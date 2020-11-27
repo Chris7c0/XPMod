@@ -241,6 +241,7 @@ public LevelUpAllCoachHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			case 0: //Yes
 			{
 				LevelUpAllCoach(iClient);
+				CoachMenuDraw(iClient);
 			}
 			case 1: //No
 			{
@@ -322,8 +323,6 @@ LevelUpAllCoach(iClient)
 	}
 	else
 		PrintToChat(iClient, "\x03[XPMod] \x01You dont have any skillpoints.");
-		
-	CoachMenuDraw(iClient);
 }
 
 //Nick Menu Handler

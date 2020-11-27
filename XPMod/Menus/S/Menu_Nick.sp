@@ -233,6 +233,7 @@ public LevelUpAllNickHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			case 0: //Yes
 			{
 				LevelUpAllNick(iClient);
+				NickMenuDraw(iClient);
 			}
 			case 1: //No
 			{
@@ -314,8 +315,6 @@ LevelUpAllNick(iClient)
 	}
 	else
 		PrintToChat(iClient, "\x03[XPMod] \x01You dont have any skillpoints.");
-		
-	NickMenuDraw(iClient);
 }
 
 //Nick Menu Handler

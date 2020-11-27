@@ -240,6 +240,7 @@ public LevelUpAllEllisHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			case 0: //Yes
 			{
 				LevelUpAllEllis(iClient);
+				EllisMenuDraw(iClient);
 			}
 			case 1: //No
 			{
@@ -321,8 +322,6 @@ LevelUpAllEllis(iClient)
 	}
 	else
 		PrintToChat(iClient, "\x03[XPMod] \x01You dont have any skillpoints.");
-		
-	EllisMenuDraw(iClient);
 }
 
 //Ellis Menu Handler

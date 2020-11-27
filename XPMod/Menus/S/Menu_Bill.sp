@@ -247,6 +247,7 @@ public LevelUpAllBillHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			case 0: //Yes
 			{
 				LevelUpAllBill(iClient);
+				SupportMenuDraw(iClient);
 			}
 			case 1: //No
 			{
@@ -327,8 +328,6 @@ LevelUpAllBill(iClient)
 	}
 	else
 		PrintToChat(iClient, "\x03[XPMod] \x01You dont have any skillpoints.");
-		
-	SupportMenuDraw(iClient);
 }
 
 //Bill Menu Handler
