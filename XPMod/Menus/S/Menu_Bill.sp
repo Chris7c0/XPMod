@@ -406,7 +406,7 @@ public InspirationalMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNu
 								g_iInspirationalLevel[iClient]++;
 								/*
 								if(g_bGameFrozen == false)
-									SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), (1.0+(g_iInspirationalLevel[iClient]*0.02) + (g_iPromotionalLevel[iClient] * 0.02)), true);
+									SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0+(g_iInspirationalLevel[iClient]*0.02) + (g_iPromotionalLevel[iClient] * 0.02)), true);
 								*/
 							}
 							else
@@ -440,7 +440,7 @@ public InspirationalMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNu
 							g_iInspirationalLevel[iClient]--;
 							/*
 							if(g_bGameFrozen == false)
-								SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), (1.0+(g_iInspirationalLevel[iClient]*0.02) + (g_iPromotionalLevel[iClient] * 0.02)), true);
+								SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0+(g_iInspirationalLevel[iClient]*0.02) + (g_iPromotionalLevel[iClient] * 0.02)), true);
 							*/
 						}
 						else
@@ -785,7 +785,7 @@ public PromotionalMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 									/*
 									if(g_bGameFrozen == false)
 									{
-										SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), (1.0+(g_iInspirationalLevel[iClient]*0.02) + (g_iPromotionalLevel[iClient] * 0.02)), true);
+										SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0+(g_iInspirationalLevel[iClient]*0.02) + (g_iPromotionalLevel[iClient] * 0.02)), true);
 										SetEntityRenderMode(iClient, RenderMode:3);
 										SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (((float(g_iGhillieLevel[iClient]) * 0.13) + ((float(g_iPromotionalLevel[iClient]) * 0.04)))))));
 									}
@@ -826,7 +826,7 @@ public PromotionalMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 							/*
 							if(g_bGameFrozen == false)
 							{
-								SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), (1.0+(g_iInspirationalLevel[iClient]*0.02) + (g_iPromotionalLevel[iClient] * 0.02)), true);
+								SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0+(g_iInspirationalLevel[iClient]*0.02) + (g_iPromotionalLevel[iClient] * 0.02)), true);
 								SetEntityRenderMode(iClient, RenderMode:3);
 								SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (((float(g_iGhillieLevel[iClient]) * 0.13) + ((float(g_iPromotionalLevel[iClient]) * 0.04)))))));
 								if(g_iGhillieLevel[iClient]==0 && g_iPromotionalLevel[iClient]==0)

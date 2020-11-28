@@ -379,7 +379,7 @@ public Action:Bind1Press(iClient,args)
 								
 								g_hTimer_DrugPlayer[iClient] = CreateTimer(2.5, TimerDrugged, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 								//g_fClientSpeedBoost[iClient] += 0.2;
-								//SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), (1.6), true);
+								//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.6), true);
 							}
 							case 6: //MegaSlap; Slaps Nick for 80 damage.
 							{
@@ -554,7 +554,7 @@ public Action:Bind1Press(iClient,args)
 								g_iClientBindUses_1[iClient]++;
 								PrintHintText(iClient, "Your serving up a hot meal. Don't forget to feed the hungry survivors!\nClick Rapidly!");
 								g_bIsServingHotMeal[iClient] = true;
-								//SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 1.0 + (g_iAcidicLevel[iClient] * 0.1), true);
+								//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0 + (g_iAcidicLevel[iClient] * 0.1), true);
 								g_fClientSpeedBoost[iClient] += (g_iAcidicLevel[iClient] * 0.1);
 								fnc_SetClientSpeed(iClient);
 								//Start Vomiting

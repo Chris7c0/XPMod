@@ -219,7 +219,7 @@ OnGameFrame_Rochelle(iClient)
 			new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
 			if((StrEqual(currentweapon, "weapon_sniper_military", false) == true) && (CurrentClipAmmo == 30))
 			{
-				new iOffset_Ammo = FindDataMapOffs(iClient,"m_iAmmo");
+				new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 				new iAmmo = GetEntData(iClient, iOffset_Ammo + 40);
 				if(iAmmo > 0)
 				{

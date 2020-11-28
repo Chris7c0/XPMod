@@ -393,7 +393,7 @@ public Action:FreezeGame(admin, args)
 			EmitAmbientSound(SOUND_FREEZE, vec, i, SNDLEVEL_NORMAL);
 			SetEntityRenderMode(i, RenderMode:3);
 			SetEntityRenderColor(i, 0, 180, 255, 160);
-			SetEntDataFloat(i , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 0.0, true);
+			SetEntDataFloat(i , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 0.0, true);
 			SetEntProp(i, Prop_Data, "m_takedamage", 0, 1);
 			new Float:cvec[3];
 			cvec[0] = 10.0;
@@ -401,7 +401,7 @@ public Action:FreezeGame(admin, args)
 			cvec[2] = 10.0;
 			g_iClientBindUses_1[i] = 0;
 			g_iClientBindUses_2[i] = 0;
-			//new gc = FindDataMapOffs(i,"m_glowColor");
+			//new gc = FindDataMapInfo(i,"m_glowColor");
 			//SetEntDataVector(i, gc, cvec, true);
 			//SetEntPropVector(i, Prop_Data, "glowcolor", cvec);
 			//DispatchKeyValue(i, "m_glowColor", "0 0 0");
@@ -418,7 +418,7 @@ public PlayerFreeze(iClient)
 	if(IsClientInGame(iClient)==true)
 	{
 		CreateTimer(0.1, FreezeColor, iClient, TIMER_FLAG_NO_MAPCHANGE);
-		SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 0.0, true);
+		SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 0.0, true);
 		SetEntProp(iClient, Prop_Data, "m_takedamage", 0, 1);
 	}
 	PrintHintText(iClient, "Survivors are temporarily frozen to choose your talents.");
@@ -509,7 +509,7 @@ ResetSurvivorSpeed(iClient)
 	
 	if(IsFakeClient(iClient) == true)
 	{
-		SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
+		SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
 	}
 	else 
 	{
@@ -518,20 +518,20 @@ ResetSurvivorSpeed(iClient)
 			case BILL:
 			{
 				if(g_bBillSprinting[iClient])
-					SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 2.0, true);
+					SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 2.0, true);
 				else
-					SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
+					SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
 			}
 			case ROCHELLE:
 			{
 				if(g_bUsingShadowNinja[iClient] == true)
-					SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iShadowLevel[iClient] * 0.12) + (g_iSniperLevel[iClient] * 0.02) + (g_iHunterLevel[iClient] * 0.02)), true);
+					SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iShadowLevel[iClient] * 0.12) + (g_iSniperLevel[iClient] * 0.02) + (g_iHunterLevel[iClient] * 0.02)), true);
 				else
-					SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iHunterLevel[iClient] * 0.02) + (g_iSniperLevel[iClient] * 0.02) + (g_iShadowLevel[iClient] * 0.02)), true);
+					SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iHunterLevel[iClient] * 0.02) + (g_iSniperLevel[iClient] * 0.02) + (g_iShadowLevel[iClient] * 0.02)), true);
 			}
 			case COACH:
 			{
-				SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 - (g_iBullLevel[iClient] * 0.03)), true);
+				SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 - (g_iBullLevel[iClient] * 0.03)), true);
 			}
 			case ELLIS:
 			{
@@ -541,12 +541,12 @@ ResetSurvivorSpeed(iClient)
 					if(g_iClientTeam[iPlayer] == TEAM_INFECTED && IsClientInGame(iPlayer) == true && 
 						IsPlayerAlive(iPlayer) == true && GetEntProp(iPlayer, Prop_Send, "m_zombieClass") == TANK)
 					{
-						SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iJamminLevel[iClient] * 0.08)), true);
+						SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iJamminLevel[iClient] * 0.08)), true);
 						return;
 					}
 				}
 				
-				SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iClient] + g_fEllisBringSpeed[iClient] + g_fEllisOverSpeed[iClient]), true);
+				SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iClient] + g_fEllisBringSpeed[iClient] + g_fEllisOverSpeed[iClient]), true);
 				//DeleteCode
 				//PrintToChatAll("All speeds are being reset");
 				//PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[iClient]);
@@ -555,7 +555,7 @@ ResetSurvivorSpeed(iClient)
 			}
 			case NICK:
 			{
-				SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iMagnumLevel[iClient] * 0.03) + (float(g_iNickDesperateMeasuresStack) * float(g_iDesperateLevel[iClient]) * 0.02)), true);
+				SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iMagnumLevel[iClient] * 0.03) + (float(g_iNickDesperateMeasuresStack) * float(g_iDesperateLevel[iClient]) * 0.02)), true);
 			}
 		}
 	}	
@@ -566,7 +566,7 @@ ResetSurvivorSpeed(iClient)
  *                                                Reset Player's Glow                                                     *
  **************************************************************************************************************************/
  
-fnc_SetRendering(iClient)
+fnc_SetRendering(int iClient)
 {
 	if (RunClientChecks(iClient) == false)
 		return;
@@ -1023,7 +1023,7 @@ fnc_DeterminePrimaryWeapon(iClient)
 		//PrintToChatAll("g_iAmmoOffset = %d", g_iAmmoOffset[iClient]);
 		
 		
-		g_iOffset_Ammo[iClient] = FindDataMapOffs(iClient,"m_iAmmo");
+		g_iOffset_Ammo[iClient] = FindDataMapInfo(iClient,"m_iAmmo");
 		//DONT FORGET THIS "g_iReserveAmmo" variable is here!
 		g_iReserveAmmo[iClient] = GetEntData(iClient, g_iOffset_Ammo[iClient] + g_iAmmoOffset[iClient]);
 		//PrintToChatAll("g_iReserveAmmo = %d", g_iReserveAmmo[iClient]);
@@ -1211,7 +1211,7 @@ fnc_SaveAmmo(iClient)
 fnc_CycleWeapon(iClient)
 {
 	//new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-	//new iOffset_Ammo = FindDataMapOffs(iClient,"m_iAmmo");
+	//new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 	switch(g_iChosenSurvivor[iClient])
 	{
 		case 0:		//Bill
@@ -1849,8 +1849,8 @@ fnc_SetClientSpeed(iClient)
 	if (iClient < 1 || (IsValidEntity(iClient) == false) || (IsClientInGame(iClient) == false) || (IsPlayerAlive(iClient) == false))
 		return;
 	
-	//new iCurrentSpeed = GetEntDataFloat(iClient, FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"));
-	SetEntDataFloat(iClient, FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), ((1.0 + g_fClientSpeedBoost[iClient]) - g_fClientSpeedPenalty[iClient]), true);
+	//new iCurrentSpeed = GetEntDataFloat(iClient, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"));
+	SetEntDataFloat(iClient, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ((1.0 + g_fClientSpeedBoost[iClient]) - g_fClientSpeedPenalty[iClient]), true);
 	//PrintToChatAll("Client %i current speed = Boost %f + Penalty %f = Total %f", iClient, g_fClientSpeedBoost[iClient], g_fClientSpeedPenalty[iClient], ((1.0 + g_fClientSpeedBoost[iClient]) - g_fClientSpeedPenalty[iClient]));
 	//g_fClientSpeedPenalty[iClient] =+ fSpeedReduction;
 	//g_fClientSpeedPenalty[iClient];
@@ -1860,7 +1860,7 @@ fnc_SetClientSpeed(iClient)
 	// {
 	// 	case 0:		//Bill
 	// 	{
-	// 		SetEntDataFloat(iClient, FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), ((1.0 + g_fBillSprintSpeed[iClient]) - g_fClientSpeedPenalty[iClient]), true);
+	// 		SetEntDataFloat(iClient, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ((1.0 + g_fBillSprintSpeed[iClient]) - g_fClientSpeedPenalty[iClient]), true);
 	// 		PrintToChatAll("Bills current speed = %d", iCurrentSpeed);
 	// 	}
 	// 	case 1:		//Rochelle
@@ -1900,7 +1900,7 @@ fnc_CheckGrapple(iClient)
 	//PrintToChatAll("g_bIsClientGrappled = %i", g_bIsClientGrappled[iClient]);
 }
 
-RunClientChecks(iClient)
+bool RunClientChecks(int iClient)
 {
 	if (iClient < 1 || (IsValidEntity(iClient) == false) || (IsClientInGame(iClient) == false))
 		return false;
@@ -1908,7 +1908,7 @@ RunClientChecks(iClient)
 	return true;
 }
 
-RunEntityChecks(iEnt)
+bool RunEntityChecks(iEnt)
 {
 	if (iEnt < 0 || (IsValidEntity(iEnt) == false))
 		return false;

@@ -72,7 +72,7 @@ public Action:Timer_FreezePlayerByTank(Handle:timer, any:iClient)
 	SetEntityRenderColor(iClient, 0, 180, 255, 255);
 	
 	//Set Movement Speed To Zero
-	SetEntDataFloat(iClient, FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 0.0, true);
+	SetEntDataFloat(iClient, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 0.0, true);
 	
 	//Set Frozen Color Overlay On Victim
 	ShowHudOverlayColor(iClient, 0, 180, 255, 128, 1200);

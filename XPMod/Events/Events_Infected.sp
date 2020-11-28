@@ -15,7 +15,7 @@ public Event_AbilityUse(Handle:hEvent, const String:strName[], bool:bDontBroadca
 		{
 			g_fClientSpeedPenalty[iClient] += (1.0 - (g_iRapidLevel[iClient] * 0.1))
 			fnc_SetClientSpeed(iClient);
-			//SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 0.0 + (g_iRapidLevel[iClient] * 0.1), true);
+			//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 0.0 + (g_iRapidLevel[iClient] * 0.1), true);
 			CreateTimer(1.5, TimerResetBoomerSpeed, iClient, TIMER_FLAG_NO_MAPCHANGE);
 			if(g_iRapidLevel[iClient] > 0)
 				CreateTimer(1.0, TimerSetBoomerCooldown, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
@@ -118,7 +118,7 @@ public Event_PlayerNowIt(Handle:hEvent, const String:strName[], bool:bDontBroadc
 								if(IsPlayerAlive(attacker) == true)
 								{
 									PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. He gets temporary super speed.", attacker);
-									//SetEntDataFloat(attacker , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 3.0, true);
+									//SetEntDataFloat(attacker , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 3.0, true);
 									g_fClientSpeedBoost[attacker] += 2.0;
 									fnc_SetClientSpeed(attacker);
 									g_bIsSuperSpeedBoomer[attacker] = true;
@@ -178,7 +178,7 @@ public Event_PlayerNowIt(Handle:hEvent, const String:strName[], bool:bDontBroadc
 									location[0] = (location[0]+(50*(Cosine(DegToRad(ang[1])))));
 									location[1] = (location[1]+(50*(Sine(DegToRad(ang[1])))));
 									
-									new ticktime = RoundToNearest( FloatDiv( GetGameTime() , GetTickInterval() ) ) + 5;
+									new ticktime = RoundToNearest(  GetGameTime() / GetTickInterval()) + 5;
 									
 									decl i;
 									for(i = 0; i < 8; i++)
@@ -245,7 +245,7 @@ public Action:Event_ChargerChargeStart(Handle:hEvent, const String:strName[], bo
 	
 	if(g_bIsSuperCharger[attacker] == true)
 	{
-		//SetEntDataFloat(attacker , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iSpikedLevel[attacker] * 0.10) + (g_iHillbillyLevel[attacker] * 0.06)), true);
+		//SetEntDataFloat(attacker , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iSpikedLevel[attacker] * 0.10) + (g_iHillbillyLevel[attacker] * 0.06)), true);
 		g_fClientSpeedBoost[attacker] += (g_iSpikedLevel[attacker] * 0.10);
 		fnc_SetClientSpeed(attacker);
 		g_iClientBindUses_1[attacker]++;
@@ -269,7 +269,7 @@ public Action:Event_ChargerChargeEnd(Handle:hEvent, const String:strName[], bool
 	{
 		g_bIsSuperCharger[attacker] = false;
 		CreateTimer(30.0, TimerResetSuperCharge, attacker,  TIMER_FLAG_NO_MAPCHANGE);
-		//SetEntDataFloat(attacker , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iHillbillyLevel[attacker] * 0.03)), true);
+		//SetEntDataFloat(attacker , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iHillbillyLevel[attacker] * 0.03)), true);
 		g_fClientSpeedBoost[attacker] -= (g_iSpikedLevel[attacker] * 0.10);
 		fnc_SetClientSpeed(attacker);
 	}
@@ -412,7 +412,7 @@ public Action:Event_ChokeStart(Handle:hEvent, const String:strName[], bool:bDont
 	{
 		SetEntityMoveType(attacker, MOVETYPE_ISOMETRIC);
 		//Going to avoid using fnc_SetClientSpeed here simply because it would not fit well
-		SetEntDataFloat(attacker, FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), (0.01 * g_iDirtyLevel[attacker]) , true);
+		SetEntDataFloat(attacker, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (0.01 * g_iDirtyLevel[attacker]) , true);
 		//CreateTimer(0.3, TimerCheckTongueDistance, attacker, TIMER_FLAG_NO_MAPCHANGE);
 	}
 	
@@ -428,7 +428,7 @@ public Action:Event_ChokeEnd(Handle:hEvent, const String:strName[], bool:bDontBr
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 	
 	SetEntityMoveType(attacker, MOVETYPE_CUSTOM);
-	//SetEntDataFloat(attacker , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iNoxiousLevel[attacker] * 0.02)), true);
+	//SetEntDataFloat(attacker , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iNoxiousLevel[attacker] * 0.02)), true);
 	fnc_SetClientSpeed(attacker);
 	
 	g_bSmokerGrappled[victim] = false;
@@ -533,15 +533,15 @@ public Action:Event_JockeyRide(Handle:hEvent, const String:strName[], bool:bDont
 		{
 			if(g_iStrongLevel[victim] > 0)
 			{
-				SetEntDataFloat(victim , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), ((1.0 + (g_iErraticLevel[attacker] * 0.03)) - ((g_iStrongLevel[victim] * 0.2) + ((g_iErraticLevel[attacker] * 0.03) * (g_iStrongLevel[victim] * 0.2)))), true);
+				SetEntDataFloat(victim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ((1.0 + (g_iErraticLevel[attacker] * 0.03)) - ((g_iStrongLevel[victim] * 0.2) + ((g_iErraticLevel[attacker] * 0.03) * (g_iStrongLevel[victim] * 0.2)))), true);
 			}
 			else if(g_iErraticLevel[attacker] > 0)
 			{
-				SetEntDataFloat(victim , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iErraticLevel[attacker] * 0.03)), true);
+				SetEntDataFloat(victim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iErraticLevel[attacker] * 0.03)), true);
 			}
 			else
 			{
-				SetEntDataFloat(victim , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
+				SetEntDataFloat(victim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
 			}
 			/*
 			g_fClientSpeedBoost[attacker] += (g_iErraticLevel[attacker] * 0.03);
@@ -662,7 +662,7 @@ public Action:Event_HunterPounceStart(Handle:hEvent, const String:strName[], boo
 	// PrintToChatAll("Distance: %i", g_iHunterPounceDistance[attacker]);
 	g_bHunterGrappled[victim] = true;
 	g_iHunterShreddingVictim[attacker] = victim;
-	SetEntDataFloat(victim , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 0.0, true);
+	SetEntDataFloat(victim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 0.0, true);
 	if(g_iClientTeam[attacker] == TEAM_INFECTED)
 	{
 		GiveClientXP(attacker, 50, g_iSprite_50XP_SI, victim, "Grappled A Survivor.");
@@ -907,7 +907,7 @@ public Action:Event_TankSpawn(Handle:hEvent, const String:strName[], bool:bDontB
 					{
 						if(g_iTankCounter == 1)
 						{
-							//SetEntDataFloat(i , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[i] + g_fEllisBringSpeed[i] + g_fEllisOverSpeed[i]), true);
+							//SetEntDataFloat(i , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[i] + g_fEllisBringSpeed[i] + g_fEllisOverSpeed[i]), true);
 							g_fClientSpeedBoost[i] += (g_iJamminLevel[i] * 0.04);
 							fnc_SetClientSpeed(i);
 							//DeleteCode
@@ -1075,7 +1075,7 @@ public Action:Event_SpitBurst(Handle:hEvent, const String:strName[], bool:bDontB
 					case 5: SetEntityModel(zombie, "models/infected/common_male_roadcrew.mdl");
 				}
 	
-				new ticktime = RoundToNearest( FloatDiv( GetGameTime() , GetTickInterval() ) ) + 5;
+				new ticktime = RoundToNearest( GetGameTime() / GetTickInterval() ) + 5;
 				SetEntProp(zombie, Prop_Data, "m_nNextThinkTick", ticktime);
 				
 				CreateTimer(0.1, TimerSetMobRush, zombie);
@@ -1210,8 +1210,8 @@ public Action:Event_GhostSpawnTime(Handle:hEvent, const String:sName[], bool:bDo
 
 public Action:Event_EnteredSpit(Handle:hEvent, const String:sName[], bool:bDontBroadcast)
 {
-	new userid = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	new subject = GetEventInt(hEvent,"subject");
+	//new userid = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	//new subject = GetEventInt(hEvent,"subject");
 	// PrintToChatAll("Entered Spit, userid = %i", userid);
 	// PrintToChatAll("Entered Spit, subject = %i", subject);
 }

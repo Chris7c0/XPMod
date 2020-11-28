@@ -82,7 +82,7 @@ OnGameFrame_Bill(iClient)
 				{
 					g_bBillSprinting[iClient] = true;
 					//g_fBillSprintSpeed[iClient] = 1.0;
-					//SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), ((1.0 + g_fBillSprintSpeed[iClient]) - g_fClientSpeedPenalty[iClient]), true);
+					//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ((1.0 + g_fBillSprintSpeed[iClient]) - g_fClientSpeedPenalty[iClient]), true);
 					g_fClientSpeedBoost[iClient] += 1.0;
 					fnc_SetClientSpeed(iClient);
 					g_iBillSprintChargePower[iClient] =  0;
@@ -115,7 +115,7 @@ OnGameFrame_Bill(iClient)
 			if(g_iBillSprintChargeCounter[iClient] < 11)
 			{
 				PrintHintText(iClient, "Sprinting Charge Depleted");
-				//SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
+				//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
 				g_bBillSprinting[iClient] = false;
 				//g_fBillSprintSpeed[iClient] = 0.0;
 				g_fClientSpeedBoost[iClient] -= 1.0;
@@ -134,7 +134,7 @@ OnGameFrame_Bill(iClient)
 			new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
 			if((((StrEqual(currentweapon, "weapon_rifle", false) == true) || (StrEqual(currentweapon, "weapon_rifle_sg552", false) == true)) && (CurrentClipAmmo == 50)) || ((StrEqual(currentweapon, "weapon_rifle_ak47", false) == true) && (CurrentClipAmmo == 40)) || ((StrEqual(currentweapon, "weapon_rifle_desert", false) == true) && (CurrentClipAmmo == 60)))
 			{
-				new iOffset_Ammo = FindDataMapOffs(iClient,"m_iAmmo");
+				new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 				new iAmmo = GetEntData(iClient, iOffset_Ammo + 12);
 				if(iAmmo > 0)
 				{

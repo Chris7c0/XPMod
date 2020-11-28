@@ -169,7 +169,7 @@ LoadFireTankTalents(iClient)
 	SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + (g_iClientLevel[iClient] * 100));
 	
 	//Set Movement Speed
-	//SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer", "m_flLaggedMovementValue"), 1.2, true);
+	//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), 1.2, true);
 	g_fClientSpeedBoost[iClient] += 0.2;
 	fnc_SetClientSpeed(iClient);
 	
@@ -213,7 +213,7 @@ LoadIceTankTalents(iClient)
 	SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + (g_iClientLevel[iClient] * 400));
 	
 	//Set Movement Speed
-	//SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer", "m_flLaggedMovementValue"), 1.0 - (RoundToCeil(g_iClientLevel[iClient] / 5.0) * 0.01), true);
+	//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), 1.0 - (RoundToCeil(g_iClientLevel[iClient] / 5.0) * 0.01), true);
 	//g_fClientSpeedPenalty[iClient] += (RoundToCeil(g_iClientLevel[iClient] / 5.0) * 0.01);
 	//fnc_SetClientSpeed(iClient);
 	

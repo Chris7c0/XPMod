@@ -299,7 +299,7 @@ public Action:ResetSkillPoints(iClient,args)
 	if(g_bGameFrozen == false)
 	{
 		//Reset run speed
-		SetEntDataFloat(iClient, FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);	//Reset run speed
+		SetEntDataFloat(iClient, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);	//Reset run speed
 		//ghillie
 		SetEntityRenderMode(iClient, RenderMode:0);		//Reset iClient tranparency
 		SetEntityRenderColor(iClient, 255, 255, 255, 255);

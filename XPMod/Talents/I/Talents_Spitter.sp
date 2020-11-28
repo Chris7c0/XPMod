@@ -39,7 +39,7 @@ OnGameFrame_Spitter(iClient)
 					
 					g_iPID_SpitterSlimeTrail[iClient] = CreateParticle("spitter_slime_trail", 0.0, iClient, ATTACH_MOUTH);
 					
-					//SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 2.0, true);
+					//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 2.0, true);
 					g_fClientSpeedBoost[iClient] += 1.0;
 					fnc_SetClientSpeed(iClient);
 					
@@ -77,7 +77,7 @@ OnGameFrame_Spitter(iClient)
 				SetEntityRenderMode(iClient, RenderMode:3);
 				SetEntityRenderColor(iClient, 255, 255, 255, 255);
 				
-				//SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
+				//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
 				g_fClientSpeedBoost[iClient] -= 1.0;
 				fnc_SetClientSpeed(iClient);
 				g_bIsStealthSpitter[iClient] = false;
@@ -145,7 +145,7 @@ DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 	*/
 	if(g_bAdhesiveGooActive[iVictim] == false)
 	{
-		//SetEntDataFloat(iVictim , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 0.5, true);
+		//SetEntDataFloat(iVictim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 0.5, true);
 		decl RandomAdhesiveGooChance;
 		RandomAdhesiveGooChance = GetRandomInt(1, 5);
 		switch (RandomAdhesiveGooChance)
@@ -158,7 +158,7 @@ DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 				{
 					case 1:
 					{
-						//SetEntDataFloat(iVictim , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 0.5, true);
+						//SetEntDataFloat(iVictim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 0.5, true);
 						g_fClientSpeedPenalty[iVictim] += (g_iPuppetLevel[iAttacker] * 0.03);
 						g_fAdhesiveAffectAmount[iVictim] = (g_iPuppetLevel[iAttacker] * 0.03);
 						//PrintToChatAll("Adhesive goo affect %d", g_fAdhesiveAffectAmount[iVictim]);
@@ -198,7 +198,7 @@ DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 			}
 			else
 			{
-				SetEntDataFloat(iVictim , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 0.5, true);
+				SetEntDataFloat(iVictim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 0.5, true);
 			}
 			
 			g_hTimer_AdhesiveGooReset[iVictim] = CreateTimer(3.0, TimerResetSpeedFromGoo, iVictim, TIMER_FLAG_NO_MAPCHANGE);
@@ -353,7 +353,7 @@ SpawnCommonInfectedMob(Float:xyzLocation[3], iAmount)
 			case 6: SetEntityModel(zombie, "models/infected/common_male_tshirt_cargos.mdl");
 		}
 		
-		new ticktime = RoundToNearest( FloatDiv( GetGameTime() , GetTickInterval() ) ) + 5;
+		new ticktime = RoundToNearest( GetGameTime() / GetTickInterval() ) + 5;
 		SetEntProp(zombie, Prop_Data, "m_nNextThinkTick", ticktime);
 		
 		CreateTimer(0.1, TimerSetMobRush, zombie);

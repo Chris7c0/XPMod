@@ -121,7 +121,7 @@ public OnGameFrame()
 				//PrintToChatAll("Current Weapon is %s", currentweapon);
 				new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 				new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
-				new iOffset_Ammo = FindDataMapOffs(iClient,"m_iAmmo");
+				new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 				
 				switch(g_iChosenSurvivor[iClient])
 				{

@@ -2,7 +2,7 @@ SetupLoadouts()
 {
 	g_iFlag_Give 			= GetCommandFlags("give");
 	g_iFlag_UpgradeAdd 		= GetCommandFlags("upgrade_add");
-	g_iFlag_UpgradeRemove 	= GetCommandFlags("upgrade_remove");
+	//g_iFlag_UpgradeRemove 	= GetCommandFlags("upgrade_remove");
 	
 	for(new i=0;i<MAXPLAYERS;i++)			//need to reset these when player disconnects and probably somewhere else
 	{

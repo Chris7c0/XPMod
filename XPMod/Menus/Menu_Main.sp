@@ -312,7 +312,7 @@ public ExtrasMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 				//OpenMOTDPanel(iClient, "Download XPMod Addon", "http://xpmod.net/downloads/xpmod_ig_downloads.html", MOTDPANEL_TYPE_URL);
 				//Get SteamID
 				decl String:strSteamID[32];
-				GetClientAuthString(iClient, strSteamID, sizeof(strSteamID));
+				GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID));
 				decl String:url[256];
 				Format(url, sizeof(url), "http://xpmod.net/select/infected_select.php?steamid=%s", strSteamID);
 				OpenMOTDPanel(iClient, "CHOOSE YOUR INFECTED", url, MOTDPANEL_TYPE_URL);

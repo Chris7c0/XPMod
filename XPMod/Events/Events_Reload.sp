@@ -773,7 +773,7 @@ if(IsFakeClient(attacker) == false)	////////////////////////////////////////////
 		if (StrContains(wclass,"rifle",false) != -1 || StrContains(wclass,"smg",false) != -1 || StrContains(wclass,"sub",false) != -1 || StrContains(wclass,"sniper",false) != -1 || StrContains(wclass,"gren",false) != -1)
 		{
 			new clip = GetEntProp(iEntid2,Prop_Data,"m_iClip1");
-			new iOffset_Ammo = FindDataMapOffs(iClient,"m_iAmmo");
+			new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 			
 			new iAmmo = GetEntData(iClient, iOffset_Ammo + 12);	//for rifle (+12)
 			if(iAmmo >= (g_iClientPrimaryClipSize[iClient] + (g_iPromotionalLevel[iClient]*20) + (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6)))
@@ -830,7 +830,7 @@ if(IsFakeClient(attacker) == false)	////////////////////////////////////////////
 	else if(g_iSilentLevel[iClient]>0)
 	{
 		new clip = GetEntProp(iEntid2,Prop_Data,"m_iClip1");
-		new iOffset_Ammo = FindDataMapOffs(iClient,"m_iAmmo");
+		new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 		decl iAmmo;
 		
 		if (StrContains(wclass,"CSniperRifle",false) != -1)	//Rugar
@@ -1078,7 +1078,7 @@ public Action:SoH_ShotgunEnd (Handle:timer, any:pack)
 		{
 			new clip = GetEntProp(iEntid2,Prop_Data,"m_iClip1");
 			clip += (g_iSprayLevel[iClient]*2);
-			new iOffset_Ammo=FindDataMapOffs(iClient,"m_iAmmo");
+			new iOffset_Ammo=FindDataMapInfo(iClient,"m_iAmmo");
 			new ammoamountpsg = GetEntData(iClient, iOffset_Ammo + 28);	//for pump shotgun (+28)
 			new ammoamountasg = GetEntData(iClient, iOffset_Ammo + 32);	//for auto shotgun (+32)
 			if(ammoamountpsg > 0)

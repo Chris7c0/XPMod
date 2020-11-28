@@ -21,7 +21,7 @@ public Action:TimerResetBoomerSpeed(Handle:timer, any:iClient)
 {
 	if(IsClientInGame(iClient) && IsPlayerAlive(iClient) && g_bIsSuperSpeedBoomer[iClient] == false)
 	{
-		//SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
+		//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
 		g_fClientSpeedPenalty[iClient] -= (1.0 - (g_iRapidLevel[iClient] * 0.1))
 		fnc_SetClientSpeed(iClient);
 	}
@@ -40,7 +40,7 @@ public Action:TimerResetFastBoomerSpeed(Handle:timer, any:iClient)
 	if(IsClientInGame(iClient))
 		if(IsPlayerAlive(iClient))
 		{
-			//SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
+			//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
 			g_fClientSpeedBoost[iClient] -= 2.0;
 			fnc_SetClientSpeed(iClient);
 		}
@@ -52,7 +52,7 @@ public Action:TimerStopHotMeal(Handle:timer, any:iClient)
 	g_bIsServingHotMeal[iClient] = false;
 	if(IsClientInGame(iClient) == true && IsPlayerAlive(iClient) == true)
 	{
-		//SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
+		//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
 		g_fClientSpeedBoost[iClient] -= (g_iAcidicLevel[iClient] * 0.1);
 		fnc_SetClientSpeed(iClient);
 			
@@ -165,7 +165,7 @@ public Action:TimerSetBoomerCooldown(Handle:timer, any:iClient)
 public Action:TimerSuicideBoomerLaunch(Handle:timer, any:iClient)
 {
 	g_bIsSuicideBoomer[iClient] = false;
-	SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"),2.0, true);
+	SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"),2.0, true);
 	decl Float:velocity[3];
 	GetEntPropVector(iClient, Prop_Data, "m_vecVelocity", velocity);
 	velocity[0] *= (1.0 + (g_iNorovirusLevel[iClient] * 0.04));

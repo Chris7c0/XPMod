@@ -779,7 +779,7 @@ public Action:TestingShit(iClient,args)
 	//new SecondaryAmmoType = GetEntProp(ActiveWeaponID,Prop_Data,"m_iSecondaryAmmoType");
 	//new UpgradedAmmoType = GetEntProp(ActiveWeaponID,Prop_Send,"m_nUpgradedPrimaryAmmoLoaded");
 	//m_nUpgradedPrimaryAmmoLoaded
-	//new iOffset_Ammo = FindDataMapOffs(iClient,"m_iAmmo");
+	//new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 	//new ReserveAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iAmmo");
 	//PrintToChatAll("m_iClip3 %d", clip3);
 	//PrintToChatAll("g_iOffset_ReloadState %d", g_iOffset_ReloadState);
@@ -817,22 +817,22 @@ public Action:TestingShit(iClient,args)
 	
 	
 	
-	// new m_reloadNumShells = FindDataMapOffs(iClient,"m_reloadNumShells");
+	// new m_reloadNumShells = FindDataMapInfo(iClient,"m_reloadNumShells");
 	// PrintToChatAll("iClient m_reloadNumShells %d", m_reloadNumShells);
-	// new m_shellsInserted = FindDataMapOffs(iClient,"m_shellsInserted");
+	// new m_shellsInserted = FindDataMapInfo(iClient,"m_shellsInserted");
 	// PrintToChatAll("iClient m_shellsInserted %d", m_shellsInserted);
-	// new m_reloadNumShells2 = FindDataMapOffs(ActiveWeaponID,"m_reloadNumShells");
+	// new m_reloadNumShells2 = FindDataMapInfo(ActiveWeaponID,"m_reloadNumShells");
 	// PrintToChatAll("ActiveWeaponID m_reloadNumShells %d", m_reloadNumShells2);
-	// new m_shellsInserted2 = FindDataMapOffs(ActiveWeaponID,"m_shellsInserted");
+	// new m_shellsInserted2 = FindDataMapInfo(ActiveWeaponID,"m_shellsInserted");
 	// PrintToChatAll("ActiveWeaponID m_shellsInserted %d", m_shellsInserted2);
 	// new m_reloadNumShells3 = GetEntProp(ActiveWeaponID,Prop_Data,"m_reloadNumShells");
 	// PrintToChatAll("Prop_Data ActiveWeaponID m_shellsInserted %d", m_reloadNumShells3);
 	// new m_shellsInserted3 = GetEntProp(iClient,Prop_Data,"m_shellsInserted");
 	// PrintToChatAll("Prop_Data iClient m_shellsInserted %d", m_shellsInserted3);
 	
-	//new m_reloadNumShells3 = FindDataMapOffs(currentweapon,"m_reloadNumShells");
+	//new m_reloadNumShells3 = FindDataMapInfo(currentweapon,"m_reloadNumShells");
 	//PrintToChatAll("currentweapon m_reloadNumShells %d", m_reloadNumShells3);
-	//new m_shellsInserted3 = FindDataMapOffs(currentweapon,"m_shellsInserted");
+	//new m_shellsInserted3 = FindDataMapInfo(currentweapon,"m_shellsInserted");
 	//PrintToChatAll("currentweapon m_shellsInserted %d", m_shellsInserted3);
 	//PrintToChatAll("m_iClip1 %d", clip1);
 	//PrintToChatAll("m_iClip2 %d", clip2);
@@ -917,7 +917,7 @@ public Action:TestingShit(iClient,args)
 	if(testtoggle[iClient] == false)
 	{
 		//SetConVarInt(FindConVar("z_no_cull"), 1);
-		//SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 0.3, true);
+		//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 0.3, true);
 		
 		//new flags = GetConVarFlags(FindConVar("sv_cheats"));
 		//SetConVarFlags(FindConVar("sv_cheats"), flags^(FCVAR_NOTIFY|FCVAR_REPLICATED|FCVAR_SPONLY));
@@ -985,7 +985,7 @@ public Action:TestingShit(iClient,args)
 	else
 	{	
 		//SetConVarInt(FindConVar("z_no_cull"), 0);
-		//SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
+		//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
 		/*new ent = CreateEntityByName("env_screenoverlay"); 
 		DispatchKeyValue(ent, "OverlayName1", "dev/dev_prisontvoverlay001.vmt"); 
 		AcceptEntityInput(ent, "StartOverlays", iClient); 

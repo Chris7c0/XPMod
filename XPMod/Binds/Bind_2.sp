@@ -74,7 +74,7 @@ public Action:Bind2Press(iClient,args)
 						SetCommandFlags("give", g_iFlag_Give);
 						SetEntityRenderMode(iClient, RenderMode:3);
 						SetEntityRenderColor(iClient, 0, 0, 0, RoundToFloor(255 * (1.0 - (float(g_iShadowLevel[iClient]) * 0.19))));
-						//SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iSilentLevel[iClient]*0.02) + (g_iShadowLevel[iClient]*0.12) + (g_iHunterLevel[iClient]*0.02)), true);
+						//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iSilentLevel[iClient]*0.02) + (g_iShadowLevel[iClient]*0.12) + (g_iHunterLevel[iClient]*0.02)), true);
 						g_fClientSpeedBoost[iClient] += (g_iShadowLevel[iClient] * 0.1);
 						fnc_SetClientSpeed(iClient);
 						//CreateParticle("rochelle_weapon_trail", 12.0, iClient, ATTACH_BLUR);

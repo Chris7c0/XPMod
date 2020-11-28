@@ -497,7 +497,7 @@ new g_iBillSprintChargePower[MAXPLAYERS + 1];
 new bool:g_bBillSprinting[MAXPLAYERS + 1];
 new bool:g_bCanDropPoopBomb[MAXPLAYERS + 1];
 new g_iPoopBombOwnerID[MAXENTITIES + 1];
-new Float:g_fBillSprintSpeed[MAXPLAYERS + 1];
+//new Float:g_fBillSprintSpeed[MAXPLAYERS + 1];
 
 //Rochelle's Stuff
 //For the Infected Detection Device(IDD) hud menu
@@ -542,9 +542,9 @@ new bool:g_bIsWreckingBallCharged[MAXPLAYERS + 1];
 new bool:g_bShowingChargeHealParticle[MAXPLAYERS + 1];
 new g_iHighestLeadLevel;
 new g_iCoachTeamHealthStack;
-new Float:g_fCoachCIHeadshotSpeed[MAXPLAYERS + 1];
-new Float:g_fCoachSIHeadshotSpeed[MAXPLAYERS + 1];
-new Float:g_fCoachRageSpeed[MAXPLAYERS + 1];
+//new Float:g_fCoachCIHeadshotSpeed[MAXPLAYERS + 1];
+//new Float:g_fCoachSIHeadshotSpeed[MAXPLAYERS + 1];
+//new Float:g_fCoachRageSpeed[MAXPLAYERS + 1];
 new g_iCoachRageRegenCounter[MAXPLAYERS + 1];
 new bool:g_bCoachRageIsAvailable[MAXPLAYERS + 1];
 new bool:g_bCoachRageIsActive[MAXPLAYERS + 1];
@@ -593,7 +593,7 @@ new g_iEllisUpgradeAmmoSlot1[MAXPLAYERS + 1];
 new g_iEllisUpgradeAmmoSlot2[MAXPLAYERS + 1];
 new String:g_strEllisUpgradeTypeSlot1[32];
 new String:g_strEllisUpgradeTypeSlot2[32];
-new bool:g_bEllisHasCycled[MAXPLAYERS + 1];
+//new bool:g_bEllisHasCycled[MAXPLAYERS + 1];
 new bool:g_bIsEllisLimitBreaking[MAXPLAYERS + 1];
 new bool:g_bCanEllisLimitBreak[MAXPLAYERS + 1];
 new bool:g_bEllisLimitBreakInCooldown[MAXPLAYERS + 1];
@@ -796,7 +796,7 @@ new g_iOffset_ReloadEndDuration		= -1;
 new g_iOffset_ReloadState			= -1;
 //new g_iOffset_ReloadStartTime		= -1;
 new g_iOffset_HealthBuffer			= -1;
-new g_iOffset_HealthBufferTime		= -1;
+//new g_iOffset_HealthBufferTime		= -1;
 new g_iOffset_CustomAbility			= -1;
 new g_iOffset_Clip1 				= -1;
 new g_iOffset_ClipShotgun			= -1;
@@ -829,7 +829,7 @@ new Float:g_flDTNextTime[64] = -1.0;
 //Flags
 new g_iFlag_Give;
 new g_iFlag_UpgradeAdd;
-new g_iFlag_UpgradeRemove;
+//new g_iFlag_UpgradeRemove;
 new g_iFlag_SpawnOld;
 
 
@@ -862,7 +862,7 @@ new Handle:g_hTimer_HunterPoison[MAXPLAYERS + 1] 			= INVALID_HANDLE;
 new Handle:g_hTimer_NickLifeSteal[MAXPLAYERS + 1] 			= INVALID_HANDLE;
 new Handle:g_hTimer_BillDropBombs[MAXPLAYERS + 1] 			= INVALID_HANDLE;
 new Handle:g_hTimer_IceSphere[MAXPLAYERS + 1]				= INVALID_HANDLE;
-new Handle:g_hTimer_AdhesiveGooReset[MAXPLAYERS + 1] 		= INVALID_HANDLE;
+//new Handle:g_hTimer_AdhesiveGooReset[MAXPLAYERS + 1] 		= INVALID_HANDLE;
 new Handle:g_hTimer_DemiGooReset[MAXPLAYERS + 1] 			= INVALID_HANDLE;
 new Handle:g_hTimer_SpitTransparencyReset[MAXPLAYERS + 1] 	= INVALID_HANDLE;
 new Handle:g_hTimer_ViralInfectionTick[MAXPLAYERS + 1] 		= INVALID_HANDLE;

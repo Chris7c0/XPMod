@@ -153,7 +153,7 @@ public Action:TimerConjureUncommonInfected(Handle:timer, any:hDataPackage)
 			case 5: SetEntityModel(zombie, "models/infected/common_male_roadcrew.mdl");
 		}
 
-		new ticktime = RoundToNearest( FloatDiv( GetGameTime() , GetTickInterval() ) ) + 5;
+		new ticktime = RoundToNearest( GetGameTime() / GetTickInterval() ) + 5;
 		SetEntProp(zombie, Prop_Data, "m_nNextThinkTick", ticktime);
 		
 		CreateTimer(0.1, TimerSetMobRush, zombie);

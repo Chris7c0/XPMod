@@ -364,7 +364,7 @@ SaveUserData(iClient)
 		return;
 		
 	decl String:strSteamID[32], String:strClientName[32], String:strClientXP[10], String:strSurvivorID[3], 
-		String:strSurvivorTalent[6][2], String:strInfectedID[3][2], String:strEquipmentSlotID[6][3], String:strOption[3][2];
+		String:strInfectedID[3][2], String:strEquipmentSlotID[6][3], String:strOption[3][2];
 	
 	//Get SteamID
 	GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID));
@@ -523,7 +523,7 @@ Logout(iClient)
 
 GetAttributesStringForQuery(char[] strAttributes, int bufferSize, int startIndex, int endIndex)
 {
-	for (int i=DB_COL_INDEX_USERS_XP; i<=DB_COL_INDEX_USERS_OPTION_DISPLAY_XP; i++)
+	for (int i=startIndex; i<=endIndex; i++)
 	{
 		StrCat(strAttributes, bufferSize, strUsersTableColumnNames[i]);
 		int len = strlen(strAttributes);

@@ -55,7 +55,7 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 						g_bEllisOverSpeedDecreased[victim] = true;
 						g_bEllisOverSpeedIncreased[victim] = false;
 						//g_fEllisOverSpeed[victim] = 0.0;
-						//SetEntDataFloat(victim , FindSendPropOffs("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[victim] + g_fEllisBringSpeed[victim] + g_fEllisOverSpeed[victim]), true);
+						//SetEntDataFloat(victim , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[victim] + g_fEllisBringSpeed[victim] + g_fEllisOverSpeed[victim]), true);
 						//DeleteCode
 						//PrintToChatAll("Hurt, now setting g_fEllisOverSpeed");
 						//PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[victim]);
@@ -69,7 +69,7 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 					if(g_bEllisOverSpeedIncreased[victim] == false)
 					{
 						//g_fEllisOverSpeed[victim] = (g_iOverLevel[victim] * 0.02);
-						//SetEntDataFloat(victim , FindSendPropOffs("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[victim] + g_fEllisBringSpeed[victim] + g_fEllisOverSpeed[victim]), true);
+						//SetEntDataFloat(victim , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[victim] + g_fEllisBringSpeed[victim] + g_fEllisOverSpeed[victim]), true);
 						g_fClientSpeedBoost[victim] += (g_iOverLevel[victim] * 0.02);
 						fnc_SetClientSpeed(victim);
 						//DeleteCode
@@ -110,7 +110,7 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 						//Change to the speed to match health percentage and level
 						g_fFireTankExtraSpeed[victim] = g_iClientLevel[victim] * 0.01 * (1.0 - fCurrentTankHealthPercentage);
 						g_fClientSpeedBoost[victim] += g_fFireTankExtraSpeed[victim];
-						//SetEntDataFloat(victim , FindSendPropOffs("CTerrorPlayer", "m_flLaggedMovementValue"), 1.2 + fExtraSpeed, true);
+						//SetEntDataFloat(victim , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), 1.2 + fExtraSpeed, true);
 						//g_fClientSpeedBoost[victim] += (0.2 + fExtraSpeed);
 						/*
 						if(g_bFireTankBaseSpeedIncreased[victim] == false)
@@ -785,7 +785,7 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 									if(IsFakeClient(victim)==false)
 										PrintHintText(victim, "\%N has injected venom into your flesh", attacker);
 									PrintHintText(attacker, "You poisoned %N, You have enough venom for %d more injections.", victim, (3 - g_iClientBindUses_2[attacker]) );
-									SetEntDataFloat(victim, FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 0.25, true);
+									SetEntDataFloat(victim, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 0.25, true);
 									g_bIsHunterReadyToPoison[attacker] = false;
 									CreateTimer(5.0, TimerResetCanHunterPoison, attacker, TIMER_FLAG_NO_MAPCHANGE);
 								}

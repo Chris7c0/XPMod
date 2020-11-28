@@ -84,7 +84,7 @@ OnGameFrame_Ellis(iClient)
 						//new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 						//PrintToChatAll("%s g_strEllisPrimarySlot2", g_strEllisPrimarySlot2[iClient]);
 						//PrintToChatAll("%s g_strEllisPrimarySlot1", g_strEllisPrimarySlot1[iClient]);
-						//new iOffset_Ammo = FindDataMapOffs(iClient,"m_iAmmo");
+						//new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 						//new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
 						//PrintToChatAll("CurrentClipAmmo %d", CurrentClipAmmo);
 						fnc_DeterminePrimaryWeapon(iClient);
@@ -545,7 +545,7 @@ OnGameFrame_Ellis(iClient)
 			new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
 			if((((StrEqual(currentweapon, "weapon_rifle", false) == true) || (StrEqual(currentweapon, "weapon_rifle_sg552", false) == true)) && (CurrentClipAmmo == 50)) || ((StrEqual(currentweapon, "weapon_rifle_ak47", false) == true) && (CurrentClipAmmo == 40)) || ((StrEqual(currentweapon, "weapon_rifle_desert", false) == true) && (CurrentClipAmmo == 60)))
 			{
-				new iOffset_Ammo = FindDataMapOffs(iClient,"m_iAmmo");
+				new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 				new iAmmo = GetEntData(iClient, iOffset_Ammo + 12);
 				if(iAmmo > 0)
 				{
@@ -557,7 +557,7 @@ OnGameFrame_Ellis(iClient)
 			}
 			if(((StrEqual(currentweapon, "weapon_smg", false) == true) || (StrEqual(currentweapon, "weapon_smg_silenced", false) == true) || (StrEqual(currentweapon, "weapon_smg_mp5", false) == true)) && (CurrentClipAmmo == 50))
 			{
-				new iOffset_Ammo = FindDataMapOffs(iClient,"m_iAmmo");
+				new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 				new iAmmo = GetEntData(iClient, iOffset_Ammo + 20);
 				if(iAmmo > 0)
 				{
@@ -569,7 +569,7 @@ OnGameFrame_Ellis(iClient)
 			}
 			if((StrEqual(currentweapon, "weapon_hunting_rifle", false) == true) && (CurrentClipAmmo == 15))
 			{
-				new iOffset_Ammo = FindDataMapOffs(iClient,"m_iAmmo");
+				new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 				new iAmmo = GetEntData(iClient, iOffset_Ammo + 36);
 				if(iAmmo > 0)
 				{
@@ -581,7 +581,7 @@ OnGameFrame_Ellis(iClient)
 			}
 			if(((StrEqual(currentweapon, "weapon_sniper_awp", false) == true) && (CurrentClipAmmo == 20)) || ((StrEqual(currentweapon, "weapon_sniper_military", false) == true) && (CurrentClipAmmo == 30)) || ((StrEqual(currentweapon, "weapon_sniper_scout", false) == true) && (CurrentClipAmmo == 15)))
 			{
-				new iOffset_Ammo = FindDataMapOffs(iClient,"m_iAmmo");
+				new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 				new iAmmo = GetEntData(iClient, iOffset_Ammo + 40);
 				if(iAmmo > 0)
 				{

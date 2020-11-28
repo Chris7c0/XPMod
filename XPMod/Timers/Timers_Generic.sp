@@ -179,7 +179,7 @@ public Action:TimerUnfreeze(Handle:timer, any:data)
 			fnc_SetRendering(i);
 			//ResetGlow(i);
 			
-			//SetEntDataFloat(i , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
+			//SetEntDataFloat(i , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
 			fnc_SetClientSpeed(i);
 			SetEntProp(i, Prop_Data, "m_takedamage", 2, 1);	//Player can take damage now
 			SetEntProp(i, Prop_Send, "m_isGoingToDie", 0);		//Fix the black and white at the beginning of the round           (Working?>

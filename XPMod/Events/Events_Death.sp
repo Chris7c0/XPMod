@@ -46,7 +46,7 @@ public Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBro
 						{
 							//g_fCoachCIHeadshotSpeed[attacker] = (g_iBullLevel[attacker] * 0.05);
 							//PrintToChatAll("g_fCoachCIHeadshotSpeed = %d", g_fCoachCIHeadshotSpeed[attacker]);
-							//SetEntDataFloat(attacker , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + g_fCoachCIHeadshotSpeed[attacker] + g_fCoachSIHeadshotSpeed[attacker] + g_fCoachRageSpeed[attacker]), true);
+							//SetEntDataFloat(attacker , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + g_fCoachCIHeadshotSpeed[attacker] + g_fCoachSIHeadshotSpeed[attacker] + g_fCoachRageSpeed[attacker]), true);
 							g_fClientSpeedBoost[attacker] += (g_iBullLevel[attacker] * 0.05);
 							fnc_SetClientSpeed(attacker);
 							CreateTimer(3.0, TimerCoachCIHeadshotSpeedReset, attacker, TIMER_FLAG_NO_MAPCHANGE);
@@ -186,7 +186,7 @@ public Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBro
 							if(g_iTankCounter == 0)
 							{
 								//g_fEllisJamminSpeed[i] = 0.0;
-								//SetEntDataFloat(i , FindSendPropOffs("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[i] + g_fEllisBringSpeed[i] + g_fEllisOverSpeed[i]), true);
+								//SetEntDataFloat(i , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[i] + g_fEllisBringSpeed[i] + g_fEllisOverSpeed[i]), true);
 								g_fClientSpeedBoost[i] -= (g_iJamminLevel[i] * 0.04);
 								fnc_SetClientSpeed(i);
 								PrintHintText(i, "You calm down knowing the TANK is dead.");
@@ -266,13 +266,13 @@ public Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBro
 													decl Float: addAmount[3], Float: svVector[3], Float: ratio[2];
 													new Float:power =  100.0 + (float(g_iNorovirusLevel[victim]) * 30.0);
 													
-													ratio[0] =  FloatDiv(distanceVec[0], SquareRoot(distanceVec[1]*distanceVec[1] + distanceVec[0]*distanceVec[0]));//Ratio x/hypo
-													ratio[1] =  FloatDiv(distanceVec[1], SquareRoot(distanceVec[1]*distanceVec[1] + distanceVec[0]*distanceVec[0]));//Ratio y/hypo
+													ratio[0] =  distanceVec[0] / SquareRoot(distanceVec[1]*distanceVec[1] + distanceVec[0]*distanceVec[0]);//Ratio x/hypo
+													ratio[1] =  distanceVec[1] / SquareRoot(distanceVec[1]*distanceVec[1] + distanceVec[0]*distanceVec[0]);//Ratio y/hypo
 													
 													GetEntPropVector(target, Prop_Data, "m_vecVelocity", svVector);
 													
-													addAmount[0] = ( -1.0 * (FloatMul(ratio[0], power)) );//multiply negative = away from TANK. multiply positive = towards TANK.
-													addAmount[1] = ( -1.0 * (FloatMul(ratio[1], power)) );
+													addAmount[0] = ( -1.0 * (ratio[0] * power) );//multiply negative = away from TANK. multiply positive = towards TANK.
+													addAmount[1] = ( -1.0 * (ratio[1] * power) );
 													addAmount[2] = power;
 													
 													SDKCall(g_hSDK_Fling, target, addAmount, 96, victim, 3.0);
@@ -365,7 +365,7 @@ public Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBro
 							{
 								//g_fCoachSIHeadshotSpeed[attacker] = (g_iHomerunLevel[attacker] * 0.05);
 								//PrintToChatAll("g_fCoachCIHeadshotSpeed = %d", g_fCoachCIHeadshotSpeed[attacker]);
-								//SetEntDataFloat(attacker , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + g_fCoachCIHeadshotSpeed[attacker] + g_fCoachSIHeadshotSpeed[attacker] + g_fCoachRageSpeed[attacker]), true);
+								//SetEntDataFloat(attacker , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + g_fCoachCIHeadshotSpeed[attacker] + g_fCoachSIHeadshotSpeed[attacker] + g_fCoachRageSpeed[attacker]), true);
 								g_fClientSpeedBoost[attacker] += (g_iHomerunLevel[attacker] * 0.05);
 								fnc_SetClientSpeed(attacker);
 								CreateTimer(6.0, TimerCoachSIHeadshotSpeedReset, attacker, TIMER_FLAG_NO_MAPCHANGE);
@@ -520,7 +520,7 @@ public Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBro
 						g_iEllisSpeedBoostCounter[attacker] = (6 * g_iBringLevel[attacker]);
 					*/
 					//g_fEllisBringSpeed[attacker] = (g_iEllisSpeedBoostCounter[attacker] * 0.01);
-					//SetEntDataFloat(attacker, FindSendPropOffs("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[attacker] + g_fEllisBringSpeed[attacker] + g_fEllisOverSpeed[attacker]), true);
+					//SetEntDataFloat(attacker, FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[attacker] + g_fEllisBringSpeed[attacker] + g_fEllisOverSpeed[attacker]), true);
 					g_fClientSpeedBoost[attacker] += 0.01;
 					fnc_SetClientSpeed(attacker);
 					//DeleteCode
@@ -549,7 +549,7 @@ public Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBro
 						{
 							if(g_iClientTeam[i]==TEAM_SURVIVORS)
 							{
-								//SetEntDataFloat(i , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 1.0 + (float(g_iMagnumLevel[i]) * 0.03) + (float(g_iNickDesperateMeasuresStack) * float(g_iDesperateLevel[i]) * 0.02), true);
+								//SetEntDataFloat(i , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0 + (float(g_iMagnumLevel[i]) * 0.03) + (float(g_iNickDesperateMeasuresStack) * float(g_iDesperateLevel[i]) * 0.02), true);
 								g_fClientSpeedBoost[i] += (g_iNickDesperateMeasuresStack * (g_iDesperateLevel[i] * 0.02));
 								fnc_SetClientSpeed(i);
 								pop(i, 1);

@@ -71,7 +71,7 @@ public Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroa
 			//PrintToChatAll("Current Weapon is %s", currentweapon);
 			new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 			new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
-			new iOffset_Ammo = FindDataMapOffs(iClient,"m_iAmmo");
+			new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 			
 			if((CurrentClipAmmo == 0) || (CurrentClipAmmo == 1))
 			//if((CurrentClipAmmo == 0) || (CurrentClipAmmo == 1))
@@ -279,7 +279,7 @@ public Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroa
 		//PrintToChatAll("Current Weapon is %s", currentweapon);
 		new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 		new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
-		new iOffset_Ammo = FindDataMapOffs(iClient,"m_iAmmo");
+		new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 		
 		switch(g_iChosenSurvivor[iClient])
 		{
@@ -753,7 +753,7 @@ public Action:Event_ReviveSuccess(Handle:hEvent, String:Event_name[], bool:dontB
 		if(iCurrentHealth < (iMaxHealth - 20.0))
 		{
 			//g_fEllisOverSpeed[target] = 0.0;
-			SetEntDataFloat(target , FindSendPropOffs("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[target] + g_fEllisBringSpeed[target] + g_fEllisOverSpeed[target]), true);
+			SetEntDataFloat(target , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[target] + g_fEllisBringSpeed[target] + g_fEllisOverSpeed[target]), true);
 			//DeleteCode
 			//PrintToChatAll("Revive success, now setting g_fEllisOverSpeed");
 			//PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[target]);
@@ -764,7 +764,7 @@ public Action:Event_ReviveSuccess(Handle:hEvent, String:Event_name[], bool:dontB
 		if(iCurrentHealth >= (iMaxHealth - 20.0))
 		{
 			g_fEllisOverSpeed[target] = (g_iOverLevel[target] * 0.02);
-			SetEntDataFloat(target , FindSendPropOffs("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[target] + g_fEllisBringSpeed[target] + g_fEllisOverSpeed[target]), true);
+			SetEntDataFloat(target , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[target] + g_fEllisBringSpeed[target] + g_fEllisOverSpeed[target]), true);
 		}
 	}
 	*/
@@ -785,7 +785,7 @@ public Action:Event_ReviveSuccess(Handle:hEvent, String:Event_name[], bool:dontB
 						{
 							if(g_iClientTeam[i]==TEAM_SURVIVORS)
 							{
-								SetEntDataFloat(i , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 1.0 + (float(g_iMagnumLevel[i]) * 0.03) + (float(g_iNickDesperateMeasuresStack) * float(g_iDesperateLevel[i]) * 0.02), true);
+								SetEntDataFloat(i , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0 + (float(g_iMagnumLevel[i]) * 0.03) + (float(g_iNickDesperateMeasuresStack) * float(g_iDesperateLevel[i]) * 0.02), true);
 								PrintHintText(i, "A teammate has been revived, your senses return to a weaker state.");
 							}
 						}
@@ -926,7 +926,7 @@ public Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDont
 	new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 	if (RunEntityChecks(ActiveWeaponID) == false)
 		return Plugin_Continue;
-	new iOffset_Ammo = FindDataMapOffs(iClient,"m_iAmmo");
+	new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 	new ClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
 	
 	//PrintToChatAll("ClipSize = %d", GetEntProp(GetPlayerWeaponSlot(iClient, 1),Prop_Data,"m_iClip1"));
@@ -969,7 +969,7 @@ public Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDont
 					new clip = GetEntProp(iEntid,Prop_Data,"m_iClip1");
 					g_iClientPrimaryClipSize[iClient] = clip;
 					SetEntData(iEntid, g_iOffset_Clip1, clip + (g_iPromotionalLevel[iClient] * 20), true);
-					//new iOffset_Ammo=FindDataMapOffs(iClient,"m_iAmmo");
+					//new iOffset_Ammo=FindDataMapInfo(iClient,"m_iAmmo");
 					clip = GetEntData(iClient, iOffset_Ammo + 12);	//for rifle (+12)
 					SetEntData(iClient, iOffset_Ammo + 12, clip - (g_iPromotionalLevel[iClient] * 20));
 				}
@@ -986,7 +986,7 @@ public Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDont
 			if(IsValidEntity(iEntid)==false)
 				return Plugin_Continue;
 			new clip = GetEntProp(iEntid,Prop_Data,"m_iClip1");
-			//new iOffset_Ammo = FindDataMapOffs(iClient,"m_iAmmo");
+			//new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 			decl iAmmo;
 			
 			if (StrContains(weaponclass,"hunting_rifle",false) != -1)	//Rugar
@@ -1040,7 +1040,7 @@ public Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDont
 					return Plugin_Continue;
 				new clip = GetEntProp(iEntid,Prop_Data,"m_iClip1");
 				clip += (g_iSprayLevel[iClient]*2);
-				//new iOffset_Ammo=FindDataMapOffs(iClient,"m_iAmmo");
+				//new iOffset_Ammo=FindDataMapInfo(iClient,"m_iAmmo");
 				new ammoamountpsg = GetEntData(iClient, iOffset_Ammo + 28);	//for pump shotgun (+28)
 				new ammoamountasg = GetEntData(iClient, iOffset_Ammo + 32);	//for auto shotgun (+32)
 				if(ammoamountpsg > 0)
@@ -1251,7 +1251,7 @@ public Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDont
 				new clip = GetEntProp(iEntid,Prop_Data,"m_iClip1");
 				g_iClientPrimaryClipSize[iClient] = clip;
 				SetEntData(iEntid, g_iOffset_Clip1, clip + (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6), true);
-				//new iOffset_Ammo=FindDataMapOffs(iClient,"m_iAmmo");
+				//new iOffset_Ammo=FindDataMapInfo(iClient,"m_iAmmo");
 				clip = GetEntData(iClient, iOffset_Ammo + 12);	//for rifle (+12)
 				SetEntData(iClient, iOffset_Ammo + 12, clip - (g_iMetalLevel[iClient]*4) - (g_iFireLevel[iClient]*6));
 				clip = GetEntData(iClient, iOffset_Ammo + 20);	//for smg (+20)
@@ -1270,7 +1270,7 @@ public Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDont
 					return Plugin_Continue;
 				new clip = GetEntProp(iEntid,Prop_Data,"m_iClip1");
 				g_iClientPrimaryClipSize[iClient] = clip;
-				new iOffset_Ammo=FindDataMapOffs(iClient,"m_iAmmo");
+				new iOffset_Ammo=FindDataMapInfo(iClient,"m_iAmmo");
 				iAmmo = GetEntData(iClient, iOffset_Ammo + 64);
 				SetEntData(iEntid, g_iOffset_Clip1, clip + g_iFireLevel[iClient], true);
 				SetEntData(iClient, iOffset_Ammo + 64, iAmmo - g_iFireLevel[iClient]);
@@ -1294,7 +1294,7 @@ public Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDont
 				if((StrEqual(g_strEllisPrimarySlot1, "empty", false) == true) && (StrEqual(g_strEllisPrimarySlot2, "empty", false) == true))
 				{
 					//new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-					//new iOffset_Ammo = FindDataMapOffs(iClient,"m_iAmmo");
+					//new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 					new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
 					if(g_iEllisCurrentPrimarySlot[iClient] == 0)
 					{
@@ -1993,12 +1993,12 @@ public Action:Event_WeaponDropped(Handle:hEvent, const String:strName[], bool:bD
 			{
 				//PrintToChatAll("Attempting to save dropped ammo...");
 				//new targetgun = GetPlayerWeaponSlot(iClient, 0);
-				//new iAmmoOffset = FindDataMapOffs(client, "m_iAmmo");
+				//new iAmmoOffset = FindDataMapInfo(client, "m_iAmmo");
 				//GetEntProp(targetgun, Prop_Data, "m_iExtraPrimaryAmmo", 4);
 				//SetEntData(iClient, iOffset_Ammo + 40, iAmmo - (g_iMetalLevel[iClient]*4) - (g_iFireLevel[iClient]*6));
-				//new iOffset_Ammo = FindDataMapOffs(iProp,"m_iAmmo");
-				//new iOffset_Ammo2 = FindDataMapOffs(droppeditem,"m_iAmmo");
-				//new iOffset_Ammo3 = FindDataMapOffs(iProp,"m_iAmmo");
+				//new iOffset_Ammo = FindDataMapInfo(iProp,"m_iAmmo");
+				//new iOffset_Ammo2 = FindDataMapInfo(droppeditem,"m_iAmmo");
+				//new iOffset_Ammo3 = FindDataMapInfo(iProp,"m_iAmmo");
 				//new iAmmo = GetEntData(iProp, iOffset_Ammo + 12);
 				//PrintToChatAll("Attempting to save dropped ammo...");
 				g_iEllisPrimarySavedClipSlot1[iClient] = GetEntProp(iProp, Prop_Data, "m_iClip1");
@@ -2096,7 +2096,7 @@ public Action:Event_PlayerIncap(Handle:hEvent, String:Event_name[], bool:dontBro
 							if(IsPlayerAlive(i) == true)
 								if(g_iClientTeam[i]==TEAM_SURVIVORS)
 								{
-									SetEntDataFloat(i , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), 1.0 + (float(g_iMagnumLevel[i]) * 0.03) + (float(g_iNickDesperateMeasuresStack) * float(g_iDesperateLevel[i]) * 0.02), true);
+									SetEntDataFloat(i , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0 + (float(g_iMagnumLevel[i]) * 0.03) + (float(g_iNickDesperateMeasuresStack) * float(g_iDesperateLevel[i]) * 0.02), true);
 									PrintHintText(i, "A teammate has fallen, your senses sharpen.");
 								}
 						}
@@ -2227,7 +2227,7 @@ public Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBro
 				g_bEllisOverSpeedIncreased[target] = false;
 			}
 			//g_fEllisOverSpeed[target] = 0.0;
-			//SetEntDataFloat(target , FindSendPropOffs("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[target] + g_fEllisBringSpeed[target] + g_fEllisOverSpeed[target]), true);
+			//SetEntDataFloat(target , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[target] + g_fEllisBringSpeed[target] + g_fEllisOverSpeed[target]), true);
 			//DeleteCode
 			//PrintToChatAll("Heal success, now setting g_fEllisOverSpeed");
 			//PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[target]);
@@ -2245,7 +2245,7 @@ public Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBro
 				g_bEllisOverSpeedIncreased[target] = true;
 			}
 			//g_fEllisOverSpeed[target] = (g_iOverLevel[target] * 0.02);
-			//SetEntDataFloat(target , FindSendPropOffs("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[target] + g_fEllisBringSpeed[target] + g_fEllisOverSpeed[target]), true);
+			//SetEntDataFloat(target , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[target] + g_fEllisBringSpeed[target] + g_fEllisOverSpeed[target]), true);
 			//DeleteCode
 			//PrintToChatAll("Heal success, now setting g_fEllisOverSpeed");
 			//PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[target]);
@@ -2576,7 +2576,7 @@ public Action:Event_DefibUsed(Handle:hEvent, const String:strName[], bool:bDontB
 				g_bEllisOverSpeedIncreased[iSubject] = false;
 			}
 			//g_fEllisOverSpeed[iSubject] = 0.0;
-			//SetEntDataFloat(iSubject , FindSendPropOffs("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iSubject] + g_fEllisBringSpeed[iSubject] + g_fEllisOverSpeed[iSubject]), true);
+			//SetEntDataFloat(iSubject , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iSubject] + g_fEllisBringSpeed[iSubject] + g_fEllisOverSpeed[iSubject]), true);
 		}
 		//else if(float(iCurrentHealth) + fTempHealth > (float(iMaxHealth) - 20.0))
 		if(iCurrentHealth >= (iMaxHealth - 20.0))
@@ -2589,7 +2589,7 @@ public Action:Event_DefibUsed(Handle:hEvent, const String:strName[], bool:bDontB
 				g_bEllisOverSpeedIncreased[iSubject] = true;
 			}
 			//g_fEllisOverSpeed[iSubject] = (g_iOverLevel[iSubject] * 0.02);
-			//SetEntDataFloat(iSubject , FindSendPropOffs("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iSubject] + g_fEllisBringSpeed[iSubject] + g_fEllisOverSpeed[iSubject]), true);
+			//SetEntDataFloat(iSubject , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iSubject] + g_fEllisBringSpeed[iSubject] + g_fEllisOverSpeed[iSubject]), true);
 		}
 	}
 	fnc_SetClientSpeed(iSubject);
@@ -2647,7 +2647,7 @@ public Action:Event_PillsUsed(Handle:hEvent, const String:strName[], bool:bDontB
 	// 	if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
 	// 	{
 	// 		g_fEllisOverSpeed[iClient] = 0.0;
-	// 		SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iClient] + g_fEllisBringSpeed[iClient] + g_fEllisOverSpeed[iClient]), true);
+	// 		SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iClient] + g_fEllisBringSpeed[iClient] + g_fEllisOverSpeed[iClient]), true);
 	// 		//DeleteCode
 	// 		PrintToChatAll("Pills used, now setting g_fEllisOverSpeed");
 	// 		PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[iClient]);
@@ -2657,7 +2657,7 @@ public Action:Event_PillsUsed(Handle:hEvent, const String:strName[], bool:bDontB
 	// 	else if(float(iCurrentHealth) + fTempHealth > (float(iMaxHealth) - 20.0))
 	// 	{
 	// 		g_fEllisOverSpeed[iClient] = (g_iOverLevel[iClient] * 0.02);
-	// 		SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iClient] + g_fEllisBringSpeed[iClient] + g_fEllisOverSpeed[iClient]), true);
+	// 		SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iClient] + g_fEllisBringSpeed[iClient] + g_fEllisOverSpeed[iClient]), true);
 	// 		//DeleteCode
 	// 		PrintToChatAll("Pills used, now setting g_fEllisOverSpeed");
 	// 		PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[iClient]);
@@ -2735,7 +2735,7 @@ public Action:Event_AdrenalineUsed(Handle:hEvent, const String:strName[], bool:b
 	// 	if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
 	// 	{
 	// 		g_fEllisOverSpeed[iClient] = 0.0;
-	// 		SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iClient] + g_fEllisBringSpeed[iClient] + g_fEllisOverSpeed[iClient]), true);
+	// 		SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iClient] + g_fEllisBringSpeed[iClient] + g_fEllisOverSpeed[iClient]), true);
 	// 		//DeleteCode
 	// 		PrintToChatAll("Adrenaline used, now setting g_fEllisOverSpeed");
 	// 		PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[iClient]);
@@ -2745,7 +2745,7 @@ public Action:Event_AdrenalineUsed(Handle:hEvent, const String:strName[], bool:b
 	// 	else if(float(iCurrentHealth) + fTempHealth > (float(iMaxHealth) - 20.0))
 	// 	{
 	// 		g_fEllisOverSpeed[iClient] = (g_iOverLevel[iClient] * 0.02);
-	// 		SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iClient] + g_fEllisBringSpeed[iClient] + g_fEllisOverSpeed[iClient]), true);
+	// 		SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iClient] + g_fEllisBringSpeed[iClient] + g_fEllisOverSpeed[iClient]), true);
 	// 		//DeleteCode
 	// 		PrintToChatAll("Adrenaline used, now setting g_fEllisOverSpeed");
 	// 		PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[iClient]);

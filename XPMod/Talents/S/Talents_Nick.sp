@@ -196,7 +196,7 @@ OnGameFrame_Nick(iClient)
 					new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 					//PrintToChatAll("%s g_strNickSecondarySlot2", g_strNickSecondarySlot2[iClient]);
 					//PrintToChatAll("%s g_strNickSecondarySlot1", g_strNickSecondarySlot1[iClient]);
-					//new iOffset_Ammo = FindDataMapOffs(iClient,"m_iAmmo");
+					//new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 					new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
 					//PrintToChatAll("CurrentClipAmmo %d", CurrentClipAmmo);
 					
@@ -362,7 +362,7 @@ public JebusHandMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 								g_bEllisOverSpeedIncreased[i] = false;
 							}
 							//g_fEllisOverSpeed[i] = 0.0;
-							//SetEntDataFloat(i , FindSendPropOffs("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[i] + g_fEllisBringSpeed[i] + g_fEllisOverSpeed[i]), true);
+							//SetEntDataFloat(i , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[i] + g_fEllisBringSpeed[i] + g_fEllisOverSpeed[i]), true);
 							//DeleteCode
 							//PrintToChatAll("Nick has team healed, now setting g_fEllisOverSpeed");
 							//PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[i]);
@@ -380,7 +380,7 @@ public JebusHandMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 								g_bEllisOverSpeedIncreased[i] = true;
 							}
 							//g_fEllisOverSpeed[i] = (g_iOverLevel[i] * 0.02);
-							//SetEntDataFloat(i , FindSendPropOffs("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[i] + g_fEllisBringSpeed[i] + g_fEllisOverSpeed[i]), true);
+							//SetEntDataFloat(i , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[i] + g_fEllisBringSpeed[i] + g_fEllisOverSpeed[i]), true);
 							//DeleteCode
 							//PrintToChatAll("Nick has team healed, now setting g_fEllisOverSpeed");
 							//PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[i]);

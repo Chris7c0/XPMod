@@ -670,7 +670,7 @@ public MagnumMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 									g_iMagnumLevel[iClient]++;
 									/*
 									if(g_bGameFrozen ==  false)
-										SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iMagnumLevel[iClient] * 0.03)), true);
+										SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iMagnumLevel[iClient] * 0.03)), true);
 									*/
 								}
 								else
@@ -707,7 +707,7 @@ public MagnumMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 							g_iMagnumLevel[iClient]--;
 							/*
 							if(g_bGameFrozen == false)
-								SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iMagnumLevel[iClient] * 0.03)), true);
+								SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iMagnumLevel[iClient] * 0.03)), true);
 							*/
 						}
 						else

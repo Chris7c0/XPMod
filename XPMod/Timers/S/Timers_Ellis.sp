@@ -93,14 +93,14 @@ public Action:TimerCheckEllisHealth(Handle:timer, any:iClient)
 	if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
 	{
 		g_fEllisOverSpeed[iClient] = 0.0;
-		SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iClient] + g_fEllisBringSpeed[iClient] + g_fEllisOverSpeed[iClient]), true);
+		SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iClient] + g_fEllisBringSpeed[iClient] + g_fEllisOverSpeed[iClient]), true);
 		//DeleteCode
 		//PrintToChatAll("Timer Tick: Ellis Over speed lost");
 	}
 	else if(float(iCurrentHealth) + fTempHealth > (float(iMaxHealth) - 20.0))
 	{
 		g_fEllisOverSpeed[iClient] = (g_iOverLevel[iClient] * 0.02);
-		SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iClient] + g_fEllisBringSpeed[iClient] + g_fEllisOverSpeed[iClient]), true);
+		SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iClient] + g_fEllisBringSpeed[iClient] + g_fEllisOverSpeed[iClient]), true);
 		//DeleteCode
 		//PrintToChatAll("Timer Tick: Ellis Over speed still in effect");
 		CreateTimer(1.0, TimerCheckEllisHealth, iClient, TIMER_FLAG_NO_MAPCHANGE);

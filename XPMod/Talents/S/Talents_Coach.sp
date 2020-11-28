@@ -370,7 +370,7 @@ OnGameFrame_Coach(iClient)
 			if(g_bCoachRageIsAvailable[iClient] == true)
 			{
 				//g_fCoachRageSpeed[iClient] = (g_iBullLevel[iClient] * 0.04);
-				//SetEntDataFloat(iClient , FindSendPropOffs("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + g_fCoachCIHeadshotSpeed[iClient] + g_fCoachSIHeadshotSpeed[iClient] + g_fCoachRageSpeed[iClient]), true);
+				//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + g_fCoachCIHeadshotSpeed[iClient] + g_fCoachSIHeadshotSpeed[iClient] + g_fCoachRageSpeed[iClient]), true);
 				g_fClientSpeedBoost[iClient] += (g_iBullLevel[iClient] * 0.04);
 				fnc_SetClientSpeed(iClient);
 				g_iCoachRageMeleeDamage[iClient] = (g_iBullLevel[iClient] * 20);
@@ -441,7 +441,7 @@ OnGameFrame_Coach(iClient)
 			new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
 			if(((StrEqual(currentweapon, "weapon_pumpshotgun", false) == true) || (StrEqual(currentweapon, "weapon_shotgun_chrome", false) == true)) && (CurrentClipAmmo > 7) && (CurrentClipAmmo <= (7 + (g_iSprayLevel[iClient] * 2))))
 			{
-				new iOffset_Ammo = FindDataMapOffs(iClient,"m_iAmmo");
+				new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 				new iAmmo = GetEntData(iClient, iOffset_Ammo + 28);
 				if(iAmmo > 0)
 				{
@@ -452,7 +452,7 @@ OnGameFrame_Coach(iClient)
 			}
 			if(((StrEqual(currentweapon, "weapon_autoshotgun", false) == true) || (StrEqual(currentweapon, "weapon_shotgun_spas", false) == true)) && (CurrentClipAmmo > 9) && (CurrentClipAmmo <= (9 + (g_iSprayLevel[iClient] * 2))))
 			{
-				new iOffset_Ammo = FindDataMapOffs(iClient,"m_iAmmo");
+				new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 				new iAmmo = GetEntData(iClient, iOffset_Ammo + 32);
 				if(iAmmo > 0)
 				{
