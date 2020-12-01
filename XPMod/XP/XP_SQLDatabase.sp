@@ -1,30 +1,145 @@
 //SQL Database File Functions
-
 #include "XPMod/Models/Database/DB_Users.sp"
 
 bool:ConnectDB()
 {	
-	new Handle:hKeyValues = CreateKeyValues("sql");
-	KvSetString(hKeyValues, "driver", "mysql");
-	KvSetString(hKeyValues, "host", DB_HOST);
-	KvSetString(hKeyValues, "database", DB_DATABASE);
-	KvSetString(hKeyValues, "user", DB_USER);
-	KvSetString(hKeyValues, "pass", DB_PASSWORD);
 
-	decl String:error[255];
-	g_hDatabase = SQL_ConnectCustom(hKeyValues, error, sizeof(error), true);
-	CloseHandle(hKeyValues);
-
-	if (g_hDatabase == INVALID_HANDLE)
+	if (SQL_CheckConfig(DB_CONF_NAME))
 	{
-		LogError("MySQL Connection For XPMod User Database Failed: %s", error);
+		new String:Error[256];
+		g_hDatabase = SQL_Connect(DB_CONF_NAME, true, Error, sizeof(Error));
+
+		if (g_hDatabase == INVALID_HANDLE)
+		{
+			LogError("Failed to connect to XPMod database: %s", Error);
+			return false;
+		}
+		// This SET NAMES 'utf8' doesnt look like its required.
+		// else if (!SQL_FastQuery(g_hDatabase, "SET NAMES 'utf8'"))
+		// {
+		// 	if (SQL_GetError(g_hDatabase, Error, sizeof(Error)))
+		// 		LogError("Failed to update XPMod DB encoding to UTF8: %s", Error);
+		// 	else
+		// 		LogError("Failed to update XPMod DB encoding to UTF8: unknown");
+		// }
+	}
+	else
+	{
+		LogError("[XPMod] Databases.cfg missing '%s' entry!", DB_CONF_NAME);
 		return false;
 	}
+
+	// This is used when connecting via the sourcecode
+	// new Handle:hKeyValues = CreateKeyValues("sql");
+	// KvSetString(hKeyValues, "driver", "mysql");
+	// KvSetString(hKeyValues, "host", DB_HOST);
+	// KvSetString(hKeyValues, "database", DB_DATABASE);
+	// KvSetString(hKeyValues, "user", DB_USER);
+	// KvSetString(hKeyValues, "pass", DB_PASSWORD);
+
+	// decl String:error[255];
+	// g_hDatabase = SQL_ConnectCustom(hKeyValues, error, sizeof(error), true);
+	// CloseHandle(hKeyValues);
+
+	// if (g_hDatabase == INVALID_HANDLE)
+	// {
+	// 	LogError("MySQL Connection For XPMod User Database Failed: %s", error);
+	// 	return false;
+	// }
 	
 	return true;
 }
 
-//Callback function for an SQL SaveUserData
+
+//Callback function for an SQL SQLGetUserIDAndToken
+public SQLGetUserIDAndTokenCallback(Handle:owner, Handle:hQuery, const String:error[], any:iClient)
+{
+	// PrintToChatAll("SQLGetUserIDAndTokenCallback Started. %i: %N", iClient, iClient);
+	// PrintToServer("SQLGetUserIDAndTokenCallback Started. %i: %N", iClient, iClient);
+
+	if (g_hDatabase == INVALID_HANDLE)
+	{
+		PrintToChatAll("Unable to connect to XPMod SQL Database.");
+		return;
+	}
+
+	if (IsValidEntity(iClient) == false || IsFakeClient(iClient))
+	{
+		LogError("SQLGetUserIDAndTokenCallback: INVALID ENTITY OR IS FAKE CLIENT");
+		return;
+	}
+	
+	if(!StrEqual("", error))
+	{
+		LogError("SQL Error: %s", error);
+		return;
+	}
+	
+	decl String:strData[50];
+	
+	if(SQL_FetchRow(hQuery))
+	{
+		//Get Client's User_ID SQL database
+		if(SQL_FetchString(hQuery, 0, strData, sizeof(strData)) != 0)
+		{
+			g_iDBUserID[iClient] = StringToInt(strData);
+			PrintToServer("USER_ID = %i", g_iDBUserID[iClient]);
+		}
+		else
+		{
+			LogError("SQL Error getting USER_ID string from query");
+			return;
+		}
+		
+		//Get Client's User Token from the SQL database
+		if(SQL_FetchString(hQuery, 1, strData, sizeof(strData)) != 0)
+		{
+			//Format(g_strDBUserToken[iClient], sizeof(g_strDBUserToken[iClient]), "%s", strData);
+			PrintToServer("USER TOKEN = %s", g_strDBUserToken[iClient]);
+		}
+		else
+		{
+			LogError("SQL Error getting USER_ID string from query");
+			return;
+		}
+
+		// Get all the user's data, now that the ID is available
+		GetUserData(iClient);
+	}
+
+	// PrintToChatAll("GetUserIDAndToken Callback Complete.  %i: %N", iClient, iClient);
+	// PrintToServer("GetUserIDAndToken Callback Complete.  %i: %N", iClient, iClient);
+}
+
+GetUserIDAndToken(any:iClient)
+{
+	// PrintToChatAll("GetUserIDAndToken. %i: %N", iClient, iClient);
+	// PrintToServer("GetUserIDAndToken. %i: %N", iClient, iClient);
+	if(iClient == 0)
+		iClient = 1;
+	
+	if (g_hDatabase == INVALID_HANDLE)
+	{
+		PrintToChatAll("Unable to connect to XPMod SQL Database.");
+		return;
+	}
+	
+	if (!IsClientInGame(iClient) || IsFakeClient(iClient) || g_bClientLoggedIn[iClient])
+		return;
+	
+	//Get SteamID
+	decl String:strSteamID[32];
+	GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID));
+	
+	// Save the new user data into the SQL database with the matching Steam ID
+	decl String:strQuery[1024] = "";
+	// Combine it all into the query
+	Format(strQuery, sizeof(strQuery), "SELECT %s,%s FROM %s WHERE steam_id = %s", strUsersTableColumnNames[DB_COL_INDEX_USERS_USER_ID], strUsersTableColumnNames[DB_COL_INDEX_USERS_TOKEN], DB_TABLENAME, strSteamID);
+
+	SQL_TQuery(g_hDatabase, SQLGetUserIDAndTokenCallback, strQuery, iClient);
+}
+
+//Callback function for an SQL GetUserData
 public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[], any:hDataPack)
 {
 	if (hDataPack == INVALID_HANDLE)
@@ -37,8 +152,8 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 	bool bOnlyWebsiteChangableData = ReadPackCell(hDataPack);
 	CloseHandle(hDataPack);
 
-	// PrintToChatAll("GetUserData Callback Started. %i: %N", iClient, iClient);
-	// PrintToServer("GetUserData Callback Started. %i: %N", iClient, iClient);
+	// PrintToChatAll("GetUserData Callback Started. %i: %N, bOnlyWebsiteChangableData = %i", iClient, iClient, bOnlyWebsiteChangableData);
+	// PrintToServer("GetUserData Callback Started. %i: %N, bOnlyWebsiteChangableData = %i", iClient, iClient, bOnlyWebsiteChangableData);
 
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -67,17 +182,27 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 		ResetSkillPoints(iClient, iClient);
 	}
 
-	// Set the start index offset to caluclate the correct field index value
+	// Set the start index offset to caluclate the correct field index value, adding DB_COL_INDEX_USERS_USER_ID and DB_COL_INDEX_USERS_TOKEN
 	int startFieldIndexOffset = DB_COL_INDEX_USERS_XP;
 	
 	if(SQL_FetchRow(hQuery))
 	{
 		if (bOnlyWebsiteChangableData == false)
 		{
-			//Get Client XP from the SQL database
+			//Get Client XP from the SQL database and level up player accordingly
 			iFieldIndex = DB_COL_INDEX_USERS_XP - startFieldIndexOffset;
 			if(SQL_FetchString(hQuery, iFieldIndex, strData, sizeof(strData)) != 0)
+			{
 				g_iClientXP[iClient] += StringToInt(strData);
+
+				//Calculate level and next level g_iClientXP
+				calclvlandnextxp(iClient);
+
+				//Calculate g_iSkillPoints
+				g_iSkillPoints[iClient] = g_iClientLevel[iClient] - iSkillPointsUsed;
+				g_iInfectedLevel[iClient] = RoundToFloor(g_iClientLevel[iClient] * 0.5);
+				//iskillpoints[iClient] = g_iInfectedLevel[iClient] * 3;
+			}
 			else
 				LogError("SQL Error getting XP string from query");
 		
@@ -100,6 +225,11 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 			else
 				LogError("SQL Error getting iInfectedID[%d] string from query", i);
 		}
+
+		//Set Infected Classes
+		g_iClientInfectedClass1[iClient] = iInfectedID[0];
+		g_iClientInfectedClass2[iClient] = iInfectedID[1];
+		g_iClientInfectedClass3[iClient] = iInfectedID[2];
 		
 		if (bOnlyWebsiteChangableData == false)
 		{
@@ -123,27 +253,9 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 					LogError("SQL Error getting iOption[%d] string from query", i);
 			}
 		}
-		
-		//Set Infected Classes
-		g_iClientInfectedClass1[iClient] = iInfectedID[0];
-		g_iClientInfectedClass2[iClient] = iInfectedID[1];
-		g_iClientInfectedClass3[iClient] = iInfectedID[2];
-
-		//Set the infected class strings
-		SetInfectedClassSlot(iClient, 1, g_iClientInfectedClass1[iClient]);
-		SetInfectedClassSlot(iClient, 2, g_iClientInfectedClass2[iClient]);
-		SetInfectedClassSlot(iClient, 3, g_iClientInfectedClass3[iClient]);
 
 		if (bOnlyWebsiteChangableData == false)
 		{
-			//Calculate level and next level g_iClientXP
-			calclvlandnextxp(iClient);
-			
-			//Calculate g_iSkillPoints
-			g_iSkillPoints[iClient] = g_iClientLevel[iClient] - iSkillPointsUsed;
-			g_iInfectedLevel[iClient] = RoundToFloor(g_iClientLevel[iClient] * 0.5);
-			//iskillpoints[iClient] = g_iInfectedLevel[iClient] * 3;
-
 			//Set Survivor Class Levels
 			switch(g_iChosenSurvivor[iClient])
 			{
@@ -168,7 +280,15 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 					LevelUpAllNick(iClient);
 				}
 			}
+		}
 
+		//Set the infected class strings
+		SetInfectedClassSlot(iClient, 1, g_iClientInfectedClass1[iClient]);
+		SetInfectedClassSlot(iClient, 2, g_iClientInfectedClass2[iClient]);
+		SetInfectedClassSlot(iClient, 3, g_iClientInfectedClass3[iClient]);
+
+		if (bOnlyWebsiteChangableData == false)
+		{
 			//Set the user's survivor equipment
 			g_iClientPrimarySlotID[iClient] = iEquipmentSlot[0];
 			g_iClientSecondarySlotID[iClient] = iEquipmentSlot[1];
@@ -222,8 +342,8 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 	}
 	else if (bOnlyWebsiteChangableData == false)
 	{
-		PrintToChatAll("\x03[XPMod] %N has no account.", iClient);
-		PrintToServer("[XPMod] %N has no account.", iClient);
+		PrintToChatAll("\x03[XPMod] \x05%N has joined", iClient);
+		PrintToServer("[XPMod] %N has joined", iClient);
 	}
 
 	// PrintToChatAll("GetUserData Callback Complete.  %i: %N", iClient, iClient);
@@ -232,8 +352,8 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 
 GetUserData(any:iClient, bool:bOnlyWebsiteChangableData = false)
 {
-	// PrintToChatAll("GetUserData. %i: %N", iClient, iClient);
-	// PrintToServer("GetUserData. %i: %N", iClient, iClient);
+	// PrintToChatAll("GetUserData. %i: %N, bOnlyWebsiteChangableData = %i", iClient, iClient, bOnlyWebsiteChangableData);
+	// PrintToServer("GetUserData. %i: %N, bOnlyWebsiteChangableData = %i", iClient, iClient, bOnlyWebsiteChangableData);
 	if(iClient == 0)
 		iClient = 1;
 	
@@ -242,21 +362,24 @@ GetUserData(any:iClient, bool:bOnlyWebsiteChangableData = false)
 		PrintToChatAll("Unable to connect to XPMod SQL Database.");
 		return;
 	}
+
+	// Check if the client has a user ID yet, if not thats required first
+	if (g_iDBUserID[iClient] == -1)
+	{
+		GetUserIDAndToken(iClient);
+		return;
+	}
 	
 	if (!IsClientInGame(iClient) || IsFakeClient(iClient) || (g_bClientLoggedIn[iClient] && bOnlyWebsiteChangableData == false))
 		return;
-	
-	//Get SteamID
-	decl String:strSteamID[32];
-	GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID));
-	
+
 	// Save the new user data into the SQL database with the matching Steam ID
 	decl String:strQuery[1024] = "";
 	decl String:strAttributes[1024] = "";
 	// Build the attribute strings for the query
 	GetAttributesStringForQuery(strAttributes, sizeof(strAttributes), DB_COL_INDEX_USERS_XP, DB_COL_INDEX_USERS_OPTION_DISPLAY_XP);
 	// Combine it all into the query
-	Format(strQuery, sizeof(strQuery), "SELECT %s FROM %s WHERE steam_id = %s", strAttributes, DB_TABLENAME, strSteamID);
+	Format(strQuery, sizeof(strQuery), "SELECT %s FROM %s WHERE user_id = %i", strAttributes, DB_TABLENAME, g_iDBUserID[iClient]);
 	
 	// Create a data pack to pass multiple parameters to the callback
 	new Handle:hDataPackage = CreateDataPack();
@@ -279,9 +402,12 @@ public SQLCreateNewUserCallback(Handle:owner, Handle:hQuery, const String:error[
 		return;
 	
 	if(!StrEqual("", error))
+	{
 		LogError("SQL Error: %s", error);
-	else
-		g_bClientLoggedIn[iClient] = true;
+		return;
+	}
+	
+	GetUserIDAndToken(iClient);
 	
 	//PrintToChatAll("New User Creation Callback Complete.  %i: %N", iClient, iClient);
 	//PrintToServer("New User Creation Callback Complete.  %i: %N", iClient, iClient);
@@ -293,8 +419,6 @@ CreateNewUser(iClient)
 	//PrintToServer("New User Creation.  %i: %N", iClient, iClient);
 	if(iClient == 0)
 		iClient = 1;
-	
-	//g_bClientLoggedIn[iClient] = true;
 	
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -312,6 +436,10 @@ CreateNewUser(iClient)
 	//Get Client Name
 	decl String:strClientName[32];
 	GetClientName(iClient, strClientName, sizeof(strClientName));
+
+	//Get a new user token
+	decl String:strUserToken[41];
+	GenerateNewHashToken(strSteamID, strUserToken);
 	
 	//PrintToChatAll(strClientName);
 	
@@ -326,8 +454,8 @@ CreateNewUser(iClient)
 		IntToString(g_iClientXP[iClient], strClientXP, sizeof(strClientXP));
 	
 	//Create new entry into the SQL database with the users information
-	decl String:strQuery[256];
-	Format(strQuery, sizeof(strQuery), "INSERT INTO %s (steam_id, user_name, xp) VALUES ('%s', '%s', %s)", DB_TABLENAME, strSteamID, strClientName, strClientXP);
+	decl String:strQuery[256] = "";
+	Format(strQuery, sizeof(strQuery), "INSERT INTO %s (steam_id, user_name, token, xp) VALUES ('%s', '%s', '%s', %s)", DB_TABLENAME, strSteamID, strClientName, strUserToken, strClientXP);
 	SQL_TQuery(g_hDatabase, SQLCreateNewUserCallback, strQuery, iClient);
 }
 
@@ -358,9 +486,13 @@ SaveUserData(iClient)
 	{
 		PrintToChatAll("Unable to connect to XPMod SQL Database.");
 		return;
-	}	
+	}
 	
 	if (!g_bClientLoggedIn[iClient] || g_iClientXP[iClient]<0)
+		return;
+
+	// Check if the client has a user ID yet
+	if (g_iDBUserID[iClient] == -1)
 		return;
 		
 	decl String:strSteamID[32], String:strClientName[32], String:strClientXP[10], String:strSurvivorID[3], 
@@ -467,7 +599,7 @@ SaveUserData(iClient)
 		equipment_laser = %s, \
 		option_announcer  = %s, \
 		option_display_xp = %s \
-		WHERE steam_id = '%s'", 
+		WHERE user_id = '%i'", 
 		DB_TABLENAME, 
 		strClientName, 
 		strClientXP, 
@@ -483,7 +615,7 @@ SaveUserData(iClient)
 		strEquipmentSlotID[5],
 		strOption[0],
 		strOption[2],
-		strSteamID);
+		g_iDBUserID[iClient]);
 	
 	SQL_TQuery(g_hDatabase, SQLSaveUserDataCallback, strQuery, iClient);
 }
@@ -532,4 +664,17 @@ GetAttributesStringForQuery(char[] strAttributes, int bufferSize, int startIndex
 	}
 	// Remove the last comma
 	strAttributes[strlen(strAttributes)-1] = '\0';
+}
+
+GenerateNewHashToken(const char[] strSteamID, char[] strToken)
+{
+	// Generate 3 random numbers to append to the end of the steam id to act as salt for the hash
+	int num1 = GetURandomInt();
+	int num2 = GetURandomInt();
+	int num3 = GetURandomInt();
+
+	decl String:strValueToHash[64] = "";
+	Format(strValueToHash, sizeof(strValueToHash), "%s%i%i%i", strSteamID, num1, num2, num3);
+
+	SHA1String(strValueToHash, strToken, true);
 }

@@ -461,7 +461,7 @@ public Action:Event_PlayerConnect(Handle:hEvent, const String:strName[], bool:bD
 		}
 		//PrintToChatAll("PCONNECT FULL: %d: Clientname %s stored in database", iClient, clientname);
 		//PrintToChatAll("\x03%N \x04has connected", iClient);
-		GetUserData(iClient);
+		GetUserIDAndToken(iClient);
 	}
 	else	//They were already in game
 	{
@@ -495,6 +495,8 @@ public Action:Event_PlayerDisconnect(Handle:hEvent, const String:strName[], bool
 	}
 	DeleteAllClientParticles(iClient);
 	g_bClientLoggedIn[iClient] = false;
+	g_iDBUserID[iClient] = -1;
+	g_strDBUserToken[iClient] = "";
 	g_iAutoSetCountDown[iClient] = -1;
 	ResetAll(iClient, iClient);
 	//PrintToChatAll("\x03%N \x04has disconnected", iClient);

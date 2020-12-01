@@ -59,12 +59,12 @@
 #define LEVEL_30 465000
 
 ///////////////////////   Database Definitions   ////////////////////////
-#define DB_HOST 		"urbanlyadjusted.com"
-//#define DB_HOST 		"47.149.229.220"
-#define DB_DATABASE		"xpmodclients"
-#define DB_USER			"xpmodclients"
-#define DB_PASSWORD		"C1ientPW"
-#define DB_CONF_NAME 	"sqltester"
+//Now defined in /addons/sourcemod/config/databases.cfg under "xpmod", DB_CONF_NAME
+//#define DB_HOST 		"DB_HOST"
+//#define DB_DATABASE	"DB_DATABASE"
+//#define DB_USER		"DB_USER"
+//#define DB_PASSWORD	"DB_PASSWORD"
+#define DB_CONF_NAME 	"xpmod"
 #define DB_TABLENAME  	"users"
 
 ///////////////////////   Sound Definitions   ////////////////////////
@@ -307,6 +307,8 @@ new Float:g_xyzOriginalRopeDistance[MAXPLAYERS + 1];
 new clientidname[MAXPLAYERS + 1][32];			//SHOULD BE A STRING?
 new g_iClientTeam[MAXPLAYERS + 1];
 new bool:g_bClientLoggedIn[MAXPLAYERS + 1];
+new g_iDBUserID[MAXPLAYERS + 1] = -1;
+new String:g_strDBUserToken[MAXPLAYERS + 1][41];
 new bool:g_bCanSave = true;
 new bool:g_bTalentsGiven[MAXPLAYERS + 1] = false;
 new g_iClientXP[MAXPLAYERS + 1];

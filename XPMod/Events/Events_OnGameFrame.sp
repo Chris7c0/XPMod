@@ -122,7 +122,7 @@ public OnGameFrame()
 				new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 				new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
 				new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
-				
+					
 				switch(g_iChosenSurvivor[iClient])
 				{
 					case 0:		//Bill Reload

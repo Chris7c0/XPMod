@@ -110,24 +110,25 @@ public Action:TimerHunterPoisonFade(Handle:timer, any:pack)
 	return Plugin_Stop;
 }
 
-public Action:TimerContinuousHunterPoison(Handle:timer, any:pack)
-{
-	if (pack == INVALID_HANDLE)
-		return Plugin_Stop;
-	ResetPack(pack);
-	new victim = ReadPackCell(pack);
-	new attacker = ReadPackCell(pack);
-	//Closing the handle to prevent invalid handle error
-	CloseHandle(pack)
+// public Action:TimerContinuousHunterPoison(Handle:timer, any:pack)
+// {
+// 	if (pack == INVALID_HANDLE)
+// 		return Plugin_Stop;
+	
+// 	ResetPack(pack);
+// 	new victim = ReadPackCell(pack);
+// 	new attacker = ReadPackCell(pack);
 
-	if( (IsValidEntity(victim) == false) || (IsClientInGame(victim) == false) || (IsPlayerAlive(victim) == false) || (g_bHunterLethalPoisoned[victim] == false))
-	{
-		PrintToChatAll("Stopping Lethal poison on victim");
-		return Plugin_Stop;
-	}
-	else
-	{
-		DealDamage(victim, attacker, 3, DAMAGETYPE_BLOCK_REVIVING);
-		return Plugin_Continue;
-	}
-}
+// 	if( (IsValidEntity(victim) == false) || (IsClientInGame(victim) == false) || (IsPlayerAlive(victim) == false) || (g_bHunterLethalPoisoned[victim] == false))
+// 	{
+// 		PrintToChatAll("Stopping Lethal poison on victim");
+// 		//Closing the handle to prevent invalid handle error
+// 		CloseHandle(pack)
+// 		return Plugin_Stop;
+// 	}
+// 	else
+// 	{
+// 		DealDamage(victim, attacker, 3, DAMAGETYPE_BLOCK_REVIVING);
+// 		return Plugin_Continue;
+// 	}
+// }

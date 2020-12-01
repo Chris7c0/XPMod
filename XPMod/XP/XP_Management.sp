@@ -207,6 +207,9 @@ ResetAllOptions(iClient)
 
 public ResetAllInfectedClasses(iClient)
 {
+	// PrintToChat(iClient, "Reset all infected classes");
+	// PrintToServer("Reset infected classes");
+
 	//Infected Classes
 	g_iClientInfectedClass1[iClient] = UNKNOWN_INFECTED;
 	g_strClientInfectedClass1[iClient] = "None";
@@ -337,6 +340,8 @@ public Action:ResetSkillPoints(iClient,args)
 
 LevelUpPlayer(iClient)
 {
+	// PrintToChat(iClient, "Level up player");
+	// PrintToServer("level up player");
 	if(iClient > 0)
 		if(IsClientInGame(iClient) == true)
 		{
@@ -371,6 +376,8 @@ LevelUpPlayer(iClient)
 //Level Up Infected Talents
 public LevelUpInfectedTalent(iClient, class)
 {
+	// PrintToChat(iClient, "level up infected tallent %i", class);
+	// PrintToServer("level up infected talent %i", class);
 	if(class == SMOKER)
 	{
 		if(g_iClientLevel[iClient] > 0 && g_iClientLevel[iClient] <= 10)
@@ -484,6 +491,8 @@ public LevelUpInfectedTalent(iClient, class)
 //Level Up Infected Talents
 public LevelDownInfectedTalent(iClient, class)
 {
+	// PrintToChat(iClient, "level down infected tallent %i", class);
+	// PrintToServer("level down infected talent %i", class);
 	if(class == SMOKER)
 	{
 		g_iEnvelopmentLevel[iClient] = 0;
@@ -524,6 +533,8 @@ public LevelDownInfectedTalent(iClient, class)
 
 public SetInfectedClassSlot(iClient, slotnum, class)
 {
+	// PrintToChat(iClient, "Set your infected class to %i", class);
+	// PrintToServer("Set infected class to %i", class);
 	switch(slotnum)
 	{
 		case 1:	//Class 1
@@ -874,8 +885,8 @@ GiveRewards()
 	decl i;
 	for(i = 1; i <= MaxClients; i++)
 	{
-		g_bTalentsConfirmed[i] = false;				//I don't know why these are here, check if needed
-		g_bUserStoppedConfirmation[i] = false;
+		//g_bTalentsConfirmed[i] = false;				//I don't know why these are here, check if needed
+		//g_bUserStoppedConfirmation[i] = false;
 		
 		if(IsClientInGame(i) == false)
 			continue;

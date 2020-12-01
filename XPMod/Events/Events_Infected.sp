@@ -1154,9 +1154,19 @@ public Action:Timer_CheckWitchRage(Handle:timer, any:iWitchID)
 	// L 11/19/2020 - 16:58:10: [SM] Call stack trace:
 	// L 11/19/2020 - 16:58:10: [SM]   [0] GetEntPropFloat
 	// L 11/19/2020 - 16:58:10: [SM]   [1] Line 1151, XPMod/Events/Events_Infected.sp::Timer_CheckWitchRage
-	decl String:class_name[32];
-	GetEntityClassname(iWitchID, class_name, 32)
-	PrintToChatAll("Timer_CheckWitchRage: id = %d, classname = %f", iWitchID, class_name)
+
+	// Got this after:
+	// Timer_CheckWitchRage: id = 796, className = witch
+	// Timer_CheckWitchRage: id = 796, className = witch
+	decl String:className[32];
+	GetEntityClassname(iWitchID, className, 32)
+	//PrintToServer("Timer_CheckWitchRage: id = %d, className = %s", iWitchID, className)
+	if (strcmp(className, "witch", true) != 0)
+	{
+		//CloseHandle(timer);  //Is this needed?
+		LogError("[XPMod] Timer_CheckWitchRage className != witch.  className: %s", className);
+		return Plugin_Stop;
+	}
 	
 	new Float:fRage = GetEntPropFloat(iWitchID, Prop_Send, "m_rage");
 	

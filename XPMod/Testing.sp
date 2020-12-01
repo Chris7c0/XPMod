@@ -39,8 +39,8 @@ public Action:TestFunction1(iClient,args)
 	char str[99];
 	GetCmdArg(1, str, sizeof(str));
 	//char str[] = "This is a test";
-	char output[40];
-
+	char output[41];
+	
 	SHA1String(str, output, true);
 	
 	// if (RunClientChecks(iClient) == false) PrintToChat(iClient, "Ran");
@@ -55,6 +55,10 @@ public Action:TestFunction1(iClient,args)
 public Action:TestFunction2(iClient,args)
 {
 	PrintToChat(iClient, "T2");
+	PrintToChatAll("%i, %i, %i", g_iClientInfectedClass1[iClient], g_iClientInfectedClass2[iClient], g_iClientInfectedClass3[iClient]);
+	PrintToChatAll("g_iRapidLevel %i, %i, %i", g_iRapidLevel[iClient], g_iAcidicLevel[iClient], g_iNorovirusLevel[iClient]);
+	PrintToChatAll("g_iPuppetLevel %i, %i, %i", g_iPuppetLevel[iClient], g_iMaterialLevel[iClient], g_iHallucinogenicLevel[iClient]);
+
 	return Plugin_Stop;
 }
 

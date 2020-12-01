@@ -781,7 +781,7 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 									g_iHunterPoisonRuntimesCounter[victim] = g_iKillmeleonLevel[attacker];
 									g_bHunterLethalPoisoned[victim] = true;
 									g_hTimer_HunterPoison[victim] = CreateTimer(1.0, TimerHunterPoison, hunterpoisonpackage, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
-									CreateTimer(20.0, TimerContinuousHunterPoison, hunterpoisonpackage, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+									//CreateTimer(20.0, TimerContinuousHunterPoison, hunterpoisonpackage, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 									if(IsFakeClient(victim)==false)
 										PrintHintText(victim, "\%N has injected venom into your flesh", attacker);
 									PrintHintText(attacker, "You poisoned %N, You have enough venom for %d more injections.", victim, (3 - g_iClientBindUses_2[attacker]) );

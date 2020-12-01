@@ -4,7 +4,7 @@
 #define DB_HOST 		"xpmodclients.db.6902666.hostedresource.com"
 #define DB_DATABASE		"xpmodclients"
 #define DB_USER			"xpmodclients"
-#define DB_PASSWORD		"C1ientPW"
+#define DB_PASSWORD		"PASSWORD_HERE"
 #define DB_CONF_NAME 	"sqltester"
 #define DB_TABLENAME  	"test"
 
