@@ -335,9 +335,8 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 			//Set the user to be logged in
 			g_bClientLoggedIn[iClient] = true;
 			
-			PrintToChatAll("\x05<-=- \x03%N (Level %d) has joined\x05 -=->", iClient, g_iClientLevel[iClient]);
+			PrintToChatAll("\x05<-=- \x03%N (Level %d) logged in\x05 -=->", iClient, g_iClientLevel[iClient]);
 			PrintToServer(":-=-=-=-=-<[%N (Level %d) logged in]>-=-=-=-=-:", iClient, g_iClientLevel[iClient]);
-			PrintHintText(iClient, "Welcome back %N", iClient);
 		}
 	}
 	else if (bOnlyWebsiteChangableData == false)
