@@ -79,16 +79,20 @@ public Action:TimerResetSpeedFromGoo(Handle:timer, any:iClient)
 
 public Action:TimerResetGravityFromGoo(Handle:timer, any:iClient)
 {
-	g_bHasDemiGravity[iClient] = false;
-	SetEntityGravity(iClient, 1.0);
-	
-	DeleteParticleEntity(g_iPID_DemiGravityEffect[iClient]);
-	g_iPID_DemiGravityEffect[iClient] = -1;
-	
-	if(IsFakeClient(iClient) == false)
-		PrintHintText(iClient, "The Spitter's Demi Goo effects wore off. Your gravity is back to normal");
+	if (RunClientChecks(iClient))
+	{
+		SetEntityGravity(iClient, 1.0);
+		DeleteParticleEntity(g_iPID_DemiGravityEffect[iClient]);
 
+		if(IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "The Spitter's Demi Goo effects wore off. Your gravity is back to normal");
+	}
+
+	g_bHasDemiGravity[iClient] = false;
+	g_iPID_DemiGravityEffect[iClient] = -1;
 	g_hTimer_DemiGooReset[iClient] = INVALID_HANDLE;
+	
+	return Plugin_Stop;
 }
 
 public Action:TimerConjureWitch(Handle:timer, any:iClient)

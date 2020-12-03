@@ -231,7 +231,6 @@ DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 			if (g_hTimer_DemiGooReset[iVictim] != INVALID_HANDLE)
 			{
 				KillTimer(g_hTimer_DemiGooReset[iVictim]);
-				g_hTimer_DemiGooReset[iVictim] = INVALID_HANDLE;
 			}
 			else
 			{
