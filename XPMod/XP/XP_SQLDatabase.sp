@@ -83,7 +83,6 @@ public SQLGetUserIDAndTokenCallback(Handle:owner, Handle:hQuery, const String:er
 		if(SQL_FetchString(hQuery, 0, strData, sizeof(strData)) != 0)
 		{
 			g_iDBUserID[iClient] = StringToInt(strData);
-			PrintToServer("USER_ID = %i", g_iDBUserID[iClient]);
 		}
 		else
 		{
@@ -94,8 +93,7 @@ public SQLGetUserIDAndTokenCallback(Handle:owner, Handle:hQuery, const String:er
 		//Get Client's User Token from the SQL database
 		if(SQL_FetchString(hQuery, 1, strData, sizeof(strData)) != 0)
 		{
-			//Format(g_strDBUserToken[iClient], sizeof(g_strDBUserToken[iClient]), "%s", strData);
-			PrintToServer("USER TOKEN = %s", g_strDBUserToken[iClient]);
+			Format(g_strDBUserToken[iClient], sizeof(g_strDBUserToken[]), "%s", strData);
 		}
 		else
 		{
@@ -640,7 +638,10 @@ Logout(iClient)
 	if(g_bClientLoggedIn[iClient] == true)
 	{
 		ResetAll(iClient, iClient);
+		g_iDBUserID[iClient] = -1;
+		g_strDBUserToken[iClient] = "";
 		g_bClientLoggedIn[iClient] = false;
+
 		//PrintToChatAll("\x03[XPMod] \x04%N Logged Out", iClient, iClient);
 		return;
 	}
