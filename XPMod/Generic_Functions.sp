@@ -105,19 +105,6 @@ SetMoveType(iClient, movetype, movecollide)
 	SetEntData(iClient, g_iOffset_MoveCollide, movecollide);
 }
 
-//To Change Your Character Class the game thinks you are
-ChangeChar(iClient, number)
-{
-	switch(number)
-	{
-		case BILL:		ChangeCharSupportMenu(iClient);
-		case ROCHELLE:	ChangeCharRochelleMenu(iClient);
-		case COACH:		ChangeCharCoachMenu(iClient);
-		case ELLIS:		ChangeCharEllisMenu(iClient);
-		case NICK:		ChangeCharNickMenu(iClient);
-	}
-}
-
 SetSurvivorModel(iClient)
 {
 	if (GetClientTeam(iClient) != TEAM_SURVIVORS)

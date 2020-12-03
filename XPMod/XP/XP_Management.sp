@@ -356,14 +356,7 @@ LevelUpPlayer(iClient)
 			}
 			
 			// Level up Surivivor Talents
-
-
-
-
-
-
-
-
+			AutoLevelUpSurivovor(iClient);
 
 			// Level Up Infected Talents
 			SetInfectedClassSlot(iClient, 1, g_iClientInfectedClass1[iClient]);
@@ -382,6 +375,176 @@ LevelUpPlayer(iClient)
 				EmitAmbientSound(SOUND_LEVELUP, vec, iClient, SNDLEVEL_NORMAL);
 			}
 		}
+}
+
+
+AutoLevelUpSurivovor(iClient)
+{
+	//Set Survivor Class Levels
+	switch(g_iChosenSurvivor[iClient])
+	{
+		case BILL: 		LevelUpAllBill(iClient);
+		case ROCHELLE:	LevelUpAllRochelle(iClient);
+		case COACH:		LevelUpAllCoach(iClient);
+		case ELLIS:		LevelUpAllEllis(iClient);
+		case NICK:		LevelUpAllNick(iClient);
+	}
+}
+
+AutoLevelUpSurvivorTalents(int iClient, int[] talent1, int[] talent2, int[] talent3, int[] talent4, int[] talent5, int[] talent6)
+{
+	
+	ResetSkillPoints(iClient,iClient);
+
+	if(g_iSkillPoints[iClient] > 0)
+	{
+		if(g_iSkillPoints[iClient] > 4)
+		{
+			g_iSkillPoints[iClient] -= 5;
+			talent1[iClient] += 5;
+		}
+		else
+		{
+			talent1[iClient] += g_iSkillPoints[iClient];
+			g_iSkillPoints[iClient] = 0;
+		}
+
+		if(g_iSkillPoints[iClient] > 4)
+		{
+			g_iSkillPoints[iClient] -= 5;
+			talent2[iClient] += 5;
+		}
+		else
+		{
+			talent2[iClient] += g_iSkillPoints[iClient];
+			g_iSkillPoints[iClient] = 0;
+		}
+
+		if(g_iSkillPoints[iClient] > 4)
+		{
+			g_iSkillPoints[iClient] -= 5;
+			talent3[iClient] += 5;
+		}
+		else
+		{
+			talent3[iClient] += g_iSkillPoints[iClient];
+			g_iSkillPoints[iClient] = 0;
+		}
+
+		if(g_iSkillPoints[iClient] > 4)
+		{
+			g_iSkillPoints[iClient] -= 5;
+			talent4[iClient] += 5;
+		}
+		else
+		{
+			talent4[iClient] += g_iSkillPoints[iClient];
+			g_iSkillPoints[iClient] = 0;
+		}
+
+		if(g_iSkillPoints[iClient] > 4)
+		{
+			g_iSkillPoints[iClient] -= 5;
+			talent5[iClient] += 5;
+		}
+		else
+		{
+			talent5[iClient] += g_iSkillPoints[iClient];
+			g_iSkillPoints[iClient] = 0;
+		}
+
+		if(g_iSkillPoints[iClient] > 4)
+		{
+			g_iSkillPoints[iClient] -= 5;
+			talent6[iClient] += 5;
+		}
+		else
+		{
+			talent6[iClient] += g_iSkillPoints[iClient];
+			g_iSkillPoints[iClient] = 0;
+		}
+		//PrintToChat(iClient, "\x03[XPMod] \x01All your skillpoints have been assigned to \x04CLASSHERE\x01.");
+	}
+}
+
+LevelUpAllBill(iClient)
+{
+	if(g_iChosenSurvivor[iClient] != BILL)
+		g_iChosenSurvivor[iClient] = BILL;
+
+	AutoLevelUpSurvivorTalents( \
+		iClient, \
+		g_iInspirationalLevel, \
+		g_iGhillieLevel, \
+		g_iWillLevel, \
+		g_iExorcismLevel, \
+		g_iDiehardLevel, \
+		g_iPromotionalLevel \
+		);
+}
+
+LevelUpAllRochelle(iClient)
+{
+	if (g_iChosenSurvivor[iClient] != ROCHELLE)
+		g_iChosenSurvivor[iClient] = ROCHELLE;
+
+	AutoLevelUpSurvivorTalents( \
+		iClient, \
+		g_iGatherLevel, \
+		g_iHunterLevel, \
+		g_iSniperLevel, \
+		g_iSilentLevel, \
+		g_iSmokeLevel, \
+		g_iShadowLevel \
+		);
+}
+
+LevelUpAllCoach(iClient)
+{
+	if (g_iChosenSurvivor[iClient] != COACH)
+		g_iChosenSurvivor[iClient] = COACH;
+
+	AutoLevelUpSurvivorTalents( \
+		iClient, \
+		g_iBullLevel, \
+		g_iWreckingLevel, \
+		g_iSprayLevel, \
+		g_iHomerunLevel, \
+		g_iLeadLevel, \
+		g_iStrongLevel \
+		);
+}
+
+LevelUpAllEllis(iClient)
+{
+	if (g_iChosenSurvivor[iClient] != ELLIS)
+		g_iChosenSurvivor[iClient] = ELLIS;
+
+	AutoLevelUpSurvivorTalents( \
+		iClient, \
+		g_iOverLevel, \
+		g_iBringLevel, \
+		g_iJamminLevel, \
+		g_iWeaponsLevel, \
+		g_iMetalLevel, \
+		g_iFireLevel \
+		);
+}
+
+LevelUpAllNick(iClient)
+{
+	if (g_iChosenSurvivor[iClient] != NICK)
+		g_iChosenSurvivor[iClient] = NICK;
+
+	AutoLevelUpSurvivorTalents( \
+		iClient, \
+		g_iSwindlerLevel, \
+		g_iLeftoverLevel, \
+		g_iRiskyLevel, \
+		g_iEnhancedLevel, \
+		g_iMagnumLevel, \
+		g_iDesperateLevel \
+		);
 }
 
 //Level Up Infected Talents

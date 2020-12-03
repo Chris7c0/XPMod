@@ -199,7 +199,6 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 				//Calculate g_iSkillPoints
 				g_iSkillPoints[iClient] = g_iClientLevel[iClient] - iSkillPointsUsed;
 				g_iInfectedLevel[iClient] = RoundToFloor(g_iClientLevel[iClient] * 0.5);
-				//iskillpoints[iClient] = g_iInfectedLevel[iClient] * 3;
 			}
 			else
 				LogError("SQL Error getting XP string from query");
@@ -255,29 +254,7 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 		if (bOnlyWebsiteChangableData == false)
 		{
 			//Set Survivor Class Levels
-			switch(g_iChosenSurvivor[iClient])
-			{
-				case BILL:
-				{
-					LevelUpAllBill(iClient);
-				}
-				case ROCHELLE:
-				{
-					LevelUpAllRochelle(iClient);
-				}
-				case COACH:
-				{
-					LevelUpAllCoach(iClient);
-				}
-				case ELLIS:
-				{
-					LevelUpAllEllis(iClient);
-				}
-				case NICK:
-				{
-					LevelUpAllNick(iClient);
-				}
-			}
+			AutoLevelUpSurivovor(iClient);
 		}
 
 		//Set the infected class strings
