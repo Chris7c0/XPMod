@@ -1,7 +1,13 @@
+
+///https://developer.valvesoftware.com/wiki/List_of_L4D2_Missions_Files
+
+
+
+
 //////////////////////////////////////////
 // Automatic Campaign Switcher for L4D2 //
-// Version 1.2.2                        //
-// Compiled May 21, 2011                //
+// Version 1.2.4                        //
+// Compiled Dec 31, 2020                //
 // Programmed by Chris Pringle          //
 //////////////////////////////////////////
 
@@ -26,7 +32,14 @@
 		Community 1-5
 
 	Change Log
-	
+		v1.2.4 (Dec 31, 2020)	- Added new maps for the Last Stand Update
+								- Removed hardcoded maps by making the campaign maps a config file
+								- Made map comparisons case insensitive
+								- Added precache of witch models to fix bug in The Passing campaign 
+								  transition crash
+								- Fixed several infinite loop bugs when on the last campaign
+								- Removed FCVAR_PLUGIN
+
 		v1.2.3 (Jan 8, 2012)	- Added the new L4D2 campaigns
 		
 		v1.2.2 (May 21, 2011)	- Added message for new vote winner when a player disconnects
@@ -63,8 +76,8 @@
 #define PLUGIN_VERSION	"v1.2.4"
 
 //Define the number of campaigns and maps in rotation
-#define NUMBER_OF_CAMPAIGNS			13		/* CHANGE TO MATCH THE TOTAL NUMBER OF CAMPAIGNS */
-#define NUMBER_OF_SCAVENGE_MAPS		16		/* CHANGE TO MATCH THE TOTAL NUMBER OF SCAVENGE MAPS */
+#define NUMBER_OF_CAMPAIGNS			14		/* CHANGE TO MATCH THE TOTAL NUMBER OF CAMPAIGNS */
+#define NUMBER_OF_SCAVENGE_MAPS		18		/* CHANGE TO MATCH THE TOTAL NUMBER OF SCAVENGE MAPS */
 
 //Define the wait time after round before changing to the next map in each game mode
 #define WAIT_TIME_BEFORE_SWITCH_COOP			1.0
@@ -170,6 +183,7 @@ SetupMapStrings()
 	Format(g_strCampaignFirstMap[10], 32, "c4m1_milltown_a");
 	Format(g_strCampaignFirstMap[11], 32, "c5m1_waterfront");
 	Format(g_strCampaignFirstMap[12], 32, "c13m1_alpinecreek");
+	Format(g_strCampaignFirstMap[13], 32, "c14m1_junkyard");
 	
 	//Last Maps of the Campaign
 	Format(g_strCampaignLastMap[0], 32, "c8m5_rooftop");
@@ -185,6 +199,7 @@ SetupMapStrings()
 	Format(g_strCampaignLastMap[10], 32, "c4m5_milltown_escape");
 	Format(g_strCampaignLastMap[11], 32, "c5m5_bridge");
 	Format(g_strCampaignLastMap[12], 32, "c13m4_cutthroatcreek");
+	Format(g_strCampaignLastMap[13], 32, "c14m2_lighthouse");
 	
 	//Campaign Names
 	Format(g_strCampaignName[0], 32, "No Mercy");
@@ -200,6 +215,7 @@ SetupMapStrings()
 	Format(g_strCampaignName[10], 32, "Hard Rain");
 	Format(g_strCampaignName[11], 32, "The Parish");
 	Format(g_strCampaignName[12], 32, "Cold Stream");
+	Format(g_strCampaignName[13], 32, "The Last Stand");
 	
 	
 	//The following string variables are only for Scavenge
@@ -225,6 +241,8 @@ SetupMapStrings()
 	Format(g_strScavengeMap[13], 32, "c4m1_milltown_a");
 	Format(g_strScavengeMap[14], 32, "c4m2_sugarmill_a");
 	Format(g_strScavengeMap[15], 32, "c5m2_park");
+	Format(g_strScavengeMap[16], 32, "c14m1_junkyard");
+	Format(g_strScavengeMap[17], 32, "c14m2_lighthouse");
 	
 	//Scavenge Map Names
 	Format(g_strScavengeMapName[0], 32, "Apartments");
@@ -243,6 +261,8 @@ SetupMapStrings()
 	Format(g_strScavengeMapName[13], 32, "Milltown");
 	Format(g_strScavengeMapName[14], 32, "Sugar Mill");
 	Format(g_strScavengeMapName[15], 32, "Park");
+	Format(g_strScavengeMapName[16], 32, "The Village");
+	Format(g_strScavengeMapName[17], 32, "The Lighthouse");
 }
 
 /*======================================================================================
@@ -506,6 +526,12 @@ public OnMapStart()
 	//Set the game mode
 	FindGameMode();
 	
+	//Precache models (This fixes missing Witch model on "The Passing")
+	if(IsModelPrecached("models/infected/witch.mdl") == false)
+		PrecacheModel("models/infected/witch.mdl");
+	if(IsModelPrecached("models/infected/witch_bride.mdl") == false)
+		PrecacheModel("models/infected/witch_bride.mdl");
+
 	//Precache sounds
 	PrecacheSound(SOUND_NEW_VOTE_START);
 	PrecacheSound(SOUND_NEW_VOTE_WINNER);
@@ -513,7 +539,9 @@ public OnMapStart()
 	
 	//Display advertising for the next campaign or map
 	if(g_iNextMapAdDisplayMode != DISPLAY_MODE_DISABLED)
-		CreateTimer(g_fNextMapAdInterval, Timer_AdvertiseNextMap, _, TIMER_FLAG_NO_MAPCHANGE);
+	{
+		CreateTimer(g_fNextMapAdInterval, Timer_AdvertiseNextMap, _, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+	}
 	
 	g_iRoundEndCounter = 0;			//Reset the round end counter on every map start
 	g_iCoopFinaleFailureCount = 0;	//Reset the amount of Survivor failures
@@ -686,7 +714,7 @@ CheckMapForChange()
 	
 	for(new iMapIndex = 0; iMapIndex < NUMBER_OF_CAMPAIGNS; iMapIndex++)
 	{
-		if(StrEqual(strCurrentMap, g_strCampaignLastMap[iMapIndex]) == true)
+		if(StrEqual(strCurrentMap, g_strCampaignLastMap[iMapIndex], false) == true)
 		{
 			//Check to see if someone voted for a campaign, if so, then change to the winning campaign
 			if(g_bVotingEnabled == true && g_iWinningMapVotes > 0 && g_iWinningMapIndex >= 0)
@@ -707,21 +735,21 @@ CheckMapForChange()
 			}
 			
 			//If no map was chosen in the vote, then go with the automatic map rotation
-			
-			if(iMapIndex == NUMBER_OF_CAMPAIGNS - 1)	//Check to see if its the end of the array
-				iMapIndex = -1;							//If so, start the array over by setting to -1 + 1 = 0
+			new iNextCampaignMapIndex = iMapIndex + 1;	// Get the next campaign map index
+			if(iMapIndex == NUMBER_OF_CAMPAIGNS - 1)	// Check to see if its the end of the array
+				iNextCampaignMapIndex = 0;				// If so, set it to the first map index
 				
-			if(IsMapValid(g_strCampaignFirstMap[iMapIndex + 1]) == true)
+			if(IsMapValid(g_strCampaignFirstMap[iNextCampaignMapIndex]) == true)
 			{
-				PrintToChatAll("\x03[ACS] \x05Switching campaign to \x04%s", g_strCampaignName[iMapIndex + 1]);
+				PrintToChatAll("\x03[ACS] \x05Switching campaign to \x04%s", g_strCampaignName[iNextCampaignMapIndex]);
 				
 				if(g_iGameMode == GAMEMODE_VERSUS)
-					CreateTimer(WAIT_TIME_BEFORE_SWITCH_VERSUS, Timer_ChangeCampaign, iMapIndex + 1);
+					CreateTimer(WAIT_TIME_BEFORE_SWITCH_VERSUS, Timer_ChangeCampaign, iNextCampaignMapIndex);
 				else if(g_iGameMode == GAMEMODE_COOP)
-					CreateTimer(WAIT_TIME_BEFORE_SWITCH_COOP, Timer_ChangeCampaign, iMapIndex + 1);
+					CreateTimer(WAIT_TIME_BEFORE_SWITCH_COOP, Timer_ChangeCampaign, iNextCampaignMapIndex);
 			}
 			else
-				LogError("Error: %s is an invalid map name, unable to switch map.", g_strCampaignFirstMap[iMapIndex + 1]);
+				LogError("Error: %s is an invalid map name, unable to switch map.", g_strCampaignFirstMap[iNextCampaignMapIndex]);
 			
 			return;
 		}
@@ -756,18 +784,19 @@ ChangeScavengeMap()
 	{
 		if(StrEqual(strCurrentMap, g_strScavengeMap[iMapIndex]) == true)
 		{
-			if(iMapIndex == NUMBER_OF_SCAVENGE_MAPS - 1)//Check to see if its the end of the array
-				iMapIndex = -1;							//If so, start the array over by setting to -1 + 1 = 0 
+			new iNextCampaignMapIndex = iMapIndex + 1;		// Get the next campaign map index
+			if(iMapIndex == NUMBER_OF_SCAVENGE_MAPS - 1)	// Check to see if its the end of the array
+				iNextCampaignMapIndex = 0;					// If so, set it to the first map index
 			
 			//Make sure the map is valid before changing and displaying the message
-			if(IsMapValid(g_strScavengeMap[iMapIndex + 1]) == true)
+			if(IsMapValid(g_strScavengeMap[iNextCampaignMapIndex]) == true)
 			{
-				PrintToChatAll("\x03[ACS] \x05Switching map to \x04%s", g_strScavengeMapName[iMapIndex + 1]);
+				PrintToChatAll("\x03[ACS] \x05Switching map to \x04%s", g_strScavengeMapName[iNextCampaignMapIndex]);
 				
-				CreateTimer(WAIT_TIME_BEFORE_SWITCH_SCAVENGE, Timer_ChangeScavengeMap, iMapIndex + 1);
+				CreateTimer(WAIT_TIME_BEFORE_SWITCH_SCAVENGE, Timer_ChangeScavengeMap, iNextCampaignMapIndex);
 			}
 			else
-				LogError("Error: %s is an invalid map name, unable to switch map.", g_strScavengeMap[iMapIndex + 1]);
+				LogError("Error: %s is an invalid map name, unable to switch map.", g_strScavengeMap[iNextCampaignMapIndex]);
 			
 			return;
 		}
@@ -794,16 +823,15 @@ public Action:Timer_ChangeScavengeMap(Handle:timer, any:iMapIndex)
 #################            A C S   A D V E R T I S I N G             #################
 ======================================================================================*/
 
-public Action:Timer_AdvertiseNextMap(Handle:timer, any:iMapIndex)
+public Action:Timer_AdvertiseNextMap(Handle:timer)
 {
-	//If next map advertising is enabled, display the text and start the timer again
-	if(g_iNextMapAdDisplayMode != DISPLAY_MODE_DISABLED)
-	{
-		DisplayNextMapToAll();
-		CreateTimer(g_fNextMapAdInterval, Timer_AdvertiseNextMap, _, TIMER_FLAG_NO_MAPCHANGE);
-	}
+	if(g_iNextMapAdDisplayMode == DISPLAY_MODE_DISABLED)
+		return Plugin_Stop;
 	
-	return Plugin_Stop;
+	//Display the ACS next map advertisement to everyone
+	DisplayNextMapToAll();
+
+	return Plugin_Continue;
 }
 
 DisplayNextMapToAll()
@@ -840,14 +868,15 @@ DisplayNextMapToAll()
 			{
 				if(StrEqual(strCurrentMap, g_strScavengeMap[iMapIndex]) == true)
 				{
-					if(iMapIndex == NUMBER_OF_SCAVENGE_MAPS - 1)	//Check to see if its the end of the array
-						iMapIndex = -1;								//If so, start the array over by setting to -1 + 1 = 0
+					new iNextCampaignMapIndex = iMapIndex + 1;		// Set to the next upcoming map index item
+					if(iMapIndex == NUMBER_OF_SCAVENGE_MAPS - 1)	// Check to see if its the end of the array
+						iNextCampaignMapIndex = 0;					// If so, then set the map index to the first one
 					
 					//Display the next map in the rotation in the appropriate way
 					if(g_iNextMapAdDisplayMode == DISPLAY_MODE_HINT)
-						PrintHintTextToAll("The next map is currently %s", g_strScavengeMapName[iMapIndex + 1]);
+						PrintHintTextToAll("The next map is currently %s", g_strScavengeMapName[iNextCampaignMapIndex]);
 					else if(g_iNextMapAdDisplayMode == DISPLAY_MODE_CHAT)
-						PrintToChatAll("\x03[ACS] \x05The next map is currently \x04%s", g_strScavengeMapName[iMapIndex + 1]);
+						PrintToChatAll("\x03[ACS] \x05The next map is currently \x04%s", g_strScavengeMapName[iNextCampaignMapIndex]);
 				}
 			}
 		}
@@ -856,16 +885,17 @@ DisplayNextMapToAll()
 			//Go through all maps and to find which map index it is on, and then switch to the next map
 			for(new iMapIndex = 0; iMapIndex < NUMBER_OF_CAMPAIGNS; iMapIndex++)
 			{
-				if(StrEqual(strCurrentMap, g_strCampaignLastMap[iMapIndex]) == true)
+				if(StrEqual(strCurrentMap, g_strCampaignLastMap[iMapIndex], false) == true)
 				{
-					if(iMapIndex == NUMBER_OF_CAMPAIGNS - 1)	//Check to see if its the end of the array
-						iMapIndex = -1;							//If so, start the array over by setting to -1 + 1 = 0
+					new iNextCampaignMapIndex = iMapIndex + 1;	// Set to the next upcoming map index item
+					if(iMapIndex == NUMBER_OF_CAMPAIGNS - 1)	// Check to see if its the end of the array
+						iNextCampaignMapIndex = 0;				// If so, then set the map index to the first one
 					
 					//Display the next map in the rotation in the appropriate way
 					if(g_iNextMapAdDisplayMode == DISPLAY_MODE_HINT)
-						PrintHintTextToAll("The next campaign is currently %s", g_strCampaignName[iMapIndex + 1]);
+						PrintHintTextToAll("The next campaign is currently %s", g_strCampaignName[iNextCampaignMapIndex]);
 					else if(g_iNextMapAdDisplayMode == DISPLAY_MODE_CHAT)
-						PrintToChatAll("\x03[ACS] \x05The next campaign is currently \x04%s", g_strCampaignName[iMapIndex + 1]);
+						PrintToChatAll("\x03[ACS] \x05The next campaign is currently \x04%s", g_strCampaignName[iNextCampaignMapIndex]);
 				}
 			}
 		}
@@ -1166,7 +1196,7 @@ bool:OnFinaleOrScavengeMap()
 	
 	//Run through all the maps, if the current map is a last campaign map, return true
 	for(new iMapIndex = 0; iMapIndex < NUMBER_OF_CAMPAIGNS; iMapIndex++)
-		if(StrEqual(strCurrentMap, g_strCampaignLastMap[iMapIndex]) == true)
+		if(StrEqual(strCurrentMap, g_strCampaignLastMap[iMapIndex], false) == true)
 			return true;
 	
 	return false;

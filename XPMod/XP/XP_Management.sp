@@ -351,25 +351,36 @@ LevelUpPlayer(iClient)
 			
 			if(g_iInfectedLevel[iClient] < RoundToFloor(g_iClientLevel[iClient] * 0.5))
 			{
-				//iskillpoints[iClient] += ((RoundToFloor(g_iClientLevel[iClient] * 0.5) - g_iInfectedLevel[iClient]) * 3);
+				//[iClient] += ((RoundToFloor(g_iClientLevel[iClient] * 0.5) - g_iInfectedLevel[iClient]) * 3);
 				g_iInfectedLevel[iClient] += (RoundToFloor(g_iClientLevel[iClient] * 0.5) - g_iInfectedLevel[iClient]);
 			}
 			
-			//Level Up Infected Talents
+			// Level up Surivivor Talents
+
+
+
+
+
+
+
+
+
+			// Level Up Infected Talents
 			SetInfectedClassSlot(iClient, 1, g_iClientInfectedClass1[iClient]);
 			SetInfectedClassSlot(iClient, 2, g_iClientInfectedClass2[iClient]);
 			SetInfectedClassSlot(iClient, 3, g_iClientInfectedClass3[iClient]);
-			//Print the message
-			g_iClientLevel[iClient] = g_iClientLevel[iClient];
-			//PrintHintText(iClient, "You have leveled up!");
-			//decl String:string[256];
-			//FormatEx(string, sizeof(string), "<-=-=-=-:[You have reached level %d]:-=-=-=->", g_iClientLevel[iClient]);
-			PrintHintText(iClient, "<-=-=-=-:[You have reached level %d]:-=-=-=->", g_iClientLevel[iClient]);
-			//PrintInstructorText(iClient, string, "255 0 0", "ATTACH_NONE");
-			PrintToChatAll("\x03[XPMod] %N is now level %d", iClient, g_iClientLevel[iClient]);
-			decl Float:vec[3];
-			GetClientAbsOrigin(iClient, vec);
-			EmitAmbientSound(SOUND_LEVELUP, vec, iClient, SNDLEVEL_NORMAL);
+
+			if (g_bClientLoggedIn[iClient])
+			{
+				// Print the level up message
+				g_iClientLevel[iClient] = g_iClientLevel[iClient];
+				PrintHintText(iClient, "<-=-=-=-:[You have reached level %d]:-=-=-=->", g_iClientLevel[iClient]);
+				PrintToChatAll("\x03[XPMod] %N is now level %d", iClient, g_iClientLevel[iClient]);
+				// Play the level up sound
+				decl Float:vec[3];
+				GetClientAbsOrigin(iClient, vec);
+				EmitAmbientSound(SOUND_LEVELUP, vec, iClient, SNDLEVEL_NORMAL);
+			}
 		}
 }
 
