@@ -148,6 +148,33 @@ OnGameFrame_Bill(iClient)
 	}
 }
 
+OGFSurvivorReload_Bill(int iClient, const char[] currentweapon, int ActiveWeaponID, int CurrentClipAmmo, int iOffset_Ammo)
+{
+	//if((((StrEqual(currentweapon, "weapon_rifle", false) == true) || (StrEqual(currentweapon, "weapon_rifle_sg552", false) == true)) && (CurrentClipAmmo == 50)) || ((StrEqual(currentweapon, "weapon_rifle_ak47", false) == true) && (CurrentClipAmmo == 40)) || ((StrEqual(currentweapon, "weapon_rifle_desert", false) == true) && (CurrentClipAmmo == 60)))
+	//if((StrEqual(currentweapon, "weapon_rifle", false) == true) || (StrEqual(currentweapon, "weapon_rifle_sg552", false) == true) || (StrEqual(currentweapon, "weapon_rifle_ak47", false) == true) || (StrEqual(currentweapon, "weapon_rifle_desert", false) == true) && (CurrentClipAmmo != 0))
+	if((((StrEqual(currentweapon, "weapon_rifle", false) == true) || (StrEqual(currentweapon, "weapon_rifle_sg552", false) == true)) && (CurrentClipAmmo == 50)) || ((StrEqual(currentweapon, "weapon_rifle_ak47", false) == true) && (CurrentClipAmmo == 40)) || ((StrEqual(currentweapon, "weapon_rifle_desert", false) == true) && (CurrentClipAmmo == 60)))
+	{
+		new iAmmo = GetEntData(iClient, iOffset_Ammo + 12);	//for rifle (+12)
+		if(iAmmo >= (g_iPromotionalLevel[iClient]*20))
+		{
+			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iPromotionalLevel[iClient]*20)), true);
+			SetEntData(iClient, iOffset_Ammo + 12, iAmmo - (g_iPromotionalLevel[iClient]*20));
+			g_bClientIsReloading[iClient] = false;
+			g_iReloadFrameCounter[iClient] = 0;
+			//PrintToChatAll("Clip Set");
+		}
+		else if(iAmmo < (g_iPromotionalLevel[iClient]*20))
+		{
+			new NewAmmo = ((g_iPromotionalLevel[iClient]*20) - iAmmo);
+			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + ((g_iPromotionalLevel[iClient]*20) - NewAmmo)), true);
+			SetEntData(iClient, iOffset_Ammo + 12, 0);
+			g_bClientIsReloading[iClient] = false;
+			g_iReloadFrameCounter[iClient] = 0;
+			//PrintToChatAll("Clip Set");
+		}
+	}
+}
+
 public Action:tmrPlayAnim(Handle:timer,any:i_Client)
 	PlayAnim(i_Client);
 

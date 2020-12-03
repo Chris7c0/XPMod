@@ -291,6 +291,30 @@ OnGameFrame_Nick(iClient)
 	}
 }
 
+OGFSurvivorReload_Nick(iClient, const char[] currentweapon, ActiveWeaponID, CurrentClipAmmo)
+{
+	if((StrEqual(currentweapon, "weapon_pistol_magnum", false) == true) && (g_iMagnumLevel[iClient] > 0) && (CurrentClipAmmo == 8))
+	{
+		SetEntData(ActiveWeaponID, g_iOffset_Clip1, 3, true);
+		g_bClientIsReloading[iClient] = false;
+		g_iReloadFrameCounter[iClient] = 0;
+		//PrintToChatAll("Setting Magnum Clip");
+	}
+	else if((StrEqual(currentweapon, "weapon_pistol", false) == true) && (g_iRiskyLevel[iClient] > 0) && ((CurrentClipAmmo == 15) || (CurrentClipAmmo == 30)))
+	{
+		if(CurrentClipAmmo == 15)
+		{
+			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iRiskyLevel[iClient] * 6)), true);
+		}
+		else if(CurrentClipAmmo == 30)
+		{
+			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iRiskyLevel[iClient] * 12)), true);
+		}
+		g_bClientIsReloading[iClient] = false;
+		g_iReloadFrameCounter[iClient] = 0;
+	}
+}
+
 //Jebus Hand Menu
 public Action:JebusHandBindMenuDraw(iClient) 
 {

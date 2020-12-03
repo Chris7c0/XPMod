@@ -465,6 +465,145 @@ OnGameFrame_Coach(iClient)
 	}
 }
 
+OGFSurvivorReload_Coach(iClient, const char[] currentweapon, ActiveWeaponID, CurrentClipAmmo, iOffset_Ammo)
+{
+	if(((StrEqual(currentweapon, "weapon_pumpshotgun", false) == true) || (StrEqual(currentweapon, "weapon_shotgun_chrome", false) == true)) && (g_iSprayLevel[iClient] > 0))
+	{
+		/*
+		if(g_bCoachShotgunForceReload[iClient] == true)
+		{
+			SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iCoachShotgunSavedAmmo[iClient], true);
+			//PrintToChatAll("g_iOffset_Clip1 %d", g_iOffset_Clip1);
+			//PrintToChatAll("g_iCoachShotgunSavedAmmo %d", g_iCoachShotgunSavedAmmo[iClient]);
+			g_bCoachShotgunForceReload[iClient] = false;
+		}
+		*/
+		new iAmmo = GetEntData(iClient, iOffset_Ammo + 28);
+		if(g_iReloadFrameCounter[iClient] == 1)
+		{
+			if(iAmmo >= ((8 + (g_iSprayLevel[iClient] * 2)) - CurrentClipAmmo))
+			{
+				SetEntData(ActiveWeaponID, g_iOffset_ReloadNumShells, ((g_iSprayLevel[iClient] * 2) + 8) - CurrentClipAmmo, true);
+				//PrintToChatAll("g_iOffset_ReloadNumShells");
+			}
+			else if(iAmmo < ((8 + (g_iSprayLevel[iClient] * 2)) - CurrentClipAmmo))
+			{
+				SetEntData(ActiveWeaponID, g_iOffset_ReloadNumShells, iAmmo, true);
+			}
+		}
+		if((CurrentClipAmmo == (8 + (g_iSprayLevel[iClient] * 2))) || (CurrentClipAmmo == (CurrentClipAmmo + iAmmo)))
+		{
+			g_bCoachShotgunForceReload[iClient] = false;
+			g_bClientIsReloading[iClient] = false;
+			g_iReloadFrameCounter[iClient] = 0;
+			SetEntData(ActiveWeaponID, g_bOffset_InReload, 0, true);
+			SetEntData(iClient, g_bOffset_InReload, 0, true);
+		}
+		//SetEntData(ActiveWeaponID, g_iOffset_ReloadNumShells, 18, true);
+		//SetEntData(ActiveWeaponID, g_iOffset_ShellsInserted, 1, true);
+		//g_iOffset_ShellsInserted
+		//new iAmmo = GetEntData(iClient, iOffset_Ammo + 28);	//for pump shotguns (+28)
+		/*
+		if(g_iReloadFrameCounter[iClient] == 1)
+		{
+			new IncreasedClipAmmo = CurrentClipAmmo + 1;
+		}
+		*/
+		
+		// PrintToChatAll("Coach and shotgun detected");
+		// if((CurrentClipAmmo == g_iCoachShotgunIncreasedAmmo[iClient]) && (g_iCoachShotgunSavedAmmo[iClient] + g_iCoachShotgunAmmoCounter[iClient]) < (8 + g_iSprayLevel[iClient]))
+		// {
+		// 	g_iCoachShotgunAmmoCounter[iClient]++;
+		// 	g_iCoachShotgunIncreasedAmmo[iClient] = CurrentClipAmmo + 1;
+		// 	PrintToChatAll("Ammo Counter Increased = %d", g_iCoachShotgunAmmoCounter[iClient]);
+		// }
+		// else if((g_iCoachShotgunSavedAmmo[iClient] + g_iCoachShotgunAmmoCounter[iClient]) == (8 + g_iSprayLevel[iClient]))
+		// {
+		// 	SetEntData(ActiveWeaponID, g_iOffset_Clip1, (g_iCoachShotgunSavedAmmo[iClient] + g_iCoachShotgunAmmoCounter[iClient]), true);
+		// 	PrintToChatAll("Clip is full, setting clip size");
+		// 	g_bClientIsReloading[iClient] = false;
+		// 	g_iReloadFrameCounter[iClient] = 0;
+		// }
+		// if(CurrentClipAmmo <= 7 && ((g_iCoachShotgunSavedAmmo[iClient] + g_iCoachShotgunAmmoCounter[iClient]) < (8 + g_iSprayLevel[iClient])))
+		// {
+		// 	SetEntData(ActiveWeaponID, g_iOffset_Clip1, 1, true);
+		// 	//PrintToChatAll("Clip = 9 and Bullets < 18, CurrentClipAmmo = %d", CurrentClipAmmo);
+		// 	g_iCoachShotgunIncreasedAmmo[iClient] = CurrentClipAmmo + 1;
+		// 	//PrintToChatAll("Clip = 9 and Bullets < 18, IncreasedAmmo = %d", g_iCoachShotgunIncreasedAmmo[iClient]);
+		// }
+		
+		/*
+		else if((g_iCoachShotgunSavedAmmo[iClient] + g_iCoachShotgunAmmoCounter[iClient]) == (8 + g_iSprayLevel[iClient]))
+		{
+			
+		}
+		
+		new IncreasedClipAmmo = CurrentClipAmmo + 1;
+		if(CurrentClipAmmo < (8 + (g_iSprayLevel[iClient] * 2)))
+		{
+			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6)), true);
+			SetEntData(iClient, iOffset_Ammo + 28, iAmmo - (g_iMetalLevel[iClient]*4) - (g_iFireLevel[iClient]*6));
+		}
+		else if(iAmmo < (g_iPromotionalLevel[iClient]*20))
+		{
+			new NewAmmo = ((g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6) - iAmmo);
+			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + ((g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6) - NewAmmo)), true);
+			SetEntData(iClient, iOffset_Ammo + 28, 0);
+		}
+		*/
+		
+	}
+	else if(((StrEqual(currentweapon, "weapon_autoshotgun", false) == true) || (StrEqual(currentweapon, "weapon_shotgun_spas", false) == true)) && (g_iSprayLevel[iClient] > 0))
+	{
+		new iAmmo = GetEntData(iClient, iOffset_Ammo + 32);
+		if(g_iReloadFrameCounter[iClient] == 1)
+		{
+			if(iAmmo >= ((10 + (g_iSprayLevel[iClient] * 2)) - CurrentClipAmmo))
+			{
+				SetEntData(ActiveWeaponID, g_iOffset_ReloadNumShells, ((g_iSprayLevel[iClient] * 2) + 10) - CurrentClipAmmo, true);
+				//PrintToChatAll("g_iOffset_ReloadNumShells");
+			}
+			else if(iAmmo < ((10 + (g_iSprayLevel[iClient] * 2)) - CurrentClipAmmo))
+			{
+				SetEntData(ActiveWeaponID, g_iOffset_ReloadNumShells, iAmmo, true);
+			}
+		}
+		if((CurrentClipAmmo == (10 + (g_iSprayLevel[iClient] * 2))) || (CurrentClipAmmo == (CurrentClipAmmo + iAmmo)))
+		{
+			
+			// new InReload = GetEntData(iClient, g_bOffset_InReload + 32);
+			// new InReloadWep = GetEntData(ActiveWeaponID, g_bOffset_InReload + 32);
+			// PrintToChatAll("InReload %d", InReload);
+			// PrintToChatAll("InReloadWep %d", InReloadWep);
+			
+			g_bCoachShotgunForceReload[iClient] = false;
+			g_bClientIsReloading[iClient] = false;
+			g_iReloadFrameCounter[iClient] = 0;
+			SetEntData(ActiveWeaponID, g_bOffset_InReload, 0, true);
+			SetEntData(iClient, g_bOffset_InReload, 0, true);
+		}
+	}
+	/*
+	if(((StrEqual(currentweapon, "weapon_autoshotgun", false) == true) || (StrEqual(currentweapon, "weapon_shotgun_spas", false) == true)) && (CurrentClipAmmo == 10))
+	{
+		new iAmmo = GetEntData(iClient, iOffset_Ammo + 32);	//for auto shotguns (+32)
+		if(iAmmo >= (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6))
+		{
+			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6)), true);
+			SetEntData(iClient, iOffset_Ammo + 32, iAmmo - (g_iMetalLevel[iClient]*4) - (g_iFireLevel[iClient]*6));
+		}
+		else if(iAmmo < (g_iPromotionalLevel[iClient]*20))
+		{
+			new NewAmmo = ((g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6) - iAmmo);
+			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + ((g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6) - NewAmmo)), true);
+			SetEntData(iClient, iOffset_Ammo + 32, 0);
+		}
+		g_bClientIsReloading[iClient] = false;
+		g_iReloadFrameCounter[iClient] = 0;
+	}
+	*/
+}
+
 //Coach's Jetpack stuff
 public Action:StartFlying(iClient)
 {
