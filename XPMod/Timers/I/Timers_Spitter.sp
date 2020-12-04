@@ -5,13 +5,11 @@ public Action:TimerSetSpitterCooldown(Handle:timer, any:iClient)
 	if (IsServerProcessing()==false
 		|| iClient <= 0
 		|| IsClientInGame(iClient)==false
-		|| IsPlayerAlive(iClient)==false)
+		|| IsPlayerAlive(iClient)==false
+		|| g_bIsServingHotMeal[iClient] == true)
 	{
-		//KillTimer(timer);
 		return Plugin_Stop;
 	}
-	if(g_bIsServingHotMeal[iClient] == true)
-		return Plugin_Stop;
 
 	//----DEBUG----
 	//PrintToChatAll("\x03 tick");
@@ -21,9 +19,8 @@ public Action:TimerSetSpitterCooldown(Handle:timer, any:iClient)
 	//get the ability ent id
 	new iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
 	//if the retrieved gun id is -1, then move on
-	if (iEntid == -1)
+	if (!IsValidEntity(iEntid))
 	{
-		//KillTimer(timer);
 		return Plugin_Stop;
 	}
 	//retrieve the next act time
@@ -90,8 +87,8 @@ public Action:TimerResetGravityFromGoo(Handle:timer, any:iClient)
 
 	g_bHasDemiGravity[iClient] = false;
 	g_iPID_DemiGravityEffect[iClient] = -1;
-	g_hTimer_DemiGooReset[iClient] = INVALID_HANDLE;
-	
+	delete g_hTimer_DemiGooReset[iClient];
+
 	return Plugin_Stop;
 }
 

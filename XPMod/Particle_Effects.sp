@@ -132,7 +132,7 @@ CreateParticle(String:type[], Float:time, entity, attach = ATTACH_NONE, bool:use
 }
 
 //Delete:
-public Action:DeleteParticle(Handle:Timer, any:Particle)
+public Action:DeleteParticle(Handle:timer, any:Particle)
 {
 
 	//Validate:
@@ -154,6 +154,7 @@ public Action:DeleteParticle(Handle:Timer, any:Particle)
 				//PrintToChatAll("Deleted particle system with id: %d", Particle);
 			}
 		}
+	
 	return Plugin_Stop;
 }
 

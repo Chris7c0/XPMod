@@ -79,7 +79,7 @@ public Action:TimerShowReward5(Handle:timer, any:iClient)
 	}
 	else
 		CreateTimer(0.1, TimerShowReward6, 0, TIMER_FLAG_NO_MAPCHANGE);
-		
+	
 	return Plugin_Stop;
 }
 

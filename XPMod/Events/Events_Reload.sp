@@ -418,10 +418,9 @@ public Float:FindAnimationSpeed(Float:reloadspeed, String:gunname[])
 //this resets the playback rate on non-shotguns
 public Action:SoH_MagEnd (Handle:timer, any:pack)
 {
-	KillTimer(timer);
 	if (IsServerProcessing()==false)
 	{
-		CloseHandle(pack);						//NEW
+		CloseHandle(pack);
 		return Plugin_Stop;
 	}
 	ResetPack(pack);
@@ -747,7 +746,6 @@ if(IsFakeClient(attacker) == false)	////////////////////////////////////////////
 			}
 */
 /*
-	KillTimer(timer);
 	//new iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	ResetPack(pack);
 	new iEntid2 = ReadPackCell(pack);
@@ -876,7 +874,6 @@ if(IsFakeClient(attacker) == false)	////////////////////////////////////////////
 
 public Action:SoH_MagEnd2 (Handle:timer, Handle:hPack)
 {
-	KillTimer(timer);
 	if (IsServerProcessing()==false)
 	{
 		CloseHandle(hPack);
@@ -891,9 +888,8 @@ public Action:SoH_MagEnd2 (Handle:timer, Handle:hPack)
 	new Float:flStartTime_calc = ReadPackFloat(hPack);
 	CloseHandle(hPack);
 
-	if (iCid2 <= 0
-		|| IsValidEntity(iCid2)==false)
-		return Plugin_Stop;
+	if (iCid2 <= 0 || IsValidEntity(iCid2)==false)
+		return Plugin_Stop;		
 
 	//experimental, remove annoying double-playback
 	new iVMid = GetEntDataEnt2(iCid2,g_iOffset_ViewModel);
@@ -1068,8 +1064,10 @@ public Action:SoH_ShotgunEnd (Handle:timer, any:pack)
 		new iClient = ReadPackCell(pack);
 		CloseHandle(pack);
 		new Float:flTime=GetGameTime()+0.2;
-		if (iClient <= 0	|| IsValidEntity(iClient)==false)
+
+		if (RunClientChecks(iClient) == false)
 			return Plugin_Stop;
+
 		SetEntDataFloat(iClient,	g_iOffset_NextAttack,	flTime,	true);
 		SetEntDataFloat(iEntid2,	g_iOffset_TimeWeaponIdle,	flTime,	true);
 		SetEntDataFloat(iEntid2,	g_iOffset_NextPrimaryAttack,	flTime,	true);
@@ -1101,6 +1099,7 @@ public Action:SoH_ShotgunEnd (Handle:timer, any:pack)
 			}
 		}
 		*/
+
 		return Plugin_Stop;
 	}
 	return Plugin_Continue;
@@ -1113,8 +1112,7 @@ public Action:SoH_ShotgunEndCock (Handle:timer, any:iEntid2)
 	//----DEBUG----
 	//PrintToChatAll("\x03-autoshotgun tick");
 
-	if (iEntid2 <= 0
-		|| IsValidEntity(iEntid2)==false)
+	if (iEntid2 <= 0 || IsValidEntity(iEntid2)==false)
 		return Plugin_Stop;
 
 	if (GetEntData(iEntid2,g_iOffset_ReloadState)==0)

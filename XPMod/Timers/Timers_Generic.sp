@@ -7,7 +7,7 @@ public Action:Timer_ResetGlow(Handle:timer, any:iClient)
 	fnc_SetRendering(iClient);
 	//ResetGlow(iClient);
 	
-	g_hTimer_SpitTransparencyReset[iClient] = INVALID_HANDLE;
+	delete g_hTimer_SpitTransparencyReset[iClient];
 	
 	return Plugin_Stop;
 }
@@ -23,6 +23,7 @@ public Action:TimerGiveHudBack(Handle:timer, any:iClient)
 /*public Action:TimerResetCommonLimit(Handle:timer, any:iClient)
 {
 	SetConVarInt(FindConVar("z_common_limit"), 30);
+	
 	return Plugin_Stop;
 }*/
 
@@ -30,6 +31,7 @@ public Action:TimerResetZombieDamage(Handle:timer, any:iClient)
 {
 	SetConVarInt(FindConVar("z_common_limit"), 30);
 	g_bCommonInfectedDoMoreDamage = false;
+	
 	return Plugin_Stop;
 }
 
@@ -41,6 +43,7 @@ public Action:TimerUnfreezeNotification(Handle:timer, any:data)
 		PrintHintTextToAll("Survivors will be unfrozen in %d seconds", g_iPrintRunTimes);
 		return Plugin_Continue;
 	}
+	
 	return Plugin_Stop;
 }
 

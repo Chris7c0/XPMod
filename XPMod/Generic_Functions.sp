@@ -19,6 +19,7 @@ public ShowXPModInfoToServer()
 public Action:Timer_ShowXPModInfoToServer(Handle:timer, any:data)
 {
 	ShowXPModInfoToServer();
+	
 	return Plugin_Stop;
 }
 

@@ -19,24 +19,20 @@ public Action:TimerStopJockeyPeeSound(Handle:timer, any:iClient)
 
 public Action:TimerStopJockeyPee(Handle:timer, any:iClient)
 {
-	if(iClient > 0)
+	if(iClient > 0 || IsClientInGame(iClient) == false)
 		return Plugin_Stop;
-	if(IsClientInGame(iClient) == false)
-		return Plugin_Stop;
-	
+
 	StopSound(iClient, SNDCHAN_AUTO, SOUND_JOCKEYPEE);
 
 	if(IsFakeClient(iClient) == false)
 		ShowHudOverlayColor(iClient, 255, 255, 0, 65, 1000, FADE_OUT);
-		
+	
 	return Plugin_Stop;
 }
 
 public Action:TimerRemovePeeFX(Handle:timer, any:iClient)
 {
-	if(IsValidEntity(iClient) ==  false)
-		return Plugin_Stop;
-	if(IsClientInGame(iClient) ==  false)
+	if(IsValidEntity(iClient) == false || IsClientInGame(iClient) ==  false)
 		return Plugin_Stop;
 	
 	fnc_SetRendering(iClient);
@@ -48,6 +44,7 @@ public Action:TimerRemovePeeFX(Handle:timer, any:iClient)
 public Action:TimerEnableJockeyPee(Handle:timer, any:iClient)
 {
 	g_bCanJockeyPee[iClient] = true;
+
 	return Plugin_Stop;
 }
 
@@ -56,35 +53,29 @@ public Action:TimerRemoveJockeyCloak(Handle:timer, any:iClient)
 	g_bCanJockeyCloak[iClient] = true;
 	fnc_SetRendering(iClient);
 	//ResetGlow(iClient);
+
 	return Plugin_Stop;
 }
 
 public Action:TimerSetJockeyCooldown(Handle:timer, any:iClient)
 {
-	//INITIAL CHECKS
-	//--------------
 	if (IsServerProcessing()==false
 		|| iClient <= 0
 		|| IsClientInGame(iClient)==false
-		|| IsPlayerAlive(iClient)==false)
+		|| IsPlayerAlive(iClient)==false
+		|| g_bIsServingHotMeal[iClient] == true)
 	{
-		//KillTimer(timer);
 		return Plugin_Stop;
 	}
-	if(g_bIsServingHotMeal[iClient] == true)
-		return Plugin_Stop;
 
 	//----DEBUG----
 	//PrintToChatAll("\x03 tick");
-
-	//RETRIEVE VARIABLES
-	//------------------
+	
 	//get the ability ent id
 	new iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
 	//if the retrieved gun id is -1, then move on
-	if (iEntid == -1)
+	if (!IsValidEntity(iEntid))
 	{
-		//KillTimer(timer);
 		return Plugin_Stop;
 	}
 	//retrieve the next act time
@@ -128,5 +119,5 @@ public Action:TimerSetJockeyCooldown(Handle:timer, any:iClient)
 public Action:TimerJockeyJumpReset(Handle:timer, any:iClient)
 {
 	g_bCanJockeyJump[iClient] = true;
-	return Plugin_Continue;
+	return Plugin_Stop;
 }

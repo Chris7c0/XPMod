@@ -136,13 +136,8 @@ ChangeGooType(iClient)
 */
 DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 {
-	/*
-	if (g_hTimer_AdhesiveGooReset[iVictim] != INVALID_HANDLE)
-	{
-		KillTimer(g_hTimer_AdhesiveGooReset[iVictim]);
-		g_hTimer_AdhesiveGooReset[iVictim] = INVALID_HANDLE;
-	}
-	*/
+	//delete g_hTimer_AdhesiveGooReset[iVictim];
+
 	if(g_bAdhesiveGooActive[iVictim] == false)
 	{
 		//SetEntDataFloat(iVictim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 0.5, true);
@@ -191,16 +186,12 @@ DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 		/*
 		case GOO_ADHESIVE:
 		{
-			if (g_hTimer_AdhesiveGooReset[iVictim] != INVALID_HANDLE)
-			{
-				KillTimer(g_hTimer_AdhesiveGooReset[iVictim]);
-				g_hTimer_AdhesiveGooReset[iVictim] = INVALID_HANDLE;
-			}
-			else
+			if (g_hTimer_AdhesiveGooReset[iVictim] == null)
 			{
 				SetEntDataFloat(iVictim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 0.5, true);
 			}
 			
+			delete g_hTimer_AdhesiveGooReset[iVictim];
 			g_hTimer_AdhesiveGooReset[iVictim] = CreateTimer(3.0, TimerResetSpeedFromGoo, iVictim, TIMER_FLAG_NO_MAPCHANGE);
 		}
 		*/
@@ -228,11 +219,7 @@ DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 		}
 		case GOO_DEMI:
 		{
-			if (g_hTimer_DemiGooReset[iVictim] != INVALID_HANDLE)
-			{
-				KillTimer(g_hTimer_DemiGooReset[iVictim]);
-			}
-			else
+			if (g_hTimer_DemiGooReset[iVictim] == null)
 			{
 				if(IsFakeClient(iVictim) == false)
 					PrintHintText(iVictim, "Your gravity has been tripled by a Spitter's Demi Goo");
@@ -243,6 +230,7 @@ DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 				g_iPID_DemiGravityEffect[iVictim] = WriteParticle(iVictim, "demi_gravity_effect", 0.0);
 			}
 			
+			delete g_hTimer_DemiGooReset[iVictim];
 			g_hTimer_DemiGooReset[iVictim] = CreateTimer(15.0, TimerResetGravityFromGoo, iVictim, TIMER_FLAG_NO_MAPCHANGE);
 		}
 		case GOO_REPULSION:

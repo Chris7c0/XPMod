@@ -89,35 +89,18 @@ public Action:TimerMoveSmokePoof2(Handle:timer, any:iClient)
 
 public Action:TimerElectricuteAgain(Handle:timer, any:iClient)
 {
-	if(g_bIsElectricuting[iClient] == false)
-	{
-		return Plugin_Stop;
-	}
-	if(IsClientInGame(iClient) == false)
-	{
-		g_bIsElectricuting[iClient] = false;
-		return Plugin_Stop;
-	}
-	if(IsPlayerAlive(iClient) == false)
+	if (g_bIsElectricuting[iClient] == false || 
+		RunClientChecks(iClient) == false || 
+		IsPlayerAlive(iClient) == false || 
+		g_iChokingVictim[iClient] < 1 ||
+		IsClientInGame(g_iChokingVictim[iClient]) ||
+		IsPlayerAlive(g_iChokingVictim[iClient]))
 	{
 		g_bIsElectricuting[iClient] = false;
+		
 		return Plugin_Stop;
 	}
-	if(g_iChokingVictim[iClient] < 1)
-	{
-		g_bIsElectricuting[iClient] = false;
-		return Plugin_Stop;
-	}
-	if(IsClientInGame(g_iChokingVictim[iClient]) == false)
-	{
-		g_bIsElectricuting[iClient] = false;
-		return Plugin_Stop;
-	}
-	if(IsPlayerAlive(g_iChokingVictim[iClient]) == false)
-	{
-		g_bIsElectricuting[iClient] = false;
-		return Plugin_Stop;
-	}
+	
 	decl Float:clientloc[3],Float:targetloc[3];
 	GetClientEyePosition(iClient,clientloc);
 	GetClientEyePosition(g_iChokingVictim[iClient],targetloc);
@@ -153,53 +136,50 @@ public Action:TimerElectricuteAgain(Handle:timer, any:iClient)
 	//Check for other players that are possible victims
 	decl i;
 	for(i = 1;i <= MaxClients;i++)
-	{
-		if(i == g_iChokingVictim[iClient])
+	{		
+		if(i == g_iChokingVictim[iClient] ||
+			g_iChokingVictim[iClient] < 1 || 
+			IsValidEntity(i) == false || 
+			IsValidEntity(g_iChokingVictim[iClient]) == false || 
+			IsClientInGame(i) == false || 
+			g_iClientTeam[i] != TEAM_SURVIVORS)
 			continue;
 		
-		if(g_iChokingVictim[iClient] < 1 || IsValidEntity(i) == false || IsValidEntity(g_iChokingVictim[iClient]) == false)
-			continue;
-		
-		if(IsClientInGame(i))
+		GetClientEyePosition(g_iChokingVictim[iClient], clientloc);
+		GetClientEyePosition(i, targetloc);
+		if(IsVisibleTo(clientloc, targetloc))
 		{
-			if(g_iClientTeam[i] == TEAM_SURVIVORS)
+			targetloc[2] -= 20.0;
+			rand = GetRandomInt(1, 3);
+			switch(rand)
 			{
-				GetClientEyePosition(g_iChokingVictim[iClient],clientloc);
-				GetClientEyePosition(i ,targetloc);
-				if(IsVisibleTo(clientloc, targetloc))
-				{
-					targetloc[2] -= 20.0;
-					rand = GetRandomInt(1, 3);
-					switch(rand)
-					{
-						case 1: zap = SOUND_ZAP1; 
-						case 2: zap = SOUND_ZAP2;
-						case 3: zap = SOUND_ZAP3;
-					}
-					pitch = GetRandomInt(95, 130);
-					EmitSoundToAll(zap, i, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, pitch, -1, targetloc, NULL_VECTOR, true, 0.0);
-					TE_SetupBeamPoints(clientloc,targetloc,g_iSprite_Laser,0,0,66,0.3, 0.5, 0.5,0,4.0,{0,40,255,200},0);
-					TE_SendToAll();
-					CreateParticle("electrical_arc_01_system", 0.8, i, ATTACH_EYES, true);
-					
-					alpha = GetRandomInt(120,180);
-					ShowHudOverlayColor(i, 255, 255, 255, alpha, 150, FADE_OUT);
-					
-					DealDamage(i , iClient, RoundToCeil((g_iNoxiousLevel[iClient] * 0.5)));
-					
-					g_iClientXP[iClient] += 10;
-					CheckLevel(iClient);
-					
-					if(g_iXPDisplayMode[iClient] == 0)
-						ShowXPSprite(iClient, g_iSprite_10XP_SI, i, 1.0);
-				}
+				case 1: zap = SOUND_ZAP1; 
+				case 2: zap = SOUND_ZAP2;
+				case 3: zap = SOUND_ZAP3;
 			}
+			pitch = GetRandomInt(95, 130);
+			EmitSoundToAll(zap, i, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, pitch, -1, targetloc, NULL_VECTOR, true, 0.0);
+			TE_SetupBeamPoints(clientloc,targetloc,g_iSprite_Laser,0,0,66,0.3, 0.5, 0.5,0,4.0,{0,40,255,200},0);
+			TE_SendToAll();
+			CreateParticle("electrical_arc_01_system", 0.8, i, ATTACH_EYES, true);
+			
+			alpha = GetRandomInt(120,180);
+			ShowHudOverlayColor(i, 255, 255, 255, alpha, 150, FADE_OUT);
+			
+			DealDamage(i , iClient, RoundToCeil((g_iNoxiousLevel[iClient] * 0.5)));
+			
+			g_iClientXP[iClient] += 10;
+			CheckLevel(iClient);
+			
+			if(g_iXPDisplayMode[iClient] == 0)
+				ShowXPSprite(iClient, g_iSprite_10XP_SI, i, 1.0);
 		}
+			
+		
 	}
-	
-	
+
 	CreateTimer(0.5, TimerElectricuteAgain, iClient, TIMER_FLAG_NO_MAPCHANGE);
-	
+
 	return Plugin_Stop;
 }
 
@@ -294,19 +274,19 @@ public Action:CheckIfStuck(Handle:timer, any:iClient)
 	decl Float:vorigin[3];
 	GetClientAbsOrigin(iClient, vorigin);
 	//PrintToChat(iClient, "vorigin = %f, %f, %f		endpos = %f, %f, %f", vorigin[0], vorigin[1], vorigin[2], g_fTeleportEndPositionX[iClient], g_fTeleportEndPositionY[iClient], g_fTeleportEndPositionZ[iClient]);
-	if(vorigin[0] == g_fTeleportEndPositionX[iClient])
-		if(vorigin[1] == g_fTeleportEndPositionY[iClient])
-			if(vorigin[2] == g_fTeleportEndPositionZ[iClient])
-			{
-				PrintHintText(iClient, "You appear to be stuck, Teleporting you back to where you started");
-				decl Float:origpos[3];
-				origpos[0] = g_fTeleportOriginalPositionX[iClient];
-				origpos[1] = g_fTeleportOriginalPositionY[iClient];
-				origpos[2] = g_fTeleportOriginalPositionZ[iClient];
-				TeleportEntity(iClient, origpos, NULL_VECTOR, NULL_VECTOR);
-				WriteParticle(iClient, "teleport_warp", 0.0, 7.0);
-				g_bTeleportCoolingDown[iClient] = false;
-			}
+	if (vorigin[0] == g_fTeleportEndPositionX[iClient] && 
+		vorigin[1] == g_fTeleportEndPositionY[iClient] &&
+		vorigin[2] == g_fTeleportEndPositionZ[iClient])
+	{
+		PrintHintText(iClient, "You appear to be stuck, Teleporting you back to where you started");
+		decl Float:origpos[3];
+		origpos[0] = g_fTeleportOriginalPositionX[iClient];
+		origpos[1] = g_fTeleportOriginalPositionY[iClient];
+		origpos[2] = g_fTeleportOriginalPositionZ[iClient];
+		TeleportEntity(iClient, origpos, NULL_VECTOR, NULL_VECTOR);
+		WriteParticle(iClient, "teleport_warp", 0.0, 7.0);
+		g_bTeleportCoolingDown[iClient] = false;
+	}
 	return Plugin_Stop;
 }
 

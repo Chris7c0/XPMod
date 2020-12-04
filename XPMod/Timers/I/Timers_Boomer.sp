@@ -13,6 +13,7 @@ public Action:TimerConstantVomitDisplay(Handle:timer, any:iClient)
 				return Plugin_Stop;
 			}
 	g_bIsSurvivorVomiting[iClient] = false;
+
 	return Plugin_Stop;
 }
 
@@ -25,25 +26,27 @@ public Action:TimerResetBoomerSpeed(Handle:timer, any:iClient)
 		g_fClientSpeedPenalty[iClient] -= (1.0 - (g_iRapidLevel[iClient] * 0.1))
 		fnc_SetClientSpeed(iClient);
 	}
+
 	return Plugin_Stop;
 }
 
 public Action:TimerResetPlayerIt(Handle:timer, any:iClient)
 {
 	g_iVomitVictimAttacker[iClient] = 0;
+
 	return Plugin_Stop;
 }
 
 public Action:TimerResetFastBoomerSpeed(Handle:timer, any:iClient)
 {
 	g_bIsSuperSpeedBoomer[iClient] = false;
-	if(IsClientInGame(iClient))
-		if(IsPlayerAlive(iClient))
-		{
-			//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
-			g_fClientSpeedBoost[iClient] -= 2.0;
-			fnc_SetClientSpeed(iClient);
-		}
+	if(IsClientInGame(iClient) && IsPlayerAlive(iClient))
+	{
+		//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
+		g_fClientSpeedBoost[iClient] -= 2.0;
+		fnc_SetClientSpeed(iClient);
+	}
+
 	return Plugin_Stop;
 }
 
@@ -59,7 +62,7 @@ public Action:TimerStopHotMeal(Handle:timer, any:iClient)
 		if(IsFakeClient(iClient) == false)
 			CreateTimer(1.5, TimerSetBoomerCooldown, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 	}
-	
+
 	return Plugin_Stop;
 }
 
@@ -67,19 +70,18 @@ public Action:TimerStopItCounting(Handle:timer, any:iClient)
 {
 	g_bNowCountingVomitVictims[iClient] = false;
 	g_iVomitVictimCounter[iClient] = 0;
+
 	return Plugin_Stop;
 }
 
 public Action:TimerConstantVomit(Handle:timer, any:iClient)
 {
-	if (IsServerProcessing()==false || iClient <= 0 || IsClientInGame(iClient)==false || IsPlayerAlive(iClient)==false)
-		return Plugin_Stop;
-	if(g_bIsServingHotMeal[iClient] == false)
+	if (IsServerProcessing()==false || iClient <= 0 || IsClientInGame(iClient)==false || IsPlayerAlive(iClient)==false || g_bIsServingHotMeal[iClient] == false)
 		return Plugin_Stop;
 	
 	new iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
 	
-	if (iEntid == -1)
+	if (!IsValidEntity(iEntid))
 		return Plugin_Stop;
 
 	new Float:flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextAct+8);
@@ -99,14 +101,11 @@ public Action:TimerSetBoomerCooldown(Handle:timer, any:iClient)
 	if (IsServerProcessing()==false
 		|| iClient <= 0
 		|| IsClientInGame(iClient)==false
-		|| IsPlayerAlive(iClient)==false)
+		|| IsPlayerAlive(iClient)==false
+		|| g_bIsServingHotMeal[iClient] == true)
 	{
-		//KillTimer(timer);
 		return Plugin_Stop;
 	}
-	if(g_bIsServingHotMeal[iClient] == true)
-		return Plugin_Stop;
-
 	//----DEBUG----
 	//PrintToChatAll("\x03 tick");
 
@@ -116,11 +115,9 @@ public Action:TimerSetBoomerCooldown(Handle:timer, any:iClient)
 	new iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
 	//if the retrieved gun id is -1, then move on
 	//PrintToChatAll("iEntid = %d", iEntid);
-	if (iEntid == -1)
-	{
-		//KillTimer(timer);
+	if (!IsValidEntity(iEntid))
 		return Plugin_Stop;
-	}
+	
 	//retrieve the next act time
 	//new Float:flDuration_ret = GetEntDataFloat(iEntid,g_iOffset_NextAct+4);
 
@@ -173,5 +170,6 @@ public Action:TimerSuicideBoomerLaunch(Handle:timer, any:iClient)
 	velocity[2] = (750.0 + (g_iNorovirusLevel[iClient] * 50.0));
 	TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, velocity);
 	g_bIsSuicideJumping[iClient] = true;
+
 	return Plugin_Stop;
 }

@@ -199,12 +199,8 @@ public Event_PlayerNowIt(Handle:hEvent, const String:strName[], bool:bDontBroadc
 									
 									
 									
-									/*if (g_hTimer_ResetInfectedCull != INVALID_HANDLE)
-									{
-										KillTimer(g_hTimer_ResetInfectedCull);
-										g_hTimer_ResetInfectedCull = INVALID_HANDLE;
-									}
-									
+									/*
+									delete g_hTimer_ResetInfectedCull;									
 									g_hTimer_ResetInfectedCull = CreateTimer(20.0, TimerResetInfectedCull);*/
 								}
 								else	//If their not alive then give them another reward
@@ -976,14 +972,12 @@ public Action:Event_SpitBurst(Handle:hEvent, const String:strName[], bool:bDontB
 	if(g_iPuppetLevel[iClient] > 0)
 	{
 		//Temporarily block switching goo types
-		if (g_hTimer_BlockGooSwitching[iClient] != INVALID_HANDLE)
+		if (g_hTimer_BlockGooSwitching[iClient] == null)
 		{
-			KillTimer(g_hTimer_BlockGooSwitching[iClient]);
-			g_hTimer_BlockGooSwitching[iClient] = INVALID_HANDLE;
-		}
-		else
 			g_bBlockGooSwitching[iClient] = true;
+		}
 		
+		delete g_hTimer_BlockGooSwitching[iClient];
 		g_hTimer_BlockGooSwitching[iClient] = CreateTimer(8.2, TimerAllowGooSwitching, iClient, TIMER_FLAG_NO_MAPCHANGE);
 		
 		//Deploying goo type effects
@@ -1163,8 +1157,8 @@ public Action:Timer_CheckWitchRage(Handle:timer, any:iWitchID)
 	//PrintToServer("Timer_CheckWitchRage: id = %d, className = %s", iWitchID, className)
 	if (strcmp(className, "witch", true) != 0)
 	{
-		//CloseHandle(timer);  //Is this needed?
-		LogError("[XPMod] Timer_CheckWitchRage className != witch.  className: %s", className);
+		LogError("[XPMod] Stoping Timer_CheckWitchRage className != witch.  className: %s", className);
+		
 		return Plugin_Stop;
 	}
 	

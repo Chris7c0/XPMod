@@ -832,13 +832,8 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 								DealSpecialSpitterGooCollision(attacker, victim, dmgHealth);
 								
 								if(g_iMaterialLevel[attacker] > 0 && GetEntProp(victim, Prop_Send, "m_isIncapacitated") != 0)
-								{							
-									if (g_hTimer_SpitTransparencyReset[victim] != INVALID_HANDLE)
-									{
-										KillTimer(g_hTimer_SpitTransparencyReset[victim]);
-										g_hTimer_SpitTransparencyReset[victim] = INVALID_HANDLE;
-									}
-									else
+								{
+									if (g_hTimer_SpitTransparencyReset[victim] == null)
 									{
 										SetEntProp(victim, Prop_Send, "m_iGlowType", 3);
 										SetEntProp(victim, Prop_Send, "m_nGlowRange", 0);
@@ -847,20 +842,19 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 										SetEntityRenderColor(victim, 255, 255, 255, 255 - RoundToNearest(255.0 * 0.1 * g_iMaterialLevel[attacker]));
 									}
 									
+									delete(g_hTimer_SpitTransparencyReset[victim]);
 									g_hTimer_SpitTransparencyReset[victim] = CreateTimer(3.0, Timer_ResetGlow, victim, TIMER_FLAG_NO_MAPCHANGE);
 								}
 							}
 							else if(g_bIsHallucinating[victim] == false && StrEqual(weapon,"spitter_claw") == true)
-							{
-								if (g_hTimer_HallucinatePlayer[victim] != INVALID_HANDLE)
-									g_hTimer_HallucinatePlayer[victim] = INVALID_HANDLE;
-								
+							{								
 								if(IsFakeClient(victim) == false)
 									PrintHintText(victim, "A Spitter's hallucinogenic toxin seeps through your viens"); 
 								
 								g_bIsHallucinating[victim] = true;
 								g_iHallucinogenRuntimesCounter[victim] = 0;
 								WriteParticle(victim, "hallucinogenic_effect", 0.0, 30.0);
+								delete g_hTimer_HallucinatePlayer[victim];
 								g_hTimer_HallucinatePlayer[victim] = CreateTimer(2.5, TimerHallucinogen, victim, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 							}
 						}

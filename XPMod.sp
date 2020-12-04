@@ -487,7 +487,7 @@ ResetAllVariables(iClient)
 	g_iTankCharge[iClient] = 0;
 	g_bTankAttackCharged[iClient] = false;
 	g_iIceTankLifePool[iClient] = 0;
-	g_hTimer_IceSphere[iClient] = INVALID_HANDLE;
+	delete g_hTimer_IceSphere[iClient];
 }
 
 SetupSDKCalls()

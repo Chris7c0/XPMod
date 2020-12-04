@@ -994,7 +994,7 @@ public Action:DisplayCurrentVotes(iClient, args)
 ======================================================================================*/
 
 //Timer to show the menu to the players if they have not voted yet
-public Action:Timer_DisplayVoteAdToAll(Handle:hTimer, any:iData)
+public Action:Timer_DisplayVoteAdToAll(Handle:timer, any:iData)
 {
 	if(g_bVotingEnabled == false || OnFinaleOrScavengeMap() == false)
 		return Plugin_Stop;
@@ -1088,11 +1088,7 @@ CleanUpMenuHandles()
 {
 	for(new iClient = 0; iClient <= MAXPLAYERS; iClient++)
 	{
-		if(g_hMenu_Vote[iClient] != INVALID_HANDLE)
-		{
-			CloseHandle(g_hMenu_Vote[iClient]);
-			g_hMenu_Vote[iClient] = INVALID_HANDLE;
-		}
+			delete g_hMenu_Vote[iClient];
 	}
 }
 

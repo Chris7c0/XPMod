@@ -49,21 +49,14 @@ public Action:TimerHunterPoison(Handle:timer, any:pack)
 		return Plugin_Stop;
 	ResetPack(pack);
 	new iClient = ReadPackCell(pack); //iClient = victim
-	if(IsClientInGame(iClient)==false)
+
+	if(IsClientInGame(iClient)==false || IsPlayerAlive(iClient)==false || g_iClientTeam[iClient] != TEAM_SURVIVORS)
 	{
 		g_bIsHunterPoisoned[iClient] = false;
+		
 		return Plugin_Stop;
 	}
-	if(IsPlayerAlive(iClient)==false)
-	{
-		g_bIsHunterPoisoned[iClient] = false;
-		return Plugin_Stop;
-	}
-	if(g_iClientTeam[iClient] != TEAM_SURVIVORS)
-	{
-		g_bIsHunterPoisoned[iClient] = false;
-		return Plugin_Stop;
-	}
+
 	if(--g_iHunterPoisonRuntimesCounter[iClient] > 0)
 	{
 		if(IsFakeClient(iClient)==false)
@@ -77,6 +70,7 @@ public Action:TimerHunterPoison(Handle:timer, any:pack)
 	if(IsFakeClient(iClient)==false)
 		PrintHintText(iClient, "The venom has passed through your body.");
 	fnc_SetClientSpeed(iClient);
+
 	return Plugin_Stop;
 }
 
@@ -87,11 +81,8 @@ public Action:TimerHunterPoisonFade(Handle:timer, any:pack)
 	ResetPack(pack);
 	new victim = ReadPackCell(pack);
 	new attacker = ReadPackCell(pack);
-	if(IsClientInGame(victim)==false)
-		return Plugin_Stop;
-	if(IsPlayerAlive(victim)==false)
-		return Plugin_Stop;
-	if(IsValidEntity(victim) == false)
+
+	if(IsValidEntity(victim) == false || IsClientInGame(victim)==false || IsPlayerAlive(victim)==false)
 		return Plugin_Stop;
 	
 	DealDamage(victim, attacker, 4, DAMAGETYPE_BLOCK_REVIVING);
