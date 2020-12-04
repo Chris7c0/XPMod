@@ -150,7 +150,6 @@ public Action:ToggleAnnouncerVoice(iClient,args)	//Toggles the announcers voice
 
 public Action:ToggleVGUIDesc(iClient,args)	//Toggles the vgui menu descriptions for talents
 {
-	/* Temporarily removed the VGUI
 	if(iClient!=0)
 	{
 		if(g_bEnabledVGUI[iClient]==false)
@@ -164,8 +163,7 @@ public Action:ToggleVGUIDesc(iClient,args)	//Toggles the vgui menu descriptions 
 			g_bEnabledVGUI[iClient] = false;
 		}
 	}
-	*/
-	g_bEnabledVGUI[iClient] = false;
+	
 	return Plugin_Handled;
 }
 

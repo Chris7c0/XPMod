@@ -854,6 +854,7 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 								g_bIsHallucinating[victim] = true;
 								g_iHallucinogenRuntimesCounter[victim] = 0;
 								WriteParticle(victim, "hallucinogenic_effect", 0.0, 30.0);
+								
 								delete g_hTimer_HallucinatePlayer[victim];
 								g_hTimer_HallucinatePlayer[victim] = CreateTimer(2.5, TimerHallucinogen, victim, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 							}
