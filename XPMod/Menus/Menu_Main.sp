@@ -245,7 +245,18 @@ public ChooseTalentsTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, ite
 			}
 			case 1: //Choose Infected
 			{
-				TopInfectedMenuDraw(iClient);
+				if (g_iTalentSelectionMode == CONVAR_WEBSITE)
+				{
+					decl String:url[256];
+					Format(url, sizeof(url), "http://xpmod.net/select/infected_select.php?id=%i;t=%s", g_iDBUserID[iClient], g_strDBUserToken[iClient]);
+					OpenMOTDPanel(iClient, "CHOOSE YOUR INFECTED", url, MOTDPANEL_TYPE_URL);
+					
+					TopInfectedMenuDraw(iClient);
+				}
+				else if (g_iTalentSelectionMode == CONVAR_MENU)
+				{
+					TopInfectedMenuDraw(iClient);
+				}
 			}
 			case 2: //Back
 			{
@@ -309,13 +320,7 @@ public ExtrasMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			}
 			case 3: //Get XPMod Addon
 			{
-				//OpenMOTDPanel(iClient, "Download XPMod Addon", "http://xpmod.net/downloads/xpmod_ig_downloads.html", MOTDPANEL_TYPE_URL);
-				//Get SteamID
-				decl String:strSteamID[32];
-				GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID));
-				decl String:url[256];
-				Format(url, sizeof(url), "http://xpmod.net/select/infected_select.php?steamid=%s", strSteamID);
-				OpenMOTDPanel(iClient, "CHOOSE YOUR INFECTED", url, MOTDPANEL_TYPE_URL);
+				OpenMOTDPanel(iClient, "Download XPMod Addon", "http://xpmod.net/downloads/xpmod_ig_downloads.html", MOTDPANEL_TYPE_URL);
 			}
 			case 4: //Website
 			{

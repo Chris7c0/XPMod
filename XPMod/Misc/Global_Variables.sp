@@ -133,6 +133,10 @@
 #define SOUND_HEADSHOT3				"xpmod/announcer/brain_surgeon.wav"
 #define SOUND_GETITON				"xpmod/announcer/get_it_on.wav"
 
+// Convars
+// Talent Selection Mode
+#define CONVAR_MENU			0
+#define CONVAR_WEBSITE		1
 
 //Survivor Character ID Definitions
 #define BILL			0
@@ -233,6 +237,10 @@ new g_oAbility = 0;
 
 
 //Global Variables ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//ConVars
+new Handle:g_hCVar_TalentSelectionMode      = INVALID_HANDLE;
+new g_iTalentSelectionMode = CONVAR_WEBSITE;
 
 new Float:EMPTY_VECTOR[3] = 0.0;
 new Float:PI = 3.1415926;

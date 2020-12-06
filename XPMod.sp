@@ -39,12 +39,13 @@
 #include <sha1>
 
 //XPMod Include Files
-#include "XPMod/Global_Variables.sp"
-#include "XPMod/Generic_Functions.sp"
-#include "XPMod/Particle_Effects.sp"
-#include "XPMod/Precache.sp"
-#include "XPMod/Statistics.sp"
-#include "XPMod/Testing.sp"	                   //Remove before relase/////////////////////////////////////////////////////////////////////////
+#include "XPMod/Misc/Global_Variables.sp"
+#include "XPMod/Misc/Generic_Functions.sp"
+#include "XPMod/Misc/ConVars.sp"
+#include "XPMod/Misc/Particle_Effects.sp"
+#include "XPMod/Misc/Precache.sp"
+#include "XPMod/Misc/Statistics.sp"
+#include "XPMod/Misc/Testing.sp"	                   //Remove before relase/////////////////////////////////////////////////////////////////////////
 //Experience and User Data Management
 #include "XPMod/XP/XP_Management.sp"
 #include "XPMod/XP/XP_SQLDatabase.sp"
@@ -127,6 +128,9 @@ public OnPluginStart()
 		SetFailState("XPMod only works in Left4Dead 2.");
 	else
 		CreateTimer(10.0, Timer_ShowXPModInfoToServer, _);
+
+	// Set up ConVars
+	SetupXPMConVars();
 		
 	//Setup the handle that will link to the MySQL Database
 	if(ConnectDB())
@@ -174,6 +178,15 @@ public OnPluginStart()
 	
 	//PrecacheLockedWeaponModels();											//Precache locked weapon models
 	CreateTimer(1.0, Timer_PrepareCSWeapons, _, TIMER_FLAG_NO_MAPCHANGE);	//Prep the cs weapons for first use
+}
+
+SetupXPMConVars()
+{
+	// Create the convars
+	g_hCVar_TalentSelectionMode = CreateConVar("xpm_talent_selection_mode", "1", "Sets the talent selection mode when players choose characters [0 = MENU, 1 = WEBSITE]", 0, true, 0.0, true, 1.0);
+
+	// Hook the convars
+	HookConVarChange(g_hCVar_TalentSelectionMode, CVarChange_TalentSelectionMode);
 }
 
 SetupConsoleCommands()
