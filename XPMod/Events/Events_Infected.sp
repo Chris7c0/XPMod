@@ -492,7 +492,8 @@ public Action:Event_TongueGrab(Handle:hEvent, const String:strName[], bool:bDont
 			SetEntProp(victim, Prop_Send, "m_glowColorOverride", 1);
 			ChangeEdictState(victim, 12);
 			
-			CreateTimer(5.0, Timer_ResetGlow, victim, TIMER_FLAG_NO_MAPCHANGE);
+			delete g_hTimer_ResetGlow[victim];
+			g_hTimer_ResetGlow[victim] = CreateTimer(5.0, Timer_ResetGlow, victim, TIMER_FLAG_NO_MAPCHANGE);
 
 			if(IsFakeClient(attacker)==false)
 			{
@@ -576,7 +577,8 @@ public Action:Event_JockeyRide(Handle:hEvent, const String:strName[], bool:bDont
 					SetEntProp(victim, Prop_Send, "m_glowColorOverride", 1);
 					ChangeEdictState(victim, 12);
 					
-					CreateTimer(5.0, Timer_ResetGlow, victim, TIMER_FLAG_NO_MAPCHANGE);
+					delete g_hTimer_ResetGlow[victim];
+					g_hTimer_ResetGlow[victim] = CreateTimer(5.0, Timer_ResetGlow, victim, TIMER_FLAG_NO_MAPCHANGE);
 					
 					if(IsFakeClient(attacker) == false)
 					{
@@ -720,7 +722,8 @@ public Action:Event_HunterPounceStart(Handle:hEvent, const String:strName[], boo
 							SetEntProp(victim, Prop_Send, "m_glowColorOverride", 1);
 							ChangeEdictState(victim, 12);
 							
-							CreateTimer(5.0, Timer_ResetGlow, victim, TIMER_FLAG_NO_MAPCHANGE);
+							delete g_hTimer_ResetGlow[victim];
+							g_hTimer_ResetGlow[victim] = CreateTimer(5.0, Timer_ResetGlow, victim, TIMER_FLAG_NO_MAPCHANGE);
 							
 							if(IsFakeClient(attacker) == false)
 							{

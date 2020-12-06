@@ -866,7 +866,7 @@ new Handle:g_hTimer_BillDropBombs[MAXPLAYERS + 1] 			= null;
 new Handle:g_hTimer_IceSphere[MAXPLAYERS + 1]				= null;
 new Handle:g_hTimer_AdhesiveGooReset[MAXPLAYERS + 1] 		= null;
 new Handle:g_hTimer_DemiGooReset[MAXPLAYERS + 1] 			= null;
-new Handle:g_hTimer_SpitTransparencyReset[MAXPLAYERS + 1] 	= null;
+new Handle:g_hTimer_ResetGlow[MAXPLAYERS + 1] 	            = null;
 new Handle:g_hTimer_ViralInfectionTick[MAXPLAYERS + 1] 		= null;
 new Handle:g_hTimer_BlockGooSwitching[MAXPLAYERS + 1] 		= null;
 

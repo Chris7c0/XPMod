@@ -833,7 +833,7 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 								
 								if(g_iMaterialLevel[attacker] > 0 && GetEntProp(victim, Prop_Send, "m_isIncapacitated") != 0)
 								{
-									if (g_hTimer_SpitTransparencyReset[victim] == null)
+									if (g_hTimer_ResetGlow[victim] == null)
 									{
 										SetEntProp(victim, Prop_Send, "m_iGlowType", 3);
 										SetEntProp(victim, Prop_Send, "m_nGlowRange", 0);
@@ -843,9 +843,9 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 									}
 									
 
-									
-									delete g_hTimer_SpitTransparencyReset[victim];
-									g_hTimer_SpitTransparencyReset[victim] = CreateTimer(3.0, Timer_ResetGlow, victim, TIMER_FLAG_NO_MAPCHANGE);
+
+									delete g_hTimer_ResetGlow[victim];
+									g_hTimer_ResetGlow[victim] = CreateTimer(3.0, Timer_ResetGlow, victim, TIMER_FLAG_NO_MAPCHANGE);
 								}
 							}
 							else if(g_bIsHallucinating[victim] == false && StrEqual(weapon,"spitter_claw") == true)

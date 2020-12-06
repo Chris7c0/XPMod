@@ -7,7 +7,7 @@ public Action:Timer_ResetGlow(Handle:timer, any:iClient)
 	fnc_SetRendering(iClient);
 	//ResetGlow(iClient);
 	
-	g_hTimer_SpitTransparencyReset[iClient] = null;
+	g_hTimer_ResetGlow[iClient] = null;
 	
 	return Plugin_Stop;
 }
