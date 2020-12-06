@@ -7,7 +7,7 @@ public Action:Timer_ResetGlow(Handle:timer, any:iClient)
 	fnc_SetRendering(iClient);
 	//ResetGlow(iClient);
 	
-	delete g_hTimer_SpitTransparencyReset[iClient];
+	g_hTimer_SpitTransparencyReset[iClient] = null;
 	
 	return Plugin_Stop;
 }
@@ -40,9 +40,14 @@ public Action:TimerUnfreezeNotification(Handle:timer, any:data)
 	if(g_iUnfreezeNotifyRunTimes-- > 1)
 	{
 		g_iPrintRunTimes = g_iUnfreezeNotifyRunTimes * 5;
-		PrintHintTextToAll("Survivors will be unfrozen in %d seconds", g_iPrintRunTimes);
+		PrintHintTextToAll("Survivors will be unfrozen in %i seconds", g_iPrintRunTimes);
+		//LogError("TimerUnfreezeNotification Continue, Handle %i", g_hTimer_FreezeCountdown);
 		return Plugin_Continue;
 	}
+
+	//LogError("TimerUnfreezeNotification Setting g_hTimer_FreezeCountdown to null, Handle %i", g_hTimer_FreezeCountdown);
+	g_hTimer_FreezeCountdown = null;
+	//LogError("TimerUnfreezeNotification Plugin_Stop, Handle %i", g_hTimer_FreezeCountdown);
 	
 	return Plugin_Stop;
 }

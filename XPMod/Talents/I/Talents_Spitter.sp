@@ -136,19 +136,18 @@ ChangeGooType(iClient)
 */
 DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 {
-	//delete g_hTimer_AdhesiveGooReset[iVictim];
-
 	if(g_bAdhesiveGooActive[iVictim] == false)
 	{
-		//SetEntDataFloat(iVictim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 0.5, true);
 		decl RandomAdhesiveGooChance;
 		RandomAdhesiveGooChance = GetRandomInt(1, 5);
 		switch (RandomAdhesiveGooChance)
 		{
+			// 20% chance of causing adhession on hit
 			case 1:
 			{
 				decl RandomAdhesiveGooAffect;
 				RandomAdhesiveGooAffect = GetRandomInt(1, 3);
+				
 				switch (RandomAdhesiveGooAffect)
 				{
 					case 1:
@@ -171,30 +170,18 @@ DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 						//PrintToChatAll("Adhesive goo affect %d", g_fAdhesiveAffectAmount[iVictim]);
 					}
 				}
+
 				g_bAdhesiveGooActive[iVictim] = true;
 				fnc_SetClientSpeed(iVictim);
-				//g_hTimer_AdhesiveGooReset[iVictim] = CreateTimer(5.0, TimerResetSpeedFromGoo, iVictim, TIMER_FLAG_NO_MAPCHANGE);
-				CreateTimer(5.0, TimerResetSpeedFromGoo, iVictim, TIMER_FLAG_NO_MAPCHANGE);
+
+				delete g_hTimer_AdhesiveGooReset[iVictim];
+				g_hTimer_AdhesiveGooReset[iVictim] = CreateTimer(5.0, TimerResetSpeedFromGoo, iVictim, TIMER_FLAG_NO_MAPCHANGE);
 			}
 		}
 	}
 	
-
-	
 	switch(g_iGooType[iAttacker])
 	{
-		/*
-		case GOO_ADHESIVE:
-		{
-			if (g_hTimer_AdhesiveGooReset[iVictim] == null)
-			{
-				SetEntDataFloat(iVictim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 0.5, true);
-			}
-			
-			delete g_hTimer_AdhesiveGooReset[iVictim];
-			g_hTimer_AdhesiveGooReset[iVictim] = CreateTimer(3.0, TimerResetSpeedFromGoo, iVictim, TIMER_FLAG_NO_MAPCHANGE);
-		}
-		*/
 		case GOO_MELTING:
 		{
 			if(GetEntProp(iVictim, Prop_Send, "m_isIncapacitated") == 0)

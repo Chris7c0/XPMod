@@ -410,6 +410,8 @@ CreateNewUser(iClient)
 	//Get Client Name
 	decl String:strClientName[32];
 	GetClientName(iClient, strClientName, sizeof(strClientName));
+	//Sanitize client name for the query
+	ReplaceString(strClientName, sizeof(strClientName), "'", "-", true);
 
 	//Get a new user token
 	decl String:strUserToken[41];
@@ -477,6 +479,8 @@ SaveUserData(iClient)
 	
 	//Get Client Name
 	GetClientName(iClient, strClientName, sizeof(strClientName));
+	//Sanitize client name for the query
+	ReplaceString(strClientName, sizeof(strClientName), "'", "-", true);
 	
 	//Get Client XP
 	if(g_iClientXP[iClient]>99999999)

@@ -842,12 +842,14 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 										SetEntityRenderColor(victim, 255, 255, 255, 255 - RoundToNearest(255.0 * 0.1 * g_iMaterialLevel[attacker]));
 									}
 									
-									delete(g_hTimer_SpitTransparencyReset[victim]);
+
+									
+									delete g_hTimer_SpitTransparencyReset[victim];
 									g_hTimer_SpitTransparencyReset[victim] = CreateTimer(3.0, Timer_ResetGlow, victim, TIMER_FLAG_NO_MAPCHANGE);
 								}
 							}
 							else if(g_bIsHallucinating[victim] == false && StrEqual(weapon,"spitter_claw") == true)
-							{								
+							{
 								if(IsFakeClient(victim) == false)
 									PrintHintText(victim, "A Spitter's hallucinogenic toxin seeps through your viens"); 
 								

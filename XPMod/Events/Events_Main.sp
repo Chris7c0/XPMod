@@ -174,6 +174,8 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
  
 public Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
+	//LogError("EVENT ROUND START=====================================================================================");
+
 	CleanUpMenuHandles();	//Puts all the menu handles at invalid to minimize the amount of handles open
 	g_bGameFrozen = true;
 	g_bEndOfRound = false;
@@ -187,11 +189,17 @@ public Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDont
 		CreateTimer(20.0, TimerUnfreeze, 0, TIMER_FLAG_NO_MAPCHANGE);
 
 		g_iUnfreezeNotifyRunTimes = 4;
-		if (g_hTimer_FreezeCountdown != INVALID_HANDLE)
-		{
-			g_hTimer_FreezeCountdown = INVALID_HANDLE;
-		}
+		
+		// *For some reason, delete errors out when ran even though it doesnt appear to be 
+		// equal to INVALID_HANDLE. The conclusion from the testing is to just not run the 
+		// delete on this one. It looks like it should be handled fine anyway*
+		// **delete g_hTimer_FreezeCountdown;
+		//LogError("Setting g_hTimer_FreezeCountdown, Handle %i", g_hTimer_FreezeCountdown);
 		g_hTimer_FreezeCountdown = CreateTimer(5.0, TimerUnfreezeNotification, _, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+		//LogError("Set g_hTimer_FreezeCountdown, Handle %i", g_hTimer_FreezeCountdown);
+
+		// This line is literally only to remove the compiler warning.  It does nothing.
+		if (g_hTimer_FreezeCountdown == null) {}
 	}
 	else
 		CreateTimer(0.3, TimerUnfreeze, 0, TIMER_FLAG_NO_MAPCHANGE);

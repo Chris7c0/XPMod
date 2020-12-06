@@ -66,12 +66,10 @@ public Action:TimerSetSpitterCooldown(Handle:timer, any:iClient)
 
 public Action:TimerResetSpeedFromGoo(Handle:timer, any:iClient)
 {
-	//ResetSurvivorSpeed(iClient);
-	//if(g_iAdhesiveAffectAmount[iClient]
 	g_fClientSpeedPenalty[iClient] -= g_fAdhesiveAffectAmount[iClient];
 	fnc_SetClientSpeed(iClient);
 	g_bAdhesiveGooActive[iClient] = false;
-	//g_hTimer_AdhesiveGooReset[iClient] = INVALID_HANDLE;
+	g_hTimer_AdhesiveGooReset[iClient] = null;
 }
 
 public Action:TimerResetGravityFromGoo(Handle:timer, any:iClient)
@@ -87,7 +85,7 @@ public Action:TimerResetGravityFromGoo(Handle:timer, any:iClient)
 
 	g_bHasDemiGravity[iClient] = false;
 	g_iPID_DemiGravityEffect[iClient] = -1;
-	delete g_hTimer_DemiGooReset[iClient];
+	g_hTimer_DemiGooReset[iClient] = null;
 
 	return Plugin_Stop;
 }
@@ -187,7 +185,11 @@ public Action:TimerSetMobRush(Handle:timer, any:iClient)
 public Action:TimerHallucinogen(Handle:timer, any:iClient)
 {
 	if(IsClientInGame(iClient) == false || IsPlayerAlive(iClient) == false)
+	{
+		g_bIsHallucinating[iClient] = false;
+		g_hTimer_HallucinatePlayer[iClient] = null;
 		return Plugin_Stop;
+	}
 	
 	//Add laughing and other evil sounds
 	
@@ -220,7 +222,8 @@ public Action:TimerHallucinogen(Handle:timer, any:iClient)
 	}		
 		
 	g_bIsHallucinating[iClient] = false;
-	
+	g_hTimer_HallucinatePlayer[iClient] = null;
+
 	return Plugin_Stop;
 }
 
@@ -321,8 +324,7 @@ public Action:TimerInstantSpitterCooldown(Handle:timer, any:iClient)
 public Action:TimerAllowGooSwitching(Handle:timer, any:iClient)
 {
 	g_bBlockGooSwitching[iClient] = false;
-	
-	g_hTimer_BlockGooSwitching[iClient] = INVALID_HANDLE;
+	g_hTimer_BlockGooSwitching[iClient] = null;
 }
 
 public Action:TimerResetRepulsion(Handle:timer, any:iClient)
