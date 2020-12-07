@@ -464,7 +464,9 @@ public ResetVariablesForMap(iClient)
 	//g_bFireTankBaseSpeedIncreased[iClient] = false;
 	
 	ResetAllVariables(iClient);
-		
+	//Delete all the global timer handles at the end of the round
+	DeleteAllGlobalTimerHandles(iClient);
+	
 	for(new j=1;j <= MaxClients;j++)
 		g_bNickIsStealingLife[iClient][j] = false;
 }
@@ -500,7 +502,25 @@ ResetAllVariables(iClient)
 	g_iTankCharge[iClient] = 0;
 	g_bTankAttackCharged[iClient] = false;
 	g_iIceTankLifePool[iClient] = 0;
+}
+
+public DeleteAllGlobalTimerHandles(iClient)
+{
+	//delete g_hTimer_FreezeCountdown;
+
+	delete g_hTimer_DrugPlayer[iClient];
+	delete g_hTimer_HallucinatePlayer[iClient];
+	delete g_hTimer_SlapPlayer[iClient];
+	delete g_hTimer_RochellePoison[iClient];
+	delete g_hTimer_HunterPoison[iClient];
+	delete g_hTimer_NickLifeSteal[iClient];
+	delete g_hTimer_BillDropBombs[iClient];
 	delete g_hTimer_IceSphere[iClient];
+	delete g_hTimer_AdhesiveGooReset[iClient];
+	delete g_hTimer_DemiGooReset[iClient];
+	delete g_hTimer_ResetGlow[iClient];
+	delete g_hTimer_ViralInfectionTick[iClient];
+	delete g_hTimer_BlockGooSwitching[iClient];	
 }
 
 SetupSDKCalls()

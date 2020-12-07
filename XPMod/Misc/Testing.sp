@@ -45,7 +45,7 @@ public Action:TestFunction1(iClient,args)
 	PrintToServer("Deleting g_TESTING_TIMERS, Handle %i", g_TESTING_TIMERS);
 	delete g_TESTING_TIMERS;
 	PrintToServer("Setting TestFunction1, Handle %i", g_TESTING_TIMERS);
-	g_TESTING_TIMERS = CreateTimer(5.0, TESTING_TIMERS, 3, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+	g_TESTING_TIMERS = CreateTimer(5.0, TESTING_TIMERS, 3, TIMER_REPEAT);
 	PrintToServer("Set TestFunction1, Handle %i", g_TESTING_TIMERS);
 
 	return Plugin_Stop;

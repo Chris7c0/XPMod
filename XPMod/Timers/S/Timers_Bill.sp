@@ -1,49 +1,10 @@
 public Action:TimerDropBombs(Handle:timer, any:iClient)
 {
-	if(IsClientInGame(iClient)==false)
+	if(IsClientInGame(iClient)==false || IsPlayerAlive(iClient)==false)
 	{
+		g_hTimer_BillDropBombs[iClient] = null;
 		return Plugin_Stop;
 	}
-	if(IsPlayerAlive(iClient)==false)
-	{
-		return Plugin_Stop;
-	}
-	//old code
-	/*if(g_iDropBombsTimes[iClient]++ < 3)
-	{
-		if(IsFakeClient(iClient)==false)
-		{
-			new Handle:cvar = FindConVar("sv_cheats"), flags = GetConVarFlags(cvar);
-			SetConVarFlags(cvar, flags^(FCVAR_NOTIFY|FCVAR_REPLICATED));
-			SetConVarBool(cvar, true);
-			SendConVarValue(iClient, FindConVar("sv_cheats"), "1");
-			FakeClientCommand(iClient, "boom");
-			SendConVarValue(iClient, FindConVar("sv_cheats"), "0");
-			SetConVarBool(cvar, false);
-			SetConVarFlags(cvar, flags);
-			CloseHandle(cvar);
-			
-			//Set the cvars back to ATTACH_NORMAL after using the sv
-			SetConVarInt(FindConVar("first_aid_kit_max_heal"), 999);		//So everyone can heal to their max using medkit
-			SetConVarInt(FindConVar("pain_pills_health_threshold"), 999);	//So everyone can use pain pills above 99 health
-			SetConVarFloat(FindConVar("upgrade_laser_sight_spread_factor"), g_fMaxLaserAccuracy);
-			SetConVarInt(FindConVar("survivor_crawl_speed"), (15 + g_iCrawlSpeedMultiplier),false,false);
-			SetConVarInt(FindConVar("survivor_allow_crawling"),1,false,false);	//this can be done because only BILL can use this talent
-			if(coachnoshake == true)
-			{
-				SetConVarInt(FindConVar("z_claw_hit_pitch_max"), 0);
-				SetConVarInt(FindConVar("z_claw_hit_pitch_min"), 0);
-				SetConVarInt(FindConVar("z_claw_hit_yaw_max"), 0);
-				SetConVarInt(FindConVar("z_claw_hit_yaw_min"), 0);
-			}
-			if(g_bUsingShadowNinja[iClient] == true)
-				SetConVarInt(FindConVar("sv_disable_glow_survivors"), 1);
-			SetConVarInt(FindConVar("chainsaw_attack_force"), 400 + (g_iHighestLeadLevel * 40));
-			SetConVarInt(FindConVar("chainsaw_damage"), 100 + (g_iHighestLeadLevel * 10));
-			SetConVarFloat(FindConVar("chainsaw_hit_interval"), 0.1 - (float(g_iHighestLeadLevel) * 0.01),false,false);
-		}
-		return Plugin_Continue;
-	}*/
 	
 	if(g_iDropBombsTimes[iClient]++ < 3)
 	{
@@ -84,6 +45,7 @@ public Action:TimerDropBombs(Handle:timer, any:iClient)
 		return Plugin_Continue;
 	}
 	
+	g_hTimer_BillDropBombs[iClient] = null;
 	return Plugin_Stop;
 }
 

@@ -105,9 +105,7 @@ public Action:Timer_CreateSmallIceSphere(Handle:timer, any:iClient)
 {
 	if(iClient < 1 || g_bShowingIceSphere[iClient] == false || g_iClientTeam[iClient] != TEAM_INFECTED 
 		|| IsValidEntity(iClient) == false || IsClientInGame(iClient) == false || IsPlayerAlive(iClient) == false)
-	{
-		g_hTimer_IceSphere[iClient] = INVALID_HANDLE;
-		
+	{		
 		//Delete the particle effects for the Ice Sphere and set to -1 for next time
 		DeleteParticleEntity(g_iPID_IceTankChargeMist[iClient]);
 		DeleteParticleEntity(g_iPID_IceTankChargeSnow[iClient]);
@@ -123,6 +121,7 @@ public Action:Timer_CreateSmallIceSphere(Handle:timer, any:iClient)
 			CreateTimer(4.0, Timer_UnfreezePlayerByTank, iVictim, TIMER_FLAG_NO_MAPCHANGE);
 		}
 		
+		g_hTimer_IceSphere[iClient] = null;
 		return Plugin_Stop;
 	}
 	

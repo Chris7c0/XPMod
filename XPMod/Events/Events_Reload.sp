@@ -501,13 +501,10 @@ if(IsFakeClient(attacker) == false)	////////////////////////////////////////////
 							if(g_bIsRochellePoisoned[victim] == false)	//If player not g_bIsRochellePoisoned poison them
 							{
 								g_bIsRochellePoisoned[victim] = true;
-								if (g_hTimer_RochellePoison[victim]!=INVALID_HANDLE)
-								{
-									//CloseHandle(g_hTimer_RochellePoison[victim]);		use this or not(not tried)???
-									g_hTimer_RochellePoison[victim]=INVALID_HANDLE;
-								}
+								
 								g_iSlapRunTimes[victim] = 5 - g_iHunterLevel[attacker];
-								g_hTimer_RochellePoison[victim] = CreateTimer(5.0, TimerPoison, victim, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+								delete g_hTimer_RochellePoison[victim];
+								g_hTimer_RochellePoison[victim] = CreateTimer(5.0, TimerPoison, victim, TIMER_REPEAT);
 								g_iPID_RochellePoisonBullet[victim] = WriteParticle(victim, "poison_bullet", 0.0);
 								CreateTimer(30.1, DeleteParticle, g_iPID_RochellePoisonBullet[victim], TIMER_FLAG_NO_MAPCHANGE);
 								
@@ -687,15 +684,15 @@ if(IsFakeClient(attacker) == false)	////////////////////////////////////////////
 							if(g_bNickIsStealingLife[victim][attacker] == false)	//If player not poisoned, poison them
 							{
 								g_bNickIsStealingLife[victim][attacker] = true;
-								if (g_hTimer_NickLifeSteal[victim]!=INVALID_HANDLE)
-								{
-									g_hTimer_NickLifeSteal[victim]=INVALID_HANDLE;
-								}
+								
 								new Handle:lifestealingpackage = CreateDataPack();
 								WritePackCell(lifestealingpackage, victim);
 								WritePackCell(lifestealingpackage, attacker);
+								
 								g_iNickStealingLifeRuntimes[victim] = 0;
-								g_hTimer_NickLifeSteal[victim] = CreateTimer(2.0, TimerLifeStealing, lifestealingpackage, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+
+								delete g_hTimer_NickLifeSteal[victim];
+								g_hTimer_NickLifeSteal[victim] = CreateTimer(2.0, TimerLifeStealing, lifestealingpackage, TIMER_REPEAT);
 								
 								decl Float:vec[3];
 								GetClientAbsOrigin(victim, vec);

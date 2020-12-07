@@ -99,7 +99,7 @@ public Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBro
 	g_bTankAttackCharged[victim] = false;
 	DeleteParticleEntity(g_iPID_TankChargedFire[victim]);
 	g_iIceTankLifePool[victim] = 0;
-	g_hTimer_IceSphere[victim] = INVALID_HANDLE;
+	delete g_hTimer_IceSphere[victim];
 	DeleteParticleEntity(g_iPID_IceTankIcicles[victim]);
 	
 	//Grapples

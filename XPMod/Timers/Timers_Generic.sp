@@ -5,7 +5,6 @@
 public Action:Timer_ResetGlow(Handle:timer, any:iClient)
 {
 	fnc_SetRendering(iClient);
-	//ResetGlow(iClient);
 	
 	g_hTimer_ResetGlow[iClient] = null;
 	
@@ -285,7 +284,10 @@ public Action:TimerRemoveSmokeEntity(Handle:timer, any:entity)
 public Action:TimerDrugged(Handle:timer, any:iClient)
 {
 	if(IsClientInGame(iClient) == false || IsPlayerAlive(iClient) == false)
+	{
+		g_hTimer_DrugPlayer[iClient] = null;
 		return Plugin_Stop;
+	}
 	
 	if(g_iDruggedRuntimesCounter[iClient]++ < 10)
 	{
@@ -316,6 +318,7 @@ public Action:TimerDrugged(Handle:timer, any:iClient)
 	//Reset Client run speed
 	//ResetSurvivorSpeed(iClient);
 	
+	g_hTimer_DrugPlayer[iClient] = null;
 	return Plugin_Stop;
 }
 

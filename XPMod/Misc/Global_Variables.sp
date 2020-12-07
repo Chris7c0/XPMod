@@ -249,6 +249,8 @@ new Float:PI = 3.1415926;
 new bool:g_bTalentsConfirmed[MAXPLAYERS + 1];
 new bool:g_bUserStoppedConfirmation[MAXPLAYERS + 1];
 new g_iAutoSetCountDown[MAXPLAYERS + 1];
+new Float:g_xyzClientVOrigin[MAXPLAYERS + 1][3];
+new Float:g_xyzClientVAngles[MAXPLAYERS + 1][3];
 
 //XPM Options
 new g_iXPDisplayMode[MAXPLAYERS + 1];						//Default 0 = Show Sprites; 1 = Show In Chat, 2 = Disabled

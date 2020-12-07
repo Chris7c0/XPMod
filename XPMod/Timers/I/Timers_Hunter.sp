@@ -53,7 +53,7 @@ public Action:TimerHunterPoison(Handle:timer, any:pack)
 	if(IsClientInGame(iClient)==false || IsPlayerAlive(iClient)==false || g_iClientTeam[iClient] != TEAM_SURVIVORS)
 	{
 		g_bIsHunterPoisoned[iClient] = false;
-		
+		g_hTimer_HunterPoison[iClient] = null;
 		return Plugin_Stop;
 	}
 
@@ -65,12 +65,15 @@ public Action:TimerHunterPoison(Handle:timer, any:pack)
 		CreateTimer(0.5, TimerHunterPoisonFade, pack, TIMER_FLAG_NO_MAPCHANGE);	//Make the effect fade away and dmg iClient(victim)
 		return Plugin_Continue;
 	}
-	g_bIsHunterPoisoned[iClient] = false;
-	CloseHandle(pack);	
+	
+	CloseHandle(pack);
 	if(IsFakeClient(iClient)==false)
 		PrintHintText(iClient, "The venom has passed through your body.");
 	fnc_SetClientSpeed(iClient);
 
+	g_bIsHunterPoisoned[iClient] = false;
+	g_hTimer_HunterPoison[iClient] = null;
+	
 	return Plugin_Stop;
 }
 

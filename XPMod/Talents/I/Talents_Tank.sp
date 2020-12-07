@@ -90,8 +90,8 @@ OnGameFrame_Tank(iClient)
 							g_iPID_IceTankChargeSnow[iClient] = WriteParticle(iClient, "ice_tank_charge_snow", 50.0);
 						}
 						
-						if(g_hTimer_IceSphere[iClient] == INVALID_HANDLE)
-							g_hTimer_IceSphere[iClient] = CreateTimer(0.1, Timer_CreateSmallIceSphere, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+						if(g_hTimer_IceSphere[iClient] == null)
+							g_hTimer_IceSphere[iClient] = CreateTimer(0.1, Timer_CreateSmallIceSphere, iClient, TIMER_REPEAT);
 						
 						//Check to see if there is a player inside of the ice sphere and freeze him if he is
 						for(new iVictim = 1; iVictim <= MaxClients; iVictim++)
@@ -199,7 +199,6 @@ LoadIceTankTalents(iClient)
 	g_iTankChosen[iClient] = ICE_TANK;
 	g_fTankHealthPercentage[iClient] =  1.0;
 	g_iIceTankLifePool[iClient] = 200 * g_iClientLevel[iClient];
-	g_hTimer_IceSphere[iClient] = INVALID_HANDLE;
 	
 	//Stop Kiting
 	SetConVarInt(FindConVar("z_tank_damage_slow_min_range"), 0);

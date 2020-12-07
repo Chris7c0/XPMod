@@ -175,7 +175,7 @@ DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 				fnc_SetClientSpeed(iVictim);
 
 				delete g_hTimer_AdhesiveGooReset[iVictim];
-				g_hTimer_AdhesiveGooReset[iVictim] = CreateTimer(5.0, TimerResetSpeedFromGoo, iVictim, TIMER_FLAG_NO_MAPCHANGE);
+				g_hTimer_AdhesiveGooReset[iVictim] = CreateTimer(5.0, TimerResetSpeedFromGoo, iVictim);
 			}
 		}
 	}
@@ -218,7 +218,7 @@ DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 			}
 			
 			delete g_hTimer_DemiGooReset[iVictim];
-			g_hTimer_DemiGooReset[iVictim] = CreateTimer(15.0, TimerResetGravityFromGoo, iVictim, TIMER_FLAG_NO_MAPCHANGE);
+			g_hTimer_DemiGooReset[iVictim] = CreateTimer(15.0, TimerResetGravityFromGoo, iVictim);
 		}
 		case GOO_REPULSION:
 		{
@@ -346,9 +346,6 @@ VirallyInfectVictim(iVictim, iAttacker)
 		g_bIsImmuneToVirus[iVictim] = true;
 		g_iViralInfector[iVictim] = iAttacker;
 		g_iViralRuntimesCounter[iVictim] = 20;
-	
-		if (g_hTimer_ViralInfectionTick[iVictim] != INVALID_HANDLE)
-			g_hTimer_ViralInfectionTick[iVictim] = INVALID_HANDLE;
 						
 		if(IsFakeClient(iVictim) == false)
 			PrintHintText(iVictim, "You have been infected by a mutated virus crafted by a Spitter");
@@ -356,6 +353,7 @@ VirallyInfectVictim(iVictim, iAttacker)
 		SetEntityRenderMode(iVictim, RenderMode:0);
 		SetEntityRenderColor(iVictim, 200, 255, 200, 255);
 		
-		g_hTimer_ViralInfectionTick[iVictim] = CreateTimer(0.5, TimerInfectedVictimTick, iVictim, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+		delete g_hTimer_ViralInfectionTick[iVictim];
+		g_hTimer_ViralInfectionTick[iVictim] = CreateTimer(0.5, TimerInfectedVictimTick, iVictim, TIMER_REPEAT);
 	}
 }

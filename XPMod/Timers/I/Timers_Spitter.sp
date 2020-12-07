@@ -230,7 +230,10 @@ public Action:TimerHallucinogen(Handle:timer, any:iClient)
 public Action:TimerInfectedVictimTick(Handle:timer, any:iClient)
 {
 	if(IsClientInGame(iClient) == false || IsPlayerAlive(iClient) == false)
+	{
+		g_hTimer_ViralInfectionTick[iClient] = null;
 		return Plugin_Stop;
+	}
 	
 	new Float:xyzVictimLocation[3], Float:xyzPotentialVictimLocation[3], Float:fDistance;
 	GetClientEyePosition(iClient, xyzVictimLocation);
@@ -294,6 +297,8 @@ public Action:TimerInfectedVictimTick(Handle:timer, any:iClient)
 	
 	//Give temp immunity to this strand of the virus
 	CreateTimer(60.0, TimerResetVirusImmunity, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
+	g_hTimer_ViralInfectionTick[iClient] = null;
 	
 	return Plugin_Stop;
 }

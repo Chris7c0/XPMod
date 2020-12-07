@@ -346,13 +346,12 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 							if(g_bIsRochellePoisoned[victim] == false)	//If player not g_bIsRochellePoisoned poison them
 							{
 								g_bIsRochellePoisoned[victim] = true;
-								if (g_hTimer_RochellePoison[victim]!=INVALID_HANDLE)
-								{
-									//CloseHandle(g_hTimer_RochellePoison[victim]);		use this or not(not tried)???
-									g_hTimer_RochellePoison[victim]=INVALID_HANDLE;
-								}
+								
 								g_iSlapRunTimes[victim] = 5 - g_iHunterLevel[attacker];
-								g_hTimer_RochellePoison[victim] = CreateTimer(5.0, TimerPoison, victim, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+
+								delete g_hTimer_RochellePoison[victim];
+								g_hTimer_RochellePoison[victim] = CreateTimer(5.0, TimerPoison, victim, TIMER_REPEAT);
+
 								g_iPID_RochellePoisonBullet[victim] = WriteParticle(victim, "poison_bullet", 0.0);
 								CreateTimer(30.1, DeleteParticle, g_iPID_RochellePoisonBullet[victim], TIMER_FLAG_NO_MAPCHANGE);
 								
@@ -532,15 +531,14 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 							if(g_bNickIsStealingLife[victim][attacker] == false)	//If player not poisoned, poison them
 							{
 								g_bNickIsStealingLife[victim][attacker] = true;
-								if (g_hTimer_NickLifeSteal[victim]!=INVALID_HANDLE)
-								{
-									g_hTimer_NickLifeSteal[victim]=INVALID_HANDLE;
-								}
+								
 								new Handle:lifestealingpackage = CreateDataPack();
 								WritePackCell(lifestealingpackage, victim);
 								WritePackCell(lifestealingpackage, attacker);
 								g_iNickStealingLifeRuntimes[victim] = 0;
-								g_hTimer_NickLifeSteal[victim] = CreateTimer(2.0, TimerLifeStealing, lifestealingpackage, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+
+								delete g_hTimer_NickLifeSteal[victim];
+								g_hTimer_NickLifeSteal[victim] = CreateTimer(2.0, TimerLifeStealing, lifestealingpackage, TIMER_REPEAT);
 								
 								decl Float:vec[3];
 								GetClientAbsOrigin(victim, vec);
@@ -773,14 +771,15 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 								{
 									g_bIsHunterPoisoned[victim] = true;
 									g_iClientBindUses_2[attacker]++;
-									if (g_hTimer_HunterPoison[victim] != INVALID_HANDLE)
-										g_hTimer_HunterPoison[victim] = INVALID_HANDLE;
+
 									new Handle:hunterpoisonpackage = CreateDataPack();
 									WritePackCell(hunterpoisonpackage, victim);
 									WritePackCell(hunterpoisonpackage, attacker);
 									g_iHunterPoisonRuntimesCounter[victim] = g_iKillmeleonLevel[attacker];
 									g_bHunterLethalPoisoned[victim] = true;
-									g_hTimer_HunterPoison[victim] = CreateTimer(1.0, TimerHunterPoison, hunterpoisonpackage, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+
+									delete g_hTimer_HunterPoison[victim];
+									g_hTimer_HunterPoison[victim] = CreateTimer(1.0, TimerHunterPoison, hunterpoisonpackage, TIMER_REPEAT);
 									//CreateTimer(20.0, TimerContinuousHunterPoison, hunterpoisonpackage, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 									if(IsFakeClient(victim)==false)
 										PrintHintText(victim, "\%N has injected venom into your flesh", attacker);
@@ -845,7 +844,7 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 
 
 									delete g_hTimer_ResetGlow[victim];
-									g_hTimer_ResetGlow[victim] = CreateTimer(3.0, Timer_ResetGlow, victim, TIMER_FLAG_NO_MAPCHANGE);
+									g_hTimer_ResetGlow[victim] = CreateTimer(3.0, Timer_ResetGlow, victim);
 								}
 							}
 							else if(g_bIsHallucinating[victim] == false && StrEqual(weapon,"spitter_claw") == true)
@@ -858,7 +857,7 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 								WriteParticle(victim, "hallucinogenic_effect", 0.0, 30.0);
 								
 								delete g_hTimer_HallucinatePlayer[victim];
-								g_hTimer_HallucinatePlayer[victim] = CreateTimer(2.5, TimerHallucinogen, victim, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+								g_hTimer_HallucinatePlayer[victim] = CreateTimer(2.5, TimerHallucinogen, victim, TIMER_REPEAT);
 							}
 						}
 					}

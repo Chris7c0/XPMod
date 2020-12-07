@@ -57,24 +57,14 @@ public Action:TimerStopShadowNinja(Handle:timer, any:iClient)
 
 public Action:TimerPoison(Handle:timer, any:iClient)
 {
-	if(IsClientInGame(iClient) == false)
+	if(IsValidEntity(iClient) == false || IsClientInGame(iClient) == false || IsPlayerAlive(iClient) == false || g_bIsRochellePoisoned[iClient] == false)
 	{
-		g_bIsRochellePoisoned[iClient] = false;
 		DeleteParticleEntity(g_iPID_RochellePoisonBullet[iClient]);
+		g_bIsRochellePoisoned[iClient] = false;
+		g_hTimer_RochellePoison[iClient] = null;
 		return Plugin_Stop;
 	}
-	if(IsPlayerAlive(iClient) == false)
-	{
-		g_bIsRochellePoisoned[iClient] = false;
-		DeleteParticleEntity(g_iPID_RochellePoisonBullet[iClient]);
-		return Plugin_Stop;
-	}
-	if(g_bIsRochellePoisoned[iClient] == false)
-	{
-		g_bIsRochellePoisoned[iClient] = false;
-		DeleteParticleEntity(g_iPID_RochellePoisonBullet[iClient]);
-		return Plugin_Stop;
-	}
+
 	if(g_iSlapRunTimes[iClient]++ < 5)
 	{
 		if(IsFakeClient(iClient)==false)
@@ -83,22 +73,18 @@ public Action:TimerPoison(Handle:timer, any:iClient)
 		CreateTimer(0.8, TimerPoisonFade, iClient, TIMER_FLAG_NO_MAPCHANGE);	//Make the effect fade away and dmg iClient(victim)
 		return Plugin_Continue;
 	}
-	g_bIsRochellePoisoned[iClient] = false;
-	
-	//if(IsFakeClient(iClient)==false)
-	//	PrintHintText(iClient, "The poison's effects have worn off.");
-	
+
+	g_bIsRochellePoisoned[iClient] = false;	
+	g_hTimer_RochellePoison[iClient] = null;
+
 	return Plugin_Stop;
 }
 
 public Action:TimerPoisonFade(Handle:timer, any:iClient)
 {
-	if(IsClientInGame(iClient)==false)
+	if(IsValidEntity(iClient) == false || IsClientInGame(iClient)==false || IsPlayerAlive(iClient)==false)
 		return Plugin_Stop;
-	if(IsPlayerAlive(iClient)==false)
-		return Plugin_Stop;
-	if(IsValidEntity(iClient) == false)
-		return Plugin_Stop;
+	
 	new hp = GetEntProp(iClient,Prop_Data,"m_iHealth");
 	if(hp < 16)
 		ForcePlayerSuicide(iClient);

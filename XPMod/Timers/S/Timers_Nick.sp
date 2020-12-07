@@ -42,10 +42,11 @@ public Action:TimerStopRambo(Handle:timer, any:iClient)
 
 public Action:TimerSlap(Handle:timer, any:iClient)
 {
-	if(IsClientInGame(iClient)==false)
+	if(IsClientInGame(iClient)==false || IsPlayerAlive(iClient)==false)
+	{
+		g_hTimer_SlapPlayer[iClient] = null;
 		return Plugin_Stop;
-	if(IsPlayerAlive(iClient)==false)
-		return Plugin_Stop;
+	}
 	if(g_iSlapRunTimes[iClient]++ < 5)
 	{
 		new iCurrentHP = GetEntProp(iClient, Prop_Data, "m_iHealth");
@@ -58,6 +59,7 @@ public Action:TimerSlap(Handle:timer, any:iClient)
 	}
 	g_bNickIsGettingBeatenUp[iClient] = false;
 	
+	g_hTimer_SlapPlayer[iClient] = null;
 	return Plugin_Stop;
 }
 
@@ -92,24 +94,15 @@ public Action:TimerLifeStealing(Handle:timer, any:pack)
 	ResetPack(pack);
 	new victim = ReadPackCell(pack);
 	new attacker = ReadPackCell(pack);
-	if(IsClientInGame(attacker)==false)
+	if(IsValidEntity(attacker)==false || IsClientInGame(attacker)==false || IsPlayerAlive(attacker)==false ||
+		IsValidEntity(victim)==false || IsClientInGame(victim)==false || IsPlayerAlive(victim)==false)
 	{
-		g_bNickIsStealingLife[victim][attacker] = false;
 		CloseHandle(pack);
+		g_bNickIsStealingLife[victim][attacker] = false;
+		g_hTimer_NickLifeSteal[victim] = null;
 		return Plugin_Stop;
 	}
-	if(IsClientInGame(victim)==false)
-	{
-		g_bNickIsStealingLife[victim][attacker] = false;
-		CloseHandle(pack);
-		return Plugin_Stop;
-	}
-	if(IsPlayerAlive(victim)==false)
-	{
-		g_bNickIsStealingLife[victim][attacker] = false;
-		CloseHandle(pack);
-		return Plugin_Stop;
-	}
+	
 	if(g_iNickStealingLifeRuntimes[victim] == 0)
 	{
 		if(attacker > 0)
@@ -138,6 +131,7 @@ public Action:TimerLifeStealing(Handle:timer, any:pack)
 	//PrintToChatAll( "victim %d, attacker %d", victim, attacker);
 
 	CloseHandle(pack);
+	g_hTimer_NickLifeSteal[victim] = null;
 	return Plugin_Stop;
 }
 

@@ -37,17 +37,17 @@ public Action:Bind1Press(iClient,args)
 				{
 					g_bCanDropPoopBomb[iClient] = false;
 					CreateTimer(20.0, TimerChangeCanDropBombs, iClient, TIMER_FLAG_NO_MAPCHANGE);
-					if (g_hTimer_BillDropBombs[iClient]!=INVALID_HANDLE)
-					{
-						g_hTimer_BillDropBombs[iClient]=INVALID_HANDLE;
-					}
+					
 					if(g_iDiehardLevel[iClient] < 3)
 						g_iDropBombsTimes[iClient] = 2;
 					else if(g_iDiehardLevel[iClient] < 5)
 						g_iDropBombsTimes[iClient] = 1;
 					else if(g_iDiehardLevel[iClient] == 5)
 						g_iDropBombsTimes[iClient] = 0;
-					g_hTimer_BillDropBombs[iClient] = CreateTimer(1.0, TimerDropBombs, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+
+					delete g_hTimer_BillDropBombs[iClient];
+					g_hTimer_BillDropBombs[iClient] = CreateTimer(1.0, TimerDropBombs, iClient, TIMER_REPEAT);
+					
 					g_iClientBindUses_1[iClient]++;
 					new uses = 3 - g_iClientBindUses_1[iClient];
 					PrintHintText(iClient, "Sons of bitches gonna die! %d uses remain", uses);
@@ -369,15 +369,12 @@ public Action:Bind1Press(iClient,args)
 								//Set Hud Overlay of The Random Color
 								ShowHudOverlayColor(iClient, red, green, blue, alpha, 700, FADE_OUT);
 								
-								if (g_hTimer_DrugPlayer[iClient]!=INVALID_HANDLE)															//Need to check if this to works if they gambled twice in succession
-								{
-									g_hTimer_DrugPlayer[iClient]=INVALID_HANDLE;
-								}
-								g_iDruggedRuntimesCounter[iClient] = 0;
-								
 								WriteParticle(iClient, "drugged_effect", 0.0, 30.0);
 								
-								g_hTimer_DrugPlayer[iClient] = CreateTimer(2.5, TimerDrugged, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+								g_iDruggedRuntimesCounter[iClient] = 0;
+
+								delete g_hTimer_DrugPlayer[iClient];
+								g_hTimer_DrugPlayer[iClient] = CreateTimer(2.5, TimerDrugged, iClient, TIMER_REPEAT);
 								//g_fClientSpeedBoost[iClient] += 0.2;
 								//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.6), true);
 							}
@@ -386,12 +383,10 @@ public Action:Bind1Press(iClient,args)
 								g_bNickIsGettingBeatenUp[iClient] = true;
 								PrintHintText(iClient,"Rolled a 6\nYou were caught carrying a pistol by a self-loathing cop...better cover up!");
 								PrintToChat(iClient, "\x03[XPMod] \x05You are being beaten by a self-loathing cop!");
-								if (g_hTimer_SlapPlayer[iClient]!=INVALID_HANDLE)																		//MIGHT be causing a memory leak check it out/////////////////////////////////////////
-								{
-									g_hTimer_SlapPlayer[iClient]=INVALID_HANDLE;
-								}
+								
 								g_iSlapRunTimes[iClient] = 0;
-								g_hTimer_SlapPlayer[iClient] = CreateTimer(1.0, TimerSlap, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+								delete g_hTimer_SlapPlayer[iClient];
+								g_hTimer_SlapPlayer[iClient] = CreateTimer(1.0, TimerSlap, iClient, TIMER_REPEAT);
 							}
 							case 7: //Gain 500 XP
 							{

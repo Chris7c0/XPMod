@@ -145,12 +145,10 @@ public Event_PlayerNowIt(Handle:hEvent, const String:strName[], bool:bDontBroadc
 									
 									ShowHudOverlayColor(victim, red, green, blue, alpha, 700, FADE_IN);
 									
-									if (g_hTimer_DrugPlayer[victim]!=INVALID_HANDLE)
-									{
-										g_hTimer_DrugPlayer[victim]=INVALID_HANDLE;
-									}
 									g_iDruggedRuntimesCounter[victim] = 0;
-									g_hTimer_DrugPlayer[victim] = CreateTimer(2.5, TimerDrugged, victim, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+
+									delete g_hTimer_DrugPlayer[victim];
+									g_hTimer_DrugPlayer[victim] = CreateTimer(2.5, TimerDrugged, victim, TIMER_REPEAT);
 									
 									WriteParticle(victim, "drugged_effect", 0.0, 30.0);
 								}
@@ -493,7 +491,7 @@ public Action:Event_TongueGrab(Handle:hEvent, const String:strName[], bool:bDont
 			ChangeEdictState(victim, 12);
 			
 			delete g_hTimer_ResetGlow[victim];
-			g_hTimer_ResetGlow[victim] = CreateTimer(5.0, Timer_ResetGlow, victim, TIMER_FLAG_NO_MAPCHANGE);
+			g_hTimer_ResetGlow[victim] = CreateTimer(5.0, Timer_ResetGlow, victim);
 
 			if(IsFakeClient(attacker)==false)
 			{
@@ -578,7 +576,7 @@ public Action:Event_JockeyRide(Handle:hEvent, const String:strName[], bool:bDont
 					ChangeEdictState(victim, 12);
 					
 					delete g_hTimer_ResetGlow[victim];
-					g_hTimer_ResetGlow[victim] = CreateTimer(5.0, Timer_ResetGlow, victim, TIMER_FLAG_NO_MAPCHANGE);
+					g_hTimer_ResetGlow[victim] = CreateTimer(5.0, Timer_ResetGlow, victim);
 					
 					if(IsFakeClient(attacker) == false)
 					{
@@ -723,7 +721,7 @@ public Action:Event_HunterPounceStart(Handle:hEvent, const String:strName[], boo
 							ChangeEdictState(victim, 12);
 							
 							delete g_hTimer_ResetGlow[victim];
-							g_hTimer_ResetGlow[victim] = CreateTimer(5.0, Timer_ResetGlow, victim, TIMER_FLAG_NO_MAPCHANGE);
+							g_hTimer_ResetGlow[victim] = CreateTimer(5.0, Timer_ResetGlow, victim);
 							
 							if(IsFakeClient(attacker) == false)
 							{
@@ -975,13 +973,10 @@ public Action:Event_SpitBurst(Handle:hEvent, const String:strName[], bool:bDontB
 	if(g_iPuppetLevel[iClient] > 0)
 	{
 		//Temporarily block switching goo types
-		if (g_hTimer_BlockGooSwitching[iClient] == null)
-		{
-			g_bBlockGooSwitching[iClient] = true;
-		}
+		g_bBlockGooSwitching[iClient] = true;
 		
 		delete g_hTimer_BlockGooSwitching[iClient];
-		g_hTimer_BlockGooSwitching[iClient] = CreateTimer(8.2, TimerAllowGooSwitching, iClient, TIMER_FLAG_NO_MAPCHANGE);
+		g_hTimer_BlockGooSwitching[iClient] = CreateTimer(8.2, TimerAllowGooSwitching, iClient);
 		
 		//Deploying goo type effects
 		new Float:position[3];
