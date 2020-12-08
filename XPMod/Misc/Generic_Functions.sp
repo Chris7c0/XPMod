@@ -23,6 +23,19 @@ public Action:Timer_ShowXPModInfoToServer(Handle:timer, any:data)
 	return Plugin_Stop;
 }
 
+AdvertiseXPModToNewUser(iClient, bool:bShowInChat = false)
+{
+	PrintHintText(iClient, "Type !xpm in chat to use XPMod");
+	if(bShowInChat)
+		PrintToChat(iClient, "\x05Type \x04!xpm\x05 in chat to use \x03XPMod\x05!");
+}
+
+AdvertiseConfirmXPModTalents(iClient)
+{
+	PrintHintText(iClient, "Your talents are NOT loaded. Type !xpm and confirm them.");
+	//PrintToChat(iClient, "\x03[XPMod] \x05Your talents are NOT loaded. Type \x04!xpm\x05 and confirm them.");
+}
+
 /**************************************************************************************************************************
  *                                                                                                        *
  **************************************************************************************************************************/

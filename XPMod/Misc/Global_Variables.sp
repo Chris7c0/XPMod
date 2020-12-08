@@ -240,7 +240,16 @@ new g_oAbility = 0;
 
 //ConVars
 new Handle:g_hCVar_TalentSelectionMode      = INVALID_HANDLE;
-new g_iTalentSelectionMode = CONVAR_WEBSITE;
+new g_iTalentSelectionMode                  = CONVAR_WEBSITE;
+new Handle:g_hCVar_DefaultSurvivor          = INVALID_HANDLE;
+new g_iDefaultSurvivor                      = BILL;
+new Handle:g_hCVar_DefaultInfecttedSlot1    = INVALID_HANDLE;
+new g_iDefaultInfectedSlot1                 = BOOMER;
+new Handle:g_hCVar_DefaultInfecttedSlot2    = INVALID_HANDLE;
+new g_iDefaultInfectedSlot2                 = JOCKEY;
+new Handle:g_hCVar_DefaultInfecttedSlot3    = INVALID_HANDLE;
+new g_iDefaultInfectedSlot3                 = SMOKER;
+
 
 new Float:EMPTY_VECTOR[3] = 0.0;
 new Float:PI = 3.1415926;

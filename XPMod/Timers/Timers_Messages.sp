@@ -36,49 +36,32 @@ public Action:PrintDonationMessage(Handle:timer, any:data)
 	return Plugin_Continue;
 }
 
-public Action:PrintMenuOpenText(Handle:timer, any:data)
+public Action:PrintXPModAdvertisementsToAll(Handle:timer, any:data)
 {
 	for(new i=1; i<=MaxClients; i++)
 	{
 		if(IsClientInGame(i))
 			if(!IsFakeClient(i))
 				if(g_bClientLoggedIn[i] == false)
-				{
-					PrintHintText(i, "Type !xpm to use XPMod");
-					//PrintToChat(i, "\x03[XPMod] \x05Type \x04!xpm\x05 in chat to open the XPMod Menu.");
-				}
+					AdvertiseXPModToNewUser(i, true);
 				else if(g_bTalentsConfirmed[i] == false && g_bGameFrozen == false)
-					PrintHintText(i, "Your talents are NOT loaded. Type !xpm and confirm them.");
-				//PrintToChat(i, "\x03[XPMod] \x05Your talents are NOT loaded. Type \x04!xpm\x05 and confirm them.");
+					AdvertiseConfirmXPModTalents(i);
 	}
 	return Plugin_Continue;
 }
 
 public Action:TimerLoadTalentsDelay(Handle:timer, any:iClient)
 {
-	if(g_bClientLoggedIn[iClient] == true)
+	if(g_bClientLoggedIn[iClient] == true && 
+		talentsJustGiven[iClient] == false && 
+		g_bTalentsConfirmed[iClient] == true && 
+		IsValidEntity(iClient) && 
+		IsClientInGame(iClient) && 
+		IsFakeClient(iClient) == false && 
+		IsPlayerAlive(iClient))
 	{
-		if(talentsJustGiven[iClient] == false)
-		{
-			if(IsClientInGame(iClient))
-				if(IsFakeClient(iClient) == false)
-					if(IsPlayerAlive(iClient))
-					{
-						if(g_bTalentsConfirmed[iClient] == true)
-						{
-							LoadTalents(iClient);
-							talentsJustGiven[iClient] = true;
-						}
-						else
-							PrintHintText(iClient, "Your talents are NOT loaded. Type !xpm and confirm them.");
-						//PrintToChat(iClient, "\x03[XPMod] \x05Your talents are NOT loaded. Type \x04!xpm\x05 and confirm them.");
-					}
-		}
-	}
-	else if(IsClientInGame(iClient))
-	{
-		if(IsFakeClient(iClient) == false)
-			PrintHintText(iClient, "Type !xpm to use XPMod");
+		LoadTalents(iClient);
+		talentsJustGiven[iClient] = true;
 	}
 	
 	return Plugin_Stop;

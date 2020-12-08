@@ -431,7 +431,25 @@ CreateNewUser(iClient)
 	
 	//Create new entry into the SQL database with the users information
 	decl String:strQuery[256] = "";
-	Format(strQuery, sizeof(strQuery), "INSERT INTO %s (steam_id, user_name, token, xp) VALUES ('%s', '%s', '%s', %s)", DB_TABLENAME, strSteamID, strClientName, strUserToken, strClientXP);
+	Format(strQuery, sizeof(strQuery), "INSERT INTO %s ( \
+		steam_id, \
+		user_name, \
+		token, \
+		xp, \
+		survivor_id, \
+		infected_id_1, \
+		infected_id_2, \
+		infected_id_3) \
+		VALUES ('%s', '%s', '%s', %s, '%i', '%i', '%i', %i)", 
+		DB_TABLENAME,
+		strSteamID,
+		strClientName,
+		strUserToken,
+		strClientXP,
+		g_iDefaultSurvivor,
+		g_iDefaultInfectedSlot1,
+		g_iDefaultInfectedSlot2,
+		g_iDefaultInfectedSlot3);
 	SQL_TQuery(g_hDatabase, SQLCreateNewUserCallback, strQuery, iClient);
 }
 

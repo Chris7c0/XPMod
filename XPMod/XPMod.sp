@@ -172,21 +172,12 @@ public OnPluginStart()
 	CreateTimer(2.0, TimerResetMelee, 0, TIMER_REPEAT);
 	CreateTimer(0.1, TimerIDD, 0, TIMER_REPEAT);
 	CreateTimer(30.0, PrintXPMmessage, 0, TIMER_REPEAT);
-	CreateTimer(30.0, PrintMenuOpenText, 0, TIMER_REPEAT);
+	CreateTimer(30.0, PrintXPModAdvertisementsToAll, 0, TIMER_REPEAT);
 	CreateTimer(2700.0, PrintDonationMessage, 0, TIMER_REPEAT);
 	CreateTimer(1.0, TimerCheckTalentsConfirmed, 0, TIMER_REPEAT);
 	
 	//PrecacheLockedWeaponModels();											//Precache locked weapon models
 	CreateTimer(1.0, Timer_PrepareCSWeapons, _, TIMER_FLAG_NO_MAPCHANGE);	//Prep the cs weapons for first use
-}
-
-SetupXPMConVars()
-{
-	// Create the convars
-	g_hCVar_TalentSelectionMode = CreateConVar("xpm_talent_selection_mode", "1", "Sets the talent selection mode when players choose characters [0 = MENU, 1 = WEBSITE]", 0, true, 0.0, true, 1.0);
-
-	// Hook the convars
-	HookConVarChange(g_hCVar_TalentSelectionMode, CVarChange_TalentSelectionMode);
 }
 
 SetupConsoleCommands()

@@ -200,13 +200,13 @@ public Action:TimerUnfreeze(Handle:timer, any:data)
 					{
 						if(g_bTalentsConfirmed[i] == false)
 						{
-							PrintHintText(i, "Your talents are NOT loaded, Type !xpm and confirm them.");
+							AdvertiseConfirmXPModTalents(i);
 						}
 						//LoadTalents(i);
 					}
 				}
 				else
-					PrintHintText(i, "Type !xpm to use XPMod");
+					AdvertiseXPModToNewUser(i);
 				//OpenMOTDPanel(i, " ", "make", MOTDPANEL_TYPE_INDEX);
 				//OpenMOTDPanel(i, "How To Create And Login To Your Account", "http://xpmod.atspace.com/makeaccount.html", MOTDPANEL_TYPE_URL);
 			}

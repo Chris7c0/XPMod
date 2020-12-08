@@ -131,7 +131,7 @@ public Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBro
 	g_bHunterLethalPoisoned[victim] = false;
 	
 	if(victim > 0 && g_bClientLoggedIn[victim] == false && IsClientInGame(victim) == true && IsFakeClient(victim) == false)
-		PrintHintText(victim, "Type !xpm to use XPMod");
+		AdvertiseXPModToNewUser(victim);
 	
 	if(g_bIsRochellePoisoned[victim]==true)
 	{
