@@ -1288,7 +1288,8 @@ fnc_CycleWeapon(iClient)
 				{
 					g_strNextWeaponCmdName = "rifle_m60";
 				}
-				RemoveEdict(g_iPrimarySlotID[iClient]);
+				if (IsValidEdict(g_iPrimarySlotID[iClient]))
+					RemoveEdict(g_iPrimarySlotID[iClient]);
 				g_iEllisCurrentPrimarySlot[iClient] = 1;
 				SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
 				FakeClientCommand(iClient, "give %s", g_strNextWeaponCmdName);

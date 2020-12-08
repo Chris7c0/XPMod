@@ -5,5 +5,9 @@ set l4d2networkfolder="D:\l4d2\"
 
 spcomp xpmod.sp -v 0
 
-xcopy ".\xpmod.smx" %l4d2pluginfolder% /Y  >NUL
+@echo off
+
+xcopy ".\xpmod.smx" %l4d2pluginfolder% /Y >NUL
 xcopy ".\xpmod.smx" %l4d2networkfolder% /Y >NUL
+
+start .\LaunchServer.lnk
