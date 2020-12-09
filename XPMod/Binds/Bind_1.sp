@@ -661,108 +661,9 @@ public Action:Bind1Press(iClient,args)
 											new iRandomTankSpawn = GetRandomInt(1, 100);
 											switch (iRandomTankSpawn)
 											{
-												case 1:
+												case 1, 2, 3, 4, 5, 6, 7, 8 , 9, 10:
 												{
-													if(g_iErraticLevel[iClient] >= 1)
-													{
-														SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
-														PrintToChatAll("Summoned a tank with jockey piss");
-														FakeClientCommand(iClient, "z_spawn_old tank auto");
-														SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);
-														PrintHintText(iClient, "You've summoned a tank with your piss!");
-													}
-												}
-												case 2:
-												{
-													if(g_iErraticLevel[iClient] >= 2)
-													{
-														SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
-														PrintToChatAll("Summoned a tank with jockey piss");
-														FakeClientCommand(iClient, "z_spawn_old tank auto");
-														SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);
-														PrintHintText(iClient, "You've summoned a tank with your piss!");
-													}
-												}
-												case 3:
-												{
-													if(g_iErraticLevel[iClient] >= 3)
-													{
-														SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
-														PrintToChatAll("Summoned a tank with jockey piss");
-														FakeClientCommand(iClient, "z_spawn_old tank auto");
-														SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);
-														PrintHintText(iClient, "You've summoned a tank with your piss!");
-													}
-												}
-												case 4:
-												{
-													if(g_iErraticLevel[iClient] >= 4)
-													{
-														SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
-														PrintToChatAll("Summoned a tank with jockey piss");
-														FakeClientCommand(iClient, "z_spawn_old tank auto");
-														SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);
-														PrintHintText(iClient, "You've summoned a tank with your piss!");
-													}
-												}
-												case 5:
-												{
-													if(g_iErraticLevel[iClient] >= 5)
-													{
-														SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
-														PrintToChatAll("Summoned a tank with jockey piss");
-														FakeClientCommand(iClient, "z_spawn_old tank auto");
-														SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);
-														PrintHintText(iClient, "You've summoned a tank with your piss!");
-													}
-												}
-												case 6:
-												{
-													if(g_iErraticLevel[iClient] >= 6)
-													{
-														SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
-														PrintToChatAll("Summoned a tank with jockey piss");
-														FakeClientCommand(iClient, "z_spawn_old tank auto");
-														SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);
-														PrintHintText(iClient, "You've summoned a tank with your piss!");
-													}
-												}
-												case 7:
-												{
-													if(g_iErraticLevel[iClient] >= 7)
-													{
-														SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
-														PrintToChatAll("Summoned a tank with jockey piss");
-														FakeClientCommand(iClient, "z_spawn_old tank auto");
-														SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);
-														PrintHintText(iClient, "You've summoned a tank with your piss!");
-													}
-												}
-												case 8:
-												{
-													if(g_iErraticLevel[iClient] >= 8)
-													{
-														SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
-														PrintToChatAll("Summoned a tank with jockey piss");
-														FakeClientCommand(iClient, "z_spawn_old tank auto");
-														SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);
-														PrintHintText(iClient, "You've summoned a tank with your piss!");
-													}
-												}
-												case 9:
-												{
-													if(g_iErraticLevel[iClient] >= 9)
-													{
-														SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
-														PrintToChatAll("Summoned a tank with jockey piss");
-														FakeClientCommand(iClient, "z_spawn_old tank auto");
-														SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);
-														PrintHintText(iClient, "You've summoned a tank with your piss!");
-													}
-												}
-												case 10:
-												{
-													if(g_iErraticLevel[iClient] >= 10)
+													if(g_iErraticLevel[iClient] >= iRandomTankSpawn)
 													{
 														SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
 														PrintToChatAll("Summoned a tank with jockey piss");
@@ -772,8 +673,6 @@ public Action:Bind1Press(iClient,args)
 													}
 												}
 											}
-											
-											
 											
 											decl Float:vec[3];
 											GetClientEyePosition(iClient, vec);
