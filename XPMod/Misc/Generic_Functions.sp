@@ -16,6 +16,22 @@ public ShowXPModInfoToServer()
 	PrintToServer(":---------<|============================================|>---------:");
 }
 
+bool RunClientChecks(int iClient)
+{
+	if (iClient < 1 || (IsValidEntity(iClient) == false) || (IsClientInGame(iClient) == false))
+		return false;
+
+	return true;
+}
+
+bool RunEntityChecks(iEnt)
+{
+	if (iEnt < 0 || (IsValidEntity(iEnt) == false))
+		return false;
+
+	return true;
+}
+
 public Action:Timer_ShowXPModInfoToServer(Handle:timer, any:data)
 {
 	ShowXPModInfoToServer();
@@ -1900,20 +1916,31 @@ fnc_CheckGrapple(iClient)
 	//PrintToChatAll("g_bIsClientGrappled = %i", g_bIsClientGrappled[iClient]);
 }
 
-bool RunClientChecks(int iClient)
-{
-	if (iClient < 1 || (IsValidEntity(iClient) == false) || (IsClientInGame(iClient) == false))
-		return false;
 
-	return true;
-}
-
-bool RunEntityChecks(iEnt)
-{
-	if (iEnt < 0 || (IsValidEntity(iEnt) == false))
-		return false;
-
-	return true;
-}
  
 /**************************************************************************************************************************/
+
+// public bool DidClientMoveEyesOrPosition(iClient)
+// {
+// 	if (!RunClientChecks(iClient))
+// 		return true;
+
+// 	decl Float:currentvorigin[3], Float:currentvangles[3];
+// 	GetClientEyePosition(iClient, currentvorigin);	//Get clients location origin vectors
+// 	GetClientEyeAngles(iClient, currentvangles);	//Get clients Eye Angles
+// 	PrintToServer("currentvorigin %f, %f, %f", currentvorigin[0], currentvorigin[1], currentvorigin[2]);
+// 	PrintToServer("currentvangles %f, %f, %f", currentvangles[0], currentvangles[1], currentvangles[2]);
+
+// 	// Set a minimum threshold that must be passed in order to trigger a move
+// 	new Float:vOriginMovementThreshold = 30.0;
+// 	new Float:vAnglesmovementThreshold = 20.0;
+
+// 	if (FloatAbs(currentvorigin[0] - g_xyzClientVOrigin[iClient][0]) > vOriginMovementThreshold ||
+// 		FloatAbs(currentvorigin[1] - g_xyzClientVOrigin[iClient][1]) > vOriginMovementThreshold ||
+// 		FloatAbs(currentvorigin[2] - g_xyzClientVOrigin[iClient][2]) > vOriginMovementThreshold) //||
+// 		//FloatAbs(currentvangles[0] - g_xyzClientVAngles[iClient][0]) > vAnglesmovementThreshold ||
+// 		//FloatAbs(currentvangles[1] - g_xyzClientVAngles[iClient][1]) > vAnglesmovementThreshold)
+// 		return true;
+
+// 	return false;
+// }

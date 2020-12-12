@@ -169,12 +169,12 @@ public OnPluginStart()
 	}
 	
 	//Start the repeating timers
+	CreateTimer(1.0, TimerCheckAndOpenCharacterSelectionMenuForAll, 0, TIMER_REPEAT);
 	CreateTimer(2.0, TimerResetMelee, 0, TIMER_REPEAT);
 	CreateTimer(0.1, TimerIDD, 0, TIMER_REPEAT);
 	CreateTimer(30.0, PrintXPMmessage, 0, TIMER_REPEAT);
 	CreateTimer(30.0, PrintXPModAdvertisementsToAll, 0, TIMER_REPEAT);
 	CreateTimer(2700.0, PrintDonationMessage, 0, TIMER_REPEAT);
-	CreateTimer(1.0, TimerCheckTalentsConfirmed, 0, TIMER_REPEAT);
 	
 	//PrecacheLockedWeaponModels();											//Precache locked weapon models
 	CreateTimer(1.0, Timer_PrepareCSWeapons, _, TIMER_FLAG_NO_MAPCHANGE);	//Prep the cs weapons for first use
@@ -256,9 +256,8 @@ SetupGameOffsets()
 
 public OnMapStart()
 {
-	//AddFileToDownloadsTable("addons\\xpmod_sound_0.1a.vpk");
-	//AddFileToDownloadsTable("xpmod_client_addons.vpk");
-	
+	//PrintToServer("OnMapStart ========================================================================================================")
+		
 	DispatchKeyValue(0, "timeofday", "1"); //Set time of day to midnight
 	
 	//Set the g_iGameMode variable
@@ -302,6 +301,9 @@ public ResetVariablesForMap(iClient)
 	g_bTalentsConfirmed[iClient] = false;
 	g_iAutoSetCountDown[iClient] = -1;
 	g_bUserStoppedConfirmation[iClient] = false;
+	g_bWaitinOnClientInputForChoosingCharacter[iClient] = false;
+	g_bWaitinOnClientInputForDrawingMenu[iClient] = false;
+	g_bClientAlreadyShownCharacterSelectMenu[iClient] = false;
 	g_iEllisMaxHealth[iClient] = 100;
 	g_iNickMaxHealth[iClient] = 100;
 	g_bTalentsGiven[iClient] = false;
@@ -372,7 +374,6 @@ public ResetVariablesForMap(iClient)
 	g_iCoachSIHeadshotCounter[iClient] = 0;
 	
 	//Ellis
-	g_fEllisFireRate[iClient] = 1.0;
 	g_bWalkAndUseToggler[iClient] = false;
 	g_fEllisBringSpeed[iClient] = 0.0;
 	g_fEllisOverSpeed[iClient] = 0.0;
@@ -498,7 +499,7 @@ ResetAllVariables(iClient)
 public DeleteAllGlobalTimerHandles(iClient)
 {
 	//delete g_hTimer_FreezeCountdown;
-
+	delete g_hTimer_ShowingConfirmTalents[iClient];
 	delete g_hTimer_DrugPlayer[iClient];
 	delete g_hTimer_HallucinatePlayer[iClient];
 	delete g_hTimer_SlapPlayer[iClient];

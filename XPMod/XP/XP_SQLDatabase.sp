@@ -148,6 +148,7 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 	ResetPack(hDataPack);
 	new iClient = ReadPackCell(hDataPack);
 	bool bOnlyWebsiteChangableData = ReadPackCell(hDataPack);
+	bool bDrawConfirmMenuAfter = ReadPackCell(hDataPack);
 	CloseHandle(hDataPack);
 
 	// PrintToChatAll("GetUserData Callback Started. %i: %N, bOnlyWebsiteChangableData = %i", iClient, iClient, bOnlyWebsiteChangableData);
@@ -202,7 +203,7 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 			}
 			else
 				LogError("SQL Error getting XP string from query");
-		
+
 			//Get survivor character id from the SQL database
 			iFieldIndex = DB_COL_INDEX_USERS_SURVIVOR_ID - startFieldIndexOffset;
 			if(SQL_FetchString(hQuery, iFieldIndex, strData, sizeof(strData)) != 0)
@@ -319,12 +320,21 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 		PrintToChatAll("\x03[XPMod] \x05%N has joined", iClient);
 		PrintToServer("[XPMod] %N has joined", iClient);
 	}
+	
+	if (bDrawConfirmMenuAfter == true && g_bTalentsConfirmed[iClient] == false)
+	{
+		g_bUserStoppedConfirmation[iClient] = false;
+		g_iAutoSetCountDown[iClient] = 20;
+
+		delete g_hTimer_ShowingConfirmTalents[iClient];
+		g_hTimer_ShowingConfirmTalents[iClient] = CreateTimer(1.0, TimerShowTalentsConfirmed, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+	}
 
 	// PrintToChatAll("GetUserData Callback Complete.  %i: %N", iClient, iClient);
 	// PrintToServer("GetUserData Callback Complete.  %i: %N", iClient, iClient);
 }
 
-GetUserData(any:iClient, bool:bOnlyWebsiteChangableData = false)
+GetUserData(any:iClient, bool:bOnlyWebsiteChangableData = false, bool:bDrawConfirmMenuAfter = false)
 {
 	// PrintToChatAll("GetUserData. %i: %N, bOnlyWebsiteChangableData = %i", iClient, iClient, bOnlyWebsiteChangableData);
 	// PrintToServer("GetUserData. %i: %N, bOnlyWebsiteChangableData = %i", iClient, iClient, bOnlyWebsiteChangableData);
@@ -359,6 +369,7 @@ GetUserData(any:iClient, bool:bOnlyWebsiteChangableData = false)
 	new Handle:hDataPackage = CreateDataPack();
 	WritePackCell(hDataPackage, iClient);
 	WritePackCell(hDataPackage, bOnlyWebsiteChangableData);
+	WritePackCell(hDataPackage, bDrawConfirmMenuAfter);
 
 	SQL_TQuery(g_hDatabase, SQLGetUserDataCallback, strQuery, hDataPackage);
 }
@@ -632,6 +643,7 @@ Logout(iClient)
 		return;
 	g_bTalentsConfirmed[iClient] = false;
 	g_bUserStoppedConfirmation[iClient] = false;
+	
 	g_bAnnouncerOn[iClient] = false;
 	g_bEnabledVGUI[iClient] = false;
 	if(g_bClientLoggedIn[iClient] == true)

@@ -1058,10 +1058,7 @@ GiveRewards()
 {
 	decl i;
 	for(i = 1; i <= MaxClients; i++)
-	{
-		//g_bTalentsConfirmed[i] = false;				//I don't know why these are here, check if needed
-		//g_bUserStoppedConfirmation[i] = false;
-		
+	{		
 		if(IsClientInGame(i) == false)
 			continue;
 		

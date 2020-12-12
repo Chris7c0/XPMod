@@ -29,63 +29,29 @@ public Action:ChangeSpeed(iClient,args)
 //  */
 // stock bool SHA1String(const char[] str, char[] output, bool bHex=true) {
 
-new Handle:g_TESTING_TIMERS = null;
-
+//new Float:g_fEllisTestFireRate = 0.0;
 public Action:TestFunction1(iClient,args)
 {
 	PrintToServer("T1");
 	//PrintToChat(iClient, "T1");
 
-	// if (g_TESTING_TIMERS != null)
-	// {
-	// 	PrintToServer("Deleting g_TESTING_TIMERS, Handle %i", g_TESTING_TIMERS);
-	// 	delete g_TESTING_TIMERS;
-	// }
+	if (args < 1) return Plugin_Stop;
+	
+	char str[99];
+	GetCmdArg(1, str, sizeof(str));
+	//g_fEllisTestFireRate = StringToFloat(str);
+	
 
-	PrintToServer("Deleting g_TESTING_TIMERS, Handle %i", g_TESTING_TIMERS);
-	delete g_TESTING_TIMERS;
-	PrintToServer("Setting TestFunction1, Handle %i", g_TESTING_TIMERS);
-	g_TESTING_TIMERS = CreateTimer(5.0, TESTING_TIMERS, 3, TIMER_REPEAT);
-	PrintToServer("Set TestFunction1, Handle %i", g_TESTING_TIMERS);
 
 	return Plugin_Stop;
 }
 
-public Action:TESTING_TIMERS(Handle:timer, any:data)
-{
-	new runtimes = 3;
-	if(runtimes-- > 1)
-	{
-		PrintToServer("TESTING_TIMERS Continue, Handle %i", g_TESTING_TIMERS);
-		return Plugin_Continue;
-	}
-	
-	PrintToServer("TESTING_TIMERS Setting g_hTimer_FreezeCountdown to null, Handle %i", g_TESTING_TIMERS);
-	g_TESTING_TIMERS = null;
-	PrintToServer("TESTING_TIMERS Plugin_Stop, Handle %i", g_TESTING_TIMERS);
-	
-	return Plugin_Stop;
-}
+
 
 public Action:TestFunction2(iClient,args)
 {
 	PrintToServer("T2");
 	// if (RunClientChecks(iClient) == false) PrintToChat(iClient, "T1");
-
-	if (args < 1) return Plugin_Stop;
-	
-	char str[99];
-	GetCmdArg(1, str, sizeof(str));
-	//char str[] = "This is a test";
-	char output[41];
-	
-	SHA1String(str, output, true);
-	
-	// if (RunClientChecks(iClient) == false) PrintToChat(iClient, "Ran");
-	PrintToServer("Ran");
-
-	// if (RunClientChecks(iClient) == false) PrintToChat(iClient, "Output = %s", output);
-	PrintToServer("Output = %s", output);
 
 	return Plugin_Stop;
 }

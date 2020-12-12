@@ -212,11 +212,12 @@ HandleFastAttackingClients()
 		{
 			if((g_iMetalLevel[iClient] > 0) && (g_bIsEllisLimitBreaking[iClient] == false))		//For Ellis's firerate
 			{
-				flNextTime_calc = ( flNextTime_ret - g_fGameTime ) * (1.0 - (0.5 * g_fEllisFireRate[iClient] * (g_iMetalLevel[iClient] * 0.08 + g_iFireLevel[iClient] * 0.12))) + g_fGameTime;
+				flNextTime_calc = ( flNextTime_ret - g_fGameTime ) * (1.0 - (0.5  * (g_iMetalLevel[iClient] * 0.06 + g_iFireLevel[iClient] * 0.10))) + g_fGameTime;
+				//flNextTime_calc = ( flNextTime_ret - g_fGameTime ) * (1.0 - (g_fEllisTestFireRate)) + g_fGameTime;
 			}
 			else if(g_bIsEllisLimitBreaking[iClient] == true)		//For Ellis's firerate
 			{
-				flNextTime_calc = ( flNextTime_ret - g_fGameTime ) * (1.0 - (0.75)) + g_fGameTime;
+				flNextTime_calc = ( flNextTime_ret - g_fGameTime ) * (1.0 - (0.66666)) + g_fGameTime;
 			}
 			
 			if(g_iShadowLevel[iClient] > 0)	//For Rochelles ninja mode

@@ -7,7 +7,7 @@
 /**************************************************************************************************************************
  *                                                 Hook All Game Events                                                   *
  **************************************************************************************************************************/
- 
+
 SetupXPMEvents()
 {
 	//Map Events
@@ -81,6 +81,21 @@ SetupXPMEvents()
 
 public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], Float:fAngles[3], &iWeapon)
 {
+	// If the round has not been unfrozen yet, check for input and then start unfreeze timer once input has been done
+	if (g_bPlayerPressedButtonThisRound == false && iButtons)
+	{
+		g_bPlayerPressedButtonThisRound = true;
+		PrintToServer("**************************** Setting up unfreeze timer OnPlayerRunCmd");
+		SetupUnfreezeGameTimer(20.0);
+	}
+
+	// Check if player pressed button after joining game, if they did it will trigger a show choose character
+	if (g_bWaitinOnClientInputForChoosingCharacter[iClient] && iButtons)
+		g_bWaitinOnClientInputForChoosingCharacter[iClient] = false;
+	// Check if player pressed button after looking at menu, if they did it will trigger a show confirm menu in a timer
+	if (g_bWaitinOnClientInputForDrawingMenu[iClient]  && iButtons)
+		g_bWaitinOnClientInputForDrawingMenu[iClient] = false;
+
 	//Charger Earthquake
 	if(g_bIsHillbillyEarthquakeReady[iClient] == true && g_bCanChargerEarthquake[iClient] == true && iButtons & IN_ATTACK2 && g_iInfectedCharacter[iClient] == CHARGER)
 	{
@@ -157,53 +172,37 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 	}
 
 	//Bill's Team Crawling
-	if (g_iCrawlSpeedMultiplier == 0 || IsFakeClient(iClient)) return; // Must be enabled and only real players
-	
-	if(iButtons & IN_FORWARD && !g_bEndOfRound && GetEntProp(iClient, Prop_Send, "m_isIncapacitated")) 
+	if(g_iCrawlSpeedMultiplier > 0 && IsFakeClient(iClient) == false)
 	{
-		if (g_Clone[iClient] != -1) return;		// Animation already playing, return
-		CreateTimer(0.1,tmrPlayAnim,iClient);		// Delay so we can get the correct angle/direction after they have moved
-		g_Clone[iClient] = -2;						// So we don't play the anim more than once if the player presses forward within the 0.1 delay
+		// g_Clone[iClient] == -1 check is to make sure Animation isnt already playing 
+		if(g_Clone[iClient] == -1 && !g_bEndOfRound && iButtons & IN_FORWARD && GetEntProp(iClient, Prop_Send, "m_isIncapacitated")) 
+		{
+			CreateTimer(0.1,tmrPlayAnim,iClient);		// Delay so we can get the correct angle/direction after they have moved
+			g_Clone[iClient] = -2;						// So we don't play the anim more than once if the player presses forward within the 0.1 delay
+		}
+		// Animation has been playing but no longer moving/incapped
+		else if(g_Clone[iClient] > 1)
+		{
+			RestoreClient(iClient);
+		}
 	}
-	else if(g_Clone[iClient] > 1)
-	{				// Animation has been playing but no longer moving/incapped
-		RestoreClient(iClient);
-	}
+
+	return Plugin_Stop;
 }
 
- 
 public Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
-	//LogError("EVENT ROUND START=====================================================================================");
-
-	CleanUpMenuHandles();	//Puts all the menu handles at invalid to minimize the amount of handles open
+	//PrintToServer("EVENT ROUND START=====================================================================================");
+	//PrintToServer("**************************** FREEZING GAME");
 	g_bGameFrozen = true;
+	g_bPlayerPressedButtonThisRound = false;
+
+	CleanUpMenuHandles();	// Puts all the menu handles at invalid to minimize the amount of handles open
 	g_bEndOfRound = false;
 	g_bCanSave = true;
 
-	//Show rewards from last round
-	CreateTimer(50.0, TimerShowReward1, 0, TIMER_FLAG_NO_MAPCHANGE);
-	
-	if(g_iGameMode != GAMEMODE_SCAVENGE)
-	{
-		CreateTimer(20.0, TimerUnfreeze, 0, TIMER_FLAG_NO_MAPCHANGE);
-
-		g_iUnfreezeNotifyRunTimes = 4;
-		
-		// *For some reason, delete errors out when ran even though it doesnt appear to be 
-		// equal to INVALID_HANDLE. The conclusion from the testing is to just not run the 
-		// delete on this one. It looks like it should be handled fine anyway*
-		// **delete g_hTimer_FreezeCountdown;
-		//LogError("Setting g_hTimer_FreezeCountdown, Handle %i", g_hTimer_FreezeCountdown);
-		g_hTimer_FreezeCountdown = CreateTimer(5.0, TimerUnfreezeNotification, _, TIMER_REPEAT);
-		//LogError("Set g_hTimer_FreezeCountdown, Handle %i", g_hTimer_FreezeCountdown);
-
-		// This line is literally only to remove the compiler warning.  It does nothing.
-		if (g_hTimer_FreezeCountdown == null) {}
-	}
-	else
-		CreateTimer(0.3, TimerUnfreeze, 0, TIMER_FLAG_NO_MAPCHANGE);
-	
+	// Show rewards from last round
+	CreateTimer(50.0, TimerShowReward1, 0, TIMER_FLAG_NO_MAPCHANGE);	
 	
 	
 	//Reset Variables
@@ -263,10 +262,12 @@ public Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDont
 
 public Action:Event_RoundEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
+	//PrintToServer("Event_RoundEnd =========================================================");
+
 	g_bGameFrozen = true;
 	g_bEndOfRound = true;
 	g_iKitsUsed = 0;
-		
+	
 	if(g_bCanSave == true)	//To prevent more than one run at the end of the round
 	{
 		decl i;
@@ -344,6 +345,9 @@ public Action:Event_PlayerChangeTeam(Handle:hEvent, const String:strName[], bool
 public Action:Event_PlayerSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+	// if (RunClientChecks(iClient) && IsFakeClient(iClient) == false)
+	// 		PrintToChat(iClient, "Event_PlayerSpawn ================================================================");
+	// PrintToServer("Event_PlayerSpawn ================================================================ %i", iClient);
 	
 	if(IsClientInGame(iClient) == false)
 		return Plugin_Continue;
@@ -379,6 +383,31 @@ public Action:Event_PlayerSpawn(Handle:hEvent, const String:strName[], bool:bDon
 		PlayerFreeze(iClient);
 	
 	return Plugin_Continue;
+}
+
+SetupUnfreezeGameTimer(Float:unfreezeWaitTime)
+{	
+	if(g_iGameMode != GAMEMODE_SCAVENGE)
+	{
+		CreateTimer(unfreezeWaitTime, TimerUnfreeze, 0, TIMER_FLAG_NO_MAPCHANGE);
+
+		g_iUnfreezeNotifyRunTimes = RoundFloat(unfreezeWaitTime / 5.0);
+		
+		// *For some reason, delete errors out when ran even though it doesnt appear to be 
+		// equal to INVALID_HANDLE. The conclusion from the testing is to just not run the 
+		// delete on this one. It looks like it should be handled fine anyway*
+		// **delete g_hTimer_FreezeCountdown;
+		//LogError("Setting g_hTimer_FreezeCountdown, Handle %i", g_hTimer_FreezeCountdown);
+		g_hTimer_FreezeCountdown = CreateTimer(5.0, TimerUnfreezeNotification, _, TIMER_REPEAT);
+		//LogError("Set g_hTimer_FreezeCountdown, Handle %i", g_hTimer_FreezeCountdown);
+
+		// This line is literally only to remove the compiler warning.  It does nothing.
+		if (g_hTimer_FreezeCountdown == null) {}
+	}
+	else
+	{
+		CreateTimer(0.3, TimerUnfreeze, 0, TIMER_FLAG_NO_MAPCHANGE);
+	}
 }
 
 public Action:Event_PlayerConnect(Handle:hEvent, const String:strName[], bool:bDontBroadcast)

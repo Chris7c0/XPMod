@@ -16,7 +16,7 @@ OnGameFrame_Ellis(iClient)
 				g_bCanEllisLimitBreak[iClient] = false;
 				CreateTimer(10.0, TimerEllisLimitBreakReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
 				CreateTimer(70.0, TimerEllisLimitBreakCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
-				PrintHintText(iClient, "Quadruple firing speed for 10 seconds; Your weapon will break afterward!");
+				PrintHintText(iClient, "Tripling firing speed for 10 seconds; Your weapon will break afterward!");
 				//PrintToChatAll("Ellis is limit breaking");
 			}
 			else if(g_bEllisLimitBreakInCooldown[iClient] == true)
@@ -25,43 +25,6 @@ OnGameFrame_Ellis(iClient)
 			}
 		}
 	}
-	/*
-	if(g_iMetalLevel[iClient] > 0 || g_iFireLevel[iClient] > 0)
-	{
-		new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
-		
-		if(!(buttons & IN_SPEED) || !(buttons & IN_USE))
-			g_bWalkAndUseToggler[iClient] = false;
-		
-		if((g_bWalkAndUseToggler[iClient] == false) && ((buttons & IN_SPEED) && (buttons & IN_USE)))		//Toggle Firing Modes
-		{
-			g_bWalkAndUseToggler[iClient] = true;
-			if(g_fEllisFireRate[iClient] == 1.0)
-			{
-				g_fEllisFireRate[iClient] = 0.0;
-				PrintHintText(iClient, "Firing Mode:  NORMAL SPEED");
-			}
-			else if(g_fEllisFireRate[iClient] == 0.0)
-			{
-				g_fEllisFireRate[iClient] = 0.33;
-				PrintHintText(iClient, "Firing Mode:  MEDIUM SPEED");
-			}
-			else if(g_fEllisFireRate[iClient] == 0.33)
-			{
-				g_fEllisFireRate[iClient] = 0.66;
-				PrintHintText(iClient, "Firing Mode:  FAST SPEED");
-			}
-			else
-			{
-				g_fEllisFireRate[iClient] = 1.0;
-				if((g_iMetalLevel[iClient] == 5) && (g_iFireLevel[iClient] == 5))
-					PrintHintText(iClient, "Firing Mode:  INSANE SPEED");
-				else
-					PrintHintText(iClient, "Firing Mode:  FASTEST SPEED");
-			}
-		}
-	}
-	*/
 	if(g_iWeaponsLevel[iClient] == 5)
 	{
 		if(g_bCanEllisPrimaryCycle[iClient] == true)

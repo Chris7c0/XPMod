@@ -107,7 +107,7 @@ public Action:TopSurvivorMenuDraw(iClient)
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Choose Equipment");
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Extras");
 	
-	if(g_bTalentsConfirmed[iClient] == true || g_bGameFrozen == true)
+	if(g_bTalentsConfirmed[iClient] == true)
 	{
 		AddMenuItem(g_hMenu_XPM[iClient], "option4", "Help & How-To");
 		AddMenuItem(g_hMenu_XPM[iClient], "option5", "", ITEMDRAW_NOTEXT);
@@ -247,13 +247,7 @@ public ChooseTalentsTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, ite
 			{
 				if (g_iTalentSelectionMode == CONVAR_WEBSITE)
 				{
-					decl String:url[256];
-					Format(url, sizeof(url), "http://xpmod.net/select/infected_select.php?i=%i&t=%s", g_iDBUserID[iClient], g_strDBUserToken[iClient]);
-					OpenMOTDPanel(iClient, "CHOOSE YOUR INFECTED", url, MOTDPANEL_TYPE_URL);
-
-					GetClientEyePosition(iClient, g_xyzClientVOrigin[iClient]);	//Get clients location origin vectors
-					GetClientEyeAngles(iClient, g_xyzClientVAngles[iClient]);	//Get clients Eye Angles
-					CreateTimer(0.1, CheckIfUserMoved, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+					OpenInfectedCharacterSelectionSite(iClient);
 				}
 				else if (g_iTalentSelectionMode == CONVAR_MENU)
 				{
@@ -266,40 +260,6 @@ public ChooseTalentsTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, ite
 			}
 		}
 	}
-}
-
-public Action:CheckIfUserMoved(Handle:timer, any:iClient)
-{
-	if (RunClientChecks(iClient) && DidClientMoveEyesOrPosition(iClient) == false)
-	{
-		return Plugin_Continue;
-	}
-
-	GetUserData(iClient, true);
-	return Plugin_Stop;
-}
-
-public bool DidClientMoveEyesOrPosition(iClient)
-{
-	if (!RunClientChecks(iClient))
-		return true;
-
-	decl Float:currentvorigin[3], Float:currentvangles[3];
-	GetClientEyePosition(iClient, currentvorigin);	//Get clients location origin vectors
-	GetClientEyeAngles(iClient, currentvangles);	//Get clients Eye Angles
-	//PrintToChatAll("currentvorigin %d, %d, %d", currentvorigin[0], currentvorigin[1], currentvorigin[2]);
-	//PrintToChatAll("currentvangles %d, %d, %d", currentvangles[0], currentvangles[1], currentvangles[2]);
-
-	if (currentvorigin[0] != g_xyzClientVOrigin[iClient][0] ||
-		currentvorigin[1] != g_xyzClientVOrigin[iClient][1] ||
-		currentvorigin[2] != g_xyzClientVOrigin[iClient][2] ||
-		currentvangles[0] != g_xyzClientVAngles[iClient][0] ||
-		currentvangles[1] != g_xyzClientVAngles[iClient][1])
-		return true;
-
-	return false;
-
-		
 }
 
 //Top Menu For Everything
@@ -329,8 +289,10 @@ public TopSurvivorMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			case 4: //Confirm Talents
 			{
 				g_bUserStoppedConfirmation[iClient] = false;
-				g_iAutoSetCountDown[iClient] = 9;
-				CreateTimer(0.1, TimerShowTalentsConfirmed, iClient, TIMER_FLAG_NO_MAPCHANGE);
+				g_iAutoSetCountDown[iClient] = 10;
+
+				delete g_hTimer_ShowingConfirmTalents[iClient];
+				g_hTimer_ShowingConfirmTalents[iClient] = CreateTimer(1.0, TimerShowTalentsConfirmed, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 			}
 		}
 	}

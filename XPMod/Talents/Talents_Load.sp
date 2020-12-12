@@ -9,7 +9,7 @@
  **************************************************************************************************************************/
 public LoadTalents(iClient)
 {
-	if(iClient < 1 || g_bGameFrozen == true || g_bClientLoggedIn[iClient] == false || g_iClientTeam[iClient] == TEAM_SPECTATORS || 
+	if(iClient < 1 || g_bClientLoggedIn[iClient] == false || g_iClientTeam[iClient] == TEAM_SPECTATORS || 
 		g_bClientSpectating[iClient] == true || IsClientInGame(iClient) == false || IsFakeClient(iClient) == true || 
 		GetEntData(iClient, g_iOffset_IsGhost, 1) == 1)	//Check if Ghost
 		return;

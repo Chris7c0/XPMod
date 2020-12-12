@@ -166,6 +166,7 @@ public Action:TimerResetMelee(Handle:timer, any:data)
 
 public Action:TimerUnfreeze(Handle:timer, any:data)
 {
+	PrintToServer("**************************** UNFREEZING GAME");
 	g_bGameFrozen = false;
 	
 	SetConVarInt(FindConVar("sb_stop"), 0);	//Turn the bots back on

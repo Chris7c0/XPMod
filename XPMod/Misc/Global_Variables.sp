@@ -254,12 +254,18 @@ new g_iDefaultInfectedSlot3                 = SMOKER;
 new Float:EMPTY_VECTOR[3] = 0.0;
 new Float:PI = 3.1415926;
 
+// Game Freezing Variables
+new bool:g_bGameFrozen = false;
+new bool:g_bPlayerPressedButtonThisRound = false;  // This is used to set thte countdown timer, it wont start till  someone presses a button
+
 //Confirmation Variables
+new bool:g_bWaitinOnClientInputForChoosingCharacter[MAXPLAYERS + 1];
+new bool:g_bWaitinOnClientInputForDrawingMenu[MAXPLAYERS + 1];
 new bool:g_bTalentsConfirmed[MAXPLAYERS + 1];
 new bool:g_bUserStoppedConfirmation[MAXPLAYERS + 1];
+new bool:g_bClientAlreadyShownCharacterSelectMenu[MAXPLAYERS + 1];
 new g_iAutoSetCountDown[MAXPLAYERS + 1];
-new Float:g_xyzClientVOrigin[MAXPLAYERS + 1][3];
-new Float:g_xyzClientVAngles[MAXPLAYERS + 1][3];
+
 
 //XPM Options
 new g_iXPDisplayMode[MAXPLAYERS + 1];						//Default 0 = Show Sprites; 1 = Show In Chat, 2 = Disabled
@@ -396,7 +402,8 @@ new bool:g_bAnnouncerOn[MAXPLAYERS + 1];
 new g_iFastAttackingClientsArray[MAXPLAYERS + 1];
 new bool:g_bSomeoneAttacksFaster;
 new bool:g_bDoesClientAttackFast[MAXPLAYERS + 1];
-new bool:g_bGameFrozen = false;
+
+
 
 
 ///////////////////////////////////////////////     TALENT VARIABLES     ///////////////////////////////////////////////
@@ -593,7 +600,6 @@ new g_iCoachSIHeadshotCounter[MAXPLAYERS + 1];
 new bool:g_bUsingFireStorm[MAXPLAYERS + 1];
 new g_iEllisMaxHealth[MAXPLAYERS + 1] = 100;
 new g_iEllisSpeedBoostCounter[MAXPLAYERS + 1];
-new Float:g_fEllisFireRate[MAXPLAYERS + 1];
 new bool:g_bWalkAndUseToggler[MAXPLAYERS + 1];
 new Float:g_fEllisOverSpeed[MAXPLAYERS + 1];
 new Float:g_fEllisBringSpeed[MAXPLAYERS + 1];
@@ -875,6 +881,7 @@ new Handle:g_hSetClass 			= INVALID_HANDLE;
 new Handle:g_hCreateAbility 			= INVALID_HANDLE;
 //Timer Handles
 new Handle:g_hTimer_FreezeCountdown 						= null;
+new Handle:g_hTimer_ShowingConfirmTalents[MAXPLAYERS + 1]	= null;
 new Handle:g_hTimer_DrugPlayer[MAXPLAYERS + 1] 				= null;
 new Handle:g_hTimer_HallucinatePlayer[MAXPLAYERS + 1]		= null;
 new Handle:g_hTimer_SlapPlayer[MAXPLAYERS + 1] 				= null;
