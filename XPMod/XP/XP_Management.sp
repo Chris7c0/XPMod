@@ -188,12 +188,14 @@ public Action:ResetAll(iClient,args)
 	g_iClientHealthSlotCost[iClient] = 0;
 	g_iClientBoostSlotCost[iClient] = 0;
 	g_iClientLaserSlotCost[iClient] = 0;
+
 	ResetAllOptions(iClient);
-	ResetAllInfectedClasses(iClient);
-	ResetSkillPoints(iClient, iClient); //Call function that resets talent levels and talents
-	if(IsClientInGame(iClient))
-		if(IsFakeClient(iClient) == false)
-			PrintToChat(iClient,"\x03[XPMod]You have reset Level, XP, and Skill Points.",g_iClientXP[iClient]);
+	ResetAllInfectedClasses(iClient); // Infected Talents
+	ResetSurvivorTalents(iClient, iClient); // Survivors Talents
+
+	if(RunClientChecks(iClient) && IsFakeClient(iClient) == false)
+		PrintToChat(iClient,"\x03[XPMod]You have reset Level, XP, and Skill Points.", g_iClientXP[iClient]);
+	
 	return Plugin_Handled;
 }
 
@@ -244,7 +246,7 @@ public ResetAllInfectedClasses(iClient)
 }
 
 //Resets the skill points and talents that come with them
-public Action:ResetSkillPoints(iClient,args)
+public Action:ResetSurvivorTalents(iClient,args)
 {
 	if(IsClientInGame(iClient) == false)
 		return Plugin_Handled;
@@ -394,7 +396,7 @@ AutoLevelUpSurivovor(iClient)
 AutoLevelUpSurvivorTalents(int iClient, int[] talent1, int[] talent2, int[] talent3, int[] talent4, int[] talent5, int[] talent6)
 {
 	
-	ResetSkillPoints(iClient,iClient);
+	ResetSurvivorTalents(iClient,iClient);
 
 	if(g_iSkillPoints[iClient] > 0)
 	{

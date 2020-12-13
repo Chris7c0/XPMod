@@ -298,12 +298,7 @@ FindGameMode()
 
 public ResetVariablesForMap(iClient)
 {
-	g_bTalentsConfirmed[iClient] = false;
-	g_iAutoSetCountDown[iClient] = -1;
-	g_bUserStoppedConfirmation[iClient] = false;
-	g_bWaitinOnClientInputForChoosingCharacter[iClient] = false;
-	g_iWaitinOnClientInputForDrawingMenu[iClient] = -1;
-	g_bClientAlreadyShownCharacterSelectMenu[iClient] = false;
+	ResetTalentConfirmCountdown(iClient);
 	g_iEllisMaxHealth[iClient] = 100;
 	g_iNickMaxHealth[iClient] = 100;
 	g_bTalentsGiven[iClient] = false;
