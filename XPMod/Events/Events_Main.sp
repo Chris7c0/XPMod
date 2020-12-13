@@ -89,12 +89,25 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 		SetupUnfreezeGameTimer(20.0);
 	}
 
-	// Check if player pressed button after joining game, if they did it will trigger a show choose character
-	if (g_bWaitinOnClientInputForChoosingCharacter[iClient] && iButtons)
-		g_bWaitinOnClientInputForChoosingCharacter[iClient] = false;
-	// Check if player pressed button after looking at menu, if they did it will trigger a show confirm menu in a timer
-	if (g_bWaitinOnClientInputForDrawingMenu[iClient]  && iButtons)
-		g_bWaitinOnClientInputForDrawingMenu[iClient] = false;
+	// // Get button released 
+	// if( GetEntProp( iClient, Prop_Data, "m_afButtonReleased" ) )
+	// 	PrintToServer("Button released =========================================< %i", iClient);
+
+	// Ensure is a real player before continuing to check for drawing choose character and confirm menu
+	if (IsFakeClient(iClient) == false)
+	{
+		// Check if player pressed button after joining game, if they did it will trigger a show choose character
+		if (g_bWaitinOnClientInputForChoosingCharacter[iClient] && iButtons)
+			g_bWaitinOnClientInputForChoosingCharacter[iClient] = false;
+	
+	
+		// Check if player pressed button after looking at menu, if they did it will trigger a show confirm menu in a timer
+		// Note that we check if they released the key they already pressed previously first.
+		if (g_iWaitinOnClientInputForDrawingMenu[iClient] == WAITING && GetEntProp(iClient, Prop_Data, "m_afButtonReleased") & IN_FORWARD)
+			g_iWaitinOnClientInputForDrawingMenu[iClient] = BUTTON_RELEASED;
+		else if (g_iWaitinOnClientInputForDrawingMenu[iClient] == BUTTON_RELEASED && iButtons & IN_FORWARD)
+			g_iWaitinOnClientInputForDrawingMenu[iClient] = FINISHED_WAITING;
+	}
 
 	//Charger Earthquake
 	if(g_bIsHillbillyEarthquakeReady[iClient] == true && g_bCanChargerEarthquake[iClient] == true && iButtons & IN_ATTACK2 && g_iInfectedCharacter[iClient] == CHARGER)
@@ -110,7 +123,7 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 		if (fDistanceOfTrace <= 100.0)
 		{
 			//Create the earthquake effect and sound
-			EmitSoundToAll(SOUND_EXPLODE, iClient, SNDCHAN_AUTO,	SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, xyzClientPosition, NULL_VECTOR, true, 0.0);
+			EmitSoundToAll(SOUND_EXPLODE, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, xyzClientPosition, NULL_VECTOR, true, 0.0);
 			
 			TE_Start("BeamRingPoint");
 			TE_WriteVector("m_vecCenter", xyzClientPosition);
@@ -508,6 +521,10 @@ public Action:Event_PlayerConnect(Handle:hEvent, const String:strName[], bool:bD
 			CreateTimer(0.1, TimerChangeSpectator, iClient, TIMER_FLAG_NO_MAPCHANGE);
 		//PrintToChatAll("PCONNECT FULL: %d: %s already in database", iClient, clientname);
 	}
+
+	// Close menu panel in case it was glitched out
+	ClosePanel(iClient);
+
 	return Plugin_Continue;
 }
 
@@ -523,8 +540,10 @@ public Action:Event_PlayerDisconnect(Handle:hEvent, const String:strName[], bool
 	{
 		// PrintToChatAll("Player Disconnect: %i: %N", iClient, iClient);
 		// PrintToServer("Player Disconnect: %i: %N", iClient, iClient);
+		
 		if(g_bClientLoggedIn[iClient] == true)
 			Logout(iClient);
+
 		return Plugin_Continue;
 	}
 	SaveUserData(iClient);

@@ -52,7 +52,7 @@ public Action:CheckIfUserPressedThenGetDataAndDrawConfirmMenu(Handle:timer, any:
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Stop;
 	
-	if (g_bWaitinOnClientInputForDrawingMenu[iClient] == true)
+	if (g_iWaitinOnClientInputForDrawingMenu[iClient] != FINISHED_WAITING)
 		return Plugin_Continue;
 	
 	PrintToChat(iClient, "CheckIfUserPressedThenGetDataAndDrawConfirmMenu STOP");
@@ -65,7 +65,10 @@ public Action:CheckIfUserPressedThenGetDataAndDrawConfirmMenu(Handle:timer, any:
 public Action:CheckIfUserPressedThenOpenCharacterSelectionSite(Handle:timer, any:iClient)
 {
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
+	{
+		g_bWaitinOnClientInputForChoosingCharacter[iClient] = false;
 		return Plugin_Stop;
+	}
 	
 	if (g_bWaitinOnClientInputForChoosingCharacter[iClient] == true)
 		return Plugin_Continue;
@@ -91,13 +94,14 @@ OpenInfectedCharacterSelectionSite(iClient)
 	CreateTimer(0.7, DrawMultipleMOTDPanels, iClient);
 	CreateTimer(1.0, DrawMultipleMOTDPanels, iClient);
 
-	CreateTimer(0.1, StartWaitingForClientInputForDrawMenu, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	CreateTimer(0.2, StartWaitingForClientInputForDrawMenu, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	CreateTimer(1.0, CheckIfUserPressedThenGetDataAndDrawConfirmMenu, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 }
 
 public Action:StartWaitingForClientInputForDrawMenu(Handle:timer, any:iClient)
 {
-	g_bWaitinOnClientInputForDrawingMenu[iClient] = true;
+	// This will wait for button release, then button input
+	g_iWaitinOnClientInputForDrawingMenu[iClient] = WAITING;
 	return Plugin_Stop;
 }
 
@@ -132,11 +136,7 @@ public Action:TimerShowTalentsConfirmed(Handle:timer, any:iClient)
 
 public Action:ConfirmationMessageMenuDraw(iClient)
 {
-	if(iClient < 1)
-		return Plugin_Handled;
-	if(IsClientInGame(iClient) == false)
-		return Plugin_Handled;
-	if(IsFakeClient(iClient) == true)
+	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Handled;
 	
 	if(g_bTalentsConfirmed[iClient] == false)
@@ -158,7 +158,7 @@ public Action:ConfirmationMessageMenuDraw(iClient)
 			}
 			
 			decl String:text[300];
-			FormatEx(text, sizeof(text), "================================================\n \n	Survivor Class:       %s\n	Equipment Cost:      %d XP\n	Infected Classes:    %s	%s	%s\n \n~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \nConfirm your talents and equipment for this round?\n ", surClass, g_iClientTotalXPCost[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+			FormatEx(text, sizeof(text), "===	===	===	===	===	===	===	===	===	===\n \n	Survivor Class:       %s\n	Equipment Cost:      %d XP\n	Infected Classes:    %s	%s	%s\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \nConfirm your talents and equipment for this round?     \n ", surClass, g_iClientTotalXPCost[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 			SetMenuTitle(g_hMenu_XPM[iClient], text);
 			
 			AddMenuItem(g_hMenu_XPM[iClient], "option1", " Yes, I want these talents for this round.");
@@ -166,18 +166,18 @@ public Action:ConfirmationMessageMenuDraw(iClient)
 			{
 				switch( (g_iAutoSetCountDown[iClient] % 3) )
 				{
-					case 0: FormatEx(text, sizeof(text), " No, not yet. I will confirm in the !xpm menu.\n \n~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n   ->           Auto-Confirming in %d Seconds           <-\n================================================\n \n \n \n \n \n \n \n \n ", g_iAutoSetCountDown[iClient]);
-					case 1: FormatEx(text, sizeof(text), " No, not yet. I will confirm in the !xpm menu.\n \n~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n            ->  Auto-Confirming in %d Seconds  <-\n================================================\n \n \n \n \n \n \n \n \n ", g_iAutoSetCountDown[iClient]);
-					case 2: FormatEx(text, sizeof(text), " No, not yet. I will confirm in the !xpm menu.\n \n~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n        ->      Auto-Confirming in %d Seconds      <-\n================================================\n \n \n \n \n \n \n \n \n ", g_iAutoSetCountDown[iClient]);
+					case 0: FormatEx(text, sizeof(text), " No, not yet. I will confirm in the !xpm menu.\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n   ->           Auto-Confirming in %d Seconds           <-\n \n===	===	===	===	===	===	===	===	===	===\n \n \n \n \n \n \n \n \n ", g_iAutoSetCountDown[iClient]);
+					case 1: FormatEx(text, sizeof(text), " No, not yet. I will confirm in the !xpm menu.\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n            ->  Auto-Confirming in %d Seconds  <-\n \n===	===	===	===	===	===	===	===	===	===\n \n \n \n \n \n \n \n \n ", g_iAutoSetCountDown[iClient]);
+					case 2: FormatEx(text, sizeof(text), " No, not yet. I will confirm in the !xpm menu.\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n        ->      Auto-Confirming in %d Seconds      <-\n \n===	===	===	===	===	===	===	===	===	===\n \n \n \n \n \n \n \n \n ", g_iAutoSetCountDown[iClient]);
 				}
 			}
 			else
 			{
 				switch( (g_iAutoSetCountDown[iClient] % 3) )
 				{
-					case 0: FormatEx(text, sizeof(text), " No, not yet. I will confirm in the !xpm menu.\n \n~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n   ->           Auto-Confirming in  %d Seconds           <-\n================================================\n \n \n \n \n \n \n \n \n ", g_iAutoSetCountDown[iClient]);
-					case 1: FormatEx(text, sizeof(text), " No, not yet. I will confirm in the !xpm menu.\n \n~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n            ->  Auto-Confirming in  %d Seconds  <-\n================================================\n \n \n \n \n \n \n \n \n ", g_iAutoSetCountDown[iClient]);
-					case 2: FormatEx(text, sizeof(text), " No, not yet. I will confirm in the !xpm menu.\n \n~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n        ->      Auto-Confirming in  %d Seconds      <-\n================================================\n \n \n \n \n \n \n \n \n ", g_iAutoSetCountDown[iClient]);
+					case 0: FormatEx(text, sizeof(text), " No, not yet. I will confirm in the !xpm menu.\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n   ->           Auto-Confirming in  %d Seconds           <-\n \n===	===	===	===	===	===	===	===	===	===\n \n \n \n \n \n \n \n \n ", g_iAutoSetCountDown[iClient]);
+					case 1: FormatEx(text, sizeof(text), " No, not yet. I will confirm in the !xpm menu.\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n            ->  Auto-Confirming in  %d Seconds  <-\n \n===	===	===	===	===	===	===	===	===	===\n \n \n \n \n \n \n \n \n ", g_iAutoSetCountDown[iClient]);
+					case 2: FormatEx(text, sizeof(text), " No, not yet. I will confirm in the !xpm menu.\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n        ->      Auto-Confirming in  %d Seconds      <-\n \n===	===	===	===	===	===	===	===	===	===\n \n \n \n \n \n \n \n \n ", g_iAutoSetCountDown[iClient]);
 				}
 			}
 			
@@ -217,6 +217,7 @@ public ConfirmationMessageMenuHandler(Handle:hmenu, MenuAction:action, iClient, 
 					
 					PrintHintText(iClient, "Talents Confirmed");
 					LoadTalents(iClient);
+					ClosePanel(iClient);
 				}
 			}
 			case 1: //No
@@ -224,6 +225,7 @@ public ConfirmationMessageMenuHandler(Handle:hmenu, MenuAction:action, iClient, 
 				g_iAutoSetCountDown[iClient] = -1;
 				g_bTalentsConfirmed[iClient] = false;
 				g_bUserStoppedConfirmation[iClient] = true;
+				ClosePanel(iClient);
 			}
 		}
 	}

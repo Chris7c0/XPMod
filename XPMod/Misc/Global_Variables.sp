@@ -259,12 +259,17 @@ new bool:g_bGameFrozen = false;
 new bool:g_bPlayerPressedButtonThisRound = false;  // This is used to set thte countdown timer, it wont start till  someone presses a button
 
 //Confirmation Variables
-new bool:g_bWaitinOnClientInputForChoosingCharacter[MAXPLAYERS + 1];
-new bool:g_bWaitinOnClientInputForDrawingMenu[MAXPLAYERS + 1];
+
 new bool:g_bTalentsConfirmed[MAXPLAYERS + 1];
 new bool:g_bUserStoppedConfirmation[MAXPLAYERS + 1];
 new bool:g_bClientAlreadyShownCharacterSelectMenu[MAXPLAYERS + 1];
 new g_iAutoSetCountDown[MAXPLAYERS + 1];
+new bool:g_bWaitinOnClientInputForChoosingCharacter[MAXPLAYERS + 1];
+new g_iWaitinOnClientInputForDrawingMenu[MAXPLAYERS + 1];
+#define WAITING             0
+#define BUTTON_RELEASED     1
+#define FINISHED_WAITING    2
+
 
 
 //XPM Options
@@ -402,8 +407,6 @@ new bool:g_bAnnouncerOn[MAXPLAYERS + 1];
 new g_iFastAttackingClientsArray[MAXPLAYERS + 1];
 new bool:g_bSomeoneAttacksFaster;
 new bool:g_bDoesClientAttackFast[MAXPLAYERS + 1];
-
-
 
 
 ///////////////////////////////////////////////     TALENT VARIABLES     ///////////////////////////////////////////////

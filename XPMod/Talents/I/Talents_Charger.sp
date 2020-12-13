@@ -1,38 +1,41 @@
 OnGameFrame_Charger(iClient)
 {
-	if(g_bIsSpikedCharged[iClient] == false)
+	if (g_iSpikedLevel[iClient] > 0)
 	{
-		new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
-		if(buttons & IN_DUCK)
+		if(g_bIsSpikedCharged[iClient] == false)
 		{
-			if(g_bCanChargerSpikedCharge[iClient] == true)
+			new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
+			if(buttons & IN_DUCK)
 			{
-				g_iSpikedChargeCounter[iClient]++;
-				if(g_iSpikedChargeCounter[iClient] == 20)
+				if(g_bCanChargerSpikedCharge[iClient] == true)
 				{
-					PrintHintText(iClient, "Charging Uppercut");
-					//play sound and particle for charging here
+					g_iSpikedChargeCounter[iClient]++;
+					if(g_iSpikedChargeCounter[iClient] == 20)
+					{
+						PrintHintText(iClient, "Charging Uppercut");
+						//play sound and particle for charging here
+					}
+					if(g_iSpikedChargeCounter[iClient]>90)
+					{
+						g_iSpikedChargeCounter[iClient] = 0;
+						g_bIsSpikedCharged[iClient] = true;
+						PrintHintText(iClient, "Uppercut charged!");
+						//play sound and particle for charged here
+					}
 				}
-				if(g_iSpikedChargeCounter[iClient]>90)
+				else if(g_iSpikedChargeCounter[iClient] == 0)
 				{
+					g_iSpikedChargeCounter[iClient] = -1;
+					PrintHintText(iClient, "Wait 30 seconds to charge your Uppercut again");
+				}
+			}
+			else
+			{
+				if(g_iSpikedChargeCounter[iClient] > 0)
+				{
+					PrintHintText(iClient, "Failed to charge Uppercut");
 					g_iSpikedChargeCounter[iClient] = 0;
-					g_bIsSpikedCharged[iClient] = true;
-					PrintHintText(iClient, "Uppercut charged!");
-					//play sound and particle for charged here
 				}
-			}
-			else if(g_iSpikedChargeCounter[iClient] == 0)
-			{
-				g_iSpikedChargeCounter[iClient] = -1;
-				PrintHintText(iClient, "Wait 30 seconds to charge your Uppercut again");
-			}
-		}
-		else
-		{
-			if(g_iSpikedChargeCounter[iClient] > 0)
-			{
-				PrintHintText(iClient, "Failed to charge Uppercut");
-				g_iSpikedChargeCounter[iClient] = 0;
 			}
 		}
 	}

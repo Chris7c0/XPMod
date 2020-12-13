@@ -302,7 +302,7 @@ public ResetVariablesForMap(iClient)
 	g_iAutoSetCountDown[iClient] = -1;
 	g_bUserStoppedConfirmation[iClient] = false;
 	g_bWaitinOnClientInputForChoosingCharacter[iClient] = false;
-	g_bWaitinOnClientInputForDrawingMenu[iClient] = false;
+	g_iWaitinOnClientInputForDrawingMenu[iClient] = -1;
 	g_bClientAlreadyShownCharacterSelectMenu[iClient] = false;
 	g_iEllisMaxHealth[iClient] = 100;
 	g_iNickMaxHealth[iClient] = 100;

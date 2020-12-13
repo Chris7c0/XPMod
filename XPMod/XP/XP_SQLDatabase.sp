@@ -640,12 +640,17 @@ Logout(iClient)
 		//return Plugin_Handled;
 	}
 	if(!IsClientInGame(iClient))
-		return;
+	 	return;
 	g_bTalentsConfirmed[iClient] = false;
+	g_iAutoSetCountDown[iClient] = -1;
 	g_bUserStoppedConfirmation[iClient] = false;
+	g_bWaitinOnClientInputForChoosingCharacter[iClient] = false;
+	g_iWaitinOnClientInputForDrawingMenu[iClient] = -1;
+	g_bClientAlreadyShownCharacterSelectMenu[iClient] = false;
 	
 	g_bAnnouncerOn[iClient] = false;
 	g_bEnabledVGUI[iClient] = false;
+
 	if(g_bClientLoggedIn[iClient] == true)
 	{
 		ResetAll(iClient, iClient);
@@ -653,7 +658,7 @@ Logout(iClient)
 		g_strDBUserToken[iClient] = "";
 		g_bClientLoggedIn[iClient] = false;
 
-		//PrintToChatAll("\x03[XPMod] \x04%N Logged Out", iClient, iClient);
+		PrintToServer("\x03[XPMod] \x04%N Logged Out", iClient, iClient);
 		return;
 	}
 

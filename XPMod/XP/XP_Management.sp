@@ -175,7 +175,7 @@ public Action:ResetAll(iClient,args)
 	g_iClientLevel[iClient] = 0;
 	g_iInfectedLevel[iClient] = 0;
 	g_iClientNextLevelXPAmount[iClient] = RoundToFloor(LEVEL_1 * XP_MULTIPLIER);
-	//Equipemnt
+	//Equipment
 	g_iClientPrimarySlotID[iClient] = 0;
 	g_iClientLaserSlotID[iClient] = 0;
 	g_iClientSecondarySlotID[iClient] = 0;
@@ -208,7 +208,7 @@ ResetAllOptions(iClient)
 public ResetAllInfectedClasses(iClient)
 {
 	// PrintToChat(iClient, "Reset all infected classes");
-	// PrintToServer("Reset infected classes");
+	PrintToServer("************Reset Infected classes for %i", iClient);
 
 	//Infected Classes
 	g_iClientInfectedClass1[iClient] = UNKNOWN_INFECTED;
