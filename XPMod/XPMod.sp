@@ -193,10 +193,6 @@ SetupConsoleCommands()
 	RegConsoleCmd("say", SayCmd);
 	RegConsoleCmd("say_team", SayTeamCmd);
 	
-	//RegConsoleCmd("savegame", SaveGame);			//Save data for player
-	//RegConsoleCmd("login", Login);				//Login to your account
-	//RegConsoleCmd("logout", Logout);				//Logout of your account
-	
 	RegAdminCmd("freeze", FreezeGame, ADMFLAG_SLAY);
 	RegAdminCmd("givexp", GiveXP, ADMFLAG_SLAY);
 	RegAdminCmd("giveidxp", GiveXPbyID, ADMFLAG_SLAY);

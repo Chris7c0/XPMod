@@ -226,7 +226,7 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 
 		//Set Infected Classes
 		ResetAllInfectedClasses(iClient);
-		
+
 		g_iClientInfectedClass1[iClient] = iInfectedID[0];
 		g_iClientInfectedClass2[iClient] = iInfectedID[1];
 		g_iClientInfectedClass3[iClient] = iInfectedID[2];
@@ -633,8 +633,6 @@ SaveUserData(iClient)
 	SQL_TQuery(g_hDatabase, SQLSaveUserDataCallback, strQuery, iClient);
 }
 
-
-//Logout                                                                                                        
 Logout(iClient)
 {
 	//PrintToChatAll("Logout. %i: %N", iClient, iClient);
