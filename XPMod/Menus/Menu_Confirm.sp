@@ -101,6 +101,17 @@ OpenInfectedCharacterSelectionSite(iClient)
 	CreateTimer(1.0, CheckIfUserPressedThenGetDataAndDrawConfirmMenu, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 }
 
+ResetTalentConfirmCountdown(iClient)
+{
+	g_bTalentsConfirmed[iClient] = false;
+	g_iAutoSetCountDown[iClient] = -1;
+	g_bUserStoppedConfirmation[iClient] = false;
+	g_bWaitinOnClientInputForChoosingCharacter[iClient] = false;
+	g_iWaitinOnClientInputForDrawingMenu[iClient] = -1;
+	g_bClientAlreadyShownCharacterSelectMenu[iClient] = false;
+}
+	
+
 public Action:StartWaitingForClientInputForDrawMenu(Handle:timer, any:iClient)
 {
 	// This will wait for button release, then button input

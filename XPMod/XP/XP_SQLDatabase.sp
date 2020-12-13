@@ -178,7 +178,7 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 	
 	if (bOnlyWebsiteChangableData == false)
 	{
-		ResetSkillPoints(iClient, iClient);
+		ResetSurvivorTalents(iClient, iClient);
 	}
 
 	// Set the start index offset to caluclate the correct field index value, adding DB_COL_INDEX_USERS_USER_ID and DB_COL_INDEX_USERS_TOKEN
@@ -639,21 +639,16 @@ Logout(iClient)
 	//PrintToServer("Logout. %i: %N", iClient, iClient);
 	if(iClient==0)
 	{
-		iClient = 1;			//Changed this and the folwogin two lines
+		iClient = 1;
 		//PrintToServer("Server host cannot login through the console, go into chat and type /login to login in.");
 		//return Plugin_Handled;
 	}
-	if(!IsClientInGame(iClient))
+	if(!RunClientChecks(iClient))
 	 	return;
-	g_bTalentsConfirmed[iClient] = false;
-	g_iAutoSetCountDown[iClient] = -1;
-	g_bUserStoppedConfirmation[iClient] = false;
-	g_bWaitinOnClientInputForChoosingCharacter[iClient] = false;
-	g_iWaitinOnClientInputForDrawingMenu[iClient] = -1;
-	g_bClientAlreadyShownCharacterSelectMenu[iClient] = false;
+
+	ResetTalentConfirmCountdown(iClient);
 	
-	g_bAnnouncerOn[iClient] = false;
-	g_bEnabledVGUI[iClient] = false;
+	ResetAllOptions(iClient);
 
 	if(g_bClientLoggedIn[iClient] == true)
 	{
