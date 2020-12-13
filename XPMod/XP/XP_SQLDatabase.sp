@@ -354,7 +354,7 @@ GetUserData(any:iClient, bool:bOnlyWebsiteChangableData = false, bool:bDrawConfi
 		return;
 	}
 	
-	if (!IsClientInGame(iClient) || IsFakeClient(iClient) || (g_bClientLoggedIn[iClient] && bOnlyWebsiteChangableData == false))
+	if (!IsClientInGame(iClient) || IsFakeClient(iClient) || (g_bClientLoggedIn[iClient] && bOnlyWebsiteChangableData == false) || g_bTalentsConfirmed[iClient])
 		return;
 
 	// Save the new user data into the SQL database with the matching Steam ID

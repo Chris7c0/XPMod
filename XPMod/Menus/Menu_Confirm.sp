@@ -58,7 +58,10 @@ public Action:CheckIfUserPressedThenGetDataAndDrawConfirmMenu(Handle:timer, any:
 	PrintToChat(iClient, "CheckIfUserPressedThenGetDataAndDrawConfirmMenu STOP");
 
 	// This will get the user data, and the second true will draw confirm menu in callback
-	GetUserData(iClient, true, true);
+	// Make sure their talents aren't confirmed yet though, to not load or change multiple
+	if (g_bTalentsConfirmed[iClient] == false)
+		GetUserData(iClient, true, true);
+	
 	return Plugin_Stop;
 }
 
