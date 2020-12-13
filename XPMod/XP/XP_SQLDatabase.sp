@@ -225,6 +225,8 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 		}
 
 		//Set Infected Classes
+		ResetAllInfectedClasses(iClient);
+		
 		g_iClientInfectedClass1[iClient] = iInfectedID[0];
 		g_iClientInfectedClass2[iClient] = iInfectedID[1];
 		g_iClientInfectedClass3[iClient] = iInfectedID[2];
@@ -354,7 +356,11 @@ GetUserData(any:iClient, bool:bOnlyWebsiteChangableData = false, bool:bDrawConfi
 		return;
 	}
 	
-	if (!IsClientInGame(iClient) || IsFakeClient(iClient) || (g_bClientLoggedIn[iClient] && bOnlyWebsiteChangableData == false) || g_bTalentsConfirmed[iClient])
+	if (!IsClientInGame(iClient) || 
+		IsFakeClient(iClient) || 
+		(g_bClientLoggedIn[iClient] 
+		&& bOnlyWebsiteChangableData == false) || 
+		g_bTalentsConfirmed[iClient])
 		return;
 
 	// Save the new user data into the SQL database with the matching Steam ID
