@@ -85,7 +85,7 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 	if (g_bPlayerPressedButtonThisRound == false && iButtons)
 	{
 		g_bPlayerPressedButtonThisRound = true;
-		PrintToServer("**************************** Setting up unfreeze timer OnPlayerRunCmd");
+		// PrintToServer("**************************** Setting up unfreeze timer OnPlayerRunCmd");
 		SetupUnfreezeGameTimer(20.0);
 	}
 
@@ -481,9 +481,10 @@ public Action:Event_PlayerConnect(Handle:hEvent, const String:strName[], bool:bD
 		g_bClientSpectating[iClient] = false;
 		g_iAutoSetCountDown[iClient] = -1;
 		g_bTalentsGiven[iClient] = false;
+
 		//ClientCommand(iClient, "bind ` toggleconsole");
 		//ClientCommand(iClient, "con_enable 1");
-		//TopMenuDraw(iClient,iClient);
+
 		GetClientName(iClient, clientname, sizeof(clientname));
 		for(new l=0; l<23; l++)
 		{

@@ -210,7 +210,7 @@ ResetAllOptions(iClient)
 public ResetAllInfectedClasses(iClient)
 {
 	// PrintToChat(iClient, "Reset all infected classes");
-	PrintToServer("************Reset Infected classes for %i", iClient);
+	// PrintToServer("************Reset Infected classes for %i", iClient);
 
 	//Infected Classes
 	g_iClientInfectedClass1[iClient] = UNKNOWN_INFECTED;

@@ -175,11 +175,6 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 	decl String:strData[20];
 	int iInfectedID[3], iEquipmentSlot[6], iOption[2];
 	int iFieldIndex = 0, iSkillPointsUsed = 0;
-	
-	if (bOnlyWebsiteChangableData == false)
-	{
-		ResetSurvivorTalents(iClient, iClient);
-	}
 
 	// Set the start index offset to caluclate the correct field index value, adding DB_COL_INDEX_USERS_USER_ID and DB_COL_INDEX_USERS_TOKEN
 	int startFieldIndexOffset = DB_COL_INDEX_USERS_XP;
@@ -203,14 +198,14 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 			}
 			else
 				LogError("SQL Error getting XP string from query");
-
-			//Get survivor character id from the SQL database
-			iFieldIndex = DB_COL_INDEX_USERS_SURVIVOR_ID - startFieldIndexOffset;
-			if(SQL_FetchString(hQuery, iFieldIndex, strData, sizeof(strData)) != 0)
-				g_iChosenSurvivor[iClient] = StringToInt(strData);
-			else
-				LogError("SQL Error getting SurvivorID string from query");
 		}
+
+		//Get survivor character id from the SQL database
+		iFieldIndex = DB_COL_INDEX_USERS_SURVIVOR_ID - startFieldIndexOffset;
+		if(SQL_FetchString(hQuery, iFieldIndex, strData, sizeof(strData)) != 0)
+			g_iChosenSurvivor[iClient] = StringToInt(strData);
+		else
+			LogError("SQL Error getting SurvivorID string from query");
 		
 		//Get Infecteed Talent ID from the SQL database
 		iFieldIndex = DB_COL_INDEX_USERS_INFECTED_ID_1 - startFieldIndexOffset;
@@ -223,13 +218,6 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 			else
 				LogError("SQL Error getting iInfectedID[%d] string from query", i);
 		}
-
-		//Set Infected Classes
-		ResetAllInfectedClasses(iClient);
-
-		g_iClientInfectedClass1[iClient] = iInfectedID[0];
-		g_iClientInfectedClass2[iClient] = iInfectedID[1];
-		g_iClientInfectedClass3[iClient] = iInfectedID[2];
 		
 		if (bOnlyWebsiteChangableData == false)
 		{
@@ -254,13 +242,22 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 			}
 		}
 
-		if (bOnlyWebsiteChangableData == false)
-		{
-			//Set Survivor Class Levels
-			AutoLevelUpSurivovor(iClient);
-		}
+		// Reset Survivor Classes and Talent Levels
+		ResetSurvivorTalents(iClient, iClient);
 
-		//Set the infected class strings
+
+		// Set Survivor Class Levels
+		AutoLevelUpSurivovor(iClient);
+
+		// Reset All infected Classes and Talent Levels
+		ResetAllInfectedClasses(iClient);
+
+		// Set the infected classes
+		g_iClientInfectedClass1[iClient] = iInfectedID[0];
+		g_iClientInfectedClass2[iClient] = iInfectedID[1];
+		g_iClientInfectedClass3[iClient] = iInfectedID[2];
+
+		// Set the infected class strings
 		SetInfectedClassSlot(iClient, 1, g_iClientInfectedClass1[iClient]);
 		SetInfectedClassSlot(iClient, 2, g_iClientInfectedClass2[iClient]);
 		SetInfectedClassSlot(iClient, 3, g_iClientInfectedClass3[iClient]);

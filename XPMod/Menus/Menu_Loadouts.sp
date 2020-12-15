@@ -482,7 +482,7 @@ public LoadoutMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			}
 			case 7: //Back
 			{
-				TopMenuDraw(iClient, iClient);
+				XPModMenuDraw(iClient, iClient);
 			}
 			default: //Exit
 			{

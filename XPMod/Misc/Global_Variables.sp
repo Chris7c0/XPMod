@@ -239,8 +239,8 @@ new g_oAbility = 0;
 //Global Variables ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //ConVars
-new Handle:g_hCVar_TalentSelectionMode      = INVALID_HANDLE;
-new g_iTalentSelectionMode                  = CONVAR_WEBSITE;
+//new Handle:g_hCVar_TalentSelectionMode      = INVALID_HANDLE;
+//new g_iTalentSelectionMode                  = CONVAR_WEBSITE;
 new Handle:g_hCVar_DefaultSurvivor          = INVALID_HANDLE;
 new g_iDefaultSurvivor                      = BILL;
 new Handle:g_hCVar_DefaultInfecttedSlot1    = INVALID_HANDLE;

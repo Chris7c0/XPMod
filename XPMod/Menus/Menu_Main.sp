@@ -61,7 +61,7 @@ public Action:ClosePanel(iClient)
 	return Plugin_Handled;
 }
 
-public Action:TopMenuDraw(iClient,args)
+public Action:XPModMenuDraw(iClient,args)
 {
 	if(iClient == 0)
 		iClient=1;
@@ -74,20 +74,20 @@ public Action:TopMenuDraw(iClient,args)
 		g_bClientIDDToggle[iClient] = false;
 		
 		if(g_bClientLoggedIn[iClient] == true)
-			TopSurvivorMenuDraw(iClient);
+			TopMenuDraw(iClient);
 	}
 	return Plugin_Handled;
 }
 //Menu Draw Functions                                                                                     
 //Top XPMod Menu Draw
-public Action:TopSurvivorMenuDraw(iClient) 
+public Action:TopMenuDraw(iClient) 
 {
 	g_bUserStoppedConfirmation[iClient] = true;
 	DeleteAllMenuParticles(iClient);
 	CheckMenu(iClient);
 	CheckLevel(iClient);
 	
-	g_hMenu_XPM[iClient] = CreateMenu(TopSurvivorMenuHandler);
+	g_hMenu_XPM[iClient] = CreateMenu(TopMenuHandler);
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	
 	if(g_iClientTeam[iClient] == TEAM_SURVIVORS)
@@ -103,7 +103,14 @@ public Action:TopSurvivorMenuDraw(iClient)
 		SetMenuTitle(g_hMenu_XPM[iClient], "     XP Mod %s\n====================\nLevel  %d  Infected\nXP:   %d/%d\n====================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 	else
 		SetMenuTitle(g_hMenu_XPM[iClient], "    XP Mod %s\n====================\nLevel %d\nXP:     %d/%d\n====================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Choose Talents");
+	
+	if (g_iClientTeam[iClient] == TEAM_SURVIVORS)
+		AddMenuItem(g_hMenu_XPM[iClient], "option1", "Choose Your Survivor");
+	else if (g_iClientTeam[iClient] == TEAM_INFECTED)
+		AddMenuItem(g_hMenu_XPM[iClient], "option1", "Choose Your Infected");
+	else
+		AddMenuItem(g_hMenu_XPM[iClient], "option1", "Choose Your Characters");
+	
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Choose Equipment");
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Extras");
 	
@@ -168,12 +175,13 @@ public Action:ExtrasMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(ExtrasMenuHandler);
 	SetMenuTitle(g_hMenu_XPM[iClient], "XPMod Extras");
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Choose Team");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Player Stats");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Options");
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Get XPMod Addon");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "XPMod Website");
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Back");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Choose Characters With Menu");
+	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Choose Team");
+	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Player Stats");
+	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Options");
+	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Get XPMod Addon");
+	AddMenuItem(g_hMenu_XPM[iClient], "option6", "XPMod Website");
+	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Back");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 
@@ -245,39 +253,37 @@ public ChooseTalentsTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, ite
 			}
 			case 1: //Choose Infected
 			{
-				if (g_iTalentSelectionMode == CONVAR_WEBSITE)
-				{
-					OpenInfectedCharacterSelectionSite(iClient);
-				}
-				else if (g_iTalentSelectionMode == CONVAR_MENU)
-				{
-					TopInfectedMenuDraw(iClient);
-				}
+				TopInfectedMenuDraw(iClient);
 			}
 			case 2: //Back
 			{
-				TopMenuDraw(iClient, iClient);
+				ExtrasMenuDraw(iClient);
 			}
 		}
 	}
 }
 
 //Top Menu For Everything
-public TopSurvivorMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+public TopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action == MenuAction_Select)
 	{
 		switch (itemNum)
 		{
-			case 0: //Choose Talents
+			case 0: //Choose Characters
 			{
-				ChooseTalentTopMenuDraw(iClient);
+				if (g_iClientTeam[iClient] == TEAM_SURVIVORS)
+					OpenCharacterSelectionSite(iClient);
+				else if (g_iClientTeam[iClient] == TEAM_INFECTED)
+					OpenCharacterSelectionSite(iClient);
+				else
+					OpenCharacterSelectionSite(iClient);
 			}
 			case 1: //Choose Loadout
 			{
 				LoadoutMenuDraw(iClient);
 			}
-			case 2: //Choose Teams
+			case 2: //XPMod Extras
 			{
 				ExtrasMenuDraw(iClient);
 			}
@@ -304,29 +310,33 @@ public ExtrasMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 	{
 		switch (itemNum)
 		{
-			case 0: //Choose Team
+			case 0: //Choose Character In Menu
+			{
+				ChooseTalentTopMenuDraw(iClient);
+			}
+			case 1: //Choose Team
 			{
 				ChooseTeamMenuDraw(iClient);
 			}
-			case 1: //Player Stats
+			case 2: //Player Stats
 			{
 				ShowTeamStatsToPlayer(iClient, iClient);
 			}
-			case 2: //Options
+			case 3: //Options
 			{
 				OptionMenuDraw(iClient);
 			}
-			case 3: //Get XPMod Addon
+			case 4: //Get XPMod Addon
 			{
 				OpenMOTDPanel(iClient, "Download XPMod Addon", "http://xpmod.net/downloads/xpmod_ig_downloads.html", MOTDPANEL_TYPE_URL);
 			}
-			case 4: //Website
+			case 5: //Website
 			{
 				OpenMOTDPanel(iClient, "", "http://xpmod.net/index.html", MOTDPANEL_TYPE_URL);
 			}
-			case 5: //Back
+			case 6: //Back
 			{
-				TopMenuDraw(iClient, iClient);
+				XPModMenuDraw(iClient, iClient);
 			}
 		}
 	}

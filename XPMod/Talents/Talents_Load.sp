@@ -225,14 +225,17 @@ public LoadTalents(iClient)
 				//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0+(g_iInspirationalLevel[iClient]*0.02) + (g_iPromotionalLevel[iClient] * 0.02)), true);
 				if(g_iGhillieLevel[iClient]>0 || g_iPromotionalLevel[iClient]>0)
 				{
-					SetEntityRenderMode(iClient, RenderMode:3);
-					SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (((float(g_iGhillieLevel[iClient]) * 0.13) + ((float(g_iPromotionalLevel[iClient]) * 0.04)))))));
-					if(g_iPromotionalLevel[iClient] > 0)	//disable glow
+					if (g_bGameFrozen == false)
 					{
-						SetEntProp(iClient, Prop_Send, "m_iGlowType", 3);
-						SetEntProp(iClient, Prop_Send, "m_nGlowRange", 0);
-						SetEntProp(iClient, Prop_Send, "m_glowColorOverride", 1);
-						ChangeEdictState(iClient, 12);
+						SetEntityRenderMode(iClient, RenderMode:3);
+						SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (((float(g_iGhillieLevel[iClient]) * 0.13) + ((float(g_iPromotionalLevel[iClient]) * 0.04)))))));
+						if(g_iPromotionalLevel[iClient] > 0)	//disable glow
+						{
+							SetEntProp(iClient, Prop_Send, "m_iGlowType", 3);
+							SetEntProp(iClient, Prop_Send, "m_nGlowRange", 0);
+							SetEntProp(iClient, Prop_Send, "m_glowColorOverride", 1);
+							ChangeEdictState(iClient, 12);
+						}
 					}
 				}
 				/*

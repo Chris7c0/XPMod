@@ -700,13 +700,13 @@ public Action:SayCmd(iClient, args)
 		StrEqual(strArgument1, "xpmod", false) == true || StrEqual(strArgument1, "!xpmod", false) == true)
 		{
 			GetUserData(iClient, true);
-			TopMenuDraw(iClient, iClient);
+			XPModMenuDraw(iClient, iClient);
 		}
 	
 	if(StrEqual(strArgument1, "/xpm", false) == true)
 	{
 		GetUserData(iClient, true);
-		TopMenuDraw(iClient, iClient);
+		XPModMenuDraw(iClient, iClient);
 		return Plugin_Handled;
 	}
 		
@@ -745,11 +745,11 @@ public Action:SayTeamCmd(iClient, args)
 	GetCmdArg(1, strArgument1, 6);
 	if(StrEqual(strArgument1, "xpm", false) == true || StrEqual(strArgument1, "!xpm", false) == true ||
 		StrEqual(strArgument1, "xpmod", false) == true || StrEqual(strArgument1, "!xpmod", false) == true)
-		TopMenuDraw(iClient, iClient);
+		XPModMenuDraw(iClient, iClient);
 		
 	if(StrEqual(strArgument1, "/xpm", false) == true)
 	{
-		TopMenuDraw(iClient, iClient);
+		XPModMenuDraw(iClient, iClient);
 		return Plugin_Handled;
 	}
 	

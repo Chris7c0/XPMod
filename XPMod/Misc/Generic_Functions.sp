@@ -1862,7 +1862,12 @@ fnc_ClearAllWeaponData(iClient)
 
 fnc_SetClientSpeed(iClient)
 {
-	if (iClient < 1 || (IsValidEntity(iClient) == false) || (IsClientInGame(iClient) == false) || (IsPlayerAlive(iClient) == false))
+	if (iClient < 1 || 
+	IsValidEntity(iClient) == false || 
+	IsClientInGame(iClient) == false || 
+	IsPlayerAlive(iClient) == false ||
+	g_bGameFrozen == true
+	)
 		return;
 	
 	//new iCurrentSpeed = GetEntDataFloat(iClient, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"));
@@ -1902,6 +1907,7 @@ fnc_SetClientSpeed(iClient)
 	// }
 	
 }
+
 fnc_CheckGrapple(iClient)
 {
 	if(g_bChargerCarrying[iClient] == true || g_bChargerGrappled[iClient] == true || g_bSmokerGrappled[iClient] == true || g_bJockeyGrappled[iClient] == true || g_bHunterGrappled[iClient] == true)

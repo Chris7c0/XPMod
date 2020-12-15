@@ -1089,7 +1089,7 @@ public Action:Testing(iClient,args)
 	// }
 	
 	
-	//TopSurvivorMenuDraw(iClient);
+	//TopMenuDraw(iClient);
 	
 	/*decl String:arg[1024];
 	GetCmdArg(1, arg, sizeof(arg));
