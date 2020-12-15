@@ -187,14 +187,14 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 	//Bill's Team Crawling
 	if(g_iCrawlSpeedMultiplier > 0 && IsFakeClient(iClient) == false)
 	{
-		// g_Clone[iClient] == -1 check is to make sure Animation isnt already playing 
-		if(g_Clone[iClient] == -1 && !g_bEndOfRound && iButtons & IN_FORWARD && GetEntProp(iClient, Prop_Send, "m_isIncapacitated")) 
+		// gClone[iClient] == -1 check is to make sure Animation isnt already playing 
+		if(gClone[iClient] == -1 && !g_bEndOfRound && iButtons & IN_FORWARD && GetEntProp(iClient, Prop_Send, "m_isIncapacitated")) 
 		{
 			CreateTimer(0.1,tmrPlayAnim,iClient);		// Delay so we can get the correct angle/direction after they have moved
-			g_Clone[iClient] = -2;						// So we don't play the anim more than once if the player presses forward within the 0.1 delay
+			gClone[iClient] = -2;						// So we don't play the anim more than once if the player presses forward within the 0.1 delay
 		}
 		// Animation has been playing but no longer moving/incapped
-		else if(g_Clone[iClient] > 1)
+		else if(gClone[iClient] > 1)
 		{
 			RestoreClient(iClient);
 		}

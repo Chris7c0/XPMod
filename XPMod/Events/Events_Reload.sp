@@ -916,6 +916,9 @@ public Action:SoH_AutoshotgunStart (Handle:timer, any:pack)
 	// 	);
 	ResetPack(pack);
 	new iEntid2 = ReadPackCell(pack);
+
+	if (iEntid2 <= 0 || IsValidEntity(iEntid2) == false)
+		return Plugin_Stop;
 				
 	//then we set the new times in the gun
 	SetEntDataFloat(iEntid2,	g_iOffset_ReloadStartDuration,	g_flSoHAutoS*g_fReloadRate,	true);
@@ -964,6 +967,9 @@ public Action:SoH_SpasShotgunStart (Handle:timer, any:pack)
 	
 	ResetPack(pack);
 	new iEntid2 = ReadPackCell(pack);
+
+	if (iEntid2 <= 0 || IsValidEntity(iEntid2) == false)
+		return Plugin_Stop;
 	
 	//then we set the new times in the gun
 	SetEntDataFloat(iEntid2,	g_iOffset_ReloadStartDuration,	g_flSoHSpasS*g_fReloadRate,	true);
@@ -991,7 +997,7 @@ public Action:SoH_SpasShotgunStart (Handle:timer, any:pack)
 		g_flSoHSpasE
 		);*/
 
-	return Plugin_Continue;
+	return Plugin_Stop;
 }
 
 //called for pump shotguns
@@ -1012,6 +1018,9 @@ public Action:SoH_PumpshotgunStart (Handle:timer, any:pack)
 
 	ResetPack(pack);
 	new iEntid2 = ReadPackCell(pack);
+
+	if (iEntid2 <= 0 || IsValidEntity(iEntid2) == false)
+		return Plugin_Stop;
 
 	//then we set the new times in the gun
 	SetEntDataFloat(iEntid2,	g_iOffset_ReloadStartDuration,	g_flSoHPumpS*g_fReloadRate,	true);
@@ -1036,7 +1045,7 @@ public Action:SoH_PumpshotgunStart (Handle:timer, any:pack)
 		g_flSoHPumpE
 		);*/
 
-	return Plugin_Continue;
+	return Plugin_Stop;
 }
 
 //this resets the playback rate on shotguns

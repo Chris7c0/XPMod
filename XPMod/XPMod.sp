@@ -352,7 +352,7 @@ public ResetVariablesForMap(iClient)
 	g_bSomeoneAttacksFaster = false;
 	
 	//Bill
-	g_Clone[iClient] = -1;
+	gClone[iClient] = -1;
 	
 	//Rochelle
 	g_bIsRochellePoisoned[iClient] = false;

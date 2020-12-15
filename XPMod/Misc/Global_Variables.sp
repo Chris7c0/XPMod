@@ -207,7 +207,7 @@
 //Animations for crawling
 #define ANIM_L4D2_NICK		631
 #define ANIM_L4D2_ELLIS		636
-#define ANIM_L4D2_ROCH		639
+#define ANIM_L4D2_ROCHELLE		639
 #define ANIM_L4D2_ZOEY		658
 #define ANIM_L4D2_LOUIS		539
 #define ANIM_L4D2_FRANCIS	542
@@ -223,7 +223,7 @@
 
 
 //Testing stuff
-new g_Clone[MAXPLAYERS + 1];
+new gClone[MAXPLAYERS + 1];
 new testingparticle;
 new bool:talentsJustGiven[MAXPLAYERS + 1] = false;
 new bool:testtoggle[MAXPLAYERS + 1];

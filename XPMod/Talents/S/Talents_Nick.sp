@@ -271,7 +271,8 @@ OnGameFrame_Nick(iClient)
 							g_iNickCurrentSecondarySlot[iClient] = 0;
 							SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
 							FakeClientCommand(iClient, "give pistol_magnum");
-							SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iNickSecondarySavedClipSlot1[iClient], true);
+							if (IsValidEntity(ActiveWeaponID) == true)
+								SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iNickSecondarySavedClipSlot1[iClient], true);
 						}
 						
 						// if(StrEqual(g_strNickSecondarySlot1, "weapon_melee", false) == true)

@@ -350,19 +350,19 @@ public Action:DisplayInstructorTimer(Handle:timer, Handle:pack)
 	//CreateTimer(0.3, DelayDisplayHint, h_Pack)
 }
 
-public DisplayInstructorText(i_Client, String:s_Message[256], String:color[], String:s_Bind[])
+public DisplayInstructorText(iClient, String:s_Message[256], String:color[], String:s_Bind[])
 {
-	if(i_Client < 1)
+	if(iClient < 1)
 		return;
-	if(IsClientInGame(i_Client) == false)
+	if(IsClientInGame(iClient) == false)
 		return;
-	if(IsFakeClient(i_Client) == true)
+	if(IsFakeClient(iClient) == true)
 		return;
 	decl i_Ent, String:s_TargetName[32], Handle:h_RemovePack;
 	i_Ent = CreateEntityByName("env_instructor_hint");
-	FormatEx(s_TargetName, sizeof(s_TargetName), "hint%d", i_Client);
+	FormatEx(s_TargetName, sizeof(s_TargetName), "hint%d", iClient);
 	ReplaceString(s_Message, sizeof(s_Message), "\n", " ");
-	DispatchKeyValue(i_Client, "targetname", s_TargetName);
+	DispatchKeyValue(iClient, "targetname", s_TargetName);
 	DispatchKeyValue(i_Ent, "hint_target", s_TargetName);
 	DispatchKeyValue(i_Ent, "hint_timeout", "5");
 	DispatchKeyValue(i_Ent, "hint_range", "0.01");
@@ -374,36 +374,36 @@ public DisplayInstructorText(i_Client, String:s_Message[256], String:color[], St
 	AcceptEntityInput(i_Ent, "ShowHint");
 	
 	h_RemovePack = CreateDataPack();
-	WritePackCell(h_RemovePack, i_Client);
+	WritePackCell(h_RemovePack, iClient);
 	WritePackCell(h_RemovePack, i_Ent);
 	CreateTimer(6.0, RemoveInstructorText, h_RemovePack);
 }
 	
 public Action:RemoveInstructorText(Handle:h_Timer, Handle:h_Pack)
 {
-	decl i_Ent, i_Client;
+	decl i_Ent, iClient;
 	
 	ResetPack(h_Pack, false);
-	i_Client = ReadPackCell(h_Pack);
+	iClient = ReadPackCell(h_Pack);
 	i_Ent = ReadPackCell(h_Pack);
 	CloseHandle(h_Pack);
 	
-	if(i_Client < 1)
+	if(iClient < 1)
 		return Plugin_Stop;
-	if(IsClientInGame(i_Client) == false)
+	if(IsClientInGame(iClient) == false)
 		return Plugin_Stop;
-	if(IsFakeClient(i_Client) == true)
+	if(IsFakeClient(iClient) == true)
 		return Plugin_Stop;
 	
-	if (!i_Client || !IsClientInGame(i_Client))
+	if (!iClient || !IsClientInGame(iClient))
 		return Plugin_Stop;
 	
 	if (IsValidEntity(i_Ent))
 			RemoveEdict(i_Ent);
 	
-	ClientCommand(i_Client, "gameinstructor_enable 0");
+	ClientCommand(iClient, "gameinstructor_enable 0");
 		
-	DispatchKeyValue(i_Client, "targetname", "");
+	DispatchKeyValue(iClient, "targetname", "");
 		
 	return Plugin_Stop;
 }

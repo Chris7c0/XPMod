@@ -10,7 +10,7 @@ public Action:TimerDropBombs(Handle:timer, any:iClient)
 	{
 		if(IsFakeClient(iClient)==false)
 		{
-			decl i_Ent, Float:f_Position[3], Float:f_Angles[3], Float:f_Speed[3];
+			decl i_Ent, Float:f_Position[3], Float:fAngles[3], Float:f_Speed[3];
 			decl String:s_TargetName[32];
 			i_Ent = CreateEntityByName("pipe_bomb_projectile");
 			
@@ -23,9 +23,9 @@ public Action:TimerDropBombs(Handle:timer, any:iClient)
 				DispatchSpawn(i_Ent);
 			}
 			GetClientEyePosition(iClient, f_Position);
-			GetClientEyeAngles(iClient, f_Angles);
-			GetAngleVectors(f_Angles, f_Speed, NULL_VECTOR, NULL_VECTOR);
-			TeleportEntity(i_Ent, f_Position, f_Angles, f_Speed);
+			GetClientEyeAngles(iClient, fAngles);
+			GetAngleVectors(fAngles, f_Speed, NULL_VECTOR, NULL_VECTOR);
+			TeleportEntity(i_Ent, f_Position, fAngles, f_Speed);
 			
 			CreateParticle("weapon_pipebomb_blinking_light", 0.0, i_Ent, ATTACH_NORMAL);
 			CreateParticle("weapon_pipebomb_fuse", 0.0, i_Ent, ATTACH_NORMAL);
@@ -55,10 +55,10 @@ public Action:TimerPoopBombBeep1(Handle:timer, any:iEntity)
 	{
 		static Float:poopbombbeeptime1 = 1.0;
 		poopbombbeeptime1 -= 0.1;
-		decl Float:f_Origin[3];
-		GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", f_Origin);
-		EmitAmbientSound(SOUND_BEEP, f_Origin, iEntity, SNDLEVEL_NORMAL);
-		AttachInfected(iEntity, f_Origin);
+		decl Float:fOrigin[3];
+		GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", fOrigin);
+		EmitAmbientSound(SOUND_BEEP, fOrigin, iEntity, SNDLEVEL_NORMAL);
+		AttachInfected(iEntity, fOrigin);
 		//PrintToChatAll("time1 = %f", poopbombbeeptime1);
 		if(poopbombbeeptime1 > 0.0)
 			CreateTimer(poopbombbeeptime1, TimerPoopBombBeep1, iEntity, TIMER_FLAG_NO_MAPCHANGE);
@@ -73,10 +73,10 @@ public Action:TimerPoopBombBeep2(Handle:timer, any:iEntity)
 	{
 		static Float:poopbombbeeptime2 = 1.0;
 		poopbombbeeptime2 -= 0.1;
-		decl Float:f_Origin[3];
-		GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", f_Origin);
-		EmitAmbientSound(SOUND_BEEP, f_Origin, iEntity, SNDLEVEL_NORMAL);
-		AttachInfected(iEntity, f_Origin);
+		decl Float:fOrigin[3];
+		GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", fOrigin);
+		EmitAmbientSound(SOUND_BEEP, fOrigin, iEntity, SNDLEVEL_NORMAL);
+		AttachInfected(iEntity, fOrigin);
 		//PrintToChatAll("time2 = %f", poopbombbeeptime2);
 		if(poopbombbeeptime2 > 0.0)
 			CreateTimer(poopbombbeeptime2, TimerPoopBombBeep2, iEntity, TIMER_FLAG_NO_MAPCHANGE);
@@ -91,10 +91,10 @@ public Action:TimerPoopBombBeep3(Handle:timer, any:iEntity)
 	{
 		static Float:poopbombbeeptime3 = 1.0;
 		poopbombbeeptime3 -= 0.1;
-		decl Float:f_Origin[3];
-		GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", f_Origin);
-		EmitAmbientSound(SOUND_BEEP, f_Origin, iEntity, SNDLEVEL_NORMAL);
-		AttachInfected(iEntity, f_Origin);
+		decl Float:fOrigin[3];
+		GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", fOrigin);
+		EmitAmbientSound(SOUND_BEEP, fOrigin, iEntity, SNDLEVEL_NORMAL);
+		AttachInfected(iEntity, fOrigin);
 		//PrintToChatAll("time3 = %f", poopbombbeeptime3);
 		if(poopbombbeeptime3 > 0.0)
 			CreateTimer(poopbombbeeptime3, TimerPoopBombBeep3, iEntity, TIMER_FLAG_NO_MAPCHANGE);

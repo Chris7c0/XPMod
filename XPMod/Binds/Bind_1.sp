@@ -4,7 +4,7 @@
 
 public Action:Bind1Press(iClient,args)
 {
-	if(iClient == 0 || IsClientInGame(iClient) == false)
+	if(RunClientChecks(iClient) == false)
 		return Plugin_Handled;
 	
 	if(g_bTalentsConfirmed[iClient] == false)
@@ -323,23 +323,6 @@ public Action:Bind1Press(iClient,args)
 							}
 							case 4: //Rambo
 							{
-							/* Old Rambo Code
-								fnc_DeterminePrimaryWeapon(iClient);
-								fnc_SaveAmmo(iClient);
-								RemoveEdict(g_iPrimarySlotID[iClient]);
-								g_bRamboModeActive[iClient] = true;
-								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-								SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd & ~FCVAR_CHEAT);
-								PrintHintText(iClient,"Rolled a 4\nAAAAAAAAAADDDRRRIIAAAAAAAAAAN!");
-								PrintToChat(iClient, "\x03[XPMod] \x05You have become RAMBO!!!");
-								FakeClientCommand(iClient, "give rifle_m60");
-								//g_iRamboWeaponID[iClient] = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-								fnc_DeterminePrimaryWeapon(iClient);
-								fnc_DetermineMaxClipSize(iClient);
-								FakeClientCommand(iClient, "upgrade_add LASER_SIGHT");
-								FakeClientCommand(iClient, "upgrade_add EXPLOSIVE_AMMO");
-								CreateTimer(30.0, TimerStopRambo, iClient, TIMER_FLAG_NO_MAPCHANGE);
-							*/
 								fnc_DeterminePrimaryWeapon(iClient);
 								fnc_SaveAmmo(iClient);
 								RemoveEdict(g_iPrimarySlotID[iClient]);

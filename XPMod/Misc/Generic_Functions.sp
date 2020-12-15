@@ -361,7 +361,7 @@ public bool:IsVisibleTo(Float:position[3], Float:targetposition[3])
 	return isVisible;
 }
 
-public AttachInfected(i_Ent, Float:f_Origin[3])
+public AttachInfected(i_Ent, Float:fOrigin[3])
 {
 	decl i_InfoEnt, String:s_TargetName[32];
 	
@@ -369,8 +369,8 @@ public AttachInfected(i_Ent, Float:f_Origin[3])
 	
 	if (IsValidEdict(i_InfoEnt))
 	{
-		f_Origin[2] += 20.0;
-		DispatchKeyValueVector(i_InfoEnt, "origin", f_Origin);
+		fOrigin[2] += 20.0;
+		DispatchKeyValueVector(i_InfoEnt, "origin", fOrigin);
 		FormatEx(s_TargetName, sizeof(s_TargetName), "goal_infected%d", i_Ent);
 		DispatchKeyValue(i_InfoEnt, "targetname", s_TargetName);
 		GetEntPropString(i_Ent, Prop_Data, "m_iName", s_TargetName, sizeof(s_TargetName));
@@ -1452,6 +1452,9 @@ fnc_CycleWeapon(iClient)
 }
 fnc_SetAmmo(iClient)
 {
+	if(RunClientChecks(iClient) ==  false || IsValidEntity(g_iPrimarySlotID[iClient]) == false)
+		return;
+	
 	switch(g_iChosenSurvivor[iClient])
 	{
 		case 0:		//Bill

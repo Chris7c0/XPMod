@@ -131,7 +131,11 @@ OnGameFrame_Bill(iClient)
 			decl String:currentweapon[32];
 			GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
 			new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+			if (IsValidEntity(ActiveWeaponID) ==  false)
+				return;
+
 			new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
+			
 			if((((StrEqual(currentweapon, "weapon_rifle", false) == true) || (StrEqual(currentweapon, "weapon_rifle_sg552", false) == true)) && (CurrentClipAmmo == 50)) || ((StrEqual(currentweapon, "weapon_rifle_ak47", false) == true) && (CurrentClipAmmo == 40)) || ((StrEqual(currentweapon, "weapon_rifle_desert", false) == true) && (CurrentClipAmmo == 60)))
 			{
 				new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
@@ -175,91 +179,94 @@ OGFSurvivorReload_Bill(int iClient, const char[] currentweapon, int ActiveWeapon
 	}
 }
 
-public Action:tmrPlayAnim(Handle:timer,any:i_Client)
-	PlayAnim(i_Client);
+public Action:tmrPlayAnim(Handle:timer,any:iClient)
+	PlayAnim(iClient);
 
-public Action:PlayAnim(i_Client)
+public Action:PlayAnim(iClient)
 {
-	decl i_Anim;
+	if (RunClientChecks(iClient) == false)
+		return;
+
+	decl iAnim;
 	new String:s_Model[128];
-	GetEntPropString(i_Client, Prop_Data, "m_ModelName", s_Model, 128);
+	GetEntPropString(iClient, Prop_Data, "m_ModelName", s_Model, 128);
 
 	if( StrEqual(s_Model, "models/survivors/survivor_gambler.mdl") )
-		i_Anim = ANIM_L4D2_NICK;	// Nick
+		iAnim = ANIM_L4D2_NICK;		// Nick
 	else if( StrEqual(s_Model, "models/survivors/survivor_mechanic.mdl") )
-		i_Anim = ANIM_L4D2_ELLIS;	// Ellis
+		iAnim = ANIM_L4D2_ELLIS;	// Ellis
 	else if( StrEqual(s_Model, "models/survivors/survivor_producer.mdl") )
-		i_Anim = ANIM_L4D2_ROCH;	// Rochelle
+		iAnim = ANIM_L4D2_ROCHELLE;	// Rochelle
 	else if( StrEqual(s_Model, "models/survivors/survivor_teenangst.mdl") )
-		i_Anim = ANIM_L4D2_ZOEY;	// Zoey
+		iAnim = ANIM_L4D2_ZOEY;		// Zoey
 	else if( StrEqual(s_Model, "models/survivors/survivor_manager.mdl") )
-		i_Anim = ANIM_L4D2_LOUIS;	// Louis
+		iAnim = ANIM_L4D2_LOUIS;	// Louis
 	else if( StrEqual(s_Model, "models/survivors/survivor_biker.mdl") )
-		i_Anim = ANIM_L4D2_FRANCIS;	// Francis
+		iAnim = ANIM_L4D2_FRANCIS;	// Francis
 	else if( StrEqual(s_Model, "models/survivors/survivor_namvet.mdl") )
-		i_Anim = ANIM_L4D2_BILL;	// Bill
+		iAnim = ANIM_L4D2_BILL;		// Bill
 	else if( StrEqual(s_Model, "models/survivors/survivor_coach.mdl") )
 		return;
 	
 
 	// Create survivor clone
-	g_Clone[i_Client] = -1;
-	new i_Clone = CreateEntityByName("prop_dynamic");
-	if (i_Clone == -1) return;
-	SetEntityModel(i_Clone,s_Model);
-	g_Clone[i_Client] = i_Clone; // Global clone ID
+	gClone[iClient] = -1;
+	new iClone = CreateEntityByName("prop_dynamic");
+	if (iClone == -1) return;
+	SetEntityModel(iClone,s_Model);
+	gClone[iClient] = iClone; // Global clone ID
 
 	// Attach to survivor
-	decl String:s_Value[128];
-	Format(s_Value, sizeof(s_Value), "target%i", i_Client);
-	DispatchKeyValue(i_Client, "targetname", s_Value);
+	decl String:sValue[128];
+	Format(sValue, sizeof(sValue), "target%i", iClient);
+	DispatchKeyValue(iClient, "targetname", sValue);
 
-	SetVariantString(s_Value);
-	AcceptEntityInput(i_Clone, "SetParent", i_Clone, i_Clone, 0);
+	SetVariantString(sValue);
+	AcceptEntityInput(iClone, "SetParent", iClone, iClone, 0);
 
 	// Attach
 	SetVariantString("bleedout");
-	AcceptEntityInput(i_Clone,"SetParentAttachment");
+	AcceptEntityInput(iClone,"SetParentAttachment");
 
 	// Get origin
-	decl Float:f_Angles[3];
-	decl Float:f_Origin[3];
-	GetClientAbsAngles(i_Client, f_Angles);
-	GetClientAbsOrigin(i_Client, f_Origin);
+	decl Float:fAngles[3];
+	decl Float:fOrigin[3];
+	GetClientAbsAngles(iClient, fAngles);
+	GetClientAbsOrigin(iClient, fOrigin);
 
 	// Correct origin
-	f_Origin[0] += (10 * (Cosine(DegToRad(f_Angles[1] - 23))));
-	f_Origin[1] += (10 * (Sine(DegToRad(f_Angles[1] - 23))));
-	f_Origin[2] -= 0.5;
+	fOrigin[0] += (10 * (Cosine(DegToRad(fAngles[1] - 23))));
+	fOrigin[1] += (10 * (Sine(DegToRad(fAngles[1] - 23))));
+	fOrigin[2] -= 0.5;
 
 	// Set origin
-	DispatchKeyValueVector(i_Clone, "Origin", f_Origin);
+	DispatchKeyValueVector(iClone, "Origin", fOrigin);
 
 	// Set angle
-	Format(s_Value,65," %f %f %f",-330.0,f_Angles[1]-100,70.0);
-	DispatchKeyValue(i_Clone, "angles", s_Value);
+	Format(sValue,65," %f %f %f",-330.0,fAngles[1]-100,70.0);
+	DispatchKeyValue(iClone, "angles", sValue);
 
 	// Set animation
-	SetEntProp(i_Clone, Prop_Send, "m_nSequence", i_Anim);
-	SetEntPropFloat(i_Clone, Prop_Send, "m_flPlaybackRate", 1.0);
+	SetEntProp(iClone, Prop_Send, "m_nSequence", iAnim);
+	SetEntPropFloat(iClone, Prop_Send, "m_flPlaybackRate", 1.0);
 
 	// Make Survivor Invisible
-	SetAlpha(i_Client,0);
+	SetAlpha(iClient,0);
 }
 
-RestoreClient(i_Client)
+RestoreClient(iClient)
 {
-	SetAlpha(i_Client,255);		// Make visible
-	RemoveClone(i_Client);		// Delete clone
-	fnc_SetRendering(i_Client);
-	//ResetGlow(i_Client);
+	SetAlpha(iClient,255);		// Make visible
+	RemoveClone(iClient);		// Delete clone
+	fnc_SetRendering(iClient);
+	//ResetGlow(iClient);
 }
 
-RemoveClone(i_Client)
+RemoveClone(iClient)
 {
-	new i_Clone = g_Clone[i_Client];
-	g_Clone[i_Client] = -1;
-	if (IsValidEntity(i_Clone)) RemoveEdict(i_Clone);
+	new iClone = gClone[iClient];
+	gClone[iClient] = -1;
+	if (IsValidEntity(iClone)) RemoveEdict(iClone);
 }
 
 SetAlpha(target, alpha)
