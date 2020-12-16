@@ -129,7 +129,7 @@ public Action:DelayedDrawMOTDPanel(Handle:timer, any:iClient)
 	else
 		Format(url, sizeof(url), "http://xpmod.net/select/character_select.php?i=%i&t=%s", g_iDBUserID[iClient], g_strDBUserToken[iClient]);
 
-	OpenMOTDPanel(iClient, "CHOOSE YOUR CHARACTERS", url, MOTDPANEL_TYPE_URL);
+	OpenMOTDPanel(iClient, " ", url, MOTDPANEL_TYPE_URL);
 
 	return Plugin_Stop;
 }
