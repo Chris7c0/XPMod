@@ -649,7 +649,7 @@ public Action:Bind1Press(iClient,args)
 													if(g_iErraticLevel[iClient] >= iRandomTankSpawn)
 													{
 														SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
-														PrintToChatAll("Summoned a tank with jockey piss");
+														PrintToChatAll("\x03[XPMod] \x04%NBeware, a tank smells %N's jockey piss", iClient);
 														FakeClientCommand(iClient, "z_spawn_old tank auto");
 														SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);
 														PrintHintText(iClient, "You've summoned a tank with your piss!");

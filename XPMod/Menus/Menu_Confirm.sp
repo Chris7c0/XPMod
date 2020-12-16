@@ -10,7 +10,8 @@ public Action:TimerCheckAndOpenCharacterSelectionMenuForAll(Handle:timer, any:da
 			g_bTalentsConfirmed[iClient] == false && 
 			IsClientInGame(iClient) == true && 
 			GetClientMenu(iClient) == MenuSource_None && 
-			IsFakeClient(iClient) == false)
+			IsFakeClient(iClient) == false &&
+			g_iClientTeam[iClient] != TEAM_SPECTATORS)
 		{
 			//g_iAutoSetCountDown[iClient] = 30;
 			//CreateTimer((0.1 * iClient), TimerShowTalentsConfirmed, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);

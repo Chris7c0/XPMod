@@ -145,6 +145,18 @@
 #define ELLIS			3
 #define NICK			4
 
+new String:SURVIVOR_NAME[][] =  {"BILL", 
+                                "ROCHELLE",
+                                "COACH",
+                                "ELLIS",
+                                "NICK"}
+
+new String:SURVIVOR_CLASS_NAME[][] =    {"SUPPORT", 
+                                        "NINJA",
+                                        "BERSERKER",
+                                        "WEAPONS EXPERT",
+                                        "MEDIC"}
+
 //Infected Class ID Definitions
 #define UNKNOWN_INFECTED	0
 #define SMOKER				1
