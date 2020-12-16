@@ -31,7 +31,6 @@ public Action:TimerCheckAndOpenCharacterSelectionMenuForAll(Handle:timer, any:da
 
 public Action:TimerOpenCharacterSelectionMenuForUser(Handle:timer, any:iClient)
 {
-
 	if (g_iAutoSetCountDown[iClient] == -1 && 
 		g_bClientLoggedIn[iClient] == true && 
 		g_bTalentsConfirmed[iClient] == false && 
@@ -86,6 +85,9 @@ public Action:CheckIfUserPressedThenOpenCharacterSelectionSite(Handle:timer, any
 
 OpenCharacterSelectionSite(iClient)
 {
+	// Close any existing confirmation menu
+	g_bUserStoppedConfirmation[iClient] = true;
+	ClosePanel(iClient);
 	// Prevent the user from seeing the menu twice for the round
 	g_bClientAlreadyShownCharacterSelectMenu[iClient] = true;
 	
