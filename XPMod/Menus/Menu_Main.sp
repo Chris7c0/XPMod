@@ -298,7 +298,7 @@ public TopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 				g_iAutoSetCountDown[iClient] = 10;
 
 				delete g_hTimer_ShowingConfirmTalents[iClient];
-				g_hTimer_ShowingConfirmTalents[iClient] = CreateTimer(1.0, TimerShowTalentsConfirmed, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+				g_hTimer_ShowingConfirmTalents[iClient] = CreateTimer(1.0, TimerShowTalentsConfirmed, iClient, TIMER_REPEAT);
 			}
 		}
 	}

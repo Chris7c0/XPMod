@@ -326,7 +326,7 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 		g_iAutoSetCountDown[iClient] = 20;
 
 		delete g_hTimer_ShowingConfirmTalents[iClient];
-		g_hTimer_ShowingConfirmTalents[iClient] = CreateTimer(1.0, TimerShowTalentsConfirmed, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+		g_hTimer_ShowingConfirmTalents[iClient] = CreateTimer(1.0, TimerShowTalentsConfirmed, iClient, TIMER_REPEAT);
 	}
 
 	// PrintToChatAll("GetUserData Callback Complete.  %i: %N", iClient, iClient);
