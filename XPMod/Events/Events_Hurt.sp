@@ -9,8 +9,8 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 	
 	new dmgType = GetEventInt(hEvent, "type");
 	new hitGroup = GetEventInt(hEvent, "hitgroup");
-	// PrintToChatAll("Attacker = %d, Victim = %d, dmgHealth = %d, dmgType = %d, hitGroup = %d", attacker, victim, dmgHealth, dmgType, hitGroup);
-	// PrintToChatAll("%N dType = %d, Group = %d, dHealth = %d", victim, dmgType, hitGroup, dmgHealth);
+	//PrintToChatAll("Attacker = %d, Victim = %d, dmgHealth = %d, dmgType = %d, hitGroup = %d", attacker, victim, dmgHealth, dmgType, hitGroup);
+	//PrintToChatAll("%N dType = %d, Group = %d, dHealth = %d", victim, dmgType, hitGroup, dmgHealth);
 	// PrintToChatAll("g_iInfectedCharacter[attacker] = %s", g_iInfectedCharacter[attacker]);
 	decl String:testweapon[20];
 	GetEventString(hEvent,"weapon", testweapon, 20);

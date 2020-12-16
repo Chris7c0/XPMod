@@ -39,7 +39,8 @@ public Action:TestFunction1(iClient,args)
 	
 	char str[99];
 	GetCmdArg(1, str, sizeof(str));
-	//g_fEllisTestFireRate = StringToFloat(str);
+	
+	// DealDamage(iClient, 2, 1,StringToInt(str));
 	
 
 

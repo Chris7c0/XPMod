@@ -282,7 +282,7 @@ public Action:Bind1Press(iClient,args)
 						CreateTimer(30.0, TimerStopRambo, iClient, TIMER_FLAG_NO_MAPCHANGE);
 						//TEST
 						*/
-						rand = GetRandomInt(1,11);
+						rand = GetRandomInt(1,12);
 						
 						switch (rand)
 						{
@@ -371,12 +371,24 @@ public Action:Bind1Press(iClient,args)
 								delete g_hTimer_SlapPlayer[iClient];
 								g_hTimer_SlapPlayer[iClient] = CreateTimer(1.0, TimerSlap, iClient, TIMER_REPEAT);
 							}
-							case 7: //Gain 500 XP
+							case 7: //Party supplies++; Spawns 3 defibs, kits, pills, and shots
 							{
-								PrintHintText(iClient,"Rolled a 7\nYou have won the jackpot! You Gain 500 XP.");
-								PrintToChat(iClient, "\x03[XPMod] \x05You won 500 XP.");
-								g_iClientXP[iClient] += 500;
-								CheckLevel(iClient);
+								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
+								PrintHintText(iClient,"Rolled a 7\nYou raided a mega hospital's medicine cabinant for supplies.");
+								PrintToChat(iClient, "\x03[XPMod] \x05You raided a medicine cabinet for supplies.");
+								FakeClientCommand(iClient, "give adrenaline");
+								FakeClientCommand(iClient, "give defibrillator");
+								FakeClientCommand(iClient, "give first_aid_kit");
+								FakeClientCommand(iClient, "give pain_pills");
+								FakeClientCommand(iClient, "give adrenaline");
+								FakeClientCommand(iClient, "give defibrillator");
+								FakeClientCommand(iClient, "give first_aid_kit");
+								FakeClientCommand(iClient, "give pain_pills");
+								FakeClientCommand(iClient, "give adrenaline");
+								FakeClientCommand(iClient, "give defibrillator");
+								FakeClientCommand(iClient, "give first_aid_kit");
+								FakeClientCommand(iClient, "give pain_pills");
+								SetCommandFlags("give", g_iFlag_Give);
 							}
 							case 8: //Get three more times to Gamble
 							{
@@ -423,6 +435,12 @@ public Action:Bind1Press(iClient,args)
 									g_bDivineInterventionQueued[iClient] = true;
 									PrintToChat(iClient, "Divine intervention will be applied when you break free!");
 								}
+							}
+							case 12: //Gain 3 more bind2s
+							{
+								PrintHintText(iClient,"Rolled an 12\nA night of partying left you wanting more.");
+								PrintToChat(iClient, "\x03[XPMod] \x05You feel ready for more! +3 Bind2!");
+								g_iClientBindUses_2[iClient] -= 3;
 							}
 						}
 						WriteParticle(iClient, "nick_bind_gamble", 0.0, 35.0);

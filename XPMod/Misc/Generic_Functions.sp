@@ -297,7 +297,7 @@ PropaneExplode(Float:xyzLocation[3])
 	AcceptEntityInput(iEntity, "Break");
 }
 
-DealDamage(iVictim, iAttacker, iAmount, iDamageType = DAMAGETYPE_HUNTER_POUNCE)
+DealDamage(iVictim, iAttacker, iAmount, iDamageType = DAMAGETYPE_INFECTED_MELEE)
 {
 	//This function was originally written by AtomikStryker
 	decl Float:iVictimPosition[3], String:strDamage[16], String:strDamageType[16], String:strDamageTarget[16];
