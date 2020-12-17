@@ -7,10 +7,11 @@ public Action:TimerStopRambo(Handle:timer, any:iClient)
 	
 	//fnc_DetermineMaxClipSize(iClient);
 	fnc_CycleWeapon(iClient);
+	g_bRamboModeActive[iClient] = false;
 	//fnc_DeterminePrimaryWeapon(iClient);
 	//fnc_SetAmmo(iClient);
 	//fnc_SetAmmoUpgrade(iClient);
-	//g_bRamboModeActive[iClient] = false;
+	
 	//PrintToChatAll("Cycled weapon via rambo stop timer");
 	//fnc_SetAmmo(iClient);
 	//fnc_SetAmmoUpgrade(iClient);

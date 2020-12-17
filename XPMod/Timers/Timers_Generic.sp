@@ -252,8 +252,8 @@ public Action:TimerUnfreeze(Handle:timer, any:data)
 			if(g_iClientTeam[i]==TEAM_SURVIVORS)
 			{
 				new currentmaxHP=GetEntProp(i,Prop_Data,"m_iMaxHealth");
-				SetEntProp(i,Prop_Data,"m_iMaxHealth", currentmaxHP + (g_iCoachTeamHealthStack * 4));
-				SetEntProp(i,Prop_Data,"m_iHealth", currentmaxHP + (g_iCoachTeamHealthStack * 4));
+				SetEntProp(i,Prop_Data,"m_iMaxHealth", currentmaxHP + (g_iCoachTeamHealthStack * 5));
+				SetEntProp(i,Prop_Data,"m_iHealth", currentmaxHP + (g_iCoachTeamHealthStack * 5));
 			}
 		}
 	}*/

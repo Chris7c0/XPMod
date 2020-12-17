@@ -247,13 +247,13 @@ public LoadTalents(iClient)
 				*/
 				if(g_iWillLevel[iClient] > 0)
 				{
-					SetEntProp(iClient,Prop_Data,"m_iMaxHealth", 100 + (g_iWillLevel[iClient]*5) + (g_iDiehardLevel[iClient]*15) + (g_iCoachTeamHealthStack * 4));
+					SetEntProp(iClient,Prop_Data,"m_iMaxHealth", 100 + (g_iWillLevel[iClient]*5) + (g_iDiehardLevel[iClient]*15) + (g_iCoachTeamHealthStack * 5));
 					new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
-					if(currentHP > (100 + (g_iWillLevel[iClient]*5) + (g_iDiehardLevel[iClient]*15) + (g_iCoachTeamHealthStack * 4)))
-						SetEntProp(iClient,Prop_Data,"m_iHealth", 100 + (g_iWillLevel[iClient]*5) + (g_iDiehardLevel[iClient]*15) + (g_iCoachTeamHealthStack * 4));
+					if(currentHP > (100 + (g_iWillLevel[iClient]*5) + (g_iDiehardLevel[iClient]*15) + (g_iCoachTeamHealthStack * 5)))
+						SetEntProp(iClient,Prop_Data,"m_iHealth", 100 + (g_iWillLevel[iClient]*5) + (g_iDiehardLevel[iClient]*15) + (g_iCoachTeamHealthStack * 5));
 					if(g_bTalentsGiven[iClient] == false)
 					{
-						SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + (g_iWillLevel[iClient]*5) + (g_iDiehardLevel[iClient]*15) + (g_iCoachTeamHealthStack * 4));
+						SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + (g_iWillLevel[iClient]*5) + (g_iDiehardLevel[iClient]*15) + (g_iCoachTeamHealthStack * 5));
 						
 						//Set Convar for crawling speed
 						g_iCrawlSpeedMultiplier += g_iWillLevel[iClient] * 5;
@@ -306,13 +306,13 @@ public LoadTalents(iClient)
 					
 					if(g_iShadowLevel[iClient]>0)
 					{
-						SetEntProp(iClient,Prop_Data,"m_iMaxHealth", 100 + (g_iShadowLevel[iClient] * 5) + (g_iSniperLevel[iClient] * 5) + (g_iCoachTeamHealthStack * 4));
+						SetEntProp(iClient,Prop_Data,"m_iMaxHealth", 100 + (g_iShadowLevel[iClient] * 5) + (g_iSniperLevel[iClient] * 5) + (g_iCoachTeamHealthStack * 5));
 						new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
-						if(currentHP > (100 + (g_iShadowLevel[iClient] * 5) + (g_iSniperLevel[iClient] * 5) + (g_iCoachTeamHealthStack * 4)))
-							SetEntProp(iClient,Prop_Data,"m_iHealth", 100 + (g_iShadowLevel[iClient] * 5) + (g_iSniperLevel[iClient] * 5) + (g_iCoachTeamHealthStack * 4));
+						if(currentHP > (100 + (g_iShadowLevel[iClient] * 5) + (g_iSniperLevel[iClient] * 5) + (g_iCoachTeamHealthStack * 5)))
+							SetEntProp(iClient,Prop_Data,"m_iHealth", 100 + (g_iShadowLevel[iClient] * 5) + (g_iSniperLevel[iClient] * 5) + (g_iCoachTeamHealthStack * 5));
 						
 						if(g_bTalentsGiven[iClient] == false)
-							SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + (g_iShadowLevel[iClient] * 5) + (g_iSniperLevel[iClient] * 5) + (g_iCoachTeamHealthStack * 4));
+							SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + (g_iShadowLevel[iClient] * 5) + (g_iSniperLevel[iClient] * 5) + (g_iCoachTeamHealthStack * 5));
 					}
 				}
 				
@@ -337,7 +337,7 @@ public LoadTalents(iClient)
 					
 					g_iMeleeDamageCounter[iClient] = (g_iStrongLevel[iClient] * 30);
 					
-					g_iClientSurvivorMaxHealth[iClient] = 100 + (g_iBullLevel[iClient]*13) + (g_iWreckingLevel[iClient]*5) + (g_iStrongLevel[iClient]*8) + (g_iCoachTeamHealthStack * 4);
+					g_iClientSurvivorMaxHealth[iClient] = 100 + (g_iBullLevel[iClient]*15) + (g_iWreckingLevel[iClient]*10) + (g_iStrongLevel[iClient]*10) + (g_iCoachTeamHealthStack * 5);
 					SetEntProp(iClient,Prop_Data,"m_iMaxHealth", g_iClientSurvivorMaxHealth[iClient]);
 					new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
 					if(currentHP > (100 +  g_iClientSurvivorMaxHealth[iClient]))
@@ -345,7 +345,7 @@ public LoadTalents(iClient)
 						
 					if(g_bTalentsGiven[iClient] == false)
 					{
-						SetEntProp(iClient,Prop_Data,"m_iHealth", 100 + (g_iBullLevel[iClient]*13) + (g_iWreckingLevel[iClient]*5) + (g_iStrongLevel[iClient]*8) + (g_iCoachTeamHealthStack * 4));
+						SetEntProp(iClient,Prop_Data,"m_iHealth", 100 + (g_iBullLevel[iClient]*15) + (g_iWreckingLevel[iClient]*10) + (g_iStrongLevel[iClient]*10) + (g_iCoachTeamHealthStack * 5));
 						
 						CreateTimer(3.0, TimerGiveFirstExplosive, iClient, TIMER_FLAG_NO_MAPCHANGE);
 					}
@@ -412,8 +412,8 @@ public LoadTalents(iClient)
 								{
 									new currentmaxHP=GetEntProp(i,Prop_Data,"m_iMaxHealth");
 									new currentHP=GetEntProp(i,Prop_Data,"m_iHealth");
-									SetEntProp(i,Prop_Data,"m_iMaxHealth", currentmaxHP + (g_iLeadLevel[iClient] * 4));
-									SetEntProp(i,Prop_Data,"m_iHealth", currentHP + (g_iLeadLevel[iClient] * 4));
+									SetEntProp(i,Prop_Data,"m_iMaxHealth", currentmaxHP + (g_iLeadLevel[iClient] * 5));
+									SetEntProp(i,Prop_Data,"m_iHealth", currentHP + (g_iLeadLevel[iClient] * 5));
 								}
 							}
 						}

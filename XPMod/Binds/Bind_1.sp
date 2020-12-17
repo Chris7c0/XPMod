@@ -290,7 +290,7 @@ public Action:Bind1Press(iClient,args)
 							{
 								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
 								PrintHintText(iClient,"Rolled a 1\nYou got in good with a random drug dealer.");
-								PrintToChat(iClient, "\x03[XPMod] \x05You received \"Da Hook Up\", pop those pills.");
+								PrintToChatAll("\x03[XPMod] \x05%N got \"Da Huk Up\"...pop those pillz.", iClient);
 								FakeClientCommand(iClient, "give pain_pills");
 								FakeClientCommand(iClient, "give pain_pills");
 								FakeClientCommand(iClient, "give pain_pills");
@@ -306,20 +306,53 @@ public Action:Bind1Press(iClient,args)
 								else
 									SlapPlayer(iClient, iCurrentHP - 1);
 								PrintHintText(iClient,"Rolled a 2\nYou were caught stealing and slapped at gunpoint by that shady dude on the corner.");
-								PrintToChat(iClient, "\x03[XPMod] \x05You've been pimp slapped by a drug dealer.");
+								PrintToChatAll("\x03[XPMod] \x05%N been pimp slapped by a drug dealer.", iClient);
 							}
-							case 3: //Plane Shift: 100% invisibility for 30 seconds
+							case 3: // Raided a gun shop, holy crap
 							{
-								g_bNickIsInvisible[iClient] = true;
-								SetEntityRenderMode(iClient, RenderMode:3);
-								SetEntityRenderColor(iClient, 255, 255, 255, 0);
-								SetEntProp(iClient, Prop_Send, "m_iGlowType", 3);
-								SetEntProp(iClient, Prop_Send, "m_nGlowRange", 0);
-								SetEntProp(iClient, Prop_Send, "m_glowColorOverride", 1);
-								ChangeEdictState(iClient, 12);
-								CreateTimer(30.0, TimerMakeVisible, iClient, TIMER_FLAG_NO_MAPCHANGE);
-								PrintHintText(iClient,"Rolled a 3\nDue to a strange phenomenon, light on your body temporarily reflects into\nanother dimension, rendering you invisible.");
-								PrintToChat(iClient, "\x03[XPMod] \x05You are temporarily invisible.");
+								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
+								PrintHintText(iClient,"Rolled a 3\nYou raided a huge weapon store. Lock and Load!");
+								PrintToChatAll("\x03[XPMod] \x05%N received a shite-ton of weapons.", iClient);
+								FakeClientCommand(iClient, "give smg");
+								FakeClientCommand(iClient, "give smg_silenced");
+								FakeClientCommand(iClient, "give smg_mp5");
+								FakeClientCommand(iClient, "give rifle");
+								FakeClientCommand(iClient, "give rifle_sg552");
+								FakeClientCommand(iClient, "give rifle_desert");
+								FakeClientCommand(iClient, "give pumpshotgun");
+								FakeClientCommand(iClient, "give shotgun_chrome");
+								FakeClientCommand(iClient, "give autoshotgun");
+								FakeClientCommand(iClient, "give shotgun_spas");
+								FakeClientCommand(iClient, "give hunting_rifle");
+								FakeClientCommand(iClient, "give sniper_military");
+								FakeClientCommand(iClient, "give sniper_scout");
+								FakeClientCommand(iClient, "give sniper_awp");
+								FakeClientCommand(iClient, "give grenade_launcher");
+								FakeClientCommand(iClient, "give rifle_m60");
+								FakeClientCommand(iClient, "give pistol");
+								FakeClientCommand(iClient, "give fireaxe");
+								FakeClientCommand(iClient, "give crowbar");
+								FakeClientCommand(iClient, "give cricket_bat");
+								FakeClientCommand(iClient, "give baseball_bat");
+								FakeClientCommand(iClient, "give katana");
+								FakeClientCommand(iClient, "give electric_guitar");
+								FakeClientCommand(iClient, "give machete");
+								FakeClientCommand(iClient, "give frying_pan");
+								FakeClientCommand(iClient, "give tonfa");
+								FakeClientCommand(iClient, "give chainsaw");
+								FakeClientCommand(iClient, "give riotshield");
+								FakeClientCommand(iClient, "give cs_knife");
+								FakeClientCommand(iClient, "give golfclub");
+								FakeClientCommand(iClient, "give pipe_bomb");
+								FakeClientCommand(iClient, "give molotov");
+								FakeClientCommand(iClient, "give vomitjar");
+								FakeClientCommand(iClient, "give upgradepack_explosive");
+								FakeClientCommand(iClient, "give upgradepack_incendiary");
+								// The ones Nick will have after
+								FakeClientCommand(iClient, "give rifle_ak47");
+								FakeClientCommand(iClient, "give pistol_magnum");
+
+								SetCommandFlags("give", g_iFlag_Give);
 							}
 							case 4: //Rambo
 							{
@@ -329,8 +362,10 @@ public Action:Bind1Press(iClient,args)
 								g_bRamboModeActive[iClient] = true;
 								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
 								SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd & ~FCVAR_CHEAT);
+
 								PrintHintText(iClient,"Rolled a 4\nAAAAAAAAAADDDRRRIIAAAAAAAAAAN!");
-								PrintToChat(iClient, "\x03[XPMod] \x05You have become RAMBO!!!");
+								PrintToChatAll("\x03[XPMod] \x05%N has become RAMBO!!!", iClient);
+
 								FakeClientCommand(iClient, "give rifle_m60");
 								//g_iRamboWeaponID[iClient] = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 								fnc_DeterminePrimaryWeapon(iClient);
@@ -342,7 +377,7 @@ public Action:Bind1Press(iClient,args)
 							case 5: //Crack Out on drugs
 							{
 								PrintHintText(iClient,"Rolled a 5\nYou popped some colorful pills from some shady ass dude on fifth street.");
-								PrintToChat(iClient, "\x03[XPMod] \x05You popped some shady pills.");
+								PrintToChatAll("\x03[XPMod] \x05%N popped some shady pills...THE COLORRRRRSS...", iClient);
 								
 								new red = GetRandomInt(0,255);
 								new green = GetRandomInt(0,255);
@@ -365,7 +400,7 @@ public Action:Bind1Press(iClient,args)
 							{
 								g_bNickIsGettingBeatenUp[iClient] = true;
 								PrintHintText(iClient,"Rolled a 6\nYou were caught carrying a pistol by a self-loathing cop...better cover up!");
-								PrintToChat(iClient, "\x03[XPMod] \x05You are being beaten by a self-loathing cop!");
+								PrintToChatAll("\x03[XPMod] \x05%N is being beaten by a self-loathing cop!", iClient);
 								
 								g_iSlapRunTimes[iClient] = 0;
 								delete g_hTimer_SlapPlayer[iClient];
@@ -375,7 +410,7 @@ public Action:Bind1Press(iClient,args)
 							{
 								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
 								PrintHintText(iClient,"Rolled a 7\nYou raided a mega hospital's medicine cabinant for supplies.");
-								PrintToChat(iClient, "\x03[XPMod] \x05You raided a medicine cabinet for supplies.");
+								PrintToChatAll("\x03[XPMod] \x05%N raided a mega hospital's medicine cabinet for supplies.", iClient);
 								FakeClientCommand(iClient, "give adrenaline");
 								FakeClientCommand(iClient, "give defibrillator");
 								FakeClientCommand(iClient, "give first_aid_kit");
@@ -394,13 +429,13 @@ public Action:Bind1Press(iClient,args)
 							{
 								PrintHintText(iClient,"Rolled an 8\nYou found a sucker to scam, three more chances to gamble this round.");
 								g_iClientBindUses_1[iClient] -= 3;
-								PrintToChat(iClient, "\x03[XPMod] \x05You received three more chances to gamble.");
+								PrintToChatAll("\x03[XPMod] \x05%N received three more chances to gamble.", iClient);
 							}
 							case 9: //Party Supplies; Spawns 1 defib, kit, pills, and shot
 							{
 								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
 								PrintHintText(iClient,"Rolled a 9\nYou successfully raided some hospital's medicine cabinant for supplies.");
-								PrintToChat(iClient, "\x03[XPMod] \x05You raided a medicine cabinet for supplies.");
+								PrintToChatAll("\x03[XPMod] \x05%N raided a medicine cabinet for supplies.", iClient);
 								FakeClientCommand(iClient, "give adrenaline");
 								FakeClientCommand(iClient, "give defibrillator");
 								FakeClientCommand(iClient, "give first_aid_kit");
@@ -410,7 +445,7 @@ public Action:Bind1Press(iClient,args)
 							case 10: //Blindness
 							{
 								PrintHintText(iClient,"Rolled a 10\nYou accidentally splashed questionable chemicals in your eyes.");
-								PrintToChat(iClient, "\x03[XPMod] \x05You were temporarily blinded.");
+								PrintToChatAll("\x03[XPMod] \x05%N has been temporarily blinded by chemicals.", iClient);
 																
 								ShowHudOverlayColor(iClient, 0, 0, 0, 255, 300, FADE_OUT);
 								
@@ -425,8 +460,10 @@ public Action:Bind1Press(iClient,args)
 									FakeClientCommand(iClient, "give health");
 									fTempHealth = 0.0;
 									SetEntDataFloat(iClient,g_iOffset_HealthBuffer, fTempHealth ,true);
+
 									PrintHintText(iClient,"Rolled an 11\nYou have received divine intervention from above...or below.");
-									PrintToChat(iClient, "\x03[XPMod] \x05You were given a fresh life.");
+									PrintToChatAll("\x03[XPMod] \x05%N was given a fresh life.", iClient);
+
 									SetCommandFlags("give", g_iFlag_Give);
 									g_bIsClientDown[iClient] = false;
 								}
@@ -439,7 +476,7 @@ public Action:Bind1Press(iClient,args)
 							case 12: //Gain 3 more bind2s
 							{
 								PrintHintText(iClient,"Rolled an 12\nA night of partying left you wanting more.");
-								PrintToChat(iClient, "\x03[XPMod] \x05You feel ready for more! +3 Bind2!");
+								PrintToChatAll("\x03[XPMod] \x05%N feels ready for more! +3 to Bind2!", iClient);
 								g_iClientBindUses_2[iClient] -= 3;
 							}
 						}
