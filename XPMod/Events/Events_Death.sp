@@ -237,7 +237,6 @@ public Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBro
 								{
 									if(g_bIsSuicideJumping[victim] == true)
 									{
-										g_iClientBindUses_2[victim]++;
 										//PrintToChatAll("trying for %N", target);
 										decl Float:targetVector[3];
 										GetClientEyePosition(target, targetVector);

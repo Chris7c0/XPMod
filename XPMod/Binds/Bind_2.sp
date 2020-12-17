@@ -295,7 +295,6 @@ public Action:Bind2Press(iClient,args)
 							{
 								if(g_bIsSuicideBoomer[iClient] == false && g_bIsSuicideJumping[iClient] == false)
 								{
-									//g_iClientBindUses_2[iClient]++;
 									g_bIsSuicideBoomer[iClient] = true;
 									PrintHintText(iClient, "You have inhaled %d Atomic Burritos! Jump to release.", g_iNorovirusLevel[iClient]);
 								}

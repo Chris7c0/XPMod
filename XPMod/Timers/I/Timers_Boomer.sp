@@ -170,6 +170,7 @@ public Action:TimerSuicideBoomerLaunch(Handle:timer, any:iClient)
 	velocity[2] = (750.0 + (g_iNorovirusLevel[iClient] * 50.0));
 	TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, velocity);
 	g_bIsSuicideJumping[iClient] = true;
+	g_iClientBindUses_2[iClient]++;
 
 	return Plugin_Stop;
 }

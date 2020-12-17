@@ -373,9 +373,9 @@ public Action:CrushingMeleeMenuDraw(iClient)
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Frying Pan (30 XP)");
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Nightstick (30 XP)");
 	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Golf Club (30 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Riot Shield (30 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Baseball Bat (50 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Back");
+	//AddMenuItem(g_hMenu_XPM[iClient], "option5", "Riot Shield (30 XP)");
+	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Baseball Bat (50 XP)");
+	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Back");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -922,17 +922,17 @@ public CrushingMeleeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNu
 				g_iClientSecondarySlotID[iClient] = 16;
 				LoadoutMenuDraw(iClient);
 			}
-			case 5: //Riot Shield
-			{
-				g_iClientSecondarySlotID[iClient] = 14;
-				LoadoutMenuDraw(iClient);
-			}
-			case 6: //Baseball Bat
+			// case 5: //Riot Shield
+			// {
+			// 	g_iClientSecondarySlotID[iClient] = 14;
+			// 	LoadoutMenuDraw(iClient);
+			// }
+			case 5: //Baseball Bat
 			{
 				g_iClientSecondarySlotID[iClient] = 7;
 				LoadoutMenuDraw(iClient);
 			}
-			case 7: //Back
+			case 6: //Back
 			{
 				SecondaryMenuDraw(iClient);
 			}
@@ -969,7 +969,7 @@ public SlashingMeleeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNu
 			}
 			case 4: //Combat Knife
 			{
-				g_iClientSecondarySlotID[iClient] = 15;
+				g_iClientSecondarySlotID[iClient] = 14;
 				LoadoutMenuDraw(iClient);
 			}
 			case 5: //Chainsaw
@@ -1152,17 +1152,17 @@ GetWeaponNames(iClient)
 			g_strClientSecondarySlot = "Chainsaw (250 XP)";
 			g_iClientSecondarySlotCost[iClient] = 250;
 		}
-		case 14: //Riot Shield
-		{
-			g_strClientSecondarySlot = "Riot Shield (30 XP)";
-			g_iClientSecondarySlotCost[iClient] = 30;
-		}
-		case 15: //Combat Knife
+		// case 14: //Riot Shield
+		// {
+		// 	g_strClientSecondarySlot = "Riot Shield (30 XP)";
+		// 	g_iClientSecondarySlotCost[iClient] = 30;
+		// }
+		case 14: //Combat Knife
 		{
 			g_strClientSecondarySlot = "Combat Knife (50 XP)";
 			g_iClientSecondarySlotCost[iClient] = 50;
 		}
-		case 16: //Golf Club
+		case 15: //Golf Club
 		{
 			g_strClientSecondarySlot = "Golf Club (30 XP)";
 			g_iClientSecondarySlotCost[iClient] = 30;
@@ -1572,27 +1572,27 @@ SpawnWeapons(iClient)
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Chainsaw");
 		}
-		case 14: //Riot Shield
-		{
-			if((g_iClientXP[iClient]-30) >= g_iClientPreviousLevelXPAmount[iClient])
-			{
-				g_iClientXP[iClient]-=30;
-				FakeClientCommand(iClient, "give riotshield");
-			}
-			else
-				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Riot Shield");
-		}
-		case 15: //Combat Knife
+		// case 14: //Riot Shield
+		// {
+		// 	if((g_iClientXP[iClient]-30) >= g_iClientPreviousLevelXPAmount[iClient])
+		// 	{
+		// 		g_iClientXP[iClient]-=30;
+		// 		FakeClientCommand(iClient, "give riotshield");
+		// 	}
+		// 	else
+		// 		PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Riot Shield");
+		// }
+		case 14: //Combat Knife
 		{
 			if((g_iClientXP[iClient]-50) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=50;
-				FakeClientCommand(iClient, "give cs_knife");
+				FakeClientCommand(iClient, "give knife");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Combat Knife");
 		}
-		case 16: //Golf Club
+		case 15: //Golf Club
 		{
 			if((g_iClientXP[iClient]-30) >= g_iClientPreviousLevelXPAmount[iClient])
 			{

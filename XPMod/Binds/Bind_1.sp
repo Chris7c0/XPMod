@@ -340,8 +340,8 @@ public Action:Bind1Press(iClient,args)
 								FakeClientCommand(iClient, "give frying_pan");
 								FakeClientCommand(iClient, "give tonfa");
 								FakeClientCommand(iClient, "give chainsaw");
-								FakeClientCommand(iClient, "give riotshield");
-								FakeClientCommand(iClient, "give cs_knife");
+								//FakeClientCommand(iClient, "give riotshield");
+								FakeClientCommand(iClient, "give knife");
 								FakeClientCommand(iClient, "give golfclub");
 								FakeClientCommand(iClient, "give pipe_bomb");
 								FakeClientCommand(iClient, "give molotov");

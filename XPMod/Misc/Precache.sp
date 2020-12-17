@@ -309,8 +309,8 @@ PrecacheLockedWeaponModels()	//Precache the locked weapon models
 	//World Models
 	if (!IsModelPrecached("models/w_models/w_knife_t.mdl"))
 		PrecacheModel("models/w_models/w_knife_t.mdl");
-	if (!IsModelPrecached("models/weapons/melee/w_riotshield.mdl"))
-		PrecacheModel("models/weapons/melee/w_riotshield.mdl");
+	// if (!IsModelPrecached("models/weapons/melee/w_riotshield.mdl"))
+	// 	PrecacheModel("models/weapons/melee/w_riotshield.mdl");
 	if (!IsModelPrecached("models/weapons/melee/w_bat.mdl"))
 		PrecacheModel("models/weapons/melee/w_bat.mdl");
 	if (!IsModelPrecached("models/props_junk/gnome.mdl"))
@@ -320,8 +320,8 @@ PrecacheLockedWeaponModels()	//Precache the locked weapon models
 	//View Models
 	if (!IsModelPrecached("models/v_models/v_knife_t.mdl"))
 		PrecacheModel("models/v_models/v_knife_t.mdl");
-	if (!IsModelPrecached("models/weapons/melee/v_riotshield.mdl"))
-		PrecacheModel("models/weapons/melee/v_riotshield.mdl");
+	// if (!IsModelPrecached("models/weapons/melee/v_riotshield.mdl"))
+	// 	PrecacheModel("models/weapons/melee/v_riotshield.mdl");
 	if (!IsModelPrecached("models/weapons/melee/v_bat.mdl"))
 		PrecacheModel("models/weapons/melee/v_bat.mdl");
 	if (!IsModelPrecached("models/weapons/melee/v_gnome.mdl"))
