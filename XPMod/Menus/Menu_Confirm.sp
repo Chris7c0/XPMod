@@ -79,7 +79,10 @@ public Action:CheckIfUserPressedThenOpenCharacterSelectionSite(Handle:timer, any
 	// PrintToChat(iClient, "CheckIfUserPressedThenOpenCharacterSelectionSite STOP");
 
 	// This will open user chacter selection, then get the user data, then will draw confirm menu in callback
-	OpenCharacterSelectionSite(iClient);
+	// If they already chose to display this through the xpm menu or talents already confirmed, then dont display
+	if (g_bClientAlreadyShownCharacterSelectMenu[iClient] == false && g_bTalentsConfirmed[iClient] == false)
+		OpenCharacterSelectionSite(iClient);
+	
 	return Plugin_Stop;
 }
 

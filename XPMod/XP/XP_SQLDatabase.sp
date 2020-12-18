@@ -245,7 +245,6 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 		// Reset Survivor Classes and Talent Levels
 		ResetSurvivorTalents(iClient, iClient);
 
-
 		// Set Survivor Class Levels
 		AutoLevelUpSurivovor(iClient);
 

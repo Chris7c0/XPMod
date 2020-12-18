@@ -64,6 +64,13 @@ public Action:TimerChangeSpectator(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
+public Action:TimerResetPlayerChangeTeamCoolDown(Handle:timer, any:iClient)
+{
+	g_bPlayerInTeamChangeCoolDown[iClient] = false;
+
+	return Plugin_Stop;
+}
+
 public Action:TimerCheckTeam(Handle:timer, any:iClient)
 {
 	if(iClient < 1 || IsClientInGame(iClient) == false)

@@ -282,7 +282,8 @@ new g_iWaitinOnClientInputForDrawingMenu[MAXPLAYERS + 1];
 #define BUTTON_RELEASED     1
 #define FINISHED_WAITING    2
 
-
+//Player Switching Teams timer
+new bool:g_bPlayerInTeamChangeCoolDown[MAXPLAYERS + 1];
 
 //XPM Options
 new g_iXPDisplayMode[MAXPLAYERS + 1];						//Default 0 = Show Sprites; 1 = Show In Chat, 2 = Disabled

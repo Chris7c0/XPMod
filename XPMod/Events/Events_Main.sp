@@ -18,6 +18,7 @@ SetupXPMEvents()
 	HookEvent("player_connect_full", Event_PlayerConnect);
 	HookEvent("player_disconnect", Event_PlayerDisconnect);
 	HookEvent("player_team", Event_PlayerChangeTeam);
+	AddCommandListener(JoinTeamCmd, "jointeam"); // Specifically for interrupting M button
 	HookEvent("player_spawn", Event_PlayerSpawn);
 	HookEvent("player_death", Event_PlayerDeath);
 	HookEvent("player_hurt", Event_PlayerHurt);
@@ -343,13 +344,28 @@ public Event_PlayerJump(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	return;
 }
 
+public Action:JoinTeamCmd(iClient, const String:command[], argc)
+{
+	// This is specifically for preventing user from changing team using M button on cool down
+	if (g_bPlayerInTeamChangeCoolDown[iClient] == true)
+	{
+		PrintToChat(iClient, "\x03[XPMod] \x05You can only change teams once every 10 seconds.");
+		return Plugin_Stop;
+	}
+
+	return Plugin_Continue;
+}
+
 public Action:Event_PlayerChangeTeam(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
-	
+
 	if(iClient < 1 || IsFakeClient(iClient) == true || IsClientInGame(iClient) == false)
 		return Plugin_Continue;
 	
+	g_bPlayerInTeamChangeCoolDown[iClient] = true;
+	CreateTimer(10.0, TimerResetPlayerChangeTeamCoolDown, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
 	CreateTimer(0.1, TimerCheckTeam, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	
 	return Plugin_Continue;

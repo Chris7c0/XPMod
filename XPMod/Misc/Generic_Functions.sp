@@ -1925,6 +1925,11 @@ fnc_CheckGrapple(iClient)
 	//PrintToChatAll("g_bIsClientGrappled = %i", g_bIsClientGrappled[iClient]);
 }
 
+public Action:OpenHelpMotdPanel(iClient,args)
+{
+	OpenMOTDPanel(iClient, "", "http://xpmod.net/help/xpmod_ig_help.html", MOTDPANEL_TYPE_URL);
+	return Plugin_Handled;
+}
 
  
 /**************************************************************************************************************************/

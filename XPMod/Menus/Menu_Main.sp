@@ -347,6 +347,13 @@ public ChooseTeamMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select)
 	{
+		if (g_bPlayerInTeamChangeCoolDown[iClient])
+		{
+			PrintToChat(iClient, "\x03[XPMod] \x05You can only change teams once every 10 seconds.");
+			ChooseTeamMenuDraw(iClient);
+			return;
+		}
+
 		switch (itemNum)
 		{
 			case 0: //Switch to Survivor

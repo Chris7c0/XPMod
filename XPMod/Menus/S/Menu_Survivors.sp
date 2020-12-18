@@ -123,35 +123,40 @@ public ChangeCharacterMenuHandler(Handle:hmenu, MenuAction:action, iClient, item
 			{
 				ResetSurvivorTalents(iClient, iClient);
 				g_iChosenSurvivor[iClient] = BILL;
-				AutoLevelUpSurivovor(iClient)
+				AutoLevelUpSurivovor(iClient);
+				SaveUserData(iClient);
 				ClassMenuDraw(iClient);
 			}
 			case 1: //Change to Rochelle
 			{
 				ResetSurvivorTalents(iClient, iClient);
 				g_iChosenSurvivor[iClient] = ROCHELLE;
-				AutoLevelUpSurivovor(iClient)
+				AutoLevelUpSurivovor(iClient);
+				SaveUserData(iClient);
 				ClassMenuDraw(iClient);
 			}
 			case 2: //Change to Coach
 			{
 				ResetSurvivorTalents(iClient, iClient);
 				g_iChosenSurvivor[iClient] = COACH;
-				AutoLevelUpSurivovor(iClient)
+				AutoLevelUpSurivovor(iClient);
+				SaveUserData(iClient);
 				ClassMenuDraw(iClient);
 			}
 			case 3: //Change to Ellis
 			{
 				ResetSurvivorTalents(iClient, iClient);
 				g_iChosenSurvivor[iClient] = ELLIS;
-				AutoLevelUpSurivovor(iClient)
+				AutoLevelUpSurivovor(iClient);
+				SaveUserData(iClient);
 				ClassMenuDraw(iClient);
 			}
 			case 4: //Change to Nick
 			{
 				ResetSurvivorTalents(iClient, iClient);
 				g_iChosenSurvivor[iClient] = NICK;
-				AutoLevelUpSurivovor(iClient)
+				AutoLevelUpSurivovor(iClient);
+				SaveUserData(iClient);
 				ClassMenuDraw(iClient);
 			}
 			case 5: //Back

@@ -168,9 +168,10 @@ public Action:GiveXP(iClient,args)
 	return Plugin_Handled;
 }
 
-//Resets XP, LVL, and Skillpoints, equipment and talents				//Make admin commmand and this wont work if canchange != true so make it work independent of the reset skill points function
+//Resets XP, LVL, and Skillpoints, equipment and talents
 public Action:ResetAll(iClient,args)
 {
+	g_bPlayerInTeamChangeCoolDown[iClient] = false;
 	g_iClientXP[iClient] = 0;
 	g_iClientLevel[iClient] = 0;
 	g_iInfectedLevel[iClient] = 0;

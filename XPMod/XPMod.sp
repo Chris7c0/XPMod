@@ -185,6 +185,7 @@ SetupConsoleCommands()
 	//RegConsoleCmd("xpm", TopMenuDraw);					//Displays XPMod Menu
 	RegConsoleCmd("xpmstats", ShowTeamStatsToPlayer);
 	RegConsoleCmd("website", MotdPanel);
+	RegConsoleCmd("xpmhelp", OpenHelpMotdPanel);
 	RegConsoleCmd("resetmyaccount", ResetAll);			//Reset Level, skillpoints, XP,  and talents
 	RegConsoleCmd("xpmbind1", Bind1Press);				//This is the binded key function for ultimate abilites, Bind 1
 	RegConsoleCmd("xpmbind2", Bind2Press);				//This is the binded key function for ultimate abilites, Bind 2
@@ -298,6 +299,7 @@ public ResetVariablesForMap(iClient)
 	g_iEllisMaxHealth[iClient] = 100;
 	g_iNickMaxHealth[iClient] = 100;
 	g_bTalentsGiven[iClient] = false;
+	g_bPlayerInTeamChangeCoolDown[iClient] = false;
 	g_fTimeStamp[iClient] = -1.0;
 	g_iFastAttackingClientsArray[iClient] = -1;
 	g_bDoesClientAttackFast[iClient] = false;
