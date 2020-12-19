@@ -83,6 +83,8 @@ public Action:Bind1Press(iClient,args)
 					DispatchKeyValue(ammopile, "spawnflags", "2");
 					DispatchSpawn(ammopile);
 					SetEntityModel(ammopile, "models/props_unique/spawn_apartment/coffeeammo.mdl");
+					// Set the ammo pile to not be solid to prevent glitches like blocking saferoom door
+					SetEntProp(ammopile, Prop_Send, "m_nSolidType", 0);
 					
 					//Show the arrow under the ammo sprite
 					vorigin[2] += 10.0;

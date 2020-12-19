@@ -321,6 +321,7 @@ public Action:TimerInstantSpitterCooldown(Handle:timer, any:iClient)
 	{
 		new Float:flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextAct+8);
 		new Float:flTimeStamp_calc = flTimeStamp_ret - 20.0;
+		PrintToChatAll("flTimeStamp_ret %f flTimeStamp_calc %f", flTimeStamp_ret, flTimeStamp_calc);
 		SetEntDataFloat(iEntid, g_iOffset_NextAct+8, flTimeStamp_calc, true);
 	}
 	PrintHintText(iClient, "SPIT AGAIN!");
