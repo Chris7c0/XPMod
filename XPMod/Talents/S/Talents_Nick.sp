@@ -194,6 +194,8 @@ OnGameFrame_Nick(iClient)
 					g_bIsNickInSecondaryCycle[iClient] = true;
 					CreateTimer(0.5, TimerNickSecondaryCycleReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
 					new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+					if (IsValidEntity(ActiveWeaponID) == false)
+						return;
 					//PrintToChatAll("%s g_strNickSecondarySlot2", g_strNickSecondarySlot2[iClient]);
 					//PrintToChatAll("%s g_strNickSecondarySlot1", g_strNickSecondarySlot1[iClient]);
 					//new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");

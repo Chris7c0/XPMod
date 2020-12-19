@@ -34,7 +34,10 @@ public Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroa
 				}
 			}
 			new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+			if (IsValidEntity(ActiveWeaponID) == false)
+				return Plugin_Continue;
 			new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
+
 			if((CurrentClipAmmo == 0) || (CurrentClipAmmo == 1))
 			{
 				fnc_DeterminePrimaryWeapon(iClient);

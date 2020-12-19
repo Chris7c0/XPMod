@@ -438,7 +438,10 @@ OnGameFrame_Coach(iClient)
 			decl String:currentweapon[32];
 			GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
 			new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+			if (IsValidEntity(ActiveWeaponID) == false)
+				return;
 			new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
+			
 			if(((StrEqual(currentweapon, "weapon_pumpshotgun", false) == true) || (StrEqual(currentweapon, "weapon_shotgun_chrome", false) == true)) && (CurrentClipAmmo > 7) && (CurrentClipAmmo <= (7 + (g_iSprayLevel[iClient] * 2))))
 			{
 				new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");

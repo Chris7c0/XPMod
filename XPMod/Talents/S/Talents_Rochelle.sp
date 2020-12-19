@@ -216,6 +216,8 @@ OnGameFrame_Rochelle(iClient)
 			decl String:currentweapon[32];
 			GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
 			new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+			if (IsValidEntity(ActiveWeaponID) == false)
+				return;
 			new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
 			if((StrEqual(currentweapon, "weapon_sniper_military", false) == true) && (CurrentClipAmmo == 30))
 			{
