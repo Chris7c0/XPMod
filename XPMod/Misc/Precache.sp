@@ -121,6 +121,8 @@ PrecacheAllParticles()
 
 PrecacheAllSounds()
 {
+	PrecacheSound(SOUND_XPM_ADVERTISEMENT);
+	PrecacheSound(SOUND_LOGIN);
 	PrecacheSound(SOUND_LEVELUP);
 	PrecacheSound(SOUND_TALENTS_LOAD);
 	PrecacheSound(SOUND_AMBTEST4);

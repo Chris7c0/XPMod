@@ -41,6 +41,7 @@ public Action:Timer_ShowXPModInfoToServer(Handle:timer, any:data)
 
 AdvertiseXPModToNewUser(iClient, bool:bShowInChat = false)
 {
+	EmitSoundToClient(iClient, SOUND_XPM_ADVERTISEMENT, SOUND_FROM_PLAYER, SNDCHAN_AUTO, SNDLEVEL_TRAIN);
 	PrintHintText(iClient, "Type !xpm in chat to use XPMod");
 	if(bShowInChat)
 		PrintToChat(iClient, "\x05Type \x04!xpm\x05 in chat to use \x03XPMod\x05!");

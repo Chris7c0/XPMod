@@ -126,12 +126,14 @@ public Action:DelayedDrawMOTDPanel(Handle:timer, any:iClient)
 	decl String:url[256];
 
 	if (g_iClientTeam[iClient] == TEAM_SURVIVORS)
-		Format(url, sizeof(url), "http://xpmod.net/select/s/survivor_select.php?i=%i&t=%s", g_iDBUserID[iClient], g_strDBUserToken[iClient]);
+		Format(url, sizeof(url), "http://xpmod.net/select/s/survivor_select.php?id=%i&t=%s", g_iDBUserID[iClient], g_strDBUserToken[iClient]);
 	else if (g_iClientTeam[iClient] == TEAM_INFECTED)
-		Format(url, sizeof(url), "http://xpmod.net/select/i/infected_select.php?i=%i&t=%s", g_iDBUserID[iClient], g_strDBUserToken[iClient]);
+		Format(url, sizeof(url), "http://xpmod.net/select/i/infected_select.php?id=%i&t=%s", g_iDBUserID[iClient], g_strDBUserToken[iClient]);
 	else
-		Format(url, sizeof(url), "http://xpmod.net/select/character_select.php?i=%i&t=%s", g_iDBUserID[iClient], g_strDBUserToken[iClient]);
+		Format(url, sizeof(url), "http://xpmod.net/select/character_select.php?id=%i&t=%s", g_iDBUserID[iClient], g_strDBUserToken[iClient]);
 
+	PrintToServer("%s", url);
+	
 	OpenMOTDPanel(iClient, " ", url, MOTDPANEL_TYPE_URL);
 
 	return Plugin_Stop;

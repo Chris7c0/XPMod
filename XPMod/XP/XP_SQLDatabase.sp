@@ -308,6 +308,11 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 			
 			//Set the user to be logged in
 			g_bClientLoggedIn[iClient] = true;
+
+			new Float:vec[3];
+			GetClientAbsOrigin(iClient, vec);
+			vec[2] += 10;
+			EmitAmbientSound(SOUND_LOGIN, vec, iClient, SNDLEVEL_RAIDSIREN);
 			
 			PrintToChatAll("\x05<-=- \x03%N (Level %d) logged in\x05 -=->", iClient, g_iClientLevel[iClient]);
 			PrintToServer(":-=-=-=-=-<[%N (Level %d) logged in]>-=-=-=-=-:", iClient, g_iClientLevel[iClient]);
@@ -358,6 +363,8 @@ GetUserData(any:iClient, bool:bOnlyWebsiteChangableData = false, bool:bDrawConfi
 		&& bOnlyWebsiteChangableData == false) || 
 		g_bTalentsConfirmed[iClient])
 		return;
+
+	PrintToServer("GetUserData %N: %i",iClient, g_iDBUserID[iClient]);
 
 	// Save the new user data into the SQL database with the matching Steam ID
 	decl String:strQuery[1024] = "";

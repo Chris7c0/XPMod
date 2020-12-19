@@ -69,6 +69,8 @@
 
 ///////////////////////   Sound Definitions   ////////////////////////
 //Stock Sounds//
+#define SOUND_XPM_ADVERTISEMENT     "buttons/button14.wav"
+#define SOUND_LOGIN                 "ui/menu_countdown.wav"
 #define SOUND_LEVELUP				"ui/critical_event_1.wav"
 #define SOUND_FREEZE				"physics/glass/glass_impact_bullet4.wav"
 #define SOUND_AMBTEST3				"music/stmusic/deathisacarousel.wav"
