@@ -1109,8 +1109,8 @@ public Action:Event_WitchSpawn(Handle:hEvent, const String:sName[], bool:bDontBr
 {
 	new iWitchID = GetEventInt(hEvent, "witchid");
 	
-	new bool:bOwnerFound = false, iClient = 1;
-	for(; iClient < MaxClients; iClient++)
+	new bool:bOwnerFound = false;
+	for(iClient = 1; iClient < MaxClients; iClient++)
 	{
 		if(g_bJustSpawnedWitch[iClient] == true && g_iClientTeam[iClient] == TEAM_INFECTED && g_iInfectedCharacter[iClient] == SPITTER
 			&& IsClientInGame(iClient) == true && IsFakeClient(iClient) == false)
@@ -1155,8 +1155,7 @@ public Action:Timer_CheckWitchRage(Handle:timer, any:iWitchID)
 	//PrintToServer("Timer_CheckWitchRage: id = %d, className = %s", iWitchID, className)
 	if (strcmp(className, "witch", true) != 0)
 	{
-		LogError("[XPMod] Stoping Timer_CheckWitchRage className != witch.  className: %s", className);
-		
+		//LogError("[XPMod] Stoping Timer_CheckWitchRage className != witch.  className: %s", className);
 		return Plugin_Stop;
 	}
 	

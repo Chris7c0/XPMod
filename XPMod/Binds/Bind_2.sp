@@ -359,7 +359,7 @@ public Action:Bind2Press(iClient,args)
 										vangles[0] = 0.0;		//Lock x and z axis
 										vangles[2] = 0.0;
 										GetClientAbsOrigin(iClient, g_xyzWitchConjureLocation[iClient]);	//Get clients location origin vectors
-										g_xyzWitchConjureLocation[iClient][0] += (vdir[0] * 40.0);		//Place the minigun infront of the players view
+										g_xyzWitchConjureLocation[iClient][0] += (vdir[0] * 40.0);		//Place the witch conjure particle infront of the players view
 										g_xyzWitchConjureLocation[iClient][1] += (vdir[1] * 40.0);
 										g_xyzWitchConjureLocation[iClient][2] += vdir[2] + 1.0;			//Raise it up slightly to prevent glitches
 										
