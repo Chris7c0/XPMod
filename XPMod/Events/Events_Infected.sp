@@ -1110,6 +1110,7 @@ public Action:Event_WitchSpawn(Handle:hEvent, const String:sName[], bool:bDontBr
 	new iWitchID = GetEventInt(hEvent, "witchid");
 	
 	new bool:bOwnerFound = false;
+	decl iClient;
 	for(iClient = 1; iClient < MaxClients; iClient++)
 	{
 		if(g_bJustSpawnedWitch[iClient] == true && g_iClientTeam[iClient] == TEAM_INFECTED && g_iInfectedCharacter[iClient] == SPITTER
