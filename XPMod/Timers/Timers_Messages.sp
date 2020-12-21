@@ -5,9 +5,9 @@ public Action:PrintXPMmessage(Handle:timer, any:data)
 			if(IsClientInGame(i) && IsFakeClient(i) == false && g_bClientLoggedIn[i] == true && g_bTalentsConfirmed[i] == true)
 			{
 				if(g_iSkillPoints[i] == 1)
-					PrintToChat(i, "\x03[XPMod]\x01 * \x05You have\x01 1\x05 unused Skill Point!\x01 *\x05\n                Type \x04!xpm\x05 and choose \x03Survivor Talents \x05to level up.");
+					PrintToChat(i, "\x03[XPMod]\x01 * \x05You have\x01 1\x05 unused Skill Point!\x01 *\x05\n                Type \x04xpm\x05 and choose \x03Survivor Talents \x05to level up.");
 				else if(g_iSkillPoints[i] > 1)
-					PrintToChat(i, "\x03[XPMod]\x01 * \x05You have \x01%d\x05 unused Skill Points!\x01 *\x05\n                Type \x04!xpm\x05 and choose \x03Survivor Talents \x05to level up.", g_iSkillPoints[i]);
+					PrintToChat(i, "\x03[XPMod]\x01 * \x05You have \x01%d\x05 unused Skill Points!\x01 *\x05\n                Type \x04xpm\x05 and choose \x03Survivor Talents \x05to level up.", g_iSkillPoints[i]);
 				else if((g_iClientInfectedClass1[i] == UNKNOWN_INFECTED) || (g_iClientInfectedClass2[i] == UNKNOWN_INFECTED) || (g_iClientInfectedClass3[i] == UNKNOWN_INFECTED))
 				{
 					new num = 0;
@@ -19,9 +19,9 @@ public Action:PrintXPMmessage(Handle:timer, any:data)
 						num++;
 					switch(num)
 					{
-						case 1: PrintToChat(i, "\x03[XPMod]\x01 * \x05You have\x01 1\x05 unchosen class in your \x01Infected Talents \x05!\x01 *\x05\n                Type \x04!xpm\x05 and choose your infected classes.");
-						case 2: PrintToChat(i, "\x03[XPMod]\x01 * \x05You have\x01 2\x05 unchosen classes in your \x01Infected Talents \x05!\x01 *\x05\n                Type \x04!xpm\x05 and choose your infected classes.");
-						case 3: PrintToChat(i, "\x03[XPMod]\x01 * \x05You have\x01 3\x05 unchosen classes in your \x01Infected Talents \x05!\x01 *\x05\n                Type \x04!xpm\x05 and choose your infected classes.");
+						case 1: PrintToChat(i, "\x03[XPMod]\x01 * \x05You have\x01 1\x05 unchosen class in your \x01Infected Talents \x05!\x01 *\x05\n                Type \x04xpm\x05 and choose your infected classes.");
+						case 2: PrintToChat(i, "\x03[XPMod]\x01 * \x05You have\x01 2\x05 unchosen classes in your \x01Infected Talents \x05!\x01 *\x05\n                Type \x04xpm\x05 and choose your infected classes.");
+						case 3: PrintToChat(i, "\x03[XPMod]\x01 * \x05You have\x01 3\x05 unchosen classes in your \x01Infected Talents \x05!\x01 *\x05\n                Type \x04xpm\x05 and choose your infected classes.");
 					}
 				}
 			}

@@ -275,7 +275,7 @@ public LoadTalents(iClient)
 				if((g_iClientLevel[iClient] - (g_iClientLevel[iClient] - g_iSkillPoints[iClient])) <= (g_iClientLevel[iClient] - 1))
 					PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Support Talents \x05have been loaded.");
 				else
-					PrintToChat(iClient, "\x03[XPMod]\x01 * \x05None of your talents are leveled up! \x01*\x05\n                Type \x04!xpm\x05 and choose \x03Survivor Talents \x05to level up.");
+					PrintToChat(iClient, "\x03[XPMod]\x01 * \x05None of your talents are leveled up! \x01*\x05\n                Type \x04xpm\x05 and choose \x03Survivor Talents \x05to level up.");
 			}
 			case 1:		//Rochelle Talents
 			{
@@ -327,7 +327,7 @@ public LoadTalents(iClient)
 				if( (g_iClientLevel[iClient] - (g_iClientLevel[iClient] - g_iSkillPoints[iClient])) <= (g_iClientLevel[iClient] - 1))
 					PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Ninja Talents \x05have been loaded.");
 				else
-					PrintToChat(iClient, "\x03[XPMod]\x01 * \x05None of your talents are leveled up! \x01*\x05\n                Type \x04!xpm\x05 and choose \x03Survivor Talents \x05to level up.");
+					PrintToChat(iClient, "\x03[XPMod]\x01 * \x05None of your talents are leveled up! \x01*\x05\n                Type \x04xpm\x05 and choose \x03Survivor Talents \x05to level up.");
 			}
 			case 2:		//Coach Talents
 			{
@@ -441,7 +441,7 @@ public LoadTalents(iClient)
 				if( (g_iClientLevel[iClient] - (g_iClientLevel[iClient] - g_iSkillPoints[iClient])) <= (g_iClientLevel[iClient] - 1))
 					PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Berserker Talents \x05have been loaded.");
 				else
-					PrintToChat(iClient, "\x03[XPMod]\x01 * \x05None of your talents are leveled up! \x01*\x05\n                Type \x04!xpm\x05 and choose \x03Survivor Talents \x05to level up.");
+					PrintToChat(iClient, "\x03[XPMod]\x01 * \x05None of your talents are leveled up! \x01*\x05\n                Type \x04xpm\x05 and choose \x03Survivor Talents \x05to level up.");
 			}
 			case 3:		//Ellis Talents
 			{
@@ -490,7 +490,7 @@ public LoadTalents(iClient)
 				if( (g_iClientLevel[iClient] - (g_iClientLevel[iClient] - g_iSkillPoints[iClient])) <= (g_iClientLevel[iClient] - 1))
 					PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Weapon Expert Talents \x05have been loaded.");
 				else
-					PrintToChat(iClient, "\x03[XPMod]\x01 * \x05None of your talents are leveled up! \x01*\x05\n                Type \x04!xpm\x05 and choose \x03Survivor Talents \x05to level up.");
+					PrintToChat(iClient, "\x03[XPMod]\x01 * \x05None of your talents are leveled up! \x01*\x05\n                Type \x04xpm\x05 and choose \x03Survivor Talents \x05to level up.");
 					
 				if(g_iOverLevel[iClient] > 0)
 				{
@@ -615,7 +615,7 @@ public LoadTalents(iClient)
 				if( (g_iClientLevel[iClient] - (g_iClientLevel[iClient] - g_iSkillPoints[iClient])) <= (g_iClientLevel[iClient] - 1))
 					PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Medic Talents \x05have been loaded.");
 				else
-					PrintToChat(iClient, "\x03[XPMod]\x01 * \x05None of your talents are leveled up! \x01*\x05\n                Type \x04!xpm\x05 and choose \x03Survivor Talents \x05to level up.");
+					PrintToChat(iClient, "\x03[XPMod]\x01 * \x05None of your talents are leveled up! \x01*\x05\n                Type \x04xpm\x05 and choose \x03Survivor Talents \x05to level up.");
 			}
 		}
 		
