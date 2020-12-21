@@ -296,6 +296,7 @@ FindGameMode()
 public ResetVariablesForMap(iClient)
 {
 	ResetTalentConfirmCountdown(iClient);
+	
 	g_iEllisMaxHealth[iClient] = 100;
 	g_iNickMaxHealth[iClient] = 100;
 	g_bTalentsGiven[iClient] = false;
@@ -701,14 +702,12 @@ public Action:SayCmd(iClient, args)
 	if(StrEqual(strArgument1, "xpm", false) == true || StrEqual(strArgument1, "!xpm", false) == true ||
 		StrEqual(strArgument1, "xpmod", false) == true || StrEqual(strArgument1, "!xpmod", false) == true)
 		{
-			GetUserData(iClient, true);
-			XPModMenuDraw(iClient, iClient);
+			XPModMenuDraw(iClient);
 		}
 	
 	if(StrEqual(strArgument1, "/xpm", false) == true)
 	{
-		GetUserData(iClient, true);
-		XPModMenuDraw(iClient, iClient);
+		XPModMenuDraw(iClient);
 		return Plugin_Handled;
 	}
 		
@@ -747,11 +746,11 @@ public Action:SayTeamCmd(iClient, args)
 	GetCmdArg(1, strArgument1, 6);
 	if(StrEqual(strArgument1, "xpm", false) == true || StrEqual(strArgument1, "!xpm", false) == true ||
 		StrEqual(strArgument1, "xpmod", false) == true || StrEqual(strArgument1, "!xpmod", false) == true)
-		XPModMenuDraw(iClient, iClient);
+		XPModMenuDraw(iClient);
 		
 	if(StrEqual(strArgument1, "/xpm", false) == true)
 	{
-		XPModMenuDraw(iClient, iClient);
+		XPModMenuDraw(iClient);
 		return Plugin_Handled;
 	}
 	

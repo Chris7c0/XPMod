@@ -61,22 +61,27 @@ public Action:ClosePanel(iClient)
 	return Plugin_Handled;
 }
 
-public Action:XPModMenuDraw(iClient,args)
+XPModMenuDraw(iClient)
 {
-	if(iClient == 0)
+	// For client hosted games
+	if (iClient == 0)
 		iClient=1;
 	
-	if(IsClientInGame(iClient))
+	if (RunClientChecks(iClient))
 	{		
 		if(g_bClientLoggedIn[iClient] == false)
+		{
 			CreateNewUser(iClient);
+			return;
+		}
 		
+		// Turn off the client IDD menu in case they have it enabled
 		g_bClientIDDToggle[iClient] = false;
 		
+		// This will get the user data, then draw the menu once its returned
 		if(g_bClientLoggedIn[iClient] == true)
-			TopMenuDraw(iClient);
+			GetUserData(iClient, true, false, true);
 	}
-	return Plugin_Handled;
 }
 //Menu Draw Functions                                                                                     
 //Top XPMod Menu Draw
@@ -100,7 +105,7 @@ public Action:TopMenuDraw(iClient)
 			case 4: SetMenuTitle(g_hMenu_XPM[iClient], "    XP Mod %s\n====================\nLevel  %d  Medic\nXP:   %d/%d\n====================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 		}
 	else if(g_iClientTeam[iClient] == TEAM_INFECTED)
-		SetMenuTitle(g_hMenu_XPM[iClient], "     XP Mod %s\n====================\nLevel  %d  Infected\nXP:   %d/%d\n====================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+		SetMenuTitle(g_hMenu_XPM[iClient], "     XP Mod %s\n====================\nLevel  %d  Infected\nXP:   %d/%d\nSlot 1: %s\nSlot 2: %s\nSlot 3: %s\n====================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	else
 		SetMenuTitle(g_hMenu_XPM[iClient], "    XP Mod %s\n====================\nLevel %d\nXP:     %d/%d\n====================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 	
@@ -278,6 +283,10 @@ public TopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 					OpenCharacterSelectionSite(iClient);
 				else
 					OpenCharacterSelectionSite(iClient);
+				
+				// Set this value to draw the confirmation once they close the motd and push a button
+				if (g_bTalentsConfirmed[iClient] == false)
+					g_iOpenCharacterMotdAndDrawMenuState[iClient] = WAITING_ON_RELEASE_FOR_CONFIRM_MENU;
 			}
 			case 1: //Choose Loadout
 			{
@@ -336,7 +345,7 @@ public ExtrasMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			}
 			case 6: //Back
 			{
-				XPModMenuDraw(iClient, iClient);
+				TopMenuDraw(iClient);
 			}
 		}
 	}

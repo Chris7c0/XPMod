@@ -149,6 +149,7 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 	new iClient = ReadPackCell(hDataPack);
 	bool bOnlyWebsiteChangableData = ReadPackCell(hDataPack);
 	bool bDrawConfirmMenuAfter = ReadPackCell(hDataPack);
+	bool bDrawTopMenuAfter = ReadPackCell(hDataPack);
 	CloseHandle(hDataPack);
 
 	// PrintToChatAll("GetUserData Callback Started. %i: %N, bOnlyWebsiteChangableData = %i", iClient, iClient, bOnlyWebsiteChangableData);
@@ -309,6 +310,9 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 			//Set the user to be logged in
 			g_bClientLoggedIn[iClient] = true;
 
+			// Show user the confirm menu
+			g_iOpenCharacterMotdAndDrawMenuState[iClient] = WAITING_ON_FINAL_BUTTON_FOR_CONFIRM_MENU;
+			
 			new Float:vec[3];
 			GetClientAbsOrigin(iClient, vec);
 			vec[2] += 10;
@@ -332,12 +336,16 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 		delete g_hTimer_ShowingConfirmTalents[iClient];
 		g_hTimer_ShowingConfirmTalents[iClient] = CreateTimer(1.0, TimerShowTalentsConfirmed, iClient, TIMER_REPEAT);
 	}
+	else if (bDrawTopMenuAfter == true)
+	{
+		TopMenuDraw(iClient);
+	}
 
 	// PrintToChatAll("GetUserData Callback Complete.  %i: %N", iClient, iClient);
 	// PrintToServer("GetUserData Callback Complete.  %i: %N", iClient, iClient);
 }
 
-GetUserData(any:iClient, bool:bOnlyWebsiteChangableData = false, bool:bDrawConfirmMenuAfter = false)
+GetUserData(any:iClient, bool:bOnlyWebsiteChangableData = false, bool:bDrawConfirmMenuAfter = false, bool:bDrawTopMenuAfter = false)
 {
 	// PrintToChatAll("GetUserData. %i: %N, bOnlyWebsiteChangableData = %i", iClient, iClient, bOnlyWebsiteChangableData);
 	// PrintToServer("GetUserData. %i: %N, bOnlyWebsiteChangableData = %i", iClient, iClient, bOnlyWebsiteChangableData);
@@ -360,11 +368,19 @@ GetUserData(any:iClient, bool:bOnlyWebsiteChangableData = false, bool:bDrawConfi
 	if (!IsClientInGame(iClient) || 
 		IsFakeClient(iClient) || 
 		(g_bClientLoggedIn[iClient] 
-		&& bOnlyWebsiteChangableData == false) || 
-		g_bTalentsConfirmed[iClient])
+		&& bOnlyWebsiteChangableData == false))
 		return;
 
-	PrintToServer("GetUserData %N: %i",iClient, g_iDBUserID[iClient]);
+	// If player already confirmed talents, return, but draw menu if needed
+	if (g_bTalentsConfirmed[iClient])
+	{
+		if (bDrawTopMenuAfter)
+			TopMenuDraw(iClient);
+		
+		return;
+	}
+
+	//PrintToServer("GetUserData %N: %i",iClient, g_iDBUserID[iClient]);
 
 	// Save the new user data into the SQL database with the matching Steam ID
 	decl String:strQuery[1024] = "";
@@ -379,6 +395,7 @@ GetUserData(any:iClient, bool:bOnlyWebsiteChangableData = false, bool:bDrawConfi
 	WritePackCell(hDataPackage, iClient);
 	WritePackCell(hDataPackage, bOnlyWebsiteChangableData);
 	WritePackCell(hDataPackage, bDrawConfirmMenuAfter);
+	WritePackCell(hDataPackage, bDrawTopMenuAfter);
 
 	SQL_TQuery(g_hDatabase, SQLGetUserDataCallback, strQuery, hDataPackage);
 }

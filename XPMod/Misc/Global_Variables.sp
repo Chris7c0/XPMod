@@ -273,16 +273,17 @@ new bool:g_bGameFrozen = false;
 new bool:g_bPlayerPressedButtonThisRound = false;  // This is used to set thte countdown timer, it wont start till  someone presses a button
 
 //Confirmation Variables
-
 new bool:g_bTalentsConfirmed[MAXPLAYERS + 1];
 new bool:g_bUserStoppedConfirmation[MAXPLAYERS + 1];
 new bool:g_bClientAlreadyShownCharacterSelectMenu[MAXPLAYERS + 1];
 new g_iAutoSetCountDown[MAXPLAYERS + 1];
-new bool:g_bWaitinOnClientInputForChoosingCharacter[MAXPLAYERS + 1];
-new g_iWaitinOnClientInputForDrawingMenu[MAXPLAYERS + 1];
-#define WAITING             0
-#define BUTTON_RELEASED     1
-#define FINISHED_WAITING    2
+//Drawing Character Select MOTD and Talents Confirm Menu
+#define STARTING_CHAR_SELECT_PROCESS                1
+#define WAITING_ON_BUTTON_FOR_MOTD                  2
+#define WAITING_ON_RELEASE_FOR_CONFIRM_MENU         3
+#define WAITING_ON_FINAL_BUTTON_FOR_CONFIRM_MENU    4
+#define FINISHED_AND_DREW_CONFIRM_MENU              5
+new g_iOpenCharacterMotdAndDrawMenuState[MAXPLAYERS + 1];
 
 //Player Switching Teams timer
 new bool:g_bPlayerInTeamChangeCoolDown[MAXPLAYERS + 1];
