@@ -219,6 +219,9 @@ LoadIceTankTalents(iClient)
 	//Change Skin Color
 	SetEntityRenderMode(iClient, RenderMode:0);
 	SetEntityRenderColor(iClient, 0, 255, 255, 255);
+
+	//Grow the tank, doesnt seem to work
+	//SetEntPropFloat(iClient , Prop_Send,"m_flModelScale", 1.3); 
 	
 	//Attach particle effect
 	g_iPID_IceTankIcicles[iClient] = CreateParticle("ice_tank_icicles", 0.0, iClient, ATTACH_RSHOULDER);
