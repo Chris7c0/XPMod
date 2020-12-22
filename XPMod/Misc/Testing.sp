@@ -35,14 +35,18 @@ public Action:TestFunction1(iClient,args)
 	PrintToServer("T1");
 	//PrintToChat(iClient, "T1");
 
+
+
 	if (args < 1) return Plugin_Stop;
 	
 	char str[99];
 	GetCmdArg(1, str, sizeof(str));
 	
-	// DealDamage(iClient, 2, 1,StringToInt(str));
-	
 
+	//Finding offset for SI cooldowns // Windows is 1084 Linux is +20 1104
+	//g_iOffset_NextActivation = StringToInt(str);
+
+	// DealDamage(iClient, 2, 1,StringToInt(str));
 
 	return Plugin_Stop;
 }
@@ -674,7 +678,7 @@ public Action:TestingShit(iClient,args)
 	//GetCmdArg(1, number1, sizeof(number1));
 	//GetCmdArg(2, number2, sizeof(number2));
 	//GetCmdArg(3, number3, sizeof(number3));
-	//g_iOffset_NextAct = StringToInt(number1);
+	//g_iOffset_NextActivation = StringToInt(number1);
 	//new WeaponIndex;
 	/*
 	while ((WeaponIndex = GetPlayerWeaponSlot(iClient, 0)) != -1)
@@ -684,7 +688,7 @@ public Action:TestingShit(iClient,args)
 	}
 	SDKCall(g_hSetClass, iClient, StringToInt(number1));
 	AcceptEntityInput(MakeCompatEntRef(GetEntProp(iClient, Prop_Send, "m_customAbility")), "Kill");
-	SetEntProp(iClient, Prop_Send, "m_customAbility", GetEntData(SDKCall(g_hCreateAbility, iClient), g_oAbility));
+	SetEntProp(iClient, Prop_Send, "m_customAbility", GetEntData(SDKCall(g_hCreateAbility, iClient), g_iAbility));
 	*/
 	//PrintToChatAll("m_zombieClass = %s", GetEntProp(Client, Prop_Send, "m_zombieClass");
 	//new num = StringToInt(number);
@@ -1069,7 +1073,7 @@ public Action:Testing(iClient,args)
 	SDKCall(g_hSetClass, iClient, newClass);
 	int cAbility = GetEntPropEnt(iClient, Prop_Send, "m_customAbility");
 	if (cAbility > 0) AcceptEntityInput(cAbility, "Kill");
-	SetEntProp(iClient, Prop_Send, "m_customAbility", GetEntData(SDKCall(g_hCreateAbility, iClient), g_oAbility));
+	SetEntProp(iClient, Prop_Send, "m_customAbility", GetEntData(SDKCall(g_hCreateAbility, iClient), g_iAbility));
 	PrintToChatAll("Should be spawned as a %i", newClass);
 	
 	// new iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
@@ -1164,7 +1168,7 @@ public Action:Testing(iClient,args)
 	WritePackCell(h_Pack, i_Ent);
 	CreateTimer(5.0, NewRemoveInstructorHint, h_Pack);
 	
-	PrintToChatAll("NextAttack = %d", g_iOffset_NextAct);
+	PrintToChatAll("NextAttack = %d", g_iOffset_NextActivation);
 	*/
 	
 	/*decl String:number[32];

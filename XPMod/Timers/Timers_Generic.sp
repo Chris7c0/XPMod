@@ -371,7 +371,7 @@ public Action:TimerSpawnGhostClass(Handle:timer, any:iClient)
 	// 		SDKCall(g_hSetClass, iClient, newClass);
 	// 		int cAbility = GetEntPropEnt(iClient, Prop_Send, "m_customAbility");
 	// 		if (cAbility > 0) AcceptEntityInput(cAbility, "Kill");
-	// 		new entData = GetEntData(SDKCall(g_hCreateAbility, iClient), g_oAbility)
+	// 		new entData = GetEntData(SDKCall(g_hCreateAbility, iClient), g_iAbility)
 	// 		if (entData > 0) SetEntProp(iClient, Prop_Send, "m_customAbility", entData);
 	// 		PrintToChatAll("Should be spawned as a %i", newClass);
 
@@ -380,7 +380,7 @@ public Action:TimerSpawnGhostClass(Handle:timer, any:iClient)
 	// 		// SDKCall(g_hSetClass, iClient, g_iClientInfectedClass3[iClient]);
 	// 		// new entprop = GetEntProp(iClient, Prop_Send, "m_customAbility")
 	// 		// AcceptEntityInput(MakeCompatEntRef(entprop), "Kill");
-	// 		// new ent = GetEntData(SDKCall(g_hCreateAbility, iClient), g_oAbility);
+	// 		// new ent = GetEntData(SDKCall(g_hCreateAbility, iClient), g_iAbility);
 	// 		// SetEntProp(iClient, Prop_Send, "m_customAbility", ent);
 	// 		// PrintToChatAll("Should be spawned as a %i", g_iClientInfectedClass3[iClient]);
 	// 	}

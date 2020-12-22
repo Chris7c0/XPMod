@@ -84,12 +84,12 @@ public Action:TimerConstantVomit(Handle:timer, any:iClient)
 	if (!IsValidEntity(iEntid))
 		return Plugin_Stop;
 
-	new Float:flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextAct+8);
+	new Float:flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+8);
 
 
 	g_fTimeStamp[iClient] = flTimeStamp_ret;
 	new Float:flTimeStamp_calc = flTimeStamp_ret - 29.5;
-	SetEntDataFloat(iEntid, g_iOffset_NextAct+8, flTimeStamp_calc, true);
+	SetEntDataFloat(iEntid, g_iOffset_NextActivation+8, flTimeStamp_calc, true);
 	
 	return Plugin_Continue;
 }
@@ -119,20 +119,20 @@ public Action:TimerSetBoomerCooldown(Handle:timer, any:iClient)
 		return Plugin_Stop;
 	
 	//retrieve the next act time
-	//new Float:flDuration_ret = GetEntDataFloat(iEntid,g_iOffset_NextAct+4);
+	//new Float:flDuration_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+4);
 
 	//----DEBUG----
 	//if (g_iShow==1)
 	//	PrintToChatAll("\x03- actsuppress dur \x01 %f\x03 timestamp \x01%f", GetEntDataFloat(iEntid, g_iSuppressO+4), GetEntDataFloat(iEntid, g_iSuppressO+8) );
 
 	//retrieve current timestamp
-	new Float:flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextAct+8);
+	new Float:flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+8);
 	//PrintToChatAll("flTimeStamp_ret = %f", flTimeStamp_ret);
-	//PrintToChatAll("\x03 after adjusted shot\n-pre, iClient \x01%i\x03; entid \x01%i\x03; enginetime\x01 %f\x03; nextactivation: dur \x01 %f\x03 timestamp \x01%f",iClient,iEntid,GetGameTime(),GetEntDataFloat(iEntid, g_iOffset_NextAct+4), GetEntDataFloat(iEntid, g_iOffset_NextAct+8) );
+	//PrintToChatAll("\x03 after adjusted shot\n-pre, iClient \x01%i\x03; entid \x01%i\x03; enginetime\x01 %f\x03; nextactivation: dur \x01 %f\x03 timestamp \x01%f",iClient,iEntid,GetGameTime(),GetEntDataFloat(iEntid, g_iOffset_NextActivation+4), GetEntDataFloat(iEntid, g_iOffset_NextActivation+8) );
 	if (g_fTimeStamp[iClient] < flTimeStamp_ret)
 	{
 		//----DEBUG----
-		//PrintToChatAll("\x03 after adjusted shot\n-pre, iClient \x01%i\x03; entid \x01%i\x03; enginetime\x01 %f\x03; nextactivation: dur \x01 %f\x03 timestamp \x01%f",iClient,iEntid,GetGameTime(),GetEntDataFloat(iEntid, g_iOffset_NextAct+4), GetEntDataFloat(iEntid, g_iOffset_NextAct+8) );
+		//PrintToChatAll("\x03 after adjusted shot\n-pre, iClient \x01%i\x03; entid \x01%i\x03; enginetime\x01 %f\x03; nextactivation: dur \x01 %f\x03 timestamp \x01%f",iClient,iEntid,GetGameTime(),GetEntDataFloat(iEntid, g_iOffset_NextActivation+4), GetEntDataFloat(iEntid, g_iOffset_NextActivation+8) );
 		//PrintToChatAll("g_fTimeStamp %f is less than flTimeStamp_ret %f", g_fTimeStamp[iClient], flTimeStamp_ret);
 		//update the timestamp stored in plugin
 		g_fTimeStamp[iClient] = flTimeStamp_ret;
@@ -149,10 +149,10 @@ public Action:TimerSetBoomerCooldown(Handle:timer, any:iClient)
 		//new Float:flTimeStamp_calc = flTimeStamp_ret - (GetConVarFloat(FindConVar("z_vomit_interval")) * (1.0 - 0.5) );	what it was in perkmod
 		new Float:flTimeStamp_calc = flTimeStamp_ret -  (30 - (30 - (g_iRapidLevel[iClient] * 2)) );
 		//PrintToChatAll("flTimeStamp_calc = %f", flTimeStamp_calc);
-		SetEntDataFloat(iEntid, g_iOffset_NextAct+8, flTimeStamp_calc, true);
+		SetEntDataFloat(iEntid, g_iOffset_NextActivation+8, flTimeStamp_calc, true);
 
 		//----DEBUG----
-		//PrintToChatAll("\x03-post, nextactivation dur \x01 %f\x03 timestamp \x01%f", GetEntDataFloat(iEntid, g_iOffset_NextAct+4), GetEntDataFloat(iEntid, g_iOffset_NextAct+8) );
+		//PrintToChatAll("\x03-post, nextactivation dur \x01 %f\x03 timestamp \x01%f", GetEntDataFloat(iEntid, g_iOffset_NextActivation+4), GetEntDataFloat(iEntid, g_iOffset_NextActivation+8) );
 	}
 
 	return Plugin_Continue;

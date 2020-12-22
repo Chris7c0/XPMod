@@ -24,19 +24,19 @@ public Action:TimerSetChargerCooldown(Handle:timer, any:iClient)
 		return Plugin_Stop;
 	}
 	//retrieve the next act time
-	//new Float:flDuration_ret = GetEntDataFloat(iEntid,g_iOffset_NextAct+4);
+	//new Float:flDuration_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+4);
 
 	//----DEBUG----
 	//if (g_iShow==1)
 	//	PrintToChatAll("\x03- actsuppress dur \x01 %f\x03 timestamp \x01%f", GetEntDataFloat(iEntid, g_iSuppressO+4), GetEntDataFloat(iEntid, g_iSuppressO+8) );
 
 	//retrieve current timestamp
-	new Float:flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextAct+8);
+	new Float:flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+8);
 
 	if (g_fTimeStamp[iClient] < flTimeStamp_ret)
 	{
 		//----DEBUG----
-		//PrintToChatAll("\x03 after adjusted shot\n-pre, iClient \x01%i\x03; entid \x01%i\x03; enginetime\x01 %f\x03; nextactivation: dur \x01 %f\x03 timestamp \x01%f",iClient,iEntid,GetGameTime(),GetEntDataFloat(iEntid, g_iOffset_NextAct+4), GetEntDataFloat(iEntid, g_iOffset_NextAct+8) );
+		//PrintToChatAll("\x03 after adjusted shot\n-pre, iClient \x01%i\x03; entid \x01%i\x03; enginetime\x01 %f\x03; nextactivation: dur \x01 %f\x03 timestamp \x01%f",iClient,iEntid,GetGameTime(),GetEntDataFloat(iEntid, g_iOffset_NextActivation+4), GetEntDataFloat(iEntid, g_iOffset_NextActivation+8) );
 
 		//update the timestamp stored in plugin
 		g_fTimeStamp[iClient] = flTimeStamp_ret;
@@ -62,10 +62,10 @@ public Action:TimerSetChargerCooldown(Handle:timer, any:iClient)
 			flTimeStamp_calc = flTimeStamp_ret -  (12 - (12 - (4)) );
 		else
 			flTimeStamp_calc = flTimeStamp_ret -  (12 - (12 - (5)) );
-		SetEntDataFloat(iEntid, g_iOffset_NextAct+8, flTimeStamp_calc, true);
+		SetEntDataFloat(iEntid, g_iOffset_NextActivation+8, flTimeStamp_calc, true);
 		
 		//----DEBUG----
-		//PrintToChatAll("\x03-post, nextactivation dur \x01 %f\x03 timestamp \x01%f", GetEntDataFloat(iEntid, g_iOffset_NextAct+4), GetEntDataFloat(iEntid, g_iOffset_NextAct+8) );
+		//PrintToChatAll("\x03-post, nextactivation dur \x01 %f\x03 timestamp \x01%f", GetEntDataFloat(iEntid, g_iOffset_NextActivation+4), GetEntDataFloat(iEntid, g_iOffset_NextActivation+8) );
 	}
 
 	return Plugin_Continue;

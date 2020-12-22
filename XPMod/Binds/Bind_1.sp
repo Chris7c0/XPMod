@@ -596,9 +596,9 @@ public Action:Bind1Press(iClient,args)
 								new iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
 								if (iEntid > 0)
 								{
-									new Float:flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextAct+8);
+									new Float:flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+8);
 									new Float:flTimeStamp_calc = flTimeStamp_ret - 29.5;
-									SetEntDataFloat(iEntid, g_iOffset_NextAct+8, flTimeStamp_calc, true);
+									SetEntDataFloat(iEntid, g_iOffset_NextActivation+8, flTimeStamp_calc, true);
 								}
 								CreateTimer(1.0, TimerConstantVomit, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 								CreateTimer(9.0, TimerStopHotMeal, iClient, TIMER_FLAG_NO_MAPCHANGE);
@@ -793,9 +793,9 @@ public Action:Bind1Press(iClient,args)
 									new iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
 									if (iEntid > 0)
 									{
-										new Float:flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextAct+8);
+										new Float:flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+8);
 										new Float:flTimeStamp_calc = flTimeStamp_ret - 12.0;
-										SetEntDataFloat(iEntid, g_iOffset_NextAct+8, flTimeStamp_calc, true);
+										SetEntDataFloat(iEntid, g_iOffset_NextActivation+8, flTimeStamp_calc, true);
 									}
 									PrintHintText(iClient, "Your next charge will be a super charge");
 								}

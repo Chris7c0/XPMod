@@ -1098,7 +1098,7 @@ public Action:Event_SpitBurst(Handle:hEvent, const String:strName[], bool:bDontB
 				if(--g_iAcidReflexLeft[iClient] == 0)
 					CreateTimer(30.0, TimerResetCanUseAcidReflex, iClient, TIMER_FLAG_NO_MAPCHANGE);
 			}
-				
+			
 			if(g_iHallucinogenicLevel[iClient] > 0)
 				CreateTimer(1.0, TimerSetSpitterCooldown, iClient,  TIMER_FLAG_NO_MAPCHANGE);
 		}

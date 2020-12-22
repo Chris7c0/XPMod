@@ -246,7 +246,7 @@ new bool:canchangemovement[MAXPLAYERS + 1];
 new preledgehealth[MAXPLAYERS + 1];
 new Float:preledgebuffer[MAXPLAYERS + 1];
 new bool:clienthanging[MAXPLAYERS + 1];
-new g_oAbility = 0;
+new g_iAbility = 0;
 
 
 
@@ -826,8 +826,10 @@ const Float:g_flSoHPumpI = 0.5;
 const Float:g_flSoHPumpE = 0.6;
 
 //Offsets for Windows
-//new g_iOffset_NextAct = 1068;
-new g_iOffset_NextAct = 1084;
+new g_iOffset_NextActivation        = -1;
+//new g_iOffset_NextActivation = 1068;
+//new g_iOffset_NextActivation = 1084;   //Windows
+//new g_iOffset_NextActivation = 1104;   //Linux
 //new g_iAttackTimerO = 5436;
 new g_iOffset_ShovePenalty			= -1;
 new g_iOffset_ActiveWeapon			= -1;

@@ -578,7 +578,9 @@ SetupSDKCalls()
 		PrepSDKCall_SetReturnInfo(SDKType_CBaseEntity, SDKPass_Pointer);
 		g_hCreateAbility = EndPrepSDKCall();
 		
-		g_oAbility = GameConfGetOffset(hGameConfigFile, "oAbility");
+		g_iOffset_NextActivation = GameConfGetOffset(hGameConfigFile, "SIAbilityNextActivation");
+		
+		g_iAbility = GameConfGetOffset(hGameConfigFile, "Ability");
 		
 		if (g_hCreateAbility == INVALID_HANDLE)
 			SetFailState("[+] S_HGD: Error: Unable to find CreateAbility signature.");
