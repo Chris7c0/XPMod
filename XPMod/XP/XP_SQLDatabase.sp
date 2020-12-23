@@ -311,7 +311,7 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 			g_bClientLoggedIn[iClient] = true;
 
 			// Show user the confirm menu
-			g_iOpenCharacterMotdAndDrawMenuState[iClient] = WAITING_ON_FINAL_BUTTON_FOR_CONFIRM_MENU;
+			g_iOpenCharacterSelectAndDrawMenuState[iClient] = WAITING_ON_FINAL_BUTTON_FOR_CONFIRM_MENU;
 			
 			new Float:vec[3];
 			GetClientAbsOrigin(iClient, vec);

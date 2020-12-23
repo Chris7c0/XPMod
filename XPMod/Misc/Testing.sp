@@ -41,8 +41,12 @@ public Action:TestFunction1(iClient,args)
 	
 	char str[99];
 	GetCmdArg(1, str, sizeof(str));
-	
 
+
+	//OpenMOTDPanel(iClient, "t1" , str, MOTDPANEL_TYPE_FILE);
+	//OpenMOTDPanel(iClient, "t1" , "http://xpmod.net/blah.html", MOTDPANEL_TYPE_URL);
+	//OpenMOTDPanel(iClient, "t1." , "<html><head><title>a</title><meta http-equiv = \"Content-Type\" content = \"text / html; charset = utf-8\" ></head><body bgcolor = \"# 000000\" ><p>test</p></body></html>", MOTDPANEL_TYPE_URL);
+	//OpenMOTDPanel(iClient, "t1." , "<html> <body> test <script> window.open('http://xpmod.net', '_blank'); </script> </body> </html>", MOTDPANEL_TYPE_URL);
 	//Finding offset for SI cooldowns // Windows is 1084 Linux is +20 1104
 	//g_iOffset_NextActivation = StringToInt(str);
 
@@ -58,6 +62,9 @@ public Action:TestFunction2(iClient,args)
 	PrintToServer("T2");
 	// if (RunClientChecks(iClient) == false) PrintToChat(iClient, "T1");
 
+	//OpenMOTDPanel(iClient, "t2" , "http://xpmod.net/blah.html", MOTDPANEL_TYPE_URL);
+	//OpenMOTDPanel(iClient, "t1." , "<html><head><title>a</title><meta http-equiv = \"Content-Type\" content = \"text / html; charset = utf-8\" ></head><body bgcolor = \"# 000000\" ><p>test</p></body></html>", MOTDPANEL_TYPE_INDEX);
+
 	return Plugin_Stop;
 }
 
@@ -65,18 +72,28 @@ public Action:TestFunction2(iClient,args)
 public Action:TestFunction3(iClient,args)
 {
 	PrintToChat(iClient, "T3");
+
+	//OpenMOTDPanel(iClient, "t3" , " .", MOTDPANEL_TYPE_URL);
+	//OpenMOTDPanel(iClient, "t3." , "<html><head><title>a</title><meta http-equiv = \"Content-Type\" content = \"text / html; charset = utf-8\" ></head><body bgcolor = \"# 000000\" ><p>test</p></body></html>", MOTDPANEL_TYPE_TEXT);
 	return Plugin_Stop;
 }
 
 public Action:TestFunction4(iClient,args)
 {
 	PrintToChat(iClient, "T4");
+
+	//OpenMOTDPanel(iClient, "t4" , " .", MOTDPANEL_TYPE_INDEX);
+	//OpenMOTDPanel(iClient, "t4." , "<html><head><title>a</title><meta http-equiv = \"Content-Type\" content = \"text / html; charset = utf-8\" ></head><body bgcolor = \"# 000000\" ><p>test</p></body></html>", MOTDPANEL_TYPE_INDEX);
 	return Plugin_Stop;
 }
 
 public Action:TestFunction5(iClient,args)
 {
 	PrintToChat(iClient, "T5");
+
+	//OpenMOTDPanel(iClient, "t5" , " .", MOTDPANEL_TYPE_FILE);
+	//OpenMOTDPanel(iClient, "t5." , "/cfg/server.cfg", MOTDPANEL_TYPE_FILE);
+
 	return Plugin_Stop;
 }
 

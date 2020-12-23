@@ -95,14 +95,14 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 	// 	PrintToServer("Button released =========================================< %i", GetEntProp( iClient, Prop_Data, "m_afButtonReleased" ));
 
 	// Ensure is a real player before continuing to check for drawing choose character and confirm menu
-	if (IsFakeClient(iClient) == false && g_iOpenCharacterMotdAndDrawMenuState[iClient] != FINISHED_AND_DREW_CONFIRM_MENU)
+	if (IsFakeClient(iClient) == false && g_iOpenCharacterSelectAndDrawMenuState[iClient] != FINISHED_AND_DREW_CONFIRM_MENU)
 	{
 		// Dont show this motd or menu if they have already confirmed
 		if (g_bTalentsConfirmed[iClient] == true)
-			g_iOpenCharacterMotdAndDrawMenuState[iClient] = FINISHED_AND_DREW_CONFIRM_MENU;
+			g_iOpenCharacterSelectAndDrawMenuState[iClient] = FINISHED_AND_DREW_CONFIRM_MENU;
 
 		// Check if player pressed a certain button after joining game, if they did it will trigger a show choose character
-		if (g_iOpenCharacterMotdAndDrawMenuState[iClient] == WAITING_ON_BUTTON_FOR_MOTD 
+		if (g_iOpenCharacterSelectAndDrawMenuState[iClient] == WAITING_ON_BUTTON_FOR_MOTD 
 			// && (iButtons & IN_FORWARD || 
 			// 	iButtons & IN_BACK || 
 			// 	iButtons & IN_MOVELEFT || 
@@ -113,30 +113,30 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 			// 	iButtons & IN_ATTACK2)
 			)
 		{
-			//PrintToChat(iClient, "g_iOpenCharacterMotdAndDrawMenuState = WAITING_ON_RELEASE_FOR_CONFIRM_MENU: %i", iButtons);
-			g_iOpenCharacterMotdAndDrawMenuState[iClient] = WAITING_ON_RELEASE_FOR_CONFIRM_MENU;
+			//PrintToChat(iClient, "g_iOpenCharacterSelectAndDrawMenuState = WAITING_ON_RELEASE_FOR_CONFIRM_MENU: %i", iButtons);
+			g_iOpenCharacterSelectAndDrawMenuState[iClient] = WAITING_ON_RELEASE_FOR_CONFIRM_MENU;
 
 			// This will open user chacter selection, then get the user data, then will draw confirm menu in callback
 			// If they already chose to display this through the xpm menu, then dont display
 			if (g_bClientAlreadyShownCharacterSelectMenu[iClient] == false)
-				OpenCharacterSelectionSite(iClient);
+				OpenCharacterSelectionPanel(iClient);
 		}
 		// Check if the user released any and all buttons that were pressed in the previous state
-		if (g_iOpenCharacterMotdAndDrawMenuState[iClient] == WAITING_ON_RELEASE_FOR_CONFIRM_MENU && 
+		if (g_iOpenCharacterSelectAndDrawMenuState[iClient] == WAITING_ON_RELEASE_FOR_CONFIRM_MENU && 
 			iButtons == 0)
 			//GetEntProp(iClient, Prop_Data, "m_afButtonReleased") & IN_FORWARD) //g_iButtonPressedbeforeCharacterMotd[iClient])
 		{
-			//PrintToChat(iClient, "g_iOpenCharacterMotdAndDrawMenuState = ...");
+			//PrintToChat(iClient, "g_iOpenCharacterSelectAndDrawMenuState = ...");
 
 			// Set to 0 first to stop multiple calls
-			g_iOpenCharacterMotdAndDrawMenuState[iClient] = 0;
+			g_iOpenCharacterSelectAndDrawMenuState[iClient] = 0;
 			CreateTimer(1.0, StartWaitingForClientInputForDrawMenu, iClient);
 		}
 		// Check if the user pushed a button after the previous buttons were released
-		if (g_iOpenCharacterMotdAndDrawMenuState[iClient] == WAITING_ON_FINAL_BUTTON_FOR_CONFIRM_MENU && iButtons)// & IN_FORWARD)
+		if (g_iOpenCharacterSelectAndDrawMenuState[iClient] == WAITING_ON_FINAL_BUTTON_FOR_CONFIRM_MENU && iButtons)// & IN_FORWARD)
 		{
-			//PrintToChat(iClient, "g_iOpenCharacterMotdAndDrawMenuState = FINISHED_AND_DREW_CONFIRM_MENU");
-			g_iOpenCharacterMotdAndDrawMenuState[iClient] = FINISHED_AND_DREW_CONFIRM_MENU;
+			//PrintToChat(iClient, "g_iOpenCharacterSelectAndDrawMenuState = FINISHED_AND_DREW_CONFIRM_MENU");
+			g_iOpenCharacterSelectAndDrawMenuState[iClient] = FINISHED_AND_DREW_CONFIRM_MENU;
 			// This will get the user data, and the second true will draw confirm menu in callback
 			// Make sure their talents aren't confirmed yet though, to not load or change multiple
 			if (g_bTalentsConfirmed[iClient] == false)

@@ -13,9 +13,9 @@ public Action:TimerCheckAndOpenCharacterSelectionMenuForAll(Handle:timer, any:da
 			IsFakeClient(iClient) == false &&
 			g_iClientTeam[iClient] != TEAM_SPECTATORS)
 		{
-			// Sets the next state of the g_iOpenCharacterMotdAndDrawMenuState which will be handled in OnPlayerRunCmd
-			if(g_iOpenCharacterMotdAndDrawMenuState[iClient] == STARTING_CHAR_SELECT_PROCESS)
-				g_iOpenCharacterMotdAndDrawMenuState[iClient] = WAITING_ON_BUTTON_FOR_MOTD;
+			// Sets the next state of the g_iOpenCharacterSelectAndDrawMenuState which will be handled in OnPlayerRunCmd
+			if(g_iOpenCharacterSelectAndDrawMenuState[iClient] == STARTING_CHAR_SELECT_PROCESS)
+				g_iOpenCharacterSelectAndDrawMenuState[iClient] = WAITING_ON_BUTTON_FOR_MOTD;
 		}
 	}
 	
@@ -33,14 +33,14 @@ public Action:TimerCheckAndOpenCharacterSelectionMenuForAll(Handle:timer, any:da
 // 	{
 // 		//g_iAutoSetCountDown[iClient] = 30;
 // 		//CreateTimer((0.1 * iClient), TimerShowTalentsConfirmed, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
-// 		//CreateTimer((10.0), CheckIfUserMovedThenOpenCharacterSelectionSite, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
-// 		OpenCharacterSelectionSite(iClient);
+// 		//CreateTimer((10.0), CheckIfUserMovedThenOpenCharacterSelectionPanel, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+// 		OpenCharacterSelectionPanel(iClient);
 // 	}
 	
 // 	return Plugin_Stop;
 // }
 
-OpenCharacterSelectionSite(iClient)
+OpenCharacterSelectionPanel(iClient)
 {
 	// Close any existing confirmation menu
 	g_bUserStoppedConfirmation[iClient] = true;
@@ -48,9 +48,11 @@ OpenCharacterSelectionSite(iClient)
 	// Prevent the user from seeing the menu twice for the round
 	g_bClientAlreadyShownCharacterSelectMenu[iClient] = true;
 	
+	// Temporarily disabled until valve fixes MOTDs when people join after joining a different server
 	// Draw multiple times to prevent from not showing
-	CreateTimer(0.1, DelayedCharacterSelectDrawMOTDPanel, iClient);
-	CreateTimer(0.5, DelayedCharacterSelectDrawMOTDPanel, iClient);
+	//CreateTimer(0.1, DelayedCharacterSelectDrawMOTDPanel, iClient);
+	//CreateTimer(0.5, DelayedCharacterSelectDrawMOTDPanel, iClient);
+	OpenCharacterSelectMenu(iClient);
 }
 
 ResetTalentConfirmCountdown(iClient)
@@ -58,15 +60,15 @@ ResetTalentConfirmCountdown(iClient)
 	g_bTalentsConfirmed[iClient] = false;
 	g_iAutoSetCountDown[iClient] = -1;
 	g_bUserStoppedConfirmation[iClient] = false;
-	g_iOpenCharacterMotdAndDrawMenuState[iClient] = STARTING_CHAR_SELECT_PROCESS;
+	g_iOpenCharacterSelectAndDrawMenuState[iClient] = STARTING_CHAR_SELECT_PROCESS;
 	g_bClientAlreadyShownCharacterSelectMenu[iClient] = false;
 }
 
 public Action:StartWaitingForClientInputForDrawMenu(Handle:timer, any:iClient)
 {
 	// This will wait then 2nd button input for drawing the confirm menu
-	g_iOpenCharacterMotdAndDrawMenuState[iClient] = WAITING_ON_FINAL_BUTTON_FOR_CONFIRM_MENU;
-	//PrintToChat(iClient, "g_iOpenCharacterMotdAndDrawMenuState = WAITING_ON_FINAL_BUTTON_FOR_CONFIRM_MENU");
+	g_iOpenCharacterSelectAndDrawMenuState[iClient] = WAITING_ON_FINAL_BUTTON_FOR_CONFIRM_MENU;
+	//PrintToChat(iClient, "g_iOpenCharacterSelectAndDrawMenuState = WAITING_ON_FINAL_BUTTON_FOR_CONFIRM_MENU");
 	return Plugin_Stop;
 }
 
@@ -81,12 +83,20 @@ public Action:DelayedCharacterSelectDrawMOTDPanel(Handle:timer, any:iClient)
 		Format(url, sizeof(url), "http://xpmod.net/select/i/infected_select.php?id=%i&t=%s", g_iDBUserID[iClient], g_strDBUserToken[iClient]);
 	else
 		Format(url, sizeof(url), "http://xpmod.net/select/character_select.php?id=%i&t=%s", g_iDBUserID[iClient], g_strDBUserToken[iClient]);
-
-	PrintToServer("%s", url);
 	
 	OpenMOTDPanel(iClient, " ", url, MOTDPANEL_TYPE_URL);
 
 	return Plugin_Stop;
+}
+
+OpenCharacterSelectMenu(iClient)
+{
+	if (g_iClientTeam[iClient] == TEAM_SURVIVORS)
+		ChangeSurvivorMenuDraw(iClient);
+	else if (g_iClientTeam[iClient] == TEAM_INFECTED)
+		ChangeInfectedMenuDraw(iClient);
+	else
+		TopChooseCharactersMenuDraw(iClient);
 }
 
 public Action:TimerShowTalentsConfirmed(Handle:timer, any:iClient)
@@ -132,17 +142,17 @@ public Action:ConfirmationMessageMenuDraw(iClient)
 			}
 			
 			decl String:text[300];
-			FormatEx(text, sizeof(text), "===	===	===	===	===	===	===	===	===	===\n \n	Survivor:       %s\n	Equipment Cost:      %d XP\n	Infected:    %s	%s	%s\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \nConfirm your talents and equipment for this round?     \n ", surClass, g_iClientTotalXPCost[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+			FormatEx(text, sizeof(text), "===	===	===	===	===	===	===	===	===	===\n \n	Survivor:			   %s\n	Equipment Cost:	 %d XP\n	Infected:				%s	%s	%s\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \nConfirm your Characters and Equipment for this round?     \n ", surClass, g_iClientTotalXPCost[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 			SetMenuTitle(g_hMenu_XPM[iClient], text);
 			
 			AddMenuItem(g_hMenu_XPM[iClient], "option1", " Yes, confirm.");
 
 			if(g_iClientTeam[iClient] == TEAM_SURVIVORS)
-				AddMenuItem(g_hMenu_XPM[iClient], "option2", " No, change Survivor.");
+				AddMenuItem(g_hMenu_XPM[iClient], "option2", " No, change Survivor/Equipment.");
 			else if(g_iClientTeam[iClient] == TEAM_INFECTED)
 				AddMenuItem(g_hMenu_XPM[iClient], "option2", " No, change Infected.");
 			else
-				AddMenuItem(g_hMenu_XPM[iClient], "option2", " No, change characters.");
+				AddMenuItem(g_hMenu_XPM[iClient], "option2", " No, change Characters.");
 
 			if(g_iAutoSetCountDown[iClient] > 9)
 			{
@@ -199,7 +209,7 @@ public ConfirmationMessageMenuHandler(Handle:hmenu, MenuAction:action, iClient, 
 					g_bTalentsConfirmed[iClient] = true;
 					g_iAutoSetCountDown[iClient] = -1;
 					
-					PrintHintText(iClient, "Talents Confirmed");
+					PrintHintText(iClient, "Characters Confirmed");
 					LoadTalents(iClient);
 					ClosePanel(iClient);
 				}
@@ -212,15 +222,15 @@ public ConfirmationMessageMenuHandler(Handle:hmenu, MenuAction:action, iClient, 
 				ClosePanel(iClient);
 
 				if (g_iClientTeam[iClient] == TEAM_SURVIVORS)
-					OpenCharacterSelectionSite(iClient);
+					OpenCharacterSelectionPanel(iClient);
 				else if (g_iClientTeam[iClient] == TEAM_INFECTED)
-					OpenCharacterSelectionSite(iClient);
+					OpenCharacterSelectionPanel(iClient);
 				else
-					OpenCharacterSelectionSite(iClient);
+					OpenCharacterSelectionPanel(iClient);
 
 				// Set this value to draw the confirmation once they close the motd and push a button
 				if (g_bTalentsConfirmed[iClient] == false)
-					g_iOpenCharacterMotdAndDrawMenuState[iClient] = WAITING_ON_RELEASE_FOR_CONFIRM_MENU;
+					g_iOpenCharacterSelectAndDrawMenuState[iClient] = WAITING_ON_RELEASE_FOR_CONFIRM_MENU;
 			}
 			case 2: //No
 			{

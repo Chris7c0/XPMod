@@ -283,7 +283,7 @@ new g_iAutoSetCountDown[MAXPLAYERS + 1];
 #define WAITING_ON_RELEASE_FOR_CONFIRM_MENU         3
 #define WAITING_ON_FINAL_BUTTON_FOR_CONFIRM_MENU    4
 #define FINISHED_AND_DREW_CONFIRM_MENU              5
-new g_iOpenCharacterMotdAndDrawMenuState[MAXPLAYERS + 1];
+new g_iOpenCharacterSelectAndDrawMenuState[MAXPLAYERS + 1];
 
 //Player Switching Teams timer
 new bool:g_bPlayerInTeamChangeCoolDown[MAXPLAYERS + 1];

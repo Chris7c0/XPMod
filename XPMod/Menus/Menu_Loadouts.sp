@@ -46,7 +46,7 @@ public Action:LoadoutMenuDraw(iClient)
 	
 	new totalcostid = g_iClientTotalXPCost[iClient]; 
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "Usable XP (XP - Current Level XP):	%d\n \n*Note: You get this equipment on confirmation*\n \nPrimary:			  %s\nSecondary:		 %s\nExplosive:			%s\nHealth/Ammo:	 %s\nHealth Boost:	  %s\nLaser Sight:		%s\n_	_	_	_	_	_	_	_	_	_	_	_	_\nTotal Cost Per Round:	%d\n ",g_iClientUsableXP, g_strClientPrimarySlot, g_strClientSecondarySlot, g_strClientExplosiveSlot, g_strClientHealthSlot, g_strClientBoostSlot, g_strClientLaserSlot, totalcostid);
+	SetMenuTitle(g_hMenu_XPM[iClient], "Usable XP: %d\n \n* You get equipment when you confirm *\n \nPrimary:			  %s\nSecondary:		 %s\nExplosive:			%s\nHealth/Ammo:	 %s\nHealth Boost:	  %s\nLaser Sight:		%s\n_	_	_	_	_	_	_	_	_	_	_	_\nTotal Cost Per Round:	%d\n ",g_iClientUsableXP, g_strClientPrimarySlot, g_strClientSecondarySlot, g_strClientExplosiveSlot, g_strClientHealthSlot, g_strClientBoostSlot, g_strClientLaserSlot, totalcostid);
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Primary Slot");
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Secondary Slot");
@@ -55,9 +55,9 @@ public Action:LoadoutMenuDraw(iClient)
 	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Health Boost Slot");
 	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Laser Sight");
 	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Reset All");
-	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Back");
-	AddMenuItem(g_hMenu_XPM[iClient], "option9", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit Menu\n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Change Your Survivor");
+	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Main Menu");
+	AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit\n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -480,7 +480,11 @@ public LoadoutMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			{
 				CleanMenuDraw(iClient);
 			}
-			case 7: //Back
+			case 7: //Change Survivor
+			{
+				ChangeSurvivorMenuDraw(iClient);
+			}
+			case 8: //Back
 			{
 				TopMenuDraw(iClient);
 			}

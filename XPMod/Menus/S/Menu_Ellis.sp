@@ -238,7 +238,7 @@ public EllisMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			}
 			case 7: //Back
 			{
-				ClassMenuDraw(iClient);
+				TopSurvivorMenuDraw(iClient);
 			}
 		}
 	}

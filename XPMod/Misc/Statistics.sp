@@ -17,7 +17,7 @@ public Action:ShowTeamStatsToPlayer(iClient, args)
 			{
 				GetLoggedInAndConfirmedStrings(i, strLoggedIn, sizeof(strLoggedIn), strConfirmed, sizeof(strConfirmed));
 
-				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x04 [\x03%N\x04]\x05: \x03Lvl %d, %d XP, \x03%s %s\n", 
+				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x04 [\x03%N\x04]\x05: \x03Lvl %d, %d XP\x03%s%s\n", 
 					i,
 					g_iClientLevel[i], 
 					g_iClientXP[i], 
@@ -25,13 +25,16 @@ public Action:ShowTeamStatsToPlayer(iClient, args)
 					strConfirmed);
 				PrintToServerOrClient(iClient, strStatsTextBuffer);
 
-				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05	%s - %s\x04	CI-Kills: %d SI-Kills: %d HS: %d\n",
-					SURVIVOR_NAME[g_iChosenSurvivor[i]],
-					SURVIVOR_CLASS_NAME[g_iChosenSurvivor[i]],
-					g_iStat_ClientCommonKilled[i], 
-					g_iStat_ClientInfectedKilled[i], 
-					g_iStat_ClientCommonHeadshots[i]);
-				PrintToServerOrClient(iClient, strStatsTextBuffer);
+				if (g_bClientLoggedIn[i])
+				{
+					Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05	%s - %s\x04	CI-Kills: %d SI-Kills: %d HS: %d\n",
+						SURVIVOR_NAME[g_iChosenSurvivor[i]],
+						SURVIVOR_CLASS_NAME[g_iChosenSurvivor[i]],
+						g_iStat_ClientCommonKilled[i], 
+						g_iStat_ClientInfectedKilled[i], 
+						g_iStat_ClientCommonHeadshots[i]);
+					PrintToServerOrClient(iClient, strStatsTextBuffer);
+				}
 			}
 		}
 		PrintToServerOrClient(iClient, " ");
@@ -48,7 +51,7 @@ public Action:ShowTeamStatsToPlayer(iClient, args)
 			{
 				GetLoggedInAndConfirmedStrings(i, strLoggedIn, sizeof(strLoggedIn), strConfirmed, sizeof(strConfirmed));
 
-				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x04 [\x03%N\x04]\x05: \x03Lvl %d, %d XP, \x03%s %s\n", 
+				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x04 [\x03%N\x04]\x05: \x03Lvl %d, %d XP\x03%s%s\n", 
 					i,
 					g_iClientLevel[i], 
 					g_iClientXP[i], 
@@ -56,14 +59,17 @@ public Action:ShowTeamStatsToPlayer(iClient, args)
 					strConfirmed);
 				PrintToServerOrClient(iClient, strStatsTextBuffer);
 
-				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05	%s, %s, %s\x04	Kills: %d Incaps: %d DMG: %d\n", 
-					g_strClientInfectedClass1[i], 
-					g_strClientInfectedClass2[i], 
-					g_strClientInfectedClass3[i],
-					g_iStat_ClientSurvivorsKilled[i], 
-					g_iStat_ClientSurvivorsIncaps[i], 
-					g_iStat_ClientDamageToSurvivors[i]);
-				PrintToServerOrClient(iClient, strStatsTextBuffer);
+				if (g_bClientLoggedIn[i])
+				{
+					Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05	%s, %s, %s\x04	Kills: %d Incaps: %d DMG: %d\n", 
+						g_strClientInfectedClass1[i], 
+						g_strClientInfectedClass2[i], 
+						g_strClientInfectedClass3[i],
+						g_iStat_ClientSurvivorsKilled[i], 
+						g_iStat_ClientSurvivorsIncaps[i], 
+						g_iStat_ClientDamageToSurvivors[i]);
+					PrintToServerOrClient(iClient, strStatsTextBuffer);
+				}
 			}
 		}
 		PrintToServerOrClient(iClient, " ");
@@ -80,7 +86,7 @@ public Action:ShowTeamStatsToPlayer(iClient, args)
 			{
 				GetLoggedInAndConfirmedStrings(i, strLoggedIn, sizeof(strLoggedIn), strConfirmed, sizeof(strConfirmed));
 
-				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x04 [\x03%N\x04]\x05: \x03Lvl %d, %d XP, \x03%s %s\n", 
+				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x04 [\x03%N\x04]\x05: \x03Lvl %d, %d XP\x03%s%s\n", 
 					i,
 					g_iClientLevel[i], 
 					g_iClientXP[i], 
@@ -110,12 +116,12 @@ PrintToServerOrClient(iClient, char[] text)
 GetLoggedInAndConfirmedStrings(iClient, char[] strLoggedIn, int iLoggedInMaxLen, char[] strConfirmed, int iConfirmedMaxLen)
 {
 	if (g_bClientLoggedIn[iClient])
-		Format(strLoggedIn, iLoggedInMaxLen, "LoggedIn");
+		Format(strLoggedIn, iLoggedInMaxLen, ", LoggedIn");
 	else
 		Format(strLoggedIn, iLoggedInMaxLen, "");
 
 	if (g_bTalentsConfirmed[iClient])
-		Format(strConfirmed, iConfirmedMaxLen, "Confirmed");
+		Format(strConfirmed, iConfirmedMaxLen, ", Confirmed");
 	else
 		Format(strConfirmed, iConfirmedMaxLen, "");
 }

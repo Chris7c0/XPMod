@@ -1,32 +1,36 @@
 
 //Class Select Menu Draw
-public Action:ClassMenuDraw(iClient)
+public Action:TopSurvivorMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	
-	g_hMenu_XPM[iClient] = CreateMenu(ClassMenuHandler);
+	g_hMenu_XPM[iClient] = CreateMenu(TopSurvivorMenuHandler);
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	
 	switch(g_iChosenSurvivor[iClient])
 	{
 		case 0:
-			SetMenuTitle(g_hMenu_XPM[iClient], "Level %d	XP:  %d/%d\n===============================\nCurrent Character: Bill (Support)\n===============================                 ",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			SetMenuTitle(g_hMenu_XPM[iClient], "Level %d	XP:  %d/%d\n====================================\nYour Survivor: Bill (Support)\n ",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 		case 1:
-			SetMenuTitle(g_hMenu_XPM[iClient], "Level %d	XP:  %d/%d\n================================\nCurrent Character: Rochelle (Ninja)\n================================                 ",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			SetMenuTitle(g_hMenu_XPM[iClient], "Level %d	XP:  %d/%d\n=====================================\nYour Survivor: Rochelle (Ninja)\n ",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 		case 2:
-			SetMenuTitle(g_hMenu_XPM[iClient], "Level %d	XP:  %d/%d\n===================================\nCurrent Character: Coach (Berserker)\n===================================                 ",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			SetMenuTitle(g_hMenu_XPM[iClient], "Level %d	XP:  %d/%d\n=====================================\nYour Survivor: Coach (Berserker)\n ",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 		case 3:
-			SetMenuTitle(g_hMenu_XPM[iClient], "Level %d	XP:  %d/%d\n=====================================\nCurrent Character: Ellis (Weapon Expert)\n=====================================                 ",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			SetMenuTitle(g_hMenu_XPM[iClient], "Level %d	XP:  %d/%d\n=====================================\nYour Survivor: Ellis (Weapon Expert)\n ",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 		case 4:
-			SetMenuTitle(g_hMenu_XPM[iClient], "Level %d	XP:  %d/%d\n===============================\nCurrent Character: Nick (Medic)\n===============================                 ",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			SetMenuTitle(g_hMenu_XPM[iClient], "Level %d	XP:  %d/%d\n=====================================\nYour Survivor: Nick (Medic)\n  ",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 	}
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", " * Choose Your Survivor *\n ");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Bill's Talents          (Support)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Rochelle's Talents  (Ninja)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Coach's Talents     (Berserker)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Ellis's Talents        (Weapons Expert)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Nick's Talents        (Medic)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Back\n \n \n \n ");
+	
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Bill's Talents			  (Support)");
+	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Rochelle's Talents	(Ninja)");
+	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Coach's Talents		(Berserker)");
+	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Ellis's Talents			(Weapons Expert)");
+	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Nick's Talents			(Medic)\n ");
+	if (g_bTalentsConfirmed[iClient] == false)
+		AddMenuItem(g_hMenu_XPM[iClient], "option6", " * Change Your Survivor *\n ");
+	else
+		AddMenuItem(g_hMenu_XPM[iClient], "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Back\n=====================================\n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 
@@ -34,30 +38,32 @@ public Action:ClassMenuDraw(iClient)
 }
 
 //Choose Character Menu Draw
-public Action:ChangeCharacterMenuDraw(iClient)
+public Action:ChangeSurvivorMenuDraw(iClient)
 {
 	CheckMenu(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(ChangeCharacterMenuHandler);
+	g_hMenu_XPM[iClient] = CreateMenu(ChangeSurvivorMenuHandler);
 	
 	switch(g_iChosenSurvivor[iClient])
 	{
 		case BILL:
-			SetMenuTitle(g_hMenu_XPM[iClient], "Level %d	XP: %d/%d\n===============================\nCurrent Character: Bill (Support)\n===============================",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			SetMenuTitle(g_hMenu_XPM[iClient], "Level %d	XP: %d/%d\n=================================\nYour Survivor: Bill (Support)\n \n Change your Survivor to...",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 		case ROCHELLE:
-			SetMenuTitle(g_hMenu_XPM[iClient], "Level %d	XP: %d/%d\n================================\nCurrent Character: Rochelle (Ninja)\n================================",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			SetMenuTitle(g_hMenu_XPM[iClient], "Level %d	XP: %d/%d\n=================================\nYour Survivor: Rochelle (Ninja)\n \n Change your Survivor to...",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 		case COACH:
-			SetMenuTitle(g_hMenu_XPM[iClient], "Level %d	XP: %d/%d\n===================================\nCurrent Character: Coach (Berserker)\n===================================",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			SetMenuTitle(g_hMenu_XPM[iClient], "Level %d	XP: %d/%d\n=================================\nYour Survivor: Coach (Berserker)\n \n Change your Survivor to...",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 		case ELLIS:
-			SetMenuTitle(g_hMenu_XPM[iClient], "Level %d	XP: %d/%d\n=====================================\nCurrent Character: Ellis (Weapon Expert)\n=====================================",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			SetMenuTitle(g_hMenu_XPM[iClient], "Level %d	XP: %d/%d\n=================================\nYour Survivor: Ellis (Weapon Expert)\n \n Change your Survivor to...",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 		case NICK:
-			SetMenuTitle(g_hMenu_XPM[iClient], "Level %d	XP: %d/%d\n===============================\nCurrent Character: Nick (Medic)\n===============================",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			SetMenuTitle(g_hMenu_XPM[iClient], "Level %d	XP: %d/%d\n=================================\nYour Survivor: Nick (Medic)\n \n Change your Survivor to...",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 	}
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Switch to Bill         (Support)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Switch to Rochelle (Ninja)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Switch to Coach    (Berserker)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Switch to Ellis       (Weapon Expert)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Switch to Nick       (Medic)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Back\n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Bill		   (Support)");
+	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Rochelle (Ninja)");
+	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Coach	 (Berserker)");
+	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Ellis		 (Weapons Expert)");
+	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Nick		 (Medic)\n ");
+
+	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Change Your Equipment");
+	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Do Nothing\n=================================\n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 
@@ -65,55 +71,53 @@ public Action:ChangeCharacterMenuDraw(iClient)
 }
 
 
-//Class Menu Handler
-public ClassMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+//Top level Survivor Menu Handler
+public TopSurvivorMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
-			case 0: //Choose Your Character
-			{
-				if(g_bTalentsConfirmed[iClient] == false)
-				{
-					ChangeCharacterMenuDraw(iClient);
-				}
-				else
-				{
-					PrintToChat(iClient, "\x03[XPMod] \x05You cannot change your character if your talents are confirmed.");
-					ClassMenuDraw(iClient);
-				}
-			}
-			case 1: //Select Bill
+			case 0: //Select Bill
 			{
 				SupportMenuDraw(iClient);
 			}
-			case 2: //Select Rochelle
+			case 1: //Select Rochelle
 			{
 				RochelleMenuDraw(iClient);
 			}
-			case 3: //Select Cooach
+			case 2: //Select Cooach
 			{
 				CoachMenuDraw(iClient);
 			}
-			case 4: //Select Ellis
+			case 3: //Select Ellis
 			{
 				EllisMenuDraw(iClient);
 			}
-			case 5: //Select Nick
+			case 4: //Select Nick
 			{
 				NickMenuDraw(iClient);
 			}
+			case 5: //Choose Your Character
+			{
+				if(g_bTalentsConfirmed[iClient] == false)
+					ChangeSurvivorMenuDraw(iClient);
+				else
+				{
+					PrintToChat(iClient, "\x03[XPMod] \x05You cannot change your characters if your talents are confirmed for this round.");
+					TopSurvivorMenuDraw(iClient);
+				}
+			}
 			case 6: //Back
 			{
-				ChooseTalentTopMenuDraw(iClient);
+				TopChooseCharactersMenuDraw(iClient);
 			}
 		}
 	}
 }
 
 //Change Character Handler
-public ChangeCharacterMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+public ChangeSurvivorMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select)
 	{
@@ -125,7 +129,7 @@ public ChangeCharacterMenuHandler(Handle:hmenu, MenuAction:action, iClient, item
 				g_iChosenSurvivor[iClient] = BILL;
 				AutoLevelUpSurivovor(iClient);
 				SaveUserData(iClient);
-				ClassMenuDraw(iClient);
+				TopSurvivorMenuDraw(iClient);
 			}
 			case 1: //Change to Rochelle
 			{
@@ -133,7 +137,7 @@ public ChangeCharacterMenuHandler(Handle:hmenu, MenuAction:action, iClient, item
 				g_iChosenSurvivor[iClient] = ROCHELLE;
 				AutoLevelUpSurivovor(iClient);
 				SaveUserData(iClient);
-				ClassMenuDraw(iClient);
+				TopSurvivorMenuDraw(iClient);
 			}
 			case 2: //Change to Coach
 			{
@@ -141,7 +145,7 @@ public ChangeCharacterMenuHandler(Handle:hmenu, MenuAction:action, iClient, item
 				g_iChosenSurvivor[iClient] = COACH;
 				AutoLevelUpSurivovor(iClient);
 				SaveUserData(iClient);
-				ClassMenuDraw(iClient);
+				TopSurvivorMenuDraw(iClient);
 			}
 			case 3: //Change to Ellis
 			{
@@ -149,7 +153,7 @@ public ChangeCharacterMenuHandler(Handle:hmenu, MenuAction:action, iClient, item
 				g_iChosenSurvivor[iClient] = ELLIS;
 				AutoLevelUpSurivovor(iClient);
 				SaveUserData(iClient);
-				ClassMenuDraw(iClient);
+				TopSurvivorMenuDraw(iClient);
 			}
 			case 4: //Change to Nick
 			{
@@ -157,11 +161,15 @@ public ChangeCharacterMenuHandler(Handle:hmenu, MenuAction:action, iClient, item
 				g_iChosenSurvivor[iClient] = NICK;
 				AutoLevelUpSurivovor(iClient);
 				SaveUserData(iClient);
-				ClassMenuDraw(iClient);
+				TopSurvivorMenuDraw(iClient);
 			}
-			case 5: //Back
+			case 5: //Change Equipment
 			{
-				ClassMenuDraw(iClient);
+				LoadoutMenuDraw(iClient);
+			}
+			case 6: //Back
+			{
+				TopSurvivorMenuDraw(iClient);
 			}
 		}
 	}

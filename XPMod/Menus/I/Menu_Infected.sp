@@ -6,20 +6,27 @@ public Action:TopInfectedMenuDraw(iClient)
 	DeleteAllMenuParticles(iClient);
 	CheckMenu(iClient);
 	
-	g_hMenu_XPM[iClient] = CreateMenu(TopImfectedMenuHandler);
+	g_hMenu_XPM[iClient] = CreateMenu(TopInfectedMenuHandler);
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	
 	decl String:title[256];
-	FormatEx(title, sizeof(title), "Level %d	XP: %d/%d\n==========================\n		 Infected Talents\n \n Class 1)	%s\n Class 2)	%s\n Class 3)	%s\n \nNote:   After Your Classes\nHave Been Chosen, Infected\nTalents Level Automatically\n==========================\n ", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+	FormatEx(title, sizeof(title), "Level %d	XP: %d/%d\n==========================\n		 Your Infected\n \n Class 1)	%s\n Class 2)	%s\n Class 3)	%s\n ", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], title);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", " * Choose Your Infected *\n ");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Smoker Talents");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Boomer Talents");
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Hunter Talents");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Spitter Talents");
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Jockey Talents");
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Charger Talents");
-	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Tank Talents    (Coming)\n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Smoker Talents");
+	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Boomer Talents");
+	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Hunter Talents");
+	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Spitter Talents");
+	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Jockey Talents");
+	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Charger Talents\n ");
+
+	//AddMenuItem(g_hMenu_XPM[iClient], "option7", "Tank Talents\n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
+
+	if (g_bTalentsConfirmed[iClient] == false)
+		AddMenuItem(g_hMenu_XPM[iClient], "option8", " * Change Your Infected *\n ");
+	else
+		AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
+	
 	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back");
 	AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit the Menu\n==========================\n \n  \n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
@@ -27,41 +34,25 @@ public Action:TopInfectedMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-//Top Infected Menu Draw
-public Action:ChooseClassesMenuDraw(iClient) 
+//Change Your Infected Menu Draw
+public Action:ChangeInfectedMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	CheckMenu(iClient);
 	
-	g_hMenu_XPM[iClient] = CreateMenu(ChooseClassesMenuHandler);
+	g_hMenu_XPM[iClient] = CreateMenu(ChangeInfectedMenuHandler);
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	
 	decl String:title[256];
-	FormatEx(title, sizeof(title), "Level %d	XP: %d/%d\n==========================\n	 Change Your Classes\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n==========================", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient],g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+	FormatEx(title, sizeof(title), "Level %d	XP: %d/%d\n==========================\n	Change Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n ", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient],g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], title);
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Change Class 1");
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Change Class 2");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Change Class 3");
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Reset All Classes");
-	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back");
+	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Change Class 3\n ");
+
+	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Do Nothing\n==========================\n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
-	return Plugin_Handled;
-}
-
-//Confirm Reset Draw
-public Action:ConfirmResetClassesMenuDraw(iClient) 
-{
-	CheckMenu(iClient);
-	
-	g_hMenu_XPM[iClient] = CreateMenu(ConfirmResetClassesHandler);
-	
-	SetMenuTitle(g_hMenu_XPM[iClient], "Reset all your classes?");
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Yes");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "No!");
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
-
 	return Plugin_Handled;
 }
 
@@ -73,15 +64,15 @@ public Action:ChangeClass1MenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(ChangeClass1MenuHandler);
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
-	SetMenuTitle(g_hMenu_XPM[iClient], "==========================\n		Current Classes\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n==========================\n \nChoose a special infected for Class 1:", g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+	SetMenuTitle(g_hMenu_XPM[iClient], "==========================\n		Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n \nChange Class 1 to...", g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Smoker");
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Boomer");
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Hunter");
 	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Spitter");
 	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Jockey");
 	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Charger");
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "None");
-	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Back");
+	AddMenuItem(g_hMenu_XPM[iClient], "option7", "None\n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Back\n==========================\n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 	return Plugin_Handled;
@@ -94,15 +85,15 @@ public Action:ChangeClass2MenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(ChangeClass2MenuHandler);
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
-	SetMenuTitle(g_hMenu_XPM[iClient], "==========================\n		Current Classes\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n==========================\n \nChoose a special infected for Class 1:", g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+	SetMenuTitle(g_hMenu_XPM[iClient], "==========================\n		Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n \nChange Class 2 to...", g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Smoker");
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Boomer");
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Hunter");
 	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Spitter");
 	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Jockey");
 	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Charger");
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "None");
-	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Back");
+	AddMenuItem(g_hMenu_XPM[iClient], "option7", "None\n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Back\n==========================\n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 	return Plugin_Handled;
@@ -115,15 +106,15 @@ public Action:ChangeClass3MenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(ChangeClass3MenuHandler);
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
-	SetMenuTitle(g_hMenu_XPM[iClient], "==========================\n		Current Classes\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n==========================\n \nChoose a special infected for Class 1:", g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+	SetMenuTitle(g_hMenu_XPM[iClient], "==========================\n		Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n \nChange Class 3 to...", g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Smoker");
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Boomer");
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Hunter");
 	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Spitter");
 	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Jockey");
 	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Charger");
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "None");
-	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Back");
+	AddMenuItem(g_hMenu_XPM[iClient], "option7", "None\n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Back\n==========================\n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 	return Plugin_Handled;
@@ -132,47 +123,54 @@ public Action:ChangeClass3MenuDraw(iClient)
 //Infected Menu Handlers
 
 //Top Infected Menu Handler
-public TopImfectedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+public TopInfectedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
-			case 0: //Select Infected Classes
-			{
-				ChooseClassesMenuDraw(iClient);
-			}
-			case 1: //Smoker
+			case 0: //Smoker
 			{
 				SmokerTopMenuDraw(iClient);
 			}
-			case 2: //Boomer
+			case 1: //Boomer
 			{
 				BoomerTopMenuDraw(iClient);
 			}
-			case 3: //Hunter
+			case 2: //Hunter
 			{
 				HunterTopMenuDraw(iClient);
 			}
-			case 4: //Spitter
+			case 3: //Spitter
 			{
 				SpitterTopMenuDraw(iClient);
 			}
-			case 5: //Jockey
+			case 4: //Jockey
 			{
 				JockeyTopMenuDraw(iClient);
 			}
-			case 6: //Charger
+			case 5: //Charger
 			{
 				ChargerTopMenuDraw(iClient);
 			}
-			case 7: //Tank
+			case 6: //Tank
 			{
+				PrintToChat(iClient, "\x03[XPMod] \x05Tank description is not available yet.");
 				TopInfectedMenuDraw(iClient);
+			}
+			case 7: //Select Infected Classes
+			{
+				if(g_bTalentsConfirmed[iClient] == false)
+					ChangeInfectedMenuDraw(iClient);
+				else
+				{
+					PrintToChat(iClient, "\x03[XPMod] \x05You cannot change your characters if your talents are confirmed for this round.");
+					TopInfectedMenuDraw(iClient);
+				}
 			}
 			case 8: //Back
 			{
-				ChooseTalentTopMenuDraw(iClient);
+				TopChooseCharactersMenuDraw(iClient);
 			}
 			default: //Exit
 			{
@@ -187,7 +185,7 @@ public TopImfectedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Choose Infected Classes Menu
-public ChooseClassesMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+public ChangeInfectedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -199,8 +197,8 @@ public ChooseClassesMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNu
 					ChangeClass1MenuDraw(iClient);
 				else
 				{
-					PrintToChat(iClient, "\x03[XPMod] \x05You cannot change your infected classes after confirming your talents");
-					ChooseClassesMenuDraw(iClient);
+					PrintToChat(iClient, "\x03[XPMod] \x05You cannot change your characters if your talents are confirmed for this round.");
+					ChangeInfectedMenuDraw(iClient);
 				}
 			}
 			case 1: //Change Class 2
@@ -209,8 +207,8 @@ public ChooseClassesMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNu
 					ChangeClass2MenuDraw(iClient);
 				else
 				{
-					PrintToChat(iClient, "\x03[XPMod] \x05You cannot change your infected classes after confirming your talents");
-					ChooseClassesMenuDraw(iClient);
+					PrintToChat(iClient, "\x03[XPMod] \x05You cannot change your characters if your talents are confirmed for this round.");
+					ChangeInfectedMenuDraw(iClient);
 				}
 			}
 			case 2: //Change Class 3
@@ -219,21 +217,11 @@ public ChooseClassesMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNu
 					ChangeClass3MenuDraw(iClient);
 				else
 				{
-					PrintToChat(iClient, "\x03[XPMod] \x05You cannot change your infected classes after confirming your talents");
-					ChooseClassesMenuDraw(iClient);
+					PrintToChat(iClient, "\x03[XPMod] \x05You cannot change your characters if your talents are confirmed for this round.");
+					ChangeInfectedMenuDraw(iClient);
 				}
 			}
-			case 3: //Reset All
-			{
-				if(g_bTalentsConfirmed[iClient] == false)
-					ConfirmResetClassesMenuDraw(iClient);
-				else
-				{
-					PrintToChat(iClient, "\x03[XPMod] \x05You cannot change your infected classes after confirming your talents");
-					ChooseClassesMenuDraw(iClient);
-				}
-			}
-			case 4: //Back
+			case 3: //Back-Do Nothing
 			{
 				TopInfectedMenuDraw(iClient);
 			}
@@ -253,11 +241,11 @@ public ConfirmResetClassesHandler(Handle:hmenu, MenuAction:action, iClient, item
 			{
 				ResetAllInfectedClasses(iClient);
 				PrintToChat(iClient, "\x03[XPMod] \x05All of your Special Infected Classes have been reset.");
-				ChooseClassesMenuDraw(iClient);
+				ChangeInfectedMenuDraw(iClient);
 			}
 			case 1: //No
 			{
-				ChooseClassesMenuDraw(iClient);
+				ChangeInfectedMenuDraw(iClient);
 			}
 		}
 	}
@@ -276,7 +264,7 @@ public ChangeClass1MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum
 				{
 					LevelDownInfectedTalent(iClient, g_iClientInfectedClass1[iClient]);
 					SetInfectedClassSlot(iClient, 1, SMOKER);
-					ChooseClassesMenuDraw(iClient);
+					ChangeInfectedMenuDraw(iClient);
 				}
 				else
 				{
@@ -290,7 +278,7 @@ public ChangeClass1MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum
 				{
 					LevelDownInfectedTalent(iClient, g_iClientInfectedClass1[iClient]);
 					SetInfectedClassSlot(iClient, 1, BOOMER);
-					ChooseClassesMenuDraw(iClient);
+					ChangeInfectedMenuDraw(iClient);
 				}
 				else
 				{
@@ -304,7 +292,7 @@ public ChangeClass1MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum
 				{
 					LevelDownInfectedTalent(iClient, g_iClientInfectedClass1[iClient]);
 					SetInfectedClassSlot(iClient, 1, HUNTER);
-					ChooseClassesMenuDraw(iClient);
+					ChangeInfectedMenuDraw(iClient);
 				}
 				else
 				{
@@ -318,7 +306,7 @@ public ChangeClass1MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum
 				{
 					LevelDownInfectedTalent(iClient, g_iClientInfectedClass1[iClient]);
 					SetInfectedClassSlot(iClient, 1, SPITTER);
-					ChooseClassesMenuDraw(iClient);
+					ChangeInfectedMenuDraw(iClient);
 				}
 				else
 				{
@@ -332,7 +320,7 @@ public ChangeClass1MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum
 				{
 					LevelDownInfectedTalent(iClient, g_iClientInfectedClass1[iClient]);
 					SetInfectedClassSlot(iClient, 1, JOCKEY);
-					ChooseClassesMenuDraw(iClient);
+					ChangeInfectedMenuDraw(iClient);
 				}
 				else
 				{
@@ -346,7 +334,7 @@ public ChangeClass1MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum
 				{
 					LevelDownInfectedTalent(iClient, g_iClientInfectedClass1[iClient]);
 					SetInfectedClassSlot(iClient, 1, CHARGER);
-					ChooseClassesMenuDraw(iClient);
+					ChangeInfectedMenuDraw(iClient);
 				}
 				else
 				{
@@ -359,11 +347,11 @@ public ChangeClass1MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum
 				LevelDownInfectedTalent(iClient, g_iClientInfectedClass1[iClient]);
 				g_iClientInfectedClass1[iClient] = UNKNOWN_INFECTED;
 				g_strClientInfectedClass1[iClient] = "None";
-				ChooseClassesMenuDraw(iClient);
+				ChangeInfectedMenuDraw(iClient);
 			}
 			case 7: //Back
 			{
-				ChooseClassesMenuDraw(iClient);
+				ChangeInfectedMenuDraw(iClient);
 			}
 			default: //Exit
 			{}
@@ -386,7 +374,7 @@ public ChangeClass2MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum
 				{
 					LevelDownInfectedTalent(iClient, g_iClientInfectedClass2[iClient]);
 					SetInfectedClassSlot(iClient, 2, SMOKER);
-					ChooseClassesMenuDraw(iClient);
+					ChangeInfectedMenuDraw(iClient);
 				}
 				else
 				{
@@ -400,7 +388,7 @@ public ChangeClass2MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum
 				{
 					LevelDownInfectedTalent(iClient, g_iClientInfectedClass2[iClient]);
 					SetInfectedClassSlot(iClient, 2, BOOMER);
-					ChooseClassesMenuDraw(iClient);
+					ChangeInfectedMenuDraw(iClient);
 				}
 				else
 				{
@@ -414,7 +402,7 @@ public ChangeClass2MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum
 				{
 					LevelDownInfectedTalent(iClient, g_iClientInfectedClass2[iClient]);
 					SetInfectedClassSlot(iClient, 2, HUNTER);
-					ChooseClassesMenuDraw(iClient);
+					ChangeInfectedMenuDraw(iClient);
 				}
 				else
 				{
@@ -428,7 +416,7 @@ public ChangeClass2MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum
 				{
 					LevelDownInfectedTalent(iClient, g_iClientInfectedClass2[iClient]);
 					SetInfectedClassSlot(iClient, 2, SPITTER);
-					ChooseClassesMenuDraw(iClient);
+					ChangeInfectedMenuDraw(iClient);
 				}
 				else
 				{
@@ -442,7 +430,7 @@ public ChangeClass2MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum
 				{
 					LevelDownInfectedTalent(iClient, g_iClientInfectedClass2[iClient]);
 					SetInfectedClassSlot(iClient, 2, JOCKEY);
-					ChooseClassesMenuDraw(iClient);
+					ChangeInfectedMenuDraw(iClient);
 				}
 				else
 				{
@@ -456,7 +444,7 @@ public ChangeClass2MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum
 				{
 					LevelDownInfectedTalent(iClient, g_iClientInfectedClass2[iClient]);
 					SetInfectedClassSlot(iClient, 2, CHARGER);
-					ChooseClassesMenuDraw(iClient);
+					ChangeInfectedMenuDraw(iClient);
 				}
 				else
 				{
@@ -469,11 +457,11 @@ public ChangeClass2MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum
 				LevelDownInfectedTalent(iClient, g_iClientInfectedClass2[iClient]);
 				g_iClientInfectedClass2[iClient] = UNKNOWN_INFECTED;
 				g_strClientInfectedClass2[iClient] = "None";
-				ChooseClassesMenuDraw(iClient);
+				ChangeInfectedMenuDraw(iClient);
 			}
 			case 7: //Back
 			{
-				ChooseClassesMenuDraw(iClient);
+				ChangeInfectedMenuDraw(iClient);
 			}
 			default: //Exit
 			{}
@@ -496,7 +484,7 @@ public ChangeClass3MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum
 				{
 					LevelDownInfectedTalent(iClient, g_iClientInfectedClass3[iClient]);
 					SetInfectedClassSlot(iClient, 3, SMOKER);
-					ChooseClassesMenuDraw(iClient);
+					ChangeInfectedMenuDraw(iClient);
 				}
 				else
 				{
@@ -510,7 +498,7 @@ public ChangeClass3MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum
 				{
 					LevelDownInfectedTalent(iClient, g_iClientInfectedClass3[iClient]);
 					SetInfectedClassSlot(iClient, 3, BOOMER);
-					ChooseClassesMenuDraw(iClient);
+					ChangeInfectedMenuDraw(iClient);
 				}
 				else
 				{
@@ -524,7 +512,7 @@ public ChangeClass3MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum
 				{
 					LevelDownInfectedTalent(iClient, g_iClientInfectedClass3[iClient]);
 					SetInfectedClassSlot(iClient, 3, HUNTER);
-					ChooseClassesMenuDraw(iClient);
+					ChangeInfectedMenuDraw(iClient);
 				}
 				else
 				{
@@ -538,7 +526,7 @@ public ChangeClass3MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum
 				{
 					LevelDownInfectedTalent(iClient, g_iClientInfectedClass3[iClient]);
 					SetInfectedClassSlot(iClient, 3, SPITTER);
-					ChooseClassesMenuDraw(iClient);
+					ChangeInfectedMenuDraw(iClient);
 				}
 				else
 				{
@@ -552,7 +540,7 @@ public ChangeClass3MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum
 				{
 					LevelDownInfectedTalent(iClient, g_iClientInfectedClass3[iClient]);
 					SetInfectedClassSlot(iClient, 3, JOCKEY);
-					ChooseClassesMenuDraw(iClient);
+					ChangeInfectedMenuDraw(iClient);
 				}
 				else
 				{
@@ -566,7 +554,7 @@ public ChangeClass3MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum
 				{
 					LevelDownInfectedTalent(iClient, g_iClientInfectedClass3[iClient]);
 					SetInfectedClassSlot(iClient, 3, CHARGER);
-					ChooseClassesMenuDraw(iClient);
+					ChangeInfectedMenuDraw(iClient);
 				}
 				else
 				{
@@ -579,11 +567,11 @@ public ChangeClass3MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum
 				LevelDownInfectedTalent(iClient, g_iClientInfectedClass3[iClient]);
 				g_iClientInfectedClass3[iClient] = UNKNOWN_INFECTED;
 				g_strClientInfectedClass3[iClient] = "None";
-				ChooseClassesMenuDraw(iClient);
+				ChangeInfectedMenuDraw(iClient);
 			}
 			case 7: //Back
 			{
-				ChooseClassesMenuDraw(iClient);
+				ChangeInfectedMenuDraw(iClient);
 			}
 			default: //Exit
 			{}

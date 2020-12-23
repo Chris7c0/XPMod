@@ -98,25 +98,33 @@ public Action:TopMenuDraw(iClient)
 	if(g_iClientTeam[iClient] == TEAM_SURVIVORS)
 		switch(g_iChosenSurvivor[iClient])
 		{
-			case 0: SetMenuTitle(g_hMenu_XPM[iClient], "    XP Mod %s\n====================\nLevel  %d  Support\nXP:   %d/%d\n====================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-			case 1: SetMenuTitle(g_hMenu_XPM[iClient], "    XP Mod %s\n====================\nLevel  %d  Ninja\nXP:   %d/%d\n====================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-			case 2: SetMenuTitle(g_hMenu_XPM[iClient], "    XP Mod %s\n====================\nLevel  %d  Berserker\nXP:   %d/%d\n====================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-			case 3: SetMenuTitle(g_hMenu_XPM[iClient], "      XP Mod %s\n=======================\nLevel %d Weapon Expert\nXP:   %d/%d\n=======================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-			case 4: SetMenuTitle(g_hMenu_XPM[iClient], "    XP Mod %s\n====================\nLevel  %d  Medic\nXP:   %d/%d\n====================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			case 0: SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel  %d  Support\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			case 1: SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel  %d  Ninja\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			case 2: SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel  %d  Berserker\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			case 3: SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel %d Weapon Expert\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			case 4: SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel  %d  Medic\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 		}
 	else if(g_iClientTeam[iClient] == TEAM_INFECTED)
-		SetMenuTitle(g_hMenu_XPM[iClient], "     XP Mod %s\n====================\nLevel  %d  Infected\nXP:   %d/%d\nSlot 1: %s\nSlot 2: %s\nSlot 3: %s\n====================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+		SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel  %d  Infected\nXP:   %d/%d\n \nClass 1) %s\nClass 2) %s\nClass 3) %s\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	else
-		SetMenuTitle(g_hMenu_XPM[iClient], "    XP Mod %s\n====================\nLevel %d\nXP:     %d/%d\n====================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+		SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel %d\nXP:     %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 	
-	if (g_iClientTeam[iClient] == TEAM_SURVIVORS)
-		AddMenuItem(g_hMenu_XPM[iClient], "option1", "Choose Your Survivor");
-	else if (g_iClientTeam[iClient] == TEAM_INFECTED)
-		AddMenuItem(g_hMenu_XPM[iClient], "option1", "Choose Your Infected");
+
+	if (g_bTalentsConfirmed[iClient] == true)
+	{
+		AddMenuItem(g_hMenu_XPM[iClient], "option1", "Learn About Characters");
+	}
 	else
-		AddMenuItem(g_hMenu_XPM[iClient], "option1", "Choose Your Characters");
+	{
+		if (g_iClientTeam[iClient] == TEAM_SURVIVORS)
+			AddMenuItem(g_hMenu_XPM[iClient], "option1", "Change Your Survivor");
+		else if (g_iClientTeam[iClient] == TEAM_INFECTED)
+			AddMenuItem(g_hMenu_XPM[iClient], "option1", "Change Your Infected");
+		else
+			AddMenuItem(g_hMenu_XPM[iClient], "option1", "Change Your Characters");
+	}
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Choose Equipment");
+	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Change Your Equipment");
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Extras");
 	
 	if(g_bTalentsConfirmed[iClient] == true)
@@ -128,24 +136,18 @@ public Action:TopMenuDraw(iClient)
 		AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
 		AddMenuItem(g_hMenu_XPM[iClient], "option9", "", ITEMDRAW_NOTEXT);
 		
-		if((g_iClientTeam[iClient] == TEAM_SURVIVORS) && (g_iChosenSurvivor[iClient] == 3))
-			AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit the Menu\n=======================\n \n ");
-		else
-			AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit the Menu\n====================\n \n ");
+		AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit the Menu\n=========================\n \n \n \n \n \n ");
 	}
 	else
 	{
-		AddMenuItem(g_hMenu_XPM[iClient], "option4", "Help\n \n   You will NOT get\n talents or equipment\n   until you confirm!");
-		AddMenuItem(g_hMenu_XPM[iClient], "option5", "* Confirm Talents *\n ");
+		AddMenuItem(g_hMenu_XPM[iClient], "option4", "Help\n \n   You need to Confirm\n   your Characters for\n  your abilities to work!");
+		AddMenuItem(g_hMenu_XPM[iClient], "option5", "* Confirm Characters *\n ");
 		AddMenuItem(g_hMenu_XPM[iClient], "option6", "", ITEMDRAW_NOTEXT);
 		AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
 		AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
 		AddMenuItem(g_hMenu_XPM[iClient], "option9", "", ITEMDRAW_NOTEXT);
 		
-		if((g_iClientTeam[iClient] == TEAM_SURVIVORS) && (g_iChosenSurvivor[iClient] == 3))
-			AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit the Menu\n=======================\n \n \n \n \n \n \n \n \n ");
-		else
-			AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit the Menu\n====================\n \n \n \n \n \n \n \n \n ");
+		AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit the Menu\n=========================\n \n \n \n \n \n \n \n \n ");
 	}
 	
 
@@ -157,15 +159,15 @@ public Action:TopMenuDraw(iClient)
 
 
 //Select Talents
-public Action:ChooseTalentTopMenuDraw(iClient)
+public Action:TopChooseCharactersMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	
-	g_hMenu_XPM[iClient] = CreateMenu(ChooseTalentsTopMenuHandler);
-	SetMenuTitle(g_hMenu_XPM[iClient], "Choose Which Talents\n=====================\n ");
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Survivor Talents");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Infected Talents");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Back\n \nNote: You can change\nany talents at any\ntime as long as you\nhave not confirmed.\n=====================\n");
+	g_hMenu_XPM[iClient] = CreateMenu(TopChooseCharactersMenuHandler);
+	SetMenuTitle(g_hMenu_XPM[iClient], "Choose A Team\n=====================\n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Survivors");
+	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Infected");
+	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Main Menu\n \nNote: Once you are\nconfirmed, you must\nwait until the next\nround to change any\nof your characters.\n=====================\n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 
@@ -180,13 +182,13 @@ public Action:ExtrasMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(ExtrasMenuHandler);
 	SetMenuTitle(g_hMenu_XPM[iClient], "XPMod Extras");
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Choose Characters With Menu");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Choose Team");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Change Characters With Menu");
+	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Change Team");
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Player Stats");
 	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Options");
 	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Get XPMod Addon");
 	AddMenuItem(g_hMenu_XPM[iClient], "option6", "XPMod Website");
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Back");
+	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Main Menu");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 
@@ -246,7 +248,7 @@ public Action:OptionMenuDraw(iClient)
 //Menu Handler Functions                                                                                   
 //Top Menu Handler
 
-public ChooseTalentsTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+public TopChooseCharactersMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -254,7 +256,7 @@ public ChooseTalentsTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, ite
 		{
 			case 0: //Choose Survivors
 			{
-				ClassMenuDraw(iClient);
+				TopSurvivorMenuDraw(iClient);
 			}
 			case 1: //Choose Infected
 			{
@@ -262,7 +264,7 @@ public ChooseTalentsTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, ite
 			}
 			case 2: //Back
 			{
-				ExtrasMenuDraw(iClient);
+				TopMenuDraw(iClient);
 			}
 		}
 	}
@@ -277,16 +279,26 @@ public TopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 		{
 			case 0: //Choose Characters
 			{
-				if (g_iClientTeam[iClient] == TEAM_SURVIVORS)
-					OpenCharacterSelectionSite(iClient);
-				else if (g_iClientTeam[iClient] == TEAM_INFECTED)
-					OpenCharacterSelectionSite(iClient);
+				if(g_bTalentsConfirmed[iClient] == false)
+				{
+					OpenCharacterSelectionPanel(iClient);
+
+					// Set this value to draw the confirmation once they close the motd and push a button
+					g_iOpenCharacterSelectAndDrawMenuState[iClient] = WAITING_ON_RELEASE_FOR_CONFIRM_MENU;
+				}
 				else
-					OpenCharacterSelectionSite(iClient);
+				{
+					TopChooseCharactersMenuDraw(iClient);
+					// if (g_iClientTeam[iClient] == TEAM_SURVIVORS)
+					// 	TopSurvivorMenuDraw(iClient);
+					// else if (g_iClientTeam[iClient] == TEAM_INFECTED)
+					// 	TopInfectedMenuDraw(iClient);
+					// else
+					// 	TopChooseCharactersMenuDraw(iClient);
+				}
 				
-				// Set this value to draw the confirmation once they close the motd and push a button
-				if (g_bTalentsConfirmed[iClient] == false)
-					g_iOpenCharacterMotdAndDrawMenuState[iClient] = WAITING_ON_RELEASE_FOR_CONFIRM_MENU;
+				
+				
 			}
 			case 1: //Choose Loadout
 			{
@@ -321,7 +333,7 @@ public ExtrasMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 		{
 			case 0: //Choose Character In Menu
 			{
-				ChooseTalentTopMenuDraw(iClient);
+				TopChooseCharactersMenuDraw(iClient);
 			}
 			case 1: //Choose Team
 			{

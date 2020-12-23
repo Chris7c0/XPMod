@@ -131,7 +131,7 @@ public HunterTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 						ChooseHunterClassMenuDraw(iClient);
 					else
 					{
-						PrintToChat(iClient, "\x03[XPMod] \x05You cannot change your infected classes after confirming your talents");
+						PrintToChat(iClient, "\x03[XPMod] \x05You cannot change your characters if your talents are confirmed for this round.");
 						HunterTopMenuDraw(iClient);
 					}
 				}
