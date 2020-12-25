@@ -134,9 +134,15 @@ public OnPluginStart()
 		
 	//Setup the handle that will link to the MySQL Database
 	if(ConnectDB())
-		PrintToServer("*** Connected to the XPMod User Database ***");
+	{
+		PrintToServer("\n*** Connected to XPMod Database ***\n ");
+	}
 	else
-		PrintToServer("*** Could Not Connect to the XPMod User Database ***");
+	{
+		PrintToServer("\n********************************************");
+		PrintToServer("*** Could Not Connect to XPMod Database! ***");
+		PrintToServer("********************************************\n ");
+	}
 
 	//Setup Included Files
 	SetupLoadouts();

@@ -1,8 +1,8 @@
 public Action:ShowTeamStatsToPlayer(iClient, args)
 {
 	decl String:strStatsTextBuffer[256];
-	decl String:strLoggedIn[10];
-	decl String:strConfirmed[10];
+	decl String:strLoggedIn[16];
+	decl String:strConfirmed[16];
 
 	// Construct the statistics string
 	if(ProbeTeams(TEAM_SURVIVORS) == true)

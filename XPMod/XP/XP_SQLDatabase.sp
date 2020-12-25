@@ -28,7 +28,7 @@ bool:ConnectDB()
 		LogError("[XPMod] Databases.cfg missing '%s' entry!", DB_CONF_NAME);
 		return false;
 	}
-
+	
 	// This is used when connecting via the sourcecode
 	// new Handle:hKeyValues = CreateKeyValues("sql");
 	// KvSetString(hKeyValues, "driver", "mysql");

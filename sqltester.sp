@@ -89,7 +89,12 @@ public OnMapStart()
 		SQL_TQuery(g_hDatabase, GetDataFromQuery, query2);*/
 	}
 	else
-		PrintToServer("*** Could Not Connect To Database ***");
+	{
+		PrintToServer("\n*******************************************");
+		PrintToServer("*** Could Not Connect To XPMod Database ***");
+		PrintToServer("*******************************************\n ");
+	}
+		
 }
 
 // Generate total rank amount.
