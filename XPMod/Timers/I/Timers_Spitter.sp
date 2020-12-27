@@ -174,10 +174,10 @@ public Action:TimerResetCanConjureWitch(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerSetMobRush(Handle:timer, any:iClient)
+public Action:TimerSetMobRush(Handle:timer, any:zombieEntity)
 {
-	if (RunClientChecks(iClient))
-		SetEntProp(iClient,Prop_Send,"m_mobRush",1);
+	if (zombieEntity > 0 && IsValidEntity(zombieEntity))
+		SetEntProp(zombieEntity,Prop_Send,"m_mobRush",1);
 	
 	return Plugin_Stop;
 }

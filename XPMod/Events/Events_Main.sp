@@ -394,7 +394,7 @@ public Action:Event_PlayerChangeTeam(Handle:hEvent, const String:strName[], bool
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 
-	if(iClient < 1 || IsFakeClient(iClient) == true || IsClientInGame(iClient) == false)
+	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Continue;
 	
 	g_bPlayerInTeamChangeCoolDown[iClient] = true;
