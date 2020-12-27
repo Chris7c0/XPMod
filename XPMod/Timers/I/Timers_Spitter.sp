@@ -176,7 +176,8 @@ public Action:TimerResetCanConjureWitch(Handle:timer, any:iClient)
 
 public Action:TimerSetMobRush(Handle:timer, any:iClient)
 {
-	SetEntProp(iClient,Prop_Send,"m_mobRush",1);
+	if (RunClientChecks(iClient))
+		SetEntProp(iClient,Prop_Send,"m_mobRush",1);
 	
 	return Plugin_Stop;
 }

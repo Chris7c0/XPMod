@@ -37,7 +37,7 @@ public Action:TimerGiveFirstExplosive(Handle:timer, any:iClient)
 
 public Action:TimerGiveExplosive(Handle:timer, any:iClient)
 {
-	if(IsClientInGame(iClient)==false && IsPlayerAlive(iClient)==false)
+	if(RunClientChecks(iClient) == false || IsPlayerAlive(iClient) == false)
 		return Plugin_Stop;
 	
 	g_iExtraExplosiveUses[iClient]++;

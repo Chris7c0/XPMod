@@ -1451,6 +1451,7 @@ fnc_CycleWeapon(iClient)
 		}
 	}
 }
+
 fnc_SetAmmo(iClient)
 {
 	if(RunClientChecks(iClient) ==  false || IsValidEntity(g_iPrimarySlotID[iClient]) == false)
