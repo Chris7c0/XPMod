@@ -51,6 +51,7 @@
 #include "XPMod/XP/XP_SQLDatabase.sp"
 //Menu Navigation Files
 #include "XPMod/Menus/Menu_Main.sp"
+#include "XPMod/Menus/Menu_NewUser.sp"
 #include "XPMod/Menus/Menu_Confirm.sp"
 #include "XPMod/Menus/Menu_Loadouts.sp"
 #include "XPMod/Menus/S/Menu_Survivors.sp"
@@ -178,9 +179,9 @@ public OnPluginStart()
 	CreateTimer(1.0, TimerCheckAndOpenCharacterSelectionMenuForAll, 0, TIMER_REPEAT);
 	CreateTimer(2.0, TimerResetMelee, 0, TIMER_REPEAT);
 	CreateTimer(0.1, TimerIDD, 0, TIMER_REPEAT);
-	CreateTimer(30.0, PrintXPMmessage, 0, TIMER_REPEAT);
-	CreateTimer(30.0, PrintXPModAdvertisementsToAll, 0, TIMER_REPEAT);
-	CreateTimer(2700.0, PrintDonationMessage, 0, TIMER_REPEAT);
+	CreateTimer(90.0, PrintUnsetClassesMessage, 0, TIMER_REPEAT);
+	CreateTimer(60.0, PrintXPModCreateAndConfirmMessageToAll, 0, TIMER_REPEAT);
+	CreateTimer(300.0, PrintXPModAdvertisementMessageToAll, 0, TIMER_REPEAT);
 	
 	//PrecacheLockedWeaponModels();											//Precache locked weapon models
 	CreateTimer(1.0, Timer_PrepareCSWeapons, _, TIMER_FLAG_NO_MAPCHANGE);	//Prep the cs weapons for first use
@@ -188,7 +189,6 @@ public OnPluginStart()
 
 SetupConsoleCommands()
 {
-	//RegConsoleCmd("xpm", TopMenuDraw);					//Displays XPMod Menu
 	RegConsoleCmd("xpmstats", ShowTeamStatsToPlayer);
 	RegConsoleCmd("website", MotdPanel);
 	RegConsoleCmd("xpmhelp", OpenHelpMotdPanel);

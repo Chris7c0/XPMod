@@ -49,7 +49,7 @@ AdvertiseXPModToNewUser(iClient, bool:bShowInChat = false)
 
 AdvertiseConfirmXPModTalents(iClient)
 {
-	PrintHintText(iClient, "Your talents are NOT loaded. Type xpm and confirm them.");
+	PrintHintText(iClient, "Your abilities are NOT loaded. Type xpm in chat and confirm to gain them.");
 	//PrintToChat(iClient, "\x03[XPMod] \x05Your talents are NOT loaded. Type \x04xpm\x05 and confirm them.");
 }
 

@@ -98,11 +98,11 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 	if (IsFakeClient(iClient) == false && g_iOpenCharacterSelectAndDrawMenuState[iClient] != FINISHED_AND_DREW_CONFIRM_MENU)
 	{
 		// Dont show this motd or menu if they have already confirmed
-		if (g_bTalentsConfirmed[iClient] == true)
+		if (g_bClientLoggedIn[iClient] == true && g_bTalentsConfirmed[iClient] == true)
 			g_iOpenCharacterSelectAndDrawMenuState[iClient] = FINISHED_AND_DREW_CONFIRM_MENU;
 
 		// Check if player pressed a certain button after joining game, if they did it will trigger a show choose character
-		if (g_iOpenCharacterSelectAndDrawMenuState[iClient] == WAITING_ON_BUTTON_FOR_MOTD 
+		if (g_iOpenCharacterSelectAndDrawMenuState[iClient] == WAITING_ON_BUTTON_FOR_MOTD && (iButtons)
 			// && (iButtons & IN_FORWARD || 
 			// 	iButtons & IN_BACK || 
 			// 	iButtons & IN_MOVELEFT || 
@@ -113,6 +113,7 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 			// 	iButtons & IN_ATTACK2)
 			)
 		{
+			//PrintToServer("g_iOpenCharacterSelectAndDrawMenuState = WAITING_ON_RELEASE_FOR_CONFIRM_MENU: %i", iButtons);
 			//PrintToChat(iClient, "g_iOpenCharacterSelectAndDrawMenuState = WAITING_ON_RELEASE_FOR_CONFIRM_MENU: %i", iButtons);
 			g_iOpenCharacterSelectAndDrawMenuState[iClient] = WAITING_ON_RELEASE_FOR_CONFIRM_MENU;
 
@@ -126,6 +127,7 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 			iButtons == 0)
 			//GetEntProp(iClient, Prop_Data, "m_afButtonReleased") & IN_FORWARD) //g_iButtonPressedbeforeCharacterMotd[iClient])
 		{
+			//PrintToServer("g_iOpenCharacterSelectAndDrawMenuState = ...");
 			//PrintToChat(iClient, "g_iOpenCharacterSelectAndDrawMenuState = ...");
 
 			// Set to 0 first to stop multiple calls

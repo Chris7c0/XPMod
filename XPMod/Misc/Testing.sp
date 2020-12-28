@@ -35,8 +35,6 @@ public Action:TestFunction1(iClient,args)
 	PrintToServer("T1");
 	//PrintToChat(iClient, "T1");
 
-
-
 	if (args < 1) return Plugin_Stop;
 	
 	char str[99];
@@ -330,6 +328,13 @@ public ToggleThirdPerson(iClient)
 	}
 }
 */
+
+// testingShowHud(iClient)
+// {
+// 	Doesnt work in l4d2...lame
+// 	SetHudTextParams(-1.0, -1.0, 30.0, 255, 255, 255, 255, 0, 0.0, 0.1, 0.1);
+// 	ShowHudText(iClient, -1, "THIS IS A TEST BLAH BLAH BLAH");
+// }
 
 /*
 public PrintInstructorText(iClient, String:msg[256], String:color[], String:bind[])

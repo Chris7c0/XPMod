@@ -71,7 +71,7 @@ XPModMenuDraw(iClient)
 	{		
 		if(g_bClientLoggedIn[iClient] == false)
 		{
-			CreateNewUser(iClient);
+			CreateNewUserMenuDraw(iClient);
 			return;
 		}
 		
@@ -83,6 +83,8 @@ XPModMenuDraw(iClient)
 			GetUserData(iClient, true, false, true);
 	}
 }
+
+
 //Menu Draw Functions                                                                                     
 //Top XPMod Menu Draw
 public Action:TopMenuDraw(iClient) 

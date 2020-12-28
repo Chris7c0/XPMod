@@ -396,7 +396,7 @@ GetUserData(any:iClient, bool:bOnlyWebsiteChangableData = false, bool:bDrawConfi
 	WritePackCell(hDataPackage, bOnlyWebsiteChangableData);
 	WritePackCell(hDataPackage, bDrawConfirmMenuAfter);
 	WritePackCell(hDataPackage, bDrawTopMenuAfter);
-
+	
 	SQL_TQuery(g_hDatabase, SQLGetUserDataCallback, strQuery, hDataPackage);
 }
 

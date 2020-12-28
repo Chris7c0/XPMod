@@ -1,4 +1,4 @@
-public Action:PrintXPMmessage(Handle:timer, any:data)
+public Action:PrintUnsetClassesMessage(Handle:timer, any:data)
 {
 	for(new i = 1; i <= MaxClients; i++)
 	{
@@ -30,23 +30,35 @@ public Action:PrintXPMmessage(Handle:timer, any:data)
 	return Plugin_Continue;
 }
 
-public Action:PrintDonationMessage(Handle:timer, any:data)
-{
-	// PrintToChatAll("\x03[XPMod]\x05  Do you enjoy XPMod? Help us out at:\n               \x03l4d2xpmod.com/donate");
-	return Plugin_Continue;
-}
-
-public Action:PrintXPModAdvertisementsToAll(Handle:timer, any:data)
+public Action:PrintXPModCreateAndConfirmMessageToAll(Handle:timer, any:data)
 {
 	for(new i=1; i<=MaxClients; i++)
 	{
-		if(IsClientInGame(i))
-			if(!IsFakeClient(i))
-				if(g_bClientLoggedIn[i] == false)
-					AdvertiseXPModToNewUser(i, true);
-				else if(g_bTalentsConfirmed[i] == false && g_bGameFrozen == false)
-					AdvertiseConfirmXPModTalents(i);
+		if(IsClientInGame(i) && !IsFakeClient(i))
+			if(g_bClientLoggedIn[i] == false)
+				AdvertiseXPModToNewUser(i, true);
+			else if(g_bTalentsConfirmed[i] == false && g_bGameFrozen == false)
+				AdvertiseConfirmXPModTalents(i);
 	}
+	return Plugin_Continue;
+}
+
+public Action:PrintXPModAdvertisementMessageToAll(Handle:timer, any:data)
+{
+	static iAdvertisementIndex;
+	if (++iAdvertisementIndex > 3)
+		iAdvertisementIndex = 0;
+
+	decl String:strAdvertisementText[128];
+	switch (iAdvertisementIndex)
+	{
+		case 0: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05Confused about XPMod? You can go to \x03xpmod.net\x05 to learn more.");
+		case 1: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05Enjoy XPMod? You can find out how to support us at \x03xpmod.net");
+		case 2: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05Go to \x03xpmod.net\x05 on your phone to learn about XPMod abilities.");
+		case 3: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05Found a bug in XPMod? Report it to \x03xpmodserver@gmail.com");
+	}
+
+	PrintToChatAll(strAdvertisementText);
 	return Plugin_Continue;
 }
 
