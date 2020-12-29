@@ -144,13 +144,46 @@ SetSurvivorModel(iClient)
 		return;
 	}
 	
+	
 	switch(g_iChosenSurvivor[iClient])
 	{
-		case BILL:		SetEntityModel(iClient, "models/survivors/survivor_namvet.mdl");
-		case ROCHELLE:	SetEntityModel(iClient, "models/survivors/survivor_producer.mdl");
-		case COACH: 	SetEntityModel(iClient, "models/survivors/survivor_coach.mdl");
-		case ELLIS: 	SetEntityModel(iClient, "models/survivors/survivor_mechanic.mdl");
-		case NICK:		SetEntityModel(iClient, "models/survivors/survivor_gambler.mdl");
+		// Note: SetEntProp works, but it causes the characters (bot or human) to
+		// disappear from the ui like tab menu and the bottom of the screen.  So,
+		// its better to just not set this and leave the character hands/voice/icon.
+		case BILL:
+		{
+			//SetEntProp(iClient, Prop_Send, "m_survivorCharacter", 4);
+			SetEntityModel(iClient, "models/survivors/survivor_namvet.mdl");
+		}
+		case ROCHELLE:
+		{
+			//SetEntProp(iClient, Prop_Send, "m_survivorCharacter", 1);
+			SetEntityModel(iClient, "models/survivors/survivor_producer.mdl");
+		}
+		case COACH:
+		{
+			//SetEntProp(iClient, Prop_Send, "m_survivorCharacter", 2);
+			SetEntityModel(iClient, "models/survivors/survivor_coach.mdl");
+		} 	
+		case ELLIS:
+		{
+			//SetEntProp(iClient, Prop_Send, "m_survivorCharacter", 3);
+			SetEntityModel(iClient, "models/survivors/survivor_mechanic.mdl");
+		} 	
+		case NICK:
+		{
+			//SetEntProp(iClient, Prop_Send, "m_survivorCharacter", 0);
+			SetEntityModel(iClient, "models/survivors/survivor_gambler.mdl");
+		}
+
+		// NOTE, when adding zoey here, there could be issues...
+		// This SCS survivor_chat_select plugin changes to a differnt model
+		// https://forums.alliedmods.net/showthread.php?p=2399163#post2399163
+
+		// Probably need a fix for l4d1 survivors on the passing campaign (Francis was specifically mentioned)
+		// Recommended plugin: The Passing CSM Fix 2.0 (prevents game breaking bugs if L4D1 survivors are used in The Passing)
+		// Fixes the bug where players with L4D1 survivors are teleported away or kicked on The Passing
+		// https://forums.alliedmods.net/showthread.php?p=2407497#post2407497 
 	}
 }
 

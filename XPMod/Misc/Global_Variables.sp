@@ -147,6 +147,16 @@
 #define ELLIS			3
 #define NICK			4
 
+// These are the actual game values (change to later)
+// #define     NICK     	0
+// #define     ROCHELLE    1
+// #define     COACH     	2
+// #define     ELLIS     	3
+// #define     BILL     	4
+// #define     ZOEY     	5
+// #define     FRANCIS     6
+// #define     LOUIS     	7
+
 new String:SURVIVOR_NAME[][] =  {"BILL", 
                                 "ROCHELLE",
                                 "COACH",
