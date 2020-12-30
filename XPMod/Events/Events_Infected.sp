@@ -623,23 +623,10 @@ public Action:Event_JockeyRideEnd(Handle:hEvent, const String:strName[], bool:bD
 {
 	new rider = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
-	/*
-	if(rider > 0)
-		if(IsClientInGame(rider) == true)
-			if(IsPlayerAlive(rider) == true)
-					if(g_iJockeyVictim[rider] > 0)
-					{
-						if(g_iMutatedLevel[rider] > 0)
-							CreateTimer(1.0, TimerSetJockeyCooldown, rider, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
-					}
-	*/
-	if(IsPlayerAlive(rider) == true)
-	{
-		if(g_iMutatedLevel[rider] > 0)
-		{
-			CreateTimer(1.0, TimerSetJockeyCooldown, rider, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
-		}
-	}
+
+	if(g_iMutatedLevel[rider] > 0 && RunClientChecks(rider)  == true && IsPlayerAlive(rider) == true)
+		CreateTimer(1.0, TimerSetJockeyCooldown, rider, TIMER_FLAG_NO_MAPCHANGE);
+	
 	g_iJockeyVictim[rider] = -1;
 	g_bJockeyIsRiding[rider] = false;
 	g_bJockeyGrappled[victim] = false;

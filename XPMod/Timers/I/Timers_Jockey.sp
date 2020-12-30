@@ -59,25 +59,18 @@ public Action:TimerRemoveJockeyCloak(Handle:timer, any:iClient)
 
 public Action:TimerSetJockeyCooldown(Handle:timer, any:iClient)
 {
-	if (IsServerProcessing()==false
-		|| iClient <= 0
-		|| IsClientInGame(iClient)==false
-		|| IsPlayerAlive(iClient)==false
-		|| g_bIsServingHotMeal[iClient] == true)
-	{
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false ||
+		g_bIsServingHotMeal[iClient] == true)
 		return Plugin_Stop;
-	}
-
-	//----DEBUG----
-	//PrintToChatAll("\x03 tick");
+		
+	//PrintToChatAll("\x03 jockey cooldown");
 	
-	//get the ability ent id
+	// Get the ability ent id
 	new iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
-	//if the retrieved gun id is -1, then move on
 	if (!IsValidEntity(iEntid))
-	{
 		return Plugin_Stop;
-	}
+
 	//retrieve the next act time
 	//new Float:flDuration_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+4);
 
@@ -106,7 +99,7 @@ public Action:TimerSetJockeyCooldown(Handle:timer, any:iClient)
 		//so if we modify T to 1:06, it will be ready at 1:36
 		//which is 6s after the player used the ability
 		//new Float:flTimeStamp_calc = flTimeStamp_ret - (GetConVarFloat(FindConVar("z_vomit_interval")) * (1.0 - 0.5) );	what it was in perkmod
-		new Float:flTimeStamp_calc = flTimeStamp_ret + (g_iMutatedLevel[iClient] * 0.35);
+		new Float:flTimeStamp_calc = flTimeStamp_ret - (g_iMutatedLevel[iClient] * 0.35);
 		SetEntDataFloat(iEntid, g_iOffset_NextActivation+8, flTimeStamp_calc, true);
 		
 		//----DEBUG----
