@@ -914,19 +914,10 @@ public Action:Event_TankSpawn(Handle:hEvent, const String:strName[], bool:bDontB
 							//PrintToChatAll("g_fEllisOverSpeed = %f", g_fEllisOverSpeed[i]);
 						}
 					}
-					new Float:fTempHealth = GetEntDataFloat(i,g_iOffset_HealthBuffer);
-					if(fTempHealth < 5.0)
-					{
-						fTempHealth += 5.0;
-						SetEntDataFloat(i,g_iOffset_HealthBuffer, fTempHealth ,true);
-					}
-					fTempHealth = GetEntDataFloat(i,g_iOffset_HealthBuffer);
-					fTempHealth = fTempHealth + (float(g_iJamminLevel[i]) * 5.0);
-					
-					if(fTempHealth > 160.0)
-						fTempHealth = 160.0;
-					SetEntDataFloat(i,g_iOffset_HealthBuffer, fTempHealth ,true);
-					//SetEntDataFloat(i,g_iOffset_HealthBuffer, GetEntDataFloat(i,g_iOffset_HealthBuffer)+30.0 ,true);
+
+					// Give temp health to ellis for tank spawn
+					AddTempHealthToSurvivor(i, float(g_iJamminLevel[i]) * 5);
+
 					if(g_iJamminLevel[i] == 5)
 					{
 						g_iEllisJamminGrenadeCounter[i]++;

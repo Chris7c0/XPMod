@@ -79,7 +79,7 @@ public Action:BringMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(BringMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=\n \n		Bring the Pain!(Level %d):\n \nOn Special Infected kill:\n \nLevel 1:\nRegen +1 health per level (+8 at max)\n+20 clip ammo per level\n(Stacks) +1%%%% movement speed\n \n \nSkill Uses:\n+6 max (Stacks) per level\n \n=	=	=	=	=	=	=	=	=",  g_iBringLevel[iClient]);
+	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=\n \n		Bring the Pain!(Level %d):\n \nOn Special Infected kill:\n \nLevel 1:\nRegen +1 temp health per level\n+20 clip ammo per level\n(Stacks) +1%%%% movement speed\n \n \nSkill Uses:\n+6 max (Stacks) per level\n \n=	=	=	=	=	=	=	=	=",  g_iBringLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");

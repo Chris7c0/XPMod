@@ -22,6 +22,12 @@ SetupXPMConVars()
 	HookConVarChange(g_hCVar_DefaultInfecttedSlot3, CVarChange_DefaultInfectedSlot3);
 }
 
+// For calculating temp health
+public void OnPainPillsDecayChanged(Handle convar, const char[] oldValue, const char[] newValue)
+{
+    flPainPillsDecay = StringToFloat(newValue);
+}
+
 //Callback function for enabling or disabling the new vote winner sound
 // public CVarChange_TalentSelectionMode(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
 // {

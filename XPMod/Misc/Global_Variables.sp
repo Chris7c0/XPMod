@@ -544,6 +544,9 @@ new Float:g_fClientSpeedBoost[MAXPLAYERS + 1];
 new bool:g_bWasClientDownOnDeath[MAXPLAYERS + 1];
 new bool:g_bAdhesiveGooActive[MAXPLAYERS + 1];
 new bool:g_bIsClientGrappled[MAXPLAYERS + 1];
+// For calculating Temp Health
+ConVar cvarPainPillsDecay;
+float flPainPillsDecay = 0.27;
 
 //Bill's Stuff (Support)/////////////////////////////////////////////////////////////////////////////////////////////////////////
 new g_iBillTeamHealCounter[MAXPLAYERS + 1];

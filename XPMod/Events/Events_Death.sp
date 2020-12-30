@@ -447,7 +447,7 @@ public Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBro
 				PlayKillSound(attacker);
 			if(g_iBringLevel[attacker] > 0)
 			{
-				new maxHP = GetEntProp(attacker,Prop_Data,"m_iMaxHealth");
+				//new maxHP = GetEntProp(attacker,Prop_Data,"m_iMaxHealth");
 				
 				//Old way of doing this, changed to nerf ELLIS because he was OP
 				/*if(maxHP < 250)
@@ -462,38 +462,43 @@ public Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBro
 				else
 					SetEntProp(attacker,Prop_Data,"m_iHealth", 250);
 					*/
-					
-				new currentHP = GetEntProp(attacker,Prop_Data,"m_iHealth");
-				if(g_bIsClientDown[attacker] == false)
-				{
-					if(g_iBringLevel[attacker] < 5)
-					{
-						if((currentHP + g_iBringLevel[attacker]) >= maxHP)
-							SetEntProp(attacker,Prop_Data,"m_iHealth", maxHP);
-						else
-							SetEntProp(attacker,Prop_Data,"m_iHealth", currentHP + g_iBringLevel[attacker]);
-					}
-					else if(g_iBringLevel[attacker] == 5)
-					{
-						if((currentHP + g_iBringLevel[attacker] + 3) >= maxHP)
-							SetEntProp(attacker,Prop_Data,"m_iHealth", maxHP);
-						else
-							SetEntProp(attacker,Prop_Data,"m_iHealth", currentHP + g_iBringLevel[attacker] + 3);
-					}
-				}
-				else
-				{
-					//SetEntProp(attacker,Prop_Data,"m_iHealth", currentHP + g_iBringLevel[attacker]);
-					if(g_iBringLevel[attacker] < 5)
-					{
-						SetEntProp(attacker,Prop_Data,"m_iHealth", currentHP + g_iBringLevel[attacker]);
-					}
-					else if(g_iBringLevel[attacker] == 5)
-					{
-						SetEntProp(attacker,Prop_Data,"m_iHealth", currentHP + g_iBringLevel[attacker] + 3);
-					}
-				}
 				
+				// Bring the pain Nerfed again to temp health
+				// new currentHP = GetEntProp(attacker,Prop_Data,"m_iHealth");
+				// if(g_bIsClientDown[attacker] == false)
+				// {
+				// 	if(g_iBringLevel[attacker] < 5)
+				// 	{
+				// 		if((currentHP + g_iBringLevel[attacker]) >= maxHP)
+				// 			SetEntProp(attacker,Prop_Data,"m_iHealth", maxHP);
+				// 		else
+				// 			SetEntProp(attacker,Prop_Data,"m_iHealth", currentHP + g_iBringLevel[attacker]);
+				// 	}
+				// 	else if(g_iBringLevel[attacker] == 5)
+				// 	{
+				// 		if((currentHP + g_iBringLevel[attacker] + 3) >= maxHP)
+				// 			SetEntProp(attacker,Prop_Data,"m_iHealth", maxHP);
+				// 		else
+				// 			SetEntProp(attacker,Prop_Data,"m_iHealth", currentHP + g_iBringLevel[attacker] + 3);
+				// 	}
+				// }
+				// else
+				// {
+				// 	//SetEntProp(attacker,Prop_Data,"m_iHealth", currentHP + g_iBringLevel[attacker]);
+				// 	if(g_iBringLevel[attacker] < 5)
+				// 	{
+				// 		SetEntProp(attacker,Prop_Data,"m_iHealth", currentHP + g_iBringLevel[attacker]);
+				// 	}
+				// 	else if(g_iBringLevel[attacker] == 5)
+				// 	{
+				// 		SetEntProp(attacker,Prop_Data,"m_iHealth", currentHP + g_iBringLevel[attacker] + 3);
+				// 	}
+				// }
+
+				// Give temp health on SI kill
+				AddTempHealthToSurvivor(attacker, float(g_iBringLevel[attacker]));
+				
+				// Increase clip size
 				new iEntid = GetEntDataEnt2(attacker,g_iOffset_ActiveWeapon);
 				if(iEntid!=-1)
 				{

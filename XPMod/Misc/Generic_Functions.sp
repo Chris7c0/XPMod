@@ -1682,6 +1682,7 @@ fnc_DetermineMaxClipSize(iClient)
 		}
 	}
 }
+
 fnc_SetAmmoUpgrade(iClient)
 {
 	switch(g_iChosenSurvivor[iClient])
@@ -1958,6 +1959,61 @@ fnc_CheckGrapple(iClient)
 	}
 	//PrintToChatAll("g_bIsClientGrappled = %s", g_bIsClientGrappled[iClient]);
 	//PrintToChatAll("g_bIsClientGrappled = %i", g_bIsClientGrappled[iClient]);
+}
+
+void AddTempHealthToSurvivor(iClient, Float:fAdditionalTempHealth)
+{
+	// Calculate the current surivivors temp health
+	new iTempHealth = GetSurvivorTempHealth(iClient);
+	if (iTempHealth < 0)
+		return;
+	
+	// If the temp health is not set or is expired (passed buffer time), then
+	// reset the buffer time and set a new temp health buffer with the new value.
+	// Else, simply add the additional health to the existing players temp health,
+	// without resetting the time buffer.
+	if (iTempHealth == 0)
+	{
+		SetEntPropFloat(iClient, Prop_Send, "m_healthBufferTime", GetGameTime());
+		SetEntPropFloat(iClient, Prop_Send, "m_healthBuffer", fAdditionalTempHealth);
+	}
+	else
+	{
+		// Get tthe current health buffer and add the specified amount to it
+		new Float:fTempHealth = GetEntPropFloat(iClient, Prop_Send, "m_healthBuffer")
+		fTempHealth += fAdditionalTempHealth;
+
+		// Cap the temp health
+		//if(fTempHealth > 160.0)
+		//	fTempHealth = 160.0;
+
+		// Set it
+		SetEntPropFloat(iClient, Prop_Send, "m_healthBuffer", fTempHealth);
+	}
+}
+
+// This function calculates a survivors temp health, since there is no direct way to 
+// obtain this information.  It takes health buffer ammount and subtracts the gametime minus
+// buffer time times the decay rate for temp health.
+int GetSurvivorTempHealth(int iClient)
+{
+    if (!RunClientChecks(iClient) || 
+		!IsPlayerAlive(iClient) || 
+		g_iClientTeam[iClient] != TEAM_SURVIVORS)
+        return -1;
+    
+    if (cvarPainPillsDecay == INVALID_HANDLE)
+    {
+        cvarPainPillsDecay = FindConVar("pain_pills_decay_rate");
+        if (cvarPainPillsDecay == INVALID_HANDLE)
+            return -1;
+        
+        HookConVarChange(cvarPainPillsDecay, OnPainPillsDecayChanged);
+        flPainPillsDecay = cvarPainPillsDecay.FloatValue;
+    }
+    
+    int tempHealth = RoundToCeil(GetEntPropFloat(iClient, Prop_Send, "m_healthBuffer") - ((GetGameTime() - GetEntPropFloat(iClient, Prop_Send, "m_healthBufferTime")) * flPainPillsDecay)) - 1;
+    return tempHealth < 0 ? 0 : tempHealth;
 }
 
 public Action:OpenHelpMotdPanel(iClient,args)

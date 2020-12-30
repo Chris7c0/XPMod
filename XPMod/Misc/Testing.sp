@@ -40,6 +40,7 @@ public Action:TestFunction1(iClient,args)
 	char str[99];
 	GetCmdArg(1, str, sizeof(str));
 
+	//AddTempHealthToSurvivor(iClient, StringToFloat(str));
 
 	//OpenMOTDPanel(iClient, "t1" , str, MOTDPANEL_TYPE_FILE);
 	//OpenMOTDPanel(iClient, "t1" , "http://xpmod.net/blah.html", MOTDPANEL_TYPE_URL);
@@ -53,12 +54,14 @@ public Action:TestFunction1(iClient,args)
 	return Plugin_Stop;
 }
 
-
-
 public Action:TestFunction2(iClient,args)
 {
 	PrintToServer("T2");
 	// if (RunClientChecks(iClient) == false) PrintToChat(iClient, "T1");
+
+	//PrintToChat(iClient, "m_healthBuffer %f", GetEntPropFloat(iClient, Prop_Send, "m_healthBuffer"));
+	//PrintToChat(iClient, "settime %f, Gametime: %f, diff: %f", GetEntPropFloat(iClient, Prop_Send, "m_healthBufferTime"), GetGameTime(), GetGameTime() - GetEntPropFloat(iClient, Prop_Send, "m_healthBufferTime"));
+	//PrintToChat(iClient, "temp_health %i", GetSurvivorTempHealth(iClient));
 
 	//OpenMOTDPanel(iClient, "t2" , "http://xpmod.net/blah.html", MOTDPANEL_TYPE_URL);
 	//OpenMOTDPanel(iClient, "t1." , "<html><head><title>a</title><meta http-equiv = \"Content-Type\" content = \"text / html; charset = utf-8\" ></head><body bgcolor = \"# 000000\" ><p>test</p></body></html>", MOTDPANEL_TYPE_INDEX);
