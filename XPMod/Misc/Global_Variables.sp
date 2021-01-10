@@ -100,7 +100,23 @@
 #define SOUND_JOCKEYPEE				"ambient/spacial_loops/4b_hospatrium_waterleak.wav"
 #define SOUND_JOCKEYLAUGH1			"player/jockey/voice/idle/jockey_lurk03.wav"
 #define SOUND_JOCKEYLAUGH2			"player/jockey/voice/idle/jockey_lurk09.wav"
+#define SOUND_BOOMER_EXPLODE        "player/boomer/explode/explo_medium_10.wav"
+new String:SOUND_BOOMER_THROW[][] =  {"player/boomer/hit/boomer_shoved_02.wav",
+                                        "player/boomer/hit/boomer_shoved_04.wav",
+                                        "player/boomer/hit/boomer_shoved_05.wav",
+                                        "player/boomer/hit/boomer_shoved_06.wav",
+                                        "player/boomer/hit/boomer_shoved_07.wav",
+                                        "player/boomer/hit/boomer_shoved_08.wav",
+                                        "player/boomer/fall/boomer_dive_01.wav"}
 #define SOUND_EXPLODE				"ambient/explosions/explode_1.wav"
+new String:SOUND_ZOMBIE_SLASHES[][] =  {"player/pz/hit/zombie_slice_1.wav",
+                                        "player/pz/hit/zombie_slice_2.wav",
+                                        "player/pz/hit/zombie_slice_3.wav",
+                                        "player/pz/hit/zombie_slice_4.wav",
+                                        "player/pz/hit/zombie_slice_5.wav",
+                                        "player/pz/hit/zombie_slice_6.wav"}
+new String:SOUND_WING_FLAP[][] =        {"player/survivor/swing/swing_miss1.wav",
+                                         "player/survivor/swing/swing_miss2.wav"}
 
 //Custom Sounds//
 #define SOUND_TALENTS_LOAD			"xpmod/ui/talents_load.wav"
@@ -181,9 +197,11 @@ new String:SURVIVOR_CLASS_NAME[][] =    {"SUPPORT",
 #define TANK				8
 
 //Chosen Tank Talents
-#define NO_TANK_CHOSEN		0
-#define FIRE_TANK			1
-#define ICE_TANK			2
+#define TANK_NOT_CHOSEN		0
+#define TANK_FIRE			1
+#define TANK_ICE			2
+#define TANK_NECROTANKER    3
+#define TANK_VAMPIRIC       4
 
 //Spitter Goo Types
 #define GOO_ADHESIVE		0
@@ -244,6 +262,24 @@ new String:SURVIVOR_CLASS_NAME[][] =    {"SUPPORT",
 #define FADE_OUT	0x0001
 #define FADE_IN		0x0002
 #define FADE_STOP	0x0010
+
+
+//Common Infected Model Names
+new String:COMMON_INFECTED_MODELS[][] = {"models/infected/common_female_tanktop_jeans.mdl", 
+                                        "models/infected/common_female_tshirt_skirt.mdl",
+                                        "models/infected/common_male_dressshirt_jeans.mdl",
+                                        "models/infected/common_male_polo_jeans.mdl",
+                                        "models/infected/common_male_tanktop_jeans.mdl",
+                                        "models/infected/common_male_tanktop_overalls.mdl",
+                                        "models/infected/common_male_tshirt_cargos.mdl"}
+
+//Uncommon Infected Model Names
+new String:UNCOMMON_INFECTED_MODELS[][] =   {"models/infected/common_male_ceda.mdl", 
+                                            "models/infected/common_male_clown.mdl",
+                                            "models/infected/common_male_jimmy.mdl",
+                                            "models/infected/common_male_mud.mdl",
+                                            "models/infected/common_male_riot.mdl",
+                                            "models/infected/common_male_roadcrew.mdl"}
 
 
 //Testing stuff
@@ -395,7 +431,8 @@ new g_iUnfreezeNotifyRunTimes = 1;						//for the unfreeze notify runtimes
 new g_iPrintRunTimes = -1;								//for printing time left till unfreeze in unfreeze notification timer
 
 //Round/Map Stuff
-new bool:g_bEndOfRound;
+//new bool:g_bRoundStarted = false;
+new bool:g_bEndOfRound = false;
 
 //Stats
 new g_iStat_ClientInfectedKilled[MAXPLAYERS + 1];
@@ -514,7 +551,8 @@ new g_iSpikedLevel[MAXPLAYERS +1];
 new g_iHillbillyLevel[MAXPLAYERS +1];
 
 //Tank
-new g_iTankChosen[MAXPLAYERS + 1];	// 0 = NO_TANK_CHOSEN, 1 = FIRE_TANK, 2 = ICE_TANK
+new g_iTankChosen[MAXPLAYERS + 1];
+
 
 ///////////////////////////////////////////////     PLAYER SPECIFIC VARIABLES     ///////////////////////////////////////////////
 
@@ -714,7 +752,7 @@ new bool:g_iInfectedConvarsSet[MAXPLAYERS + 1];
 new Float:g_fAdhesiveAffectAmount[MAXPLAYERS + 1];
 new g_iTankCounter;
 //new bool:g_bIsInfectedGrappling[MAXPLAYERS + 1];
-new g_iStumbleRadius = 160;
+//new g_iStumbleRadius = 160;
 
 //Smoker
 new g_iMaxTongueLength;
@@ -803,20 +841,56 @@ new bool:g_bIsChargerHealing[MAXPLAYERS + 1];
 new bool:g_bCanChargerEarthquake[MAXPLAYERS +1];
 
 //Tank
-new g_iFireDamageCounter[MAXPLAYERS + 1];
-new bool:g_bFrozenByTank[MAXPLAYERS + 1];
-new bool:g_bBlockTankFreezing[MAXPLAYERS + 1];
-new bool:g_bBlockTankFirePunchCharge[MAXPLAYERS + 1];
-new Float:g_fTankHealthPercentage[MAXPLAYERS + 1];
-new g_iTankCharge[MAXPLAYERS + 1];
-new Float:g_xyzClientPosition[MAXPLAYERS + 1][3];
+// Tank Rock Types
+#define TANK_ROCK_TYPE_UNKNOWN		0
+#define TANK_ROCK_TYPE_GENERIC		1
+#define TANK_ROCK_TYPE_ICE 			2
+#define TANK_ROCK_TYPE_FIRE			3
+#define TANK_ROCK_TYPE_NECROTANKER  4
+// Tank Rock Type storage in the 
+#define TANK_ROCK_ENTITY_ID			0
+// Tank Rock Thrower (Owner)
+#define TANK_ROCK_OWNER_ID			1
+// Tank Rock Type storage in the 
+#define TANK_ROCK_TYPE				2
+#define TANK_ROCK_PARTICLE_TRAIL	3
+// Tank Rock Entities that stores rock types
+new ArrayList:g_listTankRockEntities;
+// The size of the above array list
+#define TANK_ROCK_ENTITIES_ARRAY_LIST_SIZE 4
+
+
 //Fire Tank
+#define TANK_HEALTH_FIRE                    9000
+new g_iFireDamageCounter[MAXPLAYERS + 1];
 new bool:g_bTankAttackCharged[MAXPLAYERS + 1];
+new bool:g_bBlockTankFirePunchCharge[MAXPLAYERS + 1];
 //new bool:g_bFireTankBaseSpeedIncreased[MAXPLAYERS + 1];
 new Float:g_fFireTankExtraSpeed[MAXPLAYERS + 1];
 //Ice Tank
+#define TANK_HEALTH_ICE                     20000
+#define TANK_ICE_REGEN_LIFE_POOL_SIZE       10000
 new g_iIceTankLifePool[MAXPLAYERS + 1];
 new bool:g_bShowingIceSphere[MAXPLAYERS + 1];
+new bool:g_bFrozenByTank[MAXPLAYERS + 1];
+new bool:g_bBlockTankFreezing[MAXPLAYERS + 1];
+new Float:g_fTankHealthPercentage[MAXPLAYERS + 1];
+new g_iTankCharge[MAXPLAYERS + 1];
+new Float:g_xyzClientTankPosition[MAXPLAYERS + 1][3];
+//NecroTanker
+#define TANK_HEALTH_NECROTANKER             1000
+#define NECROTANKER_MAX_HEALTH              10000
+#define NECROTANKER_CONSUME_COMMON_HP       200
+#define NECROTANKER_CONSUME_UNCOMMON_HP     400
+#define NECROTANKER_CONSUME_SI_HP           1000
+//Vampiric Tank
+#define TANK_HEALTH_VAMPIRIC                12000
+#define VAMPIRIC_TANK_LIFESTEAL_MULTIPLIER  10
+new Float:VAMPIRIC_TANK_WING_FLAP_UP_VELOCITY = 600.0;
+new bool:g_bCanFlapVampiricTankWings[MAXPLAYERS + 1];
+new bool:g_bIsVampiricTankFlying[MAXPLAYERS + 1];
+
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -916,6 +990,7 @@ new Handle:g_hCreateAbility 			= INVALID_HANDLE;
 //Timer Handles
 new Handle:g_hTimer_FreezeCountdown 						= null;
 new Handle:g_hTimer_ShowingConfirmTalents[MAXPLAYERS + 1]	= null;
+new Handle:g_hTimer_ExtinguishTank[MAXPLAYERS + 1]		    = null;
 new Handle:g_hTimer_DrugPlayer[MAXPLAYERS + 1] 				= null;
 new Handle:g_hTimer_HallucinatePlayer[MAXPLAYERS + 1]		= null;
 new Handle:g_hTimer_SlapPlayer[MAXPLAYERS + 1] 				= null;
@@ -994,9 +1069,11 @@ new g_iPID_ChargerShield[MAXPLAYERS + 1];
 
 //Tank Particles
 new g_iPID_TankChargedFire[MAXPLAYERS + 1];
-new g_iPID_IceTankChargeMist[MAXPLAYERS + 1];
+new g_iPID_IceTankChargeMistStock[MAXPLAYERS + 1];
+new g_iPID_IceTankChargeMistAddon[MAXPLAYERS + 1];
 new g_iPID_IceTankChargeSnow[MAXPLAYERS + 1];
 new g_iPID_IceTankIcicles[MAXPLAYERS + 1];
+new g_iPID_IceTankTrail[MAXPLAYERS + 1];
 
 //Survivor Particle Menu Descriptions
 new g_iPID_MD_Bill_Inspirational[MAXPLAYERS + 1];

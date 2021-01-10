@@ -37,8 +37,17 @@ public Action:TestFunction1(iClient,args)
 
 	if (args < 1) return Plugin_Stop;
 	
-	char str[99];
-	GetCmdArg(1, str, sizeof(str));
+	char str1[99];
+	char str2[99];
+	GetCmdArg(1, str1, sizeof(str1));
+	GetCmdArg(2, str2, sizeof(str2));
+
+	//g_fEllisTestFireRate = StringToFloat(str1);
+
+	VAMPIRIC_TANK_WING_FLAP_UP_VELOCITY = StringToFloat(str1);
+
+	//SetClientInfo(iClient, "name", str1);
+	WriteParticle(iClient, str1, 0.0, 30.0);
 
 	//AddTempHealthToSurvivor(iClient, StringToFloat(str));
 
@@ -49,7 +58,7 @@ public Action:TestFunction1(iClient,args)
 	//Finding offset for SI cooldowns // Windows is 1084 Linux is +20 1104
 	//g_iOffset_NextActivation = StringToInt(str);
 
-	// DealDamage(iClient, 2, 1,StringToInt(str));
+	//DealDamage(StringToInt(str1), iClient, 1, StringToInt(str2));
 
 	return Plugin_Stop;
 }
@@ -57,6 +66,12 @@ public Action:TestFunction1(iClient,args)
 public Action:TestFunction2(iClient,args)
 {
 	PrintToServer("T2");
+
+	decl Float:xyzClientLocation[3];
+	GetClientAbsOrigin(iClient, xyzClientLocation);
+	xyzClientLocation[2] += 30.0;
+	WriteParticle(iClient, "mini_fireworks", 0.0, 10.0, xyzClientLocation);
+
 	// if (RunClientChecks(iClient) == false) PrintToChat(iClient, "T1");
 
 	//PrintToChat(iClient, "m_healthBuffer %f", GetEntPropFloat(iClient, Prop_Send, "m_healthBuffer"));
@@ -73,6 +88,8 @@ public Action:TestFunction2(iClient,args)
 public Action:TestFunction3(iClient,args)
 {
 	PrintToChat(iClient, "T3");
+	char str1[99];
+	GetCmdArg(1, str1, sizeof(str1));
 
 	//OpenMOTDPanel(iClient, "t3" , " .", MOTDPANEL_TYPE_URL);
 	//OpenMOTDPanel(iClient, "t3." , "<html><head><title>a</title><meta http-equiv = \"Content-Type\" content = \"text / html; charset = utf-8\" ></head><body bgcolor = \"# 000000\" ><p>test</p></body></html>", MOTDPANEL_TYPE_TEXT);
@@ -90,7 +107,11 @@ public Action:TestFunction4(iClient,args)
 
 public Action:TestFunction5(iClient,args)
 {
-	PrintToChat(iClient, "T5");
+	//PrintToChat(iClient, "T5");
+	g_iFlag_SpawnOld = GetCommandFlags("z_spawn_old");
+	SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
+	FakeClientCommand(iClient, "z_spawn_old tank auto");
+	SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);
 
 	//OpenMOTDPanel(iClient, "t5" , " .", MOTDPANEL_TYPE_FILE);
 	//OpenMOTDPanel(iClient, "t5." , "/cfg/server.cfg", MOTDPANEL_TYPE_FILE);
@@ -99,6 +120,49 @@ public Action:TestFunction5(iClient,args)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// //If ever needeed to do a silent rename, use this:
+// //https://forums.alliedmods.net/showthread.php?t=302085
+// SetClientName(iClient, "testing");
+// HookUserMessage(GetUserMessageId("SayText2"), Hook_SayText2, true);
+// #define NAME_CHANGE_STRING "#Cstrike_Name_Change"
+// bool gB_HideNameChange = true;
+// public Action Hook_SayText2(UserMsg msg_id, any msg, const int[] players, int playersNum, bool reliable, bool init)
+// {
+// 	// gB_HideNameChange = true;  // do this whenever you want name changes to be silent
+// 	// if(!gB_HideNameChange)
+// 	// {
+// 	// 	return Plugin_Continue;
+// 	// }
+
+// 	char[] sMessage = new char[24];
+
+// 	if(GetUserMessageType() == UM_Protobuf)
+// 	{
+// 		Protobuf pbmsg = msg;
+// 		pbmsg.ReadString("msg_name", sMessage, 24);
+// 	}
+
+// 	else
+// 	{
+// 		BfRead bfmsg = msg;
+// 		bfmsg.ReadByte();
+// 		bfmsg.ReadByte();
+// 		bfmsg.ReadString(sMessage, 24, false);
+// 	}
+
+// 	if(StrEqual(sMessage, NAME_CHANGE_STRING))
+// 	{
+// 		gB_HideNameChange = false;
+
+// 		return Plugin_Handled;
+// 	}
+
+// 	return Plugin_Continue;
+// }
+
+
 
 /*
 CloseMOTDPanel(iClient)
@@ -1353,7 +1417,7 @@ public Action:Testing(iClient,args)
 	amount[0] = 500.0;
 	amount[1] = 500.0;
 	amount[2] = 100.0;
-	for(i = 1; i< MaxClients; i++)
+	for(i = 1; i<= MaxClients; i++)
 	{
 		if(i!=iClient)
 		if(IsClientInGame(i) == true)

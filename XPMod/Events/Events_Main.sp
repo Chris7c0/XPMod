@@ -248,6 +248,7 @@ public Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDont
 	g_bPlayerPressedButtonThisRound = false;
 
 	CleanUpMenuHandles();	// Puts all the menu handles at invalid to minimize the amount of handles open
+	//g_bRoundStarted = true;
 	g_bEndOfRound = false;
 	g_bCanSave = true;
 
@@ -267,7 +268,7 @@ public Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDont
 		//Sets voice comns back to default setting
 		if(IsClientInGame(i) == true)
 		{
-			for(new other = 1; other < MaxClients; other++)
+			for(new other = 1; other <= MaxClients; other++)
 			{
 				if(IsClientInGame(other) == true && IsFakeClient(other) == false)
 					SetListenOverride(i, other, Listen_Default);
@@ -315,6 +316,7 @@ public Action:Event_RoundEnd(Handle:hEvent, const String:strName[], bool:bDontBr
 	//PrintToServer("Event_RoundEnd =========================================================");
 
 	g_bGameFrozen = true;
+	//g_bRoundStarted = false;
 	g_bEndOfRound = true;
 	g_iKitsUsed = 0;
 	
@@ -385,7 +387,7 @@ public Action:JoinTeamCmd(iClient, const String:command[], argc)
 	// This is specifically for preventing user from changing team using M button on cool down
 	if (g_bPlayerInTeamChangeCoolDown[iClient] == true)
 	{
-		PrintToChat(iClient, "\x03[XPMod] \x05You can only change teams once every 10 seconds.");
+		PrintToChat(iClient, "\x03[XPMod] \x05You can only change teams once every 4 seconds.");
 		return Plugin_Stop;
 	}
 
@@ -400,7 +402,7 @@ public Action:Event_PlayerChangeTeam(Handle:hEvent, const String:strName[], bool
 		return Plugin_Continue;
 	
 	g_bPlayerInTeamChangeCoolDown[iClient] = true;
-	CreateTimer(10.0, TimerResetPlayerChangeTeamCoolDown, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	CreateTimer(4.0, TimerResetPlayerChangeTeamCoolDown, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 	CreateTimer(0.1, TimerCheckTeam, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	

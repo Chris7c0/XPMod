@@ -1086,7 +1086,7 @@ public VoteMenuHandler(Handle:hMenu, MenuAction:maAction, iClient, iItemNum)
 //Resets all the menu handles to invalid for every player, until they need it again
 CleanUpMenuHandles()
 {
-	for(new iClient = 0; iClient <= MAXPLAYERS; iClient++)
+	for(new iClient = 0; iClient <= MaxClients; iClient++)
 	{
 			delete g_hMenu_Vote[iClient];
 	}

@@ -4,14 +4,40 @@ public Action:ShowTeamStatsToPlayer(iClient, args)
 	decl String:strLoggedIn[16];
 	decl String:strConfirmed[16];
 
-	// Construct the statistics string
+	// Construct the statistics strings
+	if(ProbeTeams(TEAM_SPECTATORS) == true)
+	{
+		PrintToServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=");
+		PrintToServerOrClient(iClient, "\x05|						Spectators						|");
+		PrintToServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=\n ");
+
+		for(new i = 1; i<= MaxClients; i++)
+		{
+			if(IsClientInGame(i) && IsFakeClient(i) == false && g_iClientTeam[i] == TEAM_SPECTATORS)
+			{
+				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x04 [\x03%N\x04]\x03 ", i);
+				PrintToServerOrClient(iClient, strStatsTextBuffer);
+
+				GetLoggedInAndConfirmedStrings(i, strLoggedIn, sizeof(strLoggedIn), strConfirmed, sizeof(strConfirmed));
+
+				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05	Lvl %d, %d XP%s%s\n", 
+					g_iClientLevel[i], 
+					g_iClientXP[i], 
+					strLoggedIn, 
+					strConfirmed);
+				PrintToServerOrClient(iClient, strStatsTextBuffer);
+			}
+		}
+		PrintToServerOrClient(iClient, " ");
+	}
+
 	if(ProbeTeams(TEAM_SURVIVORS) == true)
 	{
 		PrintToServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=");
 		PrintToServerOrClient(iClient, "\x05|						Survivors						|");
 		PrintToServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=\n ");
 
-		for(new i = 1; i<MaxClients; i++)
+		for(new i = 1; i<= MaxClients; i++)
 		{
 			if(IsClientInGame(i) && IsFakeClient(i) == false && g_iClientTeam[i] == TEAM_SURVIVORS)
 			{
@@ -41,13 +67,14 @@ public Action:ShowTeamStatsToPlayer(iClient, args)
 		}
 		PrintToServerOrClient(iClient, " ");
 	}
+
 	if(ProbeTeams(TEAM_INFECTED) == true)
 	{
 		PrintToServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=");
 		PrintToServerOrClient(iClient, "\x05|						Infected						|");
 		PrintToServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=\n ");
 
-		for(new i = 1; i<MaxClients; i++)
+		for(new i = 1; i<= MaxClients; i++)
 		{
 			if(IsClientInGame(i) && IsFakeClient(i) == false && g_iClientTeam[i] == TEAM_INFECTED)
 			{
@@ -78,31 +105,7 @@ public Action:ShowTeamStatsToPlayer(iClient, args)
 		}
 		PrintToServerOrClient(iClient, " ");
 	}
-	if(ProbeTeams(TEAM_SPECTATORS) == true)
-	{
-		PrintToServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=");
-		PrintToServerOrClient(iClient, "\x05|						Spectators						|");
-		PrintToServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=\n ");
-
-		for(new i = 1; i<MaxClients; i++)
-		{
-			if(IsClientInGame(i) && IsFakeClient(i) == false && g_iClientTeam[i] == TEAM_SPECTATORS)
-			{
-				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x04 [\x03%N\x04]\x03 ", i);
-				PrintToServerOrClient(iClient, strStatsTextBuffer);
-
-				GetLoggedInAndConfirmedStrings(i, strLoggedIn, sizeof(strLoggedIn), strConfirmed, sizeof(strConfirmed));
-
-				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05	Lvl %d, %d XP%s%s\n", 
-					g_iClientLevel[i], 
-					g_iClientXP[i], 
-					strLoggedIn, 
-					strConfirmed);
-				PrintToServerOrClient(iClient, strStatsTextBuffer);
-			}
-		}
-		PrintToServerOrClient(iClient, " ");
-	}
+	
 	PrintToServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=");
 	// if (iClient > 0)
 	// 	PrintToServerOrClient(iClient, "\x03[XPMod] \x04Open the console by pressing \x05~\x04 for a better view.");

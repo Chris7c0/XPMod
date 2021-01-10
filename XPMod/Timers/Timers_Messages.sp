@@ -46,16 +46,17 @@ public Action:PrintXPModCreateAndConfirmMessageToAll(Handle:timer, any:data)
 public Action:PrintXPModAdvertisementMessageToAll(Handle:timer, any:data)
 {
 	static iAdvertisementIndex;
-	if (++iAdvertisementIndex > 3)
+	if (++iAdvertisementIndex > 4)
 		iAdvertisementIndex = 0;
 
-	decl String:strAdvertisementText[128];
+	decl String:strAdvertisementText[256];
 	switch (iAdvertisementIndex)
 	{
 		case 0: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05Confused about XPMod? You can go to \x03xpmod.net\x05 to learn more.");
 		case 1: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05Enjoy XPMod? You can find out how to support us at \x03xpmod.net");
 		case 2: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05Go to \x03xpmod.net\x05 on your phone to learn about XPMod abilities.");
 		case 3: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05Found a bug in XPMod? Report it to \x03xpmodserver@gmail.com");
+		case 4: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05Want to try the XPMod Addon? It adds new special effects.\n  Press \x03H\x05\n  Click \x03Join this server's Steam Group\x05\n  Click \x03Get XPMod Addons\x05\n  Click \x03Subscribe\x05\n  Restart Left4Dead2");
 	}
 
 	PrintToChatAll(strAdvertisementText);

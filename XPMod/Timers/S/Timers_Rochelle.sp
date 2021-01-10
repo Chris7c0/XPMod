@@ -103,7 +103,7 @@ public Action:TimerIDD(Handle:timer, any:data)
 {
 	if (IsServerProcessing()==false)
 		return Plugin_Continue;
-	for(new iClient = 1;iClient<MaxClients; iClient++)
+	for(new iClient = 1;iClient<= MaxClients; iClient++)
 	{
 		if(IsClientInGame(iClient)==true)
 		{

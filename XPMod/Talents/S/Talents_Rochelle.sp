@@ -258,7 +258,7 @@ DetectionHud(iClient)
 	g_fDetectedDistance_Tank[iClient] = 0.0;
 	GetClientAbsOrigin(iClient, clientvec);
 	g_bDrawIDD[iClient] = false;
-	for(new infected = 1;infected<MaxClients;infected++)
+	for(new infected = 1;infected<= MaxClients;infected++)
 	{
 		if(IsClientInGame(infected)==true)
 		{

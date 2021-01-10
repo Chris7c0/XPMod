@@ -157,7 +157,16 @@ PrecacheAllSounds()
 	PrecacheSound(SOUND_ZAP3);
 	//Infected Sounds
 	PrecacheSound(SOUND_JOCKEYPEE);
+	PrecacheSound(SOUND_BOOMER_EXPLODE);
+	for(new i=0; i < sizeof(SOUND_BOOMER_THROW); i++)
+		PrecacheSound(SOUND_BOOMER_THROW[i]);
 	PrecacheSound(SOUND_EXPLODE);
+	for(new i=0; i < sizeof(SOUND_ZOMBIE_SLASHES); i++)
+		PrecacheSound(SOUND_ZOMBIE_SLASHES[i]);
+	for(new i=0; i < sizeof(SOUND_ZOMBIE_SLASHES); i++)
+		PrecacheSound(SOUND_WING_FLAP[i]);
+		
+		
 	//Announcer Sounds
 	PrecacheSound(SOUND_GETITON);
 	PrecacheSound(SOUND_1KILL);

@@ -36,7 +36,7 @@ public Action:PredatorialMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(PredatorialMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=\n \n  Predatorial Evolution (Level %d)\n \nLevel 1:\n+5%% movement speed per level\n+10%% pounce distance per level\n(Team)(Stacks)+5% stumble radius for Hunter/Jockey\n \n=	=	=	=	=	=	=	=	=	=\n \n",g_iPredatorialLevel[iClient]);
+	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=\n \n  Predatorial Evolution (Level %d)\n \nLevel 1:\n+5%% movement speed per level\n+10%% pounce distance per level\n \n=	=	=	=	=	=	=	=	=	=\n \n",g_iPredatorialLevel[iClient]);
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
 //	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Talent Info\n \n \n \n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);

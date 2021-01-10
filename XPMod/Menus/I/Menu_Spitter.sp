@@ -35,7 +35,7 @@ public Action:PuppetMenuDraw(iClient)
 	CheckLevel(iClient);
 	g_hMenu_XPM[iClient] = CreateMenu(PuppetMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n  						Puppet Master (Level %d)\n \nLevel 1:\nSpawn in with +1 CI per level\nWhen incapping a player, spawn +1 CI per level on the victim\n20%% chance on hit to slow survivors by 3, 6, or 9%% per level\n \nLevel 6:\nFlaming Goo: A blanket of fire lies over your spit\n \nPress [WALK] to change Goo Types\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iPuppetLevel[iClient]);
+	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n  						Puppet Master (Level %d)\n \nLevel 1:\nSpawn in with +1 CI per level\nWhen incapping a player, spawn +1 CI every other level on the victim\n20%% chance on hit to slow survivors by 3, 6, or 9%% per level\n \nLevel 6:\nFlaming Goo: A blanket of fire lies over your spit\n \nPress [WALK] to change Goo Types\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iPuppetLevel[iClient]);
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
 //	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Talent Info\n \n \n \n \n \n \n \n ");
@@ -53,7 +53,7 @@ public Action:MaterialMenuDraw(iClient)
 	CheckLevel(iClient);
 	g_hMenu_XPM[iClient] = CreateMenu(MaterialMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Material Girl (Level %d)\n \nLevel 1:\nIf spit hits an incapped player:\nCloak victim +10%% per level\nHide victims' glow\n \nSpawn +1 random UI with spit every other level\nMelting Goo: +2 spit damage, damage converts\nhealth to temp health.\n \nLevel 6:\nDemi Goo: Triples victims gravity and\nrestricts mobility talents\n \nPress [WALK] to change Goo Types\n \n \n					Bind 1: Acid Reflex\n				3 uses; 30 second cooldown\n \nSpit thrice\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iMaterialLevel[iClient]);
+	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Material Girl (Level %d)\n \nLevel 1:\nIf spit hits an incapped player:\nCloak victim +10%% per level\nHide victims' glow\n \nSpawn +1 random UI with spit (+2 at Level 10)\nMelting Goo: +2 spit damage, damage converts\nhealth to temp health.\n \nLevel 6:\nDemi Goo: Triples victims gravity and\nrestricts mobility talents\n \nPress [WALK] to change Goo Types\n \n \n					Bind 1: Acid Reflex\n				3 uses; 30 second cooldown\n \nSpit thrice\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iMaterialLevel[iClient]);
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
 //	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Talent Info");

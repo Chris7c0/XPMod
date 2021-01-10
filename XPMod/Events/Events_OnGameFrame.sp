@@ -7,8 +7,8 @@ public OnGameFrame()
 	if (IsServerProcessing() == false)
 		return;
 	
-	for(new iClient=1;iClient < MaxClients; iClient++)
-	{		
+	for(new iClient=1;iClient <= MaxClients; iClient++)
+	{
 		if(IsClientInGame(iClient)==false) continue;
 		if(IsFakeClient(iClient)==true) continue;
 		if(IsPlayerAlive(iClient)==false) continue;
@@ -24,21 +24,13 @@ public OnGameFrame()
 					GetEntityNetClass(g_iSmokerInfectionCloudEntity[iClient], entclass, 16);
 					if(StrEqual(entclass,"CSmokeStack",true) == true)
 					{
+						decl Float:xyzOrigin[3], Float:xyzAngles[3];
 						if(g_bIsSmokeEntityOff == true)
 						{
 							//DispatchKeyValue(g_iSmokerInfectionCloudEntity[iClient],"Rate", "30");
-							decl Float:vorigin[3], Float:vangles[3], Float:vdir[3];
-							GetClientEyeAngles(iClient, vangles);	//Get clients Eye Angles to know get what direction to spawn gun
-							GetAngleVectors(vangles, vdir, NULL_VECTOR, NULL_VECTOR);	//Get the direction the iClient is looking
-							vangles[0] = 0.0;		//Lock x and z axis
-							vangles[2] = 0.0;
-							GetClientEyePosition(iClient, vorigin);	//Get clients location origin vectors
-							vorigin[0] += (vdir[0] * 1.0);		//Place the minigun infront of the players view
-							vorigin[1] += (vdir[1] * 1.0);
-							vorigin[2] -= 25.0;
-							//vorigin[2] += vdir[2] + 1.0;			//Raise it up slightly to prevent glitches
+							GetLocationVectorInfrontOfClient(iClient, xyzOrigin, xyzAngles, 1.0, -25.0);
 							
-							TeleportEntity(g_iSmokerInfectionCloudEntity[iClient], vorigin, NULL_VECTOR, NULL_VECTOR);
+							TeleportEntity(g_iSmokerInfectionCloudEntity[iClient], xyzOrigin, NULL_VECTOR, NULL_VECTOR);
 							
 							AcceptEntityInput(g_iSmokerInfectionCloudEntity[iClient], "TurnOn");
 							g_bIsSmokeEntityOff =  false;
@@ -46,18 +38,9 @@ public OnGameFrame()
 						else
 						{
 							//DispatchKeyValue(g_iSmokerInfectionCloudEntity[iClient],"Rate", "0");
-							decl Float:vorigin[3], Float:vangles[3], Float:vdir[3];
-							GetClientEyeAngles(iClient, vangles);	//Get clients Eye Angles to know get what direction to spawn gun
-							GetAngleVectors(vangles, vdir, NULL_VECTOR, NULL_VECTOR);	//Get the direction the iClient is looking
-							vangles[0] = 0.0;		//Lock x and z axis
-							vangles[2] = 0.0;
-							GetClientEyePosition(iClient, vorigin);	//Get clients location origin vectors
-							vorigin[0] += (vdir[0] * 100.0);		//Place the minigun infront of the players view
-							vorigin[1] += (vdir[1] * 100.0);
-							vorigin[2] -= 25.0;
-							//vorigin[2] += vdir[2] + 1.0;			//Raise it up slightly to prevent glitches
+							GetLocationVectorInfrontOfClient(iClient, xyzOrigin, xyzAngles, 100.0, -25.0);
 							
-							TeleportEntity(g_iSmokerInfectionCloudEntity[iClient], vorigin, NULL_VECTOR, NULL_VECTOR);
+							TeleportEntity(g_iSmokerInfectionCloudEntity[iClient], xyzOrigin, NULL_VECTOR, NULL_VECTOR);
 							AcceptEntityInput(g_iSmokerInfectionCloudEntity[iClient], "TurnOff");
 							g_bIsSmokeEntityOff = true;
 						}
@@ -173,6 +156,9 @@ public OnGameFrame()
 	//For faster shooting and melee attacks
 	if (g_bSomeoneAttacksFaster == true)
 		HandleFastAttackingClients();
+
+	// Track tank rocks for special tank abilities
+	TrackAllRockPositions();
 }
 
 HandleFastAttackingClients()
@@ -212,12 +198,18 @@ HandleFastAttackingClients()
 		{
 			if((g_iMetalLevel[iClient] > 0) && (g_bIsEllisLimitBreaking[iClient] == false))		//For Ellis's firerate
 			{
-				flNextTime_calc = ( flNextTime_ret - g_fGameTime ) * (1.0 - (0.5  * (g_iMetalLevel[iClient] * 0.06 + g_iFireLevel[iClient] * 0.10))) + g_fGameTime;
-				//flNextTime_calc = ( flNextTime_ret - g_fGameTime ) * (1.0 - (g_fEllisTestFireRate)) + g_fGameTime;
+				// The formula is next normal fire rate wait time * (1/x) where x is the speed
+				// (1/1.00) would be 0% faster, (1/1.3) would be 30% faster, (1/3) would be 3 times faster
+				// We want 50% faster maxed out so 1.50x -> (1/1.5) = .666666 would be 50% faster
+				// this would be keeping .666666 of the existing wait time ( flNextTime_ret - g_fGameTime )				
+				flNextTime_calc = ( flNextTime_ret - g_fGameTime ) * (1 / (1 + (g_iMetalLevel[iClient] * 0.05) + (g_iFireLevel[iClient] * 0.05) ) ) + g_fGameTime;
+				
+				// TESTING
+				//flNextTime_calc = ( flNextTime_ret - g_fGameTime ) * ((1 / g_fEllisTestFireRate))  + g_fGameTime;
 			}
 			else if(g_bIsEllisLimitBreaking[iClient] == true)		//For Ellis's firerate
 			{
-				flNextTime_calc = ( flNextTime_ret - g_fGameTime ) * (1.0 - (0.66666)) + g_fGameTime;
+				flNextTime_calc = ( flNextTime_ret - g_fGameTime ) * (1/2) + g_fGameTime; // This was triple at .66666, changing to .5 to double
 			}
 			
 			if(g_iShadowLevel[iClient] > 0)	//For Rochelles ninja mode

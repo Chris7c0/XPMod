@@ -89,75 +89,7 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 	{
 		if(g_iInfectedCharacter[victim] == TANK)
 		{
-			new iCurrentHealth = GetEntProp(victim,Prop_Data,"m_iHealth");
-			decl Float:fCurrentTankHealthPercentage;
-			
-			switch(g_iTankChosen[victim])
-			{
-				case FIRE_TANK:
-				{
-					//Prevent Fire Damage
-					if(dmgType == DAMAGETYPE_FIRE1 || dmgType == DAMAGETYPE_FIRE2 || dmgType == DAMAGETYPE_IGNITED_ENTITY)
-						SetEntProp(victim, Prop_Data, "m_iHealth", iCurrentHealth + dmgHealth);
-					
-					fCurrentTankHealthPercentage = float(iCurrentHealth + dmgHealth) / float(6000 + g_iClientLevel[victim] * 100);
-					
-					//Check to see if the difference in stored health and current health percentage is significant
-					if(g_fTankHealthPercentage[victim] - fCurrentTankHealthPercentage >= 0.01)
-					{
-						g_fTankHealthPercentage[victim] = fCurrentTankHealthPercentage;
-						g_fClientSpeedBoost[victim] -= g_fFireTankExtraSpeed[victim];
-						//Change to the speed to match health percentage and level
-						g_fFireTankExtraSpeed[victim] = g_iClientLevel[victim] * 0.01 * (1.0 - fCurrentTankHealthPercentage);
-						g_fClientSpeedBoost[victim] += g_fFireTankExtraSpeed[victim];
-						//SetEntDataFloat(victim , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), 1.2 + fExtraSpeed, true);
-						//g_fClientSpeedBoost[victim] += (0.2 + fExtraSpeed);
-						/*
-						if(g_bFireTankBaseSpeedIncreased[victim] == false)
-						{
-							g_fClientSpeedBoost[victim] += 0.2;
-							g_bFireTankBaseSpeedIncreased[victim] = true;
-						}
-						*/
-						fnc_SetClientSpeed(victim);
-						
-						//Change the actual color of the tank to reflect his health
-						//Go from Orange to Red by lowering the green value
-						new iGreen	= 20 + RoundToNearest(180 * fCurrentTankHealthPercentage);
-						
-						SetEntityRenderMode(victim, RenderMode:0);
-						SetEntityRenderColor(victim, 255, iGreen, 0, 255);
-					}
-				}
-				case ICE_TANK:
-				{
-					//Add More Fire Damage
-					if(dmgType == DAMAGETYPE_FIRE1 || dmgType == DAMAGETYPE_FIRE2)
-					{
-						SetEntProp(victim, Prop_Data, "m_iHealth", iCurrentHealth - 216);
-					}
-					else if(dmgType == DAMAGETYPE_IGNITED_ENTITY)
-					{
-						SetEntProp(victim, Prop_Data, "m_iHealth", iCurrentHealth + 28);
-						ExtinguishEntity(victim);
-					}
-					
-					fCurrentTankHealthPercentage = float(iCurrentHealth + dmgHealth) / float(6000 + g_iClientLevel[victim] * 400);
-					
-					//Check to see if the difference in stored health and current health percentage is significant
-					if(g_fTankHealthPercentage[victim] - fCurrentTankHealthPercentage >= 0.01)
-					{
-						g_fTankHealthPercentage[victim] = fCurrentTankHealthPercentage;
-						
-						//Change the actual color of the tank to reflect his health
-						//Go from Light Blue to Dark Blue by lowering the green value
-						new iGreen	= 20 + RoundToNearest(235 * fCurrentTankHealthPercentage);
-						
-						SetEntityRenderMode(victim, RenderMode:0);
-						SetEntityRenderColor(victim, 0, iGreen, 255, 255);
-					}
-				}
-			}
+			EventsHurt_TankVictim(victim, dmgType, dmgHealth);
 		}
 	}
 	
@@ -965,7 +897,7 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 								
 						switch(g_iTankChosen[attacker])
 						{
-							case FIRE_TANK:
+							case TANK_FIRE:
 							{
 								//Lay down a molotov explosion if player is hit by fire tank's rock
 								if(StrEqual(weapon,"tank_rock") == true)
@@ -999,7 +931,7 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 									}
 								}
 							}
-							case ICE_TANK:
+							case TANK_ICE:
 							{
 								if(g_bFrozenByTank[victim] == false && g_bBlockTankFreezing[victim] == false)
 								{

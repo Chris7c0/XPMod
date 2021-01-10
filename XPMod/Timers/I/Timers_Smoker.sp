@@ -43,18 +43,10 @@ public Action:TimerMoveSmokePoof1(Handle:timer, any:iClient)
 	
 	if(IsValidEntity(g_iSmokerInfectionCloudEntity[iClient]))
 	{
-		decl Float:vorigin[3], Float:vangles[3], Float:vdir[3];
-		GetClientEyeAngles(iClient, vangles);	//Get clients Eye Angles to know get what direction to spawn gun
-		GetAngleVectors(vangles, vdir, NULL_VECTOR, NULL_VECTOR);	//Get the direction the iClient is looking
-		vangles[0] = 0.0;		//Lock x and z axis
-		vangles[2] = 0.0;
-		GetClientEyePosition(iClient, vorigin);	//Get clients location origin vectors
-		vorigin[0] += (vdir[0] * 50.0);		//Place the minigun infront of the players view
-		vorigin[1] += (vdir[1] * 50.0);
-		vorigin[2] -= 25.0;
-		//vorigin[2] += vdir[2] + 1.0;			//Raise it up slightly to prevent glitches
+		decl Float:xyzOrigin[3], Float:xyzAngles[3];
+		GetLocationVectorInfrontOfClient(iClient, xyzOrigin, xyzAngles, 50.0, -25.0);
 		
-		TeleportEntity(g_iSmokerInfectionCloudEntity[iClient], vorigin, NULL_VECTOR, NULL_VECTOR);
+		TeleportEntity(g_iSmokerInfectionCloudEntity[iClient], xyzOrigin, NULL_VECTOR, NULL_VECTOR);
 		AcceptEntityInput(g_iSmokerInfectionCloudEntity[iClient], "TurnOff");
 		CreateTimer(0.1, TimerMoveSmokePoof2, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	}
@@ -69,17 +61,10 @@ public Action:TimerMoveSmokePoof2(Handle:timer, any:iClient)
 	
 	if(IsValidEntity(g_iSmokerInfectionCloudEntity[iClient]))
 	{
-		decl Float:vorigin[3], Float:vangles[3], Float:vdir[3];
-		GetClientEyeAngles(iClient, vangles);	//Get clients Eye Angles to know get what direction to spawn gun
-		GetAngleVectors(vangles, vdir, NULL_VECTOR, NULL_VECTOR);	//Get the direction the iClient is looking
-		vangles[0] = 0.0;		//Lock x and z axis
-		vangles[2] = 0.0;
-		GetClientEyePosition(iClient, vorigin);	//Get clients location origin vectors
-		vorigin[0] += (vdir[0] * 50.0);		//Place the minigun infront of the players view
-		vorigin[1] += (vdir[1] * 50.0);
-		vorigin[2] -= 25.0;
+		decl Float:xyzOrigin[3], Float:xyzAngles[3];
+		GetLocationVectorInfrontOfClient(iClient, xyzOrigin, xyzAngles, 50.0, -25.0);
 		
-		TeleportEntity(g_iSmokerInfectionCloudEntity[iClient], vorigin, NULL_VECTOR, NULL_VECTOR);
+		TeleportEntity(g_iSmokerInfectionCloudEntity[iClient], xyzOrigin, NULL_VECTOR, NULL_VECTOR);
 		AcceptEntityInput(g_iSmokerInfectionCloudEntity[iClient], "TurnOn");
 		CreateTimer(0.1, TimerMoveSmokePoof1, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	}

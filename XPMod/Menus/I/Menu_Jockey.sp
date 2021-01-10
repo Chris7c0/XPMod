@@ -36,7 +36,7 @@ public Action:MutatedMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(MutatedMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n  				Mutated Tenacity (Level %d)\n \nLevel 1:\n+1 melee damage every 3 levels\n+6%% lunge distance per level\n-0.35 seconds from all lunge cooldowns per level\n(Team)(Stacks)+5% stumble radius for Hunter/Jockey\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iMutatedLevel[iClient]);
+	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n  				Mutated Tenacity (Level %d)\n \nLevel 1:\n+1 melee damage every 3 levels\n+6%% lunge distance per level\n-0.35 seconds from all lunge cooldowns per level\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iMutatedLevel[iClient]);
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);

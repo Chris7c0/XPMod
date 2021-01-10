@@ -16,7 +16,7 @@ CheckMenu(iClient)	//Checks the menu to see if it is not invalid handle, if it i
 
 CleanUpMenuHandles()	//Puts all the menu handles at invalid to minimize the amount of handles open
 {
-	for(new iClient = 0; iClient < (MAXPLAYERS + 1); iClient++)
+	for(new iClient = 0; iClient <= MaxClients; iClient++)
 	{
 		if(g_hMenu_XPM[iClient]!=INVALID_HANDLE)
 		{
@@ -375,7 +375,7 @@ public ChooseTeamMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 
 		if (g_bPlayerInTeamChangeCoolDown[iClient])
 		{
-			PrintToChat(iClient, "\x03[XPMod] \x05You can only change teams once every 10 seconds.");
+			PrintToChat(iClient, "\x03[XPMod] \x05You can only change teams once every 4 seconds.");
 			ChooseTeamMenuDraw(iClient);
 			return;
 		}

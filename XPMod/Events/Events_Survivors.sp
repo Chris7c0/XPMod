@@ -834,7 +834,7 @@ public Action:Event_ReviveSuccess(Handle:hEvent, String:Event_name[], bool:dontB
 	*/
 	if(IsFakeClient(iClient) == true)
 		return Plugin_Continue;
-	if (iClient > 0 && iClient < (MAXPLAYERS + 1))
+	if (iClient > 0 && iClient <= MaxClients)
 	{
 		if (iClient != target)
 		{
@@ -2539,7 +2539,7 @@ public Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBro
 			}
 		}
 	}
-	if (iClient > 0 && iClient < (MAXPLAYERS + 1))
+	if (iClient > 0 && iClient <= MaxClients)
 	{
 		if(IsFakeClient(iClient) == true)
 			return Plugin_Continue;

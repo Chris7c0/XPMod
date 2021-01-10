@@ -18,7 +18,10 @@ public ShowXPModInfoToServer()
 
 bool RunClientChecks(int iClient)
 {
-	if (iClient < 1 || (IsValidEntity(iClient) == false) || (IsClientInGame(iClient) == false))
+	if (iClient < 1 || 
+		iClient > MaxClients || 
+		IsValidEntity(iClient) == false || 
+		IsClientInGame(iClient) == false)
 		return false;
 
 	return true;
@@ -26,11 +29,21 @@ bool RunClientChecks(int iClient)
 
 bool RunEntityChecks(iEnt)
 {
-	if (iEnt < 0 || (IsValidEntity(iEnt) == false))
+	if (iEnt < 1 || IsValidEntity(iEnt) == false)
 		return false;
 
 	return true;
 }
+
+// This is purely a time saver, just to get rid of the warning that a variable is 
+// not being used. It can be used for simlar functions that might have a need for
+// a variable later, its just not used yet.
+SuppressNeverUsedWarning(var1=0, var2=0, var3=0, var4=0, var5=0)
+{
+	bool ignore;
+	if(ignore) PrintToServer("THIS IS NEVER GOING TO BE RAN",var1, var2, var3, var4, var5);
+}
+
 
 public Action:Timer_ShowXPModInfoToServer(Handle:timer, any:data)
 {
@@ -59,9 +72,7 @@ AdvertiseConfirmXPModTalents(iClient)
 
 OpenMOTDPanel(iClient, const String:title[], const  String:msg[], type = MOTDPANEL_TYPE_INDEX)
 {
-	if(IsClientInGame(iClient) == false)
-		return;
-	if(IsFakeClient(iClient) == true)
+	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return;
 	
 	decl String:num[3];
@@ -77,7 +88,6 @@ OpenMOTDPanel(iClient, const String:title[], const  String:msg[], type = MOTDPAN
 
 public Action:MotdPanel(iClient,args)
 {
-	
 	//OpenMOTDPanel(iClient, "Choose Your Survivor", "addons/sourcemod/plugins/xpmod/XPMod Website - InGame/Home/xpmod_ig_home.html", MOTDPANEL_TYPE_FILE);
 	OpenMOTDPanel(iClient, "XPMod Website", "http://xpmod.net", MOTDPANEL_TYPE_URL);
 	return;
@@ -86,11 +96,10 @@ public Action:MotdPanel(iClient,args)
 //Probe Teams for Real Players.   Returns true if there is a non-bot player on inputed team
 public bool:ProbeTeams(team)
 {
-	for(new i = 1; i<MaxClients; i++)
-		if(IsClientInGame(i))
-			if(!IsFakeClient(i))
-				if(g_iClientTeam[i] == team)
-					return true;
+	for(new i = 1; i <= MaxClients; i++)
+		if(IsClientInGame(i) && !IsFakeClient(i) && g_iClientTeam[i] == team)
+			return true;
+	
 	return false;
 }
 
@@ -110,7 +119,7 @@ bool:IsTeamFull(team)
 	{
 		max = GetConVarInt(FindConVar("survivor_limit"));
 		count = 0;
-		for (i=1;i<MaxClients;i++)
+		for (i=1;i<= MaxClients;i++)
 			if ((IsClientInGame(i))&&(!IsFakeClient(i))&&(GetClientTeam(i)==2))
 				count++;
 	}
@@ -118,7 +127,7 @@ bool:IsTeamFull(team)
 	{
 		max = GetConVarInt(FindConVar("z_max_player_zombies"));
 		count = 0;
-		for (i=1;i<MaxClients;i++)
+		for (i=1;i<= MaxClients;i++)
 			if ((IsClientInGame(i))&&(!IsFakeClient(i))&&(GetClientTeam(i)==3))
 				count++;
 	}
@@ -291,7 +300,7 @@ public bool:IsClientGrappled(iClient)
 public bool:IsJockeyGrappled(iClient)
 {
 	decl i;
-	for(i = 0; i < MaxClients; i++)
+	for(i = 0; i <= MaxClients; i++)
 		if(g_iJockeyVictim[i] == iClient)
 			return true;
 	
@@ -355,7 +364,7 @@ DealDamage(iVictim, iAttacker, iAmount, iDamageType = DAMAGETYPE_INFECTED_MELEE)
 	
 	// Teleport, activate point_hurt
 	TeleportEntity(entPointHurt, iVictimPosition, NULL_VECTOR, NULL_VECTOR);
-	AcceptEntityInput(entPointHurt, "Hurt", (iAttacker > 0 && iAttacker < MaxClients && IsClientInGame(iAttacker)) ? iAttacker : -1);
+	AcceptEntityInput(entPointHurt, "Hurt", (iAttacker > 0 && iAttacker <= MaxClients && IsClientInGame(iAttacker)) ? iAttacker : -1);
 	
 	// Config, delete point_hurt
 	DispatchKeyValue(entPointHurt, "classname", "point_hurt");
@@ -497,7 +506,7 @@ FindPlayerByName(iClient, const String:targetname[])
 {
 	new String:name[128];
 	new i, temp;
-	for (i=1;i < MaxClients;i++)
+	for (i=1;i <= MaxClients;i++)
 	{
 		if(!IsClientInGame(i))
 			continue;
@@ -822,7 +831,7 @@ public Action:push(iClient, args)
 		new bool:done;
 		a = 0;
 		done = false;
-		while(g_iFastAttackingClientsArray[a] != -1 && done==false  && a<MAXPLAYERS)
+		while(g_iFastAttackingClientsArray[a] != -1 && done==false  && a <= MaxClients)
 		{
 			if(g_iFastAttackingClientsArray[a] == iClient || g_iFastAttackingClientsArray[a+1] == iClient)
 			{
@@ -858,7 +867,7 @@ public Action:pop(iClient, args)
 		return Plugin_Handled;
 	new a = 0;
 	new bool:done = false;
-	while(g_iFastAttackingClientsArray[a] != -1 && done ==false  && a<MAXPLAYERS)
+	while(g_iFastAttackingClientsArray[a] != -1 && done ==false  && a <= MaxClients)
 	{
 		if(g_iFastAttackingClientsArray[a] == iClient)
 		{
@@ -868,7 +877,7 @@ public Action:pop(iClient, args)
 		a++;
 	}
 	if(a>0 && done==true)
-		while(g_iFastAttackingClientsArray[a-1] != -1 && a<MAXPLAYERS)
+		while(g_iFastAttackingClientsArray[a-1] != -1 && a <= MaxClients)
 		{
 			g_iFastAttackingClientsArray[a-1] = g_iFastAttackingClientsArray[a];
 			//PrintToChatAll("replacing %d with %d", (a-1), a);			//FOr debuging
@@ -2020,6 +2029,86 @@ public Action:OpenHelpMotdPanel(iClient,args)
 {
 	OpenMOTDPanel(iClient, "", "http://xpmod.net/help/xpmod_ig_help.html", MOTDPANEL_TYPE_URL);
 	return Plugin_Handled;
+}
+
+int FindIndexInArrayListUsingValue(ArrayList list, iValueToFind, iColumn=0)
+{
+	if (list == INVALID_HANDLE)
+		return -1;
+
+	for (int i=0; i < list.Length; i++)
+	{
+		new currentValue = list.Get(i, iColumn);
+		if (currentValue == iValueToFind)
+			return i;
+	}
+
+	return -1;
+}
+
+bool IsEntityUncommonInfected(iInfectedEntity)
+{
+	// Get the infected entity type (common or uncommon)
+	decl String:strClassname[99];
+	GetEdictClassname(iInfectedEntity, strClassname, sizeof(strClassname));
+	//PrintToChatAll("edict classname: %s", strClassname);
+	if (StrEqual(strClassname, "infected", true) == false)
+		return false;
+
+	// Get the infected model name
+	new String:strModelName[128];
+	GetEntPropString(iInfectedEntity, Prop_Data, "m_ModelName", strModelName, 128);
+
+	// Check if the model name corresponds to an uncommon one
+	for (new i; i < sizeof(UNCOMMON_INFECTED_MODELS); i++)
+	{
+		//PrintToChatAll("CHECKING %s", UNCOMMON_INFECTED_MODELS[i]);
+		if (StrEqual(strModelName, UNCOMMON_INFECTED_MODELS[i], false))
+			return true;
+	}
+
+	return false;		
+}
+
+// float FindClosestSurvivorDistance(iClient)
+// {
+// 	if (RunClientChecks(iClient) == false)
+// 		return 999999.0;
+
+// 	new Float:fdistance = 999999.0;
+// 	decl Float:xyzClientOrigin[3], Float:xyzTargetOrigin[3];
+// 	GetClientEyePosition(iClient, xyzClientOrigin);	//Get clients location origin vectors
+
+// 	// Check if the model name corresponds to an uncommon one
+// 	for (new iTarget; iTarget <= MaxClients; iTarget++)
+// 	{
+// 		if (RunClientChecks(iTarget) && g_iClientTeam[iTarget] == TEAM_SURVIVORS)
+// 		{
+// 			GetClientEyePosition(iTarget, xyzTargetOrigin);
+// 			new Float:fNewDistance = GetVectorDistance(xyzTargetOrigin, xyzClientOrigin);
+// 			//PrintToChatAll("Checking: %N -> %f", iTarget, fNewDistance);
+// 			if (fNewDistance < fdistance)
+// 				fdistance = fNewDistance;
+// 		}
+// 	}
+
+// 	//PrintToChatAll("FindClosestSurvivorDistance %f", fdistance);
+// 	return fdistance;		
+// }
+
+void GetLocationVectorInfrontOfClient(iClient, Float:xyzLocation[3], Float:xyzAngles[3], Float:fForwardOffset = 40.0, Float:fVerticleOffset = 1.0)
+{
+	decl Float:vDirection[3];
+
+	GetClientEyeAngles(iClient, xyzAngles);							// Get clients Eye Angles to know get what direction face
+	GetAngleVectors(xyzAngles, vDirection, NULL_VECTOR, NULL_VECTOR);	// Get the direction the iClient is looking
+	xyzAngles[0] = 0.0;	//Lock x and z axis, in other words, only do rotation as if a person is standing up and turning
+	xyzAngles[2] = 0.0;
+
+	GetClientAbsOrigin(iClient, xyzLocation);		// Get Clients location origin vectors
+	xyzLocation[0] += (vDirection[0] * fForwardOffset);	// Offset x and y a bit forward of the players view
+	xyzLocation[1] += (vDirection[1] * fForwardOffset);
+	xyzLocation[2] += vDirection[2] + fVerticleOffset;			// Raise it up slightly to prevent glitches
 }
 
  

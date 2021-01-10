@@ -3,12 +3,16 @@ public Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBro
 	new victim = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	new attacker = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
 	new headshot = GetEventBool(hEvent, "headshot");
-	//If victim was 0 then it was a common infected
+	//If victim was 0 then it was a common/uncommon infected
 	if(victim < 1)
 	{
 		victim = GetEventInt(hEvent, "entityid");
 		if(attacker < 1 || IsFakeClient(attacker) == true)
 			return Plugin_Continue;
+
+		HandleNecroTankerInfectedConsumption(attacker, victim);
+
+		// Surivovors handled below
 		if(g_iClientTeam[attacker] != TEAM_SURVIVORS)
 			return Plugin_Continue;
 			
@@ -57,7 +61,7 @@ public Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBro
 			}
 			return Plugin_Continue;
 		}
-		//If it wasnt a headshot, its a common regular common kill
+		//If it wasnt a headshot, its a regular common kill
 		g_iClientXP[attacker]++;
 		CheckLevel(attacker);
 		
@@ -81,7 +85,7 @@ public Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBro
 	if(g_bEnabledVGUI[victim] == true && g_bShowingVGUI[victim] == true)
 		DeleteAllMenuParticles(victim);
 	
-	if(g_iTankChosen[victim] == FIRE_TANK && GetEntProp(victim, Prop_Send, "m_zombieClass") == TANK)
+	if(g_iTankChosen[victim] == TANK_FIRE && GetEntProp(victim, Prop_Send, "m_zombieClass") == TANK)
 	{
 		decl Float:xyzLocation[3];
 		GetClientAbsOrigin(victim, xyzLocation);
@@ -91,16 +95,19 @@ public Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBro
 	}
 	
 	//Tank
-	g_iTankChosen[victim] = NO_TANK_CHOSEN;
-	g_xyzClientPosition[victim][0] = 0.0;
-	g_xyzClientPosition[victim][1] = 0.0;
-	g_xyzClientPosition[victim][2] = 0.0;
+	g_iTankChosen[victim] = TANK_NOT_CHOSEN;
+	g_xyzClientTankPosition[victim][0] = 0.0;
+	g_xyzClientTankPosition[victim][1] = 0.0;
+	g_xyzClientTankPosition[victim][2] = 0.0;
 	g_iTankCharge[victim] = 0;
 	g_bTankAttackCharged[victim] = false;
 	DeleteParticleEntity(g_iPID_TankChargedFire[victim]);
 	g_iIceTankLifePool[victim] = 0;
 	delete g_hTimer_IceSphere[victim];
 	DeleteParticleEntity(g_iPID_IceTankIcicles[victim]);
+	TurnOffAndDeleteSmokeStackParticle(g_iPID_IceTankTrail[victim]);
+	
+	
 	
 	//Grapples
 	g_bHunterGrappled[victim] = false;

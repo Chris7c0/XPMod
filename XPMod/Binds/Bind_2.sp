@@ -353,15 +353,8 @@ public Action:Bind2Press(iClient,args)
 									{
 										g_bCanConjureWitch[iClient] = false;
 										
-										decl Float:vangles[3], Float:vdir[3];
-										GetClientEyeAngles(iClient, vangles);	//Get clients Eye Angles to know get what direction to spawn gun
-										GetAngleVectors(vangles, vdir, NULL_VECTOR, NULL_VECTOR);	//Get the direction the iClient is looking
-										vangles[0] = 0.0;		//Lock x and z axis
-										vangles[2] = 0.0;
-										GetClientAbsOrigin(iClient, g_xyzWitchConjureLocation[iClient]);	//Get clients location origin vectors
-										g_xyzWitchConjureLocation[iClient][0] += (vdir[0] * 40.0);		//Place the witch conjure particle infront of the players view
-										g_xyzWitchConjureLocation[iClient][1] += (vdir[1] * 40.0);
-										g_xyzWitchConjureLocation[iClient][2] += vdir[2] + 1.0;			//Raise it up slightly to prevent glitches
+										decl Float:xyzAngles[3];
+										GetLocationVectorInfrontOfClient(iClient, g_xyzWitchConjureLocation[iClient], xyzAngles);
 										
 										WriteParticle(iClient, "spitter_conjure", 180.0, 7.0, g_xyzWitchConjureLocation[iClient]);
 										

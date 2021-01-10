@@ -1,4 +1,29 @@
-WriteParticle(iClient, String:strParticleName[], Float:fZOffset = 0.0, Float:fTime = 0.0, Float:xyzLocation[3] = {0.0, 0.0, 0.0})
+PrecacheParticle(String:ParticleName[])
+{
+	//Declare:
+	decl Particle;
+	
+	//Initialize:
+	Particle = CreateEntityByName("info_particle_system");
+	
+	//Validate:
+	if(IsValidEdict(Particle))
+	{
+		//Properties:
+		DispatchKeyValue(Particle, "effect_name", ParticleName);
+		
+		//Spawn:
+		DispatchSpawn(Particle);
+		ActivateEntity(Particle);
+		AcceptEntityInput(Particle, "start");
+		//AcceptEntityInput(Particle, "m_iParticleSystemIndex", stridx);
+		
+		//Delete:
+		CreateTimer(0.1, DeleteParticle, Particle, TIMER_FLAG_NO_MAPCHANGE);
+	}
+}
+
+int WriteParticle(iClient, String:strParticleName[], Float:fZOffset = 0.0, Float:fTime = 0.0, Float:xyzLocation[3] = {0.0, 0.0, 0.0})
 {	
 	if(IsValidEntity(iClient) == false)
 		return -1;
@@ -131,6 +156,40 @@ CreateParticle(String:type[], Float:time, entity, attach = ATTACH_NONE, bool:use
 	return particle;
 }
 
+int AttachParticle(target, String:particlename[], Float:time, Float:origin)
+{
+	if (target > 0 && IsValidEntity(target))
+	{
+   		new particle = CreateEntityByName("info_particle_system");
+		
+		if (IsValidEntity(particle))
+		{
+			new Float:pos[3];
+			GetEntPropVector(target, Prop_Send, "m_vecOrigin", pos);
+			pos[2] += origin;
+			TeleportEntity(particle, pos, NULL_VECTOR, NULL_VECTOR);
+			decl String:tName[64];
+			Format(tName, sizeof(tName), "Attach%d", target);
+			DispatchKeyValue(target, "targetname", tName);
+			GetEntPropString(target, Prop_Data, "m_iName", tName, sizeof(tName));
+			DispatchKeyValue(particle, "scale", "");
+			DispatchKeyValue(particle, "effect_name", particlename);
+			DispatchKeyValue(particle, "parentname", tName);
+			DispatchKeyValue(particle, "targetname", "particle");
+			DispatchSpawn(particle);
+			ActivateEntity(particle);
+			SetVariantString(tName);
+			AcceptEntityInput(particle, "SetParent", particle, particle);
+			AcceptEntityInput(particle, "Enable");
+			AcceptEntityInput(particle, "start");
+			CreateTimer(time, DeleteParticle, particle, TIMER_FLAG_NO_MAPCHANGE);
+			return particle;
+		}
+    }
+
+	return -1;
+}
+
 //Delete:
 public Action:DeleteParticle(Handle:timer, any:Particle)
 {
@@ -158,53 +217,64 @@ public Action:DeleteParticle(Handle:timer, any:Particle)
 	return Plugin_Stop;
 }
 
-public Action:DeleteParticleEntity(Particle)
+public Action:DeleteParticleEntity(iParticle)
 {
-	//Validate:
-	if(IsValidEdict(Particle))
-		if(IsValidEntity(Particle))
+	if(IsValidEdict(iParticle) && IsValidEntity(iParticle))
+	{
+		decl String:Classname[64];
+		GetEdictClassname(iParticle, Classname, sizeof(Classname));
+		
+		// Is it a Particle?
+		if(StrEqual(Classname, "info_particle_system", false))
 		{
-			//Declare:
-			decl String:Classname[64];
-			
-			//Initialize:
-			GetEdictClassname(Particle, Classname, sizeof(Classname));
-			
-			//Is a Particle:
-			if(StrEqual(Classname, "info_particle_system", false))
-			{
-				//Delete:
-				AcceptEntityInput(Particle, "kill");
-				RemoveEdict(Particle);
-				//PrintToChatAll("Deleted particle system with id: %d", Particle);
-			}
+			// Delete it
+			AcceptEntityInput(iParticle, "kill");
+			RemoveEdict(iParticle);
+			//PrintToChatAll("Deleted particle system with id: %d", Particle);
 		}
+	}
 }
 
-//Precache Particle
-PrecacheParticle(String:ParticleName[])
+TurnOffAndDeleteSmokeStackParticle(iSmokeStackEntity)
 {
-	//Declare:
-	decl Particle;
-	
-	//Initialize:
-	Particle = CreateEntityByName("info_particle_system");
-	
-	//Validate:
-	if(IsValidEdict(Particle))
+	//PrintToChatAll("TurnOffAndDeleteSmokeStackParticle %i", iSmokeStackEntity);
+	if(iSmokeStackEntity > 0 && IsValidEdict(iSmokeStackEntity) && IsValidEntity(iSmokeStackEntity))
 	{
-		//Properties:
-		DispatchKeyValue(Particle, "effect_name", ParticleName);
+		decl String:Classname[99];
+		GetEdictClassname(iSmokeStackEntity, Classname, sizeof(Classname));
+		//PrintToChatAll("edict classname: %s", Classname);
 		
-		//Spawn:
-		DispatchSpawn(Particle);
-		ActivateEntity(Particle);
-		AcceptEntityInput(Particle, "start");
-		//AcceptEntityInput(Particle, "m_iParticleSystemIndex", stridx);
-		
-		//Delete:
-		CreateTimer(0.1, DeleteParticle, Particle, TIMER_FLAG_NO_MAPCHANGE);
+		// Is it a smoke stack particle entity?
+		if(StrEqual(Classname, "env_smokestack", false))
+		{
+			//PrintToChatAll("Turning off particle %i", iSmokeStackEntity);
+			AcceptEntityInput(iSmokeStackEntity, "ClearParent");
+			AcceptEntityInput(iSmokeStackEntity, "TurnOff");
+			CreateTimer(10.0, TimerRemoveSmokeEntity, iSmokeStackEntity, TIMER_FLAG_NO_MAPCHANGE);
+		}
 	}
+}
+
+public Action:TimerStopSmokeEntity(Handle:timer, any:iSmokeStackEntity)
+{
+	TurnOffAndDeleteSmokeStackParticle(iSmokeStackEntity);
+	return Plugin_Stop;
+}
+
+public Action:TimerRemoveSmokeEntity(Handle:timer, any:iSmokeStackEntity)
+{
+	if(iSmokeStackEntity > 0 && IsValidEdict(iSmokeStackEntity) && IsValidEntity(iSmokeStackEntity))
+	{
+		decl String:Classname[99];
+		GetEdictClassname(iSmokeStackEntity, Classname, sizeof(Classname));
+		//PrintToChatAll("edict classname: %s", Classname);
+		
+		// Is it a smoke stack particle entity?
+		if(StrEqual(Classname, "env_smokestack", false))
+			RemoveEdict(iSmokeStackEntity);
+	}
+	
+	return Plugin_Stop;
 }
 
 //Delete All Particles attached to a Client
@@ -275,14 +345,18 @@ DeleteAllClientParticles(iClient)
 	
 	//Tank
 	DeleteParticleEntity(g_iPID_TankChargedFire[iClient]);
-	DeleteParticleEntity(g_iPID_IceTankChargeMist[iClient]);
+	DeleteParticleEntity(g_iPID_IceTankChargeMistAddon[iClient]);
+	DeleteParticleEntity(g_iPID_IceTankChargeMistStock[iClient]);
 	DeleteParticleEntity(g_iPID_IceTankChargeSnow[iClient]);
 	DeleteParticleEntity(g_iPID_IceTankIcicles[iClient]);
+	TurnOffAndDeleteSmokeStackParticle(g_iPID_IceTankTrail[iClient]);
 	
 	g_iPID_TankChargedFire[iClient] = -1;
-	g_iPID_IceTankChargeMist[iClient] = -1;
+	g_iPID_IceTankChargeMistAddon[iClient] = -1;
+	g_iPID_IceTankChargeMistStock[iClient] = -1;
 	g_iPID_IceTankChargeSnow[iClient] = -1;
-	g_iPID_IceTankIcicles[iClient] = -1;		
+	g_iPID_IceTankIcicles[iClient] = -1;
+	g_iPID_IceTankTrail[iClient] = -1;	
 }
 
 DeleteAllMenuParticles(iClient)

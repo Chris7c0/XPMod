@@ -623,7 +623,7 @@ public Action:StartFlying(iClient)
 	}
 	g_iClientJetpackFuel = g_iClientJetpackFuelUsed[iClient]--;
 	PrintHintText(iClient, "%d Fuel Left", g_iClientJetpackFuel);
-	AddVelocity(iClient, 50.0);
+	AddUpwardVelocity(iClient, 50.0);
 	g_bIsFlyingWithJetpack[iClient]=true;
 	if(g_iClientJetpackFuelUsed[iClient]<0)
 	{
@@ -652,7 +652,7 @@ public Action:StopFlying(iClient)
 	return Plugin_Continue;
 }
 
-AddVelocity(iClient, Float:speed)
+AddUpwardVelocity(iClient, Float:speed)
 {
 	new Float:vecVelocity[3];
 	GetEntDataVector(iClient, g_iOffset_VecVelocity, vecVelocity);

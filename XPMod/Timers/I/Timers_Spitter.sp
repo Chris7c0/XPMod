@@ -119,7 +119,7 @@ public Action:TimerConjureCommonInfected(Handle:timer, any:hDataPackage)
 	
 	CloseHandle(hDataPackage);
 	
-	SpawnCommonInfectedMob(xyzLocation, g_iPuppetLevel[iClient]);
+	SpawnRandomCommonInfectedMob(xyzLocation, RoundToFloor(g_iPuppetLevel[iClient] * 0.5), false, 0.1);
 	
 	return Plugin_Stop;
 }
@@ -134,34 +134,11 @@ public Action:TimerConjureUncommonInfected(Handle:timer, any:hDataPackage)
 	xyzLocation[2] = ReadPackFloat(hDataPackage);
 	
 	CloseHandle(hDataPackage);
-	
-	decl i;
-	for(i = 0; i < RoundToFloor(g_iMaterialLevel[iClient] * 0.5); i++)
-	{
-		new zombie = CreateEntityByName("infected");
-		
-		new iRandomNumber = GetRandomInt(0,5);
-		
-		switch(iRandomNumber)
-		{
-			case 0: SetEntityModel(zombie, "models/infected/common_male_ceda.mdl");
-			case 1: SetEntityModel(zombie, "models/infected/common_male_clown.mdl");
-			case 2: SetEntityModel(zombie, "models/infected/common_male_jimmy.mdl");
-			case 3: SetEntityModel(zombie, "models/infected/common_male_mud.mdl");
-			case 4: SetEntityModel(zombie, "models/infected/common_male_riot.mdl");
-			case 5: SetEntityModel(zombie, "models/infected/common_male_roadcrew.mdl");
-		}
 
-		new ticktime = RoundToNearest( GetGameTime() / GetTickInterval() ) + 5;
-		SetEntProp(zombie, Prop_Data, "m_nNextThinkTick", ticktime);
-		
-		CreateTimer(0.1, TimerSetMobRush, zombie);
+	// Figure out how many to spawn 2 at level 10 and 1 otherwise
+	new iSpawnCount = g_iMaterialLevel[iClient] == 10 ? 2 : 1
 
-		DispatchSpawn(zombie);
-		ActivateEntity(zombie);
-		
-		TeleportEntity(zombie, xyzLocation, NULL_VECTOR, NULL_VECTOR);
-	}
+	SpawnRandomCommonInfectedMob(xyzLocation, iSpawnCount, true, 0.1);
 	
 	return Plugin_Stop;
 }
@@ -170,14 +147,6 @@ public Action:TimerConjureUncommonInfected(Handle:timer, any:hDataPackage)
 public Action:TimerResetCanConjureWitch(Handle:timer, any:iClient)
 {
 	g_bCanConjureWitch[iClient] = true;
-	
-	return Plugin_Stop;
-}
-
-public Action:TimerSetMobRush(Handle:timer, any:zombieEntity)
-{
-	if (zombieEntity > 0 && IsValidEntity(zombieEntity))
-		SetEntProp(zombieEntity,Prop_Send,"m_mobRush",1);
 	
 	return Plugin_Stop;
 }

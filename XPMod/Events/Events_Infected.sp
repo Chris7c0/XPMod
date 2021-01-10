@@ -179,7 +179,7 @@ public Event_PlayerNowIt(Handle:hEvent, const String:strName[], bool:bDontBroadc
 									new ticktime = RoundToNearest(  GetGameTime() / GetTickInterval()) + 5;
 									
 									decl i;
-									for(i = 0; i < 8; i++)
+									for(i = 0; i < 6; i++)
 									{
 										new zombie = CreateEntityByName("infected");
 										SetEntityModel(zombie, "models/infected/common_male_jimmy.mdl");
@@ -191,8 +191,6 @@ public Event_PlayerNowIt(Handle:hEvent, const String:strName[], bool:bDontBroadc
 										ActivateEntity(zombie);
 										location[0] += 10.0;
 										TeleportEntity(zombie, location, NULL_VECTOR, NULL_VECTOR);
-										
-										
 									}
 									
 									
@@ -833,7 +831,7 @@ public Action:Event_WitchKilled(Handle:hEvent, String:Event_name[], bool:dontBro
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	new victim = GetEventInt(hEvent, "witchid");
 	new instakill = GetEventBool(hEvent, "oneshot");
-	if (iClient > 0 && iClient < (MAXPLAYERS + 1))
+	if (iClient > 0 && iClient <= MaxClients)
 	{
 		if(IsFakeClient(iClient) == true)
 			return Plugin_Continue;
@@ -919,7 +917,7 @@ public Action:Event_ZombieIgnited(Handle:hEvent, String:Event_name[], bool:dontB
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	new victim = GetEventInt(hEvent, "entityid");
 	
-	if (iClient > 0 && iClient < (MAXPLAYERS + 1))
+	if (iClient > 0 && iClient <= MaxClients)
 	{
 		if(IsFakeClient(iClient) == true)
 			return Plugin_Continue;
@@ -1027,35 +1025,7 @@ public Action:Event_SpitBurst(Handle:hEvent, const String:strName[], bool:bDontB
 		}
 		
 		if(g_iMaterialLevel[iClient] > 0)
-		{
-			/*decl i;
-			for(i = 0; i < RoundToFloor(g_iMaterialLevel[iClient] * 0.5); i++)
-			{
-				new zombie = CreateEntityByName("infected");
-				
-				new iRandomNumber = GetRandomInt(0,5);
-				
-				switch(iRandomNumber)
-				{
-					case 0: SetEntityModel(zombie, "models/infected/common_male_ceda.mdl");
-					case 1: SetEntityModel(zombie, "models/infected/common_male_clown.mdl");
-					case 2: SetEntityModel(zombie, "models/infected/common_male_jimmy.mdl");
-					case 3: SetEntityModel(zombie, "models/infected/common_male_mud.mdl");
-					case 4: SetEntityModel(zombie, "models/infected/common_male_riot.mdl");
-					case 5: SetEntityModel(zombie, "models/infected/common_male_roadcrew.mdl");
-				}
-	
-				new ticktime = RoundToNearest( GetGameTime() / GetTickInterval() ) + 5;
-				SetEntProp(zombie, Prop_Data, "m_nNextThinkTick", ticktime);
-				
-				CreateTimer(0.1, TimerSetMobRush, zombie);
-
-				DispatchSpawn(zombie);
-				ActivateEntity(zombie);
-				
-				TeleportEntity(zombie, position, NULL_VECTOR, NULL_VECTOR);
-			}*/
-			
+		{			
 			position[1] += 1.0;
 			position[2] += 1.0;
 			
@@ -1089,7 +1059,7 @@ public Action:Event_WitchSpawn(Handle:hEvent, const String:sName[], bool:bDontBr
 	
 	new bool:bOwnerFound = false;
 	decl iClient;
-	for(iClient = 1; iClient < MaxClients; iClient++)
+	for(iClient = 1; iClient <= MaxClients; iClient++)
 	{
 		if(g_bJustSpawnedWitch[iClient] == true && g_iClientTeam[iClient] == TEAM_INFECTED && g_iInfectedCharacter[iClient] == SPITTER
 			&& IsClientInGame(iClient) == true && IsFakeClient(iClient) == false)

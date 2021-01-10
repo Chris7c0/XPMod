@@ -66,15 +66,8 @@ public Action:Bind1Press(iClient,args)
 			{
 				if((GetEntityFlags(iClient) & FL_ONGROUND))
 				{
-					decl Float:vorigin[3], Float:vangles[3], Float:vdir[3], Float:topvec[3];
-					GetClientEyeAngles(iClient, vangles);	//Get clients Eye Angles to know get what direction to spawn gun
-					GetAngleVectors(vangles, vdir, NULL_VECTOR, NULL_VECTOR);	//Get the direction the iClient is looking
-					vangles[0] = 0.0;		//Lock x and z axis
-					vangles[2] = 0.0;
-					GetClientAbsOrigin(iClient, vorigin);	//Get clients location origin vectors
-					vorigin[0] += (vdir[0] * 40.0);		//Place the minigun infront of the players view
-					vorigin[1] += (vdir[1] * 40.0);
-					vorigin[2] += vdir[2] + 1.0;			//Raise it up slightly to prevent glitches
+					decl Float:vorigin[3], Float:vangles[3], Float:topvec[3];
+					GetLocationVectorInfrontOfClient(iClient, vorigin, vangles);
 					
 					new ammopile = CreateEntityByName("weapon_ammo_spawn");
 					DispatchKeyValueVector(ammopile, "Origin", vorigin);
@@ -166,15 +159,9 @@ public Action:Bind1Press(iClient,args)
 			{
 				if((GetEntityFlags(iClient) & FL_ONGROUND))
 				{
-					decl Float:vorigin[3], Float:vangles[3], Float:vdir[3];
-					GetClientEyeAngles(iClient, vangles);	//Get clients Eye Angles to know get what direction to spawn gun
-					GetAngleVectors(vangles, vdir, NULL_VECTOR, NULL_VECTOR);	//Get the direction the iClient is looking
-					vangles[0] = 0.0;		//Lock x and z axis
-					vangles[2] = 0.0;
-					GetClientAbsOrigin(iClient, vorigin);	//Get clients location origin vectors
-					vorigin[0]+=(vdir[0] * 30.0);		//Place the minigun infront of the players view
-					vorigin[1]+=(vdir[1] * 30.0);
-					vorigin[2]+=(vdir[2] * 1.0);			//Raise it up slightly to prevent glitches
+					decl Float:vorigin[3], Float:vangles[3];
+					GetLocationVectorInfrontOfClient(iClient, vorigin, vangles);
+					
 					g_iClientBindUses_1[iClient]++;
 					new uses = 3 - g_iClientBindUses_1[iClient];
 					decl random_turret;

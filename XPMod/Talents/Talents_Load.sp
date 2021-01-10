@@ -36,18 +36,18 @@ public LoadTalents(iClient)
 					g_iMaxDragSpeed += g_iDirtyLevel[iClient];
 					SetConVarFloat(FindConVar("tongue_victim_max_speed"), float(175 + (g_iMaxDragSpeed * 8)), false, false);
 				}
-				if(g_iPredatorialLevel[iClient] > 0)
-				{
-					g_iStumbleRadius += (g_iPredatorialLevel[iClient] * 8);
-					SetConVarInt(FindConVar("z_pounce_stumble_radius"), g_iStumbleRadius, false, false);
-					// PrintToChatAll("Stumble radius = %i", g_iStumbleRadius);
-				}
-				if(g_iMutatedLevel[iClient] > 0)
-				{
-					g_iStumbleRadius += (g_iMutatedLevel[iClient] * 8);
-					SetConVarInt(FindConVar("z_pounce_stumble_radius"), g_iStumbleRadius, false, false);
-					// PrintToChatAll("Stumble radius = %i", g_iStumbleRadius);
-				}
+				// if(g_iPredatorialLevel[iClient] > 0)
+				// {
+				// 	g_iStumbleRadius += (g_iPredatorialLevel[iClient] * 8);
+				// 	SetConVarInt(FindConVar("z_pounce_stumble_radius"), g_iStumbleRadius, false, false);
+				// 	// PrintToChatAll("Stumble radius = %i", g_iStumbleRadius);
+				// }
+				// if(g_iMutatedLevel[iClient] > 0)
+				// {
+				// 	g_iStumbleRadius += (g_iMutatedLevel[iClient] * 8);
+				// 	SetConVarInt(FindConVar("z_pounce_stumble_radius"), g_iStumbleRadius, false, false);
+				// 	// PrintToChatAll("Stumble radius = %i", g_iStumbleRadius);
+				// }
 			}
 			
 		}
@@ -288,7 +288,7 @@ public LoadTalents(iClient)
 				//Sets the iClient to hear all the infected's voice comms
 				if(g_iGatherLevel[iClient] == 5)
 				{
-					for(new i = 1; i < MaxClients; i++)
+					for(new i = 1; i <= MaxClients; i++)
 					{
 						if(IsClientInGame(i) == true && GetClientTeam(i) == TEAM_INFECTED && IsFakeClient(i) == false)
 							SetListenOverride(iClient, i, Listen_Yes);

@@ -91,7 +91,7 @@ public Action:TimerCheckTeam(Handle:timer, any:iClient)
 	
 	if(GetClientTeam(iClient) == TEAM_INFECTED)
 	{
-		for(new i = 1; i < MaxClients; i++)
+		for(new i = 1; i <= MaxClients; i++)
 		{
 			if(g_iGatherLevel[i] == 5 && IsClientInGame(i) == true && GetClientTeam(i) == TEAM_SURVIVORS)
 				SetListenOverride(i, iClient, Listen_Yes);	//Sets the iClient to hear all the infected's voice comms
@@ -121,7 +121,7 @@ public Action:TimerResetMelee(Handle:timer, any:data)
 	if (IsServerProcessing()==false)
 		return Plugin_Continue;
 	//PrintToChatAll("timer called");
-	for(new iClient = 1;iClient<MaxClients; iClient++)
+	for(new iClient = 1;iClient<= MaxClients; iClient++)
 	{
 		if(IsClientInGame(iClient)==true)
 		{
@@ -271,24 +271,6 @@ public Action:TimerUnfreeze(Handle:timer, any:data)
 	return Plugin_Stop;
 }
 
-public Action:TimerStopSmokeEntity(Handle:timer, any:entity)
-{
-	if (IsValidEntity(entity))
-	{
-		AcceptEntityInput(entity, "TurnOff");
-		CreateTimer(6.0, TimerRemoveSmokeEntity, entity, TIMER_FLAG_NO_MAPCHANGE);
-	}
-	
-	return Plugin_Stop;
-}
-
-public Action:TimerRemoveSmokeEntity(Handle:timer, any:entity)
-{
-	if (IsValidEntity(entity))
-		RemoveEdict(entity);
-	
-	return Plugin_Stop;
-}
 
 public Action:TimerDrugged(Handle:timer, any:iClient)
 {

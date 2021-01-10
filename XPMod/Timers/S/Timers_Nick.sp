@@ -83,7 +83,7 @@ public Action:TimerMakeVisible(Handle:timer, any:iClient)
 public Action:TimerBlindFade(Handle:timer, any:iClient)
 {
 	if(IsFakeClient(iClient)==false)
-		ShowHudOverlayColor(iClient, 0, 0, 0, 255, 9000, FADE_OUT);
+		ShowHudOverlayColor(iClient, 0, 0, 0, 255, 4000, FADE_OUT);
 	
 	return Plugin_Stop;
 }

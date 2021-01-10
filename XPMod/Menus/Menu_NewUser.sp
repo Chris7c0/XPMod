@@ -20,7 +20,7 @@ public Action:CreateNewUserMenuDraw(iClient)
         SetMenuTitle(g_hMenu_XPM[iClient], text);
         
         AddMenuItem(g_hMenu_XPM[iClient], "option1", " Yes, Lets Go!");
-        AddMenuItem(g_hMenu_XPM[iClient], "option2", " Not Yet.\n \n\
+        AddMenuItem(g_hMenu_XPM[iClient], "option2", " Not Now.\n \n\
             ==================================================\
             \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
         
@@ -45,7 +45,7 @@ public CreateNewUserMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNu
                 if (RunClientChecks(iClient) && g_bClientLoggedIn[iClient] == false)
                     CreateNewUser(iClient);
             }
-			case 2: // Not yet
+			case 2: // Not now
 			{
 				ClosePanel(iClient);
 			}

@@ -373,9 +373,11 @@ LevelUpPlayer(iClient)
 				PrintHintText(iClient, "<-=-=-=-:[You have reached level %d]:-=-=-=->", g_iClientLevel[iClient]);
 				PrintToChatAll("\x03[XPMod] %N is now level %d", iClient, g_iClientLevel[iClient]);
 				// Play the level up sound
-				decl Float:vec[3];
-				GetClientAbsOrigin(iClient, vec);
-				EmitAmbientSound(SOUND_LEVELUP, vec, iClient, SNDLEVEL_NORMAL);
+				decl Float:xyzClientLocation[3];
+				GetClientAbsOrigin(iClient, xyzClientLocation);
+				EmitAmbientSound(SOUND_LEVELUP, xyzClientLocation, iClient, SNDLEVEL_NORMAL);
+				xyzClientLocation[2] += 22.0;
+				WriteParticle(iClient, "mini_fireworks", 0.0, 10.0, xyzClientLocation);
 			}
 		}
 }

@@ -1,326 +1,351 @@
 OnGameFrame_Tank(iClient)
 {
-	//Check to see if the charging has already taken place or depleted
-	if((g_iTankChosen[iClient] == FIRE_TANK && g_bTankAttackCharged[iClient] == true) ||
-		(g_iTankChosen[iClient] == ICE_TANK && g_iIceTankLifePool[iClient] < 1) ||
-		g_iTankChosen[iClient] == NO_TANK_CHOSEN)
-		return;
-	
-	new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
-	
-	//Check to see if ducking and not attacking before starting the charge
-	if((buttons & IN_DUCK) && !(buttons & IN_ATTACK) && !(buttons & IN_ATTACK2))
+	switch (g_iTankChosen[iClient])
 	{
-		decl Float:xyzCurrentPosition[3];
-		GetClientAbsOrigin(iClient, xyzCurrentPosition);
-		
-		//Make sure the tank hasnt moved while charging(tanks position has changed)
-		if(g_xyzClientPosition[iClient][0] == xyzCurrentPosition[0] && 
-			g_xyzClientPosition[iClient][1] == xyzCurrentPosition[1] && 
-			g_xyzClientPosition[iClient][2] == xyzCurrentPosition[2])
-		{
-			g_iTankCharge[iClient]++;
-		}
-		else
-		{
-			if(g_iTankCharge[iClient] != 0)
-			{
-				if(g_iTankCharge[iClient] > 31)
-					PrintHintText(iClient, "Charge Interrupted");
-				
-				g_iTankCharge[iClient] = 0;
-				g_bShowingIceSphere[iClient] = false;
-			}
-			g_xyzClientPosition[iClient][0] = xyzCurrentPosition[0];
-			g_xyzClientPosition[iClient][1] = xyzCurrentPosition[1];
-			g_xyzClientPosition[iClient][2] = xyzCurrentPosition[2];
-		}
-		
-		//Display the first message to the player while he is charging up
-		if(g_iTankCharge[iClient] == 30)
-		{
-			if(g_iTankChosen[iClient] == FIRE_TANK)
-			{
-				if(g_bBlockTankFirePunchCharge[iClient] == false)
-				{
-					PrintHintText(iClient, "Charging Up Attack");
-				}
-				else
-				{
-					PrintHintText(iClient, "You must wait to charge your fire punch attack");
-					g_iTankCharge[iClient] = 0;
-				}
-			}
-			else if(g_iTankChosen[iClient] == ICE_TANK)
-				PrintHintText(iClient, "Charging Up Health"); 
-		}
-		
-		//Charged for long enough, now handle for each tank
-		if(g_iTankCharge[iClient] >= 150)
-		{
-			if(g_iTankChosen[iClient] == FIRE_TANK)
-			{
-				g_bTankAttackCharged[iClient] = true;
-				g_iTankCharge[iClient] = 0;				
-				g_iPID_TankChargedFire[iClient] = CreateParticle("fire_small_01", 0.0, iClient, ATTACH_DEBRIS);
-				
-				PrintHintText(iClient, "Fire Punch Attack Charged", g_iTankCharge[iClient]);
-			}
-			else if(g_iTankChosen[iClient] == ICE_TANK)
-			{
-				decl Float:fCurrentTankHealthPercentage;
-				new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
-				
-				if(g_iIceTankLifePool[iClient] > 0 && iCurrentHealth < 6000 + g_iClientLevel[iClient] * 400)
-				{
-					if(g_iIceTankLifePool[iClient] > 5)
-					{
-						SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + 5);
-						fCurrentTankHealthPercentage = float(iCurrentHealth + 5) / float(6000 + g_iClientLevel[iClient] * 400);
-						g_iIceTankLifePool[iClient] -= 5;
-						
-						PrintHintText(iClient, "Life Pool Remaining: %d", g_iIceTankLifePool[iClient]);
-						
-						//Show the ice sphere around the Ice Tank
-						g_bShowingIceSphere[iClient] = true;
-						
-						if(g_iPID_IceTankChargeMist[iClient] == -1 && g_iPID_IceTankChargeSnow[iClient] == -1)
-						{
-							g_iPID_IceTankChargeMist[iClient] = WriteParticle(iClient, "ice_tank_charge_mist", 50.0);
-							g_iPID_IceTankChargeSnow[iClient] = WriteParticle(iClient, "ice_tank_charge_snow", 50.0);
-						}
-						
-						if(g_hTimer_IceSphere[iClient] == null)
-							g_hTimer_IceSphere[iClient] = CreateTimer(0.1, Timer_CreateSmallIceSphere, iClient, TIMER_REPEAT);
-						
-						//Check to see if there is a player inside of the ice sphere and freeze him if he is
-						for(new iVictim = 1; iVictim <= MaxClients; iVictim++)
-						{
-							if(g_bFrozenByTank[iVictim] == true || g_iClientTeam[iVictim] != TEAM_SURVIVORS 
-								|| IsClientInGame(iVictim) == false || IsPlayerAlive(iVictim) == false)
-								continue;
-							
-							decl Float:xyzVictimPosition[3];
-							GetClientAbsOrigin(iVictim, xyzVictimPosition);
-							
-							new Float:fDistance = GetVectorDistance(xyzVictimPosition, xyzCurrentPosition, false);
-							
-							//The sphere radius is about 125.0 but check for 130.0 to be safe
-							if(fDistance <= 130.0)
-								CreateTimer(0.1, Timer_FreezePlayerByTank, iVictim, TIMER_FLAG_NO_MAPCHANGE);
-						}
-					}
-					else
-					{
-						SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + g_iIceTankLifePool[iClient]);
-						fCurrentTankHealthPercentage = float(iCurrentHealth + g_iIceTankLifePool[iClient]) / float(6000 + g_iClientLevel[iClient] * 400);
-						g_iIceTankLifePool[iClient] = 0;
-						
-						PrintHintText(iClient, "Life Pool Depleted");
-						
-						g_bShowingIceSphere[iClient] = false;
-					}
-					
-					//Set the color of the tank to match his current health percentage
-					new iGreen	= 20 + RoundToNearest(235 * fCurrentTankHealthPercentage);
-					
-					SetEntityRenderMode(iClient, RenderMode:0);
-					SetEntityRenderColor(iClient, 0, iGreen, 255, 255);
-				}
-			}
-		}
-	}
-	else if(g_iTankCharge[iClient] > 0)
-	{
-		if(g_iTankCharge[iClient] > 31)
-			PrintHintText(iClient, "Charge Interrupted");
-		
-		g_iTankCharge[iClient] = 0;
-		g_bShowingIceSphere[iClient] = false;
+		case TANK_FIRE:			OnGameFrame_Tank_Fire(iClient);
+		case TANK_ICE:			OnGameFrame_Tank_Ice(iClient);
+		case TANK_NECROTANKER:	OnGameFrame_Tank_NecroTanker(iClient);
+		case TANK_VAMPIRIC:		OnGameFrame_Tank_Vampiric(iClient);
 	}
 }
 
-LoadFireTankTalents(iClient)
+EventsHurt_TankVictim(iVictimTank, iDmgType, iDmgHealth)
 {
-	g_fClientSpeedBoost[iClient] = 0.0;
-	g_fClientSpeedPenalty[iClient] = 0.0;
-	
-	if(iClient < 1 || g_iClientTeam[iClient] != TEAM_INFECTED || IsClientInGame(iClient) == false || 
-		IsFakeClient(iClient) == true || GetEntProp(iClient, Prop_Send, "m_zombieClass") != TANK)
-		return;
-	
-	if(IsPlayerAlive(iClient) == false)
+	//PrintToChatAll("EventsHurt_TankVictim %N, iDmgType %i", iVictimTank, iDmgType);
+
+	// Globally for all tanks, put them out after X seconds
+	if(g_iTankChosen[iVictimTank] != TANK_FIRE && (iDmgType == DAMAGETYPE_FIRE1 || iDmgType == DAMAGETYPE_FIRE2))
 	{
-		PrintToChat(iClient, "\x04You cannot choose tank talents after you have died");
-		return;
+		// This will reset the timer each time they take new fire damage
+		delete g_hTimer_ExtinguishTank[iVictimTank];
+		g_hTimer_ExtinguishTank[iVictimTank] = CreateTimer(30.0, TimerExtinguishTank, iVictimTank);
 	}
-	
-	g_iTankChosen[iClient] = FIRE_TANK;
-	g_fTankHealthPercentage[iClient] =  1.0;
-	g_bBlockTankFirePunchCharge[iClient] = false;
-	
-	//Set On Fire
-	IgniteEntity(iClient, 10000.0, false);
-	CreateTimer(10000.0, Timer_ReigniteTank, iClient, TIMER_FLAG_NO_MAPCHANGE);
-	
-	//Give Health
-	SetEntProp(iClient, Prop_Data,"m_iMaxHealth", (6000 + g_iClientLevel[iClient] * 100));
-	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
-	SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + (g_iClientLevel[iClient] * 100));
-	
-	//Set Movement Speed
-	//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), 1.2, true);
-	g_fClientSpeedBoost[iClient] += 0.2;
-	fnc_SetClientSpeed(iClient);
-	
-	//Change Skin Color
-	SetEntityRenderMode(iClient, RenderMode:0);
-	SetEntityRenderColor(iClient, 255, 200, 0, 255);
-	//SetEntityRenderColor(iClient, 210, 88, 30, 255);
-	
-	PrintHintText(iClient, "You are now the Fire Tank");
-}
 
-LoadIceTankTalents(iClient)
-{
-	g_fClientSpeedBoost[iClient] = 0.0;
-	g_fClientSpeedPenalty[iClient] = 0.0;
-
-	if(iClient < 1 || g_iClientTeam[iClient] != TEAM_INFECTED || IsClientInGame(iClient) == false || 
-		IsFakeClient(iClient) == true || GetEntProp(iClient, Prop_Send, "m_zombieClass") != TANK)
-		return;
-	
-	if(IsPlayerAlive(iClient) == false)
+	switch(g_iTankChosen[iVictimTank])
 	{
-		PrintToChat(iClient, "\x04You cannot choose tank talents after you have died");
-		return;
+		case TANK_FIRE:			EventsHurt_TankVictim_Fire(iVictimTank, iDmgType, iDmgHealth);
+		case TANK_ICE:			EventsHurt_TankVictim_Ice(iVictimTank, iDmgType, iDmgHealth);
+		case TANK_NECROTANKER:	EventsHurt_TankVictim_NecroTanker(iVictimTank, iDmgType, iDmgHealth);
+		case TANK_VAMPIRIC:		EventsHurt_TankVictim_Vampiric(iVictimTank, iDmgType, iDmgHealth);
 	}
-	
-	g_iTankChosen[iClient] = ICE_TANK;
-	g_fTankHealthPercentage[iClient] =  1.0;
-	g_iIceTankLifePool[iClient] = 200 * g_iClientLevel[iClient];
-	
-	//Stop Kiting
-	SetConVarInt(FindConVar("z_tank_damage_slow_min_range"), 0);
-	SetConVarInt(FindConVar("z_tank_damage_slow_max_range"), 0);
-	//Stop Rock Throwing Cooldown
-	SetConVarFloat(FindConVar("z_tank_throw_interval"), 1.0);
-	
-	//Give Health
-	SetEntProp(iClient, Prop_Data,"m_iMaxHealth", (6000 + g_iClientLevel[iClient] * 400));
-	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
-	SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + (g_iClientLevel[iClient] * 400));
-	
-	//Set Movement Speed
-	//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), 1.0 - (RoundToCeil(g_iClientLevel[iClient] / 5.0) * 0.01), true);
-	//g_fClientSpeedPenalty[iClient] += (RoundToCeil(g_iClientLevel[iClient] / 5.0) * 0.01);
-	//fnc_SetClientSpeed(iClient);
-	
-	//Change Skin Color
-	SetEntityRenderMode(iClient, RenderMode:0);
-	SetEntityRenderColor(iClient, 0, 255, 255, 255);
-
-	//Grow the tank, doesnt seem to work
-	//SetEntPropFloat(iClient , Prop_Send,"m_flModelScale", 1.3); 
-	
-	//Attach particle effect
-	g_iPID_IceTankIcicles[iClient] = CreateParticle("ice_tank_icicles", 0.0, iClient, ATTACH_RSHOULDER);
-	
-	PrintHintText(iClient, "You are now the Ice Tank");
 }
 
-SetFireToPlayer(iVictim, iAttacker, Float:fTime)
+ResetAllTankVariables(iClient)
 {
-	if(iVictim < 1 || IsClientInGame(iVictim) == false)
-		return;
-	
-	g_iFireDamageCounter[iVictim] = RoundToNearest(fTime * 2);
-	IgniteEntity(iVictim, fTime, false);
-	WriteParticle(iVictim, "fire_small_01", 40.0, fTime);
-	
-	new Handle:hEntityPack = CreateDataPack();
-	WritePackCell(hEntityPack, iVictim);
-	WritePackCell(hEntityPack, iAttacker);
-	CreateTimer(0.5, Timer_DealFireDamage, hEntityPack, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
-}
-
-FreezePlayerByTank(iVictim, Float:fFreezeTime, Float:fStartTime = 0.2)
-{
-	if(iVictim < 1 || IsClientInGame(iVictim) == false)
-		return;
-	
-	CreateTimer(fStartTime, Timer_FreezePlayerByTank, iVictim, TIMER_FLAG_NO_MAPCHANGE);
-	CreateTimer(fFreezeTime, Timer_UnfreezePlayerByTank, iVictim, TIMER_FLAG_NO_MAPCHANGE);
-}
-
-UnfreezePlayerByTank(iClient)
-{
-	if(iClient < 1 || g_iClientTeam[iClient] != TEAM_SURVIVORS || g_bFrozenByTank[iClient] == false || IsValidEntity(iClient) == false || 
-		IsClientInGame(iClient) == false || IsPlayerAlive(iClient) == false)
-		return;
-	
+	g_iTankChosen[iClient] = TANK_NOT_CHOSEN;
+	g_iFireDamageCounter[iClient] = 0;
 	g_bFrozenByTank[iClient] =  false;
-	g_bBlockTankFreezing[iClient] = true;
-	
-	//Reset To Allow The Player To Freeze Again
-	CreateTimer(3.0, Timer_UnblockTankFreezing, iClient, TIMER_FLAG_NO_MAPCHANGE);
-	
-	//Play Ice Break Sound
-	new Float:vec[3];
-	GetClientAbsOrigin(iClient, vec);
-	EmitAmbientSound(SOUND_FREEZE, vec, iClient, SNDLEVEL_NORMAL);
-	
-	StopHudOverlayColor(iClient)
-	
-	//Set Player Model Color
-	fnc_SetRendering(iClient);
-	//ResetGlow(iClient);
-	
-	//Reset Movement Speed
-	fnc_SetClientSpeed(iClient);
-	//ResetSurvivorSpeed(iClient);
+	g_xyzClientTankPosition[iClient][0] = 0.0;
+	g_xyzClientTankPosition[iClient][1] = 0.0;
+	g_xyzClientTankPosition[iClient][2] = 0.0;
+	g_iTankCharge[iClient] = 0;
+	g_bTankAttackCharged[iClient] = false;
+	g_iIceTankLifePool[iClient] = 0;
+	g_bCanFlapVampiricTankWings[iClient] = false;
+	g_bIsVampiricTankFlying[iClient] = false;
 }
 
-CreateIceSphere(iClient, Float:fSphereDiameter, iRings, Float:fRingWidth, Float:fLifeTime, Float:fZOffset = 50.0)
+CheckIfTankMovedWhileChargingAndIncrementCharge(iClient)
 {
-	new Float:fRings = float(iRings);
-	decl Float:fRingDiameter, Float:xyzOrigin[3];
-	GetEntPropVector(iClient, Prop_Send, "m_vecOrigin", xyzOrigin);
+	decl Float:xyzCurrentPosition[3];
+	GetClientAbsOrigin(iClient, xyzCurrentPosition);
 	
-	
-	new Float:xyzRingPosition[3];
-	
-	xyzRingPosition[0] = xyzOrigin[0];
-	xyzRingPosition[1] = xyzOrigin[1];
-	//Raise the sphere to center it around the player
-	xyzOrigin[2] += fZOffset;
-	
-	decl i;
-	for(i = 1; i < iRings; i++)
+	//Make sure the tank hasnt moved while charging(tanks position has changed)
+	if(g_xyzClientTankPosition[iClient][0] == xyzCurrentPosition[0] && 
+		g_xyzClientTankPosition[iClient][1] == xyzCurrentPosition[1] && 
+		g_xyzClientTankPosition[iClient][2] == xyzCurrentPosition[2])
 	{
-		fRingDiameter = 0.0 + fSphereDiameter * Sine(PI * (i / fRings));
-		
-		xyzRingPosition[2] = xyzOrigin[2] + ((fSphereDiameter / 2.0) * Cosine(PI * (i / fRings)));
-		
-		TE_Start("BeamRingPoint");
-		TE_WriteVector("m_vecCenter", xyzRingPosition);
-		TE_WriteFloat("m_flStartRadius",  fRingDiameter);
-		TE_WriteFloat("m_flEndRadius", fRingDiameter + 0.1);
-		TE_WriteNum("m_nModelIndex", g_iSprite_Laser);
-		TE_WriteNum("m_nHaloIndex", g_iSprite_Halo);
-		TE_WriteNum("m_nStartFrame", 0);
-		TE_WriteNum("m_nFrameRate", 60);
-		TE_WriteFloat("m_fLife", fLifeTime);
-		TE_WriteFloat("m_fWidth", fRingWidth);
-		TE_WriteFloat("m_fEndWidth", fRingWidth);
-		TE_WriteFloat("m_fAmplitude",  0.1);	//0.5
-		TE_WriteNum("r", 0);
-		TE_WriteNum("g", 30);
-		TE_WriteNum("b", 180);
-		TE_WriteNum("a", 35);
-		TE_WriteNum("m_nSpeed", 1);
-		TE_WriteNum("m_nFlags", 0);
-		TE_WriteNum("m_nFadeLength", 0);
-		TE_SendToAll();
+		g_iTankCharge[iClient]++;
 	}
+	else
+	{
+		if(g_iTankCharge[iClient] != 0)
+		{
+			if(g_iTankCharge[iClient] > 31)
+				PrintHintText(iClient, "Interrupted");
+			
+			g_iTankCharge[iClient] = 0;
+			g_bShowingIceSphere[iClient] = false;
+		}
+		g_xyzClientTankPosition[iClient][0] = xyzCurrentPosition[0];
+		g_xyzClientTankPosition[iClient][1] = xyzCurrentPosition[1];
+		g_xyzClientTankPosition[iClient][2] = xyzCurrentPosition[2];
+	}
+}
+
+
+public bool IsTankRock(int entity, const char[] classname)
+{
+	if (strlen(classname) > 0)
+	{
+		return StrEqual(classname, "tank_rock");
+	}
+	else if (IsValidEntity(entity))
+	{
+		new String:strClassname[100];
+		GetEntityClassname(entity,strClassname,100);
+		return StrEqual(strClassname, "tank_rock");
+	}
+
+	return false;
+}
+
+void PushRockOntoTankRockEntitiesList(int iEntity)
+{
+	if (g_listTankRockEntities == INVALID_HANDLE)
+		return;
+
+	// Push a new item onto the list
+	new index = g_listTankRockEntities.Push(iEntity);
+	// Store the entity ID
+	g_listTankRockEntities.Set(index, iEntity, TANK_ROCK_ENTITY_ID);
+	// Set the type for this item to be unknown until it can be determined later
+	// what type it is.  This is done in OnGameFrame.
+	g_listTankRockEntities.Set(index, TANK_ROCK_TYPE_UNKNOWN, TANK_ROCK_TYPE);
+	g_listTankRockEntities.Set(index, -1, TANK_ROCK_PARTICLE_TRAIL);
+	//PrintToServer("PushRockOntoTankRockEntitiesList %i", iEntity);
+}
+
+void PopRockOffTankRockEntitiesList(int iEntity)
+{
+	if (g_listTankRockEntities == INVALID_HANDLE)
+		return;
+
+	//Find the tank rock entity in the list
+	new iTankRockIndex = FindIndexInArrayListUsingValue(g_listTankRockEntities, iEntity, TANK_ROCK_ENTITY_ID);
+	
+	//Remove it from the array if it was found
+	if (iTankRockIndex >= 0)
+		g_listTankRockEntities.Erase(iTankRockIndex);
+		//RemoveFromArray(g_listTankRockEntities, iTankRockIndex);
+
+	//PrintToServer("Rock Destroyed %i", iEntity);
+}
+
+void RemoveAllEntitiesFromTankRockList()
+{
+	if (g_listTankRockEntities == INVALID_HANDLE)
+		return;
+
+	for (int i=0; i < g_listTankRockEntities.Length; i++)
+		g_listTankRockEntities.Erase(i);
+}
+
+void HandleTankRockDestroy(iRockEntity)
+{
+	if (g_listTankRockEntities == INVALID_HANDLE)
+		return;
+
+	//Find the tank rock entity in the list that will be used to gain the rock type
+	new iTankRockIndex = FindIndexInArrayListUsingValue(g_listTankRockEntities, iRockEntity, TANK_ROCK_ENTITY_ID);
+	
+	switch (g_listTankRockEntities.Get(iTankRockIndex, TANK_ROCK_TYPE))
+	{
+		case TANK_ROCK_TYPE_FIRE:
+		{
+			DestroyFireTankRock(iRockEntity);
+		}
+		case TANK_ROCK_TYPE_ICE:
+		{
+			CreateIceRockDestroyEffect(iRockEntity);
+			FreezeEveryoneCloseToExplodingIceTankRock(iRockEntity);
+		}
+		case TANK_ROCK_TYPE_NECROTANKER:
+		{
+			CreateNecroTankerRockDestroyEffect(iRockEntity);
+			BileEveryoneCloseToExplodingNecroTankerTankRock(iRockEntity);
+			// Rock is destroyed early and replaced by special infected, ignore this
+		}
+		case TANK_ROCK_TYPE_GENERIC, TANK_ROCK_TYPE_UNKNOWN:
+		{
+			// Do nothing
+		}
+	}
+}
+
+// void PrintAllInTankRockEntityList()
+// {
+// 	if (g_listTankRockEntities == INVALID_HANDLE)
+// 		return;
+
+// 	PrintToServer("g_listTankRockEntities:");
+// 	for (int i=0; i < g_listTankRockEntities.Length; i++)
+// 	{
+// 		new iEntityID = g_listTankRockEntities.Get(i, TANK_ROCK_ENTITY_ID);
+// 		new iRockType = g_listTankRockEntities.Get(i, TANK_ROCK_TYPE);
+// 		PrintToServer("    %i: id %i, type %i", i, iEntityID, iRockType);
+// 	}
+// }
+
+
+
+void TrackAllRockPositions()
+{
+	for (int iTankRockIndex=0; iTankRockIndex < g_listTankRockEntities.Length; iTankRockIndex++)
+	{
+		new iTankRockEntity = g_listTankRockEntities.Get(iTankRockIndex, TANK_ROCK_ENTITY_ID);
+
+		//Get the tank rock type to determine the next course of action
+		switch (g_listTankRockEntities.Get(iTankRockIndex, TANK_ROCK_TYPE))
+		{
+			// If TANK_ROCK_TYPE_UNKNOWN, then we still need to figure out what type
+			case TANK_ROCK_TYPE_UNKNOWN:
+			{
+				// Try to determine thee type of tank rock
+				new bGotTankRockType = GetTankRockTypeAndOwner(iTankRockIndex);
+				// If a valid tank rock was found, then handle its initial setup
+				if (bGotTankRockType)
+				{
+					int iTankRockType = g_listTankRockEntities.Get(iTankRockIndex, TANK_ROCK_TYPE);
+					//PrintToChatAll("Initial Setup for tank rock type: %i", iTankRockType);
+
+					// Do initial setup depending on the rock type
+					switch (iTankRockType)
+					{
+						case TANK_ROCK_TYPE_FIRE:
+						{
+							SetEntityRenderMode(iTankRockEntity, RenderMode:0);
+							SetEntityRenderColor(iTankRockEntity,255,30,255,255);
+							CreateTimer(0.1, WaitForNonZeroOriginVectorAndSetUpTankRock, iTankRockEntity, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+						}
+						case TANK_ROCK_TYPE_ICE:
+						{
+							SetEntityRenderMode(iTankRockEntity, RenderMode:3);
+							SetEntityRenderColor(iTankRockEntity,180,230,255,240);
+							CreateTimer(0.1, WaitForNonZeroOriginVectorAndSetUpTankRock, iTankRockEntity, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+						}
+						case TANK_ROCK_TYPE_NECROTANKER:
+						{
+							SetEntityModel(iTankRockEntity, "models/infected/boomer.mdl");
+							CreateTimer(0.1, WaitForNonZeroOriginVectorAndSetUpTankRock, iTankRockEntity, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+						}
+					}
+				}
+			}
+			case TANK_ROCK_TYPE_FIRE:
+			{
+				
+			}
+			case TANK_ROCK_TYPE_ICE:
+			{
+				
+			}
+			case TANK_ROCK_TYPE_GENERIC:
+			{
+				// Do nothing
+			}
+		}			
+	}
+}
+
+bool GetTankRockTypeAndOwner(iTankRockIndex)
+{
+	//If one tank is spawned in then we can determine the type of rock easily by checking this tank type
+	if (g_iTankCounter <= 1)
+	{
+		// Determine Tank Rock type based on the tank spawned in:
+		for (int iClient=1; iClient <= MaxClients; iClient++)
+		{
+			if(RunClientChecks(iClient) && 
+				IsPlayerAlive(iClient) && 
+				GetEntProp(iClient, Prop_Send, "m_zombieClass") == TANK)
+			{
+				// Store the rock thrower (owner)
+				g_listTankRockEntities.Set(iTankRockIndex, iClient, TANK_ROCK_OWNER_ID);
+
+				new iRockTankType = TANK_ROCK_TYPE_GENERIC;
+				switch(g_iTankChosen[iClient])
+				{
+					case TANK_FIRE: 			iRockTankType = TANK_ROCK_TYPE_FIRE;
+					case TANK_ICE: 				iRockTankType = TANK_ROCK_TYPE_ICE;
+					case TANK_NECROTANKER: 		iRockTankType = TANK_ROCK_TYPE_NECROTANKER;
+				}
+
+				// Store the tank rock type
+				g_listTankRockEntities.Set(iTankRockIndex, iRockTankType, TANK_ROCK_TYPE);
+
+				return true;
+			}
+		}
+	}
+	// If multiple tanks are spawned in, then determine who threw the rock
+	// based on how close each tank is relative to the rock
+	else
+	{
+		// Get the actual rock game entity
+		new iRockEntity = g_listTankRockEntities.Get(iTankRockIndex, TANK_ROCK_ENTITY_ID);
+
+		// Get the rock entity position
+		decl Float:xyzRockPosition[3];
+		GetEntPropVector(iRockEntity, Prop_Send, "m_vecOrigin", xyzRockPosition);
+		
+		// If the rock entities vectors are still 0, 0, 0 then we cant determine its proximity to the tank yet
+		// return -1 and check again later
+		if (xyzRockPosition[0] == 0 && xyzRockPosition[1] == 0 && xyzRockPosition[2] == 0)
+			return false;
+
+		// Loop through each client, determine if they are a tank, and finally check how close they are to the rock
+		for (int iClient=1; iClient<= MaxClients; iClient++)
+		{
+			if(RunClientChecks(iClient) == true &&
+				IsPlayerAlive(iClient) == true &&
+				GetEntProp(iClient, Prop_Send, "m_zombieClass") == TANK)
+			{
+				decl Float:xyzTankOrigin[3];
+				GetClientAbsOrigin(iClient, xyzTankOrigin);
+
+				//PrintToChatAll("tank origin:  %f,%f,%f", xyzTankOrigin[0],xyzTankOrigin[1],xyzTankOrigin[2]);
+				//PrintToChatAll("rock origin:  %f,%f,%f", xyzRockPosition[0],xyzRockPosition[1],xyzRockPosition[2]);
+				//PrintToChatAll("rock distance from tank: %f\n ", GetVectorDistance(xyzTankOrigin,xyzRockPosition, false));
+
+				if (GetVectorDistance(xyzTankOrigin,xyzRockPosition, false) < 400.0)
+				{
+					// Store the rock thrower (owner)
+					g_listTankRockEntities.Set(iTankRockIndex, iClient, TANK_ROCK_OWNER_ID);
+
+					new iRockTankType = TANK_ROCK_TYPE_GENERIC;
+					switch(g_iTankChosen[iClient])
+					{
+						case TANK_FIRE: 			iRockTankType = TANK_ROCK_TYPE_FIRE;
+						case TANK_ICE: 				iRockTankType = TANK_ROCK_TYPE_ICE;
+						case TANK_NECROTANKER: 		iRockTankType = TANK_ROCK_TYPE_NECROTANKER;
+					}
+
+					// Store the tank rock type
+					g_listTankRockEntities.Set(iTankRockIndex, iRockTankType, TANK_ROCK_TYPE);
+
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+public Action:WaitForNonZeroOriginVectorAndSetUpTankRock(Handle:timer, any:iRockEntity)
+{
+	//Ensure there is a valid entitty here, remove it from the array otherwise
+	if (IsValidEntity(iRockEntity) == false)
+	{
+		PopRockOffTankRockEntitiesList(iRockEntity);
+		return Plugin_Stop;
+	}
+
+	new Float:xyzRockPosition[3];
+	GetEntPropVector(iRockEntity, Prop_Send, "m_vecOrigin", xyzRockPosition);
+	if (xyzRockPosition[0] == 0 && xyzRockPosition[1] == 0 && xyzRockPosition[2] == 0)
+		return Plugin_Continue;
+	
+	//Find the tank rock entity in the list that will be used to gain the rock type
+	new iTankRockIndex = FindIndexInArrayListUsingValue(g_listTankRockEntities, iRockEntity, TANK_ROCK_ENTITY_ID);
+	//Get the Rock Type and create the trail based on the type
+	switch(g_listTankRockEntities.Get(iTankRockIndex, TANK_ROCK_TYPE))
+	{
+		case TANK_ROCK_TYPE_FIRE: 			CreateFireRockTrailEffect(iRockEntity);
+		case TANK_ROCK_TYPE_ICE: 			CreateIceRockTrailEffect(iRockEntity);
+		case TANK_ROCK_TYPE_NECROTANKER:	CreateNecroTankerRockTrailEffect(iRockEntity);
+	}
+	
+	return Plugin_Stop;
 }

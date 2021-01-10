@@ -305,39 +305,6 @@ DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 	}
 }
 
-SpawnCommonInfectedMob(Float:xyzLocation[3], iAmount)
-{
-	xyzLocation[2] += 5;
-
-	decl i;
-	for(i = 0; i < iAmount; i++)
-	{
-		new zombie = CreateEntityByName("infected");
-		
-		new iRandomNumber = GetRandomInt(0,6);
-		
-		switch(iRandomNumber)
-		{
-			case 0: SetEntityModel(zombie, "models/infected/common_female_tanktop_jeans.mdl");
-			case 1: SetEntityModel(zombie, "models/infected/common_female_tshirt_skirt.mdl");
-			case 2: SetEntityModel(zombie, "models/infected/common_male_dressshirt_jeans.mdl");
-			case 3: SetEntityModel(zombie, "models/infected/common_male_polo_jeans.mdl");
-			case 4: SetEntityModel(zombie, "models/infected/common_male_tanktop_jeans.mdl");
-			case 5: SetEntityModel(zombie, "models/infected/common_male_tanktop_overalls.mdl");
-			case 6: SetEntityModel(zombie, "models/infected/common_male_tshirt_cargos.mdl");
-		}
-		
-		new ticktime = RoundToNearest( GetGameTime() / GetTickInterval() ) + 5;
-		SetEntProp(zombie, Prop_Data, "m_nNextThinkTick", ticktime);
-		
-		CreateTimer(0.1, TimerSetMobRush, zombie);
-		
-		DispatchSpawn(zombie);
-		ActivateEntity(zombie);
-		
-		TeleportEntity(zombie, xyzLocation, NULL_VECTOR, NULL_VECTOR);
-	}
-}
 
 VirallyInfectVictim(iVictim, iAttacker)
 {

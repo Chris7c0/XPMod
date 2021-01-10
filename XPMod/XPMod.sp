@@ -34,6 +34,7 @@
 
 #include <sourcemod>
 #include <sdktools>
+#include <sdkhooks>
 
 //Added custom includes
 #include <sha1>
@@ -45,6 +46,7 @@
 #include "XPMod/Misc/Particle_Effects.sp"
 #include "XPMod/Misc/Precache.sp"
 #include "XPMod/Misc/Statistics.sp"
+#include "XPMod/Misc/SpawnInfected.sp"
 #include "XPMod/Misc/Testing.sp"	                   //Remove before relase/////////////////////////////////////////////////////////////////////////
 //Experience and User Data Management
 #include "XPMod/XP/XP_Management.sp"
@@ -70,6 +72,7 @@
 #include "XPMod/Menus/I/Menu_Tank.sp"
 //Game Event Files
 #include "XPMod/Events/Events_Main.sp"
+#include "XPMod/Events/Events_SDK_Hooks.sp"
 #include "XPMod/Events/Events_OnGameFrame.sp"
 #include "XPMod/Events/Events_Survivors.sp"
 #include "XPMod/Events/Events_Infected.sp"
@@ -90,6 +93,10 @@
 #include "XPMod/Talents/I/Talents_Charger.sp"
 #include "XPMod/Talents/I/Talents_Jockey.sp"
 #include "XPMod/Talents/I/Talents_Tank.sp"
+#include "XPMod/Talents/I/Talents_Tank_Fire.sp"
+#include "XPMod/Talents/I/Talents_Tank_Ice.sp"
+#include "XPMod/Talents/I/Talents_Tank_NecroTanker.sp"
+#include "XPMod/Talents/I/Talents_Tank_Vampiric.sp"
 //Binded Key Press Files
 #include "XPMod/Binds/Bind_1.sp"
 #include "XPMod/Binds/Bind_2.sp"
@@ -120,7 +127,7 @@ public Plugin:myinfo =
 }
 
 public OnPluginStart()
-{	
+{
 	//Check for Left4Dead 2
 	decl String:strGameName[64];
 	GetGameFolderName(strGameName, sizeof(strGameName));
@@ -156,7 +163,7 @@ public OnPluginStart()
 	SetupSDKCalls();
 	
 	//Set initial values for variables
-	for(new i = 0; i < MAXPLAYERS; i++)
+	for(new i = 0; i <= MaxClients; i++)
 	{
 		g_iClientNextLevelXPAmount[i] = RoundToFloor(LEVEL_1 * XP_MULTIPLIER);
 		
@@ -185,6 +192,9 @@ public OnPluginStart()
 	
 	//PrecacheLockedWeaponModels();											//Precache locked weapon models
 	CreateTimer(1.0, Timer_PrepareCSWeapons, _, TIMER_FLAG_NO_MAPCHANGE);	//Prep the cs weapons for first use
+
+	//Setup Global ArrayLists
+	g_listTankRockEntities = CreateArray(TANK_ROCK_ENTITIES_ARRAY_LIST_SIZE);
 }
 
 SetupConsoleCommands()
@@ -211,11 +221,11 @@ SetupConsoleCommands()
 
 	
 	//Misc. Commands
-	RegConsoleCmd("t1", TestFunction1);
-	RegConsoleCmd("t2", TestFunction2);
-	RegConsoleCmd("t3", TestFunction3);
-	RegConsoleCmd("t4", TestFunction4);
-	RegConsoleCmd("t5", TestFunction5);
+	RegAdminCmd("t1", TestFunction1, ADMFLAG_SLAY);
+	RegAdminCmd("t2", TestFunction2, ADMFLAG_SLAY);
+	RegAdminCmd("t3", TestFunction3, ADMFLAG_SLAY);
+	RegAdminCmd("t4", TestFunction4, ADMFLAG_SLAY);
+	RegAdminCmd("t5", TestFunction5, ADMFLAG_SLAY);
 	RegAdminCmd("omghaxor", GiveMoreBinds, ADMFLAG_SLAY);
 	//RegConsoleCmd("push", push);
 	//RegConsoleCmd("pop", pop);
@@ -260,7 +270,20 @@ SetupGameOffsets()
 public OnMapStart()
 {
 	//PrintToServer("OnMapStart ========================================================================================================")
-		
+	
+	// Increase the uncommon limit for the NecroTanker and Spitter conjurer abilities
+	// Also, more is better...
+	SetConVarInt(FindConVar("z_common_limit"), 45);	
+	//SetConVarInt(FindConVar("z_background_limit"), 45);		// Not required
+	
+	// Increases the spawn distance
+	// Commented out to ensure that zombies spawn closer to the action
+	//SetConVarInt(FindConVar("z_spawn_range"), 2500);	//Required or common will disappear when spawned out of range of NecroTanker
+	//SetConVarInt(FindConVar("z_discard_range"), 3000); 	//Required or common will disappear when spawned out of range of NecroTanker
+	
+	
+	
+
 	DispatchKeyValue(0, "timeofday", "1"); //Set time of day to midnight
 	
 	//Set the g_iGameMode variable
@@ -356,6 +379,7 @@ public ResetVariablesForMap(iClient)
 	g_fClientSpeedBoost[iClient] = 0.0;
 	g_fClientSpeedPenalty[iClient] = 0.0;
 	g_iTankCounter = 0;
+	RemoveAllEntitiesFromTankRockList();
 	g_bAdhesiveGooActive[iClient] = false;
 	
 	g_bSomeoneAttacksFaster = false;
@@ -485,21 +509,14 @@ ResetAllVariables(iClient)
 	g_bDoesClientAttackFast[iClient] = false;
 	
 	//Reset Tank (Needed here for changing teams)
-	g_iTankChosen[iClient] = NO_TANK_CHOSEN;
-	g_iFireDamageCounter[iClient] = 0;
-	g_bFrozenByTank[iClient] =  false;
-	g_xyzClientPosition[iClient][0] = 0.0;
-	g_xyzClientPosition[iClient][1] = 0.0;
-	g_xyzClientPosition[iClient][2] = 0.0;
-	g_iTankCharge[iClient] = 0;
-	g_bTankAttackCharged[iClient] = false;
-	g_iIceTankLifePool[iClient] = 0;
+	ResetAllTankVariables(iClient);
 }
 
 public DeleteAllGlobalTimerHandles(iClient)
 {
 	//delete g_hTimer_FreezeCountdown;
 	delete g_hTimer_ShowingConfirmTalents[iClient];
+	delete g_hTimer_ExtinguishTank[iClient];
 	delete g_hTimer_DrugPlayer[iClient];
 	delete g_hTimer_HallucinatePlayer[iClient];
 	delete g_hTimer_SlapPlayer[iClient];

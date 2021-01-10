@@ -4,7 +4,7 @@ public Action:Timer_AskWhatTankToUse(Handle:timer, any:iClient)
 		IsPlayerAlive(iClient) == false || IsFakeClient(iClient) == true || GetEntProp(iClient, Prop_Send, "m_zombieClass") != TANK)
 		return Plugin_Stop;
 	
-	if(g_iTankChosen[iClient] == NO_TANK_CHOSEN)
+	if(g_iTankChosen[iClient] == TANK_NOT_CHOSEN)
 	{
 		ChooseTankMenuDraw(iClient);
 		CreateTimer(5.0, Timer_AskWhatTankToUse, iClient, TIMER_FLAG_NO_MAPCHANGE);
@@ -13,17 +13,29 @@ public Action:Timer_AskWhatTankToUse(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:Timer_ReigniteTank(Handle:timer, any:iClient)
+public Action:Timer_ReigniteFireTank(Handle:timer, any:iClient)
 {
-	if(iClient < 1 || g_iClientTeam[iClient] != TEAM_INFECTED || g_iTankChosen[iClient] != FIRE_TANK || IsValidEntity(iClient) == false || 
+	if(iClient < 1 || g_iClientTeam[iClient] != TEAM_INFECTED || g_iTankChosen[iClient] != TANK_FIRE || IsValidEntity(iClient) == false || 
 		IsClientInGame(iClient) == false || IsFakeClient(iClient) == true || IsPlayerAlive(iClient) == false)
 		return Plugin_Stop;
 		
 	IgniteEntity(iClient, 10000.0, false);
-	CreateTimer(10000.0, Timer_ReigniteTank, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	CreateTimer(10000.0, Timer_ReigniteFireTank, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	
 	return Plugin_Stop;
 }
+
+public Action:TimerExtinguishTank(Handle:timer, any:iClient)
+{
+	if(RunClientChecks(iClient) && IsPlayerAlive(iClient))
+		ExtinguishEntity(iClient);
+	
+	PrintToChatAll("TimerExtinguishTank for %N", iClient);
+
+	g_hTimer_ExtinguishTank[iClient] = null;
+	return Plugin_Stop;
+}
+
 
 public Action:Timer_UnblockFirePunchCharge(Handle:timer, any:iClient)
 {
@@ -107,11 +119,14 @@ public Action:Timer_CreateSmallIceSphere(Handle:timer, any:iClient)
 		|| IsValidEntity(iClient) == false || IsClientInGame(iClient) == false || IsPlayerAlive(iClient) == false)
 	{		
 		//Delete the particle effects for the Ice Sphere and set to -1 for next time
-		DeleteParticleEntity(g_iPID_IceTankChargeMist[iClient]);
+		DeleteParticleEntity(g_iPID_IceTankChargeMistAddon[iClient]);
+		TurnOffAndDeleteSmokeStackParticle(g_iPID_IceTankChargeMistStock[iClient]);
 		DeleteParticleEntity(g_iPID_IceTankChargeSnow[iClient]);
-		g_iPID_IceTankChargeMist[iClient] = -1;
+		g_iPID_IceTankChargeMistAddon[iClient] = -1;
+		g_iPID_IceTankChargeMistStock[iClient] = -1;
 		g_iPID_IceTankChargeSnow[iClient] = -1;
 		
+
 		//Unfreeze victim if they are frozen
 		for(new iVictim = 1; iVictim <= MaxClients; iVictim++)
 		{

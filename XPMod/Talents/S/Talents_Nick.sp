@@ -357,65 +357,68 @@ public JebusHandMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			{
 				decl currentHP;
 				decl maxHP;
-				for(new i = 1; i < MaxClients; i++)
+
+				for(new i = 1; i <= MaxClients; i++)
 				{
-					if(IsClientInGame(i)==true)
+					if (RunClientChecks(i) && g_iClientTeam[i]==TEAM_SURVIVORS)
 					{
-						if(GetClientTeam(i)==2 && IsPlayerAlive(i)==true && g_bIsClientDown[i] == false)
+						if(IsPlayerAlive(i)==true && g_bIsClientDown[i] == false)
 						{
 							currentHP = GetEntProp(i,Prop_Data,"m_iHealth");
 							maxHP = GetEntProp(i,Prop_Data,"m_iMaxHealth");
 							//PrintToChatAll("max health for %N is %d", i, maxHP);
 							PrintHintText(i, "You have been partially healed by %N", iClient);
-							if((currentHP + (g_iDesperateLevel[iClient]  * 4)) >= maxHP)
+							if((currentHP + (g_iDesperateLevel[iClient] * 4)) >= maxHP)
 								SetEntProp(i,Prop_Data,"m_iHealth", maxHP);
 							else
 								SetEntProp(i,Prop_Data,"m_iHealth", currentHP + (g_iDesperateLevel[iClient] * 4));
 						}
-					}
-					if(g_iOverLevel[i] > 0)
-					{
-						new iCurrentHealth = GetEntProp(i,Prop_Data,"m_iHealth");
-						new iMaxHealth = GetEntProp(i,Prop_Data,"m_iMaxHealth");
-						//new Float:fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
-						//if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
-						if(iCurrentHealth < (iMaxHealth - 20.0))
+						// Handle Ellis
+						if(g_iOverLevel[i] > 0)
 						{
-							if(g_bEllisOverSpeedDecreased[i] == false)
+							new iCurrentHealth = GetEntProp(i,Prop_Data,"m_iHealth");
+							new iMaxHealth = GetEntProp(i,Prop_Data,"m_iMaxHealth");
+							//new Float:fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
+							//if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
+							if(iCurrentHealth < (iMaxHealth - 20.0))
 							{
-								g_fClientSpeedBoost[i] -= (g_iOverLevel[i] * 0.02);
-								fnc_SetClientSpeed(i);
-								g_bEllisOverSpeedDecreased[i] = true;
-								g_bEllisOverSpeedIncreased[i] = false;
+								if(g_bEllisOverSpeedDecreased[i] == false)
+								{
+									g_fClientSpeedBoost[i] -= (g_iOverLevel[i] * 0.02);
+									fnc_SetClientSpeed(i);
+									g_bEllisOverSpeedDecreased[i] = true;
+									g_bEllisOverSpeedIncreased[i] = false;
+								}
+								//g_fEllisOverSpeed[i] = 0.0;
+								//SetEntDataFloat(i , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[i] + g_fEllisBringSpeed[i] + g_fEllisOverSpeed[i]), true);
+								//DeleteCode
+								//PrintToChatAll("Nick has team healed, now setting g_fEllisOverSpeed");
+								//PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[i]);
+								//PrintToChatAll("g_fEllisBringSpeed = %f", g_fEllisBringSpeed[i]);
+								//PrintToChatAll("g_fEllisOverSpeed = %f", g_fEllisOverSpeed[i]);
 							}
-							//g_fEllisOverSpeed[i] = 0.0;
-							//SetEntDataFloat(i , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[i] + g_fEllisBringSpeed[i] + g_fEllisOverSpeed[i]), true);
-							//DeleteCode
-							//PrintToChatAll("Nick has team healed, now setting g_fEllisOverSpeed");
-							//PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[i]);
-							//PrintToChatAll("g_fEllisBringSpeed = %f", g_fEllisBringSpeed[i]);
-							//PrintToChatAll("g_fEllisOverSpeed = %f", g_fEllisOverSpeed[i]);
-						}
-						//else if(float(iCurrentHealth) + fTempHealth > (float(iMaxHealth) - 20.0))
-						else if(iCurrentHealth >= (iMaxHealth - 20.0))
-						{
-							if(g_bEllisOverSpeedIncreased[i] == false)
+							//else if(float(iCurrentHealth) + fTempHealth > (float(iMaxHealth) - 20.0))
+							else if(iCurrentHealth >= (iMaxHealth - 20.0))
 							{
-								g_fClientSpeedBoost[i] += (g_iOverLevel[i] * 0.02);
-								fnc_SetClientSpeed(i);
-								g_bEllisOverSpeedDecreased[i] = false;
-								g_bEllisOverSpeedIncreased[i] = true;
+								if(g_bEllisOverSpeedIncreased[i] == false)
+								{
+									g_fClientSpeedBoost[i] += (g_iOverLevel[i] * 0.02);
+									fnc_SetClientSpeed(i);
+									g_bEllisOverSpeedDecreased[i] = false;
+									g_bEllisOverSpeedIncreased[i] = true;
+								}
+								//g_fEllisOverSpeed[i] = (g_iOverLevel[i] * 0.02);
+								//SetEntDataFloat(i , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[i] + g_fEllisBringSpeed[i] + g_fEllisOverSpeed[i]), true);
+								//DeleteCode
+								//PrintToChatAll("Nick has team healed, now setting g_fEllisOverSpeed");
+								//PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[i]);
+								//PrintToChatAll("g_fEllisBringSpeed = %f", g_fEllisBringSpeed[i]);
+								//PrintToChatAll("g_fEllisOverSpeed = %f", g_fEllisOverSpeed[i]);
 							}
-							//g_fEllisOverSpeed[i] = (g_iOverLevel[i] * 0.02);
-							//SetEntDataFloat(i , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[i] + g_fEllisBringSpeed[i] + g_fEllisOverSpeed[i]), true);
-							//DeleteCode
-							//PrintToChatAll("Nick has team healed, now setting g_fEllisOverSpeed");
-							//PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[i]);
-							//PrintToChatAll("g_fEllisBringSpeed = %f", g_fEllisBringSpeed[i]);
-							//PrintToChatAll("g_fEllisOverSpeed = %f", g_fEllisOverSpeed[i]);
 						}
 					}
 				}
+
 				new Float:vec[3];
 				GetClientAbsOrigin(iClient, vec);
 				EmitSoundToAll(SOUND_NICK_HEAL, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
@@ -437,7 +440,7 @@ public JebusHandMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 				if(g_iClientBindUses_2[iClient] < 2)
 				{
 					new foundvalident = 0;
-					for(new i = 1; i < MaxClients; i++)
+					for(new i = 1; i <= MaxClients; i++)
 					{
 						if(IsClientInGame(i)==true)
 							if(GetClientTeam(i)==2 && IsPlayerAlive(i)==true && g_bIsClientDown[i]==true && IsFakeClient(i)==false  && g_bHunterGrappled[i] == false && g_bChargerGrappled[i] == false && g_bSmokerGrappled[i] == false)
@@ -469,7 +472,7 @@ public JebusHandMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 									break;
 							}
 					}
-					for(new i = 1; i < MaxClients; i++)
+					for(new i = 1; i <= MaxClients; i++)
 					{
 						if(IsClientInGame(i)==true)
 							if(GetClientTeam(i)==2 && IsPlayerAlive(i)==true && g_bIsClientDown[i]==true && IsFakeClient(i)==true  && g_bHunterGrappled[i] == false && g_bChargerGrappled[i] == false && g_bSmokerGrappled[i] == false)
@@ -527,7 +530,7 @@ public JebusHandMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 					if(g_iClientBindUses_2[iClient] <= 0)
 					{
 						new foundvalident = 0;
-						for(new i = 1; i < MaxClients; i++)
+						for(new i = 1; i <= MaxClients; i++)
 						{
 							if(IsClientInGame(i)==true)
 								if(GetClientTeam(i)==2 && IsPlayerAlive(i)==false && IsFakeClient(i)==false)
@@ -559,7 +562,7 @@ public JebusHandMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 										break;
 								}
 						}
-						for(new i = 1; i < MaxClients; i++)
+						for(new i = 1; i <= MaxClients; i++)
 						{
 							if(IsClientInGame(i)==true)
 								if(GetClientTeam(i)==2 && IsPlayerAlive(i)==false)

@@ -4,7 +4,7 @@ SetupLoadouts()
 	g_iFlag_UpgradeAdd 		= GetCommandFlags("upgrade_add");
 	//g_iFlag_UpgradeRemove 	= GetCommandFlags("upgrade_remove");
 	
-	for(new i=0;i<MAXPLAYERS;i++)			//need to reset these when player disconnects and probably somewhere else
+	for(new i=0;i <= MaxClients;i++)			//need to reset these when player disconnects and probably somewhere else
 	{
 		g_iClientPrimarySlotID[i] = 0;
 		g_iClientSecondarySlotID[i] = 0;
