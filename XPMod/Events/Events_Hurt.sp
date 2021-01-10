@@ -892,57 +892,7 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 					}
 					case 8: //TANK
 					{
-						decl String:weapon[20];
-						GetEventString(hEvent,"weapon", weapon, 20);
-								
-						switch(g_iTankChosen[attacker])
-						{
-							case TANK_FIRE:
-							{
-								//Lay down a molotov explosion if player is hit by fire tank's rock
-								if(StrEqual(weapon,"tank_rock") == true)
-								{
-									decl Float:xyzLocation[3];
-									GetClientAbsOrigin(victim, xyzLocation);
-									MolotovExplode(xyzLocation);
-								}
-								
-								if(StrEqual(weapon,"tank_claw") == true)
-								{
-									//Set fire to victim if charged or percent chance happens(5 seconds)
-									if(g_bTankAttackCharged[attacker] == true)
-									{
-										decl Float:xyzLocation[3];
-										GetClientAbsOrigin(victim, xyzLocation);
-										xyzLocation[2] += 30.0;
-										PropaneExplode(xyzLocation);
-										MolotovExplode(xyzLocation);
-										
-										g_bTankAttackCharged[attacker] = false;
-										DeleteParticleEntity(g_iPID_TankChargedFire[attacker]);
-										SetFireToPlayer(victim, attacker, 5.0);
-										
-										g_bBlockTankFirePunchCharge[attacker] = true;
-										CreateTimer(30.0, Timer_UnblockFirePunchCharge, attacker, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
-									}
-									else if(GetRandomInt(0, 99) <= g_iClientLevel[attacker])
-									{
-										SetFireToPlayer(victim, attacker, 5.0);
-									}
-								}
-							}
-							case TANK_ICE:
-							{
-								if(g_bFrozenByTank[victim] == false && g_bBlockTankFreezing[victim] == false)
-								{
-									if(StrEqual(weapon,"tank_rock") == true ||
-										(StrEqual(weapon,"tank_claw") == true && GetRandomInt(0, 84) <= g_iClientLevel[attacker]))
-										FreezePlayerByTank(victim, 4.2);
-								}
-								else
-									UnfreezePlayerByTank(victim);
-							}
-						}
+						EventsHurt_TankAttacker(attacker, victim, hEvent, dmgType, dmgHealth);
 					}
 					default: //Unknown
 					{

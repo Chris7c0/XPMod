@@ -38,10 +38,10 @@ bool RunEntityChecks(iEnt)
 // This is purely a time saver, just to get rid of the warning that a variable is 
 // not being used. It can be used for simlar functions that might have a need for
 // a variable later, its just not used yet.
-SuppressNeverUsedWarning(var1=0, var2=0, var3=0, var4=0, var5=0)
+SuppressNeverUsedWarning(any:var1=0, any:var2=0, any:var3=0, any:var4=0, any:var5=0, any:var6=0, any:var7=0, any:var8=0, any:var9=0, any:var10=0)
 {
 	bool ignore;
-	if(ignore) PrintToServer("THIS IS NEVER GOING TO BE RAN",var1, var2, var3, var4, var5);
+	if(ignore) PrintToServer("THIS IS NEVER GOING TO BE RAN",var1, var2, var3, var4, var5, var6, var7, var8, var9, var10);
 }
 
 

@@ -30,6 +30,17 @@ EventsHurt_TankVictim(iVictimTank, iDmgType, iDmgHealth)
 	}
 }
 
+EventsHurt_TankAttacker(iAttackerTank, iVictim, Handle:hEvent, iDmgType, iDmgHealth)
+{
+	switch(g_iTankChosen[iAttackerTank])
+	{
+		case TANK_FIRE:			EventsHurt_TankAttacker_Fire(iAttackerTank, iVictim, hEvent, iDmgType, iDmgHealth);
+		case TANK_ICE:			EventsHurt_TankAttacker_Ice(iAttackerTank, iVictim, hEvent, iDmgType, iDmgHealth);
+		case TANK_NECROTANKER:	EventsHurt_TankAttacker_NecroTanker(iAttackerTank, iVictim, hEvent, iDmgType, iDmgHealth);
+		case TANK_VAMPIRIC:		EventsHurt_TankAttacker_Vampiric(iAttackerTank, iVictim, hEvent, iDmgType, iDmgHealth);
+	}
+}
+
 ResetAllTankVariables(iClient)
 {
 	g_iTankChosen[iClient] = TANK_NOT_CHOSEN;

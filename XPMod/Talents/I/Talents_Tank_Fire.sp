@@ -124,6 +124,46 @@ EventsHurt_TankVictim_Fire(iVictimTank, iDmgType, iDmgHealth)
 	}
 }
 
+EventsHurt_TankAttacker_Fire(iAttackerTank, iVictim, Handle:hEvent, iDmgType, iDmgHealth)
+{
+	SuppressNeverUsedWarning(iDmgType, iDmgHealth);
+	
+	decl String:weapon[20];
+	GetEventString(hEvent,"weapon", weapon, 20);
+
+	//Lay down a molotov explosion if player is hit by fire tank's rock
+	if(StrEqual(weapon,"tank_rock") == true)
+	{
+		decl Float:xyzLocation[3];
+		GetClientAbsOrigin(iVictim, xyzLocation);
+		MolotovExplode(xyzLocation);
+	}
+	
+	if(StrEqual(weapon,"tank_claw") == true)
+	{
+		//Set fire to iVictim if charged or percent chance happens(5 seconds)
+		if(g_bTankAttackCharged[iAttackerTank] == true)
+		{
+			decl Float:xyzLocation[3];
+			GetClientAbsOrigin(iVictim, xyzLocation);
+			xyzLocation[2] += 30.0;
+			PropaneExplode(xyzLocation);
+			MolotovExplode(xyzLocation);
+			
+			g_bTankAttackCharged[iAttackerTank] = false;
+			DeleteParticleEntity(g_iPID_TankChargedFire[iAttackerTank]);
+			SetFireToPlayer(iVictim, iAttackerTank, 5.0);
+			
+			g_bBlockTankFirePunchCharge[iAttackerTank] = true;
+			CreateTimer(30.0, Timer_UnblockFirePunchCharge, iAttackerTank, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+		}
+		else if(GetRandomInt(0, 99) <= g_iClientLevel[iAttackerTank])
+		{
+			SetFireToPlayer(iVictim, iAttackerTank, 5.0);
+		}
+	}
+}
+
 SetFireToPlayer(iVictim, iAttacker, Float:fTime)
 {
 	if(iVictim < 1 || IsClientInGame(iVictim) == false)

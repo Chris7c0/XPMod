@@ -73,6 +73,34 @@ EventsHurt_TankVictim_Vampiric(iVictimTank, iDmgType, iDmgHealth)
 	SuppressNeverUsedWarning(iVictimTank, iDmgType, iDmgHealth);
 }
 
+EventsHurt_TankAttacker_Vampiric(iAttackerTank, iVictim, Handle:hEvent, iDmgType, iDmgHealth)
+{
+	SuppressNeverUsedWarning(hEvent, iDmgType);
+
+	if (RunClientChecks(iAttackerTank) == false || RunClientChecks(iVictim) == false ||
+		IsPlayerAlive(iAttackerTank) == false || IsPlayerAlive(iVictim) == false)
+		return;
+
+	// Calculate the health to recieve and give to the Tank
+	new iVampiricHealthGainAmount = iDmgHealth * VAMPIRIC_TANK_LIFESTEAL_MULTIPLIER;
+	// Get the current life level
+	new iCurrentHP = GetEntProp(iAttackerTank,Prop_Data,"m_iHealth");
+	if(iCurrentHP < TANK_HEALTH_VAMPIRIC)
+	{
+		if(iCurrentHP + iVampiricHealthGainAmount < TANK_HEALTH_VAMPIRIC)
+			SetEntProp(iAttackerTank,Prop_Data,"m_iHealth", iCurrentHP + iVampiricHealthGainAmount);
+		else
+			SetEntProp(iAttackerTank,Prop_Data,"m_iHealth", TANK_HEALTH_VAMPIRIC);
+
+		// Show hud effect:
+		if(IsFakeClient(iAttackerTank)==false)
+			ShowHudOverlayColor(iAttackerTank, 100, 0, 255, 40, 440, FADE_OUT);
+		
+		if(IsFakeClient(iVictim)==false)
+			ShowHudOverlayColor(iVictim, 180, 0, 100, 40, 440, FADE_OUT);
+	}
+}
+
 AddWingFlapVelocity(iClient, Float:speed)
 {
 	new Float:vecVelocity[3];

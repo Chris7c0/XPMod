@@ -180,6 +180,7 @@ public Action:TimerLifeStealingFade(Handle:timer, any:pack)
 		}
 	}
 	
+	// HUD effects
 	if(IsFakeClient(attacker)==false)
 		ShowHudOverlayColor(attacker, 0, 100, 255, 40, 440, FADE_OUT);
 	

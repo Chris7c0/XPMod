@@ -105,6 +105,11 @@ EventsHurt_TankVictim_NecroTanker(iVictimTank, iDmgType, iDmgHealth)
 	SuppressNeverUsedWarning(iVictimTank, iDmgType, iDmgHealth);
 }
 
+EventsHurt_TankAttacker_NecroTanker(iAttackerTank, iVictim, Handle:hEvent, iDmgType, iDmgHealth)
+{
+	SuppressNeverUsedWarning(iAttackerTank, iVictim, hEvent, iDmgType, iDmgHealth);
+}
+
 HandleNecroTankerInfectedConsumption(iClient, iInfectedEntity)
 {
 	//Check if player is NecroTanker

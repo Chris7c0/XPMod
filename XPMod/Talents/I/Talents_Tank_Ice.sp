@@ -196,6 +196,23 @@ EventsHurt_TankVictim_Ice(iVictimTank, iDmgType, iDmgHealth)
 	}
 }
 
+EventsHurt_TankAttacker_Ice(iAttackerTank, iVictim, Handle:hEvent, iDmgType, iDmgHealth)
+{
+	SuppressNeverUsedWarning(iDmgType, iDmgHealth);
+
+	decl String:weapon[20];
+	GetEventString(hEvent,"weapon", weapon, 20);
+
+	if(g_bFrozenByTank[iVictim] == false && g_bBlockTankFreezing[iVictim] == false)
+	{
+		if(StrEqual(weapon,"tank_rock") == true ||
+			(StrEqual(weapon,"tank_claw") == true && GetRandomInt(0, 84) <= g_iClientLevel[iAttackerTank]))
+			FreezePlayerByTank(iVictim, 4.2);
+	}
+	else
+		UnfreezePlayerByTank(iVictim);
+}
+
 FreezePlayerByTank(iVictim, Float:fFreezeTime, Float:fStartTime = 0.2)
 {
 	if(iVictim < 1 || IsClientInGame(iVictim) == false)
