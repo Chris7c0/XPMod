@@ -9,7 +9,7 @@ OnGameFrame_Tank(iClient)
 	}
 }
 
-EventsHurt_TankVictim(iVictimTank, iDmgType, iDmgHealth)
+EventsHurt_TankVictim(Handle:hEvent, iAttacker, iVictimTank, iDmgType, iDmgHealth)
 {
 	//PrintToChatAll("EventsHurt_TankVictim %N, iDmgType %i", iVictimTank, iDmgType);
 
@@ -23,21 +23,21 @@ EventsHurt_TankVictim(iVictimTank, iDmgType, iDmgHealth)
 
 	switch(g_iTankChosen[iVictimTank])
 	{
-		case TANK_FIRE:			EventsHurt_TankVictim_Fire(iVictimTank, iDmgType, iDmgHealth);
-		case TANK_ICE:			EventsHurt_TankVictim_Ice(iVictimTank, iDmgType, iDmgHealth);
-		case TANK_NECROTANKER:	EventsHurt_TankVictim_NecroTanker(iVictimTank, iDmgType, iDmgHealth);
-		case TANK_VAMPIRIC:		EventsHurt_TankVictim_Vampiric(iVictimTank, iDmgType, iDmgHealth);
+		case TANK_FIRE:			EventsHurt_TankVictim_Fire(hEvent, iAttacker, iVictimTank, iDmgType, iDmgHealth);
+		case TANK_ICE:			EventsHurt_TankVictim_Ice(hEvent, iAttacker, iVictimTank, iDmgType, iDmgHealth);
+		case TANK_NECROTANKER:	EventsHurt_TankVictim_NecroTanker(hEvent, iAttacker, iVictimTank, iDmgType, iDmgHealth);
+		case TANK_VAMPIRIC:		EventsHurt_TankVictim_Vampiric(hEvent, iAttacker, iVictimTank, iDmgType, iDmgHealth);
 	}
 }
 
-EventsHurt_TankAttacker(iAttackerTank, iVictim, Handle:hEvent, iDmgType, iDmgHealth)
+EventsHurt_TankAttacker(Handle:hEvent, iAttackerTank, iVictim, iDmgType, iDmgHealth)
 {
 	switch(g_iTankChosen[iAttackerTank])
 	{
-		case TANK_FIRE:			EventsHurt_TankAttacker_Fire(iAttackerTank, iVictim, hEvent, iDmgType, iDmgHealth);
-		case TANK_ICE:			EventsHurt_TankAttacker_Ice(iAttackerTank, iVictim, hEvent, iDmgType, iDmgHealth);
-		case TANK_NECROTANKER:	EventsHurt_TankAttacker_NecroTanker(iAttackerTank, iVictim, hEvent, iDmgType, iDmgHealth);
-		case TANK_VAMPIRIC:		EventsHurt_TankAttacker_Vampiric(iAttackerTank, iVictim, hEvent, iDmgType, iDmgHealth);
+		case TANK_FIRE:			EventsHurt_TankAttacker_Fire(hEvent, iAttackerTank, iVictim, iDmgType, iDmgHealth);
+		case TANK_ICE:			EventsHurt_TankAttacker_Ice(hEvent, iAttackerTank, iVictim, iDmgType, iDmgHealth);
+		case TANK_NECROTANKER:	EventsHurt_TankAttacker_NecroTanker(hEvent, iAttackerTank, iVictim, iDmgType, iDmgHealth);
+		case TANK_VAMPIRIC:		EventsHurt_TankAttacker_Vampiric(hEvent, iAttackerTank, iVictim, iDmgType, iDmgHealth);
 	}
 }
 
@@ -190,7 +190,7 @@ void HandleTankRockDestroy(iRockEntity)
 
 
 
-void TrackAllRockPositions()
+void TrackAllRocks()
 {
 	for (int iTankRockIndex=0; iTankRockIndex < g_listTankRockEntities.Length; iTankRockIndex++)
 	{
@@ -230,6 +230,16 @@ void TrackAllRockPositions()
 							SetEntityModel(iTankRockEntity, "models/infected/boomer.mdl");
 							CreateTimer(0.1, WaitForNonZeroOriginVectorAndSetUpTankRock, iTankRockEntity, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 						}
+					}
+
+					// Get the owner and set their cooldown for the next rock throw
+					int iTankRockOwner = g_listTankRockEntities.Get(iTankRockIndex, TANK_ROCK_OWNER_ID);
+
+					switch(g_iTankChosen[iTankRockOwner])
+					{
+						case TANK_FIRE: 			SetSIAbilityCooldown(iTankRockOwner, 10.0);
+						case TANK_ICE: 				SetSIAbilityCooldown(iTankRockOwner, -2.9);
+						case TANK_NECROTANKER: 		SetSIAbilityCooldown(iTankRockOwner, 10.0);
 					}
 				}
 			}
@@ -359,4 +369,15 @@ public Action:WaitForNonZeroOriginVectorAndSetUpTankRock(Handle:timer, any:iRock
 	}
 	
 	return Plugin_Stop;
+}
+
+Event_BoomerVomitOnPlayerTank(iVictim)
+{
+	if(RunClientChecks(iVictim) == false || g_iClientTeam[iVictim] != TEAM_INFECTED || 
+		IsFakeClient(iVictim) == true || IsPlayerAlive(iVictim) == false || 
+		GetEntProp(iVictim, Prop_Send, "m_zombieClass") != TANK)
+		return;
+	
+	if (g_iTankChosen[iVictim] == TANK_NECROTANKER)
+		SDKCall(g_hSDK_UnVomitOnPlayer, iVictim);
 }

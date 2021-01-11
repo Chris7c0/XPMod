@@ -12,9 +12,10 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 	//PrintToChatAll("Attacker = %d, Victim = %d, dmgHealth = %d, dmgType = %d, hitGroup = %d", attacker, victim, dmgHealth, dmgType, hitGroup);
 	//PrintToChatAll("%N dType = %d, Group = %d, dHealth = %d", victim, dmgType, hitGroup, dmgHealth);
 	// PrintToChatAll("g_iInfectedCharacter[attacker] = %s", g_iInfectedCharacter[attacker]);
-	decl String:testweapon[20];
-	GetEventString(hEvent,"weapon", testweapon, 20);
-	// PrintToChatAll("Weapon of attacker is %s", testweapon);
+	//decl String:testweapon[32];
+	//GetEventString(hEvent,"weapon", testweapon, 32);
+	//PrintToChatAll("\x03-weapon: \x01%s, dmgHealth: %i",testweapon, dmgHealth);
+
 		
 	//Unfreeze player if they take any damage
 	if(g_iClientTeam[victim] == TEAM_SURVIVORS && g_bFrozenByTank[victim] == true)
@@ -89,7 +90,7 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 	{
 		if(g_iInfectedCharacter[victim] == TANK)
 		{
-			EventsHurt_TankVictim(victim, dmgType, dmgHealth);
+			EventsHurt_TankVictim(hEvent, attacker, victim, dmgType, dmgHealth);
 		}
 	}
 	
@@ -268,7 +269,6 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 							}
 						}
 					}
-					//return Plugin_Continue;
 				}
 				case 1:		//Rochelle
 				{
@@ -307,7 +307,7 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 								dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.13));
 								//PrintToChat(attacker, "your doing %d hunting rifle damage", dmg);
 								SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
-								//return Plugin_Continue;
+
 							}
 							else if(StrContains(weaponclass,"sniper_military",false) != -1)	//H&K MSG 90
 							{
@@ -317,7 +317,7 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 								dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.08));
 								//PrintToChat(attacker, "your doing %d sniper_military damage", dmg);
 								SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
-								//return Plugin_Continue;
+
 							}
 							else if(StrContains(weaponclass,"sniper_scout",false) != -1)
 							{
@@ -326,7 +326,7 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 								dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.13)) + (g_iSilentSorrowHeadshotCounter[attacker] * g_iSilentLevel[attacker] * 3);
 								//PrintToChat(attacker, "your doing %d scout damage", dmg);
 								SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
-								//return Plugin_Continue;
+
 							}
 							else if(StrContains(weaponclass,"sniper_awp",false) != -1)
 							{
@@ -335,7 +335,6 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 								dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.40) );
 								PrintToChat(attacker, "your doing %d extra awp damage", dmg);
 								SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
-								//return Plugin_Continue;
 							}
 						}
 					}
@@ -399,7 +398,6 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 									SetEntProp(victim,Prop_Data,"m_iHealth", hp - (g_iSprayLevel[attacker] * 2));
 								}
 						}
-						//return Plugin_Continue;
 					}
 				}
 				case 3:		//Ellis Talents
@@ -451,7 +449,6 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 								dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.13));
 								//PrintToChat(attacker, "your doing %d hunting rifle damage", dmg);
 								SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
-								//return Plugin_Continue;
 							}
 					*/
 				}
@@ -537,7 +534,6 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 									g_bCanNickStampedeReload[attacker] = true;
 								}
 							}
-							//return Plugin_Continue;
 						}
 					}
 					/*
@@ -892,7 +888,7 @@ public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDont
 					}
 					case 8: //TANK
 					{
-						EventsHurt_TankAttacker(attacker, victim, hEvent, dmgType, dmgHealth);
+						EventsHurt_TankAttacker(hEvent, attacker, victim, dmgType, dmgHealth);
 					}
 					default: //Unknown
 					{

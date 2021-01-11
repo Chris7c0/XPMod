@@ -47,6 +47,7 @@
 #include "XPMod/Misc/Precache.sp"
 #include "XPMod/Misc/Statistics.sp"
 #include "XPMod/Misc/SpawnInfected.sp"
+//#include "XPMod/Misc/Abilities.sp"
 #include "XPMod/Misc/Testing.sp"	                   //Remove before relase/////////////////////////////////////////////////////////////////////////
 //Experience and User Data Management
 #include "XPMod/XP/XP_Management.sp"
@@ -544,6 +545,11 @@ SetupSDKCalls()
 		PrepSDKCall_AddParameter(SDKType_CBasePlayer, SDKPass_Pointer);
 		PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
 		g_hSDK_VomitOnPlayer = EndPrepSDKCall();
+
+		// Working
+		StartPrepSDKCall(SDKCall_Player);
+		PrepSDKCall_SetFromConf(hGameConfigFile, SDKConf_Signature, "CTerrorPlayer_OnITExpired");
+		g_hSDK_UnVomitOnPlayer = EndPrepSDKCall();
 		
 		// Working
 		StartPrepSDKCall(SDKCall_Player);

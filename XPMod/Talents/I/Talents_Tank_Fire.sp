@@ -3,7 +3,7 @@ LoadFireTankTalents(iClient)
 	g_fClientSpeedBoost[iClient] = 0.0;
 	g_fClientSpeedPenalty[iClient] = 0.0;
 	
-	if(iClient < 1 || g_iClientTeam[iClient] != TEAM_INFECTED || IsClientInGame(iClient) == false || 
+	if(RunClientChecks(iClient) == false || g_iClientTeam[iClient] != TEAM_INFECTED || 
 		IsFakeClient(iClient) == true || GetEntProp(iClient, Prop_Send, "m_zombieClass") != TANK)
 		return;
 	
@@ -50,7 +50,8 @@ OnGameFrame_Tank_Fire(iClient)
 	//Check to see if ducking and not attacking before starting the charge
 	if((buttons & IN_DUCK) && !(buttons & IN_ATTACK) && !(buttons & IN_ATTACK2))
 	{
-		CheckIfTankMovedWhileChargingAndIncrementCharge(iClient);
+		// CheckIfTankMovedWhileChargingAndIncrementCharge(iClient);
+		g_iTankCharge[iClient]++;  
 
 		//Display the first message to the player while he is charging up
 		if(g_iTankCharge[iClient] == 30)
@@ -85,8 +86,10 @@ OnGameFrame_Tank_Fire(iClient)
 	}
 }
 
-EventsHurt_TankVictim_Fire(iVictimTank, iDmgType, iDmgHealth)
+EventsHurt_TankVictim_Fire(Handle:hEvent, iAttacker, iVictimTank, iDmgType, iDmgHealth)
 {
+	SuppressNeverUsedWarning(hEvent, iAttacker);
+
 	new iCurrentHealth = GetEntProp(iVictimTank,Prop_Data,"m_iHealth");
 	decl Float:fCurrentTankHealthPercentage;
 
@@ -124,7 +127,7 @@ EventsHurt_TankVictim_Fire(iVictimTank, iDmgType, iDmgHealth)
 	}
 }
 
-EventsHurt_TankAttacker_Fire(iAttackerTank, iVictim, Handle:hEvent, iDmgType, iDmgHealth)
+EventsHurt_TankAttacker_Fire(Handle:hEvent, iAttackerTank, iVictim, iDmgType, iDmgHealth)
 {
 	SuppressNeverUsedWarning(iDmgType, iDmgHealth);
 	

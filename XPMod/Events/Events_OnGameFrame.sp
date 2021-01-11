@@ -158,7 +158,7 @@ public OnGameFrame()
 		HandleFastAttackingClients();
 
 	// Track tank rocks for special tank abilities
-	TrackAllRockPositions();
+	TrackAllRocks();
 }
 
 HandleFastAttackingClients()

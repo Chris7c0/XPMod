@@ -163,7 +163,7 @@ PrecacheAllSounds()
 	PrecacheSound(SOUND_EXPLODE);
 	for(new i=0; i < sizeof(SOUND_ZOMBIE_SLASHES); i++)
 		PrecacheSound(SOUND_ZOMBIE_SLASHES[i]);
-	for(new i=0; i < sizeof(SOUND_ZOMBIE_SLASHES); i++)
+	for(new i=0; i < sizeof(SOUND_WING_FLAP); i++)
 		PrecacheSound(SOUND_WING_FLAP[i]);
 		
 		

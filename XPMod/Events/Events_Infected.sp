@@ -29,204 +29,27 @@ public Event_AbilityUse(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	return;
 }
 
-public Event_PlayerNowIt(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+public Action:Event_PlayerNowIt(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
-	new attacker = GetClientOfUserId(GetEventInt(hEvent,"attacker"));
-	new victim = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"attacker"));
+	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 
-	if (attacker == 0 || victim == 0)
-		return;
+	if (iAttacker == 0 || iVictim == 0)
+		return Plugin_Continue;
 	
-	if(IsClientInGame(attacker) == true)
-		if(IsFakeClient(attacker) == false)
-			if(g_iClientTeam[attacker] == TEAM_INFECTED)
-			{
-				g_iVomitVictimAttacker[victim] = attacker;
-				CreateTimer(20.0, TimerResetPlayerIt, victim, TIMER_FLAG_NO_MAPCHANGE); 
-			}
-	if(g_iInfectedCharacter[attacker] ==  BOOMER)
+	if(IsClientInGame(iAttacker) == true && IsFakeClient(iAttacker) == false && g_iClientTeam[iAttacker] == TEAM_INFECTED)
 	{
-		GiveClientXP(attacker, 15, g_iSprite_15XP_SI, victim, "Puked on a survivor.", false, 1.0);
-		
-		if(g_iAcidicLevel[attacker] > 0)
-		{
-			SetEntProp(victim, Prop_Send, "m_iHideHUD", 64);
-			CreateTimer((g_iAcidicLevel[attacker] * 2.0), TimerGiveHudBack, victim, TIMER_FLAG_NO_MAPCHANGE); 
-		}
-		if(g_iNorovirusLevel[attacker] >= 5)
-		{
-			g_iVomitVictimCounter[attacker]++;
-			if(g_iVomitVictimCounter[attacker] >= 3)
-			{
-				if(IsClientInGame(attacker) == true)
-					if(IsFakeClient(attacker) == false)
-					{
-						new random = GetRandomInt(0, 6);
-						switch(random)
-						{
-							case 0:		//Give 3 extra bind 1 and bind 2 uses
-							{
-								PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. He gets an extra bind 1 and bind 2 charge.", attacker);
-								g_iClientBindUses_1[attacker] --;
-								g_iClientBindUses_2[attacker] --;
-							}
-							case 1:		//Set Health to 1000
-							{
-								if(IsPlayerAlive(attacker))
-								{
-									PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. He gets 1000 Health", attacker);
-									SetEntProp(attacker,Prop_Data,"m_iMaxHealth", 1000);
-									SetEntProp(attacker,Prop_Data,"m_iHealth", 1000);
-								}
-								else	//If their not alive then give them another reward
-								{
-									PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. Common Infected temporarily do more damage.", attacker);
-									g_bCommonInfectedDoMoreDamage = true;
-									CreateTimer(20.0, TimerResetZombieDamage, 0, TIMER_FLAG_NO_MAPCHANGE);
-								}
-							}
-							case 2:		//Constant vaomit for 8 seconds on last survivor hit
-							{
-								new bool:ok = false;
-								if(IsClientInGame(victim) == true)
-								{
-									if(IsPlayerAlive(victim) == true)
-									{
-										PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. \x04%N\x05 got sick and is vomiting uncontrollably.", attacker, victim);
-										CreateParticle("boomer_vomit", 2.0, victim, ATTACH_MOUTH, true);
-										g_bIsSurvivorVomiting[victim] = true;
-										g_iShowSurvivorVomitCounter[victim] = 20;
-										CreateTimer(1.0, TimerConstantVomitDisplay, victim, TIMER_FLAG_NO_MAPCHANGE);
-										ok = true;
-									}
-								}
-								if(ok == false)	//If the victim is no longer alive, give health instead
-								{
-									PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. He gets 1000 Health", attacker);
-									SetEntProp(attacker,Prop_Data,"m_iMaxHealth", 1000);
-									SetEntProp(attacker,Prop_Data,"m_iHealth", 1000);
-								}
-							}
-							case 3:		//Zombies do more damage
-							{
-								PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. Common Infected temporarily do more damage.", attacker);
-								g_bCommonInfectedDoMoreDamage = true;
-								CreateTimer(20.0, TimerResetZombieDamage, 0, TIMER_FLAG_NO_MAPCHANGE);
-							}
-							case 4:		//Get faster movement speed
-							{
-								if(IsPlayerAlive(attacker) == true)
-								{
-									PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. He gets temporary super speed.", attacker);
-									//SetEntDataFloat(attacker , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 3.0, true);
-									g_fClientSpeedBoost[attacker] += 2.0;
-									fnc_SetClientSpeed(attacker);
-									g_bIsSuperSpeedBoomer[attacker] = true;
-									CreateTimer(20.0, TimerResetFastBoomerSpeed, attacker, TIMER_FLAG_NO_MAPCHANGE);
-								}
-								else	//If their not alive then give them another reward
-								{
-									PrintToChatAll("\x03[XPMod] \x05%N vomited on 3 survivors.  He gets an extra Bind 1 and Bind 2 charge.", attacker);
-									g_iClientBindUses_1[attacker]--;
-									g_iClientBindUses_2[attacker]--;
-								}
-							}
-							case 5:		//Crack Out
-							{
-								if((IsPlayerAlive(victim)) && (IsFakeClient(victim) == false))
-								{
-									PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. \x04%N\x05 swallowed some pills he puked up.", attacker, victim);
-									PrintHintText(victim,"You swallowed some pills that %N puked up.", attacker);
-									
-									new red = GetRandomInt(0,255);
-									new green = GetRandomInt(0,255);
-									new blue = GetRandomInt(0,255);
-									new alpha = GetRandomInt(190,230);
-									
-									ShowHudOverlayColor(victim, red, green, blue, alpha, 700, FADE_IN);
-									
-									g_iDruggedRuntimesCounter[victim] = 0;
-
-									delete g_hTimer_DrugPlayer[victim];
-									g_hTimer_DrugPlayer[victim] = CreateTimer(2.5, TimerDrugged, victim, TIMER_REPEAT);
-									
-									WriteParticle(victim, "drugged_effect", 0.0, 30.0);
-								}
-								else
-								{
-									PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. A hoard has been summoned.", attacker);
-									new flags = GetCommandFlags("z_spawn");
-									SetCommandFlags("z_spawn", flags & ~FCVAR_CHEAT);
-									FakeClientCommand(attacker, "z_spawn mob auto");
-									SetCommandFlags("z_spawn", flags);
-								}
-							}
-							case 6:
-							{
-								if(IsPlayerAlive(attacker) == true)
-								{
-									//SetConVarInt(FindConVar("z_no_cull"), 1);
-									//SetConVarInt(FindConVar("z_common_limit"), 36);
-									
-									PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. Jimmy Gibbs has come to play!", attacker);
-									decl Float:location[3], Float:ang[3];
-									GetClientAbsOrigin(attacker, location);
-									GetClientEyeAngles(attacker, ang);
-									
-									location[0] = (location[0]+(50*(Cosine(DegToRad(ang[1])))));
-									location[1] = (location[1]+(50*(Sine(DegToRad(ang[1])))));
-									
-									new ticktime = RoundToNearest(  GetGameTime() / GetTickInterval()) + 5;
-									
-									decl i;
-									for(i = 0; i < 6; i++)
-									{
-										new zombie = CreateEntityByName("infected");
-										SetEntityModel(zombie, "models/infected/common_male_jimmy.mdl");
-										
-										SetEntProp(zombie, Prop_Data, "m_nNextThinkTick", ticktime);
-										CreateTimer(0.1, TimerSetMobRush, zombie);
-										
-										DispatchSpawn(zombie);
-										ActivateEntity(zombie);
-										location[0] += 10.0;
-										TeleportEntity(zombie, location, NULL_VECTOR, NULL_VECTOR);
-									}
-									
-									
-									
-									/*
-									delete g_hTimer_ResetInfectedCull;									
-									g_hTimer_ResetInfectedCull = CreateTimer(20.0, TimerResetInfectedCull);*/
-								}
-								else	//If their not alive then give them another reward
-								{
-									PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. Common Infected temporarily do more damage.", attacker);
-									g_bCommonInfectedDoMoreDamage = true;
-									CreateTimer(20.0, TimerResetZombieDamage, 0, TIMER_FLAG_NO_MAPCHANGE);
-								}
-							}
-						}
-					}
-				g_iVomitVictimCounter[attacker] = -10;	//Set it to this so that they cant get it more than 1 time per vomit, if they hit 6 survivors
-			}
-			if(g_bNowCountingVomitVictims[attacker] == false)
-			{
-				g_bNowCountingVomitVictims[attacker] = true;
-				CreateTimer(9.0, TimerStopItCounting, attacker, TIMER_FLAG_NO_MAPCHANGE);
-			}
-			decl rand;
-			rand = GetRandomInt(1, 100);
-			if(rand <= (g_iNorovirusLevel[attacker] * 4))
-			{
-				CreateParticle("boomer_vomit", 2.0, victim, ATTACH_MOUTH, true);
-				g_bIsSurvivorVomiting[victim] = true;
-				g_iShowSurvivorVomitCounter[victim] = 3;
-				CreateTimer(1.0, TimerConstantVomitDisplay, victim, TIMER_FLAG_NO_MAPCHANGE);
-			}
-		}
+		g_iVomitVictimAttacker[iVictim] = iAttacker;
+		CreateTimer(20.0, TimerResetPlayerIt, iVictim, TIMER_FLAG_NO_MAPCHANGE); 
 	}
-	return;
+
+	// Handle the Boomer's abilities
+	Event_BoomerVomitOnPlayer(iAttacker, iVictim);
+
+	// Handle the bile on tanks, like removing vomit
+	Event_BoomerVomitOnPlayerTank(iVictim);
+	
+	return Plugin_Continue;
 }
 
 public Action:Event_ChargerChargeStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)

@@ -42,14 +42,15 @@ OnGameFrame_Tank_NecroTanker(iClient)
 	//Check to see if ducking and not attacking before starting the charge
 	if((buttons & IN_DUCK) && !(buttons & IN_ATTACK2)) // && !(buttons & IN_ATTACK)
 	{
-		CheckIfTankMovedWhileChargingAndIncrementCharge(iClient);
+		// CheckIfTankMovedWhileChargingAndIncrementCharge(iClient);
+		g_iTankCharge[iClient]++;
 
 		//Display the first message to the player while he is charging up
 		if(g_iTankCharge[iClient] == 30)
 			PrintHintText(iClient, "Spawning Infected");
 		
 		//Charged for long enough, now handle for each tank
-		if(g_iTankCharge[iClient] >= 31)
+		if(g_iTankCharge[iClient] >= 60)
 		{
 			// Get a location in front of the player to spawn the infected to prevent collision with others
 			decl Float:xyzLocation[3], Float:xyzAngles[3];
@@ -100,14 +101,14 @@ OnGameFrame_Tank_NecroTanker(iClient)
 	}
 }
 
-EventsHurt_TankVictim_NecroTanker(iVictimTank, iDmgType, iDmgHealth)
+EventsHurt_TankVictim_NecroTanker(Handle:hEvent, iAttacker, iVictimTank, iDmgType, iDmgHealth)
 {
-	SuppressNeverUsedWarning(iVictimTank, iDmgType, iDmgHealth);
+	SuppressNeverUsedWarning(hEvent, iAttacker, iVictimTank, iDmgType, iDmgHealth);
 }
 
-EventsHurt_TankAttacker_NecroTanker(iAttackerTank, iVictim, Handle:hEvent, iDmgType, iDmgHealth)
+EventsHurt_TankAttacker_NecroTanker(Handle:hEvent, iAttackerTank, iVictim, iDmgType, iDmgHealth)
 {
-	SuppressNeverUsedWarning(iAttackerTank, iVictim, hEvent, iDmgType, iDmgHealth);
+	SuppressNeverUsedWarning(hEvent, iAttackerTank, iVictim, iDmgType, iDmgHealth);
 }
 
 HandleNecroTankerInfectedConsumption(iClient, iInfectedEntity)

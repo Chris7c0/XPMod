@@ -884,8 +884,11 @@ new Float:g_xyzClientTankPosition[MAXPLAYERS + 1][3];
 #define NECROTANKER_CONSUME_UNCOMMON_HP     400
 #define NECROTANKER_CONSUME_SI_HP           1000
 //Vampiric Tank
-#define TANK_HEALTH_VAMPIRIC                12000
-#define VAMPIRIC_TANK_LIFESTEAL_MULTIPLIER  10
+#define TANK_HEALTH_VAMPIRIC                            10000
+#define VAMPIRIC_TANK_LIFESTEAL_MULTIPLIER              15
+#define VAMPIRIC_TANK_LIFESTEAL_INCAP_MULTIPLIER        30
+#define VAMPIRIC_TANK_MELEE_DMG_TAKEN_MULTIPLIER        3
+#define VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER          0.333333
 new Float:VAMPIRIC_TANK_WING_FLAP_UP_VELOCITY = 600.0;
 new bool:g_bCanFlapVampiricTankWings[MAXPLAYERS + 1];
 new bool:g_bIsVampiricTankFlying[MAXPLAYERS + 1];
@@ -983,6 +986,7 @@ new Handle:g_hSDK_RoundRespawn 		= INVALID_HANDLE;
 //new Handle:g_hSDK_StateTransition 	= INVALID_HANDLE;
 new Handle:g_hSDK_OnPounceEnd		= INVALID_HANDLE;
 new Handle:g_hSDK_VomitOnPlayer 	= INVALID_HANDLE;
+new Handle:g_hSDK_UnVomitOnPlayer 	= INVALID_HANDLE;
 new Handle:g_hSDK_Fling 			= INVALID_HANDLE;
 //Testing SDK Calls
 new Handle:g_hSetClass 			= INVALID_HANDLE;

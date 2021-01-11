@@ -38,7 +38,6 @@ SetupXPMEvents()
 	HookEvent("pills_used", Event_PillsUsed);
 	HookEvent("adrenaline_used", Event_AdrenalineUsed);
 	HookEvent("item_pickup", Event_ItemPickUp);
-	HookEvent("player_now_it", Event_PlayerNowIt);
 	HookEvent("weapon_given", Event_WeaponGiven);
 	HookEvent("upgrade_pack_used", Event_UpgradePackUsed);
 	HookEvent("weapon_drop", Event_WeaponDropped);
@@ -74,6 +73,7 @@ SetupXPMEvents()
 	HookEvent("spit_burst", Event_SpitBurst);
 	HookEvent("ghost_spawn_time", Event_GhostSpawnTime);
 	HookEvent("entered_spit", Event_EnteredSpit);
+	HookEvent("player_now_it", Event_PlayerNowIt);
 }
 
 /**************************************************************************************************************************

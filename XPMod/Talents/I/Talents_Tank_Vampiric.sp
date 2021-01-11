@@ -17,6 +17,9 @@ LoadVampiricTankTalents(iClient)
 	
 	g_bCanFlapVampiricTankWings[iClient] = true;
 	g_bIsVampiricTankFlying[iClient] = false;
+
+	// Set a really high rock cooldown so that the rock throw ability is deactivated
+	SetSIAbilityCooldown(iClient, 99999.0);
 	
 	//Give Health
 	SetEntProp(iClient, Prop_Data,"m_iMaxHealth", TANK_HEALTH_VAMPIRIC);
@@ -68,12 +71,43 @@ OnGameFrame_Tank_Vampiric(iClient)
 	}
 }
 
-EventsHurt_TankVictim_Vampiric(iVictimTank, iDmgType, iDmgHealth)
+EventsHurt_TankVictim_Vampiric(Handle:hEvent, iAttacker, iVictimTank, iDmgType, iDmgHealth)
 {
-	SuppressNeverUsedWarning(iVictimTank, iDmgType, iDmgHealth);
+	SuppressNeverUsedWarning(hEvent, iAttacker, iVictimTank, iDmgType, iDmgHealth);
+
+	decl String:weaponclass[32];
+	GetEventString(hEvent,"weapon",weaponclass,32);
+	PrintToChatAll("\x03-weaponclass: \x01%s, dmgHealth: %i",weaponclass, iDmgHealth);
+
+	// Modify damage taken for the Vampric Tank
+	if (StrContains(weaponclass,"melee",false) != -1)
+	{
+		// Increase the melee damage
+		// Remember, the original damage will still process, so subtract that
+		new iCurrentHP = GetEntProp(iVictimTank,Prop_Data,"m_iHealth");
+		PrintToChatAll("\x03iCurrentHP: %i", iCurrentHP);
+		SetEntProp(iVictimTank,Prop_Data,"m_iHealth", iCurrentHP - ((iDmgHealth * VAMPIRIC_TANK_MELEE_DMG_TAKEN_MULTIPLIER) - iDmgHealth));
+		PrintToChatAll("\x03Subtracting health: %i", ((iDmgHealth * VAMPIRIC_TANK_MELEE_DMG_TAKEN_MULTIPLIER) - iDmgHealth));
+		new iCurrentHP2 = GetEntProp(iVictimTank,Prop_Data,"m_iHealth");
+		PrintToChatAll("\x03iCurrentHP: %i", iCurrentHP2);
+	}
+	else if(StrContains(weaponclass,"pisol",false) != -1 ||
+		StrContains(weaponclass,"rifle",false) != -1 ||
+		StrContains(weaponclass,"smg",false) != -1 ||
+		StrContains(weaponclass,"sub",false) != -1 || // Needed?
+		StrContains(weaponclass,"shotgun",false) != -1 ||
+		StrContains(weaponclass,"sniper",false) != -1 ||
+		StrContains(weaponclass,"pisol",false) != -1)
+	{
+		new iCurrentHP = GetEntProp(iVictimTank,Prop_Data,"m_iHealth");
+		// The life will be taken away, so we need to convert the gun damage taken multiplier to be a reduction of this.
+		// So, if we want to only take 1/3rd damage, then we add 2/3rds back here.  1 - 1/3rds = 2/3rds.
+		SetEntProp(iVictimTank,Prop_Data,"m_iHealth", iCurrentHP + RoundToCeil(iDmgHealth * (1.0 - VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER)) );
+		PrintToChatAll("\x03Re-adding health: %i", RoundToCeil(iDmgHealth * (1.0 - VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER)) );
+	}
 }
 
-EventsHurt_TankAttacker_Vampiric(iAttackerTank, iVictim, Handle:hEvent, iDmgType, iDmgHealth)
+EventsHurt_TankAttacker_Vampiric(Handle:hEvent, iAttackerTank, iVictim, iDmgType, iDmgHealth)
 {
 	SuppressNeverUsedWarning(hEvent, iDmgType);
 
@@ -81,8 +115,13 @@ EventsHurt_TankAttacker_Vampiric(iAttackerTank, iVictim, Handle:hEvent, iDmgType
 		IsPlayerAlive(iAttackerTank) == false || IsPlayerAlive(iVictim) == false)
 		return;
 
-	// Calculate the health to recieve and give to the Tank
-	new iVampiricHealthGainAmount = iDmgHealth * VAMPIRIC_TANK_LIFESTEAL_MULTIPLIER;
+	// Calculate the health to recieve (more for incap players)
+	decl iVampiricHealthGainAmount;
+	if (GetEntProp(iVictim, Prop_Send, "m_isIncapacitated") != 0)
+		iVampiricHealthGainAmount = iDmgHealth * VAMPIRIC_TANK_LIFESTEAL_INCAP_MULTIPLIER;
+	else
+		iVampiricHealthGainAmount = iDmgHealth * VAMPIRIC_TANK_LIFESTEAL_MULTIPLIER;
+
 	// Get the current life level
 	new iCurrentHP = GetEntProp(iAttackerTank,Prop_Data,"m_iHealth");
 	if(iCurrentHP < TANK_HEALTH_VAMPIRIC)

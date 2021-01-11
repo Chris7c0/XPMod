@@ -20,8 +20,6 @@ LoadIceTankTalents(iClient)
 	//Stop Kiting
 	SetConVarInt(FindConVar("z_tank_damage_slow_min_range"), 0);
 	SetConVarInt(FindConVar("z_tank_damage_slow_max_range"), 0);
-	//Stop Rock Throwing Cooldown
-	SetConVarFloat(FindConVar("z_tank_throw_interval"), 1.0);
 	
 	//Give Health
 	SetEntProp(iClient, Prop_Data,"m_iMaxHealth", TANK_HEALTH_ICE);
@@ -164,11 +162,13 @@ OnGameFrame_Tank_Ice(iClient)
 	}
 }
 
-EventsHurt_TankVictim_Ice(iVictimTank, iDmgType, iDmgHealth)
+EventsHurt_TankVictim_Ice(Handle:hEvent, iAttacker, iVictimTank, iDmgType, iDmgHealth)
 {
+	SuppressNeverUsedWarning(hEvent, iAttacker);
+
 	new iCurrentHealth = GetEntProp(iVictimTank,Prop_Data,"m_iHealth");
 	decl Float:fCurrentTankHealthPercentage;
-	
+
 	//Add More Fire Damage
 	if(iDmgType == DAMAGETYPE_FIRE1 || iDmgType == DAMAGETYPE_FIRE2)
 	{
@@ -196,7 +196,7 @@ EventsHurt_TankVictim_Ice(iVictimTank, iDmgType, iDmgHealth)
 	}
 }
 
-EventsHurt_TankAttacker_Ice(iAttackerTank, iVictim, Handle:hEvent, iDmgType, iDmgHealth)
+EventsHurt_TankAttacker_Ice(Handle:hEvent, iAttackerTank, iVictim, iDmgType, iDmgHealth)
 {
 	SuppressNeverUsedWarning(iDmgType, iDmgHealth);
 
