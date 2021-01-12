@@ -17,7 +17,7 @@ LoadIceTankTalents(iClient)
 	g_fTankHealthPercentage[iClient] =  1.0;
 	g_iIceTankLifePool[iClient] = TANK_ICE_REGEN_LIFE_POOL_SIZE;
 	
-	//Stop Kiting
+	//Stop Kiting (Bullet hits slowing tank down)
 	SetConVarInt(FindConVar("z_tank_damage_slow_min_range"), 0);
 	SetConVarInt(FindConVar("z_tank_damage_slow_max_range"), 0);
 	
@@ -25,11 +25,6 @@ LoadIceTankTalents(iClient)
 	SetEntProp(iClient, Prop_Data,"m_iMaxHealth", TANK_HEALTH_ICE);
 	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
 	SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + TANK_HEALTH_ICE - 6000);
-	
-	//Set Movement Speed
-	//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), 1.0 - (RoundToCeil(g_iClientLevel[iClient] / 5.0) * 0.01), true);
-	//g_fClientSpeedPenalty[iClient] += (RoundToCeil(g_iClientLevel[iClient] / 5.0) * 0.01);
-	//fnc_SetClientSpeed(iClient);
 	
 	//Change Skin Color
 	SetEntityRenderMode(iClient, RenderMode:0);
@@ -198,7 +193,7 @@ EventsHurt_TankVictim_Ice(Handle:hEvent, iAttacker, iVictimTank, iDmgType, iDmgH
 
 EventsHurt_TankAttacker_Ice(Handle:hEvent, iAttackerTank, iVictim, iDmgType, iDmgHealth)
 {
-	SuppressNeverUsedWarning(iDmgType, iDmgHealth);
+	SuppressNeverUsedWarning(iAttackerTank, iDmgType, iDmgHealth);
 
 	decl String:weapon[20];
 	GetEventString(hEvent,"weapon", weapon, 20);
@@ -206,7 +201,7 @@ EventsHurt_TankAttacker_Ice(Handle:hEvent, iAttackerTank, iVictim, iDmgType, iDm
 	if(g_bFrozenByTank[iVictim] == false && g_bBlockTankFreezing[iVictim] == false)
 	{
 		if(StrEqual(weapon,"tank_rock") == true ||
-			(StrEqual(weapon,"tank_claw") == true && GetRandomInt(0, 84) <= g_iClientLevel[iAttackerTank]))
+			(StrEqual(weapon,"tank_claw") == true && GetRandomInt(1, 100) <= 25))
 			FreezePlayerByTank(iVictim, 4.2);
 	}
 	else

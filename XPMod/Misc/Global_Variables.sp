@@ -193,8 +193,19 @@ new String:SURVIVOR_CLASS_NAME[][] =    {"SUPPORT",
 #define SPITTER				4
 #define JOCKEY				5
 #define CHARGER				6
-//#define WITCH				7
+#define WITCH				7
 #define TANK				8
+
+
+new String:INFECTED_NAME[][] =  {"",
+                                "SMOKER",
+                                "BOOMER",
+                                "HUNTER",
+                                "SPITTER",
+                                "JOCKEY",
+                                "CHARGER",
+                                "WITCH",
+                                "TANK"}
 
 //Chosen Tank Talents
 #define TANK_NOT_CHOSEN		0

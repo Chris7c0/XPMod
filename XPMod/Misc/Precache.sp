@@ -1,8 +1,8 @@
 PrecacheAllParticles()
 {
-	//Bill
+	// Bill
 	
-	//Rochelle
+	// Rochelle
 	PrecacheParticle("rochelle_ulti_ninja_charge1");
 	PrecacheParticle("rochelle_ulti_ninja_charge2");
 	PrecacheParticle("rochelle_ulti_ninja_charge3");
@@ -15,7 +15,7 @@ PrecacheAllParticles()
 	PrecacheParticle("rochelle_jump_charge_trail");
 	PrecacheParticle("rochelle_silhouette");		// need to fix?
 	
-	//Coach
+	// Coach
 	PrecacheParticle("coach_bind_turret_charge1");
 	PrecacheParticle("coach_bind_turret_charge2");
 	PrecacheParticle("coach_bind_turret_charge3");
@@ -26,13 +26,13 @@ PrecacheAllParticles()
 	PrecacheParticle("coach_melee_charge_heal");
 	//PrecacheParticle("coach_melee_charge_arms");
 	
-	//Ellis
+	// Ellis
 	PrecacheParticle("ellis_ulti_fire_charge1");
 	PrecacheParticle("ellis_ulti_fire_charge2");
 	PrecacheParticle("ellis_ulti_fire_charge3");
 	PrecacheParticle("ellis_ulti_firewalk");
 	
-	//Nick
+	// Nick
 	PrecacheParticle("nick_ulti_heal_charge1");
 	PrecacheParticle("nick_ulti_heal_charge2");
 	PrecacheParticle("nick_ulti_heal_charge3");
@@ -46,14 +46,14 @@ PrecacheAllParticles()
 	PrecacheParticle("nick_bind_gamble");
 	PrecacheParticle("nick_lifesteal_recovery");
 	
-	//Smoker
+	// Smoker
 	PrecacheParticle("bug_zapper_fly_cloud");
 	PrecacheParticle("electrical_arc_01_system");
-	//PrecacheParticle("smoker_spore_attack");
+	// PrecacheParticle("smoker_spore_attack");
 	PrecacheParticle("teleport_warp");
 	
 	//Menu Descriptions "VGUIs"
-	//Bill
+	// Bill
 	PrecacheParticle("md_bill_inspirational");
 	PrecacheParticle("md_bill_ghillie");
 	PrecacheParticle("md_bill_will");
@@ -61,7 +61,7 @@ PrecacheAllParticles()
 	PrecacheParticle("md_bill_diehard");
 	PrecacheParticle("md_bill_promotional");
 	
-	//Rochelle
+	// Rochelle
 	PrecacheParticle("md_rochelle_gather");
 	PrecacheParticle("md_rochelle_hunter");
 	PrecacheParticle("md_rochelle_sniper");
@@ -69,7 +69,7 @@ PrecacheAllParticles()
 	PrecacheParticle("md_rochelle_smoke");
 	PrecacheParticle("md_rochelle_shadow");
 	
-	//Coach
+	// Coach
 	PrecacheParticle("md_coach_bull");
 	PrecacheParticle("md_coach_wrecking");
 	PrecacheParticle("md_coach_spray");
@@ -77,7 +77,7 @@ PrecacheAllParticles()
 	PrecacheParticle("md_coach_lead");
 	PrecacheParticle("md_coach_strong");
 	
-	//Ellis
+	// Ellis
 	PrecacheParticle("md_ellis_over");
 	PrecacheParticle("md_ellis_bring");
 	PrecacheParticle("md_ellis_jammin");
@@ -85,7 +85,7 @@ PrecacheAllParticles()
 	PrecacheParticle("md_ellis_mechanic");
 	PrecacheParticle("md_ellis_fire");
 	
-	//Nick
+	// Nick
 	PrecacheParticle("md_nick_swindler");
 	PrecacheParticle("md_nick_leftover");
 	PrecacheParticle("md_nick_magnum");
@@ -93,7 +93,7 @@ PrecacheAllParticles()
 	PrecacheParticle("md_nick_risky");
 	PrecacheParticle("md_nick_desperate");
 	
-	//Spitter
+	// Spitter
 	PrecacheParticle("spitter_goo_adhesive");
 	PrecacheParticle("spitter_goo_melting");
 	PrecacheParticle("spitter_goo_demi");
@@ -105,16 +105,17 @@ PrecacheAllParticles()
 	PrecacheParticle("hallucinogenic_effect_people");
 	PrecacheParticle("spitter_conjure");
 	
-	//Charger
+	// Charger
 	PrecacheParticle("charger_shield");
 	
-	//Tank
+	// Tanks
 	PrecacheParticle("fire_small_01");
 	PrecacheParticle("ice_tank_charge_mist");
 	PrecacheParticle("ice_tank_charge_snow");
 	PrecacheParticle("ice_tank_icicles");
+	PrecacheParticle("vomit_jar_b");
 	
-	
+	// Misc
 	PrecacheParticle("drugged_effect");
 	PrecacheParticle("poison_bubbles");
 }

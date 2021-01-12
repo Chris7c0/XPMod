@@ -4,34 +4,40 @@ int  SpawnRandomCommonInfectedMob(Float:xyzLocation[3], iAmount = 1, bool:bUncom
 
 	for(new i = 0; i < iAmount; i++)
 	{
-		new zombie = CreateEntityByName("infected");
+		new iZombie = CreateEntityByName("infected");
 		
 		// Get thte number of possible models
 		new iRandomModelNumber = bUncommon ? GetRandomInt(0,sizeof(UNCOMMON_INFECTED_MODELS) - 1) : GetRandomInt(0,sizeof(COMMON_INFECTED_MODELS) - 1)
 		
 		// Set the model, which sets the infected type, for uncommon changing behavior etc.
 		if (bUncommon)
-			SetEntityModel(zombie, UNCOMMON_INFECTED_MODELS[iRandomModelNumber]);
+			SetEntityModel(iZombie, UNCOMMON_INFECTED_MODELS[iRandomModelNumber]);
 		else
-			SetEntityModel(zombie, COMMON_INFECTED_MODELS[iRandomModelNumber]);
+			SetEntityModel(iZombie, COMMON_INFECTED_MODELS[iRandomModelNumber]);
 		
 		new ticktime = RoundToNearest( GetGameTime() / GetTickInterval() ) + 5;
-		SetEntProp(zombie, Prop_Data, "m_nNextThinkTick", ticktime);
+		SetEntProp(iZombie, Prop_Data, "m_nNextThinkTick", ticktime);
 		
 		// This is the wait time before they go mad and try to find survivors
 		// This will also enable them to spawn outside of the director's spawn area
 		// But it must be triggered before thte ttime of destroy happens (2-3secs)
 		if (fTimeToWaitForMob >=0)
-			CreateTimer(fTimeToWaitForMob, TimerSetMobRush, zombie);
+			CreateTimer(fTimeToWaitForMob, TimerSetMobRush, iZombie);
 		
 		// Teleport needs to happen first or problems occur.
-		TeleportEntity(zombie, xyzLocation, NULL_VECTOR, NULL_VECTOR);
+		TeleportEntity(iZombie, xyzLocation, NULL_VECTOR, NULL_VECTOR);
 		//	Activate the common infected
-		ActivateEntity(zombie);
-		DispatchSpawn(zombie);
+		ActivateEntity(iZombie);
+		DispatchSpawn(iZombie);
+
+		// Create the FX
+		// Play a random sound effect name from the several zombie slices
+		EmitSoundToAll(SOUND_ZOMBIE_SLASHES[ GetRandomInt(0 ,sizeof(SOUND_ZOMBIE_SLASHES) - 1) ], iZombie, SNDCHAN_AUTO, SNDLEVEL_TRAIN, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, xyzLocation, NULL_VECTOR, true, 0.0);
+		// Show the particle effect
+		WriteParticle(iZombie, "vomit_jar_b", 0.0, 2.0);
 
 		if (iAmount == 1)
-			return zombie;
+			return iZombie;
 	}
 	
 	return -1;
@@ -52,7 +58,72 @@ public Action:TimerSetMobRush(Handle:timer, any:iZombieEntity)
 	return Plugin_Stop;
 }
 
+SpawnCIAroundPlayer(iClient, iAmount = 1, bool:bChanceForUncommon = false)
+{
+	if (RunClientChecks(iClient) == false)
+		return;
 
+	// Get player location to spawn infected around
+	decl Float:xyzLocation[3];
+	GetClientAbsOrigin(iClient, xyzLocation);
+
+	// Get the angle increments then convert to radians
+	// We need it in radians so convert it by multiplying by 0.0174532925
+	new Float:fAngleIncrement = (360.0 / iAmount) * 0.0174532925;
+
+	for (new i=0; i < iAmount; i++)
+	{
+		// Calculate the spawn points in a circle around the player
+		// Note: angle must be in radians, 
+		// x = radius * cos(angle)
+		// y = radius * sin(angle)
+		new Float:fRadius = 50.0;
+		new Float:fXOffset = (fRadius * Cosine(fAngleIncrement * i)) - (fRadius / 2);
+		new Float:fYOffset = (fRadius * Sine(fAngleIncrement * i)) - (fRadius / 2);
+		//PrintToServer("%f %f", fXOffset, fYOffset);
+
+		xyzLocation[0] += fXOffset;
+		xyzLocation[1] += fYOffset;
+
+		SpawnRandomCommonInfectedMob(xyzLocation, 1, bChanceForUncommon && GetRandomInt(0, 5) == 0 ? true : false, 0.1);
+	}
+		
+}
+
+public Action:TimerSpawnCIAroundPlayer(Handle:timer, any:hDataPackage)
+{
+	ResetPack(hDataPackage);
+	new iClient = ReadPackCell(hDataPackage);
+	new iAmount = ReadPackCell(hDataPackage);
+	new bool:bChanceForUncommon = ReadPackCell(hDataPackage);
+	CloseHandle(hDataPackage);
+
+	SpawnCIAroundPlayer(iClient, iAmount, bChanceForUncommon);
+
+	return Plugin_Stop;
+}
+
+SpawnSpecialInfected(iClient, char[] strInfectedToSpawn = "")
+{
+	new iRandomSIID = GetRandomInt(1,6);
+	decl String:strSpawnCommand[32];
+	Format(strSpawnCommand, sizeof(strSpawnCommand), 
+		"z_spawn_old %s auto", 
+		strlen(strInfectedToSpawn) == 0 ?
+		INFECTED_NAME[iRandomSIID]:
+		strInfectedToSpawn);
+
+	PrintToChatAll("\x03[XPMod] \x04%N\x05 Summoned a \x04%s\x05.", 
+		iClient,
+		strlen(strInfectedToSpawn) == 0 ?
+		INFECTED_NAME[iRandomSIID]:
+		strInfectedToSpawn);
+
+	g_iFlag_SpawnOld = GetCommandFlags("z_spawn_old");
+	SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
+	FakeClientCommand(iClient, strSpawnCommand);
+	SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);
+}
 
 
 

@@ -91,6 +91,8 @@ public Action:TestFunction3(iClient,args)
 	char str1[99];
 	GetCmdArg(1, str1, sizeof(str1));
 
+	SpawnSpecialInfected(iClient);
+
 	//OpenMOTDPanel(iClient, "t3" , " .", MOTDPANEL_TYPE_URL);
 	//OpenMOTDPanel(iClient, "t3." , "<html><head><title>a</title><meta http-equiv = \"Content-Type\" content = \"text / html; charset = utf-8\" ></head><body bgcolor = \"# 000000\" ><p>test</p></body></html>", MOTDPANEL_TYPE_TEXT);
 	return Plugin_Stop;

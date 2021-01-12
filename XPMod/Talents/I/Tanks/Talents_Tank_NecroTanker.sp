@@ -19,6 +19,10 @@ LoadNecroTankerTalents(iClient)
 	SetEntProp(iClient, Prop_Data,"m_iMaxHealth", TANK_HEALTH_NECROTANKER);
 	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
 	SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + TANK_HEALTH_NECROTANKER - 6000);
+
+	//Stop Kiting (Bullet hits slowing tank down)
+	SetConVarInt(FindConVar("z_tank_damage_slow_min_range"), 0);
+	SetConVarInt(FindConVar("z_tank_damage_slow_max_range"), 0);
 	
 	//Set Movement Speed
 	//g_fClientSpeedBoost[iClient] += 0.2;
@@ -108,7 +112,13 @@ EventsHurt_TankVictim_NecroTanker(Handle:hEvent, iAttacker, iVictimTank, iDmgTyp
 
 EventsHurt_TankAttacker_NecroTanker(Handle:hEvent, iAttackerTank, iVictim, iDmgType, iDmgHealth)
 {
-	SuppressNeverUsedWarning(hEvent, iAttackerTank, iVictim, iDmgType, iDmgHealth);
+	SuppressNeverUsedWarning(iDmgType, iDmgHealth);
+
+	decl String:weapon[20];
+	GetEventString(hEvent,"weapon", weapon, 20);
+
+	if (StrEqual(weapon,"tank_claw"))
+		SummonNecroTankerPunchZombies(iAttackerTank, iVictim);
 }
 
 HandleNecroTankerInfectedConsumption(iClient, iInfectedEntity)
@@ -305,7 +315,16 @@ BileEveryoneCloseToExplodingNecroTankerTankRock(iRockEntity)
 			new Float:fDistance = GetVectorDistance(xyzSurvivorPosition, xyzRockPosition, false);
 			//Bile if they are close enough
 			if(fDistance <= 200.0)
+			{
 				SDKCall(g_hSDK_VomitOnPlayer, iClient, iTank, true);
+
+				new Handle:hDataPackage = CreateDataPack();
+				WritePackCell(hDataPackage, iClient);
+				WritePackCell(hDataPackage, 3);
+				WritePackCell(hDataPackage, false);
+
+				CreateTimer(0.1, TimerSpawnCIAroundPlayer, hDataPackage);
+			}
 		}
 	}
 }
@@ -321,3 +340,65 @@ CreateNecroTankerRockTrailEffect(int iRockEntity)
 	EmitAmbientSound(SOUND_BOOMER_THROW[ iRandomSoundNumber ], xyzRockPosition, iRockEntity, SNDLEVEL_GUNFIRE);
 	EmitAmbientSound(SOUND_BOOMER_THROW[ iRandomSoundNumber ], xyzRockPosition, iRockEntity, SNDLEVEL_GUNFIRE);
 }
+
+void SummonNecroTankerPunchZombies(iAttackerTank, iVictim)
+{
+	if (RunClientChecks(iAttackerTank) == false || RunClientChecks(iVictim) == false)
+		return;
+
+	
+	new iRoll = GetRandomInt(1,100);
+
+	// Testing different rolls
+	//iRoll = 20;
+
+	// 1/3rd of the time, dont spawn anything
+	if (iRoll > 66)
+		return;
+	
+	// Spawn CI around victim
+	if (iRoll > 33 && iRoll <= 66)
+	{
+		new Handle:hDataPackage = CreateDataPack();
+		WritePackCell(hDataPackage, iVictim);
+		WritePackCell(hDataPackage, 6);
+		WritePackCell(hDataPackage, false);
+
+		CreateTimer(1.0, TimerSpawnCIAroundPlayer, hDataPackage);
+		return;
+	}
+
+	// Spawn CI and UI around player
+	if (iRoll > 10 && iRoll <= 33)
+	{
+		new Handle:hDataPackage = CreateDataPack();
+		WritePackCell(hDataPackage, iVictim);
+		WritePackCell(hDataPackage, 5);
+		WritePackCell(hDataPackage, true);
+
+		CreateTimer(1.0, TimerSpawnCIAroundPlayer, hDataPackage);
+		return;
+	}
+
+	// Spawn SI
+	if (iRoll > 5 && iRoll <= 10)
+	{
+		SpawnSpecialInfected(iAttackerTank);
+		return;
+	}
+	
+	// Spawn Witch
+	if (iRoll > 1 && iRoll <= 5)
+	{
+		SpawnSpecialInfected(iAttackerTank, INFECTED_NAME[WITCH]);
+		return;
+	}
+
+	// Spawn another tank if they roll a 1
+	if (iRoll == 1)
+	{
+		SpawnSpecialInfected(iAttackerTank, INFECTED_NAME[TANK]);
+		return;
+	}
+}
+

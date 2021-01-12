@@ -25,6 +25,10 @@ LoadFireTankTalents(iClient)
 	SetEntProp(iClient, Prop_Data,"m_iMaxHealth", TANK_HEALTH_FIRE);
 	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
 	SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + TANK_HEALTH_FIRE - 6000);
+
+	//Stop Kiting (Bullet hits slowing tank down)
+	SetConVarInt(FindConVar("z_tank_damage_slow_min_range"), 0);
+	SetConVarInt(FindConVar("z_tank_damage_slow_max_range"), 0);
 	
 	//Set Movement Speed
 	//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), 1.2, true);

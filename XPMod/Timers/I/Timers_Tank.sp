@@ -29,8 +29,6 @@ public Action:TimerExtinguishTank(Handle:timer, any:iClient)
 {
 	if(RunClientChecks(iClient) && IsPlayerAlive(iClient))
 		ExtinguishEntity(iClient);
-	
-	PrintToChatAll("TimerExtinguishTank for %N", iClient);
 
 	g_hTimer_ExtinguishTank[iClient] = null;
 	return Plugin_Stop;
