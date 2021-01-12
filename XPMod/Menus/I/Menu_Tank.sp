@@ -1,5 +1,7 @@
 public Action:ChooseTankMenuDraw(iClient)
 {
+	// If they still had the confirmation menu open, close it so they can choose a tank
+	g_bUserStoppedConfirmation[iClient] = true;
 	CheckMenu(iClient);
 	
 	g_hMenu_XPM[iClient] = CreateMenu(ChooseTankMenuHandler);

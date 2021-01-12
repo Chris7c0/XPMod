@@ -186,15 +186,8 @@ public Action:ConfirmationMessageMenuDraw(iClient)
 		}
 		else
 		{
+			g_bUserStoppedConfirmation[iClient] = true;
 			ClosePanel(iClient);
-			// No longer auto confirm, it will auto close instead
-			// if(g_bClientLoggedIn[iClient] == true)
-			// {
-			// 	g_bTalentsConfirmed[iClient] = true;
-			// 	g_iAutoSetCountDown[iClient] = -1;
-			// 	PrintHintText(iClient, "Talents Confirmed");
-			// 	LoadTalents(iClient);
-			// }
 		}
 	}
 	
