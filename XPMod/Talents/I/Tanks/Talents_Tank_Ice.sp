@@ -201,7 +201,7 @@ EventsHurt_TankAttacker_Ice(Handle:hEvent, iAttackerTank, iVictim, iDmgType, iDm
 	if(g_bFrozenByTank[iVictim] == false && g_bBlockTankFreezing[iVictim] == false)
 	{
 		if(StrEqual(weapon,"tank_rock") == true ||
-			(StrEqual(weapon,"tank_claw") == true && GetRandomInt(1, 100) <= 25))
+			(StrEqual(weapon,"tank_claw") == true && GetRandomInt(1, 3) == 1))
 			FreezePlayerByTank(iVictim, 4.2);
 	}
 	else

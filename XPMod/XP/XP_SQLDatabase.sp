@@ -331,7 +331,7 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 	if (bDrawConfirmMenuAfter == true && g_bTalentsConfirmed[iClient] == false)
 	{
 		g_bUserStoppedConfirmation[iClient] = false;
-		g_iAutoSetCountDown[iClient] = 20;
+		g_iAutoSetCountDown[iClient] = 60;
 
 		delete g_hTimer_ShowingConfirmTalents[iClient];
 		g_hTimer_ShowingConfirmTalents[iClient] = CreateTimer(1.0, TimerShowTalentsConfirmed, iClient, TIMER_REPEAT);

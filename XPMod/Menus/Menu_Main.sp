@@ -318,8 +318,8 @@ public TopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			case 4: //Confirm Talents
 			{
 				g_bUserStoppedConfirmation[iClient] = false;
-				g_iAutoSetCountDown[iClient] = 10;
-
+				g_iAutoSetCountDown[iClient] = 30;
+				
 				delete g_hTimer_ShowingConfirmTalents[iClient];
 				g_hTimer_ShowingConfirmTalents[iClient] = CreateTimer(1.0, TimerShowTalentsConfirmed, iClient, TIMER_REPEAT);
 			}
