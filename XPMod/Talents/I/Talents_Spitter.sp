@@ -139,7 +139,7 @@ DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 	if(g_bAdhesiveGooActive[iVictim] == false)
 	{
 		decl RandomAdhesiveGooChance;
-		RandomAdhesiveGooChance = GetRandomInt(1, 5);
+		RandomAdhesiveGooChance = GetRandomInt(1, 4);
 		switch (RandomAdhesiveGooChance)
 		{
 			// 20% chance of causing adhession on hit
@@ -153,21 +153,21 @@ DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 					case 1:
 					{
 						//SetEntDataFloat(iVictim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 0.5, true);
-						g_fClientSpeedPenalty[iVictim] += (g_iPuppetLevel[iAttacker] * 0.03);
-						g_fAdhesiveAffectAmount[iVictim] = (g_iPuppetLevel[iAttacker] * 0.03);
+						g_fClientSpeedPenalty[iVictim] = (g_iPuppetLevel[iAttacker] * 0.02);
+						g_fAdhesiveAffectAmount[iVictim] = (g_iPuppetLevel[iAttacker] * 0.02);
 						//PrintToChatAll("Adhesive goo affect %d", g_fAdhesiveAffectAmount[iVictim]);
 					}
 					case 2:
 					{
-						g_fClientSpeedPenalty[iVictim] += (g_iPuppetLevel[iAttacker] * 0.06);
-						g_fAdhesiveAffectAmount[iVictim] = (g_iPuppetLevel[iAttacker] * 0.06);
+						g_fClientSpeedPenalty[iVictim] = (g_iPuppetLevel[iAttacker] * 0.04);
+						g_fAdhesiveAffectAmount[iVictim] = (g_iPuppetLevel[iAttacker] * 0.04);
 						//PrintToChatAll("Adhesive goo affect %d", g_fAdhesiveAffectAmount[iVictim]);
 					}
 					case 3:
 					{
-						g_fClientSpeedPenalty[iVictim] += (g_iPuppetLevel[iAttacker] * 0.09);
-						g_fAdhesiveAffectAmount[iVictim] = (g_iPuppetLevel[iAttacker] * 0.09);
-						//PrintToChatAll("Adhesive goo affect %d", g_fAdhesiveAffectAmount[iVictim]);
+						g_fClientSpeedPenalty[iVictim] = (g_iPuppetLevel[iAttacker] * 0.06);
+						g_fAdhesiveAffectAmount[iVictim] = (g_iPuppetLevel[iAttacker] * 0.06);
+						//PrintToChatAll("Adhesive goo affect %f", g_fAdhesiveAffectAmount[iVictim]);
 					}
 				}
 

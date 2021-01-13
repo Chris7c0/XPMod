@@ -35,7 +35,7 @@ public Action:PuppetMenuDraw(iClient)
 	CheckLevel(iClient);
 	g_hMenu_XPM[iClient] = CreateMenu(PuppetMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n  						Puppet Master (Level %d)\n \nLevel 1:\nSpawn in with +1 CI per level\nWhen incapping a player, spawn +1 CI every other level on the victim\n20%% chance on hit to slow survivors by 3, 6, or 9%% per level\n \nLevel 6:\nFlaming Goo: A blanket of fire lies over your spit\n \nPress [WALK] to change Goo Types\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iPuppetLevel[iClient]);
+	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n  						Puppet Master (Level %d)\n \nLevel 1:\nSpawn in with +1 CI per level\nWhen incapping a player, spawn +1 CI every other level on the victim\n25%% chance on hit to slow survivors by 2%%, 4%%, or 6%% per level\n \nLevel 6:\nFlaming Goo: A blanket of fire lies over your spit\n \nPress [WALK] to change Goo Types\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iPuppetLevel[iClient]);
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
 //	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Talent Info\n \n \n \n \n \n \n \n ");
