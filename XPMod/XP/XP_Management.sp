@@ -1,8 +1,72 @@
-
 CheckLevel(iClient)
 {
 	if(g_iClientLevel[iClient] != 30 && g_iClientXP[iClient] >= g_iClientNextLevelXPAmount[iClient])
 		LevelUpPlayer(iClient);
+}
+
+RenamePlayerWithLevelTags(iClient, bool:bRemoveTags = false)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsFakeClient(iClient) ==  true ||
+		g_bClientLoggedIn[iClient] == false)
+		return;
+
+	decl String:strClientName[32];
+	decl String:strClientBaseName[32];
+	GetClientName(iClient, strClientName, sizeof(strClientName));
+	// PrintToChatAll("%s: %i",strClientName, strlen(strClientName));
+
+	// Create the Level Tag regex to check against
+	new Handle:hTagRegex = CompileRegex("\\[[0-9]{0,2}\\] ..*");
+
+	// Check if XPMod Level tag is already added before continuing
+	// If its already there, then remove it to obtain base name
+	if (MatchRegex(hTagRegex, strClientName))
+		strcopy(strClientBaseName, sizeof(strClientBaseName), strClientName[StrContains(strClientName, "] ") + 2]);
+	else
+		strcopy(strClientBaseName, sizeof(strClientBaseName), strClientName);
+
+	CloseHandle(hTagRegex);
+
+	// The string [30] is 5 chars with the space. Max name length is 31.
+	// So check to make sure the name is not longer than 31 - 5 = 26
+	// before continuing.
+	if (strlen(strClientBaseName) > 26)
+		return;
+
+	// PrintToServer("%s: %i",strClientBaseName, strlen(strClientBaseName));
+
+	// Get the client level into a string
+	decl String:strClientLevel[3];
+	IntToString(g_iClientLevel[iClient], strClientLevel, sizeof(strClientLevel))
+
+	// Combine it into the final name
+	if (bRemoveTags == false)
+		Format(strClientName, sizeof(strClientName), "[%s] %s", strClientLevel, strClientBaseName);
+
+	// PrintToServer("%s: %i",strClientName, strlen(strClientName));
+
+	g_bHideNameChangeMessage = true;
+	
+	// Set the client name to the new name
+	if (bRemoveTags == false)
+		SetClientName(iClient, strClientName);
+	else
+		SetClientName(iClient, strClientBaseName);
+
+	delete g_hTimer_ResetHideNameChangeMessage;
+	g_hTimer_ResetHideNameChangeMessage = CreateTimer(0.5, TimerSetHideChangeNameMessage, _);
+
+	// GetClientName(iClient, strClientName, sizeof(strClientName));
+	// PrintToChatAll("%s: %i",strClientName, strlen(strClientName));
+}
+
+public Action:TimerSetHideChangeNameMessage(Handle:timer, any:data)
+{
+	g_bHideNameChangeMessage = false;
+
+	g_hTimer_ResetHideNameChangeMessage = null;
+	return Plugin_Stop;
 }
 
 public Action:GiveXPbyID(iClient,args)
@@ -378,6 +442,10 @@ LevelUpPlayer(iClient)
 				EmitAmbientSound(SOUND_LEVELUP, xyzClientLocation, iClient, SNDLEVEL_NORMAL);
 				xyzClientLocation[2] += 22.0;
 				WriteParticle(iClient, "mini_fireworks", 0.0, 10.0, xyzClientLocation);
+
+				// Change their name if they are confirmed
+				if (g_bTalentsConfirmed[iClient])
+					RenamePlayerWithLevelTags(iClient);
 			}
 		}
 }

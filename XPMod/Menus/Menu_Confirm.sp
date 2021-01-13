@@ -206,10 +206,12 @@ public ConfirmationMessageMenuHandler(Handle:hmenu, MenuAction:action, iClient, 
 				{
 					g_bTalentsConfirmed[iClient] = true;
 					g_iAutoSetCountDown[iClient] = -1;
-					
+
 					PrintHintText(iClient, "Characters Confirmed");
 					LoadTalents(iClient);
 					ClosePanel(iClient);
+					
+					RenamePlayerWithLevelTags(iClient);
 				}
 			}
 			case 1: //No, change character

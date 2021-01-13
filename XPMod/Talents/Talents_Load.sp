@@ -7,7 +7,7 @@
 /**************************************************************************************************************************
  *                                                     Load Talents                                                       *
  **************************************************************************************************************************/
-public LoadTalents(iClient)
+LoadTalents(iClient)
 {
 	if(iClient < 1 || g_bClientLoggedIn[iClient] == false || g_iClientTeam[iClient] == TEAM_SPECTATORS || 
 		g_bClientSpectating[iClient] == true || IsClientInGame(iClient) == false || IsFakeClient(iClient) == true || 

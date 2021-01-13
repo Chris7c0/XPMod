@@ -10,6 +10,9 @@
 
 SetupXPMEvents()
 {
+	//Hook user messages for silent renames for level tags
+	HookUserMessage(GetUserMessageId("SayText2"), Hook_SayText2, true);
+
 	//Map Events
 	HookEvent("round_start", Event_RoundStart);
 	HookEvent("round_end", Event_RoundEnd);
@@ -240,6 +243,38 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 	return Plugin_Stop;
 }
 
+
+// This is purely to block the name change message when updating a name to have the XPMod Level tags
+// Originally from https://forums.alliedmods.net/showthread.php?t=302085
+public Action Hook_SayText2(UserMsg msg_id, any msg, const int[] players, int playersNum, bool reliable, bool init)
+{
+	// Continue as usual if we arent hiding the name change messages currently
+	if(g_bHideNameChangeMessage == false)
+		return Plugin_Continue;
+
+	// Get the message that will be checked if its the name change string
+	char[] sMessage = new char[24];
+	if(GetUserMessageType() == UM_Protobuf)
+	{
+		Protobuf pbmsg = msg;
+		pbmsg.ReadString("msg_name", sMessage, 24);
+	}
+	else
+	{
+		BfRead bfmsg = msg;
+		bfmsg.ReadByte();
+		bfmsg.ReadByte();
+		bfmsg.ReadString(sMessage, 24, false);
+	}
+
+	// If we have a name change, then prevent the message from being seen
+	if(StrEqual(sMessage, NAME_CHANGE_STRING))
+		return Plugin_Handled;
+
+	// Otherwise, move on and continue displaying the message
+	return Plugin_Continue;
+}
+
 public Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	//PrintToServer("EVENT ROUND START=====================================================================================");
@@ -338,7 +373,7 @@ public Action:Event_RoundEnd(Handle:hEvent, const String:strName[], bool:bDontBr
 		
 		GiveRewards();
 		
-		for(i = 1; i <= MaxClients; i++)		//PUT THIS BACK AFTER
+		for(i = 1; i <= MaxClients; i++)
 		{
 			//Save their game
 			if(IsClientInGame(i) == true)
@@ -346,6 +381,10 @@ public Action:Event_RoundEnd(Handle:hEvent, const String:strName[], bool:bDontBr
 					if(g_bClientLoggedIn[i] == true)
 						SaveUserData(i);
 		}
+
+		// Remove the player level tags until the next confirmation
+		for(new iClient = 1; iClient <= MaxClients; iClient++)
+			RenamePlayerWithLevelTags(iClient, true);
 	}
 	
 	g_bCanSave = false;

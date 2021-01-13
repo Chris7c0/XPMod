@@ -318,8 +318,8 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 			vec[2] += 10;
 			EmitAmbientSound(SOUND_LOGIN, vec, iClient, SNDLEVEL_RAIDSIREN);
 			
-			PrintToChatAll("\x05<-=- \x03%N (Level %d) logged in\x05 -=->", iClient, g_iClientLevel[iClient]);
-			PrintToServer(":-=-=-=-=-<[%N (Level %d) logged in]>-=-=-=-=-:", iClient, g_iClientLevel[iClient]);
+			PrintToChatAll("\x05<-=- \x03[%i] %N logged in\x05 -=->", g_iClientLevel[iClient], iClient);
+			PrintToServer(":-=-=-=-=-<[%N (%d) logged in]>-=-=-=-=-:", iClient, g_iClientLevel[iClient]);
 		}
 	}
 	else if (bOnlyWebsiteChangableData == false)

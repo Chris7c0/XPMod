@@ -19,16 +19,6 @@ public Action:ChangeSpeed(iClient,args)
 	PrintToChat(iClient, "global reload speed = %f", rspeed);
 }
 
-// /**
-//  * @brief			Produces a 160-bit message digest for a given data stream
-//  *
-//  * @param str		Input string to calculate the hash from.
-//  * @param output	Output buffer. If bHex is true, output must be at least 40+1 of length, if not it has to be 20+1.
-//  * @param bHex		If true, return the hash as hexadecimal number, else return a raw binary format.
-//  * @return          True, if hash was calculated, false otherwise
-//  */
-// stock bool SHA1String(const char[] str, char[] output, bool bHex=true) {
-
 //new Float:g_fEllisTestFireRate = 0.0;
 public Action:TestFunction1(iClient,args)
 {
@@ -100,10 +90,11 @@ public Action:TestFunction3(iClient,args)
 
 public Action:TestFunction4(iClient,args)
 {
-	//PrintToChat(iClient, "T4");
-	PrintToServer("%i",GetRandomInt(1, 3));
-	
+	PrintToServer("T4");
+	char str1[99];
+	GetCmdArg(1, str1, sizeof(str1));
 
+	
 	//OpenMOTDPanel(iClient, "t4" , " .", MOTDPANEL_TYPE_INDEX);
 	//OpenMOTDPanel(iClient, "t4." , "<html><head><title>a</title><meta http-equiv = \"Content-Type\" content = \"text / html; charset = utf-8\" ></head><body bgcolor = \"# 000000\" ><p>test</p></body></html>", MOTDPANEL_TYPE_INDEX);
 	return Plugin_Stop;
@@ -124,48 +115,6 @@ public Action:TestFunction5(iClient,args)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-// //If ever needeed to do a silent rename, use this:
-// //https://forums.alliedmods.net/showthread.php?t=302085
-// SetClientName(iClient, "testing");
-// HookUserMessage(GetUserMessageId("SayText2"), Hook_SayText2, true);
-// #define NAME_CHANGE_STRING "#Cstrike_Name_Change"
-// bool gB_HideNameChange = true;
-// public Action Hook_SayText2(UserMsg msg_id, any msg, const int[] players, int playersNum, bool reliable, bool init)
-// {
-// 	// gB_HideNameChange = true;  // do this whenever you want name changes to be silent
-// 	// if(!gB_HideNameChange)
-// 	// {
-// 	// 	return Plugin_Continue;
-// 	// }
-
-// 	char[] sMessage = new char[24];
-
-// 	if(GetUserMessageType() == UM_Protobuf)
-// 	{
-// 		Protobuf pbmsg = msg;
-// 		pbmsg.ReadString("msg_name", sMessage, 24);
-// 	}
-
-// 	else
-// 	{
-// 		BfRead bfmsg = msg;
-// 		bfmsg.ReadByte();
-// 		bfmsg.ReadByte();
-// 		bfmsg.ReadString(sMessage, 24, false);
-// 	}
-
-// 	if(StrEqual(sMessage, NAME_CHANGE_STRING))
-// 	{
-// 		gB_HideNameChange = false;
-
-// 		return Plugin_Handled;
-// 	}
-
-// 	return Plugin_Continue;
-// }
-
 
 
 /*

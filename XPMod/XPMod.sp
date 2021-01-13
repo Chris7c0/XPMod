@@ -35,6 +35,7 @@
 #include <sourcemod>
 #include <sdktools>
 #include <sdkhooks>
+#include <regex>
 
 //Added custom includes
 #include <sha1>
@@ -155,6 +156,7 @@ public OnPluginStart()
 
 	//Setup Included Files
 	SetupLoadouts();
+	//Setup Hooks
 	SetupXPMEvents();
 	//Setup Console Commands clients can use
 	SetupConsoleCommands();

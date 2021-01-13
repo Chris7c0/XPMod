@@ -325,6 +325,10 @@ new g_iDefaultInfectedSlot3                 = SMOKER;
 new Float:EMPTY_VECTOR[3] = 0.0;
 new Float:PI = 3.1415926;
 
+// Name Change Message Blocking
+bool g_bHideNameChangeMessage = false;
+#define NAME_CHANGE_STRING "#Cstrike_Name_Change"
+
 // Game Freezing Variables
 new bool:g_bGameFrozen = false;
 new bool:g_bPlayerPressedButtonThisRound = false;  // This is used to set thte countdown timer, it wont start till  someone presses a button
@@ -889,10 +893,10 @@ new Float:g_fTankHealthPercentage[MAXPLAYERS + 1];
 new g_iTankCharge[MAXPLAYERS + 1];
 new Float:g_xyzClientTankPosition[MAXPLAYERS + 1][3];
 //NecroTanker
-#define TANK_HEALTH_NECROTANKER             1000
-#define NECROTANKER_MAX_HEALTH              10000
-#define NECROTANKER_CONSUME_COMMON_HP       200
-#define NECROTANKER_CONSUME_UNCOMMON_HP     400
+#define TANK_HEALTH_NECROTANKER             666
+#define NECROTANKER_MAX_HEALTH              13666
+#define NECROTANKER_CONSUME_COMMON_HP       500
+#define NECROTANKER_CONSUME_UNCOMMON_HP     500
 #define NECROTANKER_CONSUME_SI_HP           1000
 //Vampiric Tank
 #define TANK_HEALTH_VAMPIRIC                            10000
@@ -1003,6 +1007,7 @@ new Handle:g_hSDK_Fling 			= INVALID_HANDLE;
 new Handle:g_hSetClass 			= INVALID_HANDLE;
 new Handle:g_hCreateAbility 			= INVALID_HANDLE;
 //Timer Handles
+new Handle:g_hTimer_ResetHideNameChangeMessage 				= null;
 new Handle:g_hTimer_FreezeCountdown 						= null;
 new Handle:g_hTimer_ShowingConfirmTalents[MAXPLAYERS + 1]	= null;
 new Handle:g_hTimer_ExtinguishTank[MAXPLAYERS + 1]		    = null;
