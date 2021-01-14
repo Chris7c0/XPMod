@@ -56,7 +56,12 @@ public Action:TankTopMenuDraw(iClient)
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	
 	decl String:title[256];
-	FormatEx(title, sizeof(title), "Level %d	XP: %d/%d\n==============================\nTanks:\n==============================\n \nSelect a Tank to learn about their abilities.\n \n", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+	FormatEx(title, sizeof(title), "Level %d	XP: %d/%d\
+									\n==============================\
+									\nTanks:\
+									\n==============================\n \
+									\nSelect a Tank to learn about\
+									\ntheir abilities.\n \n", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], title);
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Fire Tank");

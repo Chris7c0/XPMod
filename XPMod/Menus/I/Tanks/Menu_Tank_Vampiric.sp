@@ -4,7 +4,8 @@ public Action:TankMenuDrawVampiric(iClient)
 	CheckLevel(iClient);
 	g_hMenu_XPM[iClient] = CreateMenu(TankMenuHandlerVampiric);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \
+	SetMenuTitle(g_hMenu_XPM[iClient],
+        "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \
         \nVAMPIRIC TANK\
         \n\"I never drink...wine.\"\
         \n \

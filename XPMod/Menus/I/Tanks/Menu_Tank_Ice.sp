@@ -4,7 +4,8 @@ public Action:TankMenuDrawIce(iClient)
 	CheckLevel(iClient);
 	g_hMenu_XPM[iClient] = CreateMenu(TankMenuHandlerIce);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \
+	SetMenuTitle(g_hMenu_XPM[iClient],
+        "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \
         \nICE TANK\
         \n\"You merely adopted the cold; I was born in it, moulded by it.\"\
         \n \

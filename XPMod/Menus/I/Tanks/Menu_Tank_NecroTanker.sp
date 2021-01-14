@@ -4,7 +4,8 @@ public Action:TankMenuDrawNecroTanker(iClient)
 	CheckLevel(iClient);
 	g_hMenu_XPM[iClient] = CreateMenu(TankMenuHandlerNecroTanker);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \
+	SetMenuTitle(g_hMenu_XPM[iClient],
+        "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \
         \nNECROTANKER\
         \n\"Life is finite, whereas Death...ah, yes. Death is infinite.\"\
         \n \
@@ -13,7 +14,8 @@ public Action:TankMenuDrawNecroTanker(iClient)
         \n - Consume Infected For Health\
         \n	+%i HP Per CI Kill\
         \n	+%i HP Per UI Kill\
-        \n - Punching Survivors Summons Powerful Infected\
+        \n - Immune to Bile\
+        \n - Punching Survivors Summons Infected\
         \n	+60%% CI/UI Mob\
         \n	+5%% SI\
         \n	+5%% Witch\
@@ -22,7 +24,7 @@ public Action:TankMenuDrawNecroTanker(iClient)
         \n Active Abilities\
         \n - [Hold CROUCH] Summon Infected\
         \n - [Press MELEE] Throw Boomers (+10 Sec Cooldown)\
-        \n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",
+        \n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",
         TANK_HEALTH_NECROTANKER,
         NECROTANKER_MAX_HEALTH,
         NECROTANKER_CONSUME_COMMON_HP,

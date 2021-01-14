@@ -4,9 +4,10 @@ public Action:TankMenuDrawFire(iClient)
 	CheckLevel(iClient);
 	g_hMenu_XPM[iClient] = CreateMenu(TankMenuHandlerFire);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \
+	SetMenuTitle(g_hMenu_XPM[iClient],
+        "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \
         \nFIRE TANK\
-        \n\"MORE PAIN?! MORE FUUUN!!\"\
+        \n\"MoRE PAiN?! MOrE FUUuN!!\"\
         \n \
         \n Passive Abilities\
         \n - %i HP | Good At All Ranges\
@@ -16,7 +17,7 @@ public Action:TankMenuDrawFire(iClient)
         \n \
         \n Active Abilities\
         \n - [Hold CROUCH] Charges Fire Punch\
-        \n    - \"PUNCH FACE...MAKE BOOM!\"\
+        \n    - \"PuNCh FAcE...MAkE BoOM!\"\
         \n - Rock Throw Spreads Fire (+10 Sec Cooldown)\
         \n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",
         TANK_HEALTH_FIRE);
