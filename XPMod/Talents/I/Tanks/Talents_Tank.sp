@@ -54,6 +54,8 @@ ResetAllTankVariables(iClient)
 	g_iIceTankLifePool[iClient] = 0;
 	g_bCanFlapVampiricTankWings[iClient] = false;
 	g_bIsVampiricTankFlying[iClient] = false;
+	g_bCanVampiricTankWingDash[iClient] = false;
+	g_iVampiricTankWingDashChargeCount[iClient] = 0;
 }
 
 CheckIfTankMovedWhileChargingAndIncrementCharge(iClient)

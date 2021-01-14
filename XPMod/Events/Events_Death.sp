@@ -106,6 +106,7 @@ public Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBro
 	delete g_hTimer_IceSphere[victim];
 	DeleteParticleEntity(g_iPID_IceTankIcicles[victim]);
 	TurnOffAndDeleteSmokeStackParticle(g_iPID_IceTankTrail[victim]);
+	delete g_hTimer_WingDashChargeRegenerate[victim];
 	
 	
 	

@@ -519,7 +519,6 @@ public DeleteAllGlobalTimerHandles(iClient)
 {
 	//delete g_hTimer_FreezeCountdown;
 	delete g_hTimer_ShowingConfirmTalents[iClient];
-	delete g_hTimer_ExtinguishTank[iClient];
 	delete g_hTimer_DrugPlayer[iClient];
 	delete g_hTimer_HallucinatePlayer[iClient];
 	delete g_hTimer_SlapPlayer[iClient];
@@ -527,12 +526,14 @@ public DeleteAllGlobalTimerHandles(iClient)
 	delete g_hTimer_HunterPoison[iClient];
 	delete g_hTimer_NickLifeSteal[iClient];
 	delete g_hTimer_BillDropBombs[iClient];
-	delete g_hTimer_IceSphere[iClient];
 	delete g_hTimer_AdhesiveGooReset[iClient];
 	delete g_hTimer_DemiGooReset[iClient];
 	delete g_hTimer_ResetGlow[iClient];
 	delete g_hTimer_ViralInfectionTick[iClient];
 	delete g_hTimer_BlockGooSwitching[iClient];	
+	delete g_hTimer_ExtinguishTank[iClient];
+	delete g_hTimer_IceSphere[iClient];
+	delete g_hTimer_WingDashChargeRegenerate[iClient];
 }
 
 SetupSDKCalls()

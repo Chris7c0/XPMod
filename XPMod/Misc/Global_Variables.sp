@@ -905,8 +905,11 @@ new Float:g_xyzClientTankPosition[MAXPLAYERS + 1][3];
 #define VAMPIRIC_TANK_MELEE_DMG_TAKEN_MULTIPLIER        3
 #define VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER          0.333333
 new Float:VAMPIRIC_TANK_WING_FLAP_UP_VELOCITY = 600.0;
+new Float:VAMPIRIC_TANK_WING_DASH_VELOCITY = 800.0;
 new bool:g_bCanFlapVampiricTankWings[MAXPLAYERS + 1];
 new bool:g_bIsVampiricTankFlying[MAXPLAYERS + 1];
+new bool:g_bCanVampiricTankWingDash[MAXPLAYERS + 1];
+new g_iVampiricTankWingDashChargeCount[MAXPLAYERS + 1];
 
 
 
@@ -1019,6 +1022,7 @@ new Handle:g_hTimer_HunterPoison[MAXPLAYERS + 1] 			= null;
 new Handle:g_hTimer_NickLifeSteal[MAXPLAYERS + 1] 			= null;
 new Handle:g_hTimer_BillDropBombs[MAXPLAYERS + 1] 			= null;
 new Handle:g_hTimer_IceSphere[MAXPLAYERS + 1]				= null;
+new Handle:g_hTimer_WingDashChargeRegenerate[MAXPLAYERS + 1]= null;
 new Handle:g_hTimer_AdhesiveGooReset[MAXPLAYERS + 1] 		= null;
 new Handle:g_hTimer_DemiGooReset[MAXPLAYERS + 1] 			= null;
 new Handle:g_hTimer_ResetGlow[MAXPLAYERS + 1] 	            = null;

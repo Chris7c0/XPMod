@@ -17,6 +17,8 @@ LoadVampiricTankTalents(iClient)
 	
 	g_bCanFlapVampiricTankWings[iClient] = true;
 	g_bIsVampiricTankFlying[iClient] = false;
+	g_bCanVampiricTankWingDash[iClient] = true;
+	g_iVampiricTankWingDashChargeCount[iClient] = 3;
 
 	// Set a really high rock cooldown so that the rock throw ability is deactivated
 	SetSIAbilityCooldown(iClient, 99999.0);
@@ -53,7 +55,7 @@ OnGameFrame_Tank_Vampiric(iClient)
 	new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 
 	//Check to see if pressing the fly button, if so, start flappling those wings
-	if(g_bCanFlapVampiricTankWings[iClient] && (buttons & IN_JUMP)) 
+	if (g_bCanFlapVampiricTankWings[iClient] && (buttons & IN_JUMP)) 
 	{
 		g_bIsVampiricTankFlying[iClient] = true;
 		g_bCanFlapVampiricTankWings[iClient] = false;
@@ -68,7 +70,36 @@ OnGameFrame_Tank_Vampiric(iClient)
 		EmitAmbientSound(SOUND_WING_FLAP[ iRandomSoundNumber ], xyzClientPosition, iClient, SNDLEVEL_SCREAMING);
 		CreateTimer(1.0, TimerCanFlapVampiricTankWingsReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	}
-	if(g_bIsVampiricTankFlying[iClient] && (GetEntityFlags(iClient) & FL_ONGROUND))
+
+	// Flying Dash
+	if (g_bCanVampiricTankWingDash[iClient] && (buttons & IN_ATTACK2))
+	{
+		if (g_iVampiricTankWingDashChargeCount[iClient] > 0)
+		{
+			g_iVampiricTankWingDashChargeCount[iClient]--;
+			g_bCanVampiricTankWingDash[iClient] =  false;
+			g_bIsVampiricTankFlying[iClient] = true;
+
+			SetMoveType(iClient, MOVETYPE_FLYGRAVITY, MOVECOLLIDE_FLY_BOUNCE);
+			AddWingDashVelocity(iClient, VAMPIRIC_TANK_WING_DASH_VELOCITY);
+
+			decl Float:xyzClientPosition[3];
+			GetClientEyePosition(iClient, xyzClientPosition);
+			// Play a random sound effect name from the the boomer throw selection
+			new iRandomSoundNumber = GetRandomInt(0 ,sizeof(SOUND_WING_FLAP) - 1);
+			// Play it twice because its to quiet (super dirty, but what do)
+			EmitAmbientSound(SOUND_WING_FLAP[ iRandomSoundNumber ], xyzClientPosition, iClient, SNDLEVEL_SCREAMING);
+			EmitAmbientSound(SOUND_WING_FLAP[ iRandomSoundNumber ], xyzClientPosition, iClient, SNDLEVEL_SCREAMING);
+
+			PrintVampiricTankWingDashCharges(iClient);
+			
+			CreateTimer(0.5, TimerVampiricTankWingDashReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
+			delete g_hTimer_WingDashChargeRegenerate[iClient];
+			g_hTimer_WingDashChargeRegenerate[iClient] = CreateTimer(15.0, TimerVampiricTankWingDashChargeRegenerate, iClient, TIMER_FLAG_NO_MAPCHANGE);
+		}
+	}
+
+	if (g_bIsVampiricTankFlying[iClient] && (GetEntityFlags(iClient) & FL_ONGROUND))
 	{
 		g_bIsVampiricTankFlying[iClient] = false;
 		SetMoveType(iClient, MOVETYPE_WALK, MOVECOLLIDE_DEFAULT);
@@ -156,10 +187,59 @@ AddWingFlapVelocity(iClient, Float:speed)
 	TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, vecVelocity);
 }
 
+AddWingDashVelocity(iClient, Float:speed)
+{
+	new Float:vecVelocity[3];
+	GetEntDataVector(iClient, g_iOffset_VecVelocity, vecVelocity);
+
+	decl Float:xyzAngles[3], Float:vDirection[3];
+
+	GetClientEyeAngles(iClient, xyzAngles);								// Get clients Eye Angles to know get what direction face
+	GetAngleVectors(xyzAngles, vDirection, NULL_VECTOR, NULL_VECTOR);	// Get the direction the iClient is looking
+
+	//PrintToChat(iClient, "vDirection: %2f, %2f, %2f", vDirection[0], vDirection[1], vDirection[2]);
+
+	vecVelocity[0] = (vDirection[0] * speed);
+	vecVelocity[1] = (vDirection[1] * speed);
+	vecVelocity[2] = (vDirection[2] * speed);
+	if ((GetEntityFlags(iClient) & FL_ONGROUND) && vecVelocity[2] < 300.0)
+		vecVelocity[2] = 300.0;
+
+	TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, vecVelocity);
+}
+
 public Action:TimerCanFlapVampiricTankWingsReset(Handle:timer, any:iClient)
 {
 	g_bCanFlapVampiricTankWings[iClient] = true;
 	return Plugin_Stop;
+}
+
+public Action:TimerVampiricTankWingDashReset(Handle:timer, any:iClient)
+{
+	g_bCanVampiricTankWingDash[iClient] = true;
+	return Plugin_Stop;
+}
+
+public Action:TimerVampiricTankWingDashChargeRegenerate(Handle:timer, any:iClient)
+{
+	g_iVampiricTankWingDashChargeCount[iClient] = 3;
+
+	PrintVampiricTankWingDashCharges(iClient);
+
+	g_hTimer_WingDashChargeRegenerate[iClient] = null;
+	return Plugin_Stop;
+}
+
+PrintVampiricTankWingDashCharges(iClient)
+{
+	// Print the Wing Dash charges
+	switch (g_iVampiricTankWingDashChargeCount[iClient])
+	{
+		case 0: PrintHintText(iClient, " ");
+		case 1: PrintHintText(iClient, "*");
+		case 2: PrintHintText(iClient, "*  *");
+		case 3: PrintHintText(iClient, "*  *  *");
+	}
 }
 
 CreateVampiricTankTrailEffect(int iClient)

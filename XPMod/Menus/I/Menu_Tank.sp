@@ -27,7 +27,7 @@ public Action:ChooseTankMenuDraw(iClient)
 	FormatEx(strText, sizeof(strText), "Vampiric Tank\
 		\n %i HP: Life Steal from Survivors\
 		\n [Press JUMP] Fly\
-		\n [Hold CROUCH] Drag Survivors to you\
+		\n [Press MELEE] Wing Dash\
 		\n=	=	=	=	=	=	=	=	=	=	=\
 		\n \n \n \n \n \n ",TANK_HEALTH_VAMPIRIC);
 	AddMenuItem(g_hMenu_XPM[iClient], "option4", strText);
