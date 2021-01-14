@@ -34,8 +34,8 @@ LoadVampiricTankTalents(iClient)
 	
 	//Set Movement Speed
 	//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), 1.0 - (RoundToCeil(g_iClientLevel[iClient] / 5.0) * 0.01), true);
-	//g_fClientSpeedPenalty[iClient] += (RoundToCeil(g_iClientLevel[iClient] / 5.0) * 0.01);
-	//fnc_SetClientSpeed(iClient);
+	g_fClientSpeedBoost[iClient] += 0.1;
+	fnc_SetClientSpeed(iClient);
 	
 	//Change Skin Color
 	SetEntityRenderMode(iClient, RenderMode:0);
@@ -59,8 +59,10 @@ OnGameFrame_Tank_Vampiric(iClient)
 	{
 		g_bIsVampiricTankFlying[iClient] = true;
 		g_bCanFlapVampiricTankWings[iClient] = false;
-		SetMoveType(iClient, MOVETYPE_FLYGRAVITY, MOVECOLLIDE_FLY_BOUNCE);
+
+		//SetMoveType(iClient, MOVETYPE_FLYGRAVITY, MOVECOLLIDE_FLY_BOUNCE);
 		AddWingFlapVelocity(iClient, VAMPIRIC_TANK_WING_FLAP_UP_VELOCITY);
+
 		decl Float:xyzClientPosition[3];
 		GetClientEyePosition(iClient, xyzClientPosition);
 		// Play a random sound effect name from the the boomer throw selection
@@ -79,8 +81,8 @@ OnGameFrame_Tank_Vampiric(iClient)
 			g_iVampiricTankWingDashChargeCount[iClient]--;
 			g_bCanVampiricTankWingDash[iClient] =  false;
 			g_bIsVampiricTankFlying[iClient] = true;
-
-			SetMoveType(iClient, MOVETYPE_FLYGRAVITY, MOVECOLLIDE_FLY_BOUNCE);
+			
+			//SetMoveType(iClient, MOVETYPE_FLYGRAVITY, MOVECOLLIDE_FLY_BOUNCE);
 			AddWingDashVelocity(iClient, VAMPIRIC_TANK_WING_DASH_VELOCITY);
 
 			decl Float:xyzClientPosition[3];
@@ -102,7 +104,7 @@ OnGameFrame_Tank_Vampiric(iClient)
 	if (g_bIsVampiricTankFlying[iClient] && (GetEntityFlags(iClient) & FL_ONGROUND))
 	{
 		g_bIsVampiricTankFlying[iClient] = false;
-		SetMoveType(iClient, MOVETYPE_WALK, MOVECOLLIDE_DEFAULT);
+		//SetMoveType(iClient, MOVETYPE_WALK, MOVECOLLIDE_DEFAULT);
 	}
 }
 
@@ -183,6 +185,16 @@ AddWingFlapVelocity(iClient, Float:speed)
 	new Float:vecVelocity[3];
 	GetEntDataVector(iClient, g_iOffset_VecVelocity, vecVelocity);
 
+	decl Float:xyzAngles[3], Float:vDirection[3];
+	GetClientEyeAngles(iClient, xyzAngles);								// Get clients Eye Angles to know get what direction face
+	GetAngleVectors(xyzAngles, vDirection, NULL_VECTOR, NULL_VECTOR);	// Get the direction the iClient is looking
+
+	// Add a little forward momentem in the direction they are facing
+	vecVelocity[0] += (vDirection[0] * 50);
+	vecVelocity[1] += (vDirection[1] * 50);
+
+	//PrintToChat(iClient, "vecVelocity: %2f, %2f, %2f", vecVelocity[0], vecVelocity[1], vecVelocity[2]);
+
 	// if ((vecVelocity[2]+speed) > 2500.0)
 	// 	vecVelocity[2] = 2500.0;
 	// else
@@ -197,7 +209,6 @@ AddWingDashVelocity(iClient, Float:speed)
 	GetEntDataVector(iClient, g_iOffset_VecVelocity, vecVelocity);
 
 	decl Float:xyzAngles[3], Float:vDirection[3];
-
 	GetClientEyeAngles(iClient, xyzAngles);								// Get clients Eye Angles to know get what direction face
 	GetAngleVectors(xyzAngles, vDirection, NULL_VECTOR, NULL_VECTOR);	// Get the direction the iClient is looking
 
