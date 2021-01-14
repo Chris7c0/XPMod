@@ -112,7 +112,7 @@ EventsHurt_TankVictim_Vampiric(Handle:hEvent, iAttacker, iVictimTank, iDmgType, 
 
 	decl String:weaponclass[32];
 	GetEventString(hEvent,"weapon",weaponclass,32);
-	PrintToChat(iVictimTank, "\x03-weaponclass: \x01%s, dmgHealth: %i",weaponclass, iDmgHealth);
+	
 
 	// Modify damage taken for the Vampric Tank
 	if (StrContains(weaponclass,"melee",false) != -1)
@@ -120,11 +120,11 @@ EventsHurt_TankVictim_Vampiric(Handle:hEvent, iAttacker, iVictimTank, iDmgType, 
 		// Increase the melee damage
 		// Remember, the original damage will still process, so subtract that
 		new iCurrentHP = GetEntProp(iVictimTank,Prop_Data,"m_iHealth");
-		PrintToChat(iVictimTank, "\x03iCurrentHP: %i", iCurrentHP);
+		//PrintToChat(iVictimTank, "\x03iCurrentHP: %i", iCurrentHP);
 		SetEntProp(iVictimTank,Prop_Data,"m_iHealth", iCurrentHP - ((iDmgHealth * VAMPIRIC_TANK_MELEE_DMG_TAKEN_MULTIPLIER) - iDmgHealth));
-		PrintToChat(iVictimTank, "\x03Subtracting health: %i", ((iDmgHealth * VAMPIRIC_TANK_MELEE_DMG_TAKEN_MULTIPLIER) - iDmgHealth));
-		new iCurrentHP2 = GetEntProp(iVictimTank,Prop_Data,"m_iHealth");
-		PrintToChat(iVictimTank, "\x03iCurrentHP: %i", iCurrentHP2);
+		//PrintToChat(iVictimTank, "\x03Subtracting health: %i", ((iDmgHealth * VAMPIRIC_TANK_MELEE_DMG_TAKEN_MULTIPLIER) - iDmgHealth));
+		//new iCurrentHP2 = GetEntProp(iVictimTank,Prop_Data,"m_iHealth");
+		//PrintToChat(iVictimTank, "\x03iCurrentHP: %i", iCurrentHP2);
 	}
 	else if(StrContains(weaponclass,"pistol",false) != -1 ||
 		StrContains(weaponclass,"rifle",false) != -1 ||
@@ -137,7 +137,11 @@ EventsHurt_TankVictim_Vampiric(Handle:hEvent, iAttacker, iVictimTank, iDmgType, 
 		// The life will be taken away, so we need to convert the gun damage taken multiplier to be a reduction of this.
 		// So, if we want to only take 1/3rd damage, then we add 2/3rds back here.  1 - 1/3rds = 2/3rds.
 		SetEntProp(iVictimTank,Prop_Data,"m_iHealth", iCurrentHP + RoundToCeil(iDmgHealth * (1.0 - VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER)) );
-		PrintToChat(iVictimTank, "\x03Re-adding health: %i", RoundToCeil(iDmgHealth * (1.0 - VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER)) );
+		//PrintToChat(iVictimTank, "\x03Re-adding health: %i", RoundToCeil(iDmgHealth * (1.0 - VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER)) );
+	}
+	else
+	{
+		PrintToChat(iVictimTank, "\x03NRMLDMG weapon: \x01%s \x03dmg: \x01%i",weaponclass, iDmgHealth);
 	}
 }
 
