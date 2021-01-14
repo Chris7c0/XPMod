@@ -36,7 +36,7 @@ LoadNecroTankerTalents(iClient)
 	CreateNecroTankerTrailEffect(iClient);
 	WriteParticle(iClient, "boomer_vomit_infected", 0.0, 999.0);
 	
-	PrintHintText(iClient, "You are now the NecroTanker");
+	PrintHintText(iClient, "You have become the NecroTanker");
 }
 
 OnGameFrame_Tank_NecroTanker(iClient)
@@ -352,12 +352,12 @@ void SummonNecroTankerPunchZombies(iAttackerTank, iVictim)
 	// Testing different rolls
 	//iRoll = 20;
 
-	// 1/3rd of the time, dont spawn anything
-	if (iRoll > 66)
+	//Dont spawn anything
+	if (iRoll > 70)
 		return;
 	
 	// Spawn CI around victim
-	if (iRoll > 33 && iRoll <= 66)
+	if (iRoll > 35 && iRoll <= 70)
 	{
 		new Handle:hDataPackage = CreateDataPack();
 		WritePackCell(hDataPackage, iVictim);
@@ -369,7 +369,7 @@ void SummonNecroTankerPunchZombies(iAttackerTank, iVictim)
 	}
 
 	// Spawn CI and UI around player
-	if (iRoll > 10 && iRoll <= 33)
+	if (iRoll > 10 && iRoll <= 35)
 	{
 		new Handle:hDataPackage = CreateDataPack();
 		WritePackCell(hDataPackage, iVictim);

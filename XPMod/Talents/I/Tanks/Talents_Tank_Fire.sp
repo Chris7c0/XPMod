@@ -40,7 +40,7 @@ LoadFireTankTalents(iClient)
 	SetEntityRenderColor(iClient, 255, 200, 0, 255);
 	//SetEntityRenderColor(iClient, 210, 88, 30, 255);
 	
-	PrintHintText(iClient, "You are now the Fire Tank");
+	PrintHintText(iClient, "You have become the Fire Tank");
 }
 
 OnGameFrame_Tank_Fire(iClient)
@@ -109,7 +109,7 @@ EventsHurt_TankVictim_Fire(Handle:hEvent, iAttacker, iVictimTank, iDmgType, iDmg
 		g_fTankHealthPercentage[iVictimTank] = fCurrentTankHealthPercentage;
 		g_fClientSpeedBoost[iVictimTank] -= g_fFireTankExtraSpeed[iVictimTank];
 		//Change to the speed to match health percentage and level
-		g_fFireTankExtraSpeed[iVictimTank] = g_iClientLevel[iVictimTank] * 0.01 * (1.0 - fCurrentTankHealthPercentage);
+		g_fFireTankExtraSpeed[iVictimTank] = 0.3 * (1.0 - fCurrentTankHealthPercentage);
 		g_fClientSpeedBoost[iVictimTank] += g_fFireTankExtraSpeed[iVictimTank];
 		//SetEntDataFloat(iVictimTank , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), 1.2 + fExtraSpeed, true);
 		//g_fClientSpeedBoost[iVictimTank] += (0.2 + fExtraSpeed);
@@ -164,7 +164,7 @@ EventsHurt_TankAttacker_Fire(Handle:hEvent, iAttackerTank, iVictim, iDmgType, iD
 			g_bBlockTankFirePunchCharge[iAttackerTank] = true;
 			CreateTimer(30.0, Timer_UnblockFirePunchCharge, iAttackerTank, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 		}
-		else if(GetRandomInt(0, 99) <= g_iClientLevel[iAttackerTank])
+		else if(GetRandomInt(1, 5) == 1)
 		{
 			SetFireToPlayer(iVictim, iAttackerTank, 5.0);
 		}

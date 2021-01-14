@@ -71,7 +71,11 @@
 #include "XPMod/Menus/I/Menu_Spitter.sp"
 #include "XPMod/Menus/I/Menu_Charger.sp"
 #include "XPMod/Menus/I/Menu_Jockey.sp"
-#include "XPMod/Menus/I/Menu_Tank.sp"
+#include "XPMod/Menus/I/Tanks/Menu_Tank.sp"
+#include "XPMod/Menus/I/Tanks/Menu_Tank_Fire.sp"
+#include "XPMod/Menus/I/Tanks/Menu_Tank_Ice.sp"
+#include "XPMod/Menus/I/Tanks/Menu_Tank_NecroTanker.sp"
+#include "XPMod/Menus/I/Tanks/Menu_Tank_Vampiric.sp"
 //Game Event Files
 #include "XPMod/Events/Events_Main.sp"
 #include "XPMod/Events/Events_SDK_Hooks.sp"

@@ -37,7 +37,7 @@ LoadIceTankTalents(iClient)
 	CreateIceTankTrailEffect(iClient);
 	g_iPID_IceTankIcicles[iClient] = CreateParticle("ice_tank_icicles", 0.0, iClient, ATTACH_RSHOULDER);
 	
-	PrintHintText(iClient, "You are now the Ice Tank");
+	PrintHintText(iClient, "You have become the Ice Tank");
 }
 
 OnGameFrame_Tank_Ice(iClient)

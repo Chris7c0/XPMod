@@ -47,7 +47,7 @@ LoadVampiricTankTalents(iClient)
 	//Particle effects
 	CreateVampiricTankTrailEffect(iClient);
 
-	PrintHintText(iClient, "You are now the Vampiric Tank");
+	PrintHintText(iClient, "You have become the Vampiric Tank");
 }
 
 OnGameFrame_Tank_Vampiric(iClient)

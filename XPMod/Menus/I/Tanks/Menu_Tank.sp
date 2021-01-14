@@ -28,6 +28,7 @@ public Action:ChooseTankMenuDraw(iClient)
 		\n %i HP: Life Steal from Survivors\
 		\n [Press JUMP] Fly\
 		\n [Press MELEE] Wing Dash\
+		\n \
 		\n=	=	=	=	=	=	=	=	=	=	=\
 		\n \n \n \n \n \n ",TANK_HEALTH_VAMPIRIC);
 	AddMenuItem(g_hMenu_XPM[iClient], "option4", strText);
@@ -45,6 +46,33 @@ public Action:ChooseTankMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
+//Tank Abilities Menu Draw
+public Action:TankTopMenuDraw(iClient)
+{
+	CheckMenu(iClient);
+	CheckLevel(iClient);
+	DeleteAllMenuParticles(iClient);
+	g_hMenu_XPM[iClient] = CreateMenu(TankTopMenuHandler);
+	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	
+	decl String:title[256];
+	FormatEx(title, sizeof(title), "Level %d	XP: %d/%d\n==============================\nTanks:\n==============================\n \nSelect a Tank to learn about their abilities.\n \n", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+	SetMenuTitle(g_hMenu_XPM[iClient], title);
+	
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Fire Tank");
+	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Ice Tank");
+	AddMenuItem(g_hMenu_XPM[iClient], "option3", "NecroTanker");
+	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Vampiric Tank\n ");
+	//AddMenuItem(g_hMenu_XPM[iClient], "option5", "Detailed Descriptions\n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Back\n==============================\n \n \n \n \n \n \n \n \n \n ");
+	
+	SetMenuExitButton(g_hMenu_XPM[iClient], false);
+	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+
+	return Plugin_Handled;
+}
+
+
 public ChooseTankMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action == MenuAction_Select)
@@ -55,6 +83,21 @@ public ChooseTankMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			case 1:	LoadIceTankTalents(iClient);
 			case 2:	LoadNecroTankerTalents(iClient);
 			case 3:	LoadVampiricTankTalents(iClient);
+		}
+	}
+}
+
+public TankTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+{
+	if(action == MenuAction_Select)
+	{
+		switch (itemNum)
+		{
+			case 0: TankMenuDrawFire(iClient);
+			case 1:	TankMenuDrawIce(iClient);
+			case 2:	TankMenuDrawNecroTanker(iClient);
+			case 3:	TankMenuDrawVampiric(iClient);
+			case 4:	TopInfectedMenuDraw(iClient);
 		}
 	}
 }

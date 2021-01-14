@@ -12,15 +12,13 @@ public Action:TopInfectedMenuDraw(iClient)
 	decl String:title[256];
 	FormatEx(title, sizeof(title), "Level %d	XP: %d/%d\n==========================\n		 Your Infected\n \n Class 1)	%s\n Class 2)	%s\n Class 3)	%s\n ", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], title);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Smoker Talents");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Boomer Talents");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Hunter Talents");
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Spitter Talents");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Jockey Talents");
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Charger Talents\n ");
-
-	//AddMenuItem(g_hMenu_XPM[iClient], "option7", "Tank Talents\n ");
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Smoker");
+	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Boomer");
+	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Hunter");
+	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Spitter");
+	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Jockey");
+	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Charger");
+	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Tanks\n ");
 
 	if (g_bTalentsConfirmed[iClient] == false)
 		AddMenuItem(g_hMenu_XPM[iClient], "option8", " * Change Your Infected *\n ");
@@ -155,8 +153,7 @@ public TopInfectedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			}
 			case 6: //Tank
 			{
-				PrintToChat(iClient, "\x03[XPMod] \x05Tank description is not available yet.");
-				TopInfectedMenuDraw(iClient);
+				TankTopMenuDraw(iClient);
 			}
 			case 7: //Select Infected Classes
 			{
