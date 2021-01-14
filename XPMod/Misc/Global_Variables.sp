@@ -841,7 +841,7 @@ new bool:g_bCanJockeyPee[MAXPLAYERS + 1] = true;
 new bool:g_bCanJockeyCloak[MAXPLAYERS + 1] = true;
 new bool:g_bJockeyIsRiding[MAXPLAYERS + 1] = false;
 new g_iJockeysVictim[MAXPLAYERS + 1];
-new bool:g_bCanJockeyJump[MAXPLAYERS + 1] = true;
+new bool:g_bCanJockeyJump[MAXPLAYERS + 1] = false;
 
 //Charger
 new bool:g_bIsChargerCharging[MAXPLAYERS +1];

@@ -152,10 +152,8 @@ LoadTalents(iClient)
 					fnc_SetClientSpeed(iClient);
 					g_bCanJockeyPee[iClient] = true;
 				}
-				if(g_iErraticLevel[iClient] > 0)
-				{
-					g_bCanJockeyJump[iClient] = true;
-				}
+
+				g_bCanJockeyJump[iClient] = false;
 			}
 			case CHARGER:
 			{

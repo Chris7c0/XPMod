@@ -394,6 +394,10 @@ public Action:Bind2Press(iClient,args)
 										//Create 2 timers to reset for both, and avoid package sending
 										CreateTimer(10.0, TimerRemoveJockeyCloak, g_iJockeyVictim[iClient], TIMER_FLAG_NO_MAPCHANGE);
 										CreateTimer(10.0, TimerRemoveJockeyCloak, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
+										// Set the jockey ride speed
+										//PrintToChatAll("JOCKEY RIDESPEED SET: %f", ( 1.0 - (g_iStrongLevel[g_iJockeyVictim[iClient]] * 0.2) + (g_iErraticLevel[iClient] * 0.03) + (g_iUnfairLevel[iClient] * 0.1) ) );
+										SetEntDataFloat(g_iJockeyVictim[iClient] , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ( 1.0 - (g_iStrongLevel[g_iJockeyVictim[iClient]] * 0.2) + (g_iErraticLevel[iClient] * 0.03) + (g_iUnfairLevel[iClient] * 0.1) ), true);
 										
 										//Disable Glow for Victim
 										if(IsValidEntity(g_iJockeyVictim[iClient]))

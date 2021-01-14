@@ -111,6 +111,11 @@ public Action:TimerSetJockeyCooldown(Handle:timer, any:iClient)
 
 public Action:TimerJockeyJumpReset(Handle:timer, any:iClient)
 {
-	g_bCanJockeyJump[iClient] = true;
+	if (RunClientChecks(iClient) && 
+		IsPlayerAlive(iClient) && 
+		IsFakeClient(iClient) ==  false && 
+		g_bJockeyIsRiding[iClient])
+		g_bCanJockeyJump[iClient] = true;
+	
 	return Plugin_Stop;
 }

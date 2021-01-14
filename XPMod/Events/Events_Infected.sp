@@ -347,13 +347,11 @@ public Action:Event_JockeyRide(Handle:hEvent, const String:strName[], bool:bDont
 		g_iJockeyVictim[attacker] = victim;
 		if(g_iClientTeam[victim] == TEAM_SURVIVORS)
 		{
-			if(g_iStrongLevel[victim] > 0)
+			if(g_iStrongLevel[victim] > 0 || g_iErraticLevel[attacker] > 0)
 			{
-				SetEntDataFloat(victim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ((1.0 + (g_iErraticLevel[attacker] * 0.03)) - ((g_iStrongLevel[victim] * 0.2) + ((g_iErraticLevel[attacker] * 0.03) * (g_iStrongLevel[victim] * 0.2)))), true);
-			}
-			else if(g_iErraticLevel[attacker] > 0)
-			{
-				SetEntDataFloat(victim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iErraticLevel[attacker] * 0.03)), true);
+				//SetEntDataFloat(victim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ((1.0 + (g_iErraticLevel[attacker] * 0.03)) - ((g_iStrongLevel[victim] * 0.2) + ((g_iErraticLevel[attacker] * 0.03) * (g_iStrongLevel[victim] * 0.2)))), true);
+				//PrintToChatAll("JOCKEY RIDESPEED SET: %f", ( 1.0 - (g_iStrongLevel[victim] * 0.2) + (g_iErraticLevel[attacker] * 0.03)) );
+				SetEntDataFloat(victim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ( 1.0 - (g_iStrongLevel[victim] * 0.2) + (g_iErraticLevel[attacker] * 0.03) ), true);
 			}
 			else
 			{
@@ -367,6 +365,7 @@ public Action:Event_JockeyRide(Handle:hEvent, const String:strName[], bool:bDont
 			}
 			fnc_SetClientSpeed(attacker);
 			*/
+
 			if(g_iSmokeLevel[victim]>0)
 			{
 				decl percentchance;

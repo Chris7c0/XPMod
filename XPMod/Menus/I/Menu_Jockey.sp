@@ -67,7 +67,7 @@ public Action:UnfairMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(UnfairMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=\n \n	Unfair Advantage (Level %d)\n \nLevel 1:\n+35 max health per level\n+7%% movement speed per level\n \n \n		Bind 2: Vanishing Act\n	3 uses; 10 second duration\n \nLevel 1:\n+9%% cloaking per level\nDisable Jockey & survivor glow\n \n=	=	=	=	=	=	=	=	=\n \n",g_iUnfairLevel[iClient]);
+	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=\n \n	Unfair Advantage (Level %d)\n \nLevel 1:\n+35 max health per level\n+7%% movement speed per level\n \n \n		Bind 2: Vanishing Act\n	3 uses; 10 second duration\n \nLevel 1:\n+9%% cloaking per level\nDisable Jockey & survivor glow\n+10%% riding speed per level\nJumping Enabled (+50 height per level)\n \n=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iUnfairLevel[iClient]);
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
