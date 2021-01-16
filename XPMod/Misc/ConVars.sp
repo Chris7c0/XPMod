@@ -23,13 +23,13 @@ SetupXPMConVars()
 }
 
 // For calculating temp health
-public void OnPainPillsDecayChanged(Handle convar, const char[] oldValue, const char[] newValue)
+void OnPainPillsDecayChanged(Handle convar, const char[] oldValue, const char[] newValue)
 {
     flPainPillsDecay = StringToFloat(newValue);
 }
 
 //Callback function for enabling or disabling the new vote winner sound
-// public CVarChange_TalentSelectionMode(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
+// CVarChange_TalentSelectionMode(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
 // {
 // 	//If the value was not changed, then do nothing
 // 	if(StrEqual(strOldValue, strNewValue) == true)
@@ -52,7 +52,7 @@ public void OnPainPillsDecayChanged(Handle convar, const char[] oldValue, const 
 
 
 //Callback function for updating the default survivor
-public CVarChange_DefaultSurvivor(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
+CVarChange_DefaultSurvivor(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
 {
 	//If the value was not changed, then do nothing
 	if(StrEqual(strOldValue, strNewValue) == true)
@@ -64,7 +64,7 @@ public CVarChange_DefaultSurvivor(Handle:hCVar, const String:strOldValue[], cons
 }
 
 //Callback function for updating the default infected
-public CVarChange_DefaultInfectedSlot1(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
+CVarChange_DefaultInfectedSlot1(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
 {
 	//If the value was not changed, then do nothing
 	if(StrEqual(strOldValue, strNewValue) == true)
@@ -76,7 +76,7 @@ public CVarChange_DefaultInfectedSlot1(Handle:hCVar, const String:strOldValue[],
 }
 
 //Callback function for updating the default infected
-public CVarChange_DefaultInfectedSlot2(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
+CVarChange_DefaultInfectedSlot2(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
 {
 	//If the value was not changed, then do nothing
 	if(StrEqual(strOldValue, strNewValue) == true)
@@ -89,7 +89,7 @@ public CVarChange_DefaultInfectedSlot2(Handle:hCVar, const String:strOldValue[],
 
 
 //Callback function for updating the default infected
-public CVarChange_DefaultInfectedSlot3(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
+CVarChange_DefaultInfectedSlot3(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
 {
 	//If the value was not changed, then do nothing
 	if(StrEqual(strOldValue, strNewValue) == true)

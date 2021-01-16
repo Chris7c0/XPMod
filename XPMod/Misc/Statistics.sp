@@ -1,4 +1,4 @@
-public Action:ShowTeamStatsToPlayer(iClient, args)
+Action:ShowTeamStatsToPlayer(iClient, args)
 {
 	decl String:strStatsTextBuffer[256];
 	decl String:strLoggedIn[16];

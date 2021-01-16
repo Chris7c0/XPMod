@@ -1,4 +1,4 @@
-public Action:TimerStartJetPack(Handle:timer, any:iClient)
+Action:TimerStartJetPack(Handle:timer, any:iClient)
 {
 	if(RunClientChecks(iClient)==false || IsPlayerAlive(iClient)==false)
 		return Plugin_Stop;
@@ -10,7 +10,7 @@ public Action:TimerStartJetPack(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerGiveFirstExplosive(Handle:timer, any:iClient)
+Action:TimerGiveFirstExplosive(Handle:timer, any:iClient)
 {
 	if(RunClientChecks(iClient)==false || IsPlayerAlive(iClient)==false)
 		return Plugin_Stop;
@@ -36,7 +36,7 @@ public Action:TimerGiveFirstExplosive(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerGiveExplosive(Handle:timer, any:iClient)
+Action:TimerGiveExplosive(Handle:timer, any:iClient)
 {
 	if(RunClientChecks(iClient) == false || IsPlayerAlive(iClient) == false)
 		return Plugin_Stop;
@@ -58,13 +58,13 @@ public Action:TimerGiveExplosive(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:Timer_ResetExplosiveJustGiven(Handle:timer, any:iClient)
-{
-	g_bExplosivesJustGiven[iClient] = true;
-	return Plugin_Stop;
-}
+// Action:Timer_ResetExplosiveJustGiven(Handle:timer, any:iClient)
+// {
+// 	g_bExplosivesJustGiven[iClient] = true;
+// 	return Plugin_Stop;
+// }
 
-public Action:TimerCoachCIHeadshotSpeedReset(Handle:timer, any:iClient)
+Action:TimerCoachCIHeadshotSpeedReset(Handle:timer, any:iClient)
 {
 	//g_fCoachCIHeadshotSpeed[iClient] = 0.0;
 	//PrintToChatAll("g_fCoachCIHeadshotSpeed = %d", g_fCoachCIHeadshotSpeed[iClient]);
@@ -83,7 +83,7 @@ public Action:TimerCoachCIHeadshotSpeedReset(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerCoachSIHeadshotSpeedReset(Handle:timer, any:iClient)
+Action:TimerCoachSIHeadshotSpeedReset(Handle:timer, any:iClient)
 {
 	//g_fCoachSIHeadshotSpeed[iClient] = 0.0;
 	//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + g_fCoachCIHeadshotSpeed[iClient] + g_fCoachSIHeadshotSpeed[iClient] + g_fCoachRageSpeed[iClient]), true);
@@ -103,7 +103,7 @@ public Action:TimerCoachSIHeadshotSpeedReset(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerCoachRageReset(Handle:timer, any:iClient)
+Action:TimerCoachRageReset(Handle:timer, any:iClient)
 {
 	//g_fCoachRageSpeed[iClient] = -0.1;
 	g_iCoachRageMeleeDamage[iClient] = 0;
@@ -116,7 +116,7 @@ public Action:TimerCoachRageReset(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerCoachRageCooldown(Handle:timer, any:iClient)
+Action:TimerCoachRageCooldown(Handle:timer, any:iClient)
 {
 	//g_fCoachRageSpeed[iClient] = 0.0;
 	//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + g_fCoachCIHeadshotSpeed[iClient] + g_fCoachSIHeadshotSpeed[iClient] + g_fCoachRageSpeed[iClient]), true);
@@ -125,7 +125,7 @@ public Action:TimerCoachRageCooldown(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerCoachRageRegenTick(Handle:timer, any:iClient)
+Action:TimerCoachRageRegenTick(Handle:timer, any:iClient)
 {
 	if(g_iCoachRageRegenCounter[iClient] == 20)
 	{
@@ -184,7 +184,7 @@ public Action:TimerCoachRageRegenTick(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerWreckingChargeRetrigger(Handle:timer, any:iClient)
+Action:TimerWreckingChargeRetrigger(Handle:timer, any:iClient)
 {
 	g_iWreckingBallChargeCounter[iClient] = 0;
 	g_bIsWreckingBallCharged[iClient] = true;
@@ -204,7 +204,7 @@ public Action:TimerWreckingChargeRetrigger(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerCoachAssignGrenades(Handle:timer, any:iClient)
+Action:TimerCoachAssignGrenades(Handle:timer, any:iClient)
 {
 	decl AssignGrenadeSlot1, AssignGrenadeSlot2, AssignGrenadeSlot3;
 	AssignGrenadeSlot1 = GetRandomInt(0,2);
@@ -304,13 +304,13 @@ public Action:TimerCoachAssignGrenades(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerCanCoachGrenadeCycleReset(Handle:timer, any:iClient)
+Action:TimerCanCoachGrenadeCycleReset(Handle:timer, any:iClient)
 {
 	g_bCanCoachGrenadeCycle[iClient] = true;
 	return Plugin_Stop;
 }
 
-public Action:TimerCoachGrenadeFireCycle(Handle:timer, any:iClient)
+Action:TimerCoachGrenadeFireCycle(Handle:timer, any:iClient)
 {
 	if(g_iStrongLevel[iClient] == 2 || g_iStrongLevel[iClient] == 3)
 	{

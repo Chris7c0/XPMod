@@ -1,4 +1,4 @@
-public Action:TimerShowReward1(Handle:timer, any:iClient)
+Action:TimerShowReward1(Handle:timer, any:iClient)
 {
 	if(g_iReward_SIKillsID > 0 && g_iReward_SIKills > 0)
 	{
@@ -15,7 +15,7 @@ public Action:TimerShowReward1(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerShowReward2(Handle:timer, any:iClient)
+Action:TimerShowReward2(Handle:timer, any:iClient)
 {
 	if(g_iReward_CIKillsID > 0 && g_iReward_CIKills > 0)
 	{
@@ -32,7 +32,7 @@ public Action:TimerShowReward2(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerShowReward3(Handle:timer, any:iClient)
+Action:TimerShowReward3(Handle:timer, any:iClient)
 {
 	if(g_iReward_HSID > 0 && g_iReward_HS > 0)
 	{
@@ -49,7 +49,7 @@ public Action:TimerShowReward3(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerShowReward4(Handle:timer, any:iClient)
+Action:TimerShowReward4(Handle:timer, any:iClient)
 {
 	if(g_iReward_SurKillsID > 0 && g_iReward_SurKills > 0)
 	{
@@ -66,7 +66,7 @@ public Action:TimerShowReward4(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerShowReward5(Handle:timer, any:iClient)
+Action:TimerShowReward5(Handle:timer, any:iClient)
 {
 	if(g_iReward_SurIncapsID > 0 && g_iReward_SurIncaps > 0)
 	{
@@ -83,7 +83,7 @@ public Action:TimerShowReward5(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerShowReward6(Handle:timer, any:iClient)
+Action:TimerShowReward6(Handle:timer, any:iClient)
 {
 	if(g_iReward_SurDmgID > 0 && g_iReward_SurDmg > 0)
 	{

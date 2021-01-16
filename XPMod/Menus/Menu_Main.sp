@@ -31,7 +31,7 @@ CleanUpMenuHandles()	//Puts all the menu handles at invalid to minimize the amou
 	}
 }
 
-public Action:CloseClientPanel(iClient,args)
+Action:CloseClientPanel(iClient, args)
 {
 	if(iClient < 1)
 		iClient=1;
@@ -42,7 +42,7 @@ public Action:CloseClientPanel(iClient,args)
 	return Plugin_Handled;
 }
 
-public Action:ClosePanel(iClient)
+Action:ClosePanel(iClient)
 {
 	if(iClient< 1)
 		iClient=1;
@@ -87,7 +87,7 @@ XPModMenuDraw(iClient)
 
 //Menu Draw Functions                                                                                     
 //Top XPMod Menu Draw
-public Action:TopMenuDraw(iClient) 
+Action:TopMenuDraw(iClient) 
 {
 	g_bUserStoppedConfirmation[iClient] = true;
 	DeleteAllMenuParticles(iClient);
@@ -161,7 +161,7 @@ public Action:TopMenuDraw(iClient)
 
 
 //Select Talents
-public Action:TopChooseCharactersMenuDraw(iClient)
+Action:TopChooseCharactersMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	
@@ -178,7 +178,7 @@ public Action:TopChooseCharactersMenuDraw(iClient)
 
 
 //Select Talents
-public Action:ExtrasMenuDraw(iClient)
+Action:ExtrasMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	
@@ -198,7 +198,7 @@ public Action:ExtrasMenuDraw(iClient)
 }
 
 //Choose Team Menu Draw
-public Action:ChooseTeamMenuDraw(iClient)
+Action:ChooseTeamMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	
@@ -214,7 +214,7 @@ public Action:ChooseTeamMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-public Action:OptionMenuDraw(iClient)
+Action:OptionMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	
@@ -250,7 +250,7 @@ public Action:OptionMenuDraw(iClient)
 //Menu Handler Functions                                                                                   
 //Top Menu Handler
 
-public TopChooseCharactersMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+TopChooseCharactersMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -273,7 +273,7 @@ public TopChooseCharactersMenuHandler(Handle:hmenu, MenuAction:action, iClient, 
 }
 
 //Top Menu For Everything
-public TopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+TopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action == MenuAction_Select)
 	{
@@ -327,7 +327,7 @@ public TopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 	}
 }
 
-public ExtrasMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ExtrasMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -366,7 +366,7 @@ public ExtrasMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Choose Team Menu Handler
-public ChooseTeamMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ChooseTeamMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select)
 	{
@@ -485,7 +485,7 @@ public ChooseTeamMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 	}
 }
 
-public OptionMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+OptionMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select)
 	{
@@ -498,12 +498,12 @@ public OptionMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			}
 			case 1: //Toggle announcer
 			{
-				ToggleAnnouncerVoice(iClient, iClient);
+				ToggleAnnouncerVoice(iClient);
 				OptionMenuDraw(iClient);
 			}
 			case 2: //Toggle VGUI Particle Descriptions
 			{
-				ToggleVGUIDesc(iClient,iClient);
+				ToggleVGUIDesc(iClient);
 				OptionMenuDraw(iClient);
 			}
 			case 3: //Back

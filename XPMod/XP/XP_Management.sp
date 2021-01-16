@@ -61,7 +61,7 @@ RenamePlayerWithLevelTags(iClient, bool:bRemoveTags = false)
 	// PrintToChatAll("%s: %i",strClientName, strlen(strClientName));
 }
 
-public Action:TimerSetHideChangeNameMessage(Handle:timer, any:data)
+Action:TimerSetHideChangeNameMessage(Handle:timer, any:data)
 {
 	g_bHideNameChangeMessage = false;
 
@@ -69,7 +69,7 @@ public Action:TimerSetHideChangeNameMessage(Handle:timer, any:data)
 	return Plugin_Stop;
 }
 
-public Action:GiveXPbyID(iClient,args)
+Action:GiveXPbyID(iClient, args)
 {
 	if(args!=2)
 	{
@@ -155,7 +155,7 @@ public Action:GiveXPbyID(iClient,args)
 	return Plugin_Handled;
 }
 
-public Action:GiveXP(iClient,args)
+Action:GiveXP(iClient, args)
 {
 	/*if(iClient == 0)
 	{
@@ -233,7 +233,7 @@ public Action:GiveXP(iClient,args)
 }
 
 //Resets XP, LVL, and Skillpoints, equipment and talents
-public Action:ResetAll(iClient,args)
+ResetAll(iClient)
 {
 	g_bPlayerInTeamChangeCoolDown[iClient] = false;
 	g_iClientXP[iClient] = 0;
@@ -256,12 +256,12 @@ public Action:ResetAll(iClient,args)
 
 	ResetAllOptions(iClient);
 	ResetAllInfectedClasses(iClient); // Infected Talents
-	ResetSurvivorTalents(iClient, iClient); // Survivors Talents
+	ResetSurvivorTalents(iClient); // Survivors Talents
 
 	if(RunClientChecks(iClient) && IsFakeClient(iClient) == false)
 		PrintToChat(iClient,"\x03[XPMod]You have reset Level, XP, and Skill Points.", g_iClientXP[iClient]);
 	
-	return Plugin_Handled;
+	return;
 }
 
 ResetAllOptions(iClient)
@@ -272,7 +272,7 @@ ResetAllOptions(iClient)
 }
 
 
-public ResetAllInfectedClasses(iClient)
+ResetAllInfectedClasses(iClient)
 {
 	// PrintToChat(iClient, "Reset all infected classes");
 	// PrintToServer("************Reset Infected classes for %i", iClient);
@@ -311,7 +311,7 @@ public ResetAllInfectedClasses(iClient)
 }
 
 //Resets the skill points and talents that come with them
-public Action:ResetSurvivorTalents(iClient,args)
+Action:ResetSurvivorTalents(iClient)
 {
 	if(IsClientInGame(iClient) == false)
 		return Plugin_Handled;
@@ -388,7 +388,7 @@ public Action:ResetSurvivorTalents(iClient,args)
 	
 	//Ellis
 	//metal(mechanic affinity)
-	pop(iClient, 1);
+	pop(iClient);
 	if(g_iFastAttackingClientsArray[0]==-1)
 		g_bSomeoneAttacksFaster = false;
 	//Nick
@@ -467,7 +467,7 @@ AutoLevelUpSurivovor(iClient)
 AutoLevelUpSurvivorTalents(int iClient, int[] talent1, int[] talent2, int[] talent3, int[] talent4, int[] talent5, int[] talent6)
 {
 	
-	ResetSurvivorTalents(iClient,iClient);
+	ResetSurvivorTalents(iClient);
 
 	if(g_iSkillPoints[iClient] > 0)
 	{
@@ -621,7 +621,7 @@ LevelUpAllNick(iClient)
 }
 
 //Level Up Infected Talents
-public LevelUpInfectedTalent(iClient, class)
+LevelUpInfectedTalent(iClient, class)
 {
 	// PrintToChat(iClient, "level up infected tallent %i", class);
 	// PrintToServer("level up infected talent %i", class);
@@ -736,7 +736,7 @@ public LevelUpInfectedTalent(iClient, class)
 }
 
 //Level Up Infected Talents
-public LevelDownInfectedTalent(iClient, class)
+LevelDownInfectedTalent(iClient, class)
 {
 	// PrintToChat(iClient, "level down infected tallent %i", class);
 	// PrintToServer("level down infected talent %i", class);
@@ -778,7 +778,7 @@ public LevelDownInfectedTalent(iClient, class)
 	}
 }
 
-public SetInfectedClassSlot(iClient, slotnum, class)
+SetInfectedClassSlot(iClient, slotnum, class)
 {
 	// PrintToChat(iClient, "Set your infected class to %i", class);
 	// PrintToServer("Set infected class to %i", class);

@@ -44,7 +44,7 @@ int  SpawnRandomCommonInfectedMob(Float:xyzLocation[3], iAmount = 1, bool:bUncom
 }
 
 
-public Action:TimerSetMobRush(Handle:timer, any:iZombieEntity)
+Action:TimerSetMobRush(Handle:timer, any:iZombieEntity)
 {
 	if (iZombieEntity > 0 && IsValidEntity(iZombieEntity))
 	{
@@ -90,7 +90,7 @@ SpawnCIAroundPlayer(iClient, iAmount = 1, bool:bChanceForUncommon = false)
 		
 }
 
-public Action:TimerSpawnCIAroundPlayer(Handle:timer, any:hDataPackage)
+Action:TimerSpawnCIAroundPlayer(Handle:timer, any:hDataPackage)
 {
 	ResetPack(hDataPackage);
 	new iClient = ReadPackCell(hDataPackage);

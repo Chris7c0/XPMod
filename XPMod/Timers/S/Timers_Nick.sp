@@ -1,4 +1,4 @@
-public Action:TimerStopRambo(Handle:timer, any:iClient)
+Action:TimerStopRambo(Handle:timer, any:iClient)
 {
 	//new Float:vec[3];
 	//GetClientAbsOrigin(iClient, vec);
@@ -41,7 +41,7 @@ public Action:TimerStopRambo(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerSlap(Handle:timer, any:iClient)
+Action:TimerSlap(Handle:timer, any:iClient)
 {
 	if(IsClientInGame(iClient)==false || IsPlayerAlive(iClient)==false)
 	{
@@ -64,23 +64,23 @@ public Action:TimerSlap(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerMakeVisible(Handle:timer, any:iClient)
-{
-	g_bNickIsInvisible[iClient] = false;
-	if(IsValidEntity(iClient) == true && IsClientInGame(iClient) == true)
-	{
-		SetEntProp(iClient, Prop_Send, "m_iGlowType", 0);
-		SetEntProp(iClient, Prop_Send, "m_nGlowRange", 0);
-		SetEntProp(iClient, Prop_Send, "m_glowColorOverride", 0);
-		SetEntityRenderMode(iClient, RenderMode:0);
-		SetEntityRenderColor(iClient, 255, 255, 255, 255);
-		if(IsFakeClient(iClient) == false)
-			PrintHintText(iClient, "The phenomenon has passed and you are now visible agian.");
-	}
-	return Plugin_Stop;
-}
+// Action:TimerMakeVisible(Handle:timer, any:iClient)
+// {
+// 	g_bNickIsInvisible[iClient] = false;
+// 	if(IsValidEntity(iClient) == true && IsClientInGame(iClient) == true)
+// 	{
+// 		SetEntProp(iClient, Prop_Send, "m_iGlowType", 0);
+// 		SetEntProp(iClient, Prop_Send, "m_nGlowRange", 0);
+// 		SetEntProp(iClient, Prop_Send, "m_glowColorOverride", 0);
+// 		SetEntityRenderMode(iClient, RenderMode:0);
+// 		SetEntityRenderColor(iClient, 255, 255, 255, 255);
+// 		if(IsFakeClient(iClient) == false)
+// 			PrintHintText(iClient, "The phenomenon has passed and you are now visible agian.");
+// 	}
+// 	return Plugin_Stop;
+// }
 
-public Action:TimerBlindFade(Handle:timer, any:iClient)
+Action:TimerBlindFade(Handle:timer, any:iClient)
 {
 	if(IsFakeClient(iClient)==false)
 		ShowHudOverlayColor(iClient, 0, 0, 0, 255, 4000, FADE_OUT);
@@ -88,7 +88,7 @@ public Action:TimerBlindFade(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerLifeStealing(Handle:timer, any:pack)
+Action:TimerLifeStealing(Handle:timer, any:pack)
 {
 	if (pack == INVALID_HANDLE)
 		return Plugin_Stop;
@@ -136,7 +136,7 @@ public Action:TimerLifeStealing(Handle:timer, any:pack)
 	return Plugin_Stop;
 }
 
-public Action:TimerLifeStealingFade(Handle:timer, any:pack)
+Action:TimerLifeStealingFade(Handle:timer, any:pack)
 {
 	if (pack == INVALID_HANDLE)
 		return Plugin_Stop;
@@ -190,13 +190,13 @@ public Action:TimerLifeStealingFade(Handle:timer, any:pack)
 	return Plugin_Stop;
 }
 
-public Action:TimerNickSecondaryCycleReset(Handle:timer, any:iClient)
+Action:TimerNickSecondaryCycleReset(Handle:timer, any:iClient)
 {
 	g_bCanNickSecondaryCycle[iClient] = true;
 	return Plugin_Stop;
 }
 
-public Action:TimerNickDualClipSize(Handle:timer, any:iClient)
+Action:TimerNickDualClipSize(Handle:timer, any:iClient)
 {
 	decl String:currentweapon[512];
 	GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
@@ -210,7 +210,7 @@ public Action:TimerNickDualClipSize(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerNickZoomKitReset(Handle:timer, any:iClient)
+Action:TimerNickZoomKitReset(Handle:timer, any:iClient)
 {
 	g_bCanNickZoomKit[iClient] = true;
 	return Plugin_Stop;

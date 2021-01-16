@@ -1,4 +1,4 @@
-public Action:Timer_AskWhatTankToUse(Handle:timer, any:iClient)
+Action:Timer_AskWhatTankToUse(Handle:timer, any:iClient)
 {
 	if(iClient < 1 || g_iClientTeam[iClient] != TEAM_INFECTED || IsValidEntity(iClient) == false || IsClientInGame(iClient) == false || 
 		IsPlayerAlive(iClient) == false || IsFakeClient(iClient) == true || GetEntProp(iClient, Prop_Send, "m_zombieClass") != TANK)
@@ -13,7 +13,7 @@ public Action:Timer_AskWhatTankToUse(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:Timer_ReigniteFireTank(Handle:timer, any:iClient)
+Action:Timer_ReigniteFireTank(Handle:timer, any:iClient)
 {
 	if(iClient < 1 || g_iClientTeam[iClient] != TEAM_INFECTED || g_iTankChosen[iClient] != TANK_FIRE || IsValidEntity(iClient) == false || 
 		IsClientInGame(iClient) == false || IsFakeClient(iClient) == true || IsPlayerAlive(iClient) == false)
@@ -25,7 +25,7 @@ public Action:Timer_ReigniteFireTank(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerExtinguishTank(Handle:timer, any:iClient)
+Action:TimerExtinguishTank(Handle:timer, any:iClient)
 {
 	if(RunClientChecks(iClient) && IsPlayerAlive(iClient))
 		ExtinguishEntity(iClient);
@@ -35,14 +35,14 @@ public Action:TimerExtinguishTank(Handle:timer, any:iClient)
 }
 
 
-public Action:Timer_UnblockFirePunchCharge(Handle:timer, any:iClient)
+Action:Timer_UnblockFirePunchCharge(Handle:timer, any:iClient)
 {
 	g_bBlockTankFirePunchCharge[iClient] = false;
 	
 	return Plugin_Stop;
 }
 
-public Action:Timer_DealFireDamage(Handle:timer, any:hDataPack)
+Action:Timer_DealFireDamage(Handle:timer, any:hDataPack)
 {
 	ResetPack(hDataPack);
 	new iVictim = ReadPackCell(hDataPack);
@@ -64,7 +64,7 @@ public Action:Timer_DealFireDamage(Handle:timer, any:hDataPack)
 	return Plugin_Stop;
 }
 
-public Action:Timer_FreezePlayerByTank(Handle:timer, any:iClient)
+Action:Timer_FreezePlayerByTank(Handle:timer, any:iClient)
 {
 	if(iClient < 1 || g_iClientTeam[iClient] != TEAM_SURVIVORS || g_bFrozenByTank[iClient] == true || 
 		IsValidEntity(iClient) == false || 	IsClientInGame(iClient) == false || IsPlayerAlive(iClient) == false)
@@ -90,7 +90,7 @@ public Action:Timer_FreezePlayerByTank(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:Timer_UnfreezePlayerByTank(Handle:timer, any:iClient)
+Action:Timer_UnfreezePlayerByTank(Handle:timer, any:iClient)
 {
 	if(iClient < 1 || g_iClientTeam[iClient] != TEAM_SURVIVORS || g_bFrozenByTank[iClient] == false || IsValidEntity(iClient) == false || 
 		IsClientInGame(iClient) == false || IsPlayerAlive(iClient) == false)
@@ -104,14 +104,14 @@ public Action:Timer_UnfreezePlayerByTank(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:Timer_UnblockTankFreezing(Handle:timer, any:iClient)
+Action:Timer_UnblockTankFreezing(Handle:timer, any:iClient)
 {
 	g_bBlockTankFreezing[iClient] = false;
 	
 	return Plugin_Stop;
 }
 
-public Action:Timer_CreateSmallIceSphere(Handle:timer, any:iClient)
+Action:Timer_CreateSmallIceSphere(Handle:timer, any:iClient)
 {
 	if(iClient < 1 || g_bShowingIceSphere[iClient] == false || g_iClientTeam[iClient] != TEAM_INFECTED 
 		|| IsValidEntity(iClient) == false || IsClientInGame(iClient) == false || IsPlayerAlive(iClient) == false)

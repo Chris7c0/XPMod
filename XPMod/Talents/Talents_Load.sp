@@ -452,7 +452,7 @@ LoadTalents(iClient)
 				{
 					g_bDoesClientAttackFast[iClient] = true;
 					g_bSomeoneAttacksFaster = true;
-					push(iClient, 1);
+					push(iClient);
 				}
 				
 				if(g_iMetalLevel[iClient] == 5)

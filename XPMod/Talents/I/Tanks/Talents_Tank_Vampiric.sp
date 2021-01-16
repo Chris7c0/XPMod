@@ -223,19 +223,19 @@ AddWingDashVelocity(iClient, Float:speed)
 	TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, vecVelocity);
 }
 
-public Action:TimerCanFlapVampiricTankWingsReset(Handle:timer, any:iClient)
+Action:TimerCanFlapVampiricTankWingsReset(Handle:timer, any:iClient)
 {
 	g_bCanFlapVampiricTankWings[iClient] = true;
 	return Plugin_Stop;
 }
 
-public Action:TimerVampiricTankWingDashReset(Handle:timer, any:iClient)
+Action:TimerVampiricTankWingDashReset(Handle:timer, any:iClient)
 {
 	g_bCanVampiricTankWingDash[iClient] = true;
 	return Plugin_Stop;
 }
 
-public Action:TimerVampiricTankWingDashChargeRegenerate(Handle:timer, any:iClient)
+Action:TimerVampiricTankWingDashChargeRegenerate(Handle:timer, any:iClient)
 {
 	if (RunClientChecks(iClient) && 
 		IsPlayerAlive(iClient) && 

@@ -608,7 +608,7 @@ OGFSurvivorReload_Coach(iClient, const char[] currentweapon, ActiveWeaponID, Cur
 }
 
 //Coach's Jetpack stuff
-public Action:StartFlying(iClient)
+Action:StartFlying(iClient)
 {
 	if(g_bIsFlyingWithJetpack[iClient]==false)
 	{
@@ -641,7 +641,7 @@ public Action:StartFlying(iClient)
 	return Plugin_Continue;
 }
 
-public Action:StopFlying(iClient)
+Action:StopFlying(iClient)
 {
 	g_bIsFlyingWithJetpack[iClient]=false;
 	CreateTimer(0.5, DeleteParticle, g_iPID_CoachJetpackStream[iClient], TIMER_FLAG_NO_MAPCHANGE);

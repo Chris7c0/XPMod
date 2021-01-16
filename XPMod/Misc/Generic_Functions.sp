@@ -7,7 +7,7 @@
  *                                                Show XPMod Info To Server                                               *
  **************************************************************************************************************************/
  
-public ShowXPModInfoToServer()
+ShowXPModInfoToServer()
 {
 	PrintToServer(":---------<|============================================|>---------:");
 	PrintToServer(":---------<|                XP Mod %s              |>---------:", PLUGIN_VERSION);
@@ -45,7 +45,7 @@ SuppressNeverUsedWarning(any:var1=0, any:var2=0, any:var3=0, any:var4=0, any:var
 }
 
 
-public Action:Timer_ShowXPModInfoToServer(Handle:timer, any:data)
+Action:Timer_ShowXPModInfoToServer(Handle:timer, any:data)
 {
 	ShowXPModInfoToServer();
 	
@@ -86,7 +86,7 @@ OpenMOTDPanel(iClient, const String:title[], const  String:msg[], type = MOTDPAN
 	CloseHandle(Kv);
 }
 
-public Action:MotdPanel(iClient,args)
+Action:MotdPanel(iClient, args)
 {
 	//OpenMOTDPanel(iClient, "Choose Your Survivor", "addons/sourcemod/plugins/xpmod/XPMod Website - InGame/Home/xpmod_ig_home.html", MOTDPANEL_TYPE_FILE);
 	OpenMOTDPanel(iClient, "XPMod Website", "http://xpmod.net", MOTDPANEL_TYPE_URL);
@@ -94,7 +94,7 @@ public Action:MotdPanel(iClient,args)
 }
 
 //Probe Teams for Real Players.   Returns true if there is a non-bot player on inputed team
-public bool:ProbeTeams(team)
+bool:ProbeTeams(team)
 {
 	for(new i = 1; i <= MaxClients; i++)
 		if(IsClientInGame(i) && !IsFakeClient(i) && g_iClientTeam[i] == team)
@@ -199,7 +199,7 @@ SetSurvivorModel(iClient)
 
 
 //Toggles
-public Action:ToggleAnnouncerVoice(iClient,args)	//Toggles the announcers voice
+Action:ToggleAnnouncerVoice(iClient)	//Toggles the announcers voice
 {
 	if(iClient!=0)
 	{
@@ -220,7 +220,7 @@ public Action:ToggleAnnouncerVoice(iClient,args)	//Toggles the announcers voice
 	return Plugin_Handled;
 }
 
-public Action:ToggleVGUIDesc(iClient,args)	//Toggles the vgui menu descriptions for talents
+Action:ToggleVGUIDesc(iClient)	//Toggles the vgui menu descriptions for talents
 {
 	if(iClient!=0)
 	{
@@ -260,7 +260,7 @@ StopHudOverlayColor(iClient)
 	ShowHudOverlayColor(iClient, 0, 0, 0, 0, 100, FADE_STOP);
 }
 
-public Action:ShowBindsRemaining(iClient, args)
+Action:ShowBindsRemaining(iClient, args)
 {
 	if(iClient < 1 || IsClientInGame(iClient) == false || IsFakeClient(iClient) == true)
 		return;
@@ -289,7 +289,7 @@ GiveClientXP(iClient, iAmount, iSprite, iVictim, String:strMessage[64], bool:bCe
 	}	
 }
 
-public bool:IsClientGrappled(iClient)
+bool:IsClientGrappled(iClient)
 {
 	if(g_bHunterGrappled[iClient] == true || g_bChargerGrappled[iClient] == true || g_bSmokerGrappled[iClient] == true || IsJockeyGrappled(iClient) == true)
 		return true;
@@ -297,7 +297,7 @@ public bool:IsClientGrappled(iClient)
 	return false;
 }
 
-public bool:IsJockeyGrappled(iClient)
+bool:IsJockeyGrappled(iClient)
 {
 	decl i;
 	for(i = 0; i <= MaxClients; i++)
@@ -374,7 +374,7 @@ DealDamage(iVictim, iAttacker, iAmount, iDamageType = DAMAGETYPE_INFECTED_MELEE)
 }
 
 //This function was originally written by AtomikStryker
-public bool:IsVisibleTo(Float:position[3], Float:targetposition[3])
+bool:IsVisibleTo(Float:position[3], Float:targetposition[3])
 {
 	decl Float:vAngles[3], Float:vLookAt[3];
 	
@@ -404,7 +404,7 @@ public bool:IsVisibleTo(Float:position[3], Float:targetposition[3])
 	return isVisible;
 }
 
-public AttachInfected(i_Ent, Float:fOrigin[3])
+AttachInfected(i_Ent, Float:fOrigin[3])
 {
 	decl i_InfoEnt, String:s_TargetName[32];
 	
@@ -434,7 +434,7 @@ public AttachInfected(i_Ent, Float:fOrigin[3])
  *                                                     Player Freezing                                                    *
  **************************************************************************************************************************/
  
-public Action:FreezeGame(admin, args)
+Action:FreezeGame(admin, args)
 {
 	g_bGameFrozen = true;
 	new String:time[20];
@@ -471,7 +471,7 @@ public Action:FreezeGame(admin, args)
 	PrintHintTextToAll("Survivors are frozen for %d more seconds to choose your talents.", freezetime);
 }
 
-public PlayerFreeze(iClient)
+PlayerFreeze(iClient)
 {
 	if(IsClientInGame(iClient)==true)
 	{
@@ -487,20 +487,20 @@ public PlayerFreeze(iClient)
  **************************************************************************************************************************/
 
 
-public FindAllPlayers(clients[])
-{
-	new ctr = 0;
-	decl i;
-	for(i = 1;i <= MaxClients;i++)
-	{
-		if(IsClientInGame(i))
-		{
-			clients[ctr] = i;
-			ctr++;
-		}
-	}
-	return ctr;
-}
+// FindAllPlayers(clients[])
+// {
+// 	new ctr = 0;
+// 	decl i;
+// 	for(i = 1;i <= MaxClients;i++)
+// 	{
+// 		if(IsClientInGame(i))
+// 		{
+// 			clients[ctr] = i;
+// 			ctr++;
+// 		}
+// 	}
+// 	return ctr;
+// }
 
 FindPlayerByName(iClient, const String:targetname[])
 {
@@ -805,7 +805,7 @@ ResetGlow(iClient)
  *                                              Push/Pop Player From Stack                                                *
  **************************************************************************************************************************/
 
-public Action:push(iClient, args)
+Action:push(iClient)
 {
 	if(iClient==0)
 		return Plugin_Handled;
@@ -861,7 +861,7 @@ public Action:push(iClient, args)
 	return Plugin_Handled;
 }
 
-public Action:pop(iClient, args)
+Action:pop(iClient)
 {
 	if(iClient==0)
 		return Plugin_Handled;
@@ -1000,7 +1000,7 @@ PlayHeadshotSound(iClient)
  *                                                      Trace Filters                                                     *
  **************************************************************************************************************************/
 
-public bool:TraceRayTryToHit(entity,mask)
+bool:TraceRayTryToHit(entity,mask)
 {
 	if((entity > 0) && (entity <= 64))	// Check if the beam hit a player and tell it to keep tracing if it did
 		return false;
@@ -1008,20 +1008,20 @@ public bool:TraceRayTryToHit(entity,mask)
 	return true;
 }
 
-public bool:TraceRayGrabEnt(entity,mask)
-{
-	if(entity > 0)	// Check if the beam hit an entity other than the grabber, and stop if it does
-	{
-		if((entity <= 64) && (!g_bUsingTongueRope[entity]))
-			return true;
-		if(entity > 64)
-			return true;
-	}
+// bool:TraceRayGrabEnt(entity,mask)
+// {
+// 	if(entity > 0)	// Check if the beam hit an entity other than the grabber, and stop if it does
+// 	{
+// 		if((entity <= 64) && (!g_bUsingTongueRope[entity]))
+// 			return true;
+// 		if(entity > 64)
+// 			return true;
+// 	}
 	
-	return false;
-}
+// 	return false;
+// }
 
-public bool:TraceRayDontHitSelf(entity, mask, any:data)
+bool:TraceRayDontHitSelf(entity, mask, any:data)
 {
     if(entity == data)	// Check if the TraceRay hit the itself.
         return false;	// Don't let the entity be hit
@@ -2034,7 +2034,7 @@ int GetSurvivorTempHealth(int iClient)
     return tempHealth < 0 ? 0 : tempHealth;
 }
 
-public Action:OpenHelpMotdPanel(iClient,args)
+Action:OpenHelpMotdPanel(iClient, args)
 {
 	OpenMOTDPanel(iClient, "", "http://xpmod.net/help/xpmod_ig_help.html", MOTDPANEL_TYPE_URL);
 	return Plugin_Handled;
@@ -2123,7 +2123,7 @@ void GetLocationVectorInfrontOfClient(iClient, Float:xyzLocation[3], Float:xyzAn
  
 /**************************************************************************************************************************/
 
-// public bool DidClientMoveEyesOrPosition(iClient)
+// bool DidClientMoveEyesOrPosition(iClient)
 // {
 // 	if (!RunClientChecks(iClient))
 // 		return true;

@@ -1,7 +1,7 @@
 //Smoker Menu
 
 //Smoker Top Menu Draw
-public Action:SmokerTopMenuDraw(iClient) 
+Action:SmokerTopMenuDraw(iClient) 
 {
 	CheckMenu(iClient);
 	
@@ -30,7 +30,7 @@ public Action:SmokerTopMenuDraw(iClient)
 //Talent Draws///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Envelopment Menu Draw
-public Action:EnvelopmentMenuDraw(iClient)
+Action:EnvelopmentMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	
@@ -46,7 +46,7 @@ public Action:EnvelopmentMenuDraw(iClient)
 }
 
 //Noxious Gasses Menu Draw
-public Action:NoxiousMenuDraw(iClient)
+Action:NoxiousMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	
@@ -62,7 +62,7 @@ public Action:NoxiousMenuDraw(iClient)
 }
 
 //Dirty Tricks Menu Draw
-public Action:DirtyMenuDraw(iClient)
+Action:DirtyMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	
@@ -78,7 +78,7 @@ public Action:DirtyMenuDraw(iClient)
 }
 
 //Choose Smoker Menu Draw
-public Action:ChooseSmokerClassMenuDraw(iClient) 
+Action:ChooseSmokerClassMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	CheckMenu(iClient);
@@ -101,7 +101,7 @@ public Action:ChooseSmokerClassMenuDraw(iClient)
 //Handlers/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Smoker Top Menu Handler
-public SmokerTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SmokerTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -151,7 +151,7 @@ public SmokerTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Envelopment Menu Handler
-public EnvelopmentMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+EnvelopmentMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -166,7 +166,7 @@ public EnvelopmentMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Noxious Gasses Menu Handler
-public NoxiousMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+NoxiousMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -181,7 +181,7 @@ public NoxiousMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Dirty Menu Handler
-public DirtyMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+DirtyMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -196,7 +196,7 @@ public DirtyMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Choose Smoker Top Menu Handler
-public ChooseSmokerClassMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ChooseSmokerClassMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{

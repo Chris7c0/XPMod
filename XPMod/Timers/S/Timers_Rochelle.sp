@@ -1,5 +1,5 @@
 
-public Action:Timer_BreakFreeOfSmoker(Handle:timer, any:iClient)
+Action:Timer_BreakFreeOfSmoker(Handle:timer, any:iClient)
 {
 	TeleportEntity(iClient, g_xyzOriginalPositionRochelle[iClient], NULL_VECTOR, NULL_VECTOR);
 	CreateRochelleSmoke(iClient);
@@ -7,7 +7,7 @@ public Action:Timer_BreakFreeOfSmoker(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:ShowRopeTimer(Handle:timer, any:iClient)
+Action:ShowRopeTimer(Handle:timer, any:iClient)
 {
 	if (IsServerProcessing()==false)
 		return Plugin_Continue;
@@ -21,10 +21,10 @@ public Action:ShowRopeTimer(Handle:timer, any:iClient)
 		return Plugin_Stop;
 }
 
-public Action:TimerStopShadowNinja(Handle:timer, any:iClient)
+Action:TimerStopShadowNinja(Handle:timer, any:iClient)
 {
 	g_bUsingShadowNinja[iClient] = false;
-	pop(iClient, 1);
+	pop(iClient);
 	
 	if(IsValidEntity(iClient) == true && IsClientInGame(iClient) == true)
 	{
@@ -55,7 +55,7 @@ public Action:TimerStopShadowNinja(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerPoison(Handle:timer, any:iClient)
+Action:TimerPoison(Handle:timer, any:iClient)
 {
 	if(IsValidEntity(iClient) == false || IsClientInGame(iClient) == false || IsPlayerAlive(iClient) == false || g_bIsRochellePoisoned[iClient] == false)
 	{
@@ -80,7 +80,7 @@ public Action:TimerPoison(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerPoisonFade(Handle:timer, any:iClient)
+Action:TimerPoisonFade(Handle:timer, any:iClient)
 {
 	if(IsValidEntity(iClient) == false || IsClientInGame(iClient)==false || IsPlayerAlive(iClient)==false)
 		return Plugin_Stop;
@@ -99,7 +99,7 @@ public Action:TimerPoisonFade(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerIDD(Handle:timer, any:data)
+Action:TimerIDD(Handle:timer, any:data)
 {
 	if (IsServerProcessing()==false)
 		return Plugin_Continue;

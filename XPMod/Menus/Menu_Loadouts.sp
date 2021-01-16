@@ -21,16 +21,16 @@ SetupLoadouts()
 	}
 }
 
-public Action:LoadoutMenuDrawSetup(iClient,args)
-{
-	if(IsClientInGame(iClient))
-		LoadoutMenuDraw(iClient);
+// Action:LoadoutMenuDrawSetup(iClient)
+// {
+// 	if(IsClientInGame(iClient))
+// 		LoadoutMenuDraw(iClient);
 	
-	return Plugin_Handled;
-}
+// 	return Plugin_Handled;
+// }
 
 //Draw Menus
-public Action:LoadoutMenuDraw(iClient)
+Action:LoadoutMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	
@@ -65,7 +65,7 @@ public Action:LoadoutMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-public Action:PrimaryMenuDraw(iClient) 
+Action:PrimaryMenuDraw(iClient) 
 {
 	CheckMenu(iClient);
 	
@@ -93,7 +93,7 @@ public Action:PrimaryMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-public Action:SecondaryMenuDraw(iClient) 
+Action:SecondaryMenuDraw(iClient) 
 {
 	CheckMenu(iClient);
 	
@@ -119,7 +119,7 @@ public Action:SecondaryMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-public Action:ExplosivesMenuDraw(iClient) 
+Action:ExplosivesMenuDraw(iClient) 
 {
 	CheckMenu(iClient);
 	
@@ -145,7 +145,7 @@ public Action:ExplosivesMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-public Action:HealthMenuDraw(iClient) 
+Action:HealthMenuDraw(iClient) 
 {
 	CheckMenu(iClient);
 	
@@ -172,7 +172,7 @@ public Action:HealthMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-public Action:BoostMenuDraw(iClient) 
+Action:BoostMenuDraw(iClient) 
 {
 	CheckMenu(iClient);
 	
@@ -197,7 +197,7 @@ public Action:BoostMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-public Action:CleanMenuDraw(iClient) 
+Action:CleanMenuDraw(iClient) 
 {
 	CheckMenu(iClient);
 	
@@ -221,7 +221,7 @@ public Action:CleanMenuDraw(iClient)
 }
 
 //SubMachine Gun Draw
-public Action:SMGMenuDraw(iClient) 
+Action:SMGMenuDraw(iClient) 
 {
 	CheckMenu(iClient);
 	
@@ -247,7 +247,7 @@ public Action:SMGMenuDraw(iClient)
 }
 
 //Machine Gun Draw
-public Action:MGMenuDraw(iClient) 
+Action:MGMenuDraw(iClient) 
 {
 	CheckMenu(iClient);
 	
@@ -274,7 +274,7 @@ public Action:MGMenuDraw(iClient)
 }
 
 //Shotgun Gun Draw
-public Action:ShotgunMenuDraw(iClient) 
+Action:ShotgunMenuDraw(iClient) 
 {
 	CheckMenu(iClient);
 	
@@ -301,7 +301,7 @@ public Action:ShotgunMenuDraw(iClient)
 }
 
 //Sniper Gun Draw
-public Action:SniperMenuDraw(iClient) 
+Action:SniperMenuDraw(iClient) 
 {
 	CheckMenu(iClient);
 	
@@ -328,7 +328,7 @@ public Action:SniperMenuDraw(iClient)
 }
 
 //Special Weapons Gun Draw
-public Action:SpecialMenuDraw(iClient) 
+Action:SpecialMenuDraw(iClient) 
 {
 	CheckMenu(iClient);
 	
@@ -353,7 +353,7 @@ public Action:SpecialMenuDraw(iClient)
 }
 
 //Chainsaw Gun Draw
-public Action:CrushingMeleeMenuDraw(iClient) 
+Action:CrushingMeleeMenuDraw(iClient) 
 {
 	CheckMenu(iClient);
 	
@@ -384,7 +384,7 @@ public Action:CrushingMeleeMenuDraw(iClient)
 }
 
 //Sidearms Gun Draw
-public Action:SidearmMenuDraw(iClient) 
+Action:SidearmMenuDraw(iClient) 
 {
 	CheckMenu(iClient);
 	
@@ -410,7 +410,7 @@ public Action:SidearmMenuDraw(iClient)
 }
 
 //Melee Gun Draw
-public Action:SlashingMeleeMenuDraw(iClient) 
+Action:SlashingMeleeMenuDraw(iClient) 
 {
 	CheckMenu(iClient);
 	
@@ -441,7 +441,7 @@ public Action:SlashingMeleeMenuDraw(iClient)
 //Menu Handlers
 
 //Loadout Menu Handler(MAIN)
-public LoadoutMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+LoadoutMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -497,7 +497,7 @@ public LoadoutMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Primary Slots Menu Handler
-public PrimaryMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+PrimaryMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -537,7 +537,7 @@ public PrimaryMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Secondary Slots Menu Handler
-public SecondaryMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SecondaryMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -569,7 +569,7 @@ public SecondaryMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Explosive Slots Menu Handler
-public ExplosivesMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ExplosivesMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -604,7 +604,7 @@ public ExplosivesMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Health Slots Menu Handler
-public HealthMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+HealthMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -644,7 +644,7 @@ public HealthMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Boost Slots Menu Handler
-public BoostMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+BoostMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -674,7 +674,7 @@ public BoostMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Clean Loadout Menu Handler
-public CleanMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+CleanMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -705,7 +705,7 @@ public CleanMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //SMG Menu Handler
-public SMGMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SMGMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -735,7 +735,7 @@ public SMGMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //MG Menu Handler
-public MGMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+MGMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -770,7 +770,7 @@ public MGMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Shotgun Menu Handler
-public ShotgunMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ShotgunMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -805,7 +805,7 @@ public ShotgunMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Sniper Menu Handler
-public SniperMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SniperMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -840,7 +840,7 @@ public SniperMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Special Weapons Menu Handler
-public SpecialMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SpecialMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -865,7 +865,7 @@ public SpecialMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Sidearms Menu Handler
-public SidearmMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SidearmMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -895,7 +895,7 @@ public SidearmMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Crushing Melee Menu Handler
-public CrushingMeleeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+CrushingMeleeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -945,7 +945,7 @@ public CrushingMeleeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNu
 }
 
 //Slashing Melee Menu Handler
-public SlashingMeleeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SlashingMeleeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{

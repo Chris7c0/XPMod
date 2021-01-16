@@ -1,4 +1,4 @@
-public Action:TimerStopFireStorm(Handle:timer, any:iClient)
+Action:TimerStopFireStorm(Handle:timer, any:iClient)
 {
 	StopSound(iClient, SNDCHAN_AUTO, SOUND_ONFIRE);
 	if(IsClientInGame(iClient)==false)
@@ -15,13 +15,13 @@ public Action:TimerStopFireStorm(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerEllisPrimaryCycleReset(Handle:timer, any:iClient)
+Action:TimerEllisPrimaryCycleReset(Handle:timer, any:iClient)
 {
 	g_bCanEllisPrimaryCycle[iClient] = true;
 	return Plugin_Stop;
 }
 
-public Action:TimerEllisJamminGiveExplosive(Handle:timer, any:iClient)
+Action:TimerEllisJamminGiveExplosive(Handle:timer, any:iClient)
 {
 	SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
 	FakeClientCommand(iClient, "give molotov");
@@ -29,7 +29,7 @@ public Action:TimerEllisJamminGiveExplosive(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerEllisLimitBreakReset(Handle:timer, any:iClient)
+Action:TimerEllisLimitBreakReset(Handle:timer, any:iClient)
 {
 	g_bIsEllisLimitBreaking[iClient] = false;
 	g_bEllisLimitBreakInCooldown[iClient] = true;
@@ -72,7 +72,7 @@ public Action:TimerEllisLimitBreakReset(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerEllisLimitBreakCooldown(Handle:timer, any:iClient)
+Action:TimerEllisLimitBreakCooldown(Handle:timer, any:iClient)
 {
 	g_bCanEllisLimitBreak[iClient] = true;
 	g_bEllisLimitBreakInCooldown[iClient] = false;
@@ -81,7 +81,7 @@ public Action:TimerEllisLimitBreakCooldown(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 /*
-public Action:TimerCheckEllisHealth(Handle:timer, any:iClient)
+Action:TimerCheckEllisHealth(Handle:timer, any:iClient)
 {
 	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
 	new iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");

@@ -1,4 +1,4 @@
-public Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
+Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 {
 	new victim = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	new attacker = GetClientOfUserId(GetEventInt(hEvent, "attacker"));

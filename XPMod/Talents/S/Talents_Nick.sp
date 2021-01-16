@@ -319,7 +319,7 @@ OGFSurvivorReload_Nick(iClient, const char[] currentweapon, ActiveWeaponID, Curr
 }
 
 //Jebus Hand Menu
-public Action:JebusHandBindMenuDraw(iClient) 
+Action:JebusHandBindMenuDraw(iClient) 
 {
 	CheckMenu(iClient);
 	g_hMenu_XPM[iClient] = CreateMenu(JebusHandMenuHandler);
@@ -337,7 +337,7 @@ public Action:JebusHandBindMenuDraw(iClient)
 }
 
 //Nick Menu Handler
-public JebusHandMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+JebusHandMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(RunClientChecks(iClient) == false)
 		return;

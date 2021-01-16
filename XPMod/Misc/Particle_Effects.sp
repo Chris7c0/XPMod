@@ -191,7 +191,7 @@ int AttachParticle(target, String:particlename[], Float:time, Float:origin)
 }
 
 //Delete:
-public Action:DeleteParticle(Handle:timer, any:Particle)
+Action:DeleteParticle(Handle:timer, any:Particle)
 {
 
 	//Validate:
@@ -217,7 +217,7 @@ public Action:DeleteParticle(Handle:timer, any:Particle)
 	return Plugin_Stop;
 }
 
-public Action:DeleteParticleEntity(iParticle)
+Action:DeleteParticleEntity(iParticle)
 {
 	if(IsValidEdict(iParticle) && IsValidEntity(iParticle))
 	{
@@ -255,13 +255,13 @@ TurnOffAndDeleteSmokeStackParticle(iSmokeStackEntity)
 	}
 }
 
-public Action:TimerStopSmokeEntity(Handle:timer, any:iSmokeStackEntity)
+Action:TimerStopSmokeEntity(Handle:timer, any:iSmokeStackEntity)
 {
 	TurnOffAndDeleteSmokeStackParticle(iSmokeStackEntity);
 	return Plugin_Stop;
 }
 
-public Action:TimerRemoveSmokeEntity(Handle:timer, any:iSmokeStackEntity)
+Action:TimerRemoveSmokeEntity(Handle:timer, any:iSmokeStackEntity)
 {
 	if(iSmokeStackEntity > 0 && IsValidEdict(iSmokeStackEntity) && IsValidEntity(iSmokeStackEntity))
 	{

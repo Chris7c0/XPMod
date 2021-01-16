@@ -1,7 +1,7 @@
 //Jockey Menu
 
 //Jockey Menu Draw
-public Action:JockeyTopMenuDraw(iClient) 
+Action:JockeyTopMenuDraw(iClient) 
 {
 	CheckMenu(iClient);
 	
@@ -30,7 +30,7 @@ public Action:JockeyTopMenuDraw(iClient)
 //Talent Draws///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Mutated Tenacity Menu Draw
-public Action:MutatedMenuDraw(iClient)
+Action:MutatedMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	
@@ -45,7 +45,7 @@ public Action:MutatedMenuDraw(iClient)
 }
 
 //Erratic Domination Menu Draw
-public Action:ErraticMenuDraw(iClient)
+Action:ErraticMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	
@@ -61,7 +61,7 @@ public Action:ErraticMenuDraw(iClient)
 }
 
 //Unfair Advantage Menu Draw
-public Action:UnfairMenuDraw(iClient)
+Action:UnfairMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	
@@ -77,7 +77,7 @@ public Action:UnfairMenuDraw(iClient)
 }
 
 //Choose Jockey Menu Draw
-public Action:ChooseJockeyClassMenuDraw(iClient) 
+Action:ChooseJockeyClassMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	CheckMenu(iClient);
@@ -100,7 +100,7 @@ public Action:ChooseJockeyClassMenuDraw(iClient)
 //Handlers/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Jockey Top Menu Handler
-public JockeyTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+JockeyTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -150,7 +150,7 @@ public JockeyTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Mutated Tenacity Menu Handler
-public MutatedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+MutatedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -165,7 +165,7 @@ public MutatedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Erratic Domination Menu Handler
-public ErraticMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ErraticMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -180,7 +180,7 @@ public ErraticMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Unfair Advantage Menu Handler
-public UnfairMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+UnfairMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -195,7 +195,7 @@ public UnfairMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Choose Jockey Top Menu Handler
-public ChooseJockeyClassMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ChooseJockeyClassMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{

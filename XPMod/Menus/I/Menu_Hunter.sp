@@ -1,7 +1,7 @@
 //Hunter Menu
 
 //Hunter Menu Draw
-public Action:HunterTopMenuDraw(iClient) 
+Action:HunterTopMenuDraw(iClient) 
 {
 	CheckMenu(iClient);
 	
@@ -30,7 +30,7 @@ public Action:HunterTopMenuDraw(iClient)
 //Talent Draws///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Predatorial Evolution Menu Draw
-public Action:PredatorialMenuDraw(iClient)
+Action:PredatorialMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	
@@ -46,7 +46,7 @@ public Action:PredatorialMenuDraw(iClient)
 }
 
 //Blood Lust Menu Draw
-public Action:BloodlustMenuDraw(iClient)
+Action:BloodlustMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	
@@ -64,7 +64,7 @@ public Action:BloodlustMenuDraw(iClient)
 }
 
 //Kill-meleon Menu Draw
-public Action:KillmeleonMenuDraw(iClient)
+Action:KillmeleonMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	
@@ -82,7 +82,7 @@ public Action:KillmeleonMenuDraw(iClient)
 }
 
 //Choose Hunter Menu Draw
-public Action:ChooseHunterClassMenuDraw(iClient) 
+Action:ChooseHunterClassMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	CheckMenu(iClient);
@@ -105,7 +105,7 @@ public Action:ChooseHunterClassMenuDraw(iClient)
 //Handlers/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Hunter Top Menu Handler
-public HunterTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+HunterTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -155,7 +155,7 @@ public HunterTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Predatorial Evolution Menu Handler
-public PredatorialMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+PredatorialMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -174,7 +174,7 @@ public PredatorialMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Blood Lust Menu Handler
-public BloodlustMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+BloodlustMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -201,7 +201,7 @@ public BloodlustMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Kill-meleon Menu Handler
-public KillmeleonMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+KillmeleonMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -228,7 +228,7 @@ public KillmeleonMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Choose Hunter Top Menu Handler
-public ChooseHunterClassMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ChooseHunterClassMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{

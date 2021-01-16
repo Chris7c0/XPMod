@@ -1,4 +1,4 @@
-public Action:TimerSetSpitterCooldown(Handle:timer, any:iClient)
+Action:TimerSetSpitterCooldown(Handle:timer, any:iClient)
 {
 	//INITIAL CHECKS
 	//--------------
@@ -64,7 +64,7 @@ public Action:TimerSetSpitterCooldown(Handle:timer, any:iClient)
 	return Plugin_Continue;
 }
 
-public Action:TimerResetSpeedFromGoo(Handle:timer, any:iClient)
+Action:TimerResetSpeedFromGoo(Handle:timer, any:iClient)
 {
 	g_fClientSpeedPenalty[iClient] -= g_fAdhesiveAffectAmount[iClient];
 	fnc_SetClientSpeed(iClient);
@@ -72,7 +72,7 @@ public Action:TimerResetSpeedFromGoo(Handle:timer, any:iClient)
 	g_hTimer_AdhesiveGooReset[iClient] = null;
 }
 
-public Action:TimerResetGravityFromGoo(Handle:timer, any:iClient)
+Action:TimerResetGravityFromGoo(Handle:timer, any:iClient)
 {
 	if (RunClientChecks(iClient))
 	{
@@ -90,7 +90,7 @@ public Action:TimerResetGravityFromGoo(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerConjureWitch(Handle:timer, any:iClient)
+Action:TimerConjureWitch(Handle:timer, any:iClient)
 {
 	g_bCanConjureWitch[iClient] = false;
 	g_bJustSpawnedWitch[iClient] = true;
@@ -108,7 +108,7 @@ public Action:TimerConjureWitch(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerConjureCommonInfected(Handle:timer, any:hDataPackage)
+Action:TimerConjureCommonInfected(Handle:timer, any:hDataPackage)
 {
 	ResetPack(hDataPackage);
 	new iClient = ReadPackCell(hDataPackage);
@@ -124,7 +124,7 @@ public Action:TimerConjureCommonInfected(Handle:timer, any:hDataPackage)
 	return Plugin_Stop;
 }
 
-public Action:TimerConjureUncommonInfected(Handle:timer, any:hDataPackage)
+Action:TimerConjureUncommonInfected(Handle:timer, any:hDataPackage)
 {
 	ResetPack(hDataPackage);
 	new iClient = ReadPackCell(hDataPackage);
@@ -144,7 +144,7 @@ public Action:TimerConjureUncommonInfected(Handle:timer, any:hDataPackage)
 }
 
 
-public Action:TimerResetCanConjureWitch(Handle:timer, any:iClient)
+Action:TimerResetCanConjureWitch(Handle:timer, any:iClient)
 {
 	g_bCanConjureWitch[iClient] = true;
 	
@@ -152,7 +152,7 @@ public Action:TimerResetCanConjureWitch(Handle:timer, any:iClient)
 }
 
 
-public Action:TimerHallucinogen(Handle:timer, any:iClient)
+Action:TimerHallucinogen(Handle:timer, any:iClient)
 {
 	if(IsClientInGame(iClient) == false || IsPlayerAlive(iClient) == false)
 	{
@@ -197,7 +197,7 @@ public Action:TimerHallucinogen(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerInfectedVictimTick(Handle:timer, any:iClient)
+Action:TimerInfectedVictimTick(Handle:timer, any:iClient)
 {
 	if(IsClientInGame(iClient) == false || IsPlayerAlive(iClient) == false)
 	{
@@ -274,17 +274,17 @@ public Action:TimerInfectedVictimTick(Handle:timer, any:iClient)
 }
 
 
-public Action:TimerResetVirusImmunity(Handle:timer, any:iClient)
+Action:TimerResetVirusImmunity(Handle:timer, any:iClient)
 {
 	g_bIsImmuneToVirus[iClient] = false;
 }
 
-public Action:TimerResetCanUseAcidReflex(Handle:timer, any:iClient)
+Action:TimerResetCanUseAcidReflex(Handle:timer, any:iClient)
 {
 	g_bJustUsedAcidReflex[iClient] = false;
 }
 
-public Action:TimerInstantSpitterCooldown(Handle:timer, any:iClient)
+Action:TimerInstantSpitterCooldown(Handle:timer, any:iClient)
 {
 	new iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
 	if (iEntid > 0)
@@ -297,13 +297,13 @@ public Action:TimerInstantSpitterCooldown(Handle:timer, any:iClient)
 	PrintHintText(iClient, "SPIT AGAIN!");
 }
 
-public Action:TimerAllowGooSwitching(Handle:timer, any:iClient)
+Action:TimerAllowGooSwitching(Handle:timer, any:iClient)
 {
 	g_bBlockGooSwitching[iClient] = false;
 	g_hTimer_BlockGooSwitching[iClient] = null;
 }
 
-public Action:TimerResetRepulsion(Handle:timer, any:iClient)
+Action:TimerResetRepulsion(Handle:timer, any:iClient)
 {
 	g_bCanBePushedByRepulsion[iClient] = true;
 }

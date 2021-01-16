@@ -1,7 +1,7 @@
 //Support (Bill) Menu////////////////////////////////////////////////////////////////
 
 //Bill Menu Draw
-public Action:SupportMenuDraw(iClient) 
+Action:SupportMenuDraw(iClient) 
 {
 	decl String:text[512];
 
@@ -39,7 +39,7 @@ public Action:SupportMenuDraw(iClient)
 }
 
 //Inspirational Leadership Draw
-public Action:InspirationalMenuDraw(iClient) 
+Action:InspirationalMenuDraw(iClient) 
 {
 	decl String:text[512];
 
@@ -69,7 +69,7 @@ public Action:InspirationalMenuDraw(iClient)
 }
 
 //Ghillie Tactics
-public Action:GhillieMenuDraw(iClient) 
+Action:GhillieMenuDraw(iClient) 
 {
 	decl String:text[512];
 
@@ -99,7 +99,7 @@ public Action:GhillieMenuDraw(iClient)
 }
 
 //Will to Live Draw
-public Action:WillMenuDraw(iClient) 
+Action:WillMenuDraw(iClient) 
 {
 	decl String:text[512];
 
@@ -130,7 +130,7 @@ public Action:WillMenuDraw(iClient)
 
 
 //Exorcism in a Barrel Draw
-public Action:ExorcismMenuDraw(iClient) 
+Action:ExorcismMenuDraw(iClient) 
 {
 	decl String:text[512];
 
@@ -160,7 +160,7 @@ public Action:ExorcismMenuDraw(iClient)
 }
 
 //Die Hard Draw
-public Action:DiehardMenuDraw(iClient) 
+Action:DiehardMenuDraw(iClient) 
 {
 	decl String:text[512];
 
@@ -190,7 +190,7 @@ public Action:DiehardMenuDraw(iClient)
 }
 
 //Promotional Benefits Draw
-public Action:PromotionalMenuDraw(iClient) 
+Action:PromotionalMenuDraw(iClient) 
 {
 	decl String:text[512];
 
@@ -222,7 +222,7 @@ public Action:PromotionalMenuDraw(iClient)
 //Handlers//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Bill Menu Handler
-public SupportMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SupportMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -267,7 +267,7 @@ public SupportMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 
 
 //Inspirational Handler
-public InspirationalMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+InspirationalMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -282,7 +282,7 @@ public InspirationalMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNu
 }
 
 //Ghillie Tactics Menu Handler
-public GhillieMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+GhillieMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if( action == MenuAction_Select )
 	{
@@ -298,7 +298,7 @@ public GhillieMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 
 
 //Will to Live Handler
-public WillMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+WillMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -314,7 +314,7 @@ public WillMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 
 
 //Exorcism in a Barrel Handler
-public ExorcismMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ExorcismMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select)
 	{
@@ -329,7 +329,7 @@ public ExorcismMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Die Hard Handler
-public DiehardMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+DiehardMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -344,7 +344,7 @@ public DiehardMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Promotional Benefit Handler
-public PromotionalMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+PromotionalMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{

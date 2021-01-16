@@ -169,7 +169,7 @@ HandleFastAttackingClients()
 		new iClient = g_iFastAttackingClientsArray[looper];
 		if(g_bDoesClientAttackFast[iClient] == false || IsClientInGame(iClient)==false || IsFakeClient(iClient)==true)
 		{
-			pop(iClient, 1);
+			pop(iClient);
 			continue;
 		}
 		

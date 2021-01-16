@@ -1,4 +1,4 @@
-public Action:TankMenuDrawVampiric(iClient)
+Action:TankMenuDrawVampiric(iClient)
 {
 	CheckMenu(iClient);
 	CheckLevel(iClient);
@@ -33,7 +33,7 @@ public Action:TankMenuDrawVampiric(iClient)
 	return Plugin_Handled;
 }
 
-public TankMenuHandlerVampiric(Handle:hmenu, MenuAction:action, iClient, itemNum)
+TankMenuHandlerVampiric(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{

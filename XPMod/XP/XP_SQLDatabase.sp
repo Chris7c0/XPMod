@@ -52,7 +52,7 @@ bool:ConnectDB()
 
 
 //Callback function for an SQL SQLGetUserIDAndToken
-public SQLGetUserIDAndTokenCallback(Handle:owner, Handle:hQuery, const String:error[], any:iClient)
+SQLGetUserIDAndTokenCallback(Handle:owner, Handle:hQuery, const String:error[], any:iClient)
 {
 	// PrintToChatAll("SQLGetUserIDAndTokenCallback Started. %i: %N", iClient, iClient);
 	// PrintToServer("SQLGetUserIDAndTokenCallback Started. %i: %N", iClient, iClient);
@@ -138,7 +138,7 @@ GetUserIDAndToken(any:iClient)
 }
 
 //Callback function for an SQL GetUserData
-public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[], any:hDataPack)
+SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[], any:hDataPack)
 {
 	if (hDataPack == INVALID_HANDLE)
 	{
@@ -244,7 +244,7 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 		}
 
 		// Reset Survivor Classes and Talent Levels
-		ResetSurvivorTalents(iClient, iClient);
+		ResetSurvivorTalents(iClient);
 
 		// Set Survivor Class Levels
 		AutoLevelUpSurivovor(iClient);
@@ -401,7 +401,7 @@ GetUserData(any:iClient, bool:bOnlyWebsiteChangableData = false, bool:bDrawConfi
 }
 
 //Callback function for an SQL CreateNewUser
-public SQLCreateNewUserCallback(Handle:owner, Handle:hQuery, const String:error[], any:iClient)
+SQLCreateNewUserCallback(Handle:owner, Handle:hQuery, const String:error[], any:iClient)
 {
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -491,7 +491,7 @@ CreateNewUser(iClient)
 }
 
 //Callback function for an SQL SaveUserData
-public SQLSaveUserDataCallback(Handle:owner, Handle:hQuery, const String:error[], any:iClient)
+SQLSaveUserDataCallback(Handle:owner, Handle:hQuery, const String:error[], any:iClient)
 {
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -672,7 +672,7 @@ Logout(iClient)
 
 	if(g_bClientLoggedIn[iClient] == true)
 	{
-		ResetAll(iClient, iClient);
+		ResetAll(iClient);
 		g_iDBUserID[iClient] = -1;
 		g_strDBUserToken[iClient] = "";
 		g_bClientLoggedIn[iClient] = false;

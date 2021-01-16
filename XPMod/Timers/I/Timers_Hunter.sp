@@ -1,4 +1,4 @@
-public Action:TimerLungeFurther(Handle:timer, any:iClient)
+Action:TimerLungeFurther(Handle:timer, any:iClient)
 {
 	decl Float:velocity[3];
 	GetEntPropVector(iClient, Prop_Data, "m_vecVelocity", velocity);
@@ -9,7 +9,7 @@ public Action:TimerLungeFurther(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerHunterPounceDamage(Handle:timer, any:pack)
+Action:TimerHunterPounceDamage(Handle:timer, any:pack)
 {
 	if (pack == INVALID_HANDLE)
 		return Plugin_Stop;
@@ -31,19 +31,19 @@ public Action:TimerHunterPounceDamage(Handle:timer, any:pack)
 	return Plugin_Stop;
 }
 
-public Action:TimerResetHunterDismount(Handle:timer, any:iClient)
+Action:TimerResetHunterDismount(Handle:timer, any:iClient)
 {
 	g_bCanHunterDismount[iClient] = true;
 	return Plugin_Stop;
 }
 
-public Action:TimerResetCanHunterPoison(Handle:timer, any:iClient)
+Action:TimerResetCanHunterPoison(Handle:timer, any:iClient)
 {
 	g_bCanHunterPoisonVictim[iClient] = true;
 	return Plugin_Stop;
 }
 
-public Action:TimerHunterPoison(Handle:timer, any:pack)
+Action:TimerHunterPoison(Handle:timer, any:pack)
 {
 	if (pack == INVALID_HANDLE)
 		return Plugin_Stop;
@@ -77,7 +77,7 @@ public Action:TimerHunterPoison(Handle:timer, any:pack)
 	return Plugin_Stop;
 }
 
-public Action:TimerHunterPoisonFade(Handle:timer, any:pack)
+Action:TimerHunterPoisonFade(Handle:timer, any:pack)
 {
 	if (pack == INVALID_HANDLE)
 		return Plugin_Stop;
@@ -104,7 +104,7 @@ public Action:TimerHunterPoisonFade(Handle:timer, any:pack)
 	return Plugin_Stop;
 }
 
-// public Action:TimerContinuousHunterPoison(Handle:timer, any:pack)
+// Action:TimerContinuousHunterPoison(Handle:timer, any:pack)
 // {
 // 	if (pack == INVALID_HANDLE)
 // 		return Plugin_Stop;

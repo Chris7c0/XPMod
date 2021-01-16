@@ -343,7 +343,7 @@ PrecacheLockedWeaponModels()	//Precache the locked weapon models
 		PrecacheModel("models/weapons/melee/v_golfclub.mdl");
 }
 
-public Action:Timer_PrepareCSWeapons(Handle:timer, any:iClient)
+Action:Timer_PrepareCSWeapons(Handle:timer, any:iClient)
 {
 	//Prepare the CounterStrike weapons for use by spawning and destroying
 	new iWeapon = CreateEntityByName("weapon_rifle_sg552");

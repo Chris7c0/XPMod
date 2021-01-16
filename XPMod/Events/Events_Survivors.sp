@@ -1,4 +1,4 @@
-public Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
+Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	
@@ -736,7 +736,7 @@ public Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroa
 	return Plugin_Continue;
 }
 
-public Action:Event_ReviveSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
+Action:Event_ReviveSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	new target = GetClientOfUserId(GetEventInt(hEvent, "subject"));
@@ -850,13 +850,13 @@ public Action:Event_ReviveSuccess(Handle:hEvent, String:Event_name[], bool:dontB
 	return Plugin_Continue;
 }
 
-public Event_LedgeGrab(Handle:hEvent, const String:strName[], bool:bDontBroadcast)		//need an event for if the iClient gets up off the ledge to make clienthanging false
+Event_LedgeGrab(Handle:hEvent, const String:strName[], bool:bDontBroadcast)		//need an event for if the iClient gets up off the ledge to make clienthanging false
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	clienthanging[iClient] = true;
 }
 
-public Action:Event_InfectedDecap(Handle:hEvent, const String:strName[], bool:bDontBroadcast)		//make a talent that makes you take no damage from your teammates friendly fire///////////////////////
+Action:Event_InfectedDecap(Handle:hEvent, const String:strName[], bool:bDontBroadcast)		//make a talent that makes you take no damage from your teammates friendly fire///////////////////////
 {
 	new iClient  = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	if(IsFakeClient(iClient) == false)
@@ -881,7 +881,7 @@ public Action:Event_InfectedDecap(Handle:hEvent, const String:strName[], bool:bD
 	return Plugin_Continue;
 }
 
-public Action:Event_WeaponPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadcast)		//make a talent that makes you take no damage from your teammates friendly fire///////////////////////
+Action:Event_WeaponPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadcast)		//make a talent that makes you take no damage from your teammates friendly fire///////////////////////
 {
 	
 	// PrintToChatAll("Event_WeaponPickUp");
@@ -894,25 +894,25 @@ public Action:Event_WeaponPickUp(Handle:hEvent, const String:strName[], bool:bDo
 	return Plugin_Continue;
 }
 
-public Action:Event_SpawnerGiveItem(Handle:hEvent, const String:strName[], bool:bDontBroadcast)		//make a talent that makes you take no damage from your teammates friendly fire///////////////////////
+Action:Event_SpawnerGiveItem(Handle:hEvent, const String:strName[], bool:bDontBroadcast)		//make a talent that makes you take no damage from your teammates friendly fire///////////////////////
 {
 	//PrintToChatAll("Event_SpawnerGiveItem");
 	return Plugin_Continue;
 }
 
-public Action:Event_UseTarget(Handle:hEvent, const String:strName[], bool:bDontBroadcast)		//make a talent that makes you take no damage from your teammates friendly fire///////////////////////
+Action:Event_UseTarget(Handle:hEvent, const String:strName[], bool:bDontBroadcast)		//make a talent that makes you take no damage from your teammates friendly fire///////////////////////
 {
 	//PrintToChatAll("Event_UseTarget");
 	return Plugin_Continue;
 }
 
-public Action:Event_PlayerUse(Handle:hEvent, const String:strName[], bool:bDontBroadcast)		//make a talent that makes you take no damage from your teammates friendly fire///////////////////////
+Action:Event_PlayerUse(Handle:hEvent, const String:strName[], bool:bDontBroadcast)		//make a talent that makes you take no damage from your teammates friendly fire///////////////////////
 {
 	//PrintToChatAll("Event_PlayerUse");
 	return Plugin_Continue;
 }
 
-public Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadcast)		//make a talent that makes you take no damage from your teammates friendly fire///////////////////////
+Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadcast)		//make a talent that makes you take no damage from your teammates friendly fire///////////////////////
 {
 	int iUserID = GetEventInt(hEvent,"userid")
 	if (RunEntityChecks(iUserID) == false)
@@ -1971,7 +1971,7 @@ public Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDont
 	return Plugin_Continue;
 }
 
-public Action:Event_WeaponDropped(Handle:hEvent, const String:strName[], bool:bDontBroadcast)		//When an item is removed from a survivor's inventory///////////////////////
+Action:Event_WeaponDropped(Handle:hEvent, const String:strName[], bool:bDontBroadcast)		//When an item is removed from a survivor's inventory///////////////////////
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	decl String:droppeditem[32];
@@ -2039,7 +2039,7 @@ public Action:Event_WeaponDropped(Handle:hEvent, const String:strName[], bool:bD
 	//g_bIsNickInSecondaryCycle[iClient] == true
 }
 
-public Action:Event_PlayerIncap(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
+Action:Event_PlayerIncap(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	new incapper = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
@@ -2188,7 +2188,7 @@ public Action:Event_PlayerIncap(Handle:hEvent, String:Event_name[], bool:dontBro
 	return Plugin_Continue;
 }
 
-public Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
+Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	new target = GetClientOfUserId(GetEventInt(hEvent, "subject"));
@@ -2557,7 +2557,7 @@ public Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBro
 	return Plugin_Continue;
 }
 
-public Action:Event_DefibUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_DefibUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new iSubject = GetClientOfUserId(GetEventInt(hEvent,"subject"));
 	new iClient  = GetClientOfUserId(GetEventInt(hEvent,"userid"));
@@ -2599,7 +2599,7 @@ public Action:Event_DefibUsed(Handle:hEvent, const String:strName[], bool:bDontB
 	return Plugin_Continue;
 }
 
-public Action:Event_UpgradePackUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_UpgradePackUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new iClient  = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	
@@ -2608,7 +2608,7 @@ public Action:Event_UpgradePackUsed(Handle:hEvent, const String:strName[], bool:
 }
 
 
-public Action:Event_PillsUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_PillsUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	
@@ -2696,7 +2696,7 @@ public Action:Event_PillsUsed(Handle:hEvent, const String:strName[], bool:bDontB
 	return Plugin_Continue;
 }
 
-public Action:Event_AdrenalineUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_AdrenalineUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	
@@ -2785,7 +2785,7 @@ public Action:Event_AdrenalineUsed(Handle:hEvent, const String:strName[], bool:b
 
 //Temporarily removed to contain an exploit
 
-public Action:Event_WeaponGiven(Handle:hEvent, const String:strName[], bool:bDontBroadcast)	//For Pills and Shots
+Action:Event_WeaponGiven(Handle:hEvent, const String:strName[], bool:bDontBroadcast)	//For Pills and Shots
 {
 	//PrintToChatAll("Event_WeaponGiven");
 	/*
@@ -2799,7 +2799,7 @@ public Action:Event_WeaponGiven(Handle:hEvent, const String:strName[], bool:bDon
 	return Plugin_Continue;
 }
 
-public Action:Event_ReceiveUpgrade(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
+Action:Event_ReceiveUpgrade(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	decl String:strUpgrade[32];

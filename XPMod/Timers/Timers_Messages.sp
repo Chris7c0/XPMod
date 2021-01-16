@@ -1,4 +1,4 @@
-public Action:PrintUnsetClassesMessage(Handle:timer, any:data)
+Action:PrintUnsetClassesMessage(Handle:timer, any:data)
 {
 	for(new i = 1; i <= MaxClients; i++)
 	{
@@ -30,7 +30,7 @@ public Action:PrintUnsetClassesMessage(Handle:timer, any:data)
 	return Plugin_Continue;
 }
 
-public Action:PrintXPModCreateAndConfirmMessageToAll(Handle:timer, any:data)
+Action:PrintXPModCreateAndConfirmMessageToAll(Handle:timer, any:data)
 {
 	for(new i=1; i<=MaxClients; i++)
 	{
@@ -43,7 +43,7 @@ public Action:PrintXPModCreateAndConfirmMessageToAll(Handle:timer, any:data)
 	return Plugin_Continue;
 }
 
-public Action:PrintXPModAdvertisementMessageToAll(Handle:timer, any:data)
+Action:PrintXPModAdvertisementMessageToAll(Handle:timer, any:data)
 {
 	static iAdvertisementIndex;
 	if (++iAdvertisementIndex > 4)
@@ -63,7 +63,7 @@ public Action:PrintXPModAdvertisementMessageToAll(Handle:timer, any:data)
 	return Plugin_Continue;
 }
 
-public Action:TimerLoadTalentsDelay(Handle:timer, any:iClient)
+Action:TimerLoadTalentsDelay(Handle:timer, any:iClient)
 {
 	if(g_bClientLoggedIn[iClient] == true && 
 		talentsJustGiven[iClient] == false && 

@@ -1,5 +1,5 @@
 
-public Event_AbilityUse(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Event_AbilityUse(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	if (iClient < 1)
@@ -29,7 +29,7 @@ public Event_AbilityUse(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	return;
 }
 
-public Action:Event_PlayerNowIt(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_PlayerNowIt(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"attacker"));
 	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"userid"));
@@ -52,7 +52,7 @@ public Action:Event_PlayerNowIt(Handle:hEvent, const String:strName[], bool:bDon
 	return Plugin_Continue;
 }
 
-public Action:Event_ChargerChargeStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_ChargerChargeStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	
@@ -70,7 +70,7 @@ public Action:Event_ChargerChargeStart(Handle:hEvent, const String:strName[], bo
 }
 
 
-public Action:Event_ChargerChargeEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_ChargerChargeEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	
 	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
@@ -92,7 +92,7 @@ public Action:Event_ChargerChargeEnd(Handle:hEvent, const String:strName[], bool
 	return Plugin_Continue;
 }
 
-public Action:Event_ChargerImpact(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_ChargerImpact(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
@@ -121,7 +121,7 @@ public Action:Event_ChargerImpact(Handle:hEvent, const String:strName[], bool:bD
 
 	return Plugin_Continue;
 }
-public Action:Event_ChargerCarryStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_ChargerCarryStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
@@ -139,7 +139,7 @@ public Action:Event_ChargerCarryStart(Handle:hEvent, const String:strName[], boo
 	return Plugin_Continue;
 }
 
-public Action:Event_ChargerCarryEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_ChargerCarryEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
@@ -163,7 +163,7 @@ public Action:Event_ChargerCarryEnd(Handle:hEvent, const String:strName[], bool:
 	return Plugin_Continue;
 }
 
-public Action:Event_ChargerPummelStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_ChargerPummelStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
@@ -182,7 +182,7 @@ public Action:Event_ChargerPummelStart(Handle:hEvent, const String:strName[], bo
 	return Plugin_Continue;
 }
 
-public Action:Event_ChargerPummelEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_ChargerPummelEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new chargerid = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
@@ -207,7 +207,7 @@ public Action:Event_ChargerPummelEnd(Handle:hEvent, const String:strName[], bool
 	return Plugin_Continue;
 }
 
-public Action:Event_ChargerKilled(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_ChargerKilled(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	//new attacker = GetClientOfUserId(GetEventInt(hEvent,"attacker"));
 	new chargerid = GetClientOfUserId(GetEventInt(hEvent,"userid"));
@@ -218,7 +218,7 @@ public Action:Event_ChargerKilled(Handle:hEvent, const String:strName[], bool:bD
 	return Plugin_Continue;
 }
 
-public Action:Event_ChokeStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_ChokeStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
@@ -237,7 +237,7 @@ public Action:Event_ChokeStart(Handle:hEvent, const String:strName[], bool:bDont
 	return Plugin_Continue;
 }
 
-public Action:Event_ChokeEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_ChokeEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
@@ -266,7 +266,7 @@ public Action:Event_ChokeEnd(Handle:hEvent, const String:strName[], bool:bDontBr
 	return Plugin_Continue;
 }
 
-public Action:Event_TongueRelease(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_TongueRelease(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	//new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
@@ -276,7 +276,7 @@ public Action:Event_TongueRelease(Handle:hEvent, const String:strName[], bool:bD
 }
 
 
-public Action:Event_TongueGrab(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_TongueGrab(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	//PrintToChatAll("toungue grab triggered");
 	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
@@ -334,7 +334,7 @@ public Action:Event_TongueGrab(Handle:hEvent, const String:strName[], bool:bDont
 }
 
 
-public Action:Event_JockeyRide(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_JockeyRide(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
@@ -439,7 +439,7 @@ public Action:Event_JockeyRide(Handle:hEvent, const String:strName[], bool:bDont
 }
 
 
-public Action:Event_JockeyRideEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)		//if TANK spawned in set ELLIS's run speed to 1.5
+Action:Event_JockeyRideEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)		//if TANK spawned in set ELLIS's run speed to 1.5
 {
 	new rider = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
@@ -457,7 +457,7 @@ public Action:Event_JockeyRideEnd(Handle:hEvent, const String:strName[], bool:bD
 }
 
 
-public Action:Event_HunterPounceStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_HunterPounceStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
@@ -547,7 +547,7 @@ public Action:Event_HunterPounceStart(Handle:hEvent, const String:strName[], boo
 	return Plugin_Continue;
 }
 
-public Action:Event_HunterPounceStopped(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_HunterPounceStopped(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
@@ -576,7 +576,7 @@ public Action:Event_HunterPounceStopped(Handle:hEvent, const String:strName[], b
 	return Plugin_Continue;
 }
 
-public Action:Event_InfectedHurt(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_InfectedHurt(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new attacker = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
 	new victim = GetEventInt(hEvent, "entityid");
@@ -648,7 +648,7 @@ public Action:Event_InfectedHurt(Handle:hEvent, const String:strName[], bool:bDo
 	return Plugin_Continue;
 }
 
-public Action:Event_WitchKilled(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
+Action:Event_WitchKilled(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	new victim = GetEventInt(hEvent, "witchid");
@@ -685,7 +685,7 @@ public Action:Event_WitchKilled(Handle:hEvent, String:Event_name[], bool:dontBro
 }
 
 
-public Action:Event_TankSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_TankSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	//PrintToChatAll("userid = %i tankindex = %i", (GetEventInt(hEvent, "userid")), (GetEventInt(hEvent, "tankid")));
 	g_iTankCounter++;
@@ -734,7 +734,7 @@ public Action:Event_TankSpawn(Handle:hEvent, const String:strName[], bool:bDontB
 	return Plugin_Continue;
 }
 
-public Action:Event_ZombieIgnited(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
+Action:Event_ZombieIgnited(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	new victim = GetEventInt(hEvent, "entityid");
@@ -763,7 +763,7 @@ public Action:Event_ZombieIgnited(Handle:hEvent, String:Event_name[], bool:dontB
 	return Plugin_Continue;
 }
 
-public Action:Event_SpitBurst(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_SpitBurst(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new iSpitEntity = GetEventInt(hEvent,"subject");
@@ -875,7 +875,7 @@ public Action:Event_SpitBurst(Handle:hEvent, const String:strName[], bool:bDontB
 	}
 }
 
-public Action:Event_WitchSpawn(Handle:hEvent, const String:sName[], bool:bDontBroadcast)
+Action:Event_WitchSpawn(Handle:hEvent, const String:sName[], bool:bDontBroadcast)
 {
 	new iWitchID = GetEventInt(hEvent, "witchid");
 	
@@ -906,7 +906,7 @@ public Action:Event_WitchSpawn(Handle:hEvent, const String:sName[], bool:bDontBr
 	return Plugin_Continue;
 }
 
-public Action:Timer_CheckWitchRage(Handle:timer, any:iWitchID)
+Action:Timer_CheckWitchRage(Handle:timer, any:iWitchID)
 {
 	if(IsValidEntity(iWitchID) == false)
 		return Plugin_Stop;
@@ -972,7 +972,7 @@ public Action:Timer_CheckWitchRage(Handle:timer, any:iWitchID)
 	return Plugin_Continue;
 }
 
-public Action:Event_GhostSpawnTime(Handle:hEvent, const String:sName[], bool:bDontBroadcast)
+Action:Event_GhostSpawnTime(Handle:hEvent, const String:sName[], bool:bDontBroadcast)
 {
 	new iSpawner = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new Float:fSpawnTime = GetEventFloat(hEvent, "spawntime");
@@ -980,7 +980,7 @@ public Action:Event_GhostSpawnTime(Handle:hEvent, const String:sName[], bool:bDo
 	CreateTimer(fSpawnTime + 0.5, TimerSpawnGhostClass, iSpawner, TIMER_FLAG_NO_MAPCHANGE);
 }
 
-public Action:Event_EnteredSpit(Handle:hEvent, const String:sName[], bool:bDontBroadcast)
+Action:Event_EnteredSpit(Handle:hEvent, const String:sName[], bool:bDontBroadcast)
 {
 	//new userid = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	//new subject = GetEventInt(hEvent,"subject");

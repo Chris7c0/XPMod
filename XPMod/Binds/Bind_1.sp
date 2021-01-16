@@ -2,7 +2,7 @@
  *                                                    Bind 1 Pressed                                                      *
  **************************************************************************************************************************/
 
-public Action:Bind1Press(iClient,args)
+Action:Bind1Press(iClient, args)
 {
 	if(RunClientChecks(iClient) == false)
 		return Plugin_Handled;

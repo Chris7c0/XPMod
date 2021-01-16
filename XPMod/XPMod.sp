@@ -209,7 +209,7 @@ SetupConsoleCommands()
 	RegConsoleCmd("xpmstats", ShowTeamStatsToPlayer);
 	RegConsoleCmd("website", MotdPanel);
 	RegConsoleCmd("xpmhelp", OpenHelpMotdPanel);
-	RegConsoleCmd("resetmyaccount", ResetAll);			//Reset Level, skillpoints, XP,  and talents
+	//RegConsoleCmd("resetmyaccount", ResetAll);			//Reset Level, skillpoints, XP,  and talents
 	RegConsoleCmd("xpmbind1", Bind1Press);				//This is the binded key function for ultimate abilites, Bind 1
 	RegConsoleCmd("xpmbind2", Bind2Press);				//This is the binded key function for ultimate abilites, Bind 2
 	RegConsoleCmd("xpmbinduses", ShowBindsRemaining);		//Display the total number of bind1 and bind2 uses left
@@ -329,7 +329,7 @@ FindGameMode()
 		g_iGameMode = GAMEMODE_UNKNOWN;
 }
 
-public ResetVariablesForMap(iClient)
+ResetVariablesForMap(iClient)
 {
 	ResetTalentConfirmCountdown(iClient);
 	
@@ -512,14 +512,14 @@ ResetAllVariables(iClient)
 	g_bBillSprinting[iClient] = false;
 	g_iBillTeamHealCounter[iClient] = 0;
 	g_bIsClientDown[iClient] = false;
-	pop(iClient, 1);
+	pop(iClient);
 	g_bDoesClientAttackFast[iClient] = false;
 	
 	//Reset Tank (Needed here for changing teams)
 	ResetAllTankVariables(iClient);
 }
 
-public DeleteAllGlobalTimerHandles(iClient)
+DeleteAllGlobalTimerHandles(iClient)
 {
 	//delete g_hTimer_FreezeCountdown;
 	delete g_hTimer_ShowingConfirmTalents[iClient];
@@ -602,10 +602,10 @@ SetupSDKCalls()
 		g_hSDK_Fling = EndPrepSDKCall();
 
 		//
-		StartPrepSDKCall(SDKCall_Player);
-		PrepSDKCall_SetFromConf(hGameConfigFile, SDKConf_Signature, "SetClass");
-		PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
-		g_hSetClass = EndPrepSDKCall();
+		// StartPrepSDKCall(SDKCall_Player);
+		// PrepSDKCall_SetFromConf(hGameConfigFile, SDKConf_Signature, "SetClass");
+		// PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
+		// g_hSetClass = EndPrepSDKCall();
 		
 		//
 		StartPrepSDKCall(SDKCall_Static);
@@ -616,7 +616,7 @@ SetupSDKCalls()
 		
 		g_iOffset_NextActivation = GameConfGetOffset(hGameConfigFile, "SIAbilityNextActivation");
 		
-		g_iAbility = GameConfGetOffset(hGameConfigFile, "Ability");
+		//g_iAbility = GameConfGetOffset(hGameConfigFile, "Ability");
 		
 		if (g_hCreateAbility == INVALID_HANDLE)
 			SetFailState("[+] S_HGD: Error: Unable to find CreateAbility signature.");
@@ -729,7 +729,7 @@ SetMapsMaxTeleportHeight()
 }
 
 //Chat
-public Action:SayCmd(iClient, args)
+Action:SayCmd(iClient, args)
 {
 	if (iClient < 1 || IsClientInGame(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Continue;
@@ -772,7 +772,7 @@ public Action:SayCmd(iClient, args)
 	return Plugin_Continue;
 }
 
-public Action:SayTeamCmd(iClient, args)
+Action:SayTeamCmd(iClient, args)
 {
 	if (iClient < 1 || IsClientInGame(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Continue;

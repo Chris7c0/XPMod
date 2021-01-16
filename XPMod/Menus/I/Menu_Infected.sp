@@ -1,7 +1,7 @@
 //Infected Talents Menu
 
 //Top Infected Menu Draw
-public Action:TopInfectedMenuDraw(iClient) 
+Action:TopInfectedMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	CheckMenu(iClient);
@@ -33,7 +33,7 @@ public Action:TopInfectedMenuDraw(iClient)
 }
 
 //Change Your Infected Menu Draw
-public Action:ChangeInfectedMenuDraw(iClient) 
+Action:ChangeInfectedMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	CheckMenu(iClient);
@@ -55,7 +55,7 @@ public Action:ChangeInfectedMenuDraw(iClient)
 }
 
 //Change Infected Class 1
-public Action:ChangeClass1MenuDraw(iClient) 
+Action:ChangeClass1MenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	CheckMenu(iClient);
@@ -76,7 +76,7 @@ public Action:ChangeClass1MenuDraw(iClient)
 	return Plugin_Handled;
 }
 //Change Infected Class 2
-public Action:ChangeClass2MenuDraw(iClient) 
+Action:ChangeClass2MenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	CheckMenu(iClient);
@@ -97,7 +97,7 @@ public Action:ChangeClass2MenuDraw(iClient)
 	return Plugin_Handled;
 }
 //Change Infected Class 3
-public Action:ChangeClass3MenuDraw(iClient) 
+Action:ChangeClass3MenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	CheckMenu(iClient);
@@ -121,7 +121,7 @@ public Action:ChangeClass3MenuDraw(iClient)
 //Infected Menu Handlers
 
 //Top Infected Menu Handler
-public TopInfectedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+TopInfectedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -182,7 +182,7 @@ public TopInfectedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Choose Infected Classes Menu
-public ChangeInfectedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ChangeInfectedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -227,29 +227,29 @@ public ChangeInfectedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemN
 }
 
 
-//Confirm Reset All Classes Menu
-public ConfirmResetClassesHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
-{
-	if(action==MenuAction_Select) 
-	{
-		switch (itemNum)
-		{
-			case 0: //Yes
-			{
-				ResetAllInfectedClasses(iClient);
-				PrintToChat(iClient, "\x03[XPMod] \x05All of your Special Infected Classes have been reset.");
-				ChangeInfectedMenuDraw(iClient);
-			}
-			case 1: //No
-			{
-				ChangeInfectedMenuDraw(iClient);
-			}
-		}
-	}
-}
+// //Confirm Reset All Classes Menu
+// ConfirmResetClassesHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+// {
+// 	if(action==MenuAction_Select) 
+// 	{
+// 		switch (itemNum)
+// 		{
+// 			case 0: //Yes
+// 			{
+// 				ResetAllInfectedClasses(iClient);
+// 				PrintToChat(iClient, "\x03[XPMod] \x05All of your Special Infected Classes have been reset.");
+// 				ChangeInfectedMenuDraw(iClient);
+// 			}
+// 			case 1: //No
+// 			{
+// 				ChangeInfectedMenuDraw(iClient);
+// 			}
+// 		}
+// 	}
+// }
 
 //Change Infected Class 1
-public ChangeClass1MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ChangeClass1MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -359,7 +359,7 @@ public ChangeClass1MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum
 	}
 }
 //Change Infected Class 2
-public ChangeClass2MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ChangeClass2MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -469,7 +469,7 @@ public ChangeClass2MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum
 	}
 }
 //Change Infected Class 3
-public ChangeClass3MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ChangeClass3MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{

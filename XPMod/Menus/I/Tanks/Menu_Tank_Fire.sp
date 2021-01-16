@@ -1,4 +1,4 @@
-public Action:TankMenuDrawFire(iClient)
+Action:TankMenuDrawFire(iClient)
 {
 	CheckMenu(iClient);
 	CheckLevel(iClient);
@@ -30,7 +30,7 @@ public Action:TankMenuDrawFire(iClient)
 	return Plugin_Handled;
 }
 
-public TankMenuHandlerFire(Handle:hmenu, MenuAction:action, iClient, itemNum)
+TankMenuHandlerFire(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{

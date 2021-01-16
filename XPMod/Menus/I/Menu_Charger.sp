@@ -1,7 +1,7 @@
 //Charger Menu
 
 //Charger Menu Draw
-public Action:ChargerTopMenuDraw(iClient)
+Action:ChargerTopMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	CheckLevel(iClient);
@@ -29,7 +29,7 @@ public Action:ChargerTopMenuDraw(iClient)
 //Talent Draws///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Ground 'n Pound Menu Draw
-public Action:GroundMenuDraw(iClient)
+Action:GroundMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	CheckLevel(iClient);
@@ -47,7 +47,7 @@ public Action:GroundMenuDraw(iClient)
 }
 
 //Spiked Carapace Menu Draw
-public Action:SpikedMenuDraw(iClient)
+Action:SpikedMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	CheckLevel(iClient);
@@ -67,7 +67,7 @@ public Action:SpikedMenuDraw(iClient)
 }
 
 //Hillbilly Madness! Menu Draw
-public Action:HillbillyMenuDraw(iClient)
+Action:HillbillyMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	CheckLevel(iClient);
@@ -87,7 +87,7 @@ public Action:HillbillyMenuDraw(iClient)
 }
 
 //Choose Charger Menu Draw
-public Action:ChooseChargerClassMenuDraw(iClient) 
+Action:ChooseChargerClassMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	CheckMenu(iClient);
@@ -113,7 +113,7 @@ public Action:ChooseChargerClassMenuDraw(iClient)
 //Handlers/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Charger Top Menu Handler
-public ChargerTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ChargerTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -163,7 +163,7 @@ public ChargerTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Ground 'n Pound Menu Handler
-public GroundMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+GroundMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -178,7 +178,7 @@ public GroundMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Spiked Carapace Menu Handler
-public SpikedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SpikedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -193,7 +193,7 @@ public SpikedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Hillbilly Madness! Menu Handler
-public HillbillyMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+HillbillyMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -208,7 +208,7 @@ public HillbillyMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Choose Charger Top Menu Handler
-public ChooseChargerClassMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ChooseChargerClassMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{

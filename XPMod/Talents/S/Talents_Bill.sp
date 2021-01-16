@@ -179,10 +179,10 @@ OGFSurvivorReload_Bill(int iClient, const char[] currentweapon, int ActiveWeapon
 	}
 }
 
-public Action:tmrPlayAnim(Handle:timer,any:iClient)
+Action:tmrPlayAnim(Handle:timer,any:iClient)
 	PlayAnim(iClient);
 
-public Action:PlayAnim(iClient)
+Action:PlayAnim(iClient)
 {
 	if (RunClientChecks(iClient) == false)
 		return;

@@ -1,4 +1,4 @@
-public Action:TankMenuDrawIce(iClient)
+Action:TankMenuDrawIce(iClient)
 {
 	CheckMenu(iClient);
 	CheckLevel(iClient);
@@ -30,7 +30,7 @@ public Action:TankMenuDrawIce(iClient)
 	return Plugin_Handled;
 }
 
-public TankMenuHandlerIce(Handle:hmenu, MenuAction:action, iClient, itemNum)
+TankMenuHandlerIce(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{

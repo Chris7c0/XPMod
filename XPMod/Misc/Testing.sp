@@ -1,26 +1,26 @@
 
 //Testing Functions//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-public Action:GiveMoreBinds(admin, args)
+Action:GiveMoreBinds(admin, args)
 {
 	g_iClientBindUses_1[admin] = -99;
 	g_iClientBindUses_2[admin] = -99;
 }
 
-public Action:ChangeSpeed(iClient,args)
-{
-	//rspeed = 0.9;
-	if(args==1)
-	{
-		decl String:targetname[128];
-		GetCmdArg(1, targetname, sizeof(targetname));
-		rspeed = StringToFloat(targetname);
-	}
-	PrintToChat(iClient, "global reload speed = %f", rspeed);
-}
+// Action:ChangeSpeed(iClient, args)
+// {
+// 	//rspeed = 0.9;
+// 	if(args==1)
+// 	{
+// 		decl String:targetname[128];
+// 		GetCmdArg(1, targetname, sizeof(targetname));
+// 		rspeed = StringToFloat(targetname);
+// 	}
+// 	PrintToChat(iClient, "global reload speed = %f", rspeed);
+// }
 
 //new Float:g_fEllisTestFireRate = 0.0;
-public Action:TestFunction1(iClient,args)
+Action:TestFunction1(iClient, args)
 {
 	PrintToServer("T1");
 	//PrintToChat(iClient, "T1");
@@ -54,7 +54,7 @@ public Action:TestFunction1(iClient,args)
 	return Plugin_Stop;
 }
 
-public Action:TestFunction2(iClient,args)
+Action:TestFunction2(iClient, args)
 {
 	PrintToServer("T2");
 
@@ -76,7 +76,7 @@ public Action:TestFunction2(iClient,args)
 }
 
 
-public Action:TestFunction3(iClient,args)
+Action:TestFunction3(iClient, args)
 {
 	PrintToChat(iClient, "T3");
 	char str1[99];
@@ -89,7 +89,7 @@ public Action:TestFunction3(iClient,args)
 	return Plugin_Stop;
 }
 
-public Action:TestFunction4(iClient,args)
+Action:TestFunction4(iClient, args)
 {
 	PrintToServer("T4");
 	char str1[99];
@@ -102,7 +102,7 @@ public Action:TestFunction4(iClient,args)
 	return Plugin_Stop;
 }
 
-public Action:TestFunction5(iClient,args)
+Action:TestFunction5(iClient, args)
 {
 	//PrintToChat(iClient, "T5");
 	g_iFlag_SpawnOld = GetCommandFlags("z_spawn_old");
@@ -230,7 +230,7 @@ TE_Particle(String:Name[],
     TE_SendToClient(entindex);
 }
 
-public Action:Command_sprite(iClient, args) 
+Action:Command_sprite(iClient, args) 
 {
 	if(iClient == 0)
 		iClient = 1;
@@ -275,7 +275,7 @@ public Action:Command_sprite(iClient, args)
 	}
 }
 
-public Action:Command_Respawn(iClient, args)
+Action:Command_Respawn(iClient, args)
 {
 	if (args < 1)
 	{
@@ -318,7 +318,7 @@ public Action:Command_Respawn(iClient, args)
 */
 /* No longer works because Valve removed ClientCommand functionality
 
-public ToggleThirdPerson(iClient)
+ToggleThirdPerson(iClient)
 {
 	if(thirdperson[iClient] == false)
 	{
@@ -359,7 +359,7 @@ public ToggleThirdPerson(iClient)
 // }
 
 /*
-public PrintInstructorText(iClient, String:msg[256], String:color[], String:bind[])
+PrintInstructorText(iClient, String:msg[256], String:color[], String:bind[])
 {
 	if(iClient < 1)
 		return;
@@ -377,7 +377,7 @@ public PrintInstructorText(iClient, String:msg[256], String:color[], String:bind
 	CreateTimer(3.0, DisplayInstructorTimer, messagepack);
 }
 
-public Action:DisplayInstructorTimer(Handle:timer, Handle:pack)
+Action:DisplayInstructorTimer(Handle:timer, Handle:pack)
 {
 	decl iClient;
 	decl String:string[256], String:color[15], String:bind[32];
@@ -399,7 +399,7 @@ public Action:DisplayInstructorTimer(Handle:timer, Handle:pack)
 	//CreateTimer(0.3, DelayDisplayHint, h_Pack)
 }
 
-public DisplayInstructorText(iClient, String:s_Message[256], String:color[], String:s_Bind[])
+DisplayInstructorText(iClient, String:s_Message[256], String:color[], String:s_Bind[])
 {
 	if(iClient < 1)
 		return;
@@ -428,7 +428,7 @@ public DisplayInstructorText(iClient, String:s_Message[256], String:color[], Str
 	CreateTimer(6.0, RemoveInstructorText, h_RemovePack);
 }
 	
-public Action:RemoveInstructorText(Handle:h_Timer, Handle:h_Pack)
+Action:RemoveInstructorText(Handle:h_Timer, Handle:h_Pack)
 {
 	decl i_Ent, iClient;
 	
@@ -471,7 +471,7 @@ public Action:RemoveInstructorText(Handle:h_Timer, Handle:h_Pack)
 *******/
 
 /*
-public Action_Rope(iClient)
+Action_Rope(iClient)
 {
 	if(iClient>0)
 	{
@@ -492,7 +492,7 @@ public Action_Rope(iClient)
 }
 
 
-public Action:Roping(Handle:timer,any:index)
+Action:Roping(Handle:timer,any:index)
 {
 	if(IsClientInGame(index)&& g_bUsingTongueRope[index] && IsPlayerAlive(index))
 	{
@@ -537,13 +537,13 @@ public Action:Roping(Handle:timer,any:index)
 	return Plugin_Continue;
 }
 
-public Action_Detach(iClient)
+Action_Detach(iClient)
 {
 	g_bUsingTongueRope[iClient]=false; // Tell plugin the iClient is not using the rope
 }
 
 
-public CreateWire(Part1, Part2)
+CreateWire(Part1, Part2)
 {
 	decl Float:Org1[3];
 	decl Float:Org2[3];
@@ -644,7 +644,7 @@ PrintTeamsToClient(iClient)
 }
 
 
-public TeamPanelHandler(Handle:menu, MenuAction:action, param1, param2)
+TeamPanelHandler(Handle:menu, MenuAction:action, param1, param2)
 {
 	if (action==MenuAction_Select)
 		{
@@ -689,7 +689,7 @@ public TeamPanelHandler(Handle:menu, MenuAction:action, param1, param2)
 }
 
 
-public Action:CreateOverlay(iClient) 
+Action:CreateOverlay(iClient) 
 { 
      new ent = CreateEntityByName("env_screenoverlay"); 
      DispatchKeyValue(ent, "OverlayName1", "dev/dev_prisontvoverlay002.vmt"); 
@@ -697,786 +697,787 @@ public Action:CreateOverlay(iClient)
      //RemoveEdict(ent); 
 } 
 */
-public Action:TestingShit(iClient,args)
-{	
-	PrintToChatAll("TestingShit");
+
+// Action:TestingShit(iClient)
+// {	
+// 	PrintToChatAll("TestingShit");
 	
-	//new Handle:hEventTest = CreateEvent("tank_spawn");
-	/*
-	new Handle:hEventTest = HookEvent("tank_spawn");
-	SetEventInt(hEventTest, "userid", iClient);
-	SetEventInt(hEventTest, "tankid", 8);
-	FireEvent(hEventTest);
-	*/
+// 	//new Handle:hEventTest = CreateEvent("tank_spawn");
+// 	/*
+// 	new Handle:hEventTest = HookEvent("tank_spawn");
+// 	SetEventInt(hEventTest, "userid", iClient);
+// 	SetEventInt(hEventTest, "tankid", 8);
+// 	FireEvent(hEventTest);
+// 	*/
 	
-	/*decl String:number[32];
-	GetCmdArg(1, number, sizeof(number));
-	new num = 1064;
-	num = StringToInt(number);
-	SetEntProp(iClient, Prop_Send, "m_iGlowType", 2);
-	SetEntProp(iClient, Prop_Send, "m_nGlowRange", 0);
-	SetEntProp(iClient, Prop_Send, "m_glowColorOverride", num);*/
-	//decl String:number1[32];
-	//decl String:number2[32];
-	//decl String:number3[32];
-	//GetCmdArg(1, number1, sizeof(number1));
-	//GetCmdArg(2, number2, sizeof(number2));
-	//GetCmdArg(3, number3, sizeof(number3));
-	//g_iOffset_NextActivation = StringToInt(number1);
-	//new WeaponIndex;
-	/*
-	while ((WeaponIndex = GetPlayerWeaponSlot(iClient, 0)) != -1)
-	{
-		RemovePlayerItem(iClient, WeaponIndex);
-		RemoveEdict(WeaponIndex);
-	}
-	SDKCall(g_hSetClass, iClient, StringToInt(number1));
-	AcceptEntityInput(MakeCompatEntRef(GetEntProp(iClient, Prop_Send, "m_customAbility")), "Kill");
-	SetEntProp(iClient, Prop_Send, "m_customAbility", GetEntData(SDKCall(g_hCreateAbility, iClient), g_iAbility));
-	*/
-	//PrintToChatAll("m_zombieClass = %s", GetEntProp(Client, Prop_Send, "m_zombieClass");
-	//new num = StringToInt(number);
-	//PrintToChatAll("Number equals %f", StringToFloat(number));
-	//new Float:xyzNewVelocity[3];
-	//xyzNewVelocity[0] = StringToFloat(number1);
-	//xyzNewVelocity[1] = StringToFloat(number2);
-	//xyzNewVelocity[2] = StringToFloat(number3);
-	//TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, xyzNewVelocity);
-	//GetClientWeapon(iClient, g_strCurrentWeapon, sizeof(g_strCurrentWeapon));
-	//PrintToChatAll("Current Weapon is %s", g_strCurrentWeapon);
-	//g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 1);
-	//PrintToChatAll("g_iSecondarySlotID Before = %d", g_iPrimarySlotID[iClient]);
+// 	/*decl String:number[32];
+// 	GetCmdArg(1, number, sizeof(number));
+// 	new num = 1064;
+// 	num = StringToInt(number);
+// 	SetEntProp(iClient, Prop_Send, "m_iGlowType", 2);
+// 	SetEntProp(iClient, Prop_Send, "m_nGlowRange", 0);
+// 	SetEntProp(iClient, Prop_Send, "m_glowColorOverride", num);*/
+// 	//decl String:number1[32];
+// 	//decl String:number2[32];
+// 	//decl String:number3[32];
+// 	//GetCmdArg(1, number1, sizeof(number1));
+// 	//GetCmdArg(2, number2, sizeof(number2));
+// 	//GetCmdArg(3, number3, sizeof(number3));
+// 	//g_iOffset_NextActivation = StringToInt(number1);
+// 	//new WeaponIndex;
+// 	/*
+// 	while ((WeaponIndex = GetPlayerWeaponSlot(iClient, 0)) != -1)
+// 	{
+// 		RemovePlayerItem(iClient, WeaponIndex);
+// 		RemoveEdict(WeaponIndex);
+// 	}
+// 	SDKCall(g_hSetClass, iClient, StringToInt(number1));
+// 	AcceptEntityInput(MakeCompatEntRef(GetEntProp(iClient, Prop_Send, "m_customAbility")), "Kill");
+// 	SetEntProp(iClient, Prop_Send, "m_customAbility", GetEntData(SDKCall(g_hCreateAbility, iClient), g_iAbility));
+// 	*/
+// 	//PrintToChatAll("m_zombieClass = %s", GetEntProp(Client, Prop_Send, "m_zombieClass");
+// 	//new num = StringToInt(number);
+// 	//PrintToChatAll("Number equals %f", StringToFloat(number));
+// 	//new Float:xyzNewVelocity[3];
+// 	//xyzNewVelocity[0] = StringToFloat(number1);
+// 	//xyzNewVelocity[1] = StringToFloat(number2);
+// 	//xyzNewVelocity[2] = StringToFloat(number3);
+// 	//TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, xyzNewVelocity);
+// 	//GetClientWeapon(iClient, g_strCurrentWeapon, sizeof(g_strCurrentWeapon));
+// 	//PrintToChatAll("Current Weapon is %s", g_strCurrentWeapon);
+// 	//g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 1);
+// 	//PrintToChatAll("g_iSecondarySlotID Before = %d", g_iPrimarySlotID[iClient]);
 	
-	// g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 0);
-	// PrintToChatAll("g_iPrimarySlotID Before = %d", g_iPrimarySlotID[iClient]);
-	// RemoveEdict(g_iPrimarySlotID[iClient]);
-	// PrintToChatAll("g_iPrimarySlotID After = %d", g_iPrimarySlotID[iClient]);
+// 	// g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 0);
+// 	// PrintToChatAll("g_iPrimarySlotID Before = %d", g_iPrimarySlotID[iClient]);
+// 	// RemoveEdict(g_iPrimarySlotID[iClient]);
+// 	// PrintToChatAll("g_iPrimarySlotID After = %d", g_iPrimarySlotID[iClient]);
 	
-	//fnc_DeterminePrimarySlot(iClient);
-	//fnc_DeterminePrimaryWeapon(iClient);
-	//SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd & ~FCVAR_CHEAT);
-	//FakeClientCommand(iClient, "upgrade_add EXPLOSIVE_AMMO");
-	//SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd);
+// 	//fnc_DeterminePrimarySlot(iClient);
+// 	//fnc_DeterminePrimaryWeapon(iClient);
+// 	//SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd & ~FCVAR_CHEAT);
+// 	//FakeClientCommand(iClient, "upgrade_add EXPLOSIVE_AMMO");
+// 	//SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd);
 	
-	// new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-	// new SpecialAmmo = GetEntProp(ActiveWeaponID,Prop_Send,"m_nUpgradedPrimaryAmmoLoaded");
-	// SetEntProp(ActiveWeaponID,Prop_Send,"m_nUpgradedPrimaryAmmoLoaded",200);
-	// PrintToChatAll("Special Ammo = %d", SpecialAmmo);
+// 	// new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+// 	// new SpecialAmmo = GetEntProp(ActiveWeaponID,Prop_Send,"m_nUpgradedPrimaryAmmoLoaded");
+// 	// SetEntProp(ActiveWeaponID,Prop_Send,"m_nUpgradedPrimaryAmmoLoaded",200);
+// 	// PrintToChatAll("Special Ammo = %d", SpecialAmmo);
 	
-	/*
-	fnc_DeterminePrimaryWeapon(iClient);
-	fnc_SaveAmmo(iClient);
-	fnc_CycleWeapon(iClient);
-	fnc_SetAmmo(iClient);
-	*/
-	/*
-	decl String:clientname[128];
-	GetClientName(iClient, clientname, sizeof(clientname));
-	*/
-	//decl String:ModelName[256];
-	//new WepSlot = GetPlayerWeaponSlot(iClient, 1);
-	//new ClientModel = GetClientModel(WepSlot, ModelName, sizeof(ModelName));
-	//PrintToChatAll("ClientModel = %s", ClientModel);
-	//decl String:currentweapon[32];
-	//GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
-	//decl Float:wepvorigin[3], Float:vangles[3], Float:vdir[3];
-	//GetClientEyeAngles(iClient, vangles);
-//	GetAngleVectors(vangles, vdir, NULL_VECTOR, NULL_VECTOR);
-	//vangles[0] = 0.0;		//Lock x and z axis
-	//vangles[2] = 0.0;
-	//GetClientAbsOrigin(iClient, wepvorigin);
-	//wepvorigin[0]+=(vdir[0] * 30.0);		
-	//wepvorigin[1]+=(vdir[1] * 30.0);
-	//wepvorigin[2]+=(vdir[2] + 30.0);
-	//wep2vorigin[0]+=(vdir[0] * 45.0);		
-	//wep2vorigin[1]+=(vdir[1] * 45.0);
-	//wep2vorigin[2]+=(vdir[2] + 30.0);
-	//wepvorigin[0]+=(vdir[0] * 15.0);		
-	//wepvorigin[1]+=(vdir[1] * 15.0);
-	//wepvorigin[2]+=(vdir[2] + 30.0);
-	//new weapon = CreateEntityByName("weapon_melee");
-	//new weapon = CreateEntityByName("weapon_katana");
-	//new weapon = CreateEntityByName("weapon_autoshotgun");
-	//DispatchKeyValue(weapon, "ammo", "200");
-	//DispatchSpawn(weapon);
-	//DispatchSpawn(weapon2);
-	//DispatchSpawn(weapon);
-	//TeleportEntity(weapon, wepvorigin, vangles, NULL_VECTOR);
-	//TeleportEntity(weapon2, wep2vorigin, vangles, NULL_VECTOR);
-	//TeleportEntity(weapon, wepvorigin, vangles, NULL_VECTOR);
-	//new iEntid2 = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
-	//new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-	//SetEntData(ActiveWeaponID, g_iOffset_Clip1, 90, true);
-	//new m_reloadState = GetEntProp(ActiveWeaponID,Prop_Data,"m_reloadState");
-	//new m_reloadNumShells = GetEntProp(ActiveWeaponID,Prop_Data,"m_reloadNumShells");
-	//new m_reloadStartTime = GetEntProp(ActiveWeaponID,Prop_Data,"m_reloadStartTime");
-	//new m_reloadStartDuration = GetEntProp(ActiveWeaponID,Prop_Data,"m_reloadStartDuration");
-	//new m_reloadInsertDuration = GetEntProp(ActiveWeaponID,Prop_Data,"m_reloadInsertDuration");
-	//new m_reloadEndDuration = GetEntProp(ActiveWeaponID,Prop_Data,"m_reloadEndDuration");
-	//new m_shellsInserted = GetEntProp(ActiveWeaponID,Prop_Data,"m_shellsInserted");
-	//PrintToChatAll("m_reloadState %d", m_reloadState);
-	//PrintToChatAll("m_reloadNumShells %d", m_reloadNumShells);
-	//PrintToChatAll("m_reloadStartTime %f", m_reloadStartTime);
-	//PrintToChatAll("m_reloadStartDuration %f", m_reloadStartDuration);
-	//PrintToChatAll("m_reloadInsertDuration %f", m_reloadInsertDuration);
-	//PrintToChatAll("m_reloadEndDuration %f", m_reloadEndDuration);
-	//PrintToChatAll("m_shellsInserted %d", m_shellsInserted);
-	//new clip1 = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
-	//new clip3 = GetEntProp(ActiveWeaponID,Prop_Send,"m_iClip2");
-	//new PrimaryAmmoType = GetEntProp(ActiveWeaponID,Prop_Data,"m_iPrimaryAmmoType");
-	//new SecondaryAmmoType = GetEntProp(ActiveWeaponID,Prop_Data,"m_iSecondaryAmmoType");
-	//new UpgradedAmmoType = GetEntProp(ActiveWeaponID,Prop_Send,"m_nUpgradedPrimaryAmmoLoaded");
-	//m_nUpgradedPrimaryAmmoLoaded
-	//new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
-	//new ReserveAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iAmmo");
-	//PrintToChatAll("m_iClip3 %d", clip3);
-	//PrintToChatAll("g_iOffset_ReloadState %d", g_iOffset_ReloadState);
-	//PrintToChatAll("g_iOffset_ReloadStartDuration %f", g_iOffset_ReloadStartDuration);
-	//PrintToChatAll("g_iOffset_ReloadInsertDuration %f", g_iOffset_ReloadInsertDuration);
-	//PrintToChatAll("g_iOffset_ReloadEndDuration %f", g_iOffset_ReloadEndDuration);
-	//PrintToChatAll("g_iOffset_ReloadState %d", g_iOffset_ReloadState);
-	//PrintToChatAll("g_iOffset_ReloadStartTime %f", g_iOffset_ReloadStartTime);
-	//PrintToChatAll("g_bOffset_InReload %d", g_bOffset_InReload);
-	//PrintToChatAll("g_iOffset_ShellsInserted %d", g_iOffset_ShellsInserted);
-	//g_iOffset_ReloadState
-	//g_iOffset_ReloadNumShells
+// 	/*
+// 	fnc_DeterminePrimaryWeapon(iClient);
+// 	fnc_SaveAmmo(iClient);
+// 	fnc_CycleWeapon(iClient);
+// 	fnc_SetAmmo(iClient);
+// 	*/
+// 	/*
+// 	decl String:clientname[128];
+// 	GetClientName(iClient, clientname, sizeof(clientname));
+// 	*/
+// 	//decl String:ModelName[256];
+// 	//new WepSlot = GetPlayerWeaponSlot(iClient, 1);
+// 	//new ClientModel = GetClientModel(WepSlot, ModelName, sizeof(ModelName));
+// 	//PrintToChatAll("ClientModel = %s", ClientModel);
+// 	//decl String:currentweapon[32];
+// 	//GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
+// 	//decl Float:wepvorigin[3], Float:vangles[3], Float:vdir[3];
+// 	//GetClientEyeAngles(iClient, vangles);
+// //	GetAngleVectors(vangles, vdir, NULL_VECTOR, NULL_VECTOR);
+// 	//vangles[0] = 0.0;		//Lock x and z axis
+// 	//vangles[2] = 0.0;
+// 	//GetClientAbsOrigin(iClient, wepvorigin);
+// 	//wepvorigin[0]+=(vdir[0] * 30.0);		
+// 	//wepvorigin[1]+=(vdir[1] * 30.0);
+// 	//wepvorigin[2]+=(vdir[2] + 30.0);
+// 	//wep2vorigin[0]+=(vdir[0] * 45.0);		
+// 	//wep2vorigin[1]+=(vdir[1] * 45.0);
+// 	//wep2vorigin[2]+=(vdir[2] + 30.0);
+// 	//wepvorigin[0]+=(vdir[0] * 15.0);		
+// 	//wepvorigin[1]+=(vdir[1] * 15.0);
+// 	//wepvorigin[2]+=(vdir[2] + 30.0);
+// 	//new weapon = CreateEntityByName("weapon_melee");
+// 	//new weapon = CreateEntityByName("weapon_katana");
+// 	//new weapon = CreateEntityByName("weapon_autoshotgun");
+// 	//DispatchKeyValue(weapon, "ammo", "200");
+// 	//DispatchSpawn(weapon);
+// 	//DispatchSpawn(weapon2);
+// 	//DispatchSpawn(weapon);
+// 	//TeleportEntity(weapon, wepvorigin, vangles, NULL_VECTOR);
+// 	//TeleportEntity(weapon2, wep2vorigin, vangles, NULL_VECTOR);
+// 	//TeleportEntity(weapon, wepvorigin, vangles, NULL_VECTOR);
+// 	//new iEntid2 = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
+// 	//new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+// 	//SetEntData(ActiveWeaponID, g_iOffset_Clip1, 90, true);
+// 	//new m_reloadState = GetEntProp(ActiveWeaponID,Prop_Data,"m_reloadState");
+// 	//new m_reloadNumShells = GetEntProp(ActiveWeaponID,Prop_Data,"m_reloadNumShells");
+// 	//new m_reloadStartTime = GetEntProp(ActiveWeaponID,Prop_Data,"m_reloadStartTime");
+// 	//new m_reloadStartDuration = GetEntProp(ActiveWeaponID,Prop_Data,"m_reloadStartDuration");
+// 	//new m_reloadInsertDuration = GetEntProp(ActiveWeaponID,Prop_Data,"m_reloadInsertDuration");
+// 	//new m_reloadEndDuration = GetEntProp(ActiveWeaponID,Prop_Data,"m_reloadEndDuration");
+// 	//new m_shellsInserted = GetEntProp(ActiveWeaponID,Prop_Data,"m_shellsInserted");
+// 	//PrintToChatAll("m_reloadState %d", m_reloadState);
+// 	//PrintToChatAll("m_reloadNumShells %d", m_reloadNumShells);
+// 	//PrintToChatAll("m_reloadStartTime %f", m_reloadStartTime);
+// 	//PrintToChatAll("m_reloadStartDuration %f", m_reloadStartDuration);
+// 	//PrintToChatAll("m_reloadInsertDuration %f", m_reloadInsertDuration);
+// 	//PrintToChatAll("m_reloadEndDuration %f", m_reloadEndDuration);
+// 	//PrintToChatAll("m_shellsInserted %d", m_shellsInserted);
+// 	//new clip1 = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
+// 	//new clip3 = GetEntProp(ActiveWeaponID,Prop_Send,"m_iClip2");
+// 	//new PrimaryAmmoType = GetEntProp(ActiveWeaponID,Prop_Data,"m_iPrimaryAmmoType");
+// 	//new SecondaryAmmoType = GetEntProp(ActiveWeaponID,Prop_Data,"m_iSecondaryAmmoType");
+// 	//new UpgradedAmmoType = GetEntProp(ActiveWeaponID,Prop_Send,"m_nUpgradedPrimaryAmmoLoaded");
+// 	//m_nUpgradedPrimaryAmmoLoaded
+// 	//new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
+// 	//new ReserveAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iAmmo");
+// 	//PrintToChatAll("m_iClip3 %d", clip3);
+// 	//PrintToChatAll("g_iOffset_ReloadState %d", g_iOffset_ReloadState);
+// 	//PrintToChatAll("g_iOffset_ReloadStartDuration %f", g_iOffset_ReloadStartDuration);
+// 	//PrintToChatAll("g_iOffset_ReloadInsertDuration %f", g_iOffset_ReloadInsertDuration);
+// 	//PrintToChatAll("g_iOffset_ReloadEndDuration %f", g_iOffset_ReloadEndDuration);
+// 	//PrintToChatAll("g_iOffset_ReloadState %d", g_iOffset_ReloadState);
+// 	//PrintToChatAll("g_iOffset_ReloadStartTime %f", g_iOffset_ReloadStartTime);
+// 	//PrintToChatAll("g_bOffset_InReload %d", g_bOffset_InReload);
+// 	//PrintToChatAll("g_iOffset_ShellsInserted %d", g_iOffset_ShellsInserted);
+// 	//g_iOffset_ReloadState
+// 	//g_iOffset_ReloadNumShells
 	
-	//new weaponcheck = GetEntPropString(GetPlayerWeaponSlot(iClient, 1), Prop_Data, "m_strMapSetScriptName", currentweapon, sizeof(currentweapon));
-	//PrintToChatAll("Test %s", weaponcheck);
-	
-	
-	// decl String:szWeapon[64]; 
-	// GetEventString(event, "weapon", szWeapon, sizeof(szWeapon)); 
-	// if (strncmp(szWeapon, "melee", 5) == 0) 
-	// { 
-	// 	new iWeapon = GetEntDataEnt2(attacker, g_iActiveWeaponOffset); 
-	// 	if (IsValidEdict(iWeapon)) 
-	// 	{ 
-	// 		GetEdictClassname(iWeapon, szWeapon, sizeof(szWeapon)); 
-	// 		if (strncmp(szWeapon[7], "melee", 5) == 0) 
-	// 		{ 
-	// 			GetEntPropString(iWeapon, Prop_Data, "m_strMapSetScriptName", szWeapon, sizeof(szWeapon)); 
-	// 			SetEventString(event, "weapon", szWeapon);
-	// 			new check = SetEventString(event, "weapon", szWeapon);
-	// 			PrintToChatAll("Test 2 %d", check);				
-	// 		} 
-	// 	} 
-	// }  
+// 	//new weaponcheck = GetEntPropString(GetPlayerWeaponSlot(iClient, 1), Prop_Data, "m_strMapSetScriptName", currentweapon, sizeof(currentweapon));
+// 	//PrintToChatAll("Test %s", weaponcheck);
 	
 	
-	
-	// new m_reloadNumShells = FindDataMapInfo(iClient,"m_reloadNumShells");
-	// PrintToChatAll("iClient m_reloadNumShells %d", m_reloadNumShells);
-	// new m_shellsInserted = FindDataMapInfo(iClient,"m_shellsInserted");
-	// PrintToChatAll("iClient m_shellsInserted %d", m_shellsInserted);
-	// new m_reloadNumShells2 = FindDataMapInfo(ActiveWeaponID,"m_reloadNumShells");
-	// PrintToChatAll("ActiveWeaponID m_reloadNumShells %d", m_reloadNumShells2);
-	// new m_shellsInserted2 = FindDataMapInfo(ActiveWeaponID,"m_shellsInserted");
-	// PrintToChatAll("ActiveWeaponID m_shellsInserted %d", m_shellsInserted2);
-	// new m_reloadNumShells3 = GetEntProp(ActiveWeaponID,Prop_Data,"m_reloadNumShells");
-	// PrintToChatAll("Prop_Data ActiveWeaponID m_shellsInserted %d", m_reloadNumShells3);
-	// new m_shellsInserted3 = GetEntProp(iClient,Prop_Data,"m_shellsInserted");
-	// PrintToChatAll("Prop_Data iClient m_shellsInserted %d", m_shellsInserted3);
-	
-	//new m_reloadNumShells3 = FindDataMapInfo(currentweapon,"m_reloadNumShells");
-	//PrintToChatAll("currentweapon m_reloadNumShells %d", m_reloadNumShells3);
-	//new m_shellsInserted3 = FindDataMapInfo(currentweapon,"m_shellsInserted");
-	//PrintToChatAll("currentweapon m_shellsInserted %d", m_shellsInserted3);
-	//PrintToChatAll("m_iClip1 %d", clip1);
-	//PrintToChatAll("m_iClip2 %d", clip2);
-	//PrintToChatAll("m_iAmmo %d", iOffset_Ammo);
-	//PrintToChatAll("ReserveAmmo %d", ReserveAmmo);
-	//PrintToChatAll("m_iPrimaryAmmoType %d", PrimaryAmmoType);
-	//PrintToChatAll("m_iSecondaryAmmoType %d", SecondaryAmmoType);
-	//PrintToChatAll("UpgradedAmmoType %d", UpgradedAmmoType);
-	
-	// PrintToChatAll("Current Grenade Slot %d", g_iCoachCurrentGrenadeSlot[iClient]);
-	// PrintToChatAll("Grenade Slot 1 %s", g_strCoachGrenadeSlot1[iClient]);
-	// PrintToChatAll("Grenade Slot 2 %s", g_strCoachGrenadeSlot2[iClient]);
-	// PrintToChatAll("Grenade Slot 3 %s", g_strCoachGrenadeSlot3[iClient]);
+// 	// decl String:szWeapon[64]; 
+// 	// GetEventString(event, "weapon", szWeapon, sizeof(szWeapon)); 
+// 	// if (strncmp(szWeapon, "melee", 5) == 0) 
+// 	// { 
+// 	// 	new iWeapon = GetEntDataEnt2(attacker, g_iActiveWeaponOffset); 
+// 	// 	if (IsValidEdict(iWeapon)) 
+// 	// 	{ 
+// 	// 		GetEdictClassname(iWeapon, szWeapon, sizeof(szWeapon)); 
+// 	// 		if (strncmp(szWeapon[7], "melee", 5) == 0) 
+// 	// 		{ 
+// 	// 			GetEntPropString(iWeapon, Prop_Data, "m_strMapSetScriptName", szWeapon, sizeof(szWeapon)); 
+// 	// 			SetEventString(event, "weapon", szWeapon);
+// 	// 			new check = SetEventString(event, "weapon", szWeapon);
+// 	// 			PrintToChatAll("Test 2 %d", check);				
+// 	// 		} 
+// 	// 	} 
+// 	// }  
 	
 	
-	// decl String:currentweapon[32];
-	// GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
-	// PrintToChatAll("Current Weapon: %s", currentweapon);
 	
-	// decl String:number[32];
-	// GetCmdArg(1, number, sizeof(number));
-	// new num = 1064;
-	// num = StringToInt(number);
-	// SetEntProp(iClient, Prop_Send, "m_iGlowType", 2);
-	// SetEntProp(iClient, Prop_Send, "m_nGlowRange", 0);
-	// SetEntProp(iClient, Prop_Send, "m_glowColorOverride", num);*/
-	// /*new flags = GetConVarFlags(FindConVar("sv_cheats"));
-	// SetConVarFlags(FindConVar("sv_cheats"), flags^(FCVAR_NOTIFY|FCVAR_REPLICATED|FCVAR_SPONLY));
-	// SetConVarBool(FindConVar("sv_cheats"), true);
-	// SendConVarValue(iClient, FindConVar("sv_cheats"), "1");
-	// ClientCommand(iClient, "r_screenoverlay dev/dev_prisontvoverlay004.vmt");
-	// FakeClientCommand(iClient, "boom");
-	// //SendConVarValue(iClient, FindConVar("sv_cheats"), "0");
-	// //SetConVarBool(FindConVar("sv_cheats"), false);
-	// //SetConVarFlags(FindConVar("sv_cheats"), flags);
+// 	// new m_reloadNumShells = FindDataMapInfo(iClient,"m_reloadNumShells");
+// 	// PrintToChatAll("iClient m_reloadNumShells %d", m_reloadNumShells);
+// 	// new m_shellsInserted = FindDataMapInfo(iClient,"m_shellsInserted");
+// 	// PrintToChatAll("iClient m_shellsInserted %d", m_shellsInserted);
+// 	// new m_reloadNumShells2 = FindDataMapInfo(ActiveWeaponID,"m_reloadNumShells");
+// 	// PrintToChatAll("ActiveWeaponID m_reloadNumShells %d", m_reloadNumShells2);
+// 	// new m_shellsInserted2 = FindDataMapInfo(ActiveWeaponID,"m_shellsInserted");
+// 	// PrintToChatAll("ActiveWeaponID m_shellsInserted %d", m_shellsInserted2);
+// 	// new m_reloadNumShells3 = GetEntProp(ActiveWeaponID,Prop_Data,"m_reloadNumShells");
+// 	// PrintToChatAll("Prop_Data ActiveWeaponID m_shellsInserted %d", m_reloadNumShells3);
+// 	// new m_shellsInserted3 = GetEntProp(iClient,Prop_Data,"m_shellsInserted");
+// 	// PrintToChatAll("Prop_Data iClient m_shellsInserted %d", m_shellsInserted3);
+	
+// 	//new m_reloadNumShells3 = FindDataMapInfo(currentweapon,"m_reloadNumShells");
+// 	//PrintToChatAll("currentweapon m_reloadNumShells %d", m_reloadNumShells3);
+// 	//new m_shellsInserted3 = FindDataMapInfo(currentweapon,"m_shellsInserted");
+// 	//PrintToChatAll("currentweapon m_shellsInserted %d", m_shellsInserted3);
+// 	//PrintToChatAll("m_iClip1 %d", clip1);
+// 	//PrintToChatAll("m_iClip2 %d", clip2);
+// 	//PrintToChatAll("m_iAmmo %d", iOffset_Ammo);
+// 	//PrintToChatAll("ReserveAmmo %d", ReserveAmmo);
+// 	//PrintToChatAll("m_iPrimaryAmmoType %d", PrimaryAmmoType);
+// 	//PrintToChatAll("m_iSecondaryAmmoType %d", SecondaryAmmoType);
+// 	//PrintToChatAll("UpgradedAmmoType %d", UpgradedAmmoType);
+	
+// 	// PrintToChatAll("Current Grenade Slot %d", g_iCoachCurrentGrenadeSlot[iClient]);
+// 	// PrintToChatAll("Grenade Slot 1 %s", g_strCoachGrenadeSlot1[iClient]);
+// 	// PrintToChatAll("Grenade Slot 2 %s", g_strCoachGrenadeSlot2[iClient]);
+// 	// PrintToChatAll("Grenade Slot 3 %s", g_strCoachGrenadeSlot3[iClient]);
+	
+	
+// 	// decl String:currentweapon[32];
+// 	// GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
+// 	// PrintToChatAll("Current Weapon: %s", currentweapon);
+	
+// 	// decl String:number[32];
+// 	// GetCmdArg(1, number, sizeof(number));
+// 	// new num = 1064;
+// 	// num = StringToInt(number);
+// 	// SetEntProp(iClient, Prop_Send, "m_iGlowType", 2);
+// 	// SetEntProp(iClient, Prop_Send, "m_nGlowRange", 0);
+// 	// SetEntProp(iClient, Prop_Send, "m_glowColorOverride", num);*/
+// 	// /*new flags = GetConVarFlags(FindConVar("sv_cheats"));
+// 	// SetConVarFlags(FindConVar("sv_cheats"), flags^(FCVAR_NOTIFY|FCVAR_REPLICATED|FCVAR_SPONLY));
+// 	// SetConVarBool(FindConVar("sv_cheats"), true);
+// 	// SendConVarValue(iClient, FindConVar("sv_cheats"), "1");
+// 	// ClientCommand(iClient, "r_screenoverlay dev/dev_prisontvoverlay004.vmt");
+// 	// FakeClientCommand(iClient, "boom");
+// 	// //SendConVarValue(iClient, FindConVar("sv_cheats"), "0");
+// 	// //SetConVarBool(FindConVar("sv_cheats"), false);
+// 	// //SetConVarFlags(FindConVar("sv_cheats"), flags);
 
 	
-	//SetMakeAccountMotdIndex();
-	//MessageText(iClient, r, g, b, String:message[])
-	//{
-	/*new Handle:TextHandle = StartMessageOne("MessageText", iClient);
-	BfWriteByte(TextHandle, 255);        // R
-	BfWriteByte(TextHandle, 255);        // G
-	BfWriteByte(TextHandle, 255);        // B
-	BfWriteString(TextHandle, "text here omg it worked");
-	EndMessage();*/
+// 	//SetMakeAccountMotdIndex();
+// 	//MessageText(iClient, r, g, b, String:message[])
+// 	//{
+// 	/*new Handle:TextHandle = StartMessageOne("MessageText", iClient);
+// 	BfWriteByte(TextHandle, 255);        // R
+// 	BfWriteByte(TextHandle, 255);        // G
+// 	BfWriteByte(TextHandle, 255);        // B
+// 	BfWriteString(TextHandle, "text here omg it worked");
+// 	EndMessage();*/
 	
-	//}  
-	/*//Check Client id name
-	decl String:clientname[128];
-	GetClientName(iClient, clientname, sizeof(clientname));
-	PrintToChat(iClient, "%s", clientname);
-	for(new l=0; l<25; l++)
-	{
-		PrintToChat(iClient, "%c, %d", clientidname[iClient][l], clientidname[iClient][l]);
-	}
-	new l = 0;
-	while(clientname[l]!='\0' || clientidname[iClient][l]!='\0')
-	{
-		PrintToChat(iClient, "checking %c, %d = %c, %d", clientidname[iClient][l], clientidname[iClient][l], clientname[l], clientname[l]);
-		if(clientidname[iClient][l] != clientname[l])
-		{
-			PrintToChat(iClient, "Does not match");
-		}
-		l++;
-	}*/
+// 	//}  
+// 	/*//Check Client id name
+// 	decl String:clientname[128];
+// 	GetClientName(iClient, clientname, sizeof(clientname));
+// 	PrintToChat(iClient, "%s", clientname);
+// 	for(new l=0; l<25; l++)
+// 	{
+// 		PrintToChat(iClient, "%c, %d", clientidname[iClient][l], clientidname[iClient][l]);
+// 	}
+// 	new l = 0;
+// 	while(clientname[l]!='\0' || clientidname[iClient][l]!='\0')
+// 	{
+// 		PrintToChat(iClient, "checking %c, %d = %c, %d", clientidname[iClient][l], clientidname[iClient][l], clientname[l], clientname[l]);
+// 		if(clientidname[iClient][l] != clientname[l])
+// 		{
+// 			PrintToChat(iClient, "Does not match");
+// 		}
+// 		l++;
+// 	}*/
 	
-	/*if(args==1)
-	{
-		decl String:targetname[128], String:clientname[128];
-		GetClientName(iClient, clientname, sizeof(clientname));
-		GetCmdArg(1, targetname, sizeof(targetname));
-		PrintToChat(iClient, "%s, %s", targetname, clientname);
-		for(new l=0; l<25; l++)
-		{
-			//clientidname[iClient][l] = targetname[l];
-			if(clientidname[l]!=-1)
-				PrintToChat(iClient, "%c, %d", clientidname[iClient][l], clientidname[iClient][l]);
-		}
-	}*/
-	//FakeClientCommandEx(iClient, "explode");
-	if(testtoggle[iClient] == false)
-	{
-		//SetConVarInt(FindConVar("z_no_cull"), 1);
-		//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 0.3, true);
+// 	/*if(args==1)
+// 	{
+// 		decl String:targetname[128], String:clientname[128];
+// 		GetClientName(iClient, clientname, sizeof(clientname));
+// 		GetCmdArg(1, targetname, sizeof(targetname));
+// 		PrintToChat(iClient, "%s, %s", targetname, clientname);
+// 		for(new l=0; l<25; l++)
+// 		{
+// 			//clientidname[iClient][l] = targetname[l];
+// 			if(clientidname[l]!=-1)
+// 				PrintToChat(iClient, "%c, %d", clientidname[iClient][l], clientidname[iClient][l]);
+// 		}
+// 	}*/
+// 	//FakeClientCommandEx(iClient, "explode");
+// 	if(testtoggle[iClient] == false)
+// 	{
+// 		//SetConVarInt(FindConVar("z_no_cull"), 1);
+// 		//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 0.3, true);
 		
-		//new flags = GetConVarFlags(FindConVar("sv_cheats"));
-		//SetConVarFlags(FindConVar("sv_cheats"), flags^(FCVAR_NOTIFY|FCVAR_REPLICATED|FCVAR_SPONLY));
-		//SetConVarBool(FindConVar("sv_cheats"), true);
-		//SendConVarValue(iClient, FindConVar("sv_cheats"), "1");
+// 		//new flags = GetConVarFlags(FindConVar("sv_cheats"));
+// 		//SetConVarFlags(FindConVar("sv_cheats"), flags^(FCVAR_NOTIFY|FCVAR_REPLICATED|FCVAR_SPONLY));
+// 		//SetConVarBool(FindConVar("sv_cheats"), true);
+// 		//SendConVarValue(iClient, FindConVar("sv_cheats"), "1");
 		
-		//FakeClientCommand(iClient, "boom");
-		//resetCheats[iClient] = 0;
+// 		//FakeClientCommand(iClient, "boom");
+// 		//resetCheats[iClient] = 0;
 		
-		/*//blockEntity[iClient] = true;
-		new ent = CreateEntityByName("env_screenoverlay");
-		DispatchKeyValue(ent, "OverlayName1", "dev/dev_prisontvoverlay002.vmt"); 
-		AcceptEntityInput(ent, "StartOverlays", iClient);*/
+// 		/*//blockEntity[iClient] = true;
+// 		new ent = CreateEntityByName("env_screenoverlay");
+// 		DispatchKeyValue(ent, "OverlayName1", "dev/dev_prisontvoverlay002.vmt"); 
+// 		AcceptEntityInput(ent, "StartOverlays", iClient);*/
 		
-		//blockEntity[iClient][ent] = false;
-		//RemovePlayerItem(iClient, GetPlayerWeaponSlot(iClient, 0));
+// 		//blockEntity[iClient][ent] = false;
+// 		//RemovePlayerItem(iClient, GetPlayerWeaponSlot(iClient, 0));
 		
-		/* SPWANGING BARRIR
-		decl Float:vorigin[3], Float:vangles[3], Float:vdir[3];
-		decl Float:voriginSet[3], Float:vanglesSet[3];
-		GetClientEyeAngles(iClient, vangles);	//Get clients Eye Angles to know get what direction to spawn gun
-		GetAngleVectors(vangles, vdir, NULL_VECTOR, NULL_VECTOR);	//Get the direction the iClient is looking
-		vanglesSet[0] = 0.0;		//Lock x and z axis
-		vanglesSet[2] = 0.0;
-		vanglesSet[1] = vangles[1] + 180.0;		//Set Y for the rotation
+// 		/* SPWANGING BARRIR
+// 		decl Float:vorigin[3], Float:vangles[3], Float:vdir[3];
+// 		decl Float:voriginSet[3], Float:vanglesSet[3];
+// 		GetClientEyeAngles(iClient, vangles);	//Get clients Eye Angles to know get what direction to spawn gun
+// 		GetAngleVectors(vangles, vdir, NULL_VECTOR, NULL_VECTOR);	//Get the direction the iClient is looking
+// 		vanglesSet[0] = 0.0;		//Lock x and z axis
+// 		vanglesSet[2] = 0.0;
+// 		vanglesSet[1] = vangles[1] + 180.0;		//Set Y for the rotation
 		
-		GetClientAbsOrigin(iClient, vorigin);	//Get clients location origin vectors
-		voriginSet[0] = vorigin[0] + (vdir[0] * 50.0);		//Place the minigun infront of the players view
-		voriginSet[1] = vorigin[1] + (vdir[1] * 50.0);
-		voriginSet[2] = vorigin[2] + (vdir[2] * 1.5);
+// 		GetClientAbsOrigin(iClient, vorigin);	//Get clients location origin vectors
+// 		voriginSet[0] = vorigin[0] + (vdir[0] * 50.0);		//Place the minigun infront of the players view
+// 		voriginSet[1] = vorigin[1] + (vdir[1] * 50.0);
+// 		voriginSet[2] = vorigin[2] + (vdir[2] * 1.5);
 		
-		PrecacheModel("models/props_fortifications/sandbags_line2.mdl");
+// 		PrecacheModel("models/props_fortifications/sandbags_line2.mdl");
 		
-		sandbag1[iClient] = CreateEntityByName("prop_dynamic");		//Front Sand Bag
-		DispatchKeyValue(sandbag1[iClient], "solid",   "6");
-		SetEntityModel(sandbag1[iClient], "models/props_fortifications/sandbags_line2.mdl");
-		DispatchSpawn(sandbag1[iClient]);
-		TeleportEntity(sandbag1[iClient], voriginSet, vanglesSet, NULL_VECTOR);
+// 		sandbag1[iClient] = CreateEntityByName("prop_dynamic");		//Front Sand Bag
+// 		DispatchKeyValue(sandbag1[iClient], "solid",   "6");
+// 		SetEntityModel(sandbag1[iClient], "models/props_fortifications/sandbags_line2.mdl");
+// 		DispatchSpawn(sandbag1[iClient]);
+// 		TeleportEntity(sandbag1[iClient], voriginSet, vanglesSet, NULL_VECTOR);
 		
-		vanglesSet[1] = vangles[1] + 60.0;
-		voriginSet[0] = vorigin[0] - (vdir[0] * 50.0);	
-		voriginSet[1] = vorigin[1] + (vdir[1] * 50.0);
+// 		vanglesSet[1] = vangles[1] + 60.0;
+// 		voriginSet[0] = vorigin[0] - (vdir[0] * 50.0);	
+// 		voriginSet[1] = vorigin[1] + (vdir[1] * 50.0);
 		
-		sandbag2[iClient] = CreateEntityByName("prop_dynamic");
-		DispatchKeyValue(sandbag2[iClient], "solid",   "6");
-		SetEntityModel(sandbag2[iClient], "models/props_fortifications/sandbags_line2.mdl");
-		DispatchSpawn(sandbag2[iClient]);
-		TeleportEntity(sandbag2[iClient], voriginSet, vanglesSet, NULL_VECTOR);*/
+// 		sandbag2[iClient] = CreateEntityByName("prop_dynamic");
+// 		DispatchKeyValue(sandbag2[iClient], "solid",   "6");
+// 		SetEntityModel(sandbag2[iClient], "models/props_fortifications/sandbags_line2.mdl");
+// 		DispatchSpawn(sandbag2[iClient]);
+// 		TeleportEntity(sandbag2[iClient], voriginSet, vanglesSet, NULL_VECTOR);*/
 		
-		/*sandbag3[iClient] = CreateEntityByName("prop_dynamic");
-		DispatchKeyValue(sandbag3[iClient], "solid",   "6");
-		SetEntityModel(sandbag3[iClient], "models/props_fortifications/sandbags_line2.mdl");
-		DispatchSpawn(sandbag3[iClient]);
-		TeleportEntity(sandbag3[iClient], voriginSet, vanglesSet, NULL_VECTOR);
-		*/
+// 		/*sandbag3[iClient] = CreateEntityByName("prop_dynamic");
+// 		DispatchKeyValue(sandbag3[iClient], "solid",   "6");
+// 		SetEntityModel(sandbag3[iClient], "models/props_fortifications/sandbags_line2.mdl");
+// 		DispatchSpawn(sandbag3[iClient]);
+// 		TeleportEntity(sandbag3[iClient], voriginSet, vanglesSet, NULL_VECTOR);
+// 		*/
 		
-		//sandbags_corner2.mdl
-		//sandbags_corner3.mdl
-		//sandbags_line2.mdl
+// 		//sandbags_corner2.mdl
+// 		//sandbags_corner3.mdl
+// 		//sandbags_line2.mdl
 		
-		PrintHintText(iClient, "Testing toggled on");
+// 		PrintHintText(iClient, "Testing toggled on");
 		
-		testtoggle[iClient] = true;
-	}
-	else
-	{	
-		//SetConVarInt(FindConVar("z_no_cull"), 0);
-		//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
-		/*new ent = CreateEntityByName("env_screenoverlay"); 
-		DispatchKeyValue(ent, "OverlayName1", "dev/dev_prisontvoverlay001.vmt"); 
-		AcceptEntityInput(ent, "StartOverlays", iClient); 
-		*/
+// 		testtoggle[iClient] = true;
+// 	}
+// 	else
+// 	{	
+// 		//SetConVarInt(FindConVar("z_no_cull"), 0);
+// 		//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
+// 		/*new ent = CreateEntityByName("env_screenoverlay"); 
+// 		DispatchKeyValue(ent, "OverlayName1", "dev/dev_prisontvoverlay001.vmt"); 
+// 		AcceptEntityInput(ent, "StartOverlays", iClient); 
+// 		*/
 		
-		// SPANWNIGN BARRIR
-		/*if(sandbag1[iClient] > 0)
-			if(IsValidEntity(sandbag1[iClient]))
-				RemoveEdict(sandbag1[iClient]);
-		sandbag1[iClient] = -1;
-		if(sandbag2[iClient] > 0)
-			if(IsValidEntity(sandbag2[iClient]))
-				RemoveEdict(sandbag2[iClient]);
-		sandbag2[iClient] = -1;
-		if(sandbag3[iClient] > 0)
-			if(IsValidEntity(sandbag3[iClient]))
-				RemoveEdict(sandbag3[iClient]);
-		sandbag3[iClient] = -1;
-		*/
-		PrintHintText(iClient, "Testing toggled off");
-		testtoggle[iClient] = false;
-	}
+// 		// SPANWNIGN BARRIR
+// 		/*if(sandbag1[iClient] > 0)
+// 			if(IsValidEntity(sandbag1[iClient]))
+// 				RemoveEdict(sandbag1[iClient]);
+// 		sandbag1[iClient] = -1;
+// 		if(sandbag2[iClient] > 0)
+// 			if(IsValidEntity(sandbag2[iClient]))
+// 				RemoveEdict(sandbag2[iClient]);
+// 		sandbag2[iClient] = -1;
+// 		if(sandbag3[iClient] > 0)
+// 			if(IsValidEntity(sandbag3[iClient]))
+// 				RemoveEdict(sandbag3[iClient]);
+// 		sandbag3[iClient] = -1;
+// 		*/
+// 		PrintHintText(iClient, "Testing toggled off");
+// 		testtoggle[iClient] = false;
+// 	}
 	
-	//Stuff to remember
-	//SetConVarInt(FindConVar("z_non_head_damage_factor_normal"), 200);
-	//SetConVarFloat(FindConVar("first_aid_heal_percent"), 0.24);
-	return;
-}
+// 	//Stuff to remember
+// 	//SetConVarInt(FindConVar("z_non_head_damage_factor_normal"), 200);
+// 	//SetConVarFloat(FindConVar("first_aid_heal_percent"), 0.24);
+// 	return;
+// }
 
-public Action:Timer_ShowPlayerStats(Handle:timer, any:iClient)
-{
-	decl String:cstr[2];
-	IntToString(iClient, cstr, sizeof(cstr));
-	//ShowLongMOTD(iClient, "Player Statistics", cstr);
-	OpenMOTDPanel(iClient, "Player Statistics", cstr, MOTDPANEL_TYPE_INDEX);
-	return Plugin_Continue;
-}
+// Action:Timer_ShowPlayerStats(Handle:timer, any:iClient)
+// {
+// 	decl String:cstr[2];
+// 	IntToString(iClient, cstr, sizeof(cstr));
+// 	//ShowLongMOTD(iClient, "Player Statistics", cstr);
+// 	OpenMOTDPanel(iClient, "Player Statistics", cstr, MOTDPANEL_TYPE_INDEX);
+// 	return Plugin_Continue;
+// }
 
 
-public Action:NewRemoveInstructorHint(Handle:h_Timer, Handle:h_Pack)
-{
-	new i_Ent, iClient;
+// Action:NewRemoveInstructorHint(Handle:h_Timer, Handle:h_Pack)
+// {
+// 	new i_Ent, iClient;
 
-	ResetPack(h_Pack, false);
-	iClient = ReadPackCell(h_Pack);
-	i_Ent = ReadPackCell(h_Pack);
-	CloseHandle(h_Pack);
+// 	ResetPack(h_Pack, false);
+// 	iClient = ReadPackCell(h_Pack);
+// 	i_Ent = ReadPackCell(h_Pack);
+// 	CloseHandle(h_Pack);
 
-	if (!iClient || !IsClientInGame(iClient))
-		return Plugin_Handled;
+// 	if (!iClient || !IsClientInGame(iClient))
+// 		return Plugin_Handled;
 
-	if (IsValidEntity(i_Ent))
-		RemoveEdict(i_Ent);
+// 	if (IsValidEntity(i_Ent))
+// 		RemoveEdict(i_Ent);
 
-	return Plugin_Continue;
-}
+// 	return Plugin_Continue;
+// }
 
-public Action:Timer_UpdateParticle(Handle:timer, any:iClient)
-{
-	decl Float:pos[3];
-	decl Float:angles[3];
-	GetEntPropVector(iClient, Prop_Send, "m_vecOrigin", pos);
-	GetClientEyeAngles(iClient, angles);
-	pos[2] += 10.0;
-	angles[2] -= 90.0;
-	TeleportEntity(testingparticle, pos, angles, NULL_VECTOR);
+// Action:Timer_UpdateParticle(Handle:timer, any:iClient)
+// {
+// 	decl Float:pos[3];
+// 	decl Float:angles[3];
+// 	GetEntPropVector(iClient, Prop_Send, "m_vecOrigin", pos);
+// 	GetClientEyeAngles(iClient, angles);
+// 	pos[2] += 10.0;
+// 	angles[2] -= 90.0;
+// 	TeleportEntity(testingparticle, pos, angles, NULL_VECTOR);
 	
-	//if(IsValidEntity(testingparticle) == true)
-	CreateTimer(0.1, Timer_UpdateParticle, iClient, TIMER_FLAG_NO_MAPCHANGE);
+// 	//if(IsValidEntity(testingparticle) == true)
+// 	CreateTimer(0.1, Timer_UpdateParticle, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	
-	return Plugin_Stop;
-}
+// 	return Plugin_Stop;
+// }
 
-public Action:Testing(iClient,args)
-{
-	PrintToChatAll("m_zombieClass = %i", GetEntProp(iClient, Prop_Send, "m_zombieClass"));
+// Action:Testing(iClient)
+// {
+// 	PrintToChatAll("m_zombieClass = %i", GetEntProp(iClient, Prop_Send, "m_zombieClass"));
 
-	new newClass = GetRandomInt(1, 6);
+// 	new newClass = GetRandomInt(1, 6);
 
-	PrintToChatAll("Attempting to change spawn to %i", newClass);
-	SDKCall(g_hSetClass, iClient, newClass);
-	int cAbility = GetEntPropEnt(iClient, Prop_Send, "m_customAbility");
-	if (cAbility > 0) AcceptEntityInput(cAbility, "Kill");
-	SetEntProp(iClient, Prop_Send, "m_customAbility", GetEntData(SDKCall(g_hCreateAbility, iClient), g_iAbility));
-	PrintToChatAll("Should be spawned as a %i", newClass);
+// 	PrintToChatAll("Attempting to change spawn to %i", newClass);
+// 	SDKCall(g_hSetClass, iClient, newClass);
+// 	int cAbility = GetEntPropEnt(iClient, Prop_Send, "m_customAbility");
+// 	if (cAbility > 0) AcceptEntityInput(cAbility, "Kill");
+// 	SetEntProp(iClient, Prop_Send, "m_customAbility", GetEntData(SDKCall(g_hCreateAbility, iClient), g_iAbility));
+// 	PrintToChatAll("Should be spawned as a %i", newClass);
 	
-	// new iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
-	// PrintToChatAll("iEntid %d", iEntid);
-	// decl offset;
-	// //decl Float:flReturn;
-	// for(offset = 1000;offset <= 2000;offset++)
-	// {
-	// 	PrintToChatAll("Started for loop");
-	// 	PrintToChatAll("Offset = %i", offset);
-	// 	PrintToChatAll("Offset Value = %f", GetEntDataFloat(iEntid, offset));
-	// 	/*
-	// 	if(flReturn > -1.0)
-	// 	{
-	// 		PrintToChatAll("Offset %i = %f", offset, flReturn);
-	// 	}
-	// 	*/
-	// }
+// 	// new iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
+// 	// PrintToChatAll("iEntid %d", iEntid);
+// 	// decl offset;
+// 	// //decl Float:flReturn;
+// 	// for(offset = 1000;offset <= 2000;offset++)
+// 	// {
+// 	// 	PrintToChatAll("Started for loop");
+// 	// 	PrintToChatAll("Offset = %i", offset);
+// 	// 	PrintToChatAll("Offset Value = %f", GetEntDataFloat(iEntid, offset));
+// 	// 	/*
+// 	// 	if(flReturn > -1.0)
+// 	// 	{
+// 	// 		PrintToChatAll("Offset %i = %f", offset, flReturn);
+// 	// 	}
+// 	// 	*/
+// 	// }
 	
 	
-	//TopMenuDraw(iClient);
+// 	//TopMenuDraw(iClient);
 	
-	/*decl String:arg[1024];
-	GetCmdArg(1, arg, sizeof(arg));
-	new Float:distance = StringToFloat(arg);
+// 	/*decl String:arg[1024];
+// 	GetCmdArg(1, arg, sizeof(arg));
+// 	new Float:distance = StringToFloat(arg);
 	
-	new Float:xyzNewVelocity[3] = {0.0, 0.0, 0.0};
+// 	new Float:xyzNewVelocity[3] = {0.0, 0.0, 0.0};
 	
-	xyzNewVelocity[2] = distance;
+// 	xyzNewVelocity[2] = distance;
 				
-	TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, xyzNewVelocity);
-	*/
+// 	TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, xyzNewVelocity);
+// 	*/
 	
-	//decl String:arg[1024];
-	//GetCmdArg(1, arg, sizeof(arg));
-	//new Float:radius = StringToFloat(arg);
-	//GetCmdArg(2, arg, sizeof(arg));
-	//new Float:width = StringToFloat(arg);
+// 	//decl String:arg[1024];
+// 	//GetCmdArg(1, arg, sizeof(arg));
+// 	//new Float:radius = StringToFloat(arg);
+// 	//GetCmdArg(2, arg, sizeof(arg));
+// 	//new Float:width = StringToFloat(arg);
 	
-	//For testing particles
-	//decl String:arg1[1024];
-	//GetCmdArg(1, arg1, sizeof(arg1));
-	//testingparticle = WriteParticle(iClient, arg1, 0.0, 10.0);
-	//CreateParticle(arg1, 10.0, iClient, ATTACH_MOUTH, true);
+// 	//For testing particles
+// 	//decl String:arg1[1024];
+// 	//GetCmdArg(1, arg1, sizeof(arg1));
+// 	//testingparticle = WriteParticle(iClient, arg1, 0.0, 10.0);
+// 	//CreateParticle(arg1, 10.0, iClient, ATTACH_MOUTH, true);
 	
-	//WriteParticle(iClient, "powerup_frame", 0.0, 6.0);
+// 	//WriteParticle(iClient, "powerup_frame", 0.0, 6.0);
 	
-	/*decl String:arg1[1024];
-	GetCmdArg(1, arg1, sizeof(arg1));
-	WriteParticle(iClient, arg1, 0.0, 6.0);
-	new i;
-	for(i = 1;i <= MaxClients; i++)
-	{
-		if(IsClientInGame(i) == true && IsPlayerAlive(i))
-			WriteParticle(i, arg1, 0.0, 6.0);
-	}*/
-	
-	
-	
-	//CreateTimer(3.0, Timer_UpdateParticle, iClient, TIMER_FLAG_NO_MAPCHANGE);
+// 	/*decl String:arg1[1024];
+// 	GetCmdArg(1, arg1, sizeof(arg1));
+// 	WriteParticle(iClient, arg1, 0.0, 6.0);
+// 	new i;
+// 	for(i = 1;i <= MaxClients; i++)
+// 	{
+// 		if(IsClientInGame(i) == true && IsPlayerAlive(i))
+// 			WriteParticle(i, arg1, 0.0, 6.0);
+// 	}*/
 	
 	
-	/*PrecacheParticle("particle_test");
-	WriteParticle(iClient, "particle_test", 0.0, 15.0);
 	
-	PrecacheParticle("particle_test_locked");
-	CreateParticle("particle_test_locked", 15.0, iClient, ATTACH_EYES);  //, bool:useangles = false, Float:xOffs=0.0, Float:yOffs=0.0, Float:zOffs=0.0)
-	*/
+// 	//CreateTimer(3.0, Timer_UpdateParticle, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	
-	/*decl i_Ent, String:s_TargetName[32], Handle:h_Pack;
-	decl String:buffer[100];
+	
+// 	/*PrecacheParticle("particle_test");
+// 	WriteParticle(iClient, "particle_test", 0.0, 15.0);
+	
+// 	PrecacheParticle("particle_test_locked");
+// 	CreateParticle("particle_test_locked", 15.0, iClient, ATTACH_EYES);  //, bool:useangles = false, Float:xOffs=0.0, Float:yOffs=0.0, Float:zOffs=0.0)
+// 	*/
+	
+// 	/*decl i_Ent, String:s_TargetName[32], Handle:h_Pack;
+// 	decl String:buffer[100];
 
-	//if( g_bTranslation )
-	//	Format(buffer, sizeof(buffer), "%T", "Crawl", iClient);
-	//else
-	Format(buffer, sizeof(buffer), "testing the new Instructor Hint text!");
-	ReplaceString(buffer, sizeof(buffer), "\n", " ");
+// 	//if( g_bTranslation )
+// 	//	Format(buffer, sizeof(buffer), "%T", "Crawl", iClient);
+// 	//else
+// 	Format(buffer, sizeof(buffer), "testing the new Instructor Hint text!");
+// 	ReplaceString(buffer, sizeof(buffer), "\n", " ");
 
-	i_Ent = CreateEntityByName("env_instructor_hint");
-	FormatEx(s_TargetName, sizeof(s_TargetName), "hint%d", iClient);
-	DispatchKeyValue(iClient, "targetname", s_TargetName);
-	DispatchKeyValue(i_Ent, "hint_target", s_TargetName);
-	DispatchKeyValue(i_Ent, "hint_timeout", "5");
-	DispatchKeyValue(i_Ent, "hint_range", "0.01");
-	DispatchKeyValue(i_Ent, "hint_icon_onscreen", "icon_tip");
-	DispatchKeyValue(i_Ent, "hint_caption", buffer);
-	DispatchKeyValue(i_Ent, "hint_color", "255 255 255");
-	DispatchSpawn(i_Ent);
-	AcceptEntityInput(i_Ent, "ShowHint");
-	h_Pack = CreateDataPack();
-	WritePackCell(h_Pack, iClient);
-	WritePackCell(h_Pack, i_Ent);
-	CreateTimer(5.0, NewRemoveInstructorHint, h_Pack);
+// 	i_Ent = CreateEntityByName("env_instructor_hint");
+// 	FormatEx(s_TargetName, sizeof(s_TargetName), "hint%d", iClient);
+// 	DispatchKeyValue(iClient, "targetname", s_TargetName);
+// 	DispatchKeyValue(i_Ent, "hint_target", s_TargetName);
+// 	DispatchKeyValue(i_Ent, "hint_timeout", "5");
+// 	DispatchKeyValue(i_Ent, "hint_range", "0.01");
+// 	DispatchKeyValue(i_Ent, "hint_icon_onscreen", "icon_tip");
+// 	DispatchKeyValue(i_Ent, "hint_caption", buffer);
+// 	DispatchKeyValue(i_Ent, "hint_color", "255 255 255");
+// 	DispatchSpawn(i_Ent);
+// 	AcceptEntityInput(i_Ent, "ShowHint");
+// 	h_Pack = CreateDataPack();
+// 	WritePackCell(h_Pack, iClient);
+// 	WritePackCell(h_Pack, i_Ent);
+// 	CreateTimer(5.0, NewRemoveInstructorHint, h_Pack);
 	
-	PrintToChatAll("NextAttack = %d", g_iOffset_NextActivation);
-	*/
+// 	PrintToChatAll("NextAttack = %d", g_iOffset_NextActivation);
+// 	*/
 	
-	/*decl String:number[32];
-	GetCmdArg(1, number, sizeof(number));
-	new num = 3;
-	num = StringToInt(number);
-	for(new i = 1; i <= num; i++)
-	{
-		new Handle:h = CreateDataPack();
-		WritePackCell(h, iClient);
-	}*/
-	
-	
-	//blockEntity[iClient] = true;
-	//WriteParticle(iClient, "ellis_ulti_charge3", 3.0, 3.0);
-	//WriteParticle(iClient, "smoker_spore_trail_spores", 3.0, 3.0);
-	
-	//WriteParticle(iClient, "smoker_smokecloud", 3.0, 3.0);
-	//PrecacheParticle("ellis_ulti_charge3");
-	
-	/*TE_Start("BeamLaser");
-	TE_WriteNum("m_nModelIndex", g_iSprite_SmokerTongue);
-	TE_WriteNum("m_nHaloIndex", 0);
-	TE_WriteNum("m_nStartFrame",3);
-	TE_WriteNum("m_nFrameRate", 60);
-	TE_WriteFloat("m_fLife", 90.0);
-	TE_WriteFloat("m_fWidth", 10.00);
-	TE_WriteFloat("m_fEndWidth", 10.0);
-	TE_WriteNum("m_nFadeLength", 9);
-	TE_WriteFloat("m_fAmplitude", 1.0);
-	TE_WriteNum("m_nSpeed", 1);
-	TE_WriteNum("r", 255);
-	TE_WriteNum("g", 255);
-	TE_WriteNum("b", 255);
-	TE_WriteNum("a", 255);
-	TE_WriteNum("m_nStartEntity", 3);
-	TE_WriteNum("m_nEndEntity", 4);*/
-	//TE_WriteEncodedEnt("m_nStartEntity", iClient);
-	//TE_WriteEncodedEnt("m_nEndEntity", 4);
+// 	/*decl String:number[32];
+// 	GetCmdArg(1, number, sizeof(number));
+// 	new num = 3;
+// 	num = StringToInt(number);
+// 	for(new i = 1; i <= num; i++)
+// 	{
+// 		new Handle:h = CreateDataPack();
+// 		WritePackCell(h, iClient);
+// 	}*/
 	
 	
-	//CreateWire(iClient, 3);
+// 	//blockEntity[iClient] = true;
+// 	//WriteParticle(iClient, "ellis_ulti_charge3", 3.0, 3.0);
+// 	//WriteParticle(iClient, "smoker_spore_trail_spores", 3.0, 3.0);
 	
-	/*new flags; 
-	flags  = GetCommandFlags("r_screenoverlay"); 
-	flags &= ~FCVAR_CHEAT; 
-	flags &= ~FCVAR_SPONLY; 
-	SetCommandFlags("r_screenoverlay", flags); 
-	ClientCommand(iClient, "r_screenoverlay dev/dev_prisontvoverlay004.vmt");*/
+// 	//WriteParticle(iClient, "smoker_smokecloud", 3.0, 3.0);
+// 	//PrecacheParticle("ellis_ulti_charge3");
 	
-	/*new flags  = GetCommandFlags("r_screenoverlay"); 
-	flags &= ~FCVAR_CHEAT; 
-	flags &= ~FCVAR_REPLICATED; 
-	flags &= ~FCVAR_SPONLY; 
-	SetCommandFlags("r_screenoverlay", flags^(FCVAR_NOTIFY|FCVAR_REPLICATED|FCVAR_SPONLY)); 
-	ClientCommand(iClient, "r_screenoverlay dev/dev_prisontvoverlay004.vmt");*/
+// 	/*TE_Start("BeamLaser");
+// 	TE_WriteNum("m_nModelIndex", g_iSprite_SmokerTongue);
+// 	TE_WriteNum("m_nHaloIndex", 0);
+// 	TE_WriteNum("m_nStartFrame",3);
+// 	TE_WriteNum("m_nFrameRate", 60);
+// 	TE_WriteFloat("m_fLife", 90.0);
+// 	TE_WriteFloat("m_fWidth", 10.00);
+// 	TE_WriteFloat("m_fEndWidth", 10.0);
+// 	TE_WriteNum("m_nFadeLength", 9);
+// 	TE_WriteFloat("m_fAmplitude", 1.0);
+// 	TE_WriteNum("m_nSpeed", 1);
+// 	TE_WriteNum("r", 255);
+// 	TE_WriteNum("g", 255);
+// 	TE_WriteNum("b", 255);
+// 	TE_WriteNum("a", 255);
+// 	TE_WriteNum("m_nStartEntity", 3);
+// 	TE_WriteNum("m_nEndEntity", 4);*/
+// 	//TE_WriteEncodedEnt("m_nStartEntity", iClient);
+// 	//TE_WriteEncodedEnt("m_nEndEntity", 4);
+	
+	
+// 	//CreateWire(iClient, 3);
+	
+// 	/*new flags; 
+// 	flags  = GetCommandFlags("r_screenoverlay"); 
+// 	flags &= ~FCVAR_CHEAT; 
+// 	flags &= ~FCVAR_SPONLY; 
+// 	SetCommandFlags("r_screenoverlay", flags); 
+// 	ClientCommand(iClient, "r_screenoverlay dev/dev_prisontvoverlay004.vmt");*/
+	
+// 	/*new flags  = GetCommandFlags("r_screenoverlay"); 
+// 	flags &= ~FCVAR_CHEAT; 
+// 	flags &= ~FCVAR_REPLICATED; 
+// 	flags &= ~FCVAR_SPONLY; 
+// 	SetCommandFlags("r_screenoverlay", flags^(FCVAR_NOTIFY|FCVAR_REPLICATED|FCVAR_SPONLY)); 
+// 	ClientCommand(iClient, "r_screenoverlay dev/dev_prisontvoverlay004.vmt");*/
 	 
-	/*flags = GetCommandFlags("r_screenoverlay");
-	SetCommandFlags("r_screenoverlay", flags^(~FCVAR_CHEAT));
-	//SetCommandFlags("r_screenoverlay", (GetCommandFlags("r_screenoverlay") - FCVAR_CHEAT));
-	ClientCommand(iClient, "r_screenoverlay dev/dev_prisontvoverlay004.vmt");
-	*/
+// 	/*flags = GetCommandFlags("r_screenoverlay");
+// 	SetCommandFlags("r_screenoverlay", flags^(~FCVAR_CHEAT));
+// 	//SetCommandFlags("r_screenoverlay", (GetCommandFlags("r_screenoverlay") - FCVAR_CHEAT));
+// 	ClientCommand(iClient, "r_screenoverlay dev/dev_prisontvoverlay004.vmt");
+// 	*/
 	
-	//SetCommandFlags("r_screenoverlay", (GetCommandFlags("r_screenoverlay") - FCVAR_CHEAT + FCVAR_NOTIFY + FCVAR_REPLICATED - FCVAR_SPONLY));
-	//SetCommandFlags("r_screenoverlay", (GetCommandFlags("r_screenoverlay") - ~FCVAR_CHEAT + FCVAR_REPLICATED));
+// 	//SetCommandFlags("r_screenoverlay", (GetCommandFlags("r_screenoverlay") - FCVAR_CHEAT + FCVAR_NOTIFY + FCVAR_REPLICATED - FCVAR_SPONLY));
+// 	//SetCommandFlags("r_screenoverlay", (GetCommandFlags("r_screenoverlay") - ~FCVAR_CHEAT + FCVAR_REPLICATED));
 	
-	//ClientCommand(iClient, "r_screenoverlay dev/dev_prisontvoverlay004.vmt");
+// 	//ClientCommand(iClient, "r_screenoverlay dev/dev_prisontvoverlay004.vmt");
 	
-	//SetCommandFlags("r_screenoverlay", flags);
+// 	//SetCommandFlags("r_screenoverlay", flags);
 	
-	/*decl String:arg1[1024];
-	GetCmdArg(1, arg1, sizeof(arg1));
-	PrintToChatAll("opening %s", arg1);
-	OpenMOTDPanel(iClient, "Website", arg1, MOTDPANEL_TYPE_URL);
-	*/
+// 	/*decl String:arg1[1024];
+// 	GetCmdArg(1, arg1, sizeof(arg1));
+// 	PrintToChatAll("opening %s", arg1);
+// 	OpenMOTDPanel(iClient, "Website", arg1, MOTDPANEL_TYPE_URL);
+// 	*/
 	
-	/*decl String:text[2048];
-	decl String:cat[2048];
-	//FormatEx(text, sizeof(text), "<html><body bgcolor=\"#000000\" text=\"#00FF00\"><h1>%N's Stat, %s</h1></body></html>", iClient, arg1);
-	FormatEx(text, sizeof(text), "<html><body bgcolor=\"#000000\" text=\"#00FF00\"><h1>%N's Statistics %s</h1>", iClient, arg1);
+// 	/*decl String:text[2048];
+// 	decl String:cat[2048];
+// 	//FormatEx(text, sizeof(text), "<html><body bgcolor=\"#000000\" text=\"#00FF00\"><h1>%N's Stat, %s</h1></body></html>", iClient, arg1);
+// 	FormatEx(text, sizeof(text), "<html><body bgcolor=\"#000000\" text=\"#00FF00\"><h1>%N's Statistics %s</h1>", iClient, arg1);
 	
-	FormatEx(cat, sizeof(cat), "<p>Common Infected kills this round: %d<p>", g_iStat_ClientCommonKilled[iClient]);
-	StrCat(text, sizeof(text), cat);
-	FormatEx(cat, sizeof(cat), "<p>Special Infected kills this round: %d<p>", g_iStat_ClientInfectedKilled[iClient]);
-	StrCat(text, sizeof(text), cat);
+// 	FormatEx(cat, sizeof(cat), "<p>Common Infected kills this round: %d<p>", g_iStat_ClientCommonKilled[iClient]);
+// 	StrCat(text, sizeof(text), cat);
+// 	FormatEx(cat, sizeof(cat), "<p>Special Infected kills this round: %d<p>", g_iStat_ClientInfectedKilled[iClient]);
+// 	StrCat(text, sizeof(text), cat);
 	
-	FormatEx(cat, sizeof(cat), "<p>END OF MESSAGE<p>");
-	StrCat(text, sizeof(text), cat);
+// 	FormatEx(cat, sizeof(cat), "<p>END OF MESSAGE<p>");
+// 	StrCat(text, sizeof(text), cat);
 	
-	StrCat(text, sizeof(text), "</body></html>");
-	//OpenMOTDPanel(iClient, "Player Stats", text, MOTDPANEL_TYPE_TEXT);
-	decl String:cstr[2];
-	IntToString(iClient, cstr, sizeof(cstr));
-	SetLongMOTD(cstr, text);
-	CreateTimer(0.1, Timer_ShowPlayerStats, iClient, TIMER_FLAG_NO_MAPCHANGE);
-	*/
+// 	StrCat(text, sizeof(text), "</body></html>");
+// 	//OpenMOTDPanel(iClient, "Player Stats", text, MOTDPANEL_TYPE_TEXT);
+// 	decl String:cstr[2];
+// 	IntToString(iClient, cstr, sizeof(cstr));
+// 	SetLongMOTD(cstr, text);
+// 	CreateTimer(0.1, Timer_ShowPlayerStats, iClient, TIMER_FLAG_NO_MAPCHANGE);
+// 	*/
 	
 	
-	/*
-	"<html><body bgcolor=\"#000000\" text=\"#00FF00\"><h1>Player Name = %d</h1></body></html>"
-	<html>
-	<body bgcolor="#000000" text="#00FF00">
-	<h1>Player Name = %d</h1>
-	</body>
-	</html>
-	*/
+// 	/*
+// 	"<html><body bgcolor=\"#000000\" text=\"#00FF00\"><h1>Player Name = %d</h1></body></html>"
+// 	<html>
+// 	<body bgcolor="#000000" text="#00FF00">
+// 	<h1>Player Name = %d</h1>
+// 	</body>
+// 	</html>
+// 	*/
 
-	/*PrecacheParticle("boomer_vomit");
-	new Float:pos[3];
-	new Float:angles[3];
-	//GetEntPropVector(iClient, Prop_Send, "m_vecOrigin", pos);
-	GetClientEyePosition(iClient, pos);
-	GetClientEyeAngles(iClient, angles);
-	TE_Particle("boomer_vomit", pos, pos, angles, iClient);
-	*/
+// 	/*PrecacheParticle("boomer_vomit");
+// 	new Float:pos[3];
+// 	new Float:angles[3];
+// 	//GetEntPropVector(iClient, Prop_Send, "m_vecOrigin", pos);
+// 	GetClientEyePosition(iClient, pos);
+// 	GetClientEyeAngles(iClient, angles);
+// 	TE_Particle("boomer_vomit", pos, pos, angles, iClient);
+// 	*/
 	
-	/*new Float:pos[3];
-	new Float:angles[3];
-	GetEntPropVector(iClient, Prop_Send, "m_vecOrigin", pos);
-	//pos[1] += 30.0;
-	//pos[0] += 30.0;
-	//pos[2] -= 100.0;
-	GetClientEyeAngles(iClient, angles);
+// 	/*new Float:pos[3];
+// 	new Float:angles[3];
+// 	GetEntPropVector(iClient, Prop_Send, "m_vecOrigin", pos);
+// 	//pos[1] += 30.0;
+// 	//pos[0] += 30.0;
+// 	//pos[2] -= 100.0;
+// 	GetClientEyeAngles(iClient, angles);
 	
-	new ent = CreateEntityByName("env_sprite");
-	DispatchKeyValue(ent, "model", "materials/custom/50xp_si.vmt");
-	DispatchKeyValue(ent, "classname", "env_sprite");
-	TeleportEntity(ent, pos, angles, NULL_VECTOR);
-	SetVariantString("!activator");
-	AcceptEntityInput(ent, "SetParent", iClient, ent, 0);
-	SetVariantString("forward");
-	AcceptEntityInput(ent, "SetParentAttachmentMaintainOffset", ent, ent, 0);
-	DispatchSpawn(ent);
-	ActivateEntity(ent);
-	AcceptEntityInput(ent, "Start");
-	//TeleportEntity(ent, pos, angles, NULL_VECTOR);
-	*/
+// 	new ent = CreateEntityByName("env_sprite");
+// 	DispatchKeyValue(ent, "model", "materials/custom/50xp_si.vmt");
+// 	DispatchKeyValue(ent, "classname", "env_sprite");
+// 	TeleportEntity(ent, pos, angles, NULL_VECTOR);
+// 	SetVariantString("!activator");
+// 	AcceptEntityInput(ent, "SetParent", iClient, ent, 0);
+// 	SetVariantString("forward");
+// 	AcceptEntityInput(ent, "SetParentAttachmentMaintainOffset", ent, ent, 0);
+// 	DispatchSpawn(ent);
+// 	ActivateEntity(ent);
+// 	AcceptEntityInput(ent, "Start");
+// 	//TeleportEntity(ent, pos, angles, NULL_VECTOR);
+// 	*/
 	
-	/*new Handle:hHudText = CreateHudSynchronizer();
-	SetHudTextParams(-1.0, 0.2, 5.0, 255, 255, 255, 255);
-	ShowSyncHudText(iClient, hHudText, "This is a test");
-	CloseHandle(hHudText);*/
+// 	/*new Handle:hHudText = CreateHudSynchronizer();
+// 	SetHudTextParams(-1.0, 0.2, 5.0, 255, 255, 255, 255);
+// 	ShowSyncHudText(iClient, hHudText, "This is a test");
+// 	CloseHandle(hHudText);*/
 	
-	/*
-	decl String:number[32];
-	GetCmdArg(1, number, sizeof(number));
-	new num = 1064;
-	num = StringToInt(number);
-	SetEntProp(iClient, Prop_Send, "m_iGlowType", 2);
-	SetEntProp(iClient, Prop_Send, "m_nGlowRange", 0);
-	SetEntProp(iClient, Prop_Send, "m_glowColorOverride", num);
-	*/
+// 	/*
+// 	decl String:number[32];
+// 	GetCmdArg(1, number, sizeof(number));
+// 	new num = 1064;
+// 	num = StringToInt(number);
+// 	SetEntProp(iClient, Prop_Send, "m_iGlowType", 2);
+// 	SetEntProp(iClient, Prop_Send, "m_nGlowRange", 0);
+// 	SetEntProp(iClient, Prop_Send, "m_glowColorOverride", num);
+// 	*/
 	
-	/*
-	decl i;
-	decl Float:amount[3];
-	amount[0] = 500.0;
-	amount[1] = 500.0;
-	amount[2] = 100.0;
-	for(i = 1; i<= MaxClients; i++)
-	{
-		if(i!=iClient)
-		if(IsClientInGame(i) == true)
-			Fling(i,amount,iClient);
-	}*/
+// 	/*
+// 	decl i;
+// 	decl Float:amount[3];
+// 	amount[0] = 500.0;
+// 	amount[1] = 500.0;
+// 	amount[2] = 100.0;
+// 	for(i = 1; i<= MaxClients; i++)
+// 	{
+// 		if(i!=iClient)
+// 		if(IsClientInGame(i) == true)
+// 			Fling(i,amount,iClient);
+// 	}*/
 	
-	/*decl String:number[32];
-	GetCmdArg(1, number, sizeof(number));
-	new num = 3;
-	num = StringToInt(number);
-	num  = GetEntProp(iClient, Prop_Send, "m_iGlowType", 4); //Set a steady glow(scavenger like)
-	PrintToChat(iClient, "GlowType = %d", num);
-	num = GetEntProp(iClient, Prop_Send, "m_nGlowRange", 4); //Set an infinite glow range(scavenger like)
-	PrintToChat(iClient, "GlowRange = %d", num);
-	num = GetEntProp(iClient, Prop_Send, "m_glowColorOverride", 4); //Set the color to a red color
-	PrintToChat(iClient, "ColorOveride = %d", num);
-	ChangeEdictState(iClient, 12); //Notify clients of the change to the glow color
-	*/
+// 	/*decl String:number[32];
+// 	GetCmdArg(1, number, sizeof(number));
+// 	new num = 3;
+// 	num = StringToInt(number);
+// 	num  = GetEntProp(iClient, Prop_Send, "m_iGlowType", 4); //Set a steady glow(scavenger like)
+// 	PrintToChat(iClient, "GlowType = %d", num);
+// 	num = GetEntProp(iClient, Prop_Send, "m_nGlowRange", 4); //Set an infinite glow range(scavenger like)
+// 	PrintToChat(iClient, "GlowRange = %d", num);
+// 	num = GetEntProp(iClient, Prop_Send, "m_glowColorOverride", 4); //Set the color to a red color
+// 	PrintToChat(iClient, "ColorOveride = %d", num);
+// 	ChangeEdictState(iClient, 12); //Notify clients of the change to the glow color
+// 	*/
 	
-	//PrintToChat(iClient, "HUNTER pounced = %d", g_bHunterGrappled[iClient]);
-	//PrintToChat(iClient, "smoked = %d", g_bSmokerGrappled[iClient]);
-	//PrintToChat(iClient, "charged = %d", g_bChargerGrappled[iClient]);
+// 	//PrintToChat(iClient, "HUNTER pounced = %d", g_bHunterGrappled[iClient]);
+// 	//PrintToChat(iClient, "smoked = %d", g_bSmokerGrappled[iClient]);
+// 	//PrintToChat(iClient, "charged = %d", g_bChargerGrappled[iClient]);
 	
 	
-	//boomflags = GetCommandFlags("boom");
-	//SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-	//SetCommandFlags("", cvarCheatsflags & ~FCVAR_CHEAT);
-	//FakeClientCommand(iClient, "boom");
-	//SetCommandFlags("boom", boomflags);
+// 	//boomflags = GetCommandFlags("boom");
+// 	//SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
+// 	//SetCommandFlags("", cvarCheatsflags & ~FCVAR_CHEAT);
+// 	//FakeClientCommand(iClient, "boom");
+// 	//SetCommandFlags("boom", boomflags);
 	
-	//PrintToChatAll("\x03Desperatestack = %d", g_iNickDesperateMeasuresStack);
-	//VGUI
-	//WriteParticle(iClient, "loadoutmenu_top", 0.0, 20.0);
+// 	//PrintToChatAll("\x03Desperatestack = %d", g_iNickDesperateMeasuresStack);
+// 	//VGUI
+// 	//WriteParticle(iClient, "loadoutmenu_top", 0.0, 20.0);
 	
-	/*//Store iClient name in clientidname array
-	decl String:clientname[128];
-	GetClientName(iClient, clientname, sizeof(clientname));
-	for(new l=0; l<22; l++)
-	{
-		//clientidname[iClient][l] = -1;
-	}
-	for(new l=0; l<22; l++)
-	{
-		//clientidname[iClient][l] = clientname[l];
-		PrintToChat(iClient, "%c, %d", clientidname[iClient][l], clientidname[iClient][l]);
-	}*/
-	//PrintToChat(iClient, "Clientname stored in database");
+// 	/*//Store iClient name in clientidname array
+// 	decl String:clientname[128];
+// 	GetClientName(iClient, clientname, sizeof(clientname));
+// 	for(new l=0; l<22; l++)
+// 	{
+// 		//clientidname[iClient][l] = -1;
+// 	}
+// 	for(new l=0; l<22; l++)
+// 	{
+// 		//clientidname[iClient][l] = clientname[l];
+// 		PrintToChat(iClient, "%c, %d", clientidname[iClient][l], clientidname[iClient][l]);
+// 	}*/
+// 	//PrintToChat(iClient, "Clientname stored in database");
 	
-	/*WriteParticle(iClient, "smoker_smokecloud", 0.0, 30.0);
-	WriteParticle(iClient, "smoker_smokecloud_cheap", 0.0, 30.0);
-	PrintHintText(iClient, "OMGZZ U h4x0r");
-	SetEntProp(iClient,Prop_Data,"m_iHealth", 50000);
-	ExtinguishEntity(iClient);
-	PrintToChat(iClient, "testing");
-	new Float:vec[3];
-	GetClientAbsOrigin(iClient, vec);
-	vec[2] += 10;*/
-	//PrecacheSound(SOUND_AMBTEST4);
-	//GetClientEyePosition(iClient, vec);
-	//EmitAmbientSound(SOUND_CUSTOM, vec, iClient, SNDLEVEL_SCREAMING);
-	//EmitAmbientSound(SOUND_PEEING, vec, iClient, SNDLEVEL_SCREAMING);
+// 	/*WriteParticle(iClient, "smoker_smokecloud", 0.0, 30.0);
+// 	WriteParticle(iClient, "smoker_smokecloud_cheap", 0.0, 30.0);
+// 	PrintHintText(iClient, "OMGZZ U h4x0r");
+// 	SetEntProp(iClient,Prop_Data,"m_iHealth", 50000);
+// 	ExtinguishEntity(iClient);
+// 	PrintToChat(iClient, "testing");
+// 	new Float:vec[3];
+// 	GetClientAbsOrigin(iClient, vec);
+// 	vec[2] += 10;*/
+// 	//PrecacheSound(SOUND_AMBTEST4);
+// 	//GetClientEyePosition(iClient, vec);
+// 	//EmitAmbientSound(SOUND_CUSTOM, vec, iClient, SNDLEVEL_SCREAMING);
+// 	//EmitAmbientSound(SOUND_PEEING, vec, iClient, SNDLEVEL_SCREAMING);
 	
-	//new String:teststring[10];
-	//GetCmdArg(1, teststring, sizeof(teststring));
-	//new test =0;
-	/*new Float:noise = GetEntDataFloat(iClient,m_noiselevel);
-	PrintToChatAll("noise level = %f", noise);
-	SetEntDataFloat(iClient,m_noiselevel, 100.0 ,true);
-	noise = GetEntDataFloat(iClient,m_noiselevel);
-	PrintToChatAll("noise level = %f", noise);*/
-	//new glow = -1;
-	//new weapon;
-	//test = StringToInt(teststring);
-	/*if(test!=0)
-		if(IsValidEntity(test))
-			if(IsValidEdict(test))
-				RemoveEdict(test);
-	ListParticles();
-	*/
-	//SetEntProp(iClient, Prop_Send, "m_bWearingSuit", 1);
-	//SetEntProp(iClient, Prop_Send, "m_bPoisoned", 1);
-	//SetEntData(iClient, m_bWearingSuit, 1, true);
-	//SetEntData(iClient, m_bPoisoned, 1, true);
+// 	//new String:teststring[10];
+// 	//GetCmdArg(1, teststring, sizeof(teststring));
+// 	//new test =0;
+// 	/*new Float:noise = GetEntDataFloat(iClient,m_noiselevel);
+// 	PrintToChatAll("noise level = %f", noise);
+// 	SetEntDataFloat(iClient,m_noiselevel, 100.0 ,true);
+// 	noise = GetEntDataFloat(iClient,m_noiselevel);
+// 	PrintToChatAll("noise level = %f", noise);*/
+// 	//new glow = -1;
+// 	//new weapon;
+// 	//test = StringToInt(teststring);
+// 	/*if(test!=0)
+// 		if(IsValidEntity(test))
+// 			if(IsValidEdict(test))
+// 				RemoveEdict(test);
+// 	ListParticles();
+// 	*/
+// 	//SetEntProp(iClient, Prop_Send, "m_bWearingSuit", 1);
+// 	//SetEntProp(iClient, Prop_Send, "m_bPoisoned", 1);
+// 	//SetEntData(iClient, m_bWearingSuit, 1, true);
+// 	//SetEntData(iClient, m_bPoisoned, 1, true);
 	
-	/*for(new i=1;i<=MaxClients;i++)
-	{
-		if(RunClientChecks(i))
-		{
-			new m_hMyWeapons = FindSendPropInfo("CBasePlayer", "m_hMyWeapons");
-			//SetEntityGravity(i, 0.5);
-			for(new l=0;l<63;l++)
-			{
-				weapon = GetEntDataEnt2(i, m_hMyWeapons + l);            
-				if(weapon>=0)
-				{
-					PrintToChat(i, "attempting change");
-					SetEntityRenderMode(weapon, RenderMode:test);
-					SetEntityRenderColor(weapon,255,255,255,150);
-					SetEntData(weapon, g_iOffset_Clip1, 99, true);
-					SetEntDataFloat(weapon, m_duration, 0.5, true);
-				}
-			}
-			//SetEntData(iClient, glowrange, test, true);
-			//SetEntData(iClient, glowtype, test, true);
-		}
-	}*/
-}
+// 	/*for(new i=1;i<=MaxClients;i++)
+// 	{
+// 		if(RunClientChecks(i))
+// 		{
+// 			new m_hMyWeapons = FindSendPropInfo("CBasePlayer", "m_hMyWeapons");
+// 			//SetEntityGravity(i, 0.5);
+// 			for(new l=0;l<63;l++)
+// 			{
+// 				weapon = GetEntDataEnt2(i, m_hMyWeapons + l);            
+// 				if(weapon>=0)
+// 				{
+// 					PrintToChat(i, "attempting change");
+// 					SetEntityRenderMode(weapon, RenderMode:test);
+// 					SetEntityRenderColor(weapon,255,255,255,150);
+// 					SetEntData(weapon, g_iOffset_Clip1, 99, true);
+// 					SetEntDataFloat(weapon, m_duration, 0.5, true);
+// 				}
+// 			}
+// 			//SetEntData(iClient, glowrange, test, true);
+// 			//SetEntData(iClient, glowtype, test, true);
+// 		}
+// 	}*/
+// }

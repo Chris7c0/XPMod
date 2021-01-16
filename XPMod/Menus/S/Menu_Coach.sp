@@ -1,7 +1,7 @@
 //Coach Menu////////////////////////////////////////////////////////////////
 
 //Coach Menu Draw
-public Action:CoachMenuDraw(iClient)
+Action:CoachMenuDraw(iClient)
 {
 	decl String:text[512];
 	
@@ -38,7 +38,7 @@ public Action:CoachMenuDraw(iClient)
 }
 
 //Bull Rush
-public Action:BullMenuDraw(iClient)
+Action:BullMenuDraw(iClient)
 {
 	decl String:text[512];
 	
@@ -65,7 +65,7 @@ public Action:BullMenuDraw(iClient)
 }
 
 //Wrecking Ball
-public Action:WreckingMenuDraw(iClient) 
+Action:WreckingMenuDraw(iClient) 
 {
 	decl String:text[512];
 	
@@ -92,7 +92,7 @@ public Action:WreckingMenuDraw(iClient)
 }
 
 //Spray n' Pray
-public Action:SprayMenuDraw(iClient) 
+Action:SprayMenuDraw(iClient) 
 {
 	decl String:text[512];
 
@@ -119,7 +119,7 @@ public Action:SprayMenuDraw(iClient)
 }
 
 //Homerun
-public Action:HomerunMenuDraw(iClient) 
+Action:HomerunMenuDraw(iClient) 
 {
 	decl String:text[512];
 
@@ -146,7 +146,7 @@ public Action:HomerunMenuDraw(iClient)
 }
 
 //Lead by Example
-public Action:LeadMenuDraw(iClient) 
+Action:LeadMenuDraw(iClient) 
 {
 	decl String:text[512];
 
@@ -173,7 +173,7 @@ public Action:LeadMenuDraw(iClient)
 }
 
 //Strong Arm
-public Action:StrongMenuDraw(iClient) 
+Action:StrongMenuDraw(iClient) 
 {
 	decl String:text[512];
 
@@ -202,7 +202,7 @@ public Action:StrongMenuDraw(iClient)
 //Handlers//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Nick Menu Handler
-public CoachMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+CoachMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -246,7 +246,7 @@ public CoachMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Bull Training Handler
-public BullMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+BullMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if (action==MenuAction_Select ) 
 	{
@@ -261,7 +261,7 @@ public BullMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Wrecking Ball Handler
-public WreckingMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+WreckingMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if (action==MenuAction_Select ) 
 	{
@@ -276,7 +276,7 @@ public WreckingMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Spray n' Pray Handler
-public SprayMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SprayMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if (action==MenuAction_Select ) 
 	{
@@ -291,7 +291,7 @@ public SprayMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Homerun Handler
-public HomerunMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+HomerunMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if (action==MenuAction_Select ) 
 	{
@@ -306,7 +306,7 @@ public HomerunMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Lead by Example Handler
-public LeadMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+LeadMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if (action==MenuAction_Select ) 
 	{
@@ -321,7 +321,7 @@ public LeadMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Strong Arm Handler
-public StrongMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+StrongMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if (action==MenuAction_Select ) 
 	{

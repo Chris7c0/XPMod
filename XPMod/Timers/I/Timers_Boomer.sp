@@ -1,6 +1,6 @@
 
 //Boomer
-public Action:TimerConstantVomitDisplay(Handle:timer, any:iClient)
+Action:TimerConstantVomitDisplay(Handle:timer, any:iClient)
 {
 	if(IsClientInGame(iClient))
 		if(IsPlayerAlive(iClient))
@@ -18,7 +18,7 @@ public Action:TimerConstantVomitDisplay(Handle:timer, any:iClient)
 }
 
 
-public Action:TimerResetBoomerSpeed(Handle:timer, any:iClient)
+Action:TimerResetBoomerSpeed(Handle:timer, any:iClient)
 {
 	if(IsClientInGame(iClient) && IsPlayerAlive(iClient) && g_bIsSuperSpeedBoomer[iClient] == false)
 	{
@@ -30,14 +30,14 @@ public Action:TimerResetBoomerSpeed(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerResetPlayerIt(Handle:timer, any:iClient)
+Action:TimerResetPlayerIt(Handle:timer, any:iClient)
 {
 	g_iVomitVictimAttacker[iClient] = 0;
 
 	return Plugin_Stop;
 }
 
-public Action:TimerResetFastBoomerSpeed(Handle:timer, any:iClient)
+Action:TimerResetFastBoomerSpeed(Handle:timer, any:iClient)
 {
 	g_bIsSuperSpeedBoomer[iClient] = false;
 	if(IsClientInGame(iClient) && IsPlayerAlive(iClient))
@@ -50,7 +50,7 @@ public Action:TimerResetFastBoomerSpeed(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerStopHotMeal(Handle:timer, any:iClient)
+Action:TimerStopHotMeal(Handle:timer, any:iClient)
 {
 	g_bIsServingHotMeal[iClient] = false;
 	if(IsClientInGame(iClient) == true && IsPlayerAlive(iClient) == true)
@@ -66,7 +66,7 @@ public Action:TimerStopHotMeal(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerStopItCounting(Handle:timer, any:iClient)
+Action:TimerStopItCounting(Handle:timer, any:iClient)
 {
 	g_bNowCountingVomitVictims[iClient] = false;
 	g_iVomitVictimCounter[iClient] = 0;
@@ -74,7 +74,7 @@ public Action:TimerStopItCounting(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerConstantVomit(Handle:timer, any:iClient)
+Action:TimerConstantVomit(Handle:timer, any:iClient)
 {
 	if (IsServerProcessing()==false || iClient <= 0 || IsClientInGame(iClient)==false || IsPlayerAlive(iClient)==false || g_bIsServingHotMeal[iClient] == false)
 		return Plugin_Stop;
@@ -94,7 +94,7 @@ public Action:TimerConstantVomit(Handle:timer, any:iClient)
 	return Plugin_Continue;
 }
 
-public Action:TimerSetBoomerCooldown(Handle:timer, any:iClient)
+Action:TimerSetBoomerCooldown(Handle:timer, any:iClient)
 {
 	//INITIAL CHECKS
 	//--------------
@@ -159,7 +159,7 @@ public Action:TimerSetBoomerCooldown(Handle:timer, any:iClient)
 }
 
 
-public Action:TimerSuicideBoomerLaunch(Handle:timer, any:iClient)
+Action:TimerSuicideBoomerLaunch(Handle:timer, any:iClient)
 {
 	g_bIsSuicideBoomer[iClient] = false;
 	SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"),2.0, true);

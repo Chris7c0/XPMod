@@ -1,4 +1,4 @@
-public Action:TimerJumpFurther(Handle:timer, any:iClient)
+Action:TimerJumpFurther(Handle:timer, any:iClient)
 {
 	decl Float:velocity[3];
 	GetEntPropVector(iClient, Prop_Data, "m_vecVelocity", velocity);
@@ -10,14 +10,14 @@ public Action:TimerJumpFurther(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerStopJockeyPeeSound(Handle:timer, any:iClient)
+Action:TimerStopJockeyPeeSound(Handle:timer, any:iClient)
 {
 	StopSound(iClient, SNDCHAN_AUTO, SOUND_JOCKEYPEE);
 	
 	return Plugin_Stop;
 }
 
-public Action:TimerStopJockeyPee(Handle:timer, any:iClient)
+Action:TimerStopJockeyPee(Handle:timer, any:iClient)
 {
 	if(iClient > 0 || IsClientInGame(iClient) == false)
 		return Plugin_Stop;
@@ -30,7 +30,7 @@ public Action:TimerStopJockeyPee(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerRemovePeeFX(Handle:timer, any:iClient)
+Action:TimerRemovePeeFX(Handle:timer, any:iClient)
 {
 	if(IsValidEntity(iClient) == false || IsClientInGame(iClient) ==  false)
 		return Plugin_Stop;
@@ -41,14 +41,14 @@ public Action:TimerRemovePeeFX(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 	
-public Action:TimerEnableJockeyPee(Handle:timer, any:iClient)
+Action:TimerEnableJockeyPee(Handle:timer, any:iClient)
 {
 	g_bCanJockeyPee[iClient] = true;
 
 	return Plugin_Stop;
 }
 
-public Action:TimerRemoveJockeyCloak(Handle:timer, any:iClient)
+Action:TimerRemoveJockeyCloak(Handle:timer, any:iClient)
 {
 	g_bCanJockeyCloak[iClient] = true;
 	fnc_SetRendering(iClient);
@@ -57,7 +57,7 @@ public Action:TimerRemoveJockeyCloak(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerSetJockeyCooldown(Handle:timer, any:iClient)
+Action:TimerSetJockeyCooldown(Handle:timer, any:iClient)
 {
 	if (RunClientChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false ||
@@ -109,7 +109,7 @@ public Action:TimerSetJockeyCooldown(Handle:timer, any:iClient)
 	return Plugin_Continue;
 }
 
-public Action:TimerJockeyJumpReset(Handle:timer, any:iClient)
+Action:TimerJockeyJumpReset(Handle:timer, any:iClient)
 {
 	if (RunClientChecks(iClient) && 
 		IsPlayerAlive(iClient) && 

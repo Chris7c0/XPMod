@@ -1,5 +1,5 @@
 //Smoker
-public Action:TimerStopInfection(Handle:timer, any:iClient)
+Action:TimerStopInfection(Handle:timer, any:iClient)
 {
 	g_bIsSmokeInfected[iClient] = false;
 	
@@ -21,7 +21,7 @@ public Action:TimerStopInfection(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerRemoveSmoke(Handle:timer, any:entity)
+Action:TimerRemoveSmoke(Handle:timer, any:entity)
 {
 	if(IsValidEntity(entity))	//check if is actually smoke too
 	{
@@ -36,7 +36,7 @@ public Action:TimerRemoveSmoke(Handle:timer, any:entity)
 	return Plugin_Stop;
 }
 
-public Action:TimerMoveSmokePoof1(Handle:timer, any:iClient)
+Action:TimerMoveSmokePoof1(Handle:timer, any:iClient)
 {
 	if(IsClientInGame(iClient) == false)
 		return Plugin_Stop;
@@ -54,7 +54,7 @@ public Action:TimerMoveSmokePoof1(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerMoveSmokePoof2(Handle:timer, any:iClient)
+Action:TimerMoveSmokePoof2(Handle:timer, any:iClient)
 {
 	if(IsClientInGame(iClient) == false)
 		return Plugin_Stop;
@@ -72,7 +72,7 @@ public Action:TimerMoveSmokePoof2(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerElectricuteAgain(Handle:timer, any:iClient)
+Action:TimerElectricuteAgain(Handle:timer, any:iClient)
 {
 	if (g_bIsElectricuting[iClient] == false || 
 		RunClientChecks(iClient) == false || 
@@ -168,21 +168,21 @@ public Action:TimerElectricuteAgain(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerStopElectricution(Handle:timer, any:iClient)
+Action:TimerStopElectricution(Handle:timer, any:iClient)
 {
 	g_bIsElectricuting[iClient] = false;
 	return Plugin_Stop;
 }
 
 
-public Action:Timer_ResetElectricuteCooldown(Handle:timer, any:iClient)
+Action:Timer_ResetElectricuteCooldown(Handle:timer, any:iClient)
 {
 	g_bElectricutionCooldown[iClient] = false;
 	return Plugin_Stop;
 }
 
 /*
-public Action:TimerCheckTongueDistance(Handle:timer, any:Smoker)
+Action:TimerCheckTongueDistance(Handle:timer, any:Smoker)
 {
 	if((IsClientInGame(Smoker) == false) || (g_iClientTeam[Smoker] != TEAM_INFECTED) || (IsFakeClient(Smoker) == true) || (g_iChokingVictim[Smoker] < 1))
 	{
@@ -211,7 +211,7 @@ public Action:TimerCheckTongueDistance(Handle:timer, any:Smoker)
 	return Plugin_Stop;
 }*/
 
-public Action:TimerPoisonCloud(Handle:timer, any:iClient)
+Action:TimerPoisonCloud(Handle:timer, any:iClient)
 {
 	if(IsClientInGame(iClient) == false || g_bHasSmokersPoisonCloudOut[iClient] == false)
 		return Plugin_Stop;
@@ -247,14 +247,14 @@ public Action:TimerPoisonCloud(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerStopPoisonCloud(Handle:timer, any:iClient)
+Action:TimerStopPoisonCloud(Handle:timer, any:iClient)
 {
 	g_bHasSmokersPoisonCloudOut[iClient] = false;
 	
 	return Plugin_Stop;
 }
 
-public Action:CheckIfStuck(Handle:timer, any:iClient)
+Action:CheckIfStuck(Handle:timer, any:iClient)
 {
 	decl Float:vorigin[3];
 	GetClientAbsOrigin(iClient, vorigin);
@@ -275,7 +275,7 @@ public Action:CheckIfStuck(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:ReallowTeleport(Handle:timer, any:iClient)
+Action:ReallowTeleport(Handle:timer, any:iClient)
 {
 	g_bTeleportCoolingDown[iClient] = false;
 	return Plugin_Stop;

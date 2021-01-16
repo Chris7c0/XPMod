@@ -1,4 +1,4 @@
-public Action:TankMenuDrawNecroTanker(iClient)
+Action:TankMenuDrawNecroTanker(iClient)
 {
 	CheckMenu(iClient);
 	CheckLevel(iClient);
@@ -38,7 +38,7 @@ public Action:TankMenuDrawNecroTanker(iClient)
 	return Plugin_Handled;
 }
 
-public TankMenuHandlerNecroTanker(Handle:hmenu, MenuAction:action, iClient, itemNum)
+TankMenuHandlerNecroTanker(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{

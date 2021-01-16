@@ -1,4 +1,4 @@
-public Action:TimerCheckAndOpenCharacterSelectionMenuForAll(Handle:timer, any:data)
+Action:TimerCheckAndOpenCharacterSelectionMenuForAll(Handle:timer, any:data)
 {
 	decl iClient;
 	for(iClient = 1; iClient <= MaxClients; iClient++)
@@ -22,7 +22,7 @@ public Action:TimerCheckAndOpenCharacterSelectionMenuForAll(Handle:timer, any:da
 	return Plugin_Continue;
 }
 
-// public Action:TimerOpenCharacterSelectionMenuForUser(Handle:timer, any:iClient)
+// Action:TimerOpenCharacterSelectionMenuForUser(Handle:timer, any:iClient)
 // {
 // 	if (g_iAutoSetCountDown[iClient] == -1 && 
 // 		g_bClientLoggedIn[iClient] == true && 
@@ -69,7 +69,7 @@ ResetTalentConfirmCountdown(iClient)
 	g_bClientAlreadyShownCharacterSelectMenu[iClient] = false;
 }
 
-public Action:StartWaitingForClientInputForDrawMenu(Handle:timer, any:iClient)
+Action:StartWaitingForClientInputForDrawMenu(Handle:timer, any:iClient)
 {
 	// This will wait then 2nd button input for drawing the confirm menu
 	g_iOpenCharacterSelectAndDrawMenuState[iClient] = WAITING_ON_FINAL_BUTTON_FOR_CONFIRM_MENU;
@@ -77,22 +77,22 @@ public Action:StartWaitingForClientInputForDrawMenu(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:DelayedCharacterSelectDrawMOTDPanel(Handle:timer, any:iClient)
-{
-	// PrintToServer("Drawing MOTD");
-	decl String:url[256];
+// Action:DelayedCharacterSelectDrawMOTDPanel(Handle:timer, any:iClient)
+// {
+// 	// PrintToServer("Drawing MOTD");
+// 	decl String:url[256];
 
-	if (g_iClientTeam[iClient] == TEAM_SURVIVORS)
-		Format(url, sizeof(url), "http://xpmod.net/select/s/survivor_select.php?id=%i&t=%s", g_iDBUserID[iClient], g_strDBUserToken[iClient]);
-	else if (g_iClientTeam[iClient] == TEAM_INFECTED)
-		Format(url, sizeof(url), "http://xpmod.net/select/i/infected_select.php?id=%i&t=%s", g_iDBUserID[iClient], g_strDBUserToken[iClient]);
-	else
-		Format(url, sizeof(url), "http://xpmod.net/select/character_select.php?id=%i&t=%s", g_iDBUserID[iClient], g_strDBUserToken[iClient]);
+// 	if (g_iClientTeam[iClient] == TEAM_SURVIVORS)
+// 		Format(url, sizeof(url), "http://xpmod.net/select/s/survivor_select.php?id=%i&t=%s", g_iDBUserID[iClient], g_strDBUserToken[iClient]);
+// 	else if (g_iClientTeam[iClient] == TEAM_INFECTED)
+// 		Format(url, sizeof(url), "http://xpmod.net/select/i/infected_select.php?id=%i&t=%s", g_iDBUserID[iClient], g_strDBUserToken[iClient]);
+// 	else
+// 		Format(url, sizeof(url), "http://xpmod.net/select/character_select.php?id=%i&t=%s", g_iDBUserID[iClient], g_strDBUserToken[iClient]);
 	
-	OpenMOTDPanel(iClient, " ", url, MOTDPANEL_TYPE_URL);
+// 	OpenMOTDPanel(iClient, " ", url, MOTDPANEL_TYPE_URL);
 
-	return Plugin_Stop;
-}
+// 	return Plugin_Stop;
+// }
 
 OpenCharacterSelectMenu(iClient)
 {
@@ -104,7 +104,7 @@ OpenCharacterSelectMenu(iClient)
 		TopChooseCharactersMenuDraw(iClient);
 }
 
-public Action:TimerShowTalentsConfirmed(Handle:timer, any:iClient)
+Action:TimerShowTalentsConfirmed(Handle:timer, any:iClient)
 {
 	if(RunClientChecks(iClient) &&
 		IsFakeClient(iClient) == false &&
@@ -123,7 +123,7 @@ public Action:TimerShowTalentsConfirmed(Handle:timer, any:iClient)
 }
 
 
-public Action:ConfirmationMessageMenuDraw(iClient)
+Action:ConfirmationMessageMenuDraw(iClient)
 {
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Handled;
@@ -194,7 +194,7 @@ public Action:ConfirmationMessageMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-public ConfirmationMessageMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ConfirmationMessageMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select)
 	{

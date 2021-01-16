@@ -2,7 +2,7 @@
  *                                                    Bind 2 Pressed                                                      *
  **************************************************************************************************************************/
 
-public Action:Bind2Press(iClient,args)
+Action:Bind2Press(iClient, args)
 {
 	if(iClient==0)
 		return Plugin_Handled;
@@ -53,7 +53,7 @@ public Action:Bind2Press(iClient,args)
 				{
 					if(g_bUsingShadowNinja[iClient]==false)
 					{
-						push(iClient, 1);
+						push(iClient);
 						g_bUsingShadowNinja[iClient] = true;
 						g_bFirstShadowNinjaSwing[iClient] = true;
 						g_iClientBindUses_2[iClient]++;

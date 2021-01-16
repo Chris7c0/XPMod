@@ -1,4 +1,4 @@
-public Action:TimerDropBombs(Handle:timer, any:iClient)
+Action:TimerDropBombs(Handle:timer, any:iClient)
 {
 	if(IsClientInGame(iClient)==false || IsPlayerAlive(iClient)==false)
 	{
@@ -49,7 +49,7 @@ public Action:TimerDropBombs(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerPoopBombBeep1(Handle:timer, any:iEntity)
+Action:TimerPoopBombBeep1(Handle:timer, any:iEntity)
 {
 	if(IsValidEntity(iEntity))
 	{
@@ -67,7 +67,7 @@ public Action:TimerPoopBombBeep1(Handle:timer, any:iEntity)
 	}
 	return Plugin_Stop;
 }
-public Action:TimerPoopBombBeep2(Handle:timer, any:iEntity)
+Action:TimerPoopBombBeep2(Handle:timer, any:iEntity)
 {
 	if(IsValidEntity(iEntity))
 	{
@@ -85,7 +85,7 @@ public Action:TimerPoopBombBeep2(Handle:timer, any:iEntity)
 	}
 	return Plugin_Stop;
 }
-public Action:TimerPoopBombBeep3(Handle:timer, any:iEntity)
+Action:TimerPoopBombBeep3(Handle:timer, any:iEntity)
 {
 	if(IsValidEntity(iEntity))
 	{
@@ -104,7 +104,7 @@ public Action:TimerPoopBombBeep3(Handle:timer, any:iEntity)
 	return Plugin_Stop;
 }
 
-public Action:TimerBlowUpPoopBomb(Handle:timer, any:iEntity)
+Action:TimerBlowUpPoopBomb(Handle:timer, any:iEntity)
 {
 	decl Float:xyzEntityOrigin[3];
 	GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", xyzEntityOrigin);
@@ -154,7 +154,7 @@ public Action:TimerBlowUpPoopBomb(Handle:timer, any:iEntity)
 	return Plugin_Stop;
 }
 
-public Action:TimerChangeCanDropBombs(Handle:timer, any:iClient)
+Action:TimerChangeCanDropBombs(Handle:timer, any:iClient)
 {
 	g_bCanDropPoopBomb[iClient] = true;
 	return Plugin_Stop;

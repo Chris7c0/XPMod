@@ -3,7 +3,7 @@
  *                                                   Reloading Event                                                      *
  **************************************************************************************************************************/
 
-public Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	//PrintToChatAll("Entered reload event...");
 	new iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
@@ -153,7 +153,7 @@ public Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroad
 			//was 0.08
 			if(rspeed > 1.0)
 			{
-				new Float:anispeed = FindAnimationSpeed(g_fReloadRate, stClass);
+				new Float:anispeed = FindAnimationSpeed(g_fReloadRate)//, stClass);
 				CreateTimer(flNextTime_calc * anispeed, SoH_MagEnd2, hPack, TIMER_FLAG_NO_MAPCHANGE);
 			}
 			else
@@ -191,7 +191,7 @@ public Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroad
 	return;
 }
 
-public Float:FindAnimationSpeed(Float:reloadspeed, String:gunname[])
+Float:FindAnimationSpeed(Float:reloadspeed) //, String:gunname[])
 {
 	decl Float:anispeed;
 	anispeed = reloadspeed;
@@ -416,7 +416,7 @@ public Float:FindAnimationSpeed(Float:reloadspeed, String:gunname[])
 }
 
 //this resets the playback rate on non-shotguns
-public Action:SoH_MagEnd (Handle:timer, any:pack)
+Action:SoH_MagEnd (Handle:timer, any:pack)
 {
 	if (IsServerProcessing()==false)
 	{
@@ -448,428 +448,428 @@ public Action:SoH_MagEnd (Handle:timer, any:pack)
 }
 
 
-public Action:IncreaseClip(Handle:timer, any:pack)
-{
-/*
-if(IsFakeClient(attacker) == false)	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	{
-		if(g_iClientTeam[attacker] == TEAM_SURVIVORS)
-		{
-			if(g_iClientTeam[victim] == TEAM_INFECTED)//////////////////////////////////////////////////////////////////////
-			switch(g_iChosenSurvivor[attacker])
-			{
-				case 0:		//Bill Talents
-				{
-					if(g_iExorcismLevel[attacker]!=0 || g_iPromotionalLevel[attacker]!=0)
-					{
-						if(g_iClientTeam[victim] == TEAM_INFECTED)
-						{
-							decl String:weaponclass[32];
-							GetEventString(hEvent,"weapon",weaponclass,32);
-							//PrintToChat(attacker, "weaponclass = %s", weaponclass);
-							if(StrContains(weaponclass,"rifle",false) != -1)
-							{
-								if(StrContains(weaponclass,"rifle_m60",false) == -1)
-								{
-									if(StrContains(weaponclass,"hunting_rifle",false) == -1)
-									{
-										new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
-										new dmg = GetEventInt(hEvent,"dmg_health");
-										dmg = RoundToNearest(dmg * (g_iExorcismLevel[attacker] * 0.04));
-										//PrintToChat(attacker, "Your doing %d extra rifle damage", dmg);
-										SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
-									}
-								}
-								else
-								{
-									new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
-									new dmg = GetEventInt(hEvent,"dmg_health");
-									dmg = RoundToNearest(dmg * (g_iPromotionalLevel[attacker] * 0.20));
-									//PrintToChat(attacker, "Your doing %d extra M60 damage", dmg);
-									SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
-								}
-							}
-						}
-					}
-					//return Plugin_Continue;
-				}
-				case 1:		//Rochelle
-				{
-					if(g_iHunterLevel[attacker] > 0)
-					{
-						if(g_iClientTeam[victim] == TEAM_INFECTED)
-							if(g_bIsRochellePoisoned[victim] == false)	//If player not g_bIsRochellePoisoned poison them
-							{
-								g_bIsRochellePoisoned[victim] = true;
+// Action:IncreaseClip(Handle:timer, any:pack)
+// {
+// /*
+// if(IsFakeClient(attacker) == false)	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 	{
+// 		if(g_iClientTeam[attacker] == TEAM_SURVIVORS)
+// 		{
+// 			if(g_iClientTeam[victim] == TEAM_INFECTED)//////////////////////////////////////////////////////////////////////
+// 			switch(g_iChosenSurvivor[attacker])
+// 			{
+// 				case 0:		//Bill Talents
+// 				{
+// 					if(g_iExorcismLevel[attacker]!=0 || g_iPromotionalLevel[attacker]!=0)
+// 					{
+// 						if(g_iClientTeam[victim] == TEAM_INFECTED)
+// 						{
+// 							decl String:weaponclass[32];
+// 							GetEventString(hEvent,"weapon",weaponclass,32);
+// 							//PrintToChat(attacker, "weaponclass = %s", weaponclass);
+// 							if(StrContains(weaponclass,"rifle",false) != -1)
+// 							{
+// 								if(StrContains(weaponclass,"rifle_m60",false) == -1)
+// 								{
+// 									if(StrContains(weaponclass,"hunting_rifle",false) == -1)
+// 									{
+// 										new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+// 										new dmg = GetEventInt(hEvent,"dmg_health");
+// 										dmg = RoundToNearest(dmg * (g_iExorcismLevel[attacker] * 0.04));
+// 										//PrintToChat(attacker, "Your doing %d extra rifle damage", dmg);
+// 										SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+// 									}
+// 								}
+// 								else
+// 								{
+// 									new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+// 									new dmg = GetEventInt(hEvent,"dmg_health");
+// 									dmg = RoundToNearest(dmg * (g_iPromotionalLevel[attacker] * 0.20));
+// 									//PrintToChat(attacker, "Your doing %d extra M60 damage", dmg);
+// 									SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+// 								}
+// 							}
+// 						}
+// 					}
+// 					//return Plugin_Continue;
+// 				}
+// 				case 1:		//Rochelle
+// 				{
+// 					if(g_iHunterLevel[attacker] > 0)
+// 					{
+// 						if(g_iClientTeam[victim] == TEAM_INFECTED)
+// 							if(g_bIsRochellePoisoned[victim] == false)	//If player not g_bIsRochellePoisoned poison them
+// 							{
+// 								g_bIsRochellePoisoned[victim] = true;
 								
-								g_iSlapRunTimes[victim] = 5 - g_iHunterLevel[attacker];
-								delete g_hTimer_RochellePoison[victim];
-								g_hTimer_RochellePoison[victim] = CreateTimer(5.0, TimerPoison, victim, TIMER_REPEAT);
-								g_iPID_RochellePoisonBullet[victim] = WriteParticle(victim, "poison_bullet", 0.0);
-								CreateTimer(30.1, DeleteParticle, g_iPID_RochellePoisonBullet[victim], TIMER_FLAG_NO_MAPCHANGE);
+// 								g_iSlapRunTimes[victim] = 5 - g_iHunterLevel[attacker];
+// 								delete g_hTimer_RochellePoison[victim];
+// 								g_hTimer_RochellePoison[victim] = CreateTimer(5.0, TimerPoison, victim, TIMER_REPEAT);
+// 								g_iPID_RochellePoisonBullet[victim] = WriteParticle(victim, "poison_bullet", 0.0);
+// 								CreateTimer(30.1, DeleteParticle, g_iPID_RochellePoisonBullet[victim], TIMER_FLAG_NO_MAPCHANGE);
 								
-								if(IsFakeClient(victim)==false)
-									ShowHudOverlayColor(victim, 0, 100, 0, 40, 8000, FADE_IN);
+// 								if(IsFakeClient(victim)==false)
+// 									ShowHudOverlayColor(victim, 0, 100, 0, 40, 8000, FADE_IN);
 								
-								PrintHintText(attacker,"You poisoned %N", victim);
-							}
-					}
-					if(g_iSilentLevel[attacker] >0)
-					{
-						if(g_iClientTeam[victim] == TEAM_INFECTED)
-						{
-							decl String:weaponclass[32];
-							GetEventString(hEvent,"weapon",weaponclass,32);
-							//PrintToChatAll("\x03-class of gun: \x01%s",weaponclass);
-							if(StrContains(weaponclass,"hunting_rifle",false) != -1)	//Rugar
-							{
-								new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
-								new dmg = GetEventInt(hEvent,"dmg_health");
-								dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.13));
-								//PrintToChat(attacker, "your doing %d hunting rifle damage", dmg);
-								SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
-								//return Plugin_Continue;
-							}
-							else if(StrContains(weaponclass,"sniper_military",false) != -1)	//H&K MSG 90
-							{
-								IgniteEntity(victim, 5.0, false);
-								new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
-								new dmg = GetEventInt(hEvent,"dmg_health");
-								dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.08));
-								//PrintToChat(attacker, "your doing %d sniper_military damage", dmg);
-								SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
-								//return Plugin_Continue;
-							}
-							else if(StrContains(weaponclass,"sniper_scout",false) != -1)
-							{
-								new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
-								new dmg = GetEventInt(hEvent,"dmg_health");
-								dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.13)) + (g_iSilentSorrowHeadshotCounter[attacker] * g_iSilentLevel[attacker] * 3);
-								//PrintToChat(attacker, "your doing %d scout damage", dmg);
-								SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
-								//return Plugin_Continue;
-							}
-							else if(StrContains(weaponclass,"sniper_awp",false) != -1)
-							{
-								new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
-								new dmg = GetEventInt(hEvent,"dmg_health");
-								dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.40) );
-								PrintToChat(attacker, "your doing %d extra awp damage", dmg);
-								SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
-								//return Plugin_Continue;
-							}
-						}
-					}
-				}
-				case 2:		//Coach
-				{
-					if(g_iClientTeam[victim] == TEAM_INFECTED)
-					{
-						if(g_iMeleeDamageCounter[attacker]>0 || g_iSprayLevel[attacker]>0 || g_bIsWreckingBallCharged[attacker]==true || g_bCoachRageIsActive[attacker] == true)
-						{
-							decl String:weaponclass[32];
-							GetEventString(hEvent,"weapon",weaponclass,32);
-							//PrintToChatAll("\x03-class of gun: \x01%s",weaponclass);
-							if(StrContains(weaponclass,"melee",false) != -1)
-							{
-								if(g_bIsWreckingBallCharged[attacker]==true)
-								{
-									if(g_iWreckingLevel[attacker] == 5)
-									{
-										g_bWreckingChargeRetrigger[attacker] = true;
-										//PrintToChatAll("Wrecking Ball Retrigger = true");
-									}
-									g_bIsWreckingBallCharged[attacker] = false;
-									new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
-									//new dmg = GetEventInt(hEvent,"dmg_health");
-									//PrintToChat(attacker, "predmg = %d", dmg);
-									//dmg = (g_iWreckingLevel[attacker]*200) + (g_iMeleeDamageCounter[attacker]);
-									CreateTimer(0.1, DeleteParticle, g_iPID_CoachMeleeCharge1[attacker], TIMER_FLAG_NO_MAPCHANGE);
-									CreateTimer(0.1, DeleteParticle, g_iPID_CoachMeleeCharge2[attacker], TIMER_FLAG_NO_MAPCHANGE);
-									//PrintToChat(attacker, "\x03[XPMod] \x05You did %d extra CHARGED melee damage", ((g_iWreckingLevel[attacker]*100) + (g_iMeleeDamageCounter[attacker])));
-									new Float:vec[3];
-									GetClientAbsOrigin(attacker, vec);
-									EmitSoundToAll(SOUND_COACH_CHARGE_HIT, attacker, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
-									//CreateParticle("coach_melee_charge_splash", 0.0, attacker, NO_ATTACH);
-									WriteParticle(victim, "coach_melee_charge_splash", 3.0);
-									SetEntProp(victim,Prop_Data,"m_iHealth", hp - ((g_iWreckingLevel[attacker]*100) + g_iMeleeDamageCounter[attacker] + g_iCoachRageMeleeDamage[attacker]));
-								}
-								else if(g_iMeleeDamageCounter[attacker]>0)
-								{
-									new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
-									//new dmg = GetEventInt(hEvent,"dmg_health");
-									//PrintToChat(attacker, "predmg = %d", dmg);
-									//dmg = g_iMeleeDamageCounter[attacker];
-									PrintToChat(attacker, "\x03[XPMod] \x05You did %d extra melee damage", (g_iMeleeDamageCounter[attacker] + g_iCoachRageMeleeDamage[attacker]));
-									SetEntProp(victim,Prop_Data,"m_iHealth", hp - (g_iMeleeDamageCounter[attacker] + g_iCoachRageMeleeDamage[attacker]));
-								}
-								else if(g_bCoachRageIsActive[attacker] == true)
-								{
-									new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
-									PrintToChat(attacker, "\x03[XPMod] \x05You did %d extra melee damage", g_iCoachRageMeleeDamage[attacker]);
-									SetEntProp(victim,Prop_Data,"m_iHealth", hp - g_iCoachRageMeleeDamage[attacker]);
-								}
-							}
-							if(g_iSprayLevel[attacker]>0)
-								if(StrContains(weaponclass,"shotgun",false) != -1)
-								{
-									new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
-									//new dmg = GetEventInt(hEvent,"dmg_health");
-									//dmg = dmg + (g_iSprayLevel[attacker] * 2);
-									//PrintToChat(attacker, "your doing %d shotgun damage", (g_iSprayLevel[attacker] * 2));
-									SetEntProp(victim,Prop_Data,"m_iHealth", hp - (g_iSprayLevel[attacker] * 2));
-								}
-						}
-						//return Plugin_Continue;
-					}
-				}
-				case 3:		//Ellis Talents
-				{
-					if(g_iFireLevel[attacker]>0)
-					{
-						if(g_iClientTeam[victim] == TEAM_INFECTED)
-						{
-							if(g_bUsingFireStorm[attacker]==true)
-							{
-								new Float:time = (float(g_iFireLevel[attacker]) * 6.0);
-								IgniteEntity(victim, time, false);
-							}
-						}
-					}
-					if(g_iOverLevel[attacker] > 0)
-					{
-						if(g_iClientTeam[victim] == TEAM_INFECTED)
-						{
-							new iCurrentHealth = GetEntProp(attacker,Prop_Data,"m_iHealth");
-							new iMaxHealth = GetEntProp(attacker,Prop_Data,"m_iMaxHealth");
-							new Float:fTempHealth = GetEntDataFloat(attacker, g_iOffset_HealthBuffer);
-							if(float(iCurrentHealth) + fTempHealth > (float(iMaxHealth) - 20.0))
-							{
-								decl String:weaponclass[32];
-								GetEventString(hEvent,"weapon",weaponclass,32);
-								//PrintToChatAll("\x03-class of gun: \x01%s",weaponclass);
-								if((StrContains(weaponclass,"shotgun",false) != -1) || (StrContains(weaponclass,"rifle",false) != -1) || (StrContains(weaponclass,"pistol",false) != -1) || (StrContains(weaponclass,"smg",false) != -1) || (StrContains(weaponclass,"sniper",false) != -1) || (StrContains(weaponclass,"launcher",false) != -1))
-								{
-									new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
-									new dmg = GetEventInt(hEvent,"dmg_health");
-									new newdmg = (dmg + (g_iOverLevel[attacker] * 2));
-									SetEntProp(victim,Prop_Data,"m_iHealth", hp - newdmg);
-									//DeleteCode
-									//PrintToChatAll("Ellis is doing %d damage", dmg);
-									//PrintToChatAll("Ellis is doing %d additional damage", (newdmg - dmg));
-								}
-							}
-						}
-					}
-							//Removed
-							decl String:weaponclass[32];
-							GetEventString(hEvent,"weapon",weaponclass,32);
-							//PrintToChatAll("\x03-class of gun: \x01%s",weaponclass);
-							if(StrContains(weaponclass,"hunting_rifle",false) != -1)	//Rugar
-							{
-								new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
-								new dmg = GetEventInt(hEvent,"dmg_health");
-								dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.13));
-								//PrintToChat(attacker, "your doing %d hunting rifle damage", dmg);
-								SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
-								//return Plugin_Continue;
-							}
-							//Removed
-				}
-				case 4:		//Nick Talents
-				{
-					if(g_iSwindlerLevel[attacker] > 0)
-					{
-						if(g_iClientTeam[victim] == TEAM_INFECTED)
-							if(g_bNickIsStealingLife[victim][attacker] == false)	//If player not poisoned, poison them
-							{
-								g_bNickIsStealingLife[victim][attacker] = true;
+// 								PrintHintText(attacker,"You poisoned %N", victim);
+// 							}
+// 					}
+// 					if(g_iSilentLevel[attacker] >0)
+// 					{
+// 						if(g_iClientTeam[victim] == TEAM_INFECTED)
+// 						{
+// 							decl String:weaponclass[32];
+// 							GetEventString(hEvent,"weapon",weaponclass,32);
+// 							//PrintToChatAll("\x03-class of gun: \x01%s",weaponclass);
+// 							if(StrContains(weaponclass,"hunting_rifle",false) != -1)	//Rugar
+// 							{
+// 								new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+// 								new dmg = GetEventInt(hEvent,"dmg_health");
+// 								dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.13));
+// 								//PrintToChat(attacker, "your doing %d hunting rifle damage", dmg);
+// 								SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+// 								//return Plugin_Continue;
+// 							}
+// 							else if(StrContains(weaponclass,"sniper_military",false) != -1)	//H&K MSG 90
+// 							{
+// 								IgniteEntity(victim, 5.0, false);
+// 								new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+// 								new dmg = GetEventInt(hEvent,"dmg_health");
+// 								dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.08));
+// 								//PrintToChat(attacker, "your doing %d sniper_military damage", dmg);
+// 								SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+// 								//return Plugin_Continue;
+// 							}
+// 							else if(StrContains(weaponclass,"sniper_scout",false) != -1)
+// 							{
+// 								new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+// 								new dmg = GetEventInt(hEvent,"dmg_health");
+// 								dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.13)) + (g_iSilentSorrowHeadshotCounter[attacker] * g_iSilentLevel[attacker] * 3);
+// 								//PrintToChat(attacker, "your doing %d scout damage", dmg);
+// 								SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+// 								//return Plugin_Continue;
+// 							}
+// 							else if(StrContains(weaponclass,"sniper_awp",false) != -1)
+// 							{
+// 								new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+// 								new dmg = GetEventInt(hEvent,"dmg_health");
+// 								dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.40) );
+// 								PrintToChat(attacker, "your doing %d extra awp damage", dmg);
+// 								SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+// 								//return Plugin_Continue;
+// 							}
+// 						}
+// 					}
+// 				}
+// 				case 2:		//Coach
+// 				{
+// 					if(g_iClientTeam[victim] == TEAM_INFECTED)
+// 					{
+// 						if(g_iMeleeDamageCounter[attacker]>0 || g_iSprayLevel[attacker]>0 || g_bIsWreckingBallCharged[attacker]==true || g_bCoachRageIsActive[attacker] == true)
+// 						{
+// 							decl String:weaponclass[32];
+// 							GetEventString(hEvent,"weapon",weaponclass,32);
+// 							//PrintToChatAll("\x03-class of gun: \x01%s",weaponclass);
+// 							if(StrContains(weaponclass,"melee",false) != -1)
+// 							{
+// 								if(g_bIsWreckingBallCharged[attacker]==true)
+// 								{
+// 									if(g_iWreckingLevel[attacker] == 5)
+// 									{
+// 										g_bWreckingChargeRetrigger[attacker] = true;
+// 										//PrintToChatAll("Wrecking Ball Retrigger = true");
+// 									}
+// 									g_bIsWreckingBallCharged[attacker] = false;
+// 									new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+// 									//new dmg = GetEventInt(hEvent,"dmg_health");
+// 									//PrintToChat(attacker, "predmg = %d", dmg);
+// 									//dmg = (g_iWreckingLevel[attacker]*200) + (g_iMeleeDamageCounter[attacker]);
+// 									CreateTimer(0.1, DeleteParticle, g_iPID_CoachMeleeCharge1[attacker], TIMER_FLAG_NO_MAPCHANGE);
+// 									CreateTimer(0.1, DeleteParticle, g_iPID_CoachMeleeCharge2[attacker], TIMER_FLAG_NO_MAPCHANGE);
+// 									//PrintToChat(attacker, "\x03[XPMod] \x05You did %d extra CHARGED melee damage", ((g_iWreckingLevel[attacker]*100) + (g_iMeleeDamageCounter[attacker])));
+// 									new Float:vec[3];
+// 									GetClientAbsOrigin(attacker, vec);
+// 									EmitSoundToAll(SOUND_COACH_CHARGE_HIT, attacker, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
+// 									//CreateParticle("coach_melee_charge_splash", 0.0, attacker, NO_ATTACH);
+// 									WriteParticle(victim, "coach_melee_charge_splash", 3.0);
+// 									SetEntProp(victim,Prop_Data,"m_iHealth", hp - ((g_iWreckingLevel[attacker]*100) + g_iMeleeDamageCounter[attacker] + g_iCoachRageMeleeDamage[attacker]));
+// 								}
+// 								else if(g_iMeleeDamageCounter[attacker]>0)
+// 								{
+// 									new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+// 									//new dmg = GetEventInt(hEvent,"dmg_health");
+// 									//PrintToChat(attacker, "predmg = %d", dmg);
+// 									//dmg = g_iMeleeDamageCounter[attacker];
+// 									PrintToChat(attacker, "\x03[XPMod] \x05You did %d extra melee damage", (g_iMeleeDamageCounter[attacker] + g_iCoachRageMeleeDamage[attacker]));
+// 									SetEntProp(victim,Prop_Data,"m_iHealth", hp - (g_iMeleeDamageCounter[attacker] + g_iCoachRageMeleeDamage[attacker]));
+// 								}
+// 								else if(g_bCoachRageIsActive[attacker] == true)
+// 								{
+// 									new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+// 									PrintToChat(attacker, "\x03[XPMod] \x05You did %d extra melee damage", g_iCoachRageMeleeDamage[attacker]);
+// 									SetEntProp(victim,Prop_Data,"m_iHealth", hp - g_iCoachRageMeleeDamage[attacker]);
+// 								}
+// 							}
+// 							if(g_iSprayLevel[attacker]>0)
+// 								if(StrContains(weaponclass,"shotgun",false) != -1)
+// 								{
+// 									new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+// 									//new dmg = GetEventInt(hEvent,"dmg_health");
+// 									//dmg = dmg + (g_iSprayLevel[attacker] * 2);
+// 									//PrintToChat(attacker, "your doing %d shotgun damage", (g_iSprayLevel[attacker] * 2));
+// 									SetEntProp(victim,Prop_Data,"m_iHealth", hp - (g_iSprayLevel[attacker] * 2));
+// 								}
+// 						}
+// 						//return Plugin_Continue;
+// 					}
+// 				}
+// 				case 3:		//Ellis Talents
+// 				{
+// 					if(g_iFireLevel[attacker]>0)
+// 					{
+// 						if(g_iClientTeam[victim] == TEAM_INFECTED)
+// 						{
+// 							if(g_bUsingFireStorm[attacker]==true)
+// 							{
+// 								new Float:time = (float(g_iFireLevel[attacker]) * 6.0);
+// 								IgniteEntity(victim, time, false);
+// 							}
+// 						}
+// 					}
+// 					if(g_iOverLevel[attacker] > 0)
+// 					{
+// 						if(g_iClientTeam[victim] == TEAM_INFECTED)
+// 						{
+// 							new iCurrentHealth = GetEntProp(attacker,Prop_Data,"m_iHealth");
+// 							new iMaxHealth = GetEntProp(attacker,Prop_Data,"m_iMaxHealth");
+// 							new Float:fTempHealth = GetEntDataFloat(attacker, g_iOffset_HealthBuffer);
+// 							if(float(iCurrentHealth) + fTempHealth > (float(iMaxHealth) - 20.0))
+// 							{
+// 								decl String:weaponclass[32];
+// 								GetEventString(hEvent,"weapon",weaponclass,32);
+// 								//PrintToChatAll("\x03-class of gun: \x01%s",weaponclass);
+// 								if((StrContains(weaponclass,"shotgun",false) != -1) || (StrContains(weaponclass,"rifle",false) != -1) || (StrContains(weaponclass,"pistol",false) != -1) || (StrContains(weaponclass,"smg",false) != -1) || (StrContains(weaponclass,"sniper",false) != -1) || (StrContains(weaponclass,"launcher",false) != -1))
+// 								{
+// 									new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+// 									new dmg = GetEventInt(hEvent,"dmg_health");
+// 									new newdmg = (dmg + (g_iOverLevel[attacker] * 2));
+// 									SetEntProp(victim,Prop_Data,"m_iHealth", hp - newdmg);
+// 									//DeleteCode
+// 									//PrintToChatAll("Ellis is doing %d damage", dmg);
+// 									//PrintToChatAll("Ellis is doing %d additional damage", (newdmg - dmg));
+// 								}
+// 							}
+// 						}
+// 					}
+// 							//Removed
+// 							decl String:weaponclass[32];
+// 							GetEventString(hEvent,"weapon",weaponclass,32);
+// 							//PrintToChatAll("\x03-class of gun: \x01%s",weaponclass);
+// 							if(StrContains(weaponclass,"hunting_rifle",false) != -1)	//Rugar
+// 							{
+// 								new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+// 								new dmg = GetEventInt(hEvent,"dmg_health");
+// 								dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.13));
+// 								//PrintToChat(attacker, "your doing %d hunting rifle damage", dmg);
+// 								SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+// 								//return Plugin_Continue;
+// 							}
+// 							//Removed
+// 				}
+// 				case 4:		//Nick Talents
+// 				{
+// 					if(g_iSwindlerLevel[attacker] > 0)
+// 					{
+// 						if(g_iClientTeam[victim] == TEAM_INFECTED)
+// 							if(g_bNickIsStealingLife[victim][attacker] == false)	//If player not poisoned, poison them
+// 							{
+// 								g_bNickIsStealingLife[victim][attacker] = true;
 								
-								new Handle:lifestealingpackage = CreateDataPack();
-								WritePackCell(lifestealingpackage, victim);
-								WritePackCell(lifestealingpackage, attacker);
+// 								new Handle:lifestealingpackage = CreateDataPack();
+// 								WritePackCell(lifestealingpackage, victim);
+// 								WritePackCell(lifestealingpackage, attacker);
 								
-								g_iNickStealingLifeRuntimes[victim] = 0;
+// 								g_iNickStealingLifeRuntimes[victim] = 0;
 
-								delete g_hTimer_NickLifeSteal[victim];
-								g_hTimer_NickLifeSteal[victim] = CreateTimer(2.0, TimerLifeStealing, lifestealingpackage, TIMER_REPEAT);
+// 								delete g_hTimer_NickLifeSteal[victim];
+// 								g_hTimer_NickLifeSteal[victim] = CreateTimer(2.0, TimerLifeStealing, lifestealingpackage, TIMER_REPEAT);
 								
-								decl Float:vec[3];
-								GetClientAbsOrigin(victim, vec);
-								EmitSoundToAll(SOUND_NICK_LIFESTEAL_HIT, victim, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
-							}
-					}
-					if(g_iDesperateLevel[attacker] > 0 && g_iNickDesperateMeasuresStack > 0)
-					{
-						decl String:weaponclass[32];
-						GetEventString(hEvent,"weapon",weaponclass,32);
+// 								decl Float:vec[3];
+// 								GetClientAbsOrigin(victim, vec);
+// 								EmitSoundToAll(SOUND_NICK_LIFESTEAL_HIT, victim, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
+// 							}
+// 					}
+// 					if(g_iDesperateLevel[attacker] > 0 && g_iNickDesperateMeasuresStack > 0)
+// 					{
+// 						decl String:weaponclass[32];
+// 						GetEventString(hEvent,"weapon",weaponclass,32);
 						
-						if(StrContains(weaponclass,"melee",false) == -1 && StrContains(weaponclass,"inferno",false) == -1 && 
-							StrContains(weaponclass,"pipe_bomb",false) == -1 && StrContains(weaponclass,"entityflame",false) == -1)
-						{
-							new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
-							new dmg = GetEventInt(hEvent,"dmg_health");
-							dmg = RoundToNearest(dmg * (g_iDesperateLevel[attacker] * 0.05) * g_iNickDesperateMeasuresStack);
-							PrintToChat(attacker, "your doing %d extra damage", dmg);
-							SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
-						}
-					}
-					if(g_iMagnumLevel[attacker]>0 || g_iRiskyLevel[attacker]>0)
-					{
-						if(g_iClientTeam[victim] == TEAM_INFECTED)
-						{
-							decl String:wclass[32];
-							GetEventString(hEvent,"weapon",wclass,32);
-							if (StrContains(wclass,"magnum",false) != -1)
-							{
-								new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
-								new dmg = GetEventInt(hEvent,"dmg_health");
-								dmg = RoundToNearest(dmg * (g_iMagnumLevel[attacker] * 0.75));
-								//PrintToChat(attacker, "your doing %d extra magnum damage", dmg);
-								SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
-							}
-							else if (StrContains(wclass,"pistol",false) != -1)
-							{
-								new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
-								new dmg = GetEventInt(hEvent,"dmg_health");
-								dmg = RoundToNearest(dmg * (g_iRiskyLevel[attacker] * 0.2));
-								//PrintToChat(attacker, "your doing %d extra damage", dmg);
-								SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
-							}
-							//return Plugin_Continue;
-						}
-					}
-				}
-			}
-*/
-/*
-	//new iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	ResetPack(pack);
-	new iEntid2 = ReadPackCell(pack);
-	if(IsValidEntity(iEntid2)==false)
-		return Plugin_Continue;
-	new iClient = ReadPackCell(pack);
-	if(IsClientInGame(iClient)==false)
-		return Plugin_Continue;
-	decl String:wclass[32];
-	ReadPackString(pack, wclass, sizeof(wclass));
-	CloseHandle(pack);
-	//PrintToChatAll("iClient: %d with gun class: %s", iClient, wclass);
-	//if(iClient==0 || IsFakeClient(iClient)==true)
-	//	return Plugin_Continue;
+// 						if(StrContains(weaponclass,"melee",false) == -1 && StrContains(weaponclass,"inferno",false) == -1 && 
+// 							StrContains(weaponclass,"pipe_bomb",false) == -1 && StrContains(weaponclass,"entityflame",false) == -1)
+// 						{
+// 							new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+// 							new dmg = GetEventInt(hEvent,"dmg_health");
+// 							dmg = RoundToNearest(dmg * (g_iDesperateLevel[attacker] * 0.05) * g_iNickDesperateMeasuresStack);
+// 							PrintToChat(attacker, "your doing %d extra damage", dmg);
+// 							SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+// 						}
+// 					}
+// 					if(g_iMagnumLevel[attacker]>0 || g_iRiskyLevel[attacker]>0)
+// 					{
+// 						if(g_iClientTeam[victim] == TEAM_INFECTED)
+// 						{
+// 							decl String:wclass[32];
+// 							GetEventString(hEvent,"weapon",wclass,32);
+// 							if (StrContains(wclass,"magnum",false) != -1)
+// 							{
+// 								new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+// 								new dmg = GetEventInt(hEvent,"dmg_health");
+// 								dmg = RoundToNearest(dmg * (g_iMagnumLevel[attacker] * 0.75));
+// 								//PrintToChat(attacker, "your doing %d extra magnum damage", dmg);
+// 								SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+// 							}
+// 							else if (StrContains(wclass,"pistol",false) != -1)
+// 							{
+// 								new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+// 								new dmg = GetEventInt(hEvent,"dmg_health");
+// 								dmg = RoundToNearest(dmg * (g_iRiskyLevel[attacker] * 0.2));
+// 								//PrintToChat(attacker, "your doing %d extra damage", dmg);
+// 								SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+// 							}
+// 							//return Plugin_Continue;
+// 						}
+// 					}
+// 				}
+// 			}
+// */
+// /*
+// 	//new iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+// 	ResetPack(pack);
+// 	new iEntid2 = ReadPackCell(pack);
+// 	if(IsValidEntity(iEntid2)==false)
+// 		return Plugin_Continue;
+// 	new iClient = ReadPackCell(pack);
+// 	if(IsClientInGame(iClient)==false)
+// 		return Plugin_Continue;
+// 	decl String:wclass[32];
+// 	ReadPackString(pack, wclass, sizeof(wclass));
+// 	CloseHandle(pack);
+// 	//PrintToChatAll("iClient: %d with gun class: %s", iClient, wclass);
+// 	//if(iClient==0 || IsFakeClient(iClient)==true)
+// 	//	return Plugin_Continue;
 	
-	iEntid2 = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);		//Might need(these two lines were commented out before)
-	if((iEntid2 < 1) || IsValidEntity(iEntid2)==false)
-		return Plugin_Continue;
-	GetEntityNetClass(iEntid2,wclass,32);
+// 	iEntid2 = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);		//Might need(these two lines were commented out before)
+// 	if((iEntid2 < 1) || IsValidEntity(iEntid2)==false)
+// 		return Plugin_Continue;
+// 	GetEntityNetClass(iEntid2,wclass,32);
 	
-	if(g_iChosenSurvivor[iClient]==0 || g_iChosenSurvivor[iClient]==3)	//if character is support or ELLIS
-	{
-		if (StrContains(wclass,"rifle",false) != -1 || StrContains(wclass,"smg",false) != -1 || StrContains(wclass,"sub",false) != -1 || StrContains(wclass,"sniper",false) != -1 || StrContains(wclass,"gren",false) != -1)
-		{
-			new clip = GetEntProp(iEntid2,Prop_Data,"m_iClip1");
-			new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
+// 	if(g_iChosenSurvivor[iClient]==0 || g_iChosenSurvivor[iClient]==3)	//if character is support or ELLIS
+// 	{
+// 		if (StrContains(wclass,"rifle",false) != -1 || StrContains(wclass,"smg",false) != -1 || StrContains(wclass,"sub",false) != -1 || StrContains(wclass,"sniper",false) != -1 || StrContains(wclass,"gren",false) != -1)
+// 		{
+// 			new clip = GetEntProp(iEntid2,Prop_Data,"m_iClip1");
+// 			new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 			
-			new iAmmo = GetEntData(iClient, iOffset_Ammo + 12);	//for rifle (+12)
-			if(iAmmo >= (g_iClientPrimaryClipSize[iClient] + (g_iPromotionalLevel[iClient]*20) + (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6)))
-			{
-				SetEntData(iEntid2, g_iOffset_Clip1, (clip + (g_iPromotionalLevel[iClient]*20) + (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6)), true);
-				SetEntData(iClient, iOffset_Ammo + 12, iAmmo - (g_iPromotionalLevel[iClient]*20) - (g_iMetalLevel[iClient]*4) - (g_iFireLevel[iClient]*6));
-			}
+// 			new iAmmo = GetEntData(iClient, iOffset_Ammo + 12);	//for rifle (+12)
+// 			if(iAmmo >= (g_iClientPrimaryClipSize[iClient] + (g_iPromotionalLevel[iClient]*20) + (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6)))
+// 			{
+// 				SetEntData(iEntid2, g_iOffset_Clip1, (clip + (g_iPromotionalLevel[iClient]*20) + (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6)), true);
+// 				SetEntData(iClient, iOffset_Ammo + 12, iAmmo - (g_iPromotionalLevel[iClient]*20) - (g_iMetalLevel[iClient]*4) - (g_iFireLevel[iClient]*6));
+// 			}
 			
-			iAmmo = GetEntData(iClient, iOffset_Ammo + 20);	//for smg (+20)
-			if(iAmmo >= (g_iClientPrimaryClipSize[iClient]+(g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6)))
-			{
-				SetEntData(iEntid2, g_iOffset_Clip1, clip + (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6), true);
-				SetEntData(iClient, iOffset_Ammo + 20, iAmmo - (g_iMetalLevel[iClient]*4) - (g_iFireLevel[iClient]*6));
-			}
+// 			iAmmo = GetEntData(iClient, iOffset_Ammo + 20);	//for smg (+20)
+// 			if(iAmmo >= (g_iClientPrimaryClipSize[iClient]+(g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6)))
+// 			{
+// 				SetEntData(iEntid2, g_iOffset_Clip1, clip + (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6), true);
+// 				SetEntData(iClient, iOffset_Ammo + 20, iAmmo - (g_iMetalLevel[iClient]*4) - (g_iFireLevel[iClient]*6));
+// 			}
 			
-			iAmmo = GetEntData(iClient, iOffset_Ammo + 32);	//for huntingrifle (+32)
-			if(iAmmo >= (g_iClientPrimaryClipSize[iClient]+(g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6)))
-			{
-				SetEntData(iEntid2, g_iOffset_Clip1, clip + (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6), true);
-				SetEntData(iClient, iOffset_Ammo + 32, iAmmo - (g_iMetalLevel[iClient]*4) - (g_iFireLevel[iClient]*6));
-			}
+// 			iAmmo = GetEntData(iClient, iOffset_Ammo + 32);	//for huntingrifle (+32)
+// 			if(iAmmo >= (g_iClientPrimaryClipSize[iClient]+(g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6)))
+// 			{
+// 				SetEntData(iEntid2, g_iOffset_Clip1, clip + (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6), true);
+// 				SetEntData(iClient, iOffset_Ammo + 32, iAmmo - (g_iMetalLevel[iClient]*4) - (g_iFireLevel[iClient]*6));
+// 			}
 			
-			iAmmo = GetEntData(iClient, iOffset_Ammo + 36);	//for huntingrifle2? (+36)
-			if(iAmmo >= (g_iClientPrimaryClipSize[iClient]+(g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6)))
-			{
-				SetEntData(iEntid2, g_iOffset_Clip1, clip + (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6), true);
-				SetEntData(iClient, iOffset_Ammo + 36, iAmmo - (g_iMetalLevel[iClient]*4) - (g_iFireLevel[iClient]*6));
-			}
-			//iAmmo = GetEntData(iClient, iOffset_Ammo + 64);	//for grenadelanucher (+36)
-			//if(iAmmo >= (g_iClientPrimaryClipSize[iClient] + g_iFireLevel[iClient]))
-			//{
-			//	SetEntData(iEntid2, g_iOffset_Clip1, clip + g_iFireLevel[iClient], true);
-			//	SetEntData(iClient, iOffset_Ammo + 64, iAmmo - g_iFireLevel[iClient]);
-		//}
-		}
-	}
-	else if(g_iMagnumLevel[iClient]>0 || g_iRiskyLevel[iClient]>0)
-	{
-		iEntid2 = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
-		if(IsValidEntity(iEntid2)==false)
-			return Plugin_Continue;
-		GetEntityNetClass(iEntid2,wclass,32);
-		if (StrContains(wclass,"magnum",false) != -1)
-		{
-			//new clip1 = GetEntProp(iEntid2,Prop_Data,"m_iClip1");
-			SetEntData(iEntid2, g_iOffset_Clip1, 8 - g_iMagnumLevel[iClient], true);
-		}
-		else if (StrContains(wclass,"cpistol",false) != -1)
-		{
-			new clip = GetEntProp(iEntid2,Prop_Data,"m_iClip1");
-			SetEntData(iEntid2, g_iOffset_Clip1, clip + (g_iRiskyLevel[iClient] * 12), true);
-		}
-	}
-	else if(g_iSilentLevel[iClient]>0)
-	{
-		new clip = GetEntProp(iEntid2,Prop_Data,"m_iClip1");
-		new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
-		decl iAmmo;
+// 			iAmmo = GetEntData(iClient, iOffset_Ammo + 36);	//for huntingrifle2? (+36)
+// 			if(iAmmo >= (g_iClientPrimaryClipSize[iClient]+(g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6)))
+// 			{
+// 				SetEntData(iEntid2, g_iOffset_Clip1, clip + (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6), true);
+// 				SetEntData(iClient, iOffset_Ammo + 36, iAmmo - (g_iMetalLevel[iClient]*4) - (g_iFireLevel[iClient]*6));
+// 			}
+// 			//iAmmo = GetEntData(iClient, iOffset_Ammo + 64);	//for grenadelanucher (+36)
+// 			//if(iAmmo >= (g_iClientPrimaryClipSize[iClient] + g_iFireLevel[iClient]))
+// 			//{
+// 			//	SetEntData(iEntid2, g_iOffset_Clip1, clip + g_iFireLevel[iClient], true);
+// 			//	SetEntData(iClient, iOffset_Ammo + 64, iAmmo - g_iFireLevel[iClient]);
+// 		//}
+// 		}
+// 	}
+// 	else if(g_iMagnumLevel[iClient]>0 || g_iRiskyLevel[iClient]>0)
+// 	{
+// 		iEntid2 = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
+// 		if(IsValidEntity(iEntid2)==false)
+// 			return Plugin_Continue;
+// 		GetEntityNetClass(iEntid2,wclass,32);
+// 		if (StrContains(wclass,"magnum",false) != -1)
+// 		{
+// 			//new clip1 = GetEntProp(iEntid2,Prop_Data,"m_iClip1");
+// 			SetEntData(iEntid2, g_iOffset_Clip1, 8 - g_iMagnumLevel[iClient], true);
+// 		}
+// 		else if (StrContains(wclass,"cpistol",false) != -1)
+// 		{
+// 			new clip = GetEntProp(iEntid2,Prop_Data,"m_iClip1");
+// 			SetEntData(iEntid2, g_iOffset_Clip1, clip + (g_iRiskyLevel[iClient] * 12), true);
+// 		}
+// 	}
+// 	else if(g_iSilentLevel[iClient]>0)
+// 	{
+// 		new clip = GetEntProp(iEntid2,Prop_Data,"m_iClip1");
+// 		new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
+// 		decl iAmmo;
 		
-		if (StrContains(wclass,"CSniperRifle",false) != -1)	//Rugar
-		{
-			if(clip > (17 - (g_iSilentLevel[iClient]*2)))
-			{
-				iAmmo = GetEntData(iClient, iOffset_Ammo + 36);	//for huntingrifle (+36)
-				SetEntData(iEntid2, g_iOffset_Clip1, 17 - (g_iSilentLevel[iClient] * 2), true);
-				SetEntData(iClient, iOffset_Ammo + 36, iAmmo + (g_iSilentLevel[iClient]*2) + 2);
-			}
-		}
-		else if (StrContains(wclass,"CSniper_Military",false) != -1)
-		{
-			iAmmo = GetEntData(iClient, iOffset_Ammo + 40);	//for other snipers (+40)
-			if(iAmmo >= (g_iClientPrimaryClipSize[iClient] + (g_iSilentLevel[iClient] * 6)))
-			{
-				SetEntData(iEntid2, g_iOffset_Clip1, 30 + (g_iSilentLevel[iClient] * 6), true);
-				SetEntData(iClient, iOffset_Ammo + 40, iAmmo - (g_iSilentLevel[iClient] * 6));
-			}
-		}
-		else if (StrContains(wclass,"CSniper_scout",false) != -1)
-		{
-			if(clip > (15 - g_iSilentLevel[iClient]))
-			{
-				iAmmo = GetEntData(iClient, iOffset_Ammo + 40);	//for other snipers (+40)
-				SetEntData(iEntid2, g_iOffset_Clip1, 15 - g_iSilentLevel[iClient], true);
-				SetEntData(iClient, iOffset_Ammo + 40, iAmmo + g_iSilentLevel[iClient]);
-			}
-		}
-		else if (StrContains(wclass,"CSniper_AWP",false) != -1)
-		{
-			iAmmo = GetEntData(iClient, iOffset_Ammo + 40);	//for other snipers (+40)
-			if(clip > 1)
-			{
-				SetEntData(iEntid2, g_iOffset_Clip1, 3, true);
-				SetEntData(iClient, iOffset_Ammo + 40, iAmmo + 17);
-			}
-		}
-	}
-	*/
-	return Plugin_Continue;
-}
+// 		if (StrContains(wclass,"CSniperRifle",false) != -1)	//Rugar
+// 		{
+// 			if(clip > (17 - (g_iSilentLevel[iClient]*2)))
+// 			{
+// 				iAmmo = GetEntData(iClient, iOffset_Ammo + 36);	//for huntingrifle (+36)
+// 				SetEntData(iEntid2, g_iOffset_Clip1, 17 - (g_iSilentLevel[iClient] * 2), true);
+// 				SetEntData(iClient, iOffset_Ammo + 36, iAmmo + (g_iSilentLevel[iClient]*2) + 2);
+// 			}
+// 		}
+// 		else if (StrContains(wclass,"CSniper_Military",false) != -1)
+// 		{
+// 			iAmmo = GetEntData(iClient, iOffset_Ammo + 40);	//for other snipers (+40)
+// 			if(iAmmo >= (g_iClientPrimaryClipSize[iClient] + (g_iSilentLevel[iClient] * 6)))
+// 			{
+// 				SetEntData(iEntid2, g_iOffset_Clip1, 30 + (g_iSilentLevel[iClient] * 6), true);
+// 				SetEntData(iClient, iOffset_Ammo + 40, iAmmo - (g_iSilentLevel[iClient] * 6));
+// 			}
+// 		}
+// 		else if (StrContains(wclass,"CSniper_scout",false) != -1)
+// 		{
+// 			if(clip > (15 - g_iSilentLevel[iClient]))
+// 			{
+// 				iAmmo = GetEntData(iClient, iOffset_Ammo + 40);	//for other snipers (+40)
+// 				SetEntData(iEntid2, g_iOffset_Clip1, 15 - g_iSilentLevel[iClient], true);
+// 				SetEntData(iClient, iOffset_Ammo + 40, iAmmo + g_iSilentLevel[iClient]);
+// 			}
+// 		}
+// 		else if (StrContains(wclass,"CSniper_AWP",false) != -1)
+// 		{
+// 			iAmmo = GetEntData(iClient, iOffset_Ammo + 40);	//for other snipers (+40)
+// 			if(clip > 1)
+// 			{
+// 				SetEntData(iEntid2, g_iOffset_Clip1, 3, true);
+// 				SetEntData(iClient, iOffset_Ammo + 40, iAmmo + 17);
+// 			}
+// 		}
+// 	}
+// 	*/
+// 	return Plugin_Continue;
+// }
 
-public Action:SoH_MagEnd2 (Handle:timer, Handle:hPack)
+Action:SoH_MagEnd2 (Handle:timer, Handle:hPack)
 {
 	if (IsServerProcessing()==false)
 	{
@@ -900,7 +900,7 @@ public Action:SoH_MagEnd2 (Handle:timer, Handle:hPack)
 
 
 //called for autoshotguns
-public Action:SoH_AutoshotgunStart (Handle:timer, any:pack)
+Action:SoH_AutoshotgunStart (Handle:timer, any:pack)
 {
 	// //----DEBUG----
 	// PrintToChatAll("\x03-autoshotgun detected, iEntid \x01%i\x03, startO \x01%i\x03, insertO \x01%i\x03, endO \x01%i",
@@ -950,7 +950,7 @@ public Action:SoH_AutoshotgunStart (Handle:timer, any:pack)
 }
 
 
-public Action:SoH_SpasShotgunStart (Handle:timer, any:pack)
+Action:SoH_SpasShotgunStart (Handle:timer, any:pack)
 {
 	//----DEBUG----
 	// PrintToChatAll("\x03-autoshotgun detected, iEntid \x01%i\x03, startO \x01%i\x03, insertO \x01%i\x03, endO \x01%i",
@@ -1001,7 +1001,7 @@ public Action:SoH_SpasShotgunStart (Handle:timer, any:pack)
 }
 
 //called for pump shotguns
-public Action:SoH_PumpshotgunStart (Handle:timer, any:pack)
+Action:SoH_PumpshotgunStart (Handle:timer, any:pack)
 {
 	//----DEBUG----
 	// PrintToChatAll("\x03-pumpshotgun detected, iEntid \x01%i\x03, startO \x01%i\x03, insertO \x01%i\x03, endO \x01%i",
@@ -1049,7 +1049,7 @@ public Action:SoH_PumpshotgunStart (Handle:timer, any:pack)
 }
 
 //this resets the playback rate on shotguns
-public Action:SoH_ShotgunEnd (Handle:timer, any:pack)
+Action:SoH_ShotgunEnd (Handle:timer, any:pack)
 {
 	ResetPack(pack);
 	new iEntid2 = ReadPackCell(pack);
@@ -1113,7 +1113,7 @@ public Action:SoH_ShotgunEnd (Handle:timer, any:pack)
 
 //since cocking requires more time, this function does
 //exactly as the above, except it adds slightly more time
-public Action:SoH_ShotgunEndCock (Handle:timer, any:iEntid2)
+Action:SoH_ShotgunEndCock (Handle:timer, any:iEntid2)
 {
 	//----DEBUG----
 	//PrintToChatAll("\x03-autoshotgun tick");

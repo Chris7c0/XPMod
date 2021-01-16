@@ -1,7 +1,7 @@
 //Nick Menu////////////////////////////////////////////////////////////////
 
 //Nick Menu Draw
-public Action:NickMenuDraw(iClient) 
+Action:NickMenuDraw(iClient) 
 {
 	decl String:text[512];
 
@@ -36,7 +36,7 @@ public Action:NickMenuDraw(iClient)
 }
 
 //Swindler
-public Action:SwindlerMenuDraw(iClient) 
+Action:SwindlerMenuDraw(iClient) 
 {
 	decl String:text[512];
 
@@ -62,7 +62,7 @@ public Action:SwindlerMenuDraw(iClient)
 }
 
 //Leftover Supplies
-public Action:LeftoverMenuDraw(iClient) 
+Action:LeftoverMenuDraw(iClient) 
 {
 	decl String:text[512];
 
@@ -88,7 +88,7 @@ public Action:LeftoverMenuDraw(iClient)
 }
 
 //Risky Business
-public Action:RiskyMenuDraw(iClient) 
+Action:RiskyMenuDraw(iClient) 
 {
 	decl String:text[512];
 
@@ -114,7 +114,7 @@ public Action:RiskyMenuDraw(iClient)
 }
 
 //Enhanced Pain Killers
-public Action:EnhancedMenuDraw(iClient) 
+Action:EnhancedMenuDraw(iClient) 
 {
 	decl String:text[512];
 
@@ -140,7 +140,7 @@ public Action:EnhancedMenuDraw(iClient)
 }
 
 //Magnum Stampede
-public Action:MagnumMenuDraw(iClient) 
+Action:MagnumMenuDraw(iClient) 
 {
 	decl String:text[512];
 
@@ -167,7 +167,7 @@ public Action:MagnumMenuDraw(iClient)
 }
 
 //Desperate Measures
-public Action:DesperateMenuDraw(iClient) 
+Action:DesperateMenuDraw(iClient) 
 {
 	decl String:text[512];
 
@@ -195,7 +195,7 @@ public Action:DesperateMenuDraw(iClient)
 //Handlers//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Nick Menu Handler
-public NickMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+NickMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -239,7 +239,7 @@ public NickMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Swindler Handler
-public SwindlerMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SwindlerMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if (action==MenuAction_Select ) 
 	{
@@ -254,7 +254,7 @@ public SwindlerMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Leftover Supplies Handler
-public LeftoverMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+LeftoverMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if (action==MenuAction_Select ) 
 	{
@@ -269,7 +269,7 @@ public LeftoverMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Risky Business Handler
-public RiskyMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+RiskyMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if (action==MenuAction_Select ) 
 	{
@@ -284,7 +284,7 @@ public RiskyMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Enhanced Pain Killers Handler
-public EnhancedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+EnhancedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if (action==MenuAction_Select ) 
 	{
@@ -299,7 +299,7 @@ public EnhancedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Magnum Stampede Handler
-public MagnumMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+MagnumMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if (action==MenuAction_Select ) 
 	{
@@ -314,7 +314,7 @@ public MagnumMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Desperate Measures Handler
-public DesperateMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+DesperateMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if (action==MenuAction_Select ) 
 	{

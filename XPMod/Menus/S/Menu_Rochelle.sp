@@ -1,5 +1,5 @@
 //Rochelle Menu Draw
-public Action:RochelleMenuDraw(iClient) 
+Action:RochelleMenuDraw(iClient) 
 {
 	decl String:text[512];
 
@@ -35,7 +35,7 @@ public Action:RochelleMenuDraw(iClient)
 }
 
 //Gather Intelligence
-public Action:GatherMenuDraw(iClient) 
+Action:GatherMenuDraw(iClient) 
 {
 	decl String:text[512];
 
@@ -61,7 +61,7 @@ public Action:GatherMenuDraw(iClient)
 }
 
 //Hunter Killer
-public Action:HunterMenuDraw(iClient) 
+Action:HunterMenuDraw(iClient) 
 {
 	decl String:text[512];
 
@@ -87,7 +87,7 @@ public Action:HunterMenuDraw(iClient)
 }
 
 //Sniper's Endurance
-public Action:SnipersEnduranceMenuDraw(iClient) 
+Action:SnipersEnduranceMenuDraw(iClient) 
 {
 	decl String:text[512];
 
@@ -113,7 +113,7 @@ public Action:SnipersEnduranceMenuDraw(iClient)
 }
 
 //Silent Sorrow
-public Action:SilentMenuDraw(iClient) 
+Action:SilentMenuDraw(iClient) 
 {
 	decl String:text[512];
 
@@ -139,7 +139,7 @@ public Action:SilentMenuDraw(iClient)
 }
 
 //Smoke and Mirrors
-public Action:SmokeMenuDraw(iClient) 
+Action:SmokeMenuDraw(iClient) 
 {
 	decl String:text[512];
 
@@ -165,7 +165,7 @@ public Action:SmokeMenuDraw(iClient)
 }
 
 //Shadow Ninja
-public Action:ShadowMenuDraw(iClient) 
+Action:ShadowMenuDraw(iClient) 
 {
 	decl String:text[512];
 
@@ -195,7 +195,7 @@ public Action:ShadowMenuDraw(iClient)
 //Handlers//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Rochelle'sMenu Handler
-public RochelleMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+RochelleMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -239,7 +239,7 @@ public RochelleMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Gather Training Handler
-public GatherMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+GatherMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if (action==MenuAction_Select ) 
 	{
@@ -254,7 +254,7 @@ public GatherMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Hunter Killer Handler
-public HunterMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+HunterMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if (action==MenuAction_Select) 
 	{
@@ -269,7 +269,7 @@ public HunterMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Sniper's Endurance Handler
-public SnipersEnduranceMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SnipersEnduranceMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if (action==MenuAction_Select ) 
 	{
@@ -284,7 +284,7 @@ public SnipersEnduranceMenuHandler(Handle:hmenu, MenuAction:action, iClient, ite
 }
 
 //Silent Handler
-public SilentMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SilentMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if (action==MenuAction_Select ) 
 	{
@@ -299,7 +299,7 @@ public SilentMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Smoke and Mirrors Handler
-public SmokeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SmokeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if (action==MenuAction_Select ) 
 	{
@@ -314,7 +314,7 @@ public SmokeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Shadow Ninja Handler
-public ShadowMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ShadowMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if (action==MenuAction_Select ) 
 	{
@@ -329,7 +329,7 @@ public ShadowMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 
-public Action:DetectionHudMenuDraw(iClient) 
+Action:DetectionHudMenuDraw(iClient) 
 {
 	if(g_iClientTeam[iClient] != TEAM_SURVIVORS || g_bDrawIDD[iClient]== false || IsPlayerAlive(iClient) == false)
 		return Plugin_Handled;
@@ -392,7 +392,7 @@ public Action:DetectionHudMenuDraw(iClient)
 		
 	return Plugin_Handled;
 }
-public DetectionHudMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+DetectionHudMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{

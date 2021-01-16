@@ -246,7 +246,7 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 
 // This is purely to block the name change message when updating a name to have the XPMod Level tags
 // Originally from https://forums.alliedmods.net/showthread.php?t=302085
-public Action Hook_SayText2(UserMsg msg_id, any msg, const int[] players, int playersNum, bool reliable, bool init)
+Action Hook_SayText2(UserMsg msg_id, any msg, const int[] players, int playersNum, bool reliable, bool init)
 {
 	// Continue as usual if we arent hiding the name change messages currently
 	if(g_bHideNameChangeMessage == false)
@@ -275,7 +275,7 @@ public Action Hook_SayText2(UserMsg msg_id, any msg, const int[] players, int pl
 	return Plugin_Continue;
 }
 
-public Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	//PrintToServer("EVENT ROUND START=====================================================================================");
 	//PrintToServer("**************************** FREEZING GAME");
@@ -346,7 +346,7 @@ public Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDont
 	return Plugin_Continue;
 }
 
-public Action:Event_RoundEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_RoundEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	//PrintToServer("Event_RoundEnd =========================================================");
 
@@ -392,7 +392,7 @@ public Action:Event_RoundEnd(Handle:hEvent, const String:strName[], bool:bDontBr
 	return Plugin_Continue;
 }
 
-public Event_PlayerJump(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Event_PlayerJump(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	if (iClient < 1)
@@ -421,7 +421,7 @@ public Event_PlayerJump(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	return;
 }
 
-public Action:JoinTeamCmd(iClient, const String:command[], argc)
+Action:JoinTeamCmd(iClient, const String:command[], argc)
 {
 	// This is specifically for preventing user from changing team using M button on cool down
 	if (g_bPlayerInTeamChangeCoolDown[iClient] == true)
@@ -433,7 +433,7 @@ public Action:JoinTeamCmd(iClient, const String:command[], argc)
 	return Plugin_Continue;
 }
 
-public Action:Event_PlayerChangeTeam(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_PlayerChangeTeam(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 
@@ -448,7 +448,7 @@ public Action:Event_PlayerChangeTeam(Handle:hEvent, const String:strName[], bool
 	return Plugin_Continue;
 }
 
-public Action:Event_PlayerSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_PlayerSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	// if (RunClientChecks(iClient) && IsFakeClient(iClient) == false)
@@ -516,7 +516,7 @@ SetupUnfreezeGameTimer(Float:unfreezeWaitTime)
 	}
 }
 
-public Action:Event_PlayerConnect(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_PlayerConnect(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	if(iClient==0)
@@ -623,7 +623,7 @@ public Action:Event_PlayerConnect(Handle:hEvent, const String:strName[], bool:bD
 }
 
 
-public Action:Event_PlayerDisconnect(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_PlayerDisconnect(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	if(iClient	< 1)
@@ -650,19 +650,19 @@ public Action:Event_PlayerDisconnect(Handle:hEvent, const String:strName[], bool
 	g_iDBUserID[iClient] = -1;
 	g_strDBUserToken[iClient] = "";
 	g_iAutoSetCountDown[iClient] = -1;
-	ResetAll(iClient, iClient);
+	ResetAll(iClient);
 	//PrintToChatAll("\x03%N \x04has disconnected", iClient);
 	//Reset the arry for the player
 	if(g_bDoesClientAttackFast[iClient] == true)
 	{
 		//PrintToChatAll("PLAYER DISCONNECTED! Removing from array iClient = %N(%d)", iClient, iClient);
-		pop(iClient, 1);
+		pop(iClient);
 		testtoggle[iClient] = false;
 	}
 	return Plugin_Continue;
 }
 
-public Action:Event_FriendlyFire(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_FriendlyFire(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	
 	// new attacker = GetClientOfUserId(GetEventInt(hEvent,"attacker"));

@@ -2,7 +2,7 @@
 ///////////////////////////////////////////////           TIMERS           ///////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-public Action:Timer_ResetGlow(Handle:timer, any:iClient)
+Action:Timer_ResetGlow(Handle:timer, any:iClient)
 {
 	fnc_SetRendering(iClient);
 	
@@ -11,7 +11,7 @@ public Action:Timer_ResetGlow(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerGiveHudBack(Handle:timer, any:iClient)
+Action:TimerGiveHudBack(Handle:timer, any:iClient)
 {
 	if(IsClientInGame(iClient) == true && IsFakeClient(iClient) == false)
 		SetEntProp(iClient, Prop_Send, "m_iHideHUD", 0);
@@ -19,14 +19,14 @@ public Action:TimerGiveHudBack(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-/*public Action:TimerResetCommonLimit(Handle:timer, any:iClient)
+/*Action:TimerResetCommonLimit(Handle:timer, any:iClient)
 {
 	SetConVarInt(FindConVar("z_common_limit"), 30);
 	
 	return Plugin_Stop;
 }*/
 
-public Action:TimerResetZombieDamage(Handle:timer, any:iClient)
+Action:TimerResetZombieDamage(Handle:timer, any:iClient)
 {
 	SetConVarInt(FindConVar("z_common_limit"), 30);
 	g_bCommonInfectedDoMoreDamage = false;
@@ -34,7 +34,7 @@ public Action:TimerResetZombieDamage(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerUnfreezeNotification(Handle:timer, any:data)
+Action:TimerUnfreezeNotification(Handle:timer, any:data)
 {
 	if(g_iUnfreezeNotifyRunTimes-- > 1)
 	{
@@ -51,7 +51,7 @@ public Action:TimerUnfreezeNotification(Handle:timer, any:data)
 	return Plugin_Stop;
 }
 
-public Action:TimerChangeSpectator(Handle:timer, any:iClient)
+Action:TimerChangeSpectator(Handle:timer, any:iClient)
 {
 	if(iClient > 0 && g_bClientSpectating[iClient] == true && IsClientInGame(iClient) && IsFakeClient(iClient) == false)
 	{
@@ -64,14 +64,14 @@ public Action:TimerChangeSpectator(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerResetPlayerChangeTeamCoolDown(Handle:timer, any:iClient)
+Action:TimerResetPlayerChangeTeamCoolDown(Handle:timer, any:iClient)
 {
 	g_bPlayerInTeamChangeCoolDown[iClient] = false;
 
 	return Plugin_Stop;
 }
 
-public Action:TimerCheckTeam(Handle:timer, any:iClient)
+Action:TimerCheckTeam(Handle:timer, any:iClient)
 {
 	if(iClient < 1 || IsClientInGame(iClient) == false)
 		return Plugin_Stop;
@@ -101,7 +101,7 @@ public Action:TimerCheckTeam(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:FreezeColor(Handle:timer, any:iClient)
+Action:FreezeColor(Handle:timer, any:iClient)
 {
 	if(IsClientInGame(iClient) == false)
 		return Plugin_Stop;
@@ -116,7 +116,7 @@ public Action:FreezeColor(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerResetMelee(Handle:timer, any:data)
+Action:TimerResetMelee(Handle:timer, any:data)
 {
 	if (IsServerProcessing()==false)
 		return Plugin_Continue;
@@ -172,7 +172,7 @@ public Action:TimerResetMelee(Handle:timer, any:data)
 	return Plugin_Continue;
 }
 
-public Action:TimerUnfreeze(Handle:timer, any:data)
+Action:TimerUnfreeze(Handle:timer, any:data)
 {
 	// PrintToServer("**************************** UNFREEZING GAME");
 	g_bGameFrozen = false;
@@ -272,7 +272,7 @@ public Action:TimerUnfreeze(Handle:timer, any:data)
 }
 
 
-public Action:TimerDrugged(Handle:timer, any:iClient)
+Action:TimerDrugged(Handle:timer, any:iClient)
 {
 	if(IsClientInGame(iClient) == false || IsPlayerAlive(iClient) == false)
 	{
@@ -313,7 +313,7 @@ public Action:TimerDrugged(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-public Action:TimerSpawnGhostClass(Handle:timer, any:iClient)
+Action:TimerSpawnGhostClass(Handle:timer, any:iClient)
 {
 	// PrintToChatAll("Spawned as ghost!");
 	

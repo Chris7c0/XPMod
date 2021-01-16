@@ -1,5 +1,5 @@
 
-public Action:CreateNewUserMenuDraw(iClient)
+Action:CreateNewUserMenuDraw(iClient)
 {
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Handled;
@@ -31,7 +31,7 @@ public Action:CreateNewUserMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-public CreateNewUserMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+CreateNewUserMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select)
 	{

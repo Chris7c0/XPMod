@@ -295,7 +295,6 @@ new String:UNCOMMON_INFECTED_MODELS[][] =   {"models/infected/common_male_ceda.m
 
 //Testing stuff
 new gClone[MAXPLAYERS + 1];
-new testingparticle;
 new bool:talentsJustGiven[MAXPLAYERS + 1] = false;
 new bool:testtoggle[MAXPLAYERS + 1];
 new Float:rspeed;
@@ -303,7 +302,7 @@ new bool:canchangemovement[MAXPLAYERS + 1];
 new preledgehealth[MAXPLAYERS + 1];
 new Float:preledgebuffer[MAXPLAYERS + 1];
 new bool:clienthanging[MAXPLAYERS + 1];
-new g_iAbility = 0;
+//new g_iAbility = 0;
 
 
 
@@ -1007,7 +1006,7 @@ new Handle:g_hSDK_VomitOnPlayer 	= INVALID_HANDLE;
 new Handle:g_hSDK_UnVomitOnPlayer 	= INVALID_HANDLE;
 new Handle:g_hSDK_Fling 			= INVALID_HANDLE;
 //Testing SDK Calls
-new Handle:g_hSetClass 			= INVALID_HANDLE;
+//new Handle:g_hSetClass 			= INVALID_HANDLE;
 new Handle:g_hCreateAbility 			= INVALID_HANDLE;
 //Timer Handles
 new Handle:g_hTimer_ResetHideNameChangeMessage 				= null;

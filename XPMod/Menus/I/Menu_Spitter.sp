@@ -1,7 +1,7 @@
 //Spitter Menu
 
 //Spitter Menu Draw
-public Action:SpitterTopMenuDraw(iClient)
+Action:SpitterTopMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	CheckLevel(iClient);
@@ -29,7 +29,7 @@ public Action:SpitterTopMenuDraw(iClient)
 //Talent Draws///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Ground 'n Pound Menu Draw
-public Action:PuppetMenuDraw(iClient)
+Action:PuppetMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	CheckLevel(iClient);
@@ -47,7 +47,7 @@ public Action:PuppetMenuDraw(iClient)
 }
 
 //Spiked Carapace Menu Draw
-public Action:MaterialMenuDraw(iClient)
+Action:MaterialMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	CheckLevel(iClient);
@@ -67,7 +67,7 @@ public Action:MaterialMenuDraw(iClient)
 }
 
 //Hillbilly Madness! Menu Draw
-public Action:HallucinogenicMenuDraw(iClient)
+Action:HallucinogenicMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	CheckLevel(iClient);
@@ -87,7 +87,7 @@ public Action:HallucinogenicMenuDraw(iClient)
 }
 
 //Choose Spitter Menu Draw
-public Action:ChooseSpitterClassMenuDraw(iClient) 
+Action:ChooseSpitterClassMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	CheckMenu(iClient);
@@ -110,7 +110,7 @@ public Action:ChooseSpitterClassMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-public Action:GooTypeMenuDraw(iClient)
+Action:GooTypeMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	CheckLevel(iClient);
@@ -156,7 +156,7 @@ public Action:GooTypeMenuDraw(iClient)
 //Handlers/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Goo Type Menu Handler
-public GooTypeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+GooTypeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -187,7 +187,7 @@ public GooTypeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Spitter Top Menu Handler
-public SpitterTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SpitterTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -237,7 +237,7 @@ public SpitterTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Ground 'n Pound Menu Handler
-public PuppetMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+PuppetMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -252,7 +252,7 @@ public PuppetMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Spiked Carapace Menu Handler
-public MaterialMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+MaterialMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -267,7 +267,7 @@ public MaterialMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Hillbilly Madness! Menu Handler
-public HallucinogenicMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+HallucinogenicMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{
@@ -282,7 +282,7 @@ public HallucinogenicMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemN
 }
 
 //Choose Spitter Top Menu Handler
-public ChooseSpitterClassMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ChooseSpitterClassMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select) 
 	{

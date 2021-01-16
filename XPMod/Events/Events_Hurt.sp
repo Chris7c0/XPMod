@@ -1,4 +1,4 @@
-public Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new attacker = GetClientOfUserId(GetEventInt(hEvent,"attacker"));
 	new victim  = GetClientOfUserId(GetEventInt(hEvent,"userid"));
