@@ -95,6 +95,7 @@ public Action:TestFunction4(iClient,args)
 	char str1[99];
 	GetCmdArg(1, str1, sizeof(str1));
 
+	SDKCall(g_hSDK_UnVomitOnPlayer, iClient);
 	
 	//OpenMOTDPanel(iClient, "t4" , " .", MOTDPANEL_TYPE_INDEX);
 	//OpenMOTDPanel(iClient, "t4." , "<html><head><title>a</title><meta http-equiv = \"Content-Type\" content = \"text / html; charset = utf-8\" ></head><body bgcolor = \"# 000000\" ><p>test</p></body></html>", MOTDPANEL_TYPE_INDEX);

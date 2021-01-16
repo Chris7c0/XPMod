@@ -1,5 +1,8 @@
 public Action:TimerStartJetPack(Handle:timer, any:iClient)
 {
+	if(RunClientChecks(iClient)==false || IsPlayerAlive(iClient)==false)
+		return Plugin_Stop;
+
 	new Float:vec[3];
 	GetClientAbsOrigin(iClient, vec);
 	EmitSoundToAll(SOUND_JPIDLEREV, iClient, SNDCHAN_AUTO,	SNDLEVEL_NORMAL, SND_NOFLAGS, 0.3, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
@@ -9,9 +12,7 @@ public Action:TimerStartJetPack(Handle:timer, any:iClient)
 
 public Action:TimerGiveFirstExplosive(Handle:timer, any:iClient)
 {
-	if(IsClientInGame(iClient)==false)
-		return Plugin_Stop;
-	if(IsPlayerAlive(iClient)==false)
+	if(RunClientChecks(iClient)==false || IsPlayerAlive(iClient)==false)
 		return Plugin_Stop;
 	
 	if(GetPlayerWeaponSlot(iClient, 2) == -1)

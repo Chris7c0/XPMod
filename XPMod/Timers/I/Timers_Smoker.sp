@@ -78,8 +78,8 @@ public Action:TimerElectricuteAgain(Handle:timer, any:iClient)
 		RunClientChecks(iClient) == false || 
 		IsPlayerAlive(iClient) == false || 
 		g_iChokingVictim[iClient] < 1 ||
-		IsClientInGame(g_iChokingVictim[iClient]) ||
-		IsPlayerAlive(g_iChokingVictim[iClient]))
+		RunClientChecks(g_iChokingVictim[iClient]) == false ||
+		IsPlayerAlive(g_iChokingVictim[iClient]) == false)
 	{
 		g_bIsElectricuting[iClient] = false;
 		

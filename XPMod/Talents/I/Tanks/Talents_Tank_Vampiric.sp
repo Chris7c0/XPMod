@@ -97,7 +97,7 @@ OnGameFrame_Tank_Vampiric(iClient)
 			
 			CreateTimer(0.5, TimerVampiricTankWingDashReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
 			delete g_hTimer_WingDashChargeRegenerate[iClient];
-			g_hTimer_WingDashChargeRegenerate[iClient] = CreateTimer(15.0, TimerVampiricTankWingDashChargeRegenerate, iClient, TIMER_FLAG_NO_MAPCHANGE);
+			g_hTimer_WingDashChargeRegenerate[iClient] = CreateTimer(15.0, TimerVampiricTankWingDashChargeRegenerate, iClient);
 		}
 	}
 
@@ -237,16 +237,25 @@ public Action:TimerVampiricTankWingDashReset(Handle:timer, any:iClient)
 
 public Action:TimerVampiricTankWingDashChargeRegenerate(Handle:timer, any:iClient)
 {
-	g_iVampiricTankWingDashChargeCount[iClient] = 3;
-
-	PrintVampiricTankWingDashCharges(iClient);
-
+	if (RunClientChecks(iClient) && 
+		IsPlayerAlive(iClient) && 
+		IsFakeClient(iClient) == false)
+	{
+		g_iVampiricTankWingDashChargeCount[iClient] = 3;
+		PrintVampiricTankWingDashCharges(iClient);
+	}
+	
 	g_hTimer_WingDashChargeRegenerate[iClient] = null;
 	return Plugin_Stop;
 }
 
 PrintVampiricTankWingDashCharges(iClient)
 {
+	if (RunClientChecks(iClient) == false || 
+		IsPlayerAlive(iClient) == false || 
+		IsFakeClient(iClient) == true)
+		return;
+	
 	// Print the Wing Dash charges
 	switch (g_iVampiricTankWingDashChargeCount[iClient])
 	{

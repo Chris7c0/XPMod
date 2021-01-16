@@ -65,7 +65,7 @@ public SQLGetUserIDAndTokenCallback(Handle:owner, Handle:hQuery, const String:er
 
 	if (IsValidEntity(iClient) == false || IsFakeClient(iClient))
 	{
-		LogError("SQLGetUserIDAndTokenCallback: INVALID ENTITY OR IS FAKE CLIENT");
+		//LogError("SQLGetUserIDAndTokenCallback: INVALID ENTITY OR IS FAKE CLIENT");
 		return;
 	}
 	
@@ -163,7 +163,7 @@ public SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[],
 
 	if (IsValidEntity(iClient) == false || IsFakeClient(iClient))
 	{
-		LogError("SQLGetUserDataCallback: INVALID ENTITY OR IS FAKE CLIENT");
+		//LogError("SQLGetUserDataCallback: INVALID ENTITY OR IS FAKE CLIENT");
 		return;
 	}
 	

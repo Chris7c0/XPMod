@@ -339,7 +339,7 @@ public Action:JebusHandBindMenuDraw(iClient)
 //Nick Menu Handler
 public JebusHandMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
-	if(iClient < 1 || IsClientInGame(iClient) == false)
+	if(RunClientChecks(iClient) == false)
 		return;
 	
 	if(IsPlayerAlive(iClient) == false)

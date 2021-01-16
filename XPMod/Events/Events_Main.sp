@@ -14,8 +14,8 @@ SetupXPMEvents()
 	HookUserMessage(GetUserMessageId("SayText2"), Hook_SayText2, true);
 
 	//Map Events
-	HookEvent("round_start", Event_RoundStart);
-	HookEvent("round_end", Event_RoundEnd);
+	HookEvent("round_start", Event_RoundStart, EventHookMode_Post);
+	HookEvent("round_end", Event_RoundEnd, EventHookMode_Pre);
 	
 	//Player Events
 	HookEvent("player_connect_full", Event_PlayerConnect);

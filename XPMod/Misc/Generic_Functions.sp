@@ -1194,7 +1194,16 @@ fnc_SaveAmmo(iClient)
 					g_iEllisPrimarySavedClipSlot1[iClient] = g_iCurrentClipAmmo[iClient];
 					g_iEllisPrimarySavedAmmoSlot1[iClient] = g_iReserveAmmo[iClient];
 					//PrintToChatAll("Saving upgrade ammo to variable");
-					g_iEllisUpgradeAmmoSlot1[iClient] = GetEntProp(g_iPrimarySlotID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded");
+
+					if (IsValidEntity(g_iPrimarySlotID[iClient]) && IsValidEdict(g_iPrimarySlotID[iClient]))
+					{
+						//decl String:strClassname[99];
+						//GetEdictClassname(g_iPrimarySlotID[iClient], strClassname, sizeof(strClassname));
+						//PrintToChatAll("g_iPrimarySlotID[%N]: %s", iClient, strClassname);
+						g_iEllisUpgradeAmmoSlot1[iClient] = GetEntProp(g_iPrimarySlotID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded");
+						//PrintToChatAll("g_iEllisUpgradeAmmoSlot1[%N]: %i", iClient, g_iEllisUpgradeAmmoSlot1[iClient]);
+					}
+					
 					//PrintToChatAll("Amount to save is %d", g_iEllisUpgradeAmmoSlot1[iClient]);
 					if(g_iEllisUpgradeAmmoSlot1[iClient] == 0)
 					{

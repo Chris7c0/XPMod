@@ -116,6 +116,7 @@ PrecacheAllParticles()
 	PrecacheParticle("vomit_jar_b");
 	
 	// Misc
+	PrecacheParticle("mini_fireworks");
 	PrecacheParticle("drugged_effect");
 	PrecacheParticle("poison_bubbles");
 }
