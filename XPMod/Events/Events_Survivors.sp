@@ -744,7 +744,7 @@ Action:Event_ReviveSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcas
 	clienthanging[target] = false;
 	if(iClient < 1)
 		return Plugin_Continue;
-	fnc_SetClientSpeed(target);
+	SetClientSpeed(target);
 	fnc_SetRendering(target);
 	/*
 	if(g_iOverLevel[target] > 0)
@@ -810,30 +810,16 @@ Action:Event_ReviveSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcas
 		{
 			if(RunClientChecks(i) && g_iClientTeam[i]==TEAM_SURVIVORS && IsPlayerAlive(i) == true)
 			{
-				g_fClientSpeedBoost[i] -= (g_iDesperateLevel[i] * 0.02);
-				fnc_SetClientSpeed(i);
+				SetClientSpeed(i);
 				PrintHintText(i, "A teammate has been revived, your senses return to a weaker state.");
 			}
 		}
 		g_iNickDesperateMeasuresStack--;
 	}
-	/*
-	g_iNickDesperateMeasuresStack--;
-	if(g_iNickDesperateMeasuresStack < 0)
-		g_iNickDesperateMeasuresStack = 0;
-	decl i;
-	for(i=1;i<=MaxClients;i++)
-	{
-		if(RunClientChecks(i) && g_iClientTeam[i]==TEAM_SURVIVORS && IsPlayerAlive(iClient) == false)
-		{
-			g_fClientSpeedBoost[i] += (g_iNickDesperateMeasuresStack * (g_iDesperateLevel[i] * 0.02));
-			fnc_SetClientSpeed(i);
-			PrintHintText(i, "A teammate has died, your senses sharpen.");
-		}
-	}
-	*/
+	
 	if(IsFakeClient(iClient) == true)
 		return Plugin_Continue;
+	
 	if (iClient > 0 && iClient <= MaxClients)
 	{
 		if (iClient != target)
@@ -2138,8 +2124,7 @@ Action:Event_PlayerIncap(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 			{
 				if(g_iNickDesperateMeasuresStack <= 3)
 				{
-					g_fClientSpeedBoost[i] += (g_iDesperateLevel[i] * 0.02);
-					fnc_SetClientSpeed(i);
+					SetClientSpeed(i);
 					PrintHintText(i, "A teammate has fallen, your senses sharpen.");
 				}
 			}
@@ -2222,12 +2207,11 @@ Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 		//if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
 		if(iCurrentHealth < (iMaxHealth - 20.0))
 		{
-			if(g_bEllisOverSpeedDecreased[target] == false)
+			if(g_bEllisOverSpeedIncreased[target])
 			{
-				g_fClientSpeedBoost[target] -= (g_iOverLevel[target] * 0.02);
-				fnc_SetClientSpeed(target);
-				g_bEllisOverSpeedDecreased[target] = true;
 				g_bEllisOverSpeedIncreased[target] = false;
+
+				SetClientSpeed(target);
 			}
 			//g_fEllisOverSpeed[target] = 0.0;
 			//SetEntDataFloat(target , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[target] + g_fEllisBringSpeed[target] + g_fEllisOverSpeed[target]), true);
@@ -2242,10 +2226,9 @@ Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 		{
 			if(g_bEllisOverSpeedIncreased[target] == false)
 			{
-				g_fClientSpeedBoost[target] += (g_iOverLevel[target] * 0.02);
-				fnc_SetClientSpeed(target);
-				g_bEllisOverSpeedDecreased[target] = false;
 				g_bEllisOverSpeedIncreased[target] = true;
+
+				SetClientSpeed(target);
 			}
 			//g_fEllisOverSpeed[target] = (g_iOverLevel[target] * 0.02);
 			//SetEntDataFloat(target , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[target] + g_fEllisBringSpeed[target] + g_fEllisOverSpeed[target]), true);
@@ -2571,12 +2554,11 @@ Action:Event_DefibUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 		//if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
 		if(iCurrentHealth < (iMaxHealth - 20.0))
 		{
-			if(g_bEllisOverSpeedDecreased[iSubject] == false)
+			if(g_bEllisOverSpeedIncreased[iSubject])
 			{
-				g_fClientSpeedBoost[iSubject] -= (g_iOverLevel[iSubject] * 0.02);
-				fnc_SetClientSpeed(iSubject);
-				g_bEllisOverSpeedDecreased[iSubject] = true;
 				g_bEllisOverSpeedIncreased[iSubject] = false;
+
+				SetClientSpeed(iSubject);
 			}
 			//g_fEllisOverSpeed[iSubject] = 0.0;
 			//SetEntDataFloat(iSubject , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iSubject] + g_fEllisBringSpeed[iSubject] + g_fEllisOverSpeed[iSubject]), true);
@@ -2586,16 +2568,15 @@ Action:Event_DefibUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 		{
 			if(g_bEllisOverSpeedIncreased[iSubject] == false)
 			{
-				g_fClientSpeedBoost[iSubject] += (g_iOverLevel[iSubject] * 0.02);
-				fnc_SetClientSpeed(iSubject);
-				g_bEllisOverSpeedDecreased[iSubject] = false;
 				g_bEllisOverSpeedIncreased[iSubject] = true;
+
+				SetClientSpeed(iSubject);
 			}
 			//g_fEllisOverSpeed[iSubject] = (g_iOverLevel[iSubject] * 0.02);
 			//SetEntDataFloat(iSubject , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iSubject] + g_fEllisBringSpeed[iSubject] + g_fEllisOverSpeed[iSubject]), true);
 		}
 	}
-	fnc_SetClientSpeed(iSubject);
+	SetClientSpeed(iSubject);
 	return Plugin_Continue;
 }
 

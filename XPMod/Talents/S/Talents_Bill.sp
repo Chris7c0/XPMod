@@ -77,14 +77,13 @@ OnGameFrame_Bill(iClient)
 					PrintHintText(iClient, "Powering on sprinting device...");
 				else if(g_iBillSprintChargePower[iClient] > 49)
 					PrintHintText(iClient, "Powering on sprinting device...%d%%", g_iBillSprintChargePower[iClient]);
+				
 				g_iBillSprintChargePower[iClient]++;
+
 				if(g_iBillSprintChargePower[iClient] == 100)
 				{
 					g_bBillSprinting[iClient] = true;
-					//g_fBillSprintSpeed[iClient] = 1.0;
-					//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ((1.0 + g_fBillSprintSpeed[iClient]) - g_fClientSpeedPenalty[iClient]), true);
-					g_fClientSpeedBoost[iClient] += 1.0;
-					fnc_SetClientSpeed(iClient);
+					SetClientSpeed(iClient);
 					g_iBillSprintChargePower[iClient] =  0;
 				}
 			}
@@ -115,11 +114,8 @@ OnGameFrame_Bill(iClient)
 			if(g_iBillSprintChargeCounter[iClient] < 11)
 			{
 				PrintHintText(iClient, "Sprinting Charge Depleted");
-				//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
 				g_bBillSprinting[iClient] = false;
-				//g_fBillSprintSpeed[iClient] = 0.0;
-				g_fClientSpeedBoost[iClient] -= 1.0;
-				fnc_SetClientSpeed(iClient);
+				SetClientSpeed(iClient);
 			}
 		}
 	}

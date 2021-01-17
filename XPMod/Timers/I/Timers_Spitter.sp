@@ -66,9 +66,10 @@ Action:TimerSetSpitterCooldown(Handle:timer, any:iClient)
 
 Action:TimerResetSpeedFromGoo(Handle:timer, any:iClient)
 {
-	g_fClientSpeedPenalty[iClient] -= g_fAdhesiveAffectAmount[iClient];
-	fnc_SetClientSpeed(iClient);
+	g_fAdhesiveAffectAmount[iClient] = 0.0;
 	g_bAdhesiveGooActive[iClient] = false;
+
+	SetClientSpeed(iClient);
 	g_hTimer_AdhesiveGooReset[iClient] = null;
 }
 

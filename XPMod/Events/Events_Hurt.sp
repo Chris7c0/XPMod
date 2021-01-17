@@ -49,19 +49,11 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 				//if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
 				if(iCurrentHealth < (iMaxHealth - 20.0))
 				{
-					if(g_bEllisOverSpeedDecreased[victim] == false)
+					if(g_bEllisOverSpeedIncreased[victim])
 					{
-						g_fClientSpeedBoost[victim] -= (g_iOverLevel[victim] * 0.02);
-						fnc_SetClientSpeed(victim);
-						g_bEllisOverSpeedDecreased[victim] = true;
 						g_bEllisOverSpeedIncreased[victim] = false;
-						//g_fEllisOverSpeed[victim] = 0.0;
-						//SetEntDataFloat(victim , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[victim] + g_fEllisBringSpeed[victim] + g_fEllisOverSpeed[victim]), true);
-						//DeleteCode
-						//PrintToChatAll("Hurt, now setting g_fEllisOverSpeed");
-						//PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[victim]);
-						//PrintToChatAll("g_fEllisBringSpeed = %f", g_fEllisBringSpeed[victim]);
-						//PrintToChatAll("g_fEllisOverSpeed = %f", g_fEllisOverSpeed[victim]);
+
+						SetClientSpeed(victim);
 					}
 				}
 				//else if(float(iCurrentHealth) + fTempHealth > (float(iMaxHealth) - 20.0))
@@ -69,18 +61,9 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 				{
 					if(g_bEllisOverSpeedIncreased[victim] == false)
 					{
-						//g_fEllisOverSpeed[victim] = (g_iOverLevel[victim] * 0.02);
-						//SetEntDataFloat(victim , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[victim] + g_fEllisBringSpeed[victim] + g_fEllisOverSpeed[victim]), true);
-						g_fClientSpeedBoost[victim] += (g_iOverLevel[victim] * 0.02);
-						fnc_SetClientSpeed(victim);
-						//DeleteCode
-						//PrintToChatAll("Hurt, now setting g_fEllisOverSpeed");
-						//PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[victim]);
-						//PrintToChatAll("g_fEllisBringSpeed = %f", g_fEllisBringSpeed[victim]);
-						//PrintToChatAll("g_fEllisOverSpeed = %f", g_fEllisOverSpeed[victim]);
-						//CreateTimer(1.0, TimerCheckEllisHealth, victim, TIMER_FLAG_NO_MAPCHANGE);
 						g_bEllisOverSpeedIncreased[victim] = true;
-						g_bEllisOverSpeedDecreased[victim] = false;
+
+						SetClientSpeed(victim);						
 					}
 				}
 			}
@@ -198,7 +181,7 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 					//PrintToChatAll("Hunter Hit INSIDE, YAY TACOS");
 					g_bHunterGrappled[victim] = false;
 					g_iHunterShreddingVictim[attacker] = -1;
-					fnc_SetClientSpeed(victim);
+					SetClientSpeed(victim);
 					//ResetSurvivorSpeed(victim);
 				}
 				
@@ -695,10 +678,12 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 						{
 							if(g_bIsHunterReadyToPoison[attacker])
 							{
-								if(g_bIsHunterPoisoned[victim] == false)	//If player not g_bIsRochellePoisoned poison them
+								if(g_bIsHunterPoisoned[victim] == false)
 								{
 									g_bIsHunterPoisoned[victim] = true;
 									g_iClientBindUses_2[attacker]++;
+
+									SetClientSpeed(victim);
 
 									new Handle:hunterpoisonpackage = CreateDataPack();
 									WritePackCell(hunterpoisonpackage, victim);
@@ -712,7 +697,8 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 									if(IsFakeClient(victim)==false)
 										PrintHintText(victim, "\%N has injected venom into your flesh", attacker);
 									PrintHintText(attacker, "You poisoned %N, You have enough venom for %d more injections.", victim, (3 - g_iClientBindUses_2[attacker]) );
-									SetEntDataFloat(victim, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 0.25, true);
+									
+									
 									g_bIsHunterReadyToPoison[attacker] = false;
 									CreateTimer(5.0, TimerResetCanHunterPoison, attacker, TIMER_FLAG_NO_MAPCHANGE);
 								}

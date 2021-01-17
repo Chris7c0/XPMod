@@ -33,10 +33,8 @@ Action:TimerStopShadowNinja(Handle:timer, any:iClient)
 		SetEntProp(iClient, Prop_Send, "m_iGlowType", 0);
 		SetEntProp(iClient, Prop_Send, "m_nGlowRange", 0);
 		SetEntProp(iClient, Prop_Send, "m_glowColorOverride", 0);
-		ChangeEdictState(iClient, 12);	
-		//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iShadowLevel[iClient]*0.03) + (g_iHunterLevel[iClient]*0.02)), true);
-		g_fClientSpeedBoost[iClient] -= (g_iShadowLevel[iClient] * 0.1);
-		fnc_SetClientSpeed(iClient);
+		ChangeEdictState(iClient, 12);
+		SetClientSpeed(iClient);
 		
 		switch(g_iClientBindUses_2[iClient])
 		{

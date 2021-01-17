@@ -11,11 +11,12 @@ Event_AbilityUse(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 	
 	if(StrEqual(ability,"ability_vomit",false) == true)
 	{
+		g_bIsBoomerVomiting[iClient] = true;
+
 		if(g_bIsServingHotMeal[iClient] == false)
 		{
-			g_fClientSpeedPenalty[iClient] += (1.0 - (g_iRapidLevel[iClient] * 0.1))
-			fnc_SetClientSpeed(iClient);
-			//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 0.0 + (g_iRapidLevel[iClient] * 0.1), true);
+			SetClientSpeed(iClient);
+			
 			CreateTimer(1.5, TimerResetBoomerSpeed, iClient, TIMER_FLAG_NO_MAPCHANGE);
 			if(g_iRapidLevel[iClient] > 0)
 				CreateTimer(1.0, TimerSetBoomerCooldown, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
@@ -60,9 +61,7 @@ Action:Event_ChargerChargeStart(Handle:hEvent, const String:strName[], bool:bDon
 	
 	if(g_bIsSuperCharger[attacker] == true)
 	{
-		//SetEntDataFloat(attacker , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iSpikedLevel[attacker] * 0.10) + (g_iHillbillyLevel[attacker] * 0.06)), true);
-		g_fClientSpeedBoost[attacker] += (g_iSpikedLevel[attacker] * 0.10);
-		fnc_SetClientSpeed(attacker);
+		SetClientSpeed(attacker);
 		g_iClientBindUses_1[attacker]++;
 	}
 	
@@ -83,10 +82,9 @@ Action:Event_ChargerChargeEnd(Handle:hEvent, const String:strName[], bool:bDontB
 	if(g_bIsSuperCharger[attacker] == true)
 	{
 		g_bIsSuperCharger[attacker] = false;
+		SetClientSpeed(attacker);
+
 		CreateTimer(30.0, TimerResetSuperCharge, attacker,  TIMER_FLAG_NO_MAPCHANGE);
-		//SetEntDataFloat(attacker , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iHillbillyLevel[attacker] * 0.03)), true);
-		g_fClientSpeedBoost[attacker] -= (g_iSpikedLevel[attacker] * 0.10);
-		fnc_SetClientSpeed(attacker);
 	}
 
 	return Plugin_Continue;
@@ -222,17 +220,19 @@ Action:Event_ChokeStart(Handle:hEvent, const String:strName[], bool:bDontBroadca
 {
 	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
+
+	g_bSmokerGrappled[victim] = true;
+	g_iChokingVictim[attacker] = victim;
 	
 	if(g_iDirtyLevel[attacker] > 0)
 	{
 		SetEntityMoveType(attacker, MOVETYPE_ISOMETRIC);
-		//Going to avoid using fnc_SetClientSpeed here simply because it would not fit well
+		//Going to avoid using SetClientSpeed here because it would not fit well
 		SetEntDataFloat(attacker, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (0.01 * g_iDirtyLevel[attacker]) , true);
+		//SetClientSpeed(attacker);
 		//CreateTimer(0.3, TimerCheckTongueDistance, attacker, TIMER_FLAG_NO_MAPCHANGE);
 	}
-	
-	g_bSmokerGrappled[victim] = true;
-	g_iChokingVictim[attacker] = victim;
+
 	fnc_SetRendering(victim);
 	return Plugin_Continue;
 }
@@ -243,11 +243,11 @@ Action:Event_ChokeEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 	
 	SetEntityMoveType(attacker, MOVETYPE_CUSTOM);
-	//SetEntDataFloat(attacker , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iNoxiousLevel[attacker] * 0.02)), true);
-	fnc_SetClientSpeed(attacker);
-	
+
 	g_bSmokerGrappled[victim] = false;
 	g_iChokingVictim[attacker] = -1;
+
+	SetClientSpeed(attacker);
 	
 	if(g_bDivineInterventionQueued[victim] == true)
 	{
@@ -340,6 +340,11 @@ Action:Event_JockeyRide(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 	new	classnum = GetEntProp(attacker, Prop_Send, "m_zombieClass");
 	
+	g_bJockeyIsRiding[attacker] = true;
+	g_bJockeyGrappled[victim] = true;
+	g_iJockeysVictim[attacker] = victim;
+	fnc_SetRendering(victim);
+
 	GiveClientXP(attacker, 50, g_iSprite_50XP_SI, victim, "Grappled A Survivor.");
 	
 	if(classnum == JOCKEY)	//If the attacker truely is the JOCKEY(this function is called for more than just JOCKEY for some reason)
@@ -347,24 +352,24 @@ Action:Event_JockeyRide(Handle:hEvent, const String:strName[], bool:bDontBroadca
 		g_iJockeyVictim[attacker] = victim;
 		if(g_iClientTeam[victim] == TEAM_SURVIVORS)
 		{
-			if(g_iStrongLevel[victim] > 0 || g_iErraticLevel[attacker] > 0)
+			if(g_iStrongLevel[victim] > 0)
+			{
+				g_fJockeyRideSpeed[victim] = 0.0;
+				SetClientSpeed(victim);
+			}
+			else if(g_iErraticLevel[attacker] > 0)
 			{
 				//SetEntDataFloat(victim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ((1.0 + (g_iErraticLevel[attacker] * 0.03)) - ((g_iStrongLevel[victim] * 0.2) + ((g_iErraticLevel[attacker] * 0.03) * (g_iStrongLevel[victim] * 0.2)))), true);
 				//PrintToChatAll("JOCKEY RIDESPEED SET: %f", ( 1.0 - (g_iStrongLevel[victim] * 0.2) + (g_iErraticLevel[attacker] * 0.03)) );
-				SetEntDataFloat(victim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ( 1.0 - (g_iStrongLevel[victim] * 0.2) + (g_iErraticLevel[attacker] * 0.03) ), true);
+				//SetEntDataFloat(victim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ( 1.0 - (g_iStrongLevel[victim] * 0.2) + (g_iErraticLevel[attacker] * 0.03) ), true);
+				g_fJockeyRideSpeed[victim] = 1.0 + (g_iErraticLevel[attacker] * 0.03);
+				SetClientSpeed(victim);
 			}
 			else
 			{
-				SetEntDataFloat(victim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
+				g_fJockeyRideSpeed[victim] = 1.0;
+				SetClientSpeed(victim);
 			}
-			/*
-			g_fClientSpeedBoost[attacker] += (g_iErraticLevel[attacker] * 0.03);
-			if(g_iStrongLevel[victim] > 0)
-			{
-				g_fClientSpeedPenalty[attacker] += (g_iStrongLevel[victim] * 0.2) + (g_iErraticLevel[attacker] * 0.03);
-			}
-			fnc_SetClientSpeed(attacker);
-			*/
 
 			if(g_iSmokeLevel[victim]>0)
 			{
@@ -410,6 +415,8 @@ Action:Event_JockeyRide(Handle:hEvent, const String:strName[], bool:bDontBroadca
 					SetCommandFlags("dismount", cmdflags);
 					//WriteParticle(victim, "rochelle_smoke", 0.0, 10.0);
 					CreateRochelleSmoke(victim);
+
+					return Plugin_Continue;
 				}
 			}
 			if(g_iUnfairLevel[attacker] > 0)
@@ -431,10 +438,7 @@ Action:Event_JockeyRide(Handle:hEvent, const String:strName[], bool:bDontBroadca
 			}
 		}
 	}
-	g_bJockeyIsRiding[attacker] = true;
-	g_bJockeyGrappled[victim] = true;
-	g_iJockeysVictim[attacker] = victim;
-	fnc_SetRendering(victim);
+	
 	return Plugin_Continue;
 }
 
@@ -450,8 +454,11 @@ Action:Event_JockeyRideEnd(Handle:hEvent, const String:strName[], bool:bDontBroa
 	g_iJockeyVictim[rider] = -1;
 	g_bJockeyIsRiding[rider] = false;
 	g_bJockeyGrappled[victim] = false;
-	fnc_SetClientSpeed(victim);
-	//ResetSurvivorSpeed(victim);
+
+	g_fJockeyRideSpeed[victim] = 1.0;
+	g_fJockeyRideSpeedVanishingActBoost[victim] = 0.0;
+	SetClientSpeed(victim);
+
 	fnc_SetRendering(victim);
 	return Plugin_Continue;
 }
@@ -465,7 +472,9 @@ Action:Event_HunterPounceStart(Handle:hEvent, const String:strName[], bool:bDont
 	// PrintToChatAll("Distance: %i", g_iHunterPounceDistance[attacker]);
 	g_bHunterGrappled[victim] = true;
 	g_iHunterShreddingVictim[attacker] = victim;
-	SetEntDataFloat(victim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 0.0, true);
+	
+	//SetEntDataFloat(victim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 0.0, true);
+
 	if(g_iClientTeam[attacker] == TEAM_INFECTED)
 	{
 		GiveClientXP(attacker, 50, g_iSprite_50XP_SI, victim, "Grappled A Survivor.");
@@ -513,7 +522,7 @@ Action:Event_HunterPounceStart(Handle:hEvent, const String:strName[], bool:bDont
 							g_bHunterGrappled[victim] = false;
 							g_iHunterShreddingVictim[attacker] = -1;
 							
-							fnc_SetClientSpeed(victim);
+							SetClientSpeed(victim);
 							//ResetSurvivorSpeed(victim);
 							
 							PrintHintText(victim, "You have ninja'd out of the Hunter's grasp");
@@ -555,7 +564,7 @@ Action:Event_HunterPounceStopped(Handle:hEvent, const String:strName[], bool:bDo
 	g_bHunterGrappled[victim] = false;
 	g_iHunterShreddingVictim[attacker] = -1;
 	
-	fnc_SetClientSpeed(victim);
+	SetClientSpeed(victim);
 	//ResetSurvivorSpeed(victim);
 	
 	if(g_bDivineInterventionQueued[victim] == true)
@@ -709,16 +718,9 @@ Action:Event_TankSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 					//if(tankspawnlvl speed > current ELLIS speed)
 					if(g_bGameFrozen == false)
 					{
-						if(g_iTankCounter == 1)
+						if(g_iTankCounter > 0)
 						{
-							//SetEntDataFloat(i , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[i] + g_fEllisBringSpeed[i] + g_fEllisOverSpeed[i]), true);
-							g_fClientSpeedBoost[i] += (g_iJamminLevel[i] * 0.04);
-							fnc_SetClientSpeed(i);
-							//DeleteCode
-							//PrintToChatAll("Tank has spawned, now setting g_fEllisJamminSpeed");
-							//PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[i]);
-							//PrintToChatAll("g_fEllisBringSpeed = %f", g_fEllisBringSpeed[i]);
-							//PrintToChatAll("g_fEllisOverSpeed = %f", g_fEllisOverSpeed[i]);
+							SetClientSpeed(i);
 						}
 					}
 

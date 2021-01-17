@@ -92,10 +92,11 @@ Event_BoomerVomitOnPlayer(iAttacker, iVictim)
 								if(IsPlayerAlive(iAttacker) == true)
 								{
 									PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. He gets temporary super speed.", iAttacker);
-									//SetEntDataFloat(iAttacker , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 3.0, true);
-									g_fClientSpeedBoost[iAttacker] += 2.0;
-									fnc_SetClientSpeed(iAttacker);
+									
 									g_bIsSuperSpeedBoomer[iAttacker] = true;
+									SetClientSpeed(iAttacker);
+
+									
 									CreateTimer(20.0, TimerResetFastBoomerSpeed, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
 								}
 								else	//If their not alive then give them another reward

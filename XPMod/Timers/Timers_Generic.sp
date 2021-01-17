@@ -193,10 +193,8 @@ Action:TimerUnfreeze(Handle:timer, any:data)
 			}
 			
 			fnc_SetRendering(i);
-			//ResetGlow(i);
-			
-			//SetEntDataFloat(i , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
-			fnc_SetClientSpeed(i);
+			SetClientSpeed(i);
+
 			SetEntProp(i, Prop_Data, "m_takedamage", 2, 1);	//Player can take damage now
 			SetEntProp(i, Prop_Send, "m_isGoingToDie", 0);		//Fix the black and white at the beginning of the round           (Working?>
 			SetEntDataFloat(i ,g_iOffset_HealthBuffer, 0.0 ,true);		//set temp health to 0

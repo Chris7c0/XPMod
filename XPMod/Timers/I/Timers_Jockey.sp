@@ -52,7 +52,14 @@ Action:TimerRemoveJockeyCloak(Handle:timer, any:iClient)
 {
 	g_bCanJockeyCloak[iClient] = true;
 	fnc_SetRendering(iClient);
-	//ResetGlow(iClient);
+
+	return Plugin_Stop;
+}
+
+Action:TimerRemoveVanishingActSpeed(Handle:timer, any:iClient)
+{
+	g_fJockeyRideSpeedVanishingActBoost[iClient] = 0.0;
+	SetClientSpeed(iClient);
 
 	return Plugin_Stop;
 }

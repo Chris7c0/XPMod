@@ -382,8 +382,6 @@ Action:Bind1Press(iClient, args)
 
 								delete g_hTimer_DrugPlayer[iClient];
 								g_hTimer_DrugPlayer[iClient] = CreateTimer(2.5, TimerDrugged, iClient, TIMER_REPEAT);
-								//g_fClientSpeedBoost[iClient] += 0.2;
-								//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.6), true);
 							}
 							case 6: //MegaSlap; Slaps Nick for 80 damage.
 							{
@@ -576,9 +574,10 @@ Action:Bind1Press(iClient, args)
 								g_iClientBindUses_1[iClient]++;
 								PrintHintText(iClient, "Your serving up a hot meal. Don't forget to feed the hungry survivors!\nClick Rapidly!");
 								g_bIsServingHotMeal[iClient] = true;
-								//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0 + (g_iAcidicLevel[iClient] * 0.1), true);
-								g_fClientSpeedBoost[iClient] += (g_iAcidicLevel[iClient] * 0.1);
-								fnc_SetClientSpeed(iClient);
+								g_bIsBoomerVomiting[iClient] = true;
+								
+								SetClientSpeed(iClient);
+
 								//Start Vomiting
 								new iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
 								if (iEntid > 0)
@@ -618,7 +617,7 @@ Action:Bind1Press(iClient, args)
 							{
 								// PrintToChatAll("Hunter attempting dismount...");
 								SDKCall(g_hSDK_OnPounceEnd,iClient);
-								fnc_SetClientSpeed(g_iHunterShreddingVictim[iClient]);
+								SetClientSpeed(g_iHunterShreddingVictim[iClient]);
 								//ResetSurvivorSpeed(g_iHunterShreddingVictim[iClient]);
 								g_iHunterShreddingVictim[iClient] = -1;
 								g_bCanHunterDismount[iClient] = false;

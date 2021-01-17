@@ -74,9 +74,9 @@ Action:Bind2Press(iClient, args)
 						SetCommandFlags("give", g_iFlag_Give);
 						SetEntityRenderMode(iClient, RenderMode:3);
 						SetEntityRenderColor(iClient, 0, 0, 0, RoundToFloor(255 * (1.0 - (float(g_iShadowLevel[iClient]) * 0.19))));
-						//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iSilentLevel[iClient]*0.02) + (g_iShadowLevel[iClient]*0.12) + (g_iHunterLevel[iClient]*0.02)), true);
-						g_fClientSpeedBoost[iClient] += (g_iShadowLevel[iClient] * 0.1);
-						fnc_SetClientSpeed(iClient);
+
+						SetClientSpeed(iClient);
+						
 						//CreateParticle("rochelle_weapon_trail", 12.0, iClient, ATTACH_BLUR);
 						CreateTimer(12.0, TimerStopShadowNinja, iClient, TIMER_FLAG_NO_MAPCHANGE);
 						
@@ -391,13 +391,19 @@ Action:Bind2Press(iClient, args)
 									{
 										g_bCanJockeyCloak[iClient] = false;
 										g_bCanJockeyJump[iClient] = true;
-										//Create 2 timers to reset for both, and avoid package sending
+										
 										CreateTimer(10.0, TimerRemoveJockeyCloak, g_iJockeyVictim[iClient], TIMER_FLAG_NO_MAPCHANGE);
 										CreateTimer(10.0, TimerRemoveJockeyCloak, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 										// Set the jockey ride speed
-										//PrintToChatAll("JOCKEY RIDE SPEED SET: %f", ( 1.0 - (g_iStrongLevel[g_iJockeyVictim[iClient]] * 0.2) + (g_iErraticLevel[iClient] * 0.03) + (g_iUnfairLevel[iClient] * 0.1) ) );
-										SetEntDataFloat(g_iJockeyVictim[iClient] , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ( 1.0 - (g_iStrongLevel[g_iJockeyVictim[iClient]] * 0.2) + (g_iErraticLevel[iClient] * 0.03) + (g_iUnfairLevel[iClient] * 0.1) ), true);
+										//SetEntDataFloat(g_iJockeyVictim[iClient] , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ( 1.0 - (g_iStrongLevel[g_iJockeyVictim[iClient]] * 0.2) + (g_iErraticLevel[iClient] * 0.03) + (g_iUnfairLevel[iClient] * 0.1) ), true);
+										if (g_iStrongLevel[g_iJockeyVictim[iClient]] == 0)
+										{
+											g_fJockeyRideSpeedVanishingActBoost[g_iJockeyVictim[iClient]] = (g_iUnfairLevel[iClient] * 0.1);
+											SetClientSpeed(g_iJockeyVictim[iClient]);
+											CreateTimer(10.0, TimerRemoveVanishingActSpeed, g_iJockeyVictim[iClient], TIMER_FLAG_NO_MAPCHANGE);
+										}
+											
 										
 										//Disable Glow for Victim
 										if(IsValidEntity(g_iJockeyVictim[iClient]))

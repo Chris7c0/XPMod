@@ -369,10 +369,6 @@ OnGameFrame_Coach(iClient)
 			g_bWalkAndUseToggler[iClient] = true;
 			if(g_bCoachRageIsAvailable[iClient] == true)
 			{
-				//g_fCoachRageSpeed[iClient] = (g_iBullLevel[iClient] * 0.04);
-				//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + g_fCoachCIHeadshotSpeed[iClient] + g_fCoachSIHeadshotSpeed[iClient] + g_fCoachRageSpeed[iClient]), true);
-				g_fClientSpeedBoost[iClient] += (g_iBullLevel[iClient] * 0.04);
-				fnc_SetClientSpeed(iClient);
 				g_iCoachRageMeleeDamage[iClient] = (g_iBullLevel[iClient] * 20);
 				CreateTimer(20.0, TimerCoachRageReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
 				if(g_iCoachRageRegenCounter[iClient] < 2)
@@ -424,6 +420,9 @@ OnGameFrame_Coach(iClient)
 				CreateTimer(1.0, TimerCoachRageRegenTick, iClient, TIMER_FLAG_NO_MAPCHANGE);
 				g_bCoachRageIsAvailable[iClient] = false;
 				g_bCoachRageIsActive[iClient] = true;
+				
+				SetClientSpeed(iClient);
+
 				PrintHintText(iClient, "You are now RAGING!");
 			}
 			else if(g_bCoachRageIsInCooldown[iClient] == true)

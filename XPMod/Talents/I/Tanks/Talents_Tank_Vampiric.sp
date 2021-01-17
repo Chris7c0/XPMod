@@ -1,8 +1,5 @@
 LoadVampiricTankTalents(iClient)
 {
-	g_fClientSpeedBoost[iClient] = 0.0;
-	g_fClientSpeedPenalty[iClient] = 0.0;
-
 	if(iClient < 1 || g_iClientTeam[iClient] != TEAM_INFECTED || IsClientInGame(iClient) == false || 
 		IsFakeClient(iClient) == true || GetEntProp(iClient, Prop_Send, "m_zombieClass") != TANK)
 		return;
@@ -33,9 +30,7 @@ LoadVampiricTankTalents(iClient)
 	SetConVarInt(FindConVar("z_tank_damage_slow_max_range"), 0);
 	
 	//Set Movement Speed
-	//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), 1.0 - (RoundToCeil(g_iClientLevel[iClient] / 5.0) * 0.01), true);
-	g_fClientSpeedBoost[iClient] += 0.1;
-	fnc_SetClientSpeed(iClient);
+	SetClientSpeed(iClient);
 	
 	//Change Skin Color
 	SetEntityRenderMode(iClient, RenderMode:0);
@@ -48,6 +43,14 @@ LoadVampiricTankTalents(iClient)
 	CreateVampiricTankTrailEffect(iClient);
 
 	PrintHintText(iClient, "You have become the Vampiric Tank");
+}
+
+SetClientSpeedTankVampiric(iClient, &Float:fSpeed)
+{
+	if (g_iTankChosen[iClient] != TANK_VAMPIRIC)
+		return;
+
+	fSpeed += 0.1;
 }
 
 OnGameFrame_Tank_Vampiric(iClient)

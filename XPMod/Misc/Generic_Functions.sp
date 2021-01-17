@@ -1917,57 +1917,13 @@ fnc_ClearAllWeaponData(iClient)
 	}
 }
 
-fnc_SetClientSpeed(iClient)
-{
-	if (iClient < 1 || 
-	IsValidEntity(iClient) == false || 
-	IsClientInGame(iClient) == false || 
-	IsPlayerAlive(iClient) == false ||
-	g_bGameFrozen == true
-	)
-		return;
-	
-	//new iCurrentSpeed = GetEntDataFloat(iClient, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"));
-	SetEntDataFloat(iClient, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ((1.0 + g_fClientSpeedBoost[iClient]) - g_fClientSpeedPenalty[iClient]), true);
-	//PrintToChatAll("Client %i current speed = Boost %f + Penalty %f = Total %f", iClient, g_fClientSpeedBoost[iClient], g_fClientSpeedPenalty[iClient], ((1.0 + g_fClientSpeedBoost[iClient]) - g_fClientSpeedPenalty[iClient]));
-	//g_fClientSpeedPenalty[iClient] =+ fSpeedReduction;
-	//g_fClientSpeedPenalty[iClient];
-	//g_fClientSpeedBoost[iClient];
-	
-	// switch(g_iChosenSurvivor[iClient])
-	// {
-	// 	case 0:		//Bill
-	// 	{
-	// 		SetEntDataFloat(iClient, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ((1.0 + g_fBillSprintSpeed[iClient]) - g_fClientSpeedPenalty[iClient]), true);
-	// 		PrintToChatAll("Bills current speed = %d", iCurrentSpeed);
-	// 	}
-	// 	case 1:		//Rochelle
-	// 	{
-			
-	// 		PrintToChatAll("Rochelles current speed = %d", iCurrentSpeed);
-	// 	}
-	// 	case 2:		//Coach
-	// 	{
-			
-	// 		PrintToChatAll("Coach current speed = %d", iCurrentSpeed);
-	// 	}
-	// 	case 3:		//Ellis
-	// 	{
-			
-	// 		PrintToChatAll("Ellis current speed = %d", iCurrentSpeed);
-	// 	}
-	// 	case 4:		//Nick
-	// 	{
-			
-	// 		PrintToChatAll("Nicks current speed = %d", iCurrentSpeed);
-	// 	}
-	// }
-	
-}
-
 fnc_CheckGrapple(iClient)
 {
-	if(g_bChargerCarrying[iClient] == true || g_bChargerGrappled[iClient] == true || g_bSmokerGrappled[iClient] == true || g_bJockeyGrappled[iClient] == true || g_bHunterGrappled[iClient] == true)
+	if (g_bChargerCarrying[iClient] == true || 
+		g_bChargerGrappled[iClient] == true || 
+		g_bSmokerGrappled[iClient] == true || 
+		g_bJockeyGrappled[iClient] == true || 
+		g_bHunterGrappled[iClient] == true)
 	{
 		g_bIsClientGrappled[iClient] = true;
 	}

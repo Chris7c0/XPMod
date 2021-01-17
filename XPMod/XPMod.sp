@@ -48,6 +48,7 @@
 #include "XPMod/Misc/Precache.sp"
 #include "XPMod/Misc/Statistics.sp"
 #include "XPMod/Misc/SpawnInfected.sp"
+#include "XPMod/Misc/MovementSpeed.sp"
 //#include "XPMod/Misc/Abilities.sp"
 #include "XPMod/Misc/Testing.sp"	                   //Remove before relase/////////////////////////////////////////////////////////////////////////
 //Experience and User Data Management
@@ -383,8 +384,6 @@ ResetVariablesForMap(iClient)
 	g_bShowingVGUI[iClient] = false;
 	g_bExplosivesJustGiven[iClient] = false;
 	g_iLaserUpgradeCounter[iClient] = 0;
-	g_fClientSpeedBoost[iClient] = 0.0;
-	g_fClientSpeedPenalty[iClient] = 0.0;
 	g_iTankCounter = 0;
 	RemoveAllEntitiesFromTankRockList();
 	g_bAdhesiveGooActive[iClient] = false;
@@ -409,7 +408,6 @@ ResetVariablesForMap(iClient)
 	g_fEllisBringSpeed[iClient] = 0.0;
 	g_fEllisOverSpeed[iClient] = 0.0;
 	g_fEllisJamminSpeed[iClient] = 0.0;
-	g_bEllisOverSpeedDecreased[iClient] = false;
 	g_bEllisOverSpeedIncreased[iClient] = false;
 	
 	//Nick 
@@ -432,6 +430,7 @@ ResetVariablesForMap(iClient)
 	g_bElectricutionCooldown[iClient] = false;
 	
 	//Boomer
+	g_bIsBoomerVomiting[iClient] = false;
 	g_iVomitVictimAttacker[iClient] = 0;
 	g_bIsServingHotMeal[iClient] = false;
 	g_iVomitVictimCounter[iClient] = 0;
@@ -440,6 +439,7 @@ ResetVariablesForMap(iClient)
 	g_bIsSuicideJumping[iClient] = false;
 	g_bIsSurvivorVomiting[iClient] = false;
 	g_bIsSuperSpeedBoomer[iClient] = false;
+
 	//Hunter
 	g_bIsCloakedHunter[iClient] = false;
 	g_bCanHunterDismount[iClient] = true;
@@ -449,9 +449,13 @@ ResetVariablesForMap(iClient)
 	g_bIsHunterPoisoned[iClient] = false;
 	
 	//Jockey
-	g_iJockeyVictim[iClient] = -1;
 	g_bCanJockeyPee[iClient] = true;
 	g_bCanJockeyCloak[iClient] = true;
+	g_bJockeyIsRiding[iClient] = false;
+	g_iJockeyVictim[iClient] = -1;
+	g_bCanJockeyJump[iClient] = false;
+	g_fJockeyRideSpeed[iClient] = 1.0;
+	g_fJockeyRideSpeedVanishingActBoost[iClient] = 0.0;
 	
 	//Spitter
 	g_bBlockGooSwitching[iClient] = false;

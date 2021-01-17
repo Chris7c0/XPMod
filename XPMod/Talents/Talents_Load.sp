@@ -60,9 +60,7 @@ LoadTalents(iClient)
 					PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Smoker Talents \x05have been loaded.");
 				if(g_iNoxiousLevel[iClient] > 0)
 				{
-					//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iNoxiousLevel[iClient] * 0.01)), true);
-					g_fClientSpeedBoost[iClient] += (g_iNoxiousLevel[iClient] * 0.02);
-					fnc_SetClientSpeed(iClient);
+					SetClientSpeed(iClient);
 				}
 			}
 			case BOOMER:
@@ -76,9 +74,7 @@ LoadTalents(iClient)
 				if(g_iPredatorialLevel[iClient] > 0)
 				{
 					PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Hunter Talents \x05have been loaded.");
-					//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iPredatorialLevel[iClient] * 0.08)), true);
-					g_fClientSpeedBoost[iClient] += (g_iPredatorialLevel[iClient] * 0.08);
-					fnc_SetClientSpeed(iClient);
+					SetClientSpeed(iClient);
 				}
 				if(g_iBloodlustLevel[iClient] > 0)
 				{
@@ -147,9 +143,8 @@ LoadTalents(iClient)
 						SetEntProp(iClient,Prop_Data,"m_iHealth", 325 + (g_iUnfairLevel[iClient] * 35));
 						SetEntProp(iClient,Prop_Data,"m_iMaxHealth", 325 + (g_iUnfairLevel[iClient] * 35));
 					}
-					//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iUnfairLevel[iClient] * 0.07)), true);
-					g_fClientSpeedBoost[iClient] += (g_iUnfairLevel[iClient] * 0.07);
-					fnc_SetClientSpeed(iClient);
+					
+					SetClientSpeed(iClient);
 					g_bCanJockeyPee[iClient] = true;
 				}
 
@@ -179,9 +174,8 @@ LoadTalents(iClient)
 				{
 					//SetEntProp(iClient,Prop_Data,"m_iHealth", 600 + (g_iSpikedLevel[iClient] * 25) + (g_iHillbillyLevel[iClient] * 35));
 					//SetEntProp(iClient,Prop_Data,"m_iMaxHealth", 600 + (g_iSpikedLevel[iClient] * 25) + (g_iHillbillyLevel[iClient] * 35));
-					//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iHillbillyLevel[iClient] * 0.03)), true);
-					g_fClientSpeedBoost[iClient] += (g_iHillbillyLevel[iClient] * 0.03);
-					fnc_SetClientSpeed(iClient);
+					
+					SetClientSpeed(iClient);
 					g_bCanChargerEarthquake[iClient] = true;
 				}
 				if(g_bHasInfectedHealthBeenSet[iClient] == false)
@@ -220,7 +214,6 @@ LoadTalents(iClient)
 		{
 			case 0:		//Bill Talents
 			{
-				//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0+(g_iInspirationalLevel[iClient]*0.02) + (g_iPromotionalLevel[iClient] * 0.02)), true);
 				if(g_iGhillieLevel[iClient]>0 || g_iPromotionalLevel[iClient]>0)
 				{
 					if (g_bGameFrozen == false)
@@ -236,13 +229,7 @@ LoadTalents(iClient)
 						}
 					}
 				}
-				/*
-				if(g_iPromotionalLevel[iClient] > 0)
-				{
-					g_fClientSpeedBoost[iClient] += (g_iPromotionalLevel[iClient] * 0.02);
-					fnc_SetClientSpeed(iClient);
-				}
-				*/
+				
 				if(g_iWillLevel[iClient] > 0)
 				{
 					SetEntProp(iClient,Prop_Data,"m_iMaxHealth", 100 + (g_iWillLevel[iClient]*5) + (g_iDiehardLevel[iClient]*15) + (g_iCoachTeamHealthStack * 5));
@@ -279,9 +266,7 @@ LoadTalents(iClient)
 			{
 				if((g_iHunterLevel[iClient] > 0) || (g_iShadowLevel[iClient] > 0) || (g_iSniperLevel[iClient] > 0))
 				{
-					g_fClientSpeedBoost[iClient] += ((g_iHunterLevel[iClient]*0.02) + (g_iSniperLevel[iClient] * 0.02) + (g_iShadowLevel[iClient] * 0.02));
-					fnc_SetClientSpeed(iClient);
-					//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iHunterLevel[iClient]*0.02) + (g_iSniperLevel[iClient] * 0.02) + (g_iShadowLevel[iClient] * 0.02)), true);
+					SetClientSpeed(iClient);
 				}
 				//Sets the iClient to hear all the infected's voice comms
 				if(g_iGatherLevel[iClient] == 5)
@@ -330,9 +315,7 @@ LoadTalents(iClient)
 			case 2:		//Coach Talents
 			{
 				if(g_iBullLevel[iClient]>0 || g_iWreckingLevel[iClient]>0 || g_iStrongLevel[iClient]>0)
-				{
-					//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0-(g_iBullLevel[iClient]*0.03)), true);
-					
+				{					
 					g_iMeleeDamageCounter[iClient] = (g_iStrongLevel[iClient] * 30);
 					
 					g_iClientSurvivorMaxHealth[iClient] = 100 + (g_iBullLevel[iClient]*15) + (g_iWreckingLevel[iClient]*10) + (g_iStrongLevel[iClient]*10) + (g_iCoachTeamHealthStack * 5);
@@ -496,49 +479,27 @@ LoadTalents(iClient)
 					new iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
 					if(iCurrentHealth < (iMaxHealth - 20))
 					{
-						if(g_bEllisOverSpeedDecreased[iClient] == false)
+						if(g_bEllisOverSpeedIncreased[iClient])
 						{
-							g_fClientSpeedBoost[iClient] -= (g_iOverLevel[iClient] * 0.02);
-							fnc_SetClientSpeed(iClient);
-							g_bEllisOverSpeedDecreased[iClient] = true;
 							g_bEllisOverSpeedIncreased[iClient] = false;
+							SetClientSpeed(iClient);
 						}
-						//g_fEllisOverSpeed[iClient] = 0.0;
-						//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iClient] + g_fEllisBringSpeed[iClient] + g_fEllisOverSpeed[iClient]), true);
-						//DeleteCode
-						//PrintToChatAll("Talents loaded, now setting g_fEllisOverSpeed");
-						//PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[iClient]);
-						//PrintToChatAll("g_fEllisBringSpeed = %f", g_fEllisBringSpeed[iClient]);
-						//PrintToChatAll("g_fEllisOverSpeed = %f", g_fEllisOverSpeed[iClient]);
 					}
 					else if(iCurrentHealth >= (iMaxHealth - 20))
 					{
 						if(g_bEllisOverSpeedIncreased[iClient] == false)
 						{
-							g_fClientSpeedBoost[iClient] += (g_iOverLevel[iClient] * 0.02);
-							fnc_SetClientSpeed(iClient);
-							g_bEllisOverSpeedDecreased[iClient] = false;
 							g_bEllisOverSpeedIncreased[iClient] = true;
+							SetClientSpeed(iClient);
 						}
-						//g_fEllisOverSpeed[iClient] = (g_iOverLevel[iClient] * 0.02);
-						//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iClient] + g_fEllisBringSpeed[iClient] + g_fEllisOverSpeed[iClient]), true);
-						//DeleteCode
-						//PrintToChatAll("Talents loaded, now setting g_fEllisOverSpeed");
-						//PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[iClient]);
-						//PrintToChatAll("g_fEllisBringSpeed = %f", g_fEllisBringSpeed[iClient]);
-						//PrintToChatAll("g_fEllisOverSpeed = %f", g_fEllisOverSpeed[iClient]);
 					}
 				}
-				/*
-				if(g_iOverLevel[iClient] == 5)
-				{
-					
-				}
-				*/
+
 				if(g_iJamminLevel[iClient] == 5)
 				{
 					g_iEllisJamminGrenadeCounter[iClient] = 0;
 				}
+				
 				if(g_iWeaponsLevel[iClient] == 5)
 				{
 					g_bIsEllisInPrimaryCycle[iClient] = false;
@@ -580,9 +541,7 @@ LoadTalents(iClient)
 				
 				if(g_iMagnumLevel[iClient] > 0)
 				{
-					//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iMagnumLevel[iClient] * 0.03)), true);
-					g_fClientSpeedBoost[iClient] += (g_iMagnumLevel[iClient] * 0.03);
-					fnc_SetClientSpeed(iClient);
+					SetClientSpeed(iClient);
 				}
 					
 				

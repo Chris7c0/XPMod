@@ -48,13 +48,9 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 						g_iCoachCIHeadshotCounter[attacker]++;
 						if(g_bCoachInCISpeed[attacker] == false)
 						{
-							//g_fCoachCIHeadshotSpeed[attacker] = (g_iBullLevel[attacker] * 0.05);
-							//PrintToChatAll("g_fCoachCIHeadshotSpeed = %d", g_fCoachCIHeadshotSpeed[attacker]);
-							//SetEntDataFloat(attacker , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + g_fCoachCIHeadshotSpeed[attacker] + g_fCoachSIHeadshotSpeed[attacker] + g_fCoachRageSpeed[attacker]), true);
-							g_fClientSpeedBoost[attacker] += (g_iBullLevel[attacker] * 0.05);
-							fnc_SetClientSpeed(attacker);
-							CreateTimer(3.0, TimerCoachCIHeadshotSpeedReset, attacker, TIMER_FLAG_NO_MAPCHANGE);
 							g_bCoachInCISpeed[attacker] = true;
+							SetClientSpeed(attacker);
+							CreateTimer(3.0, TimerCoachCIHeadshotSpeedReset, attacker, TIMER_FLAG_NO_MAPCHANGE);
 						}
 					}
 				}
@@ -79,7 +75,7 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	clienthanging[victim] = false;
 	
 	if(g_iHunterShreddingVictim[victim] > 0)
-		fnc_SetClientSpeed(g_iHunterShreddingVictim[victim]);
+		SetClientSpeed(g_iHunterShreddingVictim[victim]);
 		//ResetSurvivorSpeed(g_iHunterShreddingVictim[victim]);
 	
 	if(g_bEnabledVGUI[victim] == true && g_bShowingVGUI[victim] == true)
@@ -191,18 +187,10 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 						
 						if(g_iJamminLevel[i] > 0)
 						{
+							SetClientSpeed(i);
 							if(g_iTankCounter == 0)
 							{
-								//g_fEllisJamminSpeed[i] = 0.0;
-								//SetEntDataFloat(i , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[i] + g_fEllisBringSpeed[i] + g_fEllisOverSpeed[i]), true);
-								g_fClientSpeedBoost[i] -= (g_iJamminLevel[i] * 0.04);
-								fnc_SetClientSpeed(i);
-								PrintHintText(i, "You calm down knowing the TANK is dead.");
-								//DeleteCode
-								//PrintToChatAll("Tank has died, now setting g_fEllisJamminSpeed");
-								//PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[i]);
-								//PrintToChatAll("g_fEllisBringSpeed = %f", g_fEllisBringSpeed[i]);
-								//PrintToChatAll("g_fEllisOverSpeed = %f", g_fEllisOverSpeed[i]);
+								PrintHintText(i, "You calm down knowing a TANK is dead.");
 							}
 						}
 					}
@@ -230,6 +218,8 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 			}
 			case 2: //BOOMER
 			{
+				g_bIsBoomerVomiting[victim] = false;
+
 				if(g_iAcidicLevel[victim] > 0)
 				{
 					decl Float:vector[3];
@@ -337,9 +327,8 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 		g_bIsSuicideBoomer[victim] = false;	
 		g_bIsSuicideJumping[victim] = false;
 		g_bHasInfectedHealthBeenSet[victim] = false;
-		g_fClientSpeedBoost[victim] = 0.0;
-		g_fClientSpeedPenalty[victim] = 0.0;
-		fnc_SetClientSpeed(victim);
+
+		SetClientSpeed(victim);
 	}
 	if(IsFakeClient(attacker) == true)
 		return Plugin_Continue;
@@ -370,13 +359,12 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 							g_iCoachSIHeadshotCounter[attacker]++;
 							if(g_bCoachInSISpeed[attacker] == false)
 							{
+								g_bCoachInSISpeed[attacker] = true;
 								//g_fCoachSIHeadshotSpeed[attacker] = (g_iHomerunLevel[attacker] * 0.05);
 								//PrintToChatAll("g_fCoachCIHeadshotSpeed = %d", g_fCoachCIHeadshotSpeed[attacker]);
-								//SetEntDataFloat(attacker , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + g_fCoachCIHeadshotSpeed[attacker] + g_fCoachSIHeadshotSpeed[attacker] + g_fCoachRageSpeed[attacker]), true);
-								g_fClientSpeedBoost[attacker] += (g_iHomerunLevel[attacker] * 0.05);
-								fnc_SetClientSpeed(attacker);
+								
+								SetClientSpeed(attacker);
 								CreateTimer(6.0, TimerCoachSIHeadshotSpeedReset, attacker, TIMER_FLAG_NO_MAPCHANGE);
-								g_bCoachInSISpeed[attacker] = true;
 							}
 						}
 					}
@@ -527,80 +515,13 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 				if(g_iEllisSpeedBoostCounter[attacker] < (6 * g_iBringLevel[attacker]))
 				{
 					g_iEllisSpeedBoostCounter[attacker]++;
-					/*
-					if(g_iEllisSpeedBoostCounter[attacker] > (6 * g_iBringLevel[attacker]))
-						g_iEllisSpeedBoostCounter[attacker] = (6 * g_iBringLevel[attacker]);
-					*/
-					//g_fEllisBringSpeed[attacker] = (g_iEllisSpeedBoostCounter[attacker] * 0.01);
-					//SetEntDataFloat(attacker, FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[attacker] + g_fEllisBringSpeed[attacker] + g_fEllisOverSpeed[attacker]), true);
-					g_fClientSpeedBoost[attacker] += 0.01;
-					fnc_SetClientSpeed(attacker);
-					//DeleteCode
-					//PrintToChatAll("Killed an SI, now setting g_fEllisBringSpeed");
-					//PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[attacker]);
-					//PrintToChatAll("g_fEllisBringSpeed = %f", g_fEllisBringSpeed[attacker]);
-					//PrintToChatAll("g_fEllisOverSpeed = %f", g_fEllisOverSpeed[attacker]);
+					SetClientSpeed(attacker);
 				}
 			}
 		}
 	}
 	else if (g_iClientTeam[victim] == TEAM_SURVIVORS)//(GetClientTeam(victim) == TEAM_SURVIVORS && (g_iClientTeam(victim)==TEAM_SURVIVORS))
 	{
-		/*
-		decl i;
-		if(g_iNickDesperateMeasuresStack > 0)	//Dont allow desperate stack to go over 3 times
-		{
-			g_iNickDesperateMeasuresStack--;
-			for(i=1;i<=MaxClients;i++)		//Check all the clients to see if they have despearate level up(Nick)
-			{
-				if(g_iDesperateLevel[i]>0)
-				{
-					if(RunClientChecks(i))
-					{
-						if(!IsFakeClient(i))
-						{
-							if(g_iClientTeam[i]==TEAM_SURVIVORS)
-							{
-								//SetEntDataFloat(i , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0 + (float(g_iMagnumLevel[i]) * 0.03) + (float(g_iNickDesperateMeasuresStack) * float(g_iDesperateLevel[i]) * 0.02), true);
-								g_fClientSpeedBoost[i] += (g_iNickDesperateMeasuresStack * (g_iDesperateLevel[i] * 0.02));
-								fnc_SetClientSpeed(i);
-								pop(i, 1);
-								PrintHintText(i, "A teammate has died, your senses sharpen.");
-							}
-						}
-					}
-				}
-			}
-		}
-		*/
-		/*
-		//g_bIsClientDown[iClient] = true
-		if(g_bWasClientDownOnDeath[victim] == true)
-		{
-			g_iNickDesperateMeasuresIncapStack--;
-			if(g_iNickDesperateMeasuresIncapStack < 0)
-			{
-				g_iNickDesperateMeasuresIncapStack = 0;
-			}
-			g_bWasClientDownOnDeath[victim] = false;
-		}
-		g_iNickDesperateMeasuresDeathStack++;
-		if(g_iNickDesperateMeasuresDeathStack > 3)
-		{
-			g_iNickDesperateMeasuresDeathStack = 3;
-		}
-		g_iNickDesperateMeasuresTotalStack = (g_iNickDesperateMeasuresDeathStack + g_iNickDesperateMeasuresReviveStack);
-		decl i;
-		for(i=1;i<=MaxClients;i++)
-		{
-			if(RunClientChecks(i) && g_iClientTeam[i]==TEAM_SURVIVORS)
-			{
-				g_fClientSpeedBoost[i] += (g_iNickDesperateMeasuresTotalStack * (g_iDesperateLevel[i] * 0.02));
-				fnc_SetClientSpeed(i);
-				PrintHintText(i, "A teammate has died, your senses sharpen.");
-			}
-		}
-		*/
 		if(g_bWasClientDownOnDeath[victim] == true)
 		{
 			g_bWasClientDownOnDeath[victim] = false;
@@ -615,16 +536,15 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 				{
 					if(g_iNickDesperateMeasuresStack <= 3)
 					{
-						g_fClientSpeedBoost[i] += (g_iDesperateLevel[i] * 0.02);
-						fnc_SetClientSpeed(i);
+						SetClientSpeed(i);
 						PrintHintText(i, "A teammate has died, your senses sharpen.");
 					}
 				}
 			}
 		}
-		g_fClientSpeedBoost[victim] = 0.0;
-		g_fClientSpeedPenalty[victim] = 0.0;
-		fnc_SetClientSpeed(victim);
+
+		SetClientSpeed(victim);
 	}
+	
 	return Plugin_Continue;
 }

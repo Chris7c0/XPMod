@@ -66,9 +66,6 @@ Action:TimerGiveExplosive(Handle:timer, any:iClient)
 
 Action:TimerCoachCIHeadshotSpeedReset(Handle:timer, any:iClient)
 {
-	//g_fCoachCIHeadshotSpeed[iClient] = 0.0;
-	//PrintToChatAll("g_fCoachCIHeadshotSpeed = %d", g_fCoachCIHeadshotSpeed[iClient]);
-	//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + g_fCoachCIHeadshotSpeed[iClient] + g_fCoachSIHeadshotSpeed[iClient] + g_fCoachRageSpeed[iClient]), true);
 	g_iCoachCIHeadshotCounter[iClient]--;
 	if(g_iCoachCIHeadshotCounter[iClient] > 0)
 	{
@@ -76,9 +73,8 @@ Action:TimerCoachCIHeadshotSpeedReset(Handle:timer, any:iClient)
 	}
 	else
 	{
-		g_fClientSpeedBoost[iClient] -= (g_iBullLevel[iClient] * 0.05);
-		fnc_SetClientSpeed(iClient);
 		g_bCoachInCISpeed[iClient] = false;
+		SetClientSpeed(iClient);
 	}
 	return Plugin_Stop;
 }
@@ -86,9 +82,7 @@ Action:TimerCoachCIHeadshotSpeedReset(Handle:timer, any:iClient)
 Action:TimerCoachSIHeadshotSpeedReset(Handle:timer, any:iClient)
 {
 	//g_fCoachSIHeadshotSpeed[iClient] = 0.0;
-	//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + g_fCoachCIHeadshotSpeed[iClient] + g_fCoachSIHeadshotSpeed[iClient] + g_fCoachRageSpeed[iClient]), true);
-	//g_fClientSpeedBoost[iClient] -= (g_iHomerunLevel[iClient] * 0.05);
-	//fnc_SetClientSpeed(iClient);
+	
 	g_iCoachSIHeadshotCounter[iClient]--;
 	if(g_iCoachSIHeadshotCounter[iClient] > 0)
 	{
@@ -96,9 +90,8 @@ Action:TimerCoachSIHeadshotSpeedReset(Handle:timer, any:iClient)
 	}
 	else
 	{
-		g_fClientSpeedBoost[iClient] -= (g_iHomerunLevel[iClient] * 0.05);
-		fnc_SetClientSpeed(iClient);
 		g_bCoachInSISpeed[iClient] = false;
+		SetClientSpeed(iClient);
 	}
 	return Plugin_Stop;
 }
@@ -107,9 +100,8 @@ Action:TimerCoachRageReset(Handle:timer, any:iClient)
 {
 	//g_fCoachRageSpeed[iClient] = -0.1;
 	g_iCoachRageMeleeDamage[iClient] = 0;
-	//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + g_fCoachCIHeadshotSpeed[iClient] + g_fCoachSIHeadshotSpeed[iClient] + g_fCoachRageSpeed[iClient]), true);
-	g_fClientSpeedBoost[iClient] -= (g_iBullLevel[iClient] * 0.04);
-	fnc_SetClientSpeed(iClient);
+
+	SetClientSpeed(iClient);
 	CreateTimer(60.0, TimerCoachRageCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	g_bCoachRageIsInCooldown[iClient] = true;
 	PrintHintText(iClient, "Rage is in cooldown, healing and speed talents disabled for 60 seconds");
@@ -118,8 +110,6 @@ Action:TimerCoachRageReset(Handle:timer, any:iClient)
 
 Action:TimerCoachRageCooldown(Handle:timer, any:iClient)
 {
-	//g_fCoachRageSpeed[iClient] = 0.0;
-	//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + g_fCoachCIHeadshotSpeed[iClient] + g_fCoachSIHeadshotSpeed[iClient] + g_fCoachRageSpeed[iClient]), true);
 	g_bCoachRageIsAvailable[iClient] = true;
 	g_bCoachRageIsInCooldown[iClient] = false;
 	return Plugin_Stop;

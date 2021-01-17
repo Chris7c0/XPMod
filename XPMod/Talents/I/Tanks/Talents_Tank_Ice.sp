@@ -1,8 +1,5 @@
 LoadIceTankTalents(iClient)
 {
-	g_fClientSpeedBoost[iClient] = 0.0;
-	g_fClientSpeedPenalty[iClient] = 0.0;
-
 	if(iClient < 1 || g_iClientTeam[iClient] != TEAM_INFECTED || IsClientInGame(iClient) == false || 
 		IsFakeClient(iClient) == true || GetEntProp(iClient, Prop_Send, "m_zombieClass") != TANK)
 		return;
@@ -20,6 +17,9 @@ LoadIceTankTalents(iClient)
 	//Stop Kiting (Bullet hits slowing tank down)
 	SetConVarInt(FindConVar("z_tank_damage_slow_min_range"), 0);
 	SetConVarInt(FindConVar("z_tank_damage_slow_max_range"), 0);
+
+	//Set Movement Speed	
+	SetClientSpeed(iClient);
 	
 	//Give Health
 	SetEntProp(iClient, Prop_Data,"m_iMaxHealth", TANK_HEALTH_ICE);
@@ -38,6 +38,12 @@ LoadIceTankTalents(iClient)
 	g_iPID_IceTankIcicles[iClient] = CreateParticle("ice_tank_icicles", 0.0, iClient, ATTACH_RSHOULDER);
 	
 	PrintHintText(iClient, "You have become the Ice Tank");
+}
+
+SetClientSpeedTankIce(iClient, &Float:fSpeed)
+{
+	if (g_iTankChosen[iClient] != TANK_ICE)
+		return;
 }
 
 OnGameFrame_Tank_Ice(iClient)
@@ -241,7 +247,7 @@ UnfreezePlayerByTank(iClient)
 	//ResetGlow(iClient);
 	
 	//Reset Movement Speed
-	fnc_SetClientSpeed(iClient);
+	SetClientSpeed(iClient);
 	//ResetSurvivorSpeed(iClient);
 }
 

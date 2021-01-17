@@ -80,30 +80,3 @@ Action:TimerEllisLimitBreakCooldown(Handle:timer, any:iClient)
 	//PrintToChatAll("Ellis limit break has cooled down");
 	return Plugin_Stop;
 }
-/*
-Action:TimerCheckEllisHealth(Handle:timer, any:iClient)
-{
-	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
-	new iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
-	new Float:fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
-	//fTempHealth = 0;
-	//fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
-	new Float:fTempHealthTimer = GetEntDataFloat(iClient, g_iOffset_HealthBufferTime); //g_iOffset_HealthBufferTime
-	//PrintToChatAll("Current Health = %d Max Health = %d Temp Health = %f Time = %f", iCurrentHealth, iMaxHealth, fTempHealth, fTempHealthTimer);
-	if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
-	{
-		g_fEllisOverSpeed[iClient] = 0.0;
-		SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iClient] + g_fEllisBringSpeed[iClient] + g_fEllisOverSpeed[iClient]), true);
-		//DeleteCode
-		//PrintToChatAll("Timer Tick: Ellis Over speed lost");
-	}
-	else if(float(iCurrentHealth) + fTempHealth > (float(iMaxHealth) - 20.0))
-	{
-		g_fEllisOverSpeed[iClient] = (g_iOverLevel[iClient] * 0.02);
-		SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iClient] + g_fEllisBringSpeed[iClient] + g_fEllisOverSpeed[iClient]), true);
-		//DeleteCode
-		//PrintToChatAll("Timer Tick: Ellis Over speed still in effect");
-		CreateTimer(1.0, TimerCheckEllisHealth, iClient, TIMER_FLAG_NO_MAPCHANGE);
-	}
-}
-*/

@@ -591,8 +591,6 @@ new String:g_strCheckAmmoUpgrade[32];
 new g_iKitsUsed = 0;
 new g_iPrimarySlotID[MAXPLAYERS + 1];
 new bool:g_bDivineInterventionQueued[MAXPLAYERS + 1];
-new Float:g_fClientSpeedPenalty[MAXPLAYERS + 1];
-new Float:g_fClientSpeedBoost[MAXPLAYERS + 1];
 new bool:g_bWasClientDownOnDeath[MAXPLAYERS + 1];
 new bool:g_bAdhesiveGooActive[MAXPLAYERS + 1];
 new bool:g_bIsClientGrappled[MAXPLAYERS + 1];
@@ -708,7 +706,6 @@ new String:g_strEllisUpgradeTypeSlot2[32];
 new bool:g_bIsEllisLimitBreaking[MAXPLAYERS + 1];
 new bool:g_bCanEllisLimitBreak[MAXPLAYERS + 1];
 new bool:g_bEllisLimitBreakInCooldown[MAXPLAYERS + 1];
-new bool:g_bEllisOverSpeedDecreased[MAXPLAYERS + 1];
 new bool:g_bEllisOverSpeedIncreased[MAXPLAYERS + 1];
 
 //Nicks Stuff
@@ -794,6 +791,7 @@ new Float:g_fTeleportEndPositionZ[MAXPLAYERS + 1];
 //Boomer
 new bool:g_bIsSuicideBoomer[MAXPLAYERS + 1];
 new bool:g_bIsSuicideJumping[MAXPLAYERS + 1];
+new bool:g_bIsBoomerVomiting[MAXPLAYERS + 1];
 new bool:g_bIsServingHotMeal[MAXPLAYERS + 1];
 new g_iShowSurvivorVomitCounter[MAXPLAYERS + 1];
 new g_iVomitVictimAttacker[MAXPLAYERS + 1];
@@ -841,6 +839,9 @@ new bool:g_bCanJockeyCloak[MAXPLAYERS + 1] = true;
 new bool:g_bJockeyIsRiding[MAXPLAYERS + 1] = false;
 new g_iJockeysVictim[MAXPLAYERS + 1];
 new bool:g_bCanJockeyJump[MAXPLAYERS + 1] = false;
+new Float:g_fJockeyRideSpeed[MAXPLAYERS + 1] = 1.0;
+new Float:g_fJockeyRideSpeedVanishingActBoost[MAXPLAYERS + 1] = 0.0;
+
 
 //Charger
 new bool:g_bIsChargerCharging[MAXPLAYERS +1];

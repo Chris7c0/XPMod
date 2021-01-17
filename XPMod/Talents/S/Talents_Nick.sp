@@ -382,38 +382,20 @@ JebusHandMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 							//if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
 							if(iCurrentHealth < (iMaxHealth - 20.0))
 							{
-								if(g_bEllisOverSpeedDecreased[i] == false)
+								if(g_bEllisOverSpeedIncreased[i])
 								{
-									g_fClientSpeedBoost[i] -= (g_iOverLevel[i] * 0.02);
-									fnc_SetClientSpeed(i);
-									g_bEllisOverSpeedDecreased[i] = true;
 									g_bEllisOverSpeedIncreased[i] = false;
+									SetClientSpeed(i);
 								}
-								//g_fEllisOverSpeed[i] = 0.0;
-								//SetEntDataFloat(i , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[i] + g_fEllisBringSpeed[i] + g_fEllisOverSpeed[i]), true);
-								//DeleteCode
-								//PrintToChatAll("Nick has team healed, now setting g_fEllisOverSpeed");
-								//PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[i]);
-								//PrintToChatAll("g_fEllisBringSpeed = %f", g_fEllisBringSpeed[i]);
-								//PrintToChatAll("g_fEllisOverSpeed = %f", g_fEllisOverSpeed[i]);
 							}
 							//else if(float(iCurrentHealth) + fTempHealth > (float(iMaxHealth) - 20.0))
 							else if(iCurrentHealth >= (iMaxHealth - 20.0))
 							{
 								if(g_bEllisOverSpeedIncreased[i] == false)
 								{
-									g_fClientSpeedBoost[i] += (g_iOverLevel[i] * 0.02);
-									fnc_SetClientSpeed(i);
-									g_bEllisOverSpeedDecreased[i] = false;
 									g_bEllisOverSpeedIncreased[i] = true;
+									SetClientSpeed(i);
 								}
-								//g_fEllisOverSpeed[i] = (g_iOverLevel[i] * 0.02);
-								//SetEntDataFloat(i , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[i] + g_fEllisBringSpeed[i] + g_fEllisOverSpeed[i]), true);
-								//DeleteCode
-								//PrintToChatAll("Nick has team healed, now setting g_fEllisOverSpeed");
-								//PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[i]);
-								//PrintToChatAll("g_fEllisBringSpeed = %f", g_fEllisBringSpeed[i]);
-								//PrintToChatAll("g_fEllisOverSpeed = %f", g_fEllisOverSpeed[i]);
 							}
 						}
 					}

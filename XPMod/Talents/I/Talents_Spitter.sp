@@ -38,10 +38,8 @@ OnGameFrame_Spitter(iClient)
 					SetEntityRenderColor(iClient, 255, 255, 255, 1);
 					
 					g_iPID_SpitterSlimeTrail[iClient] = CreateParticle("spitter_slime_trail", 0.0, iClient, ATTACH_MOUTH);
-					
-					//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 2.0, true);
-					g_fClientSpeedBoost[iClient] += 1.0;
-					fnc_SetClientSpeed(iClient);
+
+					SetClientSpeed(iClient);
 					
 					g_iStealthSpitterChargePower[iClient] =  0;
 				}
@@ -77,10 +75,8 @@ OnGameFrame_Spitter(iClient)
 				SetEntityRenderMode(iClient, RenderMode:3);
 				SetEntityRenderColor(iClient, 255, 255, 255, 255);
 				
-				//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
-				g_fClientSpeedBoost[iClient] -= 1.0;
-				fnc_SetClientSpeed(iClient);
 				g_bIsStealthSpitter[iClient] = false;
+				SetClientSpeed(iClient);
 			}
 		}
 	}
@@ -150,29 +146,13 @@ DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 				
 				switch (RandomAdhesiveGooAffect)
 				{
-					case 1:
-					{
-						//SetEntDataFloat(iVictim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 0.5, true);
-						g_fClientSpeedPenalty[iVictim] = (g_iPuppetLevel[iAttacker] * 0.02);
-						g_fAdhesiveAffectAmount[iVictim] = (g_iPuppetLevel[iAttacker] * 0.02);
-						//PrintToChatAll("Adhesive goo affect %d", g_fAdhesiveAffectAmount[iVictim]);
-					}
-					case 2:
-					{
-						g_fClientSpeedPenalty[iVictim] = (g_iPuppetLevel[iAttacker] * 0.04);
-						g_fAdhesiveAffectAmount[iVictim] = (g_iPuppetLevel[iAttacker] * 0.04);
-						//PrintToChatAll("Adhesive goo affect %d", g_fAdhesiveAffectAmount[iVictim]);
-					}
-					case 3:
-					{
-						g_fClientSpeedPenalty[iVictim] = (g_iPuppetLevel[iAttacker] * 0.06);
-						g_fAdhesiveAffectAmount[iVictim] = (g_iPuppetLevel[iAttacker] * 0.06);
-						//PrintToChatAll("Adhesive goo affect %f", g_fAdhesiveAffectAmount[iVictim]);
-					}
+					case 1:	g_fAdhesiveAffectAmount[iVictim] = (g_iPuppetLevel[iAttacker] * 0.02);
+					case 2:	g_fAdhesiveAffectAmount[iVictim] = (g_iPuppetLevel[iAttacker] * 0.04);
+					case 3:	g_fAdhesiveAffectAmount[iVictim] = (g_iPuppetLevel[iAttacker] * 0.06);
 				}
 
 				g_bAdhesiveGooActive[iVictim] = true;
-				fnc_SetClientSpeed(iVictim);
+				SetClientSpeed(iVictim);
 
 				delete g_hTimer_AdhesiveGooReset[iVictim];
 				g_hTimer_AdhesiveGooReset[iVictim] = CreateTimer(5.0, TimerResetSpeedFromGoo, iVictim);

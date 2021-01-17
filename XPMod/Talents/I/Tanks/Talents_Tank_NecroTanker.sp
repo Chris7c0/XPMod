@@ -1,8 +1,5 @@
 LoadNecroTankerTalents(iClient)
-{
-	g_fClientSpeedBoost[iClient] = 0.0;
-	g_fClientSpeedPenalty[iClient] = 0.0;
-	
+{	
 	if(iClient < 1 || g_iClientTeam[iClient] != TEAM_INFECTED || IsClientInGame(iClient) == false || 
 		IsFakeClient(iClient) == true || GetEntProp(iClient, Prop_Send, "m_zombieClass") != TANK)
 		return;
@@ -25,8 +22,7 @@ LoadNecroTankerTalents(iClient)
 	SetConVarInt(FindConVar("z_tank_damage_slow_max_range"), 0);
 	
 	//Set Movement Speed
-	//g_fClientSpeedBoost[iClient] += 0.2;
-	//fnc_SetClientSpeed(iClient);
+	SetClientSpeed(iClient);
 	
 	//Change Skin Color
 	SetEntityRenderMode(iClient, RenderMode:0);
@@ -37,6 +33,12 @@ LoadNecroTankerTalents(iClient)
 	WriteParticle(iClient, "boomer_vomit_infected", 0.0, 999.0);
 	
 	PrintHintText(iClient, "You have become the NecroTanker");
+}
+
+SetClientSpeedTankNecroTanker(iClient, &Float:fSpeed)
+{
+	if (g_iTankChosen[iClient] != TANK_NECROTANKER)
+		return;
 }
 
 OnGameFrame_Tank_NecroTanker(iClient)

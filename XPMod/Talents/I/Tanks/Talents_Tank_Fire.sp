@@ -1,8 +1,5 @@
 LoadFireTankTalents(iClient)
-{
-	g_fClientSpeedBoost[iClient] = 0.0;
-	g_fClientSpeedPenalty[iClient] = 0.0;
-	
+{	
 	if(RunClientChecks(iClient) == false || g_iClientTeam[iClient] != TEAM_INFECTED || 
 		IsFakeClient(iClient) == true || GetEntProp(iClient, Prop_Send, "m_zombieClass") != TANK)
 		return;
@@ -30,10 +27,8 @@ LoadFireTankTalents(iClient)
 	SetConVarInt(FindConVar("z_tank_damage_slow_min_range"), 0);
 	SetConVarInt(FindConVar("z_tank_damage_slow_max_range"), 0);
 	
-	//Set Movement Speed
-	//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), 1.2, true);
-	g_fClientSpeedBoost[iClient] += 0.2;
-	fnc_SetClientSpeed(iClient);
+	//Set Movement Speed	
+	SetClientSpeed(iClient);
 	
 	//Change Skin Color
 	SetEntityRenderMode(iClient, RenderMode:0);
@@ -41,6 +36,14 @@ LoadFireTankTalents(iClient)
 	//SetEntityRenderColor(iClient, 210, 88, 30, 255);
 	
 	PrintHintText(iClient, "You have become the Fire Tank");
+}
+
+SetClientSpeedTankFire(iClient, &Float:fSpeed)
+{
+	if (g_iTankChosen[iClient] != TANK_FIRE)
+		return;
+	
+	fSpeed += (0.2 + g_fFireTankExtraSpeed[iClient]);
 }
 
 OnGameFrame_Tank_Fire(iClient)
@@ -106,21 +109,10 @@ EventsHurt_TankVictim_Fire(Handle:hEvent, iAttacker, iVictimTank, iDmgType, iDmg
 	//Check to see if the difference in stored health and current health percentage is significant
 	if(g_fTankHealthPercentage[iVictimTank] - fCurrentTankHealthPercentage >= 0.01)
 	{
-		g_fTankHealthPercentage[iVictimTank] = fCurrentTankHealthPercentage;
-		g_fClientSpeedBoost[iVictimTank] -= g_fFireTankExtraSpeed[iVictimTank];
 		//Change to the speed to match health percentage and level
+		g_fTankHealthPercentage[iVictimTank] = fCurrentTankHealthPercentage;
 		g_fFireTankExtraSpeed[iVictimTank] = 0.3 * (1.0 - fCurrentTankHealthPercentage);
-		g_fClientSpeedBoost[iVictimTank] += g_fFireTankExtraSpeed[iVictimTank];
-		//SetEntDataFloat(iVictimTank , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), 1.2 + fExtraSpeed, true);
-		//g_fClientSpeedBoost[iVictimTank] += (0.2 + fExtraSpeed);
-		/*
-		if(g_bFireTankBaseSpeedIncreased[iVictimTank] == false)
-		{
-			g_fClientSpeedBoost[iVictimTank] += 0.2;
-			g_bFireTankBaseSpeedIncreased[iVictimTank] = true;
-		}
-		*/
-		fnc_SetClientSpeed(iVictimTank);
+		SetClientSpeed(iVictimTank);
 		
 		//Change the actual color of the tank to reflect his health
 		//Go from Orange to Red by lowering the green value

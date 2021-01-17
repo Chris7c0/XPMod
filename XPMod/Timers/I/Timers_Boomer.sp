@@ -20,11 +20,11 @@ Action:TimerConstantVomitDisplay(Handle:timer, any:iClient)
 
 Action:TimerResetBoomerSpeed(Handle:timer, any:iClient)
 {
+	g_bIsBoomerVomiting[iClient] = false;
+
 	if(IsClientInGame(iClient) && IsPlayerAlive(iClient) && g_bIsSuperSpeedBoomer[iClient] == false)
 	{
-		//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
-		g_fClientSpeedPenalty[iClient] -= (1.0 - (g_iRapidLevel[iClient] * 0.1))
-		fnc_SetClientSpeed(iClient);
+		SetClientSpeed(iClient);
 	}
 
 	return Plugin_Stop;
@@ -40,12 +40,9 @@ Action:TimerResetPlayerIt(Handle:timer, any:iClient)
 Action:TimerResetFastBoomerSpeed(Handle:timer, any:iClient)
 {
 	g_bIsSuperSpeedBoomer[iClient] = false;
+	
 	if(IsClientInGame(iClient) && IsPlayerAlive(iClient))
-	{
-		//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
-		g_fClientSpeedBoost[iClient] -= 2.0;
-		fnc_SetClientSpeed(iClient);
-	}
+		SetClientSpeed(iClient);
 
 	return Plugin_Stop;
 }
@@ -53,11 +50,11 @@ Action:TimerResetFastBoomerSpeed(Handle:timer, any:iClient)
 Action:TimerStopHotMeal(Handle:timer, any:iClient)
 {
 	g_bIsServingHotMeal[iClient] = false;
+	g_bIsBoomerVomiting[iClient] = false;
+	
 	if(IsClientInGame(iClient) == true && IsPlayerAlive(iClient) == true)
 	{
-		//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
-		g_fClientSpeedBoost[iClient] -= (g_iAcidicLevel[iClient] * 0.1);
-		fnc_SetClientSpeed(iClient);
+		SetClientSpeed(iClient);
 			
 		if(IsFakeClient(iClient) == false)
 			CreateTimer(1.5, TimerSetBoomerCooldown, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
