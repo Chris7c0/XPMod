@@ -125,9 +125,14 @@ GetUserIDAndToken(any:iClient)
 	if (!IsClientInGame(iClient) || IsFakeClient(iClient) || g_bClientLoggedIn[iClient])
 		return;
 	
-	//Get SteamID
+	//Get Steam Auth ID, if this returns false, then do not proceed
 	decl String:strSteamID[32];
-	GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID));
+	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
+	{
+		PrintToChat(iClient, "[XPMod] Unable to obtain your current Steam Auth ID. Please restart Steam first then restart L4D2 Steam already open.");
+		LogError("GetUserIDAndToken: GetClientAuthId failed for %N", iClient);
+		return;
+	}
 	
 	// Save the new user data into the SQL database with the matching Steam ID
 	decl String:strQuery[1024] = "";
@@ -440,9 +445,14 @@ CreateNewUser(iClient)
 	if(!IsClientInGame(iClient) || IsFakeClient(iClient) || g_bClientLoggedIn[iClient])
 		return;
 	
-	//Get SteamID
+	//Get Steam Auth ID, if this returns false, then do not proceed
 	decl String:strSteamID[32];
-	GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID));
+	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
+	{
+		PrintToChat(iClient, "[XPMod] Unable to obtain your current Steam Auth ID. Please restart Steam first then restart L4D2 Steam already open.");
+		LogError("CreateNewUser: GetClientAuthId failed for %N", iClient);
+		return;
+	}
 	
 	//Get Client Name
 	decl String:strClientName[32];
@@ -526,11 +536,17 @@ SaveUserData(iClient)
 	if (g_iDBUserID[iClient] == -1)
 		return;
 		
-	decl String:strSteamID[32], String:strClientName[32], String:strClientXP[10], String:strSurvivorID[3], 
+	decl String:strClientName[32], String:strClientXP[10], String:strSurvivorID[3], 
 		String:strInfectedID[3][2], String:strEquipmentSlotID[6][3], String:strOption[3][2];
 	
-	//Get SteamID
-	GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID));
+	//Get Steam Auth ID, if this returns false, then do not proceed
+	decl String:strSteamID[32];
+	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
+	{
+		PrintToChat(iClient, "[XPMod] Unable to obtain your current Steam Auth ID. Please restart Steam first then restart L4D2 Steam already open.");
+		LogError("SaveUserData: GetClientAuthId failed for %N", iClient);
+		return;
+	}
 	
 	//Get Client Name
 	GetClientName(iClient, strClientName, sizeof(strClientName));
