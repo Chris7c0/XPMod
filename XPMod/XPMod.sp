@@ -12,9 +12,7 @@
 //         \////////////////////////////////////////////////////////////////////////////////////////////////// //
 //                                                                                                             //
 //                                                                                                             //
-//          Programming and Conceptual Design:  Chris Pringle                                                  //
-//                                                                                                             //
-//                              Particles, Menu Descriptions, and Conceptual Design:  Ezekiel Keener           //
+//          Created by: Chris Pringle and Ezekiel Keener                                                       //
 //                                                                                                             //
 //                                                                                                             //
 //			Many thanks to the developers at the Allied Modders forums! This mod would not be what it          //
@@ -37,11 +35,22 @@
 #include <sdkhooks>
 #include <regex>
 
-//Added custom includes
+// Added custom includes
 #include <sha1>
 
-//XPMod Include Files
-#include "XPMod/Misc/Global_Variables.sp"
+// XPMod Include Files
+// Global Variables
+#include "XPMod/GlobalVariables/Global_Variables.sp"
+#include "XPMod/GlobalVariables/ConVars.sp"
+#include "XPMod/GlobalVariables/Infected.sp"
+#include "XPMod/GlobalVariables/Models_Particles_Anims.sp"
+#include "XPMod/GlobalVariables/Offsets_Reload_SDKCalls.sp"
+#include "XPMod/GlobalVariables/Sounds.sp"
+#include "XPMod/GlobalVariables/Survivors.sp"
+#include "XPMod/GlobalVariables/Talent_Levels.sp"
+#include "XPMod/GlobalVariables/Timers.sp"
+#include "XPMod/GlobalVariables/XP_Levels_Confirm.sp"
+// Misc
 #include "XPMod/Misc/Generic_Functions.sp"
 #include "XPMod/Misc/ConVars.sp"
 #include "XPMod/Misc/Particle_Effects.sp"
