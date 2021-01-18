@@ -48,7 +48,7 @@ Action:PrintXPModAdvertisementMessageToAll(Handle:timer, any:data)
 	static iAdvertisementIndex;
 	if (++iAdvertisementIndex > 5)
 		iAdvertisementIndex = 0;
-	iAdvertisementIndex = 5;
+	
 	decl String:strAdvertisementText[256];
 	switch (iAdvertisementIndex)
 	{
