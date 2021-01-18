@@ -129,7 +129,8 @@ GetUserIDAndToken(any:iClient)
 	decl String:strSteamID[32];
 	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
 	{
-		PrintToChat(iClient, "[XPMod] Unable to obtain your current Steam Auth ID. Please restart Steam first then restart L4D2 Steam already open.");
+		PrintToChat(iClient, "[XPMod] Unable to obtain your Steam Auth ID. \
+			Please close L4D2, restart Steam, then restart L4D2 with Steam already open.");
 		LogError("GetUserIDAndToken: GetClientAuthId failed for %N", iClient);
 		return;
 	}
@@ -449,7 +450,8 @@ CreateNewUser(iClient)
 	decl String:strSteamID[32];
 	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
 	{
-		PrintToChat(iClient, "[XPMod] Unable to obtain your current Steam Auth ID. Please restart Steam first then restart L4D2 Steam already open.");
+		PrintToChat(iClient, "[XPMod] Unable to obtain your Steam Auth ID. \
+			Please close L4D2, restart Steam, then restart L4D2 with Steam already open.");
 		LogError("CreateNewUser: GetClientAuthId failed for %N", iClient);
 		return;
 	}
@@ -543,7 +545,8 @@ SaveUserData(iClient)
 	decl String:strSteamID[32];
 	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
 	{
-		PrintToChat(iClient, "[XPMod] Unable to obtain your current Steam Auth ID. Please restart Steam first then restart L4D2 Steam already open.");
+		PrintToChat(iClient, "[XPMod] Unable to obtain your Steam Auth ID. \
+			Please close L4D2, restart Steam, then restart L4D2 with Steam already open.");
 		LogError("SaveUserData: GetClientAuthId failed for %N", iClient);
 		return;
 	}
