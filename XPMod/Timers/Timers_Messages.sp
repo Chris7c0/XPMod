@@ -46,9 +46,9 @@ Action:PrintXPModCreateAndConfirmMessageToAll(Handle:timer, any:data)
 Action:PrintXPModAdvertisementMessageToAll(Handle:timer, any:data)
 {
 	static iAdvertisementIndex;
-	if (++iAdvertisementIndex > 4)
+	if (++iAdvertisementIndex > 5)
 		iAdvertisementIndex = 0;
-
+	iAdvertisementIndex = 5;
 	decl String:strAdvertisementText[256];
 	switch (iAdvertisementIndex)
 	{
@@ -57,6 +57,7 @@ Action:PrintXPModAdvertisementMessageToAll(Handle:timer, any:data)
 		case 2: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05Go to \x03xpmod.net\x05 on your phone to learn about XPMod abilities.");
 		case 3: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05Found a bug in XPMod? Report it to \x03xpmodserver@gmail.com");
 		case 4: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05Want to try the XPMod Addon? It adds new special effects.\n  Press \x03H\x05\n  Click \x03Join this server's Steam Group\x05\n  Click \x03Get XPMod Addons\x05\n  Click \x03Subscribe\x05\n  Restart Left4Dead2");
+		case 5: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05Want to join a XPMod server later? Then join our Steam Group.\n  Search for\x03XPMod Steam Group\x05 in your browser and Join.\n  You'll see all XPMod servers on the right when opening L4D2.");
 	}
 
 	PrintToChatAll(strAdvertisementText);
