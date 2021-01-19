@@ -443,7 +443,7 @@ Action:Event_JockeyRide(Handle:hEvent, const String:strName[], bool:bDontBroadca
 }
 
 
-Action:Event_JockeyRideEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)		//if TANK spawned in set ELLIS's run speed to 1.5
+Action:Event_JockeyRideEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new rider = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));

@@ -133,7 +133,7 @@ Action:JamminMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(JamminMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=\n \n		Jammin' to the Music (Level %d):\n \nOn Tank spawn:\n \nLevel 1:\n+4%%%% movement speed per level\n+5 temp health per level\n \nLevel 5:\nGain a molotov when you have no grenade\n \n=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iJamminLevel[iClient]);
+	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=\n \n		Jammin' to the Music (Level %d):\n \nOn Tank spawn:\n \nLevel 1:\n+2%%%% movement speed per level\n+5 temp health per level\n \nLevel 5:\nGain a molotov when you have no grenade\n \n=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iJamminLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
