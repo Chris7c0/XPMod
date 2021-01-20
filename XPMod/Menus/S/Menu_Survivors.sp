@@ -56,11 +56,11 @@ Action:ChangeSurvivorMenuDraw(iClient)
 		case NICK:
 			SetMenuTitle(g_hMenu_XPM[iClient], "Level %d	XP: %d/%d\n=================================\nYour Survivor: Nick (Medic)\n \n Change your Survivor to...",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 	}
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Bill		   (Support)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Rochelle (Ninja)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Coach	 (Berserker)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Ellis		 (Weapons Expert)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Nick		 (Medic)\n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Bill		   (Support)			   [EASY]");
+	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Rochelle (Ninja)					  [PRO]");
+	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Coach	 (Berserker)	 [NORMAL]");
+	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Ellis		 (Weapons Expert) [EASY]");
+	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Nick		 (Medic)					[PRO]\n ");
 
 	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Change Your Equipment");
 	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Do Nothing\n=================================\n \n \n \n ");
