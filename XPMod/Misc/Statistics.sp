@@ -1,5 +1,12 @@
 Action:ShowTeamStatsToPlayer(iClient, args)
 {
+	CreateXPMStatistics(iClient);
+
+	return Plugin_Handled;
+}
+
+CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
+{
 	decl String:strStatsTextBuffer[256];
 	decl String:strLoggedIn[16];
 	decl String:strConfirmed[16];
@@ -7,51 +14,51 @@ Action:ShowTeamStatsToPlayer(iClient, args)
 	// Construct the statistics strings
 	if(ProbeTeams(TEAM_SPECTATORS) == true)
 	{
-		PrintToServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=");
-		PrintToServerOrClient(iClient, "\x05|						Spectators						|");
-		PrintToServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=\n ");
+		PrintToBufferServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=", strStoreBuffer, iStoreBufferSize);
+		PrintToBufferServerOrClient(iClient, "\x05|						Spectators					|", strStoreBuffer, iStoreBufferSize);
+		PrintToBufferServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=\n ", strStoreBuffer, iStoreBufferSize);
 
 		for(new i = 1; i<= MaxClients; i++)
 		{
 			if(IsClientInGame(i) && IsFakeClient(i) == false && g_iClientTeam[i] == TEAM_SPECTATORS)
 			{
 				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x04 [\x03%N\x04]\x03 ", i);
-				PrintToServerOrClient(iClient, strStatsTextBuffer);
+				PrintToBufferServerOrClient(iClient, strStatsTextBuffer, strStoreBuffer, iStoreBufferSize);
 
 				GetLoggedInAndConfirmedStrings(i, strLoggedIn, sizeof(strLoggedIn), strConfirmed, sizeof(strConfirmed));
 
-				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05	Lvl %d, %d XP%s%s\n", 
+				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05	Lvl %d, %d XP%s%s", 
 					g_iClientLevel[i], 
 					g_iClientXP[i], 
 					strLoggedIn, 
 					strConfirmed);
-				PrintToServerOrClient(iClient, strStatsTextBuffer);
+				PrintToBufferServerOrClient(iClient, strStatsTextBuffer, strStoreBuffer, iStoreBufferSize);
 			}
 		}
-		PrintToServerOrClient(iClient, " ");
+		PrintToBufferServerOrClient(iClient, " ", strStoreBuffer, iStoreBufferSize);
 	}
 
 	if(ProbeTeams(TEAM_SURVIVORS) == true)
 	{
-		PrintToServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=");
-		PrintToServerOrClient(iClient, "\x05|						Survivors						|");
-		PrintToServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=\n ");
+		PrintToBufferServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=", strStoreBuffer, iStoreBufferSize);
+		PrintToBufferServerOrClient(iClient, "\x05|						Survivors					|", strStoreBuffer, iStoreBufferSize);
+		PrintToBufferServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=\n ", strStoreBuffer, iStoreBufferSize);
 
 		for(new i = 1; i<= MaxClients; i++)
 		{
 			if(IsClientInGame(i) && IsFakeClient(i) == false && g_iClientTeam[i] == TEAM_SURVIVORS)
 			{
 				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x04 [\x03%N\x04]\x03 ", i);
-				PrintToServerOrClient(iClient, strStatsTextBuffer);
+				PrintToBufferServerOrClient(iClient, strStatsTextBuffer, strStoreBuffer, iStoreBufferSize);
 
 				GetLoggedInAndConfirmedStrings(i, strLoggedIn, sizeof(strLoggedIn), strConfirmed, sizeof(strConfirmed));
 
-				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05	Lvl %d, %d XP%s%s\n", 
+				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05	Lvl %d, %d XP%s%s", 
 					g_iClientLevel[i], 
 					g_iClientXP[i], 
 					strLoggedIn, 
 					strConfirmed);
-				PrintToServerOrClient(iClient, strStatsTextBuffer);
+				PrintToBufferServerOrClient(iClient, strStatsTextBuffer, strStoreBuffer, iStoreBufferSize);
 
 				if (g_bClientLoggedIn[i])
 				{
@@ -61,34 +68,34 @@ Action:ShowTeamStatsToPlayer(iClient, args)
 						g_iStat_ClientCommonKilled[i], 
 						g_iStat_ClientInfectedKilled[i], 
 						g_iStat_ClientCommonHeadshots[i]);
-					PrintToServerOrClient(iClient, strStatsTextBuffer);
+					PrintToBufferServerOrClient(iClient, strStatsTextBuffer, strStoreBuffer, iStoreBufferSize);
 				}
 			}
 		}
-		PrintToServerOrClient(iClient, " ");
+		PrintToBufferServerOrClient(iClient, " ", strStoreBuffer, iStoreBufferSize);
 	}
 
 	if(ProbeTeams(TEAM_INFECTED) == true)
 	{
-		PrintToServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=");
-		PrintToServerOrClient(iClient, "\x05|						Infected						|");
-		PrintToServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=\n ");
+		PrintToBufferServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=", strStoreBuffer, iStoreBufferSize);
+		PrintToBufferServerOrClient(iClient, "\x05|						Infected					|", strStoreBuffer, iStoreBufferSize);
+		PrintToBufferServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=\n ", strStoreBuffer, iStoreBufferSize);
 
 		for(new i = 1; i<= MaxClients; i++)
 		{
 			if(IsClientInGame(i) && IsFakeClient(i) == false && g_iClientTeam[i] == TEAM_INFECTED)
 			{
 				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x04 [\x03%N\x04]\x03 ", i);
-				PrintToServerOrClient(iClient, strStatsTextBuffer);
+				PrintToBufferServerOrClient(iClient, strStatsTextBuffer, strStoreBuffer, iStoreBufferSize);
 
 				GetLoggedInAndConfirmedStrings(i, strLoggedIn, sizeof(strLoggedIn), strConfirmed, sizeof(strConfirmed));
 
-				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05	Lvl %d, %d XP%s%s\n", 
+				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05	Lvl %d, %d XP%s%s", 
 					g_iClientLevel[i], 
 					g_iClientXP[i], 
 					strLoggedIn, 
 					strConfirmed);
-				PrintToServerOrClient(iClient, strStatsTextBuffer);
+				PrintToBufferServerOrClient(iClient, strStatsTextBuffer, strStoreBuffer, iStoreBufferSize);
 
 				if (g_bClientLoggedIn[i])
 				{
@@ -99,27 +106,29 @@ Action:ShowTeamStatsToPlayer(iClient, args)
 						g_iStat_ClientSurvivorsKilled[i], 
 						g_iStat_ClientSurvivorsIncaps[i], 
 						g_iStat_ClientDamageToSurvivors[i]);
-					PrintToServerOrClient(iClient, strStatsTextBuffer);
+					PrintToBufferServerOrClient(iClient, strStatsTextBuffer, strStoreBuffer, iStoreBufferSize);
 				}
 			}
 		}
-		PrintToServerOrClient(iClient, " ");
+		PrintToBufferServerOrClient(iClient, " ", strStoreBuffer, iStoreBufferSize);
 	}
 	
-	PrintToServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=");
+	PrintToBufferServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=", strStoreBuffer, iStoreBufferSize);
 	// if (iClient > 0)
-	// 	PrintToServerOrClient(iClient, "\x03[XPMod] \x04Open the console by pressing \x05~\x04 for a better view.");
-
-	return Plugin_Handled;
+	// 	PrintToBufferServerOrClient(iClient, "\x03[XPMod] \x04Open the console by pressing \x05~\x04 for a better view.");
 }
 
-PrintToServerOrClient(iClient, char[] text)
+PrintToBufferServerOrClient(iClient, const char[] strText, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 {
-	// Print to the user
-	if (iClient == 0)
-		PrintToServer(text);
+	// Print to buffer
+	if (iStoreBufferSize > 0)
+		Format(strStoreBuffer, iStoreBufferSize, "%s%s\n", strStoreBuffer, strText);
+	// Print to the server
+	else if (iClient == 0)
+		PrintToServer(strText);
+	// Print to in game client
 	else if(RunClientChecks(iClient))
-		PrintToChat(iClient, text);
+		PrintToChat(iClient, strText);
 }
 
 GetLoggedInAndConfirmedStrings(iClient, char[] strLoggedIn, int iLoggedInMaxLen, char[] strConfirmed, int iConfirmedMaxLen)
@@ -133,4 +142,38 @@ GetLoggedInAndConfirmedStrings(iClient, char[] strLoggedIn, int iLoggedInMaxLen,
 		Format(strConfirmed, iConfirmedMaxLen, ", Confirmed");
 	else
 		Format(strConfirmed, iConfirmedMaxLen, "");
+}
+
+Action:TimerLogXPMStatsToFile(Handle:timer, any:data)
+{
+	decl String:strStoreBuffer[5000] = "";
+	CreateXPMStatistics(-1, strStoreBuffer, sizeof(strStoreBuffer));
+
+	// Remove all the color codes
+	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "\x05", "", true);
+	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "\x04", "", true);
+	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "\x03", "", true);
+
+	SaveXPMStatsBufferToLogFile(strStoreBuffer);
+
+	return Plugin_Continue;
+}
+
+public SaveXPMStatsBufferToLogFile(const char[] strBuffer)
+{
+	new String:strServerName[64]
+	new Handle:hCvarHostName = FindConVar("hostname");
+	GetConVarString(hCvarHostName, strServerName, sizeof(strServerName));
+	CloseHandle(hCvarHostName);
+
+	new String:strFileLogPath[100];
+	Format(strFileLogPath, sizeof(strFileLogPath), "/logs/xpmstats_%s.log", strServerName);
+	
+	new String:strFullFilePath[250];
+	BuildPath(Path_SM, strFullFilePath, PLATFORM_MAX_PATH, strFileLogPath);
+
+	new Handle:hFileHandle;
+	hFileHandle = OpenFile(strFullFilePath, "w");
+	WriteFileLine(hFileHandle, strBuffer);
+	CloseHandle(hFileHandle);
 }
