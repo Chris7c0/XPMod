@@ -118,7 +118,7 @@ public OnClientPostAdminCheck(client)
 	}
 
 	FormatTime(time, sizeof(time), "%H:%M:%S", -1)
-	Format(msg, sizeof(msg), "[%s] [%s] %-35N joined (%s | %s)",
+	Format(msg, sizeof(msg), "[%s] [%s] %-35N JOINED (%s | %s)",
 		time,
 		country,
 		client,
@@ -160,7 +160,7 @@ public Action:event_PlayerDisconnect(Handle:event, const String:name[], bool:don
 	GetEventString(event, "reason", reason, sizeof(reason));
 
 	FormatTime(time, sizeof(time), "%H:%M:%S", -1)
-	Format(msg, sizeof(msg), "[%s] [%s] %-35N left (%s) (%s | %s)",
+	Format(msg, sizeof(msg), "[%s] [%s] %-35N LEFT (%s) (%s | %s)",
 		time,
 		country,
 		client,
