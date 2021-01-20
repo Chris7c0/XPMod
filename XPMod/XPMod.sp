@@ -483,6 +483,7 @@ ResetVariablesForMap(iClient)
 	g_xyzWitchConjureLocation[iClient][0] = 0.0;
 	g_xyzWitchConjureLocation[iClient][1] = 0.0;
 	g_xyzWitchConjureLocation[iClient][2] = 0.0;
+	g_fAdhesiveAffectAmount[iClient] = 0.0;
 	
 	//Charger
 	g_bCanChargerSuperCharge[iClient] = true;

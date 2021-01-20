@@ -12,7 +12,7 @@ SetClientSpeed(iClient)
 	if (SetClientSpeedOverrides(iClient, fSpeed))
 	{
 		SetEntDataFloat(iClient, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), fSpeed, true);
-		//PrintToChatAll("SetClientSpeedOverride: %N: %f", iClient, fSpeed);
+		PrintToChatAll("SetClientSpeedOverride: %N: %f", iClient, fSpeed);
 		return;
 	}
 	
@@ -38,7 +38,7 @@ SetClientSpeed(iClient)
 	}
 
 	SetEntDataFloat(iClient, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), fSpeed, true);
-	//PrintToChatAll("SetClientSpeed: %N: %f", iClient, fSpeed);
+	PrintToChatAll("SetClientSpeed: %N: %f", iClient, fSpeed);
 }
 
 // Survivors =======================================================================================================================
@@ -105,7 +105,7 @@ SetClientSpeedEllis(iClient, &Float:fSpeed)
 
 	// Jammin To The Music Tank Count speed boost
 	if (g_iTankCounter > 0)
-		fSpeed += (g_iTankCounter * g_iJamminLevel[iClient] * 0.02);
+		fSpeed += (g_iTankCounter * g_iJamminLevel[iClient] * 0.03);
 	
 	//PrintToChat(iClient, "SetClientSpeedEllis: %f", fSpeed);
 }
@@ -162,7 +162,7 @@ SetClientSpeedBoomer(iClient, &Float:fSpeed)
 		fSpeed += (g_iAcidicLevel[iClient] * 0.1);
 	// Rapid Regurgitation allow Boomer speed while vomiting
 	else if(g_bIsBoomerVomiting[iClient] && g_iRapidLevel[iClient] > 0)
-	 	fSpeed = (1.0 - (g_iRapidLevel[iClient] * 0.1));
+	 	fSpeed = (g_iRapidLevel[iClient] * 0.1);
 
 	//PrintToChat(iClient, "SetClientSpeedBoomer: %f", fSpeed);
 }
@@ -243,12 +243,12 @@ SetClientSpeedTank(iClient, &Float:fSpeed)
 
 bool SetClientSpeedOverrides(iClient, &Float:fSpeed)
 {
-	// // If choking a victim, dont give other movement speed buffs
-	// if (g_iChokingVictim[iClient] > 0)
-	// {
-	// 	fSpeed = (0.01 * g_iDirtyLevel[iClient])
-	// 	return true;
-	// }
+	// If choking a victim, dont give other movement speed buffs
+	if (g_iChokingVictim[iClient] > 0)
+	{
+		fSpeed = (0.01 * g_iDirtyLevel[iClient])
+		return true;
+	}
 
 	// Jockey Riding speed (set on the victim, not the jockey thats riding)
 	if (g_bJockeyGrappled[iClient] && 

@@ -228,8 +228,8 @@ Action:Event_ChokeStart(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	{
 		SetEntityMoveType(attacker, MOVETYPE_ISOMETRIC);
 		//Going to avoid using SetClientSpeed here because it would not fit well
-		SetEntDataFloat(attacker, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (0.01 * g_iDirtyLevel[attacker]) , true);
-		//SetClientSpeed(attacker);
+		//SetEntDataFloat(attacker, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (0.01 * g_iDirtyLevel[attacker]) , true);
+		SetClientSpeed(attacker);
 		//CreateTimer(0.3, TimerCheckTongueDistance, attacker, TIMER_FLAG_NO_MAPCHANGE);
 	}
 
