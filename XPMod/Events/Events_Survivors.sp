@@ -253,7 +253,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 			if((g_bRamboModeActive[iClient] == true) && (StrEqual(g_strCurrentWeapon, "weapon_rifle_m60", false) == true))
 			{
 				//PrintToChatAll("Nick is firing with m60 and rambo mode");
-				if (HasEntProp(g_iPrimarySlotID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded"))
+				if (IsValidEntity(g_iPrimarySlotID[iClient]) && HasEntProp(g_iPrimarySlotID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded"))
 					SetEntProp(g_iPrimarySlotID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded", 251);
 			}
 			//g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 0);

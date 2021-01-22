@@ -130,14 +130,19 @@ public OnClientPostAdminCheck(client)
 
 public Action:event_PlayerDisconnect(Handle:event, const String:name[], bool:dontBroadcast)
 {
+	if (dontBroadcast)
+		return Plugin_Continue
+
 	/* Only record player detail if CVAR set */
 	if(GetConVarInt(sc_record_detail) != 1)
-		return
+		return Plugin_Continue
 
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
 
-	if(IsFakeClient(client)) 
-		return
+	if (client < 1 || 
+		IsValidEntity(client) == false ||
+		IsFakeClient(client)) 
+		return Plugin_Continue
 
 	new String:msg[2048]
 	new String:time[21]
@@ -169,6 +174,8 @@ public Action:event_PlayerDisconnect(Handle:event, const String:name[], bool:don
 		playerIP)
 
 	SaveMessage(msg)
+
+	return Plugin_Continue
 
 	// decl String:rawmsg[301];
 	// decl String:rawadmmsg[301];

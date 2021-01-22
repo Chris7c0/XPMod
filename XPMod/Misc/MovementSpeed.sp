@@ -44,7 +44,8 @@ SetClientSpeed(iClient)
 // Survivors =======================================================================================================================
 SetClientSpeedBill(iClient, &Float:fSpeed)
 {
-	if (g_iClientTeam[iClient] != TEAM_SURVIVORS ||
+	if (g_bTalentsConfirmed[iClient] == false ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
 		g_iChosenSurvivor[iClient] != BILL)
 		return;
 
@@ -57,7 +58,8 @@ SetClientSpeedBill(iClient, &Float:fSpeed)
 
 SetClientSpeedRochelle(iClient, &Float:fSpeed)
 {
-	if (g_iChosenSurvivor[iClient] != ROCHELLE)
+	if (g_bTalentsConfirmed[iClient] == false ||
+		g_iChosenSurvivor[iClient] != ROCHELLE)
 		return;
 	
 	// Passive speed boosts
@@ -72,7 +74,8 @@ SetClientSpeedRochelle(iClient, &Float:fSpeed)
 
 SetClientSpeedCoach(iClient, &Float:fSpeed)
 {
-	if (g_iChosenSurvivor[iClient] != COACH)
+	if (g_bTalentsConfirmed[iClient] == false ||
+		g_iChosenSurvivor[iClient] != COACH)
 		return;
 
 	// Bull Rush CI Kill boost
@@ -92,7 +95,8 @@ SetClientSpeedCoach(iClient, &Float:fSpeed)
 
 SetClientSpeedEllis(iClient, &Float:fSpeed)
 {
-	if (g_iChosenSurvivor[iClient] != ELLIS)
+	if (g_bTalentsConfirmed[iClient] == false ||
+		g_iChosenSurvivor[iClient] != ELLIS)
 		return;
 
 	// Overconfidence speed boost
@@ -107,12 +111,13 @@ SetClientSpeedEllis(iClient, &Float:fSpeed)
 	if (g_iTankCounter > 0)
 		fSpeed += (g_iTankCounter * g_iJamminLevel[iClient] * 0.03);
 	
-	//PrintToChat(iClient, "SetClientSpeedEllis: %f", fSpeed);
+	PrintToChat(iClient, "SetClientSpeedEllis: %f, g_iTankCounter: %i", fSpeed, g_iTankCounter);
 }
 
 SetClientSpeedNick(iClient, &Float:fSpeed)
 {
-	if (g_iChosenSurvivor[iClient] != NICK)
+	if (g_bTalentsConfirmed[iClient] == false ||
+		g_iChosenSurvivor[iClient] != NICK)
 		return;
 
 	// Magnum Stampede
@@ -133,10 +138,11 @@ SetClientSpeedNick(iClient, &Float:fSpeed)
 // Infected =======================================================================================================================
 SetClientSpeedSmoker(iClient, &Float:fSpeed)
 {
-	if ( g_iInfectedCharacter[iClient] != SMOKER ||
+	if (g_bTalentsConfirmed[iClient] == false ||
+		g_iInfectedCharacter[iClient] != SMOKER ||
 		(g_iClientInfectedClass1[iClient] != SMOKER &&
 		g_iClientInfectedClass2[iClient] != SMOKER &&
-		g_iClientInfectedClass3[iClient] != SMOKER) )
+		g_iClientInfectedClass3[iClient] != SMOKER))
 		return;
 
 	if(g_iNoxiousLevel[iClient] > 0)
@@ -147,10 +153,11 @@ SetClientSpeedSmoker(iClient, &Float:fSpeed)
 
 SetClientSpeedBoomer(iClient, &Float:fSpeed)
 {
-	if ( g_iInfectedCharacter[iClient] != BOOMER ||
+	if (g_bTalentsConfirmed[iClient] == false ||
+		g_iInfectedCharacter[iClient] != BOOMER ||
 		(g_iClientInfectedClass1[iClient] != BOOMER &&
 		g_iClientInfectedClass2[iClient] != BOOMER &&
-		g_iClientInfectedClass3[iClient] != BOOMER) )
+		g_iClientInfectedClass3[iClient] != BOOMER))
 		return;
 
 	// Vomited on 3 survivors and got super speed
@@ -169,10 +176,11 @@ SetClientSpeedBoomer(iClient, &Float:fSpeed)
 
 SetClientSpeedHunter(iClient, &Float:fSpeed)
 {
-	if ( g_iInfectedCharacter[iClient] != HUNTER ||
+	if (g_bTalentsConfirmed[iClient] == false ||
+		g_iInfectedCharacter[iClient] != HUNTER ||
 		(g_iClientInfectedClass1[iClient] != HUNTER &&
 		g_iClientInfectedClass2[iClient] != HUNTER &&
-		g_iClientInfectedClass3[iClient] != HUNTER) )
+		g_iClientInfectedClass3[iClient] != HUNTER))
 		return;
 
 	if (g_iPredatorialLevel[iClient] > 0)
@@ -183,10 +191,11 @@ SetClientSpeedHunter(iClient, &Float:fSpeed)
 
 SetClientSpeedSpitter(iClient, &Float:fSpeed)
 {
-	if ( g_iInfectedCharacter[iClient] != SPITTER ||
+	if (g_bTalentsConfirmed[iClient] == false ||
+		g_iInfectedCharacter[iClient] != SPITTER ||
 		(g_iClientInfectedClass1[iClient] != SPITTER &&
 		g_iClientInfectedClass2[iClient] != SPITTER &&
-		g_iClientInfectedClass3[iClient] != SPITTER) )
+		g_iClientInfectedClass3[iClient] != SPITTER))
 		return;
 
 	if (g_bIsStealthSpitter[iClient] == false)
@@ -197,10 +206,11 @@ SetClientSpeedSpitter(iClient, &Float:fSpeed)
 
 SetClientSpeedJockey(iClient, &Float:fSpeed)
 {
-	if ( g_iInfectedCharacter[iClient] != JOCKEY ||
+	if (g_bTalentsConfirmed[iClient] == false ||
+		g_iInfectedCharacter[iClient] != JOCKEY ||
 		(g_iClientInfectedClass1[iClient] != JOCKEY &&
 		g_iClientInfectedClass2[iClient] != JOCKEY &&
-		g_iClientInfectedClass3[iClient] != JOCKEY) )
+		g_iClientInfectedClass3[iClient] != JOCKEY))
 		return;
 	
 	if (g_iUnfairLevel[iClient] > 0)
@@ -211,10 +221,11 @@ SetClientSpeedJockey(iClient, &Float:fSpeed)
 
 SetClientSpeedCharger(iClient, &Float:fSpeed)
 {
-	if ( g_iInfectedCharacter[iClient] != CHARGER ||
+	if (g_bTalentsConfirmed[iClient] == false ||
+		g_iInfectedCharacter[iClient] != CHARGER ||
 		(g_iClientInfectedClass1[iClient] != CHARGER &&
 		g_iClientInfectedClass2[iClient] != CHARGER &&
-		g_iClientInfectedClass3[iClient] != CHARGER) )
+		g_iClientInfectedClass3[iClient] != CHARGER))
 		return;
 
 	// Hillbilly Madness speed

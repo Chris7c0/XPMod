@@ -59,10 +59,10 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 					strLoggedIn, 
 					strConfirmed);
 				PrintToBufferServerOrClient(iClient, strStatsTextBuffer, strStoreBuffer, iStoreBufferSize);
-
+				
 				if (g_bClientLoggedIn[i])
 				{
-					Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05	%s - %s\x04	CI-Kills: %d SI-Kills: %d HS: %d\x05 \n",
+					Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05	%s - %s\x04	CI-Kills: %d SI-Kills: %d HS: %d\x05 ",
 						SURVIVOR_NAME[g_iChosenSurvivor[i]],
 						SURVIVOR_CLASS_NAME[g_iChosenSurvivor[i]],
 						g_iStat_ClientCommonKilled[i], 
@@ -99,7 +99,7 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 
 				if (g_bClientLoggedIn[i])
 				{
-					Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05	%s, %s, %s\x04	Kills: %d Incaps: %d DMG: %d\x05 \n", 
+					Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05	%s, %s, %s\x04	Kills: %d Incaps: %d DMG: %d\x05 ", 
 						g_strClientInfectedClass1[i], 
 						g_strClientInfectedClass2[i], 
 						g_strClientInfectedClass3[i],
@@ -146,13 +146,18 @@ GetLoggedInAndConfirmedStrings(iClient, char[] strLoggedIn, int iLoggedInMaxLen,
 
 Action:TimerLogXPMStatsToFile(Handle:timer, any:data)
 {
-	decl String:strStoreBuffer[5000] = "";
+	decl String:strStoreBuffer[2000] = "";
 	CreateXPMStatistics(-1, strStoreBuffer, sizeof(strStoreBuffer));
 
 	// Remove all the color codes
 	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "\x05", "", true);
 	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "\x04", "", true);
 	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "\x03", "", true);
+	
+	// Add a timestamp at the end
+	decl String:strTime[16];
+	FormatTime(strTime, sizeof(strTime), "%H:%M:%S", -1);
+	Format(strStoreBuffer, sizeof(strStoreBuffer), "%s[%s]",strStoreBuffer, strTime);
 
 	SaveXPMStatsBufferToLogFile(strStoreBuffer);
 
