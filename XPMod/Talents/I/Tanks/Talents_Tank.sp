@@ -86,7 +86,7 @@ CheckIfTankMovedWhileChargingAndIncrementCharge(iClient)
 	{
 		if(g_iTankCharge[iClient] != 0)
 		{
-			if(g_iTankCharge[iClient] > 31)
+			if(g_iTankCharge[iClient] > 31 && IsFakeClient(iCLient) == false)
 				PrintHintText(iClient, "Interrupted");
 			
 			g_iTankCharge[iClient] = 0;
@@ -387,8 +387,9 @@ Action:WaitForNonZeroOriginVectorAndSetUpTankRock(Handle:timer, any:iRockEntity)
 
 Event_BoomerVomitOnPlayerTank(iVictim)
 {
-	if(RunClientChecks(iVictim) == false || g_iClientTeam[iVictim] != TEAM_INFECTED || 
-		IsFakeClient(iVictim) == true || IsPlayerAlive(iVictim) == false || 
+	if (RunClientChecks(iVictim) == false || 
+		g_iClientTeam[iVictim] != TEAM_INFECTED || 
+		IsPlayerAlive(iVictim) == false || 
 		GetEntProp(iVictim, Prop_Send, "m_zombieClass") != TANK)
 		return;
 	
