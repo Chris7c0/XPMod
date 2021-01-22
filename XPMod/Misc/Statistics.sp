@@ -164,21 +164,23 @@ Action:TimerLogXPMStatsToFile(Handle:timer, any:data)
 	return Plugin_Continue;
 }
 
-public SaveXPMStatsBufferToLogFile(const char[] strBuffer)
+SaveXPMStatsBufferToLogFile(const char[] strBuffer)
 {
-	new String:strServerName[64]
-	new Handle:hCvarHostName = FindConVar("hostname");
-	GetConVarString(hCvarHostName, strServerName, sizeof(strServerName));
-	CloseHandle(hCvarHostName);
-
-	new String:strFileLogPath[100];
-	Format(strFileLogPath, sizeof(strFileLogPath), "/logs/xpmstats_%s.log", strServerName);
+	if (strlen(g_strXPMStatsFullFilePath) < 1)
+		return;
 	
-	new String:strFullFilePath[250];
-	BuildPath(Path_SM, strFullFilePath, PLATFORM_MAX_PATH, strFileLogPath);
-
 	new Handle:hFileHandle;
-	hFileHandle = OpenFile(strFullFilePath, "w");
-	WriteFileLine(hFileHandle, strBuffer);
+	hFileHandle = OpenFile(g_strXPMStatsFullFilePath, "w");
+	if (hFileHandle != null)
+		WriteFileLine(hFileHandle, strBuffer);
 	CloseHandle(hFileHandle);
+}
+
+SetXPMStatsLogFileName()
+{
+	// TODO: Sanitize the servername for Windows/Linux file paths
+	new String:strFileLogPath[100];
+	Format(strFileLogPath, sizeof(strFileLogPath), "/logs/xpmstats_%s.log", g_strServerName);
+	
+	BuildPath(Path_SM, g_strXPMStatsFullFilePath, PLATFORM_MAX_PATH, strFileLogPath);
 }

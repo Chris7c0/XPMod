@@ -201,7 +201,7 @@ public OnPluginStart()
 	
 	//Start the repeating timers
 	CreateTimer(1.0, TimerCheckAndOpenCharacterSelectionMenuForAll, 0, TIMER_REPEAT);
-	CreateTimer(30.0, TimerLogXPMStatsToFile, 0, TIMER_REPEAT);
+	CreateTimer(20.0, TimerLogXPMStatsToFile, 0, TIMER_REPEAT);
 	CreateTimer(2.0, TimerResetMelee, 0, TIMER_REPEAT);
 	CreateTimer(0.1, TimerIDD, 0, TIMER_REPEAT);
 	CreateTimer(90.0, PrintUnsetClassesMessage, 0, TIMER_REPEAT);
@@ -299,7 +299,10 @@ public OnMapStart()
 	//SetConVarInt(FindConVar("z_spawn_range"), 2500);	//Required or common will disappear when spawned out of range of NecroTanker
 	//SetConVarInt(FindConVar("z_discard_range"), 3000); 	//Required or common will disappear when spawned out of range of NecroTanker
 	
-	
+	// Set the filename for the log to the server name
+	GetConVarString(FindConVar("hostname"), g_strServerName, sizeof(g_strServerName));
+	// Get the log file name
+	SetXPMStatsLogFileName();
 	
 
 	DispatchKeyValue(0, "timeofday", "1"); //Set time of day to midnight
