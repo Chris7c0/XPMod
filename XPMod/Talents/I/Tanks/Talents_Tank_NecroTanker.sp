@@ -1,21 +1,35 @@
 LoadNecroTankerTalents(iClient)
-{	
-	if(iClient < 1 || g_iClientTeam[iClient] != TEAM_INFECTED || IsClientInGame(iClient) == false || 
-		IsFakeClient(iClient) == true || GetEntProp(iClient, Prop_Send, "m_zombieClass") != TANK)
+{
+	if (RunClientChecks(iClient) == false || 
+		g_iClientTeam[iClient] != TEAM_INFECTED || 
+		GetEntProp(iClient, Prop_Send, "m_zombieClass") != TANK)
 		return;
 	
 	if(IsPlayerAlive(iClient) == false)
 	{
-		PrintToChat(iClient, "\x04You cannot choose tank talents after you have died");
+		if (IsFakeClient(iClient) == false)
+			PrintToChat(iClient, "\x04You cannot choose tank talents after you have died");
 		return;
 	}
 	
 	g_iTankChosen[iClient] = TANK_NECROTANKER;
 	
-	//Give Health
-	SetEntProp(iClient, Prop_Data,"m_iMaxHealth", TANK_HEALTH_NECROTANKER);
-	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
-	SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + TANK_HEALTH_NECROTANKER - 6000);
+	// Give Health
+	// If its a bot, then give max health starting
+	if (IsFakeClient(iClient))
+	{
+		SetEntProp(iClient, Prop_Data,"m_iMaxHealth", NECROTANKER_MAX_HEALTH);
+		new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
+		SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + NECROTANKER_MAX_HEALTH - 6000);
+	}
+	// If its a human player, make them work for their health
+	else
+	{
+		SetEntProp(iClient, Prop_Data,"m_iMaxHealth", TANK_HEALTH_NECROTANKER);
+		new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
+		SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + TANK_HEALTH_NECROTANKER - 6000);
+	}
+
 
 	//Stop Kiting (Bullet hits slowing tank down)
 	SetConVarInt(FindConVar("z_tank_damage_slow_min_range"), 0);
@@ -32,8 +46,15 @@ LoadNecroTankerTalents(iClient)
 	CreateNecroTankerTrailEffect(iClient);
 	WriteParticle(iClient, "boomer_vomit_infected", 0.0, 999.0);
 	
-	PrintHintText(iClient, "You have become the NecroTanker");
+	if (IsFakeClient(iClient) == false)
+		PrintHintText(iClient, "You have become the NecroTanker");
 }
+
+// SetupTankForBot_NecroTanker(iClient)
+// {
+// 	LoadNecroTankerTalents(iClient);
+// }
+
 
 SetClientSpeedTankNecroTanker(iClient, &Float:fSpeed)
 {
@@ -52,7 +73,7 @@ OnGameFrame_Tank_NecroTanker(iClient)
 		g_iTankCharge[iClient]++;
 
 		//Display the first message to the player while he is charging up
-		if(g_iTankCharge[iClient] == 30)
+		if(g_iTankCharge[iClient] == 30 && IsFakeClient(iClient) == false)
 			PrintHintText(iClient, "Spawning Infected");
 		
 		//Charged for long enough, now handle for each tank
@@ -100,7 +121,7 @@ OnGameFrame_Tank_NecroTanker(iClient)
 	}
 	else if(g_iTankCharge[iClient] > 0)
 	{
-		if(g_iTankCharge[iClient] > 31)
+		if(g_iTankCharge[iClient] > 31 && IsFakeClient(iClient) == false)
 			PrintHintText(iClient, " ");
 		
 		g_iTankCharge[iClient] = 0;
@@ -129,7 +150,6 @@ HandleNecroTankerInfectedConsumption(iClient, iInfectedEntity)
 	if(g_iTankChosen[iClient] != TANK_NECROTANKER ||
 		g_iClientTeam[iClient] != TEAM_INFECTED ||
 		RunClientChecks(iClient) == false ||
-		IsFakeClient(iClient) == true ||
 		IsPlayerAlive(iClient) == false ||
 		GetEntProp(iClient, Prop_Send, "m_zombieClass") != TANK)
 		return;

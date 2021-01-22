@@ -1,12 +1,14 @@
 LoadFireTankTalents(iClient)
-{	
-	if(RunClientChecks(iClient) == false || g_iClientTeam[iClient] != TEAM_INFECTED || 
-		IsFakeClient(iClient) == true || GetEntProp(iClient, Prop_Send, "m_zombieClass") != TANK)
+{
+	if (RunClientChecks(iClient) == false || 
+		g_iClientTeam[iClient] != TEAM_INFECTED || 
+		GetEntProp(iClient, Prop_Send, "m_zombieClass") != TANK)
 		return;
 	
 	if(IsPlayerAlive(iClient) == false)
 	{
-		PrintToChat(iClient, "\x04You cannot choose tank talents after you have died");
+		if (IsFakeClient(iClient) == false)
+			PrintToChat(iClient, "\x04You cannot choose tank talents after you have died");
 		return;
 	}
 	
@@ -35,8 +37,14 @@ LoadFireTankTalents(iClient)
 	SetEntityRenderColor(iClient, 255, 200, 0, 255);
 	//SetEntityRenderColor(iClient, 210, 88, 30, 255);
 	
-	PrintHintText(iClient, "You have become the Fire Tank");
+	if (IsFakeClient(iClient) == false)
+		PrintHintText(iClient, "You have become the Fire Tank");
 }
+
+// SetupTankForBot_Fire(iClient)
+// {
+// 	LoadFireTankTalents(iClient);
+// }
 
 SetClientSpeedTankFire(iClient, &Float:fSpeed)
 {
@@ -65,11 +73,13 @@ OnGameFrame_Tank_Fire(iClient)
 		{
 			if(g_bBlockTankFirePunchCharge[iClient] == false)
 			{
-				PrintHintText(iClient, "Charging Up Attack");
+				if (IsFakeClient(iClient) == false)
+					PrintHintText(iClient, "Charging Up Attack");
 			}
 			else
 			{
-				PrintHintText(iClient, "You must wait to charge your fire punch attack");
+				if (IsFakeClient(iClient) == false)
+					PrintHintText(iClient, "You must wait to charge your fire punch attack");
 				g_iTankCharge[iClient] = 0;
 			}
 		}
@@ -86,7 +96,7 @@ OnGameFrame_Tank_Fire(iClient)
 	}
 	else if(g_iTankCharge[iClient] > 0)
 	{
-		if(g_iTankCharge[iClient] > 31)
+		if(g_iTankCharge[iClient] > 31 && IsFakeClient(iClient) == false)
 			PrintHintText(iClient, "Charge Interrupted");
 		
 		g_iTankCharge[iClient] = 0;

@@ -41,6 +41,18 @@ EventsHurt_TankAttacker(Handle:hEvent, iAttackerTank, iVictim, iDmgType, iDmgHea
 	}
 }
 
+SetupTankForBot(iClient)
+{
+	// Choose a random tank for the bot to use
+	switch(GetRandomInt(TANK_FIRE, TANK_VAMPIRIC))
+	{
+		case TANK_FIRE:			LoadFireTankTalents(iClient);
+		case TANK_ICE:			LoadIceTankTalents(iClient);
+		case TANK_NECROTANKER:	LoadNecroTankerTalents(iClient);
+		case TANK_VAMPIRIC:		LoadVampiricTankTalents(iClient);
+	}
+}
+
 ResetAllTankVariables(iClient)
 {
 	g_iTankChosen[iClient] = TANK_NOT_CHOSEN;

@@ -1,10 +1,19 @@
 Action:Timer_AskWhatTankToUse(Handle:timer, any:iClient)
 {
-	if(iClient < 1 || g_iClientTeam[iClient] != TEAM_INFECTED || IsValidEntity(iClient) == false || IsClientInGame(iClient) == false || 
-		IsPlayerAlive(iClient) == false || IsFakeClient(iClient) == true || GetEntProp(iClient, Prop_Send, "m_zombieClass") != TANK)
+	if (RunClientChecks(iClient) == false || 
+		g_iClientTeam[iClient] != TEAM_INFECTED ||
+		IsPlayerAlive(iClient) == false || 
+		GetEntProp(iClient, Prop_Send, "m_zombieClass") != TANK)
 		return Plugin_Stop;
-	
-	if(g_iTankChosen[iClient] == TANK_NOT_CHOSEN)
+
+	// if its a bot, then handle this by automatically choosing a random tank
+	if (IsFakeClient(iClient))
+	{
+		SetupTankForBot(iClient);
+		return Plugin_Stop;
+	}
+	// If its a human player, then show them the selection menu
+	else if(g_iTankChosen[iClient] == TANK_NOT_CHOSEN)
 	{
 		ChooseTankMenuDraw(iClient);
 		CreateTimer(5.0, Timer_AskWhatTankToUse, iClient, TIMER_FLAG_NO_MAPCHANGE);

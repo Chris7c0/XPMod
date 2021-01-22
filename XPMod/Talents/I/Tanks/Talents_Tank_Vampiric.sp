@@ -1,12 +1,14 @@
 LoadVampiricTankTalents(iClient)
 {
-	if(iClient < 1 || g_iClientTeam[iClient] != TEAM_INFECTED || IsClientInGame(iClient) == false || 
-		IsFakeClient(iClient) == true || GetEntProp(iClient, Prop_Send, "m_zombieClass") != TANK)
+	if (RunClientChecks(iClient) == false || 
+		g_iClientTeam[iClient] != TEAM_INFECTED || 
+		GetEntProp(iClient, Prop_Send, "m_zombieClass") != TANK)
 		return;
 	
 	if(IsPlayerAlive(iClient) == false)
 	{
-		PrintToChat(iClient, "\x04You cannot choose tank talents after you have died");
+		if (IsFakeClient(iClient) == false)
+			PrintToChat(iClient, "\x04You cannot choose tank talents after you have died");
 		return;
 	}
 	
@@ -42,8 +44,14 @@ LoadVampiricTankTalents(iClient)
 	//Particle effects
 	CreateVampiricTankTrailEffect(iClient);
 
-	PrintHintText(iClient, "You have become the Vampiric Tank");
+	if (IsFakeClient(iClient) == false)
+		PrintHintText(iClient, "You have become the Vampiric Tank");
 }
+
+// SetupTankForBot_Vampiric(iClient)
+// {
+// 	LoadVampiricTankTalents(iClient);
+// }
 
 SetClientSpeedTankVampiric(iClient, &Float:fSpeed)
 {
@@ -125,11 +133,11 @@ EventsHurt_TankVictim_Vampiric(Handle:hEvent, iAttacker, iVictimTank, iDmgType, 
 		// Increase the melee damage
 		// Remember, the original damage will still process, so subtract that
 		new iCurrentHP = GetEntProp(iVictimTank,Prop_Data,"m_iHealth");
-		//PrintToChat(iVictimTank, "\x03iCurrentHP: %i", iCurrentHP);
+		//if (IsFakeClient(iVictimTank) == false) PrintToChat(iVictimTank, "\x03iCurrentHP: %i", iCurrentHP);
 		SetEntProp(iVictimTank,Prop_Data,"m_iHealth", iCurrentHP - ((iDmgHealth * VAMPIRIC_TANK_MELEE_DMG_TAKEN_MULTIPLIER) - iDmgHealth));
-		//PrintToChat(iVictimTank, "\x03Subtracting health: %i", ((iDmgHealth * VAMPIRIC_TANK_MELEE_DMG_TAKEN_MULTIPLIER) - iDmgHealth));
+		//if (IsFakeClient(iVictimTank) == false) PrintToChat(iVictimTank, "\x03Subtracting health: %i", ((iDmgHealth * VAMPIRIC_TANK_MELEE_DMG_TAKEN_MULTIPLIER) - iDmgHealth));
 		//new iCurrentHP2 = GetEntProp(iVictimTank,Prop_Data,"m_iHealth");
-		//PrintToChat(iVictimTank, "\x03iCurrentHP: %i", iCurrentHP2);
+		//if (IsFakeClient(iVictimTank) == false) PrintToChat(iVictimTank, "\x03iCurrentHP: %i", iCurrentHP2);
 	}
 	else if(StrContains(weaponclass,"pistol",false) != -1 ||
 		StrContains(weaponclass,"rifle",false) != -1 ||
@@ -142,11 +150,11 @@ EventsHurt_TankVictim_Vampiric(Handle:hEvent, iAttacker, iVictimTank, iDmgType, 
 		// The life will be taken away, so we need to convert the gun damage taken multiplier to be a reduction of this.
 		// So, if we want to only take 1/3rd damage, then we add 2/3rds back here.  1 - 1/3rds = 2/3rds.
 		SetEntProp(iVictimTank,Prop_Data,"m_iHealth", iCurrentHP + RoundToCeil(iDmgHealth * (1.0 - VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER)) );
-		//PrintToChat(iVictimTank, "\x03Re-adding health: %i", RoundToCeil(iDmgHealth * (1.0 - VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER)) );
+		//if (IsFakeClient(iVictimTank) == false) PrintToChat(iVictimTank, "\x03Re-adding health: %i", RoundToCeil(iDmgHealth * (1.0 - VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER)) );
 	}
 	else
 	{
-		PrintToChat(iVictimTank, "\x03NRMLDMG weapon: \x01%s \x03dmg: \x01%i",weaponclass, iDmgHealth);
+		if (IsFakeClient(iVictimTank) == false) PrintToChat(iVictimTank, "\x03NRMLDMG weapon: \x01%s \x03dmg: \x01%i",weaponclass, iDmgHealth);
 	}
 }
 
@@ -196,7 +204,7 @@ AddWingFlapVelocity(iClient, Float:speed)
 	vecVelocity[0] += (vDirection[0] * 50);
 	vecVelocity[1] += (vDirection[1] * 50);
 
-	//PrintToChat(iClient, "vecVelocity: %2f, %2f, %2f", vecVelocity[0], vecVelocity[1], vecVelocity[2]);
+	//if (IsFakeClient(iClient) == false) PrintToChat(iClient, "vecVelocity: %2f, %2f, %2f", vecVelocity[0], vecVelocity[1], vecVelocity[2]);
 
 	// if ((vecVelocity[2]+speed) > 2500.0)
 	// 	vecVelocity[2] = 2500.0;
@@ -215,7 +223,7 @@ AddWingDashVelocity(iClient, Float:speed)
 	GetClientEyeAngles(iClient, xyzAngles);								// Get clients Eye Angles to know get what direction face
 	GetAngleVectors(xyzAngles, vDirection, NULL_VECTOR, NULL_VECTOR);	// Get the direction the iClient is looking
 
-	//PrintToChat(iClient, "vDirection: %2f, %2f, %2f", vDirection[0], vDirection[1], vDirection[2]);
+	//if (IsFakeClient(iClient) == false) PrintToChat(iClient, "vDirection: %2f, %2f, %2f", vDirection[0], vDirection[1], vDirection[2]);
 
 	vecVelocity[0] = (vDirection[0] * speed);
 	vecVelocity[1] = (vDirection[1] * speed);
@@ -241,8 +249,7 @@ Action:TimerVampiricTankWingDashReset(Handle:timer, any:iClient)
 Action:TimerVampiricTankWingDashChargeRegenerate(Handle:timer, any:iClient)
 {
 	if (RunClientChecks(iClient) && 
-		IsPlayerAlive(iClient) && 
-		IsFakeClient(iClient) == false)
+		IsPlayerAlive(iClient))
 	{
 		g_iVampiricTankWingDashChargeCount[iClient] = 3;
 		PrintVampiricTankWingDashCharges(iClient);

@@ -1,12 +1,14 @@
 LoadIceTankTalents(iClient)
 {
-	if(iClient < 1 || g_iClientTeam[iClient] != TEAM_INFECTED || IsClientInGame(iClient) == false || 
-		IsFakeClient(iClient) == true || GetEntProp(iClient, Prop_Send, "m_zombieClass") != TANK)
+	if (RunClientChecks(iClient) == false || 
+		g_iClientTeam[iClient] != TEAM_INFECTED || 
+		GetEntProp(iClient, Prop_Send, "m_zombieClass") != TANK)
 		return;
 	
 	if(IsPlayerAlive(iClient) == false)
 	{
-		PrintToChat(iClient, "\x04You cannot choose tank talents after you have died");
+		if (IsFakeClient(iClient) == false)
+			PrintToChat(iClient, "\x04You cannot choose tank talents after you have died");
 		return;
 	}
 	
@@ -37,8 +39,14 @@ LoadIceTankTalents(iClient)
 	CreateIceTankTrailEffect(iClient);
 	g_iPID_IceTankIcicles[iClient] = CreateParticle("ice_tank_icicles", 0.0, iClient, ATTACH_RSHOULDER);
 	
-	PrintHintText(iClient, "You have become the Ice Tank");
+	if (IsFakeClient(iClient) == false)
+		PrintHintText(iClient, "You have become the Ice Tank");
 }
+
+// SetupTankForBot_Ice(iClient)
+// {
+// 	LoadIceTankTalents(iClient);
+// }
 
 SetClientSpeedTankIce(iClient, &Float:fSpeed)
 {
@@ -60,7 +68,7 @@ OnGameFrame_Tank_Ice(iClient)
 		CheckIfTankMovedWhileChargingAndIncrementCharge(iClient);
 
 		//Display the first message to the player while he is charging up
-		if(g_iTankCharge[iClient] == 30)
+		if(g_iTankCharge[iClient] == 30 && IsFakeClient(iClient) == false)
 			PrintHintText(iClient, "Charging Up Health Regeneration"); 
 		
 		//Charged for long enough, now handle ice tank regen
@@ -78,7 +86,8 @@ OnGameFrame_Tank_Ice(iClient)
 					fCurrentTankHealthPercentage = float(iNewHealth) / float(TANK_HEALTH_ICE);
 					g_iIceTankLifePool[iClient] -= 10;
 					
-					PrintHintText(iClient, "Life Pool Remaining: %d", g_iIceTankLifePool[iClient]);
+					if (IsFakeClient(iClient) == false)
+						PrintHintText(iClient, "Life Pool Remaining: %d", g_iIceTankLifePool[iClient]);
 					
 					//Show the ice sphere around the Ice Tank
 					g_bShowingIceSphere[iClient] = true;
@@ -140,7 +149,8 @@ OnGameFrame_Tank_Ice(iClient)
 					fCurrentTankHealthPercentage = float(iCurrentHealth + g_iIceTankLifePool[iClient]) / float(TANK_HEALTH_ICE);
 					g_iIceTankLifePool[iClient] = 0;
 					
-					PrintHintText(iClient, "Life Pool Depleted");
+					if (IsFakeClient(iClient) == false)
+						PrintHintText(iClient, "Life Pool Depleted");
 					
 					g_bShowingIceSphere[iClient] = false;
 				}
@@ -155,7 +165,7 @@ OnGameFrame_Tank_Ice(iClient)
 	}
 	else if(g_iTankCharge[iClient] > 0)
 	{
-		if(g_iTankCharge[iClient] > 31)
+		if(g_iTankCharge[iClient] > 31 && IsFakeClient(iClient) == false)
 			PrintHintText(iClient, "Charge Interrupted");
 		
 		g_iTankCharge[iClient] = 0;
