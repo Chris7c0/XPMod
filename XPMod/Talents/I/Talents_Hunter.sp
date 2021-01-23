@@ -220,3 +220,91 @@ OnGameFrame_Hunter(iClient)
 		}
 	}
 }
+
+EventsHurt_HunterAttacker(Handle:hEvent, attacker, victim)
+{
+	decl String:weapon[20];
+	GetEventString(hEvent,"weapon", weapon,20);
+	if(StrEqual(weapon,"hunter_claw") == true)
+	{
+		if(g_bIsHunterReadyToPoison[attacker])
+		{
+			if(g_bIsHunterPoisoned[victim] == false)
+			{
+				g_bIsHunterPoisoned[victim] = true;
+				g_iClientBindUses_2[attacker]++;
+
+				SetClientSpeed(victim);
+
+				new Handle:hunterpoisonpackage = CreateDataPack();
+				WritePackCell(hunterpoisonpackage, victim);
+				WritePackCell(hunterpoisonpackage, attacker);
+				g_iHunterPoisonRuntimesCounter[victim] = g_iKillmeleonLevel[attacker];
+				g_bHunterLethalPoisoned[victim] = true;
+
+				delete g_hTimer_HunterPoison[victim];
+				g_hTimer_HunterPoison[victim] = CreateTimer(1.0, TimerHunterPoison, hunterpoisonpackage, TIMER_REPEAT);
+				//CreateTimer(20.0, TimerContinuousHunterPoison, hunterpoisonpackage, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+				if(IsFakeClient(victim)==false)
+					PrintHintText(victim, "\%N has injected venom into your flesh", attacker);
+				PrintHintText(attacker, "You poisoned %N, You have enough venom for %d more injections.", victim, (3 - g_iClientBindUses_2[attacker]) );
+				
+				
+				g_bIsHunterReadyToPoison[attacker] = false;
+				CreateTimer(5.0, TimerResetCanHunterPoison, attacker, TIMER_FLAG_NO_MAPCHANGE);
+			}
+			else
+				PrintHintText(attacker, "%N has already been poisoned, find another victim", victim);
+		}
+	}
+	if(g_iBloodlustLevel[attacker] > 0)
+	{
+		new dmgtype = GetEventInt(hEvent, "type");
+		//decl String:weapon[20];
+		//GetEventString(hEvent,"weapon", weapon,20);
+		if(dmgtype == 128 &&  StrEqual(weapon,"hunter_claw") == true)
+		{
+			//new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+			//new dmg = GetEventInt(hEvent,"dmg_health");
+			decl dmg;
+			if(g_iBloodlustLevel[attacker] < 5)
+				dmg = 1;
+			else if(g_iBloodlustLevel[attacker] < 9)
+				dmg = 2;
+			else
+				dmg = 3;
+			DealDamage(victim, attacker, dmg);
+			//if((hp - dmg) > 1)
+			//	SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+			new hp = GetEntProp(attacker,Prop_Data,"m_iHealth");
+			new maxHP = GetEntProp(attacker,Prop_Data,"m_iHealth");
+			if((hp + (g_iBloodlustLevel[attacker] * 3)) < (maxHP * 2))
+				SetEntProp(attacker,Prop_Data,"m_iHealth", hp + (g_iBloodlustLevel[attacker] * 3));
+			else
+				SetEntProp(attacker,Prop_Data,"m_iHealth", (maxHP * 2));
+		}
+	}
+}
+
+EventsHurt_HunterVictim(Handle:hEvent, attacker, victim)
+{
+	new hitGroup = GetEventInt(hEvent, "hitgroup");
+	
+	//PrintToChatAll("Hunter Hit");
+	if(hitGroup == 0)	//If victim is hunter and has beeen hit with explosive ammo, reset the pounced variables
+	{
+		//PrintToChatAll("Hunter Hit INSIDE, YAY TACOS");
+		g_bHunterGrappled[victim] = false;
+		g_iHunterShreddingVictim[attacker] = -1;
+		SetClientSpeed(victim);
+		//ResetSurvivorSpeed(victim);
+	}
+
+	if(g_bIsCloakedHunter[victim] == true)
+	{
+		//SetEntityRenderMode(victim, RenderMode:3);	probably dont need this
+		SetEntityRenderColor(victim, 255, 255, 255, RoundToFloor(255 * (1.0 - (float(g_iKillmeleonLevel[victim]) * 0.012) )));
+		g_bIsCloakedHunter[victim] = false;
+		g_iHunterCloakCounter[victim] = 0;
+	}
+}

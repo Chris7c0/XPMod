@@ -86,7 +86,7 @@ CheckIfTankMovedWhileChargingAndIncrementCharge(iClient)
 	{
 		if(g_iTankCharge[iClient] != 0)
 		{
-			if(g_iTankCharge[iClient] > 31 && IsFakeClient(iCLient) == false)
+			if(g_iTankCharge[iClient] > 31 && IsFakeClient(iClient) == false)
 				PrintHintText(iClient, "Interrupted");
 			
 			g_iTankCharge[iClient] = 0;

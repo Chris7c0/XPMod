@@ -81,55 +81,49 @@ OnGameFrame_Spitter(iClient)
 		}
 	}
 }
-/*
-ChangeGooType(iClient)
+
+EventsHurt_SpitterAttacker(Handle:hEvent, attacker, victim)
 {
-	if(g_bBlockGooSwitching[iClient] == true)
-		PrintToChat(iClient, "\x03[XPMod] \x04Wait until your goo dissipates before changing goo types.");
-	else
-		g_iGooType[iClient]++;
+	new dmgHealth  = GetEventInt(hEvent,"dmg_health");
 	
-	if(g_iClientLevel[iClient] < 6)
+	if(g_iPuppetLevel[attacker] > 0)
 	{
-		g_iGooType[iClient] = GOO_ADHESIVE;
-	}
-	else if(g_iClientLevel[iClient] < 11)
-	{
-		if(g_iGooType[iClient] > GOO_FLAMING)
-			g_iGooType[iClient] = GOO_ADHESIVE;
-	}
-	else if(g_iClientLevel[iClient] < 16)
-	{
-		if(g_iGooType[iClient] > GOO_MELTING)
-			g_iGooType[iClient] = GOO_ADHESIVE;
-	}
-	else if(g_iClientLevel[iClient] < 21)
-	{
-		if(g_iGooType[iClient] > GOO_DEMI)
-			g_iGooType[iClient] = GOO_ADHESIVE;
-	}
-	else if(g_iClientLevel[iClient] < 26)
-	{
-		if(g_iGooType[iClient] > GOO_REPULSION)
-			g_iGooType[iClient] = GOO_ADHESIVE;
-	}
-	else
-	{
-		if(g_iGooType[iClient] > GOO_VIRAL)
-			g_iGooType[iClient] = GOO_ADHESIVE;
-	}
-	
-	switch(g_iGooType[iClient])
-	{
-		case GOO_ADHESIVE: 	PrintHintText(iClient, "Goo Type: Adhesive Goo");
-		case GOO_FLAMING: 	PrintHintText(iClient, "Goo Type: Flaming Goo");
-		case GOO_MELTING: 	PrintHintText(iClient, "Goo Type: Melting Goo");
-		case GOO_DEMI: 		PrintHintText(iClient, "Goo Type: Demi Goo");
-		case GOO_REPULSION:	PrintHintText(iClient, "Goo Type: Repulsion Goo");
-		case GOO_VIRAL: 	PrintHintText(iClient, "Goo Type: Viral Goo");
+		decl String:weapon[20];
+		GetEventString(hEvent,"weapon", weapon, 20);
+		if(StrEqual(weapon,"insect_swarm") == true)
+		{
+			DealSpecialSpitterGooCollision(attacker, victim, dmgHealth);
+			
+			if(g_iMaterialLevel[attacker] > 0 && GetEntProp(victim, Prop_Send, "m_isIncapacitated") != 0)
+			{
+				if (g_hTimer_ResetGlow[victim] == null)
+				{
+					SetEntProp(victim, Prop_Send, "m_iGlowType", 3);
+					SetEntProp(victim, Prop_Send, "m_nGlowRange", 0);
+					SetEntProp(victim, Prop_Send, "m_glowColorOverride", 1);
+					SetEntityRenderMode(victim, RenderMode:3);
+					SetEntityRenderColor(victim, 255, 255, 255, 255 - RoundToNearest(255.0 * 0.1 * g_iMaterialLevel[attacker]));
+				}
+				
+				delete g_hTimer_ResetGlow[victim];
+				g_hTimer_ResetGlow[victim] = CreateTimer(3.0, Timer_ResetGlow, victim);
+			}
+		}
+		else if(g_bIsHallucinating[victim] == false && StrEqual(weapon,"spitter_claw") == true)
+		{
+			if(IsFakeClient(victim) == false)
+				PrintHintText(victim, "A Spitter's hallucinogenic toxin seeps through your viens"); 
+			
+			g_bIsHallucinating[victim] = true;
+			g_iHallucinogenRuntimesCounter[victim] = 0;
+			WriteParticle(victim, "hallucinogenic_effect", 0.0, 30.0);
+			
+			delete g_hTimer_HallucinatePlayer[victim];
+			g_hTimer_HallucinatePlayer[victim] = CreateTimer(2.5, TimerHallucinogen, victim, TIMER_REPEAT);
+		}
 	}
 }
-*/
+
 DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 {
 	if(g_bAdhesiveGooActive[iVictim] == false)

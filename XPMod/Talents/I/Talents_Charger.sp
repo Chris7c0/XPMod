@@ -103,3 +103,91 @@ OnGameFrame_Charger(iClient)
 		}
 	}*/
 }
+
+EventsHurt_ChargerAttacker(Handle:hEvent, attacker, victim)
+{
+	if(g_iGroundLevel[attacker] > 0)
+	{
+		decl String:weapon[20];
+		GetEventString(hEvent,"weapon", weapon,20);
+		new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+		if(StrEqual(weapon,"charger_claw") == true)
+		{
+			decl dmg;
+			if(g_iGroundLevel[attacker] < 4)
+				dmg = 1;
+			else if(g_iGroundLevel[attacker] < 7)
+				dmg = 2;
+			else if(g_iGroundLevel[attacker] < 10)
+				dmg = 3;
+			else
+				dmg = 4;
+			if(hp > dmg)
+				DealDamage(victim, attacker, dmg);
+		}
+		if(g_bIsSpikedCharged[attacker] == true)
+		{
+			if(g_iChargerVictim[attacker] <= 0 && g_bIsChargerCharging[attacker] == false)
+			{
+				if(StrEqual(weapon,"charger_claw") == true)
+				{
+					if(GetEntProp(victim, Prop_Send, "m_isIncapacitated") == 0)
+					{												
+						decl Float: addAmount[3];
+						new Float:power = 577.0;
+
+						addAmount[0] = 0.0;
+						addAmount[1] = 0.0;
+						addAmount[2] = power;
+						
+						SDKCall(g_hSDK_Fling, victim, addAmount, 96, attacker, 3.0);
+						
+						g_bIsSpikedCharged[attacker] = false;
+						g_bCanChargerSpikedCharge[attacker] = false;
+						CreateTimer(30.0, TimerResetSpikedCharge, attacker,  TIMER_FLAG_NO_MAPCHANGE);
+					}
+				}
+			}
+		}
+	}
+}
+
+EventsHurt_ChargerVictim(hEvent, attacker, victim)
+{
+	new dmgHealth  = GetEventInt(hEvent,"dmg_health");
+
+	if(g_iSpikedLevel[victim] > 0)
+	{
+		decl String:weapon[20];
+		GetEventString(hEvent, "weapon", weapon, 20);
+		
+		if(StrEqual(weapon, "melee") == true)
+		{
+			decl iDamage;
+			iDamage = g_iSpikedLevel[victim];
+			DealDamage(attacker, victim, iDamage);
+		}
+		
+		if(g_iHillbillyLevel[victim] > 0)
+		{
+			if(g_bChargerCarrying[victim] == true)
+			{
+				new iCurrentHP = GetEntProp(victim, Prop_Data, "m_iHealth");
+				SetEntProp(victim, Prop_Data, "m_iHealth", iCurrentHP + dmgHealth + RoundToNearest(dmgHealth * g_iHillbillyLevel[victim] * 0.05));
+				
+				//Add particle effect here later since Charger glow and color cannot be changed
+				
+				if(g_bIsChargerHealing[victim] == false)
+				{
+					//g_bIsChargerHealing[victim] = true;
+					//SetEntityRenderMode(victim, RenderMode:0);
+					//SetEntityRenderColor(victim, 1, 1, 255, 254);
+					CreateTimer(0.1, TimerResetChargerHealingColor, victim,  TIMER_FLAG_NO_MAPCHANGE);
+					SetEntProp(victim, Prop_Send, "m_iGlowType", 2);
+					SetEntProp(victim, Prop_Send, "m_nGlowRange", 0);
+					SetEntProp(victim, Prop_Send, "m_glowColorOverride", 52000);
+				}
+			}
+		}
+	}
+}

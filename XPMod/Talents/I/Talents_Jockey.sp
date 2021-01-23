@@ -24,3 +24,54 @@ OnGameFrame_Jockey(iClient)
 		}
 	}
 }
+
+EventsHurt_JockeyAttacker(Handle:hEvent, attacker, victim)
+{
+	if(g_iMutatedLevel[attacker] > 0)
+	{
+		if(g_iJockeyVictim[attacker] < 0) //If they are not riding a victim
+		{
+			decl String:weapon[20];
+			GetEventString(hEvent,"weapon", weapon,20);
+			if(StrEqual(weapon,"jockey_claw") == true)
+			{
+				decl dmg;
+				if(g_iMutatedLevel[attacker] < 5)
+					dmg = 1;
+				else if(g_iMutatedLevel[attacker] < 9)
+					dmg = 2;
+				else
+					dmg = 3;
+					
+				new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+				if(hp > dmg)
+					DealDamage(victim, attacker, dmg);
+			}
+		}
+	}
+	if(g_iErraticLevel[attacker] > 0)
+	{
+		if(g_iJockeyVictim[attacker] > 0)	//If they ARE riding a victim
+		{
+			decl String:weapon[20];
+			GetEventString(hEvent,"weapon", weapon,20);
+			if(StrEqual(weapon,"jockey_claw") == true)
+			{
+				decl dmg;
+				if(g_iMutatedLevel[attacker] < 5)
+					dmg = 1;
+				else if(g_iMutatedLevel[attacker] < 9)
+					dmg = 2;
+				else
+					dmg = 3;
+				//hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+				//PrintToChat(attacker, "pre hp = %d riding",hp);
+				new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+				if(hp > dmg)
+					DealDamage(victim, attacker, dmg);
+				//hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+				//PrintToChat(attacker, "    post hp = %d riding",hp);
+			}
+		}
+	}
+}
