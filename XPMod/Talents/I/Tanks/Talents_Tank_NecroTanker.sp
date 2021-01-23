@@ -128,15 +128,13 @@ OnGameFrame_Tank_NecroTanker(iClient)
 	}
 }
 
-EventsHurt_TankVictim_NecroTanker(Handle:hEvent, iAttacker, iVictimTank, iDmgType, iDmgHealth)
+EventsHurt_TankVictim_NecroTanker(Handle:hEvent, iAttacker, iVictimTank)
 {
-	SuppressNeverUsedWarning(hEvent, iAttacker, iVictimTank, iDmgType, iDmgHealth);
+	SuppressNeverUsedWarning(hEvent, iAttacker, iVictimTank);
 }
 
-EventsHurt_TankAttacker_NecroTanker(Handle:hEvent, iAttackerTank, iVictim, iDmgType, iDmgHealth)
+EventsHurt_TankAttacker_NecroTanker(Handle:hEvent, iAttackerTank, iVictim)
 {
-	SuppressNeverUsedWarning(iDmgType, iDmgHealth);
-
 	decl String:weapon[20];
 	GetEventString(hEvent,"weapon", weapon, 20);
 

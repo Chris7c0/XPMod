@@ -235,6 +235,89 @@ OnGameFrame_Rochelle(iClient)
 	}
 }
 
+EventsHurt_AttackerRochelle(Handle:hEvent, attacker, victim)
+{
+	if (IsFakeClient(attacker))
+		return;
+
+	if (g_iClientTeam[victim] != TEAM_INFECTED)
+		return;
+
+	if(g_iHunterLevel[attacker] > 0)
+	{
+		if(g_iClientTeam[victim] == TEAM_INFECTED)
+			if(g_bIsRochellePoisoned[victim] == false)	//If player not g_bIsRochellePoisoned poison them
+			{
+				g_bIsRochellePoisoned[victim] = true;
+				
+				g_iSlapRunTimes[victim] = 5 - g_iHunterLevel[attacker];
+
+				delete g_hTimer_RochellePoison[victim];
+				g_hTimer_RochellePoison[victim] = CreateTimer(5.0, TimerPoison, victim, TIMER_REPEAT);
+
+				g_iPID_RochellePoisonBullet[victim] = WriteParticle(victim, "poison_bullet", 0.0);
+				CreateTimer(30.1, DeleteParticle, g_iPID_RochellePoisonBullet[victim], TIMER_FLAG_NO_MAPCHANGE);
+				
+				if(IsFakeClient(victim)==false)
+					ShowHudOverlayColor(victim, 0, 100, 0, 40, 8000, FADE_IN);
+				
+				PrintHintText(attacker,"You poisoned %N", victim);
+			}
+	}
+	
+	if(g_iSilentLevel[attacker] >0)
+	{
+		if(g_iClientTeam[victim] == TEAM_INFECTED)
+		{
+			decl String:weaponclass[32];
+			GetEventString(hEvent,"weapon",weaponclass,32);
+			//PrintToChatAll("\x03-class of gun: \x01%s",weaponclass);
+			if(StrContains(weaponclass,"hunting_rifle",false) != -1)	//Rugar
+			{
+				new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+				new dmg = GetEventInt(hEvent,"dmg_health");
+				dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.13));
+				//PrintToChat(attacker, "your doing %d hunting rifle damage", dmg);
+				SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+
+			}
+			else if(StrContains(weaponclass,"sniper_military",false) != -1)	//H&K MSG 90
+			{
+				IgniteEntity(victim, 5.0, false);
+				new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+				new dmg = GetEventInt(hEvent,"dmg_health");
+				dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.08));
+				//PrintToChat(attacker, "your doing %d sniper_military damage", dmg);
+				SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+
+			}
+			else if(StrContains(weaponclass,"sniper_scout",false) != -1)
+			{
+				new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+				new dmg = GetEventInt(hEvent,"dmg_health");
+				dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.13)) + (g_iSilentSorrowHeadshotCounter[attacker] * g_iSilentLevel[attacker] * 3);
+				//PrintToChat(attacker, "your doing %d scout damage", dmg);
+				SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+
+			}
+			else if(StrContains(weaponclass,"sniper_awp",false) != -1)
+			{
+				new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+				new dmg = GetEventInt(hEvent,"dmg_health");
+				dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.40) );
+				PrintToChat(attacker, "your doing %d extra awp damage", dmg);
+				SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+			}
+		}
+	}
+}
+
+// EventsHurt_VictimRochelle(Handle:hEvent, attacker, victim)
+// {
+// 	if (IsFakeClient(victim))
+// 		return;
+// }
+
 DetectionHud(iClient)
 {
 	if(IsClientInGame(iClient)==false)

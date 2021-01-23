@@ -25,11 +25,17 @@ OnGameFrame_Jockey(iClient)
 	}
 }
 
-EventsHurt_JockeyAttacker(Handle:hEvent, attacker, victim)
+EventsHurt_AttackerJockey(Handle:hEvent, attacker, victim)
 {
+	if (IsFakeClient(attacker))
+		return;
+
+	if (g_iClientTeam[victim] != TEAM_SURVIVORS)
+		return;
+	
 	if(g_iMutatedLevel[attacker] > 0)
 	{
-		if(g_iJockeyVictim[attacker] < 0) //If they are not riding a victim
+		if(g_iJockeyVictim[attacker] < 0) //If they are NOT riding a victim
 		{
 			decl String:weapon[20];
 			GetEventString(hEvent,"weapon", weapon,20);
@@ -49,6 +55,7 @@ EventsHurt_JockeyAttacker(Handle:hEvent, attacker, victim)
 			}
 		}
 	}
+
 	if(g_iErraticLevel[attacker] > 0)
 	{
 		if(g_iJockeyVictim[attacker] > 0)	//If they ARE riding a victim

@@ -103,9 +103,12 @@ OnGameFrame_Tank_Fire(iClient)
 	}
 }
 
-EventsHurt_TankVictim_Fire(Handle:hEvent, iAttacker, iVictimTank, iDmgType, iDmgHealth)
+EventsHurt_TankVictim_Fire(Handle:hEvent, iAttacker, iVictimTank)
 {
 	SuppressNeverUsedWarning(hEvent, iAttacker);
+
+	new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
+	new iDmgType = GetEventInt(hEvent, "type");
 
 	new iCurrentHealth = GetEntProp(iVictimTank,Prop_Data,"m_iHealth");
 	decl Float:fCurrentTankHealthPercentage;
@@ -133,10 +136,8 @@ EventsHurt_TankVictim_Fire(Handle:hEvent, iAttacker, iVictimTank, iDmgType, iDmg
 	}
 }
 
-EventsHurt_TankAttacker_Fire(Handle:hEvent, iAttackerTank, iVictim, iDmgType, iDmgHealth)
-{
-	SuppressNeverUsedWarning(iDmgType, iDmgHealth);
-	
+EventsHurt_TankAttacker_Fire(Handle:hEvent, iAttackerTank, iVictim)
+{	
 	decl String:weapon[20];
 	GetEventString(hEvent,"weapon", weapon, 20);
 

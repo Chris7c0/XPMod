@@ -175,8 +175,57 @@ OGFSurvivorReload_Bill(int iClient, const char[] currentweapon, int ActiveWeapon
 	}
 }
 
+EventsHurt_AttackerBill(Handle:hEvent, attacker, victim)
+{
+	if (IsFakeClient(attacker))
+		return;
+
+	if (g_iClientTeam[victim] != TEAM_INFECTED)
+		return;
+
+	if(g_iExorcismLevel[attacker]!=0 || g_iPromotionalLevel[attacker]!=0)
+	{
+		if(g_iClientTeam[victim] == TEAM_INFECTED)
+		{
+			decl String:weaponclass[32];
+			GetEventString(hEvent,"weapon",weaponclass,32);
+			//PrintToChat(attacker, "weaponclass = %s", weaponclass);
+			if(StrContains(weaponclass,"rifle",false) != -1)
+			{
+				if(StrContains(weaponclass,"rifle_m60",false) == -1)
+				{
+					if(StrContains(weaponclass,"hunting_rifle",false) == -1)
+					{
+						new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+						new dmg = GetEventInt(hEvent,"dmg_health");
+						dmg = RoundToNearest(dmg * (g_iExorcismLevel[attacker] * 0.04));
+						//PrintToChat(attacker, "Your doing %d extra rifle damage", dmg);
+						SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+					}
+				}
+				else
+				{
+					new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+					new dmg = GetEventInt(hEvent,"dmg_health");
+					dmg = RoundToNearest(dmg * (g_iPromotionalLevel[attacker] * 0.20));
+					//PrintToChat(attacker, "Your doing %d extra M60 damage", dmg);
+					SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+				}
+			}
+		}
+	}
+}
+
+// EventsHurt_VictimBill(Handle:hEvent, attacker, victim)
+// {
+// 	if (IsFakeClient(victim))
+// 		return;
+// }
+
 Action:tmrPlayAnim(Handle:timer,any:iClient)
+{
 	PlayAnim(iClient);
+}
 
 Action:PlayAnim(iClient)
 {

@@ -780,3 +780,99 @@ OGFSurvivorReload_Ellis(iClient, const char[] currentweapon, ActiveWeaponID, Cur
 	}
 	*/
 }
+
+EventsHurt_AttackerEllis(Handle:hEvent, attacker, victim)
+{
+	if (IsFakeClient(attacker))
+		return;
+	
+	if (g_iClientTeam[victim] != TEAM_INFECTED)
+		return;
+	
+	if(g_iFireLevel[attacker]>0)
+	{
+		if(g_iClientTeam[victim] == TEAM_INFECTED)
+		{
+			if(g_bUsingFireStorm[attacker]==true)
+			{
+				new Float:time = (float(g_iFireLevel[attacker]) * 6.0);
+				IgniteEntity(victim, time, false);
+			}
+		}
+	}
+	
+	if(g_iOverLevel[attacker] > 0)
+	{
+		if(g_iClientTeam[victim] == TEAM_INFECTED)
+		{
+			new iCurrentHealth = GetEntProp(attacker,Prop_Data,"m_iHealth");
+			new iMaxHealth = GetEntProp(attacker,Prop_Data,"m_iMaxHealth");
+			new Float:fTempHealth = GetEntDataFloat(attacker, g_iOffset_HealthBuffer);
+			if(float(iCurrentHealth) + fTempHealth > (float(iMaxHealth) - 20.0))
+			{
+				decl String:weaponclass[32];
+				GetEventString(hEvent,"weapon",weaponclass,32);
+				//PrintToChatAll("\x03-class of gun: \x01%s",weaponclass);
+				if((StrContains(weaponclass,"shotgun",false) != -1) || (StrContains(weaponclass,"rifle",false) != -1) || (StrContains(weaponclass,"pistol",false) != -1) || (StrContains(weaponclass,"smg",false) != -1) || (StrContains(weaponclass,"sniper",false) != -1) || (StrContains(weaponclass,"launcher",false) != -1))
+				{
+					new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+					new dmg = GetEventInt(hEvent,"dmg_health");
+					new newdmg = (dmg + (g_iOverLevel[attacker] * 2));
+					SetEntProp(victim,Prop_Data,"m_iHealth", hp - newdmg);
+					//DeleteCode
+					//PrintToChatAll("Ellis is doing %d damage", dmg);
+					//PrintToChatAll("Ellis is doing %d additional damage", (newdmg - dmg));
+				}
+			}
+		}
+	}
+}
+
+EventsHurt_VictimEllis(Handle:hEvent, attacker, victim)
+{
+	if (IsFakeClient(victim))
+		return;
+
+	SuppressNeverUsedWarning(attacker);
+
+	new dmgType = GetEventInt(hEvent, "type");
+	new dmgHealth  = GetEventInt(hEvent,"dmg_health");
+
+	if(g_iFireLevel[victim] > 0)
+	{
+		//Prevent Fire Damage
+		if(dmgType == DAMAGETYPE_FIRE1 || dmgType == DAMAGETYPE_FIRE2)
+		{
+			//PrintToChat(victim, "Prevent fire damage");
+			new currentHP = GetEventInt(hEvent,"health");
+			SetEntProp(victim,Prop_Data,"m_iHealth", dmgHealth + currentHP);
+		}
+	}
+
+	if(g_iOverLevel[victim] > 0)
+	{
+		new iCurrentHealth = GetEntProp(victim,Prop_Data,"m_iHealth");
+		new iMaxHealth = GetEntProp(victim,Prop_Data,"m_iMaxHealth");
+		//new Float:fTempHealth = GetEntDataFloat(victim, g_iOffset_HealthBuffer);
+		//if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
+		if(iCurrentHealth < (iMaxHealth - 20.0))
+		{
+			if(g_bEllisOverSpeedIncreased[victim])
+			{
+				g_bEllisOverSpeedIncreased[victim] = false;
+
+				SetClientSpeed(victim);
+			}
+		}
+		//else if(float(iCurrentHealth) + fTempHealth > (float(iMaxHealth) - 20.0))
+		else if(iCurrentHealth >= (iMaxHealth - 20.0))
+		{
+			if(g_bEllisOverSpeedIncreased[victim] == false)
+			{
+				g_bEllisOverSpeedIncreased[victim] = true;
+
+				SetClientSpeed(victim);						
+			}
+		}
+	}
+}

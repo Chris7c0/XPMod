@@ -119,9 +119,11 @@ OnGameFrame_Tank_Vampiric(iClient)
 	}
 }
 
-EventsHurt_TankVictim_Vampiric(Handle:hEvent, iAttacker, iVictimTank, iDmgType, iDmgHealth)
+EventsHurt_TankVictim_Vampiric(Handle:hEvent, iAttacker, iVictimTank)
 {
-	SuppressNeverUsedWarning(hEvent, iAttacker, iDmgType);
+	SuppressNeverUsedWarning(hEvent, iAttacker);
+
+	new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
 
 	decl String:weaponclass[32];
 	GetEventString(hEvent,"weapon",weaponclass,32);
@@ -158,9 +160,11 @@ EventsHurt_TankVictim_Vampiric(Handle:hEvent, iAttacker, iVictimTank, iDmgType, 
 	}
 }
 
-EventsHurt_TankAttacker_Vampiric(Handle:hEvent, iAttackerTank, iVictim, iDmgType, iDmgHealth)
+EventsHurt_TankAttacker_Vampiric(Handle:hEvent, iAttackerTank, iVictim)
 {
-	SuppressNeverUsedWarning(hEvent, iDmgType);
+	SuppressNeverUsedWarning(hEvent);
+	
+	new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
 
 	if (RunClientChecks(iAttackerTank) == false || RunClientChecks(iVictim) == false ||
 		IsPlayerAlive(iAttackerTank) == false || IsPlayerAlive(iVictim) == false)

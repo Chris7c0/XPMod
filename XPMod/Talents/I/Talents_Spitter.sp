@@ -82,8 +82,14 @@ OnGameFrame_Spitter(iClient)
 	}
 }
 
-EventsHurt_SpitterAttacker(Handle:hEvent, attacker, victim)
+EventsHurt_AttackerSpitter(Handle:hEvent, attacker, victim)
 {
+	if (IsFakeClient(attacker))
+		return;
+
+	if (g_iClientTeam[victim] != TEAM_SURVIVORS)
+		return;
+
 	new dmgHealth  = GetEventInt(hEvent,"dmg_health");
 	
 	if(g_iPuppetLevel[attacker] > 0)

@@ -240,8 +240,48 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 		}
 	}
 
-	return Plugin_Stop;
+	// // Testing bot button presses
+	// if (g_iTankChosen[iClient] == TANK_VAMPIRIC)
+	// {
+	// 	if (g_bShouldJump[iClient])
+	// 	{
+	// 		PrintToChatAll("Jumping");
+	// 		iButtons &= IN_JUMP;
+	// 		g_bShouldJump[iClient] = false;
+
+	// 		return Plugin_Changed;
+	// 	}
+	// 	else
+	// 	{
+	// 		if (g_hShouldAttackTimer[iClient] == null) {
+	// 			PrintToChatAll("Not Jumping");
+	// 			iButtons |= IN_JUMP;
+
+	// 			//delete g_hShouldAttackTimer[iClient];
+	// 			g_hShouldAttackTimer[iClient] = CreateTimer(3.0, Timer_ShouldJump, iClient);
+	// 		}
+	// 	}
+	// }
+
+	return Plugin_Continue;
 }
+
+// // Testing bot button presses
+// bool g_bShouldJump[MAXPLAYERS + 1];
+// Handle g_hShouldAttackTimer[MAXPLAYERS + 1];
+// public Action Timer_ShouldJump(Handle timer, int client)
+// {
+// 	PrintToChatAll("Timer_ShouldJump");
+
+// 	// check if client is the same has the one before when the timer started
+// 	if (client != 0) {
+// 		// set variable so next frame knows that client need to release attack
+// 		g_bShouldJump[client] = true;
+// 	}
+
+// 	g_hShouldAttackTimer[client] = null;
+// 	return Plugin_Handled;
+// } 
 
 
 // This is purely to block the name change message when updating a name to have the XPMod Level tags

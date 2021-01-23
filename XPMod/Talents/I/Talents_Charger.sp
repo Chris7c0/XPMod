@@ -104,13 +104,20 @@ OnGameFrame_Charger(iClient)
 	}*/
 }
 
-EventsHurt_ChargerAttacker(Handle:hEvent, attacker, victim)
+EventsHurt_AttackerCharger(Handle:hEvent, attacker, victim)
 {
+	if (IsFakeClient(attacker))
+		return;
+
+	if (g_iClientTeam[victim] != TEAM_SURVIVORS)
+		return;
+
 	if(g_iGroundLevel[attacker] > 0)
 	{
 		decl String:weapon[20];
 		GetEventString(hEvent,"weapon", weapon,20);
 		new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+
 		if(StrEqual(weapon,"charger_claw") == true)
 		{
 			decl dmg;
@@ -125,35 +132,37 @@ EventsHurt_ChargerAttacker(Handle:hEvent, attacker, victim)
 			if(hp > dmg)
 				DealDamage(victim, attacker, dmg);
 		}
-		if(g_bIsSpikedCharged[attacker] == true)
-		{
-			if(g_iChargerVictim[attacker] <= 0 && g_bIsChargerCharging[attacker] == false)
-			{
-				if(StrEqual(weapon,"charger_claw") == true)
-				{
-					if(GetEntProp(victim, Prop_Send, "m_isIncapacitated") == 0)
-					{												
-						decl Float: addAmount[3];
-						new Float:power = 577.0;
 
-						addAmount[0] = 0.0;
-						addAmount[1] = 0.0;
-						addAmount[2] = power;
-						
-						SDKCall(g_hSDK_Fling, victim, addAmount, 96, attacker, 3.0);
-						
-						g_bIsSpikedCharged[attacker] = false;
-						g_bCanChargerSpikedCharge[attacker] = false;
-						CreateTimer(30.0, TimerResetSpikedCharge, attacker,  TIMER_FLAG_NO_MAPCHANGE);
-					}
-				}
-			}
+		if (g_bIsSpikedCharged[attacker] == true && 
+			g_iChargerVictim[attacker] <= 0 && 
+			g_bIsChargerCharging[attacker] == false &&
+			StrEqual(weapon,"charger_claw") == true && 
+			GetEntProp(victim, Prop_Send, "m_isIncapacitated") == 0)
+		{
+			decl Float: addAmount[3];
+			new Float:power = 577.0;
+
+			addAmount[0] = 0.0;
+			addAmount[1] = 0.0;
+			addAmount[2] = power;
+			
+			SDKCall(g_hSDK_Fling, victim, addAmount, 96, attacker, 3.0);
+			
+			g_bIsSpikedCharged[attacker] = false;
+			g_bCanChargerSpikedCharge[attacker] = false;
+			CreateTimer(30.0, TimerResetSpikedCharge, attacker,  TIMER_FLAG_NO_MAPCHANGE);
 		}
 	}
 }
 
-EventsHurt_ChargerVictim(hEvent, attacker, victim)
+EventsHurt_VictimCharger(Handle:hEvent, attacker, victim)
 {
+	if (IsFakeClient(victim))
+		return;
+	
+	if (g_iClientTeam[attacker] != TEAM_SURVIVORS)
+		return;
+
 	new dmgHealth  = GetEventInt(hEvent,"dmg_health");
 
 	if(g_iSpikedLevel[victim] > 0)

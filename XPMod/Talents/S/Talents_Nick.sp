@@ -318,6 +318,106 @@ OGFSurvivorReload_Nick(iClient, const char[] currentweapon, ActiveWeaponID, Curr
 	}
 }
 
+EventsHurt_AttackerNick(Handle:hEvent, attacker, victim)
+{
+	if (IsFakeClient(attacker))
+		return;
+
+	if (g_iClientTeam[victim] != TEAM_INFECTED)
+		return;
+
+	if(g_iSwindlerLevel[attacker] > 0)
+	{
+		if(g_iClientTeam[victim] == TEAM_INFECTED)
+			if(g_bNickIsStealingLife[victim][attacker] == false)	//If player not poisoned, poison them
+			{
+				g_bNickIsStealingLife[victim][attacker] = true;
+				
+				new Handle:lifestealingpackage = CreateDataPack();
+				WritePackCell(lifestealingpackage, victim);
+				WritePackCell(lifestealingpackage, attacker);
+				g_iNickStealingLifeRuntimes[victim] = 0;
+
+				delete g_hTimer_NickLifeSteal[victim];
+				g_hTimer_NickLifeSteal[victim] = CreateTimer(2.0, TimerLifeStealing, lifestealingpackage, TIMER_REPEAT);
+				
+				decl Float:vec[3];
+				GetClientAbsOrigin(victim, vec);
+				EmitSoundToAll(SOUND_NICK_LIFESTEAL_HIT, victim, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
+			}
+	}
+
+	if(g_iDesperateLevel[attacker] > 0 && g_iNickDesperateMeasuresStack > 0)
+	{
+		decl String:weaponclass[32];
+		GetEventString(hEvent,"weapon",weaponclass,32);
+		
+		if(StrContains(weaponclass,"melee",false) == -1 && StrContains(weaponclass,"inferno",false) == -1 && 
+			StrContains(weaponclass,"pipe_bomb",false) == -1 && StrContains(weaponclass,"entityflame",false) == -1)
+		{
+			new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+			new dmg = GetEventInt(hEvent,"dmg_health");
+			if(g_iNickDesperateMeasuresStack > 3)
+			{
+				dmg = RoundToNearest(dmg * (g_iDesperateLevel[attacker] * 0.05) * 3);
+			}
+			else
+			{
+				dmg = RoundToNearest(dmg * (g_iDesperateLevel[attacker] * 0.05) * g_iNickDesperateMeasuresStack);
+			}
+			PrintToChat(attacker, "You are doing %d extra damage", dmg);
+			SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+		}
+	}
+	
+	if(g_iMagnumLevel[attacker] > 0 || g_iRiskyLevel[attacker] > 0)
+	{
+		if(g_iClientTeam[victim] == TEAM_INFECTED)
+		{
+			decl String:wclass[32];
+			GetEventString(hEvent,"weapon",wclass,32);
+			if (StrContains(wclass,"magnum",false) != -1)
+			{
+				new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+				new dmg = GetEventInt(hEvent,"dmg_health");
+				dmg = RoundToNearest(dmg * (g_iMagnumLevel[attacker] * 0.75));
+				//PrintToChat(attacker, "your doing %d extra magnum damage", dmg);
+				SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+			}
+			else if (StrContains(wclass,"pistol",false) != -1)
+			{
+				new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+				new dmg = GetEventInt(hEvent,"dmg_health");
+				dmg = RoundToNearest(dmg * (g_iRiskyLevel[attacker] * 0.2));
+				//PrintToChat(attacker, "your doing %d extra damage", dmg);
+				SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+			}
+			GetClientWeapon(attacker, g_strCurrentWeapon, sizeof(g_strCurrentWeapon));
+			if(StrEqual(g_strCurrentWeapon, "weapon_pistol_magnum", false) == true)
+			{
+				g_iNickMagnumShotCount[attacker]++;
+				//PrintToChatAll("g_iNickMagnumShotCount = %d", g_iNickMagnumShotCount[attacker]);
+				if((g_iNickMagnumShotCountCap[attacker] / 2) < g_iNickMagnumShotCount[attacker])
+				{
+					g_iNickMagnumShotCount[attacker] = (g_iNickMagnumShotCountCap[attacker] / 2);
+					//PrintToChatAll("g_iNickMagnumShotCount After = %d", g_iNickMagnumShotCount[attacker]);
+				}
+				if(g_iNickMagnumShotCount[attacker] == 3)
+				{
+					//PrintToChatAll("Nick Magnum Count = 3, stampede reload = true");
+					g_bCanNickStampedeReload[attacker] = true;
+				}
+			}
+		}
+	}
+}
+
+// EventsHurt_VictimNick(Handle:hEvent, attacker, victim)
+// {
+// 	if (IsFakeClient(victim))
+// 		return;
+// }
+
 //Jebus Hand Menu
 Action:JebusHandBindMenuDraw(iClient) 
 {

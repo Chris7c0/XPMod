@@ -173,9 +173,12 @@ OnGameFrame_Tank_Ice(iClient)
 	}
 }
 
-EventsHurt_TankVictim_Ice(Handle:hEvent, iAttacker, iVictimTank, iDmgType, iDmgHealth)
+EventsHurt_TankVictim_Ice(Handle:hEvent, iAttacker, iVictimTank)
 {
 	SuppressNeverUsedWarning(hEvent, iAttacker);
+
+	new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
+	new iDmgType = GetEventInt(hEvent, "type");
 
 	new iCurrentHealth = GetEntProp(iVictimTank,Prop_Data,"m_iHealth");
 	decl Float:fCurrentTankHealthPercentage;
@@ -207,9 +210,9 @@ EventsHurt_TankVictim_Ice(Handle:hEvent, iAttacker, iVictimTank, iDmgType, iDmgH
 	}
 }
 
-EventsHurt_TankAttacker_Ice(Handle:hEvent, iAttackerTank, iVictim, iDmgType, iDmgHealth)
+EventsHurt_TankAttacker_Ice(Handle:hEvent, iAttackerTank, iVictim)
 {
-	SuppressNeverUsedWarning(iAttackerTank, iDmgType, iDmgHealth);
+	SuppressNeverUsedWarning(iAttackerTank);
 
 	decl String:weapon[20];
 	GetEventString(hEvent,"weapon", weapon, 20);

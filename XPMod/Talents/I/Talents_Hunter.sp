@@ -221,10 +221,17 @@ OnGameFrame_Hunter(iClient)
 	}
 }
 
-EventsHurt_HunterAttacker(Handle:hEvent, attacker, victim)
+EventsHurt_AttackerHunter(Handle:hEvent, attacker, victim)
 {
+	if (IsFakeClient(attacker))
+		return;
+
+	if (g_iClientTeam[victim] != TEAM_SURVIVORS)
+		return;
+
 	decl String:weapon[20];
 	GetEventString(hEvent,"weapon", weapon,20);
+
 	if(StrEqual(weapon,"hunter_claw") == true)
 	{
 		if(g_bIsHunterReadyToPoison[attacker])
@@ -257,6 +264,7 @@ EventsHurt_HunterAttacker(Handle:hEvent, attacker, victim)
 				PrintHintText(attacker, "%N has already been poisoned, find another victim", victim);
 		}
 	}
+
 	if(g_iBloodlustLevel[attacker] > 0)
 	{
 		new dmgtype = GetEventInt(hEvent, "type");
@@ -286,23 +294,23 @@ EventsHurt_HunterAttacker(Handle:hEvent, attacker, victim)
 	}
 }
 
-EventsHurt_HunterVictim(Handle:hEvent, attacker, victim)
+EventsHurt_VictimHunter(Handle:hEvent, attacker, victim)
 {
+	if (IsFakeClient(victim))
+		return;
+
 	new hitGroup = GetEventInt(hEvent, "hitgroup");
 	
-	//PrintToChatAll("Hunter Hit");
-	if(hitGroup == 0)	//If victim is hunter and has beeen hit with explosive ammo, reset the pounced variables
+	if(hitGroup == 0)	// If victim is hunter and has beeen hit with explosive ammo, reset the pounced variables
 	{
-		//PrintToChatAll("Hunter Hit INSIDE, YAY TACOS");
 		g_bHunterGrappled[victim] = false;
 		g_iHunterShreddingVictim[attacker] = -1;
 		SetClientSpeed(victim);
-		//ResetSurvivorSpeed(victim);
 	}
 
 	if(g_bIsCloakedHunter[victim] == true)
 	{
-		//SetEntityRenderMode(victim, RenderMode:3);	probably dont need this
+		//SetEntityRenderMode(victim, RenderMode:3);	// Probably dont need this
 		SetEntityRenderColor(victim, 255, 255, 255, RoundToFloor(255 * (1.0 - (float(g_iKillmeleonLevel[victim]) * 0.012) )));
 		g_bIsCloakedHunter[victim] = false;
 		g_iHunterCloakCounter[victim] = 0;

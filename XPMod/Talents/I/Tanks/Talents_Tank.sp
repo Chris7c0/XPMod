@@ -9,11 +9,10 @@ OnGameFrame_Tank(iClient)
 	}
 }
 
-EventsHurt_TankVictim(Handle:hEvent, iAttacker, iVictimTank, iDmgType, iDmgHealth)
+EventsHurt_VictimTank(Handle:hEvent, iAttacker, iVictimTank)
 {
-	//PrintToChatAll("EventsHurt_TankVictim %N, iDmgType %i", iVictimTank, iDmgType);
-
 	// Globally for all tanks, put them out after X seconds
+	new iDmgType = GetEventInt(hEvent, "type");
 	if(g_iTankChosen[iVictimTank] != TANK_FIRE && (iDmgType == DAMAGETYPE_FIRE1 || iDmgType == DAMAGETYPE_FIRE2))
 	{
 		// This will reset the timer each time they take new fire damage
@@ -23,28 +22,28 @@ EventsHurt_TankVictim(Handle:hEvent, iAttacker, iVictimTank, iDmgType, iDmgHealt
 
 	switch(g_iTankChosen[iVictimTank])
 	{
-		case TANK_FIRE:			EventsHurt_TankVictim_Fire(hEvent, iAttacker, iVictimTank, iDmgType, iDmgHealth);
-		case TANK_ICE:			EventsHurt_TankVictim_Ice(hEvent, iAttacker, iVictimTank, iDmgType, iDmgHealth);
-		case TANK_NECROTANKER:	EventsHurt_TankVictim_NecroTanker(hEvent, iAttacker, iVictimTank, iDmgType, iDmgHealth);
-		case TANK_VAMPIRIC:		EventsHurt_TankVictim_Vampiric(hEvent, iAttacker, iVictimTank, iDmgType, iDmgHealth);
+		case TANK_FIRE:			EventsHurt_TankVictim_Fire(hEvent, iAttacker, iVictimTank);
+		case TANK_ICE:			EventsHurt_TankVictim_Ice(hEvent, iAttacker, iVictimTank);
+		case TANK_NECROTANKER:	EventsHurt_TankVictim_NecroTanker(hEvent, iAttacker, iVictimTank);
+		case TANK_VAMPIRIC:		EventsHurt_TankVictim_Vampiric(hEvent, iAttacker, iVictimTank);
 	}
 }
 
-EventsHurt_TankAttacker(Handle:hEvent, iAttackerTank, iVictim, iDmgType, iDmgHealth)
+EventsHurt_AttackerTank(Handle:hEvent, iAttackerTank, iVictim)
 {
 	switch(g_iTankChosen[iAttackerTank])
 	{
-		case TANK_FIRE:			EventsHurt_TankAttacker_Fire(hEvent, iAttackerTank, iVictim, iDmgType, iDmgHealth);
-		case TANK_ICE:			EventsHurt_TankAttacker_Ice(hEvent, iAttackerTank, iVictim, iDmgType, iDmgHealth);
-		case TANK_NECROTANKER:	EventsHurt_TankAttacker_NecroTanker(hEvent, iAttackerTank, iVictim, iDmgType, iDmgHealth);
-		case TANK_VAMPIRIC:		EventsHurt_TankAttacker_Vampiric(hEvent, iAttackerTank, iVictim, iDmgType, iDmgHealth);
+		case TANK_FIRE:			EventsHurt_TankAttacker_Fire(hEvent, iAttackerTank, iVictim);
+		case TANK_ICE:			EventsHurt_TankAttacker_Ice(hEvent, iAttackerTank, iVictim);
+		case TANK_NECROTANKER:	EventsHurt_TankAttacker_NecroTanker(hEvent, iAttackerTank, iVictim);
+		case TANK_VAMPIRIC:		EventsHurt_TankAttacker_Vampiric(hEvent, iAttackerTank, iVictim);
 	}
 }
 
 SetupTankForBot(iClient)
 {
 	// Choose a random tank for the bot to use
-	switch(GetRandomInt(TANK_FIRE, TANK_VAMPIRIC))
+	switch(TANK_VAMPIRIC) //GetRandomInt(TANK_FIRE, TANK_VAMPIRIC))
 	{
 		case TANK_FIRE:			LoadFireTankTalents(iClient);
 		case TANK_ICE:			LoadIceTankTalents(iClient);
