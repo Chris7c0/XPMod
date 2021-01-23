@@ -43,7 +43,7 @@ EventsHurt_AttackerTank(Handle:hEvent, iAttackerTank, iVictim)
 SetupTankForBot(iClient)
 {
 	// Choose a random tank for the bot to use
-	switch(TANK_VAMPIRIC) //GetRandomInt(TANK_FIRE, TANK_VAMPIRIC))
+	switch(GetRandomInt(TANK_FIRE, TANK_VAMPIRIC))
 	{
 		case TANK_FIRE:			LoadFireTankTalents(iClient);
 		case TANK_ICE:			LoadIceTankTalents(iClient);
