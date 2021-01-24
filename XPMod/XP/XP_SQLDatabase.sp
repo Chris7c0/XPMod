@@ -459,14 +459,11 @@ CreateNewUser(iClient)
 	//Get Client Name
 	decl String:strClientName[32];
 	GetClientName(iClient, strClientName, sizeof(strClientName));
-	//Sanitize client name for the query
-	ReplaceString(strClientName, sizeof(strClientName), "'", "-", true);
+	SanitizeValueStringForQuery(strClientName, sizeof(strClientName));
 
 	//Get a new user token
 	decl String:strUserToken[41];
 	GenerateNewHashToken(strSteamID, strUserToken);
-	
-	//PrintToChatAll(strClientName);
 	
 	//Give bonus XP
 	g_iClientXP[iClient] += 10000;
@@ -554,7 +551,7 @@ SaveUserData(iClient)
 	//Get Client Name
 	GetClientName(iClient, strClientName, sizeof(strClientName));
 	//Sanitize client name for the query
-	ReplaceString(strClientName, sizeof(strClientName), "'", "-", true);
+	SanitizeValueStringForQuery(strClientName, sizeof(strClientName));
 	
 	//Get Client XP
 	if(g_iClientXP[iClient]>99999999)
@@ -731,4 +728,12 @@ GenerateNewHashToken(const char[] strSteamID, char[] strToken)
 	Format(strValueToHash, sizeof(strValueToHash), "%s%i%i%i", strSteamID, num1, num2, num3);
 
 	SHA1String(strValueToHash, strToken, true);
+}
+
+SanitizeValueStringForQuery(char[] strValue, iStringSize)
+{
+	// Remove all the characters that can exploit or break a query
+	ReplaceString(strValue, iStringSize, "'", "-", true);
+	ReplaceString(strValue, iStringSize, "\"", "-", true);
+	ReplaceString(strValue, iStringSize, "\\", "-", true);
 }
