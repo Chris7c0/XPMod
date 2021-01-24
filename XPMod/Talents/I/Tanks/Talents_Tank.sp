@@ -19,7 +19,7 @@ EventsHurt_VictimTank(Handle:hEvent, iAttacker, iVictimTank)
 		delete g_hTimer_ExtinguishTank[iVictimTank];
 		g_hTimer_ExtinguishTank[iVictimTank] = CreateTimer(30.0, TimerExtinguishTank, iVictimTank);
 	}
-
+	
 	switch(g_iTankChosen[iVictimTank])
 	{
 		case TANK_FIRE:			EventsHurt_TankVictim_Fire(hEvent, iAttacker, iVictimTank);

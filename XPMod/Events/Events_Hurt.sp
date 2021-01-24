@@ -32,10 +32,11 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	
 	EventsHurt_IncreaseCommonInfectedDamage(attacker, victim);
 
+	new iDmgType = GetEventInt(hEvent, "type");
+
 	// If attacker is a Common Infected, no reason to continue beyond this point
-	if(attacker < 1)
+	if(attacker < 1 && iDmgType == DAMAGETYPE_INFECTED_MELEE)
 		return Plugin_Continue;
-	
 
 	// Handle Survivors
 	if (g_iClientTeam[attacker] == TEAM_SURVIVORS) // && g_iClientTeam[victim] == TEAM_INFECTED)
@@ -49,7 +50,7 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 			case NICK:		EventsHurt_AttackerNick(hEvent, attacker, victim);
 		}
 	}
-	else if (g_iClientTeam[victim] == TEAM_SURVIVORS)
+	if (g_iClientTeam[victim] == TEAM_SURVIVORS)
 	{
 		switch(g_iChosenSurvivor[victim])
 		{
@@ -75,7 +76,7 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 			case TANK: 		EventsHurt_AttackerTank(hEvent, attacker, victim);
 		}
 	}
-	else if (g_iClientTeam[victim] == TEAM_INFECTED)
+	if (g_iClientTeam[victim] == TEAM_INFECTED)
 	{
 		switch(g_iInfectedCharacter[victim])
 		{
@@ -94,8 +95,8 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 
 EventsHurt_GiveXP(Handle:hEvent, attacker, victim)
 {
-	new dmgType = GetEventInt(hEvent, "type");
-	new dmgHealth  = GetEventInt(hEvent,"dmg_health");
+	new iDmgType = GetEventInt(hEvent, "type");
+	new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
 
 	if (g_iClientTeam[victim] == TEAM_SURVIVORS && 
 		g_iClientTeam[attacker] == TEAM_INFECTED && 
@@ -106,7 +107,7 @@ EventsHurt_GiveXP(Handle:hEvent, attacker, victim)
 		GetEventString(hEvent,"weapon",iWeaponClass,32);
 		//PrintToChat(attacker, "weaponclass = %s", iWeaponClass);
 		
-		if(dmgType == 263168 || dmgType == 265216)
+		if(iDmgType == 263168 || iDmgType == 265216)
 		{
 			g_iClientXP[attacker] += 3;
 			CheckLevel(attacker);
@@ -137,8 +138,8 @@ EventsHurt_GiveXP(Handle:hEvent, attacker, victim)
 		
 		
 		//Limit because some attacks may give too many points
-		if(dmgHealth < 750)
-			g_iStat_ClientDamageToSurvivors[attacker] += dmgHealth;
+		if(iDmgHealth < 750)
+			g_iStat_ClientDamageToSurvivors[attacker] += iDmgHealth;
 		else
 			g_iStat_ClientDamageToSurvivors[attacker] += 750;
 	}
@@ -148,8 +149,8 @@ EventsHurt_GiveXP(Handle:hEvent, attacker, victim)
 	{
 		if(IsClientInGame(g_iVomitVictimAttacker[victim]) == true && IsFakeClient(g_iVomitVictimAttacker[victim]) == false)
 		{
-			if(dmgHealth < 250)
-				g_iStat_ClientDamageToSurvivors[g_iVomitVictimAttacker[victim]] += dmgHealth;
+			if(iDmgHealth < 250)
+				g_iStat_ClientDamageToSurvivors[g_iVomitVictimAttacker[victim]] += iDmgHealth;
 			else
 				g_iStat_ClientDamageToSurvivors[g_iVomitVictimAttacker[victim]] += 250;
 			
