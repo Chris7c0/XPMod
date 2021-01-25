@@ -746,7 +746,7 @@ Action:Event_ReviveSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcas
 	if(iClient < 1)
 		return Plugin_Continue;
 	SetClientSpeed(target);
-	fnc_SetRendering(target);
+	SetClientRenderAndGlowColor(target);
 	/*
 	if(g_iOverLevel[target] > 0)
 	{
@@ -2034,7 +2034,7 @@ Action:Event_PlayerIncap(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	g_bUsingTongueRope[iClient] = false;
 	g_bIsClientDown[iClient] = true;
 	g_iJockeyVictim[incapper] = -1;
-	fnc_SetRendering(iClient);
+	SetClientRenderAndGlowColor(iClient);
 	
 	if(iClient < 1)
 		return Plugin_Continue;

@@ -260,7 +260,7 @@ Action:TimerInfectedVictimTick(Handle:timer, any:iClient)
 	}
 	
 	//Reset the survivor's color
-	fnc_SetRendering(iClient);
+	SetClientRenderAndGlowColor(iClient);
 	//ResetGlow(iClient);
 	
 	//Set the attacker back to zero to signify that the victim is no longer infected

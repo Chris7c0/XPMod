@@ -124,6 +124,14 @@ new String:INFECTED_NAME[][] =          {"",
 #define MOVETYPE_WALK 			2
 #define MOVETYPE_FLYGRAVITY 	5
 
+#define GLOWTYPE_NORMAL         0
+#define GLOWTYPE_ONUSE          1
+#define GLOWTYPE_ONVISIBLE      2
+#define GLOWTYPE_CONSTANT       3
+
+#define RENDER_MODE_NORMAL      0
+#define RENDER_MODE_TRANSPARENT 3
+
 //Round/Map Variables
 //new bool:g_bRoundStarted = false;
 new bool:g_bEndOfRound = false;

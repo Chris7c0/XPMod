@@ -37,10 +37,11 @@ LoadNecroTankerTalents(iClient)
 	
 	//Set Movement Speed
 	SetClientSpeed(iClient);
-	
-	//Change Skin Color
-	SetEntityRenderMode(iClient, RenderMode:0);
-	SetEntityRenderColor(iClient, 0, 130, 0, 255);
+
+	// Change Tank's Skin Color
+	SetClientRenderColor(iClient, 0, 130, 40, 255, RENDER_MODE_NORMAL);
+	// Make the tank have a colored outline glow
+	SetClientGlow(iClient, 0, 130, 40, GLOWTYPE_ONVISIBLE);
 
 	// Create Effects
 	CreateNecroTankerTrailEffect(iClient);

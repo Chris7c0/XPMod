@@ -133,7 +133,7 @@ Action:Event_ChargerCarryStart(Handle:hEvent, const String:strName[], bool:bDont
 	if(g_iHillbillyLevel[attacker] > 0)
 		g_iPID_ChargerShield[attacker] = WriteParticle(attacker, "charger_shield", 70.0);
 		
-	fnc_SetRendering(victim);
+	SetClientRenderAndGlowColor(victim);
 	return Plugin_Continue;
 }
 
@@ -157,7 +157,7 @@ Action:Event_ChargerCarryEnd(Handle:hEvent, const String:strName[], bool:bDontBr
 		g_bUsingTongueRope[victim] = false;
 		SetMoveType(victim, MOVETYPE_WALK, MOVECOLLIDE_DEFAULT);
 	}
-	fnc_SetRendering(victim);
+	SetClientRenderAndGlowColor(victim);
 	return Plugin_Continue;
 }
 
@@ -176,7 +176,7 @@ Action:Event_ChargerPummelStart(Handle:hEvent, const String:strName[], bool:bDon
 			g_bChargerGrappled[victim] = true;
 		}
 	}
-	fnc_SetRendering(victim);
+	SetClientRenderAndGlowColor(victim);
 	return Plugin_Continue;
 }
 
@@ -201,7 +201,7 @@ Action:Event_ChargerPummelEnd(Handle:hEvent, const String:strName[], bool:bDontB
 		g_bIsClientDown[victim] = false;
 		g_bDivineInterventionQueued[victim] = false;
 	}
-	fnc_SetRendering(victim);
+	SetClientRenderAndGlowColor(victim);
 	return Plugin_Continue;
 }
 
@@ -233,7 +233,7 @@ Action:Event_ChokeStart(Handle:hEvent, const String:strName[], bool:bDontBroadca
 		//CreateTimer(0.3, TimerCheckTongueDistance, attacker, TIMER_FLAG_NO_MAPCHANGE);
 	}
 
-	fnc_SetRendering(victim);
+	SetClientRenderAndGlowColor(victim);
 	return Plugin_Continue;
 }
 
@@ -262,7 +262,7 @@ Action:Event_ChokeEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast
 		g_bIsClientDown[victim] = false;
 		g_bDivineInterventionQueued[victim] = false;
 	}
-	fnc_SetRendering(victim);
+	SetClientRenderAndGlowColor(victim);
 	return Plugin_Continue;
 }
 
@@ -271,7 +271,7 @@ Action:Event_TongueRelease(Handle:hEvent, const String:strName[], bool:bDontBroa
 	//new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 	g_bSmokerGrappled[victim] = false;
-	fnc_SetRendering(victim);
+	SetClientRenderAndGlowColor(victim);
 	return Plugin_Continue;
 }
 
@@ -329,7 +329,7 @@ Action:Event_TongueGrab(Handle:hEvent, const String:strName[], bool:bDontBroadca
 			CreateTimer(0.1, Timer_BreakFreeOfSmoker, victim, TIMER_FLAG_NO_MAPCHANGE);
 		}
 	}
-	fnc_SetRendering(victim);
+	SetClientRenderAndGlowColor(victim);
 	return Plugin_Continue;
 }
 
@@ -343,7 +343,7 @@ Action:Event_JockeyRide(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	g_bJockeyIsRiding[attacker] = true;
 	g_bJockeyGrappled[victim] = true;
 	g_iJockeysVictim[attacker] = victim;
-	fnc_SetRendering(victim);
+	SetClientRenderAndGlowColor(victim);
 
 	GiveClientXP(attacker, 50, g_iSprite_50XP_SI, victim, "Grappled A Survivor.");
 	
@@ -459,7 +459,7 @@ Action:Event_JockeyRideEnd(Handle:hEvent, const String:strName[], bool:bDontBroa
 	g_fJockeyRideSpeedVanishingActBoost[victim] = 0.0;
 	SetClientSpeed(victim);
 
-	fnc_SetRendering(victim);
+	SetClientRenderAndGlowColor(victim);
 	return Plugin_Continue;
 }
 
@@ -551,8 +551,8 @@ Action:Event_HunterPounceStart(Handle:hEvent, const String:strName[], bool:bDont
 			}
 		}
 	}
-	fnc_SetRendering(attacker);
-	fnc_SetRendering(victim);
+	SetClientRenderAndGlowColor(attacker);
+	SetClientRenderAndGlowColor(victim);
 	return Plugin_Continue;
 }
 
@@ -580,8 +580,8 @@ Action:Event_HunterPounceStopped(Handle:hEvent, const String:strName[], bool:bDo
 		g_bIsClientDown[victim] = false;
 		g_bDivineInterventionQueued[victim] = false;
 	}
-	fnc_SetRendering(attacker);
-	fnc_SetRendering(victim);
+	SetClientRenderAndGlowColor(attacker);
+	SetClientRenderAndGlowColor(victim);
 	return Plugin_Continue;
 }
 

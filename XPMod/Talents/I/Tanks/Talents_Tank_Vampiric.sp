@@ -22,26 +22,27 @@ LoadVampiricTankTalents(iClient)
 	// Set a really high rock cooldown so that the rock throw ability is deactivated
 	SetSIAbilityCooldown(iClient, 99999.0);
 	
-	//Give Health
+	// Give Health
 	SetEntProp(iClient, Prop_Data,"m_iMaxHealth", TANK_HEALTH_VAMPIRIC);
 	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
 	SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + TANK_HEALTH_VAMPIRIC - 6000);
 
-	//Stop Kiting (Bullet hits slowing tank down)
+	// Stop Kiting (Bullet hits slowing tank down)
 	SetConVarInt(FindConVar("z_tank_damage_slow_min_range"), 0);
 	SetConVarInt(FindConVar("z_tank_damage_slow_max_range"), 0);
 	
-	//Set Movement Speed
+	// Set Movement Speed
 	SetClientSpeed(iClient);
-	
-	//Change Skin Color
-	SetEntityRenderMode(iClient, RenderMode:0);
-	SetEntityRenderColor(iClient, 100, 0, 255, 255);
+
+	// Change Tank's Skin Color
+	SetClientRenderColor(iClient, 100, 0, 255, 255, RENDER_MODE_NORMAL);
+	// Make the tank have a colored outline glow
+	SetClientGlow(iClient, 100, 0, 255, GLOWTYPE_ONVISIBLE);
 
 	//Grow the tank, doesnt seem to work
 	//SetEntPropFloat(iClient , Prop_Send,"m_flModelScale", 1.3); 
 	
-	//Particle effects
+	// Particle effects
 	CreateVampiricTankTrailEffect(iClient);
 
 	if (IsFakeClient(iClient) == false)

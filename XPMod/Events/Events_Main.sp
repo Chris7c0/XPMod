@@ -533,7 +533,7 @@ Action:Event_PlayerSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadc
 	if(g_iClientTeam[iClient] == TEAM_INFECTED)
 		g_iInfectedCharacter[iClient] = GetEntProp(iClient, Prop_Send, "m_zombieClass");
 	
-	fnc_SetRendering(iClient);
+	SetClientRenderAndGlowColor(iClient);
 	//ResetGlow(iClient);
 	SetEntProp(iClient, Prop_Send, "m_iHideHUD", 0);
 	

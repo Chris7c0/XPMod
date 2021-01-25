@@ -63,6 +63,11 @@ Action:TestFunction3(iClient, args)
 	PrintToChat(iClient, "T3");
 	char str1[99];
 	GetCmdArg(1, str1, sizeof(str1));
+	char str2[99];
+	GetCmdArg(2, str2, sizeof(str2));
+
+	//Testing glow
+	SetClientGlow(StringToInt(str1), 0, 0, 0, StringToInt(str2));
 
 	//SpawnSpecialInfected(iClient);
 

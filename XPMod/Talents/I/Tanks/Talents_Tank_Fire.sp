@@ -31,11 +31,12 @@ LoadFireTankTalents(iClient)
 	
 	//Set Movement Speed	
 	SetClientSpeed(iClient);
-	
-	//Change Skin Color
-	SetEntityRenderMode(iClient, RenderMode:0);
-	SetEntityRenderColor(iClient, 255, 200, 0, 255);
-	//SetEntityRenderColor(iClient, 210, 88, 30, 255);
+
+	// Change Tank's Skin Color
+	SetClientRenderColor(iClient, 255, 200, 30, 255, RENDER_MODE_NORMAL);
+	// Make the tank have a colored outline glow
+	SetClientGlow(iClient, 250, 50, 20, GLOWTYPE_ONVISIBLE);
+	//Ellis firestorm 210, 88, 30
 	
 	if (IsFakeClient(iClient) == false)
 		PrintHintText(iClient, "You have become the Fire Tank");

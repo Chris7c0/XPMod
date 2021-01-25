@@ -35,7 +35,7 @@ Action:TimerRemovePeeFX(Handle:timer, any:iClient)
 	if(IsValidEntity(iClient) == false || IsClientInGame(iClient) ==  false)
 		return Plugin_Stop;
 	
-	fnc_SetRendering(iClient);
+	SetClientRenderAndGlowColor(iClient);
 	//ResetGlow(iClient);
 	
 	return Plugin_Stop;
@@ -51,7 +51,7 @@ Action:TimerEnableJockeyPee(Handle:timer, any:iClient)
 Action:TimerRemoveJockeyCloak(Handle:timer, any:iClient)
 {
 	g_bCanJockeyCloak[iClient] = true;
-	fnc_SetRendering(iClient);
+	SetClientRenderAndGlowColor(iClient);
 
 	return Plugin_Stop;
 }

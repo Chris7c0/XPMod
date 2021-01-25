@@ -4,7 +4,7 @@
 
 Action:Timer_ResetGlow(Handle:timer, any:iClient)
 {
-	fnc_SetRendering(iClient);
+	SetClientRenderAndGlowColor(iClient);
 	
 	g_hTimer_ResetGlow[iClient] = null;
 	
@@ -206,7 +206,7 @@ Action:TimerUnfreeze(Handle:timer, any:data)
 				EmitAmbientSound(SOUND_FREEZE, vec, i, SNDLEVEL_NORMAL);
 			}
 			
-			fnc_SetRendering(i);
+			SetClientRenderAndGlowColor(i);
 			SetClientSpeed(i);
 
 			SetEntProp(i, Prop_Data, "m_takedamage", 2, 1);	//Player can take damage now

@@ -303,7 +303,7 @@ RestoreClient(iClient)
 {
 	SetAlpha(iClient,255);		// Make visible
 	RemoveClone(iClient);		// Delete clone
-	fnc_SetRendering(iClient);
+	SetClientRenderAndGlowColor(iClient);
 	//ResetGlow(iClient);
 }
 

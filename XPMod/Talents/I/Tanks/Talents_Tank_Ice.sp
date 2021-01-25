@@ -27,10 +27,11 @@ LoadIceTankTalents(iClient)
 	SetEntProp(iClient, Prop_Data,"m_iMaxHealth", TANK_HEALTH_ICE);
 	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
 	SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + TANK_HEALTH_ICE - 6000);
-	
-	//Change Skin Color
-	SetEntityRenderMode(iClient, RenderMode:0);
-	SetEntityRenderColor(iClient, 0, 255, 255, 255);
+
+	// Change Tank's Skin Color
+	SetClientRenderColor(iClient, 0, 255, 255, 255, RENDER_MODE_NORMAL);
+	// Make the tank have a colored outline glow
+	SetClientGlow(iClient, 80, 240, 255, GLOWTYPE_ONVISIBLE);
 
 	//Grow the tank, doesnt seem to work
 	//SetEntPropFloat(iClient , Prop_Send,"m_flModelScale", 1.3); 
@@ -256,7 +257,7 @@ UnfreezePlayerByTank(iClient)
 	StopHudOverlayColor(iClient)
 	
 	//Set Player Model Color
-	fnc_SetRendering(iClient);
+	SetClientRenderAndGlowColor(iClient);
 	//ResetGlow(iClient);
 	
 	//Reset Movement Speed

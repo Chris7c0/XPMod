@@ -201,7 +201,7 @@ LoadTalents(iClient)
 	{
 		SetSurvivorModel(iClient);	//Spawn their character (change their character model)
 		DeleteAllClientParticles(iClient);
-		fnc_SetRendering(iClient);
+		SetClientRenderAndGlowColor(iClient);
 		//ResetGlow(iClient);				//Sometimes players still have their frozen blue color after loaded, trying to fix with this
 		
 		if(g_bTalentsGiven[iClient] == false)
