@@ -166,7 +166,7 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 			{
 				g_bCanBeGhost[iClient] = false;
 				g_bIsGhost[iClient] = true;
-				PrintToChat(iClient, "You are a ghost!");
+				//PrintToChat(iClient, "You are a ghost!");
 				SetClientSpeed(iClient);
 			}
 		}

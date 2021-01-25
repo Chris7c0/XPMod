@@ -1,17 +1,21 @@
 Action:TimerStopFireStorm(Handle:timer, any:iClient)
 {
+	g_bUsingFireStorm[iClient] = false;
+
+	if(RunClientChecks(iClient)==false || IsPlayerAlive(iClient)==false)
+		return Plugin_Stop;
+
 	StopSound(iClient, SNDCHAN_AUTO, SOUND_ONFIRE);
-	if(IsClientInGame(iClient)==false)
-		return Plugin_Stop;
-	if(IsPlayerAlive(iClient)==false)
-		return Plugin_Stop;
+	
 	SetEntProp(iClient, Prop_Send, "m_iGlowType", 0);
 	SetEntProp(iClient, Prop_Send, "m_nGlowRange", 0);
 	SetEntProp(iClient, Prop_Send, "m_glowColorOverride", 0);
+
 	ChangeEdictState(iClient, 12);
+
 	SetEntityRenderMode(iClient, RenderMode:0);
 	SetEntityRenderColor(iClient, 255, 255, 255, 255);
-	g_bUsingFireStorm[iClient] = false;
+	
 	return Plugin_Stop;
 }
 
@@ -23,9 +27,14 @@ Action:TimerEllisPrimaryCycleReset(Handle:timer, any:iClient)
 
 Action:TimerEllisJamminGiveExplosive(Handle:timer, any:iClient)
 {
+	g_iEventWeaponFireCounter[iClient] = 0;
+	
+	if (RunClientChecks(iClient) == false || IsFakeClient(iClient))
+		return Plugin_Stop;
+	
 	SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
 	FakeClientCommand(iClient, "give molotov");
-	g_iEventWeaponFireCounter[iClient] = 0;
+	
 	return Plugin_Stop;
 }
 
@@ -33,8 +42,10 @@ Action:TimerEllisLimitBreakReset(Handle:timer, any:iClient)
 {
 	g_bIsEllisLimitBreaking[iClient] = false;
 	g_bEllisLimitBreakInCooldown[iClient] = true;
-	PrintHintText(iClient, "Your weapon was destroyed and LIMIT BREAK is on cooldown! 60 seconds remaining");
-	//PrintToChatAll("Ellis limit break has expired");
+
+	if (RunClientChecks(iClient) && IsFakeClient(iClient) == false)
+		PrintHintText(iClient, "Your weapon was destroyed and LIMIT BREAK is on cooldown! 60 seconds remaining");
+	
 	if((StrEqual(g_strEllisPrimarySlot1, "empty", false) == false) && (StrEqual(g_strEllisPrimarySlot2, "empty", false) == false))
 	{
 		fnc_CycleWeapon(iClient);
@@ -46,7 +57,10 @@ Action:TimerEllisLimitBreakReset(Handle:timer, any:iClient)
 	else
 	{
 		g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 0);
-		if (g_iPrimarySlotID[iClient] > -1) RemoveEdict(g_iPrimarySlotID[iClient]);
+
+		if (g_iPrimarySlotID[iClient] > -1)
+			RemoveEdict(g_iPrimarySlotID[iClient]);
+
 		fnc_ClearAllWeaponData(iClient);
 	}
 	/* //////////////Old setup///////////////
@@ -76,7 +90,9 @@ Action:TimerEllisLimitBreakCooldown(Handle:timer, any:iClient)
 {
 	g_bCanEllisLimitBreak[iClient] = true;
 	g_bEllisLimitBreakInCooldown[iClient] = false;
-	PrintHintText(iClient, "Your LIMIT BREAK is ready!");
-	//PrintToChatAll("Ellis limit break has cooled down");
+
+	if (RunClientChecks(iClient) && IsFakeClient(iClient) == false)
+		PrintHintText(iClient, "Your LIMIT BREAK is ready!");
+	
 	return Plugin_Stop;
 }
