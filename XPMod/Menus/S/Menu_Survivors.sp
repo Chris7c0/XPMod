@@ -42,6 +42,7 @@ Action:ChangeSurvivorMenuDraw(iClient)
 {
 	CheckMenu(iClient);
 	g_hMenu_XPM[iClient] = CreateMenu(ChangeSurvivorMenuHandler);
+	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	
 	switch(g_iChosenSurvivor[iClient])
 	{
@@ -60,10 +61,11 @@ Action:ChangeSurvivorMenuDraw(iClient)
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Rochelle (Ninja)					  [PRO]");
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Coach	 (Berserker)	 [NORMAL]");
 	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Ellis		 (Weapons Expert) [EASY]");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Nick		 (Medic)					[PRO]\n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Nick		 (Medic)					[PRO]");
+	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Louis	  (Disruptor)			   [1337]\n ");
 
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Change Your Equipment");
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Do Nothing\n=================================\n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Change Your Equipment");
+	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Confirm Your Survivor\n=================================\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 
@@ -163,13 +165,22 @@ ChangeSurvivorMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 				SaveUserData(iClient);
 				TopSurvivorMenuDraw(iClient);
 			}
-			case 5: //Change Equipment
+			case 5: //Change to Louis
+			{
+				PrintToChat(iClient, "\x03[XPMod] \x05Louis abilities are coming soon!");
+				ChangeSurvivorMenuDraw(iClient);
+			}
+			case 6: //Change Equipment
 			{
 				LoadoutMenuDraw(iClient);
 			}
-			case 6: //Back
+			case 7: //Confirm
 			{
-				TopSurvivorMenuDraw(iClient);
+				g_bUserStoppedConfirmation[iClient] = false;
+				g_iAutoSetCountDown[iClient] = 30;
+				
+				delete g_hTimer_ShowingConfirmTalents[iClient];
+				g_hTimer_ShowingConfirmTalents[iClient] = CreateTimer(1.0, TimerShowTalentsConfirmed, iClient, TIMER_REPEAT);
 			}
 		}
 	}

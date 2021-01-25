@@ -15,7 +15,7 @@ public OnGameFrame()
 
 		// Survivors
 		if(g_iClientTeam[iClient] == TEAM_SURVIVORS)		
-		{			
+		{
 			if(g_bIsSmokeInfected[iClient] == true)
 			{
 				if(IsValidEntity(g_iSmokerInfectionCloudEntity[iClient]))

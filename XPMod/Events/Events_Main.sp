@@ -74,9 +74,10 @@ SetupXPMEvents()
 	HookEvent("charger_killed", Event_ChargerKilled);
 	HookEvent("ability_use", Event_AbilityUse);
 	HookEvent("spit_burst", Event_SpitBurst);
-	HookEvent("ghost_spawn_time", Event_GhostSpawnTime);
-	HookEvent("entered_spit", Event_EnteredSpit);
 	HookEvent("player_now_it", Event_PlayerNowIt);
+	//HookEvent("ghost_spawn_time", Event_GhostSpawnTime);
+	//HookEvent("entered_spit", Event_EnteredSpit);
+	
 }
 
 /**************************************************************************************************************************
@@ -146,6 +147,33 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 			// Make sure their talents aren't confirmed yet though, to not load or change multiple
 			if (g_bTalentsConfirmed[iClient] == false)
 				GetUserData(iClient, true, true);
+		}
+	}
+
+	// Ghosts Spawn In
+	// This is the best place I could find to capture ghost spawn in reliablly
+	// Move this to on game frame if doing more with ghost and need it before input given
+	if (g_bCanBeGhost[iClient] && 
+		g_iClientTeam[iClient] == TEAM_INFECTED &&
+		g_bIsGhost[iClient] == false &&
+		RunClientChecks(iClient))
+	{
+		// Check if they have set a class already
+		if (g_iInfectedCharacter[iClient] == UNKNOWN_INFECTED)
+		{
+			//Check if they are a ghost
+			if (GetEntData(iClient, g_iOffset_IsGhost, 1) == 1)
+			{
+				g_bCanBeGhost[iClient] = false;
+				g_bIsGhost[iClient] = true;
+				PrintToChat(iClient, "You are a ghost!");
+				SetClientSpeed(iClient);
+			}
+		}
+		// If they have an infected class set, then they are already spawned in
+		else
+		{
+			g_bCanBeGhost[iClient] = false;
 		}
 	}
 
@@ -527,6 +555,8 @@ Action:Event_PlayerSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadc
 	}
 	else if ((GetClientTeam(iClient)) == TEAM_SURVIVORS)
 		PlayerFreeze(iClient);
+
+	SetClientSpeed(iClient);
 	
 	return Plugin_Continue;
 }

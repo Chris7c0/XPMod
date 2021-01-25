@@ -835,8 +835,6 @@ EventsHurt_VictimEllis(Handle:hEvent, attacker, victim)
 
 	SuppressNeverUsedWarning(attacker);
 
-	PrintToChatAll("EventsHurt_VictimEllis");
-
 	new dmgType = GetEventInt(hEvent, "type");
 	new dmgHealth  = GetEventInt(hEvent,"dmg_health");
 

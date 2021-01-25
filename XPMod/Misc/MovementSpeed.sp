@@ -254,6 +254,13 @@ SetClientSpeedTank(iClient, &Float:fSpeed)
 
 bool SetClientSpeedOverrides(iClient, &Float:fSpeed)
 {
+	// If they are an infected ghost, then give them fast speed.
+	if(GetEntData(iClient, g_iOffset_IsGhost, 1) == 1)
+	{
+		fSpeed = 2.5;
+		return true;
+	}
+
 	// If choking a victim, dont give other movement speed buffs
 	if (g_iChokingVictim[iClient] > 0)
 	{

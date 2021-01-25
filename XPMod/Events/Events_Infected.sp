@@ -974,18 +974,78 @@ Action:Timer_CheckWitchRage(Handle:timer, any:iWitchID)
 	return Plugin_Continue;
 }
 
-Action:Event_GhostSpawnTime(Handle:hEvent, const String:sName[], bool:bDontBroadcast)
-{
-	new iSpawner = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	new Float:fSpawnTime = GetEventFloat(hEvent, "spawntime");
-	//PrintToChatAll("Spawn Time = %f", fSpawnTime);
-	CreateTimer(fSpawnTime + 0.5, TimerSpawnGhostClass, iSpawner, TIMER_FLAG_NO_MAPCHANGE);
-}
+// Action:Event_GhostSpawnTime(Handle:hEvent, const String:sName[], bool:bDontBroadcast)
+// {
+// 	new iSpawner = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+// 	new Float:fSpawnTime = GetEventFloat(hEvent, "spawntime");
+// 	PrintToChatAll("Spawn Time = %f", fSpawnTime);
+// 	CreateTimer(fSpawnTime + 1.5, TimerSpawnGhostClass, iSpawner, TIMER_FLAG_NO_MAPCHANGE);
+// }
 
-Action:Event_EnteredSpit(Handle:hEvent, const String:sName[], bool:bDontBroadcast)
-{
-	//new userid = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	//new subject = GetEventInt(hEvent,"subject");
-	// PrintToChatAll("Entered Spit, userid = %i", userid);
-	// PrintToChatAll("Entered Spit, subject = %i", subject);
-}
+// Action:TimerSpawnGhostClass(Handle:timer, any:iClient)
+// {
+// 	SetClientSpeed(iClient);
+
+// 	PrintToChatAll("Spawned as ghost!");
+	
+// 	// if (g_iClientTeam[iClient] == TEAM_INFECTED)
+// 	// {
+// 	// 	g_iInfectedCharacter[iClient] = GetEntProp(iClient, Prop_Send, "m_zombieClass");
+// 	// 	PrintToChatAll("ZombieClass = %d", g_iInfectedCharacter[iClient]);
+		
+// 	// 	if(g_iInfectedCharacter[iClient] != g_iClientInfectedClass1[iClient] && g_iInfectedCharacter[iClient] != g_iClientInfectedClass2[iClient] && g_iInfectedCharacter[iClient] != g_iClientInfectedClass3[iClient])
+// 	// 	{
+// 	// 		PrintToChatAll("Infected Character %i does not equal class %i, %i, or %i", g_iInfectedCharacter[iClient], g_iClientInfectedClass1[iClient], g_iClientInfectedClass2[iClient], g_iClientInfectedClass3[iClient]);
+// 	// 		new WeaponIndex;
+// 	// 		while ((WeaponIndex = GetPlayerWeaponSlot(iClient, 0)) != -1)
+// 	// 		{
+// 	// 			RemovePlayerItem(iClient, WeaponIndex);
+// 	// 			RemoveEdict(WeaponIndex);
+// 	// 		}
+
+// 	// 		int newClass = 0
+// 	// 		switch (GetRandomInt(0, 2))
+// 	// 		{
+// 	// 			case 0:
+// 	// 			{
+// 	// 				newClass = g_iClientInfectedClass1[iClient]
+// 	// 			}
+// 	// 			case 1:
+// 	// 			{
+// 	// 				newClass = g_iClientInfectedClass2[iClient]
+// 	// 			}
+// 	// 			case 2:
+// 	// 			{
+// 	// 				newClass = g_iClientInfectedClass3[iClient]
+// 	// 			}
+// 	// 		}
+
+// 	// 		PrintToChatAll("Attempting to change spawn to %i", newClass);
+// 	// 		SDKCall(g_hSetClass, iClient, newClass);
+// 	// 		int cAbility = GetEntPropEnt(iClient, Prop_Send, "m_customAbility");
+// 	// 		if (cAbility > 0) AcceptEntityInput(cAbility, "Kill");
+// 	// 		new entData = GetEntData(SDKCall(g_hCreateAbility, iClient), g_iAbility)
+// 	// 		if (entData > 0) SetEntProp(iClient, Prop_Send, "m_customAbility", entData);
+// 	// 		PrintToChatAll("Should be spawned as a %i", newClass);
+
+// 	// 		// Example OLD Code
+// 	// 		// PrintToChatAll("Spawning as %i", g_iClientInfectedClass3[iClient]);
+// 	// 		// SDKCall(g_hSetClass, iClient, g_iClientInfectedClass3[iClient]);
+// 	// 		// new entprop = GetEntProp(iClient, Prop_Send, "m_customAbility")
+// 	// 		// AcceptEntityInput(MakeCompatEntRef(entprop), "Kill");
+// 	// 		// new ent = GetEntData(SDKCall(g_hCreateAbility, iClient), g_iAbility);
+// 	// 		// SetEntProp(iClient, Prop_Send, "m_customAbility", ent);
+// 	// 		// PrintToChatAll("Should be spawned as a %i", g_iClientInfectedClass3[iClient]);
+// 	// 	}
+// 	// }
+	
+// 	return Plugin_Stop;
+// }
+
+// Action:Event_EnteredSpit(Handle:hEvent, const String:sName[], bool:bDontBroadcast)
+// {
+// 	//new userid = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+// 	//new subject = GetEventInt(hEvent,"subject");
+// 	// PrintToChatAll("Entered Spit, userid = %i", userid);
+// 	// PrintToChatAll("Entered Spit, subject = %i", subject);
+// }

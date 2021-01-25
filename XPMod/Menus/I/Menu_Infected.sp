@@ -26,7 +26,7 @@ Action:TopInfectedMenuDraw(iClient)
 		AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back");
-	AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit the Menu\n==========================\n \n  \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit the Menu\n==========================\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 	return Plugin_Handled;
@@ -48,7 +48,7 @@ Action:ChangeInfectedMenuDraw(iClient)
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Change Class 2");
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Change Class 3\n ");
 
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Do Nothing\n==========================\n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Confirm Your Infected\n==========================\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 	return Plugin_Handled;
@@ -70,7 +70,7 @@ Action:ChangeClass1MenuDraw(iClient)
 	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Jockey");
 	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Charger");
 	AddMenuItem(g_hMenu_XPM[iClient], "option7", "None\n ");
-	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Back\n==========================\n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Back\n==========================\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 	return Plugin_Handled;
@@ -91,7 +91,7 @@ Action:ChangeClass2MenuDraw(iClient)
 	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Jockey");
 	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Charger");
 	AddMenuItem(g_hMenu_XPM[iClient], "option7", "None\n ");
-	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Back\n==========================\n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Back\n==========================\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 	return Plugin_Handled;
@@ -112,7 +112,7 @@ Action:ChangeClass3MenuDraw(iClient)
 	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Jockey");
 	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Charger");
 	AddMenuItem(g_hMenu_XPM[iClient], "option7", "None\n ");
-	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Back\n==========================\n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Back\n==========================\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 	return Plugin_Handled;
@@ -218,9 +218,13 @@ ChangeInfectedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 					ChangeInfectedMenuDraw(iClient);
 				}
 			}
-			case 3: //Back-Do Nothing
+			case 3: //Confirm
 			{
-				TopInfectedMenuDraw(iClient);
+				g_bUserStoppedConfirmation[iClient] = false;
+				g_iAutoSetCountDown[iClient] = 30;
+				
+				delete g_hTimer_ShowingConfirmTalents[iClient];
+				g_hTimer_ShowingConfirmTalents[iClient] = CreateTimer(1.0, TimerShowTalentsConfirmed, iClient, TIMER_REPEAT);
 			}
 		}
 	}

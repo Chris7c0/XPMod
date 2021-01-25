@@ -373,6 +373,10 @@ Action:WaitForNonZeroOriginVectorAndSetUpTankRock(Handle:timer, any:iRockEntity)
 	
 	//Find the tank rock entity in the list that will be used to gain the rock type
 	new iTankRockIndex = FindIndexInArrayListUsingValue(g_listTankRockEntities, iRockEntity, TANK_ROCK_ENTITY_ID);
+	// Check that a valid index was returned
+	if (iTankRockIndex < 0)
+		return Plugin_Stop;
+
 	//Get the Rock Type and create the trail based on the type
 	switch(g_listTankRockEntities.Get(iTankRockIndex, TANK_ROCK_TYPE))
 	{

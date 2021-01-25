@@ -370,7 +370,7 @@ ChooseTeamMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	if(action==MenuAction_Select)
 	{
-		if(RunClientChecks(iClient) == false)
+		if(RunClientChecks(iClient) == false || IsFakeClient(iClient))
 			return;
 
 		if (g_bPlayerInTeamChangeCoolDown[iClient])
@@ -391,6 +391,7 @@ ChooseTeamMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 					ChooseTeamMenuDraw(iClient);
 					return;
 				}
+
 				if(!IsTeamFull(TEAM_SURVIVORS))
 				{
 					/*if ((!IsClientConnected(iClient)) || (!IsClientInGame(iClient)))
@@ -405,20 +406,16 @@ ChooseTeamMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 					// Search for an empty bot
 					new bot = 1;
 					
-					do
-					{
-						bot++;
-					}
-					while (((bot <= MaxClients) && IsValidEntity(bot) && IsClientInGame(bot) && IsFakeClient(bot) && (GetClientTeam(bot) == TEAM_SURVIVORS)) == false)
+					do { bot++; }
+					while (
+						(bot <= MaxClients && 
+						 RunClientChecks(bot) && 
+						 IsFakeClient(bot) && 
+						 GetClientTeam(bot) == TEAM_SURVIVORS) == false)
 
-					if(bot < 1 || iClient < 1 || IsValidEntity(bot) == false)
+					if (iClient < 1 || IsValidEntity(bot) == false)
 						return;
-
-					if(IsClientInGame(bot)== false)
-					{
-						PrintToChat(iClient, "[SM] Bot is not avilable anymore.");
-						return;
-					}
+					
 					// force player to spec humans
 					SDKCall(g_hSDK_SetHumanSpec, bot, iClient); 
 					

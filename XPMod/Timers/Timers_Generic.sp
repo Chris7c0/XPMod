@@ -73,29 +73,43 @@ Action:TimerResetPlayerChangeTeamCoolDown(Handle:timer, any:iClient)
 
 Action:TimerCheckTeam(Handle:timer, any:iClient)
 {
-	if(iClient < 1 || IsClientInGame(iClient) == false)
+	if (RunClientChecks(iClient) == false)
 		return Plugin_Stop;
 	
 	if(g_bClientSpectating[iClient] == true && IsFakeClient(iClient) == false)
 	{
 		ChangeClientTeam(iClient, TEAM_SPECTATORS);
 		g_iClientTeam[iClient] = 1;
-		PrintToChat(iClient, "\n\x03[XPMod] \x04You are a Spectator until you change teams through the XPM Menu.\n ");
-		PrintHintText(iClient, "You are a Spectator until you change teams through the XPM Menu.");
 	}
 	
+	// Get their team and store it for fast retrieval
 	g_iClientTeam[iClient] = GetClientTeam(iClient);
 	
 	DeleteAllClientParticles(iClient);
 	ResetAllVariables(iClient);
 	
-	if(GetClientTeam(iClient) == TEAM_INFECTED)
+	if(g_iClientTeam[iClient] == TEAM_INFECTED)
 	{
+		// We now do not know which infected they have, because they switched team
+		g_iInfectedCharacter[iClient] = UNKNOWN_INFECTED;
+
+		// For checking if the player is a ghost
+		g_bCanBeGhost[iClient] = true;
+		g_bIsGhost[iClient] = false;
+
+		// Rochelle's Listening Abilities
 		for(new i = 1; i <= MaxClients; i++)
 		{
 			if(g_iGatherLevel[i] == 5 && IsClientInGame(i) == true && GetClientTeam(i) == TEAM_SURVIVORS)
 				SetListenOverride(i, iClient, Listen_Yes);	//Sets the iClient to hear all the infected's voice comms
 		}
+	}
+
+	// Display the Spectator message
+	if (g_iClientTeam[iClient] == TEAM_SPECTATORS)
+	{
+		PrintToChat(iClient, "\n\x03[XPMod] \x04You are a Spectator until you change teams through the XPM Menu.\n ");
+		PrintHintText(iClient, "You are a Spectator until you change teams through the XPM Menu.");
 	}
 	
 	return Plugin_Stop;
@@ -308,63 +322,5 @@ Action:TimerDrugged(Handle:timer, any:iClient)
 	//ResetSurvivorSpeed(iClient);
 	
 	g_hTimer_DrugPlayer[iClient] = null;
-	return Plugin_Stop;
-}
-
-Action:TimerSpawnGhostClass(Handle:timer, any:iClient)
-{
-	// PrintToChatAll("Spawned as ghost!");
-	
-	// if (g_iClientTeam[iClient] == TEAM_INFECTED)
-	// {
-	// 	g_iInfectedCharacter[iClient] = GetEntProp(iClient, Prop_Send, "m_zombieClass");
-	// 	PrintToChatAll("ZombieClass = %d", g_iInfectedCharacter[iClient]);
-		
-	// 	if(g_iInfectedCharacter[iClient] != g_iClientInfectedClass1[iClient] && g_iInfectedCharacter[iClient] != g_iClientInfectedClass2[iClient] && g_iInfectedCharacter[iClient] != g_iClientInfectedClass3[iClient])
-	// 	{
-	// 		PrintToChatAll("Infected Character %i does not equal class %i, %i, or %i", g_iInfectedCharacter[iClient], g_iClientInfectedClass1[iClient], g_iClientInfectedClass2[iClient], g_iClientInfectedClass3[iClient]);
-	// 		new WeaponIndex;
-	// 		while ((WeaponIndex = GetPlayerWeaponSlot(iClient, 0)) != -1)
-	// 		{
-	// 			RemovePlayerItem(iClient, WeaponIndex);
-	// 			RemoveEdict(WeaponIndex);
-	// 		}
-
-	// 		int newClass = 0
-	// 		switch (GetRandomInt(0, 2))
-	// 		{
-	// 			case 0:
-	// 			{
-	// 				newClass = g_iClientInfectedClass1[iClient]
-	// 			}
-	// 			case 1:
-	// 			{
-	// 				newClass = g_iClientInfectedClass2[iClient]
-	// 			}
-	// 			case 2:
-	// 			{
-	// 				newClass = g_iClientInfectedClass3[iClient]
-	// 			}
-	// 		}
-
-	// 		PrintToChatAll("Attempting to change spawn to %i", newClass);
-	// 		SDKCall(g_hSetClass, iClient, newClass);
-	// 		int cAbility = GetEntPropEnt(iClient, Prop_Send, "m_customAbility");
-	// 		if (cAbility > 0) AcceptEntityInput(cAbility, "Kill");
-	// 		new entData = GetEntData(SDKCall(g_hCreateAbility, iClient), g_iAbility)
-	// 		if (entData > 0) SetEntProp(iClient, Prop_Send, "m_customAbility", entData);
-	// 		PrintToChatAll("Should be spawned as a %i", newClass);
-
-	// 		// Example OLD Code
-	// 		// PrintToChatAll("Spawning as %i", g_iClientInfectedClass3[iClient]);
-	// 		// SDKCall(g_hSetClass, iClient, g_iClientInfectedClass3[iClient]);
-	// 		// new entprop = GetEntProp(iClient, Prop_Send, "m_customAbility")
-	// 		// AcceptEntityInput(MakeCompatEntRef(entprop), "Kill");
-	// 		// new ent = GetEntData(SDKCall(g_hCreateAbility, iClient), g_iAbility);
-	// 		// SetEntProp(iClient, Prop_Send, "m_customAbility", ent);
-	// 		// PrintToChatAll("Should be spawned as a %i", g_iClientInfectedClass3[iClient]);
-	// 	}
-	// }
-	
 	return Plugin_Stop;
 }

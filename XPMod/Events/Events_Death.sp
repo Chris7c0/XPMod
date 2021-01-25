@@ -3,6 +3,7 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	new victim = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	new attacker = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
 	new headshot = GetEventBool(hEvent, "headshot");
+	
 	//If victim was 0 then it was a common/uncommon infected
 	if(victim < 1)
 	{
@@ -121,11 +122,6 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	
 	g_iShowSurvivorVomitCounter[victim] = 0;
 	
-	//To Turn Kiting back on
-	SetConVarInt(FindConVar("z_tank_damage_slow_min_range"), 200);
-	SetConVarInt(FindConVar("z_tank_damage_slow_max_range"), 400);
-	SetConVarFloat(FindConVar("z_tank_throw_interval"), 5.0);
-	
 	g_bUsingFireStorm[victim] = false;
 	g_bUsingShadowNinja[victim] = false;
 	g_bIsJetpackOn[victim] = false;
@@ -143,6 +139,7 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 		WriteParticle(victim, "poison_bullet_pool", 0.0, 41.0);
 	}
 	
+	// Check if the victim is CI/UI, if so, do not go beyond this point
 	if (victim < 1)
 		return Plugin_Continue;
 	
@@ -161,8 +158,16 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 		
 	}
 	
-	if(g_iClientTeam[victim] == TEAM_INFECTED)		//Give XP for killing the Tank
+	if(g_iClientTeam[victim] == TEAM_INFECTED)
 	{
+		// We now do not know which infected they have, because they dead
+		g_iInfectedCharacter[victim] = UNKNOWN_INFECTED;
+
+		// For checking if the player is a ghost
+		g_bCanBeGhost[victim] = true;
+		g_bIsGhost[victim] = false;
+		
+		//Give XP for killing the Tank
 		if(GetEntProp(victim, Prop_Send, "m_zombieClass") == TANK)
 		{
 			g_iTankCounter--;

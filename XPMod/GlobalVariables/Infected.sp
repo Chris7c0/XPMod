@@ -10,7 +10,11 @@ new String:g_strClientInfectedClass2[MAXPLAYERS + 1][10];
 new String:g_strClientInfectedClass3[MAXPLAYERS + 1][10];
 new bool:g_iInfectedConvarsSet[MAXPLAYERS + 1];
 
-//Smoker
+// Ghost Spawn Capturing
+new bool:g_bCanBeGhost[MAXPLAYERS + 1];
+new bool:g_bIsGhost[MAXPLAYERS + 1];
+
+// Smoker
 new g_iMaxTongueLength;
 new g_iMaxDragSpeed;
 new g_iChokingVictim[MAXPLAYERS + 1];
@@ -22,7 +26,6 @@ new bool:g_bHasSmokersPoisonCloudOut[MAXPLAYERS + 1];
 new Float:g_xyzPoisonCloudOriginArray[MAXPLAYERS + 1][3];
 new bool:g_bTeleportCoolingDown[MAXPLAYERS + 1];
 new bool:g_bElectricutionCooldown[MAXPLAYERS + 1];
-
 //For Teleport
 new Float:g_fMapsMaxTeleportHeight;
 new g_iSmokerTransparency[MAXPLAYERS + 1];
@@ -33,7 +36,7 @@ new Float:g_fTeleportEndPositionX[MAXPLAYERS + 1];
 new Float:g_fTeleportEndPositionY[MAXPLAYERS + 1];
 new Float:g_fTeleportEndPositionZ[MAXPLAYERS + 1];
 
-//Boomer
+// Boomer
 new bool:g_bIsSuicideBoomer[MAXPLAYERS + 1];
 new bool:g_bIsSuicideJumping[MAXPLAYERS + 1];
 new bool:g_bIsBoomerVomiting[MAXPLAYERS + 1];
@@ -46,7 +49,7 @@ new g_iVomitVictimCounter[MAXPLAYERS + 1];
 new bool:g_bIsSuperSpeedBoomer[MAXPLAYERS + 1];
 new bool:g_bCommonInfectedDoMoreDamage;
 
-//Hunter
+// Hunter
 new bool:g_bIsCloakedHunter[MAXPLAYERS + 1];
 new g_iHunterCloakCounter[MAXPLAYERS + 1];
 new bool:g_bCanHunterDismount[MAXPLAYERS + 1];
@@ -59,7 +62,7 @@ new bool:g_bHasInfectedHealthBeenSet[MAXPLAYERS + 1];
 new bool:g_bHunterLethalPoisoned[MAXPLAYERS + 1];
 new g_iHunterPounceDistance[MAXPLAYERS + 1];
 
-//Spitter
+// Spitter
 new bool:g_bBlockGooSwitching[MAXPLAYERS + 1];
 new bool:g_bJustSpawnedWitch[MAXPLAYERS + 1];
 new g_iGooType[MAXPLAYERS + 1];
@@ -87,7 +90,7 @@ new Float:g_fAdhesiveAffectAmount[MAXPLAYERS + 1];
 #define GOO_REPULSION		4
 #define GOO_VIRAL			5
 
-//Jockey
+// Jockey
 new bool:g_bCanJockeyPee[MAXPLAYERS + 1] = true;
 new bool:g_bCanJockeyCloak[MAXPLAYERS + 1] = true;
 new bool:g_bJockeyIsRiding[MAXPLAYERS + 1] = false;
@@ -97,7 +100,7 @@ new Float:g_fJockeyRideSpeed[MAXPLAYERS + 1] = 1.0;
 new Float:g_fJockeyRideSpeedVanishingActBoost[MAXPLAYERS + 1] = 0.0;
 
 
-//Charger
+// Charger
 new bool:g_bIsChargerCharging[MAXPLAYERS +1];
 new bool:g_bIsSpikedCharged[MAXPLAYERS +1];
 new bool:g_bCanChargerSpikedCharge[MAXPLAYERS +1];
@@ -109,7 +112,7 @@ new bool:g_bChargerCarrying[MAXPLAYERS + 1];
 new bool:g_bIsChargerHealing[MAXPLAYERS + 1];
 new bool:g_bCanChargerEarthquake[MAXPLAYERS +1];
 
-//Tank
+// Tank
 new g_iTankCounter;
 new bool:g_bTankOnFire[MAXPLAYERS + 1];     //prevents constant xp rewarding
 
@@ -138,14 +141,14 @@ new ArrayList:g_listTankRockEntities;
 #define TANK_ROCK_ENTITIES_ARRAY_LIST_SIZE 4
 
 
-//Fire Tank
+// Fire Tank
 #define TANK_HEALTH_FIRE                    9000
 new g_iFireDamageCounter[MAXPLAYERS + 1];
 new bool:g_bTankAttackCharged[MAXPLAYERS + 1];
 new bool:g_bBlockTankFirePunchCharge[MAXPLAYERS + 1];
 //new bool:g_bFireTankBaseSpeedIncreased[MAXPLAYERS + 1];
 new Float:g_fFireTankExtraSpeed[MAXPLAYERS + 1];
-//Ice Tank
+// Ice Tank
 #define TANK_HEALTH_ICE                     20000
 #define TANK_ICE_REGEN_LIFE_POOL_SIZE       10000
 new g_iIceTankLifePool[MAXPLAYERS + 1];
@@ -155,16 +158,16 @@ new bool:g_bBlockTankFreezing[MAXPLAYERS + 1];
 new Float:g_fTankHealthPercentage[MAXPLAYERS + 1];
 new g_iTankCharge[MAXPLAYERS + 1];
 new Float:g_xyzClientTankPosition[MAXPLAYERS + 1][3];
-//NecroTanker
+// NecroTanker
 #define TANK_HEALTH_NECROTANKER             666
 #define NECROTANKER_MAX_HEALTH              13666
 #define NECROTANKER_CONSUME_COMMON_HP       500
 #define NECROTANKER_CONSUME_UNCOMMON_HP     666
 #define NECROTANKER_CONSUME_SI_HP           1000
-//Vampiric Tank
+// Vampiric Tank
 #define TANK_HEALTH_VAMPIRIC                            10000
-#define VAMPIRIC_TANK_LIFESTEAL_MULTIPLIER              15
-#define VAMPIRIC_TANK_LIFESTEAL_INCAP_MULTIPLIER        30
+#define VAMPIRIC_TANK_LIFESTEAL_MULTIPLIER              10
+#define VAMPIRIC_TANK_LIFESTEAL_INCAP_MULTIPLIER        20
 #define VAMPIRIC_TANK_MELEE_DMG_TAKEN_MULTIPLIER        3
 #define VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER          0.333333
 new Float:VAMPIRIC_TANK_WING_FLAP_UP_VELOCITY = 600.0;

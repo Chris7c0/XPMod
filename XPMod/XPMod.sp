@@ -397,6 +397,10 @@ ResetVariablesForMap(iClient)
 	g_bShowingVGUI[iClient] = false;
 	g_bExplosivesJustGiven[iClient] = false;
 	g_iLaserUpgradeCounter[iClient] = 0;
+
+	g_iInfectedCharacter[iClient] = UNKNOWN_INFECTED;
+	g_bCanBeGhost[iClient] = true;
+	g_bIsGhost[iClient] = false;
 	g_iTankCounter = 0;
 	RemoveAllEntitiesFromTankRockList();
 	g_bAdhesiveGooActive[iClient] = false;
