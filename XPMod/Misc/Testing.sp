@@ -6,13 +6,14 @@ Action:TestFunction1(iClient, args)
 {
 	PrintToServer("T1");
 	//PrintToChat(iClient, "T1");
-
-	if (args < 1) return Plugin_Stop;
 	
 	char str1[99];
 	char str2[99];
 	GetCmdArg(1, str1, sizeof(str1));
 	GetCmdArg(2, str2, sizeof(str2));
+
+	//if (args < 1) return Plugin_Stop;
+	
 
 	//g_fEllisTestFireRate = StringToFloat(str1);
 

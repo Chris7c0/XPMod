@@ -208,8 +208,9 @@ public OnPluginStart()
 	CreateTimer(60.0, PrintXPModCreateAndConfirmMessageToAll, 0, TIMER_REPEAT);
 	CreateTimer(300.0, PrintXPModAdvertisementMessageToAll, 0, TIMER_REPEAT);
 	
-	//PrecacheLockedWeaponModels();											//Precache locked weapon models
-	CreateTimer(1.0, Timer_PrepareCSWeapons, _, TIMER_FLAG_NO_MAPCHANGE);	//Prep the cs weapons for first use
+	PrecacheLockedWeaponModels();											//Precache locked weapon models
+	// This is no longer need with the last stand update (also, this was causing crash when xpmod was replaced witth an update)
+	//CreateTimer(1.0, Timer_PrepareCSWeapons, _, TIMER_FLAG_NO_MAPCHANGE);	//Prep the cs weapons for first use
 
 	//Setup Global ArrayLists
 	g_listTankRockEntities = CreateArray(TANK_ROCK_ENTITIES_ARRAY_LIST_SIZE);
