@@ -3,6 +3,8 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	new victim = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	new attacker = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
 	new headshot = GetEventBool(hEvent, "headshot");
+
+	//PrintToChatAll("Event_PlayerDeath: victim %N, attacker: %N", victim, attacker);
 	
 	//If victim was 0 then it was a common/uncommon infected
 	if(victim < 1)
@@ -157,12 +159,9 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 			PrintCenterText(attacker, "\x03[XPMod] Killed %d.  You gain 500 XP", victim);
 		
 	}
-	
+
 	if(g_iClientTeam[victim] == TEAM_INFECTED)
 	{
-		// We now do not know which infected they have, because they dead
-		g_iInfectedCharacter[victim] = UNKNOWN_INFECTED;
-
 		// For checking if the player is a ghost
 		g_bCanBeGhost[victim] = true;
 		g_bIsGhost[victim] = false;
@@ -232,74 +231,71 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					decl target;
 					for (target = 1; target <= MaxClients; target++)
 					{
-						if(IsClientInGame(target))
+						if (RunClientChecks(target) &&
+							IsPlayerAlive(target) && 
+							g_iClientTeam[target] == TEAM_SURVIVORS)
 						{
-							if(IsPlayerAlive(target))
+							if (g_bIsSuicideJumping[victim] == true)
 							{
-								if(g_iClientTeam[target] == TEAM_SURVIVORS)
+								PrintToChatAll("trying for %N", target);
+								decl Float:targetVector[3];
+								GetClientEyePosition(target, targetVector);
+								new Float:distance = GetVectorDistance(targetVector, vector);
+								if(IsVisibleTo(vector, targetVector) == true)
 								{
-									if(g_bIsSuicideJumping[victim] == true)
+									//PrintToChatAll("%N is visible to you", target);
+									if(distance < (200.0 + (float(g_iNorovirusLevel[victim]) * 15.0)))
 									{
-										//PrintToChatAll("trying for %N", target);
-										decl Float:targetVector[3];
-										GetClientEyePosition(target, targetVector);
-										new Float:distance = GetVectorDistance(targetVector, vector);
-										if(IsVisibleTo(vector, targetVector) == true)
+										//PrintToChatAll("%N is in range", target);
+										DealDamage(target, victim, 10 + (g_iNorovirusLevel[victim] * 2));
+										SDKCall(g_hSDK_VomitOnPlayer, target, victim, true);
+										
+										//Fling Target Survivor (taken from "Tankroar 2.2" by Karma)
+										if(GetEntProp(target, Prop_Send, "m_isIncapacitated") == 0)
 										{
-											//PrintToChatAll("%N is visible to you", target);
-											if(distance < (200.0 + (float(g_iNorovirusLevel[victim]) * 15.0)))
-											{
-												//PrintToChatAll("%N is in range", target);
-												DealDamage(target, victim, 10 + (g_iNorovirusLevel[victim] * 2));
-												SDKCall(g_hSDK_VomitOnPlayer, target, victim, true);
-												
-												//Fling Target Survivor (taken from "Tankroar 2.2" by Karma)
-												if(GetEntProp(target, Prop_Send, "m_isIncapacitated") == 0)
-												{
-													decl Float:svPos[3];
-													GetClientEyePosition(target, svPos);
-													
-													decl Float:distanceVec[3];
-													
-													distanceVec[0] = (vector[0] - svPos[0]);
-													distanceVec[1] = (vector[1] - svPos[1]);
-													distanceVec[2] = (vector[2] - svPos[2]);
-													
-													decl Float: addAmount[3], Float: svVector[3], Float: ratio[2];
-													new Float:power =  100.0 + (float(g_iNorovirusLevel[victim]) * 30.0);
-													
-													ratio[0] =  distanceVec[0] / SquareRoot(distanceVec[1]*distanceVec[1] + distanceVec[0]*distanceVec[0]);//Ratio x/hypo
-													ratio[1] =  distanceVec[1] / SquareRoot(distanceVec[1]*distanceVec[1] + distanceVec[0]*distanceVec[0]);//Ratio y/hypo
-													
-													GetEntPropVector(target, Prop_Data, "m_vecVelocity", svVector);
-													
-													addAmount[0] = ( -1.0 * (ratio[0] * power) );//multiply negative = away from TANK. multiply positive = towards TANK.
-													addAmount[1] = ( -1.0 * (ratio[1] * power) );
-													addAmount[2] = power;
-													
-													SDKCall(g_hSDK_Fling, target, addAmount, 96, victim, 3.0);
-												}
-												
-												GiveClientXP(victim, 25, g_iSprite_25XP_SI, target, "Exploded on a survivor.");
-											}
+											decl Float:svPos[3];
+											GetClientEyePosition(target, svPos);
+											
+											decl Float:distanceVec[3];
+											
+											distanceVec[0] = (vector[0] - svPos[0]);
+											distanceVec[1] = (vector[1] - svPos[1]);
+											distanceVec[2] = (vector[2] - svPos[2]);
+											
+											decl Float: addAmount[3], Float: svVector[3], Float: ratio[2];
+											new Float:power =  100.0 + (float(g_iNorovirusLevel[victim]) * 30.0);
+											
+											ratio[0] =  distanceVec[0] / SquareRoot(distanceVec[1]*distanceVec[1] + distanceVec[0]*distanceVec[0]);//Ratio x/hypo
+											ratio[1] =  distanceVec[1] / SquareRoot(distanceVec[1]*distanceVec[1] + distanceVec[0]*distanceVec[0]);//Ratio y/hypo
+											
+											GetEntPropVector(target, Prop_Data, "m_vecVelocity", svVector);
+											
+											addAmount[0] = ( -1.0 * (ratio[0] * power) );//multiply negative = away from TANK. multiply positive = towards TANK.
+											addAmount[1] = ( -1.0 * (ratio[1] * power) );
+											addAmount[2] = power;
+											
+											SDKCall(g_hSDK_Fling, target, addAmount, 96, victim, 3.0);
 										}
-									}
-									else
-									{
-										decl Float:targetVector[3];
-										GetClientAbsOrigin(target, targetVector);
-										new Float:distance = GetVectorDistance(targetVector, vector);
-										if(IsVisibleTo(vector, targetVector) == true)
-											if(distance < 200.0)
-											{
-												DealDamage(target, victim, g_iAcidicLevel[victim]);
-												GiveClientXP(victim, 25, g_iSprite_25XP_SI, target, "Exploded on a survivor.");
-											}
+										
+										GiveClientXP(victim, 25, g_iSprite_25XP_SI, target, "Exploded on a survivor.");
 									}
 								}
 							}
+							else
+							{
+								decl Float:targetVector[3];
+								GetClientAbsOrigin(target, targetVector);
+								new Float:distance = GetVectorDistance(targetVector, vector);
+								if(IsVisibleTo(vector, targetVector) == true)
+									if(distance < 200.0)
+									{
+										DealDamage(target, victim, g_iAcidicLevel[victim]);
+										GiveClientXP(victim, 25, g_iSprite_25XP_SI, target, "Exploded on a survivor.");
+									}
+							}
 						}
 					}
+
 					g_bIsSuicideBoomer[victim] = false;
 					g_bIsSuicideJumping[victim] = false;
 				}
@@ -550,6 +546,10 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 
 		SetClientSpeed(victim);
 	}
+
+	// We now do not know which infected they have, because they dead
+	// TODO: move this to a better place when this function is cleaned up
+	g_iInfectedCharacter[victim] = UNKNOWN_INFECTED;
 	
 	return Plugin_Continue;
 }

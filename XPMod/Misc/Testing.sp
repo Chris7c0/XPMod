@@ -67,7 +67,7 @@ Action:TestFunction3(iClient, args)
 	GetCmdArg(2, str2, sizeof(str2));
 
 	//Testing glow
-	SetClientGlow(StringToInt(str1), 0, 0, 0, StringToInt(str2));
+	//SetClientGlow(StringToInt(str1), 0, 0, 0, StringToInt(str2));
 
 	//SpawnSpecialInfected(iClient);
 

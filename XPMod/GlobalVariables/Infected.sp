@@ -165,7 +165,7 @@ new Float:g_xyzClientTankPosition[MAXPLAYERS + 1][3];
 #define NECROTANKER_CONSUME_UNCOMMON_HP     666
 #define NECROTANKER_CONSUME_SI_HP           1000
 // Vampiric Tank
-#define TANK_HEALTH_VAMPIRIC                            10000
+#define TANK_HEALTH_VAMPIRIC                            8000
 #define VAMPIRIC_TANK_LIFESTEAL_MULTIPLIER              10
 #define VAMPIRIC_TANK_LIFESTEAL_INCAP_MULTIPLIER        20
 #define VAMPIRIC_TANK_MELEE_DMG_TAKEN_MULTIPLIER        3

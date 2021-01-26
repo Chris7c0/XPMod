@@ -12,6 +12,8 @@ SetClientSpeed(iClient)
 	if (SetClientSpeedOverrides(iClient, fSpeed))
 	{
 		SetEntDataFloat(iClient, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), fSpeed, true);
+		if (IsFakeClient(iClient) == false)
+			PrintToChat(iClient, "SetClientSpeedOverride: %N: %f", iClient, fSpeed);
 		//PrintToChatAll("SetClientSpeedOverride: %N: %f", iClient, fSpeed);
 		return;
 	}
@@ -38,6 +40,8 @@ SetClientSpeed(iClient)
 	}
 
 	SetEntDataFloat(iClient, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), fSpeed, true);
+	if (IsFakeClient(iClient) == false)
+		PrintToChat(iClient, "SetClientSpeed: %N: %f", iClient, fSpeed);
 	//PrintToChatAll("SetClientSpeed: %N: %f", iClient, fSpeed);
 }
 
@@ -257,7 +261,7 @@ bool SetClientSpeedOverrides(iClient, &Float:fSpeed)
 	// If they are an infected ghost, then give them fast speed.
 	if(GetEntData(iClient, g_iOffset_IsGhost, 1) == 1)
 	{
-		fSpeed = 2.5;
+		fSpeed = 2.0;
 		return true;
 	}
 

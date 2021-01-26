@@ -59,7 +59,7 @@ Event_BoomerVomitOnPlayer(iAttacker, iVictim)
 									CreateTimer(20.0, TimerResetZombieDamage, 0, TIMER_FLAG_NO_MAPCHANGE);
 								}
 							}
-							case 2:		//Constant vaomit for 8 seconds on last survivor hit
+							case 2:		//Constant vomit for 8 seconds on last survivor hit
 							{
 								new bool:ok = false;
 								if(IsClientInGame(iVictim) == true)
