@@ -131,7 +131,8 @@ ChangeSurvivorMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 				g_iChosenSurvivor[iClient] = BILL;
 				AutoLevelUpSurivovor(iClient);
 				SaveUserData(iClient);
-				TopSurvivorMenuDraw(iClient);
+				
+				DrawConfirmationMenuToClient(iClient);
 			}
 			case 1: //Change to Rochelle
 			{
@@ -139,7 +140,8 @@ ChangeSurvivorMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 				g_iChosenSurvivor[iClient] = ROCHELLE;
 				AutoLevelUpSurivovor(iClient);
 				SaveUserData(iClient);
-				TopSurvivorMenuDraw(iClient);
+
+				DrawConfirmationMenuToClient(iClient);
 			}
 			case 2: //Change to Coach
 			{
@@ -147,7 +149,8 @@ ChangeSurvivorMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 				g_iChosenSurvivor[iClient] = COACH;
 				AutoLevelUpSurivovor(iClient);
 				SaveUserData(iClient);
-				TopSurvivorMenuDraw(iClient);
+				
+				DrawConfirmationMenuToClient(iClient);
 			}
 			case 3: //Change to Ellis
 			{
@@ -155,7 +158,8 @@ ChangeSurvivorMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 				g_iChosenSurvivor[iClient] = ELLIS;
 				AutoLevelUpSurivovor(iClient);
 				SaveUserData(iClient);
-				TopSurvivorMenuDraw(iClient);
+
+				DrawConfirmationMenuToClient(iClient);
 			}
 			case 4: //Change to Nick
 			{
@@ -163,7 +167,8 @@ ChangeSurvivorMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 				g_iChosenSurvivor[iClient] = NICK;
 				AutoLevelUpSurivovor(iClient);
 				SaveUserData(iClient);
-				TopSurvivorMenuDraw(iClient);
+
+				DrawConfirmationMenuToClient(iClient);
 			}
 			case 5: //Change to Louis
 			{
@@ -176,11 +181,7 @@ ChangeSurvivorMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			}
 			case 7: //Confirm
 			{
-				g_bUserStoppedConfirmation[iClient] = false;
-				g_iAutoSetCountDown[iClient] = 30;
-				
-				delete g_hTimer_ShowingConfirmTalents[iClient];
-				g_hTimer_ShowingConfirmTalents[iClient] = CreateTimer(1.0, TimerShowTalentsConfirmed, iClient, TIMER_REPEAT);
+				DrawConfirmationMenuToClient(iClient);
 			}
 		}
 	}

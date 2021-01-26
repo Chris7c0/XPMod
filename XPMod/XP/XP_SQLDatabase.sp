@@ -334,19 +334,12 @@ SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[], any:hD
 		PrintToServer("[XPMod] %N has joined", iClient);
 	}
 	
+	// Draw the appropriate menu
 	if (bDrawConfirmMenuAfter == true && g_bTalentsConfirmed[iClient] == false)
-	{
-		g_bUserStoppedConfirmation[iClient] = false;
-		g_iAutoSetCountDown[iClient] = 60;
-
-		delete g_hTimer_ShowingConfirmTalents[iClient];
-		g_hTimer_ShowingConfirmTalents[iClient] = CreateTimer(1.0, TimerShowTalentsConfirmed, iClient, TIMER_REPEAT);
-	}
+		DrawConfirmationMenuToClient(iClient);
 	else if (bDrawTopMenuAfter == true)
-	{
 		TopMenuDraw(iClient);
-	}
-
+	
 	// PrintToChatAll("GetUserData Callback Complete.  %i: %N", iClient, iClient);
 	// PrintToServer("GetUserData Callback Complete.  %i: %N", iClient, iClient);
 }

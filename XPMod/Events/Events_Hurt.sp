@@ -39,7 +39,7 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 		return Plugin_Continue;
 
 	// Handle Survivors
-	if (g_iClientTeam[attacker] == TEAM_SURVIVORS) // && g_iClientTeam[victim] == TEAM_INFECTED)
+	if (g_iClientTeam[attacker] == TEAM_SURVIVORS)
 	{
 		switch(g_iChosenSurvivor[attacker])
 		{

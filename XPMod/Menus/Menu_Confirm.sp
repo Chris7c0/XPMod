@@ -122,6 +122,17 @@ Action:TimerShowTalentsConfirmed(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
+DrawConfirmationMenuToClient(iClient, iDisplayTime = 60)
+{
+	// Draw Confirmation menu
+	g_bUserStoppedConfirmation[iClient] = false;
+	g_iAutoSetCountDown[iClient] = iDisplayTime;
+
+	ConfirmationMessageMenuDraw(iClient);
+
+	delete g_hTimer_ShowingConfirmTalents[iClient];
+	g_hTimer_ShowingConfirmTalents[iClient] = CreateTimer(1.0, TimerShowTalentsConfirmed, iClient, TIMER_REPEAT);
+}
 
 Action:ConfirmationMessageMenuDraw(iClient)
 {
