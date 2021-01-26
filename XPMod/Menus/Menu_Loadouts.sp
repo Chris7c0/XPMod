@@ -29,6 +29,22 @@ SetupLoadouts()
 // 	return Plugin_Handled;
 // }
 
+Action:ShowUserLoadoutMenu(iClient, args)
+{
+	if (RunClientChecks(iClient) == false || IsFakeClient(iClient))
+		return Plugin_Handled;
+
+	// If client is logged in then show them the equipement menu, otherwise tell them this is xpm
+	if (g_bClientLoggedIn[iClient])
+		LoadoutMenuDraw(iClient);
+	else
+		XPModMenuDraw(iClient);
+
+	PrintToChat(iClient, "\x03[XPMod] \x04You can use XP to buy Survivor equipment each round.");
+
+	return Plugin_Handled;
+}
+
 //Draw Menus
 Action:LoadoutMenuDraw(iClient)
 {

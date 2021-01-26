@@ -221,10 +221,11 @@ SetupConsoleCommands()
 	RegConsoleCmd("xpmstats", ShowTeamStatsToPlayer);
 	RegConsoleCmd("website", MotdPanel);
 	RegConsoleCmd("xpmhelp", OpenHelpMotdPanel);
-	//RegConsoleCmd("resetmyaccount", ResetAll);			//Reset Level, skillpoints, XP,  and talents
+	//RegConsoleCmd("resetmyaccount", ResetAll);		//Reset Level, skillpoints, XP,  and talents (taking this out to avoid issues)
 	RegConsoleCmd("xpmbind1", Bind1Press);				//This is the binded key function for ultimate abilites, Bind 1
 	RegConsoleCmd("xpmbind2", Bind2Press);				//This is the binded key function for ultimate abilites, Bind 2
-	RegConsoleCmd("xpmbinduses", ShowBindsRemaining);		//Display the total number of bind1 and bind2 uses left
+	RegConsoleCmd("xpmbinduses", ShowBindsRemaining);	//Display the total number of bind1 and bind2 uses left
+	RegConsoleCmd("buy", ShowUserLoadoutMenu);			// People always use this buy command from other servers, show them that they can buy equipement in xpmod
 	
 	RegConsoleCmd("say", SayCmd);
 	RegConsoleCmd("say_team", SayTeamCmd);
