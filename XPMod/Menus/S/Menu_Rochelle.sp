@@ -179,7 +179,7 @@ Action:ShadowMenuDraw(iClient)
 				
 	g_hMenu_XPM[iClient] = CreateMenu(ShadowMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Shadow Ninja(Level %d):\n				  Requires Level 26\n \nLevel 1:\n+2%%%% movement speed per level\n+5 max health per level\n \n				Bind 2: Silent Assassin\n+1 use every other level; 12 second duration\n \nLevel 1:\n+10%%%% movement speed per level\n+20%%%% melee attack speed per level\n+19%%%% stealth per level\nCloak glow from SI\nGain a Katana\n \n=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iShadowLevel[iClient]);
+	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Shadow Ninja(Level %d):\n				  Requires Level 26\n \nLevel 1:\n+2%%%% movement speed per level\n+5 max health per level\n \n				Bind 2: Silent Assassin\n+1 use every other level; 12 second duration\n \nLevel 1:\n+10%%%% movement speed per level\n+30%%%% melee attack speed per level\n+19%%%% stealth per level\nCloak glow from SI\nGain a Katana\n \n=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iShadowLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 
 	

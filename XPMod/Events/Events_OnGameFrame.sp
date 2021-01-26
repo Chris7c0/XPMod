@@ -220,7 +220,7 @@ HandleFastAttackingClients()
 					flNextTime_calc = g_fGameTime;
 				}
 				else
-					flNextTime_calc = ( flNextTime_ret - g_fGameTime ) * (1.0 - (g_iShadowLevel[iClient] * 0.1))  + g_fGameTime;
+					flNextTime_calc = ( flNextTime_ret - g_fGameTime ) * (1 / (1 + (g_iShadowLevel[iClient] * 0.3) ) )   + g_fGameTime;
 				
 				WriteParticle(iClient, "rochelle_silhouette", 0.0, 0.4);
 			}
