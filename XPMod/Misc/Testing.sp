@@ -17,7 +17,10 @@ Action:TestFunction1(iClient, args)
 	//g_fEllisTestFireRate = StringToFloat(str1);
 
 	//VAMPIRIC_TANK_WING_FLAP_UP_VELOCITY = StringToFloat(str1);
-	VAMPIRIC_TANK_WING_DASH_VELOCITY = StringToFloat(str1);
+	//VAMPIRIC_TANK_WING_DASH_VELOCITY = StringToFloat(str1);
+
+	// Testing menu close detection, sad panda
+	//PrintToChat(iClient, "GetClientMenu: %i", GetClientMenu(iClient));
 	
 	//SetClientInfo(iClient, "name", str1);
 	WriteParticle(iClient, str1, 0.0, 30.0);

@@ -121,7 +121,7 @@ TopSurvivorMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 //Change Character Handler
 ChangeSurvivorMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select)
+	if(action == MenuAction_Select)
 	{
 		switch (itemNum)
 		{
