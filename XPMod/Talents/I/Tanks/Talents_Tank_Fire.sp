@@ -52,7 +52,7 @@ SetClientSpeedTankFire(iClient, &Float:fSpeed)
 	if (g_iTankChosen[iClient] != TANK_FIRE)
 		return;
 	
-	fSpeed += (0.2 + g_fFireTankExtraSpeed[iClient]);
+	fSpeed += (0.25 + g_fFireTankExtraSpeed[iClient]);
 }
 
 OnGameFrame_Tank_Fire(iClient)
@@ -125,7 +125,7 @@ EventsHurt_TankVictim_Fire(Handle:hEvent, iAttacker, iVictimTank)
 	{
 		//Change to the speed to match health percentage and level
 		g_fTankHealthPercentage[iVictimTank] = fCurrentTankHealthPercentage;
-		g_fFireTankExtraSpeed[iVictimTank] = 0.3 * (1.0 - fCurrentTankHealthPercentage);
+		g_fFireTankExtraSpeed[iVictimTank] = 0.25 * (1.0 - fCurrentTankHealthPercentage);
 		SetClientSpeed(iVictimTank);
 		
 		//Change the actual color of the tank to reflect his health
