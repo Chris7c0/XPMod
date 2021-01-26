@@ -6,9 +6,13 @@ int  SpawnRandomCommonInfectedMob(Float:xyzLocation[3], iAmount = 1, bool:bUncom
 	{
 		new iZombie = CreateEntityByName("infected");
 		
-		// Get thte number of possible models
+		// Get the number of possible models
 		new iRandomModelNumber = bUncommon ? GetRandomInt(0,sizeof(UNCOMMON_INFECTED_MODELS) - 1) : GetRandomInt(0,sizeof(COMMON_INFECTED_MODELS) - 1)
 		
+		// If its Jimmy, roll only keep 1/3rd of the time...because way too many Jimmys up in this biyyah
+		if (bUncommon && iRandomModelNumber == 0 && GetRandomInt(1,3) != 1)
+			iRandomModelNumber = GetRandomInt(1,sizeof(UNCOMMON_INFECTED_MODELS) - 1);
+
 		// Set the model, which sets the infected type, for uncommon changing behavior etc.
 		if (bUncommon)
 			SetEntityModel(iZombie, UNCOMMON_INFECTED_MODELS[iRandomModelNumber]);

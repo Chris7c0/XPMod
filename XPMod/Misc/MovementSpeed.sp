@@ -202,7 +202,7 @@ SetClientSpeedSpitter(iClient, &Float:fSpeed)
 		g_iClientInfectedClass3[iClient] != SPITTER))
 		return;
 
-	if (g_bIsStealthSpitter[iClient] == false)
+	if (g_bIsStealthSpitter[iClient] == true)
 		fSpeed += 1.0;
 	
 	//PrintToChat(iClient, "SetClientSpeedSpitter: %f", fSpeed);

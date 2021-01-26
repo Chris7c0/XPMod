@@ -48,9 +48,9 @@ new String:COMMON_INFECTED_MODELS[][] = {"models/infected/common_female_tanktop_
                                         "models/infected/common_male_tshirt_cargos.mdl"}
 
 //Uncommon Infected Model Names
-new String:UNCOMMON_INFECTED_MODELS[][] =   {"models/infected/common_male_ceda.mdl", 
+new String:UNCOMMON_INFECTED_MODELS[][] =   {"models/infected/common_male_jimmy.mdl",
                                             "models/infected/common_male_clown.mdl",
-                                            "models/infected/common_male_jimmy.mdl",
+                                            "models/infected/common_male_ceda.mdl", 
                                             "models/infected/common_male_mud.mdl",
                                             "models/infected/common_male_riot.mdl",
                                             "models/infected/common_male_roadcrew.mdl"}
