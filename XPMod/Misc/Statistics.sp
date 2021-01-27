@@ -14,9 +14,8 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 	// Construct the statistics strings
 	if(ProbeTeams(TEAM_SPECTATORS) == true)
 	{
-		PrintToBufferServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=", strStoreBuffer, iStoreBufferSize);
-		PrintToBufferServerOrClient(iClient, "\x05|						Spectators					|", strStoreBuffer, iStoreBufferSize);
-		PrintToBufferServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=\n ", strStoreBuffer, iStoreBufferSize);
+		PrintToBufferServerOrClient(iClient, "\x05[	=	=	=	=	=	Spectators	=	=	=	=	=	]\n ", strStoreBuffer, iStoreBufferSize);
+
 
 		for(new i = 1; i<= MaxClients; i++)
 		{
@@ -40,9 +39,7 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 
 	if(ProbeTeams(TEAM_SURVIVORS) == true)
 	{
-		PrintToBufferServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=", strStoreBuffer, iStoreBufferSize);
-		PrintToBufferServerOrClient(iClient, "\x05|						Survivors					|", strStoreBuffer, iStoreBufferSize);
-		PrintToBufferServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=\n ", strStoreBuffer, iStoreBufferSize);
+		PrintToBufferServerOrClient(iClient, "\x05[	=	=	=	=	=	Survivors	=	=	=	=	=	]\n ", strStoreBuffer, iStoreBufferSize);
 
 		for(new i = 1; i<= MaxClients; i++)
 		{
@@ -77,9 +74,7 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 
 	if(ProbeTeams(TEAM_INFECTED) == true)
 	{
-		PrintToBufferServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=", strStoreBuffer, iStoreBufferSize);
-		PrintToBufferServerOrClient(iClient, "\x05|						Infected					|", strStoreBuffer, iStoreBufferSize);
-		PrintToBufferServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=\n ", strStoreBuffer, iStoreBufferSize);
+		PrintToBufferServerOrClient(iClient, "\x05[	=	=	=	=	=	Infected	=	=	=	=	=	]\n ", strStoreBuffer, iStoreBufferSize);
 
 		for(new i = 1; i<= MaxClients; i++)
 		{
@@ -113,22 +108,27 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 		PrintToBufferServerOrClient(iClient, " ", strStoreBuffer, iStoreBufferSize);
 	}
 	
-	PrintToBufferServerOrClient(iClient, "\x05=	=	=	=	=	=	=	=	=	=	=	=	=	=", strStoreBuffer, iStoreBufferSize);
-	// if (iClient > 0)
-	// 	PrintToBufferServerOrClient(iClient, "\x03[XPMod] \x04Open the console by pressing \x05~\x04 for a better view.");
+	PrintToBufferServerOrClient(iClient, "\x05[	=	=	=	=	=	=	=	=	=	=	=	=	=	]", strStoreBuffer, iStoreBufferSize);
 }
 
 PrintToBufferServerOrClient(iClient, const char[] strText, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 {
 	// Print to buffer
 	if (iStoreBufferSize > 0)
-		Format(strStoreBuffer, iStoreBufferSize, "%s%s\n", strStoreBuffer, strText);
+	{
+		StrCat(strStoreBuffer, iStoreBufferSize, strText);
+		StrCat(strStoreBuffer, iStoreBufferSize, "\n");
+	}
 	// Print to the server
 	else if (iClient == 0)
+	{
 		PrintToServer(strText);
+	}
 	// Print to in game client
 	else if(RunClientChecks(iClient))
+	{
 		PrintToChat(iClient, strText);
+	}
 }
 
 GetLoggedInAndConfirmedStrings(iClient, char[] strLoggedIn, int iLoggedInMaxLen, char[] strConfirmed, int iConfirmedMaxLen)
@@ -144,37 +144,38 @@ GetLoggedInAndConfirmedStrings(iClient, char[] strLoggedIn, int iLoggedInMaxLen,
 		Format(strConfirmed, iConfirmedMaxLen, "");
 }
 
-// Action:TimerLogXPMStatsToFile(Handle:timer, any:data)
-// {
-// 	decl String:strStoreBuffer[2000] = "";
-// 	CreateXPMStatistics(-1, strStoreBuffer, sizeof(strStoreBuffer));
+Action:TimerLogXPMStatsToFile(Handle:timer, any:data)
+{
+	decl String:strStoreBuffer[2000];
+	strStoreBuffer = NULL_STRING;
+	CreateXPMStatistics(-1, strStoreBuffer, sizeof(strStoreBuffer));
 
-// 	// Remove all the color codes
-// 	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "\x05", "", true);
-// 	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "\x04", "", true);
-// 	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "\x03", "", true);
+	// Remove all the color codes
+	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "\x05", "", true);
+	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "\x04", "", true);
+	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "\x03", "", true);
 	
-// 	// Add a timestamp at the end
-// 	decl String:strTime[16];
-// 	FormatTime(strTime, sizeof(strTime), "%H:%M:%S", -1);
-// 	Format(strStoreBuffer, sizeof(strStoreBuffer), "%s[%s]",strStoreBuffer, strTime);
+	// Add a timestamp at the end
+	decl String:strTime[16];
+	FormatTime(strTime, sizeof(strTime), "%H:%M:%S", GetTime());
+	StrCat(strStoreBuffer, sizeof(strStoreBuffer), strTime);
 
-// 	SaveXPMStatsBufferToLogFile(strStoreBuffer);
+	SaveXPMStatsBufferToLogFile(strStoreBuffer);
 
-// 	return Plugin_Continue;
-// }
+	return Plugin_Continue;
+}
 
-// SaveXPMStatsBufferToLogFile(const char[] strBuffer)
-// {
-// 	if (strlen(g_strXPMStatsFullFilePath) < 1)
-// 		return;
+SaveXPMStatsBufferToLogFile(const char[] strBuffer)
+{
+	if (strlen(g_strXPMStatsFullFilePath) < 1)
+		return;
 	
-// 	new Handle:hFileHandle;
-// 	hFileHandle = OpenFile(g_strXPMStatsFullFilePath, "w");
-// 	if (hFileHandle != null)
-// 		WriteFileLine(hFileHandle, strBuffer);
-// 	CloseHandle(hFileHandle);
-// }
+	new Handle:hFileHandle;
+	hFileHandle = OpenFile(g_strXPMStatsFullFilePath, "w");
+	if (hFileHandle != null)
+		WriteFileLine(hFileHandle, strBuffer);
+	CloseHandle(hFileHandle);
+}
 
 SetXPMStatsLogFileName()
 {
