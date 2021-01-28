@@ -20,7 +20,7 @@ LoadVampiricTankTalents(iClient)
 	g_iVampiricTankWingDashChargeCount[iClient] = 3;
 
 	// Set a really high rock cooldown so that the rock throw ability is deactivated
-	SetSIAbilityCooldown(iClient, 99999.0);
+	SetSIAbilityCooldown(iClient, 9999.0);
 	
 	// Give Health
 	SetEntProp(iClient, Prop_Data,"m_iMaxHealth", TANK_HEALTH_VAMPIRIC);
@@ -93,6 +93,9 @@ OnGameFrame_Tank_Vampiric(iClient)
 			g_iVampiricTankWingDashChargeCount[iClient]--;
 			g_bCanVampiricTankWingDash[iClient] =  false;
 			g_bIsVampiricTankFlying[iClient] = true;
+
+			// Remove the rock throw ability just in case it wasn't previously set
+			SetSIAbilityCooldown(iClient, 9999.0);
 			
 			//SetMoveType(iClient, MOVETYPE_FLYGRAVITY, MOVECOLLIDE_FLY_BOUNCE);
 			AddWingDashVelocity(iClient, VAMPIRIC_TANK_WING_DASH_VELOCITY);

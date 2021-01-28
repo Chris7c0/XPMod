@@ -233,3 +233,8 @@ new g_iNickUpgradeAmmo[MAXPLAYERS + 1];
 new String:g_strNickUpgradeType[32];
 new String:g_strNickPrimarySaved[32];
 new bool:g_bNickStoresDroppedPistolAmmo[MAXPLAYERS + 1] = false;
+
+
+// Louis
+// He piggybacks off of smoker teleport using g_bTeleportCoolingDown
+//new bool:g_bIsInLouisTeleportCooldown[MAXPLAYERS + 1] = false;

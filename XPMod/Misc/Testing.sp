@@ -1,6 +1,40 @@
 
 //Testing Functions//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+// AddLouisTeleportVelocity(iClient, Float:speed)
+// {
+// 	new Float:vecVelocity[3];
+// 	GetEntDataVector(iClient, g_iOffset_VecVelocity, vecVelocity);
+
+// 	decl Float:xyzAngles[3], Float:vDirection[3];
+// 	GetClientEyeAngles(iClient, xyzAngles);								// Get clients Eye Angles to know get what direction face
+// 	GetAngleVectors(xyzAngles, vDirection, NULL_VECTOR, NULL_VECTOR);	// Get the direction the iClient is looking
+
+// 	//if (IsFakeClient(iClient) == false) PrintToChat(iClient, "vDirection: %2f, %2f, %2f", vDirection[0], vDirection[1], vDirection[2]);
+
+// 	vecVelocity[0] = (vDirection[0] * speed);
+// 	vecVelocity[1] = (vDirection[1] * speed);
+// 	vecVelocity[2] = -500.0;//(vDirection[2] * speed);
+// 	// if ((GetEntityFlags(iClient) & FL_ONGROUND) && vecVelocity[2] < 300.0)
+// 	// 	vecVelocity[2] = 300.0;
+
+// 	//SetEntProp(iClient, Prop_Send, "m_nSolidType", 0);
+// 	SetMoveType(iClient, MOVETYPE_FLYGRAVITY, MOVECOLLIDE_FLY_BOUNCE);
+
+// 	TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, vecVelocity);
+// }
+
+// Action:ResetPlayerVelocity(Handle:timer,  any:iClient)
+// {
+// 	SetMoveType(iClient, MOVETYPE_WALK, MOVECOLLIDE_DEFAULT);
+// 	TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, EMPTY_VECTOR);
+// 	return Plugin_Stop;
+// }
+
+
+
+
 //new Float:g_fEllisTestFireRate = 0.0;
 Action:TestFunction1(iClient, args)
 {
@@ -13,7 +47,9 @@ Action:TestFunction1(iClient, args)
 	GetCmdArg(2, str2, sizeof(str2));
 
 	//if (args < 1) return Plugin_Stop;
-	
+
+
+
 
 	//g_fEllisTestFireRate = StringToFloat(str1);
 

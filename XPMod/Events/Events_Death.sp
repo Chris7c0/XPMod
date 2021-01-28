@@ -162,10 +162,6 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 
 	if(g_iClientTeam[victim] == TEAM_INFECTED)
 	{
-		// For checking if the player is a ghost
-		g_bCanBeGhost[victim] = true;
-		g_bIsGhost[victim] = false;
-		
 		//Give XP for killing the Tank
 		if(GetEntProp(victim, Prop_Send, "m_zombieClass") == TANK)
 		{
@@ -331,9 +327,10 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 
 		SetClientSpeed(victim);
 	}
-	if(IsFakeClient(attacker) == true)
-		return Plugin_Continue;
-	if (g_iClientTeam[attacker] == TEAM_SURVIVORS)
+
+	// Handle Survivor Attacker abilities
+	// Note: bots cannot have abilities
+	if (g_iClientTeam[attacker] == TEAM_SURVIVORS && IsFakeClient(attacker) == false)
 	{
 		if (g_iClientTeam[victim] == TEAM_INFECTED)
 		{
@@ -550,6 +547,10 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	// We now do not know which infected they have, because they dead
 	// TODO: move this to a better place when this function is cleaned up
 	g_iInfectedCharacter[victim] = UNKNOWN_INFECTED;
+	
+	// For checking if the player is a ghost
+	g_bCanBeGhost[victim] = true;
+	g_bIsGhost[victim] = false;
 	
 	return Plugin_Continue;
 }

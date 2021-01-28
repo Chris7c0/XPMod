@@ -10,6 +10,7 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 	decl String:strStatsTextBuffer[256];
 	decl String:strLoggedIn[16];
 	decl String:strConfirmed[16];
+	decl String:strState[64];
 
 	// Construct the statistics strings
 	if(ProbeTeams(TEAM_SPECTATORS) == true)
@@ -19,7 +20,7 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 
 		for(new i = 1; i<= MaxClients; i++)
 		{
-			if(IsClientInGame(i) && IsFakeClient(i) == false && g_iClientTeam[i] == TEAM_SPECTATORS)
+			if(RunClientChecks(i) && IsFakeClient(i) == false && g_iClientTeam[i] == TEAM_SPECTATORS)
 			{
 				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x04 [\x03%N\x04]\x03 ", i);
 				PrintToBufferServerOrClient(iClient, strStatsTextBuffer, strStoreBuffer, iStoreBufferSize);
@@ -43,9 +44,23 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 
 		for(new i = 1; i<= MaxClients; i++)
 		{
-			if(IsClientInGame(i) && IsFakeClient(i) == false && g_iClientTeam[i] == TEAM_SURVIVORS)
+			if(RunClientChecks(i) && IsFakeClient(i) == false && g_iClientTeam[i] == TEAM_SURVIVORS)
 			{
-				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x04 [\x03%N\x04]\x03 ", i);
+				// Determine the player state
+				if (IsPlayerAlive(i) == false)
+					strState = "DEAD";
+				else if (GetEntProp(i, Prop_Send, "m_isIncapacitated") == 1)
+					Format(strState, sizeof(strState), "INCAPACITATED");
+				else if (GetEntProp(i,Prop_Data,"m_iHealth") > 0)
+					Format(strState, sizeof(strState), "(%i+%i of %i HP) %f Speed", 
+						GetEntProp(i,Prop_Data,"m_iHealth"), 
+						GetSurvivorTempHealth(i),
+						GetEntProp(i,Prop_Data,"m_iMaxHealth"),
+						GetEntDataFloat(i, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue")));
+				else
+					strState = "ERROR!";
+
+				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x04 [\x03%N\x04]\x05 %s\x03 ", i, strState);
 				PrintToBufferServerOrClient(iClient, strStatsTextBuffer, strStoreBuffer, iStoreBufferSize);
 
 				GetLoggedInAndConfirmedStrings(i, strLoggedIn, sizeof(strLoggedIn), strConfirmed, sizeof(strConfirmed));
@@ -78,9 +93,25 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 
 		for(new i = 1; i<= MaxClients; i++)
 		{
-			if(IsClientInGame(i) && IsFakeClient(i) == false && g_iClientTeam[i] == TEAM_INFECTED)
+			if(RunClientChecks(i) && IsFakeClient(i) == false && g_iClientTeam[i] == TEAM_INFECTED)
 			{
-				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x04 [\x03%N\x04]\x03 ", i);
+				//PrintToChat(i, "g_bIsGhost %i,g_bCanBeGhost %i, %s", g_bIsGhost[i], g_bCanBeGhost[i], INFECTED_NAME[g_iInfectedCharacter[i]])
+
+				// Determine the player state
+				if (g_bIsGhost[i])
+					strState = "SPAWNING";
+				else if (g_bCanBeGhost[i])
+					strState = "DEAD";
+				else if (IsPlayerAlive(i))
+					Format(strState, sizeof(strState), "%s (%i of %i HP) %f Speed", 
+						INFECTED_NAME[g_iInfectedCharacter[i]], 
+						GetEntProp(i,Prop_Data,"m_iHealth"), 
+						GetEntProp(i,Prop_Data,"m_iMaxHealth"), 
+						GetEntDataFloat(i, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue")));
+				else
+					strState = "ERROR!";
+
+				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x04 [\x03%N\x04]\x05 %s\x03 ", i, strState);
 				PrintToBufferServerOrClient(iClient, strStatsTextBuffer, strStoreBuffer, iStoreBufferSize);
 
 				GetLoggedInAndConfirmedStrings(i, strLoggedIn, sizeof(strLoggedIn), strConfirmed, sizeof(strConfirmed));

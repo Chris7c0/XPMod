@@ -263,13 +263,13 @@ Action:CheckIfStuck(Handle:timer, any:iClient)
 		vorigin[1] == g_fTeleportEndPositionY[iClient] &&
 		vorigin[2] == g_fTeleportEndPositionZ[iClient])
 	{
-		PrintHintText(iClient, "You appear to be stuck, Teleporting you back to where you started");
+		PrintHintText(iClient, "\x03[XPMod] \x05You appear to be stuck, Teleporting you back to where you started");
 		decl Float:origpos[3];
 		origpos[0] = g_fTeleportOriginalPositionX[iClient];
 		origpos[1] = g_fTeleportOriginalPositionY[iClient];
 		origpos[2] = g_fTeleportOriginalPositionZ[iClient];
 		TeleportEntity(iClient, origpos, NULL_VECTOR, NULL_VECTOR);
-		WriteParticle(iClient, "teleport_warp", 0.0, 7.0);
+		WriteParticle(iClient, "teleport_warp", 0.0, 3.0);
 		g_bTeleportCoolingDown[iClient] = false;
 	}
 	return Plugin_Stop;
