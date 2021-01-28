@@ -14,20 +14,21 @@ LoadNecroTankerTalents(iClient)
 	
 	g_iTankChosen[iClient] = TANK_NECROTANKER;
 	
-	// Give Health
+	// Set Health
+	// Get Current Health/MaxHealth first, to add it back later
+	new iCurrentMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
+	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
 	// If its a bot, then give max health starting
 	if (IsFakeClient(iClient))
 	{
 		SetEntProp(iClient, Prop_Data,"m_iMaxHealth", NECROTANKER_MAX_HEALTH);
-		new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
-		SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + NECROTANKER_MAX_HEALTH - 6000);
+		SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + NECROTANKER_MAX_HEALTH - iCurrentMaxHealth);
 	}
 	// If its a human player, make them work for their health
 	else
 	{
 		SetEntProp(iClient, Prop_Data,"m_iMaxHealth", TANK_HEALTH_NECROTANKER);
-		new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
-		SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + TANK_HEALTH_NECROTANKER - 6000);
+		SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + TANK_HEALTH_NECROTANKER - iCurrentMaxHealth);
 	}
 
 

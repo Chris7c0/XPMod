@@ -16,20 +16,22 @@ LoadFireTankTalents(iClient)
 	g_fTankHealthPercentage[iClient] =  1.0;
 	g_bBlockTankFirePunchCharge[iClient] = false;
 	
-	//Set On Fire
+	// Set On Fire
 	IgniteEntity(iClient, 10000.0, false);
 	CreateTimer(10000.0, Timer_ReigniteFireTank, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	
-	//Give Health
-	SetEntProp(iClient, Prop_Data,"m_iMaxHealth", TANK_HEALTH_FIRE);
+	// Set Health
+	// Get Current Health/MaxHealth first, to add it back later
+	new iCurrentMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
 	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
-	SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + TANK_HEALTH_FIRE - 6000);
+	SetEntProp(iClient, Prop_Data,"m_iMaxHealth", TANK_HEALTH_FIRE);
+	SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + TANK_HEALTH_FIRE - iCurrentMaxHealth);
 
-	//Stop Kiting (Bullet hits slowing tank down)
+	// Stop Kiting (Bullet hits slowing tank down)
 	SetConVarInt(FindConVar("z_tank_damage_slow_min_range"), 0);
 	SetConVarInt(FindConVar("z_tank_damage_slow_max_range"), 0);
 	
-	//Set Movement Speed	
+	// Set Movement Speed	
 	SetClientSpeed(iClient);
 
 	// Change Tank's Skin Color

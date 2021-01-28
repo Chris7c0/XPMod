@@ -22,10 +22,12 @@ LoadVampiricTankTalents(iClient)
 	// Set a really high rock cooldown so that the rock throw ability is deactivated
 	SetSIAbilityCooldown(iClient, 9999.0);
 	
-	// Give Health
-	SetEntProp(iClient, Prop_Data,"m_iMaxHealth", TANK_HEALTH_VAMPIRIC);
+	// Set Health
+	// Get Current Health/MaxHealth first, to add it back later
+	new iCurrentMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
 	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
-	SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + TANK_HEALTH_VAMPIRIC - 6000);
+	SetEntProp(iClient, Prop_Data,"m_iMaxHealth", TANK_HEALTH_VAMPIRIC);
+	SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + TANK_HEALTH_VAMPIRIC - iCurrentMaxHealth);
 
 	// Stop Kiting (Bullet hits slowing tank down)
 	SetConVarInt(FindConVar("z_tank_damage_slow_min_range"), 0);
