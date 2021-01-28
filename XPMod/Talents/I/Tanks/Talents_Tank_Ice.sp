@@ -2,6 +2,7 @@ LoadIceTankTalents(iClient)
 {
 	if (RunClientChecks(iClient) == false || 
 		g_iClientTeam[iClient] != TEAM_INFECTED || 
+		g_iTankChosen[iClient] != TANK_NOT_CHOSEN ||
 		GetEntProp(iClient, Prop_Send, "m_zombieClass") != TANK)
 		return;
 	
