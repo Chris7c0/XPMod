@@ -458,8 +458,8 @@ CreateNewUser(iClient)
 	decl String:strUserToken[41];
 	GenerateNewHashToken(strSteamID, strUserToken);
 	
-	//Give bonus XP
-	g_iClientXP[iClient] += 10000;
+	//Give bonus XP (called twice apparently)
+	//g_iClientXP[iClient] += 10000;
 	
 	//Get Client XP
 	decl String:strClientXP[10];
