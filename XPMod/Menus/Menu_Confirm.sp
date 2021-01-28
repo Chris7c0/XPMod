@@ -136,7 +136,9 @@ DrawConfirmationMenuToClient(iClient, iDisplayTime = 60)
 
 Action:ConfirmationMessageMenuDraw(iClient)
 {
-	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
+	if(RunClientChecks(iClient) == false || 
+		IsFakeClient(iClient) == true ||
+		g_bClientLoggedIn[iClient] == false)
 		return Plugin_Handled;
 	
 	if(g_bTalentsConfirmed[iClient] == false)

@@ -545,9 +545,8 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	}
 
 	// We now do not know which infected they have, because they dead
-	// TODO: move this to a better place when this function is cleaned up
+	// These need to take place in this order, set UNKNOWN, then set CanBeGhost
 	g_iInfectedCharacter[victim] = UNKNOWN_INFECTED;
-	
 	// For checking if the player is a ghost
 	g_bCanBeGhost[victim] = true;
 	g_bIsGhost[victim] = false;

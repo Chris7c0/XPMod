@@ -544,6 +544,13 @@ Action:JoinTeamCmd(iClient, const String:command[], argc)
 		return Plugin_Stop;
 	}
 
+	// We now do not know which infected they have, because they switched teams
+	// These need to take place in this order, set UNKNOWN, then set CanBeGhost
+	g_iInfectedCharacter[iClient] = UNKNOWN_INFECTED;
+	// For checking if the player is a ghost
+	g_bCanBeGhost[iClient] = true;
+	g_bIsGhost[iClient] = false;
+
 	return Plugin_Continue;
 }
 
@@ -558,6 +565,13 @@ Action:Event_PlayerChangeTeam(Handle:hEvent, const String:strName[], bool:bDontB
 	CreateTimer(4.0, TimerResetPlayerChangeTeamCoolDown, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 	CreateTimer(0.1, TimerCheckTeam, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
+	// We now do not know which infected they have, because they switched teams
+	// These need to take place in this order, set UNKNOWN, then set CanBeGhost
+	g_iInfectedCharacter[iClient] = UNKNOWN_INFECTED;
+	// For checking if the player is a ghost
+	g_bCanBeGhost[iClient] = true;
+	g_bIsGhost[iClient] = false;
 	
 	return Plugin_Continue;
 }
