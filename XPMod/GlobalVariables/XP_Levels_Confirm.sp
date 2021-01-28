@@ -18,40 +18,42 @@ new g_iClientUsableXP = -1;
 new g_iClientTotalXPCost[MAXPLAYERS + 1];
 
 ///////////////////////   XP Amounts   ////////////////////////
-//Multiplier amount for Talent levels (1.0 is default)
-#define	XP_MULTIPLIER	0.08
+// Multiplier amount for player levels (1.0 is default)
+// The higher this number is, the more xp it takes for
+// a player to reach each level.
+#define	XP_MULTIPLIER	1.0
 
-//Default XP amount per level
-#define LEVEL_1  1000
-#define LEVEL_2  3000
-#define LEVEL_3  6000
-#define LEVEL_4  10000
-#define LEVEL_5  15000
-#define LEVEL_6  21000
-#define LEVEL_7  28000
-#define LEVEL_8  36000
-#define LEVEL_9  45000
-#define LEVEL_10 55000
-#define LEVEL_11 66000
-#define LEVEL_12 78000
-#define LEVEL_13 91000
-#define LEVEL_14 105000
-#define LEVEL_15 120000
-#define LEVEL_16 136000
-#define LEVEL_17 153000
-#define LEVEL_18 171000
-#define LEVEL_19 190000
-#define LEVEL_20 210000
-#define LEVEL_21 231000
-#define LEVEL_22 253000
-#define LEVEL_23 276000
-#define LEVEL_24 300000
-#define LEVEL_25 325000
-#define LEVEL_26 351000
-#define LEVEL_27 378000
-#define LEVEL_28 406000
-#define LEVEL_29 435000
-#define LEVEL_30 465000
+//Default XP amount required to reach each level
+#define LEVEL_1  100
+#define LEVEL_2  300
+#define LEVEL_3  600
+#define LEVEL_4  1000
+#define LEVEL_5  1500
+#define LEVEL_6  2100
+#define LEVEL_7  2800
+#define LEVEL_8  3600
+#define LEVEL_9  4500
+#define LEVEL_10 5500
+#define LEVEL_11 6600
+#define LEVEL_12 7800
+#define LEVEL_13 9100
+#define LEVEL_14 10500
+#define LEVEL_15 12000
+#define LEVEL_16 13600
+#define LEVEL_17 15300
+#define LEVEL_18 17100
+#define LEVEL_19 19000
+#define LEVEL_20 21000
+#define LEVEL_21 23100
+#define LEVEL_22 25300
+#define LEVEL_23 27600
+#define LEVEL_24 30000
+#define LEVEL_25 32500
+#define LEVEL_26 35100
+#define LEVEL_27 37800
+#define LEVEL_28 40600
+#define LEVEL_29 43500
+#define LEVEL_30 46500
 
 //Stats
 new g_iStat_ClientInfectedKilled[MAXPLAYERS + 1];
