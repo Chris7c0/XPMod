@@ -97,7 +97,7 @@ Action:MotdPanel(iClient, args)
 bool:ProbeTeams(team)
 {
 	for(new i = 1; i <= MaxClients; i++)
-		if(IsClientInGame(i) && !IsFakeClient(i) && g_iClientTeam[i] == team)
+		if(IsClientInGame(i)  && g_iClientTeam[i] == team) //&& !IsFakeClient(i)
 			return true;
 	
 	return false;

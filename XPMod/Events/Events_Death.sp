@@ -92,23 +92,10 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 		PropaneExplode(xyzLocation);
 		MolotovExplode(xyzLocation);
 	}
-	
+
 	//Tank
-	g_iTankChosen[victim] = TANK_NOT_CHOSEN;
-	g_xyzClientTankPosition[victim][0] = 0.0;
-	g_xyzClientTankPosition[victim][1] = 0.0;
-	g_xyzClientTankPosition[victim][2] = 0.0;
-	g_iTankCharge[victim] = 0;
-	g_bTankAttackCharged[victim] = false;
-	DeleteParticleEntity(g_iPID_TankChargedFire[victim]);
-	g_iIceTankLifePool[victim] = 0;
-	delete g_hTimer_IceSphere[victim];
-	DeleteParticleEntity(g_iPID_IceTankIcicles[victim]);
-	TurnOffAndDeleteSmokeStackParticle(g_iPID_IceTankTrail[victim]);
-	delete g_hTimer_WingDashChargeRegenerate[victim];
-	
-	
-	
+	ResetAllTankVariables(victim);
+
 	//Grapples
 	g_bHunterGrappled[victim] = false;
 	g_iHunterShreddingVictim[victim] = -1;

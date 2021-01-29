@@ -52,21 +52,70 @@ SetupTankForBot(iClient)
 	}
 }
 
+// This is a timed fucntion writen for the Tank Spawn event, which doesnt work unless its timed
+Action:TimerResetAllTankVariables(Handle:timer, any:iClient)
+{
+	ResetAllTankVariables(iClient);
+	return Plugin_Stop;
+}
+
 ResetAllTankVariables(iClient)
 {
+	// Generic Tank Variables
 	g_iTankChosen[iClient] = TANK_NOT_CHOSEN;
-	g_iFireDamageCounter[iClient] = 0;
-	g_bFrozenByTank[iClient] =  false;
+	g_bTankOnFire[iClient] = false;
+	g_iTankCharge[iClient] = 0;
 	g_xyzClientTankPosition[iClient][0] = 0.0;
 	g_xyzClientTankPosition[iClient][1] = 0.0;
 	g_xyzClientTankPosition[iClient][2] = 0.0;
-	g_iTankCharge[iClient] = 0;
-	g_bTankAttackCharged[iClient] = false;
-	g_iIceTankLifePool[iClient] = 0;
-	g_bCanFlapVampiricTankWings[iClient] = false;
-	g_bIsVampiricTankFlying[iClient] = false;
-	g_bCanVampiricTankWingDash[iClient] = false;
-	g_iVampiricTankWingDashChargeCount[iClient] = 0;
+	TurnOffAndDeleteSmokeStackParticle(g_iPID_TankTrail[iClient]);
+
+	// Class specific tank variables
+	ResetAllTankVariables_Fire(iClient);
+	ResetAllTankVariables_Ice(iClient);
+	ResetAllTankVariables_NecroTanker(iClient);
+	ResetAllTankVariables_Vampiric(iClient);
+
+	// if (RunClientChecks(iClient) && IsFakeClient(iClient) == false)
+	// 	PrintToChatAll("%N g_iInfectedCharacter = %i  g_iClientTeam = %i  IsPlayerAlive = %i  m_zombieClass = %i",
+	// 		iClient,
+	// 		g_iInfectedCharacter[iClient], 
+	// 		g_iClientTeam[iClient], 
+	// 		RunClientChecks(iClient), 
+	// 		IsPlayerAlive(iClient), 
+	// 		GetEntProp(iClient, Prop_Send, "m_zombieClass") );
+
+	// Everything beyond here is for if the player is alive as a tank
+	// This is for when a player becomes a tank after another tank
+	if (g_iInfectedCharacter[iClient] != TANK ||
+		g_iClientTeam[iClient] != TEAM_INFECTED ||
+		RunClientChecks(iClient) == false || 
+		IsPlayerAlive(iClient) == false ||
+		GetEntProp(iClient, Prop_Send, "m_zombieClass") != TANK)
+		return;
+
+	// Clamp Player Max Health to ConVar Setting of Tank Max health
+	// Note: Valve multiplies the value with 1.5 so it becomes 4000 x 1.5 = 6000 hp.
+	new iMaxHealthConVarSetting = RoundToCeil(GetConVarInt(FindConVar("z_tank_health")) * 1.5);
+	new iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
+	// PrintToChatAll("%N ResetAllTankVariables m_iMaxHealth = %i iMaxHealthConVarSetting = %i", iClient, iMaxHealth, iMaxHealthConVarSetting);
+	if (iMaxHealth > iMaxHealthConVarSetting)
+		SetEntProp(iClient, Prop_Data, "m_iMaxHealth", iMaxHealthConVarSetting);
+	// Clamp Player Health to Max Health
+	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
+	// iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
+	// PrintToChatAll("%N ResetAllTankVariables m_iHealth = %i m_iMaxHealth = %i iMaxHealthConVarSetting = %i", iClient, iCurrentHealth, iMaxHealth, iMaxHealthConVarSetting);
+	if (iCurrentHealth > iMaxHealthConVarSetting)
+		SetEntProp(iClient, Prop_Data, "m_iHealth", iMaxHealthConVarSetting);
+	// PrintToChatAll("%N ResetAllTankVariables m_iHealth = %i m_iMaxHealth = %i iMaxHealthConVarSetting = %i", iClient, iCurrentHealth, iMaxHealth, iMaxHealthConVarSetting);
+
+	// Reset their cooldown
+	SetSIAbilityCooldown(iClient);
+
+	// Remove fire if the previous tank was a Fire Tank
+	ExtinguishEntity(iClient);
+
+	// PrintToChatAll("%N ResetAllTankVariables Ended", iClient);
 }
 
 CheckIfTankMovedWhileChargingAndIncrementCharge(iClient)

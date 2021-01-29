@@ -349,14 +349,14 @@ DeleteAllClientParticles(iClient)
 	DeleteParticleEntity(g_iPID_IceTankChargeMistStock[iClient]);
 	DeleteParticleEntity(g_iPID_IceTankChargeSnow[iClient]);
 	DeleteParticleEntity(g_iPID_IceTankIcicles[iClient]);
-	TurnOffAndDeleteSmokeStackParticle(g_iPID_IceTankTrail[iClient]);
+	TurnOffAndDeleteSmokeStackParticle(g_iPID_TankTrail[iClient]);
 	
 	g_iPID_TankChargedFire[iClient] = -1;
 	g_iPID_IceTankChargeMistAddon[iClient] = -1;
 	g_iPID_IceTankChargeMistStock[iClient] = -1;
 	g_iPID_IceTankChargeSnow[iClient] = -1;
 	g_iPID_IceTankIcicles[iClient] = -1;
-	g_iPID_IceTankTrail[iClient] = -1;	
+	g_iPID_TankTrail[iClient] = -1;	
 }
 
 DeleteAllMenuParticles(iClient)

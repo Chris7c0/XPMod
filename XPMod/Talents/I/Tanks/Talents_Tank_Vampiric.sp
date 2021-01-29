@@ -12,6 +12,8 @@ LoadVampiricTankTalents(iClient)
 			PrintToChat(iClient, "\x04You cannot choose tank talents after you have died");
 		return;
 	}
+
+	// PrintToChatAll("%N Loading VAMPIRIC TANK abilities.", iClient);
 	
 	g_iTankChosen[iClient] = TANK_VAMPIRIC;
 	
@@ -50,6 +52,16 @@ LoadVampiricTankTalents(iClient)
 
 	if (IsFakeClient(iClient) == false)
 		PrintHintText(iClient, "You have become the Vampiric Tank");
+}
+
+ResetAllTankVariables_Vampiric(iClient)
+{
+	g_bCanFlapVampiricTankWings[iClient] = false;
+	g_bIsVampiricTankFlying[iClient] = false;
+	g_bCanVampiricTankWingDash[iClient] = false;
+	g_iVampiricTankWingDashChargeCount[iClient] = 0;
+
+	delete g_hTimer_WingDashChargeRegenerate[iClient];
 }
 
 // SetupTankForBot_Vampiric(iClient)
@@ -295,25 +307,25 @@ CreateVampiricTankTrailEffect(int iClient)
 	new String:vecString[32];
 	Format(vecString, sizeof(vecString), "%f %f %f", xyzTankPosition[0], xyzTankPosition[1], xyzTankPosition[2]);
 
-	g_iPID_IceTankTrail[iClient] = CreateEntityByName("env_smokestack");
+	g_iPID_TankTrail[iClient] = CreateEntityByName("env_smokestack");
 	
-	DispatchKeyValue(g_iPID_IceTankTrail[iClient],"Origin", vecString);
-	DispatchKeyValue(g_iPID_IceTankTrail[iClient],"BaseSpread", "0");		//Gap in the middle
-	DispatchKeyValue(g_iPID_IceTankTrail[iClient],"SpreadSpeed", "20");	//Speed the smoke moves outwards
-	DispatchKeyValue(g_iPID_IceTankTrail[iClient],"Speed", "5");			//The speed at which the smoke particles move after they're spawned
-	DispatchKeyValue(g_iPID_IceTankTrail[iClient],"StartSize", "35");
-	DispatchKeyValue(g_iPID_IceTankTrail[iClient],"EndSize", "70");
-	DispatchKeyValue(g_iPID_IceTankTrail[iClient],"Rate", "5");			//Amount of smoke created
-	DispatchKeyValue(g_iPID_IceTankTrail[iClient],"JetLength", "20");		//Smoke jets outside of the original
-	DispatchKeyValue(g_iPID_IceTankTrail[iClient],"Twist", "3"); 			//Amount of global twisting
-	DispatchKeyValue(g_iPID_IceTankTrail[iClient],"RenderColor", "200 0 200");
-	DispatchKeyValue(g_iPID_IceTankTrail[iClient],"RenderAmt", "50");		//Transparency
-	DispatchKeyValue(g_iPID_IceTankTrail[iClient],"SmokeMaterial", "particle/particle_smokegrenade1.vmt");
+	DispatchKeyValue(g_iPID_TankTrail[iClient],"Origin", vecString);
+	DispatchKeyValue(g_iPID_TankTrail[iClient],"BaseSpread", "0");		//Gap in the middle
+	DispatchKeyValue(g_iPID_TankTrail[iClient],"SpreadSpeed", "20");	//Speed the smoke moves outwards
+	DispatchKeyValue(g_iPID_TankTrail[iClient],"Speed", "5");			//The speed at which the smoke particles move after they're spawned
+	DispatchKeyValue(g_iPID_TankTrail[iClient],"StartSize", "35");
+	DispatchKeyValue(g_iPID_TankTrail[iClient],"EndSize", "70");
+	DispatchKeyValue(g_iPID_TankTrail[iClient],"Rate", "5");			//Amount of smoke created
+	DispatchKeyValue(g_iPID_TankTrail[iClient],"JetLength", "20");		//Smoke jets outside of the original
+	DispatchKeyValue(g_iPID_TankTrail[iClient],"Twist", "3"); 			//Amount of global twisting
+	DispatchKeyValue(g_iPID_TankTrail[iClient],"RenderColor", "200 0 200");
+	DispatchKeyValue(g_iPID_TankTrail[iClient],"RenderAmt", "50");		//Transparency
+	DispatchKeyValue(g_iPID_TankTrail[iClient],"SmokeMaterial", "particle/particle_smokegrenade1.vmt");
 	
 	
 	SetVariantString("!activator");
-	AcceptEntityInput(g_iPID_IceTankTrail[iClient], "SetParent", iClient, g_iPID_IceTankTrail[iClient], 0);
+	AcceptEntityInput(g_iPID_TankTrail[iClient], "SetParent", iClient, g_iPID_TankTrail[iClient], 0);
 
-	DispatchSpawn(g_iPID_IceTankTrail[iClient]);
-	AcceptEntityInput(g_iPID_IceTankTrail[iClient], "TurnOn");
+	DispatchSpawn(g_iPID_TankTrail[iClient]);
+	AcceptEntityInput(g_iPID_TankTrail[iClient], "TurnOn");
 }

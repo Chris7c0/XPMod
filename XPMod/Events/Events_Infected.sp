@@ -695,43 +695,51 @@ Action:Event_WitchKilled(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 
 
 Action:Event_TankSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
-{
-	//PrintToChatAll("userid = %i tankindex = %i", (GetEventInt(hEvent, "userid")), (GetEventInt(hEvent, "tankid")));
-	g_iTankCounter++;
+{	
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
-	g_iInfectedCharacter[iClient] = TANK;
-	g_bTankOnFire[iClient] = false;
+
+	if(RunClientChecks(iClient) == false || IsPlayerAlive(iClient) == false)
+		return Plugin_Continue;
 	
-	CreateTimer(0.1, Timer_AskWhatTankToUse, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	//PrintToChatAll("Event_TankSpawn %N, userid = %i tankindex = %i", iClient, iClient, GetEventInt(hEvent, "tankid"));
+	
+	g_iTankCounter++;
+	g_iClientTeam[iClient] = TEAM_INFECTED;
+	g_iInfectedCharacter[iClient] = TANK;
+	// Reset all tank abilities if transitioning from another tank
+	// Note: this IS called for the bot, then the player, when officially giving tank to player and not haxored in
+	// Note2: This requires a timer, or it does not apply
+	CreateTimer(0.1, TimerResetAllTankVariables, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
+	// Give bot XPMod abilities or ask the player to pick an XPMod tank
+	CreateTimer(0.2, Timer_AskWhatTankToUse, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	
 	for(new i=1;i<=MaxClients;i++)
 	{
-		if(RunClientChecks(i))
-			if(g_iClientTeam[i] == TEAM_SURVIVORS)
-				if(g_iJamminLevel[i] > 0)		//can make more efficeint by getting this before
+		if(g_iJamminLevel[i] > 0 && g_iClientTeam[i] == TEAM_SURVIVORS && RunClientChecks(i))
+		{
+			//g_fEllisJamminSpeed[i] = (g_iJamminLevel[i] * 0.04);
+			PrintHintText(i,"Tank is near, your adrenaline pumps and you become stronger");
+			//SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
+			//FakeClientCommand(i, "give molotov");
+			//SetCommandFlags("give", g_iFlag_Give);
+			//if(tankspawnlvl speed > current ELLIS speed)
+			if(g_bGameFrozen == false)
+			{
+				if(g_iTankCounter > 0)
 				{
-					//g_fEllisJamminSpeed[i] = (g_iJamminLevel[i] * 0.04);
-					PrintHintText(i,"Tank is near, your adrenaline pumps and you become stronger");
-					//SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					//FakeClientCommand(i, "give molotov");
-					//SetCommandFlags("give", g_iFlag_Give);
-					//if(tankspawnlvl speed > current ELLIS speed)
-					if(g_bGameFrozen == false)
-					{
-						if(g_iTankCounter > 0)
-						{
-							SetClientSpeed(i);
-						}
-					}
-
-					// Give temp health to ellis for tank spawn
-					AddTempHealthToSurvivor(i, float(g_iJamminLevel[i]) * 5);
-
-					if(g_iJamminLevel[i] == 5)
-					{
-						g_iEllisJamminGrenadeCounter[i]++;
-					}
+					SetClientSpeed(i);
 				}
+			}
+
+			// Give temp health to ellis for tank spawn
+			AddTempHealthToSurvivor(i, float(g_iJamminLevel[i]) * 5);
+
+			if(g_iJamminLevel[i] == 5)
+			{
+				g_iEllisJamminGrenadeCounter[i]++;
+			}
+		}
 	}
 	return Plugin_Continue;
 }

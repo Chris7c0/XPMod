@@ -540,6 +540,7 @@ ResetAllVariables(iClient)
 	g_bDoesClientAttackFast[iClient] = false;
 	
 	//Reset Tank (Needed here for changing teams)
+	g_iTankChosen[iClient] = TANK_NOT_CHOSEN;
 	ResetAllTankVariables(iClient);
 }
 

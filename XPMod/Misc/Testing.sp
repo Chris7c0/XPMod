@@ -49,6 +49,8 @@ Action:TestFunction1(iClient, args)
 	//if (args < 1) return Plugin_Stop;
 
 
+	// z_ghost_delay_max 30
+	// z_ghost_delay_min 20
 
 
 	//g_fEllisTestFireRate = StringToFloat(str1);

@@ -1,6 +1,7 @@
 Action:Timer_AskWhatTankToUse(Handle:timer, any:iClient)
 {
-	if (RunClientChecks(iClient) == false || 
+	if (g_iTankChosen[iClient] != TANK_NOT_CHOSEN ||
+		RunClientChecks(iClient) == false || 
 		g_iClientTeam[iClient] != TEAM_INFECTED ||
 		IsPlayerAlive(iClient) == false || 
 		GetEntProp(iClient, Prop_Send, "m_zombieClass") != TANK)
@@ -13,7 +14,7 @@ Action:Timer_AskWhatTankToUse(Handle:timer, any:iClient)
 		return Plugin_Stop;
 	}
 	// If its a human player, then show them the selection menu
-	else if(g_iTankChosen[iClient] == TANK_NOT_CHOSEN)
+	else
 	{
 		ChooseTankMenuDraw(iClient);
 		CreateTimer(5.0, Timer_AskWhatTankToUse, iClient, TIMER_FLAG_NO_MAPCHANGE);

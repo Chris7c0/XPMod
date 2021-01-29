@@ -144,7 +144,7 @@ new ArrayList:g_listTankRockEntities;
 // Fire Tank
 #define TANK_HEALTH_FIRE                    9000
 new g_iFireDamageCounter[MAXPLAYERS + 1];
-new bool:g_bTankAttackCharged[MAXPLAYERS + 1];
+new bool:g_bFireTankAttackCharged[MAXPLAYERS + 1];
 new bool:g_bBlockTankFirePunchCharge[MAXPLAYERS + 1];
 //new bool:g_bFireTankBaseSpeedIncreased[MAXPLAYERS + 1];
 new Float:g_fFireTankExtraSpeed[MAXPLAYERS + 1];

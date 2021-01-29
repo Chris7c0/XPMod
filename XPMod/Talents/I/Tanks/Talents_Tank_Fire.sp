@@ -12,6 +12,8 @@ LoadFireTankTalents(iClient)
 			PrintToChat(iClient, "\x04You cannot choose tank talents after you have died");
 		return;
 	}
+
+	// PrintToChatAll("%N Loading Fire Tank abilities.", iClient);
 	
 	g_iTankChosen[iClient] = TANK_FIRE;
 	g_fTankHealthPercentage[iClient] =  1.0;
@@ -45,6 +47,16 @@ LoadFireTankTalents(iClient)
 		PrintHintText(iClient, "You have become the Fire Tank");
 }
 
+ResetAllTankVariables_Fire(iClient)
+{
+	g_iFireDamageCounter[iClient] = 0;
+	g_bFireTankAttackCharged[iClient] = false;
+	g_bBlockTankFirePunchCharge[iClient] = false;
+	g_fFireTankExtraSpeed[iClient] = 0.0;
+
+	DeleteParticleEntity(g_iPID_TankChargedFire[iClient]);
+}
+
 // SetupTankForBot_Fire(iClient)
 // {
 // 	LoadFireTankTalents(iClient);
@@ -61,7 +73,7 @@ SetClientSpeedTankFire(iClient, &Float:fSpeed)
 OnGameFrame_Tank_Fire(iClient)
 {
 	//Check to see if the charging has already taken place or depleted
-	if(g_iTankChosen[iClient] == TANK_FIRE && g_bTankAttackCharged[iClient] == true)
+	if(g_iTankChosen[iClient] == TANK_FIRE && g_bFireTankAttackCharged[iClient] == true)
 		return;
 	
 	new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
@@ -91,7 +103,7 @@ OnGameFrame_Tank_Fire(iClient)
 		//Charged for long enough, now handle fire tank charged punch
 		if(g_iTankCharge[iClient] >= 150)
 		{
-			g_bTankAttackCharged[iClient] = true;
+			g_bFireTankAttackCharged[iClient] = true;
 			g_iTankCharge[iClient] = 0;				
 			g_iPID_TankChargedFire[iClient] = CreateParticle("fire_small_01", 0.0, iClient, ATTACH_DEBRIS);
 			
@@ -156,7 +168,7 @@ EventsHurt_TankAttacker_Fire(Handle:hEvent, iAttackerTank, iVictim)
 	if(StrEqual(weapon,"tank_claw") == true)
 	{
 		//Set fire to iVictim if charged or percent chance happens(5 seconds)
-		if(g_bTankAttackCharged[iAttackerTank] == true)
+		if(g_bFireTankAttackCharged[iAttackerTank] == true)
 		{
 			decl Float:xyzLocation[3];
 			GetClientAbsOrigin(iVictim, xyzLocation);
@@ -164,7 +176,7 @@ EventsHurt_TankAttacker_Fire(Handle:hEvent, iAttackerTank, iVictim)
 			PropaneExplode(xyzLocation);
 			MolotovExplode(xyzLocation);
 			
-			g_bTankAttackCharged[iAttackerTank] = false;
+			g_bFireTankAttackCharged[iAttackerTank] = false;
 			DeleteParticleEntity(g_iPID_TankChargedFire[iAttackerTank]);
 			SetFireToPlayer(iVictim, iAttackerTank, 5.0);
 			

@@ -93,7 +93,9 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 
 		for(new i = 1; i<= MaxClients; i++)
 		{
-			if(RunClientChecks(i) && IsFakeClient(i) == false && g_iClientTeam[i] == TEAM_INFECTED)
+			if(RunClientChecks(i) && 
+				g_iClientTeam[i] == TEAM_INFECTED &&
+				(IsFakeClient(i) == false || (g_bIsGhost[i] == false && g_bCanBeGhost[i] == false)) )
 			{
 				//PrintToChat(i, "g_bIsGhost %i,g_bCanBeGhost %i, %s", g_bIsGhost[i], g_bCanBeGhost[i], INFECTED_NAME[g_iInfectedCharacter[i]])
 
@@ -102,7 +104,7 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 					strState = "SPAWNING";
 				else if (g_bCanBeGhost[i])
 					strState = "DEAD";
-				else if (IsPlayerAlive(i))
+				else if (IsPlayerAlive(i) && g_iInfectedCharacter[i] < 9)
 					Format(strState, sizeof(strState), "%s (%i of %i HP) %f Speed", 
 						INFECTED_NAME[g_iInfectedCharacter[i]], 
 						GetEntProp(i,Prop_Data,"m_iHealth"), 
@@ -110,19 +112,22 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 						GetEntDataFloat(i, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue")));
 				else
 					strState = "ERROR!";
-
+				
 				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x04 [\x03%N\x04]\x05 %s\x03 ", i, strState);
 				PrintToBufferServerOrClient(iClient, strStatsTextBuffer, strStoreBuffer, iStoreBufferSize);
 
-				GetLoggedInAndConfirmedStrings(i, strLoggedIn, sizeof(strLoggedIn), strConfirmed, sizeof(strConfirmed));
+				if (IsFakeClient(i) == false)
+				{
+					GetLoggedInAndConfirmedStrings(i, strLoggedIn, sizeof(strLoggedIn), strConfirmed, sizeof(strConfirmed));
 
-				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05	Lvl %d, %d XP%s%s", 
-					g_iClientLevel[i], 
-					g_iClientXP[i], 
-					strLoggedIn, 
-					strConfirmed);
-				PrintToBufferServerOrClient(iClient, strStatsTextBuffer, strStoreBuffer, iStoreBufferSize);
-
+					Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05	Lvl %d, %d XP%s%s", 
+						g_iClientLevel[i], 
+						g_iClientXP[i], 
+						strLoggedIn, 
+						strConfirmed);
+					PrintToBufferServerOrClient(iClient, strStatsTextBuffer, strStoreBuffer, iStoreBufferSize);
+				}
+				
 				if (g_bClientLoggedIn[i])
 				{
 					Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05	%s, %s, %s\x04	Kills: %d Incaps: %d DMG: %d\x05 ", 

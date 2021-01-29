@@ -133,7 +133,7 @@ new g_iPID_IceTankChargeMistStock[MAXPLAYERS + 1];
 new g_iPID_IceTankChargeMistAddon[MAXPLAYERS + 1];
 new g_iPID_IceTankChargeSnow[MAXPLAYERS + 1];
 new g_iPID_IceTankIcicles[MAXPLAYERS + 1];
-new g_iPID_IceTankTrail[MAXPLAYERS + 1];
+new g_iPID_TankTrail[MAXPLAYERS + 1];
 
 //Survivor Particle Menu Descriptions
 new bool:g_bEnabledVGUI[MAXPLAYERS + 1];					//VGUI toggle for iClient menu descriptions
