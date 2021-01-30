@@ -95,13 +95,14 @@
 #include "XPMod/Events/Events_Hurt.sp"
 #include "XPMod/Events/Events_Death.sp"
 #include "XPMod/Events/Events_Reload.sp"
-//Player Talent Files
+//Ability Files
 #include "XPMod/Talents/Talents_Load.sp"
 #include "XPMod/Talents/S/Talents_Rochelle.sp"
 #include "XPMod/Talents/S/Talents_Coach.sp"
 #include "XPMod/Talents/S/Talents_Ellis.sp"
 #include "XPMod/Talents/S/Talents_Nick.sp"
 #include "XPMod/Talents/S/Talents_Bill.sp"
+#include "XPMod/Talents/I/Enhance_CI.sp"
 #include "XPMod/Talents/I/Talents_Boomer.sp"
 #include "XPMod/Talents/I/Talents_Smoker.sp"
 #include "XPMod/Talents/I/Talents_Hunter.sp"
@@ -109,6 +110,7 @@
 #include "XPMod/Talents/I/Talents_Charger.sp"
 #include "XPMod/Talents/I/Talents_Jockey.sp"
 #include "XPMod/Talents/I/Tanks/Talents_Tank.sp"
+#include "XPMod/Talents/I/Tanks/Tank_Rocks.sp"
 #include "XPMod/Talents/I/Tanks/Talents_Tank_Fire.sp"
 #include "XPMod/Talents/I/Tanks/Talents_Tank_Ice.sp"
 #include "XPMod/Talents/I/Tanks/Talents_Tank_NecroTanker.sp"

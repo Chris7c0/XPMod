@@ -1,19 +1,24 @@
-public void OnEntityCreated(int entity, const char[] classname)
+public void OnEntityCreated(int iEntity, const char[] classname)
 {
 	// Check if player presseed a button this round to ensure unwanted preloaded entities are 
 	// not captured beyond this point.
 	if (g_bPlayerPressedButtonThisRound == false)
 		return;
 	
-	//PrintToServer("OnEntityCreated %i", entity);
-	if (IsTankRock(entity, classname))
+	//PrintToServer("OnEntityCreated %i", iEntity);
+	if (IsCommonInfected(iEntity, classname))
 	{
-		PushRockOntoTankRockEntitiesList(entity);
+		EnhanceCIIfNeeded(iEntity);
+    }
 
-		// new entityRef = EntIndexToEntRef(entity);
-		// PrintToServer("Rock Created %i", entityRef);
+	if (IsTankRock(iEntity, classname))
+	{
+		PushRockOntoTankRockEntitiesList(iEntity);
 
-		// CreateTimer(0.1, TrackRockPosition, entity, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+		// new iEntityRef = EntIndexToEntRef(iEntity);
+		// PrintToServer("Rock Created %i", iEntityRef);
+
+		// CreateTimer(0.1, TrackRockPosition, iEntity, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
     }
 }
 
