@@ -248,7 +248,7 @@ EventsHurt_TankAttacker_Ice(Handle:hEvent, iAttackerTank, iVictim)
 
 FreezePlayerByTank(iVictim, Float:fFreezeTime, Float:fStartTime = 0.2)
 {
-	if(iVictim < 1 || IsClientInGame(iVictim) == false)
+	if (iVictim < 1 || IsClientInGame(iVictim) == false)
 		return;
 	
 	CreateTimer(fStartTime, Timer_FreezePlayerByTank, iVictim, TIMER_FLAG_NO_MAPCHANGE);

@@ -122,11 +122,12 @@ CheckIfTankMovedWhileChargingAndIncrementCharge(iClient)
 {
 	decl Float:xyzCurrentPosition[3];
 	GetClientAbsOrigin(iClient, xyzCurrentPosition);
-	
+
+
+
 	//Make sure the tank hasnt moved while charging(tanks position has changed)
-	if(g_xyzClientTankPosition[iClient][0] == xyzCurrentPosition[0] && 
-		g_xyzClientTankPosition[iClient][1] == xyzCurrentPosition[1] && 
-		g_xyzClientTankPosition[iClient][2] == xyzCurrentPosition[2])
+	new Float:distance = GetVectorDistance(g_xyzClientTankPosition[iClient], xyzCurrentPosition, false);
+	if(distance < 5.0)
 	{
 		g_iTankCharge[iClient]++;
 	}
@@ -195,13 +196,13 @@ void PopRockOffTankRockEntitiesList(int iEntity)
 	//PrintToServer("Rock Destroyed %i", iEntity);
 }
 
-void RemoveAllEntitiesFromTankRockList()
+void RemoveAllEntitiesFromArrayList(ArrayList:list)
 {
-	if (g_listTankRockEntities == INVALID_HANDLE)
+	if (list == INVALID_HANDLE)
 		return;
 
-	for (int i=0; i < g_listTankRockEntities.Length; i++)
-		g_listTankRockEntities.Erase(i);
+	for (int i=0; i < list.Length; i++)
+		list.Erase(i);
 }
 
 void HandleTankRockDestroy(iRockEntity)

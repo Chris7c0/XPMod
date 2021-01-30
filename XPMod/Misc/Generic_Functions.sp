@@ -727,8 +727,7 @@ SetClientRenderAndGlowColor(int iClient)
 
 SetClientRenderColor(iClient, iRed = 255, iGreen = 255, iBlue = 255, iAlpha = 255, iRenderMode = RENDER_MODE_NORMAL)
 {
-	if (RunClientChecks(iClient) == false ||
-		IsPlayerAlive(iClient) == false)
+	if (IsValidEntity(iClient) == false)
 		return;
 	
 	SetEntityRenderMode(iClient, RenderMode:iRenderMode);
@@ -739,8 +738,7 @@ SetClientRenderColor(iClient, iRed = 255, iGreen = 255, iBlue = 255, iAlpha = 25
 // 1 0 0 and GLOWTYPE_CONSTANT needs to be used to hide glow
 SetClientGlow(iClient, iRed = 0, iGreen = 0, iBlue = 0, iGlowType = GLOWTYPE_NORMAL)
 {
-	if (RunClientChecks(iClient) == false ||
-		IsPlayerAlive(iClient) == false)
+	if (IsValidEntity(iClient) ==  false)
 		return;
 	
 	SetEntProp(iClient, Prop_Send, "m_iGlowType", iGlowType);

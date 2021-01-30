@@ -3,10 +3,20 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	new attacker = GetClientOfUserId(GetEventInt(hEvent,"attacker"));
 	new victim  = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 
-	// Theres currently no reason to address ci/ui being hurt. Typically, its
-	// their death that matters, not hurt.
-	if(victim < 1)
+	// PrintToChatAll("Hitbox: %d | m_flModelScale %f | Collision: %d\nSolidType: %d | SolidFlags: %d\n",
+	// 		GetEntProp(victim, Prop_Send, "m_nHitboxSet"),
+	// 		GetEntPropFloat(victim, Prop_Send, "m_flModelScale"),
+	// 		GetEntProp(victim, Prop_Send, "m_CollisionGroup"),
+	// 		GetEntProp(victim, Prop_Send, "m_nSolidType"),
+	// 		GetEntProp(victim, Prop_Send, "m_usSolidFlags"));
+
+	// Check if the victim is a CI/UI
+	if (victim < 1)
+	{
+		// No reason to address ci/ui being hurt. For now, its
+		// their death that matters, not hurt.
 		return Plugin_Continue;
+	}
 
 	// // Testing Damage Here
 	// new dmgHealth  = GetEventInt(hEvent,"dmg_health");
@@ -34,9 +44,37 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 
 	new iDmgType = GetEventInt(hEvent, "type");
 
-	// If attacker is a Common Infected, no reason to continue beyond this point
+	// If attacker is a Common Infected, handle Enhanced CI abilites
 	if(attacker < 1 && iDmgType == DAMAGETYPE_INFECTED_MELEE)
+	{
+		// Get the actual entity id of the CI
+		new iCIEntity = GetEventInt(hEvent, "attackerentid");
+
+		if (g_iClientTeam[victim] == TEAM_SURVIVORS)
+		{
+			// Find if the Enhanced CI entity in the list
+			new iEnhancedCIIndex = FindIndexInArrayListUsingValue(g_listEnhancedCIEntities, iCIEntity, ENHANCED_CI_ENTITY_ID);
+
+			// If the Enhanced CI is in the list continue
+			if (iEnhancedCIIndex >= 0)
+			{
+				// Get the Enhanced Type
+				new iEnhancedCIType = g_listEnhancedCIEntities.Get(iEnhancedCIIndex, ENHANCED_CI_TYPE);
+				
+				switch (iEnhancedCIType)
+				{
+					case ENHANCED_CI_TYPE_FIRE: EnhanceCIHandleDamage_Fire(iCIEntity, victim);
+					case ENHANCED_CI_TYPE_ICE: EnhanceCIHandleDamage_Ice(iCIEntity, victim);
+					case ENHANCED_CI_TYPE_NECRO: EnhanceCIHandleDamage_Necro(iCIEntity, victim);
+					case ENHANCED_CI_TYPE_VAMPIRIC: EnhanceCIHandleDamage_Vampiric(iCIEntity, victim);
+				}
+			}
+		}
+
+		// No reason to continue beyond this point, because CI attacker will have no abilities
 		return Plugin_Continue;
+	}
+		
 
 	// Handle Survivors
 	if (g_iClientTeam[attacker] == TEAM_SURVIVORS)

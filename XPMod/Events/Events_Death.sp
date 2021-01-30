@@ -13,9 +13,12 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 		if(attacker < 1 || IsFakeClient(attacker) == true)
 			return Plugin_Continue;
 
+		// Handle Enhanced CI deaths
+		PopZombieOffEnhancedCIEntitiesList(victim);
+		
 		HandleNecroTankerInfectedConsumption(attacker, victim);
 
-		// Surivovors handled below
+		// Survivors handled below
 		if(g_iClientTeam[attacker] != TEAM_SURVIVORS)
 			return Plugin_Continue;
 			

@@ -14,6 +14,29 @@ new bool:g_iInfectedConvarsSet[MAXPLAYERS + 1];
 new bool:g_bCanBeGhost[MAXPLAYERS + 1];
 new bool:g_bIsGhost[MAXPLAYERS + 1];
 
+// Common Infected Enhancements
+#define CI_SMALL_MIN_SIZE       0.333
+#define CI_SMALL_MAX_SIZE       0.666
+#define CI_BIG_MIN_SIZE         1.10
+#define CI_BIG_MAX_SIZE         1.35
+#define CI_SMALL_MIN_HEALTH     50
+#define CI_SMALL_MAX_HEALTH     150
+#define CI_BIG_MIN_HEALTH       500
+#define CI_BIG_MAX_HEALTH       1500
+// Enhanced CI Types
+#define ENHANCED_CI_NONE            0
+#define ENHANCED_CI_TYPE_FIRE       1
+#define ENHANCED_CI_TYPE_ICE        2
+#define ENHANCED_CI_TYPE_NECRO      3
+#define ENHANCED_CI_TYPE_VAMPIRIC   4
+// Enhanced CI Array List Properties
+#define ENHANCED_CI_ENTITY_ID		0
+#define ENHANCED_CI_TYPE			1
+// List that contains enhanced CI entities and their abilities properties
+new ArrayList:g_listEnhancedCIEntities;
+// The size of the above array list
+#define ENCHANCED_CI_ENTITIES_ARRAY_LIST_SIZE 2
+
 // Smoker
 new g_iMaxTongueLength;
 new g_iMaxDragSpeed;

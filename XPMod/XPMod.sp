@@ -213,6 +213,7 @@ public OnPluginStart()
 	//CreateTimer(1.0, Timer_PrepareCSWeapons, _, TIMER_FLAG_NO_MAPCHANGE);	//Prep the cs weapons for first use
 
 	//Setup Global ArrayLists
+	g_listEnhancedCIEntities = CreateArray(ENCHANCED_CI_ENTITIES_ARRAY_LIST_SIZE);
 	g_listTankRockEntities = CreateArray(TANK_ROCK_ENTITIES_ARRAY_LIST_SIZE);
 }
 
@@ -401,10 +402,11 @@ ResetVariablesForMap(iClient)
 	g_iLaserUpgradeCounter[iClient] = 0;
 
 	g_iInfectedCharacter[iClient] = UNKNOWN_INFECTED;
+	RemoveAllEntitiesFromArrayList(g_listEnhancedCIEntities);
 	g_bCanBeGhost[iClient] = true;
 	g_bIsGhost[iClient] = false;
 	g_iTankCounter = 0;
-	RemoveAllEntitiesFromTankRockList();
+	RemoveAllEntitiesFromArrayList(g_listTankRockEntities);
 	g_bAdhesiveGooActive[iClient] = false;
 	
 	g_bSomeoneAttacksFaster = false;

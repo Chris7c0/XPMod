@@ -109,11 +109,15 @@ OnGameFrame_Tank_NecroTanker(iClient)
 			new Float:fTimeToWaitForMob = 2.0;//FindClosestSurvivorDistance(iClient) > 1500.0 ? 2.0 : 2.0;
 
 			new iZombie = -1;
-			new iUncommonChanceRoll = GetRandomInt(1,100);
-			if (iUncommonChanceRoll <= 20)
-				iZombie = SpawnRandomCommonInfectedMob(xyzLocation, 1, true, fTimeToWaitForMob);
+			new iUncommonAndEnhancedChanceRoll = GetRandomInt(1,100);
+			if (iUncommonAndEnhancedChanceRoll <= 5)
+				iZombie = SpawnRandomCommonInfectedMob(xyzLocation, 1, true, 100, fTimeToWaitForMob);
+			else if (iUncommonAndEnhancedChanceRoll <= 15)
+				iZombie = SpawnRandomCommonInfectedMob(xyzLocation, 1, true, -1, fTimeToWaitForMob);
+			else if (iUncommonAndEnhancedChanceRoll <= 30)
+				iZombie = SpawnRandomCommonInfectedMob(xyzLocation, 1, false, 100, fTimeToWaitForMob);
 			else
-				iZombie = SpawnRandomCommonInfectedMob(xyzLocation, 1, false, fTimeToWaitForMob);
+				iZombie = SpawnRandomCommonInfectedMob(xyzLocation, 1, false, -1, fTimeToWaitForMob);
 
 			// Create the effect on the summoned common infected
 			if (iZombie > 0)
