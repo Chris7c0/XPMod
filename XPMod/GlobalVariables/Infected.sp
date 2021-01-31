@@ -15,14 +15,23 @@ new bool:g_bCanBeGhost[MAXPLAYERS + 1];
 new bool:g_bIsGhost[MAXPLAYERS + 1];
 
 // Common Infected Enhancements
-#define CI_SMALL_MIN_SIZE       0.333
-#define CI_SMALL_MAX_SIZE       0.666
-#define CI_BIG_MIN_SIZE         1.10
-#define CI_BIG_MAX_SIZE         1.35
-#define CI_SMALL_MIN_HEALTH     50
-#define CI_SMALL_MAX_HEALTH     150
-#define CI_BIG_MIN_HEALTH       500
-#define CI_BIG_MAX_HEALTH       1500
+// (Combined Survivor Levels / 120) * ENHANCEMENT_CI_CHANCE_MAX
+// 0.1 would be 10% chance if all level 30s, 2.5% (2.5 in 100) chance if 1 level 30
+// 0.01 would be 1% chance if all level 30s, 0.25% (1 in 400) chance if 1 level 30
+#define ENHANCEMENT_CI_CHANCE_MAX   0.02
+// Big Small (health + size) options and constraints
+#define CI_SMALL_OR_BIG_NONE        0
+#define CI_SMALL                    1
+#define CI_BIG                      2
+#define CI_SMALL_OR_BIG_RANDOM      3
+#define CI_SMALL_MIN_SIZE           0.6
+#define CI_SMALL_MAX_SIZE           0.8
+#define CI_BIG_MIN_SIZE             1.10
+#define CI_BIG_MAX_SIZE             1.35
+#define CI_SMALL_MIN_HEALTH         100
+#define CI_SMALL_MAX_HEALTH         200
+#define CI_BIG_MIN_HEALTH           500
+#define CI_BIG_MAX_HEALTH           1500
 // Enhanced CI Types
 #define ENHANCED_CI_NONE            0
 #define ENHANCED_CI_TYPE_FIRE       1
@@ -35,7 +44,16 @@ new bool:g_bIsGhost[MAXPLAYERS + 1];
 // List that contains enhanced CI entities and their abilities properties
 new ArrayList:g_listEnhancedCIEntities;
 // The size of the above array list
-#define ENCHANCED_CI_ENTITIES_ARRAY_LIST_SIZE 2
+#define ENCHANCED_CI_ENTITIES_ARRAY_LIST_SIZE   2
+// Enhanced CI Type Specific Variables
+// Fire CI
+#define ENHANCED_CI_FIRE_BURN_DURATION          2.5
+// Ice CI
+#define ENHANCED_CI_ICE_FREEZE_DURATION         3.0
+// Necro CI
+#define ENHANCED_CI_NECRO_SPAWN_CHANCE          6   // (1 in x) chance
+// Vampiric CI
+#define ENHANCED_CI_VAMPIRIC_LIFE_STEAL_AMOUNT  30
 
 // Smoker
 new g_iMaxTongueLength;

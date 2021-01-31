@@ -16,12 +16,31 @@ bool IsCommonInfected(int entity, const char[] classname)
 
 void EnhanceCIIfNeeded(int iEntity)
 {
-	//new iEnhanceCIChance = CalculateCIEnhancementChance();
+	// Use a timer, or size doesnt work properly
+	if (GetRandomFloat(0.0, 1.0) <= CalculateCIEnhancementChance())
+		CreateTimer(0.1, TimerSpawnRandomlyEnhancedCIForDirector, iEntity, TIMER_FLAG_NO_MAPCHANGE);
+}
 
-	bool bRollInfectedChance = GetRandomInt(1, 100) <= 75 ? true : false;
+float CalculateCIEnhancementChance()
+{
+	int iCombinedSurvivorLevel = 0;
+	float fNormalizedSurvivorLevel = 0.0;
 
-	if (bRollInfectedChance)
-		RandomlyEnhanceCommonInfected(iEntity, true, 100);
+	// Get all the survivor's levels add them up
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		if (RunClientChecks(i) && 
+			g_iClientTeam[i] == TEAM_SURVIVORS &&
+			IsFakeClient(i) == false &&
+			g_bClientLoggedIn[i] == true)
+			iCombinedSurvivorLevel += g_iClientLevel[i];
+	}
+
+	// Normalize the combined survivor level (note: this assumes 4 survivors)
+	fNormalizedSurvivorLevel = iCombinedSurvivorLevel / 120.0;
+
+	// Calculate and return the spawn chance based on normalized survivor level and max chance
+	return fNormalizedSurvivorLevel * ENHANCEMENT_CI_CHANCE_MAX;
 }
 
 void PushZombieOnEnhancedCIEntitiesList(int iEntity, int iEnchancedCIType)
@@ -55,12 +74,35 @@ void PopZombieOffEnhancedCIEntitiesList(int iEntity)
 	}
 }
 
-RandomlyEnhanceCommonInfected(iZombie, bool:bIsBigOrSmall = true, iAbilitiesChance = 0)
+void PrintAllInEnhancedCIEntityList()
 {
-	if (bIsBigOrSmall)
+	if (g_listEnhancedCIEntities == INVALID_HANDLE)
+		return;
+
+	PrintToServer("g_listEnhancedCIEntities:");
+	for (int i=0; i < g_listEnhancedCIEntities.Length; i++)
+	{
+		new iEntityID = g_listEnhancedCIEntities.Get(i, ENHANCED_CI_ENTITY_ID);
+		new iType = g_listEnhancedCIEntities.Get(i, ENHANCED_CI_TYPE);
+		PrintToServer("    %i: id %i, type %i", i, iEntityID, iType);
+	}
+}
+
+Action:TimerSpawnRandomlyEnhancedCIForDirector(Handle:timer, any:iEntity)
+{
+	if (IsValidEntity(iEntity) && IsCommonInfected(iEntity, ""))
+		RandomlyEnhanceCommonInfected(iEntity, CI_SMALL_OR_BIG_RANDOM, 100);
+	
+	return Plugin_Stop;
+}
+
+RandomlyEnhanceCommonInfected(iZombie, iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, iAbilitiesChance = 0)
+{
+	if (iBigOrSmall == CI_SMALL_OR_BIG_RANDOM || iBigOrSmall == CI_BIG || iBigOrSmall == CI_SMALL)
 	{
 		new Float:fHealthAndSizeMultiplier = GetRandomFloat(0.0, 1.0);
-		if(GetRandomInt(0, 1))
+		// If CI_BIG is specified, then spawn a big zombie, otherwise, roll the dice for 50/50 BIG OR SMALL
+		if(iBigOrSmall == CI_BIG || GetRandomInt(0, 1))
 		{
 			// Big Zombie, High Health
 			EnhanceCISetScale(iZombie, (CI_BIG_MIN_SIZE + ( (CI_BIG_MAX_SIZE - CI_BIG_MIN_SIZE) * fHealthAndSizeMultiplier) ) );
@@ -91,7 +133,7 @@ EnhanceCISetScale(iZombie, Float:fScale = -1.0)
 	if (fScale == -1.0)
 		fScale = GetRandomFloat(CI_SMALL_MIN_SIZE, CI_BIG_MAX_SIZE);
 	
-	PrintToChatAll("CI_SCALE: %f", fScale);
+	// PrintToChatAll("CI_SCALE: %f", fScale);
 	SetEntPropFloat(iZombie, Prop_Send, "m_flModelScale", fScale);
 }
 
@@ -100,7 +142,7 @@ EnhanceCISetHealth(iZombie, iHealth = -1)
 	if (iHealth == -1.0)
 		iHealth = GetRandomInt(CI_SMALL_MIN_HEALTH, CI_BIG_MAX_HEALTH);
 
-	PrintToChatAll("CI_HEALTH: %i", iHealth);
+	// PrintToChatAll("CI_HEALTH: %i", iHealth);
 	SetEntProp(iZombie, Prop_Data, "m_iHealth", iHealth);
 }
 
@@ -152,9 +194,8 @@ EnhanceCIHandleDamage_Fire(iAttacker, iVictim)
 {
 	SuppressNeverUsedWarning(iAttacker);
 
-	PrintToChatAll("FIRE**")
-
-	IgniteEntity(iVictim, 5.0, false);
+	SetFireToPlayer(iVictim, iAttacker, ENHANCED_CI_FIRE_BURN_DURATION);
+	IgniteEntity(iVictim, ENHANCED_CI_FIRE_BURN_DURATION, false);
 }
 
 EnhanceCIHandleDamage_Ice(iAttacker, iVictim)
@@ -162,14 +203,16 @@ EnhanceCIHandleDamage_Ice(iAttacker, iVictim)
 	SuppressNeverUsedWarning(iAttacker);
 
 	CreateTimer(0.1, Timer_FreezePlayerByTank, iVictim, TIMER_FLAG_NO_MAPCHANGE);
-	CreateTimer(3.0, Timer_UnfreezePlayerByTank, iVictim, TIMER_FLAG_NO_MAPCHANGE);
+	CreateTimer(ENHANCED_CI_ICE_FREEZE_DURATION, Timer_UnfreezePlayerByTank, iVictim, TIMER_FLAG_NO_MAPCHANGE);
 }
 
 EnhanceCIHandleDamage_Necro(iAttacker, iVictim)
 {
 	SuppressNeverUsedWarning(iAttacker);
 
-	SpawnCIAroundPlayer(iVictim, 1, true);
+	// Only spawn if the dice roll says to
+	if (GetRandomInt(1, ENHANCED_CI_NECRO_SPAWN_CHANCE) == 1)
+		SpawnCIAroundPlayer(iVictim, 1, true);
 }
 
 EnhanceCIHandleDamage_Vampiric(iAttacker, iVictim)
@@ -178,7 +221,13 @@ EnhanceCIHandleDamage_Vampiric(iAttacker, iVictim)
 
 	new iCurrentHealth = GetEntProp(iAttacker,Prop_Data,"m_iHealth");
 	//PrintToChatAll("ENHANCED_CI_HEALTH_START_STEAL %i", iCurrentHealth);
-	SetEntProp(iAttacker, Prop_Data, "m_iHealth", iCurrentHealth + 30);
+
+	// Clamp health and apply
+	if (iCurrentHealth + ENHANCED_CI_VAMPIRIC_LIFE_STEAL_AMOUNT <= CI_BIG_MAX_HEALTH)
+		SetEntProp(iAttacker, Prop_Data, "m_iHealth", iCurrentHealth + ENHANCED_CI_VAMPIRIC_LIFE_STEAL_AMOUNT);
+	else
+		SetEntProp(iAttacker, Prop_Data, "m_iHealth", CI_BIG_MAX_HEALTH);
+	
 	//iCurrentHealth = GetEntProp(iAttacker,Prop_Data,"m_iHealth");
 	//PrintToChatAll("ENHANCED_CI_HEALTH_POST_STEAL %i", iCurrentHealth);
 }

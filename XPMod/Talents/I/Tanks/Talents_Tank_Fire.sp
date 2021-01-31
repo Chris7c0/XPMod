@@ -192,7 +192,7 @@ EventsHurt_TankAttacker_Fire(Handle:hEvent, iAttackerTank, iVictim)
 
 SetFireToPlayer(iVictim, iAttacker, Float:fTime)
 {
-	if(iVictim < 1 || IsClientInGame(iVictim) == false)
+	if (iVictim < 1 || IsClientInGame(iVictim) == false)
 		return;
 	
 	g_iFireDamageCounter[iVictim] = RoundToNearest(fTime * 2);

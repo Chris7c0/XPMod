@@ -18,7 +18,7 @@ public void OnEntityCreated(int iEntity, const char[] classname)
 		// new iEntityRef = EntIndexToEntRef(iEntity);
 		// PrintToServer("Rock Created %i", iEntityRef);
 
-		// CreateTimer(0.1, TrackRockPosition, iEntity, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+		// CreateTimer(0.1, TrackRockPosition, iEntity, TIMER_FLAG_NO_MAPCHANGE);
     }
 }
 
@@ -29,8 +29,18 @@ public void OnEntityDestroyed(int iEntity)
 	if (g_bPlayerPressedButtonThisRound == false)
 		return;
 
+	// Get classname for the entity to check what it is later
+	new String:strClassname[100];
+	GetEntityClassname(iEntity,strClassname,100);
+
+	// Handle Enhanced CI deaths
+	if (IsCommonInfected(iEntity, strClassname))
+	{
+		PopZombieOffEnhancedCIEntitiesList(iEntity);
+    }
+
 	//PrintToServer("OnEntityDestroyed %i", entity);
-	if (IsTankRock(iEntity, ""))
+	if (IsTankRock(iEntity, strClassname))
 	{
 		HandleTankRockDestroy(iEntity);
 		PopRockOffTankRockEntitiesList(iEntity);
