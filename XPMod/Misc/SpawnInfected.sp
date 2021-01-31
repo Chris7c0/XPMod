@@ -1,4 +1,4 @@
-int  SpawnRandomCommonInfectedMob(Float:xyzLocation[3], int iAmount = 1, bool:bUncommon = false, int iEnhancedChance = -1, Float:fTimeToWaitForMob = -1.0)
+int  SpawnRandomCommonInfectedMob(Float:xyzLocation[3], int iAmount = 1, bool:bUncommon = false, int iEnhancedPropertiesChance = -1, Float:fTimeToWaitForMob = -1.0)
 {
 	xyzLocation[2] += 1;
 
@@ -35,8 +35,8 @@ int  SpawnRandomCommonInfectedMob(Float:xyzLocation[3], int iAmount = 1, bool:bU
 		DispatchSpawn(iZombie);
 
 		// Add Enhancements to the CI/UI
-		if (iEnhancedChance != -1)
-			RandomlyEnhanceCommonInfected(iZombie, CI_SMALL_OR_BIG_RANDOM, iEnhancedChance);
+		if (iEnhancedPropertiesChance != -1)
+			RandomlyEnhanceCommonInfected(iZombie, CI_SMALL_OR_BIG_RANDOM, iEnhancedPropertiesChance);
 
 		// Create the FX
 		// Play a random sound effect name from the several zombie slices
