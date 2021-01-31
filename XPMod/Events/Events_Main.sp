@@ -181,43 +181,54 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 
 
 
-	// if (g_iChosenSurvivor[iClient] == ROCHELLE && 
-	// 	g_iClientTeam[iClient] == TEAM_SURVIVORS && 
-	// 	g_bTeleportCoolingDown[iClient] == false)
-	// {
-	// 	if (iButtons & IN_SPEED && (GetEntityFlags(iClient) & FL_ONGROUND))
-	// 	{
-	// 		g_bTeleportCoolingDown[iClient] = true;
-	// 		CreateTimer(0.5, ReallowTeleport, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	if (g_iChosenSurvivor[iClient] == ROCHELLE && 
+		g_iClientTeam[iClient] == TEAM_SURVIVORS && 
+		g_bTeleportCoolingDown[iClient] == false)
+	{
+		if (iButtons & IN_SPEED && (GetEntityFlags(iClient) & FL_ONGROUND))
+		{
+			g_bTeleportCoolingDown[iClient] = true;
+			CreateTimer(0.5, ReallowTeleport, iClient, TIMER_FLAG_NO_MAPCHANGE);
 			
-	// 		// // Store the original location
-	// 		// decl Float:vorigin[3];
-	// 		// GetClientAbsOrigin(iClient, vorigin);
-	// 		// g_fTeleportOriginalPositionX[iClient] = vorigin[0];
-	// 		// g_fTeleportOriginalPositionY[iClient] = vorigin[1];
-	// 		// g_fTeleportOriginalPositionZ[iClient] = vorigin[2];
+			// // Store the original location
+			// decl Float:vorigin[3];
+			// GetClientAbsOrigin(iClient, vorigin);
+			// g_fTeleportOriginalPositionX[iClient] = vorigin[0];
+			// g_fTeleportOriginalPositionY[iClient] = vorigin[1];
+			// g_fTeleportOriginalPositionZ[iClient] = vorigin[2];
 
-	// 		// // Teleport player forward based on their look direction
-	// 		// // Get a location in front of the player to teleport to
-	// 		// decl Float:xyzLocation[3], Float:xyzAngles[3];
-	// 		// GetLocationVectorInfrontOfClient(iClient, xyzLocation, xyzAngles, 300.0);
+			// // Teleport player forward based on their look direction
+			// // Get a location in front of the player to teleport to
+			// decl Float:xyzLocation[3], Float:xyzAngles[3];
+			// GetLocationVectorInfrontOfClient(iClient, xyzLocation, xyzAngles, 300.0);
 
-	// 		// TeleportEntity(iClient, xyzLocation, NULL_VECTOR, NULL_VECTOR);
+			// TeleportEntity(iClient, xyzLocation, NULL_VECTOR, NULL_VECTOR);
 
-	// 		// WriteParticle(iClient, "teleport_warp", 0.0, 3.0);
+			// WriteParticle(iClient, "teleport_warp", 0.0, 3.0);
 
-	// 		// // Check if player is stuck, teleport them back if so
-	// 		// CreateTimer(0.5, CheckIfStuck, iClient, TIMER_FLAG_NO_MAPCHANGE);
+			// // Check if player is stuck, teleport them back if so
+			// CreateTimer(0.5, CheckIfStuck, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
+			// 		GetEntProp(victim, Prop_Send, "m_CollisionGroup"),
+			// 		GetEntProp(victim, Prop_Send, "m_nSolidType"),
+			// 		GetEntProp(victim, Prop_Send, "m_usSolidFlags"));
 			
+			// RemovePlayerHitbox(iClient);
+			// SetEntProp(iClient, Prop_Send, "m_nSolidType", 0);
+			// // SetEntProp(iClient, Prop_Send, "m_CollisionGroup", 1);
+			// new g_offsCollisionGroup = FindSendPropOffs("CBaseEntity", "m_CollisionGroup");
+			// SetEntData(iClient, g_offsCollisionGroup, 2, 4, true);
 
 
-
-	// 		// Method 2 (attempt to push player forward, then set velocity to 0)
-	// 		AddLouisTeleportVelocity(iClient, 3000.0);
-	// 		CreateTimer(0.1, ResetPlayerVelocity, iClient, TIMER_FLAG_NO_MAPCHANGE);
-	// 	}
-	// }
+			// Method 2 (attempt to push player forward, then set velocity to 0)
+			// AddLouisTeleportVelocity(iClient, 3000.0);
+			SetEntDataFloat(iClient, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ( 8.0 ), true);
+			//ShowHudOverlayColor(iClient, 0, 0, 0, 55, 3000, FADE_OUT);
+			CreateTimer(0.3, ResetPlayerVelocity, iClient, TIMER_FLAG_NO_MAPCHANGE);
+			AttachParticle(iClient, "charger_motion_blur", 5.4, 0.0)
+			//AttachParticle("hunter_motion_blur")
+		}
+	}
 
 
 

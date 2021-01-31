@@ -35,6 +35,7 @@ int  SpawnRandomCommonInfectedMob(Float:xyzLocation[3], int iAmount = 1, bool:bU
 		DispatchSpawn(iZombie);
 
 		// Add Enhancements to the CI/UI
+		// iEnhancedPropertiesChance -1 disables it here, iEnhancedPropertiesChance 0 disables Enhanced CI abilities (properties)
 		if (iEnhancedPropertiesChance != -1)
 			RandomlyEnhanceCommonInfected(iZombie, CI_SMALL_OR_BIG_RANDOM, iEnhancedPropertiesChance);
 

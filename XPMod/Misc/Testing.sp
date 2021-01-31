@@ -15,22 +15,26 @@
 
 // 	vecVelocity[0] = (vDirection[0] * speed);
 // 	vecVelocity[1] = (vDirection[1] * speed);
-// 	vecVelocity[2] = -500.0;//(vDirection[2] * speed);
+// 	//vecVelocity[2] = 300.0;
+// 	//vecVelocity[2] = -500.0;//(vDirection[2] * speed);
 // 	// if ((GetEntityFlags(iClient) & FL_ONGROUND) && vecVelocity[2] < 300.0)
 // 	// 	vecVelocity[2] = 300.0;
-
+	
 // 	//SetEntProp(iClient, Prop_Send, "m_nSolidType", 0);
-// 	SetMoveType(iClient, MOVETYPE_FLYGRAVITY, MOVECOLLIDE_FLY_BOUNCE);
+// 	//SetMoveType(iClient, MOVETYPE_FLYGRAVITY, MOVECOLLIDE_FLY_BOUNCE);
+// 	//SetMoveType(iClient, MOVETYPE_WALK, MOVECOLLIDE_FLY_SLIDE);
+// 	//SetMoveType(iClient, MOVETYPE_NOCLIP, MOVETYPE_NOCLIP);
 
 // 	TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, vecVelocity);
 // }
 
-// Action:ResetPlayerVelocity(Handle:timer,  any:iClient)
-// {
-// 	SetMoveType(iClient, MOVETYPE_WALK, MOVECOLLIDE_DEFAULT);
-// 	TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, EMPTY_VECTOR);
-// 	return Plugin_Stop;
-// }
+Action:ResetPlayerVelocity(Handle:timer,  any:iClient)
+{
+	SetClientSpeed(iClient);
+	//SetMoveType(iClient, MOVETYPE_WALK, MOVECOLLIDE_DEFAULT);
+	//TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, EMPTY_VECTOR);
+	return Plugin_Stop;
+}
 
 
 
@@ -48,12 +52,12 @@ Action:TestFunction1(iClient, args)
 
 	//if (args < 1) return Plugin_Stop;
 
+	AttachParticle(StringToInt(str1), "charger_motion_blur", 15.4, 0.0)
+	
 	PrintAllInEnhancedCIEntityList();
-
 
 	// z_ghost_delay_max 30
 	// z_ghost_delay_min 20
-
 
 	//g_fEllisTestFireRate = StringToFloat(str1);
 

@@ -118,11 +118,72 @@ new String:INFECTED_NAME[][] =          {"",
 #define DAMAGETYPE_BLOCK_REVIVING	65536
 #define DAMAGETYPE_SPITTER_GOO		263168
 
+// Movement Collide
+#define MOVECOLLIDE_DEFAULT     0	//Default behavior
+#define MOVECOLLIDE_FLY_BOUNCE  1   //Entity bounces, reflects, based on elasticity of surface and object - applies friction (adjust velocity)
+#define MOVECOLLIDE_FLY_CUSTOM  2   //ENTITY:Touch will modify the velocity however it likes
+#define MOVECOLLIDE_FLY_SLIDE   3   //Entity slides along surfaces (no bounce) - applies friciton (adjusts velocity)
+#define MOVECOLLIDE_COUNT       4	//Number of different movecollides
 // Movement Types
-#define MOVECOLLIDE_DEFAULT 	0
-#define MOVECOLLIDE_FLY_BOUNCE 	1
 #define MOVETYPE_WALK 			2
 #define MOVETYPE_FLYGRAVITY 	5
+#define MOVETYPE_PUSH           7
+
+
+
+// // Move types to be used with network properties
+// getconsttable()["MOVETYPE_NONE"] <- 0;		/**< never moves */
+// getconsttable()["MOVETYPE_ISOMETRIC"] <- 1;		/**< For players */
+// getconsttable()["MOVETYPE_WALK"] <- 2;		/**< Player only - moving on the ground */
+// getconsttable()["MOVETYPE_STEP"] <- 3;		/**< gravity, special edge handling -- monsters use this */
+// getconsttable()["MOVETYPE_FLY"] <- 4;		/**< No gravity, but still collides with stuff */
+// getconsttable()["MOVETYPE_FLYGRAVITY"] <- 5;		/**< flies through the air + is affected by gravity */
+// getconsttable()["MOVETYPE_VPHYSICS"] <- 6;		/**< uses VPHYSICS for simulation */
+// getconsttable()["MOVETYPE_PUSH"] <- 7;		/**< no clip to world, push and crush */
+// getconsttable()["MOVETYPE_NOCLIP"] <- 8;		/**< No gravity, no collisions, still do velocity/avelocity */
+// getconsttable()["MOVETYPE_LADDER"] <- 9;		/**< Used by players only when going onto a ladder */
+// getconsttable()["MOVETYPE_OBSERVER"] <- 9;		/**< Observer movement, depends on player's observer mode */
+// getconsttable()["MOVETYPE_CUSTOM"] <- 10;		/**< Allows the entity to describe its own physics */
+
+// // Flags to be used with the m_fFlags network property values
+// getconsttable()["FL_ONGROUND"] <- (1 << 0);		/**< At rest / on the ground */
+// getconsttable()["FL_DUCKING"] <- (1 << 1);		/**< Player flag -- Player is fully crouched */
+// getconsttable()["FL_WATERJUMP"] <- (1 << 2);		/**< player jumping out of water */
+// getconsttable()["FL_ONTRAIN"] <- (1 << 3);		/**< Player is _controlling_ a train, so movement commands should be ignored on client during prediction. */
+// getconsttable()["FL_INRAIN"] <- (1 << 4);		/**< Indicates the entity is standing in rain */
+// getconsttable()["FL_FROZEN"] <- (1 << 5);		/**< Player is frozen for 3rd person camera */
+// getconsttable()["FL_ATCONTROLS"] <- (1 << 6);		/**< Player can't move, but keeps key inputs for controlling another entity */
+// getconsttable()["FL_CLIENT"] <- (1 << 7);		/**< Is a player */
+// getconsttable()["FL_FAKECLIENT"] <- (1 << 8);		/**< Fake client, simulated server side; don't send network messages to them */
+// getconsttable()["FL_INWATER"] <- (1 << 9);		/**< In water */
+// getconsttable()["FL_FLY"] <- (1 << 10);		/**< Changes the SV_Movestep() behavior to not need to be on ground */
+// getconsttable()["FL_SWIM"] <- (1 << 11);		/**< Changes the SV_Movestep() behavior to not need to be on ground (but stay in water) */
+// getconsttable()["FL_CONVEYOR"] <- (1 << 12);
+// getconsttable()["FL_NPC"] <- (1 << 13);
+// getconsttable()["FL_GODMODE"] <- (1 << 14);
+// getconsttable()["FL_NOTARGET"] <- (1 << 15);
+// getconsttable()["FL_AIMTARGET"] <- (1 << 16);		/**< set if the crosshair needs to aim onto the entity */
+// getconsttable()["FL_PARTIALGROUND"] <- (1 << 17);		/**< not all corners are valid */
+// getconsttable()["FL_STATICPROP"] <- (1 << 18);		/**< Eetsa static prop!		 */
+// getconsttable()["FL_GRAPHED"] <- (1 << 19);		/**< worldgraph has this ent listed as something that blocks a connection */
+// getconsttable()["FL_GRENADE"] <- (1 << 20);
+// getconsttable()["FL_STEPMOVEMENT"] <- (1 << 21);		/**< Changes the SV_Movestep() behavior to not do any processing */
+// getconsttable()["FL_DONTTOUCH"] <- (1 << 22);		/**< Doesn't generate touch functions, generates Untouch() for anything it was touching when this flag was set */
+// getconsttable()["FL_BASEVELOCITY"] <- (1 << 23);		/**< Base velocity has been applied this frame (used to convert base velocity into momentum) */
+// getconsttable()["FL_WORLDBRUSH"] <- (1 << 24);		/**< Not moveable/removeable brush entity (really part of the world, but represented as an entity for transparency or something) */
+// getconsttable()["FL_OBJECT"] <- (1 << 25);		/**< Terrible name. This is an object that NPCs should see. Missiles, for example. */
+// getconsttable()["FL_KILLME"] <- (1 << 26);		/**< This entity is marked for death -- will be freed by game DLL */
+// getconsttable()["FL_ONFIRE"] <- (1 << 27);		/**< You know... */
+// getconsttable()["FL_DISSOLVING"] <- (1 << 28);		/**< We're dissolving! */
+// getconsttable()["FL_TRANSRAGDOLL"] <- (1 << 29);		/**< In the process of turning into a client side ragdoll. */
+// getconsttable()["FL_UNBLOCKABLE_BY_PLAYER"] <- (1 << 30);		/**< pusher that can't be blocked by the player */
+// getconsttable()["FL_FREEZING"] <- (1 << 31);		/**< We're becoming frozen! */
+// getconsttable()["FL_EP2V_UNKNOWN1"] <- (1 << 31);		/**< Unknown */
+
+
+
+
+
 
 #define GLOWTYPE_NORMAL         0
 #define GLOWTYPE_ONUSE          1
