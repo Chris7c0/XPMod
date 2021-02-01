@@ -18,7 +18,7 @@ new bool:g_bIsGhost[MAXPLAYERS + 1];
 // (Combined Survivor Levels / 120) * ENHANCEMENT_CI_CHANCE_MAX
 // 0.1 would be 10% chance if all level 30s, 2.5% (2.5 in 100) chance if 1 level 30
 // 0.01 would be 1% chance if all level 30s, 0.25% (1 in 400) chance if 1 level 30
-#define ENHANCEMENT_CI_CHANCE_MAX   0.02
+#define ENHANCEMENT_CI_CHANCE_MAX   0.03
 // Big Small (health + size) options and constraints
 #define CI_SMALL_OR_BIG_NONE        0
 #define CI_SMALL                    1

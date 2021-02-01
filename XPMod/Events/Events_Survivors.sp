@@ -2781,23 +2781,31 @@ Action:Event_WeaponGiven(Handle:hEvent, const String:strName[], bool:bDontBroadc
 	return Plugin_Continue;
 }
 
+// This was function was removed to prevent glitches
+// TODO: Re-add this later
 Action:Event_ReceiveUpgrade(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 {
-	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
-	decl String:strUpgrade[32];
-	GetEventString(hEvent, "upgrade", strUpgrade, sizeof(strUpgrade));
-	//PrintToChatAll("g_strCurrentAmmoUpgrade = %s", g_strCurrentAmmoUpgrade);
-	//g_strCurrentAmmoUpgrade = UpgradeString;
-	//PrintToChat(iClient, "Picked up UPGRADE %s", UpgradeString);
-	//PrintToChatAll("Received an upgrade");
-	if((StrEqual(strUpgrade, "EXPLOSIVE_AMMO", false) == true) || (StrEqual(strUpgrade, "INCENDIARY_AMMO", false) == true))
-	{
-		g_strCurrentAmmoUpgrade = strUpgrade;
-	}
-	g_strCheckAmmoUpgrade = strUpgrade;
-	//fnc_DeterminePrimaryWeapon(iClient);
-	//fnc_SaveAmmo(iClient);
-	fnc_DetermineMaxClipSize(iClient);
-	//fnc_SetAmmoUpgrade(iClient);
-	fnc_SetAmmoUpgradeToMaxClipSize(iClient);
+	// new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+	// decl String:strUpgrade[32];
+	// GetEventString(hEvent, "upgrade", strUpgrade, sizeof(strUpgrade));
+	// //PrintToChatAll("g_strCurrentAmmoUpgrade = %s", g_strCurrentAmmoUpgrade);
+	// //g_strCurrentAmmoUpgrade = UpgradeString;
+	// //PrintToChat(iClient, "Picked up UPGRADE %s", UpgradeString);
+	// //PrintToChatAll("Received an upgrade");
+	// if((StrEqual(strUpgrade, "EXPLOSIVE_AMMO", false) == true) || (StrEqual(strUpgrade, "INCENDIARY_AMMO", false) == true))
+	// {
+	// 	g_strCurrentAmmoUpgrade = strUpgrade;
+	// }
+	// g_strCheckAmmoUpgrade = strUpgrade;
+	// // //fnc_DeterminePrimaryWeapon(iClient);
+	// // //fnc_SaveAmmo(iClient);
+	// // fnc_DetermineMaxClipSize(iClient);
+	// // //fnc_SetAmmoUpgrade(iClient);
+
+	// // This was removed to prevent glitches
+	// // TODO: Re-add this later
+	// // This SetAmmo is the issue.  After someone has gotten rambo, it gives 250 exposive ammo for grenadeluancher
+	// // Also, before, it sets everyone to be 0 ammo, that didnt meet the criteria
+	// fnc_DetermineMaxClipSize(iClient);
+	// fnc_SetAmmoUpgradeToMaxClipSize(iClient);
 }

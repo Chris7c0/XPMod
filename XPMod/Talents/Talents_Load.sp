@@ -115,6 +115,12 @@ LoadTalents(iClient)
 					WritePackFloat(hDataPackage, xyzLocation[2]);
 					
 					CreateTimer(2.3, TimerConjureCommonInfected, hDataPackage);
+
+					// Draw the select goo menu
+					if (g_iPuppetLevel[iClient] > 5 || 
+						g_iMaterialLevel[iClient] > 0 ||
+						g_iHallucinogenicLevel[iClient] > 0)
+						GooTypeMenuDraw(iClient);
 				}
 				
 				g_bBlockGooSwitching[iClient] = false;

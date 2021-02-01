@@ -1581,6 +1581,7 @@ fnc_SetAmmo(iClient)
 		}
 	}
 }
+
 fnc_DetermineMaxClipSize(iClient)
 {
 	GetClientWeapon(iClient, g_strCurrentWeapon, sizeof(g_strCurrentWeapon));
@@ -1833,60 +1834,63 @@ fnc_SetAmmoUpgrade(iClient)
 		}
 	}
 }
-fnc_SetAmmoUpgradeToMaxClipSize(iClient)
-{
-	/*
-	if(g_iNicksRamboWeaponID[iClient] != 0)
-		return Plugin_Continue;
-	*/
-	//PrintToChatAll("Setting Ammo Upgrade");
-	g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 0);
-	if((StrEqual(g_strCheckAmmoUpgrade, "EXPLOSIVE_AMMO", false) == true) || (StrEqual(g_strCheckAmmoUpgrade, "INCENDIARY_AMMO", false) == true))
-	{
-		//PrintToChatAll("g_strCurrentAmmoUpgrade is acceptable, setting upgrade ammo based on max clip size");
-		if (IsValidEntity(g_iPrimarySlotID[iClient]) && HasEntProp(g_iPrimarySlotID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded"))
-		{
-			SetEntProp(g_iPrimarySlotID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded", g_iCurrentMaxClipSize[iClient]);
-			SetEntData(g_iPrimarySlotID[iClient], g_iOffset_Clip1, g_iCurrentMaxClipSize[iClient], true);
-			g_strCheckAmmoUpgrade = "empty";
-		}
-	}
+
+// This was function was removed to prevent glitches
+// TODO: Re-add this later
+// fnc_SetAmmoUpgradeToMaxClipSize(iClient)
+// {
+// 	/*
+// 	if(g_iNicksRamboWeaponID[iClient] != 0)
+// 		return Plugin_Continue;
+// 	*/
+// 	//PrintToChatAll("Setting Ammo Upgrade");
+// 	g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 0);
+// 	if((StrEqual(g_strCheckAmmoUpgrade, "EXPLOSIVE_AMMO", false) == true) || (StrEqual(g_strCheckAmmoUpgrade, "INCENDIARY_AMMO", false) == true))
+// 	{
+// 		//PrintToChatAll("g_strCurrentAmmoUpgrade is acceptable, setting upgrade ammo based on max clip size");
+// 		if (IsValidEntity(g_iPrimarySlotID[iClient]) && HasEntProp(g_iPrimarySlotID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded"))
+// 		{
+// 			SetEntProp(g_iPrimarySlotID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded", g_iCurrentMaxClipSize[iClient]);
+// 			SetEntData(g_iPrimarySlotID[iClient], g_iOffset_Clip1, g_iCurrentMaxClipSize[iClient], true);
+// 			g_strCheckAmmoUpgrade = "empty";
+// 		}
+// 	}
 	
-	// switch(g_iChosenSurvivor[iClient])
-	// {
-	// 	case 0:		//Bill
-	// 	{
+// 	// switch(g_iChosenSurvivor[iClient])
+// 	// {
+// 	// 	case 0:		//Bill
+// 	// 	{
 		
-	// 	}
-	// 	case 1:		//Rochelle
-	// 	{
+// 	// 	}
+// 	// 	case 1:		//Rochelle
+// 	// 	{
 		
-	// 	}
-	// 	case 2:		//Coach
-	// 	{
+// 	// 	}
+// 	// 	case 2:		//Coach
+// 	// 	{
 		
-	// 	}
-	// 	case 3:		//Ellis
-	// 	{
-	// 		if(((StrEqual(g_strCheckAmmoUpgrade, "EXPLOSIVE_AMMO", false) == true) || (StrEqual(g_strCheckAmmoUpgrade, "INCENDIARY_AMMO", false) == true)) && (g_bEllisHasCycled[iClient] == false))
-	// 		{
-	// 			PrintToChatAll("g_strCurrentAmmoUpgrade is acceptable, setting upgrade ammo based on max clip size");
-	// 			SetEntProp(g_iPrimarySlotID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded", g_iCurrentMaxClipSize[iClient]);
-	// 			SetEntData(g_iPrimarySlotID[iClient], g_iOffset_Clip1, g_iCurrentMaxClipSize[iClient], true);
-	// 			g_strCheckAmmoUpgrade = "empty";
-	// 		}
-	// 		else if(g_bEllisHasCycled[iClient] == true)
-	// 		{
-	// 			g_bEllisHasCycled[iClient] = false;
-	// 		}
-	// 	}
-	// 	case 4:		//Nick
-	// 	{
+// 	// 	}
+// 	// 	case 3:		//Ellis
+// 	// 	{
+// 	// 		if(((StrEqual(g_strCheckAmmoUpgrade, "EXPLOSIVE_AMMO", false) == true) || (StrEqual(g_strCheckAmmoUpgrade, "INCENDIARY_AMMO", false) == true)) && (g_bEllisHasCycled[iClient] == false))
+// 	// 		{
+// 	// 			PrintToChatAll("g_strCurrentAmmoUpgrade is acceptable, setting upgrade ammo based on max clip size");
+// 	// 			SetEntProp(g_iPrimarySlotID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded", g_iCurrentMaxClipSize[iClient]);
+// 	// 			SetEntData(g_iPrimarySlotID[iClient], g_iOffset_Clip1, g_iCurrentMaxClipSize[iClient], true);
+// 	// 			g_strCheckAmmoUpgrade = "empty";
+// 	// 		}
+// 	// 		else if(g_bEllisHasCycled[iClient] == true)
+// 	// 		{
+// 	// 			g_bEllisHasCycled[iClient] = false;
+// 	// 		}
+// 	// 	}
+// 	// 	case 4:		//Nick
+// 	// 	{
 			
-	// 	}
-	// }
+// 	// 	}
+// 	// }
 	
-}
+// }
 
 fnc_ClearSavedWeaponData(iClient)
 {

@@ -45,7 +45,7 @@ new String:g_strCurrentWeapon[32];
 new g_iOffset_Ammo[MAXPLAYERS + 1];
 new g_iCurrentMaxClipSize[MAXPLAYERS + 1];
 new String:g_strCurrentAmmoUpgrade[32];
-new String:g_strCheckAmmoUpgrade[32];
+//new String:g_strCheckAmmoUpgrade[32];
 new g_iKitsUsed = 0;
 new g_iSlapRunTimes[MAXPLAYERS + 1];			//for the slap timer for each iClient	//Remember to initialize this each time before use!
 new Float:g_fMaxLaserAccuracy = 0.4;	        //max accuracy increase for survivors
