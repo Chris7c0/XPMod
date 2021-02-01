@@ -99,10 +99,9 @@ Action:TimerConjureWitch(Handle:timer, any:iClient)
 	CreateTimer(180.0, TimerResetCanConjureWitch, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 	//Spawn witch
-	new flags = GetCommandFlags("z_spawn");
-	SetCommandFlags("z_spawn", flags & ~FCVAR_CHEAT);
-	FakeClientCommand(iClient, "z_spawn witch");
-	SetCommandFlags("z_spawn", flags);
+	SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
+	FakeClientCommand(iClient, "z_spawn_old witch");
+	SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);
 
 	g_iClientBindUses_2[iClient]++;
 	

@@ -45,6 +45,12 @@ SetClientSpeed(iClient)
 	//PrintToChatAll("SetClientSpeed: %N: %f", iClient, fSpeed);
 }
 
+Action:TimerResetClientSpeed(Handle:timer, any:iClient)
+{
+	SetClientSpeed(iClient);
+	return Plugin_Stop;
+}
+
 // Survivors =======================================================================================================================
 SetClientSpeedBill(iClient, &Float:fSpeed)
 {
@@ -261,7 +267,7 @@ bool SetClientSpeedOverrides(iClient, &Float:fSpeed)
 	// If they are an infected ghost, then give them fast speed.
 	if(GetEntData(iClient, g_iOffset_IsGhost, 1) == 1)
 	{
-		fSpeed = 2.0;
+		fSpeed = 1.75;
 		return true;
 	}
 

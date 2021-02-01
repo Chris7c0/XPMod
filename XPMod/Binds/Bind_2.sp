@@ -399,7 +399,7 @@ Action:Bind2Press(iClient, args)
 										//SetEntDataFloat(g_iJockeyVictim[iClient] , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ( 1.0 - (g_iStrongLevel[g_iJockeyVictim[iClient]] * 0.2) + (g_iErraticLevel[iClient] * 0.03) + (g_iUnfairLevel[iClient] * 0.1) ), true);
 										if (g_iStrongLevel[g_iJockeyVictim[iClient]] == 0)
 										{
-											g_fJockeyRideSpeedVanishingActBoost[g_iJockeyVictim[iClient]] = (g_iUnfairLevel[iClient] * 0.1);
+											g_fJockeyRideSpeedVanishingActBoost[g_iJockeyVictim[iClient]] = (g_iUnfairLevel[iClient] * 0.05);
 											SetClientSpeed(g_iJockeyVictim[iClient]);
 											CreateTimer(10.0, TimerRemoveVanishingActSpeed, g_iJockeyVictim[iClient], TIMER_FLAG_NO_MAPCHANGE);
 										}

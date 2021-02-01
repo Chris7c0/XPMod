@@ -224,7 +224,7 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 			// AddLouisTeleportVelocity(iClient, 3000.0);
 			SetEntDataFloat(iClient, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ( 8.0 ), true);
 			//ShowHudOverlayColor(iClient, 0, 0, 0, 55, 3000, FADE_OUT);
-			CreateTimer(0.3, ResetPlayerVelocity, iClient, TIMER_FLAG_NO_MAPCHANGE);
+			CreateTimer(0.3, TimerResetClientSpeed, iClient, TIMER_FLAG_NO_MAPCHANGE);
 			AttachParticle(iClient, "charger_motion_blur", 5.4, 0.0)
 			//AttachParticle("hunter_motion_blur")
 		}
@@ -467,6 +467,13 @@ Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	g_iNickDesperateMeasuresStack = 0;
 	g_fMaxLaserAccuracy = 0.4;
 	g_bSomeoneAttacksFaster = false;
+	// Turn off all the cheat flags, just incase the code errored somewhere
+	// ...which totally never happens
+	SetCommandFlags("give", g_iFlag_Give);
+	SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd);
+	SetCommandFlags("upgrade_remove", g_iFlag_UpgradeRemove);
+	SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);
+	SetCommandFlags("dismount", g_iFlag_Dismount);
 	
 	return Plugin_Continue;
 }

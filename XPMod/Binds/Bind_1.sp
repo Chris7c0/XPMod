@@ -356,12 +356,14 @@ Action:Bind1Press(iClient, args)
 								PrintToChatAll("\x03[XPMod] \x05%N has become RAMBO!!!", iClient);
 
 								FakeClientCommand(iClient, "give rifle_m60");
+								SetCommandFlags("give", g_iFlag_Give);
 								//g_iRamboWeaponID[iClient] = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 								fnc_DeterminePrimaryWeapon(iClient);
 								fnc_DetermineMaxClipSize(iClient);
 								FakeClientCommand(iClient, "upgrade_add LASER_SIGHT");
 								FakeClientCommand(iClient, "upgrade_add EXPLOSIVE_AMMO");
 								CreateTimer(30.0, TimerStopRambo, iClient, TIMER_FLAG_NO_MAPCHANGE);
+								SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd);
 							}
 							case 5: //Crack Out on drugs
 							{
@@ -683,7 +685,6 @@ Action:Bind1Press(iClient, args)
 											
 											GiveClientXP(iClient, 25, g_iSprite_25XP_SI, g_iJockeyVictim[iClient], "Pissed on survivor.");
 											
-											g_iFlag_SpawnOld = GetCommandFlags("z_spawn_old");
 											new iRandomTankSpawn = GetRandomInt(1, 100);
 											switch (iRandomTankSpawn)
 											{
@@ -737,10 +738,9 @@ Action:Bind1Press(iClient, args)
 											
 											if(g_iErraticLevel[iClient] == 10)
 											{
-												new flags = GetCommandFlags("z_spawn");
-												SetCommandFlags("z_spawn", flags & ~FCVAR_CHEAT);
-												FakeClientCommand(iClient, "z_spawn mob auto");
-												SetCommandFlags("z_spawn", flags);
+												SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
+												FakeClientCommand(iClient, "z_spawn_old mob auto");
+												SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);
 												PrintHintText(iClient, "A hoard smells your piss, here they come!");
 											}
 											

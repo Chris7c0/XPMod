@@ -29,6 +29,9 @@ public void OnEntityDestroyed(int iEntity)
 	if (g_bPlayerPressedButtonThisRound == false)
 		return;
 
+	if (IsValidEntity(iEntity) ==  false)
+		return;
+
 	// Get classname for the entity to check what it is later
 	new String:strClassname[100];
 	GetEntityClassname(iEntity,strClassname,100);

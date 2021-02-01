@@ -28,13 +28,13 @@
 // 	TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, vecVelocity);
 // }
 
-Action:ResetPlayerVelocity(Handle:timer,  any:iClient)
-{
-	SetClientSpeed(iClient);
-	//SetMoveType(iClient, MOVETYPE_WALK, MOVECOLLIDE_DEFAULT);
-	//TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, EMPTY_VECTOR);
-	return Plugin_Stop;
-}
+// Action:ResetPlayerVelocity(Handle:timer,  any:iClient)
+// {
+// 	SetClientSpeed(iClient);
+// 	//SetMoveType(iClient, MOVETYPE_WALK, MOVECOLLIDE_DEFAULT);
+// 	//TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, EMPTY_VECTOR);
+// 	return Plugin_Stop;
+// }
 
 
 
@@ -155,7 +155,6 @@ Action:TestFunction4(iClient, args)
 Action:TestFunction5(iClient, args)
 {
 	//PrintToChat(iClient, "T5");
-	g_iFlag_SpawnOld = GetCommandFlags("z_spawn_old");
 	SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
 	FakeClientCommand(iClient, "z_spawn_old tank auto");
 	SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);

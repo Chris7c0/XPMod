@@ -31,6 +31,8 @@ static String:chatFile[128]
 new Handle:fileHandle       = INVALID_HANDLE
 new Handle:sc_record_detail = INVALID_HANDLE
 
+int g_iMapsLoadedCounter = 0;
+
 public Plugin:myinfo = 
 {
 	name = "SaveChat",
@@ -118,12 +120,14 @@ public OnClientPostAdminCheck(client)
 	}
 
 	FormatTime(time, sizeof(time), "%H:%M:%S", -1)
-	Format(msg, sizeof(msg), "[%s] [%s] %-35N JOINED (%s | %s)",
+	//Format(msg, sizeof(msg), "[%s] [%s] %-35N JOINED (%s | %s)",
+	Format(msg, sizeof(msg), "[%s] [%s] %-35N JOINED (%s) - [%i Humans]",
 		time,
 		country,
 		client,
 		steamID,
-		playerIP)
+		GetHumanPlayerCount())
+		//playerIP)
 
 	SaveMessage(msg)
 }
@@ -165,13 +169,16 @@ public Action:event_PlayerDisconnect(Handle:event, const String:name[], bool:don
 	GetEventString(event, "reason", reason, sizeof(reason));
 
 	FormatTime(time, sizeof(time), "%H:%M:%S", -1)
-	Format(msg, sizeof(msg), "[%s] [%s] %-35N LEFT (%s) (%s | %s)",
+	//Format(msg, sizeof(msg), "[%s] [%s] %-35N LEFT (%s) (%s | %s)",
+	Format(msg, sizeof(msg), "[%s] [%s] %-35N LEFT (%s) (%s) - [%i Humans]",
 		time,
 		country,
 		client,
 		reason,
 		steamID,
-		playerIP)
+		GetHumanPlayerCount() - 1) // -1 to remove the player thats disconnecting here
+		//playerIP)
+
 
 	SaveMessage(msg)
 
@@ -303,9 +310,15 @@ public OnMapStart(){
 	new String:logFile[100]
 	new String:serverName[64]
 
+	g_iMapsLoadedCounter++;
+
 	new Handle:g_hCvarHostName = FindConVar("hostname");
 	if (g_hCvarHostName != INVALID_HANDLE)
 		GetConVarString(g_hCvarHostName, serverName, sizeof(serverName))
+
+	/* Log the time that the plugin started */
+	if (g_iMapsLoadedCounter == 1)
+		LogPluginStartDetails();
 
 	GetCurrentMap(map, sizeof(map))
 
@@ -316,11 +329,24 @@ public OnMapStart(){
 	BuildPath(Path_SM, chatFile, PLATFORM_MAX_PATH, logFile)
 
 	FormatTime(time, sizeof(time), "%d/%m/%Y %H:%M:%S", -1)
-	Format(msg, sizeof(msg), "[%s] --- NEW MAP STARTED: %s ---", time, map)
+	Format(msg, sizeof(msg), "[%s] --- NEW MAP STARTED: %s --- Maps Loaded: %i", time, map, g_iMapsLoadedCounter)
 
-	SaveMessage("--=================================================================--")
+	SaveMessage("--=================================================================================--")
 	SaveMessage(msg)
-	SaveMessage("--=================================================================--")
+	SaveMessage("--=================================================================================--")
+}
+
+LogPluginStartDetails()
+{
+	new String:msg[1024]
+	new String:time[21]
+
+	FormatTime(time, sizeof(time), "%d/%m/%Y %H:%M:%S", -1)
+	Format(msg, sizeof(msg), "[%s]             ************ SAVE CHAT PLUGIN STARTED: ************", time)
+
+	SaveMessage("\n\n--======================================================================================================--")
+	SaveMessage(msg)
+	SaveMessage("--======================================================================================================--\n\n")
 }
 
 /*
@@ -331,4 +357,15 @@ public SaveMessage(const String:message[])
 	fileHandle = OpenFile(chatFile, "a")  /* Append */
 	WriteFileLine(fileHandle, message)
 	CloseHandle(fileHandle)
+}
+
+int GetHumanPlayerCount()
+{
+	int iCount = 0;
+
+	for(int i=1;i <= MaxClients; i++)
+		if (IsValidEntity(i) && IsClientInGame(i) && !IsFakeClient(i))
+			iCount++;
+	
+	return iCount;
 }

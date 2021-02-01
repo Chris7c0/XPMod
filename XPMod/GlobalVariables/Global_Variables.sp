@@ -210,8 +210,9 @@ new g_iPrintRunTimes = -1;							//for printing time left till unfreeze in unfre
 // Cheat Flags
 new g_iFlag_Give;
 new g_iFlag_UpgradeAdd;
-//new g_iFlag_UpgradeRemove;
+new g_iFlag_UpgradeRemove;
 new g_iFlag_SpawnOld;
+new g_iFlag_Dismount;
 
 // Binds
 new g_iClientBindUses_1[MAXPLAYERS + 1];

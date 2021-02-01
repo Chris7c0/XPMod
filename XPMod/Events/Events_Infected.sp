@@ -409,10 +409,10 @@ Action:Event_JockeyRide(Handle:hEvent, const String:strName[], bool:bDontBroadca
 						SetEntProp(attacker, Prop_Send, "m_iHideHUD", 4);
 						CreateTimer(5.0, TimerGiveHudBack, attacker, TIMER_FLAG_NO_MAPCHANGE); 
 					}
-					new cmdflags = GetCommandFlags("dismount");
-					SetCommandFlags("dismount", cmdflags & ~FCVAR_CHEAT);
+					
+					SetCommandFlags("dismount", g_iFlag_Dismount & ~FCVAR_CHEAT);
 					FakeClientCommand(attacker, "dismount");
-					SetCommandFlags("dismount", cmdflags);
+					SetCommandFlags("dismount", g_iFlag_Dismount);
 					//WriteParticle(victim, "rochelle_smoke", 0.0, 10.0);
 					CreateRochelleSmoke(victim);
 
