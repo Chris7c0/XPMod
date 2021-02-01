@@ -804,7 +804,7 @@ Action:SayCmd(iClient, args)
 		PrintToServer("[Admin] %N : %s", iClient, input);
 		return Plugin_Handled;
 	}
-		
+	
 	return Plugin_Continue;
 }
 

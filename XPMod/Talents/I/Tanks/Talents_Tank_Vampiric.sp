@@ -127,7 +127,7 @@ OnGameFrame_Tank_Vampiric(iClient)
 			
 			CreateTimer(0.5, TimerVampiricTankWingDashReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
 			delete g_hTimer_WingDashChargeRegenerate[iClient];
-			g_hTimer_WingDashChargeRegenerate[iClient] = CreateTimer(15.0, TimerVampiricTankWingDashChargeRegenerate, iClient);
+			g_hTimer_WingDashChargeRegenerate[iClient] = CreateTimer(VAMPIRIC_TANK_WING_DASH_COOLDOWN, TimerVampiricTankWingDashChargeRegenerate, iClient);
 		}
 	}
 

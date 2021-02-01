@@ -533,7 +533,7 @@ JebusHandMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 								PrintHintText(i, "You have been instantly revived by %N", iClient);
 								SetEntProp(i,Prop_Data,"m_iHealth", 20);
 								g_bIsClientDown[i] = false;
-								g_iClientBindUses_2[iClient]+=2;
+								g_iClientBindUses_2[iClient] += 2;
 								decl Float:vec[3];
 								GetClientAbsOrigin(i, vec);
 								EmitSoundToAll(SOUND_NICK_REVIVE, i, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
@@ -607,7 +607,7 @@ JebusHandMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			}
 			case 2: //Clone Fallen Teammate
 			{
-				if(g_iNickResurrectUses == 0)		//Only allow once per round
+				if(g_iNickResurrectUses < 2)		//Only allow once per round
 				{
 					if(g_iClientBindUses_2[iClient] <= 0)
 					{
@@ -624,7 +624,7 @@ JebusHandMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 									TeleportEntity(i, vec, NULL_VECTOR, NULL_VECTOR);
 									PrintHintText(i, "You have been resurrected by %N", iClient);
 									g_bIsClientDown[i] = false;
-									g_iClientBindUses_2[iClient] = 3;
+									g_iClientBindUses_2[iClient] += 3;
 									g_iNickResurrectUses++;
 									decl Float:vec2[3];
 									
@@ -657,7 +657,7 @@ JebusHandMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 									SDKCall(g_hSDK_RoundRespawn, i);
 									TeleportEntity(i, vec, NULL_VECTOR, NULL_VECTOR);
 									g_bIsClientDown[i] = false;
-									g_iClientBindUses_2[iClient] = 3;
+									g_iClientBindUses_2[iClient] += 3;
 									g_iNickResurrectUses++;
 									EmitSoundToAll(SOUND_NICK_RESURRECT, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
 									foundvalident = 2;

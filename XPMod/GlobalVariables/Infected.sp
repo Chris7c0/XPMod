@@ -211,8 +211,9 @@ new Float:g_xyzClientTankPosition[MAXPLAYERS + 1][3];
 #define VAMPIRIC_TANK_LIFESTEAL_INCAP_MULTIPLIER        16
 #define VAMPIRIC_TANK_MELEE_DMG_TAKEN_MULTIPLIER        3
 #define VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER          0.333333
-new Float:VAMPIRIC_TANK_WING_FLAP_UP_VELOCITY = 600.0;
-new Float:VAMPIRIC_TANK_WING_DASH_VELOCITY = 800.0;
+#define VAMPIRIC_TANK_WING_FLAP_UP_VELOCITY             600.0
+#define VAMPIRIC_TANK_WING_DASH_VELOCITY                800.0
+#define VAMPIRIC_TANK_WING_DASH_COOLDOWN                13.0
 new bool:g_bCanFlapVampiricTankWings[MAXPLAYERS + 1];
 new bool:g_bIsVampiricTankFlying[MAXPLAYERS + 1];
 new bool:g_bCanVampiricTankWingDash[MAXPLAYERS + 1];
