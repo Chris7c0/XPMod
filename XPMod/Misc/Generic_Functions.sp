@@ -2190,17 +2190,13 @@ SetSIAbilityCooldown(iClient, Float:fTimeToWait = -99.0)
 
 	new Float:flTimeStamp_ret = GetEntDataFloat(iEntID,g_iOffset_NextActivation+8);
 
-	if (g_fTimeStamp[iClient] < flTimeStamp_ret)
-	{
-		
-		g_fTimeStamp[iClient] = flTimeStamp_ret;
-		decl Float:flTimeStamp_calc;
-		
-		flTimeStamp_calc = flTimeStamp_ret + fTimeToWait;
-		
-		SetEntDataFloat(iEntID, g_iOffset_NextActivation+8, flTimeStamp_calc, true);
-		
-		//----DEBUG----
-		//PrintToChatAll("\x03-post, nextactivation dur \x01 %f\x03 timestamp \x01%f", GetEntDataFloat(iEntID, g_iOffset_NextActivation+4), GetEntDataFloat(iEntid, g_iOffset_NextActivation+8) );
-	}
+
+	decl Float:flTimeStamp_calc;
+	
+	flTimeStamp_calc = flTimeStamp_ret + fTimeToWait;
+	
+	SetEntDataFloat(iEntID, g_iOffset_NextActivation+8, flTimeStamp_calc, true);
+	
+	//----DEBUG----
+	//PrintToChatAll("\x03-post, nextactivation dur \x01 %f\x03 timestamp \x01%f", GetEntDataFloat(iEntID, g_iOffset_NextActivation+4), GetEntDataFloat(iEntid, g_iOffset_NextActivation+8) );
 }
