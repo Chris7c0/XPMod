@@ -150,9 +150,22 @@ void TrackAllRocks()
 
 					switch(g_iTankChosen[iTankRockOwner])
 					{
-						case TANK_FIRE: 			SetSIAbilityCooldown(iTankRockOwner, 10.0);
-						case TANK_ICE: 				SetSIAbilityCooldown(iTankRockOwner, -2.9);
-						case TANK_NECROTANKER: 		SetSIAbilityCooldown(iTankRockOwner, 10.0);
+						case TANK_FIRE: 			SetSIAbilityCooldown(iTankRockOwner, 13.0);
+						case TANK_ICE: 				SetSIAbilityCooldown(iTankRockOwner, 2.1);
+						case TANK_NECROTANKER:
+						{
+							// Pay the mana cost
+							g_iNecroTankerManaPool[iTankRockOwner] -= NECROTANKER_MANA_COST_BOOMER_THROW;
+							// Clamp it
+							if (g_iNecroTankerManaPool[iTankRockOwner] < 0)
+								g_iNecroTankerManaPool[iTankRockOwner] = 0;
+							DisplayNecroTankerManaMeter(iTankRockOwner);
+
+							if (g_iNecroTankerManaPool[iTankRockOwner] >= NECROTANKER_MANA_COST_BOOMER_THROW)
+								SetSIAbilityCooldown(iTankRockOwner, 13.0);
+							else
+								SetSIAbilityCooldown(iTankRockOwner, 99999.0);
+						}
 					}
 				}
 			}

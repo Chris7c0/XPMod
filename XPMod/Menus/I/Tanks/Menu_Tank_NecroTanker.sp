@@ -23,7 +23,7 @@ Action:TankMenuDrawNecroTanker(iClient)
         \n \
         \n Active Abilities\
         \n - [Hold CROUCH] Summon Infected\
-        \n - [Press MELEE] Throw Boomers (+10 Sec Cooldown)\
+        \n - [Press MELEE] Throw Boomers (13 Sec Cooldown)\
         \n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",
         TANK_HEALTH_NECROTANKER,
         NECROTANKER_MAX_HEALTH,

@@ -212,7 +212,7 @@ EnhanceCIHandleDamage_Necro(iAttacker, iVictim)
 
 	// Only spawn if the dice roll says to
 	if (GetRandomInt(1, ENHANCED_CI_NECRO_SPAWN_CHANCE) == 1)
-		SpawnCIAroundPlayer(iVictim, 1, true);
+		SpawnCIAroundPlayer(iVictim, 1, true, 75);
 }
 
 EnhanceCIHandleDamage_Vampiric(iAttacker, iVictim)

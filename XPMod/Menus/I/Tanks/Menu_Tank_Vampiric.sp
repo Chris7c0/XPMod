@@ -20,7 +20,7 @@ Action:TankMenuDrawVampiric(iClient)
         \n Active Abilities\
         \n - [Press JUMP] Fly\
         \n - [Press MELEE] Wing Dash\
-        \n    - 3 Uses (15 Sec Cooldown) \
+        \n    - 3 Uses (13 Sec Cooldown) \
         \n - No Rock Throwing\
         \n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",
         TANK_HEALTH_VAMPIRIC);

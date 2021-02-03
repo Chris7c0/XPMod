@@ -16,6 +16,8 @@ LoadNecroTankerTalents(iClient)
 	// PrintToChatAll("%N Loading NECROTANKER abilities.", iClient);
 	
 	g_iTankChosen[iClient] = TANK_NECROTANKER;
+
+	g_iNecroTankerManaPool[iClient] = NECROTANKER_MANA_POOL_SIZE;
 	
 	// Set Health
 	// Get Current Health/MaxHealth first, to add it back later
@@ -33,7 +35,6 @@ LoadNecroTankerTalents(iClient)
 		SetEntProp(iClient, Prop_Data,"m_iMaxHealth", TANK_HEALTH_NECROTANKER);
 		SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + TANK_HEALTH_NECROTANKER - iCurrentMaxHealth);
 	}
-
 
 	//Stop Kiting (Bullet hits slowing tank down)
 	SetConVarInt(FindConVar("z_tank_damage_slow_min_range"), 0);
@@ -84,59 +85,25 @@ OnGameFrame_Tank_NecroTanker(iClient)
 
 		//Display the first message to the player while he is charging up
 		if(g_iTankCharge[iClient] == 30 && IsFakeClient(iClient) == false)
-			PrintHintText(iClient, "Spawning Infected");
+			DisplayNecroTankerManaMeter(iClient);
 		
 		//Charged for long enough, now handle for each tank
-		if(g_iTankCharge[iClient] >= 60)
+		if(g_iTankCharge[iClient] >= 31)
 		{
-			// Get a location in front of the player to spawn the infected to prevent collision with others
-			decl Float:xyzLocation[3], Float:xyzAngles[3];
-			// Set a random distance in front of the player
-			GetLocationVectorInfrontOfClient(iClient, xyzLocation, xyzAngles, GetRandomFloat(60.0, 81.0));
-			// Offset X and Y also
-			xyzLocation[0] += GetRandomFloat(-30.0, 30.0);
-			xyzLocation[1] += GetRandomFloat(-30.0, 30.0);
-			
-			// Check if the NecroTanker is close enough to the survivors for the summoned zombies
-			// to not disappear.  They wont disappear right away, you can set the mob timer on the
-			// entity before the disappear happens, they will run and not be removed at any distance.
-			// However, we want to keep them from mobbing if they are close enough, so the NecroTanker
-			// can consume them without chasing.  Perhaps, if consume is changed to not be a slow punch
-			// this check can be removed entirely and can mob at 2 seconds everytime.
+			// If they have the mana, spawn zombie, otherwise, print message not enough mana
+			if (g_iNecroTankerManaPool[iClient] >= NECROTANKER_MANA_COST_SUMMON_CI)
+				SummonNecroTankerCrouchAbility(iClient);
 
-			// Scrath all of this, they disappear seemingly randomly even if they are within range.
-			// So, just set it to 2.0 no matter what.
-			new Float:fTimeToWaitForMob = 2.0;//FindClosestSurvivorDistance(iClient) > 1500.0 ? 2.0 : 2.0;
+			if(IsFakeClient(iClient) == false)
+				DisplayNecroTankerManaMeter(iClient);
 
-			new iZombie = -1;
-			new iUncommonAndEnhancedChanceRoll = GetRandomInt(1,100);
-			if (iUncommonAndEnhancedChanceRoll <= 5)
-				iZombie = SpawnRandomCommonInfectedMob(xyzLocation, 1, true, 100, fTimeToWaitForMob);
-			else if (iUncommonAndEnhancedChanceRoll <= 15)
-				iZombie = SpawnRandomCommonInfectedMob(xyzLocation, 1, true, -1, fTimeToWaitForMob);
-			else if (iUncommonAndEnhancedChanceRoll <= 30)
-				iZombie = SpawnRandomCommonInfectedMob(xyzLocation, 1, false, 100, fTimeToWaitForMob);
-			else
-				iZombie = SpawnRandomCommonInfectedMob(xyzLocation, 1, false, -1, fTimeToWaitForMob);
-
-			// Create the effect on the summoned common infected
-			if (iZombie > 0)
-			{
-				// Play a random sound effect name from the several zombie slices
-				EmitSoundToAll(SOUND_ZOMBIE_SLASHES[ GetRandomInt(0 ,sizeof(SOUND_ZOMBIE_SLASHES) - 1) ], iZombie, SNDCHAN_AUTO, SNDLEVEL_TRAIN, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, xyzLocation, NULL_VECTOR, true, 0.0);
-
-				// Show the particle effect
-				WriteParticle(iZombie, "vomit_jar_b", 0.0, 2.0);
-			}
-				
-			
 			g_iTankCharge[iClient] = 0;
 		}
 	}
 	else if(g_iTankCharge[iClient] > 0)
 	{
-		if(g_iTankCharge[iClient] > 31 && IsFakeClient(iClient) == false)
-			PrintHintText(iClient, " ");
+		// if(g_iTankCharge[iClient] > 31 && IsFakeClient(iClient) == false)
+		// 	DisplayNecroTankerManaMeter(iClient);
 		
 		g_iTankCharge[iClient] = 0;
 	}
@@ -153,7 +120,24 @@ EventsHurt_TankAttacker_NecroTanker(Handle:hEvent, iAttackerTank, iVictim)
 	GetEventString(hEvent,"weapon", weapon, 20);
 
 	if (StrEqual(weapon,"tank_claw"))
+	{
 		SummonNecroTankerPunchZombies(iAttackerTank, iVictim);
+
+		// Store Check Mana before increase if below boomer throw threshhole
+		new iPreviousMana = g_iNecroTankerManaPool[iAttackerTank];
+
+		g_iNecroTankerManaPool[iAttackerTank] += NECROTANKER_MANA_GAIN_PUNCH;
+		// Clamp it
+		if (g_iNecroTankerManaPool[iAttackerTank] > NECROTANKER_MANA_POOL_SIZE)
+			g_iNecroTankerManaPool[iAttackerTank] = NECROTANKER_MANA_POOL_SIZE;
+
+		DisplayNecroTankerManaMeter(iAttackerTank);
+
+		// Reset boomer throw ability if they now have mana for it
+		if (iPreviousMana < NECROTANKER_MANA_COST_BOOMER_THROW && 
+			g_iNecroTankerManaPool[iAttackerTank] >= NECROTANKER_MANA_COST_BOOMER_THROW)
+			SetSIAbilityCooldown(iAttackerTank, 6.0);
+	}
 }
 
 HandleNecroTankerInfectedConsumption(iClient, iInfectedEntity)
@@ -356,6 +340,7 @@ BileEveryoneCloseToExplodingNecroTankerTankRock(iRockEntity)
 				WritePackCell(hDataPackage, iClient);
 				WritePackCell(hDataPackage, 3);
 				WritePackCell(hDataPackage, false);
+				WritePackCell(hDataPackage, NECROTANKER_ENHANCE_CI_CHANCE_THROW);
 
 				CreateTimer(0.1, TimerSpawnCIAroundPlayer, hDataPackage);
 			}
@@ -373,6 +358,57 @@ CreateNecroTankerRockTrailEffect(int iRockEntity)
 	// Play it twice because its to quiet (super dirty, but what do)
 	EmitAmbientSound(SOUND_BOOMER_THROW[ iRandomSoundNumber ], xyzRockPosition, iRockEntity, SNDLEVEL_GUNFIRE);
 	EmitAmbientSound(SOUND_BOOMER_THROW[ iRandomSoundNumber ], xyzRockPosition, iRockEntity, SNDLEVEL_GUNFIRE);
+}
+
+void SummonNecroTankerCrouchAbility(iClient)
+{
+	// Get a location in front of the player to spawn the infected to prevent collision with others
+	decl Float:xyzLocation[3], Float:xyzAngles[3];
+	// Set a random distance in front of the player
+	GetLocationVectorInfrontOfClient(iClient, xyzLocation, xyzAngles, GetRandomFloat(60.0, 81.0));
+	// Offset X and Y also
+	xyzLocation[0] += GetRandomFloat(-30.0, 30.0);
+	xyzLocation[1] += GetRandomFloat(-30.0, 30.0);
+	
+	// Check if the NecroTanker is close enough to the survivors for the summoned zombies
+	// to not disappear.  They wont disappear right away, you can set the mob timer on the
+	// entity before the disappear happens, they will run and not be removed at any distance.
+	// However, we want to keep them from mobbing if they are close enough, so the NecroTanker
+	// can consume them without chasing.  Perhaps, if consume is changed to not be a slow punch
+	// this check can be removed entirely and can mob at 2 seconds everytime.
+
+	// Scrath all of this, they disappear seemingly randomly even if they are within range.
+	// So, just set it to 2.0 no matter what.
+	new Float:fTimeToWaitForMob = 2.0;//FindClosestSurvivorDistance(iClient) > 1500.0 ? 2.0 : 2.0;
+
+	new iZombie = -1;
+	new iUncommonAndEnhancedChanceRoll = GetRandomInt(1,100);
+	if (iUncommonAndEnhancedChanceRoll <= 25)
+		iZombie = SpawnRandomCommonInfectedMob(xyzLocation, 1, true, 100, fTimeToWaitForMob);
+	// else if (iUncommonAndEnhancedChanceRoll <= 15)
+	// 	iZombie = SpawnRandomCommonInfectedMob(xyzLocation, 1, true, -1, fTimeToWaitForMob);
+	else if (iUncommonAndEnhancedChanceRoll <= 75)
+		iZombie = SpawnRandomCommonInfectedMob(xyzLocation, 1, false, 100, fTimeToWaitForMob);
+	else
+		iZombie = SpawnRandomCommonInfectedMob(xyzLocation, 1, false, -1, fTimeToWaitForMob);
+
+	// Create the effect on the summoned common infected
+	if (iZombie > 0)
+	{
+		// Play a random sound effect name from the several zombie slices
+		EmitSoundToAll(SOUND_ZOMBIE_SLASHES[ GetRandomInt(0 ,sizeof(SOUND_ZOMBIE_SLASHES) - 1) ], iZombie, SNDCHAN_AUTO, SNDLEVEL_TRAIN, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, xyzLocation, NULL_VECTOR, true, 0.0);
+
+		// Show the particle effect
+		WriteParticle(iZombie, "vomit_jar_b", 0.0, 2.0);
+	}
+
+	g_iNecroTankerManaPool[iClient] -= NECROTANKER_MANA_COST_SUMMON_CI;
+	// Clamp it
+	if (g_iNecroTankerManaPool[iClient] < 0)
+		g_iNecroTankerManaPool[iClient] = 0;
+	// Remove rock throw ability if no mana
+	if (g_iNecroTankerManaPool[iClient] < NECROTANKER_MANA_COST_BOOMER_THROW)
+		SetSIAbilityCooldown(iClient, 99999.0);
 }
 
 void SummonNecroTankerPunchZombies(iAttackerTank, iVictim)
@@ -397,6 +433,7 @@ void SummonNecroTankerPunchZombies(iAttackerTank, iVictim)
 		WritePackCell(hDataPackage, iVictim);
 		WritePackCell(hDataPackage, 6);
 		WritePackCell(hDataPackage, false);
+		WritePackCell(hDataPackage, NECROTANKER_ENHANCE_CI_CHANCE_PUNCH);
 
 		CreateTimer(1.0, TimerSpawnCIAroundPlayer, hDataPackage);
 		return;
@@ -409,6 +446,7 @@ void SummonNecroTankerPunchZombies(iAttackerTank, iVictim)
 		WritePackCell(hDataPackage, iVictim);
 		WritePackCell(hDataPackage, 5);
 		WritePackCell(hDataPackage, true);
+		WritePackCell(hDataPackage, NECROTANKER_ENHANCE_CI_CHANCE_PUNCH);
 
 		CreateTimer(1.0, TimerSpawnCIAroundPlayer, hDataPackage);
 		return;
@@ -436,3 +474,25 @@ void SummonNecroTankerPunchZombies(iAttackerTank, iVictim)
 	}
 }
 
+void DisplayNecroTankerManaMeter(iClient)
+{
+	if (RunClientChecks(iClient) == false || IsFakeClient(iClient))
+		return;
+
+	decl String:strEntireManaMeter[556], String:strManaMeter[256];
+	strEntireManaMeter = NULL_STRING;
+	strManaMeter = NULL_STRING;
+
+	// PrintToChatAll("g_iNecroTankerManaPool %i", RoundToCeil(g_iNecroTankerManaPool[iClient] / 3.0));
+	// PrintToChatAll("NECROTANKER_MANA_POOL_SIZE %i", RoundToCeil((NECROTANKER_MANA_POOL_SIZE - 1) / 3.0));
+
+	// Create the actual mana amount in the "progress meter"
+	for(int i = 0; i < RoundToCeil(g_iNecroTankerManaPool[iClient] / 2.5); i++)
+		StrCat(strManaMeter, sizeof(strManaMeter), "▓")
+	// Create the rest of the string
+	for(int i = RoundToCeil((NECROTANKER_MANA_POOL_SIZE - 1) / 2.5); i > RoundToCeil(g_iNecroTankerManaPool[iClient] / 2.5); i--)
+		StrCat(strManaMeter, sizeof(strManaMeter), "░")
+
+	Format(strEntireManaMeter, sizeof(strEntireManaMeter), "%s\n(%i/%i Mana)", strManaMeter, g_iNecroTankerManaPool[iClient], NECROTANKER_MANA_POOL_SIZE);
+	PrintHintText(iClient, strEntireManaMeter);
+}

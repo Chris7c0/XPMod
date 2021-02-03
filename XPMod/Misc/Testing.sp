@@ -52,9 +52,11 @@ Action:TestFunction1(iClient, args)
 
 	//if (args < 1) return Plugin_Stop;
 
-	AttachParticle(StringToInt(str1), "charger_motion_blur", 15.4, 0.0)
-	
+	//AttachParticle(StringToInt(str1), "charger_motion_blur", 15.4, 0.0)
+
 	PrintAllInEnhancedCIEntityList();
+
+	//SetSIAbilityCooldown(iClient, StringToFloat(str1), StringToInt(str2) == 1 ? true : false);
 
 	// z_ghost_delay_max 30
 	// z_ghost_delay_min 20

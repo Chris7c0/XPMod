@@ -66,7 +66,7 @@ Action:TimerSetMobRush(Handle:timer, any:iZombieEntity)
 	return Plugin_Stop;
 }
 
-SpawnCIAroundPlayer(iClient, iAmount = 1, bool:bChanceForUncommon = false)
+SpawnCIAroundPlayer(iClient, iAmount = 1, bool:bChanceForUncommon = false, int iEnhancedPropertiesChance = -1)
 {
 	if (RunClientChecks(iClient) == false)
 		return;
@@ -93,9 +93,8 @@ SpawnCIAroundPlayer(iClient, iAmount = 1, bool:bChanceForUncommon = false)
 		xyzLocation[0] += fXOffset;
 		xyzLocation[1] += fYOffset;
 
-		SpawnRandomCommonInfectedMob(xyzLocation, 1, bChanceForUncommon && GetRandomInt(0, 5) == 0 ? true : false, false, 0.1);
+		SpawnRandomCommonInfectedMob(xyzLocation, 1, bChanceForUncommon && GetRandomInt(0, 5) == 0 ? true : false, iEnhancedPropertiesChance, 0.1);
 	}
-		
 }
 
 Action:TimerSpawnCIAroundPlayer(Handle:timer, any:hDataPackage)
@@ -104,9 +103,10 @@ Action:TimerSpawnCIAroundPlayer(Handle:timer, any:hDataPackage)
 	new iClient = ReadPackCell(hDataPackage);
 	new iAmount = ReadPackCell(hDataPackage);
 	new bool:bChanceForUncommon = ReadPackCell(hDataPackage);
+	new iEnhancedPropertiesChance = ReadPackCell(hDataPackage);
 	CloseHandle(hDataPackage);
 
-	SpawnCIAroundPlayer(iClient, iAmount, bChanceForUncommon);
+	SpawnCIAroundPlayer(iClient, iAmount, bChanceForUncommon, iEnhancedPropertiesChance);
 
 	return Plugin_Stop;
 }

@@ -18,7 +18,7 @@ Action:TankMenuDrawIce(iClient)
         \n Active Abilities\
         \n - [Hold CROUCH & Do Not Move] Regenerates Health\
         \n    - Freezes Survivors Inside The Blizard Storm\
-        \n - Rock Throw Freezes Survivors (+10 Sec Cooldown)\
+        \n - Rock Throw Freezes Survivors (No Cooldown)\
         \n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",
         TANK_HEALTH_ICE);
 	

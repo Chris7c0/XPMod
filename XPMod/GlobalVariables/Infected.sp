@@ -51,7 +51,8 @@ new ArrayList:g_listEnhancedCIEntities;
 // Ice CI
 #define ENHANCED_CI_ICE_FREEZE_DURATION         3.0
 // Necro CI
-#define ENHANCED_CI_NECRO_SPAWN_CHANCE          6   // (1 in x) chance
+#define ENHANCED_CI_NECRO_SPAWN_CHANCE          4   // (1 in x) chance
+#define ENHANCED_CI_NECRO_SPAWN_ENHANCED_CHANCE 33
 // Vampiric CI
 #define ENHANCED_CI_VAMPIRIC_LIFE_STEAL_AMOUNT  30
 
@@ -205,6 +206,13 @@ new Float:g_xyzClientTankPosition[MAXPLAYERS + 1][3];
 #define NECROTANKER_CONSUME_COMMON_HP       500
 #define NECROTANKER_CONSUME_UNCOMMON_HP     666
 #define NECROTANKER_CONSUME_SI_HP           1000
+#define NECROTANKER_MANA_POOL_SIZE          100
+#define NECROTANKER_MANA_GAIN_PUNCH         30
+#define NECROTANKER_MANA_COST_SUMMON_CI     5
+#define NECROTANKER_MANA_COST_BOOMER_THROW  20
+#define NECROTANKER_ENHANCE_CI_CHANCE_THROW 33
+#define NECROTANKER_ENHANCE_CI_CHANCE_PUNCH 33
+new g_iNecroTankerManaPool[MAXPLAYERS + 1];
 // Vampiric Tank
 #define TANK_HEALTH_VAMPIRIC                            8000
 #define VAMPIRIC_TANK_LIFESTEAL_MULTIPLIER              8

@@ -23,7 +23,7 @@ LoadVampiricTankTalents(iClient)
 	g_iVampiricTankWingDashChargeCount[iClient] = 3;
 
 	// Set a really high rock cooldown so that the rock throw ability is deactivated
-	SetSIAbilityCooldown(iClient, 9999.0);
+	SetSIAbilityCooldown(iClient, 99999.0);
 	
 	// Set Health
 	// Get Current Health/MaxHealth first, to add it back later
@@ -110,7 +110,7 @@ OnGameFrame_Tank_Vampiric(iClient)
 			g_bIsVampiricTankFlying[iClient] = true;
 
 			// Remove the rock throw ability just in case it wasn't previously set
-			SetSIAbilityCooldown(iClient, 9999.0);
+			SetSIAbilityCooldown(iClient, 99999.0);
 			
 			//SetMoveType(iClient, MOVETYPE_FLYGRAVITY, MOVECOLLIDE_FLY_BOUNCE);
 			AddWingDashVelocity(iClient, VAMPIRIC_TANK_WING_DASH_VELOCITY);
@@ -292,10 +292,29 @@ PrintVampiricTankWingDashCharges(iClient)
 	// Print the Wing Dash charges
 	switch (g_iVampiricTankWingDashChargeCount[iClient])
 	{
-		case 0: PrintHintText(iClient, " ");
-		case 1: PrintHintText(iClient, "*");
-		case 2: PrintHintText(iClient, "*  *");
-		case 3: PrintHintText(iClient, "*  *  *");
+		case 0: PrintHintText(iClient, ":-=-=-=-<[░░░░░░░░░░░░░░░░░░]>-=-=-=-:");
+
+		case 1: PrintHintText(iClient, ":-=-=-=-<[▓▓▓▓▓▓░░░░░░░░░░░░]>-=-=-=-:");
+
+		case 2: PrintHintText(iClient, ":-=-=-=-<[▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░]>-=-=-=-:");
+
+		case 3: PrintHintText(iClient, ":-=-=-=-<[▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓]>-=-=-=-:");
+		// case 0: PrintHintText(iClient, ":-=-=-=-=-<[         ]>-=-=-=-=-:");
+		// case 1: PrintHintText(iClient, ":-=-=-=-=-<[[[[      ]>-=-=-=-=-:");
+		// case 2: PrintHintText(iClient, ":-=-=-=-=-<[[[[[[[   ]>-=-=-=-=-:");
+		// case 3: PrintHintText(iClient, ":-=-=-=-=-<[]]]]]]]]]]>-=-=-=-=-:");
+		// case 0: PrintHintText(iClient, ":-=-=-=-=-<[         ]>-=-=-=-=-:");
+		// case 1: PrintHintText(iClient, ":-=-=-=-=-<[|||      ]>-=-=-=-=-:");
+		// case 2: PrintHintText(iClient, ":-=-=-=-=-<[||||||   ]>-=-=-=-=-:");
+		// case 3: PrintHintText(iClient, ":-=-=-=-=-<[|||||||||]>-=-=-=-=-:");
+		// case 0: PrintHintText(iClient, ":-=-=-=-=-<[         ]>-=-=-=-=-:");
+		// case 1: PrintHintText(iClient, ":-=-=-=-=-<[ *       ]>-=-=-=-=-:");
+		// case 2: PrintHintText(iClient, ":-=-=-=-=-<[ *  *    ]>-=-=-=-=-:");
+		// case 3: PrintHintText(iClient, ":-=-=-=-=-<[ *  *  * ]>-=-=-=-=-:");
+		// case 0: PrintHintText(iClient, ":-=-=-=-=-<[         ]>-=-=-=-=-:");
+		// case 1: PrintHintText(iClient, ":-=-=-=-=-<[    *    ]>-=-=-=-=-:");
+		// case 2: PrintHintText(iClient, ":-=-=-=-=-<[  *   *  ]>-=-=-=-=-:");
+		// case 3: PrintHintText(iClient, ":-=-=-=-=-<[ *  *  * ]>-=-=-=-=-:");
 	}
 }
 

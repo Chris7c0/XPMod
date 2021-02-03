@@ -18,7 +18,7 @@ Action:TankMenuDrawFire(iClient)
         \n Active Abilities\
         \n - [Hold CROUCH] Charges Fire Punch\
         \n    - \"PuNCh FAcE...MAkE BoOM!\"\
-        \n - Rock Throw Spreads Fire (+10 Sec Cooldown)\
+        \n - Rock Throw Spreads Fire (15 Sec Cooldown)\
         \n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",
         TANK_HEALTH_FIRE);
 	

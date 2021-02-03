@@ -2174,29 +2174,38 @@ void GetLocationVectorInfrontOfClient(iClient, Float:xyzLocation[3], Float:xyzAn
 
 
 
-// Setting a really high positive value will cause the ability to never cooldown, so can be used to deactivate
-// Setting a negative value will subtract time (seconds) away from the cooldown
-// A negative value thats larger than the actual current wait period will reset the cooldown instantly
-SetSIAbilityCooldown(iClient, Float:fTimeToWait = -99.0)
+// Setting a really high positive value will cause the ability to never cooldown. Abilties can be used to deactivate with this.
+// Setting a negative value will subtract time (seconds) away from the cooldown.  Setting a value to the existing game time 
+// will cause an instant cooldown allowing for the abilty to be used instantly (bCalculateFromCurrentGameTime true & fTimeToWait 0)
+// Note: The game is going to do a comparison of fNextActivationGameTime and the game time to see if
+// this ability is in cooldown. So if fNextActivationGameTime was previously set to a high value, use 
+// bCalculateFromCurrentGameTime to switch the mode the activate + or - from the current game time instead.
+SetSIAbilityCooldown(iClient, Float:fTimeToWait = 0.0, bool bCalculateFromCurrentGameTime = true)
 {
 	if (RunClientChecks(iClient)== false || 
 		IsPlayerAlive(iClient) == false || 
 		g_iClientTeam[iClient] != TEAM_INFECTED)
 		return;
 
-	new iEntID = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
+	new iEntID = GetEntDataEnt2(iClient, g_iOffset_CustomAbility);
 	if (!IsValidEntity(iEntID))
 		return;
 
-	new Float:flTimeStamp_ret = GetEntDataFloat(iEntID,g_iOffset_NextActivation+8);
+	// Get the actual cooldown wait period, this is the next activation game time at which the ability will be activated once reached
+	new Float:fNextActivationGameTime = GetEntDataFloat(iEntID, g_iOffset_NextActivation + 8);
+	new Float:fGameTime = GetGameTime();
+	//PrintToChatAll("PRE fNextActivationGameTime: %f, GetGameTime() %f", fNextActivationGameTime, fGameTime);
 
+	// Calculate the new ability activation game time
+	decl Float:fNewNextActivationGameTime;
+	// If bCalculateFromCurrentGameTime, then the coder wants to calc next activation starting with the current game time
+	if (bCalculateFromCurrentGameTime)
+		fNewNextActivationGameTime = fGameTime + fTimeToWait;
+	// If its false, then set it to new activation starting with the existing next activation + or - time to wait
+	else
+		fNewNextActivationGameTime = fNextActivationGameTime + fTimeToWait;
+	
+	SetEntDataFloat(iEntID, g_iOffset_NextActivation + 8, fNewNextActivationGameTime, true);
 
-	decl Float:flTimeStamp_calc;
-	
-	flTimeStamp_calc = flTimeStamp_ret + fTimeToWait;
-	
-	SetEntDataFloat(iEntID, g_iOffset_NextActivation+8, flTimeStamp_calc, true);
-	
-	//----DEBUG----
-	//PrintToChatAll("\x03-post, nextactivation dur \x01 %f\x03 timestamp \x01%f", GetEntDataFloat(iEntID, g_iOffset_NextActivation+4), GetEntDataFloat(iEntid, g_iOffset_NextActivation+8) );
+	//PrintToChatAll("POST fNextActivationGameTime: %f, GetGameTime()%f", fNewNextActivationGameTime, GetGameTime());
 }
