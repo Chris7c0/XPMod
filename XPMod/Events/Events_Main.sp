@@ -649,14 +649,14 @@ SetupUnfreezeGameTimer(Float:unfreezeWaitTime)
 	{
 		CreateTimer(unfreezeWaitTime, TimerUnfreeze, 0, TIMER_FLAG_NO_MAPCHANGE);
 
-		g_iUnfreezeNotifyRunTimes = RoundFloat(unfreezeWaitTime / 5.0);
+		g_iUnfreezeNotifyRunTimes = RoundFloat(unfreezeWaitTime);
 		
 		// *For some reason, delete errors out when ran even though it doesnt appear to be 
 		// equal to INVALID_HANDLE. The conclusion from the testing is to just not run the 
 		// delete on this one. It looks like it should be handled fine anyway*
 		// **delete g_hTimer_FreezeCountdown;
 		//LogError("Setting g_hTimer_FreezeCountdown, Handle %i", g_hTimer_FreezeCountdown);
-		g_hTimer_FreezeCountdown = CreateTimer(5.0, TimerUnfreezeNotification, _, TIMER_REPEAT);
+		g_hTimer_FreezeCountdown = CreateTimer(1.0, TimerUnfreezeNotification, _, TIMER_REPEAT);
 		//LogError("Set g_hTimer_FreezeCountdown, Handle %i", g_hTimer_FreezeCountdown);
 
 		// This line is literally only to remove the compiler warning.  It does nothing.

@@ -38,8 +38,7 @@ Action:TimerUnfreezeNotification(Handle:timer, any:data)
 {
 	if(g_iUnfreezeNotifyRunTimes-- > 1)
 	{
-		g_iPrintRunTimes = g_iUnfreezeNotifyRunTimes * 5;
-		PrintHintTextToAll("Survivors will be unfrozen in %i seconds", g_iPrintRunTimes);
+		PrintHintTextToAll("Survivors will be unfrozen in %i seconds", g_iUnfreezeNotifyRunTimes);
 		//LogError("TimerUnfreezeNotification Continue, Handle %i", g_hTimer_FreezeCountdown);
 		return Plugin_Continue;
 	}

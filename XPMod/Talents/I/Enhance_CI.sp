@@ -151,8 +151,8 @@ EnhanceCISet_Fire(iZombie)
 	// Store the entity and type into the Enhanced CI Array List
 	PushZombieOnEnhancedCIEntitiesList(iZombie, ENHANCED_CI_TYPE_FIRE);
 
-	// Change Skin Color
-	SetClientRenderColor(iZombie, 255, 200, 30, 255, RENDER_MODE_NORMAL);
+	// Change Skin Color (Doesn't appear to work in L4D2 for CI)
+	// SetClientRenderColor(iZombie, 255, 200, 30, 255, RENDER_MODE_NORMAL);
 	// Change Outline Glow
 	SetClientGlow(iZombie, 250, 50, 20, GLOWTYPE_ONVISIBLE);
 }
@@ -162,8 +162,8 @@ EnhanceCISet_Ice(iZombie)
 	// Store the entity and type into the Enhanced CI Array List
 	PushZombieOnEnhancedCIEntitiesList(iZombie, ENHANCED_CI_TYPE_ICE);
 
-	// Change Skin Color
-	SetClientRenderColor(iZombie, 0, 255, 255, 255, RENDER_MODE_NORMAL);
+	// Change Skin Color (Doesn't appear to work in L4D2 for CI)
+	// SetClientRenderColor(iZombie, 0, 255, 255, 255, RENDER_MODE_NORMAL);
 	// Change Outline Glow
 	SetClientGlow(iZombie, 80, 240, 255, GLOWTYPE_ONVISIBLE);
 }
@@ -173,8 +173,8 @@ EnhanceCISet_Necro(iZombie)
 	// Store the entity and type into the Enhanced CI Array List
 	PushZombieOnEnhancedCIEntitiesList(iZombie, ENHANCED_CI_TYPE_NECRO);
 
-	// Change Skin Color
-	SetClientRenderColor(iZombie, 0, 130, 40, 255, RENDER_MODE_NORMAL);
+	// Change Skin Color (Doesn't appear to work in L4D2 for CI)
+	// SetClientRenderColor(iZombie, 0, 130, 40, 255, RENDER_MODE_NORMAL);
 	// Change Outline Glow
 	SetClientGlow(iZombie, 0, 130, 40, GLOWTYPE_ONVISIBLE);
 }
@@ -184,8 +184,8 @@ EnhanceCISet_Vampiric(iZombie)
 	// Store the entity and type into the Enhanced CI Array List
 	PushZombieOnEnhancedCIEntitiesList(iZombie, ENHANCED_CI_TYPE_VAMPIRIC);
 
-	// Change Skin Color
-	SetClientRenderColor(iZombie, 100, 0, 255, 255, RENDER_MODE_NORMAL);
+	// Change Skin Color (Doesn't appear to work in L4D2 for CI)
+	// SetClientRenderColor(iZombie, 100, 0, 255, 255, RENDER_MODE_NORMAL);
 	// Change Outline Glow
 	SetClientGlow(iZombie, 100, 0, 255, GLOWTYPE_ONVISIBLE);
 }

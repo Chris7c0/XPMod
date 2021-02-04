@@ -33,13 +33,14 @@
 
 	Change Log
 		v1.2.4 (Dec 31, 2020)	- Added new maps for the Last Stand Update
-								- Removed hardcoded maps by making the campaign maps a config file
-								- Made map comparisons case insensitive
+								- Removed hardcoded maps by making the campaign maps a config file ***********************
+								- Made map comparisons case insensitive							************************
 								- Added precache of witch models to fix bug in The Passing campaign 
 								  transition crash
 								- Fixed several infinite loop bugs when on the last campaign
 								- Removed FCVAR_PLUGIN
-
+								- Added the code from [L4D/L4D2] Return To Lobby Fix from MasterMind420. Thank you!!
+		
 		v1.2.3 (Jan 8, 2012)	- Added the new L4D2 campaigns
 		
 		v1.2.2 (May 21, 2011)	- Added message for new vote winner when a player disconnects
@@ -170,7 +171,7 @@ SetupMapStrings()
 	//loop through all of them when the check is made to change the campaign.
 	
 	//First Maps of the Campaign
-	Format(g_strCampaignFirstMap[0], 32, "c8m1_apartment");
+	Format(g_strCampaignFirstMap[0], 32, "c8m1_apartment");  // Known area to not load sometimes and everyone is returned to lobby
 	Format(g_strCampaignFirstMap[1], 32, "c9m1_alleys");
 	Format(g_strCampaignFirstMap[2], 32, "c10m1_caves");
 	Format(g_strCampaignFirstMap[3], 32, "c11m1_greenhouse");
@@ -313,6 +314,10 @@ public OnPluginStart()
 	HookEvent("finale_win", Event_FinaleWin);
 	HookEvent("scavenge_match_finished", Event_ScavengeMapFinished);
 	HookEvent("player_disconnect", Event_PlayerDisconnect);
+
+	//Hook the Return to Lobby vote and Finale End return to lobby events
+	HookUserMessage(GetUserMessageId("VotePass"), OnDisconnectToLobby, true);
+	HookUserMessage(GetUserMessageId("DisconnectToLobby"), OnDisconnectToLobby, true);
 	
 	//Register custom console commands
 	RegConsoleCmd("mapvote", MapVote);
@@ -620,6 +625,31 @@ public Action:Event_PlayerDisconnect(Handle:hEvent, const String:strName[], bool
 	SetTheCurrentVoteWinner();
 	
 	return Plugin_Continue;
+}
+
+// This function was written by MasterMind420 preventing the Return to Lobby issue
+public Action OnDisconnectToLobby(UserMsg msg_id, Handle bf, const players[], int playersNum, bool reliable, bool init)
+{
+	static bool bAllowDisconnect;
+
+	char sBuffer[64];
+	BfReadString(bf, sBuffer, sizeof(sBuffer));
+
+	if (StrContains(sBuffer, "vote_passed_return_to_lobby") > -1)
+	{
+		bAllowDisconnect = true;
+		return Plugin_Continue;
+	}
+	else if (StrContains(sBuffer, "vote_passed") > -1)
+		return Plugin_Continue;
+
+	if (bAllowDisconnect)
+	{
+		bAllowDisconnect = false;
+		return Plugin_Continue;
+	}
+
+	return Plugin_Handled;
 }
 
 /*======================================================================================

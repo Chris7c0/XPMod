@@ -205,7 +205,6 @@ new bool:g_bClientSpectating[MAXPLAYERS + 1] = false;
 new bool:g_bGameFrozen = false;
 new bool:g_bPlayerPressedButtonThisRound = false;   // This is used to set thte countdown timer, it wont start till  someone presses a button
 new g_iUnfreezeNotifyRunTimes = 1;				    //for the unfreeze notify runtimes
-new g_iPrintRunTimes = -1;							//for printing time left till unfreeze in unfreeze notification timer
 
 // Cheat Flags
 new g_iFlag_Give;

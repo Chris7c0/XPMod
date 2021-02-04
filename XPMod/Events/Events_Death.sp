@@ -4,7 +4,7 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	new attacker = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
 	new headshot = GetEventBool(hEvent, "headshot");
 
-	//PrintToChatAll("Event_PlayerDeath: victim %N, attacker: %N", victim, attacker);
+	PrintToChatAll("Event_PlayerDeath: victim %N, attacker: %N", victim, attacker);
 	
 	//If victim was 0 then it was a common/uncommon infected
 	if(victim < 1)
@@ -72,7 +72,8 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 		
 		return Plugin_Continue;
 	}
-	//PrintToChatAll("vicftim = %N, team = %d, g_iInfectedCharacter = %d", victim, g_iClientTeam[victim], g_iInfectedCharacter[victim]);
+
+	//PrintToChatAll("victim = %N, team = %d, g_iInfectedCharacter = %d", victim, g_iClientTeam[victim], g_iInfectedCharacter[victim]);
 	if(g_bIsClientDown[victim] == true)
 	{
 		g_bWasClientDownOnDeath[victim] = true;
@@ -189,8 +190,9 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 		}
 	}
 	
-	if (attacker < 1)
-		return Plugin_Continue;
+	// This could be the cause of some issues, but also might be required in some places, put it in the appropriate places.
+	// if (attacker < 1)
+	// 	return Plugin_Continue;
 	
 	if (g_iClientTeam[victim] == TEAM_INFECTED)
 	{
@@ -367,21 +369,7 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 						CreateTimer(0.5, TimerWreckingChargeRetrigger, attacker, TIMER_FLAG_NO_MAPCHANGE);
 						//PrintToChatAll("Wrecking Retriggering");
 					}
-					// PrintToChatAll("String");
 				}
-/*
-				if(g_bIsWreckingBallCharged[attacker] == true && g_iWreckingLevel[attacker] == 5)
-				{
-					decl String:weaponclass[32];
-					GetEventString(hEvent,"weapon",weaponclass,32);
-					//PrintToChatAll("\x03-class of gun: \x01%s",weaponclass);
-					if(StrContains(weaponclass,"melee",false) != -1)
-					{
-						CreateTimer(0.5, TimerWreckingChargeRetrigger, attacker, TIMER_FLAG_NO_MAPCHANGE);
-						//PrintToChatAll("Wrecking Ball Charged = True; Wrecking Level = 5");
-					}
-				}
-*/
 			}
 			else
 			{
@@ -427,58 +415,12 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 								}
 				}
 			}
+
 			if(g_bAnnouncerOn[attacker] == true)
 				PlayKillSound(attacker);
+
 			if(g_iBringLevel[attacker] > 0)
 			{
-				//new maxHP = GetEntProp(attacker,Prop_Data,"m_iMaxHealth");
-				
-				//Old way of doing this, changed to nerf ELLIS because he was OP
-				/*if(maxHP < 250)
-				{
-					SetEntProp(attacker,Prop_Data,"m_iMaxHealth", maxHP + RoundToCeil(g_iBringLevel[attacker] * 0.5));
-					g_iEllisMaxHealth[attacker] = maxHP + g_iBringLevel[attacker];
-				}
-				
-				new currentHP=GetEntProp(attacker,Prop_Data,"m_iHealth");
-				if(currentHP < 250)
-					SetEntProp(attacker,Prop_Data,"m_iHealth", currentHP + RoundToCeil(g_iBringLevel[attacker] * 0.5));
-				else
-					SetEntProp(attacker,Prop_Data,"m_iHealth", 250);
-					*/
-				
-				// Bring the pain Nerfed again to temp health
-				// new currentHP = GetEntProp(attacker,Prop_Data,"m_iHealth");
-				// if(g_bIsClientDown[attacker] == false)
-				// {
-				// 	if(g_iBringLevel[attacker] < 5)
-				// 	{
-				// 		if((currentHP + g_iBringLevel[attacker]) >= maxHP)
-				// 			SetEntProp(attacker,Prop_Data,"m_iHealth", maxHP);
-				// 		else
-				// 			SetEntProp(attacker,Prop_Data,"m_iHealth", currentHP + g_iBringLevel[attacker]);
-				// 	}
-				// 	else if(g_iBringLevel[attacker] == 5)
-				// 	{
-				// 		if((currentHP + g_iBringLevel[attacker] + 3) >= maxHP)
-				// 			SetEntProp(attacker,Prop_Data,"m_iHealth", maxHP);
-				// 		else
-				// 			SetEntProp(attacker,Prop_Data,"m_iHealth", currentHP + g_iBringLevel[attacker] + 3);
-				// 	}
-				// }
-				// else
-				// {
-				// 	//SetEntProp(attacker,Prop_Data,"m_iHealth", currentHP + g_iBringLevel[attacker]);
-				// 	if(g_iBringLevel[attacker] < 5)
-				// 	{
-				// 		SetEntProp(attacker,Prop_Data,"m_iHealth", currentHP + g_iBringLevel[attacker]);
-				// 	}
-				// 	else if(g_iBringLevel[attacker] == 5)
-				// 	{
-				// 		SetEntProp(attacker,Prop_Data,"m_iHealth", currentHP + g_iBringLevel[attacker] + 3);
-				// 	}
-				// }
-
 				// Give temp health on SI kill
 				AddTempHealthToSurvivor(attacker, float(g_iBringLevel[attacker]));
 				
@@ -508,8 +450,25 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 			}
 		}
 	}
-	else if (g_iClientTeam[victim] == TEAM_SURVIVORS)//(GetClientTeam(victim) == TEAM_SURVIVORS && (g_iClientTeam(victim)==TEAM_SURVIVORS))
+
+	if (g_iClientTeam[victim] == TEAM_SURVIVORS)
 	{
+		PrintToChatAll("INSIDE B4 COACH");
+
+		// Coach
+		if(g_iStrongLevel[victim]>0)	
+		{
+			if(g_bIsJetpackOn[victim])
+			{
+				StopSound(victim, SNDCHAN_AUTO, SOUND_JPIDLEREV);
+				g_bIsJetpackOn[victim] = false;
+				new Float:vec[3];
+				GetClientAbsOrigin(victim, vec);
+				EmitSoundToAll(SOUND_JPDIE, victim, SNDCHAN_AUTO,	SNDLEVEL_NORMAL, SND_NOFLAGS, 0.3, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
+			}
+		}
+
+		// Nick
 		if(g_bWasClientDownOnDeath[victim] == true)
 		{
 			g_bWasClientDownOnDeath[victim] = false;
