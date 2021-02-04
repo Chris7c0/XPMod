@@ -262,10 +262,13 @@ PrecacheAllModels()
 	if(!IsModelPrecached("models/survivors/survivor_gambler.mdl"))
 		PrecacheModel("models/survivors/survivor_gambler.mdl", true);	//Nick
 
-	//Precache Uncommon Infected Models
+	//Precache infected
 	if(!IsModelPrecached("models/infected/witch.mdl"))
 		PrecacheModel("models/infected/witch.mdl", true);
-	
+	if(!IsModelPrecached("models/infected/boomer.mdl"))
+		PrecacheModel("models/infected/boomer.mdl", true);
+
+	//Precache Uncommon Infected Models	
 	if(!IsModelPrecached("models/infected/common_male_ceda.mdl"))
 		PrecacheModel("models/infected/common_male_ceda.mdl", true);
 	if(!IsModelPrecached("models/infected/common_male_clown.mdl"))
