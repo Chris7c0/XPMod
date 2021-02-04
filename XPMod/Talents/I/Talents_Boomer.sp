@@ -35,7 +35,7 @@ Event_BoomerVomitOnPlayer(iAttacker, iVictim)
 				if(IsClientInGame(iAttacker) == true)
 					if(IsFakeClient(iAttacker) == false)
 					{
-						new random = GetRandomInt(0, 6);
+						new random = GetRandomInt(0, 5);
 						switch(random)
 						{
 							case 0:		//Give 3 extra bind 1 and bind 2 uses
@@ -48,9 +48,14 @@ Event_BoomerVomitOnPlayer(iAttacker, iVictim)
 							{
 								if(IsPlayerAlive(iAttacker))
 								{
-									PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. He gets 1000 Health", iAttacker);
-									SetEntProp(iAttacker,Prop_Data,"m_iMaxHealth", 1000);
-									SetEntProp(iAttacker,Prop_Data,"m_iHealth", 1000);
+									PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. He becomes a \x04FAT Ninja!\x05", iAttacker);
+									SetEntProp(iAttacker,Prop_Data,"m_iMaxHealth", 750);
+									SetEntProp(iAttacker,Prop_Data,"m_iHealth", 750);
+
+									g_bIsSuperSpeedBoomer[iAttacker] = true;
+									SetClientSpeed(iAttacker);
+									
+									CreateTimer(20.0, TimerResetFastBoomerSpeed, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
 								}
 								else	//If their not alive then give them another reward
 								{
@@ -87,26 +92,7 @@ Event_BoomerVomitOnPlayer(iAttacker, iVictim)
 								g_bCommonInfectedDoMoreDamage = true;
 								CreateTimer(20.0, TimerResetZombieDamage, 0, TIMER_FLAG_NO_MAPCHANGE);
 							}
-							case 4:		//Get faster movement speed
-							{
-								if(IsPlayerAlive(iAttacker) == true)
-								{
-									PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. He gets temporary super speed.", iAttacker);
-									
-									g_bIsSuperSpeedBoomer[iAttacker] = true;
-									SetClientSpeed(iAttacker);
-
-									
-									CreateTimer(20.0, TimerResetFastBoomerSpeed, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
-								}
-								else	//If their not alive then give them another reward
-								{
-									PrintToChatAll("\x03[XPMod] \x05%N vomited on 3 survivors.  He gets an extra Bind 1 and Bind 2 charge.", iAttacker);
-									g_iClientBindUses_1[iAttacker]--;
-									g_iClientBindUses_2[iAttacker]--;
-								}
-							}
-							case 5:		//Crack Out
+							case 4:		//Crack Out
 							{
 								if((IsPlayerAlive(iVictim)) && (IsFakeClient(iVictim) == false))
 								{
@@ -135,7 +121,7 @@ Event_BoomerVomitOnPlayer(iAttacker, iVictim)
 									SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);
 								}
 							}
-							case 6:
+							case 5:
 							{
 								if(IsPlayerAlive(iAttacker) == true)
 								{
@@ -153,7 +139,7 @@ Event_BoomerVomitOnPlayer(iAttacker, iVictim)
 									new ticktime = RoundToNearest(  GetGameTime() / GetTickInterval()) + 5;
 									
 									decl i;
-									for(i = 0; i < 6; i++)
+									for(i = 0; i < 4; i++)
 									{
 										new zombie = CreateEntityByName("infected");
 										SetEntityModel(zombie, "models/infected/common_male_jimmy.mdl");

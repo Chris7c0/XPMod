@@ -169,14 +169,13 @@ SetClientSpeedBoomer(iClient, &Float:fSpeed)
 		g_iClientInfectedClass2[iClient] != BOOMER &&
 		g_iClientInfectedClass3[iClient] != BOOMER))
 		return;
-
-	// Vomited on 3 survivors and got super speed
-	if (g_bIsSuperSpeedBoomer[iClient])
-		fSpeed += 2.0;
 	
 	// Bind 1 Hot Meal speed
 	if (g_bIsServingHotMeal[iClient])
 		fSpeed += (g_iAcidicLevel[iClient] * 0.1);
+	// Vomited on 3 survivors and got super speed
+	else if(g_bIsSuperSpeedBoomer[iClient])
+		fSpeed = 3.0;
 	// Rapid Regurgitation allow Boomer speed while vomiting
 	else if(g_bIsBoomerVomiting[iClient] && g_iRapidLevel[iClient] > 0)
 	 	fSpeed = (g_iRapidLevel[iClient] * 0.1);
