@@ -418,6 +418,42 @@ EventsHurt_AttackerNick(Handle:hEvent, attacker, victim)
 // 		return;
 // }
 
+// EventsDeath_AttackerNick(Handle:hEvent, iAttacker, iVictim)
+// {
+// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
+// }
+
+EventsDeath_VictimNick(Handle:hEvent, iAttacker, iVictim)
+{
+	if (g_iClientTeam[iVictim] != TEAM_SURVIVORS)
+		return;
+
+	SuppressNeverUsedWarning(hEvent, iAttacker);
+	
+	// Nick's DesperateMeasuresStack
+	if(g_bWasClientDownOnDeath[iVictim] == true)
+		g_bWasClientDownOnDeath[iVictim] = false;
+	else
+	{
+		g_iNickDesperateMeasuresStack++;
+
+		for(int i=1; i <= MaxClients; i++)
+		{
+			if (RunClientChecks(i) && 
+				g_iClientTeam[i]==TEAM_SURVIVORS && 
+				IsPlayerAlive(i) == true)
+			{
+				if(g_iNickDesperateMeasuresStack <= 3)
+				{
+					SetClientSpeed(i);
+					PrintHintText(i, "A teammate has died, your senses sharpen.");
+				}
+			}
+		}
+	}
+}
+
+
 //Jebus Hand Menu
 Action:JebusHandBindMenuDraw(iClient) 
 {

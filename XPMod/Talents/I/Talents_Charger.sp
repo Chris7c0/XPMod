@@ -200,3 +200,13 @@ EventsHurt_VictimCharger(Handle:hEvent, attacker, victim)
 		}
 	}
 }
+
+// EventsDeath_AttackerCharger(Handle:hEvent, iAttacker, iVictim)
+// {
+// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
+// }
+
+// EventsDeath_VictimCharger(Handle:hEvent, iAttacker, iVictim)
+// {
+// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
+// }

@@ -9,6 +9,17 @@ OnGameFrame_Tank(iClient)
 	}
 }
 
+EventsHurt_AttackerTank(Handle:hEvent, iAttackerTank, iVictim)
+{
+	switch(g_iTankChosen[iAttackerTank])
+	{
+		case TANK_FIRE:			EventsHurt_AttackerTank_Fire(hEvent, iAttackerTank, iVictim);
+		case TANK_ICE:			EventsHurt_AttackerTank_Ice(hEvent, iAttackerTank, iVictim);
+		case TANK_NECROTANKER:	EventsHurt_AttackerTank_NecroTanker(hEvent, iAttackerTank, iVictim);
+		case TANK_VAMPIRIC:		EventsHurt_AttackerTank_Vampiric(hEvent, iAttackerTank, iVictim);
+	}
+}
+
 EventsHurt_VictimTank(Handle:hEvent, iAttacker, iVictimTank)
 {
 	// Globally for all tanks, put them out after X seconds
@@ -22,21 +33,42 @@ EventsHurt_VictimTank(Handle:hEvent, iAttacker, iVictimTank)
 	
 	switch(g_iTankChosen[iVictimTank])
 	{
-		case TANK_FIRE:			EventsHurt_TankVictim_Fire(hEvent, iAttacker, iVictimTank);
-		case TANK_ICE:			EventsHurt_TankVictim_Ice(hEvent, iAttacker, iVictimTank);
-		case TANK_NECROTANKER:	EventsHurt_TankVictim_NecroTanker(hEvent, iAttacker, iVictimTank);
-		case TANK_VAMPIRIC:		EventsHurt_TankVictim_Vampiric(hEvent, iAttacker, iVictimTank);
+		case TANK_FIRE:			EventsHurt_VictimTank_Fire(hEvent, iAttacker, iVictimTank);
+		case TANK_ICE:			EventsHurt_VictimTank_Ice(hEvent, iAttacker, iVictimTank);
+		case TANK_NECROTANKER:	EventsHurt_VictimTank_NecroTanker(hEvent, iAttacker, iVictimTank);
+		case TANK_VAMPIRIC:		EventsHurt_VictimTank_Vampiric(hEvent, iAttacker, iVictimTank);
 	}
 }
 
-EventsHurt_AttackerTank(Handle:hEvent, iAttackerTank, iVictim)
+
+// EventsDeath_AttackerTank(Handle:hEvent, iAttackerTank, iVictim)
+// {
+// 	switch(g_iTankChosen[iAttackerTank])
+// 	{
+// 		// case TANK_FIRE:			EventsDeath_AttackerTank_Fire(hEvent, iAttackerTank, iVictim);
+// 		// case TANK_ICE:			EventsDeath_AttackerTank_Ice(hEvent, iAttackerTank, iVictim);
+// 		// case TANK_NECROTANKER:	EventsDeath_AttackerTank_NecroTanker(hEvent, iAttackerTank, iVictim);
+// 		// case TANK_VAMPIRIC:		EventsDeath_AttackerTank_Vampiric(hEvent, iAttackerTank, iVictim);
+// 	}
+// }
+
+EventsDeath_VictimTank(Handle:hEvent, iAttacker, iVictimTank)
 {
-	switch(g_iTankChosen[iAttackerTank])
+	if (g_iClientTeam[iVictimTank] != TEAM_INFECTED ||
+		g_bEndOfRound == true ||
+		RunClientChecks(iVictimTank) == false ||
+		GetEntProp(iVictimTank, Prop_Send, "m_zombieClass") != TANK)
+		return;
+
+	// Decriment the global Tank counter
+	g_iTankCounter--;
+
+	switch(g_iTankChosen[iVictimTank])
 	{
-		case TANK_FIRE:			EventsHurt_TankAttacker_Fire(hEvent, iAttackerTank, iVictim);
-		case TANK_ICE:			EventsHurt_TankAttacker_Ice(hEvent, iAttackerTank, iVictim);
-		case TANK_NECROTANKER:	EventsHurt_TankAttacker_NecroTanker(hEvent, iAttackerTank, iVictim);
-		case TANK_VAMPIRIC:		EventsHurt_TankAttacker_Vampiric(hEvent, iAttackerTank, iVictim);
+		case TANK_FIRE:			EventsDeath_VictimTank_Fire(hEvent, iAttacker, iVictimTank);
+		// case TANK_ICE:			EventsDeath_VictimTank_Ice(hEvent, iAttacker, iVictimTank);
+		// case TANK_NECROTANKER:	EventsDeath_VictimTank_NecroTanker(hEvent, iAttacker, iVictimTank);
+		// case TANK_VAMPIRIC:		EventsDeath_VictimTank_Vampiric(hEvent, iAttacker, iVictimTank);
 	}
 }
 
@@ -114,6 +146,9 @@ ResetAllTankVariables(iClient)
 
 	// Remove fire if the previous tank was a Fire Tank
 	ExtinguishEntity(iClient);
+
+	if(g_bEndOfRound == false)
+		StopHudOverlayColor(iClient);
 
 	// PrintToChatAll("%N ResetAllTankVariables Ended", iClient);
 }

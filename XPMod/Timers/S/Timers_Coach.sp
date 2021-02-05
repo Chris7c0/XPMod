@@ -69,7 +69,7 @@ Action:TimerCoachCIHeadshotSpeedReset(Handle:timer, any:iClient)
 	g_iCoachCIHeadshotCounter[iClient]--;
 	if(g_iCoachCIHeadshotCounter[iClient] > 0)
 	{
-		CreateTimer(3.0, TimerCoachCIHeadshotSpeedReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
+		CreateTimer(5.0, TimerCoachCIHeadshotSpeedReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	}
 	else
 	{
@@ -86,7 +86,7 @@ Action:TimerCoachSIHeadshotSpeedReset(Handle:timer, any:iClient)
 	g_iCoachSIHeadshotCounter[iClient]--;
 	if(g_iCoachSIHeadshotCounter[iClient] > 0)
 	{
-		CreateTimer(6.0, TimerCoachSIHeadshotSpeedReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
+		CreateTimer(10.0, TimerCoachSIHeadshotSpeedReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	}
 	else
 	{

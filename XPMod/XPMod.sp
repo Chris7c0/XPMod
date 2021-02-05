@@ -62,6 +62,7 @@
 #include "XPMod/Misc/Testing.sp"	                   //Remove before relase/////////////////////////////////////////////////////////////////////////
 //Experience and User Data Management
 #include "XPMod/XP/XP_Management.sp"
+#include "XPMod/XP/XP_Events.sp"
 #include "XPMod/XP/XP_SQLDatabase.sp"
 //Menu Navigation Files
 #include "XPMod/Menus/Menu_Main.sp"

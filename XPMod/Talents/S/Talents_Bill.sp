@@ -222,6 +222,17 @@ EventsHurt_AttackerBill(Handle:hEvent, attacker, victim)
 // 		return;
 // }
 
+// EventsDeath_AttackerBill(Handle:hEvent, iAttacker, iVictim)
+// {
+// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
+// }
+
+// EventsDeath_VictimBill(Handle:hEvent, iAttacker, iVictim)
+// {
+// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
+// }
+
+
 Action:tmrPlayAnim(Handle:timer,any:iClient)
 {
 	PlayAnim(iClient);

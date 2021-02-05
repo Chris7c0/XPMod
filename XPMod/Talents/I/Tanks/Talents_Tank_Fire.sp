@@ -119,7 +119,7 @@ OnGameFrame_Tank_Fire(iClient)
 	}
 }
 
-EventsHurt_TankVictim_Fire(Handle:hEvent, iAttacker, iVictimTank)
+EventsHurt_VictimTank_Fire(Handle:hEvent, iAttacker, iVictimTank)
 {
 	SuppressNeverUsedWarning(hEvent, iAttacker);
 
@@ -152,7 +152,7 @@ EventsHurt_TankVictim_Fire(Handle:hEvent, iAttacker, iVictimTank)
 	}
 }
 
-EventsHurt_TankAttacker_Fire(Handle:hEvent, iAttackerTank, iVictim)
+EventsHurt_AttackerTank_Fire(Handle:hEvent, iAttackerTank, iVictim)
 {	
 	decl String:weapon[20];
 	GetEventString(hEvent,"weapon", weapon, 20);
@@ -188,6 +188,25 @@ EventsHurt_TankAttacker_Fire(Handle:hEvent, iAttackerTank, iVictim)
 			SetFireToPlayer(iVictim, iAttackerTank, 5.0);
 		}
 	}
+}
+
+// EventsDeath_AttackerTank_Fire(Handle:hEvent, iAttackerTank, iVictim)
+// {
+// 	SuppressNeverUsedWarning(hEvent, iAttackerTank, iVictim);
+// }
+
+EventsDeath_VictimTank_Fire(Handle:hEvent, iAttacker, iVictimTank)
+{
+	if (RunClientChecks(iVictimTank) == false)
+		return;
+
+	SuppressNeverUsedWarning(hEvent, iAttacker);
+
+	// Explode the tank and set a fire
+	decl Float:xyzLocation[3];
+	GetClientAbsOrigin(iVictimTank, xyzLocation);
+	PropaneExplode(xyzLocation);
+	MolotovExplode(xyzLocation);
 }
 
 SetFireToPlayer(iVictim, iAttacker, Float:fTime)

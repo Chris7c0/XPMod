@@ -876,3 +876,80 @@ EventsHurt_VictimEllis(Handle:hEvent, attacker, victim)
 		}
 	}
 }
+
+EventsDeath_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
+{
+	// Handle Ellis's speed boost with the tanks dying
+	if (g_iClientTeam[iVictim] == TEAM_INFECTED &&
+		g_bEndOfRound == false && 
+		RunClientChecks(iVictim) &&
+		GetEntProp(iVictim, Prop_Send, "m_zombieClass") == TANK)
+	{
+		for(new i=1; i <= MaxClients; i++)
+		{
+			if (g_iChosenSurvivor[i] == ELLIS &&
+				g_iJamminLevel[i] > 0 &&
+				g_iClientTeam[i] == TEAM_SURVIVORS &&
+				RunClientChecks(i) && 
+				IsPlayerAlive(i) &&
+				IsFakeClient(i) == false)
+			{
+				SetClientSpeed(i);
+				if(g_iTankCounter == 0)
+					PrintHintText(i, "You calm down knowing there are no Tanks around.");
+			}
+		}
+	}
+	
+	// Now start Ellis's attacker abilities
+	if (g_iChosenSurvivor[iAttacker] != ELLIS ||
+		g_bTalentsConfirmed[iAttacker] != true ||
+		g_iClientTeam[iAttacker] != TEAM_SURVIVORS ||
+		g_iClientTeam[iVictim] != TEAM_INFECTED ||
+		RunClientChecks(iAttacker) == false ||
+		IsPlayerAlive(iAttacker) == false)
+		return;
+	
+	SuppressNeverUsedWarning(hEvent);
+
+	if(g_iBringLevel[iAttacker] > 0)
+	{
+		// Give temp health on SI kill
+		AddTempHealthToSurvivor(iAttacker, float(g_iBringLevel[iAttacker]));
+		
+		// Increase clip size
+		new iEntid = GetEntDataEnt2(iAttacker, g_iOffset_ActiveWeapon);
+		if (iEntid != -1)
+		{
+			decl String:wclass[32];
+			GetEntityNetClass(iEntid, wclass, 32);
+			//PrintToChatAll("\x03-class of gun: \x01%s",wclass);
+			if (StrContains(wclass,"rifle",false) != -1 || 
+				StrContains(wclass,"smg",false) != -1 || 
+				StrContains(wclass,"sub",false) != -1 || 
+				StrContains(wclass,"sniper",false) != -1)
+			{
+				new clip = GetEntProp(iEntid,Prop_Data,"m_iClip1");
+				clip += g_iBringLevel[iAttacker] * 20;
+				// Clamp the clip
+				if(clip > 250)
+					clip = 250;
+				SetEntData(iEntid, g_iOffset_Clip1, clip, true);
+
+				// Whats clip2 do??
+				//clip2 = GetEntProp(iEntid,Prop_Data,"m_iClip2"); 			
+				//SetEntData(iEntid, clipsize2, clip2+30, true);	
+			}
+		}
+		if(g_iEllisSpeedBoostCounter[iAttacker] < (6 * g_iBringLevel[iAttacker]))
+		{
+			g_iEllisSpeedBoostCounter[iAttacker]++;
+			SetClientSpeed(iAttacker);
+		}
+	}
+}
+
+// EventsDeath_VictimEllis(Handle:hEvent, iAttacker, iVictim)
+// {
+// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
+// }

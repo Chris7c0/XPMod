@@ -130,6 +130,16 @@ EventsHurt_AttackerSpitter(Handle:hEvent, attacker, victim)
 	}
 }
 
+// EventsDeath_AttackerSpitter(Handle:hEvent, iAttacker, iVictim)
+// {
+// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
+// }
+
+// EventsDeath_VictimSpitter(Handle:hEvent, iAttacker, iVictim)
+// {
+// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
+// }
+
 DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 {
 	if(g_bAdhesiveGooActive[iVictim] == false)

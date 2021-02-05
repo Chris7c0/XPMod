@@ -53,7 +53,7 @@ Action:BullMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(BullMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=\n \n			Bull Rush(Level %d):\n \nLevel 1:\n+15 max health per level\nOn CI headshot with a melee weapon:\n+5%% speed per level for 3 seconds\n \n [WALK+USE] to rage! For 20 seconds:\n+4%% speed per level\n+20 melee damage per level\nHealth regeneration\n60 second cooldown. During cooldown:\nCoach cannot regen or speed up\n \n=	=	=	=	=	=	=	=	=",  g_iSkillPoints[iClient], g_iBullLevel[iClient]);
+	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=\n \n			Bull Rush(Level %d):\n \nLevel 1:\n+15 max health per level\nOn CI headshot with a melee weapon:\n+5%% speed per level for 5 seconds\n \n [WALK+USE] to rage! For 20 seconds:\n+4%% speed per level\n+20 melee damage per level\nHealth regeneration\n60 second cooldown. During cooldown:\nCoach cannot regen or speed up\n \n=	=	=	=	=	=	=	=	=",  g_iSkillPoints[iClient], g_iBullLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
@@ -134,7 +134,7 @@ Action:HomerunMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(HomerunMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=\n \n				Homerun!(Level %d):\n \nLevel 1:\nOn SI headshot with melee weapon:\n+5%% speed per level for 6 seconds\n \n(Stacks) +2 melee damage per level\n \nLevel 5:\nNo melee fatigue\n \n \nSkill Uses:\n+1 (Stack) when decapitating infected\nMax 50 stacks\n \n=	=	=	=	=	=	=	=	=	=	=",  g_iHomerunLevel[iClient]);
+	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=\n \n				Homerun!(Level %d):\n \nLevel 1:\nOn SI headshot with melee weapon:\n+5%% speed per level for 10 seconds\n \n(Stacks) +2 melee damage per level\n \nLevel 5:\nNo melee fatigue\n \n \nSkill Uses:\n+1 (Stack) when decapitating infected\nMax 50 stacks\n \n=	=	=	=	=	=	=	=	=	=	=",  g_iHomerunLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");

@@ -109,12 +109,12 @@ OnGameFrame_Tank_NecroTanker(iClient)
 	}
 }
 
-EventsHurt_TankVictim_NecroTanker(Handle:hEvent, iAttacker, iVictimTank)
+EventsHurt_VictimTank_NecroTanker(Handle:hEvent, iAttacker, iVictimTank)
 {
 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictimTank);
 }
 
-EventsHurt_TankAttacker_NecroTanker(Handle:hEvent, iAttackerTank, iVictim)
+EventsHurt_AttackerTank_NecroTanker(Handle:hEvent, iAttackerTank, iVictim)
 {
 	decl String:weapon[20];
 	GetEventString(hEvent,"weapon", weapon, 20);

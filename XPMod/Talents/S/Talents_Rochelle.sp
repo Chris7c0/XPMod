@@ -318,6 +318,33 @@ EventsHurt_AttackerRochelle(Handle:hEvent, attacker, victim)
 // 		return;
 // }
 
+EventsDeath_AttackerRochelle(Handle:hEvent, iAttacker, iVictim)
+{
+	if (g_iChosenSurvivor[iAttacker] != ROCHELLE ||
+		g_bTalentsConfirmed[iAttacker] == false ||
+		g_iClientTeam[iAttacker] != TEAM_SURVIVORS ||
+		RunClientChecks(iAttacker) == false ||
+		IsFakeClient(iAttacker) == true)
+		return;
+	
+	SuppressNeverUsedWarning(iVictim);
+
+	// Check if common infected headshot
+	if(g_iSilentLevel[iAttacker] > 0 && 
+		iVictim < 1 &&
+		GetEventBool(hEvent, "headshot"))
+	{
+		if(g_iSilentSorrowHeadshotCounter[iAttacker] < 20)
+			g_iSilentSorrowHeadshotCounter[iAttacker]++;
+	}
+}
+
+// EventsDeath_VictimRochelle(Handle:hEvent, iAttacker, iVictim)
+// {
+// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
+// }
+
+
 DetectionHud(iClient)
 {
 	if(IsClientInGame(iClient)==false)

@@ -680,6 +680,76 @@ EventsHurt_AttackerCoach(Handle:hEvent, attacker, victim)
 // 		return;
 // }
 
+EventsDeath_AttackerCoach(Handle:hEvent, iAttacker, iVictim)
+{
+	if (g_iChosenSurvivor[iAttacker] != COACH ||
+		g_bTalentsConfirmed[iAttacker] == false ||
+		g_iClientTeam[iAttacker] != TEAM_SURVIVORS ||
+		RunClientChecks(iAttacker) == false ||
+		IsFakeClient(iAttacker) == true)
+		return;
+
+	SuppressNeverUsedWarning(hEvent);
+
+	decl String:weaponclass[32];
+	GetEventString(hEvent,"weapon",weaponclass,32);
+	//PrintToChatAll("\x03-class of gun: \x01%s",weaponclass);
+
+	// Ensure that its a infected for his headshot speed boosts
+	if (GetEventBool(hEvent, "headshot") &&
+		g_bCoachRageIsInCooldown[iAttacker] == false &&
+		StrContains(weaponclass,"melee",false) != -1)
+	{
+		// CI Headshot
+		if (iVictim < 1)
+		{
+			// Bull Rush CI headshot boost
+			if (g_iBullLevel[iAttacker] > 0)
+			{
+				g_iCoachCIHeadshotCounter[iAttacker]++;
+				if(g_bCoachInCISpeed[iAttacker] == false)
+				{
+					g_bCoachInCISpeed[iAttacker] = true;
+					SetClientSpeed(iAttacker);
+					CreateTimer(5.0, TimerCoachCIHeadshotSpeedReset, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
+				}
+			}
+		}
+		
+		// SI Headshot
+		if (iVictim > 0)
+		{
+			if(g_iHomerunLevel[iAttacker] > 1 && g_bCoachInSISpeed[iAttacker] == false)
+			{
+				g_iCoachSIHeadshotCounter[iAttacker]++;
+				g_bCoachInSISpeed[iAttacker] = true;
+				SetClientSpeed(iAttacker);
+				CreateTimer(10.0, TimerCoachSIHeadshotSpeedReset, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
+			}
+
+			if(g_bWreckingChargeRetrigger[iAttacker] == true)
+				CreateTimer(0.5, TimerWreckingChargeRetrigger, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
+		}
+	}	
+}
+
+EventsDeath_VictimCoach(Handle:hEvent, iAttacker, iVictim)
+{
+	if (g_iChosenSurvivor[iVictim] != COACH ||
+		g_bTalentsConfirmed[iVictim] == false ||
+		g_iClientTeam[iVictim] != TEAM_SURVIVORS ||
+		RunClientChecks(iVictim) == false ||
+		IsFakeClient(iVictim) == true)
+		return;
+	
+	SuppressNeverUsedWarning(hEvent, iAttacker);
+
+	// Handle the sound if his Jetpack if its still on
+	if (g_iStrongLevel[iVictim] > 0 && g_bIsJetpackOn[iVictim])
+		StopSound(iVictim, SNDCHAN_AUTO, SOUND_JPIDLEREV);
+}
+
+
 //Coach's Jetpack stuff
 Action:StartFlying(iClient)
 {

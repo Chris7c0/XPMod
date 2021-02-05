@@ -192,7 +192,7 @@ OnGameFrame_Tank_Ice(iClient)
 	}
 }
 
-EventsHurt_TankVictim_Ice(Handle:hEvent, iAttacker, iVictimTank)
+EventsHurt_VictimTank_Ice(Handle:hEvent, iAttacker, iVictimTank)
 {
 	SuppressNeverUsedWarning(hEvent, iAttacker);
 
@@ -229,7 +229,7 @@ EventsHurt_TankVictim_Ice(Handle:hEvent, iAttacker, iVictimTank)
 	}
 }
 
-EventsHurt_TankAttacker_Ice(Handle:hEvent, iAttackerTank, iVictim)
+EventsHurt_AttackerTank_Ice(Handle:hEvent, iAttackerTank, iVictim)
 {
 	SuppressNeverUsedWarning(iAttackerTank);
 

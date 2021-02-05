@@ -75,3 +75,31 @@ EventsHurt_AttackerSmoker(Handle:hEvent, attacker, victim)
 		CreateTimer(20.0, TimerStopInfection, victim, TIMER_FLAG_NO_MAPCHANGE);
 	}
 }
+
+// EventsDeath_AttackerSmoker(Handle:hEvent, iAttacker, iVictim)
+// {
+// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
+// }
+
+EventsDeath_VictimSmoker(Handle:hEvent, iAttacker, iVictim)
+{
+	if (g_iInfectedCharacter[iVictim] != SMOKER ||
+		g_iClientTeam[iVictim] != TEAM_INFECTED ||
+		g_bTalentsConfirmed[iVictim] == false ||
+		(g_iClientInfectedClass1[iVictim] != SMOKER &&
+		g_iClientInfectedClass2[iVictim] != SMOKER &&
+		g_iClientInfectedClass3[iVictim] != SMOKER) ||
+		RunClientChecks(iVictim) == false ||
+		IsFakeClient(iVictim) == true)
+		return;
+
+	SuppressNeverUsedWarning(hEvent, iAttacker);
+
+	if(g_iNoxiousLevel[iVictim] > 0)
+	{
+		g_bHasSmokersPoisonCloudOut[iVictim] = true;
+		GetClientEyePosition(iVictim, g_xyzPoisonCloudOriginArray[iVictim]);
+		CreateTimer(0.1, TimerPoisonCloud, iVictim, TIMER_FLAG_NO_MAPCHANGE);
+		CreateTimer( (float(g_iNoxiousLevel[iVictim]) * 2.0), TimerStopPoisonCloud, iVictim, TIMER_FLAG_NO_MAPCHANGE);
+	}
+}

@@ -138,7 +138,7 @@ OnGameFrame_Tank_Vampiric(iClient)
 	}
 }
 
-EventsHurt_TankVictim_Vampiric(Handle:hEvent, iAttacker, iVictimTank)
+EventsHurt_VictimTank_Vampiric(Handle:hEvent, iAttacker, iVictimTank)
 {
 	SuppressNeverUsedWarning(hEvent, iAttacker);
 
@@ -179,7 +179,7 @@ EventsHurt_TankVictim_Vampiric(Handle:hEvent, iAttacker, iVictimTank)
 	}
 }
 
-EventsHurt_TankAttacker_Vampiric(Handle:hEvent, iAttackerTank, iVictim)
+EventsHurt_AttackerTank_Vampiric(Handle:hEvent, iAttackerTank, iVictim)
 {
 	SuppressNeverUsedWarning(hEvent);
 	

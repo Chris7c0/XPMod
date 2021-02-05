@@ -316,3 +316,13 @@ EventsHurt_VictimHunter(Handle:hEvent, attacker, victim)
 		g_iHunterCloakCounter[victim] = 0;
 	}
 }
+
+// EventsDeath_AttackerHunter(Handle:hEvent, iAttacker, iVictim)
+// {
+// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
+// }
+
+// EventsDeath_VictimHunter(Handle:hEvent, iAttacker, iVictim)
+// {
+// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
+// }

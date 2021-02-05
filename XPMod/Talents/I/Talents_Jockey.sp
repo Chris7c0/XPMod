@@ -82,3 +82,13 @@ EventsHurt_AttackerJockey(Handle:hEvent, attacker, victim)
 		}
 	}
 }
+
+// EventsDeath_AttackerJockey(Handle:hEvent, iAttacker, iVictim)
+// {
+// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
+// }
+
+// EventsDeath_VictimJockey(Handle:hEvent, iAttacker, iVictim)
+// {
+// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
+// }
