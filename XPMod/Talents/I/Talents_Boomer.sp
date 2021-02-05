@@ -116,6 +116,7 @@ Event_BoomerVomitOnPlayer(iAttacker, iVictim)
 								else
 								{
 									PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. A hoard has been summoned.", iAttacker);
+									g_iFlag_SpawnOld = GetCommandFlags("z_spawn_old");
 									SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
 									FakeClientCommand(iAttacker, "z_spawn_old mob auto");
 									SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);

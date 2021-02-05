@@ -692,11 +692,12 @@ Action:Bind1Press(iClient, args)
 												{
 													if(g_iErraticLevel[iClient] >= iRandomTankSpawn)
 													{
+														g_iFlag_SpawnOld = GetCommandFlags("z_spawn_old");
 														SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
 														PrintToChatAll("\x03[XPMod] \x04Beware, a tank smells %N's jockey piss", iClient);
 														FakeClientCommand(iClient, "z_spawn_old tank auto");
 														SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);
-														PrintHintText(iClient, "You've summoned a tank with your piss!");
+														PrintHintText(iClient, "You attracted a tank with your piss!");
 													}
 												}
 											}
@@ -738,6 +739,7 @@ Action:Bind1Press(iClient, args)
 											
 											if(g_iErraticLevel[iClient] == 10)
 											{
+												g_iFlag_SpawnOld = GetCommandFlags("z_spawn_old");
 												SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
 												FakeClientCommand(iClient, "z_spawn_old mob auto");
 												SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);

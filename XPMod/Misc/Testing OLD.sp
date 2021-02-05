@@ -105,6 +105,7 @@ Action:TestFunction4(iClient, args)
 Action:TestFunction5(iClient, args)
 {
 	//PrintToChat(iClient, "T5");
+	g_iFlag_SpawnOld = GetCommandFlags("z_spawn_old");
 	SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
 	FakeClientCommand(iClient, "z_spawn_old tank auto");
 	SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);

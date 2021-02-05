@@ -472,6 +472,7 @@ Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	SetCommandFlags("give", g_iFlag_Give);
 	SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd);
 	SetCommandFlags("upgrade_remove", g_iFlag_UpgradeRemove);
+	g_iFlag_SpawnOld = GetCommandFlags("z_spawn_old");
 	SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);
 	SetCommandFlags("dismount", g_iFlag_Dismount);
 	
