@@ -120,7 +120,7 @@ Action:TimerConjureCommonInfected(Handle:timer, any:hDataPackage)
 	
 	CloseHandle(hDataPackage);
 	
-	SpawnRandomCommonInfectedMob(xyzLocation, RoundToFloor(g_iPuppetLevel[iClient] * 0.5), false, -1, 0.1);
+	SpawnCommonInfected(xyzLocation, RoundToFloor(g_iPuppetLevel[iClient] * 0.5), UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_NONE, 0.1);
 	
 	return Plugin_Stop;
 }
@@ -139,7 +139,23 @@ Action:TimerConjureUncommonInfected(Handle:timer, any:hDataPackage)
 	// Figure out how many to spawn 2 at level 10 and 1 otherwise
 	new iSpawnCount = g_iMaterialLevel[iClient] == 10 ? 2 : 1
 
-	SpawnRandomCommonInfectedMob(xyzLocation, iSpawnCount, true, -1, 0.1);
+	SpawnCommonInfected(xyzLocation, iSpawnCount, UNCOMMON_CI_RANDOM, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_NONE, 0.1);
+	
+	return Plugin_Stop;
+}
+
+Action:TimerConjureFromBagOfSpits(Handle:timer, any:hDataPackage)
+{
+	ResetPack(hDataPackage);
+	new iClient = ReadPackCell(hDataPackage);
+	decl Float:xyzLocation[3];
+	xyzLocation[0] = ReadPackFloat(hDataPackage);
+	xyzLocation[1] = ReadPackFloat(hDataPackage);
+	xyzLocation[2] = ReadPackFloat(hDataPackage);
+	
+	CloseHandle(hDataPackage);
+	
+	ConjureFromBagOfSpits(iClient, xyzLocation);
 	
 	return Plugin_Stop;
 }
@@ -278,24 +294,6 @@ Action:TimerInfectedVictimTick(Handle:timer, any:iClient)
 Action:TimerResetVirusImmunity(Handle:timer, any:iClient)
 {
 	g_bIsImmuneToVirus[iClient] = false;
-}
-
-Action:TimerResetCanUseAcidReflex(Handle:timer, any:iClient)
-{
-	g_bJustUsedAcidReflex[iClient] = false;
-}
-
-Action:TimerInstantSpitterCooldown(Handle:timer, any:iClient)
-{
-	new iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
-	if (iEntid > 0)
-	{
-		new Float:flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+8);
-		new Float:flTimeStamp_calc = flTimeStamp_ret - 20.0;
-		//PrintToChatAll("flTimeStamp_ret %f flTimeStamp_calc %f", flTimeStamp_ret, flTimeStamp_calc);
-		SetEntDataFloat(iEntid, g_iOffset_NextActivation+8, flTimeStamp_calc, true);
-	}
-	PrintHintText(iClient, "SPIT AGAIN!");
 }
 
 Action:TimerAllowGooSwitching(Handle:timer, any:iClient)

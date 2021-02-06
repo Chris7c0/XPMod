@@ -53,7 +53,7 @@ Action:MaterialMenuDraw(iClient)
 	CheckLevel(iClient);
 	g_hMenu_XPM[iClient] = CreateMenu(MaterialMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Material Girl (Level %d)\n \nLevel 1:\nIf spit hits an incapped player:\nCloak victim +10%% per level\nHide victims' glow\n \nSpawn +1 random UI with spit (+2 at Level 10)\nMelting Goo: +2 spit damage, damage converts\nhealth to temp health.\n \nLevel 6:\nDemi Goo: Triples victims gravity and\nrestricts mobility talents\n \nPress [WALK] to change Goo Types\n \n \n					Bind 1: Acid Reflex\n				3 uses; 30 second cooldown\n \nSpit thrice\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iMaterialLevel[iClient]);
+	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=\n \n				Material Girl (Level %d)\n \nLevel 1:\nIf spit hits incapped player:\nCloak victim +10%% per level\nHide victims' glow\n \nSpawn 1 random UI on spit (2 at Lvl 10)\nMelting Goo: +2 spit dmg\nDmg converts health to temp health\n \nLevel 6:\nDemi Goo: Triples victims gravity and\nrestricts mobility talents\n \nPress [WALK] to change Goo Types\n \n				Bind 1: Bag of Spits\n \nSelect from unique Enhanced CI mobs\nConjure them on your next spit\n \n=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iMaterialLevel[iClient]);
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
 //	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Talent Info");
@@ -153,38 +153,27 @@ Action:GooTypeMenuDraw(iClient)
 
 	return Plugin_Handled;
 }
-//Handlers/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//Goo Type Menu Handler
-GooTypeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+
+Action:BagOfSpitsMenuDraw(iClient)
 {
-	if(action==MenuAction_Select) 
-	{
-		switch (itemNum)
-		{
-			case 0: //Flaming Goo
-			{
-				g_iGooType[iClient] = GOO_FLAMING;
-			}
-			case 1: //Melting Goo
-			{
-				g_iGooType[iClient] = GOO_MELTING;
-			}
-			case 2: //Demi Goo
-			{
-				g_iGooType[iClient] = GOO_DEMI;
-			}
-			case 3: //Repulsion Goo
-			{
-				g_iGooType[iClient] = GOO_REPULSION;
-			}
-			case 4: //Viral Goo
-			{
-				g_iGooType[iClient] = GOO_VIRAL;
-			}
-		}
-	}
+	CheckMenu(iClient);
+	CheckLevel(iClient);
+	g_hMenu_XPM[iClient] = CreateMenu(BagOfSpitsMenuHandler);
+	
+	SetMenuTitle(g_hMenu_XPM[iClient], "Pull something nice from your Bag of Spits!"); 
+
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Tiny Army");
+	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Muscle Crew");
+	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Enhanced Jimmy");
+	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Necrofest");
+
+	SetMenuExitButton(g_hMenu_XPM[iClient], false);
+	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+
+	return Plugin_Handled;
 }
+//Handlers/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Spitter Top Menu Handler
 SpitterTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
@@ -338,5 +327,51 @@ ChooseSpitterClassMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 				SpitterTopMenuDraw(iClient);
 			}
 		}
+	}
+}
+
+//Goo Type Menu Handler
+GooTypeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+{
+	if(action==MenuAction_Select) 
+	{
+		switch (itemNum)
+		{
+			case 0: //Flaming Goo
+			{
+				g_iGooType[iClient] = GOO_FLAMING;
+			}
+			case 1: //Melting Goo
+			{
+				g_iGooType[iClient] = GOO_MELTING;
+			}
+			case 2: //Demi Goo
+			{
+				g_iGooType[iClient] = GOO_DEMI;
+			}
+			case 3: //Repulsion Goo
+			{
+				g_iGooType[iClient] = GOO_REPULSION;
+			}
+			case 4: //Viral Goo
+			{
+				g_iGooType[iClient] = GOO_VIRAL;
+			}
+		}
+	}
+}
+
+//Bag of Spits Menu Handler
+BagOfSpitsMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+{
+	// Make sure they havent already used all their Bind 1s up
+	if (g_iClientBindUses_1[iClient] >= 3) 
+		return; 
+
+	if(action==MenuAction_Select) 
+	{
+		// The Menu item number corresponds to the definition of each 
+		// Bag of Spits item.  So, just set it to the selected menu item
+		g_iBagOfSpitsSelectedSpit[iClient] = itemNum;
 	}
 }

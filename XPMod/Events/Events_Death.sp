@@ -110,6 +110,7 @@ Event_DeathResetAllVariables(iAttacker, iVictim)
 	g_bIsSuicideJumping[iVictim] = false;
 	g_bHasInfectedHealthBeenSet[iVictim] = false;
 	g_bIsHillbillyEarthquakeReady[iVictim] = false;
+	g_iBagOfSpitsSelectedSpit[iVictim] = BAG_OF_SPITS_NONE;
 
 	if(g_iHunterShreddingVictim[iVictim] > 0)
 		SetClientSpeed(g_iHunterShreddingVictim[iVictim]);

@@ -557,85 +557,20 @@ CreateRochelleSmoke(iClient)
 }
 
 /**************************************************************************************************************************
- *                                                Reset Surivor's Speed                                                   *
- **************************************************************************************************************************/
-/* 
-ResetSurvivorSpeed(iClient)
-{
-	if(iClient < 1 || g_iClientTeam[iClient] != TEAM_SURVIVORS || IsClientInGame(iClient) == false)
-		return;
-	
-	if(IsFakeClient(iClient) == true)
-	{
-		SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
-	}
-	else 
-	{
-		switch(g_iChosenSurvivor[iClient])
-		{
-			case BILL:
-			{
-				if(g_bBillSprinting[iClient])
-					SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 2.0, true);
-				else
-					SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);
-			}
-			case ROCHELLE:
-			{
-				if(g_bUsingShadowNinja[iClient] == true)
-					SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iShadowLevel[iClient] * 0.12) + (g_iSniperLevel[iClient] * 0.02) + (g_iHunterLevel[iClient] * 0.02)), true);
-				else
-					SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iHunterLevel[iClient] * 0.02) + (g_iSniperLevel[iClient] * 0.02) + (g_iShadowLevel[iClient] * 0.02)), true);
-			}
-			case COACH:
-			{
-				SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 - (g_iBullLevel[iClient] * 0.03)), true);
-			}
-			case ELLIS:
-			{
-				//Check if there is a tank in game and alive for Ellis's speed boost
-				for(new iPlayer = 1; iPlayer <= MaxClients; iPlayer++)
-				{
-					if(g_iClientTeam[iPlayer] == TEAM_INFECTED && IsClientInGame(iPlayer) == true && 
-						IsPlayerAlive(iPlayer) == true && GetEntProp(iPlayer, Prop_Send, "m_zombieClass") == TANK)
-					{
-						SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iJamminLevel[iClient] * 0.08)), true);
-						return;
-					}
-				}
-				
-				SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iClient] + g_fEllisBringSpeed[iClient] + g_fEllisOverSpeed[iClient]), true);
-				//DeleteCode
-				//PrintToChatAll("All speeds are being reset");
-				//PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[iClient]);
-				//PrintToChatAll("g_fEllisBringSpeed = %f", g_fEllisBringSpeed[iClient]);
-				//PrintToChatAll("g_fEllisOverSpeed = %f", g_fEllisOverSpeed[iClient]);
-			}
-			case NICK:
-			{
-				SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (1.0 + (g_iMagnumLevel[iClient] * 0.03) + (float(g_iNickDesperateMeasuresStack) * float(g_iDesperateLevel[iClient]) * 0.02)), true);
-			}
-		}
-	}	
-}
-*/
-
-/**************************************************************************************************************************
  *                                                Reset Player's Render Color and Glow                                                     *
  **************************************************************************************************************************/
  
 SetClientRenderAndGlowColor(int iClient)
 {
-	if (RunClientChecks(iClient) == false)
+	if (RunClientChecks(iClient) == false || IsPlayerAlive(iClient) ==  false)
 		return;
 
-	if (g_bGameFrozen) // || g_bTalentsConfirmed[iClient] == false)
+	if (g_bGameFrozen)
 		return;
-	
 
 	if(g_iClientTeam[iClient] == TEAM_SURVIVORS)
 	{
-		switch(g_iChosenSurvivor[iClient])
+		switch(g_iChosenSurvivor[iClient] && g_bTalentsConfirmed[iClient])
 		{
 			case BILL:
 			{
@@ -694,7 +629,7 @@ SetClientRenderAndGlowColor(int iClient)
 			}
 		}
 	}
-	else if(g_iClientTeam[iClient] == TEAM_INFECTED)
+	else if(g_iClientTeam[iClient] == TEAM_INFECTED && g_bTalentsConfirmed[iClient])
 	{
 		switch(g_iInfectedCharacter[iClient])
 		{
@@ -746,84 +681,6 @@ SetClientGlow(iClient, iRed = 0, iGreen = 0, iBlue = 0, iGlowType = GLOWTYPE_NOR
 	SetEntProp(iClient, Prop_Send, "m_glowColorOverride", iRed + (iGreen * 256) + (iBlue * 65536));	
 	//ChangeEdictState(iClient, 12);	// This was here before, but not needed
 }
-
-
-/*
-ResetGlow(iClient)
-{
-	if(iClient < 0)
-		return;
-	if(IsClientInGame(iClient) == false)
-		return;
-	
-	new glowtype = 0, glowcolor = 0, rendermode = 0, r = 255, g = 255, b = 255, a = 255;
-	
-	if(IsFakeClient(iClient) == false)
-	{
-		if(g_bGameFrozen == false && g_bTalentsConfirmed[iClient] == true)
-		{
-			if(g_iClientTeam[iClient] == TEAM_SURVIVORS)
-			{
-				switch(g_iChosenSurvivor[iClient])
-				{
-					case 0:		//Bill
-					{
-						glowtype = 3;
-						glowcolor = 1;
-						rendermode = 3;
-						a = RoundToFloor(255 * (1.0 - (((float(g_iGhillieLevel[iClient]) * 0.13) + ((float(g_iPromotionalLevel[iClient]) * 0.04))))));
-					}
-					case 1:		//Rochelle
-					{
-						if(g_bUsingShadowNinja[iClient] == true)
-						{
-							glowtype = 3;
-							glowcolor = 1;
-							rendermode = 3;
-							r = g = b = 0;
-							a = RoundToFloor(255 * (1.0 - (float(g_iShadowLevel[iClient]) * 0.19)));
-						}
-					}
-					case 2:		//Coach
-					{
-						//Coach doesnt have any glow stuff
-					}
-					case 3:		//Ellis
-					{
-						if(g_bUsingFireStorm[iClient] == true)
-						{
-							glowtype = 2;
-							glowcolor = 255;
-							rendermode = 3;
-							r = 210; g = 88; b = 30; a = 255;
-						}
-					}
-					case 4:		//Nick
-					{
-						if(g_bNickIsInvisible[iClient] == true)
-						{
-							glowtype = 3;
-							glowcolor = 1;
-							rendermode = 3;
-							a = 0;
-						}
-					}
-				}
-			}
-		}
-		//else if(g_iClientTeam[iClient] == TEAM_INFECTED)	Not needed yet
-		//{
-		//}
-	}
-	
-	SetEntProp(iClient, Prop_Send, "m_iGlowType", glowtype);
-	SetEntProp(iClient, Prop_Send, "m_nGlowRange", 0);
-	SetEntProp(iClient, Prop_Send, "m_glowColorOverride", glowcolor);
-	ChangeEdictState(iClient, 12);
-	SetEntityRenderMode(iClient, RenderMode:rendermode);
-	SetEntityRenderColor(iClient, r, g, b, a);
-}
-*/
 
 /**************************************************************************************************************************
  *                                              Push/Pop Player From Stack                                                *

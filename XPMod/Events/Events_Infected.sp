@@ -778,7 +778,7 @@ Action:Event_SpitBurst(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 	new iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new iSpitEntity = GetEventInt(hEvent,"subject");
 	
-	if(g_iPuppetLevel[iClient] > 0)
+	if(g_bTalentsConfirmed[iClient] && g_iPuppetLevel[iClient] > 0)
 	{
 		//Temporarily block switching goo types
 		g_bBlockGooSwitching[iClient] = true;
@@ -869,14 +869,17 @@ Action:Event_SpitBurst(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 			WritePackFloat(hDataPackage, position[1]);
 			WritePackFloat(hDataPackage, position[2]);
 			
-			CreateTimer(2.3, TimerConjureUncommonInfected, hDataPackage);
-			
-			if(g_iAcidReflexLeft[iClient] > 0)
+			CreateTimer(0.5, TimerConjureUncommonInfected, hDataPackage);
+
+			// Handle Bag of Spits, if they have a Bind 1 and have selected something
+			if (g_iClientBindUses_1[iClient] < 3 && g_iBagOfSpitsSelectedSpit[iClient] != BAG_OF_SPITS_NONE)
 			{
-				CreateTimer(1.0, TimerInstantSpitterCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
-				
-				if(--g_iAcidReflexLeft[iClient] == 0)
-					CreateTimer(30.0, TimerResetCanUseAcidReflex, iClient, TIMER_FLAG_NO_MAPCHANGE);
+				new Handle:hBagOfSpitsDataPackage = CreateDataPack();
+				WritePackCell(hBagOfSpitsDataPackage, iClient);
+				WritePackFloat(hBagOfSpitsDataPackage, position[0]);
+				WritePackFloat(hBagOfSpitsDataPackage, position[1]);
+				WritePackFloat(hBagOfSpitsDataPackage, position[2]);
+				CreateTimer(0.5, TimerConjureFromBagOfSpits, hBagOfSpitsDataPackage);
 			}
 			
 			if(g_iHallucinogenicLevel[iClient] > 0)

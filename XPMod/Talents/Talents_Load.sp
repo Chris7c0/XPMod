@@ -126,8 +126,7 @@ LoadTalents(iClient)
 				g_bBlockGooSwitching[iClient] = false;
 				g_bJustSpawnedWitch[iClient] = false;
 				g_iGooType[iClient] = GOO_ADHESIVE;
-				g_bJustUsedAcidReflex[iClient] = false;
-				g_iAcidReflexLeft[iClient] = 0;
+				g_iBagOfSpitsSelectedSpit[iClient] = BAG_OF_SPITS_NONE;
 				g_bIsStealthSpitter[iClient] = false;
 				g_iStealthSpitterChargePower[iClient] =  0;
 				g_iStealthSpitterChargeMana[iClient] =  0;

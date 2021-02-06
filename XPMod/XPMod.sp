@@ -496,8 +496,7 @@ ResetVariablesForMap(iClient)
 	g_bIsHallucinating[iClient] = false;
 	g_iViralInfector[iClient] = 0;
 	g_bIsImmuneToVirus[iClient] = false;
-	g_bJustUsedAcidReflex[iClient] = false;
-	g_iAcidReflexLeft[iClient] = 0;
+	g_iBagOfSpitsSelectedSpit[iClient] = BAG_OF_SPITS_NONE;
 	g_bCanBePushedByRepulsion[iClient] = true;
 	g_bIsStealthSpitter[iClient] = false;
 	g_iStealthSpitterChargePower[iClient] =  0;

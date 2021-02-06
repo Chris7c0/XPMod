@@ -296,7 +296,7 @@ DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 }
 
 
-VirallyInfectVictim(iVictim, iAttacker)
+void VirallyInfectVictim(iVictim, iAttacker)
 {
 	if(g_bIsImmuneToVirus[iVictim] == false && g_iViralInfector[iVictim] == 0)
 	{
@@ -313,4 +313,24 @@ VirallyInfectVictim(iVictim, iAttacker)
 		delete g_hTimer_ViralInfectionTick[iVictim];
 		g_hTimer_ViralInfectionTick[iVictim] = CreateTimer(0.5, TimerInfectedVictimTick, iVictim, TIMER_REPEAT);
 	}
+}
+
+void ConjureFromBagOfSpits(iClient, Float:xyzLocation[3])
+{
+	if (g_bTalentsConfirmed[iClient] == false || 
+		g_iMaterialLevel[iClient] == 0 || 
+		g_iBagOfSpitsSelectedSpit[iClient] == BAG_OF_SPITS_NONE)
+		return;
+	
+	switch (g_iBagOfSpitsSelectedSpit[iClient])
+	{
+		case BAG_OF_SPITS_TINY_ARMY: 		SpawnCIAroundLocation(xyzLocation, 10, UNCOMMON_CI_NONE, CI_REALLY_SMALL, ENHANCED_CI_TYPE_RANDOM, 0.1);
+		case BAG_OF_SPITS_MUSCLE_CREW: 		SpawnCIAroundLocation(xyzLocation, 3, UNCOMMON_CI_RANDOM, CI_REALLY_BIG, ENHANCED_CI_TYPE_NONE, 0.1);
+		case BAG_OF_SPITS_ENHANCED_JIMMY: 	SpawnCIAroundLocation(xyzLocation, 1, UNCOMMON_CI_JIMMY, CI_REALLY_BIG, ENHANCED_CI_TYPE_NONE, 0.1);
+		case BAG_OF_SPITS_NECROFEST: 		SpawnCIAroundLocation(xyzLocation, 6, UNCOMMON_CI_CEDA, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_NECRO, 0.1);
+	}
+	
+	// Use a bind 1 charge
+	g_iClientBindUses_1[iClient]++;
+	g_iBagOfSpitsSelectedSpit[iClient] = BAG_OF_SPITS_NONE;
 }

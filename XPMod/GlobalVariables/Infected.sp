@@ -14,26 +14,42 @@ new bool:g_iInfectedConvarsSet[MAXPLAYERS + 1];
 new bool:g_bCanBeGhost[MAXPLAYERS + 1];
 new bool:g_bIsGhost[MAXPLAYERS + 1];
 
+// Uncommon Infected (Note: these correspond to their model string index)
+#define UNCOMMON_CI_NONE        -1
+#define UNCOMMON_CI_RANDOM      -2
+#define UNCOMMON_CI_JIMMY       0
+#define UNCOMMON_CI_CLOWN       1
+#define UNCOMMON_CI_CEDA        2
+#define UNCOMMON_CI_MUD         3
+#define UNCOMMON_CI_RIOT        4
+#define UNCOMMON_CI_ROADCREW    5
 // Common Infected Enhancements
 // (Combined Survivor Levels / 120) * ENHANCEMENT_CI_CHANCE_MAX
 // 0.1 would be 10% chance if all level 30s, 2.5% (2.5 in 100) chance if 1 level 30
 // 0.01 would be 1% chance if all level 30s, 0.25% (1 in 400) chance if 1 level 30
 #define ENHANCEMENT_CI_CHANCE_MAX   0.03
 // Big Small (health + size) options and constraints
+#define CI_SMALL_OR_BIG_RANDOM      -1
 #define CI_SMALL_OR_BIG_NONE        0
-#define CI_SMALL                    1
-#define CI_BIG                      2
-#define CI_SMALL_OR_BIG_RANDOM      3
-#define CI_SMALL_MIN_SIZE           0.6
-#define CI_SMALL_MAX_SIZE           0.8
+#define CI_REALLY_SMALL             1
+#define CI_SMALL                    2
+#define CI_BIG                      3
+#define CI_REALLY_BIG               4
+#define CI_REALLY_SMALL_SIZE        0.33
+#define CI_SMALL_MIN_SIZE           0.60
+#define CI_SMALL_MAX_SIZE           0.80
 #define CI_BIG_MIN_SIZE             1.10
 #define CI_BIG_MAX_SIZE             1.35
+#define CI_REALLY_BIG_SIZE          1.60
+#define CI_REALLY_SMALL_HEALTH      30
 #define CI_SMALL_MIN_HEALTH         100
 #define CI_SMALL_MAX_HEALTH         200
 #define CI_BIG_MIN_HEALTH           500
 #define CI_BIG_MAX_HEALTH           1500
+#define CI_REALLY_BIG_HEALTH        3000
 // Enhanced CI Types
-#define ENHANCED_CI_NONE            0
+#define ENHANCED_CI_TYPE_RANDOM     -1
+#define ENHANCED_CI_TYPE_NONE       0
 #define ENHANCED_CI_TYPE_FIRE       1
 #define ENHANCED_CI_TYPE_ICE        2
 #define ENHANCED_CI_TYPE_NECRO      3
@@ -44,17 +60,19 @@ new bool:g_bIsGhost[MAXPLAYERS + 1];
 // List that contains enhanced CI entities and their abilities properties
 new ArrayList:g_listEnhancedCIEntities;
 // The size of the above array list
-#define ENCHANCED_CI_ENTITIES_ARRAY_LIST_SIZE   2
+#define ENCHANCED_CI_ENTITIES_ARRAY_LIST_SIZE       2
 // Enhanced CI Type Specific Variables
 // Fire CI
-#define ENHANCED_CI_FIRE_BURN_DURATION          2.5
+#define ENHANCED_CI_FIRE_BURN_DURATION              2.5
 // Ice CI
-#define ENHANCED_CI_ICE_FREEZE_DURATION         3.0
+#define ENHANCED_CI_ICE_FREEZE_DURATION             3.0
 // Necro CI
-#define ENHANCED_CI_NECRO_SPAWN_CHANCE          4   // (1 in x) chance
-#define ENHANCED_CI_NECRO_SPAWN_ENHANCED_CHANCE 33
+#define ENHANCED_CI_NECRO_SPAWN_CHANCE              0.33
+#define ENHANCED_CI_NECRO_SPAWN_UNCOMMON_CHANCE     0.33
+#define ENHANCED_CI_NECRO_SPAWN_BIG_SMALL_CHANCE    0.66
+#define ENHANCED_CI_NECRO_SPAWN_ENHANCED_CHANCE     0.66
 // Vampiric CI
-#define ENHANCED_CI_VAMPIRIC_LIFE_STEAL_AMOUNT  30
+#define ENHANCED_CI_VAMPIRIC_LIFE_STEAL_AMOUNT      30
 
 // Smoker
 new g_iMaxTongueLength;
@@ -115,8 +133,6 @@ new bool:g_bIsHallucinating[MAXPLAYERS + 1];
 new g_iViralInfector[MAXPLAYERS + 1];
 new g_iViralRuntimesCounter[MAXPLAYERS + 1];
 new bool:g_bIsImmuneToVirus[MAXPLAYERS + 1];
-new bool:g_bJustUsedAcidReflex[MAXPLAYERS + 1];
-new g_iAcidReflexLeft[MAXPLAYERS + 1];
 new bool:g_bCanBePushedByRepulsion[MAXPLAYERS + 1];
 new bool:g_bIsStealthSpitter[MAXPLAYERS + 1];
 new g_iStealthSpitterChargePower[MAXPLAYERS + 1];
@@ -131,6 +147,13 @@ new Float:g_fAdhesiveAffectAmount[MAXPLAYERS + 1];
 #define GOO_DEMI			3
 #define GOO_REPULSION		4
 #define GOO_VIRAL			5
+// Bag of Spits (BIND 1)
+#define BAG_OF_SPITS_NONE           -1
+#define BAG_OF_SPITS_TINY_ARMY      0
+#define BAG_OF_SPITS_MUSCLE_CREW    1
+#define BAG_OF_SPITS_ENHANCED_JIMMY 2
+#define BAG_OF_SPITS_NECROFEST      3
+new g_iBagOfSpitsSelectedSpit[MAXPLAYERS + 1] = BAG_OF_SPITS_NONE;
 
 // Jockey
 new bool:g_bCanJockeyPee[MAXPLAYERS + 1] = true;

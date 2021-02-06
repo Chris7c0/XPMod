@@ -1,4 +1,4 @@
-int  SpawnRandomCommonInfectedMob(Float:xyzLocation[3], int iAmount = 1, bool:bUncommon = false, int iEnhancedPropertiesChance = -1, Float:fTimeToWaitForMob = -1.0)
+int SpawnCommonInfected(Float:xyzLocation[3], int iAmount = 1, int iUncommon = UNCOMMON_CI_NONE, int iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, int iEnhancedCIType = ENHANCED_CI_TYPE_RANDOM, Float:fTimeToWaitForMob = -1.0)
 {
 	xyzLocation[2] += 1;
 
@@ -7,17 +7,19 @@ int  SpawnRandomCommonInfectedMob(Float:xyzLocation[3], int iAmount = 1, bool:bU
 		new iZombie = CreateEntityByName("infected");
 		
 		// Get the number of possible models
-		new iRandomModelNumber = bUncommon ? GetRandomInt(0,sizeof(UNCOMMON_INFECTED_MODELS) - 1) : GetRandomInt(0,sizeof(COMMON_INFECTED_MODELS) - 1)
+		new iRandomModelNumber = iUncommon == UNCOMMON_CI_RANDOM ? GetRandomInt(0,sizeof(UNCOMMON_INFECTED_MODELS) - 1) : GetRandomInt(0,sizeof(COMMON_INFECTED_MODELS) - 1)
 		
 		// If its Jimmy, roll only keep 1/3rd of the time...because way too many Jimmys up in this biyyah
-		if (bUncommon && iRandomModelNumber == 0 && GetRandomInt(1,3) != 1)
+		if (iUncommon == UNCOMMON_CI_RANDOM && iRandomModelNumber == 0 && GetRandomInt(1,3) != 1)
 			iRandomModelNumber = GetRandomInt(1,sizeof(UNCOMMON_INFECTED_MODELS) - 1);
 
 		// Set the model, which sets the infected type, for uncommon changing behavior etc.
-		if (bUncommon)
+		if (iUncommon == UNCOMMON_CI_NONE)
+			SetEntityModel(iZombie, COMMON_INFECTED_MODELS[iRandomModelNumber]);
+		else if (iUncommon == UNCOMMON_CI_RANDOM)
 			SetEntityModel(iZombie, UNCOMMON_INFECTED_MODELS[iRandomModelNumber]);
 		else
-			SetEntityModel(iZombie, COMMON_INFECTED_MODELS[iRandomModelNumber]);
+			SetEntityModel(iZombie, UNCOMMON_INFECTED_MODELS[iUncommon]);
 		
 		new ticktime = RoundToNearest( GetGameTime() / GetTickInterval() ) + 5;
 		SetEntProp(iZombie, Prop_Data, "m_nNextThinkTick", ticktime);
@@ -35,9 +37,8 @@ int  SpawnRandomCommonInfectedMob(Float:xyzLocation[3], int iAmount = 1, bool:bU
 		DispatchSpawn(iZombie);
 
 		// Add Enhancements to the CI/UI
-		// iEnhancedPropertiesChance -1 disables it here, iEnhancedPropertiesChance 0 disables Enhanced CI abilities (properties)
-		if (iEnhancedPropertiesChance != -1)
-			RandomlyEnhanceCommonInfected(iZombie, CI_SMALL_OR_BIG_RANDOM, iEnhancedPropertiesChance);
+		if (iBigOrSmall != CI_SMALL_OR_BIG_NONE || iEnhancedCIType != ENHANCED_CI_TYPE_NONE)
+			EnhanceCommonInfected(iZombie, iBigOrSmall, iEnhancedCIType);
 
 		// Create the FX
 		// Play a random sound effect name from the several zombie slices
@@ -66,15 +67,8 @@ Action:TimerSetMobRush(Handle:timer, any:iZombieEntity)
 	return Plugin_Stop;
 }
 
-SpawnCIAroundPlayer(iClient, iAmount = 1, bool:bChanceForUncommon = false, int iEnhancedPropertiesChance = -1)
+void SpawnCIAroundLocation(Float:xyzLocation[3], iAmount = 1, iUncommon = UNCOMMON_CI_NONE, int iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, int iEnhancedCISpecifiedType = ENHANCED_CI_TYPE_RANDOM, Float:fTimeToWaitForMob = -1.0)
 {
-	if (RunClientChecks(iClient) == false)
-		return;
-
-	// Get player location to spawn infected around
-	decl Float:xyzLocation[3];
-	GetClientAbsOrigin(iClient, xyzLocation);
-
 	// Get the angle increments then convert to radians
 	// We need it in radians so convert it by multiplying by 0.0174532925
 	new Float:fAngleIncrement = (360.0 / iAmount) * 0.0174532925;
@@ -93,7 +87,7 @@ SpawnCIAroundPlayer(iClient, iAmount = 1, bool:bChanceForUncommon = false, int i
 		xyzLocation[0] += fXOffset;
 		xyzLocation[1] += fYOffset;
 
-		SpawnRandomCommonInfectedMob(xyzLocation, 1, bChanceForUncommon && GetRandomInt(0, 5) == 0 ? true : false, iEnhancedPropertiesChance, 0.1);
+		SpawnCommonInfected(xyzLocation, 1, iUncommon, iBigOrSmall, iEnhancedCISpecifiedType, fTimeToWaitForMob);
 	}
 }
 
@@ -102,17 +96,24 @@ Action:TimerSpawnCIAroundPlayer(Handle:timer, any:hDataPackage)
 	ResetPack(hDataPackage);
 	new iClient = ReadPackCell(hDataPackage);
 	new iAmount = ReadPackCell(hDataPackage);
-	new bool:bChanceForUncommon = ReadPackCell(hDataPackage);
-	new iEnhancedPropertiesChance = ReadPackCell(hDataPackage);
+	new iUncommon = ReadPackCell(hDataPackage);
+	new iBigOrSmall = ReadPackCell(hDataPackage);
+	new iEnhancedCISpecifiedType = ReadPackCell(hDataPackage);
 	CloseHandle(hDataPackage);
 
-	SpawnCIAroundPlayer(iClient, iAmount, bChanceForUncommon, iEnhancedPropertiesChance);
+	if (RunClientChecks(iClient) == false)
+		return Plugin_Stop;
+
+	// Get player location to spawn infected around
+	decl Float:xyzLocation[3];
+	GetClientAbsOrigin(iClient, xyzLocation);
+
+	SpawnCIAroundLocation(xyzLocation, iAmount, iUncommon, iBigOrSmall, iEnhancedCISpecifiedType);
 
 	return Plugin_Stop;
 }
 
-
-SpawnSpecialInfected(iClient, char[] strInfectedToSpawn = "")
+void SpawnSpecialInfected(iClient, char[] strInfectedToSpawn = "")
 {
 	new iRandomSIID = GetRandomInt(1,6);
 	decl String:strSpawnCommand[32];

@@ -336,11 +336,17 @@ BileEveryoneCloseToExplodingNecroTankerTankRock(iRockEntity)
 			{
 				SDKCall(g_hSDK_VomitOnPlayer, iClient, iTank, true);
 
+				// Roll the dice for Big or Small
+				new iBigOrSmall = GetRandomFloat(0.0, 1.0) <= NECROTANKER_ENHANCE_CI_CHANCE_THROW ? CI_SMALL_OR_BIG_RANDOM : CI_SMALL_OR_BIG_NONE;
+				// Roll the dice for an Enhanced CI properties
+				new iEnhancedCISpecifiedType = GetRandomFloat(0.0, 1.0) <= NECROTANKER_ENHANCE_CI_CHANCE_THROW ? ENHANCED_CI_TYPE_RANDOM : ENHANCED_CI_TYPE_NONE;
+
 				new Handle:hDataPackage = CreateDataPack();
 				WritePackCell(hDataPackage, iClient);
 				WritePackCell(hDataPackage, 3);
-				WritePackCell(hDataPackage, false);
-				WritePackCell(hDataPackage, NECROTANKER_ENHANCE_CI_CHANCE_THROW);
+				WritePackCell(hDataPackage, UNCOMMON_CI_NONE);
+				WritePackCell(hDataPackage, iBigOrSmall);
+				WritePackCell(hDataPackage, iEnhancedCISpecifiedType);
 
 				CreateTimer(0.1, TimerSpawnCIAroundPlayer, hDataPackage);
 			}
@@ -384,13 +390,13 @@ void SummonNecroTankerCrouchAbility(iClient)
 	new iZombie = -1;
 	new iUncommonAndEnhancedChanceRoll = GetRandomInt(1,100);
 	if (iUncommonAndEnhancedChanceRoll <= 25)
-		iZombie = SpawnRandomCommonInfectedMob(xyzLocation, 1, true, 100, fTimeToWaitForMob);
+		iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_RANDOM, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_RANDOM, fTimeToWaitForMob);
 	// else if (iUncommonAndEnhancedChanceRoll <= 15)
-	// 	iZombie = SpawnRandomCommonInfectedMob(xyzLocation, 1, true, -1, fTimeToWaitForMob);
+	// 	iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_RANDOM, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_NONE, fTimeToWaitForMob);
 	else if (iUncommonAndEnhancedChanceRoll <= 75)
-		iZombie = SpawnRandomCommonInfectedMob(xyzLocation, 1, false, 100, fTimeToWaitForMob);
+		iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_RANDOM, fTimeToWaitForMob);
 	else
-		iZombie = SpawnRandomCommonInfectedMob(xyzLocation, 1, false, -1, fTimeToWaitForMob);
+		iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_NONE, fTimeToWaitForMob);
 
 	// Create the effect on the summoned common infected
 	if (iZombie > 0)
@@ -429,11 +435,17 @@ void SummonNecroTankerPunchZombies(iAttackerTank, iVictim)
 	// Spawn CI around victim
 	if (iRoll > 35 && iRoll <= 70)
 	{
+		// Roll the dice for Big or Small
+		new iBigOrSmall = GetRandomFloat(0.0, 1.0) <= NECROTANKER_ENHANCE_CI_CHANCE_PUNCH ? CI_SMALL_OR_BIG_RANDOM : CI_SMALL_OR_BIG_NONE;
+		// Roll the dice for an Enhanced CI properties
+		new iEnhancedCISpecifiedType = GetRandomFloat(0.0, 1.0) <= NECROTANKER_ENHANCE_CI_CHANCE_PUNCH ? ENHANCED_CI_TYPE_RANDOM : ENHANCED_CI_TYPE_NONE;
+
 		new Handle:hDataPackage = CreateDataPack();
 		WritePackCell(hDataPackage, iVictim);
 		WritePackCell(hDataPackage, 6);
-		WritePackCell(hDataPackage, false);
-		WritePackCell(hDataPackage, NECROTANKER_ENHANCE_CI_CHANCE_PUNCH);
+		WritePackCell(hDataPackage, UNCOMMON_CI_NONE);
+		WritePackCell(hDataPackage, iBigOrSmall);
+		WritePackCell(hDataPackage, iEnhancedCISpecifiedType);
 
 		CreateTimer(1.0, TimerSpawnCIAroundPlayer, hDataPackage);
 		return;
@@ -442,11 +454,17 @@ void SummonNecroTankerPunchZombies(iAttackerTank, iVictim)
 	// Spawn CI and UI around player
 	if (iRoll > 10 && iRoll <= 35)
 	{
+		// Roll the dice for Big or Small
+		new iBigOrSmall = GetRandomFloat(0.0, 1.0) <= NECROTANKER_ENHANCE_CI_CHANCE_PUNCH ? CI_SMALL_OR_BIG_RANDOM : CI_SMALL_OR_BIG_NONE;
+		// Roll the dice for an Enhanced CI properties
+		new iEnhancedCISpecifiedType = GetRandomFloat(0.0, 1.0) <= NECROTANKER_ENHANCE_CI_CHANCE_PUNCH ? ENHANCED_CI_TYPE_RANDOM : ENHANCED_CI_TYPE_NONE;
+		
 		new Handle:hDataPackage = CreateDataPack();
 		WritePackCell(hDataPackage, iVictim);
 		WritePackCell(hDataPackage, 5);
-		WritePackCell(hDataPackage, true);
-		WritePackCell(hDataPackage, NECROTANKER_ENHANCE_CI_CHANCE_PUNCH);
+		WritePackCell(hDataPackage, UNCOMMON_CI_RANDOM);
+		WritePackCell(hDataPackage, iBigOrSmall);
+		WritePackCell(hDataPackage, iEnhancedCISpecifiedType);
 
 		CreateTimer(1.0, TimerSpawnCIAroundPlayer, hDataPackage);
 		return;

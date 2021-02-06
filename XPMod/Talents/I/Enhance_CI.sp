@@ -91,12 +91,12 @@ void PrintAllInEnhancedCIEntityList()
 Action:TimerSpawnRandomlyEnhancedCIForDirector(Handle:timer, any:iEntity)
 {
 	if (IsValidEntity(iEntity) && IsCommonInfected(iEntity, ""))
-		RandomlyEnhanceCommonInfected(iEntity, CI_SMALL_OR_BIG_RANDOM, 100);
+		EnhanceCommonInfected(iEntity, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_RANDOM);
 	
 	return Plugin_Stop;
 }
 
-RandomlyEnhanceCommonInfected(iZombie, iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, iAbilitiesChance = 0)
+EnhanceCommonInfected(iZombie, iBigOrSmall = CI_SMALL_OR_BIG_NONE, iEnhancedCISpecifiedType = ENHANCED_CI_TYPE_NONE)
 {
 	if (iBigOrSmall == CI_SMALL_OR_BIG_RANDOM || iBigOrSmall == CI_BIG || iBigOrSmall == CI_SMALL)
 	{
@@ -115,15 +115,29 @@ RandomlyEnhanceCommonInfected(iZombie, iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, iAb
 			EnhanceCISetHealth(iZombie, RoundToNearest(CI_SMALL_MIN_HEALTH + ( (CI_SMALL_MAX_HEALTH - CI_SMALL_MIN_HEALTH) * fHealthAndSizeMultiplier) ) );
 		}
 	}
-
-	if (GetRandomInt(1, 100) <= iAbilitiesChance)
+	else if(iBigOrSmall == CI_REALLY_BIG)
 	{
-		switch(GetRandomInt(ENHANCED_CI_TYPE_FIRE, ENHANCED_CI_TYPE_VAMPIRIC))
+		// Really Big Zombie, Really High Health
+		EnhanceCISetScale(iZombie, CI_REALLY_BIG_SIZE);
+		EnhanceCISetHealth(iZombie, CI_REALLY_BIG_HEALTH);
+	}
+	else if(iBigOrSmall == CI_REALLY_SMALL)
+	{
+		// Really Small Zombie, Really Low Health
+		EnhanceCISetScale(iZombie, CI_REALLY_SMALL_SIZE);
+		EnhanceCISetHealth(iZombie, CI_REALLY_SMALL_HEALTH);
+	}
+
+	// Handle randomly available enhanced properties
+	if (iEnhancedCISpecifiedType != ENHANCED_CI_TYPE_NONE)
+	{
+		new iEnhancementType = iEnhancedCISpecifiedType == ENHANCED_CI_TYPE_RANDOM ? GetRandomInt(ENHANCED_CI_TYPE_FIRE, ENHANCED_CI_TYPE_VAMPIRIC) : iEnhancedCISpecifiedType;
+		switch (iEnhancementType)
 		{
-			case ENHANCED_CI_TYPE_FIRE: EnhanceCISet_Fire(iZombie);
-			case ENHANCED_CI_TYPE_ICE: EnhanceCISet_Ice(iZombie);
-			case ENHANCED_CI_TYPE_NECRO: EnhanceCISet_Necro(iZombie);
-			case ENHANCED_CI_TYPE_VAMPIRIC: EnhanceCISet_Vampiric(iZombie);
+			case ENHANCED_CI_TYPE_FIRE: 	EnhanceCISet_Fire(iZombie);
+			case ENHANCED_CI_TYPE_ICE: 		EnhanceCISet_Ice(iZombie);
+			case ENHANCED_CI_TYPE_NECRO: 	EnhanceCISet_Necro(iZombie);
+			case ENHANCED_CI_TYPE_VAMPIRIC:	EnhanceCISet_Vampiric(iZombie);
 		}
 	}
 }
@@ -211,8 +225,26 @@ EnhanceCIHandleDamage_Necro(iAttacker, iVictim)
 	SuppressNeverUsedWarning(iAttacker);
 
 	// Only spawn if the dice roll says to
-	if (GetRandomInt(1, ENHANCED_CI_NECRO_SPAWN_CHANCE) == 1)
-		SpawnCIAroundPlayer(iVictim, 1, true, 75);
+	if (GetRandomFloat(0.0, 1.0) <= ENHANCED_CI_NECRO_SPAWN_CHANCE)
+		return;
+
+	if (RunClientChecks(iVictim) == false)
+		return;
+	
+	// Get player location to spawn infected around
+	decl Float:xyzLocation[3];
+	GetClientAbsOrigin(iVictim, xyzLocation);
+
+	// Roll the dice for a uncommon
+	new iUncommon = GetRandomFloat(0.0, 1.0) <= ENHANCED_CI_NECRO_SPAWN_UNCOMMON_CHANCE ? UNCOMMON_CI_RANDOM : UNCOMMON_CI_NONE;
+
+	// Roll the dice for big or small
+	new iBigOrSmall = GetRandomFloat(0.0, 1.0) <= ENHANCED_CI_NECRO_SPAWN_BIG_SMALL_CHANCE ? CI_SMALL_OR_BIG_RANDOM : CI_SMALL_OR_BIG_NONE;
+
+	// Roll the dice for an enahnced CI
+	new iEnhancedCISpecifiedType = GetRandomFloat(0.0, 1.0) <= ENHANCED_CI_NECRO_SPAWN_ENHANCED_CHANCE ? ENHANCED_CI_TYPE_RANDOM : ENHANCED_CI_TYPE_NONE;
+
+	SpawnCIAroundLocation(xyzLocation, 1, iUncommon, iBigOrSmall, iEnhancedCISpecifiedType);
 }
 
 EnhanceCIHandleDamage_Vampiric(iAttacker, iVictim)
@@ -231,6 +263,11 @@ EnhanceCIHandleDamage_Vampiric(iAttacker, iVictim)
 	//iCurrentHealth = GetEntProp(iAttacker,Prop_Data,"m_iHealth");
 	//PrintToChatAll("ENHANCED_CI_HEALTH_POST_STEAL %i", iCurrentHealth);
 }
+
+
+// Spitter Specific Enhanced CI ////////////////////////////////////////////////////////////
+
+
 
 
 // ResizeHitbox(entity, Float:fScale = 1.0)

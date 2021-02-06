@@ -645,23 +645,13 @@ Action:Bind1Press(iClient, args)
 					{
 						if(g_iClientBindUses_1[iClient] < 3)
 						{
-							if(g_bJustUsedAcidReflex[iClient] == false)
-							{
-								//CreateTimer(1.0, TimerInstantSpitterCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
-								PrintHintText(iClient, "Your next spit will fire thrice");
-								g_iAcidReflexLeft[iClient] = 2;
-								g_bJustUsedAcidReflex[iClient] = true;
-								
-								g_iClientBindUses_1[iClient]++;
-							}
-							else
-								PrintHintText(iClient, "You must wait 30 seconds after using Acid Reflex");
+							BagOfSpitsMenuDraw(iClient);
 						}
 						else
 							PrintHintText(iClient, "You are out of Bind 1 uses for this round");
 					}
 					else
-						PrintHintText(iClient, "You must have Material Girl (Level 1) for Spitter Bind 1, Acid Reflex");
+						PrintHintText(iClient, "You must have Material Girl (Level 1) for Spitter Bind 1, Bag of Spits");
 				}
 				else
 					PrintHintText(iClient, "You don't have the Spitter as one of your classes");
