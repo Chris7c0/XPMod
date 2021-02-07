@@ -469,13 +469,7 @@ Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	g_bSomeoneAttacksFaster = false;
 	// Turn off all the cheat flags, just incase the code errored somewhere
 	// ...which totally never happens
-	SetCommandFlags("give", g_iFlag_Give);
-	SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd);
-	SetCommandFlags("upgrade_remove", g_iFlag_UpgradeRemove);
-	g_iFlag_SpawnOld = GetCommandFlags("z_spawn_old");
-	SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);
-	SetCommandFlags("dismount", g_iFlag_Dismount);
-	
+		
 	return Plugin_Continue;
 }
 

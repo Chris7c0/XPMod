@@ -191,13 +191,13 @@ Action:Event_ChargerPummelEnd(Handle:hEvent, const String:strName[], bool:bDontB
 	if(g_bDivineInterventionQueued[victim] == true)
 	{
 		new Float:fTempHealth = GetEntDataFloat(victim, g_iOffset_HealthBuffer);
-		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-		FakeClientCommand(victim, "give health");
+
+		RunCheatCommand(victim, "give", "give health");
 		fTempHealth = 0.0;
 		SetEntDataFloat(victim,g_iOffset_HealthBuffer, fTempHealth ,true);
 		PrintHintText(victim,"Rolled an 11\nYou have received divine intervention from above...or below.");
 		PrintToChat(victim, "\x03[XPMod] \x05You were given a fresh life.");
-		SetCommandFlags("give", g_iFlag_Give);
+
 		g_bIsClientDown[victim] = false;
 		g_bDivineInterventionQueued[victim] = false;
 	}
@@ -252,13 +252,13 @@ Action:Event_ChokeEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast
 	if(g_bDivineInterventionQueued[victim] == true)
 	{
 		new Float:fTempHealth = GetEntDataFloat(victim, g_iOffset_HealthBuffer);
-		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-		FakeClientCommand(victim, "give health");
+
+		RunCheatCommand(victim, "give", "give health");
 		fTempHealth = 0.0;
 		SetEntDataFloat(victim,g_iOffset_HealthBuffer, fTempHealth ,true);
 		PrintHintText(victim,"Rolled an 11\nYou have received divine intervention from above...or below.");
 		PrintToChat(victim, "\x03[XPMod] \x05You were given a fresh life.");
-		SetCommandFlags("give", g_iFlag_Give);
+
 		g_bIsClientDown[victim] = false;
 		g_bDivineInterventionQueued[victim] = false;
 	}
@@ -410,9 +410,7 @@ Action:Event_JockeyRide(Handle:hEvent, const String:strName[], bool:bDontBroadca
 						CreateTimer(5.0, TimerGiveHudBack, attacker, TIMER_FLAG_NO_MAPCHANGE); 
 					}
 					
-					SetCommandFlags("dismount", g_iFlag_Dismount & ~FCVAR_CHEAT);
-					FakeClientCommand(attacker, "dismount");
-					SetCommandFlags("dismount", g_iFlag_Dismount);
+					RunCheatCommand(attacker, "dismount", "dismount");
 					//WriteParticle(victim, "rochelle_smoke", 0.0, 10.0);
 					CreateRochelleSmoke(victim);
 
@@ -570,13 +568,13 @@ Action:Event_HunterPounceStopped(Handle:hEvent, const String:strName[], bool:bDo
 	if(g_bDivineInterventionQueued[victim] == true)
 	{
 		new Float:fTempHealth = GetEntDataFloat(victim, g_iOffset_HealthBuffer);
-		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-		FakeClientCommand(victim, "give health");
+
+		RunCheatCommand(victim, "give", "give health");
 		fTempHealth = 0.0;
 		SetEntDataFloat(victim,g_iOffset_HealthBuffer, fTempHealth ,true);
 		PrintHintText(victim,"Rolled an 11\nYou have received divine intervention from above...or below.");
 		PrintToChat(victim, "\x03[XPMod] \x05You were given a fresh life.");
-		SetCommandFlags("give", g_iFlag_Give);
+
 		g_bIsClientDown[victim] = false;
 		g_bDivineInterventionQueued[victim] = false;
 	}
@@ -720,9 +718,9 @@ Action:Event_TankSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 		{
 			//g_fEllisJamminSpeed[i] = (g_iJamminLevel[i] * 0.04);
 			PrintHintText(i,"Tank is near, your adrenaline pumps and you become stronger");
-			//SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-			//FakeClientCommand(i, "give molotov");
-			//SetCommandFlags("give", g_iFlag_Give);
+
+			//RunCheatCommand(i, "give", "give molotov");
+
 			//if(tankspawnlvl speed > current ELLIS speed)
 			if(g_bGameFrozen == false)
 			{

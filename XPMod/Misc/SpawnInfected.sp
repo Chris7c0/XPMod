@@ -129,10 +129,7 @@ void SpawnSpecialInfected(iClient, char[] strInfectedToSpawn = "")
 		INFECTED_NAME[iRandomSIID]:
 		strInfectedToSpawn);
 	
-	g_iFlag_SpawnOld = GetCommandFlags("z_spawn_old");
-	SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
-	FakeClientCommand(iClient, strSpawnCommand);
-	SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);
+	RunCheatCommand(iClient, "z_spawn_old",strSpawnCommand);
 }
 
 
@@ -171,10 +168,9 @@ void SpawnSpecialInfected(iClient, char[] strInfectedToSpawn = "")
 // 	Format(options,sizeof(options),"%s%s",g_sBossNames[Class],(bAuto?" auto":""));
 
 // 	//CheatCommand(client, "z_spawn_old", options);
-//  g_iFlag_SpawnOld = GetCommandFlags("z_spawn_old");
-// 	SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
-// 	FakeClientCommand(client, "%s %s", "z_spawn_old", options);
-// 	SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld | FCVAR_CHEAT);
+
+// 	RunCheatCommand(client, "z_spawn_old", "%s %s", "z_spawn_old", options);
+
 
 // 	//if (IsFakeClient(client)) KickClient(client);
 // 	//We restore the player's status

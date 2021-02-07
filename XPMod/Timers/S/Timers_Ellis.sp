@@ -32,8 +32,8 @@ Action:TimerEllisJamminGiveExplosive(Handle:timer, any:iClient)
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient))
 		return Plugin_Stop;
 	
-	SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-	FakeClientCommand(iClient, "give molotov");
+
+	RunCheatCommand(iClient, "give", "give molotov");
 	
 	return Plugin_Stop;
 }

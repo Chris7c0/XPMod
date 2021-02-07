@@ -27,9 +27,9 @@ Action:TimerStopRambo(Handle:timer, any:iClient)
 	GetEntityNetClass(wID, weaponclass, 32);
 	if(iClient > 1 && IsClientInGame(iClient) == true && IsPlayerAlive(iClient) == true)
 	{
-		SetCommandFlags("upgrade_remove", g_iFlag_UpgradeRemove & ~FCVAR_CHEAT);
-		FakeClientCommand(iClient, "upgrade_remove EXPLOSIVE_AMMO");
-		SetCommandFlags("upgrade_remove", g_iFlag_UpgradeRemove);
+
+		RunCheatCommand(iClient, "upgrade_remove", "upgrade_remove EXPLOSIVE_AMMO");
+
 	}
 	if(wID > 0 && IsValidEntity(wID))
 	{

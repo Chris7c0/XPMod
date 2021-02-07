@@ -52,7 +52,7 @@ OnGameFrame_Nick(iClient)
 					
 					decl grenade, weapon, boost;
 					
-					//SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
+
 							
 					
 					switch (random_grenade)
@@ -244,9 +244,9 @@ OnGameFrame_Nick(iClient)
 							RemoveEdict(ActiveWeaponID);
 						}
 						g_iNickCurrentSecondarySlot[iClient] = 1;
-						SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						FakeClientCommand(iClient, "give pistol");
-						FakeClientCommand(iClient, "give pistol");
+
+						RunCheatCommand(iClient, "give", "give pistol");
+						RunCheatCommand(iClient, "give", "give pistol");
 						//SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iNickSecondarySavedClipSlot2[iClient], true);	//This was causing the chainsaws clip to increase, redundant code
 					}
 					else if(g_iNickCurrentSecondarySlot[iClient] == 1)
@@ -271,8 +271,8 @@ OnGameFrame_Nick(iClient)
 						{
 							RemoveEdict(ActiveWeaponID);
 							g_iNickCurrentSecondarySlot[iClient] = 0;
-							SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-							FakeClientCommand(iClient, "give pistol_magnum");
+
+							RunCheatCommand(iClient, "give", "give pistol_magnum");
 							if (IsValidEntity(ActiveWeaponID) == true)
 								SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iNickSecondarySavedClipSlot1[iClient], true);
 						}
@@ -563,9 +563,7 @@ JebusHandMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 						if(IsClientInGame(i)==true)
 							if(GetClientTeam(i)==2 && IsPlayerAlive(i)==true && g_bIsClientDown[i]==true && IsFakeClient(i)==false  && g_bHunterGrappled[i] == false && g_bChargerGrappled[i] == false && g_bSmokerGrappled[i] == false)
 							{
-								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-								FakeClientCommand(i, "give health");
-								SetCommandFlags("give", g_iFlag_Give);
+								RunCheatCommand(i, "give", "give health");
 								PrintHintText(i, "You have been instantly revived by %N", iClient);
 								SetEntProp(i,Prop_Data,"m_iHealth", 20);
 								g_bIsClientDown[i] = false;
@@ -597,9 +595,9 @@ JebusHandMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 							{
 								if(foundvalident > 0  || g_iClientBindUses_2[iClient]>2)
 									break;
-								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-								FakeClientCommand(i, "give health");
-								SetCommandFlags("give", g_iFlag_Give);
+
+								RunCheatCommand(i, "give", "give health");
+
 								SetEntProp(i,Prop_Data,"m_iHealth", 20);
 								g_bIsClientDown[i] = false;
 								g_iClientBindUses_2[iClient] += 2;

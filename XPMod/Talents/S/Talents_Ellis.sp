@@ -116,8 +116,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give autoshotgun");
+
+						// 		RunCheatCommand(iClient, "give", "give autoshotgun");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 32, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 						// 	}
@@ -125,8 +125,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give grenade_launcher");
+
+						// 		RunCheatCommand(iClient, "give", "give grenade_launcher");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 68, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 						// 	}
@@ -134,8 +134,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give hunting_rifle");
+
+						// 		RunCheatCommand(iClient, "give", "give hunting_rifle");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 36, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 						// 	}
@@ -143,8 +143,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give pumpshotgun");
+
+						// 		RunCheatCommand(iClient, "give", "give pumpshotgun");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 28, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 						// 	}
@@ -152,8 +152,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give rifle");
+
+						// 		RunCheatCommand(iClient, "give", "give rifle");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 12, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 						// 	}
@@ -161,8 +161,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give rifle_ak47");
+
+						// 		RunCheatCommand(iClient, "give", "give rifle_ak47");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 12, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 						// 	}
@@ -170,8 +170,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give rifle_desert");
+
+						// 		RunCheatCommand(iClient, "give", "give rifle_desert");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 12, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 						// 	}
@@ -179,8 +179,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give rifle_m60");
+
+						// 		RunCheatCommand(iClient, "give", "give rifle_m60");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						// 		//SetEntData(iClient, iOffset_Ammo + 32, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 						// 	}
@@ -188,8 +188,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give rifle_sg552");
+
+						// 		RunCheatCommand(iClient, "give", "give rifle_sg552");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 12, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 						// 	}
@@ -197,8 +197,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give shotgun_chrome");
+
+						// 		RunCheatCommand(iClient, "give", "give shotgun_chrome");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 28, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 						// 	}
@@ -206,8 +206,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give shotgun_spas");
+
+						// 		RunCheatCommand(iClient, "give", "give shotgun_spas");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 32, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 						// 	}
@@ -215,8 +215,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give smg");
+
+						// 		RunCheatCommand(iClient, "give", "give smg");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 20, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 						// 	}
@@ -224,8 +224,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give smg_mp5");
+
+						// 		RunCheatCommand(iClient, "give", "give smg_mp5");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 20, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 						// 	}
@@ -233,8 +233,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give smg_silenced");
+
+						// 		RunCheatCommand(iClient, "give", "give smg_silenced");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 20, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 						// 	}
@@ -242,8 +242,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give sniper_awp");
+
+						// 		RunCheatCommand(iClient, "give", "give sniper_awp");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 40, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 						// 	}
@@ -251,8 +251,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give sniper_military");
+
+						// 		RunCheatCommand(iClient, "give", "give sniper_military");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 40, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 						// 	}
@@ -260,8 +260,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give sniper_scout");
+
+						// 		RunCheatCommand(iClient, "give", "give sniper_scout");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 40, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 						// 	}
@@ -332,8 +332,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give autoshotgun");
+
+						// 		RunCheatCommand(iClient, "give", "give autoshotgun");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot1[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 32, g_iEllisPrimarySavedAmmoSlot1[iClient]);
 						// 	}
@@ -341,8 +341,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give grenade_launcher");
+
+						// 		RunCheatCommand(iClient, "give", "give grenade_launcher");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot1[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 68, g_iEllisPrimarySavedAmmoSlot1[iClient]);
 						// 	}
@@ -350,8 +350,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give hunting_rifle");
+
+						// 		RunCheatCommand(iClient, "give", "give hunting_rifle");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot1[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 36, g_iEllisPrimarySavedAmmoSlot1[iClient]);
 						// 	}
@@ -359,8 +359,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give pumpshotgun");
+
+						// 		RunCheatCommand(iClient, "give", "give pumpshotgun");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot1[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 28, g_iEllisPrimarySavedAmmoSlot1[iClient]);
 						// 	}
@@ -368,8 +368,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give rifle");
+
+						// 		RunCheatCommand(iClient, "give", "give rifle");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot1[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 12, g_iEllisPrimarySavedAmmoSlot1[iClient]);
 						// 	}
@@ -377,8 +377,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give rifle_ak47");
+
+						// 		RunCheatCommand(iClient, "give", "give rifle_ak47");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot1[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 12, g_iEllisPrimarySavedAmmoSlot1[iClient]);
 						// 	}
@@ -386,8 +386,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give rifle_desert");
+
+						// 		RunCheatCommand(iClient, "give", "give rifle_desert");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot1[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 12, g_iEllisPrimarySavedAmmoSlot1[iClient]);
 						// 	}
@@ -395,8 +395,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give rifle_m60");
+
+						// 		RunCheatCommand(iClient, "give", "give rifle_m60");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot1[iClient], true);
 						// 		//SetEntData(iClient, iOffset_Ammo + 32, g_iEllisPrimarySavedAmmoSlot1[iClient]);
 						// 	}
@@ -404,8 +404,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give rifle_sg552");
+
+						// 		RunCheatCommand(iClient, "give", "give rifle_sg552");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot1[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 12, g_iEllisPrimarySavedAmmoSlot1[iClient]);
 						// 	}
@@ -413,8 +413,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give shotgun_chrome");
+
+						// 		RunCheatCommand(iClient, "give", "give shotgun_chrome");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot1[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 28, g_iEllisPrimarySavedAmmoSlot1[iClient]);
 						// 	}
@@ -422,8 +422,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give shotgun_spas");
+
+						// 		RunCheatCommand(iClient, "give", "give shotgun_spas");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot1[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 32, g_iEllisPrimarySavedAmmoSlot1[iClient]);
 						// 	}
@@ -431,8 +431,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give smg");
+
+						// 		RunCheatCommand(iClient, "give", "give smg");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot1[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 20, g_iEllisPrimarySavedAmmoSlot1[iClient]);
 						// 	}
@@ -440,8 +440,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give smg_mp5");
+
+						// 		RunCheatCommand(iClient, "give", "give smg_mp5");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot1[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 20, g_iEllisPrimarySavedAmmoSlot1[iClient]);
 						// 	}
@@ -449,8 +449,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give smg_silenced");
+
+						// 		RunCheatCommand(iClient, "give", "give smg_silenced");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot1[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 20, g_iEllisPrimarySavedAmmoSlot1[iClient]);
 						// 	}
@@ -458,8 +458,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give sniper_awp");
+
+						// 		RunCheatCommand(iClient, "give", "give sniper_awp");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot1[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 40, g_iEllisPrimarySavedAmmoSlot1[iClient]);
 						// 	}
@@ -467,8 +467,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give sniper_military");
+
+						// 		RunCheatCommand(iClient, "give", "give sniper_military");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot1[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 40, g_iEllisPrimarySavedAmmoSlot1[iClient]);
 						// 	}
@@ -476,8 +476,8 @@ OnGameFrame_Ellis(iClient)
 						// 	{
 						// 		RemoveEdict(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
-						// 		SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						// 		FakeClientCommand(iClient, "give sniper_scout");
+
+						// 		RunCheatCommand(iClient, "give", "give sniper_scout");
 						// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot1[iClient], true);
 						// 		SetEntData(iClient, iOffset_Ammo + 40, g_iEllisPrimarySavedAmmoSlot1[iClient]);
 						// 	}

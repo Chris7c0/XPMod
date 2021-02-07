@@ -255,13 +255,6 @@ SetupConsoleCommands()
 	//RegConsoleCmd("pop", pop);
 	//RegAdminCmd("s", ChangeSpeed, ADMFLAG_SLAY);
 	//RegConsoleCmd("sprite", Command_sprite);
-
-	// Setup Cheat Flags
-	g_iFlag_Give 			= GetCommandFlags("give");
-	g_iFlag_UpgradeAdd 		= GetCommandFlags("upgrade_add");
-	g_iFlag_UpgradeRemove 	= GetCommandFlags("upgrade_remove");
-	g_iFlag_SpawnOld		= GetCommandFlags("z_spawn_old");
-	g_iFlag_Dismount 		= GetCommandFlags("dismount");
 }
 
 SetupGameOffsets()

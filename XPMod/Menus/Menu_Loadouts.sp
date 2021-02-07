@@ -1271,8 +1271,8 @@ SpawnWeapons(iClient)
 	if(g_iClientLevel[iClient] < 1)
 		g_iClientPreviousLevelXPAmount[iClient] = 0;
 		
-	SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-	SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd & ~FCVAR_CHEAT);
+
+
 	
 	switch(g_iClientPrimarySlotID[iClient])
 	{
@@ -1285,7 +1285,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-55) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=55;
-				FakeClientCommand(iClient, "give smg");
+				RunCheatCommand(iClient, "give", "give smg");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for an \x04Israeli UZI");
@@ -1295,7 +1295,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-60) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=60;
-				FakeClientCommand(iClient, "give smg_silenced");
+				RunCheatCommand(iClient, "give", "give smg_silenced");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Mac-10");
@@ -1305,7 +1305,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-70) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=70;
-				FakeClientCommand(iClient, "give smg_mp5");
+				RunCheatCommand(iClient, "give", "give smg_mp5");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04MP5");
@@ -1315,7 +1315,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-80) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=80;
-				FakeClientCommand(iClient, "give rifle_ak47");
+				RunCheatCommand(iClient, "give", "give rifle_ak47");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for an \x04Ak-47");
@@ -1325,7 +1325,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-80) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=80;
-				FakeClientCommand(iClient, "give rifle");
+				RunCheatCommand(iClient, "give", "give rifle");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04M16A2");
@@ -1335,7 +1335,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-100) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=100;
-				FakeClientCommand(iClient, "give rifle_sg552");
+				RunCheatCommand(iClient, "give", "give rifle_sg552");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04SIG SG 552");
@@ -1345,7 +1345,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-60) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=60;
-				FakeClientCommand(iClient, "give rifle_desert");
+				RunCheatCommand(iClient, "give", "give rifle_desert");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Scar-L");
@@ -1355,7 +1355,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-60) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=60;
-				FakeClientCommand(iClient, "give pumpshotgun");
+				RunCheatCommand(iClient, "give", "give pumpshotgun");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Remington 870");
@@ -1365,7 +1365,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-60) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=60;
-				FakeClientCommand(iClient, "give shotgun_chrome");
+				RunCheatCommand(iClient, "give", "give shotgun_chrome");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Remington 870 Custom");
@@ -1375,7 +1375,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-80) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=80;
-				FakeClientCommand(iClient, "give autoshotgun");
+				RunCheatCommand(iClient, "give", "give autoshotgun");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Benelli M1014");
@@ -1385,7 +1385,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-80) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=80;
-				FakeClientCommand(iClient, "give shotgun_spas");
+				RunCheatCommand(iClient, "give", "give shotgun_spas");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Franchi SPAS-12");
@@ -1395,7 +1395,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-60) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=60;
-				FakeClientCommand(iClient, "give hunting_rifle");
+				RunCheatCommand(iClient, "give", "give hunting_rifle");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Ruger Mini-14");
@@ -1405,7 +1405,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-80) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=80;
-				FakeClientCommand(iClient, "give sniper_military");
+				RunCheatCommand(iClient, "give", "give sniper_military");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04H&K MSG90");
@@ -1415,7 +1415,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-60) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=60;
-				FakeClientCommand(iClient, "give sniper_scout");
+				RunCheatCommand(iClient, "give", "give sniper_scout");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Scout");
@@ -1425,7 +1425,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-100) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=100;
-				FakeClientCommand(iClient, "give sniper_awp");
+				RunCheatCommand(iClient, "give", "give sniper_awp");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for an \x04AWP");
@@ -1435,7 +1435,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-400) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=400;
-				FakeClientCommand(iClient, "give grenade_launcher");
+				RunCheatCommand(iClient, "give", "give grenade_launcher");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Grenade Launcher");
@@ -1445,7 +1445,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-500) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=500;
-				FakeClientCommand(iClient, "give rifle_m60");
+				RunCheatCommand(iClient, "give", "give rifle_m60");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for an \x04M60");
@@ -1462,7 +1462,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-15) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=15;
-				FakeClientCommand(iClient, "give pistol");
+				RunCheatCommand(iClient, "give", "give pistol");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04p220");
@@ -1472,8 +1472,8 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-30) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=30;
-				FakeClientCommand(iClient, "give pistol");
-				FakeClientCommand(iClient, "give pistol");
+				RunCheatCommand(iClient, "give", "give pistol");
+				RunCheatCommand(iClient, "give", "give pistol");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for the \x04p220 and Glock");
@@ -1483,7 +1483,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-40) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=40;
-				FakeClientCommand(iClient, "give pistol_magnum");
+				RunCheatCommand(iClient, "give", "give pistol_magnum");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Magnum");
@@ -1493,7 +1493,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-30) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=30;
-				FakeClientCommand(iClient, "give fireaxe");
+				RunCheatCommand(iClient, "give", "give fireaxe");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Fireaxe");
@@ -1503,7 +1503,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-30) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=30;
-				FakeClientCommand(iClient, "give crowbar");
+				RunCheatCommand(iClient, "give", "give crowbar");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Crowbar");
@@ -1513,7 +1513,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-30) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=30;
-				FakeClientCommand(iClient, "give cricket_bat");
+				RunCheatCommand(iClient, "give", "give cricket_bat");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Cricket Bat");
@@ -1523,7 +1523,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-50) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=50;
-				FakeClientCommand(iClient, "give baseball_bat");
+				RunCheatCommand(iClient, "give", "give baseball_bat");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Baseball Bat");
@@ -1533,7 +1533,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-30) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=30;
-				FakeClientCommand(iClient, "give katana");
+				RunCheatCommand(iClient, "give", "give katana");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Katana");
@@ -1543,7 +1543,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-30) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=30;
-				FakeClientCommand(iClient, "give electric_guitar");
+				RunCheatCommand(iClient, "give", "give electric_guitar");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for an \x04Electric Guitar");
@@ -1553,7 +1553,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-30) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=30;
-				FakeClientCommand(iClient, "give machete");
+				RunCheatCommand(iClient, "give", "give machete");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Machete");
@@ -1563,7 +1563,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-30) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=30;
-				FakeClientCommand(iClient, "give frying_pan");
+				RunCheatCommand(iClient, "give", "give frying_pan");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Frying Pan");
@@ -1573,7 +1573,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-30) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=30;
-				FakeClientCommand(iClient, "give tonfa");
+				RunCheatCommand(iClient, "give", "give tonfa");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Nightstick");
@@ -1583,7 +1583,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-250) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=250;
-				FakeClientCommand(iClient, "give chainsaw");
+				RunCheatCommand(iClient, "give", "give chainsaw");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Chainsaw");
@@ -1593,7 +1593,7 @@ SpawnWeapons(iClient)
 		// 	if((g_iClientXP[iClient]-30) >= g_iClientPreviousLevelXPAmount[iClient])
 		// 	{
 		// 		g_iClientXP[iClient]-=30;
-		// 		FakeClientCommand(iClient, "give riotshield");
+		// 		RunCheatCommand(iClient, "give", "give riotshield");
 		// 	}
 		// 	else
 		// 		PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Riot Shield");
@@ -1603,7 +1603,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-50) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=50;
-				FakeClientCommand(iClient, "give knife");
+				RunCheatCommand(iClient, "give", "give knife");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Combat Knife");
@@ -1613,7 +1613,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-30) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=30;
-				FakeClientCommand(iClient, "give golfclub");
+				RunCheatCommand(iClient, "give", "give golfclub");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Golf Club");
@@ -1630,7 +1630,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-30) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=30;
-				FakeClientCommand(iClient, "give pipe_bomb");
+				RunCheatCommand(iClient, "give", "give pipe_bomb");
 				if(g_iStrongLevel[iClient] > 0)
 				{
 					g_strCoachGrenadeSlot1 = "weapon_pipe_bomb";
@@ -1644,7 +1644,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-30) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=30;
-				FakeClientCommand(iClient, "give molotov");
+				RunCheatCommand(iClient, "give", "give molotov");
 				if(g_iStrongLevel[iClient] > 0)
 				{
 					g_strCoachGrenadeSlot1 = "weapon_molotov";
@@ -1658,7 +1658,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-40) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=40;
-				FakeClientCommand(iClient, "give vomitjar");
+				RunCheatCommand(iClient, "give", "give vomitjar");
 				if(g_iStrongLevel[iClient] > 0)
 				{
 					g_strCoachGrenadeSlot1 = "weapon_vomitjar";
@@ -1679,7 +1679,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient] - 250) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient] -= 250;
-				FakeClientCommand(iClient, "give first_aid_kit");
+				RunCheatCommand(iClient, "give", "give first_aid_kit");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04First Aid Kit");
@@ -1689,7 +1689,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient] - 500) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient] -= 500;
-				FakeClientCommand(iClient, "give defibrillator");
+				RunCheatCommand(iClient, "give", "give defibrillator");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Defibrillator");
@@ -1699,7 +1699,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient] - 1000) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient] -= 1000;
-				FakeClientCommand(iClient, "give upgradepack_explosive");
+				RunCheatCommand(iClient, "give", "give upgradepack_explosive");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for \x04Explosive Ammo");
@@ -1709,7 +1709,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient] - 500) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient] -= 500;
-				FakeClientCommand(iClient, "give upgradepack_incendiary");
+				RunCheatCommand(iClient, "give", "give upgradepack_incendiary");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for \x04Incendiary Ammo");
@@ -1726,7 +1726,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-50) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=50;
-				FakeClientCommand(iClient, "give pain_pills");
+				RunCheatCommand(iClient, "give", "give pain_pills");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for \x04Pain Pills");
@@ -1736,7 +1736,7 @@ SpawnWeapons(iClient)
 			if((g_iClientXP[iClient]-50) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
 				g_iClientXP[iClient]-=50;
-				FakeClientCommand(iClient, "give adrenaline");
+				RunCheatCommand(iClient, "give", "give adrenaline");
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for an \x04Adrenaline Shot");
@@ -1747,12 +1747,12 @@ SpawnWeapons(iClient)
 		if((g_iClientXP[iClient]-100) >= g_iClientPreviousLevelXPAmount[iClient])
 		{
 			g_iClientXP[iClient]-=100;
-			FakeClientCommand(iClient, "upgrade_add LASER_SIGHT");
+			RunCheatCommand(iClient, "upgrade_add", "upgrade_add LASER_SIGHT");
 		}
 		else
 			PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Laser Sight");
 	}
 	
-	SetCommandFlags("give", g_iFlag_Give);			//Turn off the cheats here
-	SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd);
+
+
 }

@@ -191,9 +191,9 @@ OnGameFrame_Rochelle(iClient)
 		{
 			if(buttons & IN_SPEED)
 			{
-				SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-				FakeClientCommand(iClient, "give health");
-				SetCommandFlags("give", g_iFlag_Give);
+
+				RunCheatCommand(iClient, "give", "give health");
+
 				SetEntProp(iClient,Prop_Data,"m_iHealth", preledgehealth[iClient]);
 				if(preledgebuffer[iClient] > 1.1)
 					SetEntDataFloat(iClient,g_iOffset_HealthBuffer, (preledgebuffer[iClient] - 1.0) ,true);

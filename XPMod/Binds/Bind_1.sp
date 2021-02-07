@@ -237,13 +237,13 @@ Action:Bind1Press(iClient, args)
 						if((g_bHunterGrappled[iClient] == false) && (g_bChargerGrappled[iClient] == false) && (g_bSmokerGrappled[iClient] == false))
 						{
 							new Float:fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
-							SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-							FakeClientCommand(iClient, "give health");
+
+							RunCheatCommand(iClient, "give", "give health");
 							fTempHealth = 0.0;
 							SetEntDataFloat(iClient,g_iOffset_HealthBuffer, fTempHealth ,true);
 							PrintHintText(iClient,"Rolled an 11\nYou have received divine intervention from above...or below.");
 							PrintToChat(iClient, "\x03[XPMod] \x05You were given a fresh life.");
-							SetCommandFlags("give", g_iFlag_Give);
+
 							g_bIsClientDown[iClient] = false;
 						}
 						else
@@ -258,16 +258,16 @@ Action:Bind1Press(iClient, args)
 						fnc_SaveAmmo(iClient);
 						RemoveEdict(g_iPrimarySlotID[iClient]);
 						g_bRamboModeActive[iClient] = true;
-						SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd & ~FCVAR_CHEAT);
+
+
 						PrintHintText(iClient,"Rolled a 4\nAAAAAAAAAADDDRRRIIAAAAAAAAAAN!");
 						PrintToChat(iClient, "\x03[XPMod] \x05You have become RAMBO!!!");
-						FakeClientCommand(iClient, "give rifle_m60");
+						RunCheatCommand(iClient, "give", "give rifle_m60");
 						//g_iRamboWeaponID[iClient] = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 						fnc_DeterminePrimaryWeapon(iClient);
 						fnc_DetermineMaxClipSize(iClient);
-						FakeClientCommand(iClient, "upgrade_add LASER_SIGHT");
-						FakeClientCommand(iClient, "upgrade_add EXPLOSIVE_AMMO");
+						RunCheatCommand(iClient, "upgrade_add", "upgrade_add LASER_SIGHT");
+						RunCheatCommand(iClient, "upgrade_add", "upgrade_add EXPLOSIVE_AMMO");
 						CreateTimer(30.0, TimerStopRambo, iClient, TIMER_FLAG_NO_MAPCHANGE);
 						//TEST
 						*/
@@ -277,15 +277,13 @@ Action:Bind1Press(iClient, args)
 						{
 							case 1: //Raid the Medicine cabinet
 							{
-								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
 								PrintHintText(iClient,"Rolled a 1\nYou got in good with a random drug dealer.");
 								PrintToChatAll("\x03[XPMod] \x05%N got \"Da Huk Up\"...pop those pillz.", iClient);
-								FakeClientCommand(iClient, "give pain_pills");
-								FakeClientCommand(iClient, "give pain_pills");
-								FakeClientCommand(iClient, "give pain_pills");
-								FakeClientCommand(iClient, "give pain_pills");
-								FakeClientCommand(iClient, "give pain_pills");
-								SetCommandFlags("give", g_iFlag_Give);
+								RunCheatCommand(iClient, "give", "give pain_pills");
+								RunCheatCommand(iClient, "give", "give pain_pills");
+								RunCheatCommand(iClient, "give", "give pain_pills");
+								RunCheatCommand(iClient, "give", "give pain_pills");
+								RunCheatCommand(iClient, "give", "give pain_pills");
 							}
 							case 2: // Slap
 							{
@@ -299,49 +297,49 @@ Action:Bind1Press(iClient, args)
 							}
 							case 3: // Raided a gun shop, holy crap
 							{
-								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
+
 								PrintHintText(iClient,"Rolled a 3\nYou raided a huge weapon store. Lock and Load!");
 								PrintToChatAll("\x03[XPMod] \x05%N received a shite-ton of weapons.", iClient);
-								FakeClientCommand(iClient, "give smg");
-								FakeClientCommand(iClient, "give smg_silenced");
-								FakeClientCommand(iClient, "give smg_mp5");
-								FakeClientCommand(iClient, "give rifle");
-								FakeClientCommand(iClient, "give rifle_sg552");
-								FakeClientCommand(iClient, "give rifle_desert");
-								FakeClientCommand(iClient, "give pumpshotgun");
-								FakeClientCommand(iClient, "give shotgun_chrome");
-								FakeClientCommand(iClient, "give autoshotgun");
-								FakeClientCommand(iClient, "give shotgun_spas");
-								FakeClientCommand(iClient, "give hunting_rifle");
-								FakeClientCommand(iClient, "give sniper_military");
-								FakeClientCommand(iClient, "give sniper_scout");
-								FakeClientCommand(iClient, "give sniper_awp");
-								FakeClientCommand(iClient, "give grenade_launcher");
-								FakeClientCommand(iClient, "give rifle_m60");
-								FakeClientCommand(iClient, "give pistol");
-								FakeClientCommand(iClient, "give fireaxe");
-								FakeClientCommand(iClient, "give crowbar");
-								FakeClientCommand(iClient, "give cricket_bat");
-								FakeClientCommand(iClient, "give baseball_bat");
-								FakeClientCommand(iClient, "give katana");
-								FakeClientCommand(iClient, "give electric_guitar");
-								FakeClientCommand(iClient, "give machete");
-								FakeClientCommand(iClient, "give frying_pan");
-								FakeClientCommand(iClient, "give tonfa");
-								FakeClientCommand(iClient, "give chainsaw");
-								//FakeClientCommand(iClient, "give riotshield");
-								FakeClientCommand(iClient, "give knife");
-								FakeClientCommand(iClient, "give golfclub");
-								FakeClientCommand(iClient, "give pipe_bomb");
-								FakeClientCommand(iClient, "give molotov");
-								FakeClientCommand(iClient, "give vomitjar");
-								FakeClientCommand(iClient, "give upgradepack_explosive");
-								FakeClientCommand(iClient, "give upgradepack_incendiary");
+								RunCheatCommand(iClient, "give", "give smg");
+								RunCheatCommand(iClient, "give", "give smg_silenced");
+								RunCheatCommand(iClient, "give", "give smg_mp5");
+								RunCheatCommand(iClient, "give", "give rifle");
+								RunCheatCommand(iClient, "give", "give rifle_sg552");
+								RunCheatCommand(iClient, "give", "give rifle_desert");
+								RunCheatCommand(iClient, "give", "give pumpshotgun");
+								RunCheatCommand(iClient, "give", "give shotgun_chrome");
+								RunCheatCommand(iClient, "give", "give autoshotgun");
+								RunCheatCommand(iClient, "give", "give shotgun_spas");
+								RunCheatCommand(iClient, "give", "give hunting_rifle");
+								RunCheatCommand(iClient, "give", "give sniper_military");
+								RunCheatCommand(iClient, "give", "give sniper_scout");
+								RunCheatCommand(iClient, "give", "give sniper_awp");
+								RunCheatCommand(iClient, "give", "give grenade_launcher");
+								RunCheatCommand(iClient, "give", "give rifle_m60");
+								RunCheatCommand(iClient, "give", "give pistol");
+								RunCheatCommand(iClient, "give", "give fireaxe");
+								RunCheatCommand(iClient, "give", "give crowbar");
+								RunCheatCommand(iClient, "give", "give cricket_bat");
+								RunCheatCommand(iClient, "give", "give baseball_bat");
+								RunCheatCommand(iClient, "give", "give katana");
+								RunCheatCommand(iClient, "give", "give electric_guitar");
+								RunCheatCommand(iClient, "give", "give machete");
+								RunCheatCommand(iClient, "give", "give frying_pan");
+								RunCheatCommand(iClient, "give", "give tonfa");
+								RunCheatCommand(iClient, "give", "give chainsaw");
+								//RunCheatCommand(iClient, "give", "give riotshield");
+								RunCheatCommand(iClient, "give", "give knife");
+								RunCheatCommand(iClient, "give", "give golfclub");
+								RunCheatCommand(iClient, "give", "give pipe_bomb");
+								RunCheatCommand(iClient, "give", "give molotov");
+								RunCheatCommand(iClient, "give", "give vomitjar");
+								RunCheatCommand(iClient, "give", "give upgradepack_explosive");
+								RunCheatCommand(iClient, "give", "give upgradepack_incendiary");
 								// The ones Nick will have after
-								FakeClientCommand(iClient, "give rifle_ak47");
-								FakeClientCommand(iClient, "give pistol_magnum");
+								RunCheatCommand(iClient, "give", "give rifle_ak47");
+								RunCheatCommand(iClient, "give", "give pistol_magnum");
 
-								SetCommandFlags("give", g_iFlag_Give);
+
 							}
 							case 4: //Rambo
 							{
@@ -349,21 +347,21 @@ Action:Bind1Press(iClient, args)
 								fnc_SaveAmmo(iClient);
 								RemoveEdict(g_iPrimarySlotID[iClient]);
 								g_bRamboModeActive[iClient] = true;
-								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-								SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd & ~FCVAR_CHEAT);
+
+
 
 								PrintHintText(iClient,"Rolled a 4\nAAAAAAAAAADDDRRRIIAAAAAAAAAAN!");
 								PrintToChatAll("\x03[XPMod] \x05%N has become RAMBO!!!", iClient);
 
-								FakeClientCommand(iClient, "give rifle_m60");
-								SetCommandFlags("give", g_iFlag_Give);
+								RunCheatCommand(iClient, "give", "give rifle_m60");
+
 								//g_iRamboWeaponID[iClient] = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 								fnc_DeterminePrimaryWeapon(iClient);
 								fnc_DetermineMaxClipSize(iClient);
-								FakeClientCommand(iClient, "upgrade_add LASER_SIGHT");
-								FakeClientCommand(iClient, "upgrade_add EXPLOSIVE_AMMO");
+								RunCheatCommand(iClient, "upgrade_add", "upgrade_add LASER_SIGHT");
+								RunCheatCommand(iClient, "upgrade_add", "upgrade_add EXPLOSIVE_AMMO");
 								CreateTimer(30.0, TimerStopRambo, iClient, TIMER_FLAG_NO_MAPCHANGE);
-								SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd);
+
 							}
 							case 5: //Crack Out on drugs
 							{
@@ -397,22 +395,22 @@ Action:Bind1Press(iClient, args)
 							}
 							case 7: //Party supplies++; Spawns 3 defibs, kits, pills, and shots
 							{
-								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
+
 								PrintHintText(iClient,"Rolled a 7\nYou raided a mega hospital's medicine cabinant for supplies.");
 								PrintToChatAll("\x03[XPMod] \x05%N raided a mega hospital's medicine cabinet for supplies.", iClient);
-								FakeClientCommand(iClient, "give adrenaline");
-								FakeClientCommand(iClient, "give defibrillator");
-								FakeClientCommand(iClient, "give first_aid_kit");
-								FakeClientCommand(iClient, "give pain_pills");
-								FakeClientCommand(iClient, "give adrenaline");
-								FakeClientCommand(iClient, "give defibrillator");
-								FakeClientCommand(iClient, "give first_aid_kit");
-								FakeClientCommand(iClient, "give pain_pills");
-								FakeClientCommand(iClient, "give adrenaline");
-								FakeClientCommand(iClient, "give defibrillator");
-								FakeClientCommand(iClient, "give first_aid_kit");
-								FakeClientCommand(iClient, "give pain_pills");
-								SetCommandFlags("give", g_iFlag_Give);
+								RunCheatCommand(iClient, "give", "give adrenaline");
+								RunCheatCommand(iClient, "give", "give defibrillator");
+								RunCheatCommand(iClient, "give", "give first_aid_kit");
+								RunCheatCommand(iClient, "give", "give pain_pills");
+								RunCheatCommand(iClient, "give", "give adrenaline");
+								RunCheatCommand(iClient, "give", "give defibrillator");
+								RunCheatCommand(iClient, "give", "give first_aid_kit");
+								RunCheatCommand(iClient, "give", "give pain_pills");
+								RunCheatCommand(iClient, "give", "give adrenaline");
+								RunCheatCommand(iClient, "give", "give defibrillator");
+								RunCheatCommand(iClient, "give", "give first_aid_kit");
+								RunCheatCommand(iClient, "give", "give pain_pills");
+
 							}
 							case 8: //Get three more times to Gamble
 							{
@@ -422,14 +420,14 @@ Action:Bind1Press(iClient, args)
 							}
 							case 9: //Party Supplies; Spawns 1 defib, kit, pills, and shot
 							{
-								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
+
 								PrintHintText(iClient,"Rolled a 9\nYou successfully raided some hospital's medicine cabinant for supplies.");
 								PrintToChatAll("\x03[XPMod] \x05%N raided a medicine cabinet for supplies.", iClient);
-								FakeClientCommand(iClient, "give adrenaline");
-								FakeClientCommand(iClient, "give defibrillator");
-								FakeClientCommand(iClient, "give first_aid_kit");
-								FakeClientCommand(iClient, "give pain_pills");
-								SetCommandFlags("give", g_iFlag_Give);
+								RunCheatCommand(iClient, "give", "give adrenaline");
+								RunCheatCommand(iClient, "give", "give defibrillator");
+								RunCheatCommand(iClient, "give", "give first_aid_kit");
+								RunCheatCommand(iClient, "give", "give pain_pills");
+
 							}
 							case 10: //Blindness
 							{
@@ -445,15 +443,15 @@ Action:Bind1Press(iClient, args)
 								if((g_bHunterGrappled[iClient] == false) && (g_bChargerGrappled[iClient] == false) && (g_bSmokerGrappled[iClient] == false))
 								{
 									new Float:fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
-									SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-									FakeClientCommand(iClient, "give health");
+
+									RunCheatCommand(iClient, "give", "give health");
 									fTempHealth = 0.0;
 									SetEntDataFloat(iClient,g_iOffset_HealthBuffer, fTempHealth ,true);
 
 									PrintHintText(iClient,"Rolled an 11\nYou have received divine intervention from above...or below.");
 									PrintToChatAll("\x03[XPMod] \x05%N was given a fresh life.", iClient);
 
-									SetCommandFlags("give", g_iFlag_Give);
+
 									g_bIsClientDown[iClient] = false;
 								}
 								else
@@ -682,11 +680,9 @@ Action:Bind1Press(iClient, args)
 												{
 													if(g_iErraticLevel[iClient] >= iRandomTankSpawn)
 													{
-														g_iFlag_SpawnOld = GetCommandFlags("z_spawn_old");
-														SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
+														RunCheatCommand(iClient, "z_spawn_old", "z_spawn_old tank auto");
+
 														PrintToChatAll("\x03[XPMod] \x04Beware, a tank smells %N's jockey piss", iClient);
-														FakeClientCommand(iClient, "z_spawn_old tank auto");
-														SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);
 														PrintHintText(iClient, "You attracted a tank with your piss!");
 													}
 												}
@@ -729,10 +725,8 @@ Action:Bind1Press(iClient, args)
 											
 											if(g_iErraticLevel[iClient] == 10)
 											{
-												g_iFlag_SpawnOld = GetCommandFlags("z_spawn_old");
-												SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
-												FakeClientCommand(iClient, "z_spawn_old mob auto");
-												SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);
+												RunCheatCommand(iClient, "z_spawn_old", "z_spawn_old mob auto");
+												
 												PrintHintText(iClient, "A hoard smells your piss, here they come!");
 											}
 											

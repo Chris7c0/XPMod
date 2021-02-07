@@ -206,13 +206,6 @@ new bool:g_bGameFrozen = false;
 new bool:g_bPlayerPressedButtonThisRound = false;   // This is used to set thte countdown timer, it wont start till  someone presses a button
 new g_iUnfreezeNotifyRunTimes = 1;				    //for the unfreeze notify runtimes
 
-// Cheat Flags
-new g_iFlag_Give;
-new g_iFlag_UpgradeAdd;
-new g_iFlag_UpgradeRemove;
-new g_iFlag_SpawnOld;
-new g_iFlag_Dismount;
-
 // Binds
 new g_iClientBindUses_1[MAXPLAYERS + 1];
 new g_iClientBindUses_2[MAXPLAYERS + 1];

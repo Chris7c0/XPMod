@@ -93,8 +93,8 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					{
 						RemoveEdict(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
-						SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						FakeClientCommand(iClient, "give autoshotgun");
+
+						RunCheatCommand(iClient, "give", "give autoshotgun");
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 32, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
@@ -102,8 +102,8 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					{
 						RemoveEdict(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
-						SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						FakeClientCommand(iClient, "give grenade_launcher");
+
+						RunCheatCommand(iClient, "give", "give grenade_launcher");
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 68, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
@@ -111,8 +111,8 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					{
 						RemoveEdict(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
-						SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						FakeClientCommand(iClient, "give hunting_rifle");
+
+						RunCheatCommand(iClient, "give", "give hunting_rifle");
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 36, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
@@ -120,8 +120,8 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					{
 						RemoveEdict(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
-						SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						FakeClientCommand(iClient, "give pumpshotgun");
+
+						RunCheatCommand(iClient, "give", "give pumpshotgun");
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 28, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
@@ -129,8 +129,8 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					{
 						RemoveEdict(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
-						SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						FakeClientCommand(iClient, "give rifle");
+
+						RunCheatCommand(iClient, "give", "give rifle");
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 12, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
@@ -138,8 +138,8 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					{
 						RemoveEdict(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
-						SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						FakeClientCommand(iClient, "give rifle_ak47");
+
+						RunCheatCommand(iClient, "give", "give rifle_ak47");
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 12, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
@@ -147,8 +147,8 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					{
 						RemoveEdict(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
-						SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						FakeClientCommand(iClient, "give rifle_desert");
+
+						RunCheatCommand(iClient, "give", "give rifle_desert");
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 12, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
@@ -156,8 +156,8 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					{
 						RemoveEdict(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
-						SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						FakeClientCommand(iClient, "give rifle_m60");
+
+						RunCheatCommand(iClient, "give", "give rifle_m60");
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						//SetEntData(iClient, iOffset_Ammo + 32, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
@@ -165,8 +165,8 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					{
 						RemoveEdict(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
-						SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						FakeClientCommand(iClient, "give rifle_sg552");
+
+						RunCheatCommand(iClient, "give", "give rifle_sg552");
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 12, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
@@ -174,8 +174,8 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					{
 						RemoveEdict(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
-						SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						FakeClientCommand(iClient, "give shotgun_chrome");
+
+						RunCheatCommand(iClient, "give", "give shotgun_chrome");
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 28, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
@@ -183,8 +183,8 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					{
 						RemoveEdict(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
-						SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						FakeClientCommand(iClient, "give shotgun_spas");
+
+						RunCheatCommand(iClient, "give", "give shotgun_spas");
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 32, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
@@ -192,8 +192,8 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					{
 						RemoveEdict(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
-						SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						FakeClientCommand(iClient, "give smg");
+
+						RunCheatCommand(iClient, "give", "give smg");
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 20, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
@@ -201,8 +201,8 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					{
 						RemoveEdict(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
-						SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						FakeClientCommand(iClient, "give smg_mp5");
+
+						RunCheatCommand(iClient, "give", "give smg_mp5");
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 20, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
@@ -210,8 +210,8 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					{
 						RemoveEdict(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
-						SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						FakeClientCommand(iClient, "give smg_silenced");
+
+						RunCheatCommand(iClient, "give", "give smg_silenced");
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 20, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
@@ -219,8 +219,8 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					{
 						RemoveEdict(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
-						SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						FakeClientCommand(iClient, "give sniper_awp");
+
+						RunCheatCommand(iClient, "give", "give sniper_awp");
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 40, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
@@ -228,8 +228,8 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					{
 						RemoveEdict(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
-						SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						FakeClientCommand(iClient, "give sniper_military");
+
+						RunCheatCommand(iClient, "give", "give sniper_military");
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 40, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
@@ -237,8 +237,8 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					{
 						RemoveEdict(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
-						SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						FakeClientCommand(iClient, "give sniper_scout");
+
+						RunCheatCommand(iClient, "give", "give sniper_scout");
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 40, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
@@ -668,14 +668,14 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	// 	if(wID == -1 || IsValidEntity(wID) == false)
 	// 		return Plugin_Continue;
 	// 	PrintToChatAll("Removing upgrades from Rambo Mode M60");
-	// 	SetCommandFlags("upgrade_remove", g_iFlag_UpgradeRemove & ~FCVAR_CHEAT);
-	// 	FakeClientCommand(iClient, "upgrade_remove EXPLOSIVE_AMMO");
-	// 	SetCommandFlags("upgrade_remove", g_iFlag_UpgradeRemove);
+
+	// 	RunCheatCommand(iClient, "upgrade_remove", "upgrade_remove EXPLOSIVE_AMMO");
+
 	// 	PrintToChatAll("Setting upgrades for Rambo Mode M60");
 	// 	SetEntData(wID, g_iOffset_Clip1, 251, true);
-	// 	SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd & ~FCVAR_CHEAT);
-	// 	FakeClientCommand(iClient, "upgrade_add EXPLOSIVE_AMMO");
-	// 	SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd);
+
+	// 	RunCheatCommand(iClient, "upgrade_add", "upgrade_add EXPLOSIVE_AMMO");
+
 	// 	PrintToChatAll("Everything is set for Rambo Mode M60");
 	// }
 	
@@ -936,9 +936,9 @@ Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadca
 		StrContains(weaponclass, "smg", false) != -1 || StrContains(weaponclass, "sniper", false) != -1 || 
 		StrContains(weaponclass, "grenade", false) != -1))
 	{
-		SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd & ~FCVAR_CHEAT);
-		FakeClientCommand(iClient, "upgrade_add LASER_SIGHT");
-		SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd);
+
+		RunCheatCommand(iClient, "upgrade_add", "upgrade_add LASER_SIGHT");
+
 		g_iLaserUpgradeCounter[iClient]++;
 	}
 	
@@ -1915,8 +1915,8 @@ Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadca
 					if((StrEqual(weaponclass, "pistol_magnum", false) == true) && (StrEqual(g_strNickSecondarySlot1, "weapon_pistol_magnum", false) == true))
 					{
 						//PrintToChatAll("weaponclass and slot 1 are both magnum");
-						SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						FakeClientCommand(iClient, "give pistol_magnum");
+
+						RunCheatCommand(iClient, "give", "give pistol_magnum");
 					}
 					if(StrContains(g_strNickSecondarySlot1, "empty", false) != -1)
 					{
@@ -1946,9 +1946,9 @@ Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadca
 					if(StrEqual(weaponclass, "pistol", false) == true)
 					{
 						g_iNickCurrentSecondarySlot[iClient] = 1;
-						SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						FakeClientCommand(iClient, "give pistol");
-						FakeClientCommand(iClient, "give pistol");
+
+						RunCheatCommand(iClient, "give", "give pistol");
+						RunCheatCommand(iClient, "give", "give pistol");
 						CreateTimer(0.1, TimerNickDualClipSize, iClient, TIMER_FLAG_NO_MAPCHANGE);
 					}
 				}
@@ -2251,30 +2251,30 @@ Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 			{
 				if(number<=8)
 				{
-					SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "give pain_pills");
-					SetCommandFlags("give", g_iFlag_Give);
+
+					RunCheatCommand(iClient, "give", "give pain_pills");
+
 					PrintHintText(iClient, "You gain pain pills");
 				}
 				else if(number>8 && number <=14)
 				{
-					SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "give adrenaline");
-					SetCommandFlags("give", g_iFlag_Give);
+
+					RunCheatCommand(iClient, "give", "give adrenaline");
+
 					PrintHintText(iClient, "You gain an adrenaline shot");
 				}
 				else if(number>14 && number <=18)
 				{
-					SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "give defibrillator");
-					SetCommandFlags("give", g_iFlag_Give);
+
+					RunCheatCommand(iClient, "give", "give defibrillator");
+
 					PrintHintText(iClient, "You gain a defibrillator");
 				}
 				else if(number>18 && number <=20)
 				{
-					SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "give first_aid_kit");
-					SetCommandFlags("give", g_iFlag_Give);
+
+					RunCheatCommand(iClient, "give", "give first_aid_kit");
+
 					PrintHintText(iClient, "You gain a medkit");
 				}
 				else
@@ -2284,30 +2284,30 @@ Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 			{
 				if(number<=16)
 				{
-					SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "give pain_pills");
-					SetCommandFlags("give", g_iFlag_Give);
+
+					RunCheatCommand(iClient, "give", "give pain_pills");
+
 					PrintHintText(iClient, "You gain pain pills");
 				}
 				else if(number>16&& number <=28)
 				{
-					SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "give adrenaline");
-					SetCommandFlags("give", g_iFlag_Give);
+
+					RunCheatCommand(iClient, "give", "give adrenaline");
+
 					PrintHintText(iClient, "You gain an adrenaline shot");
 				}
 				else if(number>28 && number <=36)
 				{
-					SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "give defibrillator");
-					SetCommandFlags("give", g_iFlag_Give);
+
+					RunCheatCommand(iClient, "give", "give defibrillator");
+
 					PrintHintText(iClient, "You gain a defibrillator");
 				}
 				else if(number>36 && number <=40)
 				{
-					SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "give first_aid_kit");
-					SetCommandFlags("give", g_iFlag_Give);
+
+					RunCheatCommand(iClient, "give", "give first_aid_kit");
+
 					PrintHintText(iClient, "You gain a medkit");
 				}
 				else
@@ -2317,30 +2317,30 @@ Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 			{
 				if(number<=24)
 				{
-					SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "give pain_pills");
-					SetCommandFlags("give", g_iFlag_Give);
+
+					RunCheatCommand(iClient, "give", "give pain_pills");
+
 					PrintHintText(iClient, "You gain pain pills");
 				}
 				else if(number>24 && number <=42)
 				{
-					SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "give adrenaline");
-					SetCommandFlags("give", g_iFlag_Give);
+
+					RunCheatCommand(iClient, "give", "give adrenaline");
+
 					PrintHintText(iClient, "You gain an adrenaline shot");
 				}
 				else if(number>42 && number <=54)
 				{
-					SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "give defibrillator");
-					SetCommandFlags("give", g_iFlag_Give);
+
+					RunCheatCommand(iClient, "give", "give defibrillator");
+
 					PrintHintText(iClient, "You gain a defibrillator");
 				}
 				else if(number>54 && number <=60)
 				{
-					SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "give first_aid_kit");
-					SetCommandFlags("give", g_iFlag_Give);
+
+					RunCheatCommand(iClient, "give", "give first_aid_kit");
+
 					PrintHintText(iClient, "You gain a medkit");
 				}
 				else
@@ -2350,30 +2350,30 @@ Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 			{
 				if(number<=32)
 				{
-					SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "give pain_pills");
-					SetCommandFlags("give", g_iFlag_Give);
+
+					RunCheatCommand(iClient, "give", "give pain_pills");
+
 					PrintHintText(iClient, "You gain pain pills");
 				}
 				else if(number>32 && number <=56)
 				{
-					SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "give adrenaline");
-					SetCommandFlags("give", g_iFlag_Give);
+
+					RunCheatCommand(iClient, "give", "give adrenaline");
+
 					PrintHintText(iClient, "You gain an adrenaline shot");
 				}
 				else if(number>56 && number <=72)
 				{
-					SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "give defibrillator");
-					SetCommandFlags("give", g_iFlag_Give);
+
+					RunCheatCommand(iClient, "give", "give defibrillator");
+
 					PrintHintText(iClient, "You gain a defibrillator");
 				}
 				else if(number>72 && number <=80)
 				{
-					SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "give first_aid_kit");
-					SetCommandFlags("give", g_iFlag_Give);
+
+					RunCheatCommand(iClient, "give", "give first_aid_kit");
+
 					PrintHintText(iClient, "You gain a medkit");
 				}
 				else
@@ -2383,30 +2383,30 @@ Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 			{
 				if(number<=40)
 				{
-					SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "give pain_pills");
-					SetCommandFlags("give", g_iFlag_Give);
+
+					RunCheatCommand(iClient, "give", "give pain_pills");
+
 					PrintHintText(iClient, "You gain pain pills");
 				}
 				else if(number>40 && number <=70)
 				{
-					SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "give adrenaline");
-					SetCommandFlags("give", g_iFlag_Give);
+
+					RunCheatCommand(iClient, "give", "give adrenaline");
+
 					PrintHintText(iClient, "You gain an adrenaline shot");
 				}
 				else if(number>70 && number <=90)
 				{
-					SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "give defibrillator");
-					SetCommandFlags("give", g_iFlag_Give);
+
+					RunCheatCommand(iClient, "give", "give defibrillator");
+
 					PrintHintText(iClient, "You gain a defibrillator");
 				}
 				else if(number>90 && number <=100)
 				{
-					SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "give first_aid_kit");
-					SetCommandFlags("give", g_iFlag_Give);
+
+					RunCheatCommand(iClient, "give", "give first_aid_kit");
+
 					PrintHintText(iClient, "You gain a medkit");
 				}
 				else

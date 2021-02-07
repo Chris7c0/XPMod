@@ -49,7 +49,7 @@ OnGameFrame_Charger(iClient)
 		decl Float:vectorVelocity[3];
 		if (buttons & IN_MOVELEFT)
 		{
-			//FakeClientCommand(iClient, "+left");
+			//RunCheatCommand(iClient, "+left", "+left");
 			//GetClientEyePosition(iClient, originalVector);
 			//GetClientEyeAngles(iClient, eyeAngles);
 			//GetAngleVectors(eyeAngles, vectorDirection, NULL_VECTOR, NULL_VECTOR);
@@ -60,7 +60,7 @@ OnGameFrame_Charger(iClient)
 		}
 		if (buttons & IN_MOVERIGHT)
 		{
-			//FakeClientCommand(iClient, "+right");
+			//RunCheatCommand(iClient, "+right", "+right");
 			//GetClientEyePosition(iClient, originalVector);
 			//originalVector[1]++;
 			GetEntDataVector(iClient, g_iOffset_VecVelocity, vectorVelocity);
@@ -76,14 +76,14 @@ OnGameFrame_Charger(iClient)
 			decl Float:originalVector[3];
 			if (buttons & IN_MOVELEFT)
 			{
-				//FakeClientCommand(iClient, "+left");
+				//RunCheatCommand(iClient, "+left", "+left");
 				GetClientEyePosition(iClient, originalVector);
 				originalVector[0]--;
 				TeleportEntity(iClient, originalVector, NULL_VECTOR, NULL_VECTOR);
 			}
 			if (buttons & IN_MOVERIGHT)
 			{
-				//FakeClientCommand(iClient, "+right");
+				//RunCheatCommand(iClient, "+right", "+right");
 				GetClientEyePosition(iClient, originalVector);
 				originalVector[0]++;
 				TeleportEntity(iClient, originalVector, NULL_VECTOR, NULL_VECTOR);
@@ -95,11 +95,11 @@ OnGameFrame_Charger(iClient)
 		new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 		if ((g_bIsChargerCharging[iClient] == true) && (buttons & IN_MOVELEFT))
 		{
-			FakeClientCommand(iClient, "+left");
+			RunCheatCommand(iClient, "+left", "+left");
 		}
 		if ((g_bIsChargerCharging[iClient] == true) && (buttons & IN_MOVERIGHT))
 		{
-			FakeClientCommand(iClient, "+right");
+			RunCheatCommand(iClient, "+right","+right");
 		}
 	}*/
 }

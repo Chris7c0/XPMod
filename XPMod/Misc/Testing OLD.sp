@@ -107,7 +107,7 @@ Action:TestFunction5(iClient, args)
 	//PrintToChat(iClient, "T5");
 	g_iFlag_SpawnOld = GetCommandFlags("z_spawn_old");
 	SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
-	FakeClientCommand(iClient, "z_spawn_old tank auto");
+	RunCheatCommand(iClient, "z_spawn_old", "z_spawn_old tank auto");
 	SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);
 
 	//OpenMOTDPanel(iClient, "t5" , " .", MOTDPANEL_TYPE_FILE);
@@ -756,7 +756,7 @@ Action:CreateOverlay(iClient)
 // 	//fnc_DeterminePrimarySlot(iClient);
 // 	//fnc_DeterminePrimaryWeapon(iClient);
 // 	//SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd & ~FCVAR_CHEAT);
-// 	//FakeClientCommand(iClient, "upgrade_add EXPLOSIVE_AMMO");
+// 	//RunCheatCommand(iClient, "upgrade_add", "upgrade_add EXPLOSIVE_AMMO");
 // 	//SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd);
 	
 // 	// new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);

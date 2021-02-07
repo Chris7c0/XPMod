@@ -9,9 +9,9 @@ OnGameFrame_Coach(iClient)
 			{
 				if(buttons & IN_SPEED)
 				{
-					SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "give health");
-					SetCommandFlags("give", g_iFlag_Give);
+
+					RunCheatCommand(iClient, "give", "give health");
+
 					SetEntProp(iClient,Prop_Data,"m_iHealth", preledgehealth[iClient]);
 					if(preledgebuffer[iClient] > 1.1)
 						SetEntDataFloat(iClient,g_iOffset_HealthBuffer, (preledgebuffer[iClient] - 1.0) ,true);
@@ -73,22 +73,22 @@ OnGameFrame_Coach(iClient)
 							{
 								RemoveEdict(ActiveGrenadeID);
 								g_iCoachCurrentGrenadeSlot[iClient] = 1;
-								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-								FakeClientCommand(iClient, "give vomitjar");
+
+								RunCheatCommand(iClient, "give", "give vomitjar");
 							}
 							else if(StrContains(g_strCoachGrenadeSlot2, "molotov", false) != -1)
 							{
 								RemoveEdict(ActiveGrenadeID);
 								g_iCoachCurrentGrenadeSlot[iClient] = 1;
-								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-								FakeClientCommand(iClient, "give molotov");
+
+								RunCheatCommand(iClient, "give", "give molotov");
 							}
 							else if(StrContains(g_strCoachGrenadeSlot2, "pipe_bomb", false) != -1)
 							{
 								RemoveEdict(ActiveGrenadeID);
 								g_iCoachCurrentGrenadeSlot[iClient] = 1;
-								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-								FakeClientCommand(iClient, "give pipe_bomb");
+
+								RunCheatCommand(iClient, "give", "give pipe_bomb");
 							}
 							else if(StrContains(g_strCoachGrenadeSlot2, "empty", false) != -1)
 							{
@@ -101,22 +101,22 @@ OnGameFrame_Coach(iClient)
 							{
 								RemoveEdict(ActiveGrenadeID);
 								g_iCoachCurrentGrenadeSlot[iClient] = 0;
-								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-								FakeClientCommand(iClient, "give vomitjar");
+
+								RunCheatCommand(iClient, "give", "give vomitjar");
 							}
 							else if(StrContains(g_strCoachGrenadeSlot1, "molotov", false) != -1)
 							{
 								RemoveEdict(ActiveGrenadeID);
 								g_iCoachCurrentGrenadeSlot[iClient] = 0;
-								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-								FakeClientCommand(iClient, "give molotov");
+
+								RunCheatCommand(iClient, "give", "give molotov");
 							}
 							else if(StrContains(g_strCoachGrenadeSlot1, "pipe_bomb", false) != -1)
 							{
 								RemoveEdict(ActiveGrenadeID);
 								g_iCoachCurrentGrenadeSlot[iClient] = 0;
-								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-								FakeClientCommand(iClient, "give pipe_bomb");
+
+								RunCheatCommand(iClient, "give", "give pipe_bomb");
 							}
 							else if(StrContains(g_strCoachGrenadeSlot1, "empty", false) != -1)
 							{
@@ -136,22 +136,22 @@ OnGameFrame_Coach(iClient)
 							{
 								RemoveEdict(ActiveGrenadeID);
 								g_iCoachCurrentGrenadeSlot[iClient] = 1;
-								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-								FakeClientCommand(iClient, "give vomitjar");
+
+								RunCheatCommand(iClient, "give", "give vomitjar");
 							}
 							else if(StrContains(g_strCoachGrenadeSlot2, "molotov", false) != -1)
 							{
 								RemoveEdict(ActiveGrenadeID);
 								g_iCoachCurrentGrenadeSlot[iClient] = 1;
-								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-								FakeClientCommand(iClient, "give molotov");
+
+								RunCheatCommand(iClient, "give", "give molotov");
 							}
 							else if(StrContains(g_strCoachGrenadeSlot2, "pipe_bomb", false) != -1)
 							{
 								RemoveEdict(ActiveGrenadeID);
 								g_iCoachCurrentGrenadeSlot[iClient] = 1;
-								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-								FakeClientCommand(iClient, "give pipe_bomb");
+
+								RunCheatCommand(iClient, "give", "give pipe_bomb");
 							}
 							else if(StrContains(g_strCoachGrenadeSlot2, "empty", false) != -1)
 							{
@@ -160,22 +160,22 @@ OnGameFrame_Coach(iClient)
 								{
 									RemoveEdict(ActiveGrenadeID);
 									g_iCoachCurrentGrenadeSlot[iClient] = 2;
-									SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-									FakeClientCommand(iClient, "give vomitjar");
+
+									RunCheatCommand(iClient, "give", "give vomitjar");
 								}
 								else if(StrContains(g_strCoachGrenadeSlot3, "molotov", false) != -1)
 								{
 									RemoveEdict(ActiveGrenadeID);
 									g_iCoachCurrentGrenadeSlot[iClient] = 2;
-									SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-									FakeClientCommand(iClient, "give molotov");
+
+									RunCheatCommand(iClient, "give", "give molotov");
 								}
 								else if(StrContains(g_strCoachGrenadeSlot3, "pipe_bomb", false) != -1)
 								{
 									RemoveEdict(ActiveGrenadeID);
 									g_iCoachCurrentGrenadeSlot[iClient] = 2;
-									SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-									FakeClientCommand(iClient, "give pipe_bomb");
+
+									RunCheatCommand(iClient, "give", "give pipe_bomb");
 								}
 							}
 						}
@@ -185,22 +185,22 @@ OnGameFrame_Coach(iClient)
 							{
 								RemoveEdict(ActiveGrenadeID);
 								g_iCoachCurrentGrenadeSlot[iClient] = 2;
-								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-								FakeClientCommand(iClient, "give vomitjar");
+
+								RunCheatCommand(iClient, "give", "give vomitjar");
 							}
 							else if(StrContains(g_strCoachGrenadeSlot3, "molotov", false) != -1)
 							{
 								RemoveEdict(ActiveGrenadeID);
 								g_iCoachCurrentGrenadeSlot[iClient] = 2;
-								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-								FakeClientCommand(iClient, "give molotov");
+
+								RunCheatCommand(iClient, "give", "give molotov");
 							}
 							else if(StrContains(g_strCoachGrenadeSlot3, "pipe_bomb", false) != -1)
 							{
 								RemoveEdict(ActiveGrenadeID);
 								g_iCoachCurrentGrenadeSlot[iClient] = 2;
-								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-								FakeClientCommand(iClient, "give pipe_bomb");
+
+								RunCheatCommand(iClient, "give", "give pipe_bomb");
 							}
 							else if(StrContains(g_strCoachGrenadeSlot3, "empty", false) != -1)
 							{
@@ -209,22 +209,22 @@ OnGameFrame_Coach(iClient)
 								{
 									RemoveEdict(ActiveGrenadeID);
 									g_iCoachCurrentGrenadeSlot[iClient] = 0;
-									SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-									FakeClientCommand(iClient, "give vomitjar");
+
+									RunCheatCommand(iClient, "give", "give vomitjar");
 								}
 								else if(StrContains(g_strCoachGrenadeSlot1, "molotov", false) != -1)
 								{
 									RemoveEdict(ActiveGrenadeID);
 									g_iCoachCurrentGrenadeSlot[iClient] = 0;
-									SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-									FakeClientCommand(iClient, "give molotov");
+
+									RunCheatCommand(iClient, "give", "give molotov");
 								}
 								else if(StrContains(g_strCoachGrenadeSlot1, "pipe_bomb", false) != -1)
 								{
 									RemoveEdict(ActiveGrenadeID);
 									g_iCoachCurrentGrenadeSlot[iClient] = 0;
-									SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-									FakeClientCommand(iClient, "give pipe_bomb");
+
+									RunCheatCommand(iClient, "give", "give pipe_bomb");
 								}
 							}
 						}
@@ -234,22 +234,22 @@ OnGameFrame_Coach(iClient)
 							{
 								RemoveEdict(ActiveGrenadeID);
 								g_iCoachCurrentGrenadeSlot[iClient] = 0;
-								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-								FakeClientCommand(iClient, "give vomitjar");
+
+								RunCheatCommand(iClient, "give", "give vomitjar");
 							}
 							else if(StrContains(g_strCoachGrenadeSlot1, "molotov", false) != -1)
 							{
 								RemoveEdict(ActiveGrenadeID);
 								g_iCoachCurrentGrenadeSlot[iClient] = 0;
-								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-								FakeClientCommand(iClient, "give molotov");
+
+								RunCheatCommand(iClient, "give", "give molotov");
 							}
 							else if(StrContains(g_strCoachGrenadeSlot1, "pipe_bomb", false) != -1)
 							{
 								RemoveEdict(ActiveGrenadeID);
 								g_iCoachCurrentGrenadeSlot[iClient] = 0;
-								SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-								FakeClientCommand(iClient, "give pipe_bomb");
+
+								RunCheatCommand(iClient, "give", "give pipe_bomb");
 							}
 							else if(StrContains(g_strCoachGrenadeSlot1, "empty", false) != -1)
 							{
@@ -258,22 +258,22 @@ OnGameFrame_Coach(iClient)
 								{
 									RemoveEdict(ActiveGrenadeID);
 									g_iCoachCurrentGrenadeSlot[iClient] = 1;
-									SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-									FakeClientCommand(iClient, "give vomitjar");
+
+									RunCheatCommand(iClient, "give", "give vomitjar");
 								}
 								else if(StrContains(g_strCoachGrenadeSlot2, "molotov", false) != -1)
 								{
 									RemoveEdict(ActiveGrenadeID);
 									g_iCoachCurrentGrenadeSlot[iClient] = 1;
-									SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-									FakeClientCommand(iClient, "give molotov");
+
+									RunCheatCommand(iClient, "give", "give molotov");
 								}
 								else if(StrContains(g_strCoachGrenadeSlot2, "pipe_bomb", false) != -1)
 								{
 									RemoveEdict(ActiveGrenadeID);
 									g_iCoachCurrentGrenadeSlot[iClient] = 1;
-									SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-									FakeClientCommand(iClient, "give pipe_bomb");
+
+									RunCheatCommand(iClient, "give", "give pipe_bomb");
 								}
 							}
 						}

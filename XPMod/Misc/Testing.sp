@@ -178,10 +178,8 @@ Action:TestFunction4(iClient, args)
 	// Format(strTimeScaleCmd, sizeof(strTimeScaleCmd), "host_timescale %3f", StringToFloat(str1));
 	// PrintToChat(iClient, "%s", strTimeScaleCmd);
 
-	// new g_iFlag_TimeScale = GetCommandFlags("host_timescale");
-	// SetCommandFlags("host_timescale", g_iFlag_TimeScale & ~FCVAR_CHEAT);
-	// FakeClientCommand(iClient, strTimeScaleCmd);
-	// SetCommandFlags("host_timescale", g_iFlag_TimeScale);
+	// RunCheatCommand(iClient, "host_timescale", strTimeScaleCmd);
+
 	
 	//g_hTimeScale.FloatValue = StringToFloat(str1);
 
@@ -196,10 +194,9 @@ Action:TestFunction4(iClient, args)
 Action:TestFunction5(iClient, args)
 {
 	//PrintToChat(iClient, "T5");
-	g_iFlag_SpawnOld = GetCommandFlags("z_spawn_old");
-	SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld & ~FCVAR_CHEAT);
-	FakeClientCommand(iClient, "z_spawn_old tank auto");
-	SetCommandFlags("z_spawn_old", g_iFlag_SpawnOld);
+
+	RunCheatCommand(iClient, "z_spawn_old", "z_spawn_old tank auto");
+
 
 	//OpenMOTDPanel(iClient, "t5" , " .", MOTDPANEL_TYPE_FILE);
 	//OpenMOTDPanel(iClient, "t5." , "/cfg/server.cfg", MOTDPANEL_TYPE_FILE);

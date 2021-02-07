@@ -36,12 +36,8 @@ Action:Bind2Press(iClient, args)
 			{
 				if(g_iClientBindUses_2[iClient]<3)
 				{
-					SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "give rifle_m60");
-					FakeClientCommand(iClient, "upgrade_add LASER_SIGHT");
-					SetCommandFlags("give", g_iFlag_Give);
-					SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd);
+					RunCheatCommand(iClient, "give", "give rifle_m60");
+					RunCheatCommand(iClient, "upgrade_add", "upgrade_add LASER_SIGHT");
 					g_iClientBindUses_2[iClient]++;
 				}
 				else 
@@ -69,9 +65,9 @@ Action:Bind2Press(iClient, args)
 						new Float:vec[3];
 						GetClientAbsOrigin(iClient, vec);
 						EmitSoundToAll(SOUND_NINJA_ACTIVATE, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
-						SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-						FakeClientCommand(iClient, "give katana");
-						SetCommandFlags("give", g_iFlag_Give);
+
+						RunCheatCommand(iClient, "give", "give katana");
+
 						SetEntityRenderMode(iClient, RenderMode:3);
 						SetEntityRenderColor(iClient, 0, 0, 0, RoundToFloor(255 * (1.0 - (float(g_iShadowLevel[iClient]) * 0.19))));
 

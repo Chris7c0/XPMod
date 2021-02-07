@@ -44,6 +44,27 @@ SuppressNeverUsedWarning(any:var1=0, any:var2=0, any:var3=0, any:var4=0, any:var
 	if(ignore) PrintToServer("THIS IS NEVER GOING TO BE RAN",var1, var2, var3, var4, var5, var6, var7, var8, var9, var10);
 }
 
+bool RunCheatCommand(int iClient, const char [] strCommandName, const char [] strCommandWithArgs)
+{
+	if (RunClientChecks(iClient) == false)
+		return false;
+
+	// Get the command flags
+	new iFlag = GetCommandFlags(strCommandName);
+	if (iFlag == INVALID_FCVAR_FLAGS)
+	{
+		PrintToChatAll("ERROR");
+		return false;
+	}
+
+	// Temp turn on the cheats for this command, run command,
+	// and then turn off the cheats again
+	SetCommandFlags(strCommandName, iFlag & ~FCVAR_CHEAT);
+	FakeClientCommand(iClient, strCommandWithArgs);
+	SetCommandFlags(strCommandName, iFlag);
+
+	return true;
+}
 
 Action:Timer_ShowXPModInfoToServer(Handle:timer, any:data)
 {
@@ -1260,8 +1281,9 @@ fnc_CycleWeapon(iClient)
 				if (RunClientChecks(iClient) && IsPlayerAlive(iClient))
 				{
 					g_iEllisCurrentPrimarySlot[iClient] = 1;
-					SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "give %s", g_strNextWeaponCmdName);
+					decl String:strCommandWithArgs[64];
+					Format(strCommandWithArgs, sizeof(strCommandWithArgs), "give %s", g_strNextWeaponCmdName);
+					RunCheatCommand(iClient, "give", strCommandWithArgs);
 					//PrintToChatAll("Cycle function called, Primary Slot is %i, NextWpnCmdName = %s", g_iEllisCurrentPrimarySlot[iClient], g_strNextWeaponCmdName);
 					
 					// PrintToChatAll("Gave Weapon, now setting ammo/clip");
@@ -1353,8 +1375,9 @@ fnc_CycleWeapon(iClient)
 				if (RunClientChecks(iClient) && IsPlayerAlive(iClient))
 				{
 					g_iEllisCurrentPrimarySlot[iClient] = 0;
-					SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "give %s", g_strNextWeaponCmdName);
+					decl String:strCommandWithArgs[64];
+					Format(strCommandWithArgs, sizeof(strCommandWithArgs), "give %s", g_strNextWeaponCmdName);
+					RunCheatCommand(iClient, "give", strCommandWithArgs);
 					//PrintToChatAll("Cycle function called, Primary Slot is %i, NextWpnCmdName = %s", g_iEllisCurrentPrimarySlot[iClient], g_strNextWeaponCmdName);
 					//g_bEllisHasCycled[iClient] = true;
 					
@@ -1380,8 +1403,9 @@ fnc_CycleWeapon(iClient)
 			if (RunClientChecks(iClient) && IsPlayerAlive(iClient))
 			{
 				//PrintToChatAll("Removed current weapon via fnc_CycleWeapon");
-				SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-				FakeClientCommand(iClient, "give %s", g_strNickPrimarySaved);
+				decl String:strCommandWithArgs[64];
+				Format(strCommandWithArgs, sizeof(strCommandWithArgs), "give %s", g_strNickPrimarySaved);
+				RunCheatCommand(iClient, "give", strCommandWithArgs);
 				//PrintToChatAll("Gave %s via fnc_CycleWeapon", g_strNickPrimarySaved);
 				//SetEntData(g_iPrimarySlotID[iClient], g_iOffset_Clip1, g_iNickPrimarySavedClip[iClient], true);
 				//SetEntData(iClient, g_iOffset_Ammo[iClient] + g_iAmmoOffset[iClient], g_iNickPrimarySavedAmmo[iClient]);
@@ -1618,19 +1642,18 @@ fnc_SetAmmoUpgrade(iClient)
 			/*
 			if (RunClientChecks(iClient) && IsPlayerAlive(iClient))
 			{
-				SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd & ~FCVAR_CHEAT);
-				FakeClientCommand(iClient, "upgrade_add EXPLOSIVE_AMMO");
-				SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd);
+
+				RunCheatCommand(iClient, "upgrade_add", "upgrade_add EXPLOSIVE_AMMO");
+
 			}
 			*/
 			if((g_iEllisCurrentPrimarySlot[iClient] == 0) && (g_iEllisUpgradeAmmoSlot1[iClient] > 0))
 			{
 				if (RunClientChecks(iClient) && IsPlayerAlive(iClient))
 				{
-					//PrintToChatAll("Setting Cheat Flags");
-					//SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "upgrade_add %s", g_strEllisUpgradeTypeSlot1);
+					decl String:strCommandWithArgs[64];
+					Format(strCommandWithArgs, sizeof(strCommandWithArgs), "upgrade_add %s", g_strEllisUpgradeTypeSlot1);
+					RunCheatCommand(iClient, "upgrade_add", strCommandWithArgs);
 					//PrintToChatAll("Setting upgrade clip size based on saved ammo slot");
 				}
 				if (IsValidEntity(g_iPrimarySlotID[iClient]) && HasEntProp(g_iPrimarySlotID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded"))
@@ -1639,8 +1662,8 @@ fnc_SetAmmoUpgrade(iClient)
 					SetEntData(g_iPrimarySlotID[iClient], g_iOffset_Clip1, g_iEllisUpgradeAmmoSlot1[iClient], true);
 				}
 				
-				//SetCommandFlags("give", g_iFlag_Give);
-				SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd);
+
+
 				//g_iEllisUpgradeAmmoSlot1[iClient] = 0;
 			}
 			else if((g_iEllisCurrentPrimarySlot[iClient] == 1) && (g_iEllisUpgradeAmmoSlot2[iClient] > 0))
@@ -1648,9 +1671,10 @@ fnc_SetAmmoUpgrade(iClient)
 				if (RunClientChecks(iClient) && IsPlayerAlive(iClient))
 				{
 					//PrintToChatAll("Setting Cheat Flags");
-					//SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);
-					SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "upgrade_add %s", g_strEllisUpgradeTypeSlot2);
+
+					decl String:strCommandWithArgs[64];
+					Format(strCommandWithArgs, sizeof(strCommandWithArgs), "upgrade_add %s", g_strEllisUpgradeTypeSlot2);
+					RunCheatCommand(iClient, "upgrade_add", strCommandWithArgs);
 					//PrintToChatAll("Setting upgrade clip size based on saved ammo slot");
 				}
 				if (IsValidEntity(g_iPrimarySlotID[iClient]) && HasEntProp(g_iPrimarySlotID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded"))
@@ -1659,8 +1683,8 @@ fnc_SetAmmoUpgrade(iClient)
 					SetEntData(g_iPrimarySlotID[iClient], g_iOffset_Clip1, g_iEllisUpgradeAmmoSlot2[iClient], true);
 				}
 				
-				//SetCommandFlags("give", g_iFlag_Give);
-				SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd);
+
+
 				//g_iEllisUpgradeAmmoSlot2[iClient] = 0;
 			}
 		}
@@ -1670,8 +1694,10 @@ fnc_SetAmmoUpgrade(iClient)
 			{
 				if(g_iNickUpgradeAmmo[iClient] > 0)
 				{
-					SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "upgrade_add %s", g_strNickUpgradeType);
+					decl String:strCommandWithArgs[64];
+					Format(strCommandWithArgs, sizeof(strCommandWithArgs), "upgrade_add %s", g_strNickUpgradeType);
+					RunCheatCommand(iClient, "upgrade_add", strCommandWithArgs);
+
 					//PrintToChatAll("Setting upgrade clip size based on saved ammo slot");
 					if (IsValidEntity(g_iPrimarySlotID[iClient]) && HasEntProp(g_iPrimarySlotID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded"))
 					{
@@ -1681,12 +1707,10 @@ fnc_SetAmmoUpgrade(iClient)
 				}
 				if(g_bRamboModeActive[iClient] == true)
 				{
-					SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd & ~FCVAR_CHEAT);
-					FakeClientCommand(iClient, "upgrade_add LASER_SIGHT");
-					
+					RunCheatCommand(iClient, "upgrade_add", "upgrade_add LASER_SIGHT");
 				}
 
-				SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd);
+
 			}
 		}
 	}
