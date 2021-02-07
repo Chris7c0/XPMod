@@ -45,8 +45,8 @@ EventsDeath_GiveXP(Handle:hEvent, iAttacker, iVictim)
 			
 			if(g_iXPDisplayMode[iAttacker] == 0)
 				ShowXPSprite(iAttacker, g_iSprite_5XP_HS, iCIVictim, 2.0);
-			else if(g_iXPDisplayMode[iAttacker] == 1)
-				PrintCenterText(iAttacker, "HEADSHOT! +5 XP.");
+			// else if(g_iXPDisplayMode[iAttacker] == 1)
+			// 	PrintCenterText(iAttacker, "HEADSHOT! +5 XP.");
 			
 			if(g_bCanPlayHeadshotSound[iAttacker] == true)
 				PlayHeadshotSound(iAttacker);

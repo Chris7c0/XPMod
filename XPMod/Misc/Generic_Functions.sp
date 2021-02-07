@@ -284,8 +284,8 @@ GiveClientXP(iClient, iAmount, iSprite, iVictim, String:strMessage[64], bool:bCe
 	{
 		if(bCenterText == false)
 			PrintToChat(iClient, "\x03[XPMod] %s You gain %d XP", strMessage, iAmount);
-		else
-			PrintCenterText(iClient, "%s You gain %d XP", strMessage, iAmount);
+		// else
+		// 	PrintCenterText(iClient, "%s You gain %d XP", strMessage, iAmount);
 	}	
 }
 

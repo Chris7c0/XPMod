@@ -37,7 +37,46 @@
 // }
 
 
+PrintHealthMeterToSurvivorPlayer(int iAttacker, int iVictim)
+{
+	if (RunClientChecks(iAttacker) == false ||
+		RunClientChecks(iVictim) == false ||
+		IsFakeClient(iAttacker) == true ||
+		g_iClientTeam[iAttacker] != TEAM_SURVIVORS ||
+		g_iClientTeam[iVictim] != TEAM_INFECTED)
+		return;
 
+	if (IsPlayerAlive(iVictim) == false)
+	{
+		PrintCenterText(iAttacker, "DEAD");
+		return;
+	}
+
+	new iCurrentMaxHealth = GetEntProp(iVictim,Prop_Data,"m_iMaxHealth");
+	new iCurrentHealth = GetEntProp(iVictim,Prop_Data,"m_iHealth");
+	if (iCurrentHealth < 0) iCurrentHealth = 0;
+	new Float:fHealthPercentage = (iCurrentMaxHealth > 0) ? (float(iCurrentHealth) / float(iCurrentMaxHealth)) : 0.0;
+
+	decl String:strHealthBar[256];
+	strHealthBar = NULL_STRING;
+
+	// Create the actual mana amount in the "progress meter"
+	for(int i = 0; i < RoundToCeil(fHealthPercentage * 30.0); i++)
+		StrCat(strHealthBar, sizeof(strHealthBar), "▓");
+	// Create the rest of the string
+	for(int i = 30; i > RoundToCeil(fHealthPercentage * 30.0); i--)
+		StrCat(strHealthBar, sizeof(strHealthBar), "░");
+
+	PrintCenterText(iAttacker, 
+		"%N\n\
+		%s\n\
+		%s ( %i / %i )",
+		iVictim,
+		strHealthBar,
+		INFECTED_NAME[g_iInfectedCharacter[iVictim]],
+		iCurrentHealth,
+		iCurrentMaxHealth);
+}
 
 //new Float:g_fEllisTestFireRate = 0.0;
 Action:TestFunction1(iClient, args)
