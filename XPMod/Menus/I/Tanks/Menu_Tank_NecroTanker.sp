@@ -22,8 +22,9 @@ Action:TankMenuDrawNecroTanker(iClient)
         \n	+1%% Tank\
         \n \
         \n Active Abilities\
+        \n - Mana Pool (Punches Regen Mana)\
         \n - [Hold CROUCH] Summon Infected\
-        \n - [Press MELEE] Throw Boomers (13 Sec Cooldown)\
+        \n - [Press MELEE] Throw Boomers\
         \n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",
         TANK_HEALTH_NECROTANKER,
         NECROTANKER_MAX_HEALTH,

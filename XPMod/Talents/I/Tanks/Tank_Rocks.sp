@@ -162,7 +162,7 @@ void TrackAllRocks()
 							DisplayNecroTankerManaMeter(iTankRockOwner);
 
 							if (g_iNecroTankerManaPool[iTankRockOwner] >= NECROTANKER_MANA_COST_BOOMER_THROW)
-								SetSIAbilityCooldown(iTankRockOwner, 13.0);
+								SetSIAbilityCooldown(iTankRockOwner, 6.0);
 							else
 								SetSIAbilityCooldown(iTankRockOwner, 99999.0);
 						}
