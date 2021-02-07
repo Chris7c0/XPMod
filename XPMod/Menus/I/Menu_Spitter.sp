@@ -161,12 +161,23 @@ Action:BagOfSpitsMenuDraw(iClient)
 	CheckLevel(iClient);
 	g_hMenu_XPM[iClient] = CreateMenu(BagOfSpitsMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "Pull something nice from your Bag of Spits!"); 
+	SetMenuTitle(g_hMenu_XPM[iClient], "Pull something nice from your Bag of Spits!\n "); 
 
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Tiny Army");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Muscle Crew");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Enhanced Jimmy");
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Necrofest");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1",
+		"MINI ARMY\
+		\n	A lot of very tiny, very annoying, enhanced infected.");
+	AddMenuItem(g_hMenu_XPM[iClient], "option2", 
+		"MUSCLE CREW\
+		\n	Three roided out infected...lookin' for brainz gainz.");
+	AddMenuItem(g_hMenu_XPM[iClient], "option3", 
+		"ENHANCED JIMMY\
+		\n	Big and Enhanced, for your pleasure.");
+	AddMenuItem(g_hMenu_XPM[iClient], "option4", 
+		"NECROFEASTERS\
+		\n	They brought friends, and are ready for seconds.");
+	AddMenuItem(g_hMenu_XPM[iClient], "option5", 
+		"KILLER KLOWNS FROM OUTER SPACE\
+		\n	Alien bozos with an appetite for close encounters.");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);

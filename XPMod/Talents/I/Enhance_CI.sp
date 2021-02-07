@@ -127,6 +127,12 @@ EnhanceCommonInfected(iZombie, iBigOrSmall = CI_SMALL_OR_BIG_NONE, iEnhancedCISp
 		EnhanceCISetScale(iZombie, CI_REALLY_SMALL_SIZE);
 		EnhanceCISetHealth(iZombie, CI_REALLY_SMALL_HEALTH);
 	}
+	else if(iBigOrSmall == CI_REALLY_BIG_JIMMY)
+	{
+		// Really Big Zombie, Really High Health
+		EnhanceCISetScale(iZombie, CI_REALLY_BIG_JIMMY_SIZE);
+		EnhanceCISetHealth(iZombie, CI_REALLY_BIG_JIMMY_HEALTH);
+	}
 
 	// Handle randomly available enhanced properties
 	if (iEnhancedCISpecifiedType != ENHANCED_CI_TYPE_NONE)

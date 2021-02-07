@@ -35,18 +35,23 @@ new bool:g_bIsGhost[MAXPLAYERS + 1];
 #define CI_SMALL                    2
 #define CI_BIG                      3
 #define CI_REALLY_BIG               4
+#define CI_REALLY_BIG_JIMMY         5
+// Size
 #define CI_REALLY_SMALL_SIZE        0.33
 #define CI_SMALL_MIN_SIZE           0.60
 #define CI_SMALL_MAX_SIZE           0.80
 #define CI_BIG_MIN_SIZE             1.10
 #define CI_BIG_MAX_SIZE             1.35
-#define CI_REALLY_BIG_SIZE          1.60
+#define CI_REALLY_BIG_SIZE          1.50
+#define CI_REALLY_BIG_JIMMY_SIZE    1.6
+// Health
 #define CI_REALLY_SMALL_HEALTH      30
 #define CI_SMALL_MIN_HEALTH         100
 #define CI_SMALL_MAX_HEALTH         200
 #define CI_BIG_MIN_HEALTH           500
 #define CI_BIG_MAX_HEALTH           1500
-#define CI_REALLY_BIG_HEALTH        3000
+#define CI_REALLY_BIG_HEALTH        2500
+#define CI_REALLY_BIG_JIMMY_HEALTH  4000
 // Enhanced CI Types
 #define ENHANCED_CI_TYPE_RANDOM     -1
 #define ENHANCED_CI_TYPE_NONE       0
@@ -149,10 +154,11 @@ new Float:g_fAdhesiveAffectAmount[MAXPLAYERS + 1];
 #define GOO_VIRAL			5
 // Bag of Spits (BIND 1)
 #define BAG_OF_SPITS_NONE           -1
-#define BAG_OF_SPITS_TINY_ARMY      0
+#define BAG_OF_SPITS_MINI_ARMY      0
 #define BAG_OF_SPITS_MUSCLE_CREW    1
 #define BAG_OF_SPITS_ENHANCED_JIMMY 2
-#define BAG_OF_SPITS_NECROFEST      3
+#define BAG_OF_SPITS_NECROFEASTER   3
+#define BAG_OF_SPITS_KILLER_KLOWNS  4
 new g_iBagOfSpitsSelectedSpit[MAXPLAYERS + 1] = BAG_OF_SPITS_NONE;
 
 // Jockey

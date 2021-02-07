@@ -324,10 +324,11 @@ void ConjureFromBagOfSpits(iClient, Float:xyzLocation[3])
 	
 	switch (g_iBagOfSpitsSelectedSpit[iClient])
 	{
-		case BAG_OF_SPITS_TINY_ARMY: 		SpawnCIAroundLocation(xyzLocation, 10, UNCOMMON_CI_NONE, CI_REALLY_SMALL, ENHANCED_CI_TYPE_RANDOM, 0.1);
-		case BAG_OF_SPITS_MUSCLE_CREW: 		SpawnCIAroundLocation(xyzLocation, 3, UNCOMMON_CI_RANDOM, CI_REALLY_BIG, ENHANCED_CI_TYPE_NONE, 0.1);
-		case BAG_OF_SPITS_ENHANCED_JIMMY: 	SpawnCIAroundLocation(xyzLocation, 1, UNCOMMON_CI_JIMMY, CI_REALLY_BIG, ENHANCED_CI_TYPE_NONE, 0.1);
-		case BAG_OF_SPITS_NECROFEST: 		SpawnCIAroundLocation(xyzLocation, 6, UNCOMMON_CI_CEDA, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_NECRO, 0.1);
+		case BAG_OF_SPITS_MINI_ARMY: 		SpawnCIAroundLocation(xyzLocation, 10, UNCOMMON_CI_NONE, CI_REALLY_SMALL, ENHANCED_CI_TYPE_RANDOM, 0.1);
+		case BAG_OF_SPITS_MUSCLE_CREW: 		SpawnCIAroundLocation(xyzLocation, 3, UNCOMMON_CI_NONE, CI_REALLY_BIG, ENHANCED_CI_TYPE_NONE, 0.1);
+		case BAG_OF_SPITS_ENHANCED_JIMMY: 	SpawnCIAroundLocation(xyzLocation, 1, UNCOMMON_CI_JIMMY, CI_REALLY_BIG_JIMMY, ENHANCED_CI_TYPE_RANDOM, 0.1);
+		case BAG_OF_SPITS_NECROFEASTER: 	SpawnCIAroundLocation(xyzLocation, 6, UNCOMMON_CI_CEDA, CI_BIG, ENHANCED_CI_TYPE_NECRO, 0.1);	// Add life stealing also, when code supports it
+		case BAG_OF_SPITS_KILLER_KLOWNS: 	SpawnCIAroundLocation(xyzLocation, 5, UNCOMMON_CI_CLOWN, CI_BIG, ENHANCED_CI_TYPE_VAMPIRIC, 0.1);
 	}
 	
 	// Use a bind 1 charge
