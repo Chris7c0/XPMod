@@ -5,9 +5,10 @@
 // New player buffs, until they reach max level (30)
 // Damage Reduction for new Players
 // This value at level 0, as leveling it goes lower.
-// NewPlayerMaxDamageReduction * (1 - (level/max level))
+// Reduction = ( iDmgAmount * ( NEW_PLAYER_MAX_DAMAGE_REDUCTION * (1.0 - (float(g_iClientLevel[iVictim]) / 30.0)) )
 #define NEW_PLAYER_MAX_DAMAGE_REDUCTION     0.75
 // Movement speed buff
+// SpeedBuff = ( NEW_PLAYER_MAX_MOVEMENT_SPEED * ( 1.0 - (float(g_iClientLevel[iClient]) / 30.0) ) );
 #define NEW_PLAYER_MAX_MOVEMENT_SPEED       0.15
 
 //Loadout Variables
