@@ -391,7 +391,29 @@ DealDamage(iVictim, iAttacker, iAmount, iDamageType = DAMAGETYPE_INFECTED_MELEE)
 	DispatchKeyValue(entPointHurt, "classname", "point_hurt");
 	DispatchKeyValue(iVictim, "targetname", "null");
 	RemoveEdict(entPointHurt);
-	///////////////////////////////////////////////////////////////////////
+	
+	// Reduce damage for low level human survivor players
+	ReduceDamageTakenForNewPlayers(iVictim, iAmount);
+}
+
+void ReduceDamageTakenForNewPlayers(int iVictim, int iDmgAmount)
+{
+	// Reduce damage for low level human survivor players that are not incaped
+	if (g_iClientTeam[iVictim] == TEAM_SURVIVORS && 
+		g_iClientLevel[iVictim] < 30 && 
+		RunClientChecks(iVictim) &&
+		IsFakeClient(iVictim) == false && 
+		GetEntProp(iVictim, Prop_Send, "m_isIncapacitated") != 1)
+	{
+		new iCurrentHealth = GetEntProp(iVictim, Prop_Data, "m_iHealth");
+		new iReductionAmount = RoundToNearest(( iDmgAmount * ( NEW_PLAYER_MAX_DAMAGE_REDUCTION * (1.0 - (float(g_iClientLevel[iVictim]) / 30.0)) ) ) );
+		//Ensure at least 1 damage is done
+		if (iReductionAmount == iDmgAmount)
+			iReductionAmount = iDmgAmount - 1;
+
+		//PrintToChatAll("%N dmg = %i, reduction %i", iVictim, iDmgAmount, iReductionAmount);
+		SetEntProp(iVictim,Prop_Data,"m_iHealth", iCurrentHealth + iReductionAmount);
+	}
 }
 
 //This function was originally written by AtomikStryker

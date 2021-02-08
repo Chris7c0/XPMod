@@ -469,17 +469,22 @@ CreateNewUser(iClient)
 		IntToString(g_iClientXP[iClient], strClientXP, sizeof(strClientXP));
 	
 	//Create new entry into the SQL database with the users information
-	decl String:strQuery[256] = "";
-	Format(strQuery, sizeof(strQuery), "INSERT INTO %s ( \
-		steam_id, \
-		user_name, \
-		token, \
-		xp, \
-		survivor_id, \
-		infected_id_1, \
-		infected_id_2, \
-		infected_id_3) \
-		VALUES ('%s', '%s', '%s', %s, '%i', '%i', '%i', %i)", 
+	decl String:strQuery[512] = "";
+	Format(strQuery, sizeof(strQuery), "INSERT INTO %s (\
+		steam_id,\
+		user_name,\
+		token,\
+		xp,\
+		survivor_id,\
+		infected_id_1,\
+		infected_id_2,\
+		infected_id_3,\
+		equipment_primary,\
+		equipment_secondary,\
+		equipment_health,\
+		equipment_explosive,\
+		equipment_boost)\
+		VALUES ('%s','%s','%s',%s,%i,%i,%i,%i,%i,%i,%i,%i,%i)", 
 		DB_TABLENAME,
 		strSteamID,
 		strClientName,
@@ -488,7 +493,12 @@ CreateNewUser(iClient)
 		g_iDefaultSurvivor,
 		g_iDefaultInfectedSlot1,
 		g_iDefaultInfectedSlot2,
-		g_iDefaultInfectedSlot3);
+		g_iDefaultInfectedSlot3,
+		DEFAULT_LOADOUT_PRIMARY_ID,
+		DEFAULT_LOADOUT_SECONDARY_ID,
+		DEFAULT_LOADOUT_HEALTH_ID,
+		DEFAULT_LOADOUT_EXPLOSIVE_ID,
+		DEFAULT_LOADOUT_BOOST_ID);
 	SQL_TQuery(g_hDatabase, SQLCreateNewUserCallback, strQuery, iClient);
 }
 

@@ -39,6 +39,9 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	}
 	
 	EventsHurt_GiveXP(hEvent, iAttacker, iVictim);
+
+	// Reduce damage for low level human survivor players that are not incaped
+	ReduceDamageTakenForNewPlayers(iVictim, GetEventInt(hEvent, "dmg_health"));
 	
 	EventsHurt_IncreaseCommonInfectedDamage(iAttacker, iVictim);
 

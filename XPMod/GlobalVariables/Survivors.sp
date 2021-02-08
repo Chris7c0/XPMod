@@ -2,6 +2,13 @@
 ///////////////////////////////////////////////     SURVIVOR VARIABLES     ///////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// New player buffs, until they reach max level (30)
+// Damage Reduction for new Players
+// This value at level 0, as leveling it goes lower.
+// NewPlayerMaxDamageReduction * (1 - (level/max level))
+#define NEW_PLAYER_MAX_DAMAGE_REDUCTION     0.75
+// Movement speed buff
+#define NEW_PLAYER_MAX_MOVEMENT_SPEED       0.15
 
 //Loadout Variables
 new String:g_strClientPrimarySlot[32];

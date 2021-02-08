@@ -16,3 +16,11 @@ new g_iXPDisplayMode[MAXPLAYERS + 1];						//Default 0 = Show Sprites; 1 = Show 
 // Talent Selection Mode
 #define CONVAR_MENU			0
 #define CONVAR_WEBSITE		1
+
+
+// Default Loadout
+#define DEFAULT_LOADOUT_PRIMARY_ID              7
+#define DEFAULT_LOADOUT_SECONDARY_ID            10
+#define DEFAULT_LOADOUT_HEALTH_ID               1
+#define DEFAULT_LOADOUT_EXPLOSIVE_ID            2
+#define DEFAULT_LOADOUT_BOOST_ID                1

@@ -39,6 +39,9 @@ SetClientSpeed(iClient)
 		SetClientSpeedTank(iClient, fSpeed);
 	}
 
+	// Give sub max level players more speed and scale down as they level
+	SetClientSpeedNewPlayer(iClient, fSpeed);
+
 	SetEntDataFloat(iClient, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), fSpeed, true);
 	// if (IsFakeClient(iClient) == false)
 	// 	PrintToChat(iClient, "SetClientSpeed: %N: %f", iClient, fSpeed);
@@ -144,6 +147,18 @@ SetClientSpeedNick(iClient, &Float:fSpeed)
 	
 	//PrintToChat(iClient, "SetClientSpeedNick: %f", fSpeed);
 }
+
+SetClientSpeedNewPlayer(iClient, &Float:fSpeed)
+{
+	if (g_iClientTeam[iClient] != TEAM_SURVIVORS || 
+		g_iClientLevel[iClient] == 30)
+		return;
+
+	fSpeed += ( NEW_PLAYER_MAX_MOVEMENT_SPEED * ( 1.0 - (float(g_iClientLevel[iClient]) / 30.0) ) );
+	
+	//PrintToChat(iClient, "SetClientSpeedNewPlayer: %f", fSpeed);
+}
+
 
 // Infected =======================================================================================================================
 SetClientSpeedSmoker(iClient, &Float:fSpeed)

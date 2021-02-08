@@ -253,7 +253,7 @@ ResetAll(iClient)
 	g_iClientHealthSlotCost[iClient] = 0;
 	g_iClientBoostSlotCost[iClient] = 0;
 	g_iClientLaserSlotCost[iClient] = 0;
-
+	
 	ResetAllOptions(iClient);
 	ResetAllInfectedClasses(iClient); // Infected Talents
 	ResetSurvivorTalents(iClient); // Survivors Talents

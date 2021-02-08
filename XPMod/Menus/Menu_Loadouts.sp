@@ -1042,8 +1042,8 @@ GetWeaponNames(iClient)
 		}
 		case 7: //Scar-L
 		{
-			g_strClientPrimarySlot = "Scar-L (60 XP)";
-			g_iClientPrimarySlotCost[iClient] = 60;
+			g_strClientPrimarySlot = "Scar-L (DEFAULT)";
+			g_iClientPrimarySlotCost[iClient] = 0;								// Default Loadout Item
 		}
 		case 8: //Remington 870
 		{
@@ -1150,8 +1150,8 @@ GetWeaponNames(iClient)
 		}
 		case 10: //Machete
 		{
-			g_strClientSecondarySlot = "Machete (50 XP)";
-			g_iClientSecondarySlotCost[iClient] = 50;
+			g_strClientSecondarySlot = "Machete (DEFAULT)";
+			g_iClientSecondarySlotCost[iClient] = 0;							// Default Loadout Item
 		}
 		case 11: //Frying Pan
 		{
@@ -1198,8 +1198,8 @@ GetWeaponNames(iClient)
 		}
 		case 2: //Molotov
 		{
-			g_strClientExplosiveSlot = "Molotov (30 XP)";
-			g_iClientExplosiveSlotCost[iClient] = 30;
+			g_strClientExplosiveSlot = "Molotov (DEFAULT)";
+			g_iClientExplosiveSlotCost[iClient] = 0;							// Default Loadout Item
 		}
 		case 3: //Bile Jar
 		{
@@ -1216,8 +1216,8 @@ GetWeaponNames(iClient)
 		}
 		case 1: //Med Kit
 		{
-			g_strClientHealthSlot = "First Aid Kit (250 XP)";
-			g_iClientHealthSlotCost[iClient] = 250;
+			g_strClientHealthSlot = "First Aid Kit (DEFAULT)";
+			g_iClientHealthSlotCost[iClient] = 0;								// Default Loadout Item
 		}
 		case 2: //Defib
 		{
@@ -1244,8 +1244,8 @@ GetWeaponNames(iClient)
 		}
 		case 1: //Pain Pills
 		{
-			g_strClientBoostSlot = "Pain Pills (50 XP)";
-			g_iClientBoostSlotCost[iClient] = 50;
+			g_strClientBoostSlot = "Pain Pills (DEFAULT)";
+			g_iClientBoostSlotCost[iClient] = 0;								// Default Loadout Item
 		}
 		case 2: //Adrenaline Shot
 		{
@@ -1340,15 +1340,16 @@ SpawnWeapons(iClient)
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04SIG SG 552");
 		}
-		case 7: //Scar-L
+		case 7: //Scar-L DEFAULT
 		{
-			if((g_iClientXP[iClient]-60) >= g_iClientPreviousLevelXPAmount[iClient])
-			{
-				g_iClientXP[iClient]-=60;
-				RunCheatCommand(iClient, "give", "give rifle_desert");
-			}
-			else
-				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Scar-L");
+			RunCheatCommand(iClient, "give", "give rifle_desert");
+			// if((g_iClientXP[iClient]-60) >= g_iClientPreviousLevelXPAmount[iClient])
+			// {
+			// 	g_iClientXP[iClient]-=60;
+			// 	RunCheatCommand(iClient, "give", "give rifle_desert");
+			// }
+			// else
+			// 	PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Scar-L");
 		}
 		case 8: //Remington 870
 		{
@@ -1548,15 +1549,16 @@ SpawnWeapons(iClient)
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for an \x04Electric Guitar");
 		}
-		case 10: //Machete
+		case 10: //Machete DEFAULT
 		{
-			if((g_iClientXP[iClient]-30) >= g_iClientPreviousLevelXPAmount[iClient])
-			{
-				g_iClientXP[iClient]-=30;
-				RunCheatCommand(iClient, "give", "give machete");
-			}
-			else
-				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Machete");
+			RunCheatCommand(iClient, "give", "give machete");
+			// if((g_iClientXP[iClient]-30) >= g_iClientPreviousLevelXPAmount[iClient])
+			// {
+			// 	g_iClientXP[iClient]-=30;
+			// 	RunCheatCommand(iClient, "give", "give machete");
+			// }
+			// else
+			// 	PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Machete");
 		}
 		case 11: //Frying Pan
 		{
@@ -1639,19 +1641,22 @@ SpawnWeapons(iClient)
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Pipe Bomb");
 		}
-		case 2: //Molotov
+		case 2: //Molotov DEFAULT
 		{
-			if((g_iClientXP[iClient]-30) >= g_iClientPreviousLevelXPAmount[iClient])
-			{
-				g_iClientXP[iClient]-=30;
-				RunCheatCommand(iClient, "give", "give molotov");
-				if(g_iStrongLevel[iClient] > 0)
-				{
-					g_strCoachGrenadeSlot1 = "weapon_molotov";
-				}
-			}
-			else
-				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Molotov");
+			RunCheatCommand(iClient, "give", "give molotov");
+			if(g_iStrongLevel[iClient] > 0)
+				g_strCoachGrenadeSlot1 = "weapon_molotov";
+			// if((g_iClientXP[iClient]-30) >= g_iClientPreviousLevelXPAmount[iClient])
+			// {
+			// 	g_iClientXP[iClient]-=30;
+			// 	RunCheatCommand(iClient, "give", "give molotov");
+			// 	if(g_iStrongLevel[iClient] > 0)
+			// 	{
+			// 		g_strCoachGrenadeSlot1 = "weapon_molotov";
+			// 	}
+			// }
+			// else
+			// 	PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Molotov");
 		}
 		case 3: //Bile Jar
 		{
@@ -1674,15 +1679,16 @@ SpawnWeapons(iClient)
 		{
 			
 		}
-		case 1: //Med Kit
+		case 1: //Med Kit DEFAULT
 		{
-			if((g_iClientXP[iClient] - 250) >= g_iClientPreviousLevelXPAmount[iClient])
-			{
-				g_iClientXP[iClient] -= 250;
-				RunCheatCommand(iClient, "give", "give first_aid_kit");
-			}
-			else
-				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04First Aid Kit");
+			RunCheatCommand(iClient, "give", "give first_aid_kit");
+			// if((g_iClientXP[iClient] - 250) >= g_iClientPreviousLevelXPAmount[iClient])
+			// {
+			// 	g_iClientXP[iClient] -= 250;
+			// 	RunCheatCommand(iClient, "give", "give first_aid_kit");
+			// }
+			// else
+			// 	PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04First Aid Kit");
 		}
 		case 2: //Defib
 		{
@@ -1721,15 +1727,16 @@ SpawnWeapons(iClient)
 		{
 			
 		}
-		case 1: //Pain Pills
+		case 1: //Pain Pills DEFAULT
 		{
-			if((g_iClientXP[iClient]-50) >= g_iClientPreviousLevelXPAmount[iClient])
-			{
-				g_iClientXP[iClient]-=50;
-				RunCheatCommand(iClient, "give", "give pain_pills");
-			}
-			else
-				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for \x04Pain Pills");
+			RunCheatCommand(iClient, "give", "give pain_pills");
+			// if((g_iClientXP[iClient]-50) >= g_iClientPreviousLevelXPAmount[iClient])
+			// {
+			// 	g_iClientXP[iClient]-=50;
+			// 	RunCheatCommand(iClient, "give", "give pain_pills");
+			// }
+			// else
+			// 	PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for \x04Pain Pills");
 		}
 		case 2: //Adrenaline Shot
 		{
