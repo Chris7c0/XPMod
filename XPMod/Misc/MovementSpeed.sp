@@ -12,8 +12,8 @@ SetClientSpeed(iClient)
 	if (SetClientSpeedOverrides(iClient, fSpeed))
 	{
 		SetEntDataFloat(iClient, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), fSpeed, true);
-		if (IsFakeClient(iClient) == false)
-			PrintToChat(iClient, "SetClientSpeedOverride: %N: %f", iClient, fSpeed);
+		// if (IsFakeClient(iClient) == false)
+		// 	PrintToChat(iClient, "SetClientSpeedOverride: %N: %f", iClient, fSpeed);
 		//PrintToChatAll("SetClientSpeedOverride: %N: %f", iClient, fSpeed);
 		return;
 	}
@@ -40,8 +40,8 @@ SetClientSpeed(iClient)
 	}
 
 	SetEntDataFloat(iClient, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), fSpeed, true);
-	if (IsFakeClient(iClient) == false)
-		PrintToChat(iClient, "SetClientSpeed: %N: %f", iClient, fSpeed);
+	// if (IsFakeClient(iClient) == false)
+	// 	PrintToChat(iClient, "SetClientSpeed: %N: %f", iClient, fSpeed);
 	//PrintToChatAll("SetClientSpeed: %N: %f", iClient, fSpeed);
 }
 

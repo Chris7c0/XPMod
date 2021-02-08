@@ -28,7 +28,7 @@ new g_iGameMode;
 // Server Name
 new String:g_strServerName[64]              = "";
 // Log File Paths
-//new String:g_strXPMStatsFullFilePath[256]   = "";
+new String:g_strXPMStatsFullFilePath[256]   = "";
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

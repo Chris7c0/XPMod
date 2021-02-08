@@ -180,44 +180,44 @@ GetLoggedInAndConfirmedStrings(iClient, char[] strLoggedIn, int iLoggedInMaxLen,
 		Format(strConfirmed, iConfirmedMaxLen, "");
 }
 
-// Action:TimerLogXPMStatsToFile(Handle:timer, any:data)
-// {
-// 	decl String:strStoreBuffer[2000];
-// 	strStoreBuffer = NULL_STRING;
-// 	CreateXPMStatistics(-1, strStoreBuffer, sizeof(strStoreBuffer));
+Action:TimerLogXPMStatsToFile(Handle:timer, any:data)
+{
+	decl String:strStoreBuffer[2000];
+	strStoreBuffer = NULL_STRING;
+	CreateXPMStatistics(-1, strStoreBuffer, sizeof(strStoreBuffer));
 
-// 	// Remove all the color codes
-// 	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "\x05", "", true);
-// 	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "\x04", "", true);
-// 	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "\x03", "", true);
+	// Remove all the color codes
+	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "\x05", "", true);
+	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "\x04", "", true);
+	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "\x03", "", true);
 	
-// 	// Add a timestamp at the end
-// 	decl String:strTime[16];
-// 	FormatTime(strTime, sizeof(strTime), "%H:%M:%S", GetTime());
-// 	StrCat(strStoreBuffer, sizeof(strStoreBuffer), strTime);
+	// Add a timestamp at the end
+	decl String:strTime[16];
+	FormatTime(strTime, sizeof(strTime), "%H:%M:%S", GetTime());
+	StrCat(strStoreBuffer, sizeof(strStoreBuffer), strTime);
 
-// 	SaveXPMStatsBufferToLogFile(strStoreBuffer);
+	SaveXPMStatsBufferToLogFile(strStoreBuffer);
 
-// 	return Plugin_Continue;
-// }
+	return Plugin_Continue;
+}
 
-// SaveXPMStatsBufferToLogFile(const char[] strBuffer)
-// {
-// 	if (strlen(g_strXPMStatsFullFilePath) < 1)
-// 		return;
+SaveXPMStatsBufferToLogFile(const char[] strBuffer)
+{
+	if (strlen(g_strXPMStatsFullFilePath) < 1)
+		return;
 	
-// 	new Handle:hFileHandle;
-// 	hFileHandle = OpenFile(g_strXPMStatsFullFilePath, "w");
-// 	if (hFileHandle != null)
-// 		WriteFileLine(hFileHandle, strBuffer);
-// 	CloseHandle(hFileHandle);
-// }
+	new Handle:hFileHandle;
+	hFileHandle = OpenFile(g_strXPMStatsFullFilePath, "w");
+	if (hFileHandle != null)
+		WriteFileLine(hFileHandle, strBuffer);
+	CloseHandle(hFileHandle);
+}
 
-// SetXPMStatsLogFileName()
-// {
-// 	// TODO: Sanitize the servername for Windows/Linux file paths
-// 	new String:strFileLogPath[100];
-// 	Format(strFileLogPath, sizeof(strFileLogPath), "/logs/xpmstats_%s.log", g_strServerName);
+SetXPMStatsLogFileName()
+{
+	// TODO: Sanitize the servername for Windows/Linux file paths
+	new String:strFileLogPath[100];
+	Format(strFileLogPath, sizeof(strFileLogPath), "/logs/xpmstats_%s.log", g_strServerName);
 	
-// 	BuildPath(Path_SM, g_strXPMStatsFullFilePath, PLATFORM_MAX_PATH, strFileLogPath);
-// }
+	BuildPath(Path_SM, g_strXPMStatsFullFilePath, PLATFORM_MAX_PATH, strFileLogPath);
+}

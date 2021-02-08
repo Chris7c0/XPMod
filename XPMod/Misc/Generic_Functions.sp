@@ -53,7 +53,7 @@ bool RunCheatCommand(int iClient, const char [] strCommandName, const char [] st
 	new iFlag = GetCommandFlags(strCommandName);
 	if (iFlag == INVALID_FCVAR_FLAGS)
 	{
-		PrintToChatAll("ERROR");
+		PrintToServer("ERROR GETTING COMMAND FLAGS!");
 		return false;
 	}
 
