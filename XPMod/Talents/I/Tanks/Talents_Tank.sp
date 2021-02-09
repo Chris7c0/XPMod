@@ -22,9 +22,39 @@ EventsHurt_AttackerTank(Handle:hEvent, iAttackerTank, iVictim)
 
 EventsHurt_VictimTank(Handle:hEvent, iAttacker, iVictimTank)
 {
+	// If the player has not selected a tank type, and they have take enough damage, then
+	// automatically select a tank type for them.  This will be for people that never select
+	if (g_iTankChosen[iVictimTank] == TANK_NOT_CHOSEN && 
+		RunClientChecks(iVictimTank) && 
+		IsFakeClient(iVictimTank) == false)
+	{
+		// Note: Valve multiplies the value with 1.5 so it becomes 4000 x 1.5 = 6000 hp.
+		new iMaxHealthConVarSetting = RoundToCeil(GetConVarInt(FindConVar("z_tank_health")) * 1.5);
+		new iCurrentHealth = GetEntProp(iVictimTank, Prop_Data, "m_iHealth");
+		// Check if they lost enough HP yet
+		if (iCurrentHealth < iMaxHealthConVarSetting - TANK_AUTOMATIC_SELECT_HP_LOSS)
+		{
+			// Close their Tank selection menu
+			ClosePanel(iVictimTank);
+
+			// They lost enough HP, load their auto-selected XPMod Tank abilities
+			switch (TANK_AUTOMATIC_SELECT_TYPE)
+			{
+				case TANK_FIRE: LoadFireTankTalents(iVictimTank);
+				case TANK_ICE:	LoadIceTankTalents(iVictimTank);
+				case TANK_NECROTANKER:	LoadNecroTankerTalents(iVictimTank);
+				case TANK_VAMPIRIC:	LoadVampiricTankTalents(iVictimTank);
+			}
+
+			// Display a message to the user saying it was automatically selected
+			PrintToChat(iVictimTank, "\x03[XPMod] \x04Automatic Tank selection applied.\n                 You lost too much HP before choosing your Tank.");
+		}
+	}
+	
+
 	// Globally for all tanks, put them out after X seconds
 	new iDmgType = GetEventInt(hEvent, "type");
-	if(g_iTankChosen[iVictimTank] != TANK_FIRE && (iDmgType == DAMAGETYPE_FIRE1 || iDmgType == DAMAGETYPE_FIRE2))
+	if (g_iTankChosen[iVictimTank] != TANK_FIRE && (iDmgType == DAMAGETYPE_FIRE1 || iDmgType == DAMAGETYPE_FIRE2))
 	{
 		// This will reset the timer each time they take new fire damage
 		delete g_hTimer_ExtinguishTank[iVictimTank];

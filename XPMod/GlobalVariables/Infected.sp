@@ -185,6 +185,9 @@ new bool:g_bCanChargerEarthquake[MAXPLAYERS +1];
 
 // Tank
 new g_iTankCounter;
+// The amount of HP loss before a XPMod tank type is automatically selected for the player
+#define TANK_AUTOMATIC_SELECT_HP_LOSS   1000
+#define TANK_AUTOMATIC_SELECT_TYPE      TANK_FIRE
 new bool:g_bTankOnFire[MAXPLAYERS + 1];     //prevents constant xp rewarding
 
 //Chosen Tank Talents
