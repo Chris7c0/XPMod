@@ -50,32 +50,6 @@ OnGameFrame_Hunter(iClient)
 					if(g_iHunterPounceDamageCharge[iClient] <= (g_iKillmeleonLevel[iClient] * 42))
 						g_iHunterPounceDamageCharge[iClient]++;
 			
-			
-			/*
-			if(g_iHunterPounceDamageCharge[iClient] == 21)
-			{
-				PrintHintText(iClient, "Pounce Attack Charge: %d", g_iHunterPounceDamageCharge[iClient] / 21);
-			}
-			*/
-			/*
-			new i = 21;
-			//for(new i = 21; i == 420; i)
-			while(i <= 420)
-			{
-				if(g_iHunterPounceDamageCharge[iClient] == i)
-				{
-					i += 21;
-					PrintHintText(iClient, "Pounce Attack Charge: %d", g_iHunterPounceDamageCharge[iClient] / 21);
-				}
-				else if(g_iHunterPounceDamageCharge[iClient] == 0)
-				{
-					break;
-				}
-			}
-			*/
-			//else if(g_iHunterPounceDamageCharge[iClient] == 30)
-				//PrintHintText(iClient, "Pounce Attack Charge: 0");
-			
 			switch(g_iHunterPounceDamageCharge[iClient])
 			{
 				case 21:

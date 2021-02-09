@@ -169,6 +169,7 @@ HandleFastAttackingClients()
 		new iClient = g_iFastAttackingClientsArray[looper];
 		if(g_bDoesClientAttackFast[iClient] == false || IsClientInGame(iClient)==false || IsFakeClient(iClient)==true)
 		{
+			PrintToServer("DEBUG: Popping from g_iFastAttackingClientsArray");
 			pop(iClient);
 			continue;
 		}
