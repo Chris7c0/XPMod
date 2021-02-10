@@ -78,6 +78,52 @@ PrintHealthMeterToSurvivorPlayer(int iAttacker, int iVictim)
 		iCurrentMaxHealth);
 }
 
+
+
+void DrawCircle(iClient)
+{
+	new Float:vec[3];
+	GetClientAbsOrigin(iClient, vec);
+
+	vec[2] += 10;
+	TE_SetupBeamRingPoint(vec, 100.0, 99.0, g_BeamSprite, g_HaloSprite, 0, 15, 1.0, 5.0, 0.0, {0, 0, 255, 255}, 10, 0);
+	TE_SendToAll();
+}
+
+
+int MakeLightDynamic(int target) //, const float vPos[3])
+{
+	int entity = CreateEntityByName("light_dynamic");
+	if( entity == -1 || IsValidEntity(entity) == false)
+	{
+		LogError("Failed to create 'light_dynamic'");
+		return 0;
+	}
+
+	DispatchKeyValue(entity, "_light", "0 255 0 0");
+	DispatchKeyValue(entity, "brightness", "0.1");
+	DispatchKeyValueFloat(entity, "spotlight_radius", 0.01);
+	DispatchKeyValueFloat(entity, "distance", 150.0);
+	DispatchKeyValue(entity, "style", "6");
+	DispatchSpawn(entity);
+	AcceptEntityInput(entity, "TurnOff");
+	
+	new Float:vPos[3];
+	GetClientEyePosition(target, vPos);
+
+	TeleportEntity(entity, vPos, NULL_VECTOR, NULL_VECTOR);
+
+	// Attach
+	if( target )
+	{
+		SetVariantString("!activator");
+		AcceptEntityInput(entity, "SetParent", target);
+	}
+
+	return entity;
+}
+
+
 //new Float:g_fEllisTestFireRate = 0.0;
 Action:TestFunction1(iClient, args)
 {
@@ -92,6 +138,21 @@ Action:TestFunction1(iClient, args)
 	//if (args < 1) return Plugin_Stop;
 
 	//AttachParticle(StringToInt(str1), "charger_motion_blur", 15.4, 0.0)
+
+	g_BeamSprite = PrecacheModel("materials/sprites/laserbeam.vmt");
+	g_HaloSprite = PrecacheModel("materials/sprites/glow.vmt");
+	DrawCircle(iClient);
+
+	
+	char color[12];
+	Format( color, sizeof( color ), "%i %i %i", 0, 255, 50 );
+
+	int light = MakeLightDynamic(iClient);
+
+	SetVariantEntity(light);
+	SetVariantString(color);
+	AcceptEntityInput(light, "color");
+	AcceptEntityInput(light, "TurnOn");
 
 	PrintAllInEnhancedCIEntityList();
 

@@ -159,7 +159,10 @@ new Float:g_fAdhesiveAffectAmount[MAXPLAYERS + 1];
 #define BAG_OF_SPITS_ENHANCED_JIMMY 2
 #define BAG_OF_SPITS_NECROFEASTER   3
 #define BAG_OF_SPITS_KILLER_KLOWNS  4
+
+#define BAG_OF_SPITS_SPIT_COUNT     5
 new g_iBagOfSpitsSelectedSpit[MAXPLAYERS + 1] = BAG_OF_SPITS_NONE;
+
 
 // Jockey
 new bool:g_bCanJockeyPee[MAXPLAYERS + 1] = true;

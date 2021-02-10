@@ -227,3 +227,8 @@ new preledgehealth[MAXPLAYERS + 1];
 new Float:preledgebuffer[MAXPLAYERS + 1];
 new bool:clienthanging[MAXPLAYERS + 1];
 //new g_iAbility = 0;
+
+
+
+new g_BeamSprite;
+new g_HaloSprite;

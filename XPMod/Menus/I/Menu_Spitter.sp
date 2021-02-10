@@ -376,11 +376,15 @@ GooTypeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 BagOfSpitsMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
 	// Make sure they havent already used all their Bind 1s up
-	if (g_iClientBindUses_1[iClient] >= 3) 
-		return; 
+	if (RunClientChecks(iClient) == false || g_iClientBindUses_1[iClient] >= 3) 
+		return;
 
 	if(action==MenuAction_Select) 
 	{
+		// Ensure a valid item was selected before continuing
+		if (itemNum < 0 || itemNum >= BAG_OF_SPITS_SPIT_COUNT)
+			return;
+
 		// The Menu item number corresponds to the definition of each 
 		// Bag of Spits item.  So, just set it to the selected menu item
 		g_iBagOfSpitsSelectedSpit[iClient] = itemNum;
