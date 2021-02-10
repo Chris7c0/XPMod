@@ -215,6 +215,10 @@ new String:g_strNickSecondarySlot2[512];
 new g_iNickCurrentSecondarySlot[MAXPLAYERS + 1];
 new g_iNickSecondarySavedClipSlot1[MAXPLAYERS + 1];
 new g_iNickSecondarySavedClipSlot2[MAXPLAYERS + 1];
+#define NICK_HEAL_PISTOL_GIVE       2
+#define NICK_HEAL_PISTOL_TAKE       1
+#define NICK_HEAL_MAGNUM_GIVE       7
+#define NICK_HEAL_MAGNUM_TAKE       3
 new bool:g_bCanNickZoomKit[MAXPLAYERS + 1];
 new bool:g_bIsNickInSecondaryCycle[MAXPLAYERS + 1];
 new bool:g_bRamboModeActive[MAXPLAYERS + 1];

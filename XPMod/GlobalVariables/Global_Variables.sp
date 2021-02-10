@@ -86,7 +86,7 @@ new String:SURVIVOR_CLASS_NAME[][] =    {"SUPPORT",
                                         "NINJA",
                                         "BERSERKER",
                                         "WEAPONS EXPERT",
-                                        "MEDIC"}
+                                        "GAMBLER"}
 
 //Infected Class ID Definitions
 #define UNKNOWN_INFECTED	0

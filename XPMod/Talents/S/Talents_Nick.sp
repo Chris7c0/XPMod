@@ -318,36 +318,109 @@ OGFSurvivorReload_Nick(iClient, const char[] currentweapon, ActiveWeaponID, Curr
 	}
 }
 
-EventsHurt_AttackerNick(Handle:hEvent, attacker, victim)
+EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 {
-	if (IsFakeClient(attacker))
+	if (IsFakeClient(iAttacker) || g_bTalentsConfirmed[iAttacker] == false)
 		return;
 
-	if (g_iClientTeam[victim] != TEAM_INFECTED)
-		return;
-
-	if(g_iSwindlerLevel[attacker] > 0)
+	if (g_iEnhancedLevel[iAttacker] > 0 && g_iClientTeam[iVictim] == TEAM_SURVIVORS)
 	{
-		if(g_iClientTeam[victim] == TEAM_INFECTED)
-			if(g_bNickIsStealingLife[victim][attacker] == false)	//If player not poisoned, poison them
+		decl String:strCurrentWeapon[32];
+		GetClientWeapon(iAttacker, strCurrentWeapon, sizeof(strCurrentWeapon));
+
+		// Check that its a pistol
+		if (StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == true)
+		{
+			new iCurrentAttackerHealth = GetEntProp(iAttacker, Prop_Data, "m_iHealth");
+			new iCurrentVictimHealth = GetEntProp(iVictim, Prop_Data, "m_iHealth");
+			new iCurrentVictimMaxHealth = GetEntProp(iVictim, Prop_Data, "m_iMaxHealth");
+			// Need this to remove friendly fire damage
+			new iDmgAmount = GetEventInt(hEvent, "dmg_health");
+
+			// If theres enough life in Nick's pool then make the transaction
+			if (iCurrentAttackerHealth > NICK_HEAL_MAGNUM_TAKE && iCurrentVictimHealth + iDmgAmount < iCurrentVictimMaxHealth)
 			{
-				g_bNickIsStealingLife[victim][attacker] = true;
+				new iHealAmount = iCurrentVictimHealth + iDmgAmount + NICK_HEAL_MAGNUM_GIVE < iCurrentVictimMaxHealth ? 
+					iDmgAmount + NICK_HEAL_MAGNUM_GIVE : 
+					iCurrentVictimMaxHealth - iCurrentVictimHealth;
+				SetEntProp(iAttacker,Prop_Data,"m_iHealth", iCurrentAttackerHealth - NICK_HEAL_MAGNUM_TAKE);
+				SetEntProp(iVictim,Prop_Data,"m_iHealth", iCurrentVictimHealth + iHealAmount);
+
+				// Effects
+				WriteParticle(iVictim, "nick_lifesteal_recovery", 0.0, 3.0);
+				// HUD effects
+				if(IsFakeClient(iVictim)==false)
+					ShowHudOverlayColor(iVictim, 0, 100, 255, 40, 440, FADE_OUT);
+				
+				if(IsFakeClient(iAttacker)==false)
+					ShowHudOverlayColor(iAttacker, 180, 0, 40, 40, 440, FADE_OUT);
+			}
+			// Otherwise, just give friendly fire damage back to the survivor he shot
+			else
+			{
+				SetEntProp(iVictim,Prop_Data,"m_iHealth", iCurrentVictimHealth + iDmgAmount);
+			}
+		}
+		else if(StrEqual(strCurrentWeapon, "weapon_pistol", false) == true)
+		{
+			new iCurrentAttackerHealth = GetEntProp(iAttacker, Prop_Data, "m_iHealth");
+			new iCurrentVictimHealth = GetEntProp(iVictim, Prop_Data, "m_iHealth");
+			new iCurrentVictimMaxHealth = GetEntProp(iVictim, Prop_Data, "m_iMaxHealth");
+			// Need this to remove friendly fire damage
+			new iDmgAmount = GetEventInt(hEvent, "dmg_health");
+
+			// If theres enough life in Nick's pool then make the transaction
+			if (iCurrentAttackerHealth > NICK_HEAL_PISTOL_TAKE && iCurrentVictimHealth + iDmgAmount < iCurrentVictimMaxHealth)
+			{
+				new iHealAmount = iCurrentVictimHealth + iDmgAmount + NICK_HEAL_PISTOL_GIVE < iCurrentVictimMaxHealth ? 
+					iDmgAmount + NICK_HEAL_PISTOL_GIVE : 
+					iCurrentVictimMaxHealth - iCurrentVictimHealth;
+				SetEntProp(iAttacker,Prop_Data,"m_iHealth", iCurrentAttackerHealth - NICK_HEAL_PISTOL_TAKE);
+				SetEntProp(iVictim,Prop_Data,"m_iHealth", iCurrentVictimHealth + iHealAmount);
+
+				// Effects
+				WriteParticle(iVictim, "nick_lifesteal_recovery", 0.0, 3.0);
+				// HUD effects
+				if(IsFakeClient(iVictim)==false)
+					ShowHudOverlayColor(iVictim, 0, 100, 255, 40, 440, FADE_OUT);
+				
+				if(IsFakeClient(iAttacker)==false)
+					ShowHudOverlayColor(iAttacker, 180, 0, 40, 40, 440, FADE_OUT);
+			}
+			// Otherwise, just give friendly fire damage back to the survivor he shot
+			else
+			{
+				SetEntProp(iVictim,Prop_Data,"m_iHealth", iCurrentVictimHealth + iDmgAmount);
+			}
+		}
+	}
+
+	// From this point on only deal with infected iVictims
+	if (g_iClientTeam[iVictim] != TEAM_INFECTED)
+		return;
+
+	if(g_iSwindlerLevel[iAttacker] > 0)
+	{
+		if(g_iClientTeam[iVictim] == TEAM_INFECTED)
+			if(g_bNickIsStealingLife[iVictim][iAttacker] == false)	//If player not poisoned, poison them
+			{
+				g_bNickIsStealingLife[iVictim][iAttacker] = true;
 				
 				new Handle:lifestealingpackage = CreateDataPack();
-				WritePackCell(lifestealingpackage, victim);
-				WritePackCell(lifestealingpackage, attacker);
-				g_iNickStealingLifeRuntimes[victim] = 0;
+				WritePackCell(lifestealingpackage, iVictim);
+				WritePackCell(lifestealingpackage, iAttacker);
+				g_iNickStealingLifeRuntimes[iVictim] = 0;
 
-				delete g_hTimer_NickLifeSteal[victim];
-				g_hTimer_NickLifeSteal[victim] = CreateTimer(2.0, TimerLifeStealing, lifestealingpackage, TIMER_REPEAT);
+				delete g_hTimer_NickLifeSteal[iVictim];
+				g_hTimer_NickLifeSteal[iVictim] = CreateTimer(2.0, TimerLifeStealing, lifestealingpackage, TIMER_REPEAT);
 				
 				decl Float:vec[3];
-				GetClientAbsOrigin(victim, vec);
-				EmitSoundToAll(SOUND_NICK_LIFESTEAL_HIT, victim, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
+				GetClientAbsOrigin(iVictim, vec);
+				EmitSoundToAll(SOUND_NICK_LIFESTEAL_HIT, iVictim, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
 			}
 	}
 
-	if(g_iDesperateLevel[attacker] > 0 && g_iNickDesperateMeasuresStack > 0)
+	if(g_iDesperateLevel[iAttacker] > 0 && g_iNickDesperateMeasuresStack > 0)
 	{
 		decl String:weaponclass[32];
 		GetEventString(hEvent,"weapon",weaponclass,32);
@@ -355,66 +428,66 @@ EventsHurt_AttackerNick(Handle:hEvent, attacker, victim)
 		if(StrContains(weaponclass,"melee",false) == -1 && StrContains(weaponclass,"inferno",false) == -1 && 
 			StrContains(weaponclass,"pipe_bomb",false) == -1 && StrContains(weaponclass,"entityflame",false) == -1)
 		{
-			new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+			new hp = GetEntProp(iVictim,Prop_Data,"m_iHealth");
 			new dmg = GetEventInt(hEvent,"dmg_health");
 			if(g_iNickDesperateMeasuresStack > 3)
 			{
-				dmg = RoundToNearest(dmg * (g_iDesperateLevel[attacker] * 0.05) * 3);
+				dmg = RoundToNearest(dmg * (g_iDesperateLevel[iAttacker] * 0.05) * 3);
 			}
 			else
 			{
-				dmg = RoundToNearest(dmg * (g_iDesperateLevel[attacker] * 0.05) * g_iNickDesperateMeasuresStack);
+				dmg = RoundToNearest(dmg * (g_iDesperateLevel[iAttacker] * 0.05) * g_iNickDesperateMeasuresStack);
 			}
-			PrintToChat(attacker, "You are doing %d extra damage", dmg);
-			SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+			PrintToChat(iAttacker, "You are doing %d extra damage", dmg);
+			SetEntProp(iVictim,Prop_Data,"m_iHealth", hp - dmg);
 		}
 	}
 	
-	if(g_iMagnumLevel[attacker] > 0 || g_iRiskyLevel[attacker] > 0)
+	if(g_iMagnumLevel[iAttacker] > 0 || g_iRiskyLevel[iAttacker] > 0)
 	{
-		if(g_iClientTeam[victim] == TEAM_INFECTED)
+		if(g_iClientTeam[iVictim] == TEAM_INFECTED)
 		{
 			decl String:wclass[32];
 			GetEventString(hEvent,"weapon",wclass,32);
 			if (StrContains(wclass,"magnum",false) != -1)
 			{
-				new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+				new hp = GetEntProp(iVictim,Prop_Data,"m_iHealth");
 				new dmg = GetEventInt(hEvent,"dmg_health");
-				dmg = RoundToNearest(dmg * (g_iMagnumLevel[attacker] * 0.75));
-				//PrintToChat(attacker, "your doing %d extra magnum damage", dmg);
-				SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+				dmg = RoundToNearest(dmg * (g_iMagnumLevel[iAttacker] * 0.75));
+				//PrintToChat(iAttacker, "your doing %d extra magnum damage", dmg);
+				SetEntProp(iVictim,Prop_Data,"m_iHealth", hp - dmg);
 			}
 			else if (StrContains(wclass,"pistol",false) != -1)
 			{
-				new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+				new hp = GetEntProp(iVictim,Prop_Data,"m_iHealth");
 				new dmg = GetEventInt(hEvent,"dmg_health");
-				dmg = RoundToNearest(dmg * (g_iRiskyLevel[attacker] * 0.2));
-				//PrintToChat(attacker, "your doing %d extra damage", dmg);
-				SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+				dmg = RoundToNearest(dmg * (g_iRiskyLevel[iAttacker] * 0.2));
+				//PrintToChat(iAttacker, "your doing %d extra damage", dmg);
+				SetEntProp(iVictim,Prop_Data,"m_iHealth", hp - dmg);
 			}
-			GetClientWeapon(attacker, g_strCurrentWeapon, sizeof(g_strCurrentWeapon));
+			GetClientWeapon(iAttacker, g_strCurrentWeapon, sizeof(g_strCurrentWeapon));
 			if(StrEqual(g_strCurrentWeapon, "weapon_pistol_magnum", false) == true)
 			{
-				g_iNickMagnumShotCount[attacker]++;
-				//PrintToChatAll("g_iNickMagnumShotCount = %d", g_iNickMagnumShotCount[attacker]);
-				if((g_iNickMagnumShotCountCap[attacker] / 2) < g_iNickMagnumShotCount[attacker])
+				g_iNickMagnumShotCount[iAttacker]++;
+				//PrintToChatAll("g_iNickMagnumShotCount = %d", g_iNickMagnumShotCount[iAttacker]);
+				if((g_iNickMagnumShotCountCap[iAttacker] / 2) < g_iNickMagnumShotCount[iAttacker])
 				{
-					g_iNickMagnumShotCount[attacker] = (g_iNickMagnumShotCountCap[attacker] / 2);
-					//PrintToChatAll("g_iNickMagnumShotCount After = %d", g_iNickMagnumShotCount[attacker]);
+					g_iNickMagnumShotCount[iAttacker] = (g_iNickMagnumShotCountCap[iAttacker] / 2);
+					//PrintToChatAll("g_iNickMagnumShotCount After = %d", g_iNickMagnumShotCount[iAttacker]);
 				}
-				if(g_iNickMagnumShotCount[attacker] == 3)
+				if(g_iNickMagnumShotCount[iAttacker] == 3)
 				{
 					//PrintToChatAll("Nick Magnum Count = 3, stampede reload = true");
-					g_bCanNickStampedeReload[attacker] = true;
+					g_bCanNickStampedeReload[iAttacker] = true;
 				}
 			}
 		}
 	}
 }
 
-// EventsHurt_VictimNick(Handle:hEvent, attacker, victim)
+// EventsHurt_VictimNick(Handle:hEvent, iAttacker, iVictim)
 // {
-// 	if (IsFakeClient(victim))
+// 	if (IsFakeClient(iVictim))
 // 		return;
 // }
 

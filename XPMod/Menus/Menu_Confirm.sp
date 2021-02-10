@@ -155,7 +155,7 @@ Action:ConfirmationMessageMenuDraw(iClient)
 				case 1: surClass =  "Ninja";
 				case 2: surClass =  "Berserker";
 				case 3: surClass =  "Weapons Expert";
-				case 4: surClass =  "Medic";
+				case 4: surClass =  "Gambler";
 				default: surClass = "NONE";
 			}
 			

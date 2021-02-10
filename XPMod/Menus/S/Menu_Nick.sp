@@ -10,7 +10,7 @@ Action:NickMenuDraw(iClient)
 	g_hMenu_XPM[iClient] = CreateMenu(NickMenuHandler);
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	
-	FormatEx(text, sizeof(text), "Level %d   XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n					Nick's Medic Talents\n ", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+	FormatEx(text, sizeof(text), "Level %d   XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n					Nick's Gambler Talents\n ", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
 	FormatEx(text, sizeof(text), "	[Level %d]	Swindler", g_iSwindlerLevel[iClient]);
@@ -128,7 +128,7 @@ Action:EnhancedMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(EnhancedMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n					Enhanced Pain Killers(Level %d):\n \nLevel 1:\n+6 temp health from pills & shots per level\nRecover +1 health per level when anyone uses shots & pills (+8 at max)\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iEnhancedLevel[iClient]);
+	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n					Enhanced Pain Killers(Level %d):\n \nLevel 1:\n+6 temp health from pills & shots per level\nRecover +1 health per level when anyone uses shots &   \npills (+8 at max)\n \nShoot Survivors with Pitols to heal them...at a cost.\n   Pistols:     +2 HP for Teammate, -1 HP for You\n   Magnum:  +7 HP for Teammate, -3 HP for You\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iEnhancedLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");

@@ -575,7 +575,7 @@ LoadTalents(iClient)
 				}
 				
 				if( (g_iClientLevel[iClient] - (g_iClientLevel[iClient] - g_iSkillPoints[iClient])) <= (g_iClientLevel[iClient] - 1))
-					PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Medic Talents \x05have been loaded.");
+					PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Gambler Talents \x05have been loaded.");
 				else
 					PrintToChat(iClient, "\x03[XPMod] \x05Your abilties will be automatically set as you level.");
 			}
