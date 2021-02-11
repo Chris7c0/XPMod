@@ -524,3 +524,43 @@ DeleteAllMenuParticles(iClient)
 	}
 	
 }
+
+CreateSphere(Float:xyzOrigin[3], Float:fSphereDiameter, iRings, Float:fRingWidth, const int vColor[4], Float:fLifeTime, Float:fZOffset = 50.0)
+{
+	decl Float:fRingDiameter;
+	
+	decl Float:xyzRingPosition[3];
+	xyzRingPosition[0] = xyzOrigin[0];
+	xyzRingPosition[1] = xyzOrigin[1];
+	// Apply the zoffset to raise it or lower it.
+	xyzOrigin[2] += fZOffset;
+	
+	// Create the rings to make the spehere
+	decl i;
+	for(i = 1; i < iRings; i++)
+	{
+		fRingDiameter = 0.0 + fSphereDiameter * Sine( PI * (i / float(iRings)) );
+		xyzRingPosition[2] = xyzOrigin[2] + ( (fSphereDiameter / 2.0) * Cosine( PI * (i / float(iRings)) ) );
+
+		TE_Start("BeamRingPoint");
+		TE_WriteVector("m_vecCenter", xyzRingPosition);
+		TE_WriteFloat("m_flStartRadius",  fRingDiameter);
+		TE_WriteFloat("m_flEndRadius", fRingDiameter + 0.1);
+		TE_WriteNum("m_nModelIndex", g_iSprite_Laser);
+		TE_WriteNum("m_nHaloIndex", g_iSprite_Halo);
+		TE_WriteNum("m_nStartFrame", 0);
+		TE_WriteNum("m_nFrameRate", 15); // 60
+		TE_WriteFloat("m_fLife", fLifeTime);
+		TE_WriteFloat("m_fWidth", fRingWidth);
+		TE_WriteFloat("m_fEndWidth", fRingWidth);
+		TE_WriteFloat("m_fAmplitude",  0.0); // 0.1 // Wiggles it, but makes it look messed up
+		TE_WriteNum("r", vColor[0]);
+		TE_WriteNum("g", vColor[1]);
+		TE_WriteNum("b", vColor[2]);
+		TE_WriteNum("a", vColor[3]);
+		TE_WriteNum("m_nSpeed", 10); // 1
+		TE_WriteNum("m_nFlags", 0);
+		TE_WriteNum("m_nFadeLength", 0);
+		TE_SendToAll();
+	}
+}

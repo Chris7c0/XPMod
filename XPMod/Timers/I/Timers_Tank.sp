@@ -148,7 +148,9 @@ Action:Timer_CreateSmallIceSphere(Handle:timer, any:iClient)
 		return Plugin_Stop;
 	}
 	
-	CreateIceSphere(iClient, 250.0, 30, 10.0, 0.2);
+	decl Float:xyzOrigin[3];
+	GetEntPropVector(iClient, Prop_Send, "m_vecOrigin", xyzOrigin);
+	CreateSphere(xyzOrigin, 250.0, 30, 10.0, {0, 30, 180, 20}, 1.0);
 	
 	return Plugin_Continue;
 }

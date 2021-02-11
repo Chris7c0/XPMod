@@ -283,51 +283,6 @@ UnfreezePlayerByTank(iClient)
 	//ResetSurvivorSpeed(iClient);
 }
 
-CreateIceSphere(iClient, Float:fSphereDiameter, iRings, Float:fRingWidth, Float:fLifeTime, Float:fZOffset = 50.0)
-{
-	new Float:fRings = float(iRings);
-	decl Float:fRingDiameter, Float:xyzOrigin[3];
-	GetEntPropVector(iClient, Prop_Send, "m_vecOrigin", xyzOrigin);
-	
-	
-	new Float:xyzRingPosition[3];
-	
-	xyzRingPosition[0] = xyzOrigin[0];
-	xyzRingPosition[1] = xyzOrigin[1];
-	//Raise the sphere to center it around the player
-	xyzOrigin[2] += fZOffset;
-	
-	// Create the rings to make the spehere
-	decl i;
-	for(i = 1; i < iRings; i++)
-	{
-		fRingDiameter = 0.0 + fSphereDiameter * Sine(PI * (i / fRings));
-		
-		xyzRingPosition[2] = xyzOrigin[2] + ((fSphereDiameter / 2.0) * Cosine(PI * (i / fRings)));
-		
-		TE_Start("BeamRingPoint");
-		TE_WriteVector("m_vecCenter", xyzRingPosition);
-		TE_WriteFloat("m_flStartRadius",  fRingDiameter);
-		TE_WriteFloat("m_flEndRadius", fRingDiameter + 0.1);
-		TE_WriteNum("m_nModelIndex", g_iSprite_Laser);
-		TE_WriteNum("m_nHaloIndex", g_iSprite_Halo);
-		TE_WriteNum("m_nStartFrame", 0);
-		TE_WriteNum("m_nFrameRate", 60);
-		TE_WriteFloat("m_fLife", fLifeTime);
-		TE_WriteFloat("m_fWidth", fRingWidth);
-		TE_WriteFloat("m_fEndWidth", fRingWidth);
-		TE_WriteFloat("m_fAmplitude",  0.1);	//0.5
-		TE_WriteNum("r", 0);
-		TE_WriteNum("g", 30);
-		TE_WriteNum("b", 180);
-		TE_WriteNum("a", 35);
-		TE_WriteNum("m_nSpeed", 1);
-		TE_WriteNum("m_nFlags", 0);
-		TE_WriteNum("m_nFadeLength", 0);
-		TE_SendToAll();
-	}
-}
-
 CreateIceRockDestroyEffect(int iRockEntity)
 {
 	// Find the tank rock entity in the list that will be used to the trail particle entity

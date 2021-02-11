@@ -198,7 +198,8 @@ PrecacheAllTextures()
 	
 	//Precache Sprites
 	g_iSprite_Laser			= PrecacheModel("materials/sprites/laserbeam.vmt");	
-	g_iSprite_Halo 			= PrecacheModel("materials/dev/halo_add_to_screen.vmt");
+	g_iSprite_Halo 			= PrecacheModel("materials/sprites/glow.vmt");
+	//g_iSprite_Halo 			= PrecacheModel("materials/dev/halo_add_to_screen.vmt");
 	g_iSprite_SmokerTongue 	= PrecacheModel("materials/particle/smoker_tongue_beam.vmt");
 	g_iSprite_Arrow 		= PrecacheModel("materials/sprites/640_pain_up.vmt");
 	
