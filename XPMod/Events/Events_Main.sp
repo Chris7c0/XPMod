@@ -553,7 +553,7 @@ Action:JoinTeamCmd(iClient, const String:command[], argc)
 	// This is specifically for preventing user from changing team using M button on cool down
 	if (g_bPlayerInTeamChangeCoolDown[iClient] == true)
 	{
-		PrintToChat(iClient, "\x03[XPMod] \x05You can only change teams once every 4 seconds.");
+		PrintToChat(iClient, "\x03[XPMod] \x05You can only change teams once every 3 seconds.");
 		return Plugin_Stop;
 	}
 
@@ -575,8 +575,8 @@ Action:Event_PlayerChangeTeam(Handle:hEvent, const String:strName[], bool:bDontB
 		return Plugin_Continue;
 	
 	g_bPlayerInTeamChangeCoolDown[iClient] = true;
-	CreateTimer(4.0, TimerResetPlayerChangeTeamCoolDown, iClient, TIMER_FLAG_NO_MAPCHANGE);
-
+	CreateTimer(3.0, TimerResetPlayerChangeTeamCoolDown, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	
 	CreateTimer(0.1, TimerCheckTeam, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 	// We now do not know which infected they have, because they switched teams

@@ -117,6 +117,12 @@ Action:TimerCoachRageCooldown(Handle:timer, any:iClient)
 
 Action:TimerCoachRageRegenTick(Handle:timer, any:iClient)
 {
+	if (RunClientChecks(iClient) == false || 
+		IsFakeClient(iClient) ||
+		IsPlayerAlive(iClient) == false ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS)
+		return Plugin_Stop;
+
 	if(g_iCoachRageRegenCounter[iClient] == 20)
 	{
 		g_iCoachRageRegenCounter[iClient] = 0;

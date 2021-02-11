@@ -371,7 +371,7 @@ ChooseTeamMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 
 		if (g_bPlayerInTeamChangeCoolDown[iClient])
 		{
-			PrintToChat(iClient, "\x03[XPMod] \x05You can only change teams once every 4 seconds.");
+			PrintToChat(iClient, "\x03[XPMod] \x05You can only change teams once every 3 seconds.");
 			ChooseTeamMenuDraw(iClient);
 			return;
 		}
@@ -390,35 +390,26 @@ ChooseTeamMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 
 				if(!IsTeamFull(TEAM_SURVIVORS))
 				{
-					/*if ((!IsClientConnected(iClient)) || (!IsClientInGame(iClient)))
-					{
-						PrintToChat(iClient, "[SM] The player is not avilable anymore.");
-						return;
-					}*/
-					
-					// first we switch to spectators ..
+					// First we switch to spectators
 					ChangeClientTeam(iClient, TEAM_SPECTATORS); 
-					
-					// Search for an empty bot
-					new bot = 1;
-					
-					do { bot++; }
-					while (
-						(bot <= MaxClients && 
-						 RunClientChecks(bot) && 
-						 IsFakeClient(bot) && 
-						 GetClientTeam(bot) == TEAM_SURVIVORS) == false)
 
-					if (iClient < 1 || IsValidEntity(bot) == false)
-						return;
-					
-					// force player to spec humans
-					SDKCall(g_hSDK_SetHumanSpec, bot, iClient); 
-					
-					// force player to take over bot
-					SDKCall(g_hSDK_TakeOverBot, iClient, true);
-					g_iClientTeam[iClient] = 2;
-					PrintToChatAll("\x03%N \x05moved to the \x04survivors", iClient);
+					// Look for a survivor bot then take them over
+					for (int i=1; i <= MaxClients; i++)
+					{
+						if (RunClientChecks(i) && 
+							IsFakeClient(i) &&
+							GetClientTeam(i) == TEAM_SURVIVORS)
+						{
+							// Found a valid Survivor bot, force survivor bot to spectator
+							SDKCall(g_hSDK_SetHumanSpec, i, iClient); 
+							
+							// Force player to take over survivor bot's place
+							SDKCall(g_hSDK_TakeOverBot, iClient, true);
+							g_iClientTeam[iClient] = TEAM_SURVIVORS;
+							PrintToChatAll("\x03%N \x05moved to the \x04survivors", iClient);
+							return;
+						}
+					}					
 				}
 				else
 				{
@@ -440,7 +431,7 @@ ChooseTeamMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 					if(!IsTeamFull(TEAM_INFECTED))
 					{
 						ChangeClientTeam(iClient, TEAM_INFECTED);
-						g_iClientTeam[iClient] = 3;
+						g_iClientTeam[iClient] = TEAM_INFECTED;
 						PrintToChatAll("\x03%N \x05moved to the \x04infected", iClient);
 					}
 					else
@@ -464,8 +455,9 @@ ChooseTeamMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 					ChooseTeamMenuDraw(iClient);
 					return;
 				}
+
 				ChangeClientTeam(iClient, TEAM_SPECTATORS);
-				g_iClientTeam[iClient] = 1;
+				g_iClientTeam[iClient] = TEAM_SPECTATORS;
 				g_bClientSpectating[iClient] = true;
 				PrintToChatAll("\x03%N \x05moved to the \x04specators", iClient);
 				//ChooseTeamMenuDraw(iClient);
