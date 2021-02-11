@@ -279,14 +279,20 @@ SetClientSpeedTank(iClient, &Float:fSpeed)
 bool SetClientSpeedOverrides(iClient, &Float:fSpeed)
 {
 	// If they are an infected ghost, then give them fast speed.
-	if(GetEntData(iClient, g_iOffset_IsGhost, 1) == 1)
+	if(g_iClientTeam[iClient] == TEAM_INFECTED &&
+		GetEntData(iClient, g_iOffset_IsGhost, 1) == 1)
 	{
 		fSpeed = 1.75;
 		return true;
 	}
 
 	// If choking a victim, dont give other movement speed buffs
-	if (g_iChokingVictim[iClient] > 0)
+	if (g_iDirtyLevel[iClient] > 0 &&
+		g_iInfectedCharacter[iClient] == SMOKER &&
+		g_bTalentsConfirmed[iClient] == true &&
+		g_iChokingVictim[iClient] > 0 && 
+		g_iClientTeam[iClient] == TEAM_INFECTED &&
+		g_bSmokerGrappled[g_iChokingVictim[iClient]])
 	{
 		fSpeed = (0.01 * g_iDirtyLevel[iClient])
 		return true;
@@ -294,6 +300,7 @@ bool SetClientSpeedOverrides(iClient, &Float:fSpeed)
 
 	// Jockey Riding speed (set on the victim, not the jockey thats riding)
 	if (g_bJockeyGrappled[iClient] && 
+		g_iClientTeam[iClient] == TEAM_SURVIVORS &&
 		(g_fJockeyRideSpeed[iClient] != 1.0 || g_fJockeyRideSpeedVanishingActBoost[iClient] > 0.0))
 	{
 		fSpeed = g_fJockeyRideSpeed[iClient] + g_fJockeyRideSpeedVanishingActBoost[iClient];
@@ -301,14 +308,16 @@ bool SetClientSpeedOverrides(iClient, &Float:fSpeed)
 	}
 
 	// Lethal Injection poison slow
-	if (g_bIsHunterPoisoned[iClient])
+	if (g_bIsHunterPoisoned[iClient] &&
+		g_iClientTeam[iClient] == TEAM_SURVIVORS)
 	{
 		fSpeed = 0.25;
 		return true;
 	}
 
 	// Spitter adhession spit
-	if (g_fAdhesiveAffectAmount[iClient] > 0)
+	if (g_fAdhesiveAffectAmount[iClient] > 0 &&
+		g_iClientTeam[iClient] == TEAM_SURVIVORS)
 	{
 		fSpeed = (1.0 - g_fAdhesiveAffectAmount[iClient]);
 		return true;
