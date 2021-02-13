@@ -56,74 +56,153 @@ bool OnPlayerRunCmd_Louis(iClient, &iButtons)
 	return false;
 }
 
-// OGFSurvivorReload_Louis(iClient, const char[] currentweapon, ActiveWeaponID, CurrentClipAmmo)
-// {
-// 	// if((StrEqual(currentweapon, "weapon_pistol_magnum", false) == true) && (g_iMagnumLevel[iClient] > 0) && (CurrentClipAmmo == 8))
-// 	// {
-// 	// 	SetEntData(ActiveWeaponID, g_iOffset_Clip1, 3, true);
-// 	// 	g_bClientIsReloading[iClient] = false;
-// 	// 	g_iReloadFrameCounter[iClient] = 0;
-// 	// 	//PrintToChatAll("Setting Magnum Clip");
-// 	// }
-// 	// else if((StrEqual(currentweapon, "weapon_pistol", false) == true) && (g_iRiskyLevel[iClient] > 0) && ((CurrentClipAmmo == 15) || (CurrentClipAmmo == 30)))
-// 	// {
-// 	// 	if(CurrentClipAmmo == 15)
-// 	// 	{
-// 	// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iRiskyLevel[iClient] * 6)), true);
-// 	// 	}
-// 	// 	else if(CurrentClipAmmo == 30)
-// 	// 	{
-// 	// 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iRiskyLevel[iClient] * 12)), true);
-// 	// 	}
-// 	// 	g_bClientIsReloading[iClient] = false;
-// 	// 	g_iReloadFrameCounter[iClient] = 0;
-// 	// }
-// }
+OGFSurvivorReload_Louis(iClient, const char[] currentweapon, ActiveWeaponID, CurrentClipAmmo)
+{
+	if (g_iChosenSurvivor[iClient] != LOUIS || 
+		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
+		g_bTalentsConfirmed[iClient] == false ||
+		RunClientChecks(iClient) == false ||
+		IsFakeClient(iClient))
+		return;
 
-// EventsHurt_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
-// {
-	
-// }
+	if (g_iLouisTalent1Level[iClient] > 0)
+	{
+		PrintToChat(iClient, "LOUIS currentweapon: %s, CurrentClipAmmo: %i", currentweapon, CurrentClipAmmo);
+		if (CurrentClipAmmo > 0 &&
+			(StrContains(currentweapon, "weapon_smg", false) != -1 || StrEqual(currentweapon, "weapon_pistol", false) == true) )
+		{
+			SetEntData(ActiveWeaponID, g_iOffset_Clip1, CurrentClipAmmo + (g_iLouisTalent1Level[iClient] * 10), true);
+			g_bClientIsReloading[iClient] = false;
+			g_iReloadFrameCounter[iClient] = 0;
+		}
+	}	
+}
 
-// EventsHurt_VictimNick(Handle:hEvent, iAttacker, iVictim)
+EventsHurt_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
+{
+	if (g_iChosenSurvivor[iAttacker] != LOUIS || 
+		g_iClientTeam[iAttacker] != TEAM_SURVIVORS ||
+		g_bTalentsConfirmed[iAttacker] == false ||
+		RunClientChecks(iAttacker) == false ||
+		IsFakeClient(iAttacker))
+		return;
+
+	if (g_iLouisTalent2Level[iAttacker] <= 0)
+	{
+		decl String:weaponclass[32];
+		GetEventString(hEvent,"weapon",weaponclass,32);
+		PrintToChatAll("HURT \x03-class of gun: \x01%s",weaponclass);
+		// Check for headshot and the SMGs or Pistols then give more damage
+		if (GetEventBool(hEvent, "headshot") &&
+			(StrContains(weaponclass,"SMG",false) != -1 || 
+			StrContains(weaponclass,"SubMachine",false) != -1 || 
+			StrContains(weaponclass,"CPistol",false) != -1))
+		{
+			new iVictimHealth = GetEntProp(iVictim, Prop_Data, "m_iHealth");
+			new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
+			new iExtraDamage = RoundToNearest(float(iDmgHealth) * (g_iLouisTalent2Level[iAttacker] * 0.05));
+			SetEntProp(iVictim, Prop_Data, "m_iHealth", iVictimHealth - iExtraDamage);
+			PrintToChat(iAttacker, "You did %i extra damage", iExtraDamage);
+		}
+	}
+}
+
+// EventsHurt_VictimLouis(Handle:hEvent, iAttacker, iVictim)
 // {
 // 	if (IsFakeClient(iVictim))
 // 		return;
 // }
 
-// EventsDeath_AttackerNick(Handle:hEvent, iAttacker, iVictim)
-// {
-// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
-// }
+EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
+{
+	if (g_iChosenSurvivor[iAttacker] != LOUIS ||
+		g_bTalentsConfirmed[iAttacker] == false ||
+		g_iClientTeam[iAttacker] != TEAM_SURVIVORS ||
+		RunClientChecks(iAttacker) == false ||
+		IsFakeClient(iAttacker) == true)
+		return;
+
+	if (g_iLouisTalent2Level[iAttacker] > 0)
+	{
+		decl String:weaponclass[32];
+		GetEventString(hEvent,"weapon",weaponclass,32);
+		PrintToChatAll("DEATH \x03-class of gun: \x01%s",weaponclass);
+
+		// Check for headshot and the SMGs or Pistols then give appropriate boosts
+		if (GetEventBool(hEvent, "headshot") &&
+			(StrContains(weaponclass,"SMG",false) != -1 || 
+			StrContains(weaponclass,"SubMachine",false) != -1 || 
+			StrContains(weaponclass,"CPistol",false) != -1))
+		{
+			// CI Headshot
+			if (iVictim < 1)
+			{
+				PrintToChat(iAttacker, "LOUIS CI headshot kill");
+
+				// Give health
+				new iAttackerMaxHealth = GetEntProp(iAttacker, Prop_Data, "m_iMaxHealth");
+				new iAttackerHealth = GetEntProp(iAttacker, Prop_Data, "m_iHealth");
+				if (iAttackerHealth + 1 <= iAttackerMaxHealth)
+					SetEntProp(iAttacker, Prop_Data, "m_iHealth", iAttackerHealth + 1);
+
+				// Increase Clip Ammo
+				new iActiveWeaponID = GetEntDataEnt2(iAttacker, g_iOffset_ActiveWeapon);
+				new iCurrentClipAmmo = 0;
+				if (IsValidEntity(iActiveWeaponID))
+				{
+					iCurrentClipAmmo = GetEntProp(iActiveWeaponID, Prop_Data, "m_iClip1");
+					SetEntData(iActiveWeaponID, g_iOffset_Clip1, iCurrentClipAmmo + (g_iLouisTalent2Level[iAttacker] * 2), true);
+				}
+				
+				// g_iCoachCIHeadshotCounter[iAttacker]++;
+				// if(g_bCoachInCISpeed[iAttacker] == false)
+				// {
+				// 	g_bCoachInCISpeed[iAttacker] = true;
+				// 	SetClientSpeed(iAttacker);
+				// 	CreateTimer(5.0, TimerCoachCIHeadshotSpeedReset, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
+				// }
+			}
+			
+			// SI Headshot
+			if (iVictim > 0)
+			{
+				PrintToChat(iAttacker, "LOUIS SI headshot kill");
+
+				// Give health
+				new iAttackerMaxHealth = GetEntProp(iAttacker, Prop_Data, "m_iMaxHealth");
+				new iAttackerHealth = GetEntProp(iAttacker, Prop_Data, "m_iHealth");
+				if (iAttackerHealth + 5 <= iAttackerMaxHealth)
+					SetEntProp(iAttacker, Prop_Data, "m_iHealth", iAttackerHealth + 5);
+
+				// Increase Clip Ammo
+				new iActiveWeaponID = GetEntDataEnt2(iAttacker, g_iOffset_ActiveWeapon);
+				new iCurrentClipAmmo = 0;
+				if (IsValidEntity(iActiveWeaponID))
+				{
+					iCurrentClipAmmo = GetEntProp(iActiveWeaponID,Prop_Data,"m_iClip1");
+					SetEntData(iActiveWeaponID, g_iOffset_Clip1, iCurrentClipAmmo + (g_iLouisTalent2Level[iAttacker] * 5), true);
+				}
+
+				// if(g_iHomerunLevel[iAttacker] > 1 && g_bCoachInSISpeed[iAttacker] == false)
+				// {
+				// 	g_iCoachSIHeadshotCounter[iAttacker]++;
+				// 	g_bCoachInSISpeed[iAttacker] = true;
+				// 	SetClientSpeed(iAttacker);
+				// 	CreateTimer(10.0, TimerCoachSIHeadshotSpeedReset, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
+				// }
+
+				// if(g_bWreckingChargeRetrigger[iAttacker] == true)
+				// 	CreateTimer(0.5, TimerWreckingChargeRetrigger, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
+			}
+		}
+	}
+}
 
 // EventsDeath_VictimLouis(Handle:hEvent, iAttacker, iVictim)
 // {
 // 	if (g_iClientTeam[iVictim] != TEAM_SURVIVORS)
 // 		return;
-
 // 	SuppressNeverUsedWarning(hEvent, iAttacker);
-	
-// 	// Nick's DesperateMeasuresStack
-// 	if(g_bWasClientDownOnDeath[iVictim] == true)
-// 		g_bWasClientDownOnDeath[iVictim] = false;
-// 	else
-// 	{
-// 		g_iNickDesperateMeasuresStack++;
-
-// 		for(int i=1; i <= MaxClients; i++)
-// 		{
-// 			if (RunClientChecks(i) && 
-// 				g_iClientTeam[i]==TEAM_SURVIVORS && 
-// 				IsPlayerAlive(i) == true)
-// 			{
-// 				if(g_iNickDesperateMeasuresStack <= 3)
-// 				{
-// 					SetClientSpeed(i);
-// 					PrintHintText(i, "A teammate has died, your senses sharpen.");
-// 				}
-// 			}
-// 		}
-// 	}
 // }
 
 LouisTeleport(iClient)

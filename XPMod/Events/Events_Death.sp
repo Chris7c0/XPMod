@@ -61,6 +61,7 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	EventsDeath_AttackerCoach(hEvent, iAttacker, iVictim);
 	EventsDeath_AttackerEllis(hEvent, iAttacker, iVictim);
 	// EventsDeath_AttackerNick(hEvent, iAttacker, iVictim);
+	EventsDeath_AttackerLouis(hEvent, iAttacker, iVictim);
 	
 	// Survivor Victims //////////////////////////////////////////////////////////////////////////////
 	// EventsDeath_VictimBill(hEvent, iAttacker, iVictim);
@@ -68,6 +69,7 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	EventsDeath_VictimCoach(hEvent, iAttacker, iVictim);
 	// EventsDeath_VictimEllis(hEvent, iAttacker, iVictim);
 	EventsDeath_VictimNick(hEvent, iAttacker, iVictim);
+	//EventsDeath_VictimLouis(hEvent, iAttacker, iVictim);
 
 	// Reset all the variables that should be here
 	Event_DeathResetAllVariables(iAttacker, iVictim);

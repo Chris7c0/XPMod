@@ -123,6 +123,7 @@ public OnGameFrame()
 					case COACH:		OGFSurvivorReload_Coach(iClient, strCurrentWeapon, iActiveWeaponID, iCurrentClipAmmo, iOffset_Ammo);
 					case ELLIS:		OGFSurvivorReload_Ellis(iClient, strCurrentWeapon, iActiveWeaponID, iCurrentClipAmmo, iOffset_Ammo);
 					case NICK:		OGFSurvivorReload_Nick(iClient, strCurrentWeapon, iActiveWeaponID, iCurrentClipAmmo);
+					case LOUIS:		OGFSurvivorReload_Louis(iClient, strCurrentWeapon, iActiveWeaponID, iCurrentClipAmmo);
 				}
 
 				if(g_iReloadFrameCounter[iClient] == 300)

@@ -802,8 +802,6 @@ EventsDeath_AttackerCoach(Handle:hEvent, iAttacker, iVictim)
 		IsFakeClient(iAttacker) == true)
 		return;
 
-	SuppressNeverUsedWarning(hEvent);
-
 	decl String:weaponclass[32];
 	GetEventString(hEvent,"weapon",weaponclass,32);
 	//PrintToChatAll("\x03-class of gun: \x01%s",weaponclass);

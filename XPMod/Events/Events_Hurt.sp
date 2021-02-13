@@ -92,6 +92,7 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 			case COACH:		EventsHurt_AttackerCoach(hEvent, iAttacker, iVictim);
 			case ELLIS:		EventsHurt_AttackerEllis(hEvent, iAttacker, iVictim);
 			case NICK:		EventsHurt_AttackerNick(hEvent, iAttacker, iVictim);
+			case LOUIS:		EventsHurt_AttackerLouis(hEvent, iAttacker, iVictim);
 		}
 	}
 	if (g_iClientTeam[iVictim] == TEAM_SURVIVORS)
@@ -103,6 +104,7 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 			// case COACH:		EventsHurt_VictimCoach(hEvent, iAttacker, iVictim);
 			case ELLIS:		EventsHurt_VictimEllis(hEvent, iAttacker, iVictim);
 			// case NICK:		EventsHurt_VictimNick(hEvent, iAttacker, iVictim);
+			// case LOUIS:		EventsHurt_VictimLouis(hEvent, iAttacker, iVictim);
 		}
 	}
 
