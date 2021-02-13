@@ -1,3 +1,46 @@
+TalentsLoad_Smoker(iClient)
+{
+	//Set One Time Convars
+	// This should only be set on first spawn for this client
+	if(g_iInfectedConvarsSet[iClient] == false)
+	{
+		g_iInfectedConvarsSet[iClient] = true;
+		
+		//Smoker
+		if(g_iClientTeam[iClient] == TEAM_INFECTED)
+		{
+			if(g_iEnvelopmentLevel[iClient] > 0)
+			{
+				g_iMaxTongueLength += g_iEnvelopmentLevel[iClient];
+				SetConVarFloat(FindConVar("tongue_range"), float(750 + (g_iMaxTongueLength * 25)), false, false);
+				SetConVarFloat(FindConVar("tongue_fly_speed"), float(1000 + (g_iMaxTongueLength * 30)),false,false);
+			}
+			if(g_iDirtyLevel[iClient] > 0)
+			{
+				g_iMaxDragSpeed += g_iDirtyLevel[iClient];
+				SetConVarFloat(FindConVar("tongue_victim_max_speed"), float(175 + (g_iMaxDragSpeed * 8)), false, false);
+			}
+			// if(g_iPredatorialLevel[iClient] > 0)
+			// {
+			// 	g_iStumbleRadius += (g_iPredatorialLevel[iClient] * 8);
+			// 	SetConVarInt(FindConVar("z_pounce_stumble_radius"), g_iStumbleRadius, false, false);
+			// 	// PrintToChatAll("Stumble radius = %i", g_iStumbleRadius);
+			// }
+			// if(g_iMutatedLevel[iClient] > 0)
+			// {
+			// 	g_iStumbleRadius += (g_iMutatedLevel[iClient] * 8);
+			// 	SetConVarInt(FindConVar("z_pounce_stumble_radius"), g_iStumbleRadius, false, false);
+			// 	// PrintToChatAll("Stumble radius = %i", g_iStumbleRadius);
+			// }
+		}
+	}
+
+	if(g_iEnvelopmentLevel[iClient] > 0)
+		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Smoker Talents \x05have been loaded.");
+	if(g_iNoxiousLevel[iClient] > 0)
+		SetClientSpeed(iClient);
+}
+
 OnGameFrame_Smoker(iClient)
 {
 	if(g_iDirtyLevel[iClient] > 0 && g_iSmokerTransparency[iClient] != 0)

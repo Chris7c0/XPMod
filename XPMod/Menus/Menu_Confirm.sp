@@ -148,14 +148,15 @@ Action:ConfirmationMessageMenuDraw(iClient)
 			CheckMenu(iClient);
 			g_hMenu_XPM[iClient] = CreateMenu(ConfirmationMessageMenuHandler);
 			
-			decl String:surClass[16];
+			decl String:surClass[32];
 			switch(g_iChosenSurvivor[iClient])
 			{
-				case 0: surClass =  "Support";
-				case 1: surClass =  "Ninja";
-				case 2: surClass =  "Berserker";
-				case 3: surClass =  "Weapons Expert";
-				case 4: surClass =  "Gambler";
+				case BILL: surClass =  "Bill - Support";
+				case ROCHELLE: surClass =  "Rochelle - Ninja";
+				case COACH: surClass =  "Coach - Berserker";
+				case ELLIS: surClass =  "Ellis - Weapons Expert";
+				case NICK: surClass =  "Nick - Gambler";
+				case LOUIS: surClass =  "Louis - Disruptor";
 				default: surClass = "NONE";
 			}
 			

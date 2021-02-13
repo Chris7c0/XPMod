@@ -75,6 +75,7 @@
 #include "XPMod/Menus/S/Menu_Ellis.sp"
 #include "XPMod/Menus/S/Menu_Nick.sp"
 #include "XPMod/Menus/S/Menu_Bill.sp"
+#include "XPMod/Menus/S/Menu_Louis.sp"
 #include "XPMod/Menus/I/Menu_Infected.sp"
 #include "XPMod/Menus/I/Menu_Boomer.sp"
 #include "XPMod/Menus/I/Menu_Smoker.sp"
@@ -103,6 +104,7 @@
 #include "XPMod/Talents/S/Talents_Ellis.sp"
 #include "XPMod/Talents/S/Talents_Nick.sp"
 #include "XPMod/Talents/S/Talents_Bill.sp"
+#include "XPMod/Talents/S/Talents_Louis.sp"
 #include "XPMod/Talents/I/Enhance_CI.sp"
 #include "XPMod/Talents/I/Talents_Boomer.sp"
 #include "XPMod/Talents/I/Talents_Smoker.sp"
@@ -128,6 +130,7 @@
 #include "XPMod/Timers/S/Timers_Ellis.sp"
 #include "XPMod/Timers/S/Timers_Nick.sp"
 #include "XPMod/Timers/S/Timers_Bill.sp"
+#include "XPMod/Timers/S/Timers_Louis.sp"
 #include "XPMod/Timers/I/Timers_Boomer.sp"
 #include "XPMod/Timers/I/Timers_Smoker.sp"
 #include "XPMod/Timers/I/Timers_Hunter.sp"
@@ -437,6 +440,10 @@ ResetVariablesForMap(iClient)
 	//Nick 
 	g_bNickIsGettingBeatenUp[iClient] = false;
 	g_iNickDesperateMeasuresStack = 0;
+
+	//Louis
+	g_bLouisTeleportCoolingDown[iClient] = false;
+	g_iLouisTeleportChargeUses[iClient] = 0;
 	
 	//Infected Talents
 	g_iInfectedConvarsSet[iClient] = false;
@@ -542,10 +549,11 @@ ResetAllVariables(iClient)
 	g_bIsClientDown[iClient] = false;
 	pop(iClient);
 	g_bDoesClientAttackFast[iClient] = false;
-	
+
 	//Reset Tank (Needed here for changing teams)
 	g_iTankChosen[iClient] = TANK_NOT_CHOSEN;
 	ResetAllTankVariables(iClient);
+	
 }
 
 DeleteAllGlobalTimerHandles(iClient)
@@ -559,6 +567,7 @@ DeleteAllGlobalTimerHandles(iClient)
 	delete g_hTimer_HunterPoison[iClient];
 	delete g_hTimer_NickLifeSteal[iClient];
 	delete g_hTimer_BillDropBombs[iClient];
+	delete g_hTimer_LouisTeleportRegenerate[iClient];
 	delete g_hTimer_AdhesiveGooReset[iClient];
 	delete g_hTimer_DemiGooReset[iClient];
 	delete g_hTimer_ResetGlow[iClient];

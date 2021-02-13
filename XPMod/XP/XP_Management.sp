@@ -356,6 +356,14 @@ Action:ResetSurvivorTalents(iClient)
 	g_iEnhancedLevel[iClient] = 0;
 	g_iRiskyLevel[iClient] = 0;
 	g_iDesperateLevel[iClient] = 0;
+
+	//Louis
+	g_iLouisTalent1Level[iClient] = 0;
+	g_iLouisTalent2Level[iClient] = 0;
+	g_iLouisTalent3Level[iClient] = 0;
+	g_iLouisTalent4Level[iClient] = 0;
+	g_iLouisTalent5Level[iClient] = 0;
+	g_iLouisTalent6Level[iClient] = 0;
 	
 	//reset all abilities///////////////////////////////////////////////////////////////////////////
 	//Turn of everything
@@ -461,6 +469,7 @@ AutoLevelUpSurivovor(iClient)
 		case COACH:		LevelUpAllCoach(iClient);
 		case ELLIS:		LevelUpAllEllis(iClient);
 		case NICK:		LevelUpAllNick(iClient);
+		case LOUIS:		LevelUpAllLouis(iClient);
 	}
 }
 
@@ -617,6 +626,22 @@ LevelUpAllNick(iClient)
 		g_iEnhancedLevel, \
 		g_iMagnumLevel, \
 		g_iDesperateLevel \
+		);
+}
+
+LevelUpAllLouis(iClient)
+{
+	if (g_iChosenSurvivor[iClient] != LOUIS)
+		g_iChosenSurvivor[iClient] = LOUIS;
+
+	AutoLevelUpSurvivorTalents( \
+		iClient, \
+		g_iLouisTalent1Level, \
+		g_iLouisTalent2Level, \
+		g_iLouisTalent3Level, \
+		g_iLouisTalent4Level, \
+		g_iLouisTalent5Level, \
+		g_iLouisTalent6Level \
 		);
 }
 

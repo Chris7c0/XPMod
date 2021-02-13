@@ -1,3 +1,54 @@
+TalentsLoad_Bill(iClient)
+{
+	if (g_iGhillieLevel[iClient] > 0 || g_iPromotionalLevel[iClient] > 0)
+	{
+		if (g_bGameFrozen == false)
+		{
+			SetEntityRenderMode(iClient, RenderMode:3);
+			SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (((float(g_iGhillieLevel[iClient]) * 0.13) + ((float(g_iPromotionalLevel[iClient]) * 0.04)))))));
+			if(g_iPromotionalLevel[iClient] > 0)	//disable glow
+			{
+				SetEntProp(iClient, Prop_Send, "m_iGlowType", 3);
+				SetEntProp(iClient, Prop_Send, "m_nGlowRange", 0);
+				SetEntProp(iClient, Prop_Send, "m_glowColorOverride", 1);
+				ChangeEdictState(iClient, 12);
+			}
+		}
+	}
+	
+	if(g_iWillLevel[iClient] > 0)
+	{
+		SetEntProp(iClient,Prop_Data,"m_iMaxHealth", 100 + (g_iWillLevel[iClient]*5) + (g_iDiehardLevel[iClient]*15) + (g_iCoachTeamHealthStack * 5));
+		new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
+		if(currentHP > (100 + (g_iWillLevel[iClient]*5) + (g_iDiehardLevel[iClient]*15) + (g_iCoachTeamHealthStack * 5)))
+			SetEntProp(iClient,Prop_Data,"m_iHealth", 100 + (g_iWillLevel[iClient]*5) + (g_iDiehardLevel[iClient]*15) + (g_iCoachTeamHealthStack * 5));
+		if(g_bTalentsGiven[iClient] == false)
+		{
+			SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + (g_iWillLevel[iClient]*5) + (g_iDiehardLevel[iClient]*15) + (g_iCoachTeamHealthStack * 5));
+			
+			//Set Convar for crawling speed
+			g_iCrawlSpeedMultiplier += g_iWillLevel[iClient] * 5;
+			SetConVarInt(FindConVar("survivor_crawl_speed"), (15 + g_iCrawlSpeedMultiplier),false,false);
+			SetConVarInt(FindConVar("survivor_allow_crawling"),1,false,false);
+		}
+	}
+	
+	if(g_bTalentsGiven[iClient] == false && g_iPromotionalLevel[iClient] > 0)
+	{
+		if(g_iPromotionalLevel[iClient]==1 || g_iPromotionalLevel[iClient]==2)
+			g_iClientBindUses_2[iClient] = 2;
+		else if(g_iPromotionalLevel[iClient]==3 || g_iPromotionalLevel[iClient]==4)
+			g_iClientBindUses_2[iClient] = 1;
+		else
+			g_iClientBindUses_2[iClient] = 0;
+	}
+	
+	if((g_iClientLevel[iClient] - (g_iClientLevel[iClient] - g_iSkillPoints[iClient])) <= (g_iClientLevel[iClient] - 1))
+		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Support Talents \x05have been loaded.");
+	else
+		PrintToChat(iClient, "\x03[XPMod] \x05Your abilties will be automatically set as you level.");
+}
+
 OnGameFrame_Bill(iClient)
 {
 	if(g_bGameFrozen == false)

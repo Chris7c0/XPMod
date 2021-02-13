@@ -205,6 +205,11 @@ SetSurvivorModel(iClient)
 			//SetEntProp(iClient, Prop_Send, "m_survivorCharacter", 0);
 			SetEntityModel(iClient, "models/survivors/survivor_gambler.mdl");
 		}
+		case LOUIS:
+		{
+			//SetEntProp(iClient, Prop_Send, "m_survivorCharacter", 0);
+			SetEntityModel(iClient, "models/survivors/survivor_manager.mdl");
+		}
 
 		// NOTE, when adding zoey here, there could be issues...
 		// This SCS survivor_chat_select plugin changes to a differnt model

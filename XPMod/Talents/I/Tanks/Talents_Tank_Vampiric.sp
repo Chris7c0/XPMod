@@ -60,8 +60,6 @@ ResetAllTankVariables_Vampiric(iClient)
 	g_bIsVampiricTankFlying[iClient] = false;
 	g_bCanVampiricTankWingDash[iClient] = false;
 	g_iVampiricTankWingDashChargeCount[iClient] = 0;
-
-	delete g_hTimer_WingDashChargeRegenerate[iClient];
 }
 
 // SetupTankForBot_Vampiric(iClient)

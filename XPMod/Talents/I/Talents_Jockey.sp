@@ -1,3 +1,25 @@
+TalentsLoad_Jockey(iClient)
+{
+	//g_iJockeyVictim[iClient] = -1;
+	if(g_iMutatedLevel[iClient] > 0)
+		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Jockey Talents \x05have been loaded.");
+	
+	if(g_iUnfairLevel[iClient] > 0)
+	{
+		if(g_bHasInfectedHealthBeenSet[iClient] == false)
+		{
+			g_bHasInfectedHealthBeenSet[iClient] = true;
+			SetEntProp(iClient,Prop_Data,"m_iHealth", 325 + (g_iUnfairLevel[iClient] * 35));
+			SetEntProp(iClient,Prop_Data,"m_iMaxHealth", 325 + (g_iUnfairLevel[iClient] * 35));
+		}
+		
+		SetClientSpeed(iClient);
+		g_bCanJockeyPee[iClient] = true;
+	}
+
+	g_bCanJockeyJump[iClient] = false;
+}
+
 OnGameFrame_Jockey(iClient)
 {
 	if((g_iUnfairLevel[iClient] > 0) && (g_bJockeyIsRiding[iClient] == true))

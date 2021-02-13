@@ -100,11 +100,12 @@ Action:TopMenuDraw(iClient)
 	if(g_iClientTeam[iClient] == TEAM_SURVIVORS)
 		switch(g_iChosenSurvivor[iClient])
 		{
-			case 0: SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel  %d  Support\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-			case 1: SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel  %d  Ninja\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-			case 2: SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel  %d  Berserker\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-			case 3: SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel %d Weapon Expert\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-			case 4: SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel  %d  Gambler\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			case BILL: 		SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel  %d  Support\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			case ROCHELLE:	SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel  %d  Ninja\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			case COACH:		SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel  %d  Berserker\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			case ELLIS:		SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel %d Weapon Expert\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			case NICK:		SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel  %d  Gambler\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			case LOUIS:		SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel  %d  Disruptor\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 		}
 	else if(g_iClientTeam[iClient] == TEAM_INFECTED)
 		SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel  %d  Infected\nXP:   %d/%d\n \nClass 1) %s\nClass 2) %s\nClass 3) %s\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);

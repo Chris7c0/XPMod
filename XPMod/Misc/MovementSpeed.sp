@@ -26,6 +26,7 @@ SetClientSpeed(iClient)
 		SetClientSpeedCoach(iClient, fSpeed);
 		SetClientSpeedEllis(iClient, fSpeed);
 		SetClientSpeedNick(iClient, fSpeed);
+		SetClientSpeedLouis(iClient, fSpeed);
 	}
 	// Infected
 	if (g_iClientTeam[iClient] == TEAM_INFECTED)
@@ -124,7 +125,7 @@ SetClientSpeedEllis(iClient, &Float:fSpeed)
 	if (g_iTankCounter > 0)
 		fSpeed += (g_iTankCounter * g_iJamminLevel[iClient] * 0.03);
 	
-	PrintToChat(iClient, "SetClientSpeedEllis: %f, g_iTankCounter: %i", fSpeed, g_iTankCounter);
+	//PrintToChat(iClient, "SetClientSpeedEllis: %f, g_iTankCounter: %i", fSpeed, g_iTankCounter);
 }
 
 SetClientSpeedNick(iClient, &Float:fSpeed)
@@ -147,6 +148,20 @@ SetClientSpeedNick(iClient, &Float:fSpeed)
 	
 	//PrintToChat(iClient, "SetClientSpeedNick: %f", fSpeed);
 }
+
+SetClientSpeedLouis(iClient, &Float:fSpeed)
+{
+	if (g_bTalentsConfirmed[iClient] == false ||
+		g_iChosenSurvivor[iClient] != LOUIS)
+		return;
+
+	// Magnum Stampede
+	if (g_iLouisTalent1Level[iClient] > 0)
+		fSpeed += (g_iLouisTalent1Level[iClient] * 0.02);
+	
+	PrintToChat(iClient, "SetClientSpeedLouis: %f", fSpeed);
+}
+
 
 SetClientSpeedNewPlayer(iClient, &Float:fSpeed)
 {

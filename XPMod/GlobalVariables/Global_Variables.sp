@@ -60,33 +60,56 @@ new Float:PI = 3.1415926;
 new Float:EMPTY_VECTOR[3] = 0.0;
 
 //Survivor Character ID Definitions
-#define BILL			0
-#define ROCHELLE		1
-#define COACH			2
-#define ELLIS			3
-#define NICK			4
+#define UNKNOWN_SURVIVOR    -1
+#define BILL			    0
+#define ROCHELLE		    1
+#define COACH			    2
+#define ELLIS			    3
+#define NICK			    4
+#define LOUIS     	        5
 
 // These are the actual game values (change to later)
+// #define UNKNOWN_SURVIVOR    -1
 // #define     NICK     	0
-// #define     ROCHELLE    1
+// #define     ROCHELLE     1
 // #define     COACH     	2
 // #define     ELLIS     	3
 // #define     BILL     	4
 // #define     ZOEY     	5
-// #define     FRANCIS     6
+// #define     FRANCIS      6
 // #define     LOUIS     	7
 
 new String:SURVIVOR_NAME[][] =          {"BILL", 
                                         "ROCHELLE",
                                         "COACH",
                                         "ELLIS",
-                                        "NICK"}
+                                        "NICK",
+                                        "LOUIS"}
 
 new String:SURVIVOR_CLASS_NAME[][] =    {"SUPPORT", 
                                         "NINJA",
                                         "BERSERKER",
                                         "WEAPONS EXPERT",
-                                        "GAMBLER"}
+                                        "GAMBLER",
+                                        "DISRUPTOR"}
+
+// new String:SURVIVOR_NAME[][] =          {"BILL", 
+//                                         "ROCHELLE",
+//                                         "COACH",
+//                                         "ELLIS",
+//                                         "NICK",
+//                                         "ZOEY",
+//                                         "FRANCIS",
+//                                         "LOUIS"}
+
+// new String:SURVIVOR_CLASS_NAME[][] =    {"SUPPORT", 
+//                                         "NINJA",
+//                                         "BERSERKER",
+//                                         "WEAPONS EXPERT",
+//                                         "GAMBLER",
+//                                         "HEALER",
+//                                         "GRENADIER",
+//                                         "DISRUPTOR"}
 
 //Infected Class ID Definitions
 #define UNKNOWN_INFECTED	0

@@ -46,6 +46,13 @@ new g_iEnhancedLevel[MAXPLAYERS + 1];
 new g_iRiskyLevel[MAXPLAYERS + 1];
 new g_iDesperateLevel[MAXPLAYERS + 1];
 
+//Louis Talent Levels
+new g_iLouisTalent1Level[MAXPLAYERS + 1];
+new g_iLouisTalent2Level[MAXPLAYERS + 1];
+new g_iLouisTalent3Level[MAXPLAYERS + 1];
+new g_iLouisTalent4Level[MAXPLAYERS + 1];
+new g_iLouisTalent5Level[MAXPLAYERS + 1];
+new g_iLouisTalent6Level[MAXPLAYERS + 1];
 
 
 ////////////////////////////////     INFECTED    /////////////////////////////////////

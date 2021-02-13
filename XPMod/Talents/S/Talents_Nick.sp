@@ -1,3 +1,68 @@
+TalentsLoad_Nick(iClient)
+{
+	g_bDivineInterventionQueued[iClient] = false;
+	g_iNickMagnumShotCountCap[iClient] = 0;
+	g_bCanNickStampedeReload[iClient] = false;
+	g_bNickSwindlerHealthCapped[iClient] = false;
+	g_iNickSwindlerBonusHealth[iClient] = 0;
+	g_bRamboModeActive[iClient] = false;
+	new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
+	new maxHP = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
+	
+	if((g_iKitsUsed * (g_iSwindlerLevel[iClient] * 3)) < 100)
+	{
+		SetEntProp(iClient,Prop_Data,"m_iMaxHealth", maxHP + (g_iKitsUsed * (g_iSwindlerLevel[iClient] * 3)));
+		SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + (g_iKitsUsed * (g_iSwindlerLevel[iClient] * 3)));
+	}
+	else if((g_iKitsUsed * (g_iSwindlerLevel[iClient] * 3)) > 100)
+	{
+		SetEntProp(iClient,Prop_Data,"m_iMaxHealth", maxHP + 100);
+		SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + 100);
+	}
+	//PrintToChatAll("MaxHP Post = %d", maxHP);
+	/*
+	SetEntProp(iClient,Prop_Data,"m_iMaxHealth", g_iNickMaxHealth[iClient]);
+	new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
+	if(currentHP > g_iNickMaxHealth[iClient])
+		SetEntProp(iClient,Prop_Data,"m_iHealth", g_iNickMaxHealth[iClient]);
+	*/
+	
+	if(g_iMagnumLevel[iClient] > 0)
+	{
+		SetClientSpeed(iClient);
+	}
+		
+	
+	if(g_bTalentsGiven[iClient] == false)
+		g_iClientBindUses_1[iClient] = 3 - RoundToCeil(g_iMagnumLevel[iClient] * 0.5);
+	
+	if(g_iDesperateLevel[iClient] > 0)
+	{
+		if(g_iClientBindUses_2[iClient] < 3)
+			g_iPID_NickCharge3[iClient] = WriteParticle(iClient, "nick_ulti_heal_charge3", 0.0);
+		if(g_iClientBindUses_2[iClient] < 2)
+			g_iPID_NickCharge2[iClient] = WriteParticle(iClient, "nick_ulti_heal_charge2", 0.0);
+		if(g_iClientBindUses_2[iClient] < 1)
+			g_iPID_NickCharge1[iClient] = WriteParticle(iClient, "nick_ulti_heal_charge1", 0.0);
+	}
+	if(g_iRiskyLevel[iClient] == 5)
+	{
+		g_bCanNickSecondaryCycle[iClient] = true;
+		g_bIsNickInSecondaryCycle[iClient] = false;
+		g_iNickSecondarySavedClipSlot2[iClient] = 90;
+		// PrintToChatAll("Talents Confirmed: Clip Slot 2 = %i", g_iNickSecondarySavedClipSlot2[iClient]);
+	}
+	if(g_iLeftoverLevel[iClient] == 5)
+	{
+		g_bCanNickZoomKit[iClient] = true;
+	}
+	
+	if( (g_iClientLevel[iClient] - (g_iClientLevel[iClient] - g_iSkillPoints[iClient])) <= (g_iClientLevel[iClient] - 1))
+		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Gambler Talents \x05have been loaded.");
+	else
+		PrintToChat(iClient, "\x03[XPMod] \x05Your abilties will be automatically set as you level.");
+}
+
 OnGameFrame_Nick(iClient)
 {
 	if(g_iNicksRamboWeaponID[iClient] > 0)

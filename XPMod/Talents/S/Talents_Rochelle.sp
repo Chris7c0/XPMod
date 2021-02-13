@@ -1,3 +1,54 @@
+TalentsLoad_Rochelle(iClient)
+{
+	if((g_iHunterLevel[iClient] > 0) || (g_iShadowLevel[iClient] > 0) || (g_iSniperLevel[iClient] > 0))
+	{
+		SetClientSpeed(iClient);
+	}
+	//Sets the iClient to hear all the infected's voice comms
+	if(g_iGatherLevel[iClient] == 5)
+	{
+		for(new i = 1; i <= MaxClients; i++)
+		{
+			if(IsClientInGame(i) == true && GetClientTeam(i) == TEAM_INFECTED && IsFakeClient(i) == false)
+				SetListenOverride(iClient, i, Listen_Yes);
+		}
+	}
+	
+	if(g_iShadowLevel[iClient] > 0)
+	{
+		if(g_iClientBindUses_2[iClient] < 3)
+			g_iPID_RochelleCharge3[iClient] = WriteParticle(iClient, "rochelle_ulti_ninja_charge3", 0.0);
+		if(g_iClientBindUses_2[iClient] < 2)
+			g_iPID_RochelleCharge2[iClient] = WriteParticle(iClient, "rochelle_ulti_ninja_charge2", 0.0);
+		if(g_iClientBindUses_2[iClient] < 1)
+			g_iPID_RochelleCharge1[iClient] = WriteParticle(iClient, "rochelle_ulti_ninja_charge1", 0.0);
+		
+		if(g_iShadowLevel[iClient]>0)
+		{
+			SetEntProp(iClient,Prop_Data,"m_iMaxHealth", 100 + (g_iShadowLevel[iClient] * 5) + (g_iSniperLevel[iClient] * 5) + (g_iCoachTeamHealthStack * 5));
+			new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
+			if(currentHP > (100 + (g_iShadowLevel[iClient] * 5) + (g_iSniperLevel[iClient] * 5) + (g_iCoachTeamHealthStack * 5)))
+				SetEntProp(iClient,Prop_Data,"m_iHealth", 100 + (g_iShadowLevel[iClient] * 5) + (g_iSniperLevel[iClient] * 5) + (g_iCoachTeamHealthStack * 5));
+			
+			if(g_bTalentsGiven[iClient] == false)
+				SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + (g_iShadowLevel[iClient] * 5) + (g_iSniperLevel[iClient] * 5) + (g_iCoachTeamHealthStack * 5));
+		}
+	}
+	
+	if(g_bTalentsGiven[iClient] == false)
+	{
+		if(g_iSmokeLevel[iClient]>0)
+		{
+			g_iRopeCountDownTimer[iClient] = 0;
+		}
+	}
+	
+	if( (g_iClientLevel[iClient] - (g_iClientLevel[iClient] - g_iSkillPoints[iClient])) <= (g_iClientLevel[iClient] - 1))
+		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Ninja Talents \x05have been loaded.");
+	else
+		PrintToChat(iClient, "\x03[XPMod] \x05Your abilties will be automatically set as you level.");
+}
+
 OnGameFrame_Rochelle(iClient)
 {
 	decl buttons;

@@ -9,26 +9,24 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 	new iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	switch(g_iChosenSurvivor[iClient])
 	{
-		case 0:		//Bill
+		case BILL:		//Bill
 		{
 		
 		}
-		case 1:		//Rochelle
+		case ROCHELLE:		//Rochelle
 		{
 		
 		}
-		case 2:		//Coach
+		case COACH:		//Coach
 		{
 		
 		}
-		case 3:		//Ellis
+		case ELLIS:		//Ellis
 		{
-			//PrintToChatAll("Started switch for Ellis...");
 			fnc_DeterminePrimaryWeapon(iClient);
 			fnc_SaveAmmo(iClient);
-			//PrintToChatAll("Ended switch for Ellis...");
 		}
-		case 4:		//Nick
+		case NICK:		//Nick
 		{
 		/*
 			GetClientWeapon(iClient, g_strCurrentWeapon, sizeof(g_strCurrentWeapon));
@@ -43,14 +41,19 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 			g_iNickMagnumShotCount[iClient] = 0;
 		*/
 		}
+		case LOUIS:
+		{
+
+		}
 	}
+
 	//PrintToChatAll("Beggining check for current weapon...");
 	decl String:currentweapon[32];
-	//PrintToChatAll("Weapon Reload");
+	PrintToChatAll("Weapon Reload");
 	GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
 	new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 	
-	if(iClient==0 || IsFakeClient(iClient)==true || g_iClientTeam[iClient] != TEAM_SURVIVORS)
+	if(RunClientChecks(iClient) == false || IsFakeClient(iClient)==true || g_iClientTeam[iClient] != TEAM_SURVIVORS)
 		return;
 	
 	if(g_bCoachShotgunForceReload[iClient] == true)
@@ -81,7 +84,7 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 		
 	}
 	*/
-	if(g_iExorcismLevel[iClient]>0 || g_iPromotionalLevel[iClient]>0 || g_iFireLevel[iClient]>0 || g_iOverLevel[iClient]>0 || g_iWeaponsLevel[iClient]>0 || g_iMetalLevel[iClient]>0 || g_iMagnumLevel[iClient]>0 || g_iRiskyLevel[iClient]>0 || g_iSprayLevel[iClient]>0 || g_iSilentLevel[iClient]>0)
+	if(g_iExorcismLevel[iClient]>0 || g_iPromotionalLevel[iClient]>0 || g_iFireLevel[iClient]>0 || g_iOverLevel[iClient]>0 || g_iWeaponsLevel[iClient]>0 || g_iMetalLevel[iClient]>0 || g_iMagnumLevel[iClient]>0 || g_iRiskyLevel[iClient]>0 || g_iSprayLevel[iClient]>0 || g_iSilentLevel[iClient]>0 || g_iLouisTalent1Level[iClient] > 0)
 	{
 		new iEntid = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);//5565
 		if (IsValidEntity(iEntid)==false)
@@ -89,7 +92,7 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 		if(iEntid < 1) return;
 		decl String:stClass[32];
 		GetEntityNetClass(iEntid,stClass,32);
-		//PrintToChatAll("\x03-class of gun: \x01%s",stClass );
+		PrintToChatAll("\x03-class of gun: \x01%s",stClass );
 		if (StrContains(stClass,"Grenade",false) != -1)
 			return;
 		
@@ -97,7 +100,7 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 		
 		if(g_iRiskyLevel[iClient]>0)
 		{
-			if (StrContains(stClass,"cpistol",false) != -1)	//Just for pistol not magnum
+			if (StrContains(stClass,"CPistol",false) != -1)	//Just for pistol not magnum
 				g_fReloadRate = 1.0 - (float(g_iRiskyLevel[iClient]) * 0.1);
 		}
 		else if(g_iSilentLevel[iClient]>0)
@@ -105,6 +108,14 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 			if(StrContains(stClass,"CSniperRifle",false) != -1)	//using Ruger Mini Sniper Rifle
 				g_fReloadRate = 1.0 - (float(g_iSilentLevel[iClient]) * 0.08);
 		}
+		else if(g_iLouisTalent1Level[iClient]>0)
+		{
+			if (StrContains(stClass,"CSubMachinegun",false) != -1 || 
+				StrContains(stClass,"CSMG_MP5",false) != -1 ||
+				StrContains(stClass,"CPistol",false) != -1)
+				g_fReloadRate = 1.0 - (float(g_iLouisTalent1Level[iClient]) * 0.10);
+		}
+
 		GetClientWeapon(iClient, g_strCurrentWeapon, sizeof(g_strCurrentWeapon));
 		if((g_bCanNickStampedeReload[iClient] == true) && (StrEqual(g_strCurrentWeapon, "weapon_pistol_magnum", false) == true))
 		{

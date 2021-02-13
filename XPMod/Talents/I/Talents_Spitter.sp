@@ -1,3 +1,43 @@
+TalentsLoad_Spitter(iClient)
+{
+	if(g_iPuppetLevel[iClient] > 0)
+	{
+		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Spitter Talents \x05have been loaded.");
+		
+		new Float:xyzLocation[3];
+		GetEntPropVector(iClient, Prop_Send, "m_vecOrigin", xyzLocation);
+		
+		xyzLocation[2] += 10.0;
+		
+		WriteParticle(iClient, "spitter_conjure", 180.0, 7.0, xyzLocation);
+	
+		new Handle:hDataPackage = CreateDataPack();
+		WritePackCell(hDataPackage, iClient);
+		WritePackFloat(hDataPackage, xyzLocation[0]);
+		WritePackFloat(hDataPackage, xyzLocation[1]);
+		WritePackFloat(hDataPackage, xyzLocation[2]);
+		
+		CreateTimer(2.3, TimerConjureCommonInfected, hDataPackage);
+
+		// Draw the select goo menu
+		if (g_iPuppetLevel[iClient] > 5 || 
+			g_iMaterialLevel[iClient] > 0 ||
+			g_iHallucinogenicLevel[iClient] > 0)
+			GooTypeMenuDraw(iClient);
+	}
+	
+	g_bBlockGooSwitching[iClient] = false;
+	g_bJustSpawnedWitch[iClient] = false;
+	g_iGooType[iClient] = GOO_ADHESIVE;
+	g_iBagOfSpitsSelectedSpit[iClient] = BAG_OF_SPITS_NONE;
+	g_bIsStealthSpitter[iClient] = false;
+	g_iStealthSpitterChargePower[iClient] =  0;
+	g_iStealthSpitterChargeMana[iClient] =  0;
+	g_xyzWitchConjureLocation[iClient][0] = 0.0;
+	g_xyzWitchConjureLocation[iClient][1] = 0.0;
+	g_xyzWitchConjureLocation[iClient][2] = 0.0;
+}
+
 OnGameFrame_Spitter(iClient)
 {
 	if(g_iPuppetLevel[iClient] > 5)

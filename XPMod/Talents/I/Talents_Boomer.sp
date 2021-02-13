@@ -1,3 +1,9 @@
+TalentsLoad_Boomer(iClient)
+{
+	if(g_iRapidLevel[iClient] > 0)
+		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Boomer Talents \x05have been loaded.");
+}
+
 OnGameFrame_Boomer(iClient)
 {
 	if(g_iAcidicLevel[iClient] > 0)

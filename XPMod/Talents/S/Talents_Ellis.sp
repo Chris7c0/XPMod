@@ -1,3 +1,90 @@
+TalentsLoad_Ellis(iClient)
+{
+	SetEntProp(iClient,Prop_Data,"m_iMaxHealth", g_iEllisMaxHealth[iClient]);
+	new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
+	if(currentHP > g_iEllisMaxHealth[iClient])
+		SetEntProp(iClient,Prop_Data,"m_iHealth", g_iEllisMaxHealth[iClient]);
+	
+	if(g_iMetalLevel[iClient]>0)
+	{
+		g_bDoesClientAttackFast[iClient] = true;
+		g_bSomeoneAttacksFaster = true;
+		push(iClient);
+	}
+	
+	if(g_iMetalLevel[iClient] == 5)
+	{
+		g_bIsEllisLimitBreaking[iClient] = false;
+		g_bCanEllisLimitBreak[iClient] = true;
+		g_bEllisLimitBreakInCooldown[iClient] = false;
+	}
+	
+	if(g_bTalentsGiven[iClient] == false)
+	{
+		if((0.4 - (float(g_iWeaponsLevel[iClient])*0.08)) < g_fMaxLaserAccuracy)
+		{
+			g_fMaxLaserAccuracy = 0.4 - (float(g_iWeaponsLevel[iClient])*0.08);
+			SetConVarFloat(FindConVar("upgrade_laser_sight_spread_factor"), g_fMaxLaserAccuracy);
+		}
+		
+		g_iClientBindUses_1[iClient] = 3 - RoundToCeil(g_iMetalLevel[iClient] * 0.5);
+	}
+	
+	
+	
+	if(g_iFireLevel[iClient] > 0)
+	{
+		if(g_iClientBindUses_2[iClient] < 3)
+			g_iPID_EllisCharge3[iClient] = WriteParticle(iClient, "ellis_ulti_fire_charge3", 0.0);
+		if(g_iClientBindUses_2[iClient] < 2)
+			g_iPID_EllisCharge2[iClient] = WriteParticle(iClient, "ellis_ulti_fire_charge2", 0.0);
+		if(g_iClientBindUses_2[iClient] < 1)
+			g_iPID_EllisCharge1[iClient] = WriteParticle(iClient, "ellis_ulti_fire_charge1", 0.0);
+	}
+	
+	if( (g_iClientLevel[iClient] - (g_iClientLevel[iClient] - g_iSkillPoints[iClient])) <= (g_iClientLevel[iClient] - 1))
+		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Weapon Expert Talents \x05have been loaded.");
+	else
+		PrintToChat(iClient, "\x03[XPMod] \x05Your abilties will be automatically set as you level.");
+		
+	if(g_iOverLevel[iClient] > 0)
+	{
+		new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
+		new iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
+		if(iCurrentHealth < (iMaxHealth - 20))
+		{
+			if(g_bEllisOverSpeedIncreased[iClient])
+			{
+				g_bEllisOverSpeedIncreased[iClient] = false;
+				SetClientSpeed(iClient);
+			}
+		}
+		else if(iCurrentHealth >= (iMaxHealth - 20))
+		{
+			if(g_bEllisOverSpeedIncreased[iClient] == false)
+			{
+				g_bEllisOverSpeedIncreased[iClient] = true;
+				SetClientSpeed(iClient);
+			}
+		}
+	}
+
+	if(g_iJamminLevel[iClient] == 5)
+	{
+		g_iEllisJamminGrenadeCounter[iClient] = 0;
+	}
+	
+	if(g_iWeaponsLevel[iClient] == 5)
+	{
+		g_bIsEllisInPrimaryCycle[iClient] = false;
+		g_iEllisCurrentPrimarySlot[iClient] = 0;
+		g_bCanEllisPrimaryCycle[iClient] = true;
+		g_strEllisPrimarySlot1 = "empty";
+		g_strEllisPrimarySlot2 = "empty";
+		//PrintToChatAll("Ellis primary slots are now empty");
+	}
+}
+
 OnGameFrame_Ellis(iClient)
 {
 	if(g_iMetalLevel[iClient] == 5)

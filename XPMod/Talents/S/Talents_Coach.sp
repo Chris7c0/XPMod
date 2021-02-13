@@ -1,3 +1,116 @@
+TalentsLoad_Coach(iClient)
+{
+	if(g_iBullLevel[iClient]>0 || g_iWreckingLevel[iClient]>0 || g_iStrongLevel[iClient]>0)
+	{					
+		g_iMeleeDamageCounter[iClient] = (g_iStrongLevel[iClient] * 30);
+		
+		g_iClientSurvivorMaxHealth[iClient] = 100 + (g_iBullLevel[iClient]*15) + (g_iWreckingLevel[iClient]*10) + (g_iStrongLevel[iClient]*10) + (g_iCoachTeamHealthStack * 5);
+		SetEntProp(iClient,Prop_Data,"m_iMaxHealth", g_iClientSurvivorMaxHealth[iClient]);
+		new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
+		if(currentHP > (100 +  g_iClientSurvivorMaxHealth[iClient]))
+				SetEntProp(iClient,Prop_Data,"m_iHealth", 100 +  g_iClientSurvivorMaxHealth[iClient]);
+			
+		if(g_bTalentsGiven[iClient] == false)
+		{
+			SetEntProp(iClient,Prop_Data,"m_iHealth", 100 + (g_iBullLevel[iClient]*15) + (g_iWreckingLevel[iClient]*10) + (g_iStrongLevel[iClient]*10) + (g_iCoachTeamHealthStack * 5));
+			
+			CreateTimer(3.0, TimerGiveFirstExplosive, iClient, TIMER_FLAG_NO_MAPCHANGE);
+		}
+	}
+	if(g_iBullLevel[iClient] > 0)
+	{
+		g_bCoachRageIsAvailable[iClient] = true;
+	}
+	if(g_iSprayLevel[iClient] > 0)
+	{
+		g_iCoachShotgunAmmoCounter[iClient] = 0;
+		g_bCoachShotgunForceReload[iClient] = false;
+	}
+	if(g_iStrongLevel[iClient] > 0)
+	{
+		g_iCoachCurrentGrenadeSlot[iClient] = 0;
+		g_bCanCoachGrenadeCycle[iClient] = true;
+		CreateTimer(0.5, TimerCoachAssignGrenades, iClient, TIMER_FLAG_NO_MAPCHANGE);
+		g_bIsCoachGrenadeFireCycling[iClient] = false;
+		g_bIsCoachInGrenadeCycle[iClient] = false;
+	}
+	if(g_bTalentsGiven[iClient] == false)
+	{
+		if(g_iStrongLevel[iClient]>0)
+		{
+			g_iClientJetpackFuelUsed[iClient] = g_iStrongLevel[iClient] * 160;
+		}
+		
+		if(g_iLeadLevel[iClient]> 0)
+		{
+			if(g_iLeadLevel[iClient]==1 || g_iLeadLevel[iClient]==2)
+			{
+				g_iClientBindUses_1[iClient] = 2;
+				g_iPID_CoachCharge1[iClient] = WriteParticle(iClient, "coach_bind_turret_charge1", 0.0);
+			}
+			else if(g_iLeadLevel[iClient]==3 || g_iLeadLevel[iClient]==4)
+			{
+				g_iClientBindUses_1[iClient] = 1;
+				g_iPID_CoachCharge1[iClient] = WriteParticle(iClient, "coach_bind_turret_charge1", 0.0);
+				g_iPID_CoachCharge2[iClient] = WriteParticle(iClient, "coach_bind_turret_charge2", 0.0);
+			}
+			else
+			{
+				g_iClientBindUses_1[iClient] = 0;
+				g_iPID_CoachCharge1[iClient] = WriteParticle(iClient, "coach_bind_turret_charge1", 0.0);
+				g_iPID_CoachCharge2[iClient] = WriteParticle(iClient, "coach_bind_turret_charge2", 0.0);
+				g_iPID_CoachCharge3[iClient] = WriteParticle(iClient, "coach_bind_turret_charge3", 0.0);
+			}
+		}
+		
+		if(g_iLeadLevel[iClient] > 0)
+		{
+			g_iCoachTeamHealthStack += g_iLeadLevel[iClient];
+			if(g_iLeadLevel[iClient] > g_iHighestLeadLevel)	//Find the maximum level for setting the cvars
+				g_iHighestLeadLevel = g_iLeadLevel[iClient];
+			
+			//Set Max Health for all surviovrs higher
+			decl i;
+			for(i=1;i<=MaxClients;i++)
+			{
+				if(RunClientChecks(i) && IsPlayerAlive(i) == true)
+				{
+					if(g_iClientTeam[i]==TEAM_SURVIVORS)
+					{
+						new currentmaxHP=GetEntProp(i,Prop_Data,"m_iMaxHealth");
+						new currentHP=GetEntProp(i,Prop_Data,"m_iHealth");
+						SetEntProp(i,Prop_Data,"m_iMaxHealth", currentmaxHP + (g_iLeadLevel[iClient] * 5));
+						SetEntProp(i,Prop_Data,"m_iHealth", currentHP + (g_iLeadLevel[iClient] * 5));
+					}
+				}
+			}
+		}
+		
+		//Set Convars for all coaches
+		if(g_iHighestLeadLevel>0)
+		{
+			if(g_iHighestLeadLevel==5)
+			{
+				//coachnoshake = true;
+				SetConVarInt(FindConVar("z_claw_hit_pitch_max"), 0);
+				SetConVarInt(FindConVar("z_claw_hit_pitch_min"), 0);
+				SetConVarInt(FindConVar("z_claw_hit_yaw_max"), 0);
+				SetConVarInt(FindConVar("z_claw_hit_yaw_min"), 0);
+			}
+			/*
+			SetConVarInt(FindConVar("chainsaw_attack_force"), 400 + (g_iHighestLeadLevel * 40));
+			SetConVarInt(FindConVar("chainsaw_damage"), 100 + (g_iHighestLeadLevel * 10));
+			SetConVarFloat(FindConVar("chainsaw_hit_interval"), 0.1 - (float(g_iHighestLeadLevel) * 0.01),false,false);
+			*/
+		}
+	}
+	
+	if( (g_iClientLevel[iClient] - (g_iClientLevel[iClient] - g_iSkillPoints[iClient])) <= (g_iClientLevel[iClient] - 1))
+		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Berserker Talents \x05have been loaded.");
+	else
+		PrintToChat(iClient, "\x03[XPMod] \x05Your abilties will be automatically set as you level.");
+}
+
 OnGameFrame_Coach(iClient)
 {
 	if(g_iStrongLevel[iClient] > 0)

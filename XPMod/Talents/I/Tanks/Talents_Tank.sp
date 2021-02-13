@@ -1,3 +1,8 @@
+TalentsLoad_Tank(iClient)
+{
+	PrintHintText(iClient, "\x03[XPMod] \x04Choose your Tank using the menu.");
+}
+
 OnGameFrame_Tank(iClient)
 {
 	switch (g_iTankChosen[iClient])

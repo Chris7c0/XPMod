@@ -126,7 +126,8 @@ PrecacheAllSounds()
 	PrecacheSound(SOUND_XPM_ADVERTISEMENT);
 	PrecacheSound(SOUND_LOGIN);
 	PrecacheSound(SOUND_LEVELUP);
-	PrecacheSound(SOUND_TALENTS_LOAD);
+	PrecacheSound(SOUND_TALENTS_LOAD1);
+	PrecacheSound(SOUND_TALENTS_LOAD2);
 	PrecacheSound(SOUND_AMBTEST4);
 	PrecacheSound(SOUND_PEEING);
 	PrecacheSound(SOUND_IGNITE);
@@ -152,6 +153,9 @@ PrecacheAllSounds()
 	PrecacheSound(SOUND_COACH_CHARGE3);
 	PrecacheSound(SOUND_HOOKGRAB);
 	PrecacheSound(SOUND_HOOKRELEASE);
+	PrecacheSound(SOUND_SUITCHARGED);
+	PrecacheSound(SOUND_LOUIS_TELEPORT_USE);
+	PrecacheSound(SOUND_LOUIS_TELEPORT_OVERLOAD);
 	PrecacheSound(SOUND_SUITCHARGED);
 	PrecacheSound(SOUND_BEEP);
 	PrecacheSound(SOUND_ZAP1);

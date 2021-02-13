@@ -1,3 +1,31 @@
+TalentsLoad_Hunter(iClient)
+{
+	g_iHunterShreddingVictim[iClient] = -1;
+	if(g_iPredatorialLevel[iClient] > 0)
+	{
+		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Hunter Talents \x05have been loaded.");
+		SetClientSpeed(iClient);
+	}
+	if(g_iBloodlustLevel[iClient] > 0)
+	{
+		//PrintToChatAll("g_bHasInfectedHealthBeenSet = %d", g_bHasInfectedHealthBeenSet[iClient]);
+		if(g_bHasInfectedHealthBeenSet[iClient] == false)
+		{
+			g_bHasInfectedHealthBeenSet[iClient] = true;
+			SetEntProp(iClient,Prop_Data,"m_iHealth", 250 + (g_iBloodlustLevel[iClient] * 25));
+			SetEntProp(iClient,Prop_Data,"m_iMaxHealth", 250 + (g_iBloodlustLevel[iClient] * 25));
+		}
+		g_bCanHunterDismount[iClient] = true;
+	}
+	if(g_iKillmeleonLevel[iClient] > 0)
+	{
+		g_iHunterCloakCounter[iClient] = -1;	// -1 means iClient is cloaked
+		g_bIsCloakedHunter[iClient] = true;
+		SetEntityRenderMode(iClient, RenderMode:3);
+		SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (float(g_iKillmeleonLevel[iClient]) * 0.09) )));
+	}
+}
+
 OnGameFrame_Hunter(iClient)
 {
 	if(g_iKillmeleonLevel[iClient] > 0)		//Dynamic Cloaking for kill-meleon

@@ -2,41 +2,6 @@
 //Testing Functions//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-// AddLouisTeleportVelocity(iClient, Float:speed)
-// {
-// 	new Float:vecVelocity[3];
-// 	GetEntDataVector(iClient, g_iOffset_VecVelocity, vecVelocity);
-
-// 	decl Float:xyzAngles[3], Float:vDirection[3];
-// 	GetClientEyeAngles(iClient, xyzAngles);								// Get clients Eye Angles to know get what direction face
-// 	GetAngleVectors(xyzAngles, vDirection, NULL_VECTOR, NULL_VECTOR);	// Get the direction the iClient is looking
-
-// 	//if (IsFakeClient(iClient) == false) PrintToChat(iClient, "vDirection: %2f, %2f, %2f", vDirection[0], vDirection[1], vDirection[2]);
-
-// 	vecVelocity[0] = (vDirection[0] * speed);
-// 	vecVelocity[1] = (vDirection[1] * speed);
-// 	//vecVelocity[2] = 300.0;
-// 	//vecVelocity[2] = -500.0;//(vDirection[2] * speed);
-// 	// if ((GetEntityFlags(iClient) & FL_ONGROUND) && vecVelocity[2] < 300.0)
-// 	// 	vecVelocity[2] = 300.0;
-	
-// 	//SetEntProp(iClient, Prop_Send, "m_nSolidType", 0);
-// 	//SetMoveType(iClient, MOVETYPE_FLYGRAVITY, MOVECOLLIDE_FLY_BOUNCE);
-// 	//SetMoveType(iClient, MOVETYPE_WALK, MOVECOLLIDE_FLY_SLIDE);
-// 	//SetMoveType(iClient, MOVETYPE_NOCLIP, MOVETYPE_NOCLIP);
-
-// 	TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, vecVelocity);
-// }
-
-// Action:ResetPlayerVelocity(Handle:timer,  any:iClient)
-// {
-// 	SetClientSpeed(iClient);
-// 	//SetMoveType(iClient, MOVETYPE_WALK, MOVECOLLIDE_DEFAULT);
-// 	//TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, EMPTY_VECTOR);
-// 	return Plugin_Stop;
-// }
-
-
 PrintHealthMeterToSurvivorPlayer(int iAttacker, int iVictim)
 {
 	if (RunClientChecks(iAttacker) == false ||

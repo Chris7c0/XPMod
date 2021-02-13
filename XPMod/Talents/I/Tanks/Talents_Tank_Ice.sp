@@ -56,8 +56,7 @@ ResetAllTankVariables_Ice(iClient)
 	g_bFrozenByTank[iClient] = false;
 	g_bBlockTankFreezing[iClient] = false;
 	g_fTankHealthPercentage[iClient] = 0.0;
-
-	delete g_hTimer_IceSphere[iClient];
+	
 	DeleteParticleEntity(g_iPID_IceTankIcicles[iClient]);
 }
 
