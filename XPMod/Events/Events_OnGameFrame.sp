@@ -123,7 +123,7 @@ public OnGameFrame()
 					case COACH:		OGFSurvivorReload_Coach(iClient, strCurrentWeapon, iActiveWeaponID, iCurrentClipAmmo, iOffset_Ammo);
 					case ELLIS:		OGFSurvivorReload_Ellis(iClient, strCurrentWeapon, iActiveWeaponID, iCurrentClipAmmo, iOffset_Ammo);
 					case NICK:		OGFSurvivorReload_Nick(iClient, strCurrentWeapon, iActiveWeaponID, iCurrentClipAmmo);
-					case LOUIS:		OGFSurvivorReload_Louis(iClient, strCurrentWeapon, iActiveWeaponID, iCurrentClipAmmo);
+					case LOUIS:		OGFSurvivorReload_Louis(iClient, strCurrentWeapon, iActiveWeaponID, iCurrentClipAmmo,iOffset_Ammo);
 				}
 
 				if(g_iReloadFrameCounter[iClient] == 300)
@@ -204,7 +204,7 @@ HandleFastAttackingClients()
 				// (1/1.00) would be 0% faster, (1/1.3) would be 30% faster, (1/3) would be 3 times faster
 				// We want 50% faster maxed out so 1.50x -> (1/1.5) = .666666 would be 50% faster
 				// this would be keeping .666666 of the existing wait time ( flNextTime_ret - g_fGameTime )				
-				flNextTime_calc = ( flNextTime_ret - g_fGameTime ) * (1 / (1 + (g_iMetalLevel[iClient] * 0.03) + (g_iFireLevel[iClient] * 0.03) ) ) + g_fGameTime;
+				flNextTime_calc = ( flNextTime_ret - g_fGameTime ) * (1 / (1 + (g_iMetalLevel[iClient] * 0.02) + (g_iFireLevel[iClient] * 0.03) ) ) + g_fGameTime;
 				
 				// TESTING
 				//flNextTime_calc = ( flNextTime_ret - g_fGameTime ) * ((1 / g_fEllisTestFireRate))  + g_fGameTime;

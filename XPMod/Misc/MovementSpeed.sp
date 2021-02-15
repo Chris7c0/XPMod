@@ -154,12 +154,20 @@ SetClientSpeedLouis(iClient, &Float:fSpeed)
 	if (g_bTalentsConfirmed[iClient] == false ||
 		g_iChosenSurvivor[iClient] != LOUIS)
 		return;
-
-	// Magnum Stampede
+	
+	// Base speed
 	if (g_iLouisTalent1Level[iClient] > 0)
 		fSpeed += (g_iLouisTalent1Level[iClient] * 0.02);
+
+	// CI Kill speed
+	if (g_iLouisCIHeadshotCounter[iClient] > 0)
+		fSpeed += (g_iLouisCIHeadshotCounter[iClient] * 0.01);
+
+	// SI Kill speed
+	if (g_iLouisSIHeadshotCounter[iClient] > 0)
+		fSpeed += (g_iLouisSIHeadshotCounter[iClient] * 0.05);
 	
-	PrintToChat(iClient, "SetClientSpeedLouis: %f", fSpeed);
+	//PrintToChat(iClient, "SetClientSpeedLouis: %f", fSpeed);
 }
 
 

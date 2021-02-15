@@ -287,7 +287,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 		
 		switch(g_iChosenSurvivor[iClient])
 		{
-			case 0:		//Bill Reload
+			case BILL:		//Bill Reload
 			{
 				//if((((StrEqual(currentweapon, "weapon_rifle", false) == true) || (StrEqual(currentweapon, "weapon_rifle_sg552", false) == true)) && (CurrentClipAmmo == 50)) || ((StrEqual(currentweapon, "weapon_rifle_ak47", false) == true) && (CurrentClipAmmo == 40)) || ((StrEqual(currentweapon, "weapon_rifle_desert", false) == true) && (CurrentClipAmmo == 60)))
 				//if((StrEqual(currentweapon, "weapon_rifle", false) == true) || (StrEqual(currentweapon, "weapon_rifle_sg552", false) == true) || (StrEqual(currentweapon, "weapon_rifle_ak47", false) == true) || (StrEqual(currentweapon, "weapon_rifle_desert", false) == true) && (CurrentClipAmmo != 0))
@@ -313,7 +313,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					}
 				}
 			}
-			case 1:		//Rochelle Reload
+			case ROCHELLE:		//Rochelle Reload
 			{
 				if((StrEqual(currentweapon, "weapon_hunting_rifle", false) == true) && (g_iSilentLevel[iClient] > 0) && (CurrentClipAmmo != 0))
 				{
@@ -366,7 +366,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					g_iReloadFrameCounter[iClient] = 0;
 				}
 			}
-			case 2:		//Coach Reload
+			case COACH:		//Coach Reload
 			{
 				if(((StrEqual(currentweapon, "weapon_pumpshotgun", false) == true) || (StrEqual(currentweapon, "weapon_shotgun_chrome", false) == true)) && (g_iSprayLevel[iClient] > 0))
 				{
@@ -482,7 +482,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 				}
 				*/
 			}
-			case 3:		//Ellis Reload
+			case ELLIS:		//Ellis Reload
 			{
 				if((StrEqual(currentweapon, "weapon_rifle", false) == true) || (StrEqual(currentweapon, "weapon_rifle_sg552", false) == true) || (StrEqual(currentweapon, "weapon_rifle_ak47", false) == true) || (StrEqual(currentweapon, "weapon_rifle_desert", false) == true))
 				{
@@ -629,7 +629,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 				}
 				*/
 			}
-			case 4:		//Nicks Reload
+			case NICK:		//Nicks Reload
 			{
 				if((StrEqual(currentweapon, "weapon_pistol_magnum", false) == true) && (g_iMagnumLevel[iClient] > 0))
 				{
@@ -652,6 +652,37 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					}
 					g_bClientIsReloading[iClient] = false;
 					g_iReloadFrameCounter[iClient] = 0;
+				}
+			}
+			case LOUIS:
+			{
+				if (g_iLouisTalent2Level[iClient] > 0)
+				{
+					//PrintToChat(iClient, "LOUIS currentweapon: %s, CurrentClipAmmo: %i", currentweapon, CurrentClipAmmo);
+					if (CurrentClipAmmo > 0 &&
+						(StrContains(currentweapon, "weapon_smg", false) != -1) )
+					{
+						new iAmmo = GetEntData(iClient, iOffset_Ammo + 20);
+						SetEntData(iClient, iOffset_Ammo + 20, iAmmo - (g_iLouisTalent2Level[iClient] * 10));
+
+						SetEntData(ActiveWeaponID, g_iOffset_Clip1, CurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10), true);
+
+						g_bClientIsReloading[iClient] = false;
+						g_iReloadFrameCounter[iClient] = 0;
+					}
+					else if (((CurrentClipAmmo == 15) || (CurrentClipAmmo == 30)) &&
+						(StrEqual(currentweapon, "weapon_pistol", false) == true) )
+					{
+						// 1 pistol
+						if(CurrentClipAmmo == 15)
+							SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10)), true);
+						// 2 pistols
+						else if(CurrentClipAmmo == 30)
+							SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10 * 2)), true);
+
+						g_bClientIsReloading[iClient] = false;
+						g_iReloadFrameCounter[iClient] = 0;
+					}
 				}
 			}
 		}
@@ -931,12 +962,24 @@ Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadca
 		g_iReloadFrameCounter[iClient] = 0;
 	}
 	
-	if((g_iWeaponsLevel[iClient] > 0 || g_iPromotionalLevel[iClient] > 0) && g_iLaserUpgradeCounter[iClient] < 10 &&
+	// Automatic laser site upgrades
+	if (g_bTalentsConfirmed[iClient] &&
+		(g_iWeaponsLevel[iClient] > 0 || g_iPromotionalLevel[iClient] > 0) && 
+		g_iLaserUpgradeCounter[iClient] < 10 &&
 		(StrContains(weaponclass, "rifle", false) != -1 || StrContains(weaponclass, "shotgun", false) != -1 ||
 		StrContains(weaponclass, "smg", false) != -1 || StrContains(weaponclass, "sniper", false) != -1 || 
 		StrContains(weaponclass, "grenade", false) != -1))
 	{
 
+		RunCheatCommand(iClient, "upgrade_add", "upgrade_add LASER_SIGHT");
+
+		g_iLaserUpgradeCounter[iClient]++;
+	}
+	else if (g_bTalentsConfirmed[iClient] &&
+		g_iLouisTalent2Level[iClient] > 0 && 
+		g_iLaserUpgradeCounter[iClient] < 10 &&
+		StrContains(weaponclass, "smg", false) != -1)
+	{
 		RunCheatCommand(iClient, "upgrade_add", "upgrade_add LASER_SIGHT");
 
 		g_iLaserUpgradeCounter[iClient]++;
@@ -966,7 +1009,7 @@ Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadca
 			}
 		}
 	}
-	else if(g_iChosenSurvivor[iClient] == 1)	//Rochelle
+	else if(g_iChosenSurvivor[iClient] == ROCHELLE)	//Rochelle
 	{
 		if(g_iSilentLevel[iClient]>0)
 		{
@@ -1017,7 +1060,7 @@ Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadca
 			}
 		}
 	}
-	if(g_iChosenSurvivor[iClient] == 2)		//Coach
+	if(g_iChosenSurvivor[iClient] == COACH)		//Coach
 	{
 		if(g_iSprayLevel[iClient] > 0)
 		{
@@ -1224,7 +1267,7 @@ Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadca
 			}
 		}
 	}
-	if(g_iChosenSurvivor[iClient] == 3)		//Ellis
+	if(g_iChosenSurvivor[iClient] == ELLIS)		//Ellis
 	{
 		if(g_iMetalLevel[iClient]>0 || g_iFireLevel[iClient]>0)
 		{
@@ -1776,7 +1819,7 @@ Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadca
 			}
 		}
 	}
-	else if(g_iChosenSurvivor[iClient] == 4)	//Nick
+	else if(g_iChosenSurvivor[iClient] == NICK)	//Nick
 	{
 		if(g_bRamboModeActive[iClient] == true)
 		{
@@ -1952,6 +1995,40 @@ Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadca
 						CreateTimer(0.1, TimerNickDualClipSize, iClient, TIMER_FLAG_NO_MAPCHANGE);
 					}
 				}
+			}
+		}
+	}
+	else if(g_iChosenSurvivor[iClient] == LOUIS)
+	{
+		if (g_iLouisTalent2Level[iClient] > 0)
+		{
+			//PrintToChat(iClient, "LOUIS ITEM PICKUP %s", weaponclass);
+			if (StrContains(weaponclass, "smg", false) != -1)
+			{
+				new iEntid = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+				if(iEntid  < 1)
+					return Plugin_Continue;
+				if(IsValidEntity(iEntid)==false)
+					return Plugin_Continue;
+				
+
+				new iAmmo = GetEntData(iClient, iOffset_Ammo + 20);
+				SetEntData(iClient, iOffset_Ammo + 20, iAmmo - (g_iLouisTalent2Level[iClient] * 10));
+				
+				new iCurrentClipAmmo = GetEntProp(iEntid,Prop_Data,"m_iClip1");
+				SetEntData(iEntid, g_iOffset_Clip1, iCurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10), true);
+				g_iClientPrimaryClipSize[iClient] = iCurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10);
+			}
+			else if (StrEqual(weaponclass, "pistol", false) == true)
+			{
+				new iEntid = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+				if(iEntid  < 1)
+					return Plugin_Continue;
+				if(IsValidEntity(iEntid)==false)
+					return Plugin_Continue;
+				
+				new iCurrentClipAmmo = GetEntProp(iEntid,Prop_Data,"m_iClip1");
+				SetEntData(iEntid, g_iOffset_Clip1, iCurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10), true);
 			}
 		}
 	}

@@ -11,6 +11,8 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	// If iVictim was 0 then it was a common/uncommon infected
 	if(iVictim < 1)
 	{
+		EventsDeath_PlayHeadshotDingSoundForCIHeadshots(hEvent, iAttacker);
+
 		// Get Common Infected Victim from event int, Previously iVictim only gives player IDs
 		new iCIVictim = GetEventInt(hEvent, "entityid");
 
@@ -149,4 +151,15 @@ Event_DeathResetAllVariables(iAttacker, iVictim)
 		WriteParticle(iVictim, "poison_bullet_pool", 0.0, 41.0);
 	}
 	g_bHunterLethalPoisoned[iVictim] = false;
+}
+
+EventsDeath_PlayHeadshotDingSoundForCIHeadshots(Handle:hEvent, iAttacker)
+{
+	if (g_iClientTeam[iAttacker] != TEAM_SURVIVORS || 
+		IsClientInGame(iAttacker) == false ||
+		IsFakeClient(iAttacker) == true)
+		return;
+	
+	if (GetEventBool(hEvent, "headshot"))
+		EmitSoundToClient(iAttacker, SOUND_HEADSHOT);
 }

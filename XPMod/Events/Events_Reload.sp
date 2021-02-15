@@ -49,7 +49,7 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 
 	//PrintToChatAll("Beggining check for current weapon...");
 	decl String:currentweapon[32];
-	PrintToChatAll("Weapon Reload");
+	// PrintToChatAll("Weapon Reload");
 	GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
 	new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 	
@@ -92,7 +92,7 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 		if(iEntid < 1) return;
 		decl String:stClass[32];
 		GetEntityNetClass(iEntid,stClass,32);
-		PrintToChatAll("\x03-class of gun: \x01%s",stClass );
+		//PrintToChatAll("\x03-class of gun: \x01%s",stClass );
 		if (StrContains(stClass,"Grenade",false) != -1)
 			return;
 		
@@ -108,12 +108,12 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 			if(StrContains(stClass,"CSniperRifle",false) != -1)	//using Ruger Mini Sniper Rifle
 				g_fReloadRate = 1.0 - (float(g_iSilentLevel[iClient]) * 0.08);
 		}
-		else if(g_iLouisTalent1Level[iClient]>0)
+		else if (g_iLouisTalent1Level[iClient] > 0)
 		{
 			if (StrContains(stClass,"CSubMachinegun",false) != -1 || 
 				StrContains(stClass,"CSMG_MP5",false) != -1 ||
 				StrContains(stClass,"CPistol",false) != -1)
-				g_fReloadRate = 1.0 - (float(g_iLouisTalent1Level[iClient]) * 0.10);
+				g_fReloadRate = 1.0 - (float(g_iLouisTalent1Level[iClient]) * 0.15);
 		}
 
 		GetClientWeapon(iClient, g_strCurrentWeapon, sizeof(g_strCurrentWeapon));

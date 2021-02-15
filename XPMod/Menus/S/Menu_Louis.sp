@@ -11,25 +11,25 @@ Action:LouisMenuDraw(iClient)
 	g_hMenu_XPM[iClient] = CreateMenu(LouisMenuHandler);
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	
-	FormatEx(text, sizeof(text), "Level %d   XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n			Louis's Disruptor Talents\n ", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+	FormatEx(text, sizeof(text), "Level %d   XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=\n \n			Louis's Disruptor Talents\n ", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
 	FormatEx(text, sizeof(text), "	[Level %d]	Manager's Prep", g_iLouisTalent1Level[iClient]);
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", text);
-	FormatEx(text, sizeof(text), "	[Level %d]	BOOM HEADSHOT!", g_iLouisTalent2Level[iClient]);
+	FormatEx(text, sizeof(text), "	[Level %d]	9mm Augmentation", g_iLouisTalent2Level[iClient]);
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	Time Dilation", g_iLouisTalent3Level[iClient]);
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", text);
-	FormatEx(text, sizeof(text), "	[Level %d]	Enhanced Coordination       ", g_iLouisTalent4Level[iClient]);
+	FormatEx(text, sizeof(text), "	[Level %d]	BOOM HEADSHOT!", g_iLouisTalent4Level[iClient]);
 	AddMenuItem(g_hMenu_XPM[iClient], "option4", text);
-	FormatEx(text, sizeof(text), "	[Level %d]	Explosivo (Bind 1)", g_iLouisTalent5Level[iClient]);
+	FormatEx(text, sizeof(text), "	[Level %d]	Explosivo (Bind 1)                  ", g_iLouisTalent5Level[iClient]);
 	AddMenuItem(g_hMenu_XPM[iClient], "option5", text);
-	FormatEx(text, sizeof(text), "	[Level %d]	PILLS HERE ! (Bind 2)\n ", g_iLouisTalent6Level[iClient]);
+	FormatEx(text, sizeof(text), "	[Level %d]	PILLS HERE! (Bind 2)\n ", g_iLouisTalent6Level[iClient]);
 	AddMenuItem(g_hMenu_XPM[iClient], "option6", text);
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Detailed Talent Descriptions\n ");
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Back\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Back\n \n=	=	=	=	=	=	=	=	=	=	=	=\n \n \n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 
@@ -53,11 +53,16 @@ Action:LouisTalent1MenuDraw(iClient)
 	g_hMenu_XPM[iClient] = CreateMenu(LouisTalent1MenuHandler);
 	
 	FormatEx(text, sizeof(text), 
-		"=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\
+		"=	=	=	=	=	=	=	=	=	=	=	=\
 		\n \
-		\n 					Manager's Prep (Level %d):\
-		\n \n \
-		\n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iLouisTalent1Level[iClient]);
+		\n 		Manager's Prep (Level %d):\
+		\n \
+		\n +10 HP per Level\
+		\n +2%\% Movement Speed per Level\
+		\n SMG and Pistol (Not Magnum) Buffs:     \
+		\n 	- +15\% Reload Speed per Level\
+		\n \
+		\n=	=	=	=	=	=	=	=	=	=	=	=",  g_iLouisTalent1Level[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
@@ -85,11 +90,17 @@ Action:LouisTalent2MenuDraw(iClient)
 	g_hMenu_XPM[iClient] = CreateMenu(LouisTalent2MenuHandler);
 	
 	FormatEx(text, sizeof(text), 
-		"=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\
+		"=	=	=	=	=	=	=	=	=	=	=	=	=\
 		\n \
-		\n 					BOOM HEADSHOT! (Level %d):\
-		\n \n \
-		\n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iLouisTalent2Level[iClient]);
+		\n 		9mm Augmentation (Level %d):\
+		\n \
+		\n SMG and Pistol (Not Magnum) Buffs:\
+		\n 	- +30%% Damage per Level\
+		\n 	- +10 Clip Size per Level\
+		\n 	- Automatic Laser Sight (SMGs Only)         \
+		\n \
+		\n=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iLouisTalent2Level[iClient]);
+	
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
@@ -119,13 +130,14 @@ Action:LouisTalent3MenuDraw(iClient)
 	FormatEx(text, sizeof(text), 
 		"=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\
 		\n \
-		\n 							Time Dilation (Level %d):\
+		\n 						Time Dilation (Level %d):\
 		\n \
-		\n [Press DIRECTION + Tap WALK] Expand time and move 30 ft in any direction      \
+		\n [Press DIRECTION + Tap WALK] Move 30 ft in any direction.\
 		\n   - +1 Use per level. Uses regenerate over time.\
 		\n   - +1 Overload Use. Causes a much longer cooldown period.\
-		\n   - Progressively blinds you with each use. Fades away over time.\
+		\n   - Progressively blinds you with each use. Fades away over time.     \
 		\n   - Cannot move through walls. Cannot go through CI or SI.\
+		\n   - Travel less distance while severely hurt and limping.\
 		\n \
 		\n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iLouisTalent3Level[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
@@ -155,11 +167,16 @@ Action:LouisTalent4MenuDraw(iClient)
 	g_hMenu_XPM[iClient] = CreateMenu(LouisTalent4MenuHandler);
 	
 	FormatEx(text, sizeof(text), 
-		"=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\
+		"=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	= 	=\
 		\n \
-		\n 					Enhanced Coordination (Level %d):\
-		\n \n \
-		\n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iLouisTalent4Level[iClient]);
+		\n 					BOOM HEADSHOT! (Level %d):\
+		\n \
+		\n +30% Headshot Damage Multiplier per Level\
+		\n Headshot Kill Bonuses:\
+		\n 	- CI: +1 HP, +1%% Speed for 20 Seconds, +2 Clip Ammo per Level\
+		\n 	- SI: +5 HP, +5%% Speed for 20 Seconds, +10 Clip Ammo per Level      \
+		\n \
+		\n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iLouisTalent4Level[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
@@ -190,7 +207,9 @@ Action:LouisTalent5MenuDraw(iClient)
 		"=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\
 		\n \
 		\n 					Explosivo (Level %d):\
-		\n \n \
+		\n \
+		\n COMING SOON                                                           \
+		\n \
 		\n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iLouisTalent5Level[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 
@@ -221,8 +240,10 @@ Action:LouisTalent6MenuDraw(iClient)
 	FormatEx(text, sizeof(text), 
 		"=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\
 		\n \
-		\n 					PILLS HERE ! (Level %d):\
-		\n \n \
+		\n 					PILLS HERE! (Level %d):\
+		\n \
+		\n COMING SOON                                                           \
+		\n \
 		\n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iLouisTalent6Level[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 

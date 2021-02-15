@@ -37,3 +37,19 @@ Action:TimerLouisTeleportChargeResetAll(Handle:timer, any:iClient)
 	
 	return Plugin_Stop;
 }
+
+Action:TimerLouisCIHeadshotReduce(Handle:timer, any:iClient)
+{
+	g_iLouisCIHeadshotCounter[iClient]--;
+	SetClientSpeed(iClient);
+	
+	return Plugin_Stop;
+}
+
+Action:TimerLouisSIHeadshotReduce(Handle:timer, any:iClient)
+{
+	g_iLouisSIHeadshotCounter[iClient]--;
+	SetClientSpeed(iClient);
+	
+	return Plugin_Stop;
+}

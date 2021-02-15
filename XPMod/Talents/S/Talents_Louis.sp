@@ -56,7 +56,7 @@ bool OnPlayerRunCmd_Louis(iClient, &iButtons)
 	return false;
 }
 
-OGFSurvivorReload_Louis(iClient, const char[] currentweapon, ActiveWeaponID, CurrentClipAmmo)
+OGFSurvivorReload_Louis(iClient, const char[] currentweapon, ActiveWeaponID, CurrentClipAmmo, int iOffset_Ammo)
 {
 	if (g_iChosenSurvivor[iClient] != LOUIS || 
 		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
@@ -65,44 +65,65 @@ OGFSurvivorReload_Louis(iClient, const char[] currentweapon, ActiveWeaponID, Cur
 		IsFakeClient(iClient))
 		return;
 
-	if (g_iLouisTalent1Level[iClient] > 0)
+	if (g_iLouisTalent2Level[iClient] > 0)
 	{
-		PrintToChat(iClient, "LOUIS currentweapon: %s, CurrentClipAmmo: %i", currentweapon, CurrentClipAmmo);
+		//PrintToChat(iClient, "LOUIS currentweapon: %s, CurrentClipAmmo: %i", currentweapon, CurrentClipAmmo);
 		if (CurrentClipAmmo > 0 &&
-			(StrContains(currentweapon, "weapon_smg", false) != -1 || StrEqual(currentweapon, "weapon_pistol", false) == true) )
+			(StrContains(currentweapon, "weapon_smg", false) != -1) )
 		{
-			SetEntData(ActiveWeaponID, g_iOffset_Clip1, CurrentClipAmmo + (g_iLouisTalent1Level[iClient] * 10), true);
+			new iAmmo = GetEntData(iClient, iOffset_Ammo + 20);
+			SetEntData(iClient, iOffset_Ammo + 20, iAmmo - (g_iLouisTalent2Level[iClient] * 10));
+
+			SetEntData(ActiveWeaponID, g_iOffset_Clip1, CurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10), true);
+
 			g_bClientIsReloading[iClient] = false;
 			g_iReloadFrameCounter[iClient] = 0;
 		}
-	}	
+		else if (((CurrentClipAmmo == 15) || (CurrentClipAmmo == 30)) &&
+			(StrEqual(currentweapon, "weapon_pistol", false) == true) )
+		{
+			// 1 pistol
+			if(CurrentClipAmmo == 15)
+				SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10)), true);
+			// 2 pistols
+			else if(CurrentClipAmmo == 30)
+				SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10 * 2)), true);
+
+			g_bClientIsReloading[iClient] = false;
+			g_iReloadFrameCounter[iClient] = 0;
+		}
+	}
 }
 
 EventsHurt_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 {
 	if (g_iChosenSurvivor[iAttacker] != LOUIS || 
 		g_iClientTeam[iAttacker] != TEAM_SURVIVORS ||
+		g_iClientTeam[iVictim] == TEAM_SURVIVORS ||
 		g_bTalentsConfirmed[iAttacker] == false ||
 		RunClientChecks(iAttacker) == false ||
 		IsFakeClient(iAttacker))
 		return;
 
-	if (g_iLouisTalent2Level[iAttacker] <= 0)
+	if (g_iLouisTalent2Level[iAttacker] > 0 || g_iLouisTalent4Level[iAttacker] > 0)
 	{
 		decl String:weaponclass[32];
 		GetEventString(hEvent,"weapon",weaponclass,32);
-		PrintToChatAll("HURT \x03-class of gun: \x01%s",weaponclass);
-		// Check for headshot and the SMGs or Pistols then give more damage
-		if (GetEventBool(hEvent, "headshot") &&
-			(StrContains(weaponclass,"SMG",false) != -1 || 
+		//PrintToChatAll("HURT \x03-class of gun: \x01%s, hitgroup: %i, dmg = %i",weaponclass, GetEventInt(hEvent, "hitgroup"), GetEventInt(hEvent,"dmg_health"));
+		// Check for SMGs or Pistols then give more damage
+		if (StrContains(weaponclass,"SMG",false) != -1 || 
 			StrContains(weaponclass,"SubMachine",false) != -1 || 
-			StrContains(weaponclass,"CPistol",false) != -1))
+			StrEqual(weaponclass,"pistol",false) == true ||
+			StrEqual(weaponclass,"dual_pistols",false) == true)
 		{
 			new iVictimHealth = GetEntProp(iVictim, Prop_Data, "m_iHealth");
 			new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
-			new iExtraDamage = RoundToNearest(float(iDmgHealth) * (g_iLouisTalent2Level[iAttacker] * 0.05));
-			SetEntProp(iVictim, Prop_Data, "m_iHealth", iVictimHealth - iExtraDamage);
-			PrintToChat(iAttacker, "You did %i extra damage", iExtraDamage);
+			new iNewDamageAmount = iDmgHealth + RoundToNearest(float(iDmgHealth) * (g_iLouisTalent2Level[iAttacker] * 0.3));
+			// Add even more damage if its a headshot
+			if (GetEventInt(hEvent, "hitgroup") == HITGROUP_HEAD)
+				iNewDamageAmount = iNewDamageAmount + (iNewDamageAmount * RoundToNearest(g_iLouisTalent4Level[iAttacker] * 0.3));
+			SetEntProp(iVictim, Prop_Data, "m_iHealth", iVictimHealth + iDmgHealth - iNewDamageAmount);
+			PrintToChat(iAttacker, "You did %i damage ", iNewDamageAmount);
 		}
 	}
 }
@@ -122,23 +143,22 @@ EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 		IsFakeClient(iAttacker) == true)
 		return;
 
-	if (g_iLouisTalent2Level[iAttacker] > 0)
+	if (g_iLouisTalent4Level[iAttacker] > 0)
 	{
 		decl String:weaponclass[32];
 		GetEventString(hEvent,"weapon",weaponclass,32);
-		PrintToChatAll("DEATH \x03-class of gun: \x01%s",weaponclass);
+		// PrintToChatAll("DEATH \x03-class of gun: \x01%s",weaponclass);
 
 		// Check for headshot and the SMGs or Pistols then give appropriate boosts
 		if (GetEventBool(hEvent, "headshot") &&
 			(StrContains(weaponclass,"SMG",false) != -1 || 
 			StrContains(weaponclass,"SubMachine",false) != -1 || 
-			StrContains(weaponclass,"CPistol",false) != -1))
+			StrEqual(weaponclass,"pistol",false) == true ||
+			StrEqual(weaponclass,"dual_pistols",false) == true))
 		{
 			// CI Headshot
 			if (iVictim < 1)
 			{
-				PrintToChat(iAttacker, "LOUIS CI headshot kill");
-
 				// Give health
 				new iAttackerMaxHealth = GetEntProp(iAttacker, Prop_Data, "m_iMaxHealth");
 				new iAttackerHealth = GetEntProp(iAttacker, Prop_Data, "m_iHealth");
@@ -151,23 +171,17 @@ EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 				if (IsValidEntity(iActiveWeaponID))
 				{
 					iCurrentClipAmmo = GetEntProp(iActiveWeaponID, Prop_Data, "m_iClip1");
-					SetEntData(iActiveWeaponID, g_iOffset_Clip1, iCurrentClipAmmo + (g_iLouisTalent2Level[iAttacker] * 2), true);
+					SetEntData(iActiveWeaponID, g_iOffset_Clip1, iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 2), true);
 				}
 				
-				// g_iCoachCIHeadshotCounter[iAttacker]++;
-				// if(g_bCoachInCISpeed[iAttacker] == false)
-				// {
-				// 	g_bCoachInCISpeed[iAttacker] = true;
-				// 	SetClientSpeed(iAttacker);
-				// 	CreateTimer(5.0, TimerCoachCIHeadshotSpeedReset, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
-				// }
+				g_iLouisCIHeadshotCounter[iAttacker]++;
+				SetClientSpeed(iAttacker);
+				CreateTimer(20.0, TimerLouisCIHeadshotReduce, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
 			}
 			
 			// SI Headshot
 			if (iVictim > 0)
 			{
-				PrintToChat(iAttacker, "LOUIS SI headshot kill");
-
 				// Give health
 				new iAttackerMaxHealth = GetEntProp(iAttacker, Prop_Data, "m_iMaxHealth");
 				new iAttackerHealth = GetEntProp(iAttacker, Prop_Data, "m_iHealth");
@@ -180,19 +194,12 @@ EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 				if (IsValidEntity(iActiveWeaponID))
 				{
 					iCurrentClipAmmo = GetEntProp(iActiveWeaponID,Prop_Data,"m_iClip1");
-					SetEntData(iActiveWeaponID, g_iOffset_Clip1, iCurrentClipAmmo + (g_iLouisTalent2Level[iAttacker] * 5), true);
+					SetEntData(iActiveWeaponID, g_iOffset_Clip1, iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 10), true);
 				}
 
-				// if(g_iHomerunLevel[iAttacker] > 1 && g_bCoachInSISpeed[iAttacker] == false)
-				// {
-				// 	g_iCoachSIHeadshotCounter[iAttacker]++;
-				// 	g_bCoachInSISpeed[iAttacker] = true;
-				// 	SetClientSpeed(iAttacker);
-				// 	CreateTimer(10.0, TimerCoachSIHeadshotSpeedReset, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
-				// }
-
-				// if(g_bWreckingChargeRetrigger[iAttacker] == true)
-				// 	CreateTimer(0.5, TimerWreckingChargeRetrigger, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
+				g_iLouisSIHeadshotCounter[iAttacker]++;
+				SetClientSpeed(iAttacker);
+				CreateTimer(20.0, TimerLouisSIHeadshotReduce, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
 			}
 		}
 	}
@@ -274,7 +281,7 @@ HandleLouisTeleportBlindingEffect(iClient)
 	if (g_iLouisTeleportBlindnessAmount[iClient] > 255)
 		g_iLouisTeleportBlindnessAmount[iClient] = 255;
 
-	PrintToChat(iClient, "Blindness amount: %i", g_iLouisTeleportBlindnessAmount[iClient]);
+	//PrintToChat(iClient, "Blindness amount: %i", g_iLouisTeleportBlindnessAmount[iClient]);
 
 	g_fLouisTeleportLastUseGameTime[iClient] = fCurrentGameTime;
 	ShowHudOverlayColor(iClient, 40, 0, 5, g_iLouisTeleportBlindnessAmount[iClient], 3000, FADE_OUT);

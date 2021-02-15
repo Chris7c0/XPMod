@@ -141,6 +141,9 @@ new String:INFECTED_NAME[][] =          {"",
 #define DAMAGETYPE_BLOCK_REVIVING	65536
 #define DAMAGETYPE_SPITTER_GOO		263168
 
+// Hitgroups
+#define HITGROUP_HEAD               1
+
 // Movement Collide
 #define MOVECOLLIDE_DEFAULT     0	//Default behavior
 #define MOVECOLLIDE_FLY_BOUNCE  1   //Entity bounces, reflects, based on elasticity of surface and object - applies friction (adjust velocity)

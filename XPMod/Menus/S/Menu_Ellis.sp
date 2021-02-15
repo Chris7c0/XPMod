@@ -160,7 +160,7 @@ Action:MetalMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(MetalMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Mechanic Affinity (Level %d):\n					Requires Level 11\n \nLevel 1:\n+4 clip size per level (SMG/Rifle/Sniper only)\n+3%%%% firing rate per level\n+8%%%% reload speed per level\n \nLevel 5:\n [WALK+USE] double firing rate for 10 seconds\nDestroys weapon after\n \n \n					Bind 1: Ammo Refill\n				+1 use every other level\n \nLevel 1:\nDeploy an ammo stash\n \n=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iMetalLevel[iClient]);
+	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Mechanic Affinity (Level %d):\n					Requires Level 11\n \nLevel 1:\n+4 clip size per level (SMG/Rifle/Sniper only)\n+2%%%% firing rate per level\n+8%%%% reload speed per level\n \nLevel 5:\n [WALK+USE] double firing rate for 10 seconds\nDestroys weapon after\n \n \n					Bind 1: Ammo Refill\n				+1 use every other level\n \nLevel 1:\nDeploy an ammo stash\n \n=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iMetalLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");

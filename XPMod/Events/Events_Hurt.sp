@@ -10,13 +10,14 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	// 		GetEntProp(iVictim, Prop_Send, "m_nSolidType"),
 	// 		GetEntProp(iVictim, Prop_Send, "m_usSolidFlags"));
 
-	// Check if the iVictim is a CI/UI
-	if (iVictim < 1)
-	{
-		// No reason to address ci/ui being hurt. For now, its
-		// their death that matters, not hurt.
-		return Plugin_Continue;
-	}
+	// Note, this is never going to be called because this is not triggered for CI/UI
+	// // Check if the iVictim is a CI/UI
+	// if (iVictim < 1)
+	// {
+	// 	// No reason to address ci/ui being hurt. For now, its
+	// 	// their death that matters, not hurt.
+	// 	return Plugin_Continue;
+	// }
 
 	// // Testing Damage Here
 	// new dmgHealth  = GetEventInt(hEvent,"dmg_health");
@@ -39,6 +40,9 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	}
 	
 	EventsHurt_GiveXP(hEvent, iAttacker, iVictim);
+
+	// Play headshot ding sound if they got one
+	EventsHurt_PlayHeadshotDingSoundForHeadshots(hEvent, iAttacker, iVictim);
 
 	// Reduce damage for low level human survivor players that are not incaped
 	ReduceDamageTakenForNewPlayers(iVictim, GetEventInt(hEvent, "dmg_health"));
@@ -236,4 +240,16 @@ EventsHurt_IncreaseCommonInfectedDamage(iAttacker, iVictim)
 		else
 			SetEntProp(iVictim,Prop_Data,"m_iHealth", hp - 1);
 	}
+}
+
+EventsHurt_PlayHeadshotDingSoundForHeadshots(Handle:hEvent, iAttacker, iVictim)
+{
+	if (g_iClientTeam[iAttacker] != TEAM_SURVIVORS || 
+		g_iClientTeam[iVictim] != TEAM_INFECTED ||
+		IsClientInGame(iAttacker) == false ||
+		IsFakeClient(iAttacker) == true)
+		return;
+	
+	if (GetEventInt(hEvent, "hitgroup") == HITGROUP_HEAD)
+		EmitSoundToClient(iAttacker, SOUND_HEADSHOT);
 }

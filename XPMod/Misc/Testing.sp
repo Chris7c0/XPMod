@@ -153,6 +153,10 @@ Action:TestFunction1(iClient, args)
 
 	//AttachParticle(StringToInt(str1), "charger_motion_blur", 15.4, 0.0)
 
+	// new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
+	// new iAmmo = GetEntData(iClient, iOffset_Ammo + StringToInt(str1));
+	// PrintToChatAll("iammo = %i", iAmmo);
+
 	CreateWarezStation(iClient);
 
 	PrintAllInEnhancedCIEntityList();

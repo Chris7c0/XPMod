@@ -128,6 +128,7 @@ PrecacheAllSounds()
 	PrecacheSound(SOUND_LEVELUP);
 	PrecacheSound(SOUND_TALENTS_LOAD1);
 	PrecacheSound(SOUND_TALENTS_LOAD2);
+	PrecacheSound(SOUND_HEADSHOT);
 	PrecacheSound(SOUND_AMBTEST4);
 	PrecacheSound(SOUND_PEEING);
 	PrecacheSound(SOUND_IGNITE);
