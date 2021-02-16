@@ -97,6 +97,7 @@
 #include "XPMod/Events/Events_Hurt.sp"
 #include "XPMod/Events/Events_Death.sp"
 #include "XPMod/Events/Events_Reload.sp"
+#include "XPMod/Events/Events_Interact.sp"
 //Ability Files
 #include "XPMod/Talents/Talents_Load.sp"
 #include "XPMod/Talents/S/Talents_Rochelle.sp"
