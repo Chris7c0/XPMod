@@ -906,9 +906,8 @@ EventsHurt_AttackerEllis(Handle:hEvent, attacker, victim)
 					new dmg = GetEventInt(hEvent,"dmg_health");
 					new newdmg = (dmg + (g_iOverLevel[attacker] * 2));
 					SetEntProp(victim,Prop_Data,"m_iHealth", hp - newdmg);
-					//DeleteCode
-					PrintToChatAll("Ellis is doing %d damage", dmg);
-					PrintToChatAll("Ellis is doing %d additional damage", (newdmg - dmg));
+					//PrintToChatAll("Ellis is doing %d damage", dmg);
+					//PrintToChatAll("Ellis is doing %d additional damage", (newdmg - dmg));
 				}
 			}
 		}

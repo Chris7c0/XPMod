@@ -123,7 +123,7 @@ EventsHurt_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 			if (GetEventInt(hEvent, "hitgroup") == HITGROUP_HEAD)
 				iNewDamageAmount = iNewDamageAmount + (iNewDamageAmount * RoundToNearest(g_iLouisTalent4Level[iAttacker] * 0.3));
 			SetEntProp(iVictim, Prop_Data, "m_iHealth", iVictimHealth + iDmgHealth - iNewDamageAmount);
-			PrintToChat(iAttacker, "You did %i damage ", iNewDamageAmount);
+			//PrintToChat(iAttacker, "You did %i damage ", iNewDamageAmount);
 		}
 	}
 }

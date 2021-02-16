@@ -92,7 +92,7 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 		if(iEntid < 1) return;
 		decl String:stClass[32];
 		GetEntityNetClass(iEntid,stClass,32);
-		//PrintToChatAll("\x03-class of gun: \x01%s",stClass );
+		// PrintToChatAll("\x03-class of gun: \x01%s",stClass );
 		if (StrContains(stClass,"Grenade",false) != -1)
 			return;
 		
@@ -111,7 +111,7 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 		else if (g_iLouisTalent1Level[iClient] > 0)
 		{
 			if (StrContains(stClass,"CSubMachinegun",false) != -1 || 
-				StrContains(stClass,"CSMG_MP5",false) != -1 ||
+				StrContains(stClass,"CSMG",false) != -1 ||
 				StrContains(stClass,"CPistol",false) != -1)
 				g_fReloadRate = 1.0 - (float(g_iLouisTalent1Level[iClient]) * 0.15);
 		}
