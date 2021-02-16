@@ -78,7 +78,7 @@ OnGameFrame_Tank_NecroTanker(iClient)
 	new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 	
 	//Check to see if ducking and not attacking before starting the charge
-	if((buttons & IN_DUCK) && !(buttons & IN_ATTACK2)) // && !(buttons & IN_ATTACK)
+	if((buttons & IN_SPEED || buttons & IN_DUCK) && !(buttons & IN_ATTACK2)) // && !(buttons & IN_ATTACK)
 	{
 		// CheckIfTankMovedWhileChargingAndIncrementCharge(iClient);
 		g_iTankCharge[iClient]++;
@@ -87,12 +87,23 @@ OnGameFrame_Tank_NecroTanker(iClient)
 		if(g_iTankCharge[iClient] == 30 && IsFakeClient(iClient) == false)
 			DisplayNecroTankerManaMeter(iClient);
 		
-		//Charged for long enough, now handle for each tank
-		if(g_iTankCharge[iClient] >= 31)
+		//Charged for long enough, now handle summoning for each type WALK or CROUCH
+		if(buttons & IN_DUCK && g_iTankCharge[iClient] >= 31)
 		{
 			// If they have the mana, spawn zombie, otherwise, print message not enough mana
-			if (g_iNecroTankerManaPool[iClient] >= NECROTANKER_MANA_COST_SUMMON_CI)
-				SummonNecroTankerCrouchAbility(iClient);
+			if (g_iNecroTankerManaPool[iClient] >= NECROTANKER_MANA_COST_SUMMON_ENHANCED_CI)
+				SummonNecroTankerCrouchAndWalkAbility(iClient, true);
+
+			if(IsFakeClient(iClient) == false)
+				DisplayNecroTankerManaMeter(iClient);
+
+			g_iTankCharge[iClient] = 0;
+		}
+		else if(buttons & IN_SPEED && g_iTankCharge[iClient] >= 60)
+		{
+			// If they have the mana, spawn zombie, otherwise, print message not enough mana
+			if (g_iNecroTankerManaPool[iClient] >= NECROTANKER_MANA_COST_SUMMON_NORMAL_CI)
+				SummonNecroTankerCrouchAndWalkAbility(iClient, false);
 
 			if(IsFakeClient(iClient) == false)
 				DisplayNecroTankerManaMeter(iClient);
@@ -366,7 +377,7 @@ CreateNecroTankerRockTrailEffect(int iRockEntity)
 	EmitAmbientSound(SOUND_BOOMER_THROW[ iRandomSoundNumber ], xyzRockPosition, iRockEntity, SNDLEVEL_GUNFIRE);
 }
 
-void SummonNecroTankerCrouchAbility(iClient)
+void SummonNecroTankerCrouchAndWalkAbility(iClient, bool bEnhancedCI)
 {
 	// Get a location in front of the player to spawn the infected to prevent collision with others
 	decl Float:xyzLocation[3], Float:xyzAngles[3];
@@ -388,15 +399,21 @@ void SummonNecroTankerCrouchAbility(iClient)
 	new Float:fTimeToWaitForMob = 2.0;//FindClosestSurvivorDistance(iClient) > 1500.0 ? 2.0 : 2.0;
 
 	new iZombie = -1;
-	new iUncommonAndEnhancedChanceRoll = GetRandomInt(1,100);
-	if (iUncommonAndEnhancedChanceRoll <= 25)
-		iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_RANDOM, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_RANDOM, fTimeToWaitForMob);
-	// else if (iUncommonAndEnhancedChanceRoll <= 15)
-	// 	iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_RANDOM, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_NONE, fTimeToWaitForMob);
-	else if (iUncommonAndEnhancedChanceRoll <= 75)
-		iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_RANDOM, fTimeToWaitForMob);
-	else
+	if (bEnhancedCI == false)
+	{
 		iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_NONE, fTimeToWaitForMob);
+	}
+	else
+	{
+		new iUncommonAndEnhancedChanceRoll = GetRandomInt(1,100);
+		if (iUncommonAndEnhancedChanceRoll <= 25)
+			iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_RANDOM, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_RANDOM, fTimeToWaitForMob);
+		else if (iUncommonAndEnhancedChanceRoll <= 75)
+			iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_RANDOM, fTimeToWaitForMob);
+		else if (iUncommonAndEnhancedChanceRoll <= 100)
+			iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_RANDOM, fTimeToWaitForMob);
+	}
+	
 
 	// Create the effect on the summoned common infected
 	if (iZombie > 0)
@@ -408,7 +425,7 @@ void SummonNecroTankerCrouchAbility(iClient)
 		WriteParticle(iZombie, "vomit_jar_b", 0.0, 2.0);
 	}
 
-	g_iNecroTankerManaPool[iClient] -= NECROTANKER_MANA_COST_SUMMON_CI;
+	g_iNecroTankerManaPool[iClient] -= bEnhancedCI ? NECROTANKER_MANA_COST_SUMMON_ENHANCED_CI : NECROTANKER_MANA_COST_SUMMON_NORMAL_CI;
 	// Clamp it
 	if (g_iNecroTankerManaPool[iClient] < 0)
 		g_iNecroTankerManaPool[iClient] = 0;

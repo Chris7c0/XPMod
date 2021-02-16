@@ -21,7 +21,7 @@ Action:ChooseTankMenuDraw(iClient)
 	FormatEx(strText, sizeof(strText), "NecroTanker\
 		\n %i HP: Kill Infected for Health\
 		\n Throw Boomers!\
-		\n [Hold CROUCH] Summon Infected\
+		\n [Hold WALK or CROUCH] Summon CI\
 		\n ",TANK_HEALTH_NECROTANKER);
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", strText);
 	FormatEx(strText, sizeof(strText), "Vampiric Tank\

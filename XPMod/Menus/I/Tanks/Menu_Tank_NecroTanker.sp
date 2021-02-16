@@ -10,7 +10,7 @@ Action:TankMenuDrawNecroTanker(iClient)
         \n\"Life is finite, whereas Death...ah, yes. Death is infinite.\"\
         \n \
         \n Passive Abilities\
-        \n - %i Starting HP, %i Max HP | Good At Close Range\
+        \n - %i Start HP, %i Max HP | Good At Close Range\
         \n - Consume Infected For Health\
         \n	+%i HP Per CI Kill\
         \n	+%i HP Per UI Kill\
@@ -23,7 +23,7 @@ Action:TankMenuDrawNecroTanker(iClient)
         \n \
         \n Active Abilities\
         \n - Mana Pool (Punches Regen Mana)\
-        \n - [Hold CROUCH] Summon Infected\
+        \n - [Hold WALK or CROUCH] Summon CI\
         \n - [Press MELEE] Throw Boomers\
         \n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",
         TANK_HEALTH_NECROTANKER,
