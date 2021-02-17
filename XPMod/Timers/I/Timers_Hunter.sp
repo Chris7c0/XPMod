@@ -67,11 +67,13 @@ Action:TimerHunterPoison(Handle:timer, any:pack)
 	}
 	
 	CloseHandle(pack);
+
+	g_bIsHunterPoisoned[iClient] = false;
+	SetClientSpeed(iClient);
+
 	if(IsFakeClient(iClient)==false)
 		PrintHintText(iClient, "The venom has passed through your body.");
-	SetClientSpeed(iClient);
 	
-	g_bIsHunterPoisoned[iClient] = false;
 	g_hTimer_HunterPoison[iClient] = null;
 	
 	return Plugin_Stop;
