@@ -120,10 +120,10 @@ SetClientSpeedEllis(iClient, &Float:fSpeed)
 	// Bring The Pain SI Kill counter speed boost
 	if (g_iEllisSpeedBoostCounter[iClient] > 0)
 		fSpeed += (g_iEllisSpeedBoostCounter[iClient] * 0.01);
-
+	
 	// Jammin To The Music Tank Count speed boost
 	if (g_iTankCounter > 0)
-		fSpeed += (g_iTankCounter * g_iJamminLevel[iClient] * 0.03);
+		fSpeed += (g_iTankCounter * g_iJamminLevel[iClient] * 0.01);
 	
 	//PrintToChat(iClient, "SetClientSpeedEllis: %f, g_iTankCounter: %i", fSpeed, g_iTankCounter);
 }

@@ -1027,7 +1027,7 @@ EventsDeath_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 				//SetEntData(iEntid, clipsize2, clip2+30, true);	
 			}
 		}
-		if(g_iEllisSpeedBoostCounter[iAttacker] < (6 * g_iBringLevel[iAttacker]))
+		if(g_iEllisSpeedBoostCounter[iAttacker] < (4 * g_iBringLevel[iAttacker]))
 		{
 			g_iEllisSpeedBoostCounter[iAttacker]++;
 			SetClientSpeed(iAttacker);

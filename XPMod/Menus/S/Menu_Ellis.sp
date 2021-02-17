@@ -79,7 +79,7 @@ Action:BringMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(BringMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=\n \n		Bring the Pain!(Level %d):\n \nOn Special Infected kill:\n \nLevel 1:\nRegen +1 temp health per level\n+20 clip ammo per level\n(Stacks) +1%%%% movement speed\n \n \nSkill Uses:\n+6 max (Stacks) per level\n \n=	=	=	=	=	=	=	=	=",  g_iBringLevel[iClient]);
+	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=\n \n		Bring the Pain!(Level %d):\n \nOn Special Infected kill:\n \nLevel 1:\nRegen +1 temp health per level\n+20 clip ammo per level\n(Stacks) +1%%%% movement speed\n \n \nSkill Uses:\n+4 max (Stacks) per level\n \n=	=	=	=	=	=	=	=	=",  g_iBringLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
@@ -133,7 +133,7 @@ Action:JamminMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(JamminMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=\n \n		Jammin' to the Music (Level %d):\n \nOn Tank spawn:\n \nLevel 1:\n+3%%%% movement speed per level\n+5 temp health per level\n \nLevel 5:\nGain a molotov when you have no grenade\n \n=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iJamminLevel[iClient]);
+	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=\n \n		Jammin' to the Music (Level %d):\n \nOn Tank spawn:\n \nLevel 1:\n+1%%%% movement speed per level\n+5 temp health per level\n \nLevel 5:\nGain a molotov when you have no grenade\n \n=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iJamminLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
