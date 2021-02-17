@@ -27,7 +27,7 @@ Action:CoachMenuDraw(iClient)
 	FormatEx(text, sizeof(text), "	[Level %d]	Strong Arm (Bind 2)\n ", g_iStrongLevel[iClient]);
 	AddMenuItem(g_hMenu_XPM[iClient], "option6", text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Detailed Talent Descriptions\n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Open In Website\n ");
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Back\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n \n \n \n \n \n ");
 	
@@ -232,7 +232,7 @@ CoachMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			{
 				StrongMenuDraw(iClient);
 			}
-			case 6: //Detailed Talent Descriptions
+			case 6: //Open In Website
 			{
 				OpenMOTDPanel(iClient, "", "http://xpmod.net/talents/survivors/ceda%20files/coach/xpmod_ig_talents_survivors_coach.html", MOTDPANEL_TYPE_URL);
 				CoachMenuDraw(iClient);

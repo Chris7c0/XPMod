@@ -17,7 +17,7 @@ Action:SpitterTopMenuDraw(iClient)
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Material Girl");
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Hallucinogenic Nightmare\n ");
 	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Choose The Spitter\n ");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Detailed Talent Descriptions\n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Open In Website\n ");
 	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Back\n==============================\n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
@@ -223,7 +223,7 @@ SpitterTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 					SpitterTopMenuDraw(iClient);
 				}
 			}
-			case 4: //Detailed Talent Descriptions
+			case 4: //Open In Website
 			{
 				OpenMOTDPanel(iClient, "", "http://xpmod.net/talents/infected/ceda%20files/spitter/xpmod_ig_talents_infected_spitter.html", MOTDPANEL_TYPE_URL);
 				SpitterTopMenuDraw(iClient);

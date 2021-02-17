@@ -28,7 +28,7 @@ Action:SupportMenuDraw(iClient)
 	FormatEx(text, sizeof(text), "	[Level %d]	Promotional Benefits (Bind 2)          \n ", g_iPromotionalLevel[iClient]);
 	AddMenuItem(g_hMenu_XPM[iClient], "option6", text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Detailed Talent Descriptions	\n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Open In Website	\n ");
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Back\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n \n \n \n \n \n ");
 	
@@ -252,7 +252,7 @@ SupportMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			{
 				PromotionalMenuDraw(iClient);
 			}
-			case 6: //Detailed Talent Descriptions
+			case 6: //Open In Website
 			{
 				OpenMOTDPanel(iClient, "", "http://xpmod.net/talents/survivors/ceda%20files/bill/xpmod_ig_talents_survivors_bill.html", MOTDPANEL_TYPE_URL);
 				SupportMenuDraw(iClient);

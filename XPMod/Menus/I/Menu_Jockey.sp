@@ -18,7 +18,7 @@ Action:JockeyTopMenuDraw(iClient)
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Choose The Jockey\n ");
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Detailed Talent Descriptions\n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Open In Website\n ");
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Back\n==========================\n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
@@ -136,7 +136,7 @@ JockeyTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 					JockeyTopMenuDraw(iClient);
 				}
 			}
-			case 4: //Detailed Talent Descriptions
+			case 4: //Open In Website
 			{
 				OpenMOTDPanel(iClient, "", "http://xpmod.net/talents/infected/ceda%20files/jockey/xpmod_ig_talents_infected_jockey.html", MOTDPANEL_TYPE_URL);
 				JockeyTopMenuDraw(iClient);

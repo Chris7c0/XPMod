@@ -18,7 +18,7 @@ Action:SmokerTopMenuDraw(iClient)
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Choose The Smoker\n ");
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Detailed Talent Descriptions\n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Open In Website\n ");
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Back\n==========================\n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
@@ -137,7 +137,7 @@ SmokerTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 					SmokerTopMenuDraw(iClient);
 				}
 			}
-			case 4: //Detailed Talent Descriptions
+			case 4: //Open In Website
 			{
 				OpenMOTDPanel(iClient, "", "http://xpmod.net/talents/infected/ceda%20files/smoker/xpmod_ig_talents_infected_smoker.html", MOTDPANEL_TYPE_URL);
 				SmokerTopMenuDraw(iClient);
