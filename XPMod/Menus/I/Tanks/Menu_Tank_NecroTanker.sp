@@ -14,6 +14,7 @@ Action:TankMenuDrawNecroTanker(iClient)
         \n - Consume Infected For Health\
         \n	+%i HP Per CI Kill\
         \n	+%i HP Per UI Kill\
+        \n - 10%% Faster\
         \n - Immune to Bile\
         \n - Punching Survivors Summons Infected\
         \n	+60%% CI/UI Mob\

@@ -72,7 +72,7 @@ SetClientSpeedTankVampiric(iClient, &Float:fSpeed)
 	if (g_iTankChosen[iClient] != TANK_VAMPIRIC)
 		return;
 
-	fSpeed += 0.1;
+	fSpeed += 0.20;
 }
 
 OnGameFrame_Tank_Vampiric(iClient)
