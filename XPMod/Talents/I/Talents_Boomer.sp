@@ -234,7 +234,7 @@ EventsDeath_VictimBoomer(Handle:hEvent, iAttacker, iVictim)
 						if(distance < (200.0 + (float(g_iNorovirusLevel[iVictim]) * 15.0)))
 						{
 							//PrintToChatAll("%N is in range", target);
-							DealDamage(target, iVictim, 10 + (g_iNorovirusLevel[iVictim] * 2));
+							DealDamage(target, iVictim, 10 + RoundToNearest(g_iNorovirusLevel[iVictim] * 1.5));
 							SDKCall(g_hSDK_VomitOnPlayer, target, iVictim, true);
 							
 							//Fling Target Survivor (taken from "Tankroar 2.2" by Karma)
