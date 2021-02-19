@@ -213,7 +213,7 @@ EventsHurt_AttackerTank_Vampiric(Handle:hEvent, iAttackerTank, iVictim)
 }
 
 // NOTE: This function is for additional damage, not handling the original damage amount
-int CalculateAdditionalDamageTakenForVictimTalents_Tank_Vampiric(int iVictim, int iDmgAmount, const char[] strWeaponClass = "")
+int CalculateDamageForVictimTalents_Tank_Vampiric(int iVictim, int iDmgAmount, const char[] strWeaponClass = "")
 {
 	// Make sure its a Vampiric Tank
 	if (g_iClientTeam[iVictim] != TEAM_INFECTED || 

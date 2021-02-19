@@ -432,7 +432,7 @@ void ReduceDamageTakenForNewPlayers(int iVictim, int iDmgAmount)
 }
 
 // NOTE: This function is for additional damage, not handling the original damage amount
-int CalculateAdditionalDamageTakenForVictimTalents(int iVictim, int iDmgAmount, const char[] strWeaponClass = "")
+int CalculateDamageTakenForVictimTalents(int iVictim, int iDmgAmount, const char[] strWeaponClass = "")
 {
 	if (RunClientChecks(iVictim) == false || 
 		IsPlayerAlive(iVictim) == false)
@@ -440,7 +440,7 @@ int CalculateAdditionalDamageTakenForVictimTalents(int iVictim, int iDmgAmount, 
 	
 	int iDmgReductionOrAddition = 0;
 
-	iDmgReductionOrAddition = CalculateAdditionalDamageTakenForVictimTalents_Tank_Vampiric(iVictim, iDmgAmount, strWeaponClass);
+	iDmgReductionOrAddition = CalculateDamageForVictimTalents_Tank_Vampiric(iVictim, iDmgAmount, strWeaponClass);
 
 	return iDmgReductionOrAddition == 0 ? iDmgAmount : iDmgReductionOrAddition;
 }

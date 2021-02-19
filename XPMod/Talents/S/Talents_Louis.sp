@@ -120,10 +120,17 @@ EventsHurt_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 			PrintToChatAll("Louis iVictim %N START HP: %i", iVictim, iVictimHealth);
 
 			new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
-			new iNewDamageAmount = iDmgHealth + RoundToNearest(float(iDmgHealth) * (g_iLouisTalent2Level[iAttacker] * 0.3));
+			new iAddtionalDamageAmount = RoundToNearest(float(iDmgHealth) * (g_iLouisTalent2Level[iAttacker] * 0.2));
+			new iNewDamageAmount = iDmgHealth + iAddtionalDamageAmount;
+
 			// Add even more damage if its a headshot
 			if (GetEventInt(hEvent, "hitgroup") == HITGROUP_HEAD)
-				iNewDamageAmount = iNewDamageAmount + (iNewDamageAmount * RoundToNearest(g_iLouisTalent4Level[iAttacker] * 0.3));
+				iNewDamageAmount = iNewDamageAmount + (iNewDamageAmount * RoundToNearest(g_iLouisTalent4Level[iAttacker] * 0.2));
+
+			// Add or remove damage based on victim talents
+			iNewDamageAmount = CalculateDamageTakenForVictimTalents(iVictim, iNewDamageAmount, weaponclass);
+
+			// Apply the new damage
 			SetEntProp(iVictim, Prop_Data, "m_iHealth", iVictimHealth + iDmgHealth - iNewDamageAmount);
 
 			PrintToChat(iAttacker, "You did %i damage ", iNewDamageAmount);
