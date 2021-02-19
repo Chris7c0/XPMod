@@ -868,46 +868,57 @@ OGFSurvivorReload_Ellis(iClient, const char[] currentweapon, ActiveWeaponID, Cur
 	*/
 }
 
-EventsHurt_AttackerEllis(Handle:hEvent, attacker, victim)
+EventsHurt_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 {
-	if (IsFakeClient(attacker))
+	if (IsFakeClient(iAttacker))
 		return;
 	
-	if (g_iClientTeam[victim] != TEAM_INFECTED)
+	if (g_iClientTeam[iVictim] != TEAM_INFECTED)
 		return;
 	
-	if(g_iFireLevel[attacker]>0)
+	if(g_iFireLevel[iAttacker]>0)
 	{
-		if(g_iClientTeam[victim] == TEAM_INFECTED)
+		if(g_iClientTeam[iVictim] == TEAM_INFECTED)
 		{
-			if(g_bUsingFireStorm[attacker]==true)
+			if(g_bUsingFireStorm[iAttacker]==true)
 			{
-				new Float:time = (float(g_iFireLevel[attacker]) * 6.0);
-				IgniteEntity(victim, time, false);
+				new Float:time = (float(g_iFireLevel[iAttacker]) * 6.0);
+				IgniteEntity(iVictim, time, false);
 			}
 		}
 	}
 	
-	if(g_iOverLevel[attacker] > 0)
+	if(g_iOverLevel[iAttacker] > 0)
 	{
-		if(g_iClientTeam[victim] == TEAM_INFECTED)
+		if(g_iClientTeam[iVictim] == TEAM_INFECTED)
 		{
-			new iCurrentHealth = GetEntProp(attacker,Prop_Data,"m_iHealth");
-			new iMaxHealth = GetEntProp(attacker,Prop_Data,"m_iMaxHealth");
-			new Float:fTempHealth = GetEntDataFloat(attacker, g_iOffset_HealthBuffer);
-			if(float(iCurrentHealth) + fTempHealth > (float(iMaxHealth) - 20.0))
+			new iCurrentHealth = GetEntProp(iAttacker,Prop_Data,"m_iHealth");
+			new iMaxHealth = GetEntProp(iAttacker,Prop_Data,"m_iMaxHealth");
+			new iTempHealth = GetSurvivorTempHealth(iAttacker);
+			if(iCurrentHealth + iTempHealth >= iMaxHealth - 20)
 			{
-				decl String:weaponclass[32];
-				GetEventString(hEvent,"weapon",weaponclass,32);
-				//PrintToChatAll("\x03-class of gun: \x01%s",weaponclass);
-				if((StrContains(weaponclass,"shotgun",false) != -1) || (StrContains(weaponclass,"rifle",false) != -1) || (StrContains(weaponclass,"pistol",false) != -1) || (StrContains(weaponclass,"smg",false) != -1) || (StrContains(weaponclass,"sniper",false) != -1) || (StrContains(weaponclass,"launcher",false) != -1))
+				decl String:strWeaponClass[32];
+				GetEventString(hEvent,"weapon",strWeaponClass,32);
+				//PrintToChatAll("\x03-class of gun: \x01%s",strWeaponClass);
+				if ((StrContains(strWeaponClass,"shotgun",false) != -1) || 
+					(StrContains(strWeaponClass,"rifle",false) != -1) || 
+					(StrContains(strWeaponClass,"pistol",false) != -1) || 
+					(StrContains(strWeaponClass,"smg",false) != -1) || 
+					(StrContains(strWeaponClass,"sniper",false) != -1) || 
+					(StrContains(strWeaponClass,"launcher",false) != -1) || 
+					(StrContains(strWeaponClass,"melee",false) != -1))
 				{
-					new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
-					new dmg = GetEventInt(hEvent,"dmg_health");
-					new newdmg = (dmg + (g_iOverLevel[attacker] * 2));
-					SetEntProp(victim,Prop_Data,"m_iHealth", hp - newdmg);
-					//PrintToChatAll("Ellis is doing %d damage", dmg);
-					//PrintToChatAll("Ellis is doing %d additional damage", (newdmg - dmg));
+					new iVictimHealth = GetEntProp(iVictim,Prop_Data,"m_iHealth");
+					// PrintToChatAll("Ellis iVictim %N START HP: %i", iVictim, iVictimHealth);
+
+					new iDmgAmount = GetEventInt(hEvent,"dmg_health");
+					new iAddtionalDmg = RoundToNearest(iDmgAmount * g_iOverLevel[iAttacker] * 0.04);
+					SetEntProp(iVictim, Prop_Data,"m_iHealth", iVictimHealth - CalculateAdditionalDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
+					// PrintToChatAll("Ellis is doing %i original damage", iDmgAmount);
+					// PrintToChatAll("Ellis is doing %i additional damage", CalculateAddioonalDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
+
+					// new iVictimHealth2 = GetEntProp(iVictim,Prop_Data,"m_iHealth");
+					// PrintToChatAll("Ellis iVictim %N   END HP: %i", iVictim, iVictimHealth2);
 				}
 			}
 		}

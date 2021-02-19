@@ -52,7 +52,7 @@ Action:OverMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(OverMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n 					Overconfidence (Level %d):\n \nLevel 1:\n+4 pill & shot health per level\n+8%%%% reload speed per level\n(Stacks) (Team) +1 second adrenaline duration per level\nIf within 20 points of max health:\n+2% speed && +2 damage to all guns per level\n \n \nSkill Uses:\nAdrenaline (Stacks) with itself\nUnlimited stacks\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iOverLevel[iClient]);
+	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n 					Overconfidence (Level %d):\n \nLevel 1:\n+4 pill & shot health per level\n+8%%%% reload speed per level\n(Stacks) (Team) +1 second adrenaline duration per level\nIf within 20 points of max health:\n+2%% speed && +4%% damage to all guns per level\n \n \nSkill Uses:\nAdrenaline (Stacks) with itself\nUnlimited stacks\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iOverLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
@@ -160,7 +160,7 @@ Action:MetalMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(MetalMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Mechanic Affinity (Level %d):\n					Requires Level 11\n \nLevel 1:\n+4 clip size per level (SMG/Rifle/Sniper only)\n+1%%%% firing rate per level\n+8%%%% reload speed per level\n \nLevel 5:\n [WALK+USE] double firing rate for 10 seconds\nDestroys weapon after\n \n \n					Bind 1: Ammo Refill\n				+1 use every other level\n \nLevel 1:\nDeploy an ammo stash\n \n=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iMetalLevel[iClient]);
+	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Mechanic Affinity (Level %d):\n					Requires Level 11\n \nLevel 1:\n+4 clip size per level (SMG/Rifle/Sniper only)\n+6%%%% firing rate per level\n+8%%%% reload speed per level\n \nLevel 5:\n [WALK+USE] double firing rate for 10 seconds\nDestroys weapon after\n \n \n					Bind 1: Ammo Refill\n				+1 use every other level\n \nLevel 1:\nDeploy an ammo stash\n \n=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iMetalLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
@@ -187,7 +187,7 @@ Action:FireMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(FireMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n						Fire Storm(Level %d):\n						Requires Level 26\n \nLevel 1:\n+6 clip size per level (SMG/Rifle/Sniper only)\n+10%%%% reload speed per level\n+2%%%% firing rate per level\nFire immunity\n \n \n			Bind 2: Summon Kagu-Tsuchi's Wrath\n						+1 use every other level\n \nLevel 1: +6 seconds of incendiary attacks\nand burn duration per level\nBurning a calm Witch\nimmediately neutralizes her\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iFireLevel[iClient]);
+	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n						Fire Storm(Level %d):\n						Requires Level 26\n \nLevel 1:\n+6 clip size per level (SMG/Rifle/Sniper only)\n+10%%%% reload speed per level\n+6%%%% firing rate per level\nFire immunity\n \n \n			Bind 2: Summon Kagu-Tsuchi's Wrath\n						+1 use every other level\n \nLevel 1: +6 seconds of incendiary attacks\nand burn duration per level\nBurning a calm Witch\nimmediately neutralizes her\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iFireLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");

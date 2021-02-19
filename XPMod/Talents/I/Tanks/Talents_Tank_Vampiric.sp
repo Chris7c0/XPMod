@@ -212,6 +212,35 @@ EventsHurt_AttackerTank_Vampiric(Handle:hEvent, iAttackerTank, iVictim)
 	}
 }
 
+// NOTE: This function is for additional damage, not handling the original damage amount
+int CalculateAdditionalDamageTakenForVictimTalents_Tank_Vampiric(int iVictim, int iDmgAmount, const char[] strWeaponClass = "")
+{
+	// Make sure its a Vampiric Tank
+	if (g_iClientTeam[iVictim] != TEAM_INFECTED || 
+		g_iTankChosen[iVictim] != TANK_VAMPIRIC ||
+		GetEntProp(iVictim, Prop_Send, "m_zombieClass") != TANK)
+		return 0;
+
+	// Modify damage taken for the Vampric Tank
+	if (StrContains(strWeaponClass,"melee",false) != -1)
+	{
+		// Increase the melee damage
+		return (iDmgAmount * VAMPIRIC_TANK_MELEE_DMG_TAKEN_MULTIPLIER);
+	}
+	else if(StrContains(strWeaponClass,"pistol",false) != -1 ||
+		StrContains(strWeaponClass,"rifle",false) != -1 ||
+		StrContains(strWeaponClass,"smg",false) != -1 ||
+		StrContains(strWeaponClass,"sub",false) != -1 || // Needed?
+		StrContains(strWeaponClass,"shotgun",false) != -1 ||
+		StrContains(strWeaponClass,"sniper",false) != -1)
+	{
+		// Decrease gun damage
+		return RoundToCeil(iDmgAmount * VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER);
+	}
+
+	return 0;
+}
+
 AddWingFlapVelocity(iClient, Float:speed)
 {
 	new Float:vecVelocity[3];

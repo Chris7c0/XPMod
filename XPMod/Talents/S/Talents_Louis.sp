@@ -116,14 +116,20 @@ EventsHurt_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 			StrEqual(weaponclass,"pistol",false) == true ||
 			StrEqual(weaponclass,"dual_pistols",false) == true)
 		{
-			new iVictimHealth = GetEntProp(iVictim, Prop_Data, "m_iHealth");
+			new iVictimHealth = GetEntProp(iVictim,Prop_Data,"m_iHealth");
+			PrintToChatAll("Louis iVictim %N START HP: %i", iVictim, iVictimHealth);
+
 			new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
 			new iNewDamageAmount = iDmgHealth + RoundToNearest(float(iDmgHealth) * (g_iLouisTalent2Level[iAttacker] * 0.3));
 			// Add even more damage if its a headshot
 			if (GetEventInt(hEvent, "hitgroup") == HITGROUP_HEAD)
 				iNewDamageAmount = iNewDamageAmount + (iNewDamageAmount * RoundToNearest(g_iLouisTalent4Level[iAttacker] * 0.3));
 			SetEntProp(iVictim, Prop_Data, "m_iHealth", iVictimHealth + iDmgHealth - iNewDamageAmount);
-			//PrintToChat(iAttacker, "You did %i damage ", iNewDamageAmount);
+
+			PrintToChat(iAttacker, "You did %i damage ", iNewDamageAmount);
+
+			new iVictimHealth2 = GetEntProp(iVictim,Prop_Data,"m_iHealth");
+			PrintToChatAll("Louis iVictim %N START HP: %i", iVictim, iVictimHealth2);
 		}
 	}
 }

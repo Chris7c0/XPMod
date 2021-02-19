@@ -1,6 +1,33 @@
 
 //Testing Functions//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+MonitorAndPrintHealthMeterToSurvivorPlayer(iAttacker, iVictim)
+{
+	// To get an immediate display print the current health
+	PrintHealthMeterToSurvivorPlayer(iAttacker, iVictim);
+
+	new Handle:hDataPackage = CreateDataPack();
+	WritePackCell(hDataPackage, iAttacker);
+	WritePackCell(hDataPackage, iVictim);
+	
+	CreateTimer(0.5, Timer_MonitorAndPrintHealthMeterToSurvivorPlayer, hDataPackage, TIMER_FLAG_NO_MAPCHANGE);
+}
+
+Action Timer_MonitorAndPrintHealthMeterToSurvivorPlayer(Handle:timer, Handle:hDataPackage)
+{
+	ResetPack(hDataPackage);
+	new iAttacker = ReadPackCell(hDataPackage);
+	new iVictim = ReadPackCell(hDataPackage);
+	CloseHandle(hDataPackage);
+
+	if (RunClientChecks(iAttacker) == false || 
+		RunClientChecks(iVictim) == false)
+		return Plugin_Stop;
+	
+	PrintHealthMeterToSurvivorPlayer(iAttacker, iVictim);
+
+	return Plugin_Stop;
+}
 
 PrintHealthMeterToSurvivorPlayer(int iAttacker, int iVictim)
 {

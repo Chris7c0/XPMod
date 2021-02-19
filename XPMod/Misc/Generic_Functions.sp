@@ -431,6 +431,20 @@ void ReduceDamageTakenForNewPlayers(int iVictim, int iDmgAmount)
 	SetEntProp(iVictim,Prop_Data,"m_iHealth", iCurrentHealth + iReductionAmount);
 }
 
+// NOTE: This function is for additional damage, not handling the original damage amount
+int CalculateAdditionalDamageTakenForVictimTalents(int iVictim, int iDmgAmount, const char[] strWeaponClass = "")
+{
+	if (RunClientChecks(iVictim) == false || 
+		IsPlayerAlive(iVictim) == false)
+		return 0;
+	
+	int iDmgReductionOrAddition = 0;
+
+	iDmgReductionOrAddition = CalculateAdditionalDamageTakenForVictimTalents_Tank_Vampiric(iVictim, iDmgAmount, strWeaponClass);
+
+	return iDmgReductionOrAddition == 0 ? iDmgAmount : iDmgReductionOrAddition;
+}
+
 //This function was originally written by AtomikStryker
 bool:IsVisibleTo(Float:position[3], Float:targetposition[3])
 {
