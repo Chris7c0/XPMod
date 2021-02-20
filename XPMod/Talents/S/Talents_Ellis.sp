@@ -101,10 +101,9 @@ OnGameFrame_Ellis(iClient)
 			{
 				g_bIsEllisLimitBreaking[iClient] = true;
 				g_bCanEllisLimitBreak[iClient] = false;
-				CreateTimer(10.0, TimerEllisLimitBreakReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
-				CreateTimer(70.0, TimerEllisLimitBreakCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
-				PrintHintText(iClient, "Tripling firing speed for 10 seconds; Your weapon will break afterward!");
-				//PrintToChatAll("Ellis is limit breaking");
+				CreateTimer(5.0, TimerEllisLimitBreakReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
+				CreateTimer(65.0, TimerEllisLimitBreakCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
+				PrintHintText(iClient, "Double fire rate for 5 seconds; Your weapon will break afterward!");
 			}
 			else if(g_bEllisLimitBreakInCooldown[iClient] == true)
 			{
