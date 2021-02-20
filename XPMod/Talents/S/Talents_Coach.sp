@@ -766,13 +766,13 @@ EventsHurt_AttackerCoach(Handle:hEvent, attacker, victim)
 				//new dmg = GetEventInt(hEvent,"dmg_health");
 				//PrintToChat(attacker, "predmg = %d", dmg);
 				//dmg = g_iMeleeDamageCounter[attacker];
-				PrintToChat(attacker, "\x03[XPMod] \x05You did %d extra melee damage", (g_iMeleeDamageCounter[attacker] + g_iCoachRageMeleeDamage[attacker]));
+				//PrintToChat(attacker, "\x03[XPMod] \x05You did %d extra melee damage", (g_iMeleeDamageCounter[attacker] + g_iCoachRageMeleeDamage[attacker]));
 				SetEntProp(victim,Prop_Data,"m_iHealth", hp - (g_iMeleeDamageCounter[attacker] + g_iCoachRageMeleeDamage[attacker]));
 			}
 			else if(g_bCoachRageIsActive[attacker] == true)
 			{
 				new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
-				PrintToChat(attacker, "\x03[XPMod] \x05You did %d extra melee damage", g_iCoachRageMeleeDamage[attacker]);
+				//PrintToChat(attacker, "\x03[XPMod] \x05You did %d extra melee damage", g_iCoachRageMeleeDamage[attacker]);
 				SetEntProp(victim,Prop_Data,"m_iHealth", hp - g_iCoachRageMeleeDamage[attacker]);
 			}
 		}
