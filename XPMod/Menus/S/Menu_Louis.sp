@@ -171,7 +171,7 @@ Action:LouisTalent4MenuDraw(iClient)
 		\n \
 		\n 					BOOM HEADSHOT! (Level %d):\
 		\n \
-		\n +20% Headshot Damage Multiplier per Level\
+		\n +30% Headshot Damage Multiplier per Level\
 		\n Headshot Kill Bonuses:\
 		\n 	- CI: +1 HP, +1%% Speed for 20 Seconds, +2 Clip Ammo per Level\
 		\n 	- SI: +5 HP, +5%% Speed for 20 Seconds, +10 Clip Ammo per Level      \

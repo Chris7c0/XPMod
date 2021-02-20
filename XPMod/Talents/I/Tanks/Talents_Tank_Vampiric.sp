@@ -235,7 +235,7 @@ int CalculateDamageForVictimTalents_Tank_Vampiric(int iVictim, int iDmgAmount, c
 		StrContains(strWeaponClass,"sniper",false) != -1)
 	{
 		// Decrease gun damage
-		return RoundToCeil(iDmgAmount * VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER);
+		return RoundToNearest(iDmgAmount * VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER);
 	}
 
 	return 0;

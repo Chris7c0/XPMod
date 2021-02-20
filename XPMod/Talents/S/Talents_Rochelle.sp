@@ -327,7 +327,10 @@ EventsHurt_AttackerRochelle(Handle:hEvent, attacker, victim)
 			{
 				new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
 				new dmg = GetEventInt(hEvent,"dmg_health");
+
 				dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.13));
+				dmg = CalculateDamageTakenForVictimTalents(victim, dmg, weaponclass);
+
 				//PrintToChat(attacker, "your doing %d hunting rifle damage", dmg);
 				SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
 
@@ -337,7 +340,10 @@ EventsHurt_AttackerRochelle(Handle:hEvent, attacker, victim)
 				IgniteEntity(victim, 5.0, false);
 				new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
 				new dmg = GetEventInt(hEvent,"dmg_health");
+
 				dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.08));
+				dmg = CalculateDamageTakenForVictimTalents(victim, dmg, weaponclass);
+
 				//PrintToChat(attacker, "your doing %d sniper_military damage", dmg);
 				SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
 
@@ -346,7 +352,10 @@ EventsHurt_AttackerRochelle(Handle:hEvent, attacker, victim)
 			{
 				new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
 				new dmg = GetEventInt(hEvent,"dmg_health");
+
 				dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.13)) + (g_iSilentSorrowHeadshotCounter[attacker] * g_iSilentLevel[attacker] * 3);
+				dmg = CalculateDamageTakenForVictimTalents(victim, dmg, weaponclass);
+
 				//PrintToChat(attacker, "your doing %d scout damage", dmg);
 				SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
 
@@ -355,8 +364,11 @@ EventsHurt_AttackerRochelle(Handle:hEvent, attacker, victim)
 			{
 				new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
 				new dmg = GetEventInt(hEvent,"dmg_health");
+
 				dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.40) );
-				PrintToChat(attacker, "your doing %d extra awp damage", dmg);
+				dmg = CalculateDamageTakenForVictimTalents(victim, dmg, weaponclass);
+
+				//PrintToChat(attacker, "your doing %d extra awp damage", dmg);
 				SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
 			}
 		}

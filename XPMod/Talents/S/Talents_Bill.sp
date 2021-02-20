@@ -238,29 +238,29 @@ EventsHurt_AttackerBill(Handle:hEvent, attacker, victim)
 	{
 		if(g_iClientTeam[victim] == TEAM_INFECTED)
 		{
-			decl String:weaponclass[32];
-			GetEventString(hEvent,"weapon",weaponclass,32);
-			//PrintToChat(attacker, "weaponclass = %s", weaponclass);
-			if(StrContains(weaponclass,"rifle",false) != -1)
+			decl String:strWeaponClass[32];
+			GetEventString(hEvent,"weapon",strWeaponClass,32);
+			//PrintToChat(attacker, "strWeaponClass = %s", strWeaponClass);
+			if(StrContains(strWeaponClass,"rifle",false) != -1)
 			{
-				if(StrContains(weaponclass,"rifle_m60",false) == -1)
+				if(StrContains(strWeaponClass,"rifle_m60",false) == -1)
 				{
-					if(StrContains(weaponclass,"hunting_rifle",false) == -1)
+					if(StrContains(strWeaponClass,"hunting_rifle",false) == -1)
 					{
-						new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
-						new dmg = GetEventInt(hEvent,"dmg_health");
-						dmg = RoundToNearest(dmg * (g_iExorcismLevel[attacker] * 0.04));
-						//PrintToChat(attacker, "Your doing %d extra rifle damage", dmg);
-						SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+						new iCurrentHP = GetEntProp(victim,Prop_Data,"m_iHealth");
+						new iDmgAmount = GetEventInt(hEvent,"dmg_health");
+						iDmgAmount = CalculateDamageTakenForVictimTalents(victim, RoundToNearest(iDmgAmount * (g_iExorcismLevel[attacker] * 0.04)), strWeaponClass);
+						//PrintToChat(attacker, "Your doing %d extra rifle damage", iDmgAmount);
+						SetEntProp(victim, Prop_Data, "m_iHealth", iCurrentHP - iDmgAmount);
 					}
 				}
 				else
 				{
-					new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
-					new dmg = GetEventInt(hEvent,"dmg_health");
-					dmg = RoundToNearest(dmg * (g_iPromotionalLevel[attacker] * 0.20));
-					//PrintToChat(attacker, "Your doing %d extra M60 damage", dmg);
-					SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+					new iCurrentHP = GetEntProp(victim,Prop_Data,"m_iHealth");
+					new iDmgAmount = GetEventInt(hEvent,"dmg_health");
+					iDmgAmount = CalculateDamageTakenForVictimTalents(victim, RoundToNearest(iDmgAmount * (g_iPromotionalLevel[attacker] * 0.20)), strWeaponClass);
+					//PrintToChat(attacker, "Your doing %d extra M60 damage", iDmgAmount);
+					SetEntProp(victim,Prop_Data,"m_iHealth", iCurrentHP - iDmgAmount);
 				}
 			}
 		}

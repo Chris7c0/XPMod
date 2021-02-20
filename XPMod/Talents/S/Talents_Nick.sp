@@ -495,15 +495,15 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 		{
 			new hp = GetEntProp(iVictim,Prop_Data,"m_iHealth");
 			new dmg = GetEventInt(hEvent,"dmg_health");
+			
 			if(g_iNickDesperateMeasuresStack > 3)
-			{
 				dmg = RoundToNearest(dmg * (g_iDesperateLevel[iAttacker] * 0.05) * 3);
-			}
 			else
-			{
 				dmg = RoundToNearest(dmg * (g_iDesperateLevel[iAttacker] * 0.05) * g_iNickDesperateMeasuresStack);
-			}
-			PrintToChat(iAttacker, "You are doing %d extra damage", dmg);
+
+			dmg = CalculateDamageTakenForVictimTalents(iVictim, dmg, weaponclass);
+
+			//PrintToChat(iAttacker, "You are doing %d extra damage", dmg);
 			SetEntProp(iVictim,Prop_Data,"m_iHealth", hp - dmg);
 		}
 	}
@@ -512,21 +512,27 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 	{
 		if(g_iClientTeam[iVictim] == TEAM_INFECTED)
 		{
-			decl String:wclass[32];
-			GetEventString(hEvent,"weapon",wclass,32);
-			if (StrContains(wclass,"magnum",false) != -1)
+			decl String:weaponclass[32];
+			GetEventString(hEvent,"weapon",weaponclass,32);
+			if (StrContains(weaponclass,"magnum",false) != -1)
 			{
 				new hp = GetEntProp(iVictim,Prop_Data,"m_iHealth");
 				new dmg = GetEventInt(hEvent,"dmg_health");
+
 				dmg = RoundToNearest(dmg * (g_iMagnumLevel[iAttacker] * 0.75));
+				dmg = CalculateDamageTakenForVictimTalents(iVictim, dmg, weaponclass);
+
 				//PrintToChat(iAttacker, "your doing %d extra magnum damage", dmg);
 				SetEntProp(iVictim,Prop_Data,"m_iHealth", hp - dmg);
 			}
-			else if (StrContains(wclass,"pistol",false) != -1)
+			else if (StrContains(weaponclass,"pistol",false) != -1)
 			{
 				new hp = GetEntProp(iVictim,Prop_Data,"m_iHealth");
 				new dmg = GetEventInt(hEvent,"dmg_health");
+
 				dmg = RoundToNearest(dmg * (g_iRiskyLevel[iAttacker] * 0.2));
+				dmg = CalculateDamageTakenForVictimTalents(iVictim, dmg, weaponclass);
+
 				//PrintToChat(iAttacker, "your doing %d extra damage", dmg);
 				SetEntProp(iVictim,Prop_Data,"m_iHealth", hp - dmg);
 			}

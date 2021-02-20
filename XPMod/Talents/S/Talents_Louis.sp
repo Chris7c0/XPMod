@@ -117,7 +117,7 @@ EventsHurt_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 			StrEqual(weaponclass,"dual_pistols",false) == true)
 		{
 			new iVictimHealth = GetEntProp(iVictim,Prop_Data,"m_iHealth");
-			PrintToChatAll("Louis iVictim %N START HP: %i", iVictim, iVictimHealth);
+			// PrintToChatAll("Louis iVictim %N START HP: %i", iVictim, iVictimHealth);
 
 			new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
 			new iAddtionalDamageAmount = RoundToNearest(float(iDmgHealth) * (g_iLouisTalent2Level[iAttacker] * 0.2));
@@ -125,18 +125,18 @@ EventsHurt_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 
 			// Add even more damage if its a headshot
 			if (GetEventInt(hEvent, "hitgroup") == HITGROUP_HEAD)
-				iNewDamageAmount = iNewDamageAmount + (iNewDamageAmount * RoundToNearest(g_iLouisTalent4Level[iAttacker] * 0.2));
+				iNewDamageAmount = iNewDamageAmount + (iNewDamageAmount * RoundToNearest(g_iLouisTalent4Level[iAttacker] * 0.3));
 
-			// Add or remove damage based on victim talents
-			iNewDamageAmount = CalculateDamageTakenForVictimTalents(iVictim, iNewDamageAmount, weaponclass);
+			// Add or remove damage based on victim talents (Also subtract damage that will be already)
+			iNewDamageAmount = CalculateDamageTakenForVictimTalents(iVictim, iNewDamageAmount, weaponclass) - CalculateDamageTakenForVictimTalents(iVictim, iDmgHealth, weaponclass);
 
 			// Apply the new damage
-			SetEntProp(iVictim, Prop_Data, "m_iHealth", iVictimHealth + iDmgHealth - iNewDamageAmount);
+			SetEntProp(iVictim, Prop_Data, "m_iHealth", iVictimHealth - iNewDamageAmount);
 
-			PrintToChat(iAttacker, "You did %i damage ", iNewDamageAmount);
+			// PrintToChat(iAttacker, "\x03Original Dmg: %i, New Add Dmg: %i ", iDmgHealth, iNewDamageAmount);
 
-			new iVictimHealth2 = GetEntProp(iVictim,Prop_Data,"m_iHealth");
-			PrintToChatAll("Louis iVictim %N START HP: %i", iVictim, iVictimHealth2);
+			// new iVictimHealth2 = GetEntProp(iVictim,Prop_Data,"m_iHealth");
+			// PrintToChatAll("Louis iVictim %N END HP: %i", iVictim, iVictimHealth2);
 		}
 	}
 }
