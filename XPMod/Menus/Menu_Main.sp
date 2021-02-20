@@ -185,12 +185,12 @@ Action:ExtrasMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(ExtrasMenuHandler);
 	SetMenuTitle(g_hMenu_XPM[iClient], "XPMod Extras");
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Change Characters With Menu");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Change Team");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Player Stats");
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Options");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Get XPMod Addon");
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "XPMod Website");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Change Team");
+	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Player Stats");
+	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Options");
+	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Get XPMod Addon");
+	AddMenuItem(g_hMenu_XPM[iClient], "option5", "XPMod Website");
+	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Ban Me");
 	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Main Menu");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -330,29 +330,29 @@ ExtrasMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 	{
 		switch (itemNum)
 		{
-			case 0: //Choose Character In Menu
-			{
-				TopChooseCharactersMenuDraw(iClient);
-			}
-			case 1: //Choose Team
+			case 0: //Choose Team
 			{
 				ChooseTeamMenuDraw(iClient);
 			}
-			case 2: //Player Stats
+			case 1: //Player Stats
 			{
 				ShowTeamStatsToPlayer(iClient, iClient);
 			}
-			case 3: //Options
+			case 2: //Options
 			{
 				OptionMenuDraw(iClient);
 			}
-			case 4: //Get XPMod Addon
+			case 3: //Get XPMod Addon
 			{
 				OpenMOTDPanel(iClient, "Download XPMod Addon", "http://xpmod.net/downloads/xpmod_ig_downloads.html", MOTDPANEL_TYPE_URL);
 			}
-			case 5: //Website
+			case 4: //Website
 			{
 				OpenMOTDPanel(iClient, "", "http://xpmod.net/index.html", MOTDPANEL_TYPE_URL);
+			}
+			case 5: //Ban Me
+			{
+				BanMeMenuDraw(iClient);
 			}
 			case 6: //Back
 			{
