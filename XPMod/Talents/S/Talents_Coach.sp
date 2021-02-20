@@ -782,7 +782,7 @@ EventsHurt_AttackerCoach(Handle:hEvent, attacker, victim)
 			//new dmg = GetEventInt(hEvent,"dmg_health");
 			//dmg = dmg + (g_iSprayLevel[attacker] * 2);
 			//PrintToChat(attacker, "your doing %d shotgun damage", (g_iSprayLevel[attacker] * 2));
-			SetEntProp(victim,Prop_Data,"m_iHealth", hp - (g_iSprayLevel[attacker] * 2));
+			SetEntProp(victim,Prop_Data,"m_iHealth", hp - CalculateDamageTakenForVictimTalents(victim, (g_iSprayLevel[attacker] * 2), weaponclass));
 		}
 	}
 }
