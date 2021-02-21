@@ -164,6 +164,9 @@ ResetAllTankVariables(iClient)
 	// Clamp Player Max Health to ConVar Setting of Tank Max health
 	// Note: Valve multiplies the value with 1.5 so it becomes 4000 x 1.5 = 6000 hp.
 	new iMaxHealthConVarSetting = RoundToCeil(GetConVarInt(FindConVar("z_tank_health")) * 1.5);
+	// Scale the max health to the survivors levels or for XPMod spawn
+	iMaxHealthConVarSetting = RoundToNearest(iMaxHealthConVarSetting * g_fTankStartingHealthMultiplier[iClient]);
+	//PrintToChatAll("iMaxHealthConVarSetting: %i", iMaxHealthConVarSetting);
 	new iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
 	// PrintToChatAll("%N ResetAllTankVariables m_iMaxHealth = %i iMaxHealthConVarSetting = %i", iClient, iMaxHealth, iMaxHealthConVarSetting);
 	if (iMaxHealth > iMaxHealthConVarSetting)
@@ -192,6 +195,13 @@ float CalculateTankHealthPercentageMultiplier()
 {
 	int iCombinedSurvivorLevel = 0;
 	float fNormalizedTankHealthPercentageMultiplier = 0.0;
+
+	// For XPMod Tank spawns (Jockey pee spawn, NecroTanker, etc.) give the proper health
+	if (g_bTankStartingHealthXPModSpawn)
+	{
+		g_bTankStartingHealthXPModSpawn = false;
+		return TANK_STARTING_HEALTH_MULTIPLIER_XPMOD_SPAWN;
+	}
 
 	// Get all the survivor's levels add them up
 	for (int i = 1; i <= MaxClients; i++)

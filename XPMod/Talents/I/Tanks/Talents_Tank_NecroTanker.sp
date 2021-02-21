@@ -509,6 +509,7 @@ void SummonNecroTankerPunchZombies(iAttackerTank, iVictim)
 	// Spawn another tank if they roll a 1
 	if (iRoll == 1)
 	{
+		g_bTankStartingHealthXPModSpawn = true;
 		SpawnSpecialInfected(iAttackerTank, INFECTED_NAME[TANK]);
 		return;
 	}

@@ -680,6 +680,7 @@ Action:Bind1Press(iClient, args)
 												{
 													if(g_iErraticLevel[iClient] >= iRandomTankSpawn)
 													{
+														g_bTankStartingHealthXPModSpawn = true;
 														RunCheatCommand(iClient, "z_spawn_old", "z_spawn_old tank auto");
 
 														PrintToChatAll("\x03[XPMod] \x04Beware, a tank smells %N's jockey piss", iClient);
