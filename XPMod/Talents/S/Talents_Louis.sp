@@ -308,8 +308,8 @@ PrintLouisTeleportCharges(iClient)
 		IsFakeClient(iClient) == true)
 		return;
 	
-	// Print the Wing Dash charges
-	switch (6 - g_iLouisTeleportChargeUses[iClient])
+	// Print the Louis Teleport charges
+	switch (g_iLouisTalent3Level[iClient] + 1 - g_iLouisTeleportChargeUses[iClient])
 	{
 		case 0: PrintHintText(iClient, "( XxX.xX.xX..xXX.X..Xxx.xX..XxxX..xX.XXx.xx.X.Xxx..xX )");
 
