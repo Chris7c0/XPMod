@@ -222,10 +222,17 @@ Action:TestFunction2(iClient, args)
 {
 	PrintToServer("T2");
 
-	decl Float:xyzClientLocation[3];
-	GetClientAbsOrigin(iClient, xyzClientLocation);
-	xyzClientLocation[2] += 30.0;
-	WriteParticle(iClient, "mini_fireworks", 0.0, 10.0, xyzClientLocation);
+	char str1[99];
+	char str2[99];
+	GetCmdArg(1, str1, sizeof(str1));
+	GetCmdArg(2, str2, sizeof(str2));
+
+	// g_iTesting =  StringToInt(str1);
+
+	// decl Float:xyzClientLocation[3];
+	// GetClientAbsOrigin(iClient, xyzClientLocation);
+	// xyzClientLocation[2] += 30.0;
+	// WriteParticle(iClient, "mini_fireworks", 0.0, 10.0, xyzClientLocation);
 
 	// if (RunClientChecks(iClient) == false) PrintToChat(iClient, "T1");
 

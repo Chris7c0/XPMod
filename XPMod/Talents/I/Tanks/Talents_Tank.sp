@@ -188,6 +188,33 @@ ResetAllTankVariables(iClient)
 	// PrintToChatAll("%N ResetAllTankVariables Ended", iClient);
 }
 
+float CalculateTankHealthPercentageMultiplier()
+{
+	int iCombinedSurvivorLevel = 0;
+	float fNormalizedTankHealthPercentageMultiplier = 0.0;
+
+	// Get all the survivor's levels add them up
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		if (RunClientChecks(i) && 
+			g_iClientTeam[i] == TEAM_SURVIVORS &&
+			IsFakeClient(i) == false &&
+			g_bClientLoggedIn[i] == true &&
+			IsPlayerAlive(i) == true)
+			iCombinedSurvivorLevel += g_iClientLevel[i];
+	}
+
+	// Normalize the combined survivor level with a base min multiplier
+	fNormalizedTankHealthPercentageMultiplier = TANK_STARTING_HEALTH_MULTIPLIER_MIN + ((1.0 - TANK_STARTING_HEALTH_MULTIPLIER_MIN) * (iCombinedSurvivorLevel / float(TANK_STARTING_HEALTH_REQUIRED_TEAM_LEVEL_FOR_MAX)) );
+
+	// Cap upper bounds
+	if (fNormalizedTankHealthPercentageMultiplier > TANK_STARTING_HEALTH_MULTIPLIER_MAX)
+		fNormalizedTankHealthPercentageMultiplier = TANK_STARTING_HEALTH_MULTIPLIER_MAX;
+
+	// Return the health multiplier
+	return fNormalizedTankHealthPercentageMultiplier;
+}
+
 CheckIfTankMovedWhileChargingAndIncrementCharge(iClient)
 {
 	decl Float:xyzCurrentPosition[3];

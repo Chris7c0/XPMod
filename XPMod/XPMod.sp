@@ -413,6 +413,7 @@ ResetVariablesForMap(iClient)
 	g_bCanBeGhost[iClient] = true;
 	g_bIsGhost[iClient] = false;
 	g_iTankCounter = 0;
+	g_fTankStartingHealthMultiplier[iClient] = 1.0;
 	RemoveAllEntitiesFromArrayList(g_listTankRockEntities);
 	g_bAdhesiveGooActive[iClient] = false;
 	

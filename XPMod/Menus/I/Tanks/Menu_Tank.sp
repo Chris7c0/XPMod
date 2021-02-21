@@ -11,18 +11,21 @@ Action:ChooseTankMenuDraw(iClient)
 	FormatEx(strText, sizeof(strText), "Fire Tank\
 		\n %i HP, High Damage\
 		\n [Hold CROUCH] Fire Punch\
-		\n ",TANK_HEALTH_FIRE);
+		\n ",
+		RoundToNearest(TANK_HEALTH_FIRE * g_fTankStartingHealthMultiplier[iClient]) );
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", strText);
 	FormatEx(strText, sizeof(strText), "Ice Tank\
 		\n %i HP, Freeze Survivors\
 		\n [Hold CROUCH] Regenerates Health\
-		\n ",TANK_HEALTH_ICE);
+		\n ",
+		RoundToNearest(TANK_HEALTH_ICE * g_fTankStartingHealthMultiplier[iClient]) );
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", strText);
 	FormatEx(strText, sizeof(strText), "NecroTanker\
 		\n %i HP: Kill Infected for Health\
 		\n Throw Boomers!\
 		\n [Hold WALK or CROUCH] Summon CI\
-		\n ",TANK_HEALTH_NECROTANKER);
+		\n ",
+		RoundToNearest(TANK_HEALTH_NECROTANKER * g_fTankStartingHealthMultiplier[iClient]) );
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", strText);
 	FormatEx(strText, sizeof(strText), "Vampiric Tank\
 		\n %i HP: Life Steal from Survivors\
@@ -30,7 +33,8 @@ Action:ChooseTankMenuDraw(iClient)
 		\n [Press MELEE] Wing Dash\
 		\n \
 		\n=	=	=	=	=	=	=	=	=	=	=\
-		\n \n \n \n \n \n ",TANK_HEALTH_VAMPIRIC);
+		\n \n \n \n \n \n ",
+		RoundToNearest(TANK_HEALTH_VAMPIRIC * g_fTankStartingHealthMultiplier[iClient]) );
 	AddMenuItem(g_hMenu_XPM[iClient], "option4", strText);
 
 	// FormatEx(strText, sizeof(strText), "Fire Tank\n - 20%% - %d%% Faster (Pain = Speed)\n - %d Health\n - Fire Immunity\n - %d%% Chance To Ignite Victim\n - Fire Punch [Hold CROUCH]\n ", 20 + g_iClientLevel[iClient], (6000 + g_iClientLevel[iClient] * 100), g_iClientLevel[iClient]);

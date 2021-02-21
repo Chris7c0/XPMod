@@ -704,6 +704,8 @@ Action:Event_TankSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 	g_iTankCounter++;
 	g_iClientTeam[iClient] = TEAM_INFECTED;
 	g_iInfectedCharacter[iClient] = TANK;
+	// Get the calucated hp multiplier to scale helath based on survivor team
+	g_fTankStartingHealthMultiplier[iClient] = CalculateTankHealthPercentageMultiplier();
 	// Reset all tank abilities if transitioning from another tank
 	// Note: this IS called for the bot, then the player, when officially giving tank to player and not haxored in
 	// Note2: This requires a timer, or it does not apply

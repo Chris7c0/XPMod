@@ -26,14 +26,16 @@ LoadNecroTankerTalents(iClient)
 	// If its a bot, then give max health starting
 	if (IsFakeClient(iClient))
 	{
-		SetEntProp(iClient, Prop_Data,"m_iMaxHealth", NECROTANKER_MAX_HEALTH);
-		SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + NECROTANKER_MAX_HEALTH - iCurrentMaxHealth);
+		SetEntProp(iClient, Prop_Data,"m_iMaxHealth", RoundToNearest(NECROTANKER_MAX_HEALTH * g_fTankStartingHealthMultiplier[iClient]));
+		new iNewHealth = iCurrentHealth + RoundToNearest(NECROTANKER_MAX_HEALTH * g_fTankStartingHealthMultiplier[iClient]) - iCurrentMaxHealth
+		SetEntProp(iClient, Prop_Data,"m_iHealth", iNewHealth > 100 ? iNewHealth : 100);
 	}
 	// If its a human player, make them work for their health
 	else
 	{
-		SetEntProp(iClient, Prop_Data,"m_iMaxHealth", TANK_HEALTH_NECROTANKER);
-		SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + TANK_HEALTH_NECROTANKER - iCurrentMaxHealth);
+		SetEntProp(iClient, Prop_Data,"m_iMaxHealth", RoundToNearest(TANK_HEALTH_NECROTANKER * g_fTankStartingHealthMultiplier[iClient]));
+		new iNewHealth = iCurrentHealth + RoundToNearest(TANK_HEALTH_NECROTANKER * g_fTankStartingHealthMultiplier[iClient]) - iCurrentMaxHealth
+		SetEntProp(iClient, Prop_Data,"m_iHealth", iNewHealth > 100 ? iNewHealth : 100);
 	}
 
 	//Stop Kiting (Bullet hits slowing tank down)
@@ -173,18 +175,19 @@ HandleNecroTankerInfectedConsumption(iClient, iInfectedEntity)
 	// Give the appropriate amount of Health & Max Health
 	// Check if should increase max health
 	new iCurrentMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
-	if (iCurrentMaxHealth < NECROTANKER_MAX_HEALTH)
+	new iAbsoluteMaxHealth = RoundToNearest(NECROTANKER_MAX_HEALTH * g_fTankStartingHealthMultiplier[iClient]);
+	if (iCurrentMaxHealth < iAbsoluteMaxHealth)
 	{
 		// Add it, Cap it, Set it
-		new iNewHealth = iCurrentMaxHealth + iAdditionalHealth > NECROTANKER_MAX_HEALTH ? NECROTANKER_MAX_HEALTH : iCurrentMaxHealth + iAdditionalHealth;
+		new iNewHealth = iCurrentMaxHealth + iAdditionalHealth > iAbsoluteMaxHealth ? iAbsoluteMaxHealth : iCurrentMaxHealth + iAdditionalHealth;
 		SetEntProp(iClient, Prop_Data,"m_iMaxHealth", iNewHealth);
 	}
 	// Check if should increase health
 	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
-	if (iCurrentHealth < NECROTANKER_MAX_HEALTH)
+	if (iCurrentHealth < iAbsoluteMaxHealth)
 	{
 		// Add it, Cap it, Set it
-		new iNewHealth = iCurrentHealth + iAdditionalHealth > NECROTANKER_MAX_HEALTH ? NECROTANKER_MAX_HEALTH : iCurrentHealth + iAdditionalHealth;
+		new iNewHealth = iCurrentHealth + iAdditionalHealth > iAbsoluteMaxHealth ? iAbsoluteMaxHealth : iCurrentHealth + iAdditionalHealth;
 		SetEntProp(iClient, Prop_Data,"m_iHealth", iNewHealth);
 	}
 }

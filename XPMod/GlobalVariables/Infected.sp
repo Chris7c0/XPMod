@@ -188,6 +188,14 @@ new bool:g_bCanChargerEarthquake[MAXPLAYERS +1];
 
 // Tank
 new g_iTankCounter;
+// The calculated amount of starting HP multiplier for scaling to skill level of survivors
+new Float:g_fTankStartingHealthMultiplier[MAXPLAYERS + 1];
+#define TANK_STARTING_HEALTH_MULTIPLIER_MIN                 0.4
+#define TANK_STARTING_HEALTH_MULTIPLIER_MAX                 1.0
+// Required level to get tank health max
+// 120 would require a team of 4 (4x30) before getting max tank health.
+// 90 would require a team of 3 (3x30) before getting max tank health.
+#define TANK_STARTING_HEALTH_REQUIRED_TEAM_LEVEL_FOR_MAX    90
 // The amount of HP loss before a XPMod tank type is automatically selected for the player
 #define TANK_AUTOMATIC_SELECT_HP_LOSS   1000
 #define TANK_AUTOMATIC_SELECT_TYPE      TANK_FIRE

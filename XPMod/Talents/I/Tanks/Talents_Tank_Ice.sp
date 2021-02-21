@@ -30,8 +30,9 @@ LoadIceTankTalents(iClient)
 	// Get Current Health/MaxHealth first, to add it back later
 	new iCurrentMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
 	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
-	SetEntProp(iClient, Prop_Data,"m_iMaxHealth", TANK_HEALTH_ICE);
-	SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + TANK_HEALTH_ICE - iCurrentMaxHealth);
+	SetEntProp(iClient, Prop_Data,"m_iMaxHealth", RoundToNearest(TANK_HEALTH_ICE * g_fTankStartingHealthMultiplier[iClient]));
+	new iNewHealth = iCurrentHealth + RoundToNearest(TANK_HEALTH_ICE * g_fTankStartingHealthMultiplier[iClient]) - iCurrentMaxHealth;
+	SetEntProp(iClient, Prop_Data,"m_iHealth", iNewHealth > 100 ? iNewHealth : 100);
 
 	// Change Tank's Skin Color
 	SetClientRenderColor(iClient, 0, 255, 255, 255, RENDER_MODE_NORMAL);
@@ -94,14 +95,15 @@ OnGameFrame_Tank_Ice(iClient)
 		{
 			decl Float:fCurrentTankHealthPercentage;
 			new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
+			new iCurrentMaxHealth = RoundToNearest(TANK_HEALTH_ICE * g_fTankStartingHealthMultiplier[iClient]);
 			
-			if(g_iIceTankLifePool[iClient] > 0 && iCurrentHealth < TANK_HEALTH_ICE)
+			if(g_iIceTankLifePool[iClient] > 0 && iCurrentHealth < iCurrentMaxHealth)
 			{
 				if(g_iIceTankLifePool[iClient] > 10)
 				{
-					new iNewHealth = iCurrentHealth + 10 > TANK_HEALTH_ICE ? TANK_HEALTH_ICE : iCurrentHealth + 10;
+					new iNewHealth = iCurrentHealth + 10 > iCurrentMaxHealth ? iCurrentMaxHealth : iCurrentHealth + 10;
 					SetEntProp(iClient, Prop_Data,"m_iHealth", iNewHealth);
-					fCurrentTankHealthPercentage = float(iNewHealth) / float(TANK_HEALTH_ICE);
+					fCurrentTankHealthPercentage = float(iNewHealth) / float(iCurrentMaxHealth);
 					g_iIceTankLifePool[iClient] -= 10;
 					
 					if (IsFakeClient(iClient) == false)
@@ -162,9 +164,9 @@ OnGameFrame_Tank_Ice(iClient)
 				}
 				else
 				{
-					new iNewHealth = iCurrentHealth + g_iIceTankLifePool[iClient] > TANK_HEALTH_ICE ? TANK_HEALTH_ICE : iCurrentHealth + g_iIceTankLifePool[iClient];
+					new iNewHealth = iCurrentHealth + g_iIceTankLifePool[iClient] > iCurrentMaxHealth ? iCurrentMaxHealth : iCurrentHealth + g_iIceTankLifePool[iClient];
 					SetEntProp(iClient, Prop_Data,"m_iHealth", iNewHealth);
-					fCurrentTankHealthPercentage = float(iCurrentHealth + g_iIceTankLifePool[iClient]) / float(TANK_HEALTH_ICE);
+					fCurrentTankHealthPercentage = float(iCurrentHealth + g_iIceTankLifePool[iClient]) / float(iCurrentMaxHealth);
 					g_iIceTankLifePool[iClient] = 0;
 					
 					if (IsFakeClient(iClient) == false)
@@ -212,7 +214,7 @@ EventsHurt_VictimTank_Ice(Handle:hEvent, iAttacker, iVictimTank)
 		ExtinguishEntity(iVictimTank);
 	}
 	
-	fCurrentTankHealthPercentage = float(iCurrentHealth + iDmgHealth) / float(TANK_HEALTH_ICE);
+	fCurrentTankHealthPercentage = float(iCurrentHealth + iDmgHealth) / (TANK_HEALTH_ICE * g_fTankStartingHealthMultiplier[iVictimTank]);
 	
 	//Check to see if the difference in stored health and current health percentage is significant
 	if(g_fTankHealthPercentage[iVictimTank] - fCurrentTankHealthPercentage >= 0.01)

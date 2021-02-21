@@ -27,8 +27,9 @@ LoadFireTankTalents(iClient)
 	// Get Current Health/MaxHealth first, to add it back later
 	new iCurrentMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
 	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
-	SetEntProp(iClient, Prop_Data,"m_iMaxHealth", TANK_HEALTH_FIRE);
-	SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + TANK_HEALTH_FIRE - iCurrentMaxHealth);
+	SetEntProp(iClient, Prop_Data,"m_iMaxHealth", RoundToNearest(TANK_HEALTH_FIRE * g_fTankStartingHealthMultiplier[iClient]));
+	new iNewHealth = iCurrentHealth + RoundToNearest(TANK_HEALTH_FIRE * g_fTankStartingHealthMultiplier[iClient]) - iCurrentMaxHealth;
+	SetEntProp(iClient, Prop_Data,"m_iHealth", iNewHealth > 100 ? iNewHealth : 100);
 
 	// Stop Kiting (Bullet hits slowing tank down)
 	SetConVarInt(FindConVar("z_tank_damage_slow_min_range"), 0);
@@ -133,7 +134,7 @@ EventsHurt_VictimTank_Fire(Handle:hEvent, iAttacker, iVictimTank)
 	if(iDmgType == DAMAGETYPE_FIRE1 || iDmgType == DAMAGETYPE_FIRE2 || iDmgType == DAMAGETYPE_IGNITED_ENTITY)
 		SetEntProp(iVictimTank, Prop_Data, "m_iHealth", iCurrentHealth + iDmgHealth);
 	
-	fCurrentTankHealthPercentage = float(iCurrentHealth + iDmgHealth) / float(TANK_HEALTH_FIRE);
+	fCurrentTankHealthPercentage = float(iCurrentHealth + iDmgHealth) / (TANK_HEALTH_FIRE * g_fTankStartingHealthMultiplier[iVictimTank]);
 	
 	//Check to see if the difference in stored health and current health percentage is significant
 	if(g_fTankHealthPercentage[iVictimTank] - fCurrentTankHealthPercentage >= 0.01)

@@ -29,8 +29,9 @@ LoadVampiricTankTalents(iClient)
 	// Get Current Health/MaxHealth first, to add it back later
 	new iCurrentMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
 	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
-	SetEntProp(iClient, Prop_Data,"m_iMaxHealth", TANK_HEALTH_VAMPIRIC);
-	SetEntProp(iClient, Prop_Data,"m_iHealth", iCurrentHealth + TANK_HEALTH_VAMPIRIC - iCurrentMaxHealth);
+	SetEntProp(iClient, Prop_Data,"m_iMaxHealth", RoundToNearest(TANK_HEALTH_VAMPIRIC * g_fTankStartingHealthMultiplier[iClient]));
+	new iNewHealth = iCurrentHealth + RoundToNearest(TANK_HEALTH_VAMPIRIC * g_fTankStartingHealthMultiplier[iClient]) - iCurrentMaxHealth;
+	SetEntProp(iClient, Prop_Data,"m_iHealth", iNewHealth > 100 ? iNewHealth : 100);
 
 	// Stop Kiting (Bullet hits slowing tank down)
 	SetConVarInt(FindConVar("z_tank_damage_slow_min_range"), 0);
@@ -196,12 +197,13 @@ EventsHurt_AttackerTank_Vampiric(Handle:hEvent, iAttackerTank, iVictim)
 
 	// Get the current life level
 	new iCurrentHP = GetEntProp(iAttackerTank,Prop_Data,"m_iHealth");
-	if(iCurrentHP < TANK_HEALTH_VAMPIRIC)
+	new iCurrentMaxHP = RoundToNearest(TANK_HEALTH_VAMPIRIC * g_fTankStartingHealthMultiplier[iAttackerTank]);
+	if(iCurrentHP < iCurrentMaxHP)
 	{
-		if(iCurrentHP + iVampiricHealthGainAmount < TANK_HEALTH_VAMPIRIC)
+		if(iCurrentHP + iVampiricHealthGainAmount < iCurrentMaxHP)
 			SetEntProp(iAttackerTank,Prop_Data,"m_iHealth", iCurrentHP + iVampiricHealthGainAmount);
 		else
-			SetEntProp(iAttackerTank,Prop_Data,"m_iHealth", TANK_HEALTH_VAMPIRIC);
+			SetEntProp(iAttackerTank,Prop_Data,"m_iHealth", iCurrentMaxHP);
 
 		// Show hud effect:
 		if(IsFakeClient(iAttackerTank)==false)
