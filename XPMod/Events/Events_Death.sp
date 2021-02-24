@@ -118,7 +118,7 @@ Event_DeathResetAllVariables(iAttacker, iVictim)
 
 	if(g_iHunterShreddingVictim[iVictim] > 0)
 		SetClientSpeed(g_iHunterShreddingVictim[iVictim]);
-
+	
 	//Tank
 	ResetAllTankVariables(iVictim);
 

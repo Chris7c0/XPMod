@@ -49,11 +49,11 @@ SetClientSpeed(iClient)
 	//PrintToChatAll("SetClientSpeed: %N: %f", iClient, fSpeed);
 }
 
-Action:TimerResetClientSpeed(Handle:timer, any:iClient)
-{
-	SetClientSpeed(iClient);
-	return Plugin_Stop;
-}
+// Action:TimerResetClientSpeed(Handle:timer, any:iClient)
+// {
+// 	SetClientSpeed(iClient);
+// 	return Plugin_Stop;
+// }
 
 // Survivors =======================================================================================================================
 SetClientSpeedBill(iClient, &Float:fSpeed)
@@ -155,9 +155,20 @@ SetClientSpeedLouis(iClient, &Float:fSpeed)
 		g_iChosenSurvivor[iClient] != LOUIS)
 		return;
 	
+	// Make sure Louis is not using his teleporter
+	if (g_bLouisTeleportActive[iClient] == true)
+	{
+		fSpeed = LOUIS_TELEPORT_MOVEMENT_SPEED;
+		return;
+	}
+
 	// Base speed
 	if (g_iLouisTalent1Level[iClient] > 0)
-		fSpeed += (g_iLouisTalent1Level[iClient] * 0.02);
+		fSpeed += (g_iLouisTalent1Level[iClient] * 0.03);
+
+	// Teleport penatly
+	if (g_iLouisTeleportMovementPenaltyStacks[iClient] > 0)
+		fSpeed -= (g_iLouisTeleportMovementPenaltyStacks[iClient] * LOUIS_TELEPORT_MOVEMENT_PENALTY_AMOUNT);
 
 	// CI Kill speed
 	if (g_iLouisCIHeadshotCounter[iClient] > 0)
@@ -166,6 +177,10 @@ SetClientSpeedLouis(iClient, &Float:fSpeed)
 	// SI Kill speed
 	if (g_iLouisSIHeadshotCounter[iClient] > 0)
 		fSpeed += (g_iLouisSIHeadshotCounter[iClient] * 0.05);
+
+	// Cap Louis's speed
+	if (fSpeed > LOUIS_SPEED_MAX)
+		fSpeed = LOUIS_SPEED_MAX;
 	
 	//PrintToChat(iClient, "SetClientSpeedLouis: %f", fSpeed);
 }

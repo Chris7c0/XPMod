@@ -446,6 +446,7 @@ ResetVariablesForMap(iClient)
 
 	//Louis
 	g_bLouisTeleportCoolingDown[iClient] = false;
+	g_bLouisTeleportActive[iClient] = false;
 	g_iLouisTeleportChargeUses[iClient] = 0;
 	g_iLouisCIHeadshotCounter[iClient] = 0;
 	g_iLouisSIHeadshotCounter[iClient] = 0;

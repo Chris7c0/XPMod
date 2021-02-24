@@ -46,8 +46,9 @@ bool OnPlayerRunCmd_Louis(iClient, &iButtons)
 		if(g_bIsClientGrappled[iClient] == false && g_bIsClientDown[iClient] == false)
 			LouisTeleport(iClient);
 	}
-	// Disable walk key
-	if(iButtons & IN_SPEED)
+
+	// Disable walk key while teleporting
+	if(g_bLouisTeleportActive[iClient] == true && iButtons & IN_SPEED)
 	{
 		iButtons &= ~IN_SPEED;
 		return true;
@@ -120,12 +121,12 @@ EventsHurt_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 			// PrintToChatAll("Louis iVictim %N START HP: %i", iVictim, iVictimHealth);
 
 			new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
-			new iAddtionalDamageAmount = RoundToNearest(float(iDmgHealth) * (g_iLouisTalent2Level[iAttacker] * 0.2));
+			new iAddtionalDamageAmount = RoundToNearest(float(iDmgHealth) * (g_iLouisTalent2Level[iAttacker] * 0.15));
 			new iNewDamageAmount = iDmgHealth + iAddtionalDamageAmount;
 
 			// Add even more damage if its a headshot
 			if (GetEventInt(hEvent, "hitgroup") == HITGROUP_HEAD)
-				iNewDamageAmount = iNewDamageAmount + (iNewDamageAmount * RoundToNearest(g_iLouisTalent4Level[iAttacker] * 0.3));
+				iNewDamageAmount = iNewDamageAmount + (iNewDamageAmount * RoundToNearest(g_iLouisTalent4Level[iAttacker] * 0.40));
 
 			// Add or remove damage based on victim talents (Also subtract damage that will be already)
 			iNewDamageAmount = CalculateDamageTakenForVictimTalents(iVictim, iNewDamageAmount, weaponclass) - CalculateDamageTakenForVictimTalents(iVictim, iDmgHealth, weaponclass);
@@ -184,12 +185,12 @@ EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 				if (IsValidEntity(iActiveWeaponID))
 				{
 					iCurrentClipAmmo = GetEntProp(iActiveWeaponID, Prop_Data, "m_iClip1");
-					SetEntData(iActiveWeaponID, g_iOffset_Clip1, iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 2), true);
+					SetEntData(iActiveWeaponID, g_iOffset_Clip1, iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 5), true);
 				}
 				
 				g_iLouisCIHeadshotCounter[iAttacker]++;
 				SetClientSpeed(iAttacker);
-				CreateTimer(20.0, TimerLouisCIHeadshotReduce, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
+				CreateTimer(LOUIS_HEADSHOT_SPEED_RETENTION_TIME_CI, TimerLouisCIHeadshotReduce, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
 			}
 			
 			// SI Headshot
@@ -207,12 +208,12 @@ EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 				if (IsValidEntity(iActiveWeaponID))
 				{
 					iCurrentClipAmmo = GetEntProp(iActiveWeaponID,Prop_Data,"m_iClip1");
-					SetEntData(iActiveWeaponID, g_iOffset_Clip1, iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 10), true);
+					SetEntData(iActiveWeaponID, g_iOffset_Clip1, iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 15), true);
 				}
 
 				g_iLouisSIHeadshotCounter[iAttacker]++;
 				SetClientSpeed(iAttacker);
-				CreateTimer(20.0, TimerLouisSIHeadshotReduce, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
+				CreateTimer(LOUIS_HEADSHOT_SPEED_RETENTION_TIME_SI, TimerLouisSIHeadshotReduce, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
 			}
 		}
 	}
@@ -228,10 +229,12 @@ EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 LouisTeleport(iClient)
 {
 	g_bLouisTeleportCoolingDown[iClient] = true;
-	CreateTimer(1.0, LouisTeleportReactivate, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	CreateTimer(1.0, LouisTeleportReenable, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	
-	SetEntDataFloat(iClient, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), LOUIS_TELEPORT_MOVEMENT_SPEED, true);
-	CreateTimer(0.3, TimerResetClientSpeed, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	g_bLouisTeleportActive[iClient] = true;
+	SetClientSpeed(iClient);
+	//SetEntDataFloat(iClient, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), LOUIS_TELEPORT_MOVEMENT_SPEED, true);
+	CreateTimer(0.3, TimerSetLouisTeleportInactive, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	EmitSoundToClient(iClient, SOUND_LOUIS_TELEPORT_USE);
 
 	HandleLouisTeleportChargeUses(iClient);
@@ -241,6 +244,9 @@ LouisTeleport(iClient)
 
 	// Create the blinding effect
 	HandleLouisTeleportBlindingEffect(iClient);
+
+	// Penalize movement speed for teleport usage
+	HandleLouisTeleportMovementSpeedPenalty(iClient);
 }
 
 HandleLouisTeleportChargeUses(iClient)
@@ -266,6 +272,8 @@ HandleLouisTeleportChargeUses(iClient)
 
 }
 
+
+
 HandleLouisTeleportBlindingEffect(iClient)
 {
 	new Float:fCurrentGameTime = GetGameTime();
@@ -273,8 +281,6 @@ HandleLouisTeleportBlindingEffect(iClient)
 	if (g_iLouisTeleportBlindnessAmount[iClient] > 0 )
 	{
 		new Float:fGameTimeSinceLastUse = fCurrentGameTime - g_fLouisTeleportLastUseGameTime[iClient];
-
-		
 
 		// if enough time has passed then just reset to 0
 		if (fGameTimeSinceLastUse < 0.0 || fGameTimeSinceLastUse > LOUIS_TELEPORT_BLINDNESS_FADE_TIME)
@@ -298,6 +304,13 @@ HandleLouisTeleportBlindingEffect(iClient)
 
 	g_fLouisTeleportLastUseGameTime[iClient] = fCurrentGameTime;
 	ShowHudOverlayColor(iClient, 40, 0, 5, g_iLouisTeleportBlindnessAmount[iClient], 3000, FADE_OUT);
+}
+
+HandleLouisTeleportMovementSpeedPenalty(iClient)
+{
+	g_iLouisTeleportMovementPenaltyStacks[iClient]++;
+
+	CreateTimer(LOUIS_TELEPORT_MOVEMENT_PENALTY_TIME, TimerLouisTeleportRemoveMovementSpeedPenalty, iClient, TIMER_FLAG_NO_MAPCHANGE);
 }
 
 

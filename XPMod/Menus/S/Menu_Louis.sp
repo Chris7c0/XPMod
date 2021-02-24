@@ -58,9 +58,9 @@ Action:LouisTalent1MenuDraw(iClient)
 		\n 		Manager's Prep (Level %d):\
 		\n \
 		\n +10 HP per Level\
-		\n +2%\% Movement Speed per Level\
+		\n +3%%%%% Movement Speed per Level\
 		\n SMG and Pistol (Not Magnum) Buffs:     \
-		\n 	- +15\% Reload Speed per Level\
+		\n 	- +15%%%% Reload Speed per Level\
 		\n \
 		\n=	=	=	=	=	=	=	=	=	=	=	=",  g_iLouisTalent1Level[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
@@ -95,7 +95,7 @@ Action:LouisTalent2MenuDraw(iClient)
 		\n 		9mm Augmentation (Level %d):\
 		\n \
 		\n SMG and Pistol (Not Magnum) Buffs:\
-		\n 	- +20%% Damage per Level\
+		\n 	- +15%%%% Damage per Level\
 		\n 	- +10 Clip Size per Level\
 		\n 	- Automatic Laser Sight (SMGs Only)         \
 		\n \
@@ -128,18 +128,19 @@ Action:LouisTalent3MenuDraw(iClient)
 	g_hMenu_XPM[iClient] = CreateMenu(LouisTalent3MenuHandler);
 	
 	FormatEx(text, sizeof(text), 
-		"=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\
+		"=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\
 		\n \
 		\n 						Time Dilation (Level %d):\
 		\n \
-		\n [Press DIRECTION + Tap WALK] Move 30 ft in any direction.\
-		\n   - +1 Use per level. Uses regenerate over time.\
-		\n   - +1 Overload Use. Causes a much longer cooldown period.\
-		\n   - Progressively blinds you with each use. Fades away over time.     \
-		\n   - Cannot move through walls. Cannot go through CI or SI.\
-		\n   - Travel less distance while severely hurt and limping.\
+		\n [Press DIRECTION + Tap WALK] Move 30 ft in any direction.    \
+		\n	- +1 Use per level. Uses regenerate over time.\
+		\n	- +1 Overload Use. Causes much longer cooldown period.\
+		\n	- -5%%%% Speed for 15 secs after each use.\
+		\n	- Progressively blinds you with each use. Fades over time.\
+		\n	- Cannot move through walls, CI, or SI.\
+		\n	- Travel less distance while severely hurt and limping.\
 		\n \
-		\n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iLouisTalent3Level[iClient]);
+		\n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iLouisTalent3Level[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
@@ -171,10 +172,11 @@ Action:LouisTalent4MenuDraw(iClient)
 		\n \
 		\n 					BOOM HEADSHOT! (Level %d):\
 		\n \
-		\n +30% Headshot Damage Multiplier per Level\
+		\n +40% Headshot Damage Multiplier per Level\
 		\n Headshot Kill Bonuses:\
-		\n 	- CI: +1 HP, +1%% Speed for 20 Seconds, +2 Clip Ammo per Level\
-		\n 	- SI: +5 HP, +5%% Speed for 20 Seconds, +10 Clip Ammo per Level      \
+		\n 	- CI: +1 HP, +1%%%% Speed for 60 Seconds, +5 Clip Ammo per Level\
+		\n 	- SI: +5 HP, +5%%%% Speed for 60 Seconds, +15 Clip Ammo per Level      \
+		\n  - Movement Speed capped at +25%%%%\
 		\n \
 		\n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iLouisTalent4Level[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);

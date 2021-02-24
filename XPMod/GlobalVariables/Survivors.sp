@@ -251,12 +251,19 @@ new bool:g_bNickStoresDroppedPistolAmmo[MAXPLAYERS + 1] = false;
 #define LOUIS_TELEPORT_MOVEMENT_SPEED                   8.0
 #define LOUIS_TELEPORT_CHARGE_REGENERATE_TIME           5.0
 #define LOUIS_TELEPORT_CHARGE_MAXED_REGENERATE_TIME     60.0
-#define LOUIS_TELEPORT_BLINDNESS_ADDITIVE_AMOUNT        55
+#define LOUIS_TELEPORT_BLINDNESS_ADDITIVE_AMOUNT        50
 #define LOUIS_TELEPORT_BLINDNESS_FADE_TIME              10.0
 #define LOUIS_TELEPORT_BLINDNESS_STAY_FACTOR            3.0
+#define LOUIS_TELEPORT_MOVEMENT_PENALTY_TIME            15.0
+#define LOUIS_TELEPORT_MOVEMENT_PENALTY_AMOUNT          0.05
+#define LOUIS_SPEED_MAX                                 1.25
+#define LOUIS_HEADSHOT_SPEED_RETENTION_TIME_CI          60.0
+#define LOUIS_HEADSHOT_SPEED_RETENTION_TIME_SI          60.0
 new bool:g_bLouisTeleportCoolingDown[MAXPLAYERS + 1] = false;
+new bool:g_bLouisTeleportActive[MAXPLAYERS + 1] = false;
 new g_iLouisTeleportChargeUses[MAXPLAYERS + 1] = 0;
 new Float:g_fLouisTeleportLastUseGameTime[MAXPLAYERS + 1] = 0.0;
 new g_iLouisTeleportBlindnessAmount[MAXPLAYERS + 1] = 0;
+new g_iLouisTeleportMovementPenaltyStacks[MAXPLAYERS + 1] = 0;
 new g_iLouisCIHeadshotCounter[MAXPLAYERS + 1] = 0;
 new g_iLouisSIHeadshotCounter[MAXPLAYERS + 1] = 0;

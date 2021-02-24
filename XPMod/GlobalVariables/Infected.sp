@@ -195,7 +195,7 @@ new Float:g_fTankStartingHealthMultiplier[MAXPLAYERS + 1];
 // Required level to get tank health max
 // 120 would require a team of 4 (4x30) before getting max tank health.
 // 90 would require a team of 3 (3x30) before getting max tank health.
-#define TANK_STARTING_HEALTH_REQUIRED_TEAM_LEVEL_FOR_MAX    90
+#define TANK_STARTING_HEALTH_REQUIRED_TEAM_LEVEL_FOR_MAX    60
 new bool:g_bTankStartingHealthXPModSpawn;
 #define TANK_STARTING_HEALTH_MULTIPLIER_XPMOD_SPAWN         0.33333
 // The amount of HP loss before a XPMod tank type is automatically selected for the player

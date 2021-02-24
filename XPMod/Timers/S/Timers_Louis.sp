@@ -1,6 +1,14 @@
-Action:LouisTeleportReactivate(Handle:timer, any:iClient)
+Action:LouisTeleportReenable(Handle:timer, any:iClient)
 {
 	g_bLouisTeleportCoolingDown[iClient] = false;
+	return Plugin_Stop;
+}
+
+Action:TimerSetLouisTeleportInactive(Handle:timer, any:iClient)
+{
+	g_bLouisTeleportActive[iClient] = false;
+	SetClientSpeed(iClient);
+	
 	return Plugin_Stop;
 }
 
@@ -38,10 +46,20 @@ Action:TimerLouisTeleportChargeResetAll(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
+Action:TimerLouisTeleportRemoveMovementSpeedPenalty(Handle:timer, any:iClient)
+{
+	g_iLouisTeleportMovementPenaltyStacks[iClient]--;
+	if (g_bLouisTeleportActive[iClient] == false)
+		SetClientSpeed(iClient);
+	
+	return Plugin_Stop;
+}
+
 Action:TimerLouisCIHeadshotReduce(Handle:timer, any:iClient)
 {
 	g_iLouisCIHeadshotCounter[iClient]--;
-	SetClientSpeed(iClient);
+	if (g_bLouisTeleportActive[iClient] == false)
+		SetClientSpeed(iClient);
 	
 	return Plugin_Stop;
 }
@@ -49,7 +67,9 @@ Action:TimerLouisCIHeadshotReduce(Handle:timer, any:iClient)
 Action:TimerLouisSIHeadshotReduce(Handle:timer, any:iClient)
 {
 	g_iLouisSIHeadshotCounter[iClient]--;
-	SetClientSpeed(iClient);
+	if (g_bLouisTeleportActive[iClient] == false)
+		SetClientSpeed(iClient);
 	
 	return Plugin_Stop;
 }
+
