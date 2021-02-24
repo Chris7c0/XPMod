@@ -1050,6 +1050,8 @@ public void Sub_DetermineClass(any Client, any ZClass)
 	{
 		do
 		{
+			PrintToServer("Looping through Sub_CheckPerClassLimits...");
+
 			if (Sub_IsTank(Client))
 				return;
 
@@ -1114,6 +1116,7 @@ public void Sub_DetermineClass(any Client, any ZClass)
 		int WeaponIndex;
 		while ((WeaponIndex = GetPlayerWeaponSlot(Client, 0)) != -1)
 		{
+			PrintToServer("Looping through RemovePlayerItem...");
 			RemovePlayerItem(Client, WeaponIndex);
 			RemoveEdict(WeaponIndex);
 		}

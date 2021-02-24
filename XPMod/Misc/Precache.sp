@@ -113,6 +113,10 @@ PrecacheAllParticles()
 	PrecacheParticle("ice_tank_charge_mist");
 	PrecacheParticle("ice_tank_charge_snow");
 	PrecacheParticle("ice_tank_icicles");
+	PrecacheParticle("impact_glass");
+	PrecacheParticle("impact_glass_cheap");
+	PrecacheParticle("water_child_water6");
+	PrecacheParticle("tank_rock_throw_impact_chunks");
 	PrecacheParticle("vomit_jar_b");
 	
 	// Misc
