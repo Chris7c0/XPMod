@@ -47,7 +47,7 @@ Action:Bind2Press(iClient, args)
 			{
 				if(g_iClientBindUses_2[iClient] < 3)
 				{
-					if(g_bUsingShadowNinja[iClient]==false)
+					if(g_bUsingShadowNinja[iClient]==false && GetEntProp(iClient, Prop_Send, "m_isIncapacitated") != 1)
 					{
 						push(iClient);
 						g_bUsingShadowNinja[iClient] = true;
