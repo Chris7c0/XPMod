@@ -278,7 +278,7 @@ public Action RemoveInstructorHint(Handle h_Timer, DataPack h_Pack)
 		return Plugin_Handled;
 	
 	if (IsValidEntity(i_Ent))
-			RemoveEdict(i_Ent);
+			AcceptEntityInput(i_Ent, "Kill");
 	
 	ClientCommand(i_Client, "gameinstructor_enable 0");
 	

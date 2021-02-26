@@ -58,6 +58,7 @@
 #include "XPMod/Misc/Statistics.sp"
 #include "XPMod/Misc/SpawnInfected.sp"
 #include "XPMod/Misc/MovementSpeed.sp"
+#include "XPMod/Misc/VictimHealthMeter.sp"
 //#include "XPMod/Misc/Abilities.sp"
 #include "XPMod/Misc/Testing.sp"	                   //Remove before relase/////////////////////////////////////////////////////////////////////////
 //Experience and User Data Management
@@ -407,6 +408,9 @@ ResetVariablesForMap(iClient)
 	g_bShowingVGUI[iClient] = false;
 	g_bExplosivesJustGiven[iClient] = false;
 	g_iLaserUpgradeCounter[iClient] = 0;
+	// Victim Health Meter
+	g_bVictimHealthMeterActive[iClient] = false;
+	g_iVictimHealthMeterWatchVictim[iClient] =  0;
 
 	g_iInfectedCharacter[iClient] = UNKNOWN_INFECTED;
 	RemoveAllEntitiesFromArrayList(g_listEnhancedCIEntities);
@@ -566,6 +570,7 @@ DeleteAllGlobalTimerHandles(iClient)
 {
 	//delete g_hTimer_FreezeCountdown;
 	delete g_hTimer_ShowingConfirmTalents[iClient];
+	delete g_hTimer_VictimHealthMeterStop[iClient];
 	delete g_hTimer_DrugPlayer[iClient];
 	delete g_hTimer_HallucinatePlayer[iClient];
 	delete g_hTimer_SlapPlayer[iClient];

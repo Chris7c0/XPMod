@@ -3,6 +3,7 @@ new Handle:g_hTimer_ResetHideNameChangeMessage 				= null;
 new Handle:g_hTimer_FreezeCountdown 						= null;
 new Handle:g_hTimer_ShowingConfirmTalents[MAXPLAYERS + 1]	= null;
 new Handle:g_hTimer_ExtinguishTank[MAXPLAYERS + 1]		    = null;
+new Handle:g_hTimer_VictimHealthMeterStop[MAXPLAYERS + 1]	= null;
 new Handle:g_hTimer_DrugPlayer[MAXPLAYERS + 1] 				= null;
 new Handle:g_hTimer_HallucinatePlayer[MAXPLAYERS + 1]		= null;
 new Handle:g_hTimer_SlapPlayer[MAXPLAYERS + 1] 				= null;

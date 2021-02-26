@@ -86,8 +86,8 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	// Handle Survivors
 	if (g_iClientTeam[iAttacker] == TEAM_SURVIVORS)
 	{
-		// Testing purposes (remove later)
-		MonitorAndPrintHealthMeterToSurvivorPlayer(iAttacker, iVictim);
+		// Testing purposes (remove later once talents are in for it)
+		MonitorVictimHealthMeterForSurvivorPlayer(iAttacker, iVictim);
 
 		switch(g_iChosenSurvivor[iAttacker])
 		{

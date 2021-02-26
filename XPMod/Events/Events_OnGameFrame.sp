@@ -16,6 +16,9 @@ public OnGameFrame()
 		// Survivors
 		if(g_iClientTeam[iClient] == TEAM_SURVIVORS)		
 		{
+			// Handle Victim Health Meters
+			PrintVictimHealthMeterToSurvivorPlayer(iClient);
+
 			if(g_bIsSmokeInfected[iClient] == true)
 			{
 				if(IsValidEntity(g_iSmokerInfectionCloudEntity[iClient]))

@@ -62,6 +62,11 @@ new g_iClientPrimaryClipSize[MAXPLAYERS + 1];   //g_iOffset_Clip1 for the client
 new bool:g_bDivineInterventionQueued[MAXPLAYERS + 1];
 new bool:g_bWasClientDownOnDeath[MAXPLAYERS + 1];
 new bool:g_bAdhesiveGooActive[MAXPLAYERS + 1];
+// Victim Health Meter
+#define VICTIM_HEALTH_METER_DISPLAY_TIME        3.0
+new bool:g_bVictimHealthMeterActive[MAXPLAYERS + 1];
+new g_iVictimHealthMeterWatchVictim[MAXPLAYERS + 1];
+
 
 // Grapples
 new bool:g_bIsClientGrappled[MAXPLAYERS + 1];
