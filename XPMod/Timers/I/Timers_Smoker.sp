@@ -29,7 +29,7 @@ Action:TimerRemoveSmoke(Handle:timer, any:entity)
 		GetEntityNetClass(entity, entclass, 16);
 		if(StrEqual(entclass,"CSmokeStack",true)==true)
 		{
-			RemoveEdict(entity);
+			AcceptEntityInput(entity, "Kill");
 		}
 	}
 	

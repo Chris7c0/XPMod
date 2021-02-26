@@ -106,8 +106,7 @@ Action:TimerRemoveLightDynamicEntity(Handle:timer, any:iEntity)
 		return Plugin_Stop;
 
 	AcceptEntityInput(iEntity, "TurnOff");
-	AcceptEntityInput(iEntity, "kill");
-	RemoveEdict(iEntity);
+	AcceptEntityInput(iEntity, "Kill");
 
 	return Plugin_Stop;
 }

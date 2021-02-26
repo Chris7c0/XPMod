@@ -396,7 +396,7 @@ DealDamage(iVictim, iAttacker, iAmount, iDamageType = DAMAGETYPE_INFECTED_MELEE)
 	// Config, delete point_hurt
 	DispatchKeyValue(entPointHurt, "classname", "point_hurt");
 	DispatchKeyValue(iVictim, "targetname", "null");
-	RemoveEdict(entPointHurt);
+	AcceptEntityInput(entPointHurt, "Kill");
 }
 
 void ReduceDamageTakenForNewPlayers(int iVictim, int iDmgAmount)
@@ -1327,7 +1327,7 @@ fnc_CycleWeapon(iClient)
 				}
 				
 				if (IsValidEdict(g_iPrimarySlotID[iClient]))
-					RemoveEdict(g_iPrimarySlotID[iClient]);
+					AcceptEntityInput(g_iPrimarySlotID[iClient], "Kill");
 
 				if (RunClientChecks(iClient) && IsPlayerAlive(iClient))
 				{
@@ -1421,7 +1421,7 @@ fnc_CycleWeapon(iClient)
 				}
 
 				if (IsValidEdict(g_iPrimarySlotID[iClient]))
-					RemoveEdict(g_iPrimarySlotID[iClient]);
+					AcceptEntityInput(g_iPrimarySlotID[iClient], "Kill");
 				
 				if (RunClientChecks(iClient) && IsPlayerAlive(iClient))
 				{
@@ -1449,7 +1449,7 @@ fnc_CycleWeapon(iClient)
 		case 4:		//Nick
 		{
 			if (IsValidEdict(g_iPrimarySlotID[iClient]))
-				RemoveEdict(g_iPrimarySlotID[iClient]);
+				AcceptEntityInput(g_iPrimarySlotID[iClient], "Kill");
 			
 			if (RunClientChecks(iClient) && IsPlayerAlive(iClient))
 			{

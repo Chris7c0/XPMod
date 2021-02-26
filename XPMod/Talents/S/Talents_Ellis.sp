@@ -200,7 +200,7 @@ OnGameFrame_Ellis(iClient)
 							
 						// 	if(StrEqual(g_strEllisPrimarySlot2, "weapon_autoshotgun", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						// 		RunCheatCommand(iClient, "give", "give autoshotgun");
@@ -209,7 +209,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot2, "weapon_grenade_launcher", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						// 		RunCheatCommand(iClient, "give", "give grenade_launcher");
@@ -218,7 +218,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot2, "weapon_hunting_rifle", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						// 		RunCheatCommand(iClient, "give", "give hunting_rifle");
@@ -227,7 +227,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot2, "weapon_pumpshotgun", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						// 		RunCheatCommand(iClient, "give", "give pumpshotgun");
@@ -236,7 +236,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot2, "weapon_rifle", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						// 		RunCheatCommand(iClient, "give", "give rifle");
@@ -245,7 +245,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot2, "weapon_rifle_ak47", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						// 		RunCheatCommand(iClient, "give", "give rifle_ak47");
@@ -254,7 +254,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot2, "weapon_rifle_desert", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						// 		RunCheatCommand(iClient, "give", "give rifle_desert");
@@ -263,7 +263,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot2, "weapon_rifle_m60", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						// 		RunCheatCommand(iClient, "give", "give rifle_m60");
@@ -272,7 +272,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot2, "weapon_rifle_sg552", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						// 		RunCheatCommand(iClient, "give", "give rifle_sg552");
@@ -281,7 +281,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot2, "weapon_shotgun_chrome", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						// 		RunCheatCommand(iClient, "give", "give shotgun_chrome");
@@ -290,7 +290,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot2, "weapon_shotgun_spas", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						// 		RunCheatCommand(iClient, "give", "give shotgun_spas");
@@ -299,7 +299,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot2, "weapon_smg", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						// 		RunCheatCommand(iClient, "give", "give smg");
@@ -308,7 +308,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot2, "weapon_smg_mp5", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						// 		RunCheatCommand(iClient, "give", "give smg_mp5");
@@ -317,7 +317,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot2, "weapon_smg_silenced", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						// 		RunCheatCommand(iClient, "give", "give smg_silenced");
@@ -326,7 +326,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot2, "weapon_sniper_awp", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						// 		RunCheatCommand(iClient, "give", "give sniper_awp");
@@ -335,7 +335,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot2, "weapon_sniper_military", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						// 		RunCheatCommand(iClient, "give", "give sniper_military");
@@ -344,7 +344,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot2, "weapon_sniper_scout", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						// 		RunCheatCommand(iClient, "give", "give sniper_scout");
@@ -416,7 +416,7 @@ OnGameFrame_Ellis(iClient)
 							
 						// 	if(StrEqual(g_strEllisPrimarySlot1, "weapon_autoshotgun", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
 
 						// 		RunCheatCommand(iClient, "give", "give autoshotgun");
@@ -425,7 +425,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot1, "weapon_grenade_launcher", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
 
 						// 		RunCheatCommand(iClient, "give", "give grenade_launcher");
@@ -434,7 +434,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot1, "weapon_hunting_rifle", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
 
 						// 		RunCheatCommand(iClient, "give", "give hunting_rifle");
@@ -443,7 +443,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot1, "weapon_pumpshotgun", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
 
 						// 		RunCheatCommand(iClient, "give", "give pumpshotgun");
@@ -452,7 +452,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot1, "weapon_rifle", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
 
 						// 		RunCheatCommand(iClient, "give", "give rifle");
@@ -461,7 +461,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot1, "weapon_rifle_ak47", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
 
 						// 		RunCheatCommand(iClient, "give", "give rifle_ak47");
@@ -470,7 +470,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot1, "weapon_rifle_desert", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
 
 						// 		RunCheatCommand(iClient, "give", "give rifle_desert");
@@ -479,7 +479,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot1, "weapon_rifle_m60", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
 
 						// 		RunCheatCommand(iClient, "give", "give rifle_m60");
@@ -488,7 +488,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot1, "weapon_rifle_sg552", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
 
 						// 		RunCheatCommand(iClient, "give", "give rifle_sg552");
@@ -497,7 +497,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot1, "weapon_shotgun_chrome", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
 
 						// 		RunCheatCommand(iClient, "give", "give shotgun_chrome");
@@ -506,7 +506,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot1, "weapon_shotgun_spas", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
 
 						// 		RunCheatCommand(iClient, "give", "give shotgun_spas");
@@ -515,7 +515,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot1, "weapon_smg", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
 
 						// 		RunCheatCommand(iClient, "give", "give smg");
@@ -524,7 +524,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot1, "weapon_smg_mp5", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
 
 						// 		RunCheatCommand(iClient, "give", "give smg_mp5");
@@ -533,7 +533,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot1, "weapon_smg_silenced", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
 
 						// 		RunCheatCommand(iClient, "give", "give smg_silenced");
@@ -542,7 +542,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot1, "weapon_sniper_awp", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
 
 						// 		RunCheatCommand(iClient, "give", "give sniper_awp");
@@ -551,7 +551,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot1, "weapon_sniper_military", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
 
 						// 		RunCheatCommand(iClient, "give", "give sniper_military");
@@ -560,7 +560,7 @@ OnGameFrame_Ellis(iClient)
 						// 	}
 						// 	else if(StrEqual(g_strEllisPrimarySlot1, "weapon_sniper_scout", false) == true)
 						// 	{
-						// 		RemoveEdict(ActiveWeaponID);
+						// 		AcceptEntityInput(ActiveWeaponID);
 						// 		g_iEllisCurrentPrimarySlot[iClient] = 0;
 
 						// 		RunCheatCommand(iClient, "give", "give sniper_scout");

@@ -184,21 +184,21 @@ OnGameFrame_Coach(iClient)
 						{
 							if(StrContains(g_strCoachGrenadeSlot2, "vomitjar", false) != -1)
 							{
-								RemoveEdict(ActiveGrenadeID);
+								AcceptEntityInput(ActiveGrenadeID, "Kill");
 								g_iCoachCurrentGrenadeSlot[iClient] = 1;
 
 								RunCheatCommand(iClient, "give", "give vomitjar");
 							}
 							else if(StrContains(g_strCoachGrenadeSlot2, "molotov", false) != -1)
 							{
-								RemoveEdict(ActiveGrenadeID);
+								AcceptEntityInput(ActiveGrenadeID, "Kill");
 								g_iCoachCurrentGrenadeSlot[iClient] = 1;
 
 								RunCheatCommand(iClient, "give", "give molotov");
 							}
 							else if(StrContains(g_strCoachGrenadeSlot2, "pipe_bomb", false) != -1)
 							{
-								RemoveEdict(ActiveGrenadeID);
+								AcceptEntityInput(ActiveGrenadeID, "Kill");
 								g_iCoachCurrentGrenadeSlot[iClient] = 1;
 
 								RunCheatCommand(iClient, "give", "give pipe_bomb");
@@ -212,21 +212,21 @@ OnGameFrame_Coach(iClient)
 						{
 							if(StrContains(g_strCoachGrenadeSlot1, "vomitjar", false) != -1)
 							{
-								RemoveEdict(ActiveGrenadeID);
+								AcceptEntityInput(ActiveGrenadeID, "Kill");
 								g_iCoachCurrentGrenadeSlot[iClient] = 0;
 
 								RunCheatCommand(iClient, "give", "give vomitjar");
 							}
 							else if(StrContains(g_strCoachGrenadeSlot1, "molotov", false) != -1)
 							{
-								RemoveEdict(ActiveGrenadeID);
+								AcceptEntityInput(ActiveGrenadeID, "Kill");
 								g_iCoachCurrentGrenadeSlot[iClient] = 0;
 
 								RunCheatCommand(iClient, "give", "give molotov");
 							}
 							else if(StrContains(g_strCoachGrenadeSlot1, "pipe_bomb", false) != -1)
 							{
-								RemoveEdict(ActiveGrenadeID);
+								AcceptEntityInput(ActiveGrenadeID, "Kill");
 								g_iCoachCurrentGrenadeSlot[iClient] = 0;
 
 								RunCheatCommand(iClient, "give", "give pipe_bomb");
@@ -247,21 +247,21 @@ OnGameFrame_Coach(iClient)
 						{
 							if(StrContains(g_strCoachGrenadeSlot2, "vomitjar", false) != -1)
 							{
-								RemoveEdict(ActiveGrenadeID);
+								AcceptEntityInput(ActiveGrenadeID, "Kill");
 								g_iCoachCurrentGrenadeSlot[iClient] = 1;
 
 								RunCheatCommand(iClient, "give", "give vomitjar");
 							}
 							else if(StrContains(g_strCoachGrenadeSlot2, "molotov", false) != -1)
 							{
-								RemoveEdict(ActiveGrenadeID);
+								AcceptEntityInput(ActiveGrenadeID, "Kill");
 								g_iCoachCurrentGrenadeSlot[iClient] = 1;
 
 								RunCheatCommand(iClient, "give", "give molotov");
 							}
 							else if(StrContains(g_strCoachGrenadeSlot2, "pipe_bomb", false) != -1)
 							{
-								RemoveEdict(ActiveGrenadeID);
+								AcceptEntityInput(ActiveGrenadeID, "Kill");
 								g_iCoachCurrentGrenadeSlot[iClient] = 1;
 
 								RunCheatCommand(iClient, "give", "give pipe_bomb");
@@ -271,21 +271,21 @@ OnGameFrame_Coach(iClient)
 								//PrintToChatAll("Grenade Slot 2 is empty");
 								if(StrContains(g_strCoachGrenadeSlot3, "vomitjar", false) != -1)
 								{
-									RemoveEdict(ActiveGrenadeID);
+									AcceptEntityInput(ActiveGrenadeID, "Kill");
 									g_iCoachCurrentGrenadeSlot[iClient] = 2;
 
 									RunCheatCommand(iClient, "give", "give vomitjar");
 								}
 								else if(StrContains(g_strCoachGrenadeSlot3, "molotov", false) != -1)
 								{
-									RemoveEdict(ActiveGrenadeID);
+									AcceptEntityInput(ActiveGrenadeID, "Kill");
 									g_iCoachCurrentGrenadeSlot[iClient] = 2;
 
 									RunCheatCommand(iClient, "give", "give molotov");
 								}
 								else if(StrContains(g_strCoachGrenadeSlot3, "pipe_bomb", false) != -1)
 								{
-									RemoveEdict(ActiveGrenadeID);
+									AcceptEntityInput(ActiveGrenadeID, "Kill");
 									g_iCoachCurrentGrenadeSlot[iClient] = 2;
 
 									RunCheatCommand(iClient, "give", "give pipe_bomb");
@@ -296,21 +296,21 @@ OnGameFrame_Coach(iClient)
 						{
 							if(StrContains(g_strCoachGrenadeSlot3, "vomitjar", false) != -1)
 							{
-								RemoveEdict(ActiveGrenadeID);
+								AcceptEntityInput(ActiveGrenadeID, "Kill");
 								g_iCoachCurrentGrenadeSlot[iClient] = 2;
 
 								RunCheatCommand(iClient, "give", "give vomitjar");
 							}
 							else if(StrContains(g_strCoachGrenadeSlot3, "molotov", false) != -1)
 							{
-								RemoveEdict(ActiveGrenadeID);
+								AcceptEntityInput(ActiveGrenadeID, "Kill");
 								g_iCoachCurrentGrenadeSlot[iClient] = 2;
 
 								RunCheatCommand(iClient, "give", "give molotov");
 							}
 							else if(StrContains(g_strCoachGrenadeSlot3, "pipe_bomb", false) != -1)
 							{
-								RemoveEdict(ActiveGrenadeID);
+								AcceptEntityInput(ActiveGrenadeID, "Kill");
 								g_iCoachCurrentGrenadeSlot[iClient] = 2;
 
 								RunCheatCommand(iClient, "give", "give pipe_bomb");
@@ -320,21 +320,21 @@ OnGameFrame_Coach(iClient)
 								//PrintToChatAll("Grenade Slot 3 is empty");
 								if(StrContains(g_strCoachGrenadeSlot1, "vomitjar", false) != -1)
 								{
-									RemoveEdict(ActiveGrenadeID);
+									AcceptEntityInput(ActiveGrenadeID, "Kill");
 									g_iCoachCurrentGrenadeSlot[iClient] = 0;
 
 									RunCheatCommand(iClient, "give", "give vomitjar");
 								}
 								else if(StrContains(g_strCoachGrenadeSlot1, "molotov", false) != -1)
 								{
-									RemoveEdict(ActiveGrenadeID);
+									AcceptEntityInput(ActiveGrenadeID, "Kill");
 									g_iCoachCurrentGrenadeSlot[iClient] = 0;
 
 									RunCheatCommand(iClient, "give", "give molotov");
 								}
 								else if(StrContains(g_strCoachGrenadeSlot1, "pipe_bomb", false) != -1)
 								{
-									RemoveEdict(ActiveGrenadeID);
+									AcceptEntityInput(ActiveGrenadeID, "Kill");
 									g_iCoachCurrentGrenadeSlot[iClient] = 0;
 
 									RunCheatCommand(iClient, "give", "give pipe_bomb");
@@ -345,21 +345,21 @@ OnGameFrame_Coach(iClient)
 						{
 							if(StrContains(g_strCoachGrenadeSlot1, "vomitjar", false) != -1)
 							{
-								RemoveEdict(ActiveGrenadeID);
+								AcceptEntityInput(ActiveGrenadeID, "Kill");
 								g_iCoachCurrentGrenadeSlot[iClient] = 0;
 
 								RunCheatCommand(iClient, "give", "give vomitjar");
 							}
 							else if(StrContains(g_strCoachGrenadeSlot1, "molotov", false) != -1)
 							{
-								RemoveEdict(ActiveGrenadeID);
+								AcceptEntityInput(ActiveGrenadeID, "Kill");
 								g_iCoachCurrentGrenadeSlot[iClient] = 0;
 
 								RunCheatCommand(iClient, "give", "give molotov");
 							}
 							else if(StrContains(g_strCoachGrenadeSlot1, "pipe_bomb", false) != -1)
 							{
-								RemoveEdict(ActiveGrenadeID);
+								AcceptEntityInput(ActiveGrenadeID, "Kill");
 								g_iCoachCurrentGrenadeSlot[iClient] = 0;
 
 								RunCheatCommand(iClient, "give", "give pipe_bomb");
@@ -369,21 +369,21 @@ OnGameFrame_Coach(iClient)
 								//PrintToChatAll("Grenade Slot 1 is empty");
 								if(StrContains(g_strCoachGrenadeSlot2, "vomitjar", false) != -1)
 								{
-									RemoveEdict(ActiveGrenadeID);
+									AcceptEntityInput(ActiveGrenadeID, "Kill");
 									g_iCoachCurrentGrenadeSlot[iClient] = 1;
 
 									RunCheatCommand(iClient, "give", "give vomitjar");
 								}
 								else if(StrContains(g_strCoachGrenadeSlot2, "molotov", false) != -1)
 								{
-									RemoveEdict(ActiveGrenadeID);
+									AcceptEntityInput(ActiveGrenadeID, "Kill");
 									g_iCoachCurrentGrenadeSlot[iClient] = 1;
 
 									RunCheatCommand(iClient, "give", "give molotov");
 								}
 								else if(StrContains(g_strCoachGrenadeSlot2, "pipe_bomb", false) != -1)
 								{
-									RemoveEdict(ActiveGrenadeID);
+									AcceptEntityInput(ActiveGrenadeID, "Kill");
 									g_iCoachCurrentGrenadeSlot[iClient] = 1;
 
 									RunCheatCommand(iClient, "give", "give pipe_bomb");

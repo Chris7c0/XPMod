@@ -17,7 +17,7 @@ Action:TimerStopRambo(Handle:timer, any:iClient)
 	//fnc_SetAmmoUpgrade(iClient);
 	//fnc_ClearSavedWeaponData(iClient);
 	
-	//RemoveEdict(g_iRamboWeaponID[iClient]);
+	//AcceptEntityInput(g_iRamboWeaponID[iClient]);
 	/*
 	if(iClient > 0)
 		if(IsClientInGame(iClient) == true)
@@ -34,7 +34,7 @@ Action:TimerStopRambo(Handle:timer, any:iClient)
 	if(wID > 0 && IsValidEntity(wID))
 	{
 		SetEntData(wID, g_iOffset_Clip1, 0, true);	//remove entity if this is working good
-		RemoveEdict(wID);
+		AcceptEntityInput(wID);
 	}
 	g_iNicksRamboWeaponID[iClient] = 0;
 	*/

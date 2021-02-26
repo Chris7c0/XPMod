@@ -448,7 +448,7 @@ Action:RemoveInstructorText(Handle:h_Timer, Handle:h_Pack)
 		return Plugin_Stop;
 	
 	if (IsValidEntity(i_Ent))
-			RemoveEdict(i_Ent);
+			AcceptEntityInput(i_Ent);
 	
 	ClientCommand(iClient, "gameinstructor_enable 0");
 		
@@ -694,7 +694,7 @@ Action:CreateOverlay(iClient)
      new ent = CreateEntityByName("env_screenoverlay"); 
      DispatchKeyValue(ent, "OverlayName1", "dev/dev_prisontvoverlay002.vmt"); 
      AcceptEntityInput(ent, "StartOverlays", iClient); 
-     //RemoveEdict(ent); 
+     //AcceptEntityInput(ent); 
 } 
 */
 
@@ -729,7 +729,7 @@ Action:CreateOverlay(iClient)
 // 	while ((WeaponIndex = GetPlayerWeaponSlot(iClient, 0)) != -1)
 // 	{
 // 		RemovePlayerItem(iClient, WeaponIndex);
-// 		RemoveEdict(WeaponIndex);
+// 		AcceptEntityInput(WeaponIndex);
 // 	}
 // 	SDKCall(g_hSetClass, iClient, StringToInt(number1));
 // 	AcceptEntityInput(MakeCompatEntRef(GetEntProp(iClient, Prop_Send, "m_customAbility")), "Kill");
@@ -750,7 +750,7 @@ Action:CreateOverlay(iClient)
 	
 // 	// g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 0);
 // 	// PrintToChatAll("g_iPrimarySlotID Before = %d", g_iPrimarySlotID[iClient]);
-// 	// RemoveEdict(g_iPrimarySlotID[iClient]);
+// 	// AcceptEntityInput(g_iPrimarySlotID[iClient]);
 // 	// PrintToChatAll("g_iPrimarySlotID After = %d", g_iPrimarySlotID[iClient]);
 	
 // 	//fnc_DeterminePrimarySlot(iClient);
@@ -1043,15 +1043,15 @@ Action:CreateOverlay(iClient)
 // 		// SPANWNIGN BARRIR
 // 		/*if(sandbag1[iClient] > 0)
 // 			if(IsValidEntity(sandbag1[iClient]))
-// 				RemoveEdict(sandbag1[iClient]);
+// 				AcceptEntityInput(sandbag1[iClient]);
 // 		sandbag1[iClient] = -1;
 // 		if(sandbag2[iClient] > 0)
 // 			if(IsValidEntity(sandbag2[iClient]))
-// 				RemoveEdict(sandbag2[iClient]);
+// 				AcceptEntityInput(sandbag2[iClient]);
 // 		sandbag2[iClient] = -1;
 // 		if(sandbag3[iClient] > 0)
 // 			if(IsValidEntity(sandbag3[iClient]))
-// 				RemoveEdict(sandbag3[iClient]);
+// 				AcceptEntityInput(sandbag3[iClient]);
 // 		sandbag3[iClient] = -1;
 // 		*/
 // 		PrintHintText(iClient, "Testing toggled off");
@@ -1087,7 +1087,7 @@ Action:CreateOverlay(iClient)
 // 		return Plugin_Handled;
 
 // 	if (IsValidEntity(i_Ent))
-// 		RemoveEdict(i_Ent);
+// 		AcceptEntityInput(i_Ent);
 
 // 	return Plugin_Continue;
 // }
@@ -1450,7 +1450,7 @@ Action:CreateOverlay(iClient)
 // 	/*if(test!=0)
 // 		if(IsValidEntity(test))
 // 			if(IsValidEdict(test))
-// 				RemoveEdict(test);
+// 				AcceptEntityInput(test);
 // 	ListParticles();
 // 	*/
 // 	//SetEntProp(iClient, Prop_Send, "m_bWearingSuit", 1);

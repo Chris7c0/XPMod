@@ -373,7 +373,8 @@ RemoveClone(iClient)
 {
 	new iClone = gClone[iClient];
 	gClone[iClient] = -1;
-	if (IsValidEntity(iClone)) RemoveEdict(iClone);
+	if (IsValidEntity(iClone))
+		AcceptEntityInput(iClone, "Kill");
 }
 
 SetAlpha(target, alpha)

@@ -256,7 +256,7 @@ Action:Bind1Press(iClient, args)
 						//TEST
 						fnc_DeterminePrimaryWeapon(iClient);
 						fnc_SaveAmmo(iClient);
-						RemoveEdict(g_iPrimarySlotID[iClient]);
+						AcceptEntityInput(g_iPrimarySlotID[iClient]);
 						g_bRamboModeActive[iClient] = true;
 
 
@@ -345,7 +345,7 @@ Action:Bind1Press(iClient, args)
 							{
 								fnc_DeterminePrimaryWeapon(iClient);
 								fnc_SaveAmmo(iClient);
-								RemoveEdict(g_iPrimarySlotID[iClient]);
+								AcceptEntityInput(g_iPrimarySlotID[iClient], "Kill");
 								g_bRamboModeActive[iClient] = true;
 
 

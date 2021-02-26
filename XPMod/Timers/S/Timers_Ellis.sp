@@ -59,14 +59,14 @@ Action:TimerEllisLimitBreakReset(Handle:timer, any:iClient)
 		g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 0);
 
 		if (g_iPrimarySlotID[iClient] > -1)
-			RemoveEdict(g_iPrimarySlotID[iClient]);
+			AcceptEntityInput(g_iPrimarySlotID[iClient], "Kill");
 
 		fnc_ClearAllWeaponData(iClient);
 	}
 	/* //////////////Old setup///////////////
 	fnc_ClearSavedWeaponData(iClient);
 	g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 0);
-	RemoveEdict(g_iPrimarySlotID[iClient]);
+	AcceptEntityInput(g_iPrimarySlotID[iClient]);
 	fnc_CycleWeapon(iClient);
 	*/
 	/* //Working but needs tweaking
@@ -80,7 +80,7 @@ Action:TimerEllisLimitBreakReset(Handle:timer, any:iClient)
 	if((StrEqual(g_strEllisPrimarySlot1, "empty", false) == true) || (StrEqual(g_strEllisPrimarySlot2, "empty", false) == true))
 	{
 		g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 0);
-		RemoveEdict(g_iPrimarySlotID[iClient]);
+		AcceptEntityInput(g_iPrimarySlotID[iClient]);
 	}
 	*/
 	return Plugin_Stop;

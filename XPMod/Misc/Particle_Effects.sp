@@ -208,8 +208,7 @@ Action:DeleteParticle(Handle:timer, any:Particle)
 			if(StrEqual(Classname, "info_particle_system", false))
 			{
 				//Delete:
-				AcceptEntityInput(Particle, "kill");
-				RemoveEdict(Particle);
+				AcceptEntityInput(Particle, "Kill");
 				//PrintToChatAll("Deleted particle system with id: %d", Particle);
 			}
 		}
@@ -228,8 +227,7 @@ Action:DeleteParticleEntity(iParticle)
 		if(StrEqual(Classname, "info_particle_system", false))
 		{
 			// Delete it
-			AcceptEntityInput(iParticle, "kill");
-			RemoveEdict(iParticle);
+			AcceptEntityInput(iParticle, "Kill");
 			//PrintToChatAll("Deleted particle system with id: %d", Particle);
 		}
 	}
@@ -271,7 +269,7 @@ Action:TimerRemoveSmokeEntity(Handle:timer, any:iSmokeStackEntity)
 		
 		// Is it a smoke stack particle entity?
 		if(StrEqual(Classname, "env_smokestack", false))
-			RemoveEdict(iSmokeStackEntity);
+			AcceptEntityInput(iSmokeStackEntity, "Kill");
 	}
 	
 	return Plugin_Stop;

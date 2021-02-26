@@ -91,7 +91,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 				{
 					if(StrEqual(g_strEllisPrimarySlot2, "weapon_autoshotgun", false) == true)
 					{
-						RemoveEdict(ActiveWeaponID);
+						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						RunCheatCommand(iClient, "give", "give autoshotgun");
@@ -100,7 +100,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					}
 					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_grenade_launcher", false) == true)
 					{
-						RemoveEdict(ActiveWeaponID);
+						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						RunCheatCommand(iClient, "give", "give grenade_launcher");
@@ -109,7 +109,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					}
 					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_hunting_rifle", false) == true)
 					{
-						RemoveEdict(ActiveWeaponID);
+						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						RunCheatCommand(iClient, "give", "give hunting_rifle");
@@ -118,7 +118,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					}
 					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_pumpshotgun", false) == true)
 					{
-						RemoveEdict(ActiveWeaponID);
+						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						RunCheatCommand(iClient, "give", "give pumpshotgun");
@@ -127,7 +127,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					}
 					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_rifle", false) == true)
 					{
-						RemoveEdict(ActiveWeaponID);
+						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						RunCheatCommand(iClient, "give", "give rifle");
@@ -136,7 +136,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					}
 					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_rifle_ak47", false) == true)
 					{
-						RemoveEdict(ActiveWeaponID);
+						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						RunCheatCommand(iClient, "give", "give rifle_ak47");
@@ -145,7 +145,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					}
 					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_rifle_desert", false) == true)
 					{
-						RemoveEdict(ActiveWeaponID);
+						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						RunCheatCommand(iClient, "give", "give rifle_desert");
@@ -154,7 +154,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					}
 					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_rifle_m60", false) == true)
 					{
-						RemoveEdict(ActiveWeaponID);
+						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						RunCheatCommand(iClient, "give", "give rifle_m60");
@@ -163,7 +163,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					}
 					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_rifle_sg552", false) == true)
 					{
-						RemoveEdict(ActiveWeaponID);
+						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						RunCheatCommand(iClient, "give", "give rifle_sg552");
@@ -172,7 +172,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					}
 					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_shotgun_chrome", false) == true)
 					{
-						RemoveEdict(ActiveWeaponID);
+						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						RunCheatCommand(iClient, "give", "give shotgun_chrome");
@@ -181,7 +181,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					}
 					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_shotgun_spas", false) == true)
 					{
-						RemoveEdict(ActiveWeaponID);
+						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						RunCheatCommand(iClient, "give", "give shotgun_spas");
@@ -190,7 +190,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					}
 					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_smg", false) == true)
 					{
-						RemoveEdict(ActiveWeaponID);
+						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						RunCheatCommand(iClient, "give", "give smg");
@@ -199,7 +199,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					}
 					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_smg_mp5", false) == true)
 					{
-						RemoveEdict(ActiveWeaponID);
+						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						RunCheatCommand(iClient, "give", "give smg_mp5");
@@ -208,7 +208,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					}
 					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_smg_silenced", false) == true)
 					{
-						RemoveEdict(ActiveWeaponID);
+						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						RunCheatCommand(iClient, "give", "give smg_silenced");
@@ -217,7 +217,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					}
 					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_sniper_awp", false) == true)
 					{
-						RemoveEdict(ActiveWeaponID);
+						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						RunCheatCommand(iClient, "give", "give sniper_awp");
@@ -226,7 +226,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					}
 					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_sniper_military", false) == true)
 					{
-						RemoveEdict(ActiveWeaponID);
+						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						RunCheatCommand(iClient, "give", "give sniper_military");
@@ -235,7 +235,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					}
 					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_sniper_scout", false) == true)
 					{
-						RemoveEdict(ActiveWeaponID);
+						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
 
 						RunCheatCommand(iClient, "give", "give sniper_scout");

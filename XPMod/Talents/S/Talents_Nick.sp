@@ -230,7 +230,7 @@ OnGameFrame_Nick(iClient)
 						}
 					}
 					DispatchKeyValue(weapon, "ammo", "200");
-					RemoveEdict(ActiveWeaponID);
+					AcceptEntityInput(ActiveWeaponID, "Kill");
 					DispatchSpawn(grenade);
 					DispatchSpawn(weapon);
 					DispatchSpawn(boost);
@@ -306,7 +306,7 @@ OnGameFrame_Nick(iClient)
 						}
 						else
 						{
-							RemoveEdict(ActiveWeaponID);
+							AcceptEntityInput(ActiveWeaponID, "Kill");
 						}
 						g_iNickCurrentSecondarySlot[iClient] = 1;
 
@@ -334,7 +334,7 @@ OnGameFrame_Nick(iClient)
 						
 						if(StrEqual(g_strNickSecondarySlot1, "weapon_pistol_magnum", false) == true)
 						{
-							RemoveEdict(ActiveWeaponID);
+							AcceptEntityInput(ActiveWeaponID, "Kill");
 							g_iNickCurrentSecondarySlot[iClient] = 0;
 
 							RunCheatCommand(iClient, "give", "give pistol_magnum");

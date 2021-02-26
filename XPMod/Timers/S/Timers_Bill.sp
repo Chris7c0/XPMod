@@ -109,7 +109,7 @@ Action:TimerBlowUpPoopBomb(Handle:timer, any:iEntity)
 	decl Float:xyzEntityOrigin[3];
 	GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", xyzEntityOrigin);
 	if(IsValidEntity(iEntity))
-		RemoveEdict(iEntity);
+		AcceptEntityInput(iEntity, "Kill");
 	new i_Ent = CreateEntityByName("prop_physics");
 	//DispatchKeyValue(i_Ent, "physdamagescale", "0.0");
 	DispatchKeyValue(i_Ent, "model", "models/props_junk/propanecanister001a.mdl");
