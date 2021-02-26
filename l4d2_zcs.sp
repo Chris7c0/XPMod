@@ -1118,7 +1118,11 @@ public void Sub_DetermineClass(any Client, any ZClass)
 		{
 			PrintToServer("Looping through RemovePlayerItem...");
 			RemovePlayerItem(Client, WeaponIndex);
-			RemoveEdict(WeaponIndex);
+			
+			// Removed this due to this: https://forums.alliedmods.net/showpost.php?p=2536790&postcount=12
+			//RemoveEdict(WeaponIndex);
+			// Replaced with this:
+			AcceptEntityInput(WeaponIndex, "Kill");
 		}
 
 		SDKCall(g_hSetClass, Client, g_iNextClass[Client]);
