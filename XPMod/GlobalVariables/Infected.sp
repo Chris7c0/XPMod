@@ -27,7 +27,7 @@ new bool:g_bIsGhost[MAXPLAYERS + 1];
 // (Combined Survivor Levels / 120) * ENHANCEMENT_CI_CHANCE_MAX
 // 0.1 would be 10% chance if all level 30s, 2.5% (2.5 in 100) chance if 1 level 30
 // 0.01 would be 1% chance if all level 30s, 0.25% (1 in 400) chance if 1 level 30
-#define ENHANCEMENT_CI_CHANCE_MAX   0.03
+#define ENHANCEMENT_CI_CHANCE_MAX   0.1
 // Big Small (health + size) options and constraints
 #define CI_SMALL_OR_BIG_RANDOM      -1
 #define CI_SMALL_OR_BIG_NONE        0
@@ -51,7 +51,7 @@ new bool:g_bIsGhost[MAXPLAYERS + 1];
 #define CI_BIG_MIN_HEALTH           500
 #define CI_BIG_MAX_HEALTH           1500
 #define CI_REALLY_BIG_HEALTH        2500
-#define CI_REALLY_BIG_JIMMY_HEALTH  4000
+#define CI_REALLY_BIG_JIMMY_HEALTH  6000
 // Enhanced CI Types
 #define ENHANCED_CI_TYPE_RANDOM     -1
 #define ENHANCED_CI_TYPE_NONE       0
@@ -197,7 +197,7 @@ new Float:g_fTankStartingHealthMultiplier[MAXPLAYERS + 1];
 // 90 would require a team of 3 (3x30) before getting max tank health.
 #define TANK_STARTING_HEALTH_REQUIRED_TEAM_LEVEL_FOR_MAX    60
 new bool:g_bTankStartingHealthXPModSpawn;
-#define TANK_STARTING_HEALTH_MULTIPLIER_XPMOD_SPAWN         0.33333
+#define TANK_STARTING_HEALTH_MULTIPLIER_XPMOD_SPAWN         0.50
 // The amount of HP loss before a XPMod tank type is automatically selected for the player
 #define TANK_AUTOMATIC_SELECT_HP_LOSS   1000
 #define TANK_AUTOMATIC_SELECT_TYPE      TANK_FIRE

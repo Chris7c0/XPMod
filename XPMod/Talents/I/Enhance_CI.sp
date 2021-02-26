@@ -31,8 +31,9 @@ float CalculateCIEnhancementChance()
 	{
 		if (RunClientChecks(i) && 
 			g_iClientTeam[i] == TEAM_SURVIVORS &&
+			g_bClientLoggedIn[i] == true &&
 			IsFakeClient(i) == false &&
-			g_bClientLoggedIn[i] == true)
+			IsPlayerAlive(i) == true)
 			iCombinedSurvivorLevel += g_iClientLevel[i];
 	}
 

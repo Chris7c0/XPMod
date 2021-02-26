@@ -252,7 +252,6 @@ CreateNecroTankerTrailEffect(int iClient)
 // 		SpawnSpecialInfected(bot, BOOMER, true);
 // 		new Float:Pos[3];
 // 		GetEntPropVector(iTankRockEntity, Prop_Send, "m_vecOrigin", Pos);	
-// 		//RemoveEntity(iTankRockEntity);
 // 		AcceptEntityInput(iTankRockEntity, "Kill");
 // 		NormalizeVector(velocity, velocity);
 // 		new Float:speed = GetConVarFloat(FindConVar("z_tank_throw_force"));
