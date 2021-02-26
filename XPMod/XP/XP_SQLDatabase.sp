@@ -1,6 +1,21 @@
 //SQL Database File Functions
 #include "XPMod/Models/Database/DB_Users.sp"
 
+SetUpTheDBConnection()
+{
+	//Setup the handle that will link to the MySQL Database
+	if(ConnectDB())
+	{
+		PrintToServer("\n*** Connected to XPMod Database ***\n ");
+	}
+	else
+	{
+		PrintToServer("\n********************************************");
+		PrintToServer("*** Could Not Connect to XPMod Database! ***");
+		PrintToServer("********************************************\n ");
+	}
+}
+
 bool:ConnectDB()
 {	
 

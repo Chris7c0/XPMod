@@ -319,6 +319,84 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 // } 
 
 
+//Chat
+Action:SayCmd(iClient, args)
+{
+	if (iClient < 1 || IsClientInGame(iClient) == false || IsFakeClient(iClient) == true)
+		return Plugin_Continue;
+	
+	//Check to see if they typed in xpm or xpmod, indifferent to the case used
+	decl String:strArgument1[16];
+	GetCmdArg(1, strArgument1, sizeof(strArgument1));
+	if(StrEqual(strArgument1, "xpm", false) == true || StrEqual(strArgument1, "!xpm", false) == true ||
+		StrEqual(strArgument1, "xpmod", false) == true || StrEqual(strArgument1, "!xpmod", false) == true)
+		{
+			XPModMenuDraw(iClient);
+		}
+	
+	if(StrEqual(strArgument1, "/xpm", false) == true)
+	{
+		XPModMenuDraw(iClient);
+		return Plugin_Handled;
+	}
+		
+	
+	//Change the color of the admin text in the chat to green
+	if(GetUserAdmin(iClient) != INVALID_ADMIN_ID)
+	{
+		decl String:input[256];
+		
+		GetCmdArgString(input, sizeof(input));
+		if(input[0] ==  '/' || input[1] ==  '/')
+			return Plugin_Handled;
+			
+		if(input[0] ==  '"')
+			input[0] = ' ';
+		if(input[strlen(input) - 1] == '"')
+			input[strlen(input) - 1] = '\0';
+		
+		PrintToChatAll("\x03%N\x01 : %s", iClient, input);
+		PrintToServer("[Admin] %N : %s", iClient, input);
+		return Plugin_Handled;
+	}
+	
+	return Plugin_Continue;
+}
+
+Action:SayTeamCmd(iClient, args)
+{
+	if (iClient < 1 || IsClientInGame(iClient) == false || IsFakeClient(iClient) == true)
+		return Plugin_Continue;
+	
+	decl String:input[256];
+	GetCmdArgString(input,sizeof(input));
+
+	decl String:strArgument1[6];
+	GetCmdArg(1, strArgument1, 6);
+	if(StrEqual(strArgument1, "xpm", false) == true || StrEqual(strArgument1, "!xpm", false) == true ||
+		StrEqual(strArgument1, "xpmod", false) == true || StrEqual(strArgument1, "!xpmod", false) == true)
+		XPModMenuDraw(iClient);
+		
+	if(StrEqual(strArgument1, "/xpm", false) == true)
+	{
+		XPModMenuDraw(iClient);
+		return Plugin_Handled;
+	}
+	
+	decl i;
+	for(i = 1; i <= MaxClients; i++)
+	{
+		if(g_iGatherLevel[i] == 5 && IsClientInGame(i) && IsFakeClient(i) == false && GetClientTeam(i)==TEAM_SURVIVORS && GetClientTeam(iClient)==TEAM_INFECTED)
+		{
+			decl String:clientname[25];
+			GetClientName(iClient, clientname, sizeof(clientname));
+			PrintToChat(i, "\x04[\x05IDD Survalence\x04] \x05%s\x04: \x01%s", clientname, input);
+		}
+	}
+	
+	return Plugin_Continue;
+}
+
 // This is purely to block the name change message when updating a name to have the XPMod Level tags
 // Originally from https://forums.alliedmods.net/showthread.php?t=302085
 Action Hook_SayText2(UserMsg msg_id, any msg, const int[] players, int playersNum, bool reliable, bool init)
@@ -348,6 +426,42 @@ Action Hook_SayText2(UserMsg msg_id, any msg, const int[] players, int playersNu
 
 	// Otherwise, move on and continue displaying the message
 	return Plugin_Continue;
+}
+
+
+public OnMapStart()
+{
+	//PrintToServer("OnMapStart ========================================================================================================")
+	
+	// Increase the uncommon limit for the NecroTanker and Spitter conjurer abilities
+	// Also, more is better...
+	SetConVarInt(FindConVar("z_common_limit"), 45);	
+	//SetConVarInt(FindConVar("z_background_limit"), 45);		// Not required
+	
+	// Increases the spawn distance
+	// Commented out to ensure that zombies spawn closer to the action
+	//SetConVarInt(FindConVar("z_spawn_range"), 2500);	//Required or common will disappear when spawned out of range of NecroTanker
+	//SetConVarInt(FindConVar("z_discard_range"), 3000); 	//Required or common will disappear when spawned out of range of NecroTanker
+	
+	// Set the filename for the log to the server name
+	GetConVarString(FindConVar("hostname"), g_strServerName, sizeof(g_strServerName));
+	// Get the log file name
+	SetXPMStatsLogFileName();
+	
+
+	DispatchKeyValue(0, "timeofday", "1"); //Set time of day to midnight
+	
+	//Set the g_iGameMode variable
+	FindGameMode();
+	
+	//Precache everything needed for XPMod
+	PrecacheAllTextures();	
+	PrecacheAllModels();
+	PrecacheAllParticles();
+	PrecacheAllSounds();
+	
+	//Set the max teleport height for the map
+	SetMapsMaxTeleportHeight();
 }
 
 Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)

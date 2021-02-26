@@ -44,6 +44,29 @@ SuppressNeverUsedWarning(any:var1=0, any:var2=0, any:var3=0, any:var4=0, any:var
 	if(ignore) PrintToServer("THIS IS NEVER GOING TO BE RAN",var1, var2, var3, var4, var5, var6, var7, var8, var9, var10);
 }
 
+FindGameMode()
+{
+	decl String:g_strGameMode[20];
+	GetConVarString(FindConVar("mp_gamemode"), g_strGameMode, sizeof(g_strGameMode));
+	
+	if (StrEqual(g_strGameMode,"coop",true))
+		g_iGameMode = GAMEMODE_COOP;
+	else if (StrEqual(g_strGameMode,"versus",true))
+		g_iGameMode = GAMEMODE_VERSUS;
+	else if (StrEqual(g_strGameMode,"teamversus",true))
+		g_iGameMode = GAMEMODE_UNKNOWN;
+	else if (StrEqual(g_strGameMode,"teamscavenge",true))
+		g_iGameMode = GAMEMODE_SCAVENGE;
+	else if (StrEqual(g_strGameMode,"scavenge",true))
+		g_iGameMode = GAMEMODE_SCAVENGE;
+	else if (StrEqual(g_strGameMode,"survival",true))
+		g_iGameMode = GAMEMODE_SURVIVAL;
+	else if (StrEqual(g_strGameMode,"realism",true))
+		g_iGameMode = GAMEMODE_UNKNOWN;
+	else
+		g_iGameMode = GAMEMODE_UNKNOWN;
+}
+
 bool RunCheatCommand(int iClient, const char [] strCommandName, const char [] strCommandWithArgs)
 {
 	if (RunClientChecks(iClient) == false)
