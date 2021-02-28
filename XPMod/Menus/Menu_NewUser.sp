@@ -120,45 +120,27 @@ BanMeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			case 2: // Ban for 1 Day
 			{
 				ClosePanel(iClient);
+				// Add user to the bans table in the xpmod database
+				SQLAddBannedUserToDatabase(iClient, 86400, "XPMod Banned for 1 Day");
+				// Ban the user, regardless of being able to add to the database or not
 				BanClient(iClient, 1440, BANFLAG_AUTHID, "XPMod Banned for 1 Day", "You are banned for 1 day. Thanks, have a nice day");
-				//BanAndAddUserToBannedUsersConfig(iClient, 1440, "XPMod Banned for 1 Day", "You are banned for 1 day. Thanks, have a nice day");
 			}
 			case 3: // Ban for 1 Week
 			{
 				ClosePanel(iClient);
+				// Add user to the bans table in the xpmod database
+				SQLAddBannedUserToDatabase(iClient, 604800, "XPMod Banned for 1 Week");
+				// Ban the user, regardless of being able to add to the database or not
 				BanClient(iClient, 10080, BANFLAG_AUTHID, "XPMod Banned for 1 Week", "You are banned for 1 week. Thanks, have a nice day");
 			}
 			case 4: // Ban for 1 Month
 			{
 				ClosePanel(iClient);
-				BanClient(iClient, 40320, BANFLAG_AUTHID, "XPMod Banned for 1 Month", "You are banned for 1 month. Thanks, have a nice day");
+				// Add user to the bans table in the xpmod database
+				SQLAddBannedUserToDatabase(iClient, 18144000, "XPMod Banned for 1 Month");
+				// Ban the user, regardless of being able to add to the database or not
+				BanClient(iClient, 302400, BANFLAG_AUTHID, "XPMod Banned for 1 Month", "You are banned for 1 month. Thanks, have a nice day");
 			}
 		}
 	}
 }
-
-// void BanAndAddUserToBannedUsersConfig(int iClient, int iDuration, const char[] strBanReason, const char[] strKickMessage)
-// {
-// 	//Get Steam Auth ID, if this returns false, then do not proceed
-// 	decl String:strSteamID[32];
-// 	if (GetClientAuthId(iClient, AuthId_Steam2, strSteamID, sizeof(strSteamID)) == false)
-// 	{
-// 		PrintToChat(iClient, "\x03[XPMod] Sorry, ban failed. please manually disconnect.");
-// 		LogError("BanAndAddUserToBannedUsersConfig: GetClientAuthId failed for %N", iClient);
-// 		return;
-// 	}
-
-// 	bool bHasRootFlag = GetAdminFlag(iClient, Admin_Root);
-// 	SetAdminFlag(iClient, Admin_Root, true); // Give them root flag
-// 	FakeClientCommand(client, "sm_addban %d \"%s\" \"%s\"", iDuration, strSteamID, strBanReason); // Add ban
-// 	SetAdminFlag(iClient, Admin_Root, bHasRootFlag); // Remove root flag 
-
-// 	new AdminId:source_aid = GetUserAdmin(iClient);
-// 	// Add the user to banned_user.cfg
-// 	//SetAdminFlag(iClient, Admin_Root, true);
-// 	FakeClientCommand(iClient, "sm_addban %d \"%s\" %s", iDuration, strSteamID, strBanReason);
-// 	//SetAdminFlag(iClient, Admin_Root, true);
-
-// 	// Ban the user
-// 	//BanClient(iClient, iDuration, BANFLAG_AUTHID, strBanReason, strKickMessage);
-// }

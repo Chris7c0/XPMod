@@ -6,7 +6,7 @@
 #define DB_USER			"xpmodclients"
 #define DB_PASSWORD		"PASSWORD_HERE"
 #define DB_CONF_NAME 	"sqltester"
-#define DB_TABLENAME  	"test"
+#define DB_TABLENAME_USERS  	"test"
 
 new Handle:g_hDatabase = INVALID_HANDLE;
 
@@ -35,7 +35,7 @@ public Action:ConsoleCommandMassInsert(client, args)
 	for(new i = 8000;i < 16000; i++)
 	{
 		IntToString(i, number, sizeof(number));
-		Format(queryInsert, sizeof(queryInsert), "INSERT INTO %s (SteamID, Name, IsBot) VALUES ('%s', 'black bear', 1)", DB_TABLENAME, number);
+		Format(queryInsert, sizeof(queryInsert), "INSERT INTO %s (SteamID, Name, IsBot) VALUES ('%s', 'black bear', 1)", DB_TABLENAME_USERS, number);
 		SQL_TQuery(g_hDatabase, SQLErrorCheckCallback, queryInsert);
 	}
 }
@@ -45,7 +45,7 @@ public Action:ConsoleCommandMassQuery(client, args)
 	decl String:query[64];
 	for(new i = 0;i < 2; i++)
 	{
-		Format(query, sizeof(query), "SELECT SteamID FROM %s", DB_TABLENAME);
+		Format(query, sizeof(query), "SELECT SteamID FROM %s", DB_TABLENAME_USERS);
 		SQL_TQuery(g_hDatabase, GetDataFromQuery, query);
 	}
 }
@@ -53,7 +53,7 @@ public Action:ConsoleCommandMassQuery(client, args)
 public Action:ConsoleCommandDeleteData(client, args)
 {
 	decl String:query[64];
-	Format(query, sizeof(query), "DELETE FROM %s", DB_TABLENAME);
+	Format(query, sizeof(query), "DELETE FROM %s", DB_TABLENAME_USERS);
 	SQL_TQuery(g_hDatabase, GetDataFromQuery, query);
 }
 
@@ -67,7 +67,7 @@ public OnMapStart()
 		PrintToServer("*** Connected To Database ***");
 		
 		/*decl String:query1[64];
-		Format(query1, sizeof(query1), "UPDATE %s SET SteamID = 'NEWTEST' WHERE id = 1", DB_TABLENAME);
+		Format(query1, sizeof(query1), "UPDATE %s SET SteamID = 'NEWTEST' WHERE id = 1", DB_TABLENAME_USERS);
 		
 		SQL_TQuery(g_hDatabase, SQLErrorCheckCallback, query1);*/
 		
@@ -84,7 +84,7 @@ public OnMapStart()
 		}*/
 		
 		/*decl String:query2[64];
-		Format(query2, sizeof(query2), "SELECT SteamID FROM %s", DB_TABLENAME);
+		Format(query2, sizeof(query2), "SELECT SteamID FROM %s", DB_TABLENAME_USERS);
 		
 		SQL_TQuery(g_hDatabase, GetDataFromQuery, query2);*/
 	}

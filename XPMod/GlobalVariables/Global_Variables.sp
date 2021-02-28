@@ -43,8 +43,9 @@ new Handle:g_hDatabase = INVALID_HANDLE;
 //#define DB_DATABASE	"DB_DATABASE"
 //#define DB_USER		"DB_USER"
 //#define DB_PASSWORD	"DB_PASSWORD"
-#define DB_CONF_NAME 	"xpmod"
-#define DB_TABLENAME  	"users"
+#define DB_CONF_NAME 	        "xpmod"
+#define DB_TABLENAME_USERS  	"users"
+#define DB_TABLENAME_BANS  	    "bans"
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

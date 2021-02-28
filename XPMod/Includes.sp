@@ -9,6 +9,8 @@
 #include "XPMod/GlobalVariables/Talent_Levels.sp"
 #include "XPMod/GlobalVariables/Timers.sp"
 #include "XPMod/GlobalVariables/XP_Levels_Confirm.sp"
+//Remove Testing before release                       /////////////////////////////////////////////////////////////////////////
+#include "XPMod/Misc/Testing.sp"
 // Misc
 #include "XPMod/Misc/Generic_Functions.sp"
 #include "XPMod/Misc/Setup.sp"
@@ -20,12 +22,14 @@
 #include "XPMod/Misc/SpawnInfected.sp"
 #include "XPMod/Misc/MovementSpeed.sp"
 #include "XPMod/Misc/VictimHealthMeter.sp"
-//#include "XPMod/Misc/Abilities.sp"
-#include "XPMod/Misc/Testing.sp"	                   //Remove before relase/////////////////////////////////////////////////////////////////////////
-//Experience and User Data Management
+//Database Management
+#include "XPMod/Database/Database.sp"
+#include "XPMod/Database/Models/DB_Users.sp"
+#include "XPMod/Database/User_Management.sp"
+#include "XPMod/Database/Ban_Management.sp"
+//Experience
 #include "XPMod/XP/XP_Management.sp"
 #include "XPMod/XP/XP_Events.sp"
-#include "XPMod/XP/XP_SQLDatabase.sp"
 //Menu Navigation Files
 #include "XPMod/Menus/Menu_Main.sp"
 #include "XPMod/Menus/Menu_NewUser.sp"

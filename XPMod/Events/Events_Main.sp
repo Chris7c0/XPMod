@@ -818,6 +818,8 @@ Action:Event_PlayerConnect(Handle:hEvent, const String:strName[], bool:bDontBroa
 		}
 		//PrintToChatAll("PCONNECT FULL: %d: Clientname %s stored in database", iClient, clientname);
 		//PrintToChatAll("\x03%N \x04has connected", iClient);
+
+		SQLCheckIfUserIsInBanList(iClient);
 		GetUserIDAndToken(iClient);
 	}
 	else	//They were already in game
