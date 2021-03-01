@@ -82,6 +82,7 @@ Action:PrimaryMenuDraw(iClient)
 	CheckMenu(iClient);
 	
 	g_hMenu_XPM[iClient] = CreateMenu(PrimaryMenuHandler);
+	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -110,6 +111,7 @@ Action:SecondaryMenuDraw(iClient)
 	CheckMenu(iClient);
 	
 	g_hMenu_XPM[iClient] = CreateMenu(SecondaryMenuHandler);
+	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -136,6 +138,7 @@ Action:ExplosivesMenuDraw(iClient)
 	CheckMenu(iClient);
 	
 	g_hMenu_XPM[iClient] = CreateMenu(ExplosivesMenuHandler);
+	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -162,6 +165,7 @@ Action:HealthMenuDraw(iClient)
 	CheckMenu(iClient);
 	
 	g_hMenu_XPM[iClient] = CreateMenu(HealthMenuHandler);
+	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -189,6 +193,7 @@ Action:BoostMenuDraw(iClient)
 	CheckMenu(iClient);
 	
 	g_hMenu_XPM[iClient] = CreateMenu(BoostMenuHandler);
+	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -214,6 +219,7 @@ Action:CleanMenuDraw(iClient)
 	CheckMenu(iClient);
 	
 	g_hMenu_XPM[iClient] = CreateMenu(CleanMenuHandler);
+	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -238,6 +244,7 @@ Action:SMGMenuDraw(iClient)
 	CheckMenu(iClient);
 	
 	g_hMenu_XPM[iClient] = CreateMenu(SMGMenuHandler);
+	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -264,6 +271,7 @@ Action:MGMenuDraw(iClient)
 	CheckMenu(iClient);
 	
 	g_hMenu_XPM[iClient] = CreateMenu(MGMenuHandler);
+	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -291,6 +299,7 @@ Action:ShotgunMenuDraw(iClient)
 	CheckMenu(iClient);
 	
 	g_hMenu_XPM[iClient] = CreateMenu(ShotgunMenuHandler);
+	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -318,6 +327,7 @@ Action:SniperMenuDraw(iClient)
 	CheckMenu(iClient);
 	
 	g_hMenu_XPM[iClient] = CreateMenu(SniperMenuHandler);
+	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -345,6 +355,7 @@ Action:SpecialMenuDraw(iClient)
 	CheckMenu(iClient);
 	
 	g_hMenu_XPM[iClient] = CreateMenu(SpecialMenuHandler);
+	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -370,6 +381,7 @@ Action:CrushingMeleeMenuDraw(iClient)
 	CheckMenu(iClient);
 	
 	g_hMenu_XPM[iClient] = CreateMenu(CrushingMeleeMenuHandler);
+	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
@@ -401,6 +413,7 @@ Action:SidearmMenuDraw(iClient)
 	CheckMenu(iClient);
 	
 	g_hMenu_XPM[iClient] = CreateMenu(SidearmMenuHandler);
+	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -427,6 +440,7 @@ Action:SlashingMeleeMenuDraw(iClient)
 	CheckMenu(iClient);
 	
 	g_hMenu_XPM[iClient] = CreateMenu(SlashingMeleeMenuHandler);
+	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -440,9 +454,10 @@ Action:SlashingMeleeMenuDraw(iClient)
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Crowbar (30 XP)");
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Katana (30 XP)");
 	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Machete (30 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Combat Knife (50 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Chainsaw (250 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Back");
+	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Pitch Fork (30 XP)");
+	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Combat Knife (50 XP)");
+	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Chainsaw (250 XP)");
+	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Back");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -935,7 +950,7 @@ CrushingMeleeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			}
 			case 4: //Golf Club
 			{
-				g_iClientSecondarySlotID[iClient] = 16;
+				g_iClientSecondarySlotID[iClient] = 15;
 				LoadoutMenuDraw(iClient);
 			}
 			// case 5: //Riot Shield
@@ -983,17 +998,22 @@ SlashingMeleeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 				g_iClientSecondarySlotID[iClient] = 10;
 				LoadoutMenuDraw(iClient);
 			}
-			case 4: //Combat Knife
+			case 4: //Pitch Fork
+			{
+				g_iClientSecondarySlotID[iClient] = 16;
+				LoadoutMenuDraw(iClient);
+			}
+			case 5: //Combat Knife
 			{
 				g_iClientSecondarySlotID[iClient] = 14;
 				LoadoutMenuDraw(iClient);
 			}
-			case 5: //Chainsaw
+			case 6: //Chainsaw
 			{
 				g_iClientSecondarySlotID[iClient] = 13;
 				LoadoutMenuDraw(iClient);
 			}
-			case 6: //Back
+			case 7: //Back
 			{
 				SecondaryMenuDraw(iClient);
 			}
@@ -1181,6 +1201,11 @@ GetWeaponNames(iClient)
 		case 15: //Golf Club
 		{
 			g_strClientSecondarySlot = "Golf Club (30 XP)";
+			g_iClientSecondarySlotCost[iClient] = 30;
+		}
+		case 16: //Pitch Fork
+		{
+			g_strClientSecondarySlot = "Pitch Fork (30 XP)";
 			g_iClientSecondarySlotCost[iClient] = 30;
 		}
 	}
@@ -1619,6 +1644,16 @@ SpawnWeapons(iClient)
 			}
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Golf Club");
+		}
+		case 16: //Pitch Fork
+		{
+			if((g_iClientXP[iClient]-30) >= g_iClientPreviousLevelXPAmount[iClient])
+			{
+				g_iClientXP[iClient]-=30;
+				RunCheatCommand(iClient, "give", "give pitchfork");
+			}
+			else
+				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Pitch Fork");
 		}
 	}
 	switch(g_iClientExplosiveSlotID[iClient])

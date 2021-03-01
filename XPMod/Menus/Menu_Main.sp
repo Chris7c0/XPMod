@@ -327,8 +327,8 @@ TopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			}
 			case 7: //Admin menu
 			{
-				if (GetClientAdminLevel(iClient) > 0)
-					AdminMenuDraw(iClient);
+				// if (GetClientAdminLevel(iClient) > 0)
+				// 	AdminMenuDraw(iClient);
 			}
 		}
 	}
