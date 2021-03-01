@@ -16,12 +16,17 @@ SetupXPMEvents()
 	//Map Events
 	HookEvent("round_start", Event_RoundStart, EventHookMode_Post);
 	HookEvent("round_end", Event_RoundEnd, EventHookMode_Pre);
+
+	//Pause game
+	AddCommandListener(CommandListener_Pause,	"pause");
+	AddCommandListener(CommandListener_Setpause,"setpause");
+	AddCommandListener(CommandListener_Unpause,	"unpause");
 	
 	//Player Events
 	HookEvent("player_connect_full", Event_PlayerConnect);
 	HookEvent("player_disconnect", Event_PlayerDisconnect);
 	HookEvent("player_team", Event_PlayerChangeTeam);
-	AddCommandListener(JoinTeamCmd, "jointeam"); // Specifically for interrupting M button
+	AddCommandListener(CommandListener_JoinTeam, "jointeam"); // Specifically for interrupting M button
 	HookEvent("player_spawn", Event_PlayerSpawn);
 	HookEvent("player_death", Event_PlayerDeath);
 	HookEvent("player_hurt", Event_PlayerHurt);
@@ -583,6 +588,24 @@ Action:Event_RoundEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast
 	return Plugin_Continue;
 }
 
+public Action:CommandListener_Pause(client, const String:command[], argc) {
+	return Plugin_Handled; 
+}
+
+public Action:CommandListener_Setpause(client, const String:command[], argc) {
+	if (g_bGamePaused)
+		return Plugin_Continue;
+	
+	return Plugin_Handled;
+}
+
+public Action:CommandListener_Unpause(client, const String:command[], argc) {
+	if (g_bGamePaused == false)
+		return Plugin_Continue;
+	
+	return Plugin_Handled;
+}
+
 Event_PlayerJump(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
@@ -612,7 +635,7 @@ Event_PlayerJump(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 	return;
 }
 
-Action:JoinTeamCmd(iClient, const String:command[], argc)
+Action:CommandListener_JoinTeam(iClient, const String:command[], argc)
 {
 	// This is specifically for preventing user from changing team using M button on cool down
 	if (g_bPlayerInTeamChangeCoolDown[iClient] == true)
@@ -727,13 +750,35 @@ SetupUnfreezeGameTimer(Float:unfreezeWaitTime)
 	}
 }
 
+public OnClientPutInServer(iClient)
+{
+	if (g_bGamePaused && IsFakeClient(iClient) == false)
+	{
+		UnpauseGame(iClient);
+		CreateTimer(1.0, TimerPauseGame, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	}
+}
+
+// public OnClientConnected(iClient)
+// {
+// 	if (g_bGamePaused && IsFakeClient(iClient) == false)
+// 	{
+// 		UnpauseGame(iClient);
+// 		CreateTimer(1.0, TimerPauseGame, iClient, TIMER_FLAG_NO_MAPCHANGE);
+// 	}
+// }
+
+// public OnClientDisconnect(iClient)
+// {
+
+// }
+
 Action:Event_PlayerConnect(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
-	if(iClient==0)
+	if(RunClientChecks(iClient) == false)
 		return Plugin_Continue;
-	if(!IsClientInGame(iClient))
-		return Plugin_Continue;
+
 	if(IsFakeClient(iClient)==true)
 	{
 		// PrintToChatAll("FAKE CLIENT: %i: %N", iClient, iClient);

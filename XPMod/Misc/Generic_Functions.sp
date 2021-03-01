@@ -44,6 +44,20 @@ SuppressNeverUsedWarning(any:var1=0, any:var2=0, any:var3=0, any:var4=0, any:var
 	if(ignore) PrintToServer("THIS IS NEVER GOING TO BE RAN",var1, var2, var3, var4, var5, var6, var7, var8, var9, var10);
 }
 
+int GetClientAdminLevel(iClient)
+{
+	if (CheckCommandAccess(iClient, "", ADMFLAG_BAN, true))
+		return ADMFLAG_BAN;
+	if (CheckCommandAccess(iClient, "", ADMFLAG_KICK, true))
+		return ADMFLAG_KICK;
+	if (CheckCommandAccess(iClient, "", ADMFLAG_SLAY, true))
+		return ADMFLAG_SLAY;
+	if (CheckCommandAccess(iClient, "", ADMFLAG_GENERIC, true))
+		return ADMFLAG_GENERIC;
+
+	return -1;
+}
+
 FindGameMode()
 {
 	decl String:g_strGameMode[20];

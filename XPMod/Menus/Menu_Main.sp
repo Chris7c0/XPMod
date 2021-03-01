@@ -132,13 +132,16 @@ Action:TopMenuDraw(iClient)
 	
 	if(g_bTalentsConfirmed[iClient] == true)
 	{
-		AddMenuItem(g_hMenu_XPM[iClient], "option4", "Help & How-To");
+		AddMenuItem(g_hMenu_XPM[iClient], "option4", "Help & How-To\n ");
 		AddMenuItem(g_hMenu_XPM[iClient], "option5", "", ITEMDRAW_NOTEXT);
 		AddMenuItem(g_hMenu_XPM[iClient], "option6", "", ITEMDRAW_NOTEXT);
 		AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
-		AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
-		AddMenuItem(g_hMenu_XPM[iClient], "option9", "", ITEMDRAW_NOTEXT);
+		if (GetClientAdminLevel(iClient) > 0)
+			AddMenuItem(g_hMenu_XPM[iClient], "option8", "Admin Menu");
+		else
+			AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
 		
+		AddMenuItem(g_hMenu_XPM[iClient], "option9", "", ITEMDRAW_NOTEXT);
 		AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit the Menu\n=========================\n \n \n \n \n \n ");
 	}
 	else
@@ -147,9 +150,11 @@ Action:TopMenuDraw(iClient)
 		AddMenuItem(g_hMenu_XPM[iClient], "option5", "* Confirm Characters *\n ");
 		AddMenuItem(g_hMenu_XPM[iClient], "option6", "", ITEMDRAW_NOTEXT);
 		AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
-		AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
+		if (GetClientAdminLevel(iClient) > 0)
+			AddMenuItem(g_hMenu_XPM[iClient], "option8", "Admin Menu");
+		else
+			AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
 		AddMenuItem(g_hMenu_XPM[iClient], "option9", "", ITEMDRAW_NOTEXT);
-		
 		AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit the Menu\n=========================\n \n \n \n \n \n \n \n \n ");
 	}
 	
@@ -319,6 +324,11 @@ TopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			case 4: //Confirm Talents
 			{
 				DrawConfirmationMenuToClient(iClient);
+			}
+			case 7: //Admin menu
+			{
+				if (GetClientAdminLevel(iClient) > 0)
+					AdminMenuDraw(iClient);
 			}
 		}
 	}

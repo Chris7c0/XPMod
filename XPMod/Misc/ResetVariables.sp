@@ -186,6 +186,7 @@ ResetVariablesForMap(iClient)
 
 ResetAllVariables(iClient)
 {
+	g_iBanDurationInMinutes[iClient] = 0;
 	g_bHunterGrappled[iClient] = false;
 	g_bChargerGrappled[iClient] = false;
 	g_bSmokerGrappled[iClient] = false;

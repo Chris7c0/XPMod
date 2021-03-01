@@ -228,6 +228,12 @@ new bool:g_bEndOfRound = false;
 new bool:g_bPlayerInTeamChangeCoolDown[MAXPLAYERS + 1];
 new bool:g_bClientSpectating[MAXPLAYERS + 1] = false;
 
+// Ban from XPMod servers duration
+new g_iBanDurationInMinutes[MAXPLAYERS + 1];
+
+// Game Pausing by admins
+bool g_bGamePaused = false;
+
 // Game Freezing Variables
 new bool:g_bGameFrozen = false;
 new bool:g_bPlayerPressedButtonThisRound = false;   // This is used to set thte countdown timer, it wont start till  someone presses a button

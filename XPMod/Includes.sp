@@ -12,6 +12,7 @@
 //Remove Testing before release                       /////////////////////////////////////////////////////////////////////////
 #include "XPMod/Misc/Testing.sp"
 // Misc
+#include "XPMod/Misc/Admin_Commands.sp"
 #include "XPMod/Misc/Generic_Functions.sp"
 #include "XPMod/Misc/Setup.sp"
 #include "XPMod/Misc/ResetVariables.sp"
@@ -32,6 +33,7 @@
 #include "XPMod/XP/XP_Events.sp"
 //Menu Navigation Files
 #include "XPMod/Menus/Menu_Main.sp"
+#include "XPMod/Menus/Menu_Admin.sp"
 #include "XPMod/Menus/Menu_NewUser.sp"
 #include "XPMod/Menus/Menu_Confirm.sp"
 #include "XPMod/Menus/Menu_Loadouts.sp"
