@@ -136,13 +136,15 @@ Action:TopMenuDraw(iClient)
 		AddMenuItem(g_hMenu_XPM[iClient], "option5", "", ITEMDRAW_NOTEXT);
 		AddMenuItem(g_hMenu_XPM[iClient], "option6", "", ITEMDRAW_NOTEXT);
 		AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
-		if (GetClientAdminLevel(iClient) > 0)
+		if (GetClientAdminLevel(iClient) > 0 && iClient == -99)
 			AddMenuItem(g_hMenu_XPM[iClient], "option8", "Admin Menu");
 		else
 			AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
 		
 		AddMenuItem(g_hMenu_XPM[iClient], "option9", "", ITEMDRAW_NOTEXT);
-		AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit the Menu\n=========================\n \n \n \n \n \n ");
+		AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit the Menu\
+		\n=========================\
+		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	}
 	else
 	{
@@ -150,12 +152,14 @@ Action:TopMenuDraw(iClient)
 		AddMenuItem(g_hMenu_XPM[iClient], "option5", "* Confirm Characters *\n ");
 		AddMenuItem(g_hMenu_XPM[iClient], "option6", "", ITEMDRAW_NOTEXT);
 		AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
-		if (GetClientAdminLevel(iClient) > 0)
+		if (GetClientAdminLevel(iClient) > 0 && iClient == -99)
 			AddMenuItem(g_hMenu_XPM[iClient], "option8", "Admin Menu");
 		else
 			AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
 		AddMenuItem(g_hMenu_XPM[iClient], "option9", "", ITEMDRAW_NOTEXT);
-		AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit the Menu\n=========================\n \n \n \n \n \n \n \n \n ");
+		AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit the Menu\
+		\n=========================\
+		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n");
 	}
 	
 
@@ -172,10 +176,20 @@ Action:TopChooseCharactersMenuDraw(iClient)
 	CheckMenu(iClient);
 	
 	g_hMenu_XPM[iClient] = CreateMenu(TopChooseCharactersMenuHandler);
-	SetMenuTitle(g_hMenu_XPM[iClient], "Choose A Team\n=====================\n ");
+	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+
+	SetMenuTitle(g_hMenu_XPM[iClient], "Choose A Team\n=====================\n");
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Survivors");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Infected");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Main Menu\n \nNote: Once you are\nconfirmed, you must\nwait until the next\nround to change any\nof your characters.\n=====================\n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Infected\n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option3", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option4", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option5", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Main Menu\n \nNote: Once you are\nconfirmed, you must\nwait until the next\nround to change any\nof your characters.\
+	\n=====================\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 
@@ -189,14 +203,20 @@ Action:ExtrasMenuDraw(iClient)
 	CheckMenu(iClient);
 	
 	g_hMenu_XPM[iClient] = CreateMenu(ExtrasMenuHandler);
-	SetMenuTitle(g_hMenu_XPM[iClient], "XPMod Extras");
+	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+
+	SetMenuTitle(g_hMenu_XPM[iClient], "XPMod Extras\n=====================\n");
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Change Team");
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Player Stats");
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Options");
 	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Get XPMod Addon");
 	AddMenuItem(g_hMenu_XPM[iClient], "option5", "XPMod Website");
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Ban Me");
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Main Menu");
+	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Ban Me\n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Main Menu\
+	\n=====================\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 
@@ -209,11 +229,20 @@ Action:ChooseTeamMenuDraw(iClient)
 	CheckMenu(iClient);
 	
 	g_hMenu_XPM[iClient] = CreateMenu(ChooseTeamMenuHandler);
-	SetMenuTitle(g_hMenu_XPM[iClient], "Choose A Team");
+	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+
+	SetMenuTitle(g_hMenu_XPM[iClient], "Choose A Team\n=====================\n");
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Survivors");
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Infected");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Spectators");
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Back");
+	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Spectators\n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option4", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option5", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back\
+	\n=====================\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 
@@ -226,7 +255,8 @@ Action:OptionMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(OptionMenuHandler);
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
-	SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod Options\n ");
+
+	SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod Options\n=	=	=	=	=	=	=	=	=\n");
 	
 	if(g_iXPDisplayMode[iClient]==0)
 		AddMenuItem(g_hMenu_XPM[iClient], "option1", "XP Display Mode: In Game\n       - Requires XPMod Addon\n ");
@@ -245,7 +275,14 @@ Action:OptionMenuDraw(iClient)
 	else
 		AddMenuItem(g_hMenu_XPM[iClient], "option3", "Turn VGUI Descriptions On\n       - Requires XPMod Addon\n ");
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Back\n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option4", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option5", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back\
+	\n=	=	=	=	=	=	=	=	=\n\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -270,7 +307,7 @@ TopChooseCharactersMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum
 			{
 				TopInfectedMenuDraw(iClient);
 			}
-			case 2: //Back
+			case 8: //Back
 			{
 				TopMenuDraw(iClient);
 			}
@@ -327,8 +364,8 @@ TopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			}
 			case 7: //Admin menu
 			{
-				// if (GetClientAdminLevel(iClient) > 0)
-				// 	AdminMenuDraw(iClient);
+				if (GetClientAdminLevel(iClient) > 0)
+					AdminMenuDraw(iClient);
 			}
 		}
 	}
@@ -346,6 +383,7 @@ ExtrasMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			}
 			case 1: //Player Stats
 			{
+				ExtrasMenuDraw(iClient);
 				ShowTeamStatsToPlayer(iClient, iClient);
 			}
 			case 2: //Options
@@ -364,7 +402,7 @@ ExtrasMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			{
 				BanMeMenuDraw(iClient);
 			}
-			case 6: //Back
+			case 8: //Back
 			{
 				TopMenuDraw(iClient);
 			}
@@ -473,7 +511,7 @@ ChooseTeamMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 				PrintToChatAll("\x03%N \x05moved to the \x04specators", iClient);
 				//ChooseTeamMenuDraw(iClient);
 			}
-			case 3: //Back
+			case 8: //Back
 			{
 				ExtrasMenuDraw(iClient);
 			}
@@ -502,7 +540,7 @@ OptionMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 				ToggleVGUIDesc(iClient);
 				OptionMenuDraw(iClient);
 			}
-			case 3: //Back
+			case 8: //Back
 			{
 				ExtrasMenuDraw(iClient);
 			}

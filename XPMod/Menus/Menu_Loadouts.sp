@@ -56,9 +56,28 @@ Action:LoadoutMenuDraw(iClient)
 	else
 		g_iClientUsableXP = g_iClientXP[iClient];
 	
-	new totalcostid = g_iClientTotalXPCost[iClient]; 
-	
-	SetMenuTitle(g_hMenu_XPM[iClient], "Usable XP: %d\n \n* You get equipment when you confirm *\n \nPrimary:			  %s\nSecondary:		 %s\nExplosive:			%s\nHealth/Ammo:	 %s\nHealth Boost:	  %s\nLaser Sight:		%s\n_	_	_	_	_	_	_	_	_	_	_	_\nTotal Cost Per Round:	%d\n ",g_iClientUsableXP, g_strClientPrimarySlot, g_strClientSecondarySlot, g_strClientExplosiveSlot, g_strClientHealthSlot, g_strClientBoostSlot, g_strClientLaserSlot, totalcostid);
+	SetMenuTitle(g_hMenu_XPM[iClient], 
+		"Usable XP: %d\
+		\n \
+		\n* You get equipment when you confirm *\
+		\n \
+		\nPrimary:			  %s\
+		\nSecondary:		 %s\
+		\nExplosive:			%s\
+		\nHealth/Ammo:	 %s\
+		\nHealth Boost:	  %s\
+		\nLaser Sight:		%s\
+		\n_	_	_	_	_	_	_	_	_	_	_	_\
+		\nCost Per Round:	%d\
+		\n ",
+		g_iClientUsableXP,
+		g_strClientPrimarySlot,
+		g_strClientSecondarySlot,
+		g_strClientExplosiveSlot,
+		g_strClientHealthSlot,
+		g_strClientBoostSlot,
+		g_strClientLaserSlot,
+		g_iClientTotalXPCost[iClient]);
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Primary Slot");
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Secondary Slot");
@@ -67,9 +86,10 @@ Action:LoadoutMenuDraw(iClient)
 	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Health Boost Slot");
 	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Laser Sight");
 	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Reset All");
-	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Change Your Survivor");
+	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Change Your Survivor\n ");
 	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Main Menu");
-	AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit\n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit\
+		\n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);

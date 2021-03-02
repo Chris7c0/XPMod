@@ -33,17 +33,10 @@ Action:ChooseTankMenuDraw(iClient)
 		\n [Press MELEE] Wing Dash\
 		\n \
 		\n=	=	=	=	=	=	=	=	=	=	=\
-		\n \n \n \n \n \n ",
+		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		RoundToNearest(TANK_HEALTH_VAMPIRIC * g_fTankStartingHealthMultiplier[iClient]) );
 	AddMenuItem(g_hMenu_XPM[iClient], "option4", strText);
 
-	// FormatEx(strText, sizeof(strText), "Fire Tank\n - 20%% - %d%% Faster (Pain = Speed)\n - %d Health\n - Fire Immunity\n - %d%% Chance To Ignite Victim\n - Fire Punch [Hold CROUCH]\n ", 20 + g_iClientLevel[iClient], (6000 + g_iClientLevel[iClient] * 100), g_iClientLevel[iClient]);
-	// AddMenuItem(g_hMenu_XPM[iClient], "option1", strText);
-	// FormatEx(strText, sizeof(strText), "Ice Tank\n - 18000 HP\n - Direct Fire Damage Hurts More\n - Fire Goes Out Quickly\n - %d%% Chance To Freeze Victim\n - Kiting Immunity\n - No Rock Cooldown\n - Rocks Freeze Victims\n - %d Health Regen. [Hold CROUCH]\n \n	*Movement Disrupts Charging*\n ", RoundToCeil(g_iClientLevel[iClient] / 5.0), (6000 + g_iClientLevel[iClient] * 400), 15 + g_iClientLevel[iClient], g_iClientLevel[iClient] * 200);
-	// AddMenuItem(g_hMenu_XPM[iClient], "option2", strText);
-	// FormatEx(strText, sizeof(strText), "NecroTanker\n - 2000 HP\n - Consume (Kill) Zombies for health\n - Holding CROUCH summons Infected\n - MELEE Survivors summons powerful Infected\n - Throw Boomers instead of rocks\n=	=	=	=	=	=	=	=	=	=	=");
-	// AddMenuItem(g_hMenu_XPM[iClient], "option3", strText);
-	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 
@@ -61,9 +54,9 @@ Action:TankTopMenuDraw(iClient)
 	
 	decl String:title[256];
 	FormatEx(title, sizeof(title), "Level %d	XP: %d/%d\
-									\n==============================\
+									\n==========================\
 									\nTanks:\
-									\n==============================\n \
+									\n==========================\n \
 									\nSelect a Tank to learn about\
 									\ntheir abilities.\n \n", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], title);
@@ -72,8 +65,13 @@ Action:TankTopMenuDraw(iClient)
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Ice Tank");
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "NecroTanker");
 	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Vampiric Tank\n ");
-	//AddMenuItem(g_hMenu_XPM[iClient], "option5", "Detailed Descriptions\n ");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Back\n==============================\n \n \n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option5", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back\
+		\n==========================\
+		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -106,7 +104,7 @@ TankTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			case 1:	TankMenuDrawIce(iClient);
 			case 2:	TankMenuDrawNecroTanker(iClient);
 			case 3:	TankMenuDrawVampiric(iClient);
-			case 4:	TopInfectedMenuDraw(iClient);
+			case 8:	TopInfectedMenuDraw(iClient);
 		}
 	}
 }

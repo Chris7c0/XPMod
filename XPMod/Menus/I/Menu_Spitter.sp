@@ -18,7 +18,13 @@ Action:SpitterTopMenuDraw(iClient)
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Hallucinogenic Nightmare\n ");
 	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Choose The Spitter\n ");
 	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Open In Website\n ");
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Back\n==============================\n \n \n \n \n ");
+	
+	AddMenuItem(g_hMenu_XPM[iClient], "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back\
+		\n==============================\
+		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -228,7 +234,7 @@ SpitterTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 				OpenMOTDPanel(iClient, "", "http://xpmod.net/talents/infected/ceda%20files/spitter/xpmod_ig_talents_infected_spitter.html", MOTDPANEL_TYPE_URL);
 				SpitterTopMenuDraw(iClient);
 			}
-			case 5: //Back
+			case 8: //Back
 			{
 				TopInfectedMenuDraw(iClient);
 			}

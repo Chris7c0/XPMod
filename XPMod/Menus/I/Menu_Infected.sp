@@ -26,7 +26,9 @@ Action:TopInfectedMenuDraw(iClient)
 		AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back");
-	AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit the Menu\n==========================\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit the Menu\
+		\n==========================\
+		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 	return Plugin_Handled;
