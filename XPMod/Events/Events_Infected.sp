@@ -744,6 +744,30 @@ Action:Event_TankSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 	return Plugin_Continue;
 }
 
+Action:Event_TankFrustrated(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+{	
+	g_iTankCounter--;
+
+	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+
+	if(RunClientChecks(iClient) == false || IsPlayerAlive(iClient) == false)
+		return Plugin_Continue;
+
+	g_iInfectedCharacter[iClient] = UNKNOWN_INFECTED;
+
+	new iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
+	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
+	g_fFrustratedTankTransferHealthPercentage = iCurrentHealth / float(iMaxHealth);
+	
+	//PrintToChatAll("%N ResetAllTankVariables m_iHealth = %i m_iMaxHealth = %i ", iClient, iCurrentHealth, iMaxHealth);
+	PrintToChatAll("\x03[XPMod] \x04%N's tank has been frustrated. Transfering tank with %3f health.", iClient, g_fFrustratedTankTransferHealthPercentage);
+
+	//Set the current health to max health so that the new tank player can get this full percentage
+	SetEntProp(iClient, Prop_Data, "m_iHealth", iMaxHealth);
+
+	return Plugin_Continue;
+}
+
 Action:Event_ZombieIgnited(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));

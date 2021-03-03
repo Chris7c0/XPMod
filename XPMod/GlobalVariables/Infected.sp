@@ -188,6 +188,7 @@ new bool:g_bCanChargerEarthquake[MAXPLAYERS +1];
 
 // Tank
 new g_iTankCounter;
+float g_fFrustratedTankTransferHealthPercentage;
 // The calculated amount of starting HP multiplier for scaling to skill level of survivors
 new Float:g_fTankStartingHealthMultiplier[MAXPLAYERS + 1];
 #define TANK_STARTING_HEALTH_MULTIPLIER_MIN                 0.5

@@ -58,6 +58,7 @@ SetupXPMEvents()
 	HookEvent("infected_decapitated", Event_InfectedDecap);
 	HookEvent("infected_hurt", Event_InfectedHurt);
 	HookEvent("tank_spawn", Event_TankSpawn);
+	HookEvent("tank_frustrated", Event_TankFrustrated);
 	HookEvent("witch_spawn", Event_WitchSpawn);
 	HookEvent("witch_killed", Event_WitchKilled);
 	HookEvent("zombie_ignited", Event_ZombieIgnited);
@@ -509,7 +510,8 @@ Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDontBroadca
 		g_iPoopBombOwnerID[i] = 0;
 	
 	//Reset CVars and XPMod Variables for the round
-	SetConVarInt(FindConVar("z_frustration"), 0);
+	//SetConVarInt(FindConVar("z_frustration"), 0);
+	SetConVarInt(FindConVar("z_frustration_lifetime"), 60);
 	SetConVarInt(FindConVar("z_common_limit"), 30);
 	SetConVarInt(FindConVar("sv_disable_glow_survivors"), 0);
 	SetConVarInt(FindConVar("z_claw_hit_pitch_max"), 20);

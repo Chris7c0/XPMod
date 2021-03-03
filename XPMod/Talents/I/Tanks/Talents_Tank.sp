@@ -161,24 +161,8 @@ ResetAllTankVariables(iClient)
 		GetEntProp(iClient, Prop_Send, "m_zombieClass") != TANK)
 		return;
 
-	// Clamp Player Max Health to ConVar Setting of Tank Max health
-	// Note: Valve multiplies the value with 1.5 so it becomes 4000 x 1.5 = 6000 hp.
-	new iMaxHealthConVarSetting = RoundToCeil(GetConVarInt(FindConVar("z_tank_health")) * 1.5);
-	// Scale the max health to the survivors levels or for XPMod spawn
-	iMaxHealthConVarSetting = RoundToNearest(iMaxHealthConVarSetting * g_fTankStartingHealthMultiplier[iClient]);
-	//PrintToChatAll("iMaxHealthConVarSetting: %i", iMaxHealthConVarSetting);
-	new iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
-	// PrintToChatAll("%N ResetAllTankVariables m_iMaxHealth = %i iMaxHealthConVarSetting = %i", iClient, iMaxHealth, iMaxHealthConVarSetting);
-	if (iMaxHealth > iMaxHealthConVarSetting)
-		SetEntProp(iClient, Prop_Data, "m_iMaxHealth", iMaxHealthConVarSetting);
-	// Clamp Player Health to Max Health
-	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
-	// iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
-	// PrintToChatAll("%N ResetAllTankVariables m_iHealth = %i m_iMaxHealth = %i iMaxHealthConVarSetting = %i", iClient, iCurrentHealth, iMaxHealth, iMaxHealthConVarSetting);
-	if (iCurrentHealth > iMaxHealthConVarSetting)
-		SetEntProp(iClient, Prop_Data, "m_iHealth", iMaxHealthConVarSetting);
-	// PrintToChatAll("%N ResetAllTankVariables m_iHealth = %i m_iMaxHealth = %i iMaxHealthConVarSetting = %i", iClient, iCurrentHealth, iMaxHealth, iMaxHealthConVarSetting);
-
+	ResetTankHealth(iClient);
+	
 	// Reset their cooldown
 	SetSIAbilityCooldown(iClient);
 
@@ -189,6 +173,31 @@ ResetAllTankVariables(iClient)
 		StopHudOverlayColor(iClient);
 
 	// PrintToChatAll("%N ResetAllTankVariables Ended", iClient);
+}
+
+ResetTankHealth(int iClient)
+{
+	// Clamp Player Max Health to ConVar Setting of Tank Max health
+	// Note: Valve multiplies the value with 1.5 so it becomes 4000 x 1.5 = 6000 hp.
+	new iMaxHealthConVarSetting = RoundToCeil(GetConVarInt(FindConVar("z_tank_health")) * 1.5);
+	// Scale the max health to the survivors levels or for XPMod spawn
+	iMaxHealthConVarSetting = RoundToNearest(iMaxHealthConVarSetting * g_fTankStartingHealthMultiplier[iClient]);
+	//PrintToChatAll("iMaxHealthConVarSetting: %i", iMaxHealthConVarSetting);
+	new iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
+	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
+	// PrintToChatAll("%N ResetAllTankVariables m_iHealth = %i m_iMaxHealth = %i iMaxHealthConVarSetting = %i", iClient, iCurrentHealth, iMaxHealth, iMaxHealthConVarSetting);
+	
+	// Clamp Player MaxHealth to ConVar Health
+	if (iMaxHealth > iMaxHealthConVarSetting)
+		SetEntProp(iClient, Prop_Data, "m_iMaxHealth", iMaxHealthConVarSetting);
+
+	// iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
+	// PrintToChatAll("%N ResetAllTankVariables m_iHealth = %i m_iMaxHealth = %i iMaxHealthConVarSetting = %i", iClient, iCurrentHealth, iMaxHealth, iMaxHealthConVarSetting);
+
+	// Clamp Player Health to Max Health
+	if (iCurrentHealth > iMaxHealthConVarSetting)
+		SetEntProp(iClient, Prop_Data, "m_iHealth", iMaxHealthConVarSetting);
+	// PrintToChatAll("%N ResetAllTankVariables m_iHealth = %i m_iMaxHealth = %i iMaxHealthConVarSetting = %i", iClient, iCurrentHealth, iMaxHealth, iMaxHealthConVarSetting);
 }
 
 float CalculateTankHealthPercentageMultiplier()

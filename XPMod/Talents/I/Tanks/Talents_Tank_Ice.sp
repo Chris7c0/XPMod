@@ -32,6 +32,12 @@ LoadIceTankTalents(iClient)
 	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
 	SetEntProp(iClient, Prop_Data,"m_iMaxHealth", RoundToNearest(TANK_HEALTH_ICE * g_fTankStartingHealthMultiplier[iClient]));
 	new iNewHealth = iCurrentHealth + RoundToNearest(TANK_HEALTH_ICE * g_fTankStartingHealthMultiplier[iClient]) - iCurrentMaxHealth;
+	// If this was a transfered frustrated tank, then set the health to this percentage
+	if (g_fFrustratedTankTransferHealthPercentage > 0.0)
+	{
+		iNewHealth = RoundToNearest(iNewHealth * g_fFrustratedTankTransferHealthPercentage);
+		g_fFrustratedTankTransferHealthPercentage = 0.0;
+	}
 	SetEntProp(iClient, Prop_Data,"m_iHealth", iNewHealth > 100 ? iNewHealth : 100);
 
 	// Change Tank's Skin Color

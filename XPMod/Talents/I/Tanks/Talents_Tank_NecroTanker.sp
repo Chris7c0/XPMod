@@ -23,20 +23,26 @@ LoadNecroTankerTalents(iClient)
 	// Get Current Health/MaxHealth first, to add it back later
 	new iCurrentMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
 	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
+	decl iNewHealth;
 	// If its a bot, then give max health starting
 	if (IsFakeClient(iClient))
 	{
 		SetEntProp(iClient, Prop_Data,"m_iMaxHealth", RoundToNearest(NECROTANKER_MAX_HEALTH * g_fTankStartingHealthMultiplier[iClient]));
-		new iNewHealth = iCurrentHealth + RoundToNearest(NECROTANKER_MAX_HEALTH * g_fTankStartingHealthMultiplier[iClient]) - iCurrentMaxHealth
-		SetEntProp(iClient, Prop_Data,"m_iHealth", iNewHealth > 100 ? iNewHealth : 100);
+		iNewHealth = iCurrentHealth + RoundToNearest(NECROTANKER_MAX_HEALTH * g_fTankStartingHealthMultiplier[iClient]) - iCurrentMaxHealth
 	}
 	// If its a human player, make them work for their health
 	else
 	{
 		SetEntProp(iClient, Prop_Data,"m_iMaxHealth", RoundToNearest(TANK_HEALTH_NECROTANKER * g_fTankStartingHealthMultiplier[iClient]));
-		new iNewHealth = iCurrentHealth + RoundToNearest(TANK_HEALTH_NECROTANKER * g_fTankStartingHealthMultiplier[iClient]) - iCurrentMaxHealth
-		SetEntProp(iClient, Prop_Data,"m_iHealth", iNewHealth > 100 ? iNewHealth : 100);
+		iNewHealth = iCurrentHealth + RoundToNearest(TANK_HEALTH_NECROTANKER * g_fTankStartingHealthMultiplier[iClient]) - iCurrentMaxHealth
 	}
+	// If this was a transfered frustrated tank, then set the health to this percentage
+	if (g_fFrustratedTankTransferHealthPercentage > 0.0)
+	{
+		iNewHealth = RoundToNearest(iNewHealth * g_fFrustratedTankTransferHealthPercentage);
+		g_fFrustratedTankTransferHealthPercentage = 0.0;
+	}
+	SetEntProp(iClient, Prop_Data,"m_iHealth", iNewHealth > 100 ? iNewHealth : 100);
 
 	//Stop Kiting (Bullet hits slowing tank down)
 	SetConVarInt(FindConVar("z_tank_damage_slow_min_range"), 0);
