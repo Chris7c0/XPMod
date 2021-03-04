@@ -10,7 +10,7 @@ Action:HunterTopMenuDraw(iClient)
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	
 	decl String:title[256];
-	FormatEx(title, sizeof(title), "Level %d	XP: %d/%d\n==========================\nHunter Talents:\n==========================\n \nPredatorial Evolution: Level %d\nBlood Lust: Level %d\nKill-meleon: Level %d\n \n", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iPredatorialLevel[iClient], g_iBloodlustLevel[iClient], g_iKillmeleonLevel[iClient]);
+	FormatEx(title, sizeof(title), "\n \nLevel %d	XP: %d/%d\n==========================\nHunter Talents:\n==========================\n \nPredatorial Evolution: Level %d\nBlood Lust: Level %d\nKill-meleon: Level %d\n \n", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iPredatorialLevel[iClient], g_iBloodlustLevel[iClient], g_iKillmeleonLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], title);
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Predatorial Evolution");
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Blood Lust");
@@ -25,7 +25,7 @@ Action:HunterTopMenuDraw(iClient)
 	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back\
 		\n==========================\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);

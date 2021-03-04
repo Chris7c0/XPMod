@@ -161,7 +161,7 @@ Action:ConfirmationMessageMenuDraw(iClient)
 			}
 			
 			decl String:text[300];
-			FormatEx(text, sizeof(text), "===	===	===	===	===	===	===	===	===	===\n \n	Survivor:			   %s\n	Equipment Cost:	 %d XP\n	Infected:				%s	%s	%s\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \nConfirm your Characters and Equipment for this round?     \n ", surClass, g_iClientTotalXPCost[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+			FormatEx(text, sizeof(text), "\n \n===	===	===	===	===	===	===	===	===	===\n \n	Survivor:			   %s\n	Equipment Cost:	 %d XP\n	Infected:				%s	%s	%s\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \nConfirm your Characters and Equipment for this round?     \n ", surClass, g_iClientTotalXPCost[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 			SetMenuTitle(g_hMenu_XPM[iClient], text);
 			
 			AddMenuItem(g_hMenu_XPM[iClient], "option1", " Yes, confirm.");
@@ -177,18 +177,18 @@ Action:ConfirmationMessageMenuDraw(iClient)
 			{
 				switch( (g_iAutoSetCountDown[iClient] % 3) )
 				{
-					case 0: FormatEx(text, sizeof(text), " No, not yet.\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n		   ->           Closing in %d Seconds           <-\n \n===	===	===	===	===	===	===	===	===	===\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ", g_iAutoSetCountDown[iClient]);
-					case 1: FormatEx(text, sizeof(text), " No, not yet.\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n		            ->  Closing in %d Seconds  <-\n \n===	===	===	===	===	===	===	===	===	===\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ", g_iAutoSetCountDown[iClient]);
-					case 2: FormatEx(text, sizeof(text), " No, not yet.\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n		        ->      Closing in %d Seconds      <-\n \n===	===	===	===	===	===	===	===	===	===\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ", g_iAutoSetCountDown[iClient]);
+					case 0: FormatEx(text, sizeof(text), " No, not yet.\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n		   ->           Closing in %d Seconds           <-\n \n===	===	===	===	===	===	===	===	===	===\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ", g_iAutoSetCountDown[iClient]);
+					case 1: FormatEx(text, sizeof(text), " No, not yet.\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n		            ->  Closing in %d Seconds  <-\n \n===	===	===	===	===	===	===	===	===	===\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ", g_iAutoSetCountDown[iClient]);
+					case 2: FormatEx(text, sizeof(text), " No, not yet.\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n		        ->      Closing in %d Seconds      <-\n \n===	===	===	===	===	===	===	===	===	===\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ", g_iAutoSetCountDown[iClient]);
 				}
 			}
 			else
 			{
 				switch( (g_iAutoSetCountDown[iClient] % 3) )
 				{
-					case 0: FormatEx(text, sizeof(text), " No, not yet.\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n		   ->           Closing in  %d Seconds           <-\n \n===	===	===	===	===	===	===	===	===	===\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ", g_iAutoSetCountDown[iClient]);
-					case 1: FormatEx(text, sizeof(text), " No, not yet.\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n		            ->  Closing in  %d Seconds  <-\n \n===	===	===	===	===	===	===	===	===	===\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ", g_iAutoSetCountDown[iClient]);
-					case 2: FormatEx(text, sizeof(text), " No, not yet.\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n		        ->      Closing in  %d Seconds      <-\n \n===	===	===	===	===	===	===	===	===	===\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ", g_iAutoSetCountDown[iClient]);
+					case 0: FormatEx(text, sizeof(text), " No, not yet.\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n		   ->           Closing in  %d Seconds           <-\n \n===	===	===	===	===	===	===	===	===	===\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ", g_iAutoSetCountDown[iClient]);
+					case 1: FormatEx(text, sizeof(text), " No, not yet.\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n		            ->  Closing in  %d Seconds  <-\n \n===	===	===	===	===	===	===	===	===	===\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ", g_iAutoSetCountDown[iClient]);
+					case 2: FormatEx(text, sizeof(text), " No, not yet.\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n		        ->      Closing in  %d Seconds      <-\n \n===	===	===	===	===	===	===	===	===	===\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ", g_iAutoSetCountDown[iClient]);
 				}
 			}
 			

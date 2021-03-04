@@ -10,7 +10,7 @@ Action:JockeyTopMenuDraw(iClient)
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	
 	decl String:title[256];
-	FormatEx(title, sizeof(title), "Level %d	XP: %d/%d\n==========================\nJockey Talents:\n==========================\n \nMutated Tenacity: Level %d\nErratic Domination: Level %d\nUnfair Advantage: Level %d\n \n", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iMutatedLevel[iClient], g_iErraticLevel[iClient], g_iUnfairLevel[iClient]);
+	FormatEx(title, sizeof(title), "\n \nLevel %d	XP: %d/%d\n==========================\nJockey Talents:\n==========================\n \nMutated Tenacity: Level %d\nErratic Domination: Level %d\nUnfair Advantage: Level %d\n \n", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iMutatedLevel[iClient], g_iErraticLevel[iClient], g_iUnfairLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], title);
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Mutated Tenacity");
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Erratic Domination");
@@ -25,7 +25,7 @@ Action:JockeyTopMenuDraw(iClient)
 	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back\
 		\n==========================\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);

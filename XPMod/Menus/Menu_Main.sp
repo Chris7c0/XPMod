@@ -97,22 +97,23 @@ Action:TopMenuDraw(iClient)
 	g_hMenu_XPM[iClient] = CreateMenu(TopMenuHandler);
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	
+	// Title
 	if(g_iClientTeam[iClient] == TEAM_SURVIVORS)
 		switch(g_iChosenSurvivor[iClient])
 		{
-			case BILL: 		SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel  %d  Support\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-			case ROCHELLE:	SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel  %d  Ninja\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-			case COACH:		SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel  %d  Berserker\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-			case ELLIS:		SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel %d Weapon Expert\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-			case NICK:		SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel  %d  Gambler\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-			case LOUIS:		SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel  %d  Disruptor\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			case BILL: 		SetMenuTitle(g_hMenu_XPM[iClient], "\n \n		  XP Mod %s\n=========================\nLevel  %d  Support\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			case ROCHELLE:	SetMenuTitle(g_hMenu_XPM[iClient], "\n \n		  XP Mod %s\n=========================\nLevel  %d  Ninja\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			case COACH:		SetMenuTitle(g_hMenu_XPM[iClient], "\n \n		  XP Mod %s\n=========================\nLevel  %d  Berserker\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			case ELLIS:		SetMenuTitle(g_hMenu_XPM[iClient], "\n \n		  XP Mod %s\n=========================\nLevel %d Weapon Expert\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			case NICK:		SetMenuTitle(g_hMenu_XPM[iClient], "\n \n		  XP Mod %s\n=========================\nLevel  %d  Gambler\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			case LOUIS:		SetMenuTitle(g_hMenu_XPM[iClient], "\n \n		  XP Mod %s\n=========================\nLevel  %d  Disruptor\nXP:   %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 		}
 	else if(g_iClientTeam[iClient] == TEAM_INFECTED)
-		SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel  %d  Infected\nXP:   %d/%d\n \nClass 1) %s\nClass 2) %s\nClass 3) %s\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+		SetMenuTitle(g_hMenu_XPM[iClient], "\n \n		  XP Mod %s\n=========================\nLevel  %d  Infected\nXP:   %d/%d\n \nClass 1) %s\nClass 2) %s\nClass 3) %s\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	else
-		SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod %s\n=========================\nLevel %d\nXP:     %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+		SetMenuTitle(g_hMenu_XPM[iClient], "\n \n		  XP Mod %s\n=========================\nLevel %d\nXP:     %d/%d\n=========================", PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 	
-
+	// Option 1
 	if (g_bTalentsConfirmed[iClient] == true)
 	{
 		AddMenuItem(g_hMenu_XPM[iClient], "option1", "Learn About Characters");
@@ -127,41 +128,48 @@ Action:TopMenuDraw(iClient)
 			AddMenuItem(g_hMenu_XPM[iClient], "option1", "Change Your Characters");
 	}
 	
+	// Options 2 and 3
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Change Your Equipment");
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Extras");
-	
+
+	// Options 4 and 5
 	if(g_bTalentsConfirmed[iClient] == true)
 	{
-		AddMenuItem(g_hMenu_XPM[iClient], "option4", "Help & How-To\n ");
+		AddMenuItem(g_hMenu_XPM[iClient], "option4", "Help\n ");
 		AddMenuItem(g_hMenu_XPM[iClient], "option5", "", ITEMDRAW_NOTEXT);
-		AddMenuItem(g_hMenu_XPM[iClient], "option6", "", ITEMDRAW_NOTEXT);
-		AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
-		if (GetClientAdminLevel(iClient) > 0 && iClient == -99)
-			AddMenuItem(g_hMenu_XPM[iClient], "option8", "Admin Menu");
-		else
-			AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
-		
-		AddMenuItem(g_hMenu_XPM[iClient], "option9", "", ITEMDRAW_NOTEXT);
-		AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit the Menu\
-		\n=========================\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	}
 	else
 	{
 		AddMenuItem(g_hMenu_XPM[iClient], "option4", "Help\n \n   You need to Confirm\n   your Characters for\n  your abilities to work!");
 		AddMenuItem(g_hMenu_XPM[iClient], "option5", "* Confirm Characters *\n ");
-		AddMenuItem(g_hMenu_XPM[iClient], "option6", "", ITEMDRAW_NOTEXT);
-		AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
-		if (GetClientAdminLevel(iClient) > 0 && iClient == -99)
-			AddMenuItem(g_hMenu_XPM[iClient], "option8", "Admin Menu");
-		else
-			AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
-		AddMenuItem(g_hMenu_XPM[iClient], "option9", "", ITEMDRAW_NOTEXT);
-		AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit the Menu\
-		\n=========================\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n");
 	}
-	
+
+	// Options 6 and 7
+	AddMenuItem(g_hMenu_XPM[iClient], "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
+
+	// Option 8
+	if (GetClientAdminLevel(iClient) > 0 && iClient == -99)
+		AddMenuItem(g_hMenu_XPM[iClient], "option8", "Admin Menu");
+	else
+		AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
+
+	// Option 9
+	AddMenuItem(g_hMenu_XPM[iClient], "option9", "", ITEMDRAW_NOTEXT);
+
+	// Option 10 (This is the tricky bit, to get the menu at the right height)
+	// This must consider all the new lines for all the conditions above
+	// Start with a baseline of newlines, then add the others for each condition
+	decl String:strFinalOptionText[150];
+	Format(strFinalOptionText, sizeof(strFinalOptionText), 
+		"Exit the Menu\
+		\n=========================\
+		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \
+		%s%s%s",
+		g_iClientTeam[iClient] == TEAM_INFECTED ? "" : "\n \n \n \n ",
+		g_bTalentsConfirmed[iClient] == false ? "" : "\n \n \n \n \n ",
+		GetClientAdminLevel(iClient) > 0 && iClient == -99 ? "" : "\n ")
+	AddMenuItem(g_hMenu_XPM[iClient], "option10", strFinalOptionText);
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -170,7 +178,7 @@ Action:TopMenuDraw(iClient)
 }
 
 
-//Select Talents
+// Learn about characters
 Action:TopChooseCharactersMenuDraw(iClient)
 {
 	CheckMenu(iClient);
@@ -178,7 +186,11 @@ Action:TopChooseCharactersMenuDraw(iClient)
 	g_hMenu_XPM[iClient] = CreateMenu(TopChooseCharactersMenuHandler);
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 
-	SetMenuTitle(g_hMenu_XPM[iClient], "Choose A Team\n=====================\n");
+	SetMenuTitle(g_hMenu_XPM[iClient], 
+	"\n \n\
+	Choose A Team\
+	\n======================\n");
+	//\n▬▬▬▬▬▬▬▬▬▬▬\n");
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Survivors");
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Infected\n ");
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "", ITEMDRAW_NOTEXT);
@@ -188,8 +200,8 @@ Action:TopChooseCharactersMenuDraw(iClient)
 	AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Main Menu\n \nNote: Once you are\nconfirmed, you must\nwait until the next\nround to change any\nof your characters.\
-	\n=====================\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	\n======================\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 
@@ -205,7 +217,10 @@ Action:ExtrasMenuDraw(iClient)
 	g_hMenu_XPM[iClient] = CreateMenu(ExtrasMenuHandler);
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 
-	SetMenuTitle(g_hMenu_XPM[iClient], "XPMod Extras\n=====================\n");
+	SetMenuTitle(g_hMenu_XPM[iClient], 
+	"\n \n\
+	XPMod Extras\
+	\n======================\n");
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Change Team");
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Player Stats");
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Options");
@@ -215,8 +230,8 @@ Action:ExtrasMenuDraw(iClient)
 	AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Main Menu\
-	\n=====================\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	\n======================\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 
@@ -231,7 +246,7 @@ Action:ChooseTeamMenuDraw(iClient)
 	g_hMenu_XPM[iClient] = CreateMenu(ChooseTeamMenuHandler);
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 
-	SetMenuTitle(g_hMenu_XPM[iClient], "Choose A Team\n=====================\n");
+	SetMenuTitle(g_hMenu_XPM[iClient], "\n \nChoose A Team\n=====================\n");
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Survivors");
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Infected");
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Spectators\n ");
@@ -242,7 +257,7 @@ Action:ChooseTeamMenuDraw(iClient)
 	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back\
 	\n=====================\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 
@@ -256,7 +271,7 @@ Action:OptionMenuDraw(iClient)
 	g_hMenu_XPM[iClient] = CreateMenu(OptionMenuHandler);
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 
-	SetMenuTitle(g_hMenu_XPM[iClient], "		 XP Mod Options\n=	=	=	=	=	=	=	=	=\n");
+	SetMenuTitle(g_hMenu_XPM[iClient], "\n \n		 XP Mod Options\n=	=	=	=	=	=	=	=	=\n");
 	
 	if(g_iXPDisplayMode[iClient]==0)
 		AddMenuItem(g_hMenu_XPM[iClient], "option1", "XP Display Mode: In Game\n       - Requires XPMod Addon\n ");
@@ -282,7 +297,7 @@ Action:OptionMenuDraw(iClient)
 	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back\
 	\n=	=	=	=	=	=	=	=	=\n\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -383,7 +398,6 @@ ExtrasMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			}
 			case 1: //Player Stats
 			{
-				ExtrasMenuDraw(iClient);
 				ShowTeamStatsToPlayer(iClient, iClient);
 			}
 			case 2: //Options

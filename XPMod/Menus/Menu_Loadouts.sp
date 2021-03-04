@@ -57,7 +57,7 @@ Action:LoadoutMenuDraw(iClient)
 		g_iClientUsableXP = g_iClientXP[iClient];
 	
 	SetMenuTitle(g_hMenu_XPM[iClient], 
-		"Usable XP: %d\
+		"\n \nUsable XP: %d\
 		\n \
 		\n* You get equipment when you confirm *\
 		\n \
@@ -89,7 +89,7 @@ Action:LoadoutMenuDraw(iClient)
 	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Change Your Survivor\n ");
 	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Main Menu");
 	AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);

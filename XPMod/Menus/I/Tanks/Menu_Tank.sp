@@ -5,7 +5,7 @@ Action:ChooseTankMenuDraw(iClient)
 	CheckMenu(iClient);
 	
 	g_hMenu_XPM[iClient] = CreateMenu(ChooseTankMenuHandler);
-	SetMenuTitle(g_hMenu_XPM[iClient], "			Choose Your Tank\n=	=	=	=	=	=	=	=	=	=	=\n ");
+	SetMenuTitle(g_hMenu_XPM[iClient], "\n \n			Choose Your Tank\n=	=	=	=	=	=	=	=	=	=	=\n ");
 	
 	decl String:strText[512];
 	FormatEx(strText, sizeof(strText), "Fire Tank\
@@ -33,7 +33,7 @@ Action:ChooseTankMenuDraw(iClient)
 		\n [Press MELEE] Wing Dash\
 		\n \
 		\n=	=	=	=	=	=	=	=	=	=	=\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		RoundToNearest(TANK_HEALTH_VAMPIRIC * g_fTankStartingHealthMultiplier[iClient]) );
 	AddMenuItem(g_hMenu_XPM[iClient], "option4", strText);
 
@@ -53,7 +53,7 @@ Action:TankTopMenuDraw(iClient)
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	
 	decl String:title[256];
-	FormatEx(title, sizeof(title), "Level %d	XP: %d/%d\
+	FormatEx(title, sizeof(title), "\n \nLevel %d	XP: %d/%d\
 									\n==========================\
 									\nTanks:\
 									\n==========================\n \
@@ -71,7 +71,7 @@ Action:TankTopMenuDraw(iClient)
 	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back\
 		\n==========================\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);

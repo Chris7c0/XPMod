@@ -11,11 +11,11 @@ Action:CreateNewUserMenuDraw(iClient)
 		SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 		
 		decl String:text[500];
-		FormatEx(text, sizeof(text), " \n\
-			=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \
+		FormatEx(text, sizeof(text), 
+			"\n \n \
 			\n							Welcome to XPMod!\n \
 			\n\
-			XPMod adds RPG elements to Left4Dead2, enabling you \n\
+			XPMod adds RPG elements to Left4Dead2, enabling you\n\
 			to gain powerful abilities and equipment by earning XP.\n \
 			\n\
 			This is not a typical mod. It is complex with a lot of\n\
@@ -35,8 +35,7 @@ Action:CreateNewUserMenuDraw(iClient)
 		AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
 		AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
 		AddMenuItem(g_hMenu_XPM[iClient], "option9", " No, Ban Me.\n \n\
-			=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\
-			\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+			\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 		
 		SetMenuExitButton(g_hMenu_XPM[iClient], false);
 		DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -81,9 +80,9 @@ Action:BanMeMenuDraw(iClient)
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	
 	decl String:text[500];
-	FormatEx(text, sizeof(text), " \n\
+	FormatEx(text, sizeof(text), "\n \n\
 		=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n\
-		How long would you like to be banned from this server?\n ");
+		How long would you like to be banned from this server?   \n ");
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", " Nevermind!");
@@ -92,7 +91,7 @@ Action:BanMeMenuDraw(iClient)
 	AddMenuItem(g_hMenu_XPM[iClient], "option4", " 1 Week Ban");
 	AddMenuItem(g_hMenu_XPM[iClient], "option5", " 1 Month Ban\n \n\
 		=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -144,16 +143,16 @@ Action:BanConfirmMenu(int iClient, int iBanDurationInMinutes)
 	g_iBanDurationInMinutes[iClient] = iBanDurationInMinutes;
 	
 	decl String:text[500];
-	FormatEx(text, sizeof(text), " \n\
+	FormatEx(text, sizeof(text), "\n \n\
 		=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n\
-		You will be banned from all XPMod servers for %i days.   \n \n\
+		You will be banned from all XPMod servers for %i days.    \n \n\
 		Are you sure?\n ", (g_iBanDurationInMinutes[iClient] / 60 / 24) );
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", " Yes");
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", " No\n \n\
 		=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
