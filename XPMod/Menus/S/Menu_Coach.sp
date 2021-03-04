@@ -54,10 +54,28 @@ Action:BullMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(BullMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=\n \n			Bull Rush(Level %d):\n \nLevel 1:\n+15 max health per level\nOn CI headshot with a melee weapon:\n+5%% speed per level for 5 seconds\n \n [WALK+USE] to rage! For 20 seconds:\n+4%% speed per level\n+20 melee damage per level\nHealth regeneration\n60 second cooldown. During cooldown:\nCoach cannot regen or speed up\n \n=	=	=	=	=	=	=	=	=",  g_iSkillPoints[iClient], g_iBullLevel[iClient]);
+	FormatEx(text, sizeof(text), "\
+		\n \
+		\n			Bull Rush(Level %d):\
+		\n \
+		\nLevel 1:\
+		\n+15 max health per level\
+		\nOn CI headshot with a melee weapon:\
+		\n+5%% speed per level for 5 seconds\
+		\n \
+		\n [WALK+USE] to rage! For 20 seconds:\
+		\n+4%% speed per level\
+		\n+20 melee damage per level\
+		\nHealth regeneration\
+		\n60 second cooldown. During cooldown:\
+		\nCoach cannot regen or speed up\
+		\n ",
+		g_iSkillPoints[iClient], 
+		g_iBullLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -81,10 +99,30 @@ Action:WreckingMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(WreckingMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n									Wrecking Ball(Level %d):\n \nLevel 1:\n(Charge) +100 melee dmg per level\n+10 max health per level\n \nLevel 5:\nOn SI headshot w/ melee weapon & Wrecking Ball charged:\nInstantly recharge Wrecking Ball\n(Charge) +1 health regen every 0.75 seconds\n \n \nSkill Uses:\n(Charge) Melee dmg bonus: Hold [CROUCH] to power up\n(Charge) Melee dmg bonus expelled on next [MELEE] against SI\n(Charge) HP regen: Hold [CROUCH] to heal yourself\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iWreckingLevel[iClient]);
+	FormatEx(text, sizeof(text), "\
+		\n \
+		\n									Wrecking Ball(Level %d):\
+		\n \
+		\nLevel 1:\
+		\n(Charge) +100 melee dmg per level\
+		\n+10 max health per level\
+		\n \
+		\nLevel 5:\
+		\nOn SI headshot w/ melee weapon & Wrecking Ball charged:\
+		\nInstantly recharge Wrecking Ball\
+		\n(Charge) +1 health regen every 0.75 seconds\
+		\n \
+		\n \
+		\nSkill Uses:\
+		\n(Charge) Melee dmg bonus: Hold [CROUCH] to power up\
+		\n(Charge) Melee dmg bonus expelled on next [MELEE] against SI\
+		\n(Charge) HP regen: Hold [CROUCH] to heal yourself\
+		\n ",
+		g_iWreckingLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -108,10 +146,19 @@ Action:SprayMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(SprayMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=\n \n			Spray n' Pray(Level %d):\n \nLevel 1:\n+2 shotgun clip size per level\n+2 shotgun pellet damage per level\n \n=	=	=	=	=	=	=	=	=	=	=",  g_iSprayLevel[iClient]);
+	FormatEx(text, sizeof(text), "\
+		\n \
+		\n			Spray n' Pray(Level %d):\
+		\n \
+		\nLevel 1:\
+		\n+2 shotgun clip size per level\
+		\n+2 shotgun pellet damage per level\
+		\n ",
+		g_iSprayLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -135,10 +182,29 @@ Action:HomerunMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(HomerunMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=\n \n				Homerun!(Level %d):\n \nLevel 1:\nOn SI headshot with melee weapon:\n+5%% speed per level for 10 seconds\n \n(Stacks) +2 melee damage per level\n \nLevel 5:\nNo melee fatigue\n \n \nSkill Uses:\n+1 (Stack) when decapitating infected\nMax 50 stacks\n \n=	=	=	=	=	=	=	=	=	=	=",  g_iHomerunLevel[iClient]);
+	FormatEx(text, sizeof(text), "\
+		\n \
+		\n				Homerun!(Level %d):\
+		\n \
+		\nLevel 1:\
+		\nOn SI headshot with melee weapon:\
+		\n+5%% speed per level for 10 seconds\
+		\n \
+		\n(Stacks) +2 melee damage per level\
+		\n \
+		\nLevel 5:\
+		\nNo melee fatigue\
+		\n \
+		\n \
+		\nSkill Uses:\
+		\n+1 (Stack) when decapitating infected\
+		\nMax 50 stacks\
+		\n ",
+		g_iHomerunLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -162,10 +228,34 @@ Action:LeadMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(LeadMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Lead by Example(Level %d):\n					Requires Level 11\n \nLevel 1:\n(Team) +10%% chainsaw fuel per level\n(Stacks) (Team) +5 max health per level\n \nLevel 5:\n(Team) Prevent screen shaking on damage\n \n \n				 Bind 1: Heavy Gunner\n				+1 use every other level\n \nLevel 1:\nDeploy Turrets\n \n \nSkill Uses:\n(Team) max health (Stacks) with itself\n \n=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iLeadLevel[iClient]);
+	FormatEx(text, sizeof(text), "\
+		\n \
+		\n				Lead by Example(Level %d):\
+		\n					Requires Level 11\
+		\n \
+		\nLevel 1:\
+		\n(Team) +10%% chainsaw fuel per level\
+		\n(Stacks) (Team) +5 max health per level\
+		\n \
+		\nLevel 5:\
+		\n(Team) Prevent screen shaking on damage\
+		\n \
+		\n \
+		\n				 Bind 1: Heavy Gunner\
+		\n				+1 use every other level\
+		\n \
+		\nLevel 1:\
+		\nDeploy Turrets\
+		\n \
+		\n \
+		\nSkill Uses:\
+		\n(Team) max health (Stacks) with itself\
+		\n ",
+		g_iLeadLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -189,10 +279,37 @@ Action:StrongMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(StrongMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n					Strong Arm(Level %d):\n					 Requires Level 26\n \nLevel 1:\n+30 melee damage per level\n+10 max health per level\n+20%% Jockey resistance per level\nStart the round with grenades\n \nLevel 2:\n+1 bomb storage every other level\n [WALK+ZOOM] to cycle grenades\n \n \n			Bind 2: D.E.A.D. Jetpack (Charge)\n						Limited Fuel\n \nLevel 1:\n+160 fuel per level\n \n \nSkill Uses:\n(Charge): Hold [WALK] to fly when jetpack is on\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iStrongLevel[iClient]);
+	FormatEx(text, sizeof(text), "\
+		\n \
+		\n					Strong Arm(Level %d):\
+		\n					 Requires Level 26\
+		\n \
+		\nLevel 1:\
+		\n+30 melee damage per level\
+		\n+10 max health per level\
+		\n+20%% Jockey resistance per level\
+		\nStart the round with grenades\
+		\n \
+		\nLevel 2:\
+		\n+1 bomb storage every other level\
+		\n [WALK+ZOOM] to cycle grenades\
+		\n \
+		\n \
+		\n			Bind 2: D.E.A.D. Jetpack (Charge)\
+		\n						Limited Fuel\
+		\n \
+		\nLevel 1:\
+		\n+160 fuel per level\
+		\n \
+		\n \
+		\nSkill Uses:\
+		\n(Charge): Hold [WALK] to fly when jetpack is on\
+		\n ",
+		g_iStrongLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);

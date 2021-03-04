@@ -56,12 +56,26 @@ Action:InspirationalMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(InspirationalMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Inspirational Leadership (Level %d)\n \nLevel 1:\n(Team) +10 bonus XP per level for teammates on SI kill\n(Charge) Regenerate 1 life to random ally per level\n \n \nSkill Uses:\n(Charge) HP Regeneration: Hold [CROUCH] to heal allies\nevery 6 seconds\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",g_iInspirationalLevel[iClient]);
+	FormatEx(text, sizeof(text), "\
+		\n \
+		\n				Inspirational Leadership (Level %d)\
+		\n \
+		\nLevel 1:\
+		\n(Team) +10 bonus XP per level for teammates on SI kill\
+		\n(Charge) Regenerate 1 life to random ally per level\
+		\n \
+		\n \
+		\nSkill Uses:\
+		\n(Charge) HP Regeneration: Hold [CROUCH] to heal allies\
+		\nevery 6 seconds\
+		\n ",
+		g_iInspirationalLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 
 	
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -86,12 +100,27 @@ Action:GhillieMenuDraw(iClient)
 				
 	g_hMenu_XPM[iClient] = CreateMenu(GhillieMenuHandler);
 
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Ghillie Tactics(Level %d):\n \nLevel 1:\n+13%%%% cloaking per level\n(Charge) +30 sprinting stamina per level\n \n \nSkill Uses:\n(Charge) sprinting stamina builds over time\nHold [WALK] to activate\nWorks while incapacitated\n \n=	=	=	=	=	=	=	=	=	=	=	=	=", g_iGhillieLevel[iClient]);
+	FormatEx(text, sizeof(text), "\
+		\n \
+		\n				Ghillie Tactics(Level %d):\
+		\n \
+		\nLevel 1:\
+		\n+13%%%% cloaking per level\
+		\n(Charge) +30 sprinting stamina per level\
+		\n \
+		\n \
+		\nSkill Uses:\
+		\n(Charge) sprinting stamina builds over time\
+		\nHold [WALK] to activate\
+		\nWorks while incapacitated\
+		\n ", 
+		g_iGhillieLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 
 	
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -116,12 +145,28 @@ Action:WillMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(WillMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=\n \n					Will to Live(Level %d):\n \nLevel 1:\n+5 max health per level\n+50 incap health per level\n(Team) Allow crawling\n(Stacks) (Team) +5 crawl speed per level\n \n \nSkill Uses:\nCrawl speed (Stacks) with itself\nUnlimited stacks\n \n=	=	=	=	=	=	=	=	=	=	=	=	=", g_iWillLevel[iClient]);
+	FormatEx(text, sizeof(text), "\
+		\n \
+		\n					Will to Live(Level %d):\
+		\n \
+		\nLevel 1:\
+		\n+5 max health per level\
+		\n+50 incap health per level\
+		\n(Team) Allow crawling\
+		\n(Stacks) (Team) +5 crawl speed per level\
+		\n \
+		\n \
+		\nSkill Uses:\
+		\nCrawl speed (Stacks) with itself\
+		\nUnlimited stacks\
+		\n ",
+		g_iWillLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 
 	
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -147,12 +192,20 @@ Action:ExorcismMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(ExorcismMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=\n \n  Exorcism in a Barrel(Level %d):\n \nLevel 1:\n+4%%%% assault rifle damage per level\n+20%%%% reload speed per level\n \n=	=	=	=	=	=	=	=	=	=", g_iExorcismLevel[iClient]);
+	FormatEx(text, sizeof(text), "\
+		\n \
+		\n  Exorcism in a Barrel(Level %d):\
+		\n \
+		\nLevel 1:\
+		\n+4%%%% Assault Rifle damage per level\
+		\n+20%%%% Reload speed per level\
+		\n ", g_iExorcismLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 
 	
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -177,12 +230,28 @@ Action:DiehardMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(DiehardMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=\n \n					Die Hard(Level %d):\n					Requires Level 11\n \nLevel 1:\n+15 max health per level\nRegen 6 health when ally incaps per level\n \n \n		Bind 1: Improvised Explosives\n			+1 use every other level\n \nLevel 1:\nDrop +1 active pipebomb every other level\n \n=	=	=	=	=	=	=	=	=	=	=	=	=", g_iDiehardLevel[iClient]);
+	FormatEx(text, sizeof(text), "\
+		\n \
+		\n					Die Hard(Level %d):\
+		\n					Requires Level 11\
+		\n \
+		\nLevel 1:\
+		\n+15 max health per level\
+		\nRegen 6 health when ally incaps per level\
+		\n \
+		\n \
+		\n		Bind 1: Improvised Explosives\
+		\n			+1 use every other level\
+		\n \
+		\nLevel 1:\
+		\nDrop +1 active pipebomb every other level\
+		\n ", g_iDiehardLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 
 	
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -207,12 +276,30 @@ Action:PromotionalMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(PromotionalMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=\n \n		Promotional Benefits(Level %d):\n			   Requires Level 26\n \nLevel 1:\n+8%%%% reload speed & cloaking per level\n+20 rifle clip size per level\n+20%%%% M60 damage per level\nAutomatic laser sight\nHide glow from SI\n \n \n				Bind 2: First Blood\n			+1 use every other level\n \nLevel 1:\nSpawn M60\n \n=	=	=	=	=	=	=	=	=	=	=", g_iPromotionalLevel[iClient]);
+	FormatEx(text, sizeof(text), "\
+		\n \
+		\n		Promotional Benefits(Level %d):\
+		\n			   Requires Level 26\
+		\n \
+		\nLevel 1:\
+		\n+8%%%% reload speed & cloaking per level\
+		\n+20 rifle clip size per level\
+		\n+20%%%% M60 damage per level\
+		\nAutomatic laser sight\
+		\nHide glow from SI\
+		\n \
+		\n \
+		\n				Bind 2: First Blood\
+		\n			+1 use every other level\
+		\n \
+		\nLevel 1:\
+		\nSpawn M60\
+		\n ",
+		g_iPromotionalLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 
-	
-	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);

@@ -50,10 +50,23 @@ Action:GatherMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(GatherMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n					Gather Intelligence(Level %d):\n \nLevel 1:\nD.E.A.D. Infected Detection Device upgrade every level\n \n \nSkill Uses:\nPress [Walk + Use] to turn on or off\nDefault: [Shift + E]\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iGatherLevel[iClient]);
+	FormatEx(text, sizeof(text), "\
+		\n \
+		\n					Gather Intelligence(Level %d):\
+		\n \
+		\nLevel 1:\
+		\nD.E.A.D. Infected Detection Device upgrade every level\
+		\n \
+		\n \
+		\nSkill Uses:\
+		\nPress [Walk + Use] to turn on or off\
+		\nDefault: [Shift + E]\
+		\n ",
+		g_iGatherLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -76,10 +89,26 @@ Action:HunterMenuDraw(iClient)
 				
 	g_hMenu_XPM[iClient] = CreateMenu(HunterMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n									Hunter Killer(Level %d):\n \nLevel 1:\n+25 poison damage when shooting SI\n+2%%%% movement speed per level\n \nLevel 5:\nTracking rounds when shooting SI (Requires XPMod Addon File)\n \n \nSkill Uses:\nPoison damage every 5 seconds, +1 tick per level\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iHunterLevel[iClient]);
+	FormatEx(text, sizeof(text), "\
+		\n \
+		\n									Hunter Killer(Level %d):\
+		\n \
+		\nLevel 1:\
+		\n+25 poison damage when shooting SI\
+		\n+2%%%% movement speed per level\
+		\n \
+		\nLevel 5:\
+		\nTracking rounds when shooting SI (Requires XPMod Addon File)\
+		\n \
+		\n \
+		\nSkill Uses:\
+		\nPoison damage every 5 seconds, +1 tick per level\
+		\n ",
+		g_iHunterLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -102,10 +131,29 @@ Action:SnipersEnduranceMenuDraw(iClient)
 				
 	g_hMenu_XPM[iClient] = CreateMenu(SnipersEnduranceMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n					Sniper's Endurance(Level %d):\n \nLevel 1:\n(Charge) Jump +1x higher per level\n+5 max health per level\n+2%%%% movement speed per level\n \nLevel 5:\nNo melee fatigue\n \n \nSkill Uses:\n(Charge) Super Jump: Hold [CROUCH] to power up\n(Charge) Super Jump: Expelled on next [JUMP]\nFall damage immunity while super jumping\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iSniperLevel[iClient]);
+	FormatEx(text, sizeof(text), "\
+		\n \
+		\n					Sniper's Endurance(Level %d):\
+		\n \
+		\nLevel 1:\
+		\n(Charge) Jump +1x higher per level\
+		\n+5 max health per level\
+		\n+2%%%% movement speed per level\
+		\n \
+		\nLevel 5:\
+		\nNo melee fatigue\
+		\n \
+		\n \
+		\nSkill Uses:\
+		\n(Charge) Super Jump: Hold [CROUCH] to power up\
+		\n(Charge) Super Jump: Expelled on next [JUMP]\
+		\nFall damage immunity while super jumping\
+		\n ",
+		g_iSniperLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -128,10 +176,21 @@ Action:SilentMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(SilentMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=\n \n			Silent Sorrow(Level %d):\n \nLevel 1:\nSniper upgrades every level\n \nSee \"Open In Website\" in the\nprevious menu for upgrade details\n \n=	=	=	=	=	=	=	=	=	=	=	=",  g_iSilentLevel[iClient]);
+	FormatEx(text, sizeof(text), "\
+		\n \
+		\n			Silent Sorrow(Level %d):\
+		\n \
+		\nLevel 1:\
+		\nSniper upgrades every level\
+		\n \
+		\nSee \"Open In Website\" in the\
+		\nprevious menu for upgrade details\
+		\n ",
+		g_iSilentLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -154,10 +213,35 @@ Action:SmokeMenuDraw(iClient)
 				
 	g_hMenu_XPM[iClient] = CreateMenu(SmokeMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Smoke and Mirrors(Level %d):\n					  Requires Level 11\n \nLevel 1:\n+5%%%% chance to escape a hold per level\n \nOn break for 5 seconds:\nCloak glow & Hide infected HUD\n+19%%%% stealth per level\n \n \n					Bind 1: Rope Master\n					30 second lifetime\n \nLevel 1:\n+40 feet rope distance per level\n \n \nSkill Uses:\nRope:[JUMP]/[CROUCH] to climb/descend,\nfall damage immunity\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iSmokeLevel[iClient]);
+	FormatEx(text, sizeof(text), "\
+		\n \
+		\n				Smoke and Mirrors(Level %d):\
+		\n					  Requires Level 11\
+		\n \
+		\nLevel 1:\
+		\n+5%%%% chance to escape a hold per level\
+		\n \
+		\nOn break for 5 seconds:\
+		\nCloak glow & Hide infected HUD\
+		\n+19%%%% stealth per level\
+		\n \
+		\n \
+		\n					Bind 1: Rope Master\
+		\n					30 second lifetime\
+		\n \
+		\nLevel 1:\
+		\n+40 feet rope distance per level\
+		\n \
+		\n \
+		\nSkill Uses:\
+		\nRope:[JUMP]/[CROUCH] to climb/descend,\
+		\nfall damage immunity\
+		\n ",
+		g_iSmokeLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -180,12 +264,30 @@ Action:ShadowMenuDraw(iClient)
 				
 	g_hMenu_XPM[iClient] = CreateMenu(ShadowMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Shadow Ninja(Level %d):\n				  Requires Level 26\n \nLevel 1:\n+2%%%% movement speed per level\n+5 max health per level\n \n				Bind 2: Silent Assassin\n+1 use every other level; 12 second duration\n \nLevel 1:\n+10%%%% movement speed per level\n+30%%%% melee attack speed per level\n+19%%%% stealth per level\nCloak glow from SI\nGain a Katana\n \n=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iShadowLevel[iClient]);
+	FormatEx(text, sizeof(text), "\
+		\n \
+		\n				Shadow Ninja(Level %d):\
+		\n				  Requires Level 26\
+		\n \
+		\nLevel 1:\
+		\n+2%%%% movement speed per level\
+		\n+5 max health per level\
+		\n \
+		\n				Bind 2: Silent Assassin\
+		\n+1 use every other level; 12 second duration\
+		\n \
+		\nLevel 1:\
+		\n+10%%%% movement speed per level\
+		\n+30%%%% melee attack speed per level\
+		\n+19%%%% stealth per level\
+		\nCloak glow from SI\
+		\nGain a Katana\
+		\n ",
+		g_iShadowLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 
-	
-	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);

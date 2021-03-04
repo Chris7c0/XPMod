@@ -51,10 +51,25 @@ Action:SwindlerMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(SwindlerMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n						Swindler(Level %d):\n \nLevel 1:\n+3 max health per level when ally uses a kit (max +100)\n+1 life stealing recovery every other level\n+1 life stealing damage every level\n \n \nSkill Uses:\nLife stealing ticks every second for 5 seconds\nLife stealing only affects SI\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iSwindlerLevel[iClient]);
+	FormatEx(text, sizeof(text), "\
+		\n \
+		\n						Swindler(Level %d):\
+		\n \
+		\nLevel 1:\
+		\n+3 max health per level when ally uses a kit (max +100)\
+		\n+1 life stealing recovery every other level\
+		\n+1 life stealing damage every level\
+		\n \
+		\n \
+		\nSkill Uses:\
+		\nLife stealing ticks every second for 5 seconds\
+		\nLife stealing only affects SI\
+		\n ",
+		g_iSwindlerLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -77,10 +92,24 @@ Action:LeftoverMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(LeftoverMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n							Leftover Supplies(Level %d):\n \nLevel 1:\n+15%%%% chance to spawn items when you use a medkit per level\n \nLevel 5:\n [ZOOM] with a kit to destroy it and gain:\n1 random weapon\n1 random grenade\1 shot or pills\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iSkillPoints[iClient], g_iLeftoverLevel[iClient]);
+	FormatEx(text, sizeof(text), "\
+		\n \
+		\n							Leftover Supplies(Level %d):\
+		\n \
+		\nLevel 1:\
+		\n+15%%%% chance to spawn items when you use a medkit per level\
+		\n \
+		\nLevel 5:\
+		\n [ZOOM] with a kit to destroy it and gain:\
+		\n1 random weapon\
+		\n1 random grenade\1 shot or pills\
+		\n ",
+		g_iSkillPoints[iClient],
+		g_iLeftoverLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -103,10 +132,26 @@ Action:RiskyMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(RiskyMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=\n \n	Risky Business(Level %d):\n \nAll upgrades are (p220 & Glock):\n \nLevel 1:\n+20%%%% reload speed per level\n+20%%%% damage per level\n+6 clip size per level\n \nLevel 5:\n [WALK+ZOOM] cycle to dual pistols\nYou can cycle back to Magnums\n \n=	=	=	=	=	=	=	=	=",  g_iRiskyLevel[iClient]);
+	FormatEx(text, sizeof(text), "\
+		\n \
+		\n	Risky Business(Level %d):\
+		\n \
+		\nAll upgrades are (p220 & Glock):\
+		\n \
+		\nLevel 1:\
+		\n+20%%%% reload speed per level\
+		\n+20%%%% damage per level\
+		\n+6 clip size per level\
+		\n \
+		\nLevel 5:\
+		\n [WALK+ZOOM] cycle to dual pistols\
+		\nYou can cycle back to Magnums\
+		\n ",
+		g_iRiskyLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -129,10 +174,23 @@ Action:EnhancedMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(EnhancedMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n					Enhanced Pain Killers(Level %d):\n \nLevel 1:\n+6 temp health from pills & shots per level\nRecover +1 health per level when anyone uses shots &   \npills (+8 at max)\n \nShoot Survivors with Pitols to heal them...at a cost.\n   Pistols:     +2 HP for Teammate, -1 HP for You\n   Magnum:  +7 HP for Teammate, -3 HP for You\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iEnhancedLevel[iClient]);
+	FormatEx(text, sizeof(text), "\
+		\n \
+		\n					Enhanced Pain Killers(Level %d):\
+		\n \
+		\nLevel 1:\
+		\n+6 temp health from pills & shots per level\
+		\nRecover +1 health per level when anyone uses shots &   \
+		\npills (+8 at max)\
+		\n \
+		\nShoot Survivors with Pitols to heal them...at a cost.\
+		\n   Pistols:     +2 HP for Teammate, -1 HP for You\
+		\n   Magnum:  +7 HP for Teammate, -3 HP for You\
+		\n ",  g_iEnhancedLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -155,11 +213,30 @@ Action:MagnumMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(MagnumMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=\n \n			Magnum Stampede(Level %d):\n			    Requires Level 11\n \nLevel 1:\n-5 clip size(Magnum Only)\n+75%%%% damage per level (Magnum Only)\n+3%%%% movement speed per level\n \nLevel 5:\n50% faster reload on 3 consecutive hits (Magnum only)\n \n			Bind 1: Gambling Problem\n			+1 use every other level\n \nLevel 1:\nGamble for one of eleven random effects  \n \n=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iMagnumLevel[iClient]);
+	FormatEx(text, sizeof(text), "\
+		\n \
+		\n			Magnum Stampede(Level %d):\
+		\n			    Requires Level 11\
+		\n \
+		\nLevel 1:\
+		\n-5 clip size(Magnum Only)\
+		\n+75%%%% damage per level (Magnum Only)\
+		\n+3%%%% movement speed per level\
+		\n \
+		\nLevel 5:\
+		\n50% faster reload on 3 consecutive hits (Magnum only)\
+		\n \
+		\n			Bind 1: Gambling Problem\
+		\n			+1 use every other level\
+		\n \
+		\nLevel 1:\
+		\nGamble for one of eleven random effects  \
+		\n ",
+		g_iMagnumLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
-	//SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=\n \n			Risky Business(Level %d):\n \nAll upgrades are (Pistol Only):\n \nLevel 1:\n+10%% reload speed per level\n+10 damage per level\n+6 clip size per level\n \n \n"
-	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+		
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -182,10 +259,35 @@ Action:DesperateMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(DesperateMenuHandler);
 	
-	FormatEx(text, sizeof(text), "=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Desperate Measures(Level %d):\n					  Requires Level 26\n \nLevel 1:\n(Stacks) +2%%%% speed & +5%%%% gun damage per level\n \n \n				Bind 2: Cheating Death\n				+1 use every other level\n \nLevel 1:\nHeal team +4 health per level; 1 use\nLevel 3:\nRevive incapped ally; 2 uses\nLevel 5:\nResurrect an ally; 3 uses\n \n \nSkill Uses:\n+1 (Stack) when ally incaps or dies\n-1 (Stack) if ally recovers\nMax 3 stacks\n \n=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iDesperateLevel[iClient]);
+	FormatEx(text, sizeof(text), "\
+		\n \
+		\n				Desperate Measures(Level %d):\
+		\n					  Requires Level 26\
+		\n \
+		\nLevel 1:\
+		\n(Stacks) +2%%%% speed & +5%%%% gun damage per level\
+		\n \
+		\n \
+		\n				Bind 2: Cheating Death\
+		\n				+1 use every other level\
+		\n \
+		\nLevel 1:\
+		\nHeal team +4 health per level; 1 use\
+		\nLevel 3:\
+		\nRevive incapped ally; 2 uses\
+		\nLevel 5:\
+		\nResurrect an ally; 3 uses\
+		\n \
+		\n \
+		\nSkill Uses:\
+		\n+1 (Stack) when ally incaps or dies\
+		\n-1 (Stack) if ally recovers\
+		\nMax 3 stacks\
+		\n ",  g_iDesperateLevel[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);

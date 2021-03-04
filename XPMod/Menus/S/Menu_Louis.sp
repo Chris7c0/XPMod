@@ -53,8 +53,7 @@ Action:LouisTalent1MenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(LouisTalent1MenuHandler);
 	
-	FormatEx(text, sizeof(text), 
-		"=	=	=	=	=	=	=	=	=	=	=	=\
+	FormatEx(text, sizeof(text), "\
 		\n \
 		\n 		Manager's Prep (Level %d):\
 		\n \
@@ -62,11 +61,12 @@ Action:LouisTalent1MenuDraw(iClient)
 		\n +3%%%%% Movement Speed per Level\
 		\n SMG and Pistol (Not Magnum) Buffs:     \
 		\n 	- +15%%%% Reload Speed per Level\
-		\n \
-		\n=	=	=	=	=	=	=	=	=	=	=	=",  g_iLouisTalent1Level[iClient]);
+		\n ",
+		g_iLouisTalent1Level[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -90,8 +90,7 @@ Action:LouisTalent2MenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(LouisTalent2MenuHandler);
 	
-	FormatEx(text, sizeof(text), 
-		"=	=	=	=	=	=	=	=	=	=	=	=	=\
+	FormatEx(text, sizeof(text), "\
 		\n \
 		\n 		9mm Augmentation (Level %d):\
 		\n \
@@ -99,12 +98,13 @@ Action:LouisTalent2MenuDraw(iClient)
 		\n 	- +15%%%% Damage per Level\
 		\n 	- +10 Clip Size per Level\
 		\n 	- Automatic Laser Sight (SMGs Only)         \
-		\n \
-		\n=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iLouisTalent2Level[iClient]);
+		\n ",
+		g_iLouisTalent2Level[iClient]);
 	
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -128,8 +128,7 @@ Action:LouisTalent3MenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(LouisTalent3MenuHandler);
 	
-	FormatEx(text, sizeof(text), 
-		"=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\
+	FormatEx(text, sizeof(text), "\
 		\n \
 		\n 						Time Dilation (Level %d):\
 		\n \
@@ -140,11 +139,12 @@ Action:LouisTalent3MenuDraw(iClient)
 		\n	- Progressively blinds you with each use. Fades over time.\
 		\n	- Cannot move through walls, CI, or SI.\
 		\n	- Travel less distance while severely hurt and limping.\
-		\n \
-		\n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iLouisTalent3Level[iClient]);
+		\n ",
+		g_iLouisTalent3Level[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -168,21 +168,21 @@ Action:LouisTalent4MenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(LouisTalent4MenuHandler);
 	
-	FormatEx(text, sizeof(text), 
-		"=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	= 	=\
+	FormatEx(text, sizeof(text), "\
 		\n \
 		\n 					BOOM HEADSHOT! (Level %d):\
 		\n \
 		\n +40% Headshot Damage Multiplier per Level\
 		\n Headshot Kill Bonuses:\
 		\n 	- CI: +1 HP, +1%%%% Speed for 60 Seconds, +5 Clip Ammo per Level\
-		\n 	- SI: +5 HP, +5%%%% Speed for 60 Seconds, +15 Clip Ammo per Level      \
+		\n 	- SI: +5 HP, +5%%%% Speed for 60 Seconds, +15 Clip Ammo per Level   \
 		\n  - Movement Speed capped at +25%%%%\
-		\n \
-		\n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iLouisTalent4Level[iClient]);
+		\n ",
+		g_iLouisTalent4Level[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -206,17 +206,17 @@ Action:LouisTalent5MenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(LouisTalent5MenuHandler);
 	
-	FormatEx(text, sizeof(text), 
-		"=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\
+	FormatEx(text, sizeof(text), "\
 		\n \
 		\n 					Explosivo (Level %d):\
 		\n \
 		\n COMING SOON                                                           \
-		\n \
-		\n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iLouisTalent5Level[iClient]);
+		\n ",
+		g_iLouisTalent5Level[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -240,17 +240,17 @@ Action:LouisTalent6MenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(LouisTalent6MenuHandler);
 	
-	FormatEx(text, sizeof(text), 
-		"=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\
+	FormatEx(text, sizeof(text), "\
 		\n \
 		\n 					PILLS HERE! (Level %d):\
 		\n \
 		\n COMING SOON                                                           \
-		\n \
-		\n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=",  g_iLouisTalent6Level[iClient]);
+		\n ",
+		g_iLouisTalent6Level[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
