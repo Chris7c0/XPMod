@@ -40,9 +40,19 @@ Action:RapidMenuDraw(iClient)
 	CheckMenu(iClient);
 	
 	g_hMenu_XPM[iClient] = CreateMenu(RapidMenuHandler);
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n  					Rapid Regurgitation (Level %d)\n \nLevel 1:\n-2 second vomit cooldown per level\nReduce movement penalty after vomiting by 10%% per level\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iRapidLevel[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Talent Info\n \n \n \n \n \n \n \n ");
+	SetMenuTitle(g_hMenu_XPM[iClient], "\
+		\n \
+		\n  					Rapid Regurgitation (Level %d)\
+		\n \
+		\nLevel 1:\
+		\n-2 second vomit cooldown per level\
+		\nReduce movement penalty after vomiting by 10%% per level\
+		\n ",
+		g_iRapidLevel[iClient]);
+	
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 
@@ -56,11 +66,27 @@ Action:AcidicMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(AcidicMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n						Acidic Brew (Level %d)\n \nLevel 1:\nVomit victims lose their HUD for 2 seconds per level\n+1 damage per level to survivors near your death boom\n \n \n						  Bind 1: Hot Meal\n					3 uses; 9 second duration\n \nLevel 1:\nConstant vomiting while active\n+10%% movement speed per level\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iAcidicLevel[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Talent Info");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Bind Info");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option4", "How To Use Binds\n \n \n \n \n \n \n \n ");
+	SetMenuTitle(g_hMenu_XPM[iClient], "\
+		\n \
+		\n						Acidic Brew (Level %d)\
+		\n \
+		\nLevel 1:\
+		\nVomit victims lose their HUD for 2 seconds per level\
+		\n+1 damage per level to survivors near your death boom\
+		\n \
+		\n \
+		\n						  Bind 1: Hot Meal\
+		\n					3 uses; 9 second duration\
+		\n \
+		\nLevel 1:\
+		\nConstant vomiting while active\
+		\n+10%% movement speed per level\
+		\n ",
+		g_iAcidicLevel[iClient]);
+	
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 
@@ -74,11 +100,31 @@ Action:NorovirusMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(NorovirusMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n							Norovirus (Level %d)\n \nLevel 1:\n+4%% chance to make survivors vomit per level\n \nLevel 5:\nRandom effect if you vomit on 3 survivors within 9 seconds\n \n \n						Bind 2: Suicide Boomer\n									3 uses\n \nLevel 1:\n+5x jump heighth per level\n+2 boom damage per level\n+20%% fling distance per level\n+20%% boom distance per level\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iNorovirusLevel[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Talent Info");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Bind Info");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option4", "How To Use Binds\n \n \n \n \n \n \n \n ");
+	SetMenuTitle(g_hMenu_XPM[iClient], "\
+		\n \
+		\n							Norovirus (Level %d)\
+		\n \
+		\nLevel 1:\
+		\n+4%% chance to make survivors vomit per level\
+		\n \
+		\nLevel 5:\
+		\nRandom effect if you vomit on 3 survivors within 9 seconds\
+		\n \
+		\n \
+		\n						Bind 2: Suicide Boomer\
+		\n									3 uses\
+		\n \
+		\nLevel 1:\
+		\n+5x jump heighth per level\
+		\n+2 boom damage per level\
+		\n+20%% fling distance per level\
+		\n+20%% boom distance per level\
+		\n ",
+		g_iNorovirusLevel[iClient]);
+	
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 

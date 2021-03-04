@@ -41,10 +41,19 @@ Action:GroundMenuDraw(iClient)
 	CheckLevel(iClient);
 	g_hMenu_XPM[iClient] = CreateMenu(GroundMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n  				Ground 'n Pound (Level %d)\n \nLevel 1:\n+1 knock damage per level\n+1 punch, pound, and slam damage every 3rd level\nafter the 1st level\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iGroundLevel[iClient]);
+	SetMenuTitle(g_hMenu_XPM[iClient], "\
+		\n \
+		\n  				Ground 'n Pound (Level %d)\
+		\n \
+		\nLevel 1:\
+		\n+1 knock damage per level\
+		\n+1 punch, pound, and slam damage every 3rd level\
+		\nafter the 1st level\
+		\n ",
+		g_iGroundLevel[iClient]);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Talent Info\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -59,12 +68,32 @@ Action:SpikedMenuDraw(iClient)
 	CheckLevel(iClient);
 	g_hMenu_XPM[iClient] = CreateMenu(SpikedMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Spiked Carapace (Level %d)\n \nLevel 1:\nReflect 1 damage per level when meleed\n+25 max health per level\n+33 health per level when knocking survivors\n \nCROUCH to charge Uppercut, on next melee:\n \nThrow survivors up, 5 fall damage, short stun\n \n \n					Bind 1: Heavy Carry\n				3 uses; 30 second cooldown\n \nLevel 1:\n+10%% per level to carry distance and speed\non next charge\nReset charge cooldown\n \n=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iSpikedLevel[iClient]);
+	SetMenuTitle(g_hMenu_XPM[iClient], "\
+		\n \
+		\n				Spiked Carapace (Level %d)\
+		\n \
+		\nLevel 1:\
+		\nReflect 1 damage per level when meleed\
+		\n+25 max health per level\
+		\n+33 health per level when knocking survivors\
+		\n \
+		\nCROUCH to charge Uppercut, on next melee:\
+		\n \
+		\nThrow survivors up, 5 fall damage, short stun\
+		\n \
+		\n \
+		\n					Bind 1: Heavy Carry\
+		\n				3 uses; 30 second cooldown\
+		\n \
+		\nLevel 1:\
+		\n+10%% per level to carry distance and speed\
+		\non next charge\
+		\nReset charge cooldown\
+		\n ",
+		g_iSpikedLevel[iClient]);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Talent Info");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Bind Info");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option4", "How To Use Binds\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -79,12 +108,30 @@ Action:HillbillyMenuDraw(iClient)
 	CheckLevel(iClient);
 	g_hMenu_XPM[iClient] = CreateMenu(HillbillyMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n						Hillbilly Madness! (Level %d)\n \nLevel 1:\n+35 max health per level\n+3%% movement speed & carry range per level\n-1 second from charger cooldown every other level\n \nOn successful grapple (until end of charge):\n \nInvincibility\n+5%% of damage taken is converted to health per level\n \n \n						Bind 2: Earthquake\n								3 uses\n \nEarthquake stuns all survivors in a large radius\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iHillbillyLevel[iClient]);
+	SetMenuTitle(g_hMenu_XPM[iClient], "\
+		\n \
+		\n						Hillbilly Madness! (Level %d)\
+		\n \
+		\nLevel 1:\
+		\n+35 max health per level\
+		\n+3%% movement speed & carry range per level\
+		\n-1 second from charger cooldown every other level\
+		\n \
+		\nOn successful grapple (until end of charge):\
+		\n \
+		\nInvincibility\
+		\n+5%% of damage taken is converted to health per level\
+		\n \
+		\n \
+		\n						Bind 2: Earthquake\
+		\n								3 uses\
+		\n \
+		\nEarthquake stuns all survivors in a large radius\
+		\n ",
+		g_iHillbillyLevel[iClient]);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Talent Info");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Bind Info");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option4", "How To Use Binds\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -107,7 +154,7 @@ Action:ChooseChargerClassMenuDraw(iClient)
 	SetMenuTitle(g_hMenu_XPM[iClient], title);
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Replace Class 1");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Replace Class 2");	//implemented in loadouts.sp
+	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Replace Class 2");
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Replace Class 3");
 	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back");
 	

@@ -42,8 +42,20 @@ Action:MutatedMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(MutatedMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n  				Mutated Tenacity (Level %d)\n \nLevel 1:\n+1 melee damage every 3 levels\n+6%% lunge distance per level\n-0.35 seconds from all lunge cooldowns per level\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iMutatedLevel[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	SetMenuTitle(g_hMenu_XPM[iClient], "\
+		\n \
+		\n  				Mutated Tenacity (Level %d)\
+		\n \
+		\nLevel 1:\
+		\n+1 melee damage every 3 levels\
+		\n+6%% lunge distance per level\
+		\n-0.35 seconds from all lunge cooldowns per level\
+		\n ",
+		g_iMutatedLevel[iClient]);
+	
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 
@@ -57,8 +69,30 @@ Action:ErraticMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(ErraticMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n						Erratic Domination (Level %d)\n \nLevel 1:\n+1 riding damage every 3 levels\n+3%% riding speed per level\n \n \n						  Bind 1: Golden Shower\n							 		3 uses\n \nLevel 1:\nWhile riding, urinate on your victim, attracting infected\nDisables survivors cloaking\n+1% per level to summon a tank\n \nLevel 10:\nSummon a horde\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iErraticLevel[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	SetMenuTitle(g_hMenu_XPM[iClient], "\
+		\n \
+		\n						Erratic Domination (Level %d)\
+		\n \
+		\nLevel 1:\
+		\n+1 riding damage every 3 levels\
+		\n+3%% riding speed per level\
+		\n \
+		\n \
+		\n						  Bind 1: Golden Shower\
+		\n							 		3 uses\
+		\n \
+		\nLevel 1:\
+		\nWhile riding, urinate on your victim, attracting infected\
+		\nDisables survivors cloaking\
+		\n+1% per level to summon a tank\
+		\n \
+		\nLevel 10:\
+		\nSummon a horde\
+		\n ",
+		g_iErraticLevel[iClient]);
+	
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -73,8 +107,28 @@ Action:UnfairMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(UnfairMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=\n \n	Unfair Advantage (Level %d)\n \nLevel 1:\n+35 max health per level\n+7%% movement speed per level\n \n \n		Bind 2: Vanishing Act\n	3 uses; 10 second duration\n \nLevel 1:\n+9%% cloaking per level\nDisable Jockey & survivor glow\n+5%% riding speed per level\nJumping Enabled (+50 height per level)\n \n=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iUnfairLevel[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	SetMenuTitle(g_hMenu_XPM[iClient], "\
+		\n \
+		\n	Unfair Advantage (Level %d)\
+		\n \
+		\nLevel 1:\
+		\n+35 max health per level\
+		\n+7%% movement speed per level\
+		\n \
+		\n \
+		\n		Bind 2: Vanishing Act\
+		\n	3 uses; 10 second duration\
+		\n \
+		\nLevel 1:\
+		\n+9%% cloaking per level\
+		\nDisable Jockey & survivor glow\
+		\n+5%% riding speed per level\
+		\nJumping Enabled (+50 height per level)\
+		\n ",
+		g_iUnfairLevel[iClient]);
+	
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);

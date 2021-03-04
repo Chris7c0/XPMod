@@ -4,8 +4,8 @@ Action:TankMenuDrawIce(iClient)
 	CheckLevel(iClient);
 	g_hMenu_XPM[iClient] = CreateMenu(TankMenuHandlerIce);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient],
-        "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \
+	SetMenuTitle(g_hMenu_XPM[iClient],"\
+		\n \
         \nICE TANK\
         \n\"You merely adopted the cold; I was born in it, moulded by it.\"\
         \n \
@@ -19,10 +19,11 @@ Action:TankMenuDrawIce(iClient)
         \n - [Hold CROUCH & Do Not Move] Regenerates Health\
         \n    - Freezes Survivors Inside The Blizard Storm\
         \n - Rock Throw Freezes Survivors (No Cooldown)\
-        \n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",
+        \n ",
         TANK_HEALTH_ICE);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);

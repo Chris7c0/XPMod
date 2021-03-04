@@ -4,8 +4,8 @@ Action:TankMenuDrawNecroTanker(iClient)
 	CheckLevel(iClient);
 	g_hMenu_XPM[iClient] = CreateMenu(TankMenuHandlerNecroTanker);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient],
-        "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \
+	SetMenuTitle(g_hMenu_XPM[iClient],"\
+	\n \
         \nNECROTANKER\
         \n\"Life is finite, whereas Death...ah, yes. Death is infinite.\"\
         \n \
@@ -26,13 +26,14 @@ Action:TankMenuDrawNecroTanker(iClient)
         \n - Mana Pool (Punches Regen Mana)\
         \n - [Hold WALK or CROUCH] Summon CI\
         \n - [Press MELEE] Throw Boomers\
-        \n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",
+        \n ",
         TANK_HEALTH_NECROTANKER,
         NECROTANKER_MAX_HEALTH,
         NECROTANKER_CONSUME_COMMON_HP,
         NECROTANKER_CONSUME_UNCOMMON_HP);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);

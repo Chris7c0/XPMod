@@ -4,8 +4,8 @@ Action:TankMenuDrawFire(iClient)
 	CheckLevel(iClient);
 	g_hMenu_XPM[iClient] = CreateMenu(TankMenuHandlerFire);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient],
-        "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \
+	SetMenuTitle(g_hMenu_XPM[iClient],"\
+		\n \
         \nFIRE TANK\
         \n\"MoRE PAiN?! MOrE FUUuN!!\"\
         \n \
@@ -19,10 +19,11 @@ Action:TankMenuDrawFire(iClient)
         \n - [Hold CROUCH] Charges Fire Punch\
         \n    - \"PuNCh FAcE...MAkE BoOM!\"\
         \n - Rock Throw Spreads Fire (15 Sec Cooldown)\
-        \n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",
+        \n ",
         TANK_HEALTH_FIRE);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);

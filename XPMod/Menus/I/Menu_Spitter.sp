@@ -41,10 +41,24 @@ Action:PuppetMenuDraw(iClient)
 	CheckLevel(iClient);
 	g_hMenu_XPM[iClient] = CreateMenu(PuppetMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n  						Puppet Master (Level %d)\n \nLevel 1:\nSpawn in with +1 CI per level\nWhen incapping a player, spawn +1 CI every other level on the victim\n25%% chance on hit to slow survivors by 2%%, 4%%, or 6%% per level\n \nLevel 6:\nFlaming Goo: A blanket of fire lies over your spit\n \nPress [WALK] to change Goo Types\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iPuppetLevel[iClient]);
+	SetMenuTitle(g_hMenu_XPM[iClient], "\
+		\n \
+		\n  						Puppet Master (Level %d)\
+		\n \
+		\nLevel 1:\
+		\nSpawn in with +1 CI per level\
+		\nWhen incapping a player, spawn +1 CI every other level on the victim\
+		\n25%% chance on hit to slow survivors by 2%%, 4%%, or 6%% per level\
+		\n \
+		\nLevel 6:\
+		\nFlaming Goo: A blanket of fire lies over your spit\
+		\n \
+		\nPress [WALK] to change Goo Types\
+		\n ",
+		g_iPuppetLevel[iClient]);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Talent Info\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -59,12 +73,34 @@ Action:MaterialMenuDraw(iClient)
 	CheckLevel(iClient);
 	g_hMenu_XPM[iClient] = CreateMenu(MaterialMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=\n \n				Material Girl (Level %d)\n \nLevel 1:\nIf spit hits incapped player:\nCloak victim +10%% per level\nHide victims' glow\n \nSpawn 1 random UI on spit (2 at Lvl 10)\nMelting Goo: +2 spit dmg\nDmg converts health to temp health\n \nLevel 6:\nDemi Goo: Triples victims gravity and\nrestricts mobility talents\n \nPress [WALK] to change Goo Types\n \n				Bind 1: Bag of Spits\n \nSelect from unique Enhanced CI mobs\nConjure them on your next spit\n \n=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iMaterialLevel[iClient]);
+	SetMenuTitle(g_hMenu_XPM[iClient], "\
+		\n \
+		\n				Material Girl (Level %d)\
+		\n \
+		\nLevel 1:\
+		\nIf spit hits incapped player:\
+		\nCloak victim +10%% per level\
+		\nHide victims' glow\
+		\n \
+		\nSpawn 1 random UI on spit (2 at Lvl 10)\
+		\nMelting Goo: +2 spit dmg\
+		\nDmg converts health to temp health\
+		\n \
+		\nLevel 6:\
+		\nDemi Goo: Triples victims gravity and\
+		\nrestricts mobility talents\
+		\n \
+		\nPress [WALK] to change Goo Types\
+		\n \
+		\n				Bind 1: Bag of Spits\
+		\n \
+		\nSelect from unique Enhanced CI mobs\
+		\nConjure them on your next spit\
+		\n ",
+		g_iMaterialLevel[iClient]);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Talent Info");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Bind Info");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option4", "How To Use Binds\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -79,12 +115,31 @@ Action:HallucinogenicMenuDraw(iClient)
 	CheckLevel(iClient);
 	g_hMenu_XPM[iClient] = CreateMenu(HallucinogenicMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Hallucinogenic Nightmare (Level %d)\n \nLevel 1:\n-0.5s spit cooldown per level\nHold [CROUCH] to Phase Shift (stealth and speed)\nClaws drug your victim, causing hallucinations\nRepulsion Goo: Bounces victims in 1 of 9 directions\n \nLevel 6:\nViral Goo: Infect victims with a contagious virus\n \nPress [WALK] to change Goo Types\n \n \n						Bind 2: Sisterhood\n					3 uses; 3 minute cooldown\n \nConjure a disguised witch\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iHallucinogenicLevel[iClient]);
+	SetMenuTitle(g_hMenu_XPM[iClient], "\
+		\n \
+		\n				Hallucinogenic Nightmare (Level %d)\
+		\n \
+		\nLevel 1:\
+		\n-0.5s spit cooldown per level\
+		\nHold [CROUCH] to Phase Shift (stealth and speed)\
+		\nClaws drug your victim, causing hallucinations\
+		\nRepulsion Goo: Bounces victims in 1 of 9 directions\
+		\n \
+		\nLevel 6:\
+		\nViral Goo: Infect victims with a contagious virus\
+		\n \
+		\nPress [WALK] to change Goo Types\
+		\n \
+		\n \
+		\n						Bind 2: Sisterhood\
+		\n					3 uses; 3 minute cooldown\
+		\n \
+		\nConjure a disguised witch\
+		\n ",
+		g_iHallucinogenicLevel[iClient]);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Talent Info");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Bind Info");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option4", "How To Use Binds\n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -107,7 +162,7 @@ Action:ChooseSpitterClassMenuDraw(iClient)
 	SetMenuTitle(g_hMenu_XPM[iClient], title);
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Replace Class 1");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Replace Class 2");	//implemented in loadouts.sp
+	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Replace Class 2");
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Replace Class 3");
 	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back");
 	

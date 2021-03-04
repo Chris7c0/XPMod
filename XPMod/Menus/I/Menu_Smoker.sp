@@ -42,8 +42,22 @@ Action:EnvelopmentMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(EnvelopmentMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=\n \n  			Envelopment (Level %d)\n \nLevel 1:\n(Stacks) +3%% tongue range & fly speed\n \n \nSkill Uses:\n+1 (Stack) for each Smoker with this talent\nUnlimited stacks\n \n=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iEnvelopmentLevel[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	SetMenuTitle(g_hMenu_XPM[iClient], "\
+	\n \
+	\n  			Envelopment (Level %d)\
+	\n \
+	\nLevel 1:\
+	\n(Stacks) +3%% tongue range & fly speed\
+	\n \
+	\n \
+	\nSkill Uses:\
+	\n+1 (Stack) for each Smoker with this talent\
+	\nUnlimited stacks\
+	\n ",
+	g_iEnvelopmentLevel[iClient]);
+	
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -58,8 +72,27 @@ Action:NoxiousMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(NoxiousMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n									Noxious Gasses (Level %d)\n \nLevel 1:\n1 cloud damage every tick\n-0.25 seconds between cloud ticks per level (Base: 3 seconds)\n+2%% movement speed per level\n \n \n						    Bind 1: Disperse\n				Unlimited uses; 10 second cooldown\n \nLevel 1:\nTeleport +30 feet per level\n100%% transparency after use, fades to 0%% over +1 second per level\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iNoxiousLevel[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	SetMenuTitle(g_hMenu_XPM[iClient], "\
+		\n \
+		\n									Noxious Gasses (Level %d)\
+		\n \
+		\nLevel 1:\
+		\n1 cloud damage every tick\
+		\n-0.25 seconds between cloud ticks per level (Base: 3 seconds)\
+		\n+2%% movement speed per level\
+		\n \
+		\n \
+		\n						    Bind 1: Disperse\
+		\n				Unlimited uses; 10 second cooldown\
+		\n \
+		\nLevel 1:\
+		\nTeleport +30 feet per level\
+		\n100%% transparency after use, fades to 0%% over +1 second per level\
+		\n ",
+		g_iNoxiousLevel[iClient]);
+	
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -74,8 +107,32 @@ Action:DirtyMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(DirtyMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n					Dirty Tricks (Level %d)\n \nLevel 1:\nAttacks infect for +2 sec per level\n+1%% speed when choking per level\n(Stacks) +8%% drag speed per level\n \n \n					Bind 2: The Electric Snare\n						 3 uses; 3 sec duration\n \nLevel 1:\nShock for 1 dmg per level every half sec\nArcs to survivors in line of sight for half damage\n \n \nSkill Uses:\n+1 (Stack) for each SMOKER w/ this talent\nUnlimited stacks\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iDirtyLevel[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
+	SetMenuTitle(g_hMenu_XPM[iClient], "\
+		\n \
+		\n					Dirty Tricks (Level %d)\
+		\n \
+		\nLevel 1:\
+		\nAttacks infect for +2 sec per level\
+		\n+1%% speed when choking per level\
+		\n(Stacks) +8%% drag speed per level\
+		\n \
+		\n \
+		\n					Bind 2: The Electric Snare\
+		\n						 3 uses; 3 sec duration\
+		\n \
+		\nLevel 1:\
+		\nShock for 1 dmg per level every half sec\
+		\nArcs to survivors in line of sight for half damage\
+		\n \
+		\n \
+		\nSkill Uses:\
+		\n+1 (Stack) for each SMOKER w/ this talent\
+		\nUnlimited stacks\
+		\n ",
+		g_iDirtyLevel[iClient]);
+	
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);

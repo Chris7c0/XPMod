@@ -4,8 +4,8 @@ Action:TankMenuDrawVampiric(iClient)
 	CheckLevel(iClient);
 	g_hMenu_XPM[iClient] = CreateMenu(TankMenuHandlerVampiric);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient],
-        "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \
+	SetMenuTitle(g_hMenu_XPM[iClient],"\
+	\n \
         \nVAMPIRIC TANK\
         \n\"I never drink...wine.\"\
         \n \
@@ -22,10 +22,11 @@ Action:TankMenuDrawVampiric(iClient)
         \n - [Press MELEE] Wing Dash\
         \n    - 3 Uses (13 Sec Cooldown) \
         \n - No Rock Throwing\
-        \n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",
+        \n ",
         TANK_HEALTH_VAMPIRIC);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);

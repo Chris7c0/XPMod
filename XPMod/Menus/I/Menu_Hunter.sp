@@ -42,9 +42,19 @@ Action:PredatorialMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(PredatorialMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=\n \n  Predatorial Evolution (Level %d)\n \nLevel 1:\n+5%% movement speed per level\n+10%% pounce distance per level\n \n=	=	=	=	=	=	=	=	=	=\n \n",g_iPredatorialLevel[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Talent Info\n \n \n \n \n \n \n \n ");
+	SetMenuTitle(g_hMenu_XPM[iClient], "\
+		\n \
+		\n  Predatorial Evolution (Level %d)\
+		\n \
+		\nLevel 1:\
+		\n+5%% movement speed per level\
+		\n+10%% pounce distance per level\
+		\n ",
+		g_iPredatorialLevel[iClient]);
+	
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 
@@ -58,11 +68,27 @@ Action:BloodlustMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(BloodlustMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=\n \n				Blood Lust (Level %d)\n \nLevel 1:\n+1 shredding damage every 4 levels\n+25 max health per level\n+3 life stealing while shredding per level\n \n \n				Bind 1: Dismount\n	Unlimited uses; 15 second cooldown\n \nLevel 1:\nDismount a pounced survivor\n \n=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iBloodlustLevel[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Talent Info");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Bind Info");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option4", "How To Use Binds\n \n \n \n \n \n \n \n ");
+	SetMenuTitle(g_hMenu_XPM[iClient], "\
+		\n \
+		\n				Blood Lust (Level %d)\
+		\n \
+		\nLevel 1:\
+		\n+1 shredding damage every 4 levels\
+		\n+25 max health per level\
+		\n+3 life stealing while shredding per level\
+		\n \
+		\n \
+		\n				Bind 1: Dismount\
+		\n	Unlimited uses; 15 second cooldown\
+		\n \
+		\nLevel 1:\
+		\nDismount a pounced survivor\
+		\n ",
+		g_iBloodlustLevel[iClient]);
+	
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 
@@ -76,11 +102,36 @@ Action:KillmeleonMenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(KillmeleonMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n											Kill-meleon (Level %d)\n \nLevel 1:\n(Charge) +9%% stealth & pounce damage per 0.35 seconds\nLevel 5:\nHide glow when pounced\n \n \n											Bind 2: Lethal Injection\n													3 uses\n \nLevel 1:\nNext attack does 4 damage per second\n+1 second per level\nPoison prevents item exchanging\nSlow victims to 25%\n3 damage per 20 seconds permanently\n \n \nSkill Uses:\n(Charge) Hold [CROUCH] to stealth & build damage\n+2 damage per level\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n",g_iKillmeleonLevel[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\n \n \n \n \n \n \n \n ");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Talent Info");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Bind Info");
-//	AddMenuItem(g_hMenu_XPM[iClient], "option4", "How To Use Binds\n \n \n \n \n \n \n \n ");
+	SetMenuTitle(g_hMenu_XPM[iClient], "\
+		\n \
+		\n											Kill-meleon (Level %d)\
+		\n \
+		\nLevel 1:\
+		\n(Charge) +9%% stealth & pounce damage per 0.35 seconds\
+		\nLevel 5:\
+		\nHide glow when pounced\
+		\n \
+		\n \
+		\n											Bind 2: Lethal Injection\
+		\n													3 uses\
+		\n \
+		\nLevel 1:\
+		\nNext attack does 4 damage per second\
+		\n+1 second per level\
+		\nPoison prevents item exchanging\
+		\nSlow victims to 25%\
+		\n3 damage per 20 seconds permanently\
+		\n \
+		\n \
+		\nSkill Uses:\
+		\n(Charge) Hold [CROUCH] to stealth & build damage\
+		\n+2 damage per level\
+		\n ",
+		g_iKillmeleonLevel[iClient]);
+	
+	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 
