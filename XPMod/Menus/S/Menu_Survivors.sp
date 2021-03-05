@@ -45,23 +45,23 @@ Action:ChangeSurvivorMenuDraw(iClient)
 	
 	switch(g_iChosenSurvivor[iClient])
 	{
-		case BILL:		SetMenuTitle(g_hMenu_XPM[iClient], "\n \nLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\nYour Survivor: Bill (Support)\n \n Change your Survivor to...",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-		case ROCHELLE:	SetMenuTitle(g_hMenu_XPM[iClient], "\n \nLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\nYour Survivor: Rochelle (Ninja)\n \n Change your Survivor to...",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-		case COACH:		SetMenuTitle(g_hMenu_XPM[iClient], "\n \nLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\nYour Survivor: Coach (Berserker)\n \n Change your Survivor to...",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-		case ELLIS:		SetMenuTitle(g_hMenu_XPM[iClient], "\n \nLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\nYour Survivor: Ellis (Weapon Expert)\n \n Change your Survivor to...",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-		case NICK:		SetMenuTitle(g_hMenu_XPM[iClient], "\n \nLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\nYour Survivor: Nick (Gambler)\n \n Change your Survivor to...",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-		case LOUIS:		SetMenuTitle(g_hMenu_XPM[iClient], "\n \nLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\nYour Survivor: Louis (Disruptor)\n \n Change your Survivor to...",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+		case BILL:		SetMenuTitle(g_hMenu_XPM[iClient], "\n \nLevel %d	XP: %d/%d\n=================================\nYour Survivor: Bill (Support)\n \n Change your Survivor to...",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+		case ROCHELLE:	SetMenuTitle(g_hMenu_XPM[iClient], "\n \nLevel %d	XP: %d/%d\n=================================\nYour Survivor: Rochelle (Ninja)\n \n Change your Survivor to...",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+		case COACH:		SetMenuTitle(g_hMenu_XPM[iClient], "\n \nLevel %d	XP: %d/%d\n=================================\nYour Survivor: Coach (Berserker)\n \n Change your Survivor to...",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+		case ELLIS:		SetMenuTitle(g_hMenu_XPM[iClient], "\n \nLevel %d	XP: %d/%d\n=================================\nYour Survivor: Ellis (Weapon Expert)\n \n Change your Survivor to...",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+		case NICK:		SetMenuTitle(g_hMenu_XPM[iClient], "\n \nLevel %d	XP: %d/%d\n=================================\nYour Survivor: Nick (Gambler)\n \n Change your Survivor to...",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+		case LOUIS:		SetMenuTitle(g_hMenu_XPM[iClient], "\n \nLevel %d	XP: %d/%d\n=================================\nYour Survivor: Louis (Disruptor)\n \n Change your Survivor to...",g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 	}
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Bill		   (Support)			   [EASY]");
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Rochelle (Ninja)					  [PRO]");
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Coach	 (Berserker)	 [NORMAL]");
 	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Ellis		 (Weapons Expert) [EASY]");
 	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Nick		 (Gambler)				[PRO]");
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Louis	  (Disruptor)			   [1337]  <-- INCOMPLETE PREVIEW               \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Louis	  (Disruptor)			   [1337] <-- PREVIEW            \n ");
 
 	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Change Your Equipment");
 	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Confirm Your Survivor\
-		\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\
+		\n=================================\
 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
