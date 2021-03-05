@@ -10,7 +10,7 @@ Action:TopInfectedMenuDraw(iClient)
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	
 	decl String:title[256];
-	FormatEx(title, sizeof(title), "\n \nLevel %d	XP: %d/%d\n==========================\n		 Your Infected\n \n Class 1)	%s\n Class 2)	%s\n Class 3)	%s\n ", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+	FormatEx(title, sizeof(title), "\n \nLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		 Your Infected\n \n Class 1)	%s\n Class 2)	%s\n Class 3)	%s\n ", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], title);
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Smoker");
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Boomer");
@@ -27,7 +27,7 @@ Action:TopInfectedMenuDraw(iClient)
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back");
 	AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit the Menu\
-		\n==========================\
+		\n▬▬▬▬▬▬▬▬▬▬▬▬▬\
 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -44,13 +44,15 @@ Action:ChangeInfectedMenuDraw(iClient)
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
 	
 	decl String:title[256];
-	FormatEx(title, sizeof(title), "\n \nLevel %d	XP: %d/%d\n==========================\n	Change Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n ", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient],g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+	FormatEx(title, sizeof(title), "\n \nLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n	Change Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n ", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient],g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	SetMenuTitle(g_hMenu_XPM[iClient], title);
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Change Class 1");
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Change Class 2");
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Change Class 3\n ");
 
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Confirm Your Infected\n==========================\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Confirm Your Infected\
+	\n▬▬▬▬▬▬▬▬▬▬▬▬▬\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
 	return Plugin_Handled;
@@ -64,7 +66,7 @@ Action:ChangeClass1MenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(ChangeClass1MenuHandler);
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
-	SetMenuTitle(g_hMenu_XPM[iClient], "\n \nChange Your Infected\n==========================\n		Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n \nChange Class 1 to...", g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+	SetMenuTitle(g_hMenu_XPM[iClient], "\n \nChange Your Infected\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n \nChange Class 1 to...", g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Smoker");
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Boomer");
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Hunter");
@@ -74,7 +76,7 @@ Action:ChangeClass1MenuDraw(iClient)
 	AddMenuItem(g_hMenu_XPM[iClient], "option7", "None\n ");
 	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back\
-		\n==========================\
+		\n▬▬▬▬▬▬▬▬▬▬▬▬▬\
 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -88,7 +90,7 @@ Action:ChangeClass2MenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(ChangeClass2MenuHandler);
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
-	SetMenuTitle(g_hMenu_XPM[iClient], "\n \nChange Your Infected\n==========================\n		Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n \nChange Class 2 to...", g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+	SetMenuTitle(g_hMenu_XPM[iClient], "\n \nChange Your Infected\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n \nChange Class 2 to...", g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Smoker");
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Boomer");
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Hunter");
@@ -98,7 +100,7 @@ Action:ChangeClass2MenuDraw(iClient)
 	AddMenuItem(g_hMenu_XPM[iClient], "option7", "None\n ");
 	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back\
-		\n==========================\
+		\n▬▬▬▬▬▬▬▬▬▬▬▬▬\
 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -112,7 +114,7 @@ Action:ChangeClass3MenuDraw(iClient)
 	
 	g_hMenu_XPM[iClient] = CreateMenu(ChangeClass3MenuHandler);
 	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
-	SetMenuTitle(g_hMenu_XPM[iClient], "\n \nChange Your Infected\n==========================\n		Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n \nChange Class 3 to...", g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+	SetMenuTitle(g_hMenu_XPM[iClient], "\n \nChange Your Infected\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n \nChange Class 3 to...", g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Smoker");
 	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Boomer");
 	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Hunter");
@@ -122,7 +124,7 @@ Action:ChangeClass3MenuDraw(iClient)
 	AddMenuItem(g_hMenu_XPM[iClient], "option7", "None\n ");
 	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back\
-		\n==========================\
+		\n▬▬▬▬▬▬▬▬▬▬▬▬▬\
 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
@@ -134,7 +136,7 @@ Action:ChangeClass3MenuDraw(iClient)
 //Top Infected Menu Handler
 TopInfectedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if(action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -195,7 +197,7 @@ TopInfectedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 //Choose Infected Classes Menu
 ChangeInfectedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if(action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -241,7 +243,7 @@ ChangeInfectedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 // //Confirm Reset All Classes Menu
 // ConfirmResetClassesHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 // {
-// 	if(action==MenuAction_Select) 
+// 	if(action == MenuAction_Select) 
 // 	{
 // 		switch (itemNum)
 // 		{
@@ -262,7 +264,7 @@ ChangeInfectedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 //Change Infected Class 1
 ChangeClass1MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if(action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -372,7 +374,7 @@ ChangeClass1MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 //Change Infected Class 2
 ChangeClass2MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if(action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -482,7 +484,7 @@ ChangeClass2MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 //Change Infected Class 3
 ChangeClass3MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if(action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
