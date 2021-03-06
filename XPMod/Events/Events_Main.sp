@@ -511,7 +511,7 @@ Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	
 	//Reset CVars and XPMod Variables for the round
 	//SetConVarInt(FindConVar("z_frustration"), 0);
-	SetConVarInt(FindConVar("z_frustration_lifetime"), 60);
+	SetConVarInt(FindConVar("z_frustration_lifetime"), TANK_FRUSTRATION_TIME_IN_SECONDS);
 	SetConVarInt(FindConVar("z_common_limit"), 30);
 	SetConVarInt(FindConVar("sv_disable_glow_survivors"), 0);
 	SetConVarInt(FindConVar("z_claw_hit_pitch_max"), 20);
