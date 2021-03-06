@@ -1,15 +1,10 @@
-// ConVars
-//new Handle:g_hCVar_TalentSelectionMode      = INVALID_HANDLE;
-//new g_iTalentSelectionMode                  = CONVAR_WEBSITE;
-new Handle:g_hCVar_DefaultSurvivor          = INVALID_HANDLE;
-new g_iDefaultSurvivor                      = BILL;
-new Handle:g_hCVar_DefaultInfecttedSlot1    = INVALID_HANDLE;
-new g_iDefaultInfectedSlot1                 = BOOMER;
-new Handle:g_hCVar_DefaultInfecttedSlot2    = INVALID_HANDLE;
-new g_iDefaultInfectedSlot2                 = JOCKEY;
-new Handle:g_hCVar_DefaultInfecttedSlot3    = INVALID_HANDLE;
-new g_iDefaultInfectedSlot3                 = SMOKER;
-
+// Debug Modes
+#define DEBUG_MODE_TESTING      -1
+#define DEBUG_MODE_OFF          0
+#define DEBUG_MODE_ERRORS       1
+#define DEBUG_MODE_TIMERS       2
+#define DEBUG_MODE_VERBOSE      3
+#define DEBUG_MODE_EVERYTHING   4
 
 //XPM Options
 new g_iXPDisplayMode[MAXPLAYERS + 1];						//Default 0 = Show Sprites; 1 = Show In Chat, 2 = Disabled
@@ -24,3 +19,18 @@ new g_iXPDisplayMode[MAXPLAYERS + 1];						//Default 0 = Show Sprites; 1 = Show 
 #define DEFAULT_LOADOUT_HEALTH_ID               1
 #define DEFAULT_LOADOUT_EXPLOSIVE_ID            2
 #define DEFAULT_LOADOUT_BOOST_ID                1
+
+
+// ConVars
+new Handle:g_hCVar_DebugMode                = INVALID_HANDLE;
+new g_iDebugMode                            = DEBUG_MODE_OFF;
+//new Handle:g_hCVar_TalentSelectionMode      = INVALID_HANDLE;
+//new g_iTalentSelectionMode                  = CONVAR_WEBSITE;
+new Handle:g_hCVar_DefaultSurvivor          = INVALID_HANDLE;
+new g_iDefaultSurvivor                      = BILL;
+new Handle:g_hCVar_DefaultInfecttedSlot1    = INVALID_HANDLE;
+new g_iDefaultInfectedSlot1                 = BOOMER;
+new Handle:g_hCVar_DefaultInfecttedSlot2    = INVALID_HANDLE;
+new g_iDefaultInfectedSlot2                 = JOCKEY;
+new Handle:g_hCVar_DefaultInfecttedSlot3    = INVALID_HANDLE;
+new g_iDefaultInfectedSlot3                 = SMOKER;

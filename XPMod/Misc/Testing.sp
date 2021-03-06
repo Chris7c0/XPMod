@@ -157,6 +157,13 @@ Action:TestFunction2(iClient, args)
 	GetCmdArg(1, str1, sizeof(str1));
 	GetCmdArg(2, str2, sizeof(str2));
 
+	// DebugLog(DEBUG_MODE_TESTING, "DEBUG_MODE_TESTING %N, %i, %i, %i, %i, %f, %f, %s, %s", iClient, 1, 2, 3, 4, 5.5, 6.6, "testing", "another test string!");
+	// DebugLog(DEBUG_MODE_TESTING, "DEBUG_MODE_TESTING");
+	// DebugLog(DEBUG_MODE_ERRORS, "DEBUG_MODE_ERRORS %N", iClient);
+	// DebugLog(DEBUG_MODE_TIMERS, "DEBUG_MODE_TIMERS %N", iClient);
+	// DebugLog(DEBUG_MODE_VERBOSE, "DEBUG_MODE_VERBOSE %N", iClient);
+	// DebugLog(DEBUG_MODE_EVERYTHING, "DEBUG_MODE_EVERYTHING %N", iClient);
+
 	// g_iTesting =  StringToInt(str1);
 
 	// decl Float:xyzClientLocation[3];
