@@ -27,3 +27,26 @@ Action TimerPauseGame(Handle:timer, any:iClient)
     PauseGame(iClient);
     return Plugin_Stop;
 }
+
+HealClientFully(iClient)
+{
+	if (RunClientChecks(iClient) == false || IsPlayerAlive(iClient) == false)
+		return;
+
+	new iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
+
+	SetEntProp(iClient, Prop_Data, "m_iHealth", iMaxHealth);
+}
+
+HealAllSurvivorsFully()
+{
+	for(new i=1;i <= MaxClients;i++)
+	{
+		if (RunClientChecks(i) && 
+			IsPlayerAlive(i) && 
+			g_iClientTeam[i] == TEAM_SURVIVORS)
+		{
+			HealClientFully(i);
+		}
+	}
+}

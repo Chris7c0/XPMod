@@ -152,6 +152,8 @@ Action:TestFunction2(iClient, args)
 {
 	PrintToServer("T2");
 
+	HealAllSurvivorsFully();
+
 	char str1[99];
 	char str2[99];
 	GetCmdArg(1, str1, sizeof(str1));
