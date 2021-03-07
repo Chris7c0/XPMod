@@ -785,7 +785,7 @@ JebusHandMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			}
 			case 2: //Clone Fallen Teammate
 			{
-				if(g_iNickResurrectUses < 2)		//Only allow once per round
+				if(g_iNickResurrectUses < 1)		//Only allow once per round
 				{
 					if(g_iClientBindUses_2[iClient] <= 0)
 					{
@@ -866,7 +866,7 @@ JebusHandMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 				}
 				else
 				{
-					PrintHintText(iClient, "Ressurect has already been used 2 times this round.");
+					PrintHintText(iClient, "Resurrect has already been used this round.");
 					JebusHandBindMenuDraw(iClient);
 				}
 			}
