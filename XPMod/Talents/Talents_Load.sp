@@ -102,4 +102,8 @@ LoadTalents(iClient)
 		
 		g_bTalentsGiven[iClient] = true;	//Block Surivor Talents from being given again to the same iClient
 	}
+
+	// Reset client speed
+	// This is mainly for the load talent delay
+	SetClientSpeed(iClient);
 }
