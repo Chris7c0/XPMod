@@ -35,24 +35,24 @@ void BindPress(int iClient, int iBindNumber)
 	{
 		switch(g_iChosenSurvivor[iClient])
 		{
-			case BILL:		iBindNumber == 1 ? Bind1Press_Bill(iClient) : Bind2Press_Bill(iClient);
-			case ROCHELLE:	iBindNumber == 1 ? Bind1Press_Rochelle(iClient) : Bind2Press_Rochelle(iClient);
-			case COACH:		iBindNumber == 1 ? Bind1Press_Coach(iClient) : Bind2Press_Coach(iClient);
-			case ELLIS:		iBindNumber == 1 ? Bind1Press_Ellis(iClient) : Bind2Press_Ellis(iClient);
-			case NICK:		iBindNumber == 1 ? Bind1Press_Nick(iClient) : Bind2Press_Nick(iClient);
-			case LOUIS:		iBindNumber == 1 ? Bind1Press_Louis(iClient) : Bind2Press_Louis(iClient);
+			case BILL:		iBindNumber == 1 ? Bind1Press_Bill(iClient) 	: Bind2Press_Bill(iClient);
+			case ROCHELLE:	iBindNumber == 1 ? Bind1Press_Rochelle(iClient)	: Bind2Press_Rochelle(iClient);
+			case COACH:		iBindNumber == 1 ? Bind1Press_Coach(iClient) 	: Bind2Press_Coach(iClient);
+			case ELLIS:		iBindNumber == 1 ? Bind1Press_Ellis(iClient) 	: Bind2Press_Ellis(iClient);
+			case NICK:		iBindNumber == 1 ? Bind1Press_Nick(iClient) 	: Bind2Press_Nick(iClient);
+			case LOUIS:		iBindNumber == 1 ? Bind1Press_Louis(iClient) 	: Bind2Press_Louis(iClient);
 		}
 	}
 	else if(g_iClientTeam[iClient] == TEAM_INFECTED)
 	{
 		switch(g_iInfectedCharacter[iClient])
 		{
-			case SMOKER:	iBindNumber == 1 ? Bind1Press_Smoker(iClient) : Bind2Press_Smoker(iClient);
-			case BOOMER:	iBindNumber == 1 ? Bind1Press_Boomer(iClient) : Bind2Press_Boomer(iClient);
-			case HUNTER:	iBindNumber == 1 ? Bind1Press_Hunter(iClient) : Bind2Press_Hunter(iClient);
-			case SPITTER:	iBindNumber == 1 ? Bind1Press_Spitter(iClient) : Bind2Press_Spitter(iClient);
-			case JOCKEY:	iBindNumber == 1 ? Bind1Press_Jockey(iClient) : Bind2Press_Jockey(iClient);
-			case CHARGER:	iBindNumber == 1 ? Bind1Press_Charger(iClient) : Bind2Press_Charger(iClient);
+			case SMOKER:	iBindNumber == 1 ? Bind1Press_Smoker(iClient) 	: Bind2Press_Smoker(iClient);
+			case BOOMER:	iBindNumber == 1 ? Bind1Press_Boomer(iClient) 	: Bind2Press_Boomer(iClient);
+			case HUNTER:	iBindNumber == 1 ? Bind1Press_Hunter(iClient) 	: Bind2Press_Hunter(iClient);
+			case SPITTER:	iBindNumber == 1 ? Bind1Press_Spitter(iClient) 	: Bind2Press_Spitter(iClient);
+			case JOCKEY:	iBindNumber == 1 ? Bind1Press_Jockey(iClient) 	: Bind2Press_Jockey(iClient);
+			case CHARGER:	iBindNumber == 1 ? Bind1Press_Charger(iClient) 	: Bind2Press_Charger(iClient);
 		}
 	}
 }
