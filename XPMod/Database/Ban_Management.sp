@@ -18,17 +18,22 @@ SQLCheckIfUserIsInBanListCallback(Handle:owner, Handle:hQuery, const String:erro
 	decl String:strData[50];
 	if(SQL_FetchRow(hQuery))
 	{		
-		//Get Client's User Token from the SQL database
+		//Get the ban duration of the user, if null returned then ban for a long time
 		if(SQL_FetchString(hQuery, 0, strData, sizeof(strData)) != 0)
 		{
 			new iBanDurationSeconds = StringToInt(strData);
-			// PrintToServer("[XPMod] BANNING FOR %i SECONDS", iBanDurationSeconds);
+			PrintToServer("[XPMod] BANNING FOR %i SECONDS", iBanDurationSeconds);
 
 			// If the user was found in the bans table, ban them again
 			// Note: this occurs when the server has been restarted and their ban is not currently in memory.
 			// Once it has been added to memory, they will no longer be able to join to get to this point.
 			if (iBanDurationSeconds > 60)
 				BanClient(iClient, RoundToFloor(iBanDurationSeconds / 60.0), BANFLAG_AUTHID, "XPMod Banned", "You are currently banned from XPMod servers");
+		}
+		else
+		{
+			// User has been banned with a NULL expiration_timer so ban for a long time
+			BanClient(iClient, 9999999, BANFLAG_AUTHID, "XPMod Banned", "You are permanently banned from XPMod servers");
 		}
 	}
 	
