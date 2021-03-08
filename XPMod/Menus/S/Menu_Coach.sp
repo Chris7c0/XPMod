@@ -234,11 +234,12 @@ Action:LeadMenuDraw(iClient)
 		\n					Requires Level 11\
 		\n \
 		\nLevel 1:\
-		\n(Team) +10%% chainsaw fuel per level\
+		\n(Team) +10%%%% chainsaw fuel per level\
 		\n(Stacks) (Team) +5 max health per level\
 		\n \
 		\nLevel 5:\
-		\n(Team) Prevent screen shaking on damage\
+		\n(Stacks) (Team) Reduce screen shaking when\
+		\n   taking damage by 33%%%%\
 		\n \
 		\n \
 		\n				 Bind 1: Heavy Gunner\
@@ -255,7 +256,7 @@ Action:LeadMenuDraw(iClient)
 	SetMenuTitle(g_hMenu_XPM[iClient], text);
 	
 	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
 	SetMenuExitButton(g_hMenu_XPM[iClient], false);
 	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);

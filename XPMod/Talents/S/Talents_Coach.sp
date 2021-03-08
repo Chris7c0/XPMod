@@ -84,25 +84,20 @@ TalentsLoad_Coach(iClient)
 					}
 				}
 			}
+
+			g_iScreenShakeAmount -= 7;
+			SetSurvivorScreenShakeAmount();
 		}
 		
-		//Set Convars for all coaches
-		if(g_iHighestLeadLevel>0)
-		{
-			if(g_iHighestLeadLevel==5)
-			{
-				//coachnoshake = true;
-				SetConVarInt(FindConVar("z_claw_hit_pitch_max"), 0);
-				SetConVarInt(FindConVar("z_claw_hit_pitch_min"), 0);
-				SetConVarInt(FindConVar("z_claw_hit_yaw_max"), 0);
-				SetConVarInt(FindConVar("z_claw_hit_yaw_min"), 0);
-			}
-			/*
-			SetConVarInt(FindConVar("chainsaw_attack_force"), 400 + (g_iHighestLeadLevel * 40));
-			SetConVarInt(FindConVar("chainsaw_damage"), 100 + (g_iHighestLeadLevel * 10));
-			SetConVarFloat(FindConVar("chainsaw_hit_interval"), 0.1 - (float(g_iHighestLeadLevel) * 0.01),false,false);
-			*/
-		}
+		// //Set Convars for all coaches
+		// if(g_iHighestLeadLevel>0)
+		// {
+		// 	/*
+		// 	SetConVarInt(FindConVar("chainsaw_attack_force"), 400 + (g_iHighestLeadLevel * 40));
+		// 	SetConVarInt(FindConVar("chainsaw_damage"), 100 + (g_iHighestLeadLevel * 10));
+		// 	SetConVarFloat(FindConVar("chainsaw_hit_interval"), 0.1 - (float(g_iHighestLeadLevel) * 0.01),false,false);
+		// 	*/
+		// }
 	}
 	
 	if( (g_iClientLevel[iClient] - (g_iClientLevel[iClient] - g_iSkillPoints[iClient])) <= (g_iClientLevel[iClient] - 1))

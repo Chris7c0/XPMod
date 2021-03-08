@@ -37,6 +37,8 @@ new g_iClientLaserSlotCost[MAXPLAYERS + 1];
 ///////////////////////////////////////////////     PLAYER SPECIFIC VARIABLES     ///////////////////////////////////////////////
 
 // Misc Survivor Variables
+#define SCREEN_SHAKE_AMOUNT_DEFAULT     20
+new g_iScreenShakeAmount = SCREEN_SHAKE_AMOUNT_DEFAULT;
 new bool:g_bClientIsReloading[MAXPLAYERS + 1];
 new g_iReloadFrameCounter[MAXPLAYERS + 1];
 new g_iLaserUpgradeCounter[MAXPLAYERS + 1];
@@ -264,11 +266,15 @@ new bool:g_bNickStoresDroppedPistolAmmo[MAXPLAYERS + 1] = false;
 #define LOUIS_SPEED_MAX                                 1.25
 #define LOUIS_HEADSHOT_SPEED_RETENTION_TIME_CI          60.0
 #define LOUIS_HEADSHOT_SPEED_RETENTION_TIME_SI          60.0
-new bool:g_bLouisTeleportCoolingDown[MAXPLAYERS + 1] = false;
-new bool:g_bLouisTeleportActive[MAXPLAYERS + 1] = false;
+bool g_bLouisTeleportCoolingDown[MAXPLAYERS + 1] = false;
+bool g_bLouisTeleportActive[MAXPLAYERS + 1] = false;
 new g_iLouisTeleportChargeUses[MAXPLAYERS + 1] = 0;
 new Float:g_fLouisTeleportLastUseGameTime[MAXPLAYERS + 1] = 0.0;
 new g_iLouisTeleportBlindnessAmount[MAXPLAYERS + 1] = 0;
 new g_iLouisTeleportMovementPenaltyStacks[MAXPLAYERS + 1] = 0;
 new g_iLouisCIHeadshotCounter[MAXPLAYERS + 1] = 0;
 new g_iLouisSIHeadshotCounter[MAXPLAYERS + 1] = 0;
+bool g_bWareStationActive[MAXPLAYERS + 1];
+bool g_bWareStationClientAlreadyServiced[MAXPLAYERS + 1][MAXPLAYERS + 1];
+float g_xyzWarezStationLocation[MAXPLAYERS + 1][3];
+

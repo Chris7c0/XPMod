@@ -100,6 +100,10 @@ ResetVariablesForMap(iClient)
 	g_iLouisTeleportChargeUses[iClient] = 0;
 	g_iLouisCIHeadshotCounter[iClient] = 0;
 	g_iLouisSIHeadshotCounter[iClient] = 0;
+	g_bWareStationActive[iClient] = false;
+	for(new i=1;i <= MaxClients;i++)
+		g_bWareStationClientAlreadyServiced[iClient][i] = false;
+	g_xyzWarezStationLocation[iClient] = NULL_VECTOR;
 	
 	//Infected Talents
 	g_iInfectedConvarsSet[iClient] = false;

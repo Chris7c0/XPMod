@@ -515,11 +515,9 @@ Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	//SetConVarInt(FindConVar("z_frustration"), 0);
 	SetConVarInt(FindConVar("z_frustration_lifetime"), TANK_FRUSTRATION_TIME_IN_SECONDS);
 	SetConVarInt(FindConVar("z_common_limit"), 30);
+	g_iScreenShakeAmount = SCREEN_SHAKE_AMOUNT_DEFAULT;
+	SetSurvivorScreenShakeAmount();
 	SetConVarInt(FindConVar("sv_disable_glow_survivors"), 0);
-	SetConVarInt(FindConVar("z_claw_hit_pitch_max"), 20);
-	SetConVarInt(FindConVar("z_claw_hit_pitch_min"), -20);
-	SetConVarInt(FindConVar("z_claw_hit_yaw_max"), 20);
-	SetConVarInt(FindConVar("z_claw_hit_yaw_min"), -20);
 	SetConVarInt(FindConVar("chainsaw_attack_force"), 400);
 	SetConVarInt(FindConVar("chainsaw_damage"), 100);
 	SetConVarFloat(FindConVar("chainsaw_hit_interval"), 0.1, false, false);

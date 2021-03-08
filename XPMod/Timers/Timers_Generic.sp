@@ -229,53 +229,9 @@ Action:TimerUnfreeze(Handle:timer, any:data)
 					AdvertiseXPModToNewUser(i);
 				//OpenMOTDPanel(i, " ", "make", MOTDPANEL_TYPE_INDEX);
 				//OpenMOTDPanel(i, "How To Create And Login To Your Account", "http://xpmod.atspace.com/makeaccount.html", MOTDPANEL_TYPE_URL);
-			}
-			
-			/*if(g_iClientTeam[i] == TEAM_SURVIVORS)
-			{
-				if(g_iChosenSurvivor[i] == 0)		//Bills will to live crawling
-				{
-					if(g_iWillLevel[i] > 0)
-					{
-						g_iCrawlSpeedMultiplier += g_iWillLevel[i] * 5;
-						SetConVarInt(FindConVar("survivor_crawl_speed"), (15 + g_iCrawlSpeedMultiplier),false,false);
-						SetConVarInt(FindConVar("survivor_allow_crawling"),1,false,false);
-					}
-				}
-			}*/
-			
+			}			
 		}
 	}
-	
-	//Set CVars for all talents that use them.
-	/*if(g_iHighestLeadLevel>0)
-	{
-		if(g_iHighestLeadLevel==5)
-		{
-			//coachnoshake = true;
-			SetConVarInt(FindConVar("z_claw_hit_pitch_max"), 0);
-			SetConVarInt(FindConVar("z_claw_hit_pitch_min"), 0);
-			SetConVarInt(FindConVar("z_claw_hit_yaw_max"), 0);
-			SetConVarInt(FindConVar("z_claw_hit_yaw_min"), 0);
-		}
-		
-		SetConVarInt(FindConVar("chainsaw_attack_force"), 400 + (g_iHighestLeadLevel * 40));
-		SetConVarInt(FindConVar("chainsaw_damage"), 100 + (g_iHighestLeadLevel * 10));
-		SetConVarFloat(FindConVar("chainsaw_hit_interval"), 0.1 - (float(g_iHighestLeadLevel) * 0.01),false,false);
-	}*/
-	
-	/*for(i=1;i<=MaxClients;i++)
-	{
-		if(RunClientChecks(i) && IsPlayerAlive(iClient) == true)
-		{
-			if(g_iClientTeam[i]==TEAM_SURVIVORS)
-			{
-				new currentmaxHP=GetEntProp(i,Prop_Data,"m_iMaxHealth");
-				SetEntProp(i,Prop_Data,"m_iMaxHealth", currentmaxHP + (g_iCoachTeamHealthStack * 5));
-				SetEntProp(i,Prop_Data,"m_iHealth", currentmaxHP + (g_iCoachTeamHealthStack * 5));
-			}
-		}
-	}*/
 	
 	PrintHintTextToAll("Survivors Are Unfrozen");
 	

@@ -1,99 +1,6 @@
 
 //Testing Functions//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CreateWarezStation(iClient)
-{
-	decl Float:xyzOrigin[3];
-	GetEntPropVector(iClient, Prop_Send, "m_vecOrigin", xyzOrigin);
-	CreateSphere(xyzOrigin, 50.0, 30, 0.1, {0, 255, 50, 255}, 25.0);
-
-	// Fix this later to be on next game frame
-	CreateTimer(0.1, TimerTestingTE_SENDTOALL, iClient);
-	
-	//CreateSphere(xyzOrigin, 5.0, 30, 0.1, {0, 255, 50, 150}, 25.0);
-	//TE_SendToAll();
-	DrawRing(iClient);
-
-	// Create light
-	char color[12];
-	Format( color, sizeof( color ), "%i %i %i", 0, 255, 50 );
-	int iLight = MakeLightDynamic(iClient);
-	SetVariantEntity(iLight);
-	SetVariantString(color);
-	AcceptEntityInput(iLight, "color");
-	AcceptEntityInput(iLight, "TurnOn");
-	CreateTimer(25.0, TimerRemoveLightDynamicEntity, iLight, TIMER_FLAG_NO_MAPCHANGE);
-}
-
-Action:TimerRemoveLightDynamicEntity(Handle:timer, any:iEntity)
-{
-	if (iEntity < 1 || IsValidEntity(iEntity) == false)
-		return Plugin_Stop;
-
-	decl String:strEntityClass[32];
-	GetEntityNetClass(iEntity, strEntityClass, 32);
-	// PrintToChatAll("strEntityClass: %s", strEntityClass);
-	if (StrEqual(strEntityClass, "CDynamicLight", true) == false)
-		return Plugin_Stop;
-
-	AcceptEntityInput(iEntity, "TurnOff");
-	AcceptEntityInput(iEntity, "Kill");
-
-	return Plugin_Stop;
-}
-
-Action:TimerTestingTE_SENDTOALL(Handle:timer, any:iClient)
-{
-	decl Float:xyzOrigin2[3];
-	GetEntPropVector(iClient, Prop_Send, "m_vecOrigin", xyzOrigin2);
-	CreateSphere(xyzOrigin2, 35.0, 30, 0.1, {0, 255, 50, 150}, 25.0);
-	return Plugin_Stop;
-}
-
-void DrawRing(iClient)
-{
-	new Float:vec[3];
-	GetClientAbsOrigin(iClient, vec);
-
-	vec[2] += 10;
-	TE_SetupBeamRingPoint(vec, 60.0, 59.0, g_iSprite_Laser, g_iSprite_Halo, 0, 15, 60.0, 5.0, 0.0, {0, 255, 30, 255}, 10, 0);
-	TE_SendToAll();
-}
-
-
-int MakeLightDynamic(int target) //, const float vPos[3])
-{
-	int entity = CreateEntityByName("light_dynamic");
-	if( entity == -1 || IsValidEntity(entity) == false)
-	{
-		LogError("Failed to create 'light_dynamic'");
-		return 0;
-	}
-
-	DispatchKeyValue(entity, "_light", "0 255 0 0");
-	DispatchKeyValue(entity, "brightness", "0.1");
-	DispatchKeyValueFloat(entity, "spotlight_radius", 100.0);
-	DispatchKeyValueFloat(entity, "distance", 400.0);
-	DispatchKeyValue(entity, "style", "6");
-	DispatchSpawn(entity);
-	AcceptEntityInput(entity, "TurnOff");
-	
-	new Float:vPos[3];
-	GetClientEyePosition(target, vPos);
-
-	TeleportEntity(entity, vPos, NULL_VECTOR, NULL_VECTOR);
-
-	// // Attaching has many issues, lighting glitches, laggy, fps, just dont do it.
-	// // Attach
-	// if( target )
-	// {
-	// 	SetVariantString("!activator");
-	// 	AcceptEntityInput(entity, "SetParent", target);
-	// }
-
-	return entity;
-}
-
 
 //new Float:g_fEllisTestFireRate = 0.0;
 Action:TestFunction1(iClient, args)
@@ -113,8 +20,6 @@ Action:TestFunction1(iClient, args)
 	// new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 	// new iAmmo = GetEntData(iClient, iOffset_Ammo + StringToInt(str1));
 	// PrintToChatAll("iammo = %i", iAmmo);
-
-	CreateWarezStation(iClient);
 
 	PrintAllInEnhancedCIEntityList();
 

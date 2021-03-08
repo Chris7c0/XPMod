@@ -523,23 +523,26 @@ DeleteAllMenuParticles(iClient)
 	
 }
 
-CreateSphere(Float:xyzOrigin[3], Float:fSphereDiameter, iRings, Float:fRingWidth, const int vColor[4], Float:fLifeTime, Float:fZOffset = 50.0)
+CreateSphere(const Float:xyzOrigin[3], Float:fSphereDiameter, iRings, Float:fRingWidth, const int vColor[4], Float:fLifeTime, Float:fZOffset = 50.0)
 {
 	decl Float:fRingDiameter;
 	
-	decl Float:xyzRingPosition[3];
+	decl Float:xyzSpherePosition[3], Float:xyzRingPosition[3];
+	xyzSpherePosition[0] = xyzOrigin[0];
+	xyzSpherePosition[1] = xyzOrigin[1];
+	// Apply the zoffset to raise it or lower it.
+	xyzSpherePosition[2] = xyzOrigin[2] + fZOffset;
+	// Set x and y for ring positions
 	xyzRingPosition[0] = xyzOrigin[0];
 	xyzRingPosition[1] = xyzOrigin[1];
-	// Apply the zoffset to raise it or lower it.
-	xyzOrigin[2] += fZOffset;
-	
+
 	// Create the rings to make the spehere
 	decl i;
 	for(i = 1; i < iRings; i++)
 	{
 		fRingDiameter = 0.0 + fSphereDiameter * Sine( PI * (i / float(iRings)) );
-		xyzRingPosition[2] = xyzOrigin[2] + ( (fSphereDiameter / 2.0) * Cosine( PI * (i / float(iRings)) ) );
-
+		xyzRingPosition[2] = xyzSpherePosition[2] + ( (fSphereDiameter / 2.0) * Cosine( PI * (i / float(iRings)) ) );
+		
 		TE_Start("BeamRingPoint");
 		TE_WriteVector("m_vecCenter", xyzRingPosition);
 		TE_WriteFloat("m_flStartRadius",  fRingDiameter);
