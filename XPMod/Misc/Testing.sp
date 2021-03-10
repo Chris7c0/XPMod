@@ -1,11 +1,10 @@
 
 //Testing Functions//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
 //new Float:g_fEllisTestFireRate = 0.0;
 Action:TestFunction1(iClient, args)
 {
-	PrintToServer("T1");
+	DebugLog(DEBUG_MODE_TESTING, "T1");
 	//PrintToChat(iClient, "T1");
 	
 	char str1[99];
@@ -22,7 +21,7 @@ Action:TestFunction1(iClient, args)
 	// PrintToChatAll("iammo = %i", iAmmo);
 
 	PrintAllInEnhancedCIEntityList();
-
+	
 	//SetSIAbilityCooldown(iClient, StringToFloat(str1), StringToInt(str2) == 1 ? true : false);
 
 	// z_ghost_delay_max 30
@@ -55,7 +54,7 @@ Action:TestFunction1(iClient, args)
 
 Action:TestFunction2(iClient, args)
 {
-	PrintToServer("T2");
+	DebugLog(DEBUG_MODE_TESTING, "T2");
 
 	HealAllSurvivorsFully();
 
@@ -93,7 +92,7 @@ Action:TestFunction2(iClient, args)
 
 Action:TestFunction3(iClient, args)
 {
-	PrintToChat(iClient, "T3");
+	DebugLog(DEBUG_MODE_TESTING, "T3");
 	char str1[99];
 	GetCmdArg(1, str1, sizeof(str1));
 	char str2[99];
@@ -113,7 +112,7 @@ Action:TestFunction3(iClient, args)
 
 Action:TestFunction4(iClient, args)
 {
-	PrintToServer("T4");
+	DebugLog(DEBUG_MODE_TESTING, "T4");
 	char str1[99];
 	GetCmdArg(1, str1, sizeof(str1));
 
@@ -137,7 +136,7 @@ Action:TestFunction4(iClient, args)
 
 Action:TestFunction5(iClient, args)
 {
-	//PrintToChat(iClient, "T5");
+	DebugLog(DEBUG_MODE_TESTING, "T5");
 
 	RunCheatCommand(iClient, "z_spawn_old", "z_spawn_old tank auto");
 
@@ -152,31 +151,4 @@ Action:GiveMoreBinds(admin, args)
 {
 	g_iClientBindUses_1[admin] = -99;
 	g_iClientBindUses_2[admin] = -99;
-}
-
-
-public Action:TimeScale(client, args)
-{
-	decl i_Ent, String:arg[12];
-	if(args == 1)
-	{
-		GetCmdArg(1, arg, sizeof(arg));
-		new Float:scale = StringToFloat(arg);
-		if(scale == 0.0)
-		{
-			ReplyToCommand(client, "[SM] Invalid Float!");
-			return;
-		}	
-		i_Ent = CreateEntityByName("func_timescale");
-		DispatchKeyValue(i_Ent, "desiredTimescale", arg);
-		DispatchKeyValue(i_Ent, "acceleration", "2.0");
-		DispatchKeyValue(i_Ent, "minBlendRate", "1.0");
-		DispatchKeyValue(i_Ent, "blendDeltaMultiplier", "2.0");
-		DispatchSpawn(i_Ent);
-		AcceptEntityInput(i_Ent, "Start");
-	}
-	else
-	{
-		ReplyToCommand(client, "[SM] Usage: sm_timescale <float>");
-	}	
 }

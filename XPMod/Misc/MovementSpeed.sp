@@ -46,7 +46,7 @@ SetClientSpeed(iClient)
 	SetEntDataFloat(iClient, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), fSpeed, true);
 	// if (IsFakeClient(iClient) == false)
 	// 	PrintToChat(iClient, "SetClientSpeed: %N: %f", iClient, fSpeed);
-	//PrintToChatAll("SetClientSpeed: %N: %f", iClient, fSpeed);
+	// PrintToChatAll("SetClientSpeed: %N: %f", iClient, fSpeed);
 }
 
 // Action:TimerResetClientSpeed(Handle:timer, any:iClient)
@@ -151,6 +151,9 @@ SetClientSpeedNick(iClient, &Float:fSpeed)
 
 SetClientSpeedLouis(iClient, &Float:fSpeed)
 {
+	// Warez Station boost
+	fSpeed += g_fWarezStationSpeedBoost[iClient];
+
 	if (g_bTalentsConfirmed[iClient] == false ||
 		g_iChosenSurvivor[iClient] != LOUIS)
 		return;

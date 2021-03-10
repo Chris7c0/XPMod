@@ -56,6 +56,10 @@ ResetVariablesForMap(iClient)
 	// Victim Health Meter
 	g_bVictimHealthMeterActive[iClient] = false;
 	g_iVictimHealthMeterWatchVictim[iClient] =  0;
+	// Self Revives
+	g_iSelfRevives[iClient] = 0;
+	g_bSelfReviving[iClient] = false;
+	g_fSelfRevivingFinishTime[iClient] = -1.0;
 
 	g_iInfectedCharacter[iClient] = UNKNOWN_INFECTED;
 	RemoveAllEntitiesFromArrayList(g_listEnhancedCIEntities);
@@ -103,7 +107,9 @@ ResetVariablesForMap(iClient)
 	g_bWareStationActive[iClient] = false;
 	for(new i=1;i <= MaxClients;i++)
 		g_bWareStationClientAlreadyServiced[iClient][i] = false;
+	g_iWareStationOwnerIDOfCurrentlyViewedStation[iClient] = -1;
 	g_xyzWarezStationLocation[iClient] = NULL_VECTOR;
+	g_fWarezStationSpeedBoost[iClient] = 0.0;
 	
 	//Infected Talents
 	g_iInfectedConvarsSet[iClient] = false;
@@ -221,6 +227,7 @@ DeleteAllGlobalTimerHandles(iClient)
 	//delete g_hTimer_FreezeCountdown;
 	delete g_hTimer_ShowingConfirmTalents[iClient];
 	delete g_hTimer_VictimHealthMeterStop[iClient];
+	delete g_hTimer_SelfReviveCheck[iClient];
 	delete g_hTimer_DrugPlayer[iClient];
 	delete g_hTimer_HallucinatePlayer[iClient];
 	delete g_hTimer_SlapPlayer[iClient];

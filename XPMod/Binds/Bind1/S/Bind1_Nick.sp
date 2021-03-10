@@ -85,46 +85,11 @@ void Bind1Press_Nick(iClient)
 
 								PrintHintText(iClient,"Rolled a 3\nYou raided a huge weapon store. Lock and Load!");
 								PrintToChatAll("\x03[XPMod] \x05%N received a shite-ton of weapons.", iClient);
-								RunCheatCommand(iClient, "give", "give smg");
-								RunCheatCommand(iClient, "give", "give smg_silenced");
-								RunCheatCommand(iClient, "give", "give smg_mp5");
-								RunCheatCommand(iClient, "give", "give rifle");
-								RunCheatCommand(iClient, "give", "give rifle_sg552");
-								RunCheatCommand(iClient, "give", "give rifle_desert");
-								RunCheatCommand(iClient, "give", "give pumpshotgun");
-								RunCheatCommand(iClient, "give", "give shotgun_chrome");
-								RunCheatCommand(iClient, "give", "give autoshotgun");
-								RunCheatCommand(iClient, "give", "give shotgun_spas");
-								RunCheatCommand(iClient, "give", "give hunting_rifle");
-								RunCheatCommand(iClient, "give", "give sniper_military");
-								RunCheatCommand(iClient, "give", "give sniper_scout");
-								RunCheatCommand(iClient, "give", "give sniper_awp");
-								RunCheatCommand(iClient, "give", "give grenade_launcher");
-								RunCheatCommand(iClient, "give", "give rifle_m60");
-								RunCheatCommand(iClient, "give", "give pistol");
-								RunCheatCommand(iClient, "give", "give fireaxe");
-								RunCheatCommand(iClient, "give", "give crowbar");
-								RunCheatCommand(iClient, "give", "give cricket_bat");
-								RunCheatCommand(iClient, "give", "give baseball_bat");
-								RunCheatCommand(iClient, "give", "give katana");
-								RunCheatCommand(iClient, "give", "give electric_guitar");
-								RunCheatCommand(iClient, "give", "give machete");
-								RunCheatCommand(iClient, "give", "give frying_pan");
-								RunCheatCommand(iClient, "give", "give tonfa");
-								RunCheatCommand(iClient, "give", "give chainsaw");
-								//RunCheatCommand(iClient, "give", "give riotshield");
-								RunCheatCommand(iClient, "give", "give knife");
-								RunCheatCommand(iClient, "give", "give golfclub");
-								RunCheatCommand(iClient, "give", "give pipe_bomb");
-								RunCheatCommand(iClient, "give", "give molotov");
-								RunCheatCommand(iClient, "give", "give vomitjar");
-								RunCheatCommand(iClient, "give", "give upgradepack_explosive");
-								RunCheatCommand(iClient, "give", "give upgradepack_incendiary");
+								
+								GiveEveryWeaponToSurvivor(iClient);
 								// The ones Nick will have after
 								RunCheatCommand(iClient, "give", "give rifle_ak47");
 								RunCheatCommand(iClient, "give", "give pistol_magnum");
-
-
 							}
 							case 4: //Rambo
 							{

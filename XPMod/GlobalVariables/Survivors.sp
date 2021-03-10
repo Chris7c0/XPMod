@@ -68,7 +68,13 @@ new bool:g_bAdhesiveGooActive[MAXPLAYERS + 1];
 #define VICTIM_HEALTH_METER_DISPLAY_TIME        3.0
 new bool:g_bVictimHealthMeterActive[MAXPLAYERS + 1];
 new g_iVictimHealthMeterWatchVictim[MAXPLAYERS + 1];
-
+// Self Revives
+#define SELF_REVIVE_TIME	    4.0
+#define SELF_REVIVE_HEALTH	    1
+#define SELF_REVIVE_TEMP_HEALTH 30
+new g_iSelfRevives[MAXPLAYERS + 1];
+new bool:g_bSelfReviving[MAXPLAYERS + 1];
+new Float:g_fSelfRevivingFinishTime[MAXPLAYERS + 1];
 
 // Grapples
 new bool:g_bIsClientGrappled[MAXPLAYERS + 1];
@@ -276,5 +282,6 @@ new g_iLouisCIHeadshotCounter[MAXPLAYERS + 1] = 0;
 new g_iLouisSIHeadshotCounter[MAXPLAYERS + 1] = 0;
 bool g_bWareStationActive[MAXPLAYERS + 1];
 bool g_bWareStationClientAlreadyServiced[MAXPLAYERS + 1][MAXPLAYERS + 1];
+new g_iWareStationOwnerIDOfCurrentlyViewedStation[MAXPLAYERS + 1];
 float g_xyzWarezStationLocation[MAXPLAYERS + 1][3];
-
+float g_fWarezStationSpeedBoost[MAXPLAYERS + 1];
