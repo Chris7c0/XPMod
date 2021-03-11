@@ -155,9 +155,13 @@ Action:ChooseSmokerClassMenuDraw(iClient)
 //Handlers/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Smoker Top Menu Handler
-SmokerTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SmokerTopMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -205,9 +209,13 @@ SmokerTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Envelopment Menu Handler
-EnvelopmentMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+EnvelopmentMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -220,9 +228,13 @@ EnvelopmentMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Noxious Gasses Menu Handler
-NoxiousMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+NoxiousMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -235,9 +247,13 @@ NoxiousMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Dirty Menu Handler
-DirtyMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+DirtyMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -250,9 +266,13 @@ DirtyMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Choose Smoker Top Menu Handler
-ChooseSmokerClassMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ChooseSmokerClassMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{

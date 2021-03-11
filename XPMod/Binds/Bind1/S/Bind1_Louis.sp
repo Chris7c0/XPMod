@@ -139,14 +139,12 @@ WarezStationMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 	{
 		delete menu;
 	}
-	else if(action == MenuAction_Select)
+	else if (action == MenuAction_Select)
 	{
 		if (RunClientChecks(iClient) == false || 
-		g_iClientTeam[iClient] != TEAM_SURVIVORS || 
-		IsFakeClient(iClient))
-		{
+			g_iClientTeam[iClient] != TEAM_SURVIVORS || 
+			IsFakeClient(iClient))
 			return;
-		}
 
 		if (g_bIsClientGrappled[iClient] || GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1)
 		{

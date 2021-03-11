@@ -601,7 +601,6 @@ EventsDeath_VictimNick(Handle:hEvent, iAttacker, iVictim)
 //Jebus Hand Menu
 Action:JebusHandBindMenuDraw(iClient) 
 {
-	
 	Menu menu = CreateMenu(JebusHandMenuHandler);
 	
 	g_iOverLevel[iClient] = 3 - g_iClientBindUses_2[iClient];
@@ -617,20 +616,24 @@ Action:JebusHandBindMenuDraw(iClient)
 }
 
 //Nick Menu Handler
-JebusHandMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+JebusHandMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(RunClientChecks(iClient) == false)
-		return;
-	
-	if(IsPlayerAlive(iClient) == false)
+	if (action == MenuAction_End)
 	{
-		if(IsFakeClient(iClient) == false)
-			PrintToChat(iClient, "\x03[XPMod] \x01You cannot use Jebus Hand after you have died.");
-		return;
+		delete menu;
 	}
-	
-	if(action==MenuAction_Select) 
+	else if (action == MenuAction_Select) 
 	{
+		if (RunClientChecks(iClient) == false)
+		return;
+	
+		if (IsPlayerAlive(iClient) == false)
+		{
+			if(IsFakeClient(iClient) == false)
+				PrintToChat(iClient, "\x03[XPMod] \x01You cannot use Jebus Hand after you have died.");
+			return;
+		}
+
 		switch (itemNum)
 		{
 			case 0: //Heal Every Teammate

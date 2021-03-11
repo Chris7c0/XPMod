@@ -307,9 +307,13 @@ Action:StrongMenuDraw(iClient)
 //Handlers//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Nick Menu Handler
-CoachMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+CoachMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -351,9 +355,13 @@ CoachMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Bull Training Handler
-BullMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+BullMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if (action==MenuAction_Select ) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch(itemNum)
 		{
@@ -366,9 +374,13 @@ BullMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Wrecking Ball Handler
-WreckingMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+WreckingMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if (action==MenuAction_Select ) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch(itemNum)
 		{
@@ -381,9 +393,13 @@ WreckingMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Spray n' Pray Handler
-SprayMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SprayMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if (action==MenuAction_Select ) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch(itemNum)
 		{
@@ -396,9 +412,13 @@ SprayMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Homerun Handler
-HomerunMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+HomerunMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if (action==MenuAction_Select ) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch(itemNum)
 		{
@@ -411,9 +431,13 @@ HomerunMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Lead by Example Handler
-LeadMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+LeadMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if (action==MenuAction_Select ) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch(itemNum)
 		{
@@ -426,9 +450,13 @@ LeadMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Strong Arm Handler
-StrongMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+StrongMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if (action==MenuAction_Select ) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch(itemNum)
 		{

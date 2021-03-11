@@ -291,9 +291,13 @@ Action:DesperateMenuDraw(iClient)
 //Handlers//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Nick Menu Handler
-NickMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+NickMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -335,9 +339,13 @@ NickMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Swindler Handler
-SwindlerMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SwindlerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if (action==MenuAction_Select ) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch(itemNum)
 		{
@@ -350,9 +358,13 @@ SwindlerMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Leftover Supplies Handler
-LeftoverMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+LeftoverMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if (action==MenuAction_Select ) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch(itemNum)
 		{
@@ -365,9 +377,13 @@ LeftoverMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Risky Business Handler
-RiskyMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+RiskyMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if (action==MenuAction_Select ) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch(itemNum)
 		{
@@ -380,9 +396,13 @@ RiskyMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Enhanced Pain Killers Handler
-EnhancedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+EnhancedMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if (action==MenuAction_Select ) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch(itemNum)
 		{
@@ -395,9 +415,13 @@ EnhancedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Magnum Stampede Handler
-MagnumMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+MagnumMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if (action==MenuAction_Select ) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch(itemNum)
 		{
@@ -410,9 +434,13 @@ MagnumMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Desperate Measures Handler
-DesperateMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+DesperateMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if (action==MenuAction_Select ) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch(itemNum)
 		{

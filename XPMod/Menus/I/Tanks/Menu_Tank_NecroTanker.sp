@@ -40,9 +40,13 @@ Action:TankMenuDrawNecroTanker(iClient)
 	return Plugin_Handled;
 }
 
-TankMenuHandlerNecroTanker(Handle:hmenu, MenuAction:action, iClient, itemNum)
+TankMenuHandlerNecroTanker(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{

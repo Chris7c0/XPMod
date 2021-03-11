@@ -458,9 +458,13 @@ Action:SlashingMeleeMenuDraw(iClient)
 //Menu Handlers
 
 //Loadout Menu Handler(MAIN)
-LoadoutMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+LoadoutMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -514,9 +518,13 @@ LoadoutMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Primary Slots Menu Handler
-PrimaryMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+PrimaryMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -554,9 +562,13 @@ PrimaryMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Secondary Slots Menu Handler
-SecondaryMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SecondaryMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -586,9 +598,13 @@ SecondaryMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Explosive Slots Menu Handler
-ExplosivesMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ExplosivesMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -621,9 +637,13 @@ ExplosivesMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Health Slots Menu Handler
-HealthMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+HealthMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -661,9 +681,13 @@ HealthMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Boost Slots Menu Handler
-BoostMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+BoostMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -691,9 +715,13 @@ BoostMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Clean Loadout Menu Handler
-CleanMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+CleanMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -722,9 +750,13 @@ CleanMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //SMG Menu Handler
-SMGMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SMGMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -752,9 +784,13 @@ SMGMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //MG Menu Handler
-MGMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+MGMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -787,9 +823,13 @@ MGMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Shotgun Menu Handler
-ShotgunMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ShotgunMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -822,9 +862,13 @@ ShotgunMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Sniper Menu Handler
-SniperMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SniperMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -857,9 +901,13 @@ SniperMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Special Weapons Menu Handler
-SpecialMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SpecialMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -882,9 +930,13 @@ SpecialMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Sidearms Menu Handler
-SidearmMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SidearmMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -912,9 +964,13 @@ SidearmMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Crushing Melee Menu Handler
-CrushingMeleeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+CrushingMeleeMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -962,9 +1018,13 @@ CrushingMeleeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Slashing Melee Menu Handler
-SlashingMeleeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SlashingMeleeMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{

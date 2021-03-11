@@ -43,9 +43,13 @@ Action:CreateNewUserMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-CreateNewUserMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+CreateNewUserMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select)
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch (itemNum)
 		{
@@ -97,9 +101,13 @@ Action:BanMeMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-BanMeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+BanMeMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select)
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch (itemNum)
 		{
@@ -158,9 +166,13 @@ Action:BanConfirmMenu(int iClient, int iBanDurationInMinutes)
 }
 
 
-BanConfirmMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+BanConfirmMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select)
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch (itemNum)
 		{

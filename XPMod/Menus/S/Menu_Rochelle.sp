@@ -290,9 +290,13 @@ Action:ShadowMenuDraw(iClient)
 //Handlers//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Rochelle'sMenu Handler
-RochelleMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+RochelleMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -334,9 +338,13 @@ RochelleMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Gather Training Handler
-GatherMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+GatherMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if (action==MenuAction_Select ) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch(itemNum)
 		{
@@ -349,9 +357,13 @@ GatherMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Hunter Killer Handler
-HunterMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+HunterMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if (action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch(itemNum)
 		{
@@ -364,9 +376,13 @@ HunterMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Sniper's Endurance Handler
-SnipersEnduranceMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SnipersEnduranceMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if (action==MenuAction_Select ) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch(itemNum)
 		{
@@ -379,9 +395,13 @@ SnipersEnduranceMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Silent Handler
-SilentMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SilentMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if (action==MenuAction_Select ) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch(itemNum)
 		{
@@ -394,9 +414,13 @@ SilentMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Smoke and Mirrors Handler
-SmokeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SmokeMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if (action==MenuAction_Select ) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch(itemNum)
 		{
@@ -409,9 +433,13 @@ SmokeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Shadow Ninja Handler
-ShadowMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ShadowMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if (action==MenuAction_Select ) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch(itemNum)
 		{
@@ -429,67 +457,66 @@ Action:DetectionHudMenuDraw(iClient)
 	if(g_iClientTeam[iClient] != TEAM_SURVIVORS || g_bDrawIDD[iClient]== false || IsPlayerAlive(iClient) == false)
 		return Plugin_Handled;
 	
-	if(g_hMenu_IDD[iClient]!=INVALID_HANDLE)
-	{
-		CloseHandle(g_hMenu_IDD[iClient]);
-		g_hMenu_IDD[iClient]=INVALID_HANDLE;
-	}
-	
 	decl String:strDetectedText[128];
 	
-	g_hMenu_IDD[iClient] = CreateMenu(DetectionHudMenuHandler);
-	SetMenuTitle(g_hMenu_IDD[iClient], "    D.E.A.D. I.D. Device %.1f\n=========================\n            WARNING!\n=========================", (1.0 + (g_iGatherLevel[iClient] * 0.2)));
+	Menu menu = CreateMenu(DetectionHudMenuHandler);
+	SetMenuTitle(menu, "    D.E.A.D. I.D. Device %.1f\n=========================\n            WARNING!\n=========================", (1.0 + (g_iGatherLevel[iClient] * 0.2)));
 	
 	if(g_fDetectedDistance_Smoker[iClient] > 0.0)
 		FormatEx(strDetectedText, sizeof(strDetectedText), "Smoker Detected %.0f ft.", g_fDetectedDistance_Smoker[iClient]);
 	else
 		FormatEx(strDetectedText, sizeof(strDetectedText), "N/A");
-	AddMenuItem(g_hMenu_IDD[iClient], "option1", strDetectedText);
+	AddMenuItem(menu, "option1", strDetectedText);
 	
 	if(g_fDetectedDistance_Boomer[iClient] > 0.0)
 		FormatEx(strDetectedText, sizeof(strDetectedText), "Boomer Detected %.0f ft.", g_fDetectedDistance_Boomer[iClient]); 
 	else
 		FormatEx(strDetectedText, sizeof(strDetectedText), "N/A");
-	AddMenuItem(g_hMenu_IDD[iClient], "option2", strDetectedText);
+	AddMenuItem(menu, "option2", strDetectedText);
 	
 	if(g_fDetectedDistance_Hunter[iClient] > 0.0)
 		FormatEx(strDetectedText, sizeof(strDetectedText), "Hunter Detected %.0f ft.", g_fDetectedDistance_Hunter[iClient]); 
 	else
 		FormatEx(strDetectedText, sizeof(strDetectedText), "N/A");
-	AddMenuItem(g_hMenu_IDD[iClient], "option3", strDetectedText);
+	AddMenuItem(menu, "option3", strDetectedText);
 	
 	if(g_fDetectedDistance_Spitter[iClient] > 0.0)
 		FormatEx(strDetectedText, sizeof(strDetectedText), "Spitter Detected %.0f ft.", g_fDetectedDistance_Spitter[iClient]); 
 	else
 		FormatEx(strDetectedText, sizeof(strDetectedText), "N/A");
-	AddMenuItem(g_hMenu_IDD[iClient], "option4", strDetectedText);
+	AddMenuItem(menu, "option4", strDetectedText);
 	
 	if(g_fDetectedDistance_Jockey[iClient] > 0.0)
 		FormatEx(strDetectedText, sizeof(strDetectedText), "Jockey Detected %.0f ft.", g_fDetectedDistance_Jockey[iClient]); 
 	else
 		FormatEx(strDetectedText, sizeof(strDetectedText), "N/A");
-	AddMenuItem(g_hMenu_IDD[iClient], "option5", strDetectedText);
+	AddMenuItem(menu, "option5", strDetectedText);
 	
 	if(g_fDetectedDistance_Charger[iClient] > 0.0)
 		FormatEx(strDetectedText, sizeof(strDetectedText), "Charger Detected %.0f ft.", g_fDetectedDistance_Charger[iClient]); 
 	else
 		FormatEx(strDetectedText, sizeof(strDetectedText), "N/A");
-	AddMenuItem(g_hMenu_IDD[iClient], "option6", strDetectedText);
+	AddMenuItem(menu, "option6", strDetectedText);
 	
 	if(g_fDetectedDistance_Tank[iClient] > 0.0)
 		FormatEx(strDetectedText, sizeof(strDetectedText), "Tank Detected! %.0f ft.\n=========================\n         TANK WARNING!\n=========================", g_fDetectedDistance_Tank[iClient]); 
 	else
 		FormatEx(strDetectedText, sizeof(strDetectedText), "N/A\n=========================");
-	AddMenuItem(g_hMenu_IDD[iClient], "option7", strDetectedText);
+	AddMenuItem(menu, "option7", strDetectedText);
 	
-	SetMenuExitButton(g_hMenu_IDD[iClient], false);
-	DisplayMenu(g_hMenu_IDD[iClient], iClient, 1);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, 1);
 		
 	return Plugin_Handled;
 }
-DetectionHudMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+
+DetectionHudMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{

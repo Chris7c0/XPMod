@@ -162,9 +162,13 @@ Action:ChooseChargerClassMenuDraw(iClient)
 //Handlers/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Charger Top Menu Handler
-ChargerTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ChargerTopMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -212,9 +216,13 @@ ChargerTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Ground 'n Pound Menu Handler
-GroundMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+GroundMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -227,9 +235,13 @@ GroundMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Spiked Carapace Menu Handler
-SpikedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SpikedMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -242,9 +254,13 @@ SpikedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Hillbilly Madness! Menu Handler
-HillbillyMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+HillbillyMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -257,9 +273,13 @@ HillbillyMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Choose Charger Top Menu Handler
-ChooseChargerClassMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ChooseChargerClassMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{

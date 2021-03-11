@@ -33,9 +33,13 @@ Action:TankMenuDrawVampiric(iClient)
 	return Plugin_Handled;
 }
 
-TankMenuHandlerVampiric(Handle:hmenu, MenuAction:action, iClient, itemNum)
+TankMenuHandlerVampiric(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{

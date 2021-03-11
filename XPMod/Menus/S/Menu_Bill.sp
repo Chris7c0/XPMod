@@ -280,9 +280,13 @@ Action:PromotionalMenuDraw(iClient)
 //Handlers//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Bill Menu Handler
-SupportMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SupportMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -325,9 +329,13 @@ SupportMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 
 
 //Inspirational Handler
-InspirationalMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+InspirationalMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -340,9 +348,13 @@ InspirationalMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Ghillie Tactics Menu Handler
-GhillieMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+GhillieMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if( action == MenuAction_Select )
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch (itemNum)
 		{
@@ -356,9 +368,13 @@ GhillieMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 
 
 //Will to Live Handler
-WillMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+WillMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -372,9 +388,13 @@ WillMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 
 
 //Exorcism in a Barrel Handler
-ExorcismMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ExorcismMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select)
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch (itemNum)
 		{
@@ -387,9 +407,13 @@ ExorcismMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Die Hard Handler
-DiehardMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+DiehardMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -402,9 +426,13 @@ DiehardMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Promotional Benefit Handler
-PromotionalMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+PromotionalMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{

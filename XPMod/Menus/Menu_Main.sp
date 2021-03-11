@@ -258,9 +258,13 @@ Action:OptionMenuDraw(iClient)
 //Menu Handler Functions                                                                                   
 //Top Menu Handler
 
-TopChooseCharactersMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+TopChooseCharactersMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -281,9 +285,13 @@ TopChooseCharactersMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum
 }
 
 //Top Menu For Everything
-TopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+TopMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action == MenuAction_Select)
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch (itemNum)
 		{
@@ -336,9 +344,13 @@ TopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 	}
 }
 
-ExtrasMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ExtrasMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -375,9 +387,13 @@ ExtrasMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Choose Team Menu Handler
-ChooseTeamMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ChooseTeamMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select)
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		if(RunClientChecks(iClient) == false || IsFakeClient(iClient))
 			return;
@@ -483,9 +499,13 @@ ChooseTeamMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 	}
 }
 
-OptionMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+OptionMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select)
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch (itemNum)
 		{			

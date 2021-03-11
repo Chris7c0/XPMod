@@ -129,9 +129,13 @@ Action:ChangeClass3MenuDraw(iClient)
 //Infected Menu Handlers
 
 //Top Infected Menu Handler
-TopInfectedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+TopInfectedMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action == MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -182,9 +186,13 @@ TopInfectedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Choose Infected Classes Menu
-ChangeInfectedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ChangeInfectedMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action == MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -226,32 +234,14 @@ ChangeInfectedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 	}
 }
 
-
-// //Confirm Reset All Classes Menu
-// ConfirmResetClassesHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
-// {
-// 	if(action == MenuAction_Select) 
-// 	{
-// 		switch (itemNum)
-// 		{
-// 			case 0: //Yes
-// 			{
-// 				ResetAllInfectedClasses(iClient);
-// 				PrintToChat(iClient, "\x03[XPMod] \x05All of your Special Infected Classes have been reset.");
-// 				ChangeInfectedMenuDraw(iClient);
-// 			}
-// 			case 1: //No
-// 			{
-// 				ChangeInfectedMenuDraw(iClient);
-// 			}
-// 		}
-// 	}
-// }
-
 //Change Infected Class 1
-ChangeClass1MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ChangeClass1MenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action == MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -359,9 +349,13 @@ ChangeClass1MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 	}
 }
 //Change Infected Class 2
-ChangeClass2MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ChangeClass2MenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action == MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -469,9 +463,13 @@ ChangeClass2MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 	}
 }
 //Change Infected Class 3
-ChangeClass3MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ChangeClass3MenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action == MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{

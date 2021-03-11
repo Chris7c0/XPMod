@@ -643,52 +643,6 @@ PrintTeamsToClient(iClient)
 	SendPanelToClient(TeamPanel, iClient, TeamPanelHandler, 40);
 }
 
-
-TeamPanelHandler(Handle:menu, MenuAction:action, param1, param2)
-{
-	if (action==MenuAction_Select)
-		{
-			switch(param2)
-			{
-				case 1:
-					{
-						PrintToChat(param1,"Item 1 pressed");
-					}
-				case 2:
-					{
-						PrintToChat(param1,"Item 2 pressed");
-					}
-				case 3:
-					{
-						PrintToChat(param1,"Item 3 pressed");
-					}
-				case 4:
-					{
-						PrintToChat(param1,"Item 4 pressed");
-					}
-				case 5:
-					{
-						PrintToChat(param1,"Item 5 pressed");
-					}
-				case 6:
-					{
-						PrintToChat(param1,"Item 6 pressed");
-					}
-				case 7:
-					{
-						PrintToChat(param1,"Item 7 pressed");
-					}
-				default:
-					{
-						PrintToChat(param1,"Item default");
-					}
-			}
-		}
-	else
-		PrintToChat(param1,"NONE");
-}
-
-
 Action:CreateOverlay(iClient) 
 { 
      new ent = CreateEntityByName("env_screenoverlay"); 

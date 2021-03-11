@@ -153,9 +153,13 @@ Action:ChooseHunterClassMenuDraw(iClient)
 //Handlers/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Hunter Top Menu Handler
-HunterTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+HunterTopMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -203,9 +207,13 @@ HunterTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Predatorial Evolution Menu Handler
-PredatorialMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+PredatorialMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -222,9 +230,13 @@ PredatorialMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Blood Lust Menu Handler
-BloodlustMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+BloodlustMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -249,9 +261,13 @@ BloodlustMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Kill-meleon Menu Handler
-KillmeleonMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+KillmeleonMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -276,9 +292,13 @@ KillmeleonMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Choose Hunter Top Menu Handler
-ChooseHunterClassMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ChooseHunterClassMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{

@@ -151,9 +151,13 @@ Action:ChooseJockeyClassMenuDraw(iClient)
 //Handlers/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Jockey Top Menu Handler
-JockeyTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+JockeyTopMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -201,9 +205,13 @@ JockeyTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Mutated Tenacity Menu Handler
-MutatedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+MutatedMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -216,9 +224,13 @@ MutatedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Erratic Domination Menu Handler
-ErraticMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ErraticMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -231,9 +243,13 @@ ErraticMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Unfair Advantage Menu Handler
-UnfairMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+UnfairMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -246,9 +262,13 @@ UnfairMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Choose Jockey Top Menu Handler
-ChooseJockeyClassMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ChooseJockeyClassMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{

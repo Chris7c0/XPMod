@@ -68,9 +68,13 @@ Action:ChangeSurvivorMenuDraw(iClient)
 
 
 //Top level Survivor Menu Handler
-TopSurvivorMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+TopSurvivorMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action == MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -99,9 +103,13 @@ TopSurvivorMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Change Character Handler
-ChangeSurvivorMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ChangeSurvivorMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action == MenuAction_Select)
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch (itemNum)
 		{

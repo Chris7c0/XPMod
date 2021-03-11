@@ -242,9 +242,13 @@ Action:BagOfSpitsMenuDraw(iClient)
 //Handlers/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Spitter Top Menu Handler
-SpitterTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+SpitterTopMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -292,9 +296,13 @@ SpitterTopMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Ground 'n Pound Menu Handler
-PuppetMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+PuppetMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -307,9 +315,13 @@ PuppetMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Spiked Carapace Menu Handler
-MaterialMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+MaterialMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -322,9 +334,13 @@ MaterialMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Hillbilly Madness! Menu Handler
-HallucinogenicMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+HallucinogenicMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -337,9 +353,13 @@ HallucinogenicMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Choose Spitter Top Menu Handler
-ChooseSpitterClassMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+ChooseSpitterClassMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -397,9 +417,13 @@ ChooseSpitterClassMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Goo Type Menu Handler
-GooTypeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+GooTypeMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -428,14 +452,18 @@ GooTypeMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Bag of Spits Menu Handler
-BagOfSpitsMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+BagOfSpitsMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	// Make sure they havent already used all their Bind 1s up
-	if (RunClientChecks(iClient) == false || g_iClientBindUses_1[iClient] >= 3) 
-		return;
-
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
 	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
+	{
+		// Make sure they havent already used all their Bind 1s up
+		if (RunClientChecks(iClient) == false || g_iClientBindUses_1[iClient] >= 3) 
+			return;
+			
 		// Ensure a valid item was selected before continuing
 		if (itemNum < 0 || itemNum >= BAG_OF_SPITS_SPIT_COUNT)
 			return;

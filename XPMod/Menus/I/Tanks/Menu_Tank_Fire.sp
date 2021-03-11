@@ -30,9 +30,13 @@ Action:TankMenuDrawFire(iClient)
 	return Plugin_Handled;
 }
 
-TankMenuHandlerFire(Handle:hmenu, MenuAction:action, iClient, itemNum)
+TankMenuHandlerFire(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{

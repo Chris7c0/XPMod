@@ -290,9 +290,13 @@ Action:FireMenuDraw(iClient)
 //Handlers//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Ellis Menu Handler
-EllisMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+EllisMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -334,9 +338,13 @@ EllisMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Overconfidence Handler
-OverMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+OverMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if( action == MenuAction_Select )
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch (itemNum)
 		{
@@ -349,9 +357,13 @@ OverMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //Bring the Pain Handler
-BringMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+BringMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if( action == MenuAction_Select )
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch (itemNum)
 		{
@@ -365,9 +377,13 @@ BringMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 
 
 //Weapons Training Handler
-WeaponsMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+WeaponsMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if( action == MenuAction_Select )
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch (itemNum)
 		{
@@ -381,9 +397,13 @@ WeaponsMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 
 
 //Jammin to the Music Handler
-JamminMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+JamminMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if( action == MenuAction_Select )
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch (itemNum)
 		{
@@ -397,9 +417,13 @@ JamminMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 
 
 //Metal Storm Handler and Mechanic Affinity
-MetalMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+MetalMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if( action == MenuAction_Select )
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch (itemNum)
 		{
@@ -413,9 +437,13 @@ MetalMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 
 
 //Fire Storm Handler
-FireMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+FireMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if( action == MenuAction_Select )
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch (itemNum)
 		{

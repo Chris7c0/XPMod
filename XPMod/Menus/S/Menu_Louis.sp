@@ -247,9 +247,13 @@ Action:LouisTalent6MenuDraw(iClient)
 //Handlers//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Louis Menu Handler
-LouisMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+LouisMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
 	{
 		switch (itemNum)
 		{
@@ -274,9 +278,13 @@ LouisMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //LouisTalent1 Menu Handler
-LouisTalent1MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+LouisTalent1MenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if( action == MenuAction_Select )
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch (itemNum)
 		{
@@ -289,9 +297,13 @@ LouisTalent1MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //LouisTalent2 Menu Handler
-LouisTalent2MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+LouisTalent2MenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if( action == MenuAction_Select )
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch (itemNum)
 		{
@@ -304,9 +316,13 @@ LouisTalent2MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //LouisTalent3 Menu Handler
-LouisTalent3MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+LouisTalent3MenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if( action == MenuAction_Select )
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch (itemNum)
 		{
@@ -319,9 +335,13 @@ LouisTalent3MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //LouisTalent4 Menu Handler
-LouisTalent4MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+LouisTalent4MenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if( action == MenuAction_Select )
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch (itemNum)
 		{
@@ -334,9 +354,13 @@ LouisTalent4MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //LouisTalent5 Menu Handler
-LouisTalent5MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+LouisTalent5MenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if( action == MenuAction_Select )
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch (itemNum)
 		{
@@ -349,9 +373,13 @@ LouisTalent5MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 }
 
 //LouisTalent6 Menu Handler
-LouisTalent6MenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+LouisTalent6MenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if( action == MenuAction_Select )
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch (itemNum)
 		{

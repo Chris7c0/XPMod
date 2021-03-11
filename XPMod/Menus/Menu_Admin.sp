@@ -18,9 +18,13 @@ Action:AdminMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-AdminMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+AdminMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select)
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		switch (itemNum)
 		{
@@ -78,12 +82,16 @@ Action:KickPlayerMenuDraw(iClient)
 }
 
 
-KickPlayerMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+KickPlayerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select)
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		decl String:strInfo[128];
-		GetMenuItem(hmenu, itemNum, strInfo, sizeof(strInfo));
+		GetMenuItem(menu, itemNum, strInfo, sizeof(strInfo));
 		KickClient(StringToInt(strInfo), "Peace!");
 	}
 }
@@ -103,12 +111,16 @@ Action:BanPlayerMenuDraw(iClient)
 }
 
 
-BanPlayerMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
+BanPlayerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
-	if(action==MenuAction_Select)
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
 	{
 		decl String:strInfo[128];
-		GetMenuItem(hmenu, itemNum, strInfo, sizeof(strInfo));
+		GetMenuItem(menu, itemNum, strInfo, sizeof(strInfo));
 		// // Add user to the bans table in the xpmod database
 		// SQLAddBannedUserToDatabase(iClient, 43200 * 60, "Banned by Admin");
 		// // Ban the user, regardless of being able to add to the database or not
