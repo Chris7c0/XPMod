@@ -243,8 +243,7 @@ Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	//PrintToServer("**************************** FREEZING GAME");
 	g_bGameFrozen = true;
 	g_bPlayerPressedButtonThisRound = false;
-
-	CleanUpMenuHandles();	// Puts all the menu handles at invalid to minimize the amount of handles open
+	
 	//g_bRoundStarted = true;
 	g_bEndOfRound = false;
 	g_bCanSave = true;

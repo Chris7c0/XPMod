@@ -16,12 +16,6 @@ SetupConsoleCommands()
 	RegAdminCmd("givexp", GiveXP, ADMFLAG_SLAY);
 	RegAdminCmd("giveidxp", GiveXPbyID, ADMFLAG_SLAY);
 	
-	RegConsoleCmd("closepanel", CloseClientPanel);
-	//To be coded
-	//RegConsoleCmd("s",Spectate);
-	//RegConsoleCmd("showallxp", ShowAllXP);		//Shows all players XP points and level to iClient that typed it (once a round?)
-
-	
 	//Misc. Commands
 	RegAdminCmd("t1", TestFunction1, ADMFLAG_SLAY);
 	RegAdminCmd("t2", TestFunction2, ADMFLAG_SLAY);

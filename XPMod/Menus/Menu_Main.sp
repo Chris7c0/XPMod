@@ -2,63 +2,16 @@
 //////////////////////////////////////////////         XPMod Menus         ///////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-///////////////////////////////////////////////          Top Menu         ////////////////////////////////////////////////
-CheckMenu(iClient)	//Checks the menu to see if it is not invalid handle, if it is close the handle to stop memory leaks
+ClosePanel(iClient)
 {
-	if(g_hMenu_XPM[iClient] != INVALID_HANDLE)
-	{
-		CloseHandle(g_hMenu_XPM[iClient]);
-		g_hMenu_XPM[iClient]=INVALID_HANDLE;
-	}
-}
+	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
+		return;
 
-CleanUpMenuHandles()	//Puts all the menu handles at invalid to minimize the amount of handles open
-{
-	for(new iClient = 0; iClient <= MaxClients; iClient++)
-	{
-		if(g_hMenu_XPM[iClient]!=INVALID_HANDLE)
-		{
-			CloseHandle(g_hMenu_XPM[iClient]);
-			g_hMenu_XPM[iClient]=INVALID_HANDLE;
-		}
-		if(g_hMenu_IDD[iClient]!=INVALID_HANDLE)
-		{
-			CloseHandle(g_hMenu_IDD[iClient]);
-			g_hMenu_IDD[iClient]=INVALID_HANDLE;
-		}
-	}
-}
+	Panel panel = CreatePanel();
+	SetPanelTitle(panel, " ");
+	SendPanelToClient(panel, iClient, EmptyPanelHandler, 1);
 
-Action:CloseClientPanel(iClient, args)
-{
-	if(iClient < 1)
-		iClient=1;
-	if(IsClientInGame(iClient))
-		if(IsFakeClient(iClient) == false)
-			ClosePanel(iClient);
-	
-	return Plugin_Handled;
-}
-
-Action:ClosePanel(iClient)
-{
-	if(iClient< 1)
-		iClient=1;
-	if(IsClientInGame(iClient) == false)
-		return Plugin_Handled;
-	if(IsFakeClient(iClient) == true)
-		return Plugin_Handled;
-	
-	CheckMenu(iClient);
-	g_hMenu_XPM[iClient] = CreatePanel();
-	SetPanelTitle(g_hMenu_XPM[iClient], " ");
-	SendPanelToClient(g_hMenu_XPM[iClient], iClient, ConfirmationMessageMenuHandler, 1);
-	//CloseHandle(g_hMenu_XPM[iClient]);
-	CheckMenu(iClient);
-	
-	return Plugin_Handled;
+	delete panel;
 }
 
 XPModMenuDraw(iClient)
@@ -565,4 +518,10 @@ OptionMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			}
 		}
 	}
+}
+
+
+int EmptyPanelHandler(Menu menu, MenuAction action, int param1, int param2)
+{
+
 }
