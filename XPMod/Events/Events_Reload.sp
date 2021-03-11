@@ -440,7 +440,7 @@ Action:SoH_MagEnd (Handle:timer, any:pack)
 	if(IsClientInGame(iClient)==false)
 	{
 		CloseHandle(pack);
-		return Plugin_Continue;
+		return Plugin_Stop;
 	}
 	//----DEBUG----
 	//PrintToChatAll("\x03SoH reset playback, magazine loader");

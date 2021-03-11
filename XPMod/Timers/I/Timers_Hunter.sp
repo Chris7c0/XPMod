@@ -52,6 +52,8 @@ Action:TimerHunterPoison(Handle:timer, any:pack)
 
 	if(IsClientInGame(iClient)==false || IsPlayerAlive(iClient)==false || g_iClientTeam[iClient] != TEAM_SURVIVORS)
 	{
+		CloseHandle(pack);
+		
 		g_bIsHunterPoisoned[iClient] = false;
 		g_hTimer_HunterPoison[iClient] = null;
 		return Plugin_Stop;
