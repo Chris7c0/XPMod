@@ -318,7 +318,9 @@ PrintLouisTeleportCharges(iClient)
 {
 	if (RunClientChecks(iClient) == false || 
 		IsPlayerAlive(iClient) == false || 
-		IsFakeClient(iClient) == true)
+		IsFakeClient(iClient) == true ||
+		g_bIsClientGrappled[iClient] ||
+		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1)
 		return;
 	
 	// Print the Louis Teleport charges

@@ -99,55 +99,58 @@ Action:TimerWarezStationDisable(Handle:timer, any:iClient)
 Action:WarezStationMenuDraw(iClient) 
 {
 	decl String:text[512];
-
-	CheckMenu(iClient);
 	
-	g_hMenu_XPM[iClient] = CreateMenu(WarezStationMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(WarezStationMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
 	FormatEx(text, sizeof(text), "\
 		\n \
-		\n		cH0o53 joOr w4R3z\
+		\n	   cH0o53 joOr w4R3z\
 		\n =========================\
 		\n ",
 		g_iLouisTalent6Level[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], text);
+	SetMenuTitle(menu, text);
 
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "+2% Speed Increase");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "+10% Max Health");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "-33% Team Screen Shake");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "+1 Self revive");
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Receive Medkit + Pills");
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Receive Full Ammo");
-	AddMenuItem(g_hMenu_XPM[iClient], "option8", "I'm Feeling Lucky\n ");
+	AddMenuItem(menu, "option1", "+2% Speed Increase");
+	AddMenuItem(menu, "option2", "+10% Max Health");
+	AddMenuItem(menu, "option3", "-33% Team Screen Shake");
+	AddMenuItem(menu, "option4", "+1 Self revive");
+	AddMenuItem(menu, "option5", "Receive Medkit + Pills");
+	AddMenuItem(menu, "option6", "Receive Full Ammo");
+	AddMenuItem(menu, "option7", "I'm Feeling Lucky\n ");
 
-	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Nothing For Now.\
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "", ITEMDRAW_NOTEXT);
+
+	AddMenuItem(menu, "option10", "Nothing For Now.\
 	\n =========================\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
 
 // Warez Station Menu Handler
-WarezStationMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
-{
-	if (RunClientChecks(iClient) == false || 
+WarezStationMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+{	
+	if(action == MenuAction_Select)
+	{
+		if (RunClientChecks(iClient) == false || 
 		g_iClientTeam[iClient] != TEAM_SURVIVORS || 
 		IsFakeClient(iClient))
-		return;
+		{
+			return;
+		}
 
-	if (g_bIsClientGrappled[iClient] || GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1)
-	{
-		PrintHintText(iClient, "You cannot recieve Warez while Grappled or Incapacitated.")
-		WarezStationMenuDraw(iClient);
-		return;
-	}
-	
-	if(action==MenuAction_Select)
-	{
+		if (g_bIsClientGrappled[iClient] || GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1)
+		{
+			PrintHintText(iClient, "You cannot recieve Warez while Grappled or Incapacitated.")
+			WarezStationMenuDraw(iClient);
+			return;
+		}
+
 		switch (itemNum)
 		{
 			case 0: // Speed
@@ -207,6 +210,10 @@ WarezStationMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			// Reset iClient's Warez Station Owner, they arent using a Warez Station any more.
 			g_iWareStationOwnerIDOfCurrentlyViewedStation[iClient] = -1;
 		}
+	}
+	else if (action == MenuAction_End)
+	{
+		delete menu;
 	}
 }
 

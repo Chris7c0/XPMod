@@ -182,14 +182,6 @@ TopInfectedMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 			{
 				TopChooseCharactersMenuDraw(iClient);
 			}
-			default: //Exit
-			{
-				if(g_hMenu_XPM[iClient]!=INVALID_HANDLE)
-				{
-					CloseHandle(g_hMenu_XPM[iClient]);
-					g_hMenu_XPM[iClient]=INVALID_HANDLE;
-				}
-			}
 		}
 	}
 }

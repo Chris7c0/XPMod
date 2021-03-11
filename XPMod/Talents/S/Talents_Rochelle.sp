@@ -416,8 +416,7 @@ DetectionHud(iClient)
 		return;
 	if(g_bGameFrozen == true)
 		return;
-	//if(GetClientMenu(iClient, Handle:INVALID_HANDLE)!=MenuSource_None && g_bClientIDDToggle[iClient]==false)
-	//	return;
+	
 	decl Float:detdistance;
 	decl Float:clientvec[3];
 	new Float:infectedvec[3];

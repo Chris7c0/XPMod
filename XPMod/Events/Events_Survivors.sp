@@ -840,7 +840,11 @@ Action:Event_ReviveSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcas
 		decl i;
 		for(i=1;i<=MaxClients;i++)
 		{
-			if(RunClientChecks(i) && g_iClientTeam[i]==TEAM_SURVIVORS && IsPlayerAlive(i) == true)
+			if (g_iChosenSurvivor[i] == NICK &&
+				g_iDesperateLevel[i] > 0 &&
+				RunClientChecks(i) && 
+				g_iClientTeam[i]==TEAM_SURVIVORS && 
+				IsPlayerAlive(i) == true)
 			{
 				SetClientSpeed(i);
 				PrintHintText(i, "A teammate has been revived, your senses return to a weaker state.");
@@ -909,8 +913,9 @@ Action:Event_PlayerIncap(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	g_iJockeyVictim[incapper] = -1;
 	SetClientRenderAndGlowColor(iClient);
 	
-	if(iClient < 1)
+	if(RunClientChecks(iClient) == false)
 		return Plugin_Continue;
+	
 	if(g_iWillLevel[iClient]>0)
 	{
 		new currentHP=GetEntProp(iClient,Prop_Data,"m_iHealth");
@@ -994,7 +999,11 @@ Action:Event_PlayerIncap(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 		decl i;
 		for(i=1;i<=MaxClients;i++)
 		{
-			if(RunClientChecks(i) && g_iClientTeam[i]==TEAM_SURVIVORS && IsPlayerAlive(i) == true)
+			if (g_iChosenSurvivor[i] == NICK && 
+				g_iDesperateLevel[i] > 0 &&
+				RunClientChecks(i) && 
+				g_iClientTeam[i]==TEAM_SURVIVORS && 
+				IsPlayerAlive(i) == true)
 			{
 				if(g_iNickDesperateMeasuresStack <= 3)
 				{
@@ -1042,6 +1051,12 @@ Action:Event_PlayerIncap(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 				
 				CreateTimer(2.3, TimerConjureCommonInfected, hDataPackage);
 			}
+		}
+
+		// Self Revive Message
+		if (g_iSelfRevives[iClient] > 0 && IsFakeClient(iClient) == false)
+		{
+			PrintHintText(iClient, "You have %i Self Revive%s.\nHOLD USE to revive yourself.", g_iSelfRevives[iClient], g_iSelfRevives[iClient] != 1 ? "s" : "");
 		}
 	}
 	return Plugin_Continue;
