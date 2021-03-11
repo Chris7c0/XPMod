@@ -1,10 +1,9 @@
 Action:TankMenuDrawIce(iClient)
 {
-	CheckMenu(iClient);
 	CheckLevel(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(TankMenuHandlerIce);
+	Menu menu = CreateMenu(TankMenuHandlerIce);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient],"\
+	SetMenuTitle(menu,"\
 		\n \
         \nICE TANK\
         \n\"You merely adopted the cold; I was born in it, moulded by it.\"\
@@ -22,11 +21,11 @@ Action:TankMenuDrawIce(iClient)
         \n ",
         TANK_HEALTH_ICE);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }

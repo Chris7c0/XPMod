@@ -5,34 +5,32 @@ Action:LouisMenuDraw(iClient)
 {
 	decl String:text[512];
 
-	CheckMenu(iClient);
-	
 	DeleteAllMenuParticles(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(LouisMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(LouisMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
 	FormatEx(text, sizeof(text), "\n \nLevel %d	XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=\n \n			Louis's Disruptor Talents\n ", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], text);
+	SetMenuTitle(menu, text);
 	
 	FormatEx(text, sizeof(text), "	[Level %d]	Manager's Prep", g_iLouisTalent1Level[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", text);
+	AddMenuItem(menu, "option1", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	9mm Augmentation", g_iLouisTalent2Level[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", text);
+	AddMenuItem(menu, "option2", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	Time Dilation", g_iLouisTalent3Level[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", text);
+	AddMenuItem(menu, "option3", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	BOOM HEADSHOT!", g_iLouisTalent4Level[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", text);
+	AddMenuItem(menu, "option4", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	Explosivo (Bind 1)                  ", g_iLouisTalent5Level[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", text);
+	AddMenuItem(menu, "option5", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	PILLS HERE! (Bind 2)\n ", g_iLouisTalent6Level[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", text);
+	AddMenuItem(menu, "option6", text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Open In Website\n ");
-	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back\n \n=	=	=	=	=	=	=	=	=	=	=	=\
+	AddMenuItem(menu, "option7", "Open In Website\n ");
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back\n \n=	=	=	=	=	=	=	=	=	=	=	=\
 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -42,8 +40,6 @@ Action:LouisTalent1MenuDraw(iClient)
 {
 	decl String:text[512];
 
-	CheckMenu(iClient);
-	
 	// DeleteAllMenuParticles(iClient);
 	// if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
 	// {
@@ -51,7 +47,7 @@ Action:LouisTalent1MenuDraw(iClient)
 	// 	g_bShowingVGUI[iClient] =  true;
 	// }
 	
-	g_hMenu_XPM[iClient] = CreateMenu(LouisTalent1MenuHandler);
+	Menu menu = CreateMenu(LouisTalent1MenuHandler);
 	
 	FormatEx(text, sizeof(text), "\
 		\n \
@@ -63,13 +59,13 @@ Action:LouisTalent1MenuDraw(iClient)
 		\n 	- +15%%%% Reload Speed per Level\
 		\n ",
 		g_iLouisTalent1Level[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], text);
+	SetMenuTitle(menu, text);
 
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -79,8 +75,6 @@ Action:LouisTalent2MenuDraw(iClient)
 {
 	decl String:text[512];
 
-	CheckMenu(iClient);
-	
 	// DeleteAllMenuParticles(iClient);
 	// if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
 	// {
@@ -88,7 +82,7 @@ Action:LouisTalent2MenuDraw(iClient)
 	// 	g_bShowingVGUI[iClient] =  true;
 	// }
 	
-	g_hMenu_XPM[iClient] = CreateMenu(LouisTalent2MenuHandler);
+	Menu menu = CreateMenu(LouisTalent2MenuHandler);
 	
 	FormatEx(text, sizeof(text), "\
 		\n \
@@ -101,13 +95,13 @@ Action:LouisTalent2MenuDraw(iClient)
 		\n ",
 		g_iLouisTalent2Level[iClient]);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], text);
+	SetMenuTitle(menu, text);
 
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -117,8 +111,6 @@ Action:LouisTalent3MenuDraw(iClient)
 {
 	decl String:text[512];
 
-	CheckMenu(iClient);
-	
 	// DeleteAllMenuParticles(iClient);
 	// if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
 	// {
@@ -126,7 +118,7 @@ Action:LouisTalent3MenuDraw(iClient)
 	// 	g_bShowingVGUI[iClient] =  true;
 	// }
 	
-	g_hMenu_XPM[iClient] = CreateMenu(LouisTalent3MenuHandler);
+	Menu menu = CreateMenu(LouisTalent3MenuHandler);
 	
 	FormatEx(text, sizeof(text), "\
 		\n \
@@ -141,13 +133,13 @@ Action:LouisTalent3MenuDraw(iClient)
 		\n	- Travel less distance while severely hurt and limping.\
 		\n ",
 		g_iLouisTalent3Level[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], text);
+	SetMenuTitle(menu, text);
 
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -157,8 +149,6 @@ Action:LouisTalent4MenuDraw(iClient)
 {
 	decl String:text[512];
 
-	CheckMenu(iClient);
-	
 	// DeleteAllMenuParticles(iClient);
 	// if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
 	// {
@@ -166,7 +156,7 @@ Action:LouisTalent4MenuDraw(iClient)
 	// 	g_bShowingVGUI[iClient] =  true;
 	// }
 	
-	g_hMenu_XPM[iClient] = CreateMenu(LouisTalent4MenuHandler);
+	Menu menu = CreateMenu(LouisTalent4MenuHandler);
 	
 	FormatEx(text, sizeof(text), "\
 		\n \
@@ -179,13 +169,13 @@ Action:LouisTalent4MenuDraw(iClient)
 		\n  - Movement Speed capped at +25%%%%\
 		\n ",
 		g_iLouisTalent4Level[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], text);
+	SetMenuTitle(menu, text);
 
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -195,8 +185,6 @@ Action:LouisTalent5MenuDraw(iClient)
 {
 	decl String:text[512];
 
-	CheckMenu(iClient);
-	
 	// DeleteAllMenuParticles(iClient);
 	// if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
 	// {
@@ -204,7 +192,7 @@ Action:LouisTalent5MenuDraw(iClient)
 	// 	g_bShowingVGUI[iClient] =  true;
 	// }
 	
-	g_hMenu_XPM[iClient] = CreateMenu(LouisTalent5MenuHandler);
+	Menu menu = CreateMenu(LouisTalent5MenuHandler);
 	
 	FormatEx(text, sizeof(text), "\
 		\n \
@@ -213,13 +201,13 @@ Action:LouisTalent5MenuDraw(iClient)
 		\n COMING SOON                                                           \
 		\n ",
 		g_iLouisTalent5Level[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], text);
+	SetMenuTitle(menu, text);
 
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -228,8 +216,6 @@ Action:LouisTalent5MenuDraw(iClient)
 Action:LouisTalent6MenuDraw(iClient) 
 {
 	decl String:text[512];
-
-	CheckMenu(iClient);
 	
 	// DeleteAllMenuParticles(iClient);
 	// if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -238,7 +224,7 @@ Action:LouisTalent6MenuDraw(iClient)
 	// 	g_bShowingVGUI[iClient] =  true;
 	// }
 	
-	g_hMenu_XPM[iClient] = CreateMenu(LouisTalent6MenuHandler);
+	Menu menu = CreateMenu(LouisTalent6MenuHandler);
 	
 	FormatEx(text, sizeof(text), "\
 		\n \
@@ -247,13 +233,13 @@ Action:LouisTalent6MenuDraw(iClient)
 		\n COMING SOON                                                           \
 		\n ",
 		g_iLouisTalent6Level[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], text);
+	SetMenuTitle(menu, text);
 
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }

@@ -53,7 +53,6 @@ new Handle:g_hDatabase = INVALID_HANDLE;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Menus
-new Handle:g_hMenu_XPM[MAXPLAYERS + 1]  = INVALID_HANDLE;
 new Handle:g_hMenu_IDD[MAXPLAYERS + 1]  = INVALID_HANDLE;
 
 // Math

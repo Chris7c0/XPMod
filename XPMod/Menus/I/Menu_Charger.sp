@@ -3,31 +3,30 @@
 //Charger Menu Draw
 Action:ChargerTopMenuDraw(iClient)
 {
-	CheckMenu(iClient);
 	CheckLevel(iClient);
 	DeleteAllMenuParticles(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(ChargerTopMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(ChargerTopMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
 	decl String:title[256];
 	FormatEx(title, sizeof(title), "\n \nLevel %d	XP: %d/%d\n==========================\nCharger Talents:\n==========================\n \nGround 'n Pound: Level %d\nSpiked Carapace: Level %d\nHillbilly Madness!: Level %d\n \n", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iGroundLevel[iClient], g_iSpikedLevel[iClient], g_iHillbillyLevel[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], title);
+	SetMenuTitle(menu, title);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Ground 'n Pound");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Spiked Carapace");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Hillbilly Madness!\n ");
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Choose The Charger\n ");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Open In Website\n ");
+	AddMenuItem(menu, "option1", "Ground 'n Pound");
+	AddMenuItem(menu, "option2", "Spiked Carapace");
+	AddMenuItem(menu, "option3", "Hillbilly Madness!\n ");
+	AddMenuItem(menu, "option4", "Choose The Charger\n ");
+	AddMenuItem(menu, "option5", "Open In Website\n ");
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back\
+	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back\
 		\n==========================\
 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 		
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -37,11 +36,10 @@ Action:ChargerTopMenuDraw(iClient)
 //Ground 'n Pound Menu Draw
 Action:GroundMenuDraw(iClient)
 {
-	CheckMenu(iClient);
 	CheckLevel(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(GroundMenuHandler);
+	Menu menu = CreateMenu(GroundMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "\
+	SetMenuTitle(menu, "\
 		\n \
 		\n  				Ground 'n Pound (Level %d)\
 		\n \
@@ -52,11 +50,11 @@ Action:GroundMenuDraw(iClient)
 		\n ",
 		g_iGroundLevel[iClient]);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -64,11 +62,10 @@ Action:GroundMenuDraw(iClient)
 //Spiked Carapace Menu Draw
 Action:SpikedMenuDraw(iClient)
 {
-	CheckMenu(iClient);
 	CheckLevel(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(SpikedMenuHandler);
+	Menu menu = CreateMenu(SpikedMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "\
+	SetMenuTitle(menu, "\
 		\n \
 		\n				Spiked Carapace (Level %d)\
 		\n \
@@ -92,11 +89,11 @@ Action:SpikedMenuDraw(iClient)
 		\n ",
 		g_iSpikedLevel[iClient]);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -104,11 +101,10 @@ Action:SpikedMenuDraw(iClient)
 //Hillbilly Madness! Menu Draw
 Action:HillbillyMenuDraw(iClient)
 {
-	CheckMenu(iClient);
 	CheckLevel(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(HillbillyMenuHandler);
+	Menu menu = CreateMenu(HillbillyMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "\
+	SetMenuTitle(menu, "\
 		\n \
 		\n						Hillbilly Madness! (Level %d)\
 		\n \
@@ -130,11 +126,11 @@ Action:HillbillyMenuDraw(iClient)
 		\n ",
 		g_iHillbillyLevel[iClient]);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -143,23 +139,23 @@ Action:HillbillyMenuDraw(iClient)
 Action:ChooseChargerClassMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
-	CheckMenu(iClient);
+	
 	CheckLevel(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(ChooseChargerClassMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(ChooseChargerClassMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
 	decl String:title[256];
 	FormatEx(title, sizeof(title), "==========================\n		Current Classes\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n==========================\n \nPick a class to replace with the Charger:",g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], title);
+	SetMenuTitle(menu, title);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Replace Class 1");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Replace Class 2");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Replace Class 3");
-	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back");
+	AddMenuItem(menu, "option1", "Replace Class 1");
+	AddMenuItem(menu, "option2", "Replace Class 2");
+	AddMenuItem(menu, "option3", "Replace Class 3");
+	AddMenuItem(menu, "option9", "Back");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	return Plugin_Handled;
 }
 

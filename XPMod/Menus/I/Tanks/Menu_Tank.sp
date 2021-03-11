@@ -2,10 +2,9 @@ Action:ChooseTankMenuDraw(iClient)
 {
 	// If they still had the confirmation menu open, close it so they can choose a tank
 	g_bUserStoppedConfirmation[iClient] = true;
-	CheckMenu(iClient);
 	
-	g_hMenu_XPM[iClient] = CreateMenu(ChooseTankMenuHandler);
-	SetMenuTitle(g_hMenu_XPM[iClient], "\n \n			Choose Your Tank\n=	=	=	=	=	=	=	=	=	=	=\n ");
+	Menu menu = CreateMenu(ChooseTankMenuHandler);
+	SetMenuTitle(menu, "\n \n			Choose Your Tank\n=	=	=	=	=	=	=	=	=	=	=\n ");
 	
 	decl String:strText[512];
 	FormatEx(strText, sizeof(strText), "Fire Tank\
@@ -13,20 +12,20 @@ Action:ChooseTankMenuDraw(iClient)
 		\n [Hold CROUCH] Fire Punch\
 		\n ",
 		RoundToNearest(TANK_HEALTH_FIRE * g_fTankStartingHealthMultiplier[iClient]) );
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", strText);
+	AddMenuItem(menu, "option1", strText);
 	FormatEx(strText, sizeof(strText), "Ice Tank\
 		\n %i HP, Freeze Survivors\
 		\n [Hold CROUCH] Regenerates Health\
 		\n ",
 		RoundToNearest(TANK_HEALTH_ICE * g_fTankStartingHealthMultiplier[iClient]) );
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", strText);
+	AddMenuItem(menu, "option2", strText);
 	FormatEx(strText, sizeof(strText), "NecroTanker\
 		\n %i HP: Kill Infected for Health\
 		\n Throw Boomers!\
 		\n [Hold WALK or CROUCH] Summon CI\
 		\n ",
 		RoundToNearest(TANK_HEALTH_NECROTANKER * g_fTankStartingHealthMultiplier[iClient]) );
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", strText);
+	AddMenuItem(menu, "option3", strText);
 	FormatEx(strText, sizeof(strText), "Vampiric Tank\
 		\n %i HP: Life Steal from Survivors\
 		\n [Press JUMP] Fly\
@@ -35,10 +34,10 @@ Action:ChooseTankMenuDraw(iClient)
 		\n=	=	=	=	=	=	=	=	=	=	=\
 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		RoundToNearest(TANK_HEALTH_VAMPIRIC * g_fTankStartingHealthMultiplier[iClient]) );
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", strText);
+	AddMenuItem(menu, "option4", strText);
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -46,11 +45,11 @@ Action:ChooseTankMenuDraw(iClient)
 //Tank Abilities Menu Draw
 Action:TankTopMenuDraw(iClient)
 {
-	CheckMenu(iClient);
+	
 	CheckLevel(iClient);
 	DeleteAllMenuParticles(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(TankTopMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(TankTopMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
 	decl String:title[256];
 	FormatEx(title, sizeof(title), "\n \nLevel %d	XP: %d/%d\
@@ -59,22 +58,22 @@ Action:TankTopMenuDraw(iClient)
 									\n==========================\n \
 									\nSelect a Tank to learn about\
 									\ntheir abilities.\n \n", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], title);
+	SetMenuTitle(menu, title);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Fire Tank");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Ice Tank");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "NecroTanker");
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Vampiric Tank\n ");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back\
+	AddMenuItem(menu, "option1", "Fire Tank");
+	AddMenuItem(menu, "option2", "Ice Tank");
+	AddMenuItem(menu, "option3", "NecroTanker");
+	AddMenuItem(menu, "option4", "Vampiric Tank\n ");
+	AddMenuItem(menu, "option5", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back\
 		\n==========================\
 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }

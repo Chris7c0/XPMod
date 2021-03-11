@@ -3,32 +3,30 @@
 //Jockey Menu Draw
 Action:JockeyTopMenuDraw(iClient) 
 {
-	CheckMenu(iClient);
-	
 	DeleteAllMenuParticles(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(JockeyTopMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(JockeyTopMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
 	decl String:title[256];
 	FormatEx(title, sizeof(title), "\n \nLevel %d	XP: %d/%d\n==========================\nJockey Talents:\n==========================\n \nMutated Tenacity: Level %d\nErratic Domination: Level %d\nUnfair Advantage: Level %d\n \n", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iMutatedLevel[iClient], g_iErraticLevel[iClient], g_iUnfairLevel[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], title);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Mutated Tenacity");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Erratic Domination");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Unfair Advantage\n ");
+	SetMenuTitle(menu, title);
+	AddMenuItem(menu, "option1", "Mutated Tenacity");
+	AddMenuItem(menu, "option2", "Erratic Domination");
+	AddMenuItem(menu, "option3", "Unfair Advantage\n ");
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Choose The Jockey\n ");
+	AddMenuItem(menu, "option4", "Choose The Jockey\n ");
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Open In Website\n ");
+	AddMenuItem(menu, "option5", "Open In Website\n ");
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back\
+	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back\
 		\n==========================\
 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -38,11 +36,9 @@ Action:JockeyTopMenuDraw(iClient)
 //Mutated Tenacity Menu Draw
 Action:MutatedMenuDraw(iClient)
 {
-	CheckMenu(iClient);
+	Menu menu = CreateMenu(MutatedMenuHandler);
 	
-	g_hMenu_XPM[iClient] = CreateMenu(MutatedMenuHandler);
-	
-	SetMenuTitle(g_hMenu_XPM[iClient], "\
+	SetMenuTitle(menu, "\
 		\n \
 		\n  				Mutated Tenacity (Level %d)\
 		\n \
@@ -53,11 +49,11 @@ Action:MutatedMenuDraw(iClient)
 		\n ",
 		g_iMutatedLevel[iClient]);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -65,11 +61,9 @@ Action:MutatedMenuDraw(iClient)
 //Erratic Domination Menu Draw
 Action:ErraticMenuDraw(iClient)
 {
-	CheckMenu(iClient);
+	Menu menu = CreateMenu(ErraticMenuHandler);
 	
-	g_hMenu_XPM[iClient] = CreateMenu(ErraticMenuHandler);
-	
-	SetMenuTitle(g_hMenu_XPM[iClient], "\
+	SetMenuTitle(menu, "\
 		\n \
 		\n						Erratic Domination (Level %d)\
 		\n \
@@ -91,11 +85,11 @@ Action:ErraticMenuDraw(iClient)
 		\n ",
 		g_iErraticLevel[iClient]);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -103,11 +97,9 @@ Action:ErraticMenuDraw(iClient)
 //Unfair Advantage Menu Draw
 Action:UnfairMenuDraw(iClient)
 {
-	CheckMenu(iClient);
+	Menu menu = CreateMenu(UnfairMenuHandler);
 	
-	g_hMenu_XPM[iClient] = CreateMenu(UnfairMenuHandler);
-	
-	SetMenuTitle(g_hMenu_XPM[iClient], "\
+	SetMenuTitle(menu, "\
 		\n \
 		\n	Unfair Advantage (Level %d)\
 		\n \
@@ -127,11 +119,11 @@ Action:UnfairMenuDraw(iClient)
 		\n ",
 		g_iUnfairLevel[iClient]);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -140,20 +132,19 @@ Action:UnfairMenuDraw(iClient)
 Action:ChooseJockeyClassMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
-	CheckMenu(iClient);
 	
-	g_hMenu_XPM[iClient] = CreateMenu(ChooseJockeyClassMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(ChooseJockeyClassMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
 	decl String:title[256];
 	FormatEx(title, sizeof(title), "==========================\n		Current Classes\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n==========================\n \nPick a class to replace with the Jockey:",g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], title);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Replace Class 1");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Replace Class 2");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Replace Class 3");
-	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back");
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuTitle(menu, title);
+	AddMenuItem(menu, "option1", "Replace Class 1");
+	AddMenuItem(menu, "option2", "Replace Class 2");
+	AddMenuItem(menu, "option3", "Replace Class 3");
+	AddMenuItem(menu, "option9", "Back");
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	return Plugin_Handled;
 }
 

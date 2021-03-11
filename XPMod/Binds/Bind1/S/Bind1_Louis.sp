@@ -135,7 +135,11 @@ Action:WarezStationMenuDraw(iClient)
 // Warez Station Menu Handler
 WarezStationMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {	
-	if(action == MenuAction_Select)
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if(action == MenuAction_Select)
 	{
 		if (RunClientChecks(iClient) == false || 
 		g_iClientTeam[iClient] != TEAM_SURVIVORS || 
@@ -210,10 +214,6 @@ WarezStationMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			// Reset iClient's Warez Station Owner, they arent using a Warez Station any more.
 			g_iWareStationOwnerIDOfCurrentlyViewedStation[iClient] = -1;
 		}
-	}
-	else if (action == MenuAction_End)
-	{
-		delete menu;
 	}
 }
 

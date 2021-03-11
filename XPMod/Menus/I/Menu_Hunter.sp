@@ -3,32 +3,30 @@
 //Hunter Menu Draw
 Action:HunterTopMenuDraw(iClient) 
 {
-	CheckMenu(iClient);
-	
 	DeleteAllMenuParticles(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(HunterTopMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(HunterTopMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
 	decl String:title[256];
 	FormatEx(title, sizeof(title), "\n \nLevel %d	XP: %d/%d\n==========================\nHunter Talents:\n==========================\n \nPredatorial Evolution: Level %d\nBlood Lust: Level %d\nKill-meleon: Level %d\n \n", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iPredatorialLevel[iClient], g_iBloodlustLevel[iClient], g_iKillmeleonLevel[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], title);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Predatorial Evolution");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Blood Lust");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Kill-meleon\n ");
+	SetMenuTitle(menu, title);
+	AddMenuItem(menu, "option1", "Predatorial Evolution");
+	AddMenuItem(menu, "option2", "Blood Lust");
+	AddMenuItem(menu, "option3", "Kill-meleon\n ");
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Choose The Hunter\n ");
+	AddMenuItem(menu, "option4", "Choose The Hunter\n ");
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Open In Website\n ");
+	AddMenuItem(menu, "option5", "Open In Website\n ");
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back\
+	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back\
 		\n==========================\
 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -38,11 +36,9 @@ Action:HunterTopMenuDraw(iClient)
 //Predatorial Evolution Menu Draw
 Action:PredatorialMenuDraw(iClient)
 {
-	CheckMenu(iClient);
+	Menu menu = CreateMenu(PredatorialMenuHandler);
 	
-	g_hMenu_XPM[iClient] = CreateMenu(PredatorialMenuHandler);
-	
-	SetMenuTitle(g_hMenu_XPM[iClient], "\
+	SetMenuTitle(menu, "\
 		\n \
 		\n  Predatorial Evolution (Level %d)\
 		\n \
@@ -52,11 +48,11 @@ Action:PredatorialMenuDraw(iClient)
 		\n ",
 		g_iPredatorialLevel[iClient]);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -64,11 +60,9 @@ Action:PredatorialMenuDraw(iClient)
 //Blood Lust Menu Draw
 Action:BloodlustMenuDraw(iClient)
 {
-	CheckMenu(iClient);
+	Menu menu = CreateMenu(BloodlustMenuHandler);
 	
-	g_hMenu_XPM[iClient] = CreateMenu(BloodlustMenuHandler);
-	
-	SetMenuTitle(g_hMenu_XPM[iClient], "\
+	SetMenuTitle(menu, "\
 		\n \
 		\n				Blood Lust (Level %d)\
 		\n \
@@ -86,11 +80,11 @@ Action:BloodlustMenuDraw(iClient)
 		\n ",
 		g_iBloodlustLevel[iClient]);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -98,11 +92,9 @@ Action:BloodlustMenuDraw(iClient)
 //Kill-meleon Menu Draw
 Action:KillmeleonMenuDraw(iClient)
 {
-	CheckMenu(iClient);
+	Menu menu = CreateMenu(KillmeleonMenuHandler);
 	
-	g_hMenu_XPM[iClient] = CreateMenu(KillmeleonMenuHandler);
-	
-	SetMenuTitle(g_hMenu_XPM[iClient], "\
+	SetMenuTitle(menu, "\
 		\n \
 		\n											Kill-meleon (Level %d)\
 		\n \
@@ -129,11 +121,11 @@ Action:KillmeleonMenuDraw(iClient)
 		\n ",
 		g_iKillmeleonLevel[iClient]);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -142,20 +134,19 @@ Action:KillmeleonMenuDraw(iClient)
 Action:ChooseHunterClassMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
-	CheckMenu(iClient);
 	
-	g_hMenu_XPM[iClient] = CreateMenu(ChooseHunterClassMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(ChooseHunterClassMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
 	decl String:title[256];
 	FormatEx(title, sizeof(title), "==========================\n		Current Classes\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n==========================\n \nPick a class to replace with the Hunter:",g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], title);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Replace Class 1");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Replace Class 2");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Replace Class 3");
-	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back");
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuTitle(menu, title);
+	AddMenuItem(menu, "option1", "Replace Class 1");
+	AddMenuItem(menu, "option2", "Replace Class 2");
+	AddMenuItem(menu, "option3", "Replace Class 3");
+	AddMenuItem(menu, "option9", "Back");
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	return Plugin_Handled;
 }
 

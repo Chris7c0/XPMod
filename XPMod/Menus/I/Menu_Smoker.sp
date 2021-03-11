@@ -3,32 +3,30 @@
 //Smoker Top Menu Draw
 Action:SmokerTopMenuDraw(iClient) 
 {
-	CheckMenu(iClient);
-	
 	DeleteAllMenuParticles(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(SmokerTopMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(SmokerTopMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
 	decl String:title[256];
 	FormatEx(title, sizeof(title), "\n \nLevel %d	XP: %d/%d\n==========================\nSmoker Talents:\n==========================\n \nEnvelopment: Level %d\nNoxious Gasses: Level %d\nDirty Tricks: Level %d\n \n", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iEnvelopmentLevel[iClient], g_iNoxiousLevel[iClient], g_iDirtyLevel[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], title);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Envelopment");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Noxious Gasses");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Dirty Tricks\n ");
+	SetMenuTitle(menu, title);
+	AddMenuItem(menu, "option1", "Envelopment");
+	AddMenuItem(menu, "option2", "Noxious Gasses");
+	AddMenuItem(menu, "option3", "Dirty Tricks\n ");
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Choose The Smoker\n ");
+	AddMenuItem(menu, "option4", "Choose The Smoker\n ");
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Open In Website\n ");
+	AddMenuItem(menu, "option5", "Open In Website\n ");
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back\
+	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back\
 		\n==========================\
 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -38,11 +36,9 @@ Action:SmokerTopMenuDraw(iClient)
 //Envelopment Menu Draw
 Action:EnvelopmentMenuDraw(iClient)
 {
-	CheckMenu(iClient);
+	Menu menu = CreateMenu(EnvelopmentMenuHandler);
 	
-	g_hMenu_XPM[iClient] = CreateMenu(EnvelopmentMenuHandler);
-	
-	SetMenuTitle(g_hMenu_XPM[iClient], "\
+	SetMenuTitle(menu, "\
 	\n \
 	\n  			Envelopment (Level %d)\
 	\n \
@@ -56,11 +52,11 @@ Action:EnvelopmentMenuDraw(iClient)
 	\n ",
 	g_iEnvelopmentLevel[iClient]);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -68,11 +64,9 @@ Action:EnvelopmentMenuDraw(iClient)
 //Noxious Gasses Menu Draw
 Action:NoxiousMenuDraw(iClient)
 {
-	CheckMenu(iClient);
+	Menu menu = CreateMenu(NoxiousMenuHandler);
 	
-	g_hMenu_XPM[iClient] = CreateMenu(NoxiousMenuHandler);
-	
-	SetMenuTitle(g_hMenu_XPM[iClient], "\
+	SetMenuTitle(menu, "\
 		\n \
 		\n									Noxious Gasses (Level %d)\
 		\n \
@@ -91,11 +85,11 @@ Action:NoxiousMenuDraw(iClient)
 		\n ",
 		g_iNoxiousLevel[iClient]);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -103,11 +97,9 @@ Action:NoxiousMenuDraw(iClient)
 //Dirty Tricks Menu Draw
 Action:DirtyMenuDraw(iClient)
 {
-	CheckMenu(iClient);
+	Menu menu = CreateMenu(DirtyMenuHandler);
 	
-	g_hMenu_XPM[iClient] = CreateMenu(DirtyMenuHandler);
-	
-	SetMenuTitle(g_hMenu_XPM[iClient], "\
+	SetMenuTitle(menu, "\
 		\n \
 		\n					Dirty Tricks (Level %d)\
 		\n \
@@ -131,11 +123,11 @@ Action:DirtyMenuDraw(iClient)
 		\n ",
 		g_iDirtyLevel[iClient]);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -144,20 +136,19 @@ Action:DirtyMenuDraw(iClient)
 Action:ChooseSmokerClassMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
-	CheckMenu(iClient);
 	
-	g_hMenu_XPM[iClient] = CreateMenu(ChooseSmokerClassMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(ChooseSmokerClassMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
 	decl String:title[256];
 	FormatEx(title, sizeof(title), "==========================\n		Current Classes\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n==========================\n \nPick a class to replace with the Smoker:",g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], title);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Replace Class 1");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Replace Class 2");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Replace Class 3");
-	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back");
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuTitle(menu, title);
+	AddMenuItem(menu, "option1", "Replace Class 1");
+	AddMenuItem(menu, "option2", "Replace Class 2");
+	AddMenuItem(menu, "option3", "Replace Class 3");
+	AddMenuItem(menu, "option9", "Back");
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	return Plugin_Handled;
 }
 

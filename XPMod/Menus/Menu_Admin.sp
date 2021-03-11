@@ -1,21 +1,19 @@
 Action:AdminMenuDraw(iClient)
 {
-	CheckMenu(iClient);
-	
-	g_hMenu_XPM[iClient] = CreateMenu(AdminMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
-	SetMenuTitle(g_hMenu_XPM[iClient], "XPMod Admin Menu\n ");
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Auto-Balance Teams");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Switch Player's Team");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Force Client Popup"); //Like Help, Addon Download, Confirm Talents, etc.
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Kick Player");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Ban Player");
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Undo Griefing");
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", g_bGamePaused ? "Unpause Game": "Pause Game");
-	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back to Main Menu");
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	Menu menu = CreateMenu(AdminMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
+	SetMenuTitle(menu, "XPMod Admin Menu\n ");
+	AddMenuItem(menu, "option1", "Auto-Balance Teams");
+	AddMenuItem(menu, "option2", "Switch Player's Team");
+	AddMenuItem(menu, "option3", "Force Client Popup"); //Like Help, Addon Download, Confirm Talents, etc.
+	AddMenuItem(menu, "option4", "Kick Player");
+	AddMenuItem(menu, "option5", "Ban Player");
+	AddMenuItem(menu, "option6", "Undo Griefing");
+	AddMenuItem(menu, "option7", g_bGamePaused ? "Unpause Game": "Pause Game");
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back to Main Menu");
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -67,16 +65,14 @@ AdminMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 
 Action:KickPlayerMenuDraw(iClient)
 {
-	CheckMenu(iClient);
+	Menu menu = CreateMenu(KickPlayerMenuHandler);
 	
-	g_hMenu_XPM[iClient] = CreateMenu(KickPlayerMenuHandler);
+	SetMenuTitle(menu, "Select a player to Kick\n ");
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "Select a player to Kick\n ");
-	
-	AddAllPlayersToMenu(iClient);
+	AddAllPlayersToMenu(menu, iClient);
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -94,16 +90,14 @@ KickPlayerMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 
 Action:BanPlayerMenuDraw(iClient)
 {
-	CheckMenu(iClient);
+	Menu menu = CreateMenu(BanPlayerMenuHandler);
 	
-	g_hMenu_XPM[iClient] = CreateMenu(BanPlayerMenuHandler);
+	SetMenuTitle(menu, "Select a player to Ban\n ");
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "Select a player to Ban\n ");
-	
-	AddAllPlayersToMenu(iClient);
+	AddAllPlayersToMenu(menu, iClient);
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -125,7 +119,7 @@ BanPlayerMenuHandler(Handle:hmenu, MenuAction:action, iClient, itemNum)
 
 
 
-AddAllPlayersToMenu(iClient)
+AddAllPlayersToMenu(Menu menu, iClient)
 {
 	for(new iTarget = 1; iTarget <= MaxClients; iTarget++)
 	{
@@ -145,7 +139,7 @@ AddAllPlayersToMenu(iClient)
 			iTarget,
 			iTarget);
 
-			AddMenuItem(g_hMenu_XPM[iClient], strSteamID, strTargetInfo);
+			AddMenuItem(menu, strSteamID, strTargetInfo);
 		}
 	}
 }

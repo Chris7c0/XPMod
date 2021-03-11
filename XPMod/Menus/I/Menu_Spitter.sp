@@ -3,31 +3,30 @@
 //Spitter Menu Draw
 Action:SpitterTopMenuDraw(iClient)
 {
-	CheckMenu(iClient);
 	CheckLevel(iClient);
 	DeleteAllMenuParticles(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(SpitterTopMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(SpitterTopMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
 	decl String:title[256];
 	FormatEx(title, sizeof(title), "\n \nLevel %d	XP: %d/%d\n==============================\nSpitter Talents:\n==============================\n \nPuppet Master: Level %d\nMaterial Girl: Level %d\nHallucinogenic Nightmare: Level %d\n \n", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iPuppetLevel[iClient], g_iMaterialLevel[iClient], g_iHallucinogenicLevel[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], title);
+	SetMenuTitle(menu, title);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Puppet Master");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Material Girl");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Hallucinogenic Nightmare\n ");
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Choose The Spitter\n ");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Open In Website\n ");
+	AddMenuItem(menu, "option1", "Puppet Master");
+	AddMenuItem(menu, "option2", "Material Girl");
+	AddMenuItem(menu, "option3", "Hallucinogenic Nightmare\n ");
+	AddMenuItem(menu, "option4", "Choose The Spitter\n ");
+	AddMenuItem(menu, "option5", "Open In Website\n ");
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back\
+	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back\
 		\n==============================\
 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -37,11 +36,10 @@ Action:SpitterTopMenuDraw(iClient)
 //Ground 'n Pound Menu Draw
 Action:PuppetMenuDraw(iClient)
 {
-	CheckMenu(iClient);
 	CheckLevel(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(PuppetMenuHandler);
+	Menu menu = CreateMenu(PuppetMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "\
+	SetMenuTitle(menu, "\
 		\n \
 		\n  						Puppet Master (Level %d)\
 		\n \
@@ -57,11 +55,11 @@ Action:PuppetMenuDraw(iClient)
 		\n ",
 		g_iPuppetLevel[iClient]);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -69,11 +67,10 @@ Action:PuppetMenuDraw(iClient)
 //Spiked Carapace Menu Draw
 Action:MaterialMenuDraw(iClient)
 {
-	CheckMenu(iClient);
 	CheckLevel(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(MaterialMenuHandler);
+	Menu menu = CreateMenu(MaterialMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "\
+	SetMenuTitle(menu, "\
 		\n \
 		\n				Material Girl (Level %d)\
 		\n \
@@ -99,11 +96,11 @@ Action:MaterialMenuDraw(iClient)
 		\n ",
 		g_iMaterialLevel[iClient]);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -111,11 +108,10 @@ Action:MaterialMenuDraw(iClient)
 //Hillbilly Madness! Menu Draw
 Action:HallucinogenicMenuDraw(iClient)
 {
-	CheckMenu(iClient);
 	CheckLevel(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(HallucinogenicMenuHandler);
+	Menu menu = CreateMenu(HallucinogenicMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "\
+	SetMenuTitle(menu, "\
 		\n \
 		\n				Hallucinogenic Nightmare (Level %d)\
 		\n \
@@ -138,11 +134,11 @@ Action:HallucinogenicMenuDraw(iClient)
 		\n ",
 		g_iHallucinogenicLevel[iClient]);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -151,66 +147,65 @@ Action:HallucinogenicMenuDraw(iClient)
 Action:ChooseSpitterClassMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
-	CheckMenu(iClient);
+	
 	CheckLevel(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(ChooseSpitterClassMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(ChooseSpitterClassMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
 	decl String:title[256];
 	FormatEx(title, sizeof(title), "==========================\n		Current Classes\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n==========================\n \nPick a class to replace with the Spitter:",g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], title);
+	SetMenuTitle(menu, title);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Replace Class 1");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Replace Class 2");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Replace Class 3");
-	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back");
+	AddMenuItem(menu, "option1", "Replace Class 1");
+	AddMenuItem(menu, "option2", "Replace Class 2");
+	AddMenuItem(menu, "option3", "Replace Class 3");
+	AddMenuItem(menu, "option9", "Back");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	return Plugin_Handled;
 }
 
 Action:GooTypeMenuDraw(iClient)
 {
-	CheckMenu(iClient);
 	CheckLevel(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(GooTypeMenuHandler);
+	Menu menu = CreateMenu(GooTypeMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "Choose your Goo Type!"); 
+	SetMenuTitle(menu, "Choose your Goo Type!"); 
 	if(g_iPuppetLevel[iClient] > 5 && g_iMaterialLevel[iClient] < 1)
 	{
-		AddMenuItem(g_hMenu_XPM[iClient], "option1", "Flaming Goo");
+		AddMenuItem(menu, "option1", "Flaming Goo");
 	}
 	else if(g_iMaterialLevel[iClient] > 0 && g_iMaterialLevel[iClient] < 6)
 	{
-		AddMenuItem(g_hMenu_XPM[iClient], "option1", "Flaming Goo");
-		AddMenuItem(g_hMenu_XPM[iClient], "option2", "Melting Goo");
+		AddMenuItem(menu, "option1", "Flaming Goo");
+		AddMenuItem(menu, "option2", "Melting Goo");
 	}
 	else if(g_iMaterialLevel[iClient] > 5 && g_iHallucinogenicLevel[iClient] < 1)
 	{
-		AddMenuItem(g_hMenu_XPM[iClient], "option1", "Flaming Goo");
-		AddMenuItem(g_hMenu_XPM[iClient], "option2", "Melting Goo");
-		AddMenuItem(g_hMenu_XPM[iClient], "option3", "Demi Goo");
+		AddMenuItem(menu, "option1", "Flaming Goo");
+		AddMenuItem(menu, "option2", "Melting Goo");
+		AddMenuItem(menu, "option3", "Demi Goo");
 	}
 	else if(g_iHallucinogenicLevel[iClient] > 0 && g_iHallucinogenicLevel[iClient] < 6)
 	{
-		AddMenuItem(g_hMenu_XPM[iClient], "option1", "Flaming Goo");
-		AddMenuItem(g_hMenu_XPM[iClient], "option2", "Melting Goo");
-		AddMenuItem(g_hMenu_XPM[iClient], "option3", "Demi Goo");
-		AddMenuItem(g_hMenu_XPM[iClient], "option4", "Repulsion Goo");
+		AddMenuItem(menu, "option1", "Flaming Goo");
+		AddMenuItem(menu, "option2", "Melting Goo");
+		AddMenuItem(menu, "option3", "Demi Goo");
+		AddMenuItem(menu, "option4", "Repulsion Goo");
 	}
 	else if(g_iHallucinogenicLevel[iClient] > 5)
 	{
-		AddMenuItem(g_hMenu_XPM[iClient], "option1", "Flaming Goo");
-		AddMenuItem(g_hMenu_XPM[iClient], "option2", "Melting Goo");
-		AddMenuItem(g_hMenu_XPM[iClient], "option3", "Demi Goo");
-		AddMenuItem(g_hMenu_XPM[iClient], "option4", "Repulsion Goo");
-		AddMenuItem(g_hMenu_XPM[iClient], "option5", "Viral Goo");
+		AddMenuItem(menu, "option1", "Flaming Goo");
+		AddMenuItem(menu, "option2", "Melting Goo");
+		AddMenuItem(menu, "option3", "Demi Goo");
+		AddMenuItem(menu, "option4", "Repulsion Goo");
+		AddMenuItem(menu, "option5", "Viral Goo");
 	}
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -218,30 +213,29 @@ Action:GooTypeMenuDraw(iClient)
 
 Action:BagOfSpitsMenuDraw(iClient)
 {
-	CheckMenu(iClient);
 	CheckLevel(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(BagOfSpitsMenuHandler);
+	Menu menu = CreateMenu(BagOfSpitsMenuHandler);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "Pull something nice from your Bag of Spits!\n "); 
+	SetMenuTitle(menu, "Pull something nice from your Bag of Spits!\n "); 
 
-	AddMenuItem(g_hMenu_XPM[iClient], "option1",
+	AddMenuItem(menu, "option1",
 		"MINI ARMY\
 		\n	A lot of very tiny, very annoying, enhanced infected.");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", 
+	AddMenuItem(menu, "option2", 
 		"MUSCLE CREW\
 		\n	Three roided out infected...lookin' for brainz gainz.");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", 
+	AddMenuItem(menu, "option3", 
 		"ENHANCED JIMMY\
 		\n	Big and Enhanced, for your pleasure.");
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", 
+	AddMenuItem(menu, "option4", 
 		"NECROFEASTERS\
 		\n	They brought friends, and are ready for seconds.");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", 
+	AddMenuItem(menu, "option5", 
 		"KILLER KLOWNS FROM OUTER SPACE\
 		\n	Alien bozos with an appetite for close encounters.");
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }

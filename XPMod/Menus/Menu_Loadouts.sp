@@ -44,10 +44,8 @@ Action:ShowUserLoadoutMenu(iClient, args)
 //Draw Menus
 Action:LoadoutMenuDraw(iClient)
 {
-	CheckMenu(iClient);
-	
-	g_hMenu_XPM[iClient] = CreateMenu(LoadoutMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(LoadoutMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	GetWeaponNames(iClient);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
@@ -56,7 +54,7 @@ Action:LoadoutMenuDraw(iClient)
 	else
 		g_iClientUsableXP = g_iClientXP[iClient];
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], 
+	SetMenuTitle(menu, 
 		"\n \nUsable XP: %d\
 		\n \
 		\n* You get equipment when you confirm *\
@@ -79,30 +77,28 @@ Action:LoadoutMenuDraw(iClient)
 		g_strClientLaserSlot,
 		g_iClientTotalXPCost[iClient]);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Primary Slot");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Secondary Slot");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Explosives Slot");
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Health/Ammo Slot");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Health Boost Slot");
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Laser Sight");
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Reset All");
-	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Change Your Survivor\n ");
-	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Main Menu");
-	AddMenuItem(g_hMenu_XPM[iClient], "option10", "Exit\
+	AddMenuItem(menu, "option1", "Primary Slot");
+	AddMenuItem(menu, "option2", "Secondary Slot");
+	AddMenuItem(menu, "option3", "Explosives Slot");
+	AddMenuItem(menu, "option4", "Health/Ammo Slot");
+	AddMenuItem(menu, "option5", "Health Boost Slot");
+	AddMenuItem(menu, "option6", "Laser Sight");
+	AddMenuItem(menu, "option7", "Reset All");
+	AddMenuItem(menu, "option8", "Change Your Survivor\n ");
+	AddMenuItem(menu, "option9", "Main Menu");
+	AddMenuItem(menu, "option10", "Exit\
 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	
 	return Plugin_Handled;
 }
 
 Action:PrimaryMenuDraw(iClient) 
 {
-	CheckMenu(iClient);
-	
-	g_hMenu_XPM[iClient] = CreateMenu(PrimaryMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(PrimaryMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -110,28 +106,26 @@ Action:PrimaryMenuDraw(iClient)
 	else
 		g_iClientUsableXP = g_iClientXP[iClient];
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "Usable XP: %d\n \nSelect the Class of Weapon:", g_iClientUsableXP);
+	SetMenuTitle(menu, "Usable XP: %d\n \nSelect the Class of Weapon:", g_iClientUsableXP);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Sub-Machine Guns");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Assault Rifles");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Shotguns");	
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Sniper Rifles");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Special Weapons");
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "None");
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Back");
+	AddMenuItem(menu, "option1", "Sub-Machine Guns");
+	AddMenuItem(menu, "option2", "Assault Rifles");
+	AddMenuItem(menu, "option3", "Shotguns");	
+	AddMenuItem(menu, "option4", "Sniper Rifles");
+	AddMenuItem(menu, "option5", "Special Weapons");
+	AddMenuItem(menu, "option6", "None");
+	AddMenuItem(menu, "option7", "Back");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	
 	return Plugin_Handled;
 }
 
 Action:SecondaryMenuDraw(iClient) 
 {
-	CheckMenu(iClient);
-	
-	g_hMenu_XPM[iClient] = CreateMenu(SecondaryMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(SecondaryMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -139,26 +133,24 @@ Action:SecondaryMenuDraw(iClient)
 	else
 		g_iClientUsableXP = g_iClientXP[iClient];
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "Usable XP: %d\n \nSelect the Class of Weapon:",g_iClientUsableXP);
+	SetMenuTitle(menu, "Usable XP: %d\n \nSelect the Class of Weapon:",g_iClientUsableXP);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Sidearms");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Slashing Weapons");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Crushing Weapons");
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "None");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Back");
+	AddMenuItem(menu, "option1", "Sidearms");
+	AddMenuItem(menu, "option2", "Slashing Weapons");
+	AddMenuItem(menu, "option3", "Crushing Weapons");
+	AddMenuItem(menu, "option4", "None");
+	AddMenuItem(menu, "option5", "Back");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	
 	return Plugin_Handled;
 }
 
 Action:ExplosivesMenuDraw(iClient) 
 {
-	CheckMenu(iClient);
-	
-	g_hMenu_XPM[iClient] = CreateMenu(ExplosivesMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(ExplosivesMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -166,26 +158,24 @@ Action:ExplosivesMenuDraw(iClient)
 	else
 		g_iClientUsableXP = g_iClientXP[iClient];
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "Usable XP: %d\n \nSelect Explosive:", g_iClientUsableXP);
+	SetMenuTitle(menu, "Usable XP: %d\n \nSelect Explosive:", g_iClientUsableXP);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", " Pipe Bomb (30 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Molotov (30 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Bile Jar (40 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "None");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Back");
+	AddMenuItem(menu, "option1", " Pipe Bomb (30 XP)");
+	AddMenuItem(menu, "option2", "Molotov (30 XP)");
+	AddMenuItem(menu, "option3", "Bile Jar (40 XP)");
+	AddMenuItem(menu, "option4", "None");
+	AddMenuItem(menu, "option5", "Back");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	
 	return Plugin_Handled;
 }
 
 Action:HealthMenuDraw(iClient) 
 {
-	CheckMenu(iClient);
-	
-	g_hMenu_XPM[iClient] = CreateMenu(HealthMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(HealthMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -193,27 +183,25 @@ Action:HealthMenuDraw(iClient)
 	else
 		g_iClientUsableXP = g_iClientXP[iClient];
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "Usable XP: %d\n \nSelect Relief Supplies:", g_iClientUsableXP);
+	SetMenuTitle(menu, "Usable XP: %d\n \nSelect Relief Supplies:", g_iClientUsableXP);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "First Aid Kit (250 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Defibrillator (500 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Explosive Ammo (1000 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Incendiary Ammo (500 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "None");
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Back");
+	AddMenuItem(menu, "option1", "First Aid Kit (250 XP)");
+	AddMenuItem(menu, "option2", "Defibrillator (500 XP)");
+	AddMenuItem(menu, "option3", "Explosive Ammo (1000 XP)");
+	AddMenuItem(menu, "option4", "Incendiary Ammo (500 XP)");
+	AddMenuItem(menu, "option5", "None");
+	AddMenuItem(menu, "option6", "Back");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	
 	return Plugin_Handled;
 }
 
 Action:BoostMenuDraw(iClient) 
 {
-	CheckMenu(iClient);
-	
-	g_hMenu_XPM[iClient] = CreateMenu(BoostMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(BoostMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -221,25 +209,23 @@ Action:BoostMenuDraw(iClient)
 	else
 		g_iClientUsableXP = g_iClientXP[iClient];
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "Usable XP: %d\n \nSelect Enhancement:", g_iClientUsableXP);
+	SetMenuTitle(menu, "Usable XP: %d\n \nSelect Enhancement:", g_iClientUsableXP);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Pain Pills (50 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Adrenaline Shot (50 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "None");
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Back");
+	AddMenuItem(menu, "option1", "Pain Pills (50 XP)");
+	AddMenuItem(menu, "option2", "Adrenaline Shot (50 XP)");
+	AddMenuItem(menu, "option3", "None");
+	AddMenuItem(menu, "option4", "Back");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	
 	return Plugin_Handled;
 }
 
 Action:CleanMenuDraw(iClient) 
 {
-	CheckMenu(iClient);
-	
-	g_hMenu_XPM[iClient] = CreateMenu(CleanMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(CleanMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -247,13 +233,13 @@ Action:CleanMenuDraw(iClient)
 	else
 		g_iClientUsableXP = g_iClientXP[iClient];
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "Usable XP: %d\n \nReset Your Equipment Loadout?", g_iClientUsableXP);
+	SetMenuTitle(menu, "Usable XP: %d\n \nReset Your Equipment Loadout?", g_iClientUsableXP);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Yes");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "No");
+	AddMenuItem(menu, "option1", "Yes");
+	AddMenuItem(menu, "option2", "No");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	
 	return Plugin_Handled;
 }
@@ -261,10 +247,8 @@ Action:CleanMenuDraw(iClient)
 //SubMachine Gun Draw
 Action:SMGMenuDraw(iClient) 
 {
-	CheckMenu(iClient);
-	
-	g_hMenu_XPM[iClient] = CreateMenu(SMGMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(SMGMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -272,15 +256,15 @@ Action:SMGMenuDraw(iClient)
 	else
 		g_iClientUsableXP = g_iClientXP[iClient];
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "Usable XP: %d\n \nSub-Machine Guns\n", g_iClientUsableXP);
+	SetMenuTitle(menu, "Usable XP: %d\n \nSub-Machine Guns\n", g_iClientUsableXP);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Israeli UZI (55 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Silenced Mac-10 (60 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "MP5 (70 XP)");	
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Back");
+	AddMenuItem(menu, "option1", "Israeli UZI (55 XP)");
+	AddMenuItem(menu, "option2", "Silenced Mac-10 (60 XP)");
+	AddMenuItem(menu, "option3", "MP5 (70 XP)");	
+	AddMenuItem(menu, "option4", "Back");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	
 	return Plugin_Handled;
 }
@@ -288,10 +272,8 @@ Action:SMGMenuDraw(iClient)
 //Machine Gun Draw
 Action:MGMenuDraw(iClient) 
 {
-	CheckMenu(iClient);
-	
-	g_hMenu_XPM[iClient] = CreateMenu(MGMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(MGMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -299,16 +281,16 @@ Action:MGMenuDraw(iClient)
 	else
 		g_iClientUsableXP = g_iClientXP[iClient];
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "Usable XP: %d\n \nAssault Rifles\n", g_iClientUsableXP);
+	SetMenuTitle(menu, "Usable XP: %d\n \nAssault Rifles\n", g_iClientUsableXP);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "AK-47 (80 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "M16A2 (80 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "SIG SG 552 (100 XP)");	
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "SCAR-L (60 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Back");
+	AddMenuItem(menu, "option1", "AK-47 (80 XP)");
+	AddMenuItem(menu, "option2", "M16A2 (80 XP)");
+	AddMenuItem(menu, "option3", "SIG SG 552 (100 XP)");	
+	AddMenuItem(menu, "option4", "SCAR-L (60 XP)");
+	AddMenuItem(menu, "option5", "Back");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	
 	return Plugin_Handled;
 }
@@ -316,10 +298,8 @@ Action:MGMenuDraw(iClient)
 //Shotgun Gun Draw
 Action:ShotgunMenuDraw(iClient) 
 {
-	CheckMenu(iClient);
-	
-	g_hMenu_XPM[iClient] = CreateMenu(ShotgunMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(ShotgunMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -327,16 +307,16 @@ Action:ShotgunMenuDraw(iClient)
 	else
 		g_iClientUsableXP = g_iClientXP[iClient];
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "Usable XP: %d\n \nShotguns\n", g_iClientUsableXP);
+	SetMenuTitle(menu, "Usable XP: %d\n \nShotguns\n", g_iClientUsableXP);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Remington 870 (60 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Remington 870 Custom (60 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Benelli M1014 (80 XP)");	
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Franchi SPAS-12 (80 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Back");
+	AddMenuItem(menu, "option1", "Remington 870 (60 XP)");
+	AddMenuItem(menu, "option2", "Remington 870 Custom (60 XP)");
+	AddMenuItem(menu, "option3", "Benelli M1014 (80 XP)");	
+	AddMenuItem(menu, "option4", "Franchi SPAS-12 (80 XP)");
+	AddMenuItem(menu, "option5", "Back");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	
 	return Plugin_Handled;
 }
@@ -344,10 +324,8 @@ Action:ShotgunMenuDraw(iClient)
 //Sniper Gun Draw
 Action:SniperMenuDraw(iClient) 
 {
-	CheckMenu(iClient);
-	
-	g_hMenu_XPM[iClient] = CreateMenu(SniperMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(SniperMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -355,16 +333,16 @@ Action:SniperMenuDraw(iClient)
 	else
 		g_iClientUsableXP = g_iClientXP[iClient];
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "Usable XP: %d\n \nSniper Rifles\n", g_iClientUsableXP);
+	SetMenuTitle(menu, "Usable XP: %d\n \nSniper Rifles\n", g_iClientUsableXP);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Ruger Mini-14 (60 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "H&K MSG90 (80 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Scout (60 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "AWP (100 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Back");
+	AddMenuItem(menu, "option1", "Ruger Mini-14 (60 XP)");
+	AddMenuItem(menu, "option2", "H&K MSG90 (80 XP)");
+	AddMenuItem(menu, "option3", "Scout (60 XP)");
+	AddMenuItem(menu, "option4", "AWP (100 XP)");
+	AddMenuItem(menu, "option5", "Back");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	
 	return Plugin_Handled;
 }
@@ -372,10 +350,8 @@ Action:SniperMenuDraw(iClient)
 //Special Weapons Gun Draw
 Action:SpecialMenuDraw(iClient) 
 {
-	CheckMenu(iClient);
-	
-	g_hMenu_XPM[iClient] = CreateMenu(SpecialMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(SpecialMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -383,14 +359,14 @@ Action:SpecialMenuDraw(iClient)
 	else
 		g_iClientUsableXP = g_iClientXP[iClient];
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "Usable XP: %d\n \nSpecial Weapons\n", g_iClientUsableXP);
+	SetMenuTitle(menu, "Usable XP: %d\n \nSpecial Weapons\n", g_iClientUsableXP);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Grenade Launcher (400 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "M60 Machine Gun (500 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Back");
+	AddMenuItem(menu, "option1", "Grenade Launcher (400 XP)");
+	AddMenuItem(menu, "option2", "M60 Machine Gun (500 XP)");
+	AddMenuItem(menu, "option3", "Back");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	
 	return Plugin_Handled;
 }
@@ -398,11 +374,9 @@ Action:SpecialMenuDraw(iClient)
 //Chainsaw Gun Draw
 Action:CrushingMeleeMenuDraw(iClient) 
 {
-	CheckMenu(iClient);
-	
-	g_hMenu_XPM[iClient] = CreateMenu(CrushingMeleeMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(CrushingMeleeMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -410,19 +384,19 @@ Action:CrushingMeleeMenuDraw(iClient)
 	else
 		g_iClientUsableXP = g_iClientXP[iClient];
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "Usable XP: %d\n \nCrushing Melee Weapons\n", g_iClientUsableXP);
+	SetMenuTitle(menu, "Usable XP: %d\n \nCrushing Melee Weapons\n", g_iClientUsableXP);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option0", "Cricket Bat (30 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Electric Guitar (30 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Frying Pan (30 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Nightstick (30 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Golf Club (30 XP)");
-	//AddMenuItem(g_hMenu_XPM[iClient], "option5", "Riot Shield (30 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Baseball Bat (50 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Back");
+	AddMenuItem(menu, "option0", "Cricket Bat (30 XP)");
+	AddMenuItem(menu, "option1", "Electric Guitar (30 XP)");
+	AddMenuItem(menu, "option2", "Frying Pan (30 XP)");
+	AddMenuItem(menu, "option3", "Nightstick (30 XP)");
+	AddMenuItem(menu, "option4", "Golf Club (30 XP)");
+	//AddMenuItem(menu, "option5", "Riot Shield (30 XP)");
+	AddMenuItem(menu, "option5", "Baseball Bat (50 XP)");
+	AddMenuItem(menu, "option6", "Back");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	
 	return Plugin_Handled;
 }
@@ -430,10 +404,8 @@ Action:CrushingMeleeMenuDraw(iClient)
 //Sidearms Gun Draw
 Action:SidearmMenuDraw(iClient) 
 {
-	CheckMenu(iClient);
-	
-	g_hMenu_XPM[iClient] = CreateMenu(SidearmMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(SidearmMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -441,15 +413,15 @@ Action:SidearmMenuDraw(iClient)
 	else
 		g_iClientUsableXP = g_iClientXP[iClient];
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "Usable XP: %d\n \nSidearms\n", g_iClientUsableXP);
+	SetMenuTitle(menu, "Usable XP: %d\n \nSidearms\n", g_iClientUsableXP);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "P220 (15 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Glock + P220 (30 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Magnum (40 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Back");
+	AddMenuItem(menu, "option1", "P220 (15 XP)");
+	AddMenuItem(menu, "option2", "Glock + P220 (30 XP)");
+	AddMenuItem(menu, "option3", "Magnum (40 XP)");
+	AddMenuItem(menu, "option4", "Back");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	
 	return Plugin_Handled;
 }
@@ -457,10 +429,8 @@ Action:SidearmMenuDraw(iClient)
 //Melee Gun Draw
 Action:SlashingMeleeMenuDraw(iClient) 
 {
-	CheckMenu(iClient);
-	
-	g_hMenu_XPM[iClient] = CreateMenu(SlashingMeleeMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(SlashingMeleeMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -468,19 +438,19 @@ Action:SlashingMeleeMenuDraw(iClient)
 	else
 		g_iClientUsableXP = g_iClientXP[iClient];
 	
-	SetMenuTitle(g_hMenu_XPM[iClient], "Usable XP: %d\n \nSlashing Melee Weapons\n", g_iClientUsableXP);
+	SetMenuTitle(menu, "Usable XP: %d\n \nSlashing Melee Weapons\n", g_iClientUsableXP);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Axe (30 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Crowbar (30 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Katana (30 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Machete (30 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Pitch Fork (30 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "Combat Knife (50 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Chainsaw (250 XP)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option8", "Back");
+	AddMenuItem(menu, "option1", "Axe (30 XP)");
+	AddMenuItem(menu, "option2", "Crowbar (30 XP)");
+	AddMenuItem(menu, "option3", "Katana (30 XP)");
+	AddMenuItem(menu, "option4", "Machete (30 XP)");
+	AddMenuItem(menu, "option5", "Pitch Fork (30 XP)");
+	AddMenuItem(menu, "option6", "Combat Knife (50 XP)");
+	AddMenuItem(menu, "option7", "Chainsaw (250 XP)");
+	AddMenuItem(menu, "option8", "Back");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	
 	return Plugin_Handled;
 }

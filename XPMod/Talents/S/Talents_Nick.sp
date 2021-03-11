@@ -601,17 +601,17 @@ EventsDeath_VictimNick(Handle:hEvent, iAttacker, iVictim)
 //Jebus Hand Menu
 Action:JebusHandBindMenuDraw(iClient) 
 {
-	CheckMenu(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(JebusHandMenuHandler);
+	
+	Menu menu = CreateMenu(JebusHandMenuHandler);
 	
 	g_iOverLevel[iClient] = 3 - g_iClientBindUses_2[iClient];
-	SetMenuTitle(g_hMenu_XPM[iClient], "     Jebus Hand Menu\n================================\n%d Charges Remain\n================================", g_iOverLevel[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Heal Every Teammate        (1 Charge)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Revive Downed Teammate     (2 Charges)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Resurrect A Dead Teammate  (3 Charges)");
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Do Nothing For Now\n ");
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuTitle(menu, "     Jebus Hand Menu\n================================\n%d Charges Remain\n================================", g_iOverLevel[iClient]);
+	AddMenuItem(menu, "option1", "Heal Every Teammate        (1 Charge)");
+	AddMenuItem(menu, "option2", "Revive Downed Teammate     (2 Charges)");
+	AddMenuItem(menu, "option3", "Resurrect A Dead Teammate  (3 Charges)");
+	AddMenuItem(menu, "option4", "Do Nothing For Now\n ");
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }

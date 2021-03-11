@@ -1,10 +1,9 @@
 Action:TankMenuDrawNecroTanker(iClient)
 {
-	CheckMenu(iClient);
 	CheckLevel(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(TankMenuHandlerNecroTanker);
+	Menu menu = CreateMenu(TankMenuHandlerNecroTanker);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient],"\
+	SetMenuTitle(menu,"\
 	\n \
         \nNECROTANKER\
         \n\"Life is finite, whereas Death...ah, yes. Death is infinite.\"\
@@ -32,11 +31,11 @@ Action:TankMenuDrawNecroTanker(iClient)
         NECROTANKER_CONSUME_COMMON_HP,
         NECROTANKER_CONSUME_UNCOMMON_HP);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }

@@ -1,10 +1,9 @@
 Action:TankMenuDrawFire(iClient)
 {
-	CheckMenu(iClient);
 	CheckLevel(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(TankMenuHandlerFire);
+	Menu menu = CreateMenu(TankMenuHandlerFire);
 	
-	SetMenuTitle(g_hMenu_XPM[iClient],"\
+	SetMenuTitle(menu,"\
 		\n \
         \nFIRE TANK\
         \n\"MoRE PAiN?! MOrE FUUuN!!\"\
@@ -22,11 +21,11 @@ Action:TankMenuDrawFire(iClient)
         \n ",
         TANK_HEALTH_FIRE);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }

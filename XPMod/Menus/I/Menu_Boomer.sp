@@ -3,31 +3,29 @@
 //Boomer Top Menu Draw
 Action:BoomerTopMenuDraw(iClient) 
 {
-	CheckMenu(iClient);
-	
 	DeleteAllMenuParticles(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(BoomerTopMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(BoomerTopMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	decl String:title[256];
 	FormatEx(title, sizeof(title), "\n \nLevel %d	XP: %d/%d\n==========================\nBoomer Talents:\n==========================\n \nRapid Regurgitation: Level %d\nAcidic Brew: Level %d\nNorovirus: Level %d\n \n", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iRapidLevel[iClient], g_iAcidicLevel[iClient], g_iNorovirusLevel[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], title);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Rapid Regurgitation");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Acidic Brew");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Norovirus\n ");
+	SetMenuTitle(menu, title);
+	AddMenuItem(menu, "option1", "Rapid Regurgitation");
+	AddMenuItem(menu, "option2", "Acidic Brew");
+	AddMenuItem(menu, "option3", "Norovirus\n ");
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", "Choose The Boomer\n ");
+	AddMenuItem(menu, "option4", "Choose The Boomer\n ");
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", "Open In Website\n ");
+	AddMenuItem(menu, "option5", "Open In Website\n ");
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back\
+	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back\
 		\n==========================\
 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -37,10 +35,8 @@ Action:BoomerTopMenuDraw(iClient)
 //Rapid Regurgitation Menu Draw
 Action:RapidMenuDraw(iClient)
 {
-	CheckMenu(iClient);
-	
-	g_hMenu_XPM[iClient] = CreateMenu(RapidMenuHandler);
-	SetMenuTitle(g_hMenu_XPM[iClient], "\
+	Menu menu = CreateMenu(RapidMenuHandler);
+	SetMenuTitle(menu, "\
 		\n \
 		\n  					Rapid Regurgitation (Level %d)\
 		\n \
@@ -50,11 +46,11 @@ Action:RapidMenuDraw(iClient)
 		\n ",
 		g_iRapidLevel[iClient]);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -62,11 +58,9 @@ Action:RapidMenuDraw(iClient)
 //Acidic Brew Menu Draw
 Action:AcidicMenuDraw(iClient)
 {
-	CheckMenu(iClient);
+	Menu menu = CreateMenu(AcidicMenuHandler);
 	
-	g_hMenu_XPM[iClient] = CreateMenu(AcidicMenuHandler);
-	
-	SetMenuTitle(g_hMenu_XPM[iClient], "\
+	SetMenuTitle(menu, "\
 		\n \
 		\n						Acidic Brew (Level %d)\
 		\n \
@@ -84,11 +78,11 @@ Action:AcidicMenuDraw(iClient)
 		\n ",
 		g_iAcidicLevel[iClient]);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -96,11 +90,9 @@ Action:AcidicMenuDraw(iClient)
 //Norovirus Menu Draw
 Action:NorovirusMenuDraw(iClient)
 {
-	CheckMenu(iClient);
+	Menu menu = CreateMenu(NorovirusMenuHandler);
 	
-	g_hMenu_XPM[iClient] = CreateMenu(NorovirusMenuHandler);
-	
-	SetMenuTitle(g_hMenu_XPM[iClient], "\
+	SetMenuTitle(menu, "\
 		\n \
 		\n							Norovirus (Level %d)\
 		\n \
@@ -122,11 +114,11 @@ Action:NorovirusMenuDraw(iClient)
 		\n ",
 		g_iNorovirusLevel[iClient]);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -135,20 +127,19 @@ Action:NorovirusMenuDraw(iClient)
 Action:ChooseBoomerClassMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
-	CheckMenu(iClient);
 	
-	g_hMenu_XPM[iClient] = CreateMenu(ChooseBoomerClassMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(ChooseBoomerClassMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
 	decl String:title[256];
 	FormatEx(title, sizeof(title), "==========================\n		Current Classes\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n==========================\n \nPick a class to replace with the Boomer:",g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], title);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Replace Class 1");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", "Replace Class 2");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", "Replace Class 3");
-	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back");
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuTitle(menu, title);
+	AddMenuItem(menu, "option1", "Replace Class 1");
+	AddMenuItem(menu, "option2", "Replace Class 2");
+	AddMenuItem(menu, "option3", "Replace Class 3");
+	AddMenuItem(menu, "option9", "Back");
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	return Plugin_Handled;
 }
 

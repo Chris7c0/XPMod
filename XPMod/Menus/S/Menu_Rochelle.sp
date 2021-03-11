@@ -3,34 +3,32 @@ Action:RochelleMenuDraw(iClient)
 {
 	decl String:text[512];
 
-	CheckMenu(iClient);
 	DeleteAllMenuParticles(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(RochelleMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
-	
-	
+	Menu menu = CreateMenu(RochelleMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
+
 	FormatEx(text, sizeof(text), "\n \nLevel %d	XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Rochelle's Ninja Talents\n ", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], text);
+	SetMenuTitle(menu, text);
 	
 	FormatEx(text, sizeof(text), "	[Level %d]	Gather Intelligence", g_iGatherLevel[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", text);
+	AddMenuItem(menu, "option1", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	Hunter Killer", g_iHunterLevel[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", text);
+	AddMenuItem(menu, "option2", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	Sniper's Endurance", g_iSniperLevel[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", text);
+	AddMenuItem(menu, "option3", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	Silent Sorrow", g_iSilentLevel[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", text);
+	AddMenuItem(menu, "option4", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	Smoke and Mirrors (Bind 1)            ", g_iSmokeLevel[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", text);
+	AddMenuItem(menu, "option5", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	Shadow Ninja (Bind 2)\n ", g_iShadowLevel[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", text);
+	AddMenuItem(menu, "option6", text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Open In Website\n ");
-	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=\
+	AddMenuItem(menu, "option7", "Open In Website\n ");
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=\
 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -40,7 +38,6 @@ Action:GatherMenuDraw(iClient)
 {
 	decl String:text[512];
 
-	CheckMenu(iClient);
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
 	{
@@ -48,7 +45,7 @@ Action:GatherMenuDraw(iClient)
 		g_bShowingVGUI[iClient] =  true;
 	}
 	
-	g_hMenu_XPM[iClient] = CreateMenu(GatherMenuHandler);
+	Menu menu = CreateMenu(GatherMenuHandler);
 	
 	FormatEx(text, sizeof(text), "\
 		\n \
@@ -63,13 +60,13 @@ Action:GatherMenuDraw(iClient)
 		\nDefault: [Shift + E]\
 		\n ",
 		g_iGatherLevel[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], text);
+	SetMenuTitle(menu, text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -79,7 +76,6 @@ Action:HunterMenuDraw(iClient)
 {
 	decl String:text[512];
 
-	CheckMenu(iClient);
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
 	{
@@ -87,7 +83,7 @@ Action:HunterMenuDraw(iClient)
 		g_bShowingVGUI[iClient] =  true;
 	}
 				
-	g_hMenu_XPM[iClient] = CreateMenu(HunterMenuHandler);
+	Menu menu = CreateMenu(HunterMenuHandler);
 	
 	FormatEx(text, sizeof(text), "\
 		\n \
@@ -105,13 +101,13 @@ Action:HunterMenuDraw(iClient)
 		\nPoison damage every 5 seconds, +1 tick per level\
 		\n ",
 		g_iHunterLevel[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], text);
+	SetMenuTitle(menu, text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -121,7 +117,6 @@ Action:SnipersEnduranceMenuDraw(iClient)
 {
 	decl String:text[512];
 
-	CheckMenu(iClient);
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
 	{
@@ -129,7 +124,7 @@ Action:SnipersEnduranceMenuDraw(iClient)
 		g_bShowingVGUI[iClient] =  true;
 	}
 				
-	g_hMenu_XPM[iClient] = CreateMenu(SnipersEnduranceMenuHandler);
+	Menu menu = CreateMenu(SnipersEnduranceMenuHandler);
 	
 	FormatEx(text, sizeof(text), "\
 		\n \
@@ -150,13 +145,13 @@ Action:SnipersEnduranceMenuDraw(iClient)
 		\nFall damage immunity while super jumping\
 		\n ",
 		g_iSniperLevel[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], text);
+	SetMenuTitle(menu, text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -166,7 +161,6 @@ Action:SilentMenuDraw(iClient)
 {
 	decl String:text[512];
 
-	CheckMenu(iClient);
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
 	{
@@ -174,7 +168,7 @@ Action:SilentMenuDraw(iClient)
 		g_bShowingVGUI[iClient] =  true;
 	}
 	
-	g_hMenu_XPM[iClient] = CreateMenu(SilentMenuHandler);
+	Menu menu = CreateMenu(SilentMenuHandler);
 	
 	FormatEx(text, sizeof(text), "\
 		\n \
@@ -187,13 +181,13 @@ Action:SilentMenuDraw(iClient)
 		\nprevious menu for upgrade details\
 		\n ",
 		g_iSilentLevel[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], text);
+	SetMenuTitle(menu, text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -203,7 +197,6 @@ Action:SmokeMenuDraw(iClient)
 {
 	decl String:text[512];
 
-	CheckMenu(iClient);
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
 	{
@@ -211,7 +204,7 @@ Action:SmokeMenuDraw(iClient)
 		g_bShowingVGUI[iClient] =  true;
 	}
 				
-	g_hMenu_XPM[iClient] = CreateMenu(SmokeMenuHandler);
+	Menu menu = CreateMenu(SmokeMenuHandler);
 	
 	FormatEx(text, sizeof(text), "\
 		\n \
@@ -238,13 +231,13 @@ Action:SmokeMenuDraw(iClient)
 		\nfall damage immunity\
 		\n ",
 		g_iSmokeLevel[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], text);
+	SetMenuTitle(menu, text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	
 	return Plugin_Handled;
 }
@@ -253,8 +246,7 @@ Action:SmokeMenuDraw(iClient)
 Action:ShadowMenuDraw(iClient) 
 {
 	decl String:text[512];
-
-	CheckMenu(iClient);
+	
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
 	{
@@ -262,7 +254,7 @@ Action:ShadowMenuDraw(iClient)
 		g_bShowingVGUI[iClient] =  true;
 	}
 				
-	g_hMenu_XPM[iClient] = CreateMenu(ShadowMenuHandler);
+	Menu menu = CreateMenu(ShadowMenuHandler);
 	
 	FormatEx(text, sizeof(text), "\
 		\n \
@@ -284,13 +276,13 @@ Action:ShadowMenuDraw(iClient)
 		\nGain a Katana\
 		\n ",
 		g_iShadowLevel[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], text);
+	SetMenuTitle(menu, text);
 
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }

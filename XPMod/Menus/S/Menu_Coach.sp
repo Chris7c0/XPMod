@@ -4,36 +4,34 @@
 Action:CoachMenuDraw(iClient)
 {
 	decl String:text[512];
-	
-	CheckMenu(iClient);
-	
+
 	DeleteAllMenuParticles(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(CoachMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(CoachMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
 	FormatEx(text, sizeof(text), "\n \nLevel %d	XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Coach's Berserker Talents\n ", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], text);
+	SetMenuTitle(menu, text);
 	
 	FormatEx(text, sizeof(text), "	[Level %d]	Bull Rush", g_iBullLevel[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", text);
+	AddMenuItem(menu, "option1", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	Wrecking Ball", g_iWreckingLevel[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", text);
+	AddMenuItem(menu, "option2", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	Spray n' Pray", g_iSprayLevel[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", text);
+	AddMenuItem(menu, "option3", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	Homerun!", g_iHomerunLevel[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", text);
+	AddMenuItem(menu, "option4", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	Lead by Example (Bind 1)        ", g_iLeadLevel[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", text);
+	AddMenuItem(menu, "option5", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	Strong Arm (Bind 2)\n ", g_iStrongLevel[iClient]);
-	AddMenuItem(g_hMenu_XPM[iClient], "option6", text);
+	AddMenuItem(menu, "option6", text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option7", "Open In Website\n ");
-	AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(g_hMenu_XPM[iClient], "option9", "Back\n \n=	=	=	=	=	=	=	=	=	=	=	=	=\
+	AddMenuItem(menu, "option7", "Open In Website\n ");
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back\n \n=	=	=	=	=	=	=	=	=	=	=	=	=\
 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -42,9 +40,7 @@ Action:CoachMenuDraw(iClient)
 Action:BullMenuDraw(iClient)
 {
 	decl String:text[512];
-	
-	CheckMenu(iClient);
-	
+
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
 	{
@@ -52,7 +48,7 @@ Action:BullMenuDraw(iClient)
 		g_bShowingVGUI[iClient] =  true;
 	}
 	
-	g_hMenu_XPM[iClient] = CreateMenu(BullMenuHandler);
+	Menu menu = CreateMenu(BullMenuHandler);
 	
 	FormatEx(text, sizeof(text), "\
 		\n \
@@ -72,13 +68,13 @@ Action:BullMenuDraw(iClient)
 		\n ",
 		g_iSkillPoints[iClient], 
 		g_iBullLevel[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], text);
+	SetMenuTitle(menu, text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -87,9 +83,7 @@ Action:BullMenuDraw(iClient)
 Action:WreckingMenuDraw(iClient) 
 {
 	decl String:text[512];
-	
-	CheckMenu(iClient);
-	
+
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
 	{
@@ -97,7 +91,7 @@ Action:WreckingMenuDraw(iClient)
 		g_bShowingVGUI[iClient] =  true;
 	}
 	
-	g_hMenu_XPM[iClient] = CreateMenu(WreckingMenuHandler);
+	Menu menu = CreateMenu(WreckingMenuHandler);
 	
 	FormatEx(text, sizeof(text), "\
 		\n \
@@ -119,13 +113,13 @@ Action:WreckingMenuDraw(iClient)
 		\n(Charge) HP regen: Hold [CROUCH] to heal yourself\
 		\n ",
 		g_iWreckingLevel[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], text);
+	SetMenuTitle(menu, text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -135,8 +129,6 @@ Action:SprayMenuDraw(iClient)
 {
 	decl String:text[512];
 
-	CheckMenu(iClient);
-	
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
 	{
@@ -144,7 +136,7 @@ Action:SprayMenuDraw(iClient)
 		g_bShowingVGUI[iClient] =  true;
 	}
 	
-	g_hMenu_XPM[iClient] = CreateMenu(SprayMenuHandler);
+	Menu menu = CreateMenu(SprayMenuHandler);
 	
 	FormatEx(text, sizeof(text), "\
 		\n \
@@ -155,13 +147,13 @@ Action:SprayMenuDraw(iClient)
 		\n+2 shotgun pellet damage per level\
 		\n ",
 		g_iSprayLevel[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], text);
+	SetMenuTitle(menu, text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -171,8 +163,6 @@ Action:HomerunMenuDraw(iClient)
 {
 	decl String:text[512];
 
-	CheckMenu(iClient);
-	
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
 	{
@@ -180,7 +170,7 @@ Action:HomerunMenuDraw(iClient)
 		g_bShowingVGUI[iClient] =  true;
 	}
 	
-	g_hMenu_XPM[iClient] = CreateMenu(HomerunMenuHandler);
+	Menu menu = CreateMenu(HomerunMenuHandler);
 	
 	FormatEx(text, sizeof(text), "\
 		\n \
@@ -201,13 +191,13 @@ Action:HomerunMenuDraw(iClient)
 		\nMax 50 stacks\
 		\n ",
 		g_iHomerunLevel[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], text);
+	SetMenuTitle(menu, text);
 
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -217,8 +207,6 @@ Action:LeadMenuDraw(iClient)
 {
 	decl String:text[512];
 
-	CheckMenu(iClient);
-	
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
 	{
@@ -226,7 +214,7 @@ Action:LeadMenuDraw(iClient)
 		g_bShowingVGUI[iClient] =  true;
 	}
 	
-	g_hMenu_XPM[iClient] = CreateMenu(LeadMenuHandler);
+	Menu menu = CreateMenu(LeadMenuHandler);
 	
 	FormatEx(text, sizeof(text), "\
 		\n \
@@ -253,13 +241,13 @@ Action:LeadMenuDraw(iClient)
 		\n(Team) max health (Stacks) with itself\
 		\n ",
 		g_iLeadLevel[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], text);
+	SetMenuTitle(menu, text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -268,8 +256,6 @@ Action:LeadMenuDraw(iClient)
 Action:StrongMenuDraw(iClient) 
 {
 	decl String:text[512];
-
-	CheckMenu(iClient);
 	
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -278,7 +264,7 @@ Action:StrongMenuDraw(iClient)
 		g_bShowingVGUI[iClient] =  true;
 	}
 	
-	g_hMenu_XPM[iClient] = CreateMenu(StrongMenuHandler);
+	Menu menu = CreateMenu(StrongMenuHandler);
 	
 	FormatEx(text, sizeof(text), "\
 		\n \
@@ -307,13 +293,13 @@ Action:StrongMenuDraw(iClient)
 		\n(Charge): Hold [WALK] to fly when jetpack is on\
 		\n ",
 		g_iStrongLevel[iClient]);
-	SetMenuTitle(g_hMenu_XPM[iClient], text);
+	SetMenuTitle(menu, text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", "Back\
+	AddMenuItem(menu, "option1", "Back\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }

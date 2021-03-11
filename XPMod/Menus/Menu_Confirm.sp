@@ -145,8 +145,7 @@ Action:ConfirmationMessageMenuDraw(iClient)
 	{
 		if(g_iAutoSetCountDown[iClient] > 0)
 		{
-			CheckMenu(iClient);
-			g_hMenu_XPM[iClient] = CreateMenu(ConfirmationMessageMenuHandler);
+			Menu menu = CreateMenu(ConfirmationMessageMenuHandler);
 			
 			decl String:surClass[32];
 			switch(g_iChosenSurvivor[iClient])
@@ -162,16 +161,16 @@ Action:ConfirmationMessageMenuDraw(iClient)
 			
 			decl String:text[300];
 			FormatEx(text, sizeof(text), "\n \n===	===	===	===	===	===	===	===	===	===\n \n	Survivor:			   %s\n	Equipment Cost:	 %d XP\n	Infected:				%s	%s	%s\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \nConfirm your Characters and Equipment for this round?     \n ", surClass, g_iClientTotalXPCost[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
-			SetMenuTitle(g_hMenu_XPM[iClient], text);
+			SetMenuTitle(menu, text);
 			
-			AddMenuItem(g_hMenu_XPM[iClient], "option1", " Yes, confirm.");
+			AddMenuItem(menu, "option1", " Yes, confirm.");
 
 			if(g_iClientTeam[iClient] == TEAM_SURVIVORS)
-				AddMenuItem(g_hMenu_XPM[iClient], "option2", " No, change Survivor/Equipment.");
+				AddMenuItem(menu, "option2", " No, change Survivor/Equipment.");
 			else if(g_iClientTeam[iClient] == TEAM_INFECTED)
-				AddMenuItem(g_hMenu_XPM[iClient], "option2", " No, change Infected.");
+				AddMenuItem(menu, "option2", " No, change Infected.");
 			else
-				AddMenuItem(g_hMenu_XPM[iClient], "option2", " No, change Characters.");
+				AddMenuItem(menu, "option2", " No, change Characters.");
 
 			if(g_iAutoSetCountDown[iClient] > 9)
 			{
@@ -192,11 +191,10 @@ Action:ConfirmationMessageMenuDraw(iClient)
 				}
 			}
 			
+			AddMenuItem(menu, "option3", text);
 			
-			AddMenuItem(g_hMenu_XPM[iClient], "option3", text);
-			
-			SetMenuExitButton(g_hMenu_XPM[iClient], false);
-			DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+			SetMenuExitButton(menu, false);
+			DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 		}
 		else
 		{

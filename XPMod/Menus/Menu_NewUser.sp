@@ -6,9 +6,8 @@ Action:CreateNewUserMenuDraw(iClient)
 	
 	if(g_bTalentsConfirmed[iClient] == false)
 	{
-		CheckMenu(iClient);
-		g_hMenu_XPM[iClient] = CreateMenu(CreateNewUserMenuHandler);
-		SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+		Menu menu = CreateMenu(CreateNewUserMenuHandler);
+		SetMenuPagination(menu, MENU_NO_PAGINATION);
 		
 		decl String:text[500];
 		FormatEx(text, sizeof(text), 
@@ -24,21 +23,21 @@ Action:CreateNewUserMenuDraw(iClient)
 			be rewarded with intense gameplay.\n \
 			\n\
 			Start playing XPMod?");
-		SetMenuTitle(g_hMenu_XPM[iClient], text);
+		SetMenuTitle(menu, text);
 		
-		AddMenuItem(g_hMenu_XPM[iClient], "option1", " Yes, Lets Go!");
-		AddMenuItem(g_hMenu_XPM[iClient], "option2", " Not Now.");
-		AddMenuItem(g_hMenu_XPM[iClient], "option3", "", ITEMDRAW_NOTEXT);
-		AddMenuItem(g_hMenu_XPM[iClient], "option4", "", ITEMDRAW_NOTEXT);
-		AddMenuItem(g_hMenu_XPM[iClient], "option5", "", ITEMDRAW_NOTEXT);
-		AddMenuItem(g_hMenu_XPM[iClient], "option6", "", ITEMDRAW_NOTEXT);
-		AddMenuItem(g_hMenu_XPM[iClient], "option7", "", ITEMDRAW_NOTEXT);
-		AddMenuItem(g_hMenu_XPM[iClient], "option8", "", ITEMDRAW_NOTEXT);
-		AddMenuItem(g_hMenu_XPM[iClient], "option9", " No, Ban Me.\n \n\
+		AddMenuItem(menu, "option1", " Yes, Lets Go!");
+		AddMenuItem(menu, "option2", " Not Now.");
+		AddMenuItem(menu, "option3", "", ITEMDRAW_NOTEXT);
+		AddMenuItem(menu, "option4", "", ITEMDRAW_NOTEXT);
+		AddMenuItem(menu, "option5", "", ITEMDRAW_NOTEXT);
+		AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
+		AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
+		AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+		AddMenuItem(menu, "option9", " No, Ban Me.\n \n\
 			\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 		
-		SetMenuExitButton(g_hMenu_XPM[iClient], false);
-		DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+		SetMenuExitButton(menu, false);
+		DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	}
 	
 	return Plugin_Handled;
@@ -75,26 +74,25 @@ Action:BanMeMenuDraw(iClient)
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Handled;
 	
-	CheckMenu(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(BanMeMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(BanMeMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
 	decl String:text[500];
 	FormatEx(text, sizeof(text), "\n \n\
 		=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n\
 		How long would you like to be banned from this server?   \n ");
-	SetMenuTitle(g_hMenu_XPM[iClient], text);
+	SetMenuTitle(menu, text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", " Nevermind!");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", " Kick Only");
-	AddMenuItem(g_hMenu_XPM[iClient], "option3", " 1 Day Ban");
-	AddMenuItem(g_hMenu_XPM[iClient], "option4", " 1 Week Ban");
-	AddMenuItem(g_hMenu_XPM[iClient], "option5", " 1 Month Ban\n \n\
+	AddMenuItem(menu, "option1", " Nevermind!");
+	AddMenuItem(menu, "option2", " Kick Only");
+	AddMenuItem(menu, "option3", " 1 Day Ban");
+	AddMenuItem(menu, "option4", " 1 Week Ban");
+	AddMenuItem(menu, "option5", " 1 Month Ban\n \n\
 		=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\
 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	
 	return Plugin_Handled;
 }
@@ -135,9 +133,8 @@ Action:BanConfirmMenu(int iClient, int iBanDurationInMinutes)
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Handled;
 	
-	CheckMenu(iClient);
-	g_hMenu_XPM[iClient] = CreateMenu(BanConfirmMenuHandler);
-	SetMenuPagination(g_hMenu_XPM[iClient], MENU_NO_PAGINATION);
+	Menu menu = CreateMenu(BanConfirmMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
 	// Store the value for use in the handler
 	g_iBanDurationInMinutes[iClient] = iBanDurationInMinutes;
@@ -147,15 +144,15 @@ Action:BanConfirmMenu(int iClient, int iBanDurationInMinutes)
 		=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n\
 		You will be banned from all XPMod servers for %i days.    \n \n\
 		Are you sure?\n ", (g_iBanDurationInMinutes[iClient] / 60 / 24) );
-	SetMenuTitle(g_hMenu_XPM[iClient], text);
+	SetMenuTitle(menu, text);
 	
-	AddMenuItem(g_hMenu_XPM[iClient], "option1", " Yes");
-	AddMenuItem(g_hMenu_XPM[iClient], "option2", " No\n \n\
+	AddMenuItem(menu, "option1", " Yes");
+	AddMenuItem(menu, "option2", " No\n \n\
 		=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\
 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	
-	SetMenuExitButton(g_hMenu_XPM[iClient], false);
-	DisplayMenu(g_hMenu_XPM[iClient], iClient, MENU_TIME_FOREVER);
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	
 	return Plugin_Handled;
 }
