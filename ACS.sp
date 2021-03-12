@@ -33,12 +33,15 @@
 
 	Change Log
 		v1.2.4 (Dec 31, 2020)	- Added new maps for the Last Stand Update
-								- Removed hardcoded maps by making the campaign maps a config file ***********************
+								- Supplemented hardcoded maps by adding optional campaign maps config file ***********************
 								- Made map comparisons case insensitive							************************
+								- Fixed config file not loading changes ******************************************************
 								- Added precache of witch models to fix bug in The Passing campaign 
 								  transition crash
 								- Fixed several infinite loop bugs when on the last campaign
+								- Changed Timer_AdvertiseNextMap to not have TIMER_REPEAT and TIMER_FLAG_NO_MAPCHANGE together
 								- Removed FCVAR_PLUGIN
+								- Removed global menu handle
 								- Added the code from [L4D/L4D2] Return To Lobby Fix from MasterMind420. Thank you!!
 		
 		v1.2.3 (Jan 8, 2012)	- Added the new L4D2 campaigns
@@ -118,7 +121,7 @@ new String:g_strScavengeMapName[NUMBER_OF_SCAVENGE_MAPS][32];	//Name of scaveeng
 
 //Voting Variables
 new bool:g_bVotingEnabled = true;							//Tells if the voting system is on
-new g_iVotingAdDisplayMode = DISPLAY_MODE_HINT;				//The way to advertise the voting system
+new g_iVotingAdDisplayMode = DISPLAY_MODE_MENU;				//The way to advertise the voting system
 new Float:g_fVotingAdDelayTime = 1.0;						//Time to wait before showing advertising
 new bool:g_bVoteWinnerSoundEnabled = true;					//Sound plays when vote winner changes
 new g_iNextMapAdDisplayMode = DISPLAY_MODE_HINT;			//The way to advertise the next map
@@ -128,7 +131,6 @@ new bool:g_bClientVoted[MAXPLAYERS + 1];					//If the client has voted on a map
 new g_iClientVote[MAXPLAYERS + 1];							//The value of the clients vote
 new g_iWinningMapIndex;										//Winning map/campaign's index
 new g_iWinningMapVotes;										//Winning map/campaign's number of votes
-new Handle:g_hMenu_Vote[MAXPLAYERS + 1]	= INVALID_HANDLE;	//Handle for each players vote menu
 
 //Console Variables (CVars)
 new Handle:g_hCVar_VotingEnabled			= INVALID_HANDLE;
@@ -292,7 +294,7 @@ public OnPluginStart()
 	CreateConVar("acs_version", PLUGIN_VERSION, "Version of Automatic Campaign Switcher (ACS) on this server", FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY|FCVAR_DONTRECORD);
 	g_hCVar_VotingEnabled = CreateConVar("acs_voting_system_enabled", "1", "Enables players to vote for the next map or campaign [0 = DISABLED, 1 = ENABLED]", 0, true, 0.0, true, 1.0);
 	g_hCVar_VoteWinnerSoundEnabled = CreateConVar("acs_voting_sound_enabled", "1", "Determines if a sound plays when a new map is winning the vote [0 = DISABLED, 1 = ENABLED]", 0, true, 0.0, true, 1.0);
-	g_hCVar_VotingAdMode = CreateConVar("acs_voting_ad_mode", "1", "Sets how to advertise voting at the start of the map [0 = DISABLED, 1 = HINT TEXT, 2 = CHAT TEXT, 3 = OPEN VOTE MENU]\n * Note: This is only displayed once during a finale or scavenge map *", 0, true, 0.0, true, 3.0);
+	g_hCVar_VotingAdMode = CreateConVar("acs_voting_ad_mode", "3", "Sets how to advertise voting at the start of the map [0 = DISABLED, 1 = HINT TEXT, 2 = CHAT TEXT, 3 = OPEN VOTE MENU]\n * Note: This is only displayed once during a finale or scavenge map *", 0, true, 0.0, true, 3.0);
 	g_hCVar_VotingAdDelayTime = CreateConVar("acs_voting_ad_delay_time", "1.0", "Time, in seconds, to wait after survivors leave the start area to advertise voting as defined in acs_voting_ad_mode\n * Note: If the server is up, changing this in the .cfg file takes two map changes before the change takes place *", 0, true, 0.1, false);
 	g_hCVar_NextMapAdMode = CreateConVar("acs_next_map_ad_mode", "1", "Sets how the next campaign/map is advertised during a finale or scavenge map [0 = DISABLED, 1 = HINT TEXT, 2 = CHAT TEXT]", 0, true, 0.0, true, 2.0);
 	g_hCVar_NextMapAdInterval = CreateConVar("acs_next_map_ad_interval", "600.0", "The time, in seconds, between advertisements for the next campaign/map on finales and scavenge maps", 0, true, 60.0, false);
@@ -322,6 +324,9 @@ public OnPluginStart()
 	//Register custom console commands
 	RegConsoleCmd("mapvote", MapVote);
 	RegConsoleCmd("mapvotes", DisplayCurrentVotes);
+
+	//Repeating Timers
+	CreateTimer(g_fNextMapAdInterval, Timer_AdvertiseNextMap, _, TIMER_REPEAT);
 }
 
 /*======================================================================================
@@ -525,9 +530,6 @@ public OnMapStart()
 	Format(strFileName, sizeof(strFileName), "Automatic_Campaign_Switcher_%s", PLUGIN_VERSION);
 	AutoExecConfig(true, strFileName);
 	
-	//Set all the menu handles to invalid
-	CleanUpMenuHandles();
-	
 	//Set the game mode
 	FindGameMode();
 	
@@ -540,13 +542,6 @@ public OnMapStart()
 	//Precache sounds
 	PrecacheSound(SOUND_NEW_VOTE_START);
 	PrecacheSound(SOUND_NEW_VOTE_WINNER);
-	
-	
-	//Display advertising for the next campaign or map
-	if(g_iNextMapAdDisplayMode != DISPLAY_MODE_DISABLED)
-	{
-		CreateTimer(g_fNextMapAdInterval, Timer_AdvertiseNextMap, _, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
-	}
 	
 	g_iRoundEndCounter = 0;			//Reset the round end counter on every map start
 	g_iCoopFinaleFailureCount = 0;	//Reset the amount of Survivor failures
@@ -855,12 +850,10 @@ public Action:Timer_ChangeScavengeMap(Handle:timer, any:iMapIndex)
 
 public Action:Timer_AdvertiseNextMap(Handle:timer)
 {
-	if(g_iNextMapAdDisplayMode == DISPLAY_MODE_DISABLED)
-		return Plugin_Stop;
-	
 	//Display the ACS next map advertisement to everyone
-	DisplayNextMapToAll();
-
+	if(g_iNextMapAdDisplayMode != DISPLAY_MODE_DISABLED)
+		DisplayNextMapToAll();
+	
 	return Plugin_Continue;
 }
 
@@ -1054,32 +1047,32 @@ public Action:VoteMenuDraw(iClient)
 		return Plugin_Handled;
 	
 	//Create the menu
-	g_hMenu_Vote[iClient] = CreateMenu(VoteMenuHandler);
+	Menu menu = CreateMenu(VoteMenuHandler);
 	
 	//Give the player the option of not choosing a map
-	AddMenuItem(g_hMenu_Vote[iClient], "option1", "I Don't Care");
+	AddMenuItem(menu, "option1", "I Don't Care");
 	
 	//Populate the menu with the maps in rotation for the corresponding game mode
 	if(g_iGameMode == GAMEMODE_SCAVENGE)
 	{
-		SetMenuTitle(g_hMenu_Vote[iClient], "Vote for the next map\n ");
+		SetMenuTitle(menu, "Vote for the next map\n ");
 
 		for(new iCampaign = 0; iCampaign < NUMBER_OF_SCAVENGE_MAPS; iCampaign++)
-			AddMenuItem(g_hMenu_Vote[iClient], g_strScavengeMapName[iCampaign], g_strScavengeMapName[iCampaign]);
+			AddMenuItem(menu, g_strScavengeMapName[iCampaign], g_strScavengeMapName[iCampaign]);
 	}
 	else
 	{
-		SetMenuTitle(g_hMenu_Vote[iClient], "Vote for the next campaign\n ");
+		SetMenuTitle(menu, "Vote for the next campaign\n ");
 
 		for(new iCampaign = 0; iCampaign < NUMBER_OF_CAMPAIGNS; iCampaign++)
-			AddMenuItem(g_hMenu_Vote[iClient], g_strCampaignName[iCampaign], g_strCampaignName[iCampaign]);
+			AddMenuItem(menu, g_strCampaignName[iCampaign], g_strCampaignName[iCampaign]);
 	}
 	
 	//Add an exit button
-	SetMenuExitButton(g_hMenu_Vote[iClient], true);
+	SetMenuExitButton(menu, true);
 	
 	//And finally, show the menu to the client
-	DisplayMenu(g_hMenu_Vote[iClient], iClient, MENU_TIME_FOREVER);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	
 	//Play a sound to indicate that the user can vote on a map
 	EmitSoundToClient(iClient, SOUND_NEW_VOTE_START);
@@ -1088,9 +1081,13 @@ public Action:VoteMenuDraw(iClient)
 }
 
 //Handle the menu selection the client chose for voting
-public VoteMenuHandler(Handle:hMenu, MenuAction:maAction, iClient, iItemNum)
+public VoteMenuHandler(Menu menu, MenuAction action, iClient, iItemNum)
 {
-	if(maAction == MenuAction_Select) 
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if(action == MenuAction_Select) 
 	{
 		g_bClientVoted[iClient] = true;
 		
@@ -1110,15 +1107,6 @@ public VoteMenuHandler(Handle:hMenu, MenuAction:maAction, iClient, iItemNum)
 			PrintHintText(iClient, "You voted for %s.\n- To change your vote, type: !mapvote\n- To see all the votes, type: !mapvotes", g_strScavengeMapName[iItemNum - 1]);
 		else
 			PrintHintText(iClient, "You voted for %s.\n- To change your vote, type: !mapvote\n- To see all the votes, type: !mapvotes", g_strCampaignName[iItemNum - 1]);
-	}
-}
-
-//Resets all the menu handles to invalid for every player, until they need it again
-CleanUpMenuHandles()
-{
-	for(new iClient = 0; iClient <= MaxClients; iClient++)
-	{
-			delete g_hMenu_Vote[iClient];
 	}
 }
 
