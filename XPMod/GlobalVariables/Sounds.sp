@@ -23,6 +23,7 @@
 #define SOUND_JEBUS					        "ambient/wind/wind_snippet1.wav"
 #define SOUND_CHARGECOACH			        "player/survivor/voice/coach/battlecry07.wav"
 #define SOUND_SUITCHARGED			        "items/suitchargeok1.wav"
+#define SOUND_WAREZ_STATION                 "ambient/spacial_loops/lights_flicker.wav"
 #define SOUND_LOUIS_TELEPORT_USE            "ui/menu_countdown.wav"
 #define SOUND_LOUIS_TELEPORT_USE_REGEN      "buttons/blip1.wav"
 #define SOUND_LOUIS_TELEPORT_OVERLOAD       "ui/pickup_misc42.wav"

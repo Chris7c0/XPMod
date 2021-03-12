@@ -137,6 +137,7 @@ PrecacheAllSounds()
 	PrecacheSound(SOUND_PEEING);
 	PrecacheSound(SOUND_IGNITE);
 	PrecacheSound(SOUND_ONFIRE);
+	PrecacheSound(SOUND_WAREZ_STATION);
 	PrecacheSound(SOUND_JPHIGHREV);
 	PrecacheSound(SOUND_JPIDLEREV);
 	PrecacheSound(SOUND_JPDIE);

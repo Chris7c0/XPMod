@@ -43,6 +43,22 @@ void CreateWarezStation(iClient)
 	AcceptEntityInput(iLight, "TurnOn");
 	CreateTimer(25.0, TimerRemoveLightDynamicEntity, iLight, TIMER_FLAG_NO_MAPCHANGE);
 
+	// Warez station Sound
+	new iSoundEntityAttachement = CreateEntityByName("env_smokestack");
+	if (iSoundEntityAttachement != -1 && IsValidEntity(iSoundEntityAttachement))
+	{
+		// Spawn the dummy entity to attach the sound to and teleport it to our location
+		DispatchSpawn(iSoundEntityAttachement);
+		TeleportEntity(iSoundEntityAttachement, g_xyzWarezStationLocation[iClient], NULL_VECTOR, NULL_VECTOR);
+
+		// PLay the sound
+		EmitAmbientSound(SOUND_WAREZ_STATION, g_xyzWarezStationLocation[iClient], iSoundEntityAttachement, SNDLEVEL_NORMAL);
+
+		// Turn off the sound and remove the sound entity once done
+		CreateTimer(25.0, TimerWarezStationStopAndRemoveSound, iSoundEntityAttachement, TIMER_FLAG_NO_MAPCHANGE);
+	}
+	
+
 	// Check if clients are close to the warez station
 	CreateTimer(0.3, TimerWarezStationCheckForSurvivorToService, iClient, TIMER_REPEAT);
 
@@ -91,7 +107,7 @@ Action:TimerWarezStationDisable(Handle:timer, any:iClient)
 {
 	g_bWareStationActive[iClient] = false;
 	g_xyzWarezStationLocation[iClient] = NULL_VECTOR;
-	
+
 	return Plugin_Stop;
 }
 
@@ -334,7 +350,7 @@ void DrawRing(const float xyzLocation[3])
 	xyzOffsetLocation[0] = xyzLocation[0];
 	xyzOffsetLocation[1] = xyzLocation[1];
 	xyzOffsetLocation[2] = xyzLocation[2] + 10.0;
-	TE_SetupBeamRingPoint(xyzOffsetLocation, 60.0, 59.0, g_iSprite_Laser, g_iSprite_Halo, 0, 15, 60.0, 5.0, 0.0, {0, 255, 30, 255}, 10, 0);
+	TE_SetupBeamRingPoint(xyzOffsetLocation, 60.0, 59.0, g_iSprite_Laser, g_iSprite_Halo, 0, 15, 25.1, 5.0, 0.0, {0, 255, 30, 255}, 10, 0);
 	TE_SendToAll();
 }
 
@@ -388,6 +404,20 @@ Action:TimerRemoveLightDynamicEntity(Handle:timer, any:iEntity)
 
 	return Plugin_Stop;
 }
+
+Action:TimerWarezStationStopAndRemoveSound(Handle:timer, any:iEntity)
+{
+	if (iEntity != -1 && IsValidEntity(iEntity))
+	{
+		EmitAmbientSound(SOUND_WAREZ_STATION, NULL_VECTOR, iEntity, SNDLEVEL_NORMAL, SND_STOPLOOPING);
+		StopSound(iEntity, SNDCHAN_AUTO, SOUND_WAREZ_STATION);
+
+		AcceptEntityInput(iEntity, "kill");
+	}
+
+	return Plugin_Stop;
+}
+
 
 GiveEveryWeaponToSurvivor(iClient)
 {
