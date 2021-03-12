@@ -85,7 +85,7 @@ TalentsLoad_Coach(iClient)
 				}
 			}
 
-			g_iScreenShakeAmount -= 7;
+			g_iScreenShakeAmount -= 10;
 			SetSurvivorScreenShakeAmount();
 		}
 		

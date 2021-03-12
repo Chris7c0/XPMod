@@ -227,7 +227,7 @@ Action:LeadMenuDraw(iClient)
 		\n \
 		\nLevel 5:\
 		\n(Stacks) (Team) Reduce screen shaking when\
-		\n   taking damage by 33%%%%\
+		\n   taking damage by 50%%%%\
 		\n \
 		\n \
 		\n				 Bind 1: Heavy Gunner\

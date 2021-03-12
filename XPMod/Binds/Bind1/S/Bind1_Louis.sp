@@ -129,7 +129,7 @@ Action:WarezStationMenuDraw(iClient)
 
 	AddMenuItem(menu, "option1", "+2% Speed Increase");
 	AddMenuItem(menu, "option2", "+10% Max Health");
-	AddMenuItem(menu, "option3", "-33% Team Screen Shake");
+	AddMenuItem(menu, "option3", "-50% Team Screen Shake");
 	AddMenuItem(menu, "option4", "+1 Self revive");
 	AddMenuItem(menu, "option5", "Receive Medkit + Pills");
 	AddMenuItem(menu, "option6", "Receive Full Ammo");
@@ -187,7 +187,7 @@ WarezStationMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			}
 			case 2: // Team Screen Shake
 			{
-				g_iScreenShakeAmount -= 7;
+				g_iScreenShakeAmount -= 10;
 				SetSurvivorScreenShakeAmount();
 
 				// Print Message to Survivors
@@ -334,7 +334,7 @@ SetSurvivorScreenShakeAmount()
 	SetConVarInt(FindConVar("z_claw_hit_yaw_max"), g_iScreenShakeAmount);
 	SetConVarInt(FindConVar("z_claw_hit_yaw_min"), g_iScreenShakeAmount * -1);
 
-	PrintToChatAll("g_iScreenShakeAmount =  %i", g_iScreenShakeAmount);
+	PrintToChatAll("\x03[XPMod] \x04Survivor Screen Shake on hit is at %i\%.", RoundToNearest((g_iScreenShakeAmount / 20.0) * 100.0) );
 }
 
 Action:TimerCreateInnerSphere(Handle:timer, any:iClient)
