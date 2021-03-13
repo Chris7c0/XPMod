@@ -20,6 +20,12 @@ Action:TestFunction1(iClient, args)
 	// new iAmmo = GetEntData(iClient, iOffset_Ammo + StringToInt(str1));
 	// PrintToChatAll("iammo = %i", iAmmo);
 
+	// PrintToChatAll("Gametime = %f; m_flProgressBarStartTime = %f; m_flProgressBarDuration = %f, revive = %i",
+	// 	GetGameTime(),
+	// 	GetEntPropFloat(iClient, Prop_Send, "m_flProgressBarStartTime"),
+	// 	GetEntPropFloat(iClient, Prop_Send, "m_flProgressBarDuration"),
+	// 	GetEntPropEnt(iClient, Prop_Send, "m_reviveOwner"));
+
 	PrintAllInEnhancedCIEntityList();
 	
 	//SetSIAbilityCooldown(iClient, StringToFloat(str1), StringToInt(str2) == 1 ? true : false);

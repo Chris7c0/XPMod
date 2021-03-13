@@ -27,12 +27,17 @@ void OnPlayerRunCmd_SelfRevive(int iClient, &iButtons)
 void StartSelfRevive(int iClient)
 {
 	DebugLog(DEBUG_MODE_TESTING, "StartSelfRevive");
+
+	// Note, its very important to check if someone else is reviving
+	// here. Notice the last line of this if statement.  If they are,
+	// then do not continue with self revive or they will never to go down
 	if (g_bSelfReviving[iClient] == true ||
 		g_iClientTeam[iClient] != TEAM_SURVIVORS || 
 		g_bIsClientGrappled[iClient] ||
 		RunClientChecks(iClient) == false ||
 		IsFakeClient(iClient) ||
-		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 0)
+		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 0 ||
+		GetEntPropEnt(iClient, Prop_Send, "m_reviveOwner") != -1)
 		return;
 	
 	g_bSelfReviving[iClient] = true;
@@ -79,15 +84,25 @@ Action:TimerSelfReviveCheck(Handle:timer, any:iClient)
 
 void SuccessfulSelfRevive(int iClient)
 {
+	DebugLog(DEBUG_MODE_TESTING, "SuccessfulSelfRevive");
+	bool bIsLedgeRevive = GetEntProp(iClient, Prop_Send, "m_isHangingFromLedge") == 1;
+
 	// Revive them by using cheat command to give full health
 	RunCheatCommand(iClient, "give", "give health");
 
-	// Change health to self revive health
-	SetEntProp(iClient, Prop_Data,"m_iHealth", SELF_REVIVE_HEALTH);
+	if (bIsLedgeRevive == false)
+	{
+		// Change health to self revive health
+		SetEntProp(iClient, Prop_Data,"m_iHealth", SELF_REVIVE_HEALTH);
+		// Change temp health to self revive health
+		ResetTempHealthToSurvivor(iClient);
+		AddTempHealthToSurvivor(iClient, float(SELF_REVIVE_TEMP_HEALTH));
+	}
 
-	// Change temp health to self revive health
-	ResetTempHealthToSurvivor(iClient);
-	AddTempHealthToSurvivor(iClient, float(SELF_REVIVE_TEMP_HEALTH));
+	// We must now handle this, instead of the game.
+	SetEntPropFloat(iClient, Prop_Send, "m_flProgressBarStartTime", GetGameTime());
+	SetEntPropFloat(iClient, Prop_Send, "m_flProgressBarDuration", 0.0);
+	SetEntPropEnt(iClient, Prop_Send, "m_reviveOwner", -1);
 
 	// Remove the self revive from the client
 	g_iSelfRevives[iClient]--;
@@ -101,9 +116,14 @@ void EndSelfRevive(int iClient)
 	
 	g_bSelfReviving[iClient] = false;
 	g_fSelfRevivingFinishTime[iClient] = -1.0;
-	SetEntPropFloat(iClient, Prop_Send, "m_flProgressBarStartTime", GetGameTime());
-	SetEntPropFloat(iClient, Prop_Send, "m_flProgressBarDuration", 0.0);
-	SetEntPropEnt(iClient, Prop_Send, "m_reviveOwner", -1);
+
+	// We must now handle this, instead of the game, if the player stoppeed a self revive
+	if (GetEntPropEnt(iClient, Prop_Send, "m_reviveOwner") == iClient)
+	{
+		SetEntPropFloat(iClient, Prop_Send, "m_flProgressBarStartTime", GetGameTime());
+		SetEntPropFloat(iClient, Prop_Send, "m_flProgressBarDuration", 0.0);
+		SetEntPropEnt(iClient, Prop_Send, "m_reviveOwner", -1);
+	}
 }
 
 void ResetTempHealthToSurvivor(iClient)

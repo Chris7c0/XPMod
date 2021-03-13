@@ -31,7 +31,6 @@ SetupXPMEvents()
 	HookEvent("player_death", Event_PlayerDeath);
 	HookEvent("player_hurt", Event_PlayerHurt);
 	HookEvent("player_incapacitated", Event_PlayerIncap);
-	HookEvent("player_ledge_grab", Event_LedgeGrab);
 	HookEvent("player_jump", Event_PlayerJump);
 	HookEvent("player_use", Event_PlayerUse);
 	HookEvent("friendly_fire", Event_FriendlyFire);
@@ -40,6 +39,7 @@ SetupXPMEvents()
 	HookEvent("weapon_fire", Event_WeaponFire);
 	HookEvent("weapon_reload", Event_WeaponReload);
 	HookEvent("heal_success", Event_HealSuccess);
+	HookEvent("player_ledge_grab", Event_LedgeGrab);
 	HookEvent("revive_success", Event_ReviveSuccess);
 	HookEvent("defibrillator_used", Event_DefibUsed);
 	HookEvent("weapon_fire", Event_WeaponFire);

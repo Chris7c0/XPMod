@@ -772,9 +772,14 @@ Action:Event_ReviveSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcas
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	new target = GetClientOfUserId(GetEventInt(hEvent, "subject"));
+
+	DebugLog(DEBUG_MODE_TESTING, "Event_ReviveSuccess");
+
 	g_bIsClientDown[target] = false;
 	clienthanging[target] = false;
-	if(iClient < 1)
+	EndSelfRevive(target);
+
+	if(RunClientChecks(target))
 		return Plugin_Continue;
 	SetClientSpeed(target);
 	SetClientRenderAndGlowColor(target);
@@ -876,6 +881,12 @@ Event_LedgeGrab(Handle:hEvent, const String:strName[], bool:bDontBroadcast)		//n
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	clienthanging[iClient] = true;
+
+	// Self Revive Message
+	if (g_iSelfRevives[iClient] > 0 && IsFakeClient(iClient) == false)
+	{
+		PrintHintText(iClient, "You have %i Self Revive%s.\nHOLD USE to revive yourself.", g_iSelfRevives[iClient], g_iSelfRevives[iClient] != 1 ? "s" : "");
+	}
 }
 
 Action:Event_InfectedDecap(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
