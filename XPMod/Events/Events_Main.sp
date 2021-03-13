@@ -410,6 +410,11 @@ Action:CommandListener_JoinTeam(iClient, const String:command[], argc)
 		return Plugin_Stop;
 	}
 
+	CreateTimer(0.1, TimerCheckTeam, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
+	//This needs to be at 0.2 because ResetAllVariables is called at 0.1 twice on change team
+	CreateTimer(0.2, TimerLoadTalentsDelay, iClient, TIMER_FLAG_NO_MAPCHANGE);	
+
 	// We now do not know which infected they have, because they switched teams
 	// These need to take place in this order, set UNKNOWN, then set CanBeGhost
 	g_iInfectedCharacter[iClient] = UNKNOWN_INFECTED;
@@ -431,6 +436,9 @@ Action:Event_PlayerChangeTeam(Handle:hEvent, const String:strName[], bool:bDontB
 	CreateTimer(3.0, TimerResetPlayerChangeTeamCoolDown, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	
 	CreateTimer(0.1, TimerCheckTeam, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
+	//This needs to be at 0.2 because ResetAllVariables is called at 0.1 twice on change team
+	CreateTimer(0.2, TimerLoadTalentsDelay, iClient, TIMER_FLAG_NO_MAPCHANGE);	
 
 	// We now do not know which infected they have, because they switched teams
 	// These need to take place in this order, set UNKNOWN, then set CanBeGhost
@@ -595,7 +603,7 @@ Action:Event_PlayerConnect(Handle:hEvent, const String:strName[], bool:bDontBroa
 		Logout(iClient);
 		g_bClientSpectating[iClient] = false;
 		g_iAutoSetCountDown[iClient] = -1;
-		g_bTalentsGiven[iClient] = false;
+		g_bSurvivorTalentsGivenThisRound[iClient] = false;
 
 		//ClientCommand(iClient, "bind ` toggleconsole");
 		//ClientCommand(iClient, "con_enable 1");
@@ -653,7 +661,7 @@ Action:Event_PlayerDisconnect(Handle:hEvent, const String:strName[], bool:bDontB
 	if(iClient	< 1)
 		return Plugin_Continue;
 	g_bClientSpectating[iClient] = false;
-	g_bTalentsGiven[iClient] = false;
+	g_bSurvivorTalentsGivenThisRound[iClient] = false;
 	if(IsFakeClient(iClient)==true)
 	{
 		// PrintToChatAll("Player Disconnect: %i: %N", iClient, iClient);

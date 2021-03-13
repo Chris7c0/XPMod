@@ -30,12 +30,12 @@ TalentsLoad_Rochelle(iClient)
 			if(currentHP > (100 + (g_iShadowLevel[iClient] * 5) + (g_iSniperLevel[iClient] * 5) + (g_iCoachTeamHealthStack * 5)))
 				SetEntProp(iClient,Prop_Data,"m_iHealth", 100 + (g_iShadowLevel[iClient] * 5) + (g_iSniperLevel[iClient] * 5) + (g_iCoachTeamHealthStack * 5));
 			
-			if(g_bTalentsGiven[iClient] == false)
+			if(g_bSurvivorTalentsGivenThisRound[iClient] == false)
 				SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + (g_iShadowLevel[iClient] * 5) + (g_iSniperLevel[iClient] * 5) + (g_iCoachTeamHealthStack * 5));
 		}
 	}
 	
-	if(g_bTalentsGiven[iClient] == false)
+	if(g_bSurvivorTalentsGivenThisRound[iClient] == false)
 	{
 		if(g_iSmokeLevel[iClient]>0)
 		{

@@ -22,7 +22,7 @@ TalentsLoad_Bill(iClient)
 		new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
 		if(currentHP > (100 + (g_iWillLevel[iClient]*5) + (g_iDiehardLevel[iClient]*15) + (g_iCoachTeamHealthStack * 5)))
 			SetEntProp(iClient,Prop_Data,"m_iHealth", 100 + (g_iWillLevel[iClient]*5) + (g_iDiehardLevel[iClient]*15) + (g_iCoachTeamHealthStack * 5));
-		if(g_bTalentsGiven[iClient] == false)
+		if(g_bSurvivorTalentsGivenThisRound[iClient] == false)
 		{
 			SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + (g_iWillLevel[iClient]*5) + (g_iDiehardLevel[iClient]*15) + (g_iCoachTeamHealthStack * 5));
 			
@@ -33,7 +33,7 @@ TalentsLoad_Bill(iClient)
 		}
 	}
 	
-	if(g_bTalentsGiven[iClient] == false && g_iPromotionalLevel[iClient] > 0)
+	if(g_bSurvivorTalentsGivenThisRound[iClient] == false && g_iPromotionalLevel[iClient] > 0)
 	{
 		if(g_iPromotionalLevel[iClient]==1 || g_iPromotionalLevel[iClient]==2)
 			g_iClientBindUses_2[iClient] = 2;

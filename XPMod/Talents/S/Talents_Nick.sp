@@ -33,7 +33,7 @@ TalentsLoad_Nick(iClient)
 	}
 		
 	
-	if(g_bTalentsGiven[iClient] == false)
+	if(g_bSurvivorTalentsGivenThisRound[iClient] == false)
 		g_iClientBindUses_1[iClient] = 3 - RoundToCeil(g_iMagnumLevel[iClient] * 0.5);
 	
 	if(g_iDesperateLevel[iClient] > 0)

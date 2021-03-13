@@ -19,7 +19,7 @@ TalentsLoad_Ellis(iClient)
 		g_bEllisLimitBreakInCooldown[iClient] = false;
 	}
 	
-	if(g_bTalentsGiven[iClient] == false)
+	if(g_bSurvivorTalentsGivenThisRound[iClient] == false)
 	{
 		if((0.4 - (float(g_iWeaponsLevel[iClient])*0.08)) < g_fMaxLaserAccuracy)
 		{

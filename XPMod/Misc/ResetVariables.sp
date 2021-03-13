@@ -5,7 +5,7 @@ ResetVariablesForMap(iClient)
 	
 	g_iEllisMaxHealth[iClient] = 100;
 	g_iNickMaxHealth[iClient] = 100;
-	g_bTalentsGiven[iClient] = false;
+	g_bSurvivorTalentsGivenThisRound[iClient] = false;
 	g_bPlayerInTeamChangeCoolDown[iClient] = false;
 	g_fTimeStamp[iClient] = -1.0;
 	g_iFastAttackingClientsArray[iClient] = -1;

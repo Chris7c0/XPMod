@@ -10,7 +10,7 @@ TalentsLoad_Coach(iClient)
 		if(currentHP > (100 +  g_iClientSurvivorMaxHealth[iClient]))
 				SetEntProp(iClient,Prop_Data,"m_iHealth", 100 +  g_iClientSurvivorMaxHealth[iClient]);
 			
-		if(g_bTalentsGiven[iClient] == false)
+		if(g_bSurvivorTalentsGivenThisRound[iClient] == false)
 		{
 			SetEntProp(iClient,Prop_Data,"m_iHealth", 100 + (g_iBullLevel[iClient]*15) + (g_iWreckingLevel[iClient]*10) + (g_iStrongLevel[iClient]*10) + (g_iCoachTeamHealthStack * 5));
 			
@@ -34,7 +34,7 @@ TalentsLoad_Coach(iClient)
 		g_bIsCoachGrenadeFireCycling[iClient] = false;
 		g_bIsCoachInGrenadeCycle[iClient] = false;
 	}
-	if(g_bTalentsGiven[iClient] == false)
+	if(g_bSurvivorTalentsGivenThisRound[iClient] == false)
 	{
 		if(g_iStrongLevel[iClient]>0)
 		{
