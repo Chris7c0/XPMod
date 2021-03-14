@@ -45,6 +45,7 @@ Action:TopMenuDraw(iClient)
 	g_bUserStoppedConfirmation[iClient] = true;
 	DeleteAllMenuParticles(iClient);
 	
+	test
 	CheckLevel(iClient);
 	
 	Menu menu = CreateMenu(TopMenuHandler);
