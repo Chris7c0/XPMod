@@ -2,6 +2,7 @@ Action:AdminMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(AdminMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
+	
 	SetMenuTitle(menu, "XPMod Admin Menu\n ");
 	AddMenuItem(menu, "option1", "Auto-Balance Teams");
 	AddMenuItem(menu, "option2", "Switch Player's Team");

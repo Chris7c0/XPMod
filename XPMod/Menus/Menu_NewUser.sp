@@ -8,10 +8,14 @@ Action:CreateNewUserMenuDraw(iClient)
 	{
 		Menu menu = CreateMenu(CreateNewUserMenuHandler);
 		SetMenuPagination(menu, MENU_NO_PAGINATION);
+
+		char strStartingNewLines[32], strEndingNewLines[32];
+		GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+		GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 		
 		decl String:text[500];
 		FormatEx(text, sizeof(text), 
-			"\n \n \
+			"%s \
 			\n							Welcome to XPMod!\n \
 			\n\
 			XPMod adds RPG elements to Left4Dead2, enabling you\n\
@@ -22,7 +26,8 @@ Action:CreateNewUserMenuDraw(iClient)
 			to play XPMod will encounter unique challenges and\n\
 			be rewarded with intense gameplay.\n \
 			\n\
-			Start playing XPMod?");
+			Start playing XPMod?",
+			strStartingNewLines);
 		SetMenuTitle(menu, text);
 		
 		AddMenuItem(menu, "option1", " Yes, Lets Go!");
@@ -33,9 +38,12 @@ Action:CreateNewUserMenuDraw(iClient)
 		AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
 		AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 		AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
-		AddMenuItem(menu, "option9", " No, Ban Me.\n \n\
-			\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
-		
+		decl String:strFinalOptionText[250];
+		Format(strFinalOptionText, sizeof(strFinalOptionText), " No, Ban Me.\n \n\
+			%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+			strEndingNewLines);
+		AddMenuItem(menu, "option9", strFinalOptionText);
+
 		SetMenuExitButton(menu, false);
 		DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	}
@@ -80,20 +88,28 @@ Action:BanMeMenuDraw(iClient)
 	
 	Menu menu = CreateMenu(BanMeMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	decl String:text[500];
-	FormatEx(text, sizeof(text), "\n \n\
+	FormatEx(text, sizeof(text), "%s\
 		=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n\
-		How long would you like to be banned from this server?   \n ");
+		How long would you like to be banned from this server?   \n ",
+		strStartingNewLines);
 	SetMenuTitle(menu, text);
 	
 	AddMenuItem(menu, "option1", " Nevermind!");
 	AddMenuItem(menu, "option2", " Kick Only");
 	AddMenuItem(menu, "option3", " 1 Day Ban");
 	AddMenuItem(menu, "option4", " 1 Week Ban");
-	AddMenuItem(menu, "option5", " 1 Month Ban\n \n\
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText), " 1 Month Ban\n \n\
 		=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option5", strFinalOptionText);
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -144,20 +160,29 @@ Action:BanConfirmMenu(int iClient, int iBanDurationInMinutes)
 	Menu menu = CreateMenu(BanConfirmMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
+
 	// Store the value for use in the handler
 	g_iBanDurationInMinutes[iClient] = iBanDurationInMinutes;
 	
 	decl String:text[500];
-	FormatEx(text, sizeof(text), "\n \n\
+	FormatEx(text, sizeof(text), "%s\
 		=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n\
 		You will be banned from all XPMod servers for %i days.    \n \n\
-		Are you sure?\n ", (g_iBanDurationInMinutes[iClient] / 60 / 24) );
+		Are you sure?\n ",
+		strStartingNewLines,
+		(g_iBanDurationInMinutes[iClient] / 60 / 24) );
 	SetMenuTitle(menu, text);
 	
 	AddMenuItem(menu, "option1", " Yes");
-	AddMenuItem(menu, "option2", " No\n \n\
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText), " No\n \n\
 		=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option2", strFinalOptionText);
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);

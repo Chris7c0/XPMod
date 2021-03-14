@@ -7,9 +7,13 @@ Action:TopInfectedMenuDraw(iClient)
 
 	Menu menu = CreateMenu(TopInfectedMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	decl String:title[256];
-	FormatEx(title, sizeof(title), "\n \nLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		 Your Infected\n \n Class 1)	%s\n Class 2)	%s\n Class 3)	%s\n ", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		 Your Infected\n \n Class 1)	%s\n Class 2)	%s\n Class 3)	%s\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	SetMenuTitle(menu, title);
 	AddMenuItem(menu, "option1", "Smoker");
 	AddMenuItem(menu, "option2", "Boomer");
@@ -25,9 +29,17 @@ Action:TopInfectedMenuDraw(iClient)
 		AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 	
 	AddMenuItem(menu, "option9", "Back");
-	AddMenuItem(menu, "option10", "Exit the Menu\
+
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText), "Exit the Menu\
 		\n▬▬▬▬▬▬▬▬▬▬▬▬▬\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+		%s\
+		%s\
+		\n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines,
+		g_bTalentsConfirmed[iClient] ? "\n \n ": "");
+	AddMenuItem(menu, "option10", strFinalOptionText);
+	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	return Plugin_Handled;
@@ -40,17 +52,27 @@ Action:ChangeInfectedMenuDraw(iClient)
 
 	Menu menu = CreateMenu(ChangeInfectedMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	decl String:title[256];
-	FormatEx(title, sizeof(title), "\n \nLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n	Change Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n ", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient],g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n	Change Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient],g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	SetMenuTitle(menu, title);
 	AddMenuItem(menu, "option1", "Change Class 1");
 	AddMenuItem(menu, "option2", "Change Class 2");
 	AddMenuItem(menu, "option3", "Change Class 3\n ");
+	AddMenuItem(menu, "option4", "", ITEMDRAW_NOTEXT);
 
-	AddMenuItem(menu, "option4", "Confirm Your Infected\
-	\n▬▬▬▬▬▬▬▬▬▬▬▬▬\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText), "Confirm Your Infected\
+		\n▬▬▬▬▬▬▬▬▬▬▬▬▬\
+		%s\
+		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option5", strFinalOptionText);
+
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	return Plugin_Handled;
@@ -63,7 +85,12 @@ Action:ChangeClass1MenuDraw(iClient)
 	
 	Menu menu = CreateMenu(ChangeClass1MenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
-	SetMenuTitle(menu, "\n \nChange Your Infected\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n \nChange Class 1 to...", g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
+
+	SetMenuTitle(menu, "%sChange Your Infected\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n \nChange Class 1 to...", strStartingNewLines, g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	AddMenuItem(menu, "option1", "Smoker");
 	AddMenuItem(menu, "option2", "Boomer");
 	AddMenuItem(menu, "option3", "Hunter");
@@ -72,9 +99,15 @@ Action:ChangeClass1MenuDraw(iClient)
 	AddMenuItem(menu, "option6", "Charger");
 	AddMenuItem(menu, "option7", "None\n ");
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(menu, "option9", "Back\
+
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText), "Back\
 		\n▬▬▬▬▬▬▬▬▬▬▬▬▬\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+		%s\
+		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option9", strFinalOptionText); 
+
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	return Plugin_Handled;
@@ -86,7 +119,12 @@ Action:ChangeClass2MenuDraw(iClient)
 	
 	Menu menu = CreateMenu(ChangeClass2MenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
-	SetMenuTitle(menu, "\n \nChange Your Infected\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n \nChange Class 2 to...", g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
+
+	SetMenuTitle(menu, "%sChange Your Infected\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n \nChange Class 2 to...", strStartingNewLines, g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	AddMenuItem(menu, "option1", "Smoker");
 	AddMenuItem(menu, "option2", "Boomer");
 	AddMenuItem(menu, "option3", "Hunter");
@@ -95,9 +133,15 @@ Action:ChangeClass2MenuDraw(iClient)
 	AddMenuItem(menu, "option6", "Charger");
 	AddMenuItem(menu, "option7", "None\n ");
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(menu, "option9", "Back\
+
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText), "Back\
 		\n▬▬▬▬▬▬▬▬▬▬▬▬▬\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+		%s\
+		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option9", strFinalOptionText);
+
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	return Plugin_Handled;
@@ -109,7 +153,12 @@ Action:ChangeClass3MenuDraw(iClient)
 	
 	Menu menu = CreateMenu(ChangeClass3MenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
-	SetMenuTitle(menu, "\n \nChange Your Infected\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n \nChange Class 3 to...", g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
+
+	SetMenuTitle(menu, "%sChange Your Infected\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n \nChange Class 3 to...", strStartingNewLines, g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	AddMenuItem(menu, "option1", "Smoker");
 	AddMenuItem(menu, "option2", "Boomer");
 	AddMenuItem(menu, "option3", "Hunter");
@@ -118,9 +167,15 @@ Action:ChangeClass3MenuDraw(iClient)
 	AddMenuItem(menu, "option6", "Charger");
 	AddMenuItem(menu, "option7", "None\n ");
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(menu, "option9", "Back\
+
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText), "Back\
 		\n▬▬▬▬▬▬▬▬▬▬▬▬▬\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+		%s\
+		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option9", strFinalOptionText);
+
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	return Plugin_Handled;
@@ -226,7 +281,7 @@ ChangeInfectedMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 					ChangeInfectedMenuDraw(iClient);
 				}
 			}
-			case 3: //Confirm
+			case 4: //Confirm
 			{
 				DrawConfirmationMenuToClient(iClient);
 			}

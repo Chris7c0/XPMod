@@ -17,12 +17,23 @@ ClosePanel(iClient)
 GetNewLinesToPushMenuDown(iClient, char strStartingNewLines[32])
 {
 	// if Client is specator or ghost
-	if (g_iClientTeam[iClient] == TEAM_SPECTATORS || g_bIsGhost[iClient] == true)
-		strStartingNewLines = "\n \n \n \n \n \n \n";
+	if (g_iClientTeam[iClient] == TEAM_SPECTATORS)// || g_bIsGhost[iClient] == true)
+		strStartingNewLines = "\n \n \n \n \n \n";
 	else if (g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == false)
-		strStartingNewLines = "\n \n \n \n \n \n \n \n \n \n";
+		strStartingNewLines = "\n \n \n \n \n \n \n \n";
 	else
 		strStartingNewLines = "\n \n";
+}
+
+GetNewLinesToPushMenuUp(iClient, char strEndingNewLines[32])
+{
+	// if Client is specator or ghost
+	if (g_iClientTeam[iClient] == TEAM_SPECTATORS)// || g_bIsGhost[iClient] == true)
+		strEndingNewLines = "\n \n ";
+	else if (g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == false)
+		strEndingNewLines = "";
+	else
+		strEndingNewLines = "\n \n \n \n \n \n ";
 }
 
 XPModMenuDraw(iClient)
@@ -55,15 +66,15 @@ Action:TopMenuDraw(iClient)
 {
 	g_bUserStoppedConfirmation[iClient] = true;
 	DeleteAllMenuParticles(iClient);
-	
-	test
+
 	CheckLevel(iClient);
 	
 	Menu menu = CreateMenu(TopMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
-	char strStartingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	// Title
 	if(g_iClientTeam[iClient] == TEAM_SURVIVORS)
@@ -132,8 +143,10 @@ Action:TopMenuDraw(iClient)
 	Format(strFinalOptionText, sizeof(strFinalOptionText), 
 		"Exit the Menu\
 		\n▬▬▬▬▬▬▬▬▬▬▬▬▬\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \
+		%s\
+		\n \n \n \n \n \n \n \n \n \n \n \n \
 		%s%s%s",
+		strEndingNewLines,
 		g_iClientTeam[iClient] == TEAM_INFECTED ? "" : "\n \n \n \n ",
 		g_bTalentsConfirmed[iClient] == false ? "" : "\n \n \n \n \n ",
 		GetClientAdminLevel(iClient) > 0 && iClient == -99 ? "" : "\n ")
@@ -152,10 +165,14 @@ Action:TopChooseCharactersMenuDraw(iClient)
 	Menu menu = CreateMenu(TopChooseCharactersMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
-	SetMenuTitle(menu, 
-	"\n \
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
+
+	SetMenuTitle(menu, "%s\
 	\nChoose A Team\
-	\n▬▬▬▬▬▬▬▬▬▬▬\n");
+	\n▬▬▬▬▬▬▬▬▬▬▬\n",
+	strStartingNewLines);
 	AddMenuItem(menu, "option1", "Survivors");
 	AddMenuItem(menu, "option2", "Infected\n ");
 	AddMenuItem(menu, "option3", "", ITEMDRAW_NOTEXT);
@@ -164,9 +181,15 @@ Action:TopChooseCharactersMenuDraw(iClient)
 	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(menu, "option9", "Main Menu\n \nNote: Once you are\nconfirmed, you must\nwait until the next\nround to change any\nof your characters.\
+
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText), "Main Menu\n \nNote: Once you are\nconfirmed, you must\nwait until the next\nround to change any\nof your characters.\
 	\n▬▬▬▬▬▬▬▬▬▬▬\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	%s\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+	strEndingNewLines);
+	AddMenuItem(menu, "option9", strFinalOptionText);
+
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
@@ -180,10 +203,14 @@ Action:ExtrasMenuDraw(iClient)
 	Menu menu = CreateMenu(ExtrasMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
-	SetMenuTitle(menu, 
-	"\n \
-	\nXPMod Extras\
-	\n▬▬▬▬▬▬▬▬▬▬▬\n");
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
+
+	SetMenuTitle(menu, "%s\
+	XPMod Extras\
+	\n▬▬▬▬▬▬▬▬▬▬▬\n",
+	strStartingNewLines);
 	AddMenuItem(menu, "option1", "Change Team");
 	AddMenuItem(menu, "option2", "Player Stats");
 	AddMenuItem(menu, "option3", "Options");
@@ -192,9 +219,15 @@ Action:ExtrasMenuDraw(iClient)
 	AddMenuItem(menu, "option6", "Ban Me\n ");
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(menu, "option9", "Main Menu\
+
+	decl String:strFinalOptionText[150];
+	Format(strFinalOptionText, sizeof(strFinalOptionText), "Main Menu\
 	\n▬▬▬▬▬▬▬▬▬▬▬\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	%s\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+	strEndingNewLines);
+	AddMenuItem(menu, "option9", strFinalOptionText);
+
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
@@ -207,10 +240,14 @@ Action:ChooseTeamMenuDraw(iClient)
 	Menu menu = CreateMenu(ChooseTeamMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
-	SetMenuTitle(menu, "\
-	\n \
-	\nChoose A Team\
-	\n▬▬▬▬▬▬▬▬▬▬▬\n");
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
+
+	SetMenuTitle(menu, "%s\
+	Choose A Team\
+	\n▬▬▬▬▬▬▬▬▬▬▬\n",
+	strStartingNewLines);
 	AddMenuItem(menu, "option1", "Survivors");
 	AddMenuItem(menu, "option2", "Infected");
 	AddMenuItem(menu, "option3", "Spectators\n ");
@@ -219,9 +256,15 @@ Action:ChooseTeamMenuDraw(iClient)
 	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(menu, "option9", "Back\
+
+	decl String:strFinalOptionText[150];
+	Format(strFinalOptionText, sizeof(strFinalOptionText), "Back\
 	\n▬▬▬▬▬▬▬▬▬▬▬\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	%s\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+	strEndingNewLines);
+	AddMenuItem(menu, "option9", strFinalOptionText);
+
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
@@ -233,10 +276,14 @@ Action:OptionMenuDraw(iClient)
 	Menu menu = CreateMenu(OptionMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
+
 	SetMenuTitle(menu, "\
-	\n \
-	\n		 XP Mod Options\
-	\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
+	%s		 XP Mod Options\
+	\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬",
+	strStartingNewLines);
 	
 	if(g_iXPDisplayMode[iClient]==0)
 		AddMenuItem(menu, "option1", "XP Display Mode: In Game\n       - Requires XPMod Addon\n ");
@@ -260,9 +307,14 @@ Action:OptionMenuDraw(iClient)
 	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(menu, "option9", "Back\
+
+	decl String:strFinalOptionText[150];
+	Format(strFinalOptionText, sizeof(strFinalOptionText), "Back\
 	\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	%s\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+	strEndingNewLines);
+	AddMenuItem(menu, "option9", strFinalOptionText);
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);

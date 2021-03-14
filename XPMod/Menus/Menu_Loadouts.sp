@@ -46,6 +46,11 @@ Action:LoadoutMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(LoadoutMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
+
 	GetWeaponNames(iClient);
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
@@ -55,7 +60,7 @@ Action:LoadoutMenuDraw(iClient)
 		g_iClientUsableXP = g_iClientXP[iClient];
 	
 	SetMenuTitle(menu, 
-		"\n \nUsable XP: %d\
+		"%sUsable XP: %d\
 		\n \
 		\n* You get equipment when you confirm *\
 		\n \
@@ -68,6 +73,7 @@ Action:LoadoutMenuDraw(iClient)
 		\n_	_	_	_	_	_	_	_	_	_	_	_\
 		\nCost Per Round:	%d\
 		\n ",
+		strStartingNewLines,
 		g_iClientUsableXP,
 		g_strClientPrimarySlot,
 		g_strClientSecondarySlot,
@@ -86,8 +92,12 @@ Action:LoadoutMenuDraw(iClient)
 	AddMenuItem(menu, "option7", "Reset All");
 	AddMenuItem(menu, "option8", "Change Your Survivor\n ");
 	AddMenuItem(menu, "option9", "Main Menu");
-	AddMenuItem(menu, "option10", "Exit\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText), "Exit\
+		%s\n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option10", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -113,8 +123,10 @@ Action:PrimaryMenuDraw(iClient)
 	AddMenuItem(menu, "option3", "Shotguns");	
 	AddMenuItem(menu, "option4", "Sniper Rifles");
 	AddMenuItem(menu, "option5", "Special Weapons");
-	AddMenuItem(menu, "option6", "None");
-	AddMenuItem(menu, "option7", "Back");
+	AddMenuItem(menu, "option6", "None\n ");
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back");
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -138,8 +150,12 @@ Action:SecondaryMenuDraw(iClient)
 	AddMenuItem(menu, "option1", "Sidearms");
 	AddMenuItem(menu, "option2", "Slashing Weapons");
 	AddMenuItem(menu, "option3", "Crushing Weapons");
-	AddMenuItem(menu, "option4", "None");
-	AddMenuItem(menu, "option5", "Back");
+	AddMenuItem(menu, "option4", "None\n ");
+	AddMenuItem(menu, "option5", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back");
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -163,8 +179,12 @@ Action:ExplosivesMenuDraw(iClient)
 	AddMenuItem(menu, "option1", " Pipe Bomb (30 XP)");
 	AddMenuItem(menu, "option2", "Molotov (30 XP)");
 	AddMenuItem(menu, "option3", "Bile Jar (40 XP)");
-	AddMenuItem(menu, "option4", "None");
-	AddMenuItem(menu, "option5", "Back");
+	AddMenuItem(menu, "option4", "None\n ");
+	AddMenuItem(menu, "option5", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back");
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -189,8 +209,11 @@ Action:HealthMenuDraw(iClient)
 	AddMenuItem(menu, "option2", "Defibrillator (500 XP)");
 	AddMenuItem(menu, "option3", "Explosive Ammo (1000 XP)");
 	AddMenuItem(menu, "option4", "Incendiary Ammo (500 XP)");
-	AddMenuItem(menu, "option5", "None");
-	AddMenuItem(menu, "option6", "Back");
+	AddMenuItem(menu, "option5", "None\n ");
+	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back");
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -213,8 +236,13 @@ Action:BoostMenuDraw(iClient)
 	
 	AddMenuItem(menu, "option1", "Pain Pills (50 XP)");
 	AddMenuItem(menu, "option2", "Adrenaline Shot (50 XP)");
-	AddMenuItem(menu, "option3", "None");
-	AddMenuItem(menu, "option4", "Back");
+	AddMenuItem(menu, "option3", "None\n ");
+	AddMenuItem(menu, "option4", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option5", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back");
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -260,8 +288,13 @@ Action:SMGMenuDraw(iClient)
 	
 	AddMenuItem(menu, "option1", "Israeli UZI (55 XP)");
 	AddMenuItem(menu, "option2", "Silenced Mac-10 (60 XP)");
-	AddMenuItem(menu, "option3", "MP5 (70 XP)");	
-	AddMenuItem(menu, "option4", "Back");
+	AddMenuItem(menu, "option3", "MP5 (70 XP)\n ");	
+	AddMenuItem(menu, "option4", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option5", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back");
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -286,8 +319,12 @@ Action:MGMenuDraw(iClient)
 	AddMenuItem(menu, "option1", "AK-47 (80 XP)");
 	AddMenuItem(menu, "option2", "M16A2 (80 XP)");
 	AddMenuItem(menu, "option3", "SIG SG 552 (100 XP)");	
-	AddMenuItem(menu, "option4", "SCAR-L (60 XP)");
-	AddMenuItem(menu, "option5", "Back");
+	AddMenuItem(menu, "option4", "SCAR-L (60 XP)\n ");
+	AddMenuItem(menu, "option5", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back");
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -312,8 +349,12 @@ Action:ShotgunMenuDraw(iClient)
 	AddMenuItem(menu, "option1", "Remington 870 (60 XP)");
 	AddMenuItem(menu, "option2", "Remington 870 Custom (60 XP)");
 	AddMenuItem(menu, "option3", "Benelli M1014 (80 XP)");	
-	AddMenuItem(menu, "option4", "Franchi SPAS-12 (80 XP)");
-	AddMenuItem(menu, "option5", "Back");
+	AddMenuItem(menu, "option4", "Franchi SPAS-12 (80 XP)\n ");
+	AddMenuItem(menu, "option5", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back");
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -338,8 +379,12 @@ Action:SniperMenuDraw(iClient)
 	AddMenuItem(menu, "option1", "Ruger Mini-14 (60 XP)");
 	AddMenuItem(menu, "option2", "H&K MSG90 (80 XP)");
 	AddMenuItem(menu, "option3", "Scout (60 XP)");
-	AddMenuItem(menu, "option4", "AWP (100 XP)");
-	AddMenuItem(menu, "option5", "Back");
+	AddMenuItem(menu, "option4", "AWP (100 XP)\n ");
+	AddMenuItem(menu, "option5", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back");
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -362,8 +407,14 @@ Action:SpecialMenuDraw(iClient)
 	SetMenuTitle(menu, "Usable XP: %d\n \nSpecial Weapons\n", g_iClientUsableXP);
 	
 	AddMenuItem(menu, "option1", "Grenade Launcher (400 XP)");
-	AddMenuItem(menu, "option2", "M60 Machine Gun (500 XP)");
-	AddMenuItem(menu, "option3", "Back");
+	AddMenuItem(menu, "option2", "M60 Machine Gun (500 XP)\n ");
+	AddMenuItem(menu, "option3", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option4", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option5", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back");
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -376,7 +427,7 @@ Action:CrushingMeleeMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(CrushingMeleeMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
-	SetMenuPagination(menu, MENU_NO_PAGINATION);
+	
 	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
@@ -392,8 +443,11 @@ Action:CrushingMeleeMenuDraw(iClient)
 	AddMenuItem(menu, "option3", "Nightstick (30 XP)");
 	AddMenuItem(menu, "option4", "Golf Club (30 XP)");
 	//AddMenuItem(menu, "option5", "Riot Shield (30 XP)");
-	AddMenuItem(menu, "option5", "Baseball Bat (50 XP)");
-	AddMenuItem(menu, "option6", "Back");
+	AddMenuItem(menu, "option5", "Baseball Bat (50 XP)\n ");
+	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back");
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -417,8 +471,13 @@ Action:SidearmMenuDraw(iClient)
 	
 	AddMenuItem(menu, "option1", "P220 (15 XP)");
 	AddMenuItem(menu, "option2", "Glock + P220 (30 XP)");
-	AddMenuItem(menu, "option3", "Magnum (40 XP)");
-	AddMenuItem(menu, "option4", "Back");
+	AddMenuItem(menu, "option3", "Magnum (40 XP)\n ");
+	AddMenuItem(menu, "option4", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option5", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back");
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -446,8 +505,9 @@ Action:SlashingMeleeMenuDraw(iClient)
 	AddMenuItem(menu, "option4", "Machete (30 XP)");
 	AddMenuItem(menu, "option5", "Pitch Fork (30 XP)");
 	AddMenuItem(menu, "option6", "Combat Knife (50 XP)");
-	AddMenuItem(menu, "option7", "Chainsaw (250 XP)");
-	AddMenuItem(menu, "option8", "Back");
+	AddMenuItem(menu, "option7", "Chainsaw (250 XP)\n ");
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back");
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -553,7 +613,7 @@ PrimaryMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 				g_iClientPrimarySlotID[iClient] = 0;
 				LoadoutMenuDraw(iClient);
 			}
-			case 6: //Back
+			case 8: //Back
 			{
 				LoadoutMenuDraw(iClient);
 			}
@@ -589,7 +649,7 @@ SecondaryMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 				g_iClientSecondarySlotID[iClient] = 0;
 				LoadoutMenuDraw(iClient);
 			}
-			case 4: //Back
+			case 8: //Back
 			{
 				LoadoutMenuDraw(iClient);
 			}
@@ -628,7 +688,7 @@ ExplosivesMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 				g_iClientExplosiveSlotID[iClient] = 0;
 				LoadoutMenuDraw(iClient);
 			}
-			case 4: //Back
+			case 8: //Back
 			{
 				LoadoutMenuDraw(iClient);
 			}
@@ -672,7 +732,7 @@ HealthMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 				g_iClientHealthSlotID[iClient] = 0;
 				LoadoutMenuDraw(iClient);
 			}
-			case 5: //Back
+			case 8: //Back
 			{
 				LoadoutMenuDraw(iClient);
 			}
@@ -706,7 +766,7 @@ BoostMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 				g_iClientBoostSlotID[iClient] = 0;
 				LoadoutMenuDraw(iClient);
 			}
-			case 3: //Back
+			case 8: //Back
 			{
 				LoadoutMenuDraw(iClient);
 			}
@@ -775,7 +835,7 @@ SMGMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 				g_iClientPrimarySlotID[iClient] = 3;
 				LoadoutMenuDraw(iClient);
 			}
-			case 3: //Back
+			case 8: //Back
 			{
 				PrimaryMenuDraw(iClient);
 			}
@@ -814,7 +874,7 @@ MGMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 				g_iClientPrimarySlotID[iClient] = 7;
 				LoadoutMenuDraw(iClient);
 			}
-			case 4: //Back
+			case 8: //Back
 			{
 				PrimaryMenuDraw(iClient);
 			}
@@ -853,7 +913,7 @@ ShotgunMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 				g_iClientPrimarySlotID[iClient] = 11;
 				LoadoutMenuDraw(iClient);
 			}
-			case 4: //Back
+			case 8: //Back
 			{
 				PrimaryMenuDraw(iClient);
 			}
@@ -892,7 +952,7 @@ SniperMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 				g_iClientPrimarySlotID[iClient] = 15;
 				LoadoutMenuDraw(iClient);
 			}
-			case 4: //Back
+			case 8: //Back
 			{
 				PrimaryMenuDraw(iClient);
 			}
@@ -921,7 +981,7 @@ SpecialMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 				g_iClientPrimarySlotID[iClient] = 17;
 				LoadoutMenuDraw(iClient);
 			}
-			case 2: //Back
+			case 8: //Back
 			{
 				PrimaryMenuDraw(iClient);
 			}
@@ -955,7 +1015,7 @@ SidearmMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 				g_iClientSecondarySlotID[iClient] = 3;
 				LoadoutMenuDraw(iClient);
 			}
-			case 3: //Back
+			case 8: //Back
 			{
 				SecondaryMenuDraw(iClient);
 			}
@@ -1009,7 +1069,7 @@ CrushingMeleeMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 				g_iClientSecondarySlotID[iClient] = 7;
 				LoadoutMenuDraw(iClient);
 			}
-			case 6: //Back
+			case 8: //Back
 			{
 				SecondaryMenuDraw(iClient);
 			}
@@ -1063,7 +1123,7 @@ SlashingMeleeMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 				g_iClientSecondarySlotID[iClient] = 13;
 				LoadoutMenuDraw(iClient);
 			}
-			case 7: //Back
+			case 8: //Back
 			{
 				SecondaryMenuDraw(iClient);
 			}
@@ -1844,7 +1904,4 @@ SpawnWeapons(iClient)
 		else
 			PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Laser Sight");
 	}
-	
-
-
 }
