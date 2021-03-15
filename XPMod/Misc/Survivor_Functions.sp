@@ -90,7 +90,18 @@ void SuccessfulSelfRevive(int iClient)
 	// Revive them by using cheat command to give full health
 	RunCheatCommand(iClient, "give", "give health");
 
-	if (bIsLedgeRevive == false)
+	if (bIsLedgeRevive)
+	{
+		// If its a self revive off ledge, Use the stored health values
+		if (g_iPlayerHealth[iClient] <= 1)
+			g_iPlayerHealth[iClient] = 1;
+		// Change health to self revive health
+		SetEntProp(iClient, Prop_Data,"m_iHealth", g_iPlayerHealth[iClient]);
+		// Change temp health to self revive health
+		ResetTempHealthToSurvivor(iClient);
+		AddTempHealthToSurvivor(iClient, float(g_iPlayerHealthTemp[iClient]));
+	}
+	else
 	{
 		// Change health to self revive health
 		SetEntProp(iClient, Prop_Data,"m_iHealth", SELF_REVIVE_HEALTH);

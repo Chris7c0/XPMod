@@ -111,6 +111,9 @@ LoadTalents(iClient)
 		}		
 	}
 
+	// Capture the players health for functionality like self revive on ledge
+	CreateTimer(0.1, TimerStorePlayerHealth, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
 	// Reset client speed
 	// This is mainly for the load talent delay
 	SetClientSpeed(iClient);

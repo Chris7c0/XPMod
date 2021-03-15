@@ -41,6 +41,11 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	
 	EventsHurt_GiveXP(hEvent, iAttacker, iVictim);
 
+	// Capture the players health for functionality like self revive on ledge
+	StorePlayerHealth(iVictim);
+	// This is to capture any extra damage that happens post player hurt
+	CreateTimer(0.1, TimerStorePlayerHealth, iVictim, TIMER_FLAG_NO_MAPCHANGE);
+
 	// Play headshot ding sound if they got one
 	EventsHurt_PlayHeadshotDingSoundForHeadshots(hEvent, iAttacker, iVictim);
 
@@ -143,7 +148,7 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	return Plugin_Continue;
 }
 
-EventsHurt_GiveXP(Handle:hEvent, iAttacker, iVictim)
+void EventsHurt_GiveXP(Handle:hEvent, iAttacker, iVictim)
 {
 	new iDmgType = GetEventInt(hEvent, "type");
 	new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
@@ -222,7 +227,7 @@ EventsHurt_GiveXP(Handle:hEvent, iAttacker, iVictim)
 	}
 }
 
-EventsHurt_IncreaseCommonInfectedDamage(iAttacker, iVictim)
+void EventsHurt_IncreaseCommonInfectedDamage(iAttacker, iVictim)
 {
 	if (iAttacker < 1 && // If iAttacker is a Common Infected
 		g_bCommonInfectedDoMoreDamage == true &&
@@ -242,7 +247,7 @@ EventsHurt_IncreaseCommonInfectedDamage(iAttacker, iVictim)
 	}
 }
 
-EventsHurt_PlayHeadshotDingSoundForHeadshots(Handle:hEvent, iAttacker, iVictim)
+void EventsHurt_PlayHeadshotDingSoundForHeadshots(Handle:hEvent, iAttacker, iVictim)
 {
 	if (g_iClientTeam[iAttacker] != TEAM_SURVIVORS || 
 		g_iClientTeam[iVictim] != TEAM_INFECTED ||

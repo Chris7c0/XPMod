@@ -494,6 +494,9 @@ Action:Event_PlayerSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadc
 	else if ((GetClientTeam(iClient)) == TEAM_SURVIVORS)
 		PlayerFreeze(iClient);
 
+	// Capture the players health for functionality like self revive on ledge
+	CreateTimer(0.1, TimerStorePlayerHealth, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
 	SetClientSpeed(iClient);
 	
 	return Plugin_Continue;

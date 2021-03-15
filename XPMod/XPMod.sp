@@ -84,6 +84,7 @@ public OnPluginStart()
 	CreateTimer(1.0, TimerCheckAndOpenCharacterSelectionMenuForAll, 0, TIMER_REPEAT);
 	CreateTimer(5.0, TimerLogXPMStatsToFile, 0, TIMER_REPEAT);
 	CreateTimer(2.0, TimerResetMelee, 0, TIMER_REPEAT);
+	CreateTimer(1.0, TimerRepeatStoreAllPlayersHealth, 0, TIMER_REPEAT);
 	CreateTimer(0.1, TimerIDD, 0, TIMER_REPEAT);
 	CreateTimer(90.0, PrintUnsetClassesMessage, 0, TIMER_REPEAT);
 	CreateTimer(60.0, PrintXPModCreateAndConfirmMessageToAll, 0, TIMER_REPEAT);

@@ -7,7 +7,7 @@
  *                                                Show XPMod Info To Server                                               *
  **************************************************************************************************************************/
  
-ShowXPModInfoToServer()
+void ShowXPModInfoToServer()
 {
 	PrintToServer(":---------<|============================================|>---------:");
 	PrintToServer(":---------<|                XP Mod %s              |>---------:", PLUGIN_VERSION);
@@ -27,18 +27,44 @@ bool RunClientChecks(int iClient)
 	return true;
 }
 
-bool RunEntityChecks(iEnt)
+bool RunEntityChecks(int iEntity)
 {
-	if (iEnt < 1 || IsValidEntity(iEnt) == false)
+	if (iEntity < 1 || IsValidEntity(iEntity) == false)
 		return false;
 
 	return true;
 }
 
+void StorePlayerHealth(int iClient)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false ||
+		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1)
+		return;
+	
+	g_iPlayerHealth[iClient] = GetEntProp(iClient, Prop_Data, "m_iHealth");
+	g_iPlayerHealthTemp[iClient] =  GetSurvivorTempHealth(iClient);
+}
+
+Action:TimerStorePlayerHealth(Handle timer, int iClient)
+{
+	StorePlayerHealth(iClient);
+
+	return Plugin_Continue;
+}
+
+Action:TimerRepeatStoreAllPlayersHealth(Handle timer, int iNothing)
+{
+	for (int i=1; i <= MaxClients; i++)
+		StorePlayerHealth(i);
+
+	return Plugin_Continue;
+}
+
 // This is purely a time saver, just to get rid of the warning that a variable is 
 // not being used. It can be used for simlar functions that might have a need for
 // a variable later, its just not used yet.
-SuppressNeverUsedWarning(any:var1=0, any:var2=0, any:var3=0, any:var4=0, any:var5=0, any:var6=0, any:var7=0, any:var8=0, any:var9=0, any:var10=0)
+void SuppressNeverUsedWarning(any:var1=0, any:var2=0, any:var3=0, any:var4=0, any:var5=0, any:var6=0, any:var7=0, any:var8=0, any:var9=0, any:var10=0)
 {
 	bool ignore;
 	if(ignore) PrintToServer("THIS IS NEVER GOING TO BE RAN",var1, var2, var3, var4, var5, var6, var7, var8, var9, var10);
@@ -58,7 +84,7 @@ int GetClientAdminLevel(iClient)
 	return -1;
 }
 
-FindGameMode()
+void FindGameMode()
 {
 	decl String:g_strGameMode[20];
 	GetConVarString(FindConVar("mp_gamemode"), g_strGameMode, sizeof(g_strGameMode));

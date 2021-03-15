@@ -239,6 +239,10 @@ new g_iUnfreezeNotifyRunTimes = 1;				    //for the unfreeze notify runtimes
 new g_iClientBindUses_1[MAXPLAYERS + 1];
 new g_iClientBindUses_2[MAXPLAYERS + 1];
 
+// Storage of player health for when needed and not provided
+new g_iPlayerHealth[MAXPLAYERS + 1];
+new g_iPlayerHealthTemp[MAXPLAYERS + 1];
+
 // Name Change Message Blocking
 bool g_bHideNameChangeMessage = false;
 #define NAME_CHANGE_STRING "#Cstrike_Name_Change"
