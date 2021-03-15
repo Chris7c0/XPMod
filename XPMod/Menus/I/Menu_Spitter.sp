@@ -7,9 +7,13 @@ Action:SpitterTopMenuDraw(iClient)
 	DeleteAllMenuParticles(iClient);
 	Menu menu = CreateMenu(SpitterTopMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	decl String:title[256];
-	FormatEx(title, sizeof(title), "\n \nLevel %d	XP: %d/%d\n==============================\nSpitter Talents:\n==============================\n \nPuppet Master: Level %d\nMaterial Girl: Level %d\nHallucinogenic Nightmare: Level %d\n \n", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iPuppetLevel[iClient], g_iMaterialLevel[iClient], g_iHallucinogenicLevel[iClient]);
+	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n==============================\nSpitter Talents:\n==============================\n \nPuppet Master: Level %d\nMaterial Girl: Level %d\nHallucinogenic Nightmare: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iPuppetLevel[iClient], g_iMaterialLevel[iClient], g_iHallucinogenicLevel[iClient]);
 	SetMenuTitle(menu, title);
 	
 	AddMenuItem(menu, "option1", "Puppet Master");
@@ -21,10 +25,15 @@ Action:SpitterTopMenuDraw(iClient)
 	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(menu, "option9", "Back\
+
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
 		\n==============================\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
-	
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option9", strFinalOptionText);
+
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
@@ -38,10 +47,13 @@ Action:PuppetMenuDraw(iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(PuppetMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	SetMenuTitle(menu, "\
-		\n \
-		\n  						Puppet Master (Level %d)\
+		%s  						Puppet Master (Level %d)\
 		\n \
 		\nLevel 1:\
 		\nSpawn in with +1 CI per level\
@@ -53,10 +65,15 @@ Action:PuppetMenuDraw(iClient)
 		\n \
 		\nPress [WALK] to change Goo Types\
 		\n ",
+		strStartingNewLines,
 		g_iPuppetLevel[iClient]);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -69,10 +86,13 @@ Action:MaterialMenuDraw(iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(MaterialMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	SetMenuTitle(menu, "\
-		\n \
-		\n				Material Girl (Level %d)\
+		%s				Material Girl (Level %d)\
 		\n \
 		\nLevel 1:\
 		\nIf spit hits incapped player:\
@@ -94,10 +114,15 @@ Action:MaterialMenuDraw(iClient)
 		\nSelect from unique Enhanced CI mobs\
 		\nConjure them on your next spit\
 		\n ",
+		strStartingNewLines,
 		g_iMaterialLevel[iClient]);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -110,10 +135,13 @@ Action:HallucinogenicMenuDraw(iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(HallucinogenicMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	SetMenuTitle(menu, "\
-		\n \
-		\n				Hallucinogenic Nightmare (Level %d)\
+		%s				Hallucinogenic Nightmare (Level %d)\
 		\n \
 		\nLevel 1:\
 		\n-0.5s spit cooldown per level\
@@ -132,10 +160,15 @@ Action:HallucinogenicMenuDraw(iClient)
 		\n \
 		\nConjure a disguised witch\
 		\n ",
+		strStartingNewLines,
 		g_iHallucinogenicLevel[iClient]);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -151,6 +184,10 @@ Action:ChooseSpitterClassMenuDraw(iClient)
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(ChooseSpitterClassMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	decl String:title[256];
 	FormatEx(title, sizeof(title), "==========================\n		Current Classes\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n==========================\n \nPick a class to replace with the Spitter:",g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);

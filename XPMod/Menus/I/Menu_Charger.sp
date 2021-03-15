@@ -7,9 +7,13 @@ Action:ChargerTopMenuDraw(iClient)
 	DeleteAllMenuParticles(iClient);
 	Menu menu = CreateMenu(ChargerTopMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	decl String:title[256];
-	FormatEx(title, sizeof(title), "\n \nLevel %d	XP: %d/%d\n==========================\nCharger Talents:\n==========================\n \nGround 'n Pound: Level %d\nSpiked Carapace: Level %d\nHillbilly Madness!: Level %d\n \n", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iGroundLevel[iClient], g_iSpikedLevel[iClient], g_iHillbillyLevel[iClient]);
+	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n==========================\nCharger Talents:\n==========================\n \nGround 'n Pound: Level %d\nSpiked Carapace: Level %d\nHillbilly Madness!: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iGroundLevel[iClient], g_iSpikedLevel[iClient], g_iHillbillyLevel[iClient]);
 	SetMenuTitle(menu, title);
 	
 	AddMenuItem(menu, "option1", "Ground 'n Pound");
@@ -21,9 +25,14 @@ Action:ChargerTopMenuDraw(iClient)
 	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(menu, "option9", "Back\
+
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
 		\n==========================\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option9", strFinalOptionText);
 		
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -38,21 +47,29 @@ Action:GroundMenuDraw(iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(GroundMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	SetMenuTitle(menu, "\
-		\n \
-		\n  				Ground 'n Pound (Level %d)\
+		%s  				Ground 'n Pound (Level %d)\
 		\n \
 		\nLevel 1:\
 		\n+1 knock damage per level\
 		\n+1 punch, pound, and slam damage every 3rd level\
 		\nafter the 1st level\
 		\n ",
+		strStartingNewLines,
 		g_iGroundLevel[iClient]);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
-	
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
+
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
@@ -64,10 +81,13 @@ Action:SpikedMenuDraw(iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(SpikedMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	SetMenuTitle(menu, "\
-		\n \
-		\n				Spiked Carapace (Level %d)\
+		%s				Spiked Carapace (Level %d)\
 		\n \
 		\nLevel 1:\
 		\nReflect 1 damage per level when meleed\
@@ -87,11 +107,16 @@ Action:SpikedMenuDraw(iClient)
 		\non next charge\
 		\nReset charge cooldown\
 		\n ",
+		strStartingNewLines,
 		g_iSpikedLevel[iClient]);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
-	
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
+
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
@@ -103,10 +128,13 @@ Action:HillbillyMenuDraw(iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(HillbillyMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	SetMenuTitle(menu, "\
-		\n \
-		\n						Hillbilly Madness! (Level %d)\
+		%s						Hillbilly Madness! (Level %d)\
 		\n \
 		\nLevel 1:\
 		\n+35 max health per level\
@@ -124,11 +152,16 @@ Action:HillbillyMenuDraw(iClient)
 		\n \
 		\nEarthquake stuns all survivors in a large radius\
 		\n ",
+		strStartingNewLines,
 		g_iHillbillyLevel[iClient]);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
-	
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
+
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 

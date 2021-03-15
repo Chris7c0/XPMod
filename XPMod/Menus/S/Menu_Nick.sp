@@ -9,7 +9,11 @@ Action:NickMenuDraw(iClient)
 	Menu menu = CreateMenu(NickMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
-	FormatEx(text, sizeof(text), "\n \nLevel %d	XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n					Nick's Gambler Talents\n ", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
+	
+	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n					Nick's Gambler Talents\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 	SetMenuTitle(menu, text);
 	
 	FormatEx(text, sizeof(text), "	[Level %d]	Swindler", g_iSwindlerLevel[iClient]);
@@ -27,8 +31,14 @@ Action:NickMenuDraw(iClient)
 	
 	AddMenuItem(menu, "option7", "Open In Website \n ");
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(menu, "option9", "Back\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option9", strFinalOptionText);
+
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
@@ -48,10 +58,13 @@ Action:SwindlerMenuDraw(iClient)
 	}
 	
 	Menu menu = CreateMenu(SwindlerMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n						Swindler(Level %d):\
+		%s						Swindler(Level %d):\
 		\n \
 		\nLevel 1:\
 		\n+3 max health per level when ally uses a kit (max +100)\
@@ -63,11 +76,16 @@ Action:SwindlerMenuDraw(iClient)
 		\nLife stealing ticks every second for 5 seconds\
 		\nLife stealing only affects SI\
 		\n ",
+		strStartingNewLines,
 		g_iSwindlerLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -88,10 +106,13 @@ Action:LeftoverMenuDraw(iClient)
 	}
 	
 	Menu menu = CreateMenu(LeftoverMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n							Leftover Supplies(Level %d):\
+		%s							Leftover Supplies(Level %d):\
 		\n \
 		\nLevel 1:\
 		\n+15%%%% chance to spawn items when you use a medkit per level\
@@ -101,12 +122,17 @@ Action:LeftoverMenuDraw(iClient)
 		\n1 random weapon\
 		\n1 random grenade\1 shot or pills\
 		\n ",
+		strStartingNewLines,
 		g_iSkillPoints[iClient],
 		g_iLeftoverLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -127,10 +153,13 @@ Action:RiskyMenuDraw(iClient)
 	}
 	
 	Menu menu = CreateMenu(RiskyMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n	Risky Business(Level %d):\
+		%s	Risky Business(Level %d):\
 		\n \
 		\nAll upgrades are (p220 & Glock):\
 		\n \
@@ -143,11 +172,16 @@ Action:RiskyMenuDraw(iClient)
 		\n [WALK+ZOOM] cycle to dual pistols\
 		\nYou can cycle back to Magnums\
 		\n ",
+		strStartingNewLines,
 		g_iRiskyLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -168,10 +202,13 @@ Action:EnhancedMenuDraw(iClient)
 	}
 	
 	Menu menu = CreateMenu(EnhancedMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n					Enhanced Pain Killers(Level %d):\
+		%s					Enhanced Pain Killers(Level %d):\
 		\n \
 		\nLevel 1:\
 		\n+6 temp health from pills & shots per level\
@@ -181,11 +218,17 @@ Action:EnhancedMenuDraw(iClient)
 		\nShoot Survivors with Pitols to heal them...at a cost.\
 		\n   Pistols:     +2 HP for Teammate, -1 HP for You\
 		\n   Magnum:  +7 HP for Teammate, -3 HP for You\
-		\n ",  g_iEnhancedLevel[iClient]);
+		\n ",
+		strStartingNewLines,
+		g_iEnhancedLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -206,10 +249,13 @@ Action:MagnumMenuDraw(iClient)
 	}
 	
 	Menu menu = CreateMenu(MagnumMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n			Magnum Stampede(Level %d):\
+		%s			Magnum Stampede(Level %d):\
 		\n			    Requires Level 11\
 		\n \
 		\nLevel 1:\
@@ -226,11 +272,16 @@ Action:MagnumMenuDraw(iClient)
 		\nLevel 1:\
 		\nGamble for one of eleven random effects  \
 		\n ",
+		strStartingNewLines,
 		g_iMagnumLevel[iClient]);
 	SetMenuTitle(menu, text);
 		
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -251,10 +302,13 @@ Action:DesperateMenuDraw(iClient)
 	}
 	
 	Menu menu = CreateMenu(DesperateMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n				Desperate Measures(Level %d):\
+		%s				Desperate Measures(Level %d):\
 		\n					  Requires Level 26\
 		\n \
 		\nLevel 1:\
@@ -276,11 +330,17 @@ Action:DesperateMenuDraw(iClient)
 		\n+1 (Stack) when ally incaps or dies\
 		\n-1 (Stack) if ally recovers\
 		\nMax 3 stacks\
-		\n ",  g_iDesperateLevel[iClient]);
+		\n ",
+		strStartingNewLines,
+		g_iDesperateLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);

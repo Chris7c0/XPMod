@@ -8,8 +8,12 @@ Action:EllisMenuDraw(iClient)
 	DeleteAllMenuParticles(iClient);
 	Menu menu = CreateMenu(EllisMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
-	FormatEx(text, sizeof(text), "\n \nLevel %d	XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n			Ellis's Weapons Expert Talents\n ", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n			Ellis's Weapons Expert Talents\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 	SetMenuTitle(menu, text);
 	
 	FormatEx(text, sizeof(text), "	[Level %d]	Overconfidence", g_iOverLevel[iClient]);
@@ -27,8 +31,14 @@ Action:EllisMenuDraw(iClient)
 	
 	AddMenuItem(menu, "option7", "Open In Website\n ");
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(menu, "option9", "Back\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option9", strFinalOptionText);
+
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
@@ -48,10 +58,13 @@ Action:OverMenuDraw(iClient)
 	}
 	
 	Menu menu = CreateMenu(OverMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n 					Overconfidence (Level %d):\
+		%s 					Overconfidence (Level %d):\
 		\n \
 		\nLevel 1:\
 		\n+4 pill & shot health per level\
@@ -65,11 +78,16 @@ Action:OverMenuDraw(iClient)
 		\nAdrenaline (Stacks) with itself\
 		\nUnlimited stacks\
 		\n ",
+		strStartingNewLines,
 		g_iOverLevel[iClient]);
 	SetMenuTitle(menu, text);
 
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -90,10 +108,13 @@ Action:BringMenuDraw(iClient)
 	}
 	
 	Menu menu = CreateMenu(BringMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n		Bring the Pain!(Level %d):\
+		%s		Bring the Pain!(Level %d):\
 		\n \
 		\nOn Special Infected kill:\
 		\n \
@@ -106,11 +127,16 @@ Action:BringMenuDraw(iClient)
 		\nSkill Uses:\
 		\n+4 max (Stacks) per level\
 		\n ",
+		strStartingNewLines,
 		g_iBringLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -131,10 +157,13 @@ Action:WeaponsMenuDraw(iClient)
 	}
 	
 	Menu menu = CreateMenu(WeaponsMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 		
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n		Weapons Training (Level %d):\
+		%s		Weapons Training (Level %d):\
 		\n \
 		\nLevel 1:\
 		\n+10%%%% reload speed per level\
@@ -145,11 +174,16 @@ Action:WeaponsMenuDraw(iClient)
 		\nEllis can carry 2 primary weapons\
 		\n [WALK+ZOOM] to cycle weapons\
 		\n ",
+		strStartingNewLines,
 		g_iWeaponsLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -170,10 +204,13 @@ Action:JamminMenuDraw(iClient)
 	}
 	
 	Menu menu = CreateMenu(JamminMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n		Jammin' to the Music (Level %d):\
+		%s		Jammin' to the Music (Level %d):\
 		\n \
 		\nOn Tank spawn:\
 		\n \
@@ -184,11 +221,16 @@ Action:JamminMenuDraw(iClient)
 		\nLevel 5:\
 		\nGain a molotov when you have no grenade\
 		\n ",
+		strStartingNewLines,
 		g_iJamminLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -209,10 +251,13 @@ Action:MetalMenuDraw(iClient)
 	}
 	
 	Menu menu = CreateMenu(MetalMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n				Mechanic Affinity (Level %d):\
+		%s				Mechanic Affinity (Level %d):\
 		\n					Requires Level 11\
 		\n \
 		\nLevel 1:\
@@ -230,11 +275,17 @@ Action:MetalMenuDraw(iClient)
 		\n \
 		\nLevel 1:\
 		\nDeploy an ammo stash\
-		\n ",  g_iMetalLevel[iClient]);
+		\n ",
+		strStartingNewLines,
+		g_iMetalLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -255,10 +306,13 @@ Action:FireMenuDraw(iClient)
 	}
 	
 	Menu menu = CreateMenu(FireMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n						Fire Storm(Level %d):\
+		%s						Fire Storm(Level %d):\
 		\n						Requires Level 26\
 		\n \
 		\nLevel 1:\
@@ -275,11 +329,17 @@ Action:FireMenuDraw(iClient)
 		\nand burn duration per level\
 		\nBurning a calm Witch\
 		\nimmediately neutralizes her\
-		\n ",  g_iFireLevel[iClient]);
+		\n ",
+		strStartingNewLines,
+		g_iFireLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);

@@ -8,8 +8,12 @@ Action:CoachMenuDraw(iClient)
 	DeleteAllMenuParticles(iClient);
 	Menu menu = CreateMenu(CoachMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
-	FormatEx(text, sizeof(text), "\n \nLevel %d	XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Coach's Berserker Talents\n ", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Coach's Berserker Talents\n ", strStartingNewLines,g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 	SetMenuTitle(menu, text);
 	
 	FormatEx(text, sizeof(text), "	[Level %d]	Bull Rush", g_iBullLevel[iClient]);
@@ -27,8 +31,13 @@ Action:CoachMenuDraw(iClient)
 	
 	AddMenuItem(menu, "option7", "Open In Website\n ");
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(menu, "option9", "Back\n \n=	=	=	=	=	=	=	=	=	=	=	=	=\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\n \n=	=	=	=	=	=	=	=	=	=	=	=	=\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option9", strFinalOptionText);
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -49,10 +58,13 @@ Action:BullMenuDraw(iClient)
 	}
 	
 	Menu menu = CreateMenu(BullMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n			Bull Rush(Level %d):\
+		%s			Bull Rush(Level %d):\
 		\n \
 		\nLevel 1:\
 		\n+15 max health per level\
@@ -66,12 +78,17 @@ Action:BullMenuDraw(iClient)
 		\n60 second cooldown. During cooldown:\
 		\nCoach cannot regen or speed up\
 		\n ",
+		strStartingNewLines,
 		g_iSkillPoints[iClient], 
 		g_iBullLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -92,10 +109,13 @@ Action:WreckingMenuDraw(iClient)
 	}
 	
 	Menu menu = CreateMenu(WreckingMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n									Wrecking Ball(Level %d):\
+		%s									Wrecking Ball(Level %d):\
 		\n \
 		\nLevel 1:\
 		\n(Charge) +100 melee dmg per level\
@@ -112,11 +132,16 @@ Action:WreckingMenuDraw(iClient)
 		\n(Charge) Melee dmg bonus expelled on next [MELEE] against SI\
 		\n(Charge) HP regen: Hold [CROUCH] to heal yourself\
 		\n ",
+		strStartingNewLines,
 		g_iWreckingLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -137,20 +162,28 @@ Action:SprayMenuDraw(iClient)
 	}
 	
 	Menu menu = CreateMenu(SprayMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n			Spray n' Pray(Level %d):\
+		%s			Spray n' Pray(Level %d):\
 		\n \
 		\nLevel 1:\
 		\n+2 shotgun clip size per level\
 		\n+2 shotgun pellet damage per level\
 		\n ",
+		strStartingNewLines,
 		g_iSprayLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -171,10 +204,13 @@ Action:HomerunMenuDraw(iClient)
 	}
 	
 	Menu menu = CreateMenu(HomerunMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n				Homerun!(Level %d):\
+		%s				Homerun!(Level %d):\
 		\n \
 		\nLevel 1:\
 		\nOn SI headshot with melee weapon:\
@@ -190,11 +226,16 @@ Action:HomerunMenuDraw(iClient)
 		\n+1 (Stack) when decapitating infected\
 		\nMax 50 stacks\
 		\n ",
+		strStartingNewLines,
 		g_iHomerunLevel[iClient]);
 	SetMenuTitle(menu, text);
 
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -215,10 +256,13 @@ Action:LeadMenuDraw(iClient)
 	}
 	
 	Menu menu = CreateMenu(LeadMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n				Lead by Example(Level %d):\
+		%s				Lead by Example(Level %d):\
 		\n					Requires Level 11\
 		\n \
 		\nLevel 1:\
@@ -240,11 +284,16 @@ Action:LeadMenuDraw(iClient)
 		\nSkill Uses:\
 		\n(Team) max health (Stacks) with itself\
 		\n ",
+		strStartingNewLines,
 		g_iLeadLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -265,10 +314,13 @@ Action:StrongMenuDraw(iClient)
 	}
 	
 	Menu menu = CreateMenu(StrongMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n					Strong Arm(Level %d):\
+		%s					Strong Arm(Level %d):\
 		\n					 Requires Level 26\
 		\n \
 		\nLevel 1:\
@@ -292,11 +344,16 @@ Action:StrongMenuDraw(iClient)
 		\nSkill Uses:\
 		\n(Charge): Hold [WALK] to fly when jetpack is on\
 		\n ",
+		strStartingNewLines,
 		g_iStrongLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);

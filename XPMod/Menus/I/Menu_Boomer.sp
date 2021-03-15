@@ -4,10 +4,16 @@
 Action:BoomerTopMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
+
 	Menu menu = CreateMenu(BoomerTopMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
+
 	decl String:title[256];
-	FormatEx(title, sizeof(title), "\n \nLevel %d	XP: %d/%d\n==========================\nBoomer Talents:\n==========================\n \nRapid Regurgitation: Level %d\nAcidic Brew: Level %d\nNorovirus: Level %d\n \n", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iRapidLevel[iClient], g_iAcidicLevel[iClient], g_iNorovirusLevel[iClient]);
+	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n==========================\nBoomer Talents:\n==========================\n \nRapid Regurgitation: Level %d\nAcidic Brew: Level %d\nNorovirus: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iRapidLevel[iClient], g_iAcidicLevel[iClient], g_iNorovirusLevel[iClient]);
 	SetMenuTitle(menu, title);
 	AddMenuItem(menu, "option1", "Rapid Regurgitation");
 	AddMenuItem(menu, "option2", "Acidic Brew");
@@ -20,9 +26,14 @@ Action:BoomerTopMenuDraw(iClient)
 	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(menu, "option9", "Back\
+
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
 		\n==========================\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option9", strFinalOptionText);
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -36,18 +47,27 @@ Action:BoomerTopMenuDraw(iClient)
 Action:RapidMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(RapidMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
+
 	SetMenuTitle(menu, "\
-		\n \
-		\n  					Rapid Regurgitation (Level %d)\
+		%s  					Rapid Regurgitation (Level %d)\
 		\n \
 		\nLevel 1:\
 		\n-2 second vomit cooldown per level\
 		\nReduce movement penalty after vomiting by 10%% per level\
 		\n ",
+		strStartingNewLines,
 		g_iRapidLevel[iClient]);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -59,10 +79,13 @@ Action:RapidMenuDraw(iClient)
 Action:AcidicMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(AcidicMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	SetMenuTitle(menu, "\
-		\n \
-		\n						Acidic Brew (Level %d)\
+		%s						Acidic Brew (Level %d)\
 		\n \
 		\nLevel 1:\
 		\nVomit victims lose their HUD for 2 seconds per level\
@@ -76,11 +99,16 @@ Action:AcidicMenuDraw(iClient)
 		\nConstant vomiting while active\
 		\n+10%% movement speed per level\
 		\n ",
+		strStartingNewLines,
 		g_iAcidicLevel[iClient]);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
-	
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
+
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
@@ -91,10 +119,13 @@ Action:AcidicMenuDraw(iClient)
 Action:NorovirusMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(NorovirusMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	SetMenuTitle(menu, "\
-		\n \
-		\n							Norovirus (Level %d)\
+		%s							Norovirus (Level %d)\
 		\n \
 		\nLevel 1:\
 		\n+4%% chance to make survivors vomit per level\
@@ -112,10 +143,15 @@ Action:NorovirusMenuDraw(iClient)
 		\n+20%% fling distance per level\
 		\n+20%% boom distance per level\
 		\n ",
+		strStartingNewLines,
 		g_iNorovirusLevel[iClient]);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);

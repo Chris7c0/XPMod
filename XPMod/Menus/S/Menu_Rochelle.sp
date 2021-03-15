@@ -7,7 +7,11 @@ Action:RochelleMenuDraw(iClient)
 	Menu menu = CreateMenu(RochelleMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
-	FormatEx(text, sizeof(text), "\n \nLevel %d	XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Rochelle's Ninja Talents\n ", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
+	
+	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Rochelle's Ninja Talents\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 	SetMenuTitle(menu, text);
 	
 	FormatEx(text, sizeof(text), "	[Level %d]	Gather Intelligence", g_iGatherLevel[iClient]);
@@ -25,8 +29,14 @@ Action:RochelleMenuDraw(iClient)
 	
 	AddMenuItem(menu, "option7", "Open In Website\n ");
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(menu, "option9", "Back\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option9", strFinalOptionText);
+
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
@@ -46,10 +56,13 @@ Action:GatherMenuDraw(iClient)
 	}
 	
 	Menu menu = CreateMenu(GatherMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n					Gather Intelligence(Level %d):\
+		%s					Gather Intelligence(Level %d):\
 		\n \
 		\nLevel 1:\
 		\nD.E.A.D. Infected Detection Device upgrade every level\
@@ -59,11 +72,16 @@ Action:GatherMenuDraw(iClient)
 		\nPress [Walk + Use] to turn on or off\
 		\nDefault: [Shift + E]\
 		\n ",
+		strStartingNewLines,
 		g_iGatherLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -84,10 +102,13 @@ Action:HunterMenuDraw(iClient)
 	}
 				
 	Menu menu = CreateMenu(HunterMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n									Hunter Killer(Level %d):\
+		%s									Hunter Killer(Level %d):\
 		\n \
 		\nLevel 1:\
 		\n+25 poison damage when shooting SI\
@@ -100,11 +121,16 @@ Action:HunterMenuDraw(iClient)
 		\nSkill Uses:\
 		\nPoison damage every 5 seconds, +1 tick per level\
 		\n ",
+		strStartingNewLines,
 		g_iHunterLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -125,10 +151,13 @@ Action:SnipersEnduranceMenuDraw(iClient)
 	}
 				
 	Menu menu = CreateMenu(SnipersEnduranceMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n					Sniper's Endurance(Level %d):\
+		%s					Sniper's Endurance(Level %d):\
 		\n \
 		\nLevel 1:\
 		\n(Charge) Jump +1x higher per level\
@@ -144,11 +173,16 @@ Action:SnipersEnduranceMenuDraw(iClient)
 		\n(Charge) Super Jump: Expelled on next [JUMP]\
 		\nFall damage immunity while super jumping\
 		\n ",
+		strStartingNewLines,
 		g_iSniperLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -169,10 +203,13 @@ Action:SilentMenuDraw(iClient)
 	}
 	
 	Menu menu = CreateMenu(SilentMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n			Silent Sorrow(Level %d):\
+		%s			Silent Sorrow(Level %d):\
 		\n \
 		\nLevel 1:\
 		\nSniper upgrades every level\
@@ -180,11 +217,16 @@ Action:SilentMenuDraw(iClient)
 		\nSee \"Open In Website\" in the\
 		\nprevious menu for upgrade details\
 		\n ",
+		strStartingNewLines,
 		g_iSilentLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -205,10 +247,13 @@ Action:SmokeMenuDraw(iClient)
 	}
 				
 	Menu menu = CreateMenu(SmokeMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n				Smoke and Mirrors(Level %d):\
+		%s				Smoke and Mirrors(Level %d):\
 		\n					  Requires Level 11\
 		\n \
 		\nLevel 1:\
@@ -230,11 +275,16 @@ Action:SmokeMenuDraw(iClient)
 		\nRope:[JUMP]/[CROUCH] to climb/descend,\
 		\nfall damage immunity\
 		\n ",
+		strStartingNewLines,
 		g_iSmokeLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -255,10 +305,13 @@ Action:ShadowMenuDraw(iClient)
 	}
 				
 	Menu menu = CreateMenu(ShadowMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n				Shadow Ninja(Level %d):\
+		%s				Shadow Ninja(Level %d):\
 		\n				  Requires Level 26\
 		\n \
 		\nLevel 1:\
@@ -275,11 +328,16 @@ Action:ShadowMenuDraw(iClient)
 		\nCloak glow from SI\
 		\nGain a Katana\
 		\n ",
+		strStartingNewLines,
 		g_iShadowLevel[iClient]);
 	SetMenuTitle(menu, text);
 
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);

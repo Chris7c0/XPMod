@@ -8,8 +8,12 @@ Action:LouisMenuDraw(iClient)
 	DeleteAllMenuParticles(iClient);
 	Menu menu = CreateMenu(LouisMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
-	FormatEx(text, sizeof(text), "\n \nLevel %d	XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=\n \n			Louis's Disruptor Talents\n ", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=\n \n			Louis's Disruptor Talents\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 	SetMenuTitle(menu, text);
 	
 	FormatEx(text, sizeof(text), "	[Level %d]	Manager's Prep", g_iLouisTalent1Level[iClient]);
@@ -27,8 +31,14 @@ Action:LouisMenuDraw(iClient)
 	
 	AddMenuItem(menu, "option7", "Open In Website\n ");
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(menu, "option9", "Back\n \n=	=	=	=	=	=	=	=	=	=	=	=\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\n \n=	=	=	=	=	=	=	=	=	=	=	=\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option9", strFinalOptionText);
+	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
@@ -48,21 +58,29 @@ Action:LouisTalent1MenuDraw(iClient)
 	// }
 	
 	Menu menu = CreateMenu(LouisTalent1MenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n 		Manager's Prep (Level %d):\
+		%s 		Manager's Prep (Level %d):\
 		\n \
 		\n +10 HP per Level\
 		\n +3%%%%% Movement Speed per Level\
 		\n SMG and Pistol (Not Magnum) Buffs:     \
 		\n 	- +15%%%% Reload Speed per Level\
 		\n ",
+		strStartingNewLines,
 		g_iLouisTalent1Level[iClient]);
 	SetMenuTitle(menu, text);
 
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -83,22 +101,30 @@ Action:LouisTalent2MenuDraw(iClient)
 	// }
 	
 	Menu menu = CreateMenu(LouisTalent2MenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n 		9mm Augmentation (Level %d):\
+		%s 		9mm Augmentation (Level %d):\
 		\n \
 		\n SMG and Pistol (Not Magnum) Buffs:\
 		\n 	- +15%%%% Damage per Level\
 		\n 	- +10 Clip Size per Level\
 		\n 	- Automatic Laser Sight (SMGs Only)         \
 		\n ",
+		strStartingNewLines,
 		g_iLouisTalent2Level[iClient]);
 	
 	SetMenuTitle(menu, text);
 
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -119,10 +145,13 @@ Action:LouisTalent3MenuDraw(iClient)
 	// }
 	
 	Menu menu = CreateMenu(LouisTalent3MenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n 						Time Dilation (Level %d):\
+		%s 						Time Dilation (Level %d):\
 		\n \
 		\n [Press DIRECTION + Tap WALK] Move 30 ft in any direction.    \
 		\n	- +1 Use per level. Uses regenerate over time.\
@@ -132,11 +161,16 @@ Action:LouisTalent3MenuDraw(iClient)
 		\n	- Cannot move through walls, CI, or SI.\
 		\n	- Travel less distance while severely hurt and limping.\
 		\n ",
+		strStartingNewLines,
 		g_iLouisTalent3Level[iClient]);
 	SetMenuTitle(menu, text);
 
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -157,10 +191,13 @@ Action:LouisTalent4MenuDraw(iClient)
 	// }
 	
 	Menu menu = CreateMenu(LouisTalent4MenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n 					BOOM HEADSHOT! (Level %d):\
+		%s 					BOOM HEADSHOT! (Level %d):\
 		\n \
 		\n +40% Headshot Damage Multiplier per Level\
 		\n Headshot Kill Bonuses:\
@@ -168,11 +205,16 @@ Action:LouisTalent4MenuDraw(iClient)
 		\n 	- SI: +5 HP, +5%%%% Speed for 60 Seconds, +15 Clip Ammo per Level   \
 		\n  - Movement Speed capped at +25%%%%\
 		\n ",
+		strStartingNewLines,
 		g_iLouisTalent4Level[iClient]);
 	SetMenuTitle(menu, text);
 
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -193,18 +235,26 @@ Action:LouisTalent5MenuDraw(iClient)
 	// }
 	
 	Menu menu = CreateMenu(LouisTalent5MenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n 					Explosivo (Level %d):\
+		%s 					Explosivo (Level %d):\
 		\n \
 		\n COMING SOON                                                           \
 		\n ",
+		strStartingNewLines,
 		g_iLouisTalent5Level[iClient]);
 	SetMenuTitle(menu, text);
 
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -225,18 +275,26 @@ Action:LouisTalent6MenuDraw(iClient)
 	// }
 	
 	Menu menu = CreateMenu(LouisTalent6MenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		\n \
-		\n 					PILLS HERE! (Level %d):\
+		%s 					PILLS HERE! (Level %d):\
 		\n \
 		\n COMING SOON                                                           \
 		\n ",
+		strStartingNewLines,
 		g_iLouisTalent6Level[iClient]);
 	SetMenuTitle(menu, text);
 
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);

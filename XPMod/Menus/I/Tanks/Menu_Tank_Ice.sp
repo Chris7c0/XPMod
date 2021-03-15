@@ -2,10 +2,14 @@ Action:TankMenuDrawIce(iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(TankMenuHandlerIce);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	SetMenuTitle(menu,"\
-		\n \
-        \nICE TANK\
+		%s \
+        ICE TANK\
         \n\"You merely adopted the cold; I was born in it, moulded by it.\"\
         \n \
         \n Passive Abilities\
@@ -19,11 +23,16 @@ Action:TankMenuDrawIce(iClient)
         \n    - Freezes Survivors Inside The Blizard Storm\
         \n - Rock Throw Freezes Survivors (No Cooldown)\
         \n ",
+		strStartingNewLines,
         TANK_HEALTH_ICE);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
-	
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
+
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 

@@ -437,14 +437,13 @@ Action:CrushingMeleeMenuDraw(iClient)
 	
 	SetMenuTitle(menu, "Usable XP: %d\n \nCrushing Melee Weapons\n", g_iClientUsableXP);
 	
-	AddMenuItem(menu, "option0", "Cricket Bat (30 XP)");
-	AddMenuItem(menu, "option1", "Electric Guitar (30 XP)");
-	AddMenuItem(menu, "option2", "Frying Pan (30 XP)");
-	AddMenuItem(menu, "option3", "Nightstick (30 XP)");
-	AddMenuItem(menu, "option4", "Golf Club (30 XP)");
-	//AddMenuItem(menu, "option5", "Riot Shield (30 XP)");
-	AddMenuItem(menu, "option5", "Baseball Bat (50 XP)\n ");
-	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option1", "Cricket Bat (30 XP)");
+	AddMenuItem(menu, "option2", "Electric Guitar (30 XP)");
+	AddMenuItem(menu, "option3", "Frying Pan (30 XP)");
+	AddMenuItem(menu, "option4", "Nightstick (30 XP)");
+	AddMenuItem(menu, "option5", "Golf Club (30 XP)");
+	//AddMenuItem(menu, "option6", "Riot Shield (30 XP)");
+	AddMenuItem(menu, "option6", "Baseball Bat (50 XP)\n ");
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option9", "Back");

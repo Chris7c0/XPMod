@@ -119,7 +119,7 @@ Action:TopMenuDraw(iClient)
 	}
 	else
 	{
-		AddMenuItem(menu, "option4", "Help\n \n   You need to Confirm\n   your Characters for\n  your abilities to work!");
+		AddMenuItem(menu, "option4", "Help\n \n   You need to Confirm\n   your Characters for\n   your abilities to work!");
 		AddMenuItem(menu, "option5", "* Confirm Characters *\n ");
 	}
 

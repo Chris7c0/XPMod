@@ -4,7 +4,15 @@ Action:ChooseTankMenuDraw(iClient)
 	g_bUserStoppedConfirmation[iClient] = true;
 	
 	Menu menu = CreateMenu(ChooseTankMenuHandler);
-	SetMenuTitle(menu, "\n \n			Choose Your Tank\n=	=	=	=	=	=	=	=	=	=	=\n ");
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
+
+	SetMenuTitle(menu, "\
+		%s			Choose Your Tank\
+		\n=	=	=	=	=	=	=	=	=	=	=\n ",
+		strStartingNewLines);
 	
 	decl String:strText[512];
 	FormatEx(strText, sizeof(strText), "Fire Tank\
@@ -32,8 +40,9 @@ Action:ChooseTankMenuDraw(iClient)
 		\n [Press MELEE] Wing Dash\
 		\n \
 		\n=	=	=	=	=	=	=	=	=	=	=\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
-		RoundToNearest(TANK_HEALTH_VAMPIRIC * g_fTankStartingHealthMultiplier[iClient]) );
+		%s\n \n \n \n \n \n \n \n \n \n \n \n ",
+		RoundToNearest(TANK_HEALTH_VAMPIRIC * g_fTankStartingHealthMultiplier[iClient]),
+		strEndingNewLines);
 	AddMenuItem(menu, "option4", strText);
 
 	SetMenuExitButton(menu, false);
@@ -48,16 +57,26 @@ Action:TankTopMenuDraw(iClient)
 	
 	CheckLevel(iClient);
 	DeleteAllMenuParticles(iClient);
+
 	Menu menu = CreateMenu(TankTopMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	decl String:title[256];
-	FormatEx(title, sizeof(title), "\n \nLevel %d	XP: %d/%d\
-									\n==========================\
-									\nTanks:\
-									\n==========================\n \
-									\nSelect a Tank to learn about\
-									\ntheir abilities.\n \n", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+	FormatEx(title, sizeof(title), "\
+		%sLevel %d	XP: %d/%d\
+		\n==========================\
+		\nTanks:\
+		\n==========================\n \
+		\nSelect a Tank to learn about\
+		\ntheir abilities.\n \n",
+		strStartingNewLines,
+		g_iClientLevel[iClient],
+		g_iClientXP[iClient],
+		g_iClientNextLevelXPAmount[iClient]);
 	SetMenuTitle(menu, title);
 	
 	AddMenuItem(menu, "option1", "Fire Tank");
@@ -68,9 +87,14 @@ Action:TankTopMenuDraw(iClient)
 	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(menu, "option9", "Back\
+
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
 		\n==========================\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option9", strFinalOptionText);
 	
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);

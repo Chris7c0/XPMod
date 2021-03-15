@@ -6,9 +6,13 @@ Action:SmokerTopMenuDraw(iClient)
 	DeleteAllMenuParticles(iClient);
 	Menu menu = CreateMenu(SmokerTopMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	decl String:title[256];
-	FormatEx(title, sizeof(title), "\n \nLevel %d	XP: %d/%d\n==========================\nSmoker Talents:\n==========================\n \nEnvelopment: Level %d\nNoxious Gasses: Level %d\nDirty Tricks: Level %d\n \n", g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iEnvelopmentLevel[iClient], g_iNoxiousLevel[iClient], g_iDirtyLevel[iClient]);
+	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n==========================\nSmoker Talents:\n==========================\n \nEnvelopment: Level %d\nNoxious Gasses: Level %d\nDirty Tricks: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iEnvelopmentLevel[iClient], g_iNoxiousLevel[iClient], g_iDirtyLevel[iClient]);
 	SetMenuTitle(menu, title);
 	AddMenuItem(menu, "option1", "Envelopment");
 	AddMenuItem(menu, "option2", "Noxious Gasses");
@@ -21,10 +25,15 @@ Action:SmokerTopMenuDraw(iClient)
 	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(menu, "option9", "Back\
+
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
 		\n==========================\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
-	
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option9", strFinalOptionText);
+
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
@@ -37,24 +46,32 @@ Action:SmokerTopMenuDraw(iClient)
 Action:EnvelopmentMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(EnvelopmentMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	SetMenuTitle(menu, "\
-	\n \
-	\n  			Envelopment (Level %d)\
-	\n \
-	\nLevel 1:\
-	\n(Stacks) +3%% tongue range & fly speed\
-	\n \
-	\n \
-	\nSkill Uses:\
-	\n+1 (Stack) for each Smoker with this talent\
-	\nUnlimited stacks\
-	\n ",
-	g_iEnvelopmentLevel[iClient]);
+		%s  			Envelopment (Level %d)\
+		\n \
+		\nLevel 1:\
+		\n(Stacks) +3%% tongue range & fly speed\
+		\n \
+		\n \
+		\nSkill Uses:\
+		\n+1 (Stack) for each Smoker with this talent\
+		\nUnlimited stacks\
+		\n ",
+		strStartingNewLines,
+		g_iEnvelopmentLevel[iClient]);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
-	
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
+
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
@@ -65,10 +82,13 @@ Action:EnvelopmentMenuDraw(iClient)
 Action:NoxiousMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(NoxiousMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	SetMenuTitle(menu, "\
-		\n \
-		\n									Noxious Gasses (Level %d)\
+		%s									Noxious Gasses (Level %d)\
 		\n \
 		\nLevel 1:\
 		\n1 cloud damage every tick\
@@ -83,11 +103,16 @@ Action:NoxiousMenuDraw(iClient)
 		\nTeleport +30 feet per level\
 		\n100%% transparency after use, fades to 0%% over +1 second per level\
 		\n ",
+		strStartingNewLines,
 		g_iNoxiousLevel[iClient]);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
-	
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
+
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
@@ -98,10 +123,13 @@ Action:NoxiousMenuDraw(iClient)
 Action:DirtyMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(DirtyMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	SetMenuTitle(menu, "\
-		\n \
-		\n					Dirty Tricks (Level %d)\
+		%s					Dirty Tricks (Level %d)\
 		\n \
 		\nLevel 1:\
 		\nAttacks infect for +2 sec per level\
@@ -121,11 +149,16 @@ Action:DirtyMenuDraw(iClient)
 		\n+1 (Stack) for each SMOKER w/ this talent\
 		\nUnlimited stacks\
 		\n ",
+		strStartingNewLines,
 		g_iDirtyLevel[iClient]);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
-	
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
+
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 

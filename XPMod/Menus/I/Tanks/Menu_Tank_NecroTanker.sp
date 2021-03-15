@@ -2,10 +2,14 @@ Action:TankMenuDrawNecroTanker(iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(TankMenuHandlerNecroTanker);
+
+        char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	SetMenuTitle(menu,"\
-	\n \
-        \nNECROTANKER\
+	%s \
+        NECROTANKER\
         \n\"Life is finite, whereas Death...ah, yes. Death is infinite.\"\
         \n \
         \n Passive Abilities\
@@ -26,14 +30,19 @@ Action:TankMenuDrawNecroTanker(iClient)
         \n - [Hold WALK or CROUCH] Summon CI\
         \n - [Press MELEE] Throw Boomers\
         \n ",
+	strStartingNewLines,
         TANK_HEALTH_NECROTANKER,
         NECROTANKER_MAX_HEALTH,
         NECROTANKER_CONSUME_COMMON_HP,
         NECROTANKER_CONSUME_UNCOMMON_HP);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
-	
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+                "Back\
+                %s\n \n \n \n \n \n \n \n \n \n \n \n ",
+                strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
+        
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 

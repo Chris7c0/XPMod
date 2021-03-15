@@ -2,10 +2,14 @@ Action:TankMenuDrawVampiric(iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(TankMenuHandlerVampiric);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	SetMenuTitle(menu,"\
-	\n \
-        \nVAMPIRIC TANK\
+		%s \
+        VAMPIRIC TANK\
         \n\"I never drink...wine.\"\
         \n \
         \n Passive Abilities\
@@ -22,11 +26,16 @@ Action:TankMenuDrawVampiric(iClient)
         \n    - 3 Uses (13 Sec Cooldown) \
         \n - No Rock Throwing\
         \n ",
+		strStartingNewLines,
         TANK_HEALTH_VAMPIRIC);
 	
-	AddMenuItem(menu, "option1", "Back\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
-	
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
+
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
