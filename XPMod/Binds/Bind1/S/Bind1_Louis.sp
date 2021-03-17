@@ -112,7 +112,7 @@ Action:TimerWarezStationDisable(Handle:timer, any:iClient)
 }
 
 // Warez Station Menu Draw
-Action:WarezStationMenuDraw(iClient) 
+Action:WarezStationMenuDraw(iClient)
 {
 	decl String:text[512];
 	
@@ -133,7 +133,7 @@ Action:WarezStationMenuDraw(iClient)
 	AddMenuItem(menu, "option4", "+1 Self revive");
 	AddMenuItem(menu, "option5", "Receive Medkit + Pills");
 	AddMenuItem(menu, "option6", "Receive Full Ammo");
-	AddMenuItem(menu, "option7", "I'm Feeling Lucky\n ");
+	AddMenuItem(menu, "option7", "I'm Feeling Lucky\n ")
 
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option9", "", ITEMDRAW_NOTEXT);
@@ -187,15 +187,19 @@ WarezStationMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			}
 			case 2: // Team Screen Shake
 			{
+				// If screenshake is already 0, then redraw menu and let them choose again.
+				if (g_iScreenShakeAmount <= 0)
+				{
+					PrintToChat(iClient, "\x03[XPMod] \x04Screen Shake is already at 0%%. Choose something else.");
+					WarezStationMenuDraw(iClient);
+					return;
+				}
+					
+				// Print Message to Survivors
+				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Screen Shake Reduced", iClient);
+
 				g_iScreenShakeAmount -= 10;
 				SetSurvivorScreenShakeAmount();
-
-				// Print Message to Survivors
-				for(new iSurvivor=1;iSurvivor <= MaxClients;iSurvivor++)
-					if (RunClientChecks(iSurvivor) && 
-						IsFakeClient(iSurvivor) == false && 
-						g_iClientTeam[iSurvivor] == TEAM_SURVIVORS)
-							PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Screen Shake Reduced", iClient);
 			}
 			case 3: // Self revive
 			{
