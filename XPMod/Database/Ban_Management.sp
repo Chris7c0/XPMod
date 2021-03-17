@@ -128,7 +128,7 @@ SQLAddBannedUserToDatabase(iClient, int iBanDurationSeconds = 0, const char [] s
 		user_name,\
 		expiration_time,\
 		reason)\
-		VALUES ('%s','%s','%s','%s')", 
+		VALUES ('%s','%s',%s,'%s')", 
 		DB_TABLENAME_BANS,
 		strSteamID,
 		strClientName,
@@ -137,10 +137,15 @@ SQLAddBannedUserToDatabase(iClient, int iBanDurationSeconds = 0, const char [] s
 	SQL_TQuery(g_hDatabase, SQLAddBannedUserToDatabaseCallback, strQuery, iClient);
 }
 
-GetBanExpirationTimestamp(char [] strDateTime, int iDateTimeStringSize, int iBanDurationSeconds) 
+GetBanExpirationTimestamp(char [] strExpirationTimeStampValue, int iExpirationTimeStampValueSize, int iBanDurationSeconds) 
 {
 	if (iBanDurationSeconds <= 0)
+	{
+		Format(strExpirationTimeStampValue, iExpirationTimeStampValueSize, "NULL");
 		return;
+	}
 	
-	FormatTime(strDateTime, iDateTimeStringSize, "%Y-%m-%d %H:%M:%S", GetTime() + iBanDurationSeconds);
+	decl String:strDateTime[30];
+	FormatTime(strDateTime, sizeof(strDateTime), "%Y-%m-%d %H:%M:%S", GetTime() + iBanDurationSeconds);
+	Format(strExpirationTimeStampValue, iExpirationTimeStampValueSize, "'%s'", strDateTime);
 }

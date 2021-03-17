@@ -128,7 +128,7 @@ Action:TopMenuDraw(iClient)
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 
 	// Option 8
-	if (GetClientAdminLevel(iClient) > 0 && iClient == -99)
+	if (GetClientAdminLevel(iClient) > 0)
 		AddMenuItem(menu, "option8", "Admin Menu");
 	else
 		AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
@@ -149,7 +149,7 @@ Action:TopMenuDraw(iClient)
 		strEndingNewLines,
 		g_iClientTeam[iClient] == TEAM_INFECTED ? "" : "\n \n \n \n ",
 		g_bTalentsConfirmed[iClient] == false ? "" : "\n \n \n \n \n ",
-		GetClientAdminLevel(iClient) > 0 && iClient == -99 ? "" : "\n ")
+		GetClientAdminLevel(iClient) > 0 ? "" : "\n ")
 	AddMenuItem(menu, "option10", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);

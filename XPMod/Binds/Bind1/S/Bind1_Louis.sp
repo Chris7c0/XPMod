@@ -89,7 +89,7 @@ Action:TimerWarezStationCheckForSurvivorToService(Handle:timer, any:iClient)
 			// The candidate has entered the warez station radius, check if they already used it.
 			if (g_bWareStationClientAlreadyServiced[iClient][iCandidate] == false)
 			{
-				WarezStationMenuDraw(iClient);
+				WarezStationMenuDraw(iCandidate);
 				g_iWareStationOwnerIDOfCurrentlyViewedStation[iCandidate] = iClient;
 			}
 			else
