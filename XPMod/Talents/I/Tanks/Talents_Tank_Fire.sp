@@ -228,7 +228,7 @@ SetFireToPlayer(iVictim, iAttacker, Float:fTime)
 	new Handle:hEntityPack = CreateDataPack();
 	WritePackCell(hEntityPack, iVictim);
 	WritePackCell(hEntityPack, iAttacker);
-	CreateTimer(0.5, Timer_DealFireDamage, hEntityPack, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+	CreateTimer(0.5, Timer_DealFireDamage, hEntityPack, TIMER_REPEAT);
 }
 
 CreateFireRockTrailEffect(int iRockEntity)

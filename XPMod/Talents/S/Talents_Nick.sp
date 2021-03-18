@@ -381,6 +381,25 @@ OGFSurvivorReload_Nick(iClient, const char[] currentweapon, ActiveWeaponID, Curr
 		g_bClientIsReloading[iClient] = false;
 		g_iReloadFrameCounter[iClient] = 0;
 	}
+	// This was in the JebusMenuHnadler...moved it up...pretty sure its not required anymore.
+	// if(g_iRiskyLevel[iClient] > 0)
+	// {
+	// 	new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
+	// 	if((buttons & IN_RELOAD) && g_bClientIsReloading[iClient] == false && g_bForceReload[iClient] == false)
+	// 	{
+	// 		decl String:currentweapon[32];
+	// 		GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
+	// 		new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+	// 		new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
+	// 		if((StrEqual(currentweapon, "weapon_pistol", false) == true) && ((CurrentClipAmmo == 15) || (CurrentClipAmmo == 30)))
+	// 		{
+	// 			g_bForceReload[iClient] = true;
+	// 			g_iSavedClip[iClient] = CurrentClipAmmo;
+	// 			SetEntData(ActiveWeaponID, g_iOffset_Clip1, 0, true);
+	// 		}
+	// 	}
+	// }
+	// return;
 }
 
 EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
@@ -467,7 +486,7 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 	if(g_iSwindlerLevel[iAttacker] > 0)
 	{
 		if(g_iClientTeam[iVictim] == TEAM_INFECTED)
-			if(g_bNickIsStealingLife[iVictim][iAttacker] == false)	//If player not poisoned, poison them
+			if(g_bNickIsStealingLife[iVictim][iAttacker] == false)
 			{
 				g_bNickIsStealingLife[iVictim][iAttacker] = true;
 				
@@ -625,7 +644,7 @@ JebusHandMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 	else if (action == MenuAction_Select) 
 	{
 		if (RunClientChecks(iClient) == false)
-		return;
+			return;
 	
 		if (IsPlayerAlive(iClient) == false)
 		{
@@ -875,22 +894,4 @@ JebusHandMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			}
 		}
 	}
-	if(g_iRiskyLevel[iClient] > 0)
-	{
-		new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
-		if((buttons & IN_RELOAD) && g_bClientIsReloading[iClient] == false && g_bForceReload[iClient] == false)
-		{
-			decl String:currentweapon[32];
-			GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
-			new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-			new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
-			if((StrEqual(currentweapon, "weapon_pistol", false) == true) && ((CurrentClipAmmo == 15) || (CurrentClipAmmo == 30)))
-			{
-				g_bForceReload[iClient] = true;
-				g_iSavedClip[iClient] = CurrentClipAmmo;
-				SetEntData(ActiveWeaponID, g_iOffset_Clip1, 0, true);
-			}
-		}
-	}
-	return;
 }

@@ -100,11 +100,14 @@ Action:TimerCoachRageReset(Handle:timer, any:iClient)
 {
 	//g_fCoachRageSpeed[iClient] = -0.1;
 	g_iCoachRageMeleeDamage[iClient] = 0;
+	g_bCoachRageIsInCooldown[iClient] = true;
 
 	SetClientSpeed(iClient);
 	CreateTimer(60.0, TimerCoachRageCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
-	g_bCoachRageIsInCooldown[iClient] = true;
-	PrintHintText(iClient, "Rage is in cooldown, healing and speed talents disabled for 60 seconds");
+	
+	if (RunClientChecks(iClient) && IsFakeClient(iClient) == false)
+		PrintHintText(iClient, "Rage is in cooldown, healing and speed talents disabled for 60 seconds");
+	
 	return Plugin_Stop;
 }
 

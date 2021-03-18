@@ -10,10 +10,7 @@ Action:TimerLungeFurther(Handle:timer, any:iClient)
 }
 
 Action:TimerHunterPounceDamage(Handle:timer, any:pack)
-{
-	if (pack == INVALID_HANDLE)
-		return Plugin_Stop;
-	
+{	
 	ResetPack(pack);
 	new iVictim = ReadPackCell(pack);
 	new iAttacker = ReadPackCell(pack);

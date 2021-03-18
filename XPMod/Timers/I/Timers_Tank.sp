@@ -58,7 +58,7 @@ Action:Timer_DealFireDamage(Handle:timer, any:hDataPack)
 	new iVictim = ReadPackCell(hDataPack);
 	new iAttacker = ReadPackCell(hDataPack);
 	
-	if(iVictim < 1 || g_iClientTeam[iVictim] != TEAM_SURVIVORS || IsValidEntity(iVictim) == false ||  IsPlayerAlive(iVictim) == false)
+	if(RunClientChecks(iVictim) == false || g_iClientTeam[iVictim] != TEAM_SURVIVORS || IsPlayerAlive(iVictim) == false)
 	{
 		CloseHandle(hDataPack);
 		return Plugin_Stop;

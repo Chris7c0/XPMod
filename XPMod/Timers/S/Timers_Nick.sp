@@ -198,6 +198,11 @@ Action:TimerNickSecondaryCycleReset(Handle:timer, any:iClient)
 
 Action:TimerNickDualClipSize(Handle:timer, any:iClient)
 {
+	if (RunClientChecks(iClient) == false || 
+		IsPlayerAlive(iClient) == false || 
+		IsFakeClient(iClient) == true)
+		return Plugin_Stop;
+	
 	decl String:currentweapon[512];
 	GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
 	new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
