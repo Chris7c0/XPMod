@@ -129,10 +129,7 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 		g_iNickMagnumShotCountCap[iClient] = 0;
 		
 		//PrintToChatAll("ReloadRate = %f", g_fReloadRate);
-		new Handle:clientEntPack = CreateDataPack();
-		WritePackCell(clientEntPack, iEntid);
-		WritePackCell(clientEntPack, iClient);
-		WritePackString(clientEntPack, stClass);
+		
 		if (StrContains(stClass,"shotgun",false) == -1)
 		{
 			g_fGameTime = GetGameTime(); 
@@ -149,8 +146,8 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 
 				//create a timer to reset the playrate after
 				//time equal to the modified attack interval
-
-			CreateTimer(flNextTime_calc, SoH_MagEnd, clientEntPack, TIMER_FLAG_NO_MAPCHANGE);
+			
+			CreateTimer(flNextTime_calc, SoH_MagEnd, iEntid, TIMER_FLAG_NO_MAPCHANGE);
 
 			//experiment to remove double-playback bug
 			new Handle:hPack = CreateDataPack();
@@ -181,20 +178,20 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 		}
 		else if (StrContains(stClass,"autoshotgun",false) != -1)
 		{
-			CreateTimer(0.1,SoH_AutoshotgunStart, clientEntPack, TIMER_FLAG_NO_MAPCHANGE);
+			CreateTimer(0.1,SoH_AutoshotgunStart, iEntid, TIMER_FLAG_NO_MAPCHANGE);
 			return;
 		}
 
 		else if (StrContains(stClass,"shotgun_spas",false) != -1)
 		{
-			CreateTimer(0.1,SoH_SpasShotgunStart,clientEntPack, TIMER_FLAG_NO_MAPCHANGE);
+			CreateTimer(0.1,SoH_SpasShotgunStart,iEntid, TIMER_FLAG_NO_MAPCHANGE);
 			return;
 		}
 
 		else if (StrContains(stClass,"pumpshotgun",false) != -1
 			|| StrContains(stClass,"shotgun_chrome",false) != -1)
 		{
-			CreateTimer(0.1,SoH_PumpshotgunStart,clientEntPack, TIMER_FLAG_NO_MAPCHANGE);
+			CreateTimer(0.1,SoH_PumpshotgunStart,iEntid, TIMER_FLAG_NO_MAPCHANGE);
 			return;
 		}
 	}
@@ -427,34 +424,15 @@ Float:FindAnimationSpeed(Float:reloadspeed) //, String:gunname[])
 }
 
 //this resets the playback rate on non-shotguns
-Action:SoH_MagEnd (Handle:timer, any:pack)
+Action:SoH_MagEnd (Handle:timer, any:iEntid2)
 {
-	if (IsServerProcessing()==false)
-	{
-		CloseHandle(pack);
-		return Plugin_Stop;
-	}
-	ResetPack(pack);
-	new iEntid2 = ReadPackCell(pack);
-	new iClient = ReadPackCell(pack);
-	if(IsClientInGame(iClient)==false)
-	{
-		CloseHandle(pack);
-		return Plugin_Stop;
-	}
-	//----DEBUG----
 	//PrintToChatAll("\x03SoH reset playback, magazine loader");
 
 	if (iEntid2 <= 0 || IsValidEntity(iEntid2)==false)
-	{
-		CloseHandle(pack);
 		return Plugin_Stop;
-	}
 
 	SetEntDataFloat(iEntid2, g_iOffset_PlaybackRate, 1.0, true);
-	
-	//CreateTimer(0.1,IncreaseClip, pack, TIMER_FLAG_NO_MAPCHANGE);
-	
+
 	return Plugin_Stop;
 }
 
@@ -882,15 +860,7 @@ Action:SoH_MagEnd (Handle:timer, any:pack)
 
 Action:SoH_MagEnd2 (Handle:timer, Handle:hPack)
 {
-	if (IsServerProcessing()==false)
-	{
-		CloseHandle(hPack);
-		return Plugin_Stop;
-	}
-
-	//----DEBUG----
 	//PrintToChatAll("\x03SoH reset playback, magazine loader");
-
 	ResetPack(hPack);
 	new iCid2 = ReadPackCell(hPack);
 	new Float:flStartTime_calc = ReadPackFloat(hPack);
@@ -911,7 +881,7 @@ Action:SoH_MagEnd2 (Handle:timer, Handle:hPack)
 
 
 //called for autoshotguns
-Action:SoH_AutoshotgunStart (Handle:timer, any:pack)
+Action:SoH_AutoshotgunStart (Handle:timer, any:iEntid2)
 {
 	// //----DEBUG----
 	// PrintToChatAll("\x03-autoshotgun detected, iEntid \x01%i\x03, startO \x01%i\x03, insertO \x01%i\x03, endO \x01%i",
@@ -925,8 +895,6 @@ Action:SoH_AutoshotgunStart (Handle:timer, any:pack)
 	// 	g_flSoHAutoI,
 	// 	g_flSoHAutoE
 	// 	);
-	ResetPack(pack);
-	new iEntid2 = ReadPackCell(pack);
 
 	if (iEntid2 <= 0 || IsValidEntity(iEntid2) == false)
 		return Plugin_Stop;
@@ -934,7 +902,7 @@ Action:SoH_AutoshotgunStart (Handle:timer, any:pack)
 	//then we set the new times in the gun
 	SetEntDataFloat(iEntid2,	g_iOffset_ReloadStartDuration,	g_flSoHAutoS*g_fReloadRate,	true);
 	SetEntDataFloat(iEntid2,	g_iOffset_ReloadInsertDuration,	g_flSoHAutoI*g_fReloadRate,	true);
-	SetEntDataFloat(iEntid2,	g_iOffset_ReloadEndDuration,		g_flSoHAutoE*g_fReloadRate,	true);
+	SetEntDataFloat(iEntid2,	g_iOffset_ReloadEndDuration,	g_flSoHAutoE*g_fReloadRate,	true);
 
 	//we change the playback rate of the gun
 	//just so the player can "see" the gun reloading faster
@@ -948,9 +916,8 @@ Action:SoH_AutoshotgunStart (Handle:timer, any:pack)
 	if (GetEntData(iEntid2,g_iOffset_ReloadState)==2)
 		CreateTimer(0.3,SoH_ShotgunEndCock,iEntid2,TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 	else
-		CreateTimer(0.3,SoH_ShotgunEnd,pack,TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
-
-	//----DEBUG----
+		CreateTimer(0.3,SoH_ShotgunEnd,iEntid2,TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+	
 	/*PrintToChatAll("\x03- after mod, start \x01%f\x03, insert \x01%f\x03, end \x01%f",
 		g_flSoHAutoS,
 		g_flSoHAutoI,
@@ -961,9 +928,8 @@ Action:SoH_AutoshotgunStart (Handle:timer, any:pack)
 }
 
 
-Action:SoH_SpasShotgunStart (Handle:timer, any:pack)
+Action:SoH_SpasShotgunStart (Handle:timer, any:iEntid2)
 {
-	//----DEBUG----
 	// PrintToChatAll("\x03-autoshotgun detected, iEntid \x01%i\x03, startO \x01%i\x03, insertO \x01%i\x03, endO \x01%i",
 	// 	iEntid,
 	// 	g_iOffset_ReloadStartDuration,
@@ -975,9 +941,6 @@ Action:SoH_SpasShotgunStart (Handle:timer, any:pack)
 	// 	g_flSoHSpasI,
 	// 	g_flSoHSpasE
 	// 	);
-	
-	ResetPack(pack);
-	new iEntid2 = ReadPackCell(pack);
 
 	if (iEntid2 <= 0 || IsValidEntity(iEntid2) == false)
 		return Plugin_Stop;
@@ -999,9 +962,8 @@ Action:SoH_SpasShotgunStart (Handle:timer, any:pack)
 	if (GetEntData(iEntid2,g_iOffset_ReloadState)==2)
 		CreateTimer(0.3,SoH_ShotgunEndCock,iEntid2,TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 	else
-		CreateTimer(0.3,SoH_ShotgunEnd,pack,TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+		CreateTimer(0.3,SoH_ShotgunEnd,iEntid2,TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 
-	//----DEBUG----
 	/*PrintToChatAll("\x03- after mod, start \x01%f\x03, insert \x01%f\x03, end \x01%f",
 		g_flSoHSpasS,
 		g_flSoHSpasI,
@@ -1012,9 +974,8 @@ Action:SoH_SpasShotgunStart (Handle:timer, any:pack)
 }
 
 //called for pump shotguns
-Action:SoH_PumpshotgunStart (Handle:timer, any:pack)
+Action:SoH_PumpshotgunStart (Handle:timer, any:iEntid2)
 {
-	//----DEBUG----
 	// PrintToChatAll("\x03-pumpshotgun detected, iEntid \x01%i\x03, startO \x01%i\x03, insertO \x01%i\x03, endO \x01%i",
 	// 	iEntid,
 	// 	g_iOffset_ReloadStartDuration,
@@ -1026,9 +987,6 @@ Action:SoH_PumpshotgunStart (Handle:timer, any:pack)
 	// 	g_flSoHPumpI,
 	// 	g_flSoHPumpE
 	// 	);
-
-	ResetPack(pack);
-	new iEntid2 = ReadPackCell(pack);
 
 	if (iEntid2 <= 0 || IsValidEntity(iEntid2) == false)
 		return Plugin_Stop;
@@ -1047,9 +1005,8 @@ Action:SoH_PumpshotgunStart (Handle:timer, any:pack)
 	if (GetEntData(iEntid2,g_iOffset_ReloadState)==2)
 		CreateTimer(0.3,SoH_ShotgunEndCock,iEntid2,TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 	else
-		CreateTimer(0.3,SoH_ShotgunEnd,pack,TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
-
-	//----DEBUG----
+		CreateTimer(0.3,SoH_ShotgunEnd,iEntid2,TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+	
 	/*PrintToChatAll("\x03- after mod, start \x01%f\x03, insert \x01%f\x03, end \x01%f",
 		g_flSoHPumpS,
 		g_flSoHPumpI,
@@ -1060,65 +1017,31 @@ Action:SoH_PumpshotgunStart (Handle:timer, any:pack)
 }
 
 //this resets the playback rate on shotguns
-Action:SoH_ShotgunEnd (Handle:timer, any:pack)
+Action:SoH_ShotgunEnd (Handle:timer, any:iEntid2)
 {
-	ResetPack(pack);
-	new iEntid2 = ReadPackCell(pack);
-	//----DEBUG----
 	//PrintToChatAll("\x03-autoshotgun tick");
 
 	if (iEntid2 <= 0 || IsValidEntity(iEntid2)==false)
-	{
-		CloseHandle(pack);
 		return Plugin_Stop;
-	}
 
-	if (GetEntData(iEntid2,g_iOffset_ReloadState)==0)
+	if (GetEntData(iEntid2, g_iOffset_ReloadState)==0)
 	{
-		//----DEBUG----
 		//PrintToChatAll("\x03-shotgun end reload detected");
 		SetEntDataFloat(iEntid2, g_iOffset_PlaybackRate, 1.0, true);
-		new iClient = ReadPackCell(pack);
-		CloseHandle(pack);
+
 		new Float:flTime=GetGameTime()+0.2;
 
-		if (RunClientChecks(iClient) == false)
+		new iClient = GetEntPropEnt(iEntid2,Prop_Data,"m_hOwner");
+		if (RunClientChecks(iClient) == false || IsPlayerAlive(iClient) == false)
 			return Plugin_Stop;
 
 		SetEntDataFloat(iClient,	g_iOffset_NextAttack,	flTime,	true);
 		SetEntDataFloat(iEntid2,	g_iOffset_TimeWeaponIdle,	flTime,	true);
 		SetEntDataFloat(iEntid2,	g_iOffset_NextPrimaryAttack,	flTime,	true);
-		/*
-		if(g_iSprayLevel[iClient]>0)
-		{
-			new clip = GetEntProp(iEntid2,Prop_Data,"m_iClip1");
-			clip += (g_iSprayLevel[iClient]*2);
-			new iOffset_Ammo=FindDataMapInfo(iClient,"m_iAmmo");
-			new ammoamountpsg = GetEntData(iClient, iOffset_Ammo + 28);	//for pump shotgun (+28)
-			new ammoamountasg = GetEntData(iClient, iOffset_Ammo + 32);	//for auto shotgun (+32)
-			if(ammoamountpsg > 0)
-			{
-				if(clip > 7)
-					if(ammoamountpsg>(g_iSprayLevel[iClient]*2))
-					{
-						SetEntData(iEntid2, g_iOffset_Clip1, clip, true);
-						SetEntData(iClient, iOffset_Ammo + 28, ammoamountpsg - (g_iSprayLevel[iClient]*2));
-					}
-			}
-			else if(ammoamountasg > 0)
-			{
-				if(clip > 9)
-					if(ammoamountasg > (g_iSprayLevel[iClient]*2))
-					{
-						SetEntData(iEntid2, g_iOffset_Clip1, clip, true);
-						SetEntData(iClient, iOffset_Ammo + 32, ammoamountasg - (g_iSprayLevel[iClient]*2));
-					}
-			}
-		}
-		*/
 
 		return Plugin_Stop;
 	}
+
 	return Plugin_Continue;
 }
 
@@ -1126,7 +1049,6 @@ Action:SoH_ShotgunEnd (Handle:timer, any:pack)
 //exactly as the above, except it adds slightly more time
 Action:SoH_ShotgunEndCock (Handle:timer, any:iEntid2)
 {
-	//----DEBUG----
 	//PrintToChatAll("\x03-autoshotgun tick");
 
 	if (iEntid2 <= 0 || IsValidEntity(iEntid2)==false)
@@ -1134,14 +1056,16 @@ Action:SoH_ShotgunEndCock (Handle:timer, any:iEntid2)
 
 	if (GetEntData(iEntid2,g_iOffset_ReloadState)==0)
 	{
-		//----DEBUG----
 		//PrintToChatAll("\x03-shotgun end reload + cock detected");
 
 		SetEntDataFloat(iEntid2, g_iOffset_PlaybackRate, 1.0, true);
-		//PrintToChatAll("SoH_ShotgunEndCock");
-		new iCid2=GetEntPropEnt(iEntid2,Prop_Data,"m_hOwner");
-		new Float:flTime= GetGameTime() + 1.0;
-		SetEntDataFloat(iCid2,	g_iOffset_NextAttack,	flTime,	true);
+
+		new iClient=GetEntPropEnt(iEntid2,Prop_Data,"m_hOwner");
+		if (RunClientChecks(iClient) == false || IsPlayerAlive(iClient) == false)
+			return Plugin_Stop;
+
+		new Float:flTime= GetGameTime() + 0.6;
+		SetEntDataFloat(iClient,	g_iOffset_NextAttack,	flTime,	true);
 		SetEntDataFloat(iEntid2,	g_iOffset_TimeWeaponIdle,	flTime,	true);
 		SetEntDataFloat(iEntid2,	g_iOffset_NextPrimaryAttack,	flTime,	true);
 
