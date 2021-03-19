@@ -17,7 +17,10 @@ Action:TimerHunterPounceDamage(Handle:timer, any:pack)
 	new iDamage = ReadPackCell(pack);
 	CloseHandle(pack);
 	
-	if(IsClientInGame(iVictim)==false || IsPlayerAlive(iVictim)==false || IsValidEntity(iVictim) == false)
+	if (IsClientInGame(iVictim)==false || 
+		IsPlayerAlive(iVictim)==false || 
+		IsValidEntity(iVictim) == false || 
+		g_bGameFrozen == true)
 		return Plugin_Stop;
 	
 	DealDamage(iVictim, iAttacker, iDamage, DAMAGETYPE_BLOCK_REVIVING);
@@ -44,10 +47,14 @@ Action:TimerHunterPoison(Handle:timer, any:pack)
 {
 	if (pack == INVALID_HANDLE)
 		return Plugin_Stop;
+		
 	ResetPack(pack);
 	new iClient = ReadPackCell(pack); //iClient = victim
 
-	if(IsClientInGame(iClient)==false || IsPlayerAlive(iClient)==false || g_iClientTeam[iClient] != TEAM_SURVIVORS)
+	if (IsClientInGame(iClient)==false || 
+		IsPlayerAlive(iClient)==false || 
+		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
+		g_bGameFrozen == true)
 	{
 		CloseHandle(pack);
 		
@@ -82,12 +89,20 @@ Action:TimerHunterPoisonFade(Handle:timer, any:pack)
 {
 	if (pack == INVALID_HANDLE)
 		return Plugin_Stop;
+
 	ResetPack(pack);
 	new victim = ReadPackCell(pack);
 	new attacker = ReadPackCell(pack);
 
-	if(IsValidEntity(victim) == false || IsClientInGame(victim)==false || IsPlayerAlive(victim)==false)
+	if (IsValidEntity(victim) == false || 
+		IsClientInGame(victim)==false || 
+		IsPlayerAlive(victim)==false ||
+		g_bGameFrozen == true)
+	{
+		//CloseHandle for the pack is handled in the TimerHunterPoison timer that calls this
 		return Plugin_Stop;
+	}
+		
 	
 	DealDamage(victim, attacker, 4, DAMAGETYPE_BLOCK_REVIVING);
 	

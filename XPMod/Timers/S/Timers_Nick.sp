@@ -92,9 +92,11 @@ Action:TimerLifeStealing(Handle:timer, any:pack)
 {
 	if (pack == INVALID_HANDLE)
 		return Plugin_Stop;
+	
 	ResetPack(pack);
 	new victim = ReadPackCell(pack);
 	new attacker = ReadPackCell(pack);
+	
 	if(IsValidEntity(attacker)==false || IsClientInGame(attacker)==false || IsPlayerAlive(attacker)==false ||
 		IsValidEntity(victim)==false || IsClientInGame(victim)==false || IsPlayerAlive(victim)==false)
 	{

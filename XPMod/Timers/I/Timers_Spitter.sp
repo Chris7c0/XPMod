@@ -114,7 +114,6 @@ Action:TimerConjureCommonInfected(Handle:timer, any:hDataPackage)
 	xyzLocation[0] = ReadPackFloat(hDataPackage);
 	xyzLocation[1] = ReadPackFloat(hDataPackage);
 	xyzLocation[2] = ReadPackFloat(hDataPackage);
-	
 	CloseHandle(hDataPackage);
 	
 	SpawnCommonInfected(xyzLocation, RoundToFloor(g_iPuppetLevel[iClient] * 0.5), UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_NONE, 0.1);

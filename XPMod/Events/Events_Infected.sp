@@ -486,7 +486,7 @@ Action:Event_HunterPounceStart(Handle:hEvent, const String:strName[], bool:bDont
 				WritePackCell(iDataPack, victim);
 				WritePackCell(iDataPack, attacker);
 				WritePackCell(iDataPack, iDamage);
-				CreateTimer(0.1, TimerHunterPounceDamage, iDataPack, TIMER_FLAG_NO_MAPCHANGE);
+				CreateTimer(0.1, TimerHunterPounceDamage, iDataPack);
 			}
 		}
 		if(g_iSmokeLevel[victim]>0)		//For ROCHELLE ninja break free skills
