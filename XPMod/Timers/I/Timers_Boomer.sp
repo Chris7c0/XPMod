@@ -30,13 +30,6 @@ Action:TimerResetBoomerSpeed(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerResetPlayerIt(Handle:timer, any:iClient)
-{
-	g_iVomitVictimAttacker[iClient] = 0;
-
-	return Plugin_Stop;
-}
-
 Action:TimerResetFastBoomerSpeed(Handle:timer, any:iClient)
 {
 	g_bIsSuperSpeedBoomer[iClient] = false;

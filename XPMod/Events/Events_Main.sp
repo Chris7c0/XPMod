@@ -81,6 +81,7 @@ SetupXPMEvents()
 	HookEvent("ability_use", Event_AbilityUse);
 	HookEvent("spit_burst", Event_SpitBurst);
 	HookEvent("player_now_it", Event_PlayerNowIt);
+	HookEvent("player_no_longer_it", Event_PlayerNoLongerIt);
 	//HookEvent("ghost_spawn_time", Event_GhostSpawnTime);
 	//HookEvent("entered_spit", Event_EnteredSpit);
 	

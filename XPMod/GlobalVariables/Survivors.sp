@@ -75,6 +75,8 @@ new g_iVictimHealthMeterWatchVictim[MAXPLAYERS + 1];
 new g_iSelfRevives[MAXPLAYERS + 1];
 new bool:g_bSelfReviving[MAXPLAYERS + 1];
 new Float:g_fSelfRevivingFinishTime[MAXPLAYERS + 1];
+// Bile Removal Kits
+new g_iBileCleansingKits[MAXPLAYERS + 1];
 
 // Grapples
 new bool:g_bIsClientGrappled[MAXPLAYERS + 1];

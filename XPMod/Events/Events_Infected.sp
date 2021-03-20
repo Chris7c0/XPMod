@@ -38,10 +38,10 @@ Action:Event_PlayerNowIt(Handle:hEvent, const String:strName[], bool:bDontBroadc
 	if (iAttacker == 0 || iVictim == 0)
 		return Plugin_Continue;
 	
-	if(IsClientInGame(iAttacker) == true && IsFakeClient(iAttacker) == false && g_iClientTeam[iAttacker] == TEAM_INFECTED)
+	if(RunClientChecks(iAttacker) == true)
 	{
+		// PrintToChatAll("%N is vomited on by %N", iVictim, iAttacker);
 		g_iVomitVictimAttacker[iVictim] = iAttacker;
-		CreateTimer(20.0, TimerResetPlayerIt, iVictim, TIMER_FLAG_NO_MAPCHANGE); 
 	}
 
 	// Handle the Boomer's abilities
@@ -50,6 +50,17 @@ Action:Event_PlayerNowIt(Handle:hEvent, const String:strName[], bool:bDontBroadc
 	// Handle the bile on tanks, like removing vomit
 	Event_BoomerVomitOnPlayerTank(iVictim);
 	
+	return Plugin_Continue;
+}
+
+Action:Event_PlayerNoLongerIt(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+{
+	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+
+	g_iVomitVictimAttacker[iVictim] = 0;
+
+	// PrintToChatAll("%N is no longer vomited on", iVictim);
+
 	return Plugin_Continue;
 }
 

@@ -54,25 +54,25 @@ public OnGameFrame()
 			if(g_bIsSurvivorVomiting[iClient] == true)
 			{
 				new victim = GetClientAimTarget(iClient, true);
-				if(victim > 0)
+
+				if (RunClientChecks(victim) && 
+					g_bIsSurvivorVomiting[victim] == false && 
+					IsPlayerAlive(victim) && 
+					g_iClientTeam[victim] == TEAM_SURVIVORS)
 				{
-					if(IsClientInGame(victim))
-						if(IsPlayerAlive(victim))
-							if(g_iClientTeam[victim] == TEAM_SURVIVORS)
-							{
-								decl Float:clientVec[3],Float:victimVec[3];
-								GetClientEyePosition(iClient, clientVec);
-								GetClientEyePosition(victim, victimVec);
-								if(GetVectorDistance(clientVec, victimVec) <= 310.0)
-									if(g_bIsSurvivorVomiting[victim] == false)
-									{
-										SDKCall(g_hSDK_VomitOnPlayer, victim, iClient, true);
-										CreateParticle("boomer_vomit", 2.0, victim, ATTACH_MOUTH, true);
-										g_bIsSurvivorVomiting[victim] = true;
-										g_iShowSurvivorVomitCounter[victim] = 3;
-										CreateTimer(1.0, TimerConstantVomitDisplay, victim, TIMER_FLAG_NO_MAPCHANGE);
-									}
-							}
+					decl Float:clientVec[3],Float:victimVec[3];
+					GetClientEyePosition(iClient, clientVec);
+					GetClientEyePosition(victim, victimVec);
+					if(GetVectorDistance(clientVec, victimVec) <= 310.0)
+					{
+						// Set the attacker to the boomer that vomited on them, otherwise, set to the person vomiting
+						new iAttacker = RunClientChecks(g_iVomitVictimAttacker[victim]) ? g_iVomitVictimAttacker[victim] : iClient;
+						SDKCall(g_hSDK_VomitOnPlayer, victim, iAttacker, true);
+						CreateParticle("boomer_vomit", 2.0, victim, ATTACH_MOUTH, true);
+						g_bIsSurvivorVomiting[victim] = true;
+						g_iShowSurvivorVomitCounter[victim] = 3;
+						CreateTimer(1.0, TimerConstantVomitDisplay, victim, TIMER_FLAG_NO_MAPCHANGE);
+					}
 				}
 			}
 			

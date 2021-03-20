@@ -27,6 +27,8 @@ Action:TestFunction1(iClient, args)
 	// 	GetEntPropEnt(iClient, Prop_Send, "m_reviveOwner"));
 
 	PrintAllInEnhancedCIEntityList();
+
+	SDKCall(g_hSDK_VomitOnPlayer, StringToInt(str1), iClient, true);
 	
 	//SetSIAbilityCooldown(iClient, StringToFloat(str1), StringToInt(str2) == 1 ? true : false);
 

@@ -60,17 +60,20 @@ ResetVariablesForMap(iClient)
 	g_iSelfRevives[iClient] = 0;
 	g_bSelfReviving[iClient] = false;
 	g_fSelfRevivingFinishTime[iClient] = -1.0;
+	// Bile Cleansing Kits
+	g_iBileCleansingKits[iClient] = 0;
 
 	g_iInfectedCharacter[iClient] = UNKNOWN_INFECTED;
 	RemoveAllEntitiesFromArrayList(g_listEnhancedCIEntities);
 	g_bCanBeGhost[iClient] = true;
 	g_bIsGhost[iClient] = false;
+	
 	g_iTankCounter = 0;
 	g_fFrustratedTankTransferHealthPercentage = 0.0;
 	g_bTankStartingHealthXPModSpawn = false;
 	g_fTankStartingHealthMultiplier[iClient] = 1.0;
 	RemoveAllEntitiesFromArrayList(g_listTankRockEntities);
-	g_bAdhesiveGooActive[iClient] = false;
+	
 	
 	g_bSomeoneAttacksFaster = false;
 	
@@ -155,6 +158,7 @@ ResetVariablesForMap(iClient)
 	g_fJockeyRideSpeedVanishingActBoost[iClient] = 0.0;
 	
 	//Spitter
+	g_bAdhesiveGooActive[iClient] = false;
 	g_bBlockGooSwitching[iClient] = false;
 	g_bJustSpawnedWitch[iClient] = false;
 	g_bCanConjureWitch[iClient] = true;
