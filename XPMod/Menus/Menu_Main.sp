@@ -555,7 +555,7 @@ ChooseTeamMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 				ChangeClientTeam(iClient, TEAM_SPECTATORS);
 				g_iClientTeam[iClient] = TEAM_SPECTATORS;
 				g_bClientSpectating[iClient] = true;
-				PrintToChatAll("\x03%N \x05moved to the \x04specators", iClient);
+				PrintToChatAll("\x03%N \x05moved to the \x04spectators", iClient);
 				//ChooseTeamMenuDraw(iClient);
 			}
 			case 8: //Back

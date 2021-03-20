@@ -8,7 +8,11 @@ void Bind1Press_Louis(iClient)
 		PrintHintText(iClient, "You are out of Warez Stations.");
 		return;
 	}
-
+	if (g_bIsClientGrappled[iClient] || GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1)
+	{
+		PrintHintText(iClient, "You cannot deploy a Warez Station while Grappled or Incapacitated.")
+		return;
+	}
 	if (g_bWareStationActive[iClient])
 	{
 		PrintHintText(iClient, "You can only deploy one Warez Station at a time.");
@@ -123,19 +127,22 @@ Action:WarezStationMenuDraw(iClient)
 		\n \
 		\n	   cH0o53 joOr w4R3z\
 		\n =========================\
+		\n  Brought to you by:\
+		\n    %N\
+		\n =========================\
 		\n ",
-		g_iLouisTalent6Level[iClient]);
+		g_iWareStationOwnerIDOfCurrentlyViewedStation[iClient]);
 	SetMenuTitle(menu, text);
 
 	AddMenuItem(menu, "option1", "+2% Speed Increase");
 	AddMenuItem(menu, "option2", "+10% Max Health");
 	AddMenuItem(menu, "option3", "-50% Team Screen Shake");
-	AddMenuItem(menu, "option4", "+1 Self revive");
-	AddMenuItem(menu, "option5", "Receive Medkit + Pills");
-	AddMenuItem(menu, "option6", "Receive Full Ammo");
-	AddMenuItem(menu, "option7", "I'm Feeling Lucky\n ")
+	AddMenuItem(menu, "option4", "+1 Self Revive Kit");
+	AddMenuItem(menu, "option5", "+3 Bile Cleansing Kit");
+	AddMenuItem(menu, "option6", "Receive Medkit + Pills");
+	AddMenuItem(menu, "option7", "Receive Full Ammo");
+	AddMenuItem(menu, "option8", "I'm Feeling Lucky\n ")
 
-	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option9", "", ITEMDRAW_NOTEXT);
 
 	AddMenuItem(menu, "option10", "Nothing For Now.\
@@ -204,20 +211,25 @@ WarezStationMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			case 3: // Self revive
 			{
 				g_iSelfRevives[iClient]++;
-				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Self Revive", iClient);
+				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Self Revive Kit", iClient);
 			}
-			case 4:	// Med supplies
+			case 4: // Bile Cleansing Kits
+			{
+				//g_iBileCleansingKits[iClient]++;
+				//PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04+3 Bile Cleansing Kits", iClient);
+			}
+			case 5:	// Med supplies
 			{
 				RunCheatCommand(iClient, "give", "give first_aid_kit");
 				RunCheatCommand(iClient, "give", "give pain_pills");
 				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Medical Supplies", iClient);
 			}
-			case 5:	// Ammo
+			case 6:	// Ammo
 			{
 				RunCheatCommand(iClient, "give", "give ammo");
 				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Full Ammo", iClient);
 			}
-			case 6:	// I'm Feeling Lucky
+			case 7:	// I'm Feeling Lucky
 			{
 				ImFeelingLuckyRoll(iClient);
 			}
@@ -252,8 +264,17 @@ ImFeelingLuckyRoll(iClient)
 		}
 		case 2:  	// Extra Bind 2
 		{
-			g_iClientBindUses_2[iClient]--;
-			PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Extra Bind 2", iClient);
+			//For Louis, this is convertred to bind 1 since he doesnt have a bind 2 use count
+			if (g_iChosenSurvivor[iClient] != LOUIS)
+			{
+				g_iClientBindUses_2[iClient]--;
+				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Extra Bind 2", iClient);
+			}
+			else 
+			{
+				g_iClientBindUses_1[iClient]--;
+				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Extra Bind 1", iClient);
+			}
 		}
 		case 3: 	// Team Medical Supplies
 		{
@@ -281,7 +302,7 @@ ImFeelingLuckyRoll(iClient)
 		case 5:		// Self Revives
 		{
 			g_iSelfRevives[iClient] += 10;
-			PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04+10 Self Revives", iClient);
+			PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04+10 Self Revive Kits", iClient);
 		}
 		case 6:		// Electric zap damage
 		{
