@@ -93,8 +93,8 @@ Action:TimerWarezStationCheckForSurvivorToService(Handle:timer, any:iClient)
 			// The candidate has entered the warez station radius, check if they already used it.
 			if (g_bWareStationClientAlreadyServiced[iClient][iCandidate] == false)
 			{
-				WarezStationMenuDraw(iCandidate);
 				g_iWareStationOwnerIDOfCurrentlyViewedStation[iCandidate] = iClient;
+				WarezStationMenuDraw(iCandidate);
 			}
 			else
 			{
@@ -131,7 +131,8 @@ Action:WarezStationMenuDraw(iClient)
 		\n    %N\
 		\n =========================\
 		\n ",
-		g_iWareStationOwnerIDOfCurrentlyViewedStation[iClient]);
+		RunClientChecks(g_iWareStationOwnerIDOfCurrentlyViewedStation[iClient]) ? 
+			g_iWareStationOwnerIDOfCurrentlyViewedStation[iClient] : iClient);
 	SetMenuTitle(menu, text);
 
 	AddMenuItem(menu, "option1", "+2% Speed Increase");
@@ -147,7 +148,7 @@ Action:WarezStationMenuDraw(iClient)
 
 	AddMenuItem(menu, "option10", "Nothing For Now.\
 	\n =========================\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -217,6 +218,7 @@ WarezStationMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			{
 				g_iBileCleansingKits[iClient] += 3;
 				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04+3 Bile Cleansing Kits", iClient);
+				PrintToChat(iClient, "\x03[XPMod] \x04While biled, HOLD USE to use a Bile Cleansing Kit.");
 			}
 			case 5:	// Med supplies
 			{

@@ -40,9 +40,18 @@ Action:Event_PlayerNowIt(Handle:hEvent, const String:strName[], bool:bDontBroadc
 	
 	if(RunClientChecks(iAttacker) == true)
 	{
-		// PrintToChatAll("%N is vomited on by %N", iVictim, iAttacker);
+		//PrintToChatAll("%N is vomited on by %N", iVictim, iAttacker);
 		g_iVomitVictimAttacker[iVictim] = iAttacker;
 	}
+
+	if (g_iBileCleansingKits[iVictim] > 0 &&
+		RunClientChecks(iVictim) == true &&
+		IsPlayerAlive(iVictim) == true &&
+		IsFakeClient(iVictim) == false)
+		PrintHintText(iVictim, "HOLD USE to Cleanse Bile\
+			\n%i Bile Cleansing Kit%s Remaining",
+			g_iBileCleansingKits[iVictim],
+			g_iBileCleansingKits[iVictim] == 1 ? "" : "s");
 
 	// Handle the Boomer's abilities
 	Event_BoomerVomitOnPlayer(iAttacker, iVictim);
@@ -59,7 +68,7 @@ Action:Event_PlayerNoLongerIt(Handle:hEvent, const String:strName[], bool:bDontB
 
 	g_iVomitVictimAttacker[iVictim] = 0;
 
-	// PrintToChatAll("%N is no longer vomited on", iVictim);
+	//PrintToChatAll("%N is no longer vomited on", iVictim);
 
 	return Plugin_Continue;
 }

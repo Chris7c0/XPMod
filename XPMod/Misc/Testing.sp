@@ -28,7 +28,7 @@ Action:TestFunction1(iClient, args)
 
 	PrintAllInEnhancedCIEntityList();
 
-	SDKCall(g_hSDK_VomitOnPlayer, StringToInt(str1), iClient, true);
+	// SDKCall(g_hSDK_VomitOnPlayer, StringToInt(str1), iClient, true);
 	
 	//SetSIAbilityCooldown(iClient, StringToFloat(str1), StringToInt(str2) == 1 ? true : false);
 

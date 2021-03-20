@@ -1,3 +1,54 @@
+void OnPlayerRunCmd_BileCleanse(int iClient, &iButtons)
+{
+	// If they started a bile cleanse, handle if something prevented contiuation
+	if (g_iBileCleansingFrameTimeCtr[iClient] >= 0 && 
+		(!(iButtons & IN_USE) || 
+		 g_bIsClientGrappled[iClient] == true || 
+		 GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1) )
+	{
+		g_iBileCleansingFrameTimeCtr[iClient] = -1;
+
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "Bile Cleansing Interrupted...");
+	}
+	
+	// Make sure the player is actually biled before continuing
+	if (g_iVomitVictimAttacker[iClient] == 0)
+		return;
+
+	// Check that the player has a self revive and is pressing the button while incap
+	if (g_iBileCleansingKits[iClient] <= 0 ||
+		!(iButtons & IN_USE) ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS || 
+		RunClientChecks(iClient) == false ||
+		g_bIsClientGrappled[iClient] == true ||
+		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1 ||
+		IsFakeClient(iClient) == true)
+		return;
+
+	DebugLog(DEBUG_MODE_TESTING, "OnPlayerRunCmd_BileCleanse");
+
+	// Increment the frame counter to measure time the USE button has been pressed
+	g_iBileCleansingFrameTimeCtr[iClient]++;
+
+	// Display that they are using the kit
+	if (g_iBileCleansingFrameTimeCtr[iClient] == 15)
+		PrintHintText(iClient, "Using Bile Cleansing Kit...");
+
+	// Use the bile cleansing kit
+	if (g_iBileCleansingFrameTimeCtr[iClient] >= BILE_CLEANSING_COMPLETION_FRAME)
+	{
+		g_iBileCleansingFrameTimeCtr[iClient] = -1;
+		g_iBileCleansingKits[iClient]--;
+
+		SDKCall(g_hSDK_UnVomitOnPlayer, iClient);
+
+		PrintHintText(iClient, "%i Bile Cleansing Kit%s Remaining",
+			g_iBileCleansingKits[iClient],
+			g_iBileCleansingKits[iClient] == 1 ? "" : "s");
+	}
+}
+
 void OnPlayerRunCmd_SelfRevive(int iClient, &iButtons)
 {
 	// The GetEntProp method for getting buttons doesnt work for IN_USE
@@ -6,7 +57,7 @@ void OnPlayerRunCmd_SelfRevive(int iClient, &iButtons)
 	// Note: this is apparently stoppeed by being hit by CI. In order
 	// to disable this, perhaps make a counter to check how long the
 	// IN_USE has been let go before calling EndSelfRevive
-	if(g_bSelfReviving[iClient] == true && !(iButtons & IN_USE))
+	if (g_bSelfReviving[iClient] == true && !(iButtons & IN_USE))
 		EndSelfRevive(iClient);
 
 	// Check that the player has a self revive and is pressing the button while incap

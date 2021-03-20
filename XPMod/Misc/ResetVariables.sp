@@ -62,6 +62,8 @@ ResetVariablesForMap(iClient)
 	g_fSelfRevivingFinishTime[iClient] = -1.0;
 	// Bile Cleansing Kits
 	g_iBileCleansingKits[iClient] = 0;
+	g_iBileCleansingFrameTimeCtr[iClient] = -1;
+
 
 	g_iInfectedCharacter[iClient] = UNKNOWN_INFECTED;
 	RemoveAllEntitiesFromArrayList(g_listEnhancedCIEntities);

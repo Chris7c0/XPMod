@@ -93,6 +93,8 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 		}
 	}
 	
+	OnPlayerRunCmd_BileCleanse(iClient, iButtons);
+
 	OnPlayerRunCmd_SelfRevive(iClient, iButtons);
 
 	bButtonsChanged = OnPlayerRunCmd_Louis(iClient, iButtons);
