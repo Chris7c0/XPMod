@@ -23,7 +23,6 @@ Action:TankMenuDrawNecroTanker(iClient)
         \n	+60%% CI/UI Mob\
         \n	+5%% SI\
         \n	+5%% Witch\
-        \n	+1%% Tank\
         \n \
         \n Active Abilities\
         \n - Mana Pool (Punches Regen Mana)\

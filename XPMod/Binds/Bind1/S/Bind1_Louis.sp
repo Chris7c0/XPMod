@@ -217,6 +217,10 @@ WarezStationMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			{
 				//g_iBileCleansingKits[iClient]++;
 				//PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04+3 Bile Cleansing Kits", iClient);
+
+				PrintToChat(iClient, "\x03[XPMod] \x04Bile Cleansing Kits aren't ready yet.");
+				WarezStationMenuDraw(iClient);
+				return;
 			}
 			case 5:	// Med supplies
 			{

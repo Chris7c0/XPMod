@@ -446,12 +446,13 @@ void SummonNecroTankerCrouchAndWalkAbility(iClient, bool bEnhancedCI)
 
 void SummonNecroTankerPunchZombies(iAttackerTank, iVictim)
 {
-	if (RunClientChecks(iAttackerTank) == false || RunClientChecks(iVictim) == false)
+	if (RunClientChecks(iAttackerTank) == false || 
+		RunClientChecks(iVictim) == false ||
+		GetEntProp(iVictim, Prop_Send, "m_isIncapacitated") == 1)
 		return;
-
 	
 	new iRoll = GetRandomInt(1,100);
-
+	
 	// Testing different rolls
 	//iRoll = 20;
 
@@ -511,13 +512,13 @@ void SummonNecroTankerPunchZombies(iAttackerTank, iVictim)
 		return;
 	}
 
-	// Spawn another tank if they roll a 1
-	if (iRoll == 1)
-	{
-		g_bTankStartingHealthXPModSpawn = true;
-		SpawnSpecialInfected(iAttackerTank, INFECTED_NAME[TANK]);
-		return;
-	}
+	// // Spawn another tank if they roll a 1
+	// if (iRoll == 1)
+	// {
+	// 	g_bTankStartingHealthXPModSpawn = true;
+	// 	SpawnSpecialInfected(iAttackerTank, INFECTED_NAME[TANK]);
+	// 	return;
+	// }
 }
 
 void DisplayNecroTankerManaMeter(iClient)
