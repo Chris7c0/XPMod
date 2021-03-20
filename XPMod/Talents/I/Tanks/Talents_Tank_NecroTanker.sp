@@ -137,10 +137,10 @@ EventsHurt_VictimTank_NecroTanker(Handle:hEvent, iAttacker, iVictimTank)
 
 EventsHurt_AttackerTank_NecroTanker(Handle:hEvent, iAttackerTank, iVictim)
 {
-	decl String:weapon[20];
-	GetEventString(hEvent,"weapon", weapon, 20);
+	decl String:strWeapon[20];
+	GetEventString(hEvent,"weapon", strWeapon, 20);
 
-	if (StrEqual(weapon,"tank_claw"))
+	if (StrEqual(strWeapon,"tank_claw"))
 	{
 		SummonNecroTankerPunchZombies(iAttackerTank, iVictim);
 

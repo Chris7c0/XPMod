@@ -188,10 +188,13 @@ EventsHurt_AttackerTank_Vampiric(Handle:hEvent, iAttackerTank, iVictim)
 {
 	SuppressNeverUsedWarning(hEvent);
 	
+	decl String:strWeapon[20];
+	GetEventString(hEvent,"weapon", strWeapon, 20);
 	new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
 
 	if (RunClientChecks(iAttackerTank) == false || RunClientChecks(iVictim) == false ||
-		IsPlayerAlive(iAttackerTank) == false || IsPlayerAlive(iVictim) == false)
+		IsPlayerAlive(iAttackerTank) == false || IsPlayerAlive(iVictim) == false || 
+		StrEqual(strWeapon,"tank_claw") == false)
 		return;
 
 	// Calculate the health to recieve (more for incap players)
