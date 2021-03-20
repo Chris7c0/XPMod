@@ -1,6 +1,7 @@
 // Global Variables
 #include "XPMod/GlobalVariables/Global_Variables.sp"
 #include "XPMod/GlobalVariables/ConVars.sp"
+#include "XPMod/GlobalVariables/Admin.sp"
 #include "XPMod/GlobalVariables/Infected.sp"
 #include "XPMod/GlobalVariables/Models_Particles_Anims.sp"
 #include "XPMod/GlobalVariables/Offsets_Reload_SDKCalls.sp"

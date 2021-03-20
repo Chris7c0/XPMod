@@ -6,6 +6,9 @@ Action:AdminMenuDraw(iClient)
 	// 	return Plugin_Handled
 	// }
 
+	// Reset all selected options so nothing is falsly selected
+	ResetAllAdminMenuSelectionVariables(iClient);
+
 	Menu menu = CreateMenu(AdminMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
@@ -83,6 +86,12 @@ AdminMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 	}
 }
 
+void ResetAllAdminMenuSelectionVariables(int iClient)
+{
+	g_iAdminSelectedSteamID[iClient] = -1;
+	g_iAdminSelectedDuration[iClient] = -1;
+}
+
 Action:KickPlayerMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(KickPlayerMenuHandler);
@@ -106,11 +115,16 @@ KickPlayerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 	}
 	else if (action == MenuAction_Select)
 	{
-		decl String:strInfo[128];
-		GetMenuItem(menu, itemNum, strInfo, sizeof(strInfo));
-
-		// PrintToChatAll("INFO=%s", strInfo);
-		KickClient(StringToInt(strInfo), "Peace");
+		int iTarget; char strSteamID[32];
+		if (GetTargetIDandSteamIDFromMenuParameters(iClient, menu, itemNum, iTarget, strSteamID, sizeof(strSteamID)) == false)
+		{
+			PrintToChat(iClient, "Error obtaining client info for ban.");
+			LogError("BanPlayerMenuHandler: Error obtaining client info for ban", iTarget);
+			return;
+		}
+		
+		PrintToChat(iClient, "\x03[XPMod] \x04Banning %N...", iTarget);
+		KickClient(iTarget, "Peace");
 	}
 }
 
@@ -137,20 +151,22 @@ BanPlayerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 	}
 	else if (action == MenuAction_Select)
 	{
-		decl String:strInfo[128];
-		GetMenuItem(menu, itemNum, strInfo, sizeof(strInfo));
+		int iTarget; char strSteamID[32];
+		if (GetTargetIDandSteamIDFromMenuParameters(iClient, menu, itemNum, iTarget, strSteamID, sizeof(strSteamID)) == false)
+		{
+			PrintToChat(iClient, "Error obtaining client info for ban.");
+			LogError("BanPlayerMenuHandler: Error obtaining client info for ban", iTarget);
+			return;
+		}
 
-		// Note to chris, verify the steamid here (pass in and verify), because of time delay client id is not enough
+		PrintToChat(iClient, "\x03[XPMod] \x04Banning %N...", iTarget);
 		
-
-
 		// Add user to the bans table in the xpmod database
-		SQLAddBannedUserToDatabase(iClient, 0, "Banned by Admin");
+		SQLAddBannedUserToDatabase(iTarget, 0, "Banned by Admin");
 		// Ban the user, regardless of being able to add to the database or not
-		BanClient(iClient, 999999, BANFLAG_AUTHID, "Banned by Admin", "Banned from XPMod");
+		BanClient(iTarget, 999999, BANFLAG_AUTHID, "Banned by Admin", "Banned from XPMod");
 	}
 }
-
 
 void AddAllPlayersToMenu(Menu menu, int iClient)
 {
@@ -168,16 +184,69 @@ void AddAllPlayersToMenu(Menu menu, int iClient)
 			}
 
 			// Get the in game client id
-			decl String:strID[8];
-			Format(strID, sizeof(strID),"%i", iTarget)
+			decl String:strParameters[32];
+			Format(strParameters, sizeof(strParameters),"%i;%s", iTarget, strSteamID)
 			
 			// Combine the info into a string that the admin will see
 			decl String:strTargetInfo[50];
 			Format(strTargetInfo, sizeof(strTargetInfo), " (%s) %N",
-			strID,
+			strParameters,
 			iTarget);
 
-			AddMenuItem(menu, strID, strTargetInfo);
+			AddMenuItem(menu, strParameters, strTargetInfo);
 		}
 	}
+}
+
+bool GetTargetIDandSteamIDFromMenuParameters(int iClient, Menu menu, int itemNum, int &iTarget, char[] strSteamID, int iSteamIDSize)
+{
+	// Get the client parameters
+	char strInfo[128], strParameters[2][32];
+	GetMenuItem(menu, itemNum, strInfo, sizeof(strInfo));
+	ExplodeString(strInfo, ";", strParameters, sizeof(strParameters), sizeof(strParameters[]));
+
+	// PrintToChat(iClient, "param1: %s", strParameters[0]);
+	// PrintToChat(iClient, "param2: %s", strParameters[1]);
+
+	iTarget = StringToInt(strParameters[0]);
+
+	if (RunClientChecks(iTarget) == false || IsFakeClient(iTarget))
+	{
+		PrintToChat(iClient, "Client %i is invalid.", iTarget);
+		LogError("GetTargetIDandSteamIDFromMenuParameters: iTarget %i is invalid", iTarget);
+		return false;
+	}
+
+	// Verify the steamid here (pass in and verify), because of time delay client id is not enough
+	if (VerifyClientSteamIDMatches(iTarget, strParameters[1]) == false)
+	{
+		PrintToChat(iClient, "Client %i does not match the selected steamID, please try again.", iTarget);
+		LogError("GetTargetIDandSteamIDFromMenuParameters: Client %i does not match the selected steamID", iTarget);
+		return false;
+	}
+
+	// Store the steamid parameter
+	Format(strSteamID, iSteamIDSize, "%s", strParameters[1]);
+
+	return true;
+}
+
+bool VerifyClientSteamIDMatches(int iClient, char[] strSteamIDToCheck)
+{
+	if (RunClientChecks(iClient) == false || IsFakeClient(iClient))
+		return false;
+
+	//Get Steam Auth ID, if this returns false, then do not proceed
+	decl String:strSteamID[32];
+	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
+	{
+		PrintToChat(iClient, "GetClientAuthId failed for %N", iClient);
+		LogError("VerifyClientSteamIDMatches: GetClientAuthId failed for %N", iClient);
+		return false;
+	}
+
+	if (strcmp(strSteamIDToCheck, strSteamID, false) == 0)
+		return true;
+
+	return false;
 }
