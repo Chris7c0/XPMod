@@ -811,74 +811,25 @@ JebusHandMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 				{
 					if(g_iClientBindUses_2[iClient] <= 0)
 					{
-						new foundvalident = 0;
-						for(new i = 1; i <= MaxClients; i++)
+						// Attempt to resurrect a Survivor
+						if (RunClientChecks(FindAndResurrectSurvivor(iClient)))
 						{
-							if(IsClientInGame(i)==true)
-								if(GetClientTeam(i)==2 && IsPlayerAlive(i)==false && IsFakeClient(i)==false)
-								{
-									decl Float:vec[3];
-									GetClientAbsOrigin(iClient, vec);
-									
-									SDKCall(g_hSDK_RoundRespawn, i);
-									TeleportEntity(i, vec, NULL_VECTOR, NULL_VECTOR);
-									PrintHintText(i, "You have been resurrected by %N", iClient);
-									g_bIsClientDown[i] = false;
-									g_iClientBindUses_2[iClient] += 3;
-									g_iNickResurrectUses++;
-									decl Float:vec2[3];
-									
-									GetClientAbsOrigin(i, vec2);
-									EmitSoundToAll(SOUND_NICK_RESURRECT, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec2, NULL_VECTOR, true, 0.0);
-									foundvalident = 2;
-									WriteParticle(i, "nick_ulti_resurrect_base", 0.0, 25.0);
-									WriteParticle(i, "nick_ulti_resurrect_mind", 0.0, 25.0);
-									WriteParticle(i, "nick_ulti_resurrect_body", 0.0, 25.0);
-									WriteParticle(i, "nick_ulti_resurrect_soul", 0.0, 25.0);
-									WriteParticle(i, "nick_ulti_resurrect_trail", 0.0, 25.0);
-									DeleteParticleEntity(g_iPID_NickCharge1[iClient]);
-									DeleteParticleEntity(g_iPID_NickCharge2[iClient]);
-									DeleteParticleEntity(g_iPID_NickCharge3[iClient]);
-									SetEntProp(i,Prop_Data,"m_iHealth", 50);
-									if(foundvalident == 2)
-										break;
-								}
+							// Player was resurrected, handle the rest
+							g_iClientBindUses_2[iClient] += 3;
+							g_iNickResurrectUses++;
+
+							DeleteParticleEntity(g_iPID_NickCharge1[iClient]);
+							DeleteParticleEntity(g_iPID_NickCharge2[iClient]);
+							DeleteParticleEntity(g_iPID_NickCharge3[iClient]);
+
+							PrintHintText(iClient, "You have resurrected a fallen teammate.");
 						}
-						for(new i = 1; i <= MaxClients; i++)
+						else
 						{
-							if(IsClientInGame(i)==true)
-								if(GetClientTeam(i)==2 && IsPlayerAlive(i)==false)
-								{
-									if(foundvalident==2)
-										break;
-									decl Float:vec[3];
-									
-									GetClientAbsOrigin(iClient, vec);
-									SDKCall(g_hSDK_RoundRespawn, i);
-									TeleportEntity(i, vec, NULL_VECTOR, NULL_VECTOR);
-									g_bIsClientDown[i] = false;
-									g_iClientBindUses_2[iClient] += 3;
-									g_iNickResurrectUses++;
-									EmitSoundToAll(SOUND_NICK_RESURRECT, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
-									foundvalident = 2;
-									WriteParticle(i, "nick_ulti_resurrect_base", 0.0, 25.0);
-									WriteParticle(i, "nick_ulti_resurrect_mind", 0.0, 25.0);
-									WriteParticle(i, "nick_ulti_resurrect_body", 0.0, 25.0);
-									WriteParticle(i, "nick_ulti_resurrect_soul", 0.0, 25.0);
-									WriteParticle(i, "nick_ulti_resurrect_trail", 0.0, 25.0);
-									DeleteParticleEntity(g_iPID_NickCharge1[iClient]);
-									DeleteParticleEntity(g_iPID_NickCharge2[iClient]);
-									DeleteParticleEntity(g_iPID_NickCharge3[iClient]);
-									SetEntProp(i,Prop_Data,"m_iHealth", 50);
-								}
-						}
-						if(foundvalident==0)
-						{
+							// Player was not resurrected, redraw the menu
 							PrintHintText(iClient, "No one is dead.");
 							JebusHandBindMenuDraw(iClient);
-						}
-						else if(foundvalident==1)
-							PrintHintText(iClient, "You have resurrected a fallen teammate.");
+						}							
 					}
 					else
 					{

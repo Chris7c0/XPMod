@@ -13,14 +13,14 @@ Action:AdminMenuDraw(iClient)
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
 	SetMenuTitle(menu, "XPMod Admin Menu\n ");
-	AddMenuItem(menu, "option1", "Auto-Balance Teams	[NOT READY]");
+	AddMenuItem(menu, "option1", "Auto-Balance Teams   [NOT READY]");
 	AddMenuItem(menu, "option2", "Switch Player's Team");
-	AddMenuItem(menu, "option3", "Force Client Popup		[NOT READY]"); //Like Help, Addon Download, Confirm Talents, etc.
-	AddMenuItem(menu, "option4", "Mute Player					[NOT READY]");
+	AddMenuItem(menu, "option3", "Force Client Popup     [NOT READY]"); //Like Help, Addon Download, Confirm Talents, etc.
+	AddMenuItem(menu, "option4", "Mute Player");
 	AddMenuItem(menu, "option5", "Kick Player");
 	AddMenuItem(menu, "option6", "Ban Player");
 	AddMenuItem(menu, "option7", "Griefing Undo Tools");
-	AddMenuItem(menu, "option8", g_bGamePaused ? "Unpause Game": "Pause Game");
+	AddMenuItem(menu, "option8", g_bGamePaused ? "Unpause Game\n ": "Pause Game\n ");
 	AddMenuItem(menu, "option9", "Back to Main Menu");
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -54,9 +54,7 @@ AdminMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			}
 			case 3: //Mute Player
 			{
-				MutePlayer(iClient)
-				PrintToChat(iClient, "This feature is not ready yet.");
-				AdminMenuDraw(iClient);
+				MutePlayerMenuDraw(iClient);
 			}
 			case 4: //Kick Player
 			{
@@ -102,7 +100,7 @@ Action:SwitchPlayersTeamMenuDraw(iClient)
 	
 	AddAllPlayersToMenu(menu, iClient);
 
-	SetMenuExitButton(menu, false);
+	SetMenuExitButton(menu, true);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
@@ -198,6 +196,45 @@ SwitchPlayersTeamMenuSelectTeamHandler(Menu menu, MenuAction:action, iClient, it
 			SwitchPlayersTeamMenuDraw(iClient);
 	}
 }
+
+Action:MutePlayerMenuDraw(iClient)
+{
+	Menu menu = CreateMenu(MutePlayerMenuHandler);
+	
+	SetMenuTitle(menu, "Mute or Unmute Whom?\n ");
+	
+	AddAllPlayersToMenu(menu, iClient);
+
+	SetMenuExitButton(menu, true);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
+
+	return Plugin_Handled;
+}
+
+
+MutePlayerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+{
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
+	{
+		int iTarget; char strSteamID[32];
+		if (GetTargetIDandSteamIDFromMenuParameters(iClient, menu, itemNum, iTarget, strSteamID, sizeof(strSteamID)) == false)
+		{
+			PrintToChat(iClient, "Error obtaining client info for ban.");
+			LogError("BanPlayerMenuHandler: Error obtaining client info for ban", iTarget);
+			return;
+		}
+
+		// Toggle mute on the player
+		MutePlayer(iTarget, !g_bIsPlayerMuted[iTarget], false);
+
+		MutePlayerMenuDraw(iClient);
+	}
+}
+
 
 Action:KickPlayerMenuDraw(iClient)
 {
@@ -364,11 +401,11 @@ Action:AdminGriefingUndoToolsMenuDraw(iClient)
 	Menu menu = CreateMenu(AdminGriefingUndoToolsMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
-	SetMenuTitle(menu, "Undo Griefing Tools\n ");
+	SetMenuTitle(menu, "Griefing Undo Tools\n ");
 	AddMenuItem(menu, "option1", "Revive and Full Heal Survivor");
 	AddMenuItem(menu, "option2", "Revive and Full Heal All Survivors");
-	AddMenuItem(menu, "option3", "Resurrect Survivor");
-	AddMenuItem(menu, "option4", "Give Full Loadout");
+	AddMenuItem(menu, "option3", "Resurrect Survivor\n ");
+	AddMenuItem(menu, "option4", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option5", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
@@ -397,18 +434,19 @@ AdminGriefingUndoToolsMenuHandler(Menu menu, MenuAction:action, iClient, itemNum
 			case 1: //Revive and Full Heal All Survivors
 			{
 				HealAllSurvivorsFully();
-				PrintToChat(iClient, "\x03[XPMod] \x0All Survivors have been revived and fully headed.");
+				PrintToChat(iClient, "\x03[XPMod] \x04All Survivors have been revived and fully headed.");
 
 				AdminGriefingUndoToolsMenuDraw(iClient);
 			}
 			case 2: //Resurrect Survivor
 			{
-				PrintToChat(iClient, "This feature is not ready yet.");
-				AdminGriefingUndoToolsMenuDraw(iClient);
-			}
-			case 3: //Give Full Loadout
-			{
-				PrintToChat(iClient, "This feature is not ready yet.");
+				int iTarget = FindAndResurrectSurvivor(iClient);
+
+				if (RunClientChecks(iTarget))
+					HealClientFully(iTarget);
+				else
+					PrintToChat(iClient, "\x03[XPMod] \x040No dead Survivors were found.");
+
 				AdminGriefingUndoToolsMenuDraw(iClient);
 			}
 			case 8: //Back to Main Menu
@@ -431,7 +469,7 @@ Action:AdminReviveAndFullHealSurvivorMenuDraw(iClient)
 	{
 		if (RunClientChecks(i) &&
 			g_iClientTeam[i] == TEAM_SURVIVORS && 
-			IsPlayerAlive(iClient))
+			IsPlayerAlive(i))
 		{
 			// Get the in game client name
 			decl String:strSurvivorInfo[32];
