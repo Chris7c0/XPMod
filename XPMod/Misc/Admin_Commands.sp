@@ -50,3 +50,8 @@ HealAllSurvivorsFully()
 		}
 	}
 }
+
+MutePlayer(iClient)
+{
+	BaseComm_SetClientMute(iClient, true);
+}

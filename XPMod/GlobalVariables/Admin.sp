@@ -5,5 +5,6 @@ new g_iBanDurationInMinutes[MAXPLAYERS + 1];
 bool g_bGamePaused = false;
 
 // Admin Menu Selections
+new g_iAdminSelectedClientID[MAXPLAYERS + 1];
 new g_iAdminSelectedSteamID[MAXPLAYERS + 1];
 new g_iAdminSelectedDuration[MAXPLAYERS + 1];

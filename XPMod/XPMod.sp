@@ -34,6 +34,7 @@
 #include <sdktools>
 #include <sdkhooks>
 #include <regex>
+#include <basecomm>
 
 // Added custom includes
 #include <sha1>
