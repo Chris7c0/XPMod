@@ -472,97 +472,23 @@ ChooseTeamMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			return;
 		}
 
+		if (itemNum == 8)
+		{
+			ExtrasMenuDraw(iClient);
+			return;
+		}
+
+		new iTeam = TEAM_SPECTATORS;
+
 		switch (itemNum)
 		{
-			case 0: //Switch to Survivor
-			{
-				g_bClientSpectating[iClient] = false;
-				if(g_iClientTeam[iClient] == TEAM_SURVIVORS)
-				{
-					PrintToChat(iClient, "\x03[XPMod] \x05You are already on the \x04Survivor Team\x05.");
-					ChooseTeamMenuDraw(iClient);
-					return;
-				}
-
-				if(!IsTeamFull(TEAM_SURVIVORS))
-				{
-					// First we switch to spectators
-					ChangeClientTeam(iClient, TEAM_SPECTATORS); 
-
-					// Look for a survivor bot then take them over
-					for (int i=1; i <= MaxClients; i++)
-					{
-						if (RunClientChecks(i) && 
-							IsFakeClient(i) &&
-							GetClientTeam(i) == TEAM_SURVIVORS)
-						{
-							// Found a valid Survivor bot, force survivor bot to spectator
-							SDKCall(g_hSDK_SetHumanSpec, i, iClient); 
-							
-							// Force player to take over survivor bot's place
-							SDKCall(g_hSDK_TakeOverBot, iClient, true);
-							g_iClientTeam[iClient] = TEAM_SURVIVORS;
-							PrintToChatAll("\x03%N \x05moved to the \x04survivors", iClient);
-							return;
-						}
-					}					
-				}
-				else
-				{
-					PrintToChat(iClient, "\x03[XPMod] \x05The \x04Survivor Team \x05is full.");
-					ChooseTeamMenuDraw(iClient);
-				}
-			}
-			case 1: //Switch to Infected
-			{
-				g_bClientSpectating[iClient] = false;
-				if(g_iClientTeam[iClient] == TEAM_INFECTED)
-				{
-					PrintToChat(iClient, "\x03[XPMod] \x05You are already on the \x04Infected Team\x05.");
-					ChooseTeamMenuDraw(iClient);
-					return;
-				}
-				if(g_iGameMode == GAMEMODE_VERSUS)
-				{
-					if(!IsTeamFull(TEAM_INFECTED))
-					{
-						ChangeClientTeam(iClient, TEAM_INFECTED);
-						g_iClientTeam[iClient] = TEAM_INFECTED;
-						PrintToChatAll("\x03%N \x05moved to the \x04infected", iClient);
-					}
-					else
-					{
-						PrintToChat(iClient, "\x03[XPMod] \x05The \x04Infected Team \x05is full.");
-						ChooseTeamMenuDraw(iClient);
-					}
-				}
-				else
-				{
-					PrintToChat(iClient, "\x03[XPMod] \x04You can only switch to infected in a Versus game");
-					ChooseTeamMenuDraw(iClient);
-				}
-			}
-			case 2: //Switch to Spectator
-			{
-				if(g_iClientTeam[iClient] == TEAM_SPECTATORS)
-				{
-					g_bClientSpectating[iClient] = true;
-					PrintToChat(iClient, "\x03[XPMod] \x05You are already a \x04spectator\x05.");
-					ChooseTeamMenuDraw(iClient);
-					return;
-				}
-
-				ChangeClientTeam(iClient, TEAM_SPECTATORS);
-				g_iClientTeam[iClient] = TEAM_SPECTATORS;
-				g_bClientSpectating[iClient] = true;
-				PrintToChatAll("\x03%N \x05moved to the \x04spectators", iClient);
-				//ChooseTeamMenuDraw(iClient);
-			}
-			case 8: //Back
-			{
-				ExtrasMenuDraw(iClient);
-			}
+			case 0: iTeam = TEAM_SURVIVORS;
+			case 1: iTeam = TEAM_INFECTED;
+			case 2: iTeam = TEAM_SPECTATORS;
 		}
+		
+		if (SwitchPlayerTeam(iClient, iClient, iTeam) == false)
+			ChooseTeamMenuDraw(iClient);
 	}
 }
 
