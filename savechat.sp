@@ -121,12 +121,12 @@ public OnClientPostAdminCheck(client)
 
 	FormatTime(time, sizeof(time), "%H:%M:%S", -1)
 	//Format(msg, sizeof(msg), "[%s] [%s] %-35N JOINED (%s | %s)",
-	Format(msg, sizeof(msg), "[%s] [%s] %-35N JOINED (%s) - [%i Humans]",
+	Format(msg, sizeof(msg), "[%s] [%s] %-35N [%i Humans] JOINED (%s)",
 		time,
 		country,
 		client,
-		steamID,
-		GetHumanPlayerCount())
+		GetHumanPlayerCount(),
+		steamID)
 		//playerIP)
 
 	SaveMessage(msg)
@@ -170,13 +170,13 @@ public Action:event_PlayerDisconnect(Handle:event, const String:name[], bool:don
 
 	FormatTime(time, sizeof(time), "%H:%M:%S", -1)
 	//Format(msg, sizeof(msg), "[%s] [%s] %-35N LEFT (%s) (%s | %s)",
-	Format(msg, sizeof(msg), "[%s] [%s] %-35N LEFT (%s) (%s) - [%i Humans]",
+	Format(msg, sizeof(msg), "[%s] [%s] %-35N [%i Humans] LEFT (%s) (%s)",
 		time,
 		country,
 		client,
+		GetHumanPlayerCount() - 1,
 		reason,
-		steamID,
-		GetHumanPlayerCount() - 1) // -1 to remove the player thats disconnecting here
+		steamID) // -1 to remove the player thats disconnecting here
 		//playerIP)
 
 
@@ -280,7 +280,7 @@ public LogChat(client, args, bool:teamchat)
 	FormatTime(time, sizeof(time), "%H:%M:%S", -1)
 
 	if(GetConVarInt(sc_record_detail) == 1) {
-		Format(msg, sizeof(msg), "[%s] [%s] [%-11s] %-35N :%s %s",
+		Format(msg, sizeof(msg), "[%s] [%s] [%-10s] %-35N :%s %s",
 			time,
 			country,
 			teamName,
