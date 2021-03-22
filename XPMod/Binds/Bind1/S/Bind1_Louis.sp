@@ -237,7 +237,7 @@ WarezStationMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			}
 		}
 
-		if (itemNum >= 0  && itemNum <= 6)
+		if (itemNum >= 0 && itemNum <= 7)
 		{
 			// Set that the iOwners Warez Station Serviced array to true for this iClient.
 			new iOwner = g_iWareStationOwnerIDOfCurrentlyViewedStation[iClient];

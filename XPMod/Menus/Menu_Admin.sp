@@ -445,7 +445,7 @@ AdminGriefingUndoToolsMenuHandler(Menu menu, MenuAction:action, iClient, itemNum
 				if (RunClientChecks(iTarget))
 					HealClientFully(iTarget);
 				else
-					PrintToChat(iClient, "\x03[XPMod] \x040No dead Survivors were found.");
+					PrintToChat(iClient, "\x03[XPMod] \x04No dead Survivors were found.");
 
 				AdminGriefingUndoToolsMenuDraw(iClient);
 			}
