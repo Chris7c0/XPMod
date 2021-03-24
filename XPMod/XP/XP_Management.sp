@@ -1154,13 +1154,9 @@ ChangeXPDisplayMode(iClient)
 
 GiveRewards()
 {
-	decl i;
-	for(i = 1; i <= MaxClients; i++)
+	for(int i = 1; i <= MaxClients; i++)
 	{		
-		if(IsClientInGame(i) == false)
-			continue;
-		
-		if(IsFakeClient(i) == true)
+		if(RunClientChecks(i) == false || IsFakeClient(i) == true)
 			continue;
 		
 		//Give Survivor Rewards

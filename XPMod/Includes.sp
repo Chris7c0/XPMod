@@ -24,6 +24,7 @@
 #include "XPMod/Misc/Precache.sp"
 #include "XPMod/Misc/MovementSpeed.sp"
 #include "XPMod/Misc/Statistics.sp"
+#include "XPMod/Misc/Statistics_Panel.sp"
 #include "XPMod/Misc/Survivor_Functions.sp"
 #include "XPMod/Misc/SpawnInfected.sp"
 #include "XPMod/Misc/VictimHealthMeter.sp"
@@ -121,7 +122,6 @@
 //Timer Files
 #include "XPMod/Timers/Timers_Generic.sp"
 #include "XPMod/Timers/Timers_Messages.sp"
-#include "XPMod/Timers/Timers_Rewards.sp"
 #include "XPMod/Timers/S/Timers_Rochelle.sp"
 #include "XPMod/Timers/S/Timers_Coach.sp"
 #include "XPMod/Timers/S/Timers_Ellis.sp"

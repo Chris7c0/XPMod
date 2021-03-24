@@ -56,8 +56,8 @@ Action:TimerChangeSpectator(Handle:timer, any:iClient)
 	{
 		ChangeClientTeam(iClient, TEAM_SPECTATORS);
 		g_iClientTeam[iClient] = 1;
-		PrintToChat(iClient, "\n\x03[XPMod] \x04You are a Spectator until you change teams through the XPM Menu.\n ");
-		PrintHintText(iClient, "You are a Spectator until you change teams through the XPM Menu.");
+		PrintToChat(iClient, "\n\x03[XPMod] \x04You're Spectator until you change teams in the XPM Menu.\n ");
+		PrintHintText(iClient, "You're Spectator until you change teams in the XPM Menu.");
 	}
 	
 	return Plugin_Stop;
@@ -107,8 +107,8 @@ Action:TimerCheckTeam(Handle:timer, any:iClient)
 	// Display the Spectator message
 	if (g_iClientTeam[iClient] == TEAM_SPECTATORS)
 	{
-		PrintToChat(iClient, "\n\x03[XPMod] \x04You are a Spectator until you change teams through the XPM Menu.\n ");
-		PrintHintText(iClient, "You are a Spectator until you change teams through the XPM Menu.");
+		PrintToChat(iClient, "\n\x03[XPMod] \x04You're Spectator until you change teams in the XPM Menu.\n ");
+		PrintHintText(iClient, "You're Spectator until you change teams in the XPM Menu.");
 	}
 	
 	return Plugin_Stop;

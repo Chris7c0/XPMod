@@ -62,6 +62,13 @@ new g_iStat_ClientCommonHeadshots[MAXPLAYERS + 1];
 new g_iStat_ClientSurvivorsKilled[MAXPLAYERS + 1];
 new g_iStat_ClientSurvivorsIncaps[MAXPLAYERS + 1];
 new g_iStat_ClientDamageToSurvivors[MAXPLAYERS + 1];
+//Last Round Stats
+new g_iStat_LastRound_ClientInfectedKilled[MAXPLAYERS + 1];
+new g_iStat_LastRound_ClientCommonKilled[MAXPLAYERS + 1];	
+new g_iStat_LastRound_ClientCommonHeadshots[MAXPLAYERS + 1];
+new g_iStat_LastRound_ClientSurvivorsKilled[MAXPLAYERS + 1];
+new g_iStat_LastRound_ClientSurvivorsIncaps[MAXPLAYERS + 1];
+new g_iStat_LastRound_ClientDamageToSurvivors[MAXPLAYERS + 1];
 
 //Rewards
 new g_iReward_SIKills;
@@ -82,6 +89,13 @@ new String:g_strReward_SurIncaps[32];
 new g_iReward_SurDmg;
 new g_iReward_SurDmgID;
 new String:g_strReward_SurDmg[32];
+//Statistic Panel Shown After Confirmation
+new RoundStatsPanel[MAXPLAYERS + 1];
+#define ROUND_STATS_PANEL_LAST_ROUND_INDIVIDUAL     0
+#define ROUND_STATS_PANEL_LAST_ROUND_TOP_PLAYERS    1
+#define ROUND_STATS_PANEL_XPMOD_TOP_PLAYERS         2
+#define ROUND_STATS_PANEL_DONE                      3
+#define ROUND_STATS_PANEL_LIFETIME                  6.0
 
 //Announcer Sound Variables
 new bool:g_bCanPlayHeadshotSound[MAXPLAYERS + 1];

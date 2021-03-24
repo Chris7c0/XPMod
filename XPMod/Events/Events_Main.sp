@@ -248,10 +248,6 @@ Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	//g_bRoundStarted = true;
 	g_bEndOfRound = false;
 	g_bCanSave = true;
-
-	// Show rewards from last round
-	CreateTimer(50.0, TimerShowReward1, 0, TIMER_FLAG_NO_MAPCHANGE);	
-	
 	
 	//Reset Variables
 	for(new i = 1; i <= MaxClients; i++)
@@ -335,6 +331,7 @@ Action:Event_RoundEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast
 		g_iReward_SurDmg = 0;
 		
 		GiveRewards();
+		StoreLastRoundClientsStats();
 		
 		for(i = 1; i <= MaxClients; i++)
 		{

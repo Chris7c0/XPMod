@@ -12,6 +12,9 @@ Action:TestFunction1(iClient, args)
 	GetCmdArg(1, str1, sizeof(str1));
 	GetCmdArg(2, str2, sizeof(str2));
 
+
+	ShowRoundStatsPanelsToPlayer(iClient);
+
 	//if (args < 1) return Plugin_Stop;
 
 	//AttachParticle(StringToInt(str1), "charger_motion_blur", 15.4, 0.0)

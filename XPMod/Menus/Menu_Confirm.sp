@@ -232,6 +232,8 @@ ConfirmationMessageMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 					ClosePanel(iClient);
 					
 					RenamePlayerWithLevelTags(iClient);
+					
+					ShowRoundStatsPanelsToPlayer(iClient);
 				}
 			}
 			case 1: //No, change character
