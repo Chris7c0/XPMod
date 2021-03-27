@@ -15,6 +15,8 @@ Action:TestFunction1(iClient, args)
 
 	ShowRoundStatsPanelsToPlayer(iClient);
 
+	SQLGetTopXPModPlayerStatistics();
+
 	//if (args < 1) return Plugin_Stop;
 
 	//AttachParticle(StringToInt(str1), "charger_motion_blur", 15.4, 0.0)

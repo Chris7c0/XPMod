@@ -69,6 +69,8 @@ new g_iStat_LastRound_ClientCommonHeadshots[MAXPLAYERS + 1];
 new g_iStat_LastRound_ClientSurvivorsKilled[MAXPLAYERS + 1];
 new g_iStat_LastRound_ClientSurvivorsIncaps[MAXPLAYERS + 1];
 new g_iStat_LastRound_ClientDamageToSurvivors[MAXPLAYERS + 1];
+//Top XPMod Players
+char g_strTopXPModPlayersStatsText[600];
 
 //Rewards
 new g_iReward_SIKills;
@@ -95,7 +97,7 @@ new RoundStatsPanel[MAXPLAYERS + 1];
 #define ROUND_STATS_PANEL_LAST_ROUND_TOP_PLAYERS    1
 #define ROUND_STATS_PANEL_XPMOD_TOP_PLAYERS         2
 #define ROUND_STATS_PANEL_DONE                      3
-#define ROUND_STATS_PANEL_LIFETIME                  6.0
+#define ROUND_STATS_PANEL_LIFETIME                  7.0
 
 //Announcer Sound Variables
 new bool:g_bCanPlayHeadshotSound[MAXPLAYERS + 1];

@@ -46,6 +46,7 @@ new Handle:g_hDatabase = INVALID_HANDLE;
 #define DB_CONF_NAME 	        "xpmod"
 #define DB_TABLENAME_USERS  	"users"
 #define DB_TABLENAME_BANS  	    "bans"
+#define DB_VIEWNAME_TOP_10  	"top10"
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

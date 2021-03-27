@@ -68,23 +68,19 @@ ShowRoundStatsXPModTopPlayers(iClient)
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return;
 
+	// If we dont have the the TopXPModPlayers yet, then don't display
+	if (strlen(g_strTopXPModPlayersStatsText) <= 1)
+		return;
+
 	char strStatsText[700];
 	Format(strStatsText, sizeof(strStatsText),
 		"\n \
-		\nTop 10 XPMod Players\
+		\nTop XPMod Players\
 		\n \
-		\n1)  1234567890123456789012345 12345678 XP\
-		\n2)  1234567890123456789012345 12345678 XP\
-		\n3)  1234567890123456789012345 12345678 XP\
-		\n4)  1234567890123456789012345 12345678 XP\
-		\n5)  1234567890123456789012345 12345678 XP\
-		\n6)  1234567890123456789012345 12345678 XP\
-		\n7)  1234567890123456789012345 12345678 XP\
-		\n8)  1234567890123456789012345 12345678 XP\
-		\n9)  1234567890123456789012345 12345678 XP\
-		\n10) 1234567890123456789012345 12345678 XP\
+		%s\
 		\n \
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
+		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		g_strTopXPModPlayersStatsText);
 	
 	RoundStatsMenuDraw(iClient, strStatsText);
 }

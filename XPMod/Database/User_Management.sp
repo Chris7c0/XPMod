@@ -271,7 +271,7 @@ SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[], any:hD
 			vec[2] += 10;
 			EmitAmbientSound(SOUND_LOGIN, vec, iClient, SNDLEVEL_RAIDSIREN);
 			
-			PrintToChatAll("\x05<-=- \x03[%i] %N logged in\x05 -=->", g_iClientLevel[iClient], iClient);
+			// PrintToChatAll("\x05<-=- \x03[%i] %N logged in\x05 -=->", g_iClientLevel[iClient], iClient);
 			PrintToServer(":-=-=-=-=-<[%N (%d) logged in]>-=-=-=-=-:", iClient, g_iClientLevel[iClient]);
 		}
 	}

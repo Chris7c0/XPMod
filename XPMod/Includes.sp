@@ -33,6 +33,7 @@
 #include "XPMod/Database/Models/DB_Users.sp"
 #include "XPMod/Database/User_Management.sp"
 #include "XPMod/Database/Ban_Management.sp"
+#include "XPMod/Database/Statistics.sp"
 //Experience
 #include "XPMod/XP/XP_Management.sp"
 #include "XPMod/XP/XP_Events.sp"

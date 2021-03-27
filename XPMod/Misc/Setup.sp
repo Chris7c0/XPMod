@@ -13,8 +13,8 @@ SetupConsoleCommands()
 	RegConsoleCmd("say_team", SayTeamCmd);
 	
 	RegAdminCmd("freeze", FreezeGame, ADMFLAG_SLAY);
-	RegAdminCmd("givexp", GiveXP, ADMFLAG_SLAY);
-	RegAdminCmd("giveidxp", GiveXPbyID, ADMFLAG_SLAY);
+	RegAdminCmd("givexp", GiveXP, ADMFLAG_RCON);
+	RegAdminCmd("giveidxp", GiveXPbyID, ADMFLAG_RCON);
 	
 	//Misc. Commands
 	RegAdminCmd("t1", TestFunction1, ADMFLAG_SLAY);
