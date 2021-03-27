@@ -80,13 +80,11 @@ new Float:g_fSelfRevivingFinishTime[MAXPLAYERS + 1];
 new g_iBileCleansingKits[MAXPLAYERS + 1];
 new g_iBileCleansingFrameTimeCtr[MAXPLAYERS + 1];
 
-// Grapples
-new bool:g_bIsClientGrappled[MAXPLAYERS + 1];
 // Grappled Checks
-new bool:g_bHunterGrappled[MAXPLAYERS + 1];
 new bool:g_bChargerGrappled[MAXPLAYERS + 1];
 new bool:g_bSmokerGrappled[MAXPLAYERS + 1];
 new bool:g_bJockeyGrappled[MAXPLAYERS + 1];
+new bool:g_bHunterGrappled[MAXPLAYERS + 1];
 new g_iChargerVictim[MAXPLAYERS + 1];
 new g_iJockeyVictim[MAXPLAYERS + 1];    //g_iJockeyVictim[attacker] = victim;
 new g_iHunterShreddingVictim[MAXPLAYERS + 1];

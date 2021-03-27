@@ -13,49 +13,7 @@ void Bind1Press_Nick(iClient)
 						decl rand;
 						decl String:clientname[128];
 						GetClientName(iClient, clientname, sizeof(clientname));
-						/*
-						g_bHunterGrappled
-						g_bChargerGrappled
-						g_bSmokerGrappled
-						*/
-						/*
-						if((g_bHunterGrappled[iClient] == false) && (g_bChargerGrappled[iClient] == false) && (g_bSmokerGrappled[iClient] == false))
-						{
-							new Float:fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
-
-							RunCheatCommand(iClient, "give", "give health");
-							fTempHealth = 0.0;
-							SetEntDataFloat(iClient,g_iOffset_HealthBuffer, fTempHealth ,true);
-							PrintHintText(iClient,"Rolled an 11\nYou have received divine intervention from above...or below.");
-							PrintToChat(iClient, "\x03[XPMod] \x05You were given a fresh life.");
-
-							g_bIsClientDown[iClient] = false;
-						}
-						else
-						{
-							g_bDivineInterventionQueued[iClient] = true;
-							PrintToChat(iClient, "Divine intervention will be applied when you break free!");
-						}
-						*/
-						/*
-						//TEST
-						fnc_DeterminePrimaryWeapon(iClient);
-						fnc_SaveAmmo(iClient);
-						AcceptEntityInput(g_iPrimarySlotID[iClient]);
-						g_bRamboModeActive[iClient] = true;
-
-
-						PrintHintText(iClient,"Rolled a 4\nAAAAAAAAAADDDRRRIIAAAAAAAAAAN!");
-						PrintToChat(iClient, "\x03[XPMod] \x05You have become RAMBO!!!");
-						RunCheatCommand(iClient, "give", "give rifle_m60");
-						//g_iRamboWeaponID[iClient] = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-						fnc_DeterminePrimaryWeapon(iClient);
-						fnc_DetermineMaxClipSize(iClient);
-						RunCheatCommand(iClient, "upgrade_add", "upgrade_add LASER_SIGHT");
-						RunCheatCommand(iClient, "upgrade_add", "upgrade_add EXPLOSIVE_AMMO");
-						CreateTimer(30.0, TimerStopRambo, iClient, TIMER_FLAG_NO_MAPCHANGE);
-						//TEST
-						*/
+						
 						rand = GetRandomInt(1,12);
 						
 						switch (rand)
@@ -190,7 +148,7 @@ void Bind1Press_Nick(iClient)
 							}
 							case 11: //Revival; Return to maximum health, even when incapped
 							{
-								if((g_bHunterGrappled[iClient] == false) && (g_bChargerGrappled[iClient] == false) && (g_bSmokerGrappled[iClient] == false))
+								if(IsClientGrappled(iClient) == false)
 								{
 									new Float:fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
 

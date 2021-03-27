@@ -21,7 +21,7 @@ Action:TestFunction1(iClient, args)
 		if (RunClientChecks(i) == false)
 			continue;
 
-		if (g_bIsClientGrappled[i] == true)
+		if (IsClientGrappled(i) == true)
 			PrintToChatAll("Grappled: %N", i);
 
 		if (GetEntProp(i, Prop_Send, "m_isIncapacitated") == 1)

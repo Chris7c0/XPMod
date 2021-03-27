@@ -137,7 +137,6 @@ OnGameFrame_Coach(iClient)
 		}
 		if(g_bIsJetpackOn[iClient] == true)
 		{
-			
 			if (buttons & IN_SPEED && g_bIsClientDown[iClient] == false && IsClientGrappled(iClient) == false)
 			{
 				if(canchangemovement[iClient] == true)

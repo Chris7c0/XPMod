@@ -40,10 +40,8 @@ bool OnPlayerRunCmd_Louis(iClient, &iButtons)
 		(iButtons & IN_FORWARD || iButtons & IN_BACK || iButtons & IN_MOVELEFT || iButtons & IN_MOVERIGHT) &&
 		(GetEntityFlags(iClient) & FL_ONGROUND))
 	{
-		// Check and update if bill is grappled or not
-		fnc_CheckGrapple(iClient);
-		
-		if(g_bIsClientGrappled[iClient] == false && g_bIsClientDown[iClient] == false)
+		// Check and update if Louis is grappled or down first
+		if(IsClientGrappled(iClient) == false && g_bIsClientDown[iClient] == false)
 			LouisTeleport(iClient);
 	}
 
@@ -319,7 +317,7 @@ PrintLouisTeleportCharges(iClient)
 	if (RunClientChecks(iClient) == false || 
 		IsPlayerAlive(iClient) == false || 
 		IsFakeClient(iClient) == true ||
-		g_bIsClientGrappled[iClient] ||
+		IsClientGrappled(iClient) ||
 		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1)
 		return;
 	

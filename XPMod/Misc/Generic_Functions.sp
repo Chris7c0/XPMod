@@ -378,24 +378,6 @@ GiveClientXP(iClient, iAmount, iSprite, iVictim, String:strMessage[64], bool:bCe
 	}	
 }
 
-bool:IsClientGrappled(iClient)
-{
-	if(g_bHunterGrappled[iClient] == true || g_bChargerGrappled[iClient] == true || g_bSmokerGrappled[iClient] == true || IsJockeyGrappled(iClient) == true)
-		return true;
-	
-	return false;
-}
-
-bool:IsJockeyGrappled(iClient)
-{
-	decl i;
-	for(i = 0; i <= MaxClients; i++)
-		if(g_iJockeyVictim[i] == iClient)
-			return true;
-	
-	return false;
-}
-
 
 MolotovExplode(Float:xyzLocation[3])
 {
@@ -711,10 +693,8 @@ SetClientRenderAndGlowColor(int iClient)
 			{
 				if (g_iGhillieLevel[iClient] > 0)
 				{
-					// Check and update if bill is grappled or not
-					fnc_CheckGrapple(iClient);
-
-					if(g_bIsClientGrappled[iClient] == false && g_bIsClientDown[iClient] == false)
+					// Check and update if bill is grappled or down
+					if (IsClientGrappled(iClient) == false && g_bIsClientDown[iClient] == false)
 					{					
 						// Cloaking Suit values
 						new iAlpha = RoundToFloor(255 * (1.0 - (((float(g_iGhillieLevel[iClient]) * 0.13) + ((float(g_iPromotionalLevel[iClient]) * 0.04))))));
@@ -722,7 +702,7 @@ SetClientRenderAndGlowColor(int iClient)
 						SetClientGlow(iClient, 1, 0, 0, GLOWTYPE_CONSTANT);
 						return;
 					}
-					else if(g_bIsClientGrappled[iClient] == true || g_bIsClientDown[iClient] == true)
+					else if (IsClientGrappled(iClient) == true || g_bIsClientDown[iClient] == true)
 					{
 						// Reset to normal rendering
 						SetClientRenderColor(iClient);
@@ -1980,7 +1960,7 @@ fnc_ClearAllWeaponData(iClient)
 	}
 }
 
-fnc_CheckGrapple(iClient)
+bool IsClientGrappled(iClient)
 {
 	if (g_bChargerCarrying[iClient] == true || 
 		g_bChargerGrappled[iClient] == true || 
@@ -1988,15 +1968,23 @@ fnc_CheckGrapple(iClient)
 		g_bJockeyGrappled[iClient] == true || 
 		g_bHunterGrappled[iClient] == true)
 	{
-		g_bIsClientGrappled[iClient] = true;
+		DebugLog(DEBUG_MODE_TESTING, "IsClientGrappled(%N): true", iClient);
+		return true;
 	}
-	else
-	{
-		g_bIsClientGrappled[iClient] = false;
-	}
-	//PrintToChatAll("g_bIsClientGrappled = %s", g_bIsClientGrappled[iClient]);
-	//PrintToChatAll("g_bIsClientGrappled = %i", g_bIsClientGrappled[iClient]);
+		
+	DebugLog(DEBUG_MODE_TESTING, "IsClientGrappled(%N): false", iClient);
+	return false;
 }
+
+// bool:IsJockeyGrappled(iClient)
+// {
+// 	decl i;
+// 	for(i = 0; i <= MaxClients; i++)
+// 		if(g_iJockeyVictim[i] == iClient)
+// 			return true;
+	
+// 	return false;
+// }
 
 Action:OpenHelpMotdPanel(iClient, args)
 {

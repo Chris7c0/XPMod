@@ -727,7 +727,7 @@ JebusHandMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 					for(new i = 1; i <= MaxClients; i++)
 					{
 						if(IsClientInGame(i)==true)
-							if(GetClientTeam(i)==2 && IsPlayerAlive(i)==true && g_bIsClientDown[i]==true && IsFakeClient(i)==false  && g_bHunterGrappled[i] == false && g_bChargerGrappled[i] == false && g_bSmokerGrappled[i] == false)
+							if(GetClientTeam(i)==2 && IsPlayerAlive(i)==true && g_bIsClientDown[i]==true && IsFakeClient(i)==false  && IsClientGrappled(i) == false)
 							{
 								RunCheatCommand(i, "give", "give health");
 								PrintHintText(i, "You have been instantly revived by %N", iClient);
@@ -757,7 +757,7 @@ JebusHandMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 					for(new i = 1; i <= MaxClients; i++)
 					{
 						if(IsClientInGame(i)==true)
-							if(GetClientTeam(i)==2 && IsPlayerAlive(i)==true && g_bIsClientDown[i]==true && IsFakeClient(i)==true  && g_bHunterGrappled[i] == false && g_bChargerGrappled[i] == false && g_bSmokerGrappled[i] == false)
+							if(GetClientTeam(i)==2 && IsPlayerAlive(i)==true && g_bIsClientDown[i]==true && IsFakeClient(i)==true  && IsClientGrappled(i) == false)
 							{
 								if(foundvalident > 0  || g_iClientBindUses_2[iClient]>2)
 									break;

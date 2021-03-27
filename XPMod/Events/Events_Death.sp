@@ -127,13 +127,16 @@ Event_DeathResetAllVariables(iAttacker, iVictim)
 	g_iHunterShreddingVictim[iVictim] = -1;
 	g_bHunterGrappled[iAttacker] = false;		//Need to do it for both of them
 	g_iHunterShreddingVictim[iAttacker] = -1;
-	g_bSmokerGrappled[iVictim] = false;
-	g_bChargerGrappled[iVictim] = false;
-	g_bSmokerGrappled[iAttacker] = false;
 	g_bChargerGrappled[g_iChargerVictim[iVictim]] = false;
 	g_bChargerGrappled[iVictim] = false;
 	g_iChargerVictim[iVictim] = 0;
+	g_bSmokerGrappled[iVictim] = false;
+	g_bSmokerGrappled[iAttacker] = false;
+	g_bJockeyGrappled[iVictim] = false;
+	g_bJockeyGrappled[iAttacker] = false;
 	g_iJockeyVictim[iVictim] = -1;
+	g_bHunterGrappled[iVictim] = false;
+	g_bHunterGrappled[iAttacker] = false;
 	
 	g_iShowSurvivorVomitCounter[iVictim] = 0;
 

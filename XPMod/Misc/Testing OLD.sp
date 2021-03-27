@@ -1347,10 +1347,6 @@ Action:CreateOverlay(iClient)
 // 	ChangeEdictState(iClient, 12); //Notify clients of the change to the glow color
 // 	*/
 	
-// 	//PrintToChat(iClient, "HUNTER pounced = %d", g_bHunterGrappled[iClient]);
-// 	//PrintToChat(iClient, "smoked = %d", g_bSmokerGrappled[iClient]);
-// 	//PrintToChat(iClient, "charged = %d", g_bChargerGrappled[iClient]);
-	
 	
 // 	//boomflags = GetCommandFlags("boom");
 // 	//SetCommandFlags("give", g_iFlag_Give & ~FCVAR_CHEAT);

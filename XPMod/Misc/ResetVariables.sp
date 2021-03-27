@@ -42,10 +42,6 @@ ResetVariablesForMap(iClient)
 	clienthanging[iClient] = false;
 	g_iBillTeamHealCounter[iClient] = 0;
 	g_iClientToHeal[iClient] = 1;
-	g_bHunterGrappled[iClient] = false;
-	g_bChargerGrappled[iClient] = false;
-	g_iChargerVictim[iClient] = 0;
-	g_bSmokerGrappled[iClient] = false;
 	g_iNicksRamboWeaponID[iClient] = 0;
 	g_bNickIsInvisible[iClient] = false;
 	g_bCanDropPoopBomb[iClient] = true;
@@ -204,9 +200,7 @@ ResetVariablesForMap(iClient)
 ResetAllVariables(iClient)
 {
 	g_iBanDurationInMinutes[iClient] = 0;
-	g_bHunterGrappled[iClient] = false;
-	g_bChargerGrappled[iClient] = false;
-	g_bSmokerGrappled[iClient] = false;
+	
 	g_bUsingFireStorm[iClient] = false;
 	g_bUsingTongueRope[iClient] = false;
 	clienthanging[iClient] = false;
@@ -222,6 +216,15 @@ ResetAllVariables(iClient)
 	g_bIsClientDown[iClient] = false;
 	pop(iClient);
 	g_bDoesClientAttackFast[iClient] = false;
+
+	//Grapples
+	g_bHunterGrappled[iClient] = false;
+	g_iHunterShreddingVictim[iClient] = -1;
+	g_bChargerGrappled[iClient] = false;
+	g_iChargerVictim[iClient] = 0;
+	g_bSmokerGrappled[iClient] = false;
+	g_bJockeyGrappled[iClient] = false;
+	g_iJockeyVictim[iClient] = -1;
 
 	//Reset Tank (Needed here for changing teams)
 	g_iTankChosen[iClient] = TANK_NOT_CHOSEN;

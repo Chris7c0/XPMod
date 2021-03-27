@@ -3,7 +3,7 @@ void OnPlayerRunCmd_BileCleanse(int iClient, &iButtons)
 	// If they started a bile cleanse, handle if something prevented contiuation
 	if (g_iBileCleansingFrameTimeCtr[iClient] >= 0 && 
 		(!(iButtons & IN_USE) || 
-		 g_bIsClientGrappled[iClient] == true || 
+		 IsClientGrappled(iClient) == true || 
 		 GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1) )
 	{
 		g_iBileCleansingFrameTimeCtr[iClient] = -1;
@@ -21,7 +21,7 @@ void OnPlayerRunCmd_BileCleanse(int iClient, &iButtons)
 		!(iButtons & IN_USE) ||
 		g_iClientTeam[iClient] != TEAM_SURVIVORS || 
 		RunClientChecks(iClient) == false ||
-		g_bIsClientGrappled[iClient] == true ||
+		IsClientGrappled(iClient) == true ||
 		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1 ||
 		IsFakeClient(iClient) == true)
 		return;
@@ -84,7 +84,7 @@ void StartSelfRevive(int iClient)
 	// then do not continue with self revive or they will never to go down
 	if (g_bSelfReviving[iClient] == true ||
 		g_iClientTeam[iClient] != TEAM_SURVIVORS || 
-		g_bIsClientGrappled[iClient] ||
+		IsClientGrappled(iClient) ||
 		RunClientChecks(iClient) == false ||
 		IsFakeClient(iClient) ||
 		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 0 ||
@@ -105,7 +105,7 @@ Action:TimerSelfReviveCheck(Handle:timer, any:iClient)
 {
 	DebugLog(DEBUG_MODE_TESTING, "TimerSelfReviveCheck");
 	if (g_iClientTeam[iClient] != TEAM_SURVIVORS || 
-		g_bIsClientGrappled[iClient] ||
+		IsClientGrappled(iClient) ||
 		RunClientChecks(iClient) == false ||
 		IsFakeClient(iClient) ||
 		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 0)
