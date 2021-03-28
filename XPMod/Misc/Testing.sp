@@ -24,6 +24,9 @@ Action:TestFunction1(iClient, args)
 		if (IsClientGrappled(i) == true)
 			PrintToChatAll("Grappled: %N", i);
 
+		if (g_bIsClientDown[i])
+			PrintToChatAll("g_bIsClientDown: %N", i);
+
 		if (GetEntProp(i, Prop_Send, "m_isIncapacitated") == 1)
 			PrintToChatAll("Incap: %N", i);
 	}
@@ -87,9 +90,11 @@ Action:TestFunction2(iClient, args)
 	GetCmdArg(1, str1, sizeof(str1));
 	GetCmdArg(2, str2, sizeof(str2));
 
+	SQLGetTopXPModPlayerStatistics();
+	
 	ShowRoundStatsPanelsToPlayer(iClient);
 
-	SQLGetTopXPModPlayerStatistics();
+	
 
 	// DebugLog(DEBUG_MODE_TESTING, "DEBUG_MODE_TESTING %N, %i, %i, %i, %i, %f, %f, %s, %s", iClient, 1, 2, 3, 4, 5.5, 6.6, "testing", "another test string!");
 	// DebugLog(DEBUG_MODE_TESTING, "DEBUG_MODE_TESTING");

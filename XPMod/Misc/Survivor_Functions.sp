@@ -141,6 +141,8 @@ void SuccessfulSelfRevive(int iClient)
 	// Revive them by using cheat command to give full health
 	RunCheatCommand(iClient, "give", "give health");
 
+	g_bIsClientDown[iClient] = false;
+
 	if (bIsLedgeRevive)
 	{
 		// If its a self revive off ledge, Use the stored health values

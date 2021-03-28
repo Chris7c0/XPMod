@@ -35,6 +35,8 @@ HealClientFully(iClient)
 
 	RunCheatCommand(iClient, "give", "give health");
 	ResetTempHealthToSurvivor(iClient);
+
+	g_bIsClientDown[iClient] = false;
 	
 	// new iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
 	// SetEntProp(iClient, Prop_Data, "m_iHealth", iMaxHealth);

@@ -125,6 +125,8 @@ OnGameFrame_Coach(iClient)
 						SetEntDataFloat(iClient,g_iOffset_HealthBuffer, (preledgebuffer[iClient] - 1.0) ,true);
 					else
 						SetEntDataFloat(iClient,g_iOffset_HealthBuffer, 0.0 ,true);
+					
+					g_bIsClientDown[iClient] = false;
 					clienthanging[iClient] = false;
 				}
 			}
