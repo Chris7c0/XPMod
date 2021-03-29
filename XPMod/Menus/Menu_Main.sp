@@ -64,6 +64,8 @@ XPModMenuDraw(iClient)
 //Top XPMod Menu Draw
 Action:TopMenuDraw(iClient) 
 {
+	RoundStatsPanel[iClient] = ROUND_STATS_PANEL_DONE;
+
 	g_bUserStoppedConfirmation[iClient] = true;
 	DeleteAllMenuParticles(iClient);
 
@@ -212,7 +214,7 @@ Action:ExtrasMenuDraw(iClient)
 	\n▬▬▬▬▬▬▬▬▬▬▬\n",
 	strStartingNewLines);
 	AddMenuItem(menu, "option1", "Change Team");
-	AddMenuItem(menu, "option2", "Player Stats");
+	AddMenuItem(menu, "option2", "Statistics");
 	AddMenuItem(menu, "option3", "Options");
 	AddMenuItem(menu, "option4", "Get XPMod Addon");
 	AddMenuItem(menu, "option5", "XPMod Website");
@@ -262,6 +264,44 @@ Action:ChooseTeamMenuDraw(iClient)
 	\n▬▬▬▬▬▬▬▬▬▬▬\
 	%s\
 	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+	strEndingNewLines);
+	AddMenuItem(menu, "option9", strFinalOptionText);
+
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
+
+	return Plugin_Handled;
+}
+
+
+// Learn about characters
+Action:ChooseStatisticsMenuDraw(iClient)
+{
+	Menu menu = CreateMenu(ChooseStatisticsMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
+
+	SetMenuTitle(menu, "%s\
+	\nChoose The Statistics You Want To See\
+	\n▬▬▬▬▬▬▬▬▬▬▬\n",
+	strStartingNewLines);
+	AddMenuItem(menu, "option1", "Last Round Stats");
+	AddMenuItem(menu, "option2", "Current Round Stats\n ");
+	AddMenuItem(menu, "option3", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option4", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option5", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+
+	decl String:strFinalOptionText[150];
+	Format(strFinalOptionText, sizeof(strFinalOptionText), "Back\
+	\n▬▬▬▬▬▬▬▬▬▬▬\
+	%s\
+	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 	strEndingNewLines);
 	AddMenuItem(menu, "option9", strFinalOptionText);
 
@@ -425,9 +465,9 @@ ExtrasMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			{
 				ChooseTeamMenuDraw(iClient);
 			}
-			case 1: //Player Stats
+			case 1: //Choose Stats Menu
 			{
-				ShowTeamStatsToPlayer(iClient, iClient);
+				ChooseStatisticsMenuDraw(iClient)
 			}
 			case 2: //Options
 			{
@@ -489,6 +529,32 @@ ChooseTeamMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 		
 		if (SwitchPlayerTeam(iClient, iClient, iTeam) == false)
 			ChooseTeamMenuDraw(iClient);
+	}
+}
+
+ChooseStatisticsMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+{
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select) 
+	{
+		switch (itemNum)
+		{
+			case 0: //Last Round Statistics
+			{
+				ShowRoundStatsPanelsToPlayer(iClient);
+			}
+			case 1: //Currnt Round Statistics
+			{
+				ShowTeamStatsToPlayer(iClient, iClient);
+			}
+			case 8: //Back
+			{
+				ExtrasMenuDraw(iClient);
+			}
+		}
 	}
 }
 
