@@ -361,7 +361,9 @@ SetSurvivorScreenShakeAmount()
 	SetConVarInt(FindConVar("z_claw_hit_yaw_max"), g_iScreenShakeAmount);
 	SetConVarInt(FindConVar("z_claw_hit_yaw_min"), g_iScreenShakeAmount * -1);
 
-	PrintToChatAll("\x03[XPMod] \x04Survivor Screen Shake on hit is at %i\%.", RoundToNearest((g_iScreenShakeAmount / 20.0) * 100.0) );
+	// Show the message to all that its been lowered, however don't show if its reset to 100%
+	if (g_iScreenShakeAmount < 20.0)
+		PrintToChatAll("\x03[XPMod] \x04Survivor Screen Shake on hit is at %i\%.", RoundToNearest((g_iScreenShakeAmount / 20.0) * 100.0) );
 }
 
 Action:TimerCreateInnerSphere(Handle:timer, any:iClient)
