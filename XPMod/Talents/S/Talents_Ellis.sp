@@ -1010,7 +1010,7 @@ EventsDeath_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 	if(g_iBringLevel[iAttacker] > 0)
 	{
 		// Give temp health on SI kill
-		AddTempHealthToSurvivor(iAttacker, float(g_iBringLevel[iAttacker]));
+		AddTempHealthToSurvivor(iAttacker, float(g_iBringLevel[iAttacker]), false);
 		
 		// Increase clip size
 		new iEntid = GetEntDataEnt2(iAttacker, g_iOffset_ActiveWeapon);

@@ -26,7 +26,7 @@ void OnPlayerRunCmd_BileCleanse(int iClient, &iButtons)
 		IsFakeClient(iClient) == true)
 		return;
 
-	DebugLog(DEBUG_MODE_TESTING, "OnPlayerRunCmd_BileCleanse");
+	DebugLog(DEBUG_MODE_VERBOSE, "OnPlayerRunCmd_BileCleanse");
 
 	// Increment the frame counter to measure time the USE button has been pressed
 	g_iBileCleansingFrameTimeCtr[iClient]++;
@@ -70,14 +70,14 @@ void OnPlayerRunCmd_SelfRevive(int iClient, &iButtons)
 		IsFakeClient(iClient))
 		return;
 
-	DebugLog(DEBUG_MODE_TESTING, "OnPlayerRunCmd_SelfRevive");
+	DebugLog(DEBUG_MODE_VERBOSE, "OnPlayerRunCmd_SelfRevive");
 
 	StartSelfRevive(iClient);
 }
 
 void StartSelfRevive(int iClient)
 {
-	DebugLog(DEBUG_MODE_TESTING, "StartSelfRevive");
+	DebugLog(DEBUG_MODE_VERBOSE, "StartSelfRevive");
 
 	// Note, its very important to check if someone else is reviving
 	// here. Notice the last line of this if statement.  If they are,
@@ -103,7 +103,7 @@ void StartSelfRevive(int iClient)
 
 Action:TimerSelfReviveCheck(Handle:timer, any:iClient)
 {
-	DebugLog(DEBUG_MODE_TESTING, "TimerSelfReviveCheck");
+	DebugLog(DEBUG_MODE_VERBOSE, "TimerSelfReviveCheck");
 	if (g_iClientTeam[iClient] != TEAM_SURVIVORS || 
 		IsClientGrappled(iClient) ||
 		RunClientChecks(iClient) == false ||
@@ -135,7 +135,7 @@ Action:TimerSelfReviveCheck(Handle:timer, any:iClient)
 
 void SuccessfulSelfRevive(int iClient)
 {
-	DebugLog(DEBUG_MODE_TESTING, "SuccessfulSelfRevive");
+	DebugLog(DEBUG_MODE_VERBOSE, "SuccessfulSelfRevive");
 	bool bIsLedgeRevive = GetEntProp(iClient, Prop_Send, "m_isHangingFromLedge") == 1;
 
 	// Revive them by using cheat command to give full health
@@ -174,7 +174,7 @@ void SuccessfulSelfRevive(int iClient)
 
 void EndSelfRevive(int iClient)
 {
-	DebugLog(DEBUG_MODE_TESTING, "EndSelfRevive");
+	DebugLog(DEBUG_MODE_VERBOSE, "EndSelfRevive");
 	if (RunClientChecks(iClient) == false)
 		return;
 	
@@ -201,7 +201,7 @@ void ResetTempHealthToSurvivor(iClient)
 	SetEntPropFloat(iClient, Prop_Send, "m_healthBuffer", 0.0);
 }
 
-void AddTempHealthToSurvivor(iClient, Float:fAdditionalTempHealth)
+void AddTempHealthToSurvivor(int iClient, float fAdditionalTempHealth, bool bRespectMaxHealth = true)
 {
 	if (!RunClientChecks(iClient) || 
 		!IsPlayerAlive(iClient) || 
@@ -212,6 +212,17 @@ void AddTempHealthToSurvivor(iClient, Float:fAdditionalTempHealth)
 	new iTempHealth = GetSurvivorTempHealth(iClient);
 	if (iTempHealth < 0)
 		return;
+
+	// Cap fAdditionalTempHealth to Max Health if option selected
+	if (bRespectMaxHealth)
+	{
+		new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
+		new iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
+
+		// This will go over max health, so cap the additional amount given if true
+		if (iCurrentHealth + iTempHealth + RoundToNearest(fAdditionalTempHealth) > iMaxHealth)
+			fAdditionalTempHealth = float(iMaxHealth - iCurrentHealth - iTempHealth);
+	}
 	
 	// If the temp health is not set or is expired (passed buffer time), then
 	// reset the buffer time and set a new temp health buffer with the new value.

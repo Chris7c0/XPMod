@@ -181,11 +181,15 @@ SetClientSpeedLouis(iClient, &Float:fSpeed)
 	if (g_iLouisSIHeadshotCounter[iClient] > 0)
 		fSpeed += (g_iLouisSIHeadshotCounter[iClient] * 0.05);
 
+	// Pills Used Stack speed
+	if (g_iPillsUsedStack[iClient] > 0)
+		fSpeed += (g_iPillsUsedStack[iClient] * g_iLouisTalent6Level[iClient] * 0.01);
+
 	// Cap Louis's speed
 	if (fSpeed > LOUIS_SPEED_MAX)
 		fSpeed = LOUIS_SPEED_MAX;
 	
-	//PrintToChat(iClient, "SetClientSpeedLouis: %f", fSpeed);
+	// PrintToChat(iClient, "SetClientSpeedLouis: %f", fSpeed);
 }
 
 

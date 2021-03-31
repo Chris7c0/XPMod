@@ -49,6 +49,10 @@ Action:TimerLouisTeleportChargeResetAll(Handle:timer, any:iClient)
 Action:TimerLouisTeleportRemoveMovementSpeedPenalty(Handle:timer, any:iClient)
 {
 	g_iLouisTeleportMovementPenaltyStacks[iClient]--;
+
+	if (g_iLouisTeleportMovementPenaltyStacks[iClient] < 0)
+		g_iLouisTeleportMovementPenaltyStacks[iClient] = 0;
+
 	if (g_bLouisTeleportActive[iClient] == false)
 		SetClientSpeed(iClient);
 	
@@ -58,6 +62,10 @@ Action:TimerLouisTeleportRemoveMovementSpeedPenalty(Handle:timer, any:iClient)
 Action:TimerLouisCIHeadshotReduce(Handle:timer, any:iClient)
 {
 	g_iLouisCIHeadshotCounter[iClient]--;
+
+	if (g_iLouisCIHeadshotCounter[iClient] < 0)
+		g_iLouisCIHeadshotCounter[iClient] = 0;
+
 	if (g_bLouisTeleportActive[iClient] == false)
 		SetClientSpeed(iClient);
 	
@@ -67,9 +75,43 @@ Action:TimerLouisCIHeadshotReduce(Handle:timer, any:iClient)
 Action:TimerLouisSIHeadshotReduce(Handle:timer, any:iClient)
 {
 	g_iLouisSIHeadshotCounter[iClient]--;
+
+	if (g_iLouisSIHeadshotCounter[iClient] < 0)
+		g_iLouisSIHeadshotCounter[iClient] = 0;
+
 	if (g_bLouisTeleportActive[iClient] == false)
 		SetClientSpeed(iClient);
 	
 	return Plugin_Stop;
 }
 
+Action:TimerLouisPillsUsedStackReduce(Handle:timer, any:iClient)
+{
+	g_iPillsUsedStack[iClient]--;
+
+	if (RunClientChecks(iClient) && IsFakeClient(iClient) == false)
+		PrintToChat(iClient, "\x03[XPMod] \x04Pills x%i", g_iPillsUsedStack[iClient]);
+	
+	if (g_iPillsUsedStack[iClient] < 0)
+		g_iPillsUsedStack[iClient] = 0;
+
+	if (g_bLouisTeleportActive[iClient] == false)
+		SetClientSpeed(iClient);
+	
+	return Plugin_Stop;
+}
+
+Action:TimerGivePillsFromStashedInventory(Handle:timer, int iClient)
+{
+	if (g_iStashedInventoryPills[iClient] > 0)
+	{
+		g_iStashedInventoryPills[iClient]--;
+		
+		RunCheatCommand(iClient, "give", "give pain_pills");
+		PrintToChat(iClient, "\x03[XPMod] \x04You have %i more Pill Bottle%s.",
+						g_iStashedInventoryPills[iClient],
+						g_iStashedInventoryPills[iClient] != 1 ? "s" : "");
+	}
+
+	return Plugin_Stop;
+}

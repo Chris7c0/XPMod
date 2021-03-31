@@ -120,6 +120,9 @@ bool RunCheatCommand(int iClient, const char [] strCommandName, const char [] st
 		return false;
 	}
 
+	// Handle XPMod Related Tasks
+	HandleCheatCommandTasks(iClient, strCommandWithArgs);
+
 	// Temp turn on the cheats for this command, run command,
 	// and then turn off the cheats again
 	SetCommandFlags(strCommandName, iFlag & ~FCVAR_CHEAT);
@@ -127,6 +130,11 @@ bool RunCheatCommand(int iClient, const char [] strCommandName, const char [] st
 	SetCommandFlags(strCommandName, iFlag);
 
 	return true;
+}
+
+void HandleCheatCommandTasks(int iClient, const char [] strCommandWithArgs)
+{
+	HandleCheatCommandTasks_Louis(iClient, strCommandWithArgs)
 }
 
 Action:Timer_ShowXPModInfoToServer(Handle:timer, any:data)
@@ -1968,11 +1976,11 @@ bool IsClientGrappled(iClient)
 		g_bJockeyGrappled[iClient] == true || 
 		g_bHunterGrappled[iClient] == true)
 	{
-		DebugLog(DEBUG_MODE_TESTING, "IsClientGrappled(%N): true", iClient);
+		DebugLog(DEBUG_MODE_VERBOSE, "IsClientGrappled(%N): true", iClient);
 		return true;
 	}
 		
-	DebugLog(DEBUG_MODE_TESTING, "IsClientGrappled(%N): false", iClient);
+	DebugLog(DEBUG_MODE_VERBOSE, "IsClientGrappled(%N): false", iClient);
 	return false;
 }
 

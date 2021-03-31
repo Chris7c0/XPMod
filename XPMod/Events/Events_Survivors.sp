@@ -773,7 +773,7 @@ Action:Event_ReviveSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcas
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	new target = GetClientOfUserId(GetEventInt(hEvent, "subject"));
 
-	DebugLog(DEBUG_MODE_TESTING, "Event_ReviveSuccess");
+	DebugLog(DEBUG_MODE_VERBOSE, "Event_ReviveSuccess");
 
 	g_bIsClientDown[target] = false;
 	clienthanging[target] = false;
@@ -1493,7 +1493,7 @@ Action:Event_PillsUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	
-	if(iClient < 1)
+	if(RunClientChecks(iClient) == false)
 		return Plugin_Continue;
 	
 	if(g_iOverLevel[iClient] > 0 && IsFakeClient(iClient) == false)
@@ -1573,6 +1573,8 @@ Action:Event_PillsUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 			}
 		}
 	}
+
+	EventsPillsUsed_Louis(iClient);
 		
 	return Plugin_Continue;
 }
@@ -1581,7 +1583,7 @@ Action:Event_AdrenalineUsed(Handle:hEvent, const String:strName[], bool:bDontBro
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	
-	if(iClient < 1)
+	if(RunClientChecks(iClient) == false)
 		return Plugin_Continue;
 
 	if(g_iOverLevel[iClient] > 0 && IsFakeClient(iClient) == false)
@@ -1661,6 +1663,9 @@ Action:Event_AdrenalineUsed(Handle:hEvent, const String:strName[], bool:bDontBro
 			}
 		}
 	}
+
+	EventsAdrenalineUsed_Louis(iClient);
+
 	return Plugin_Continue;
 }
 

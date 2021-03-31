@@ -274,6 +274,9 @@ new bool:g_bNickStoresDroppedPistolAmmo[MAXPLAYERS + 1] = false;
 #define LOUIS_SPEED_MAX                                 1.25
 #define LOUIS_HEADSHOT_SPEED_RETENTION_TIME_CI          60.0
 #define LOUIS_HEADSHOT_SPEED_RETENTION_TIME_SI          60.0
+#define LOUIS_STASHED_INVENTORY_MAX_PILLS               4
+#define LOUIS_PILLS_USED_BONUS_DURATION                 60.0
+#define LOUIS_PILLS_USED_MAX_STACKS                     5
 bool g_bLouisTeleportCoolingDown[MAXPLAYERS + 1] = false;
 bool g_bLouisTeleportActive[MAXPLAYERS + 1] = false;
 new g_iLouisTeleportChargeUses[MAXPLAYERS + 1] = 0;
@@ -282,6 +285,10 @@ new g_iLouisTeleportBlindnessAmount[MAXPLAYERS + 1] = 0;
 new g_iLouisTeleportMovementPenaltyStacks[MAXPLAYERS + 1] = 0;
 new g_iLouisCIHeadshotCounter[MAXPLAYERS + 1] = 0;
 new g_iLouisSIHeadshotCounter[MAXPLAYERS + 1] = 0;
+new g_iStashedInventoryPills[MAXPLAYERS + 1] = 0;
+new g_iPillsUsedStack[MAXPLAYERS + 1] = 0;
+bool g_bHealthBoostItemJustGivenByCheats[MAXPLAYERS + 1] = false;
+bool g_bHealthBoostSlotWasEmptyOnLastPickUp[MAXPLAYERS + 1] = false;
 bool g_bWareStationActive[MAXPLAYERS + 1];
 bool g_bWareStationClientAlreadyServiced[MAXPLAYERS + 1][MAXPLAYERS + 1];
 new g_iWareStationOwnerIDOfCurrentlyViewedStation[MAXPLAYERS + 1];

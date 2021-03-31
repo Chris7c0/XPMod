@@ -117,9 +117,6 @@ OnGameFrame_Nick(iClient)
 					
 					decl grenade, weapon, boost;
 					
-
-							
-					
 					switch (random_grenade)
 					{
 						case 0:

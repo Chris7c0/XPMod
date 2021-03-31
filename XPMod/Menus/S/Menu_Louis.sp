@@ -64,10 +64,13 @@ Action:LouisTalent1MenuDraw(iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		%s 		Manager's Prep (Level %d):\
+		%s			Manager's Prep (Level %d):\
 		\n \
 		\n +10 HP per Level\
+		\n \
 		\n +3%%%%% Movement Speed per Level\
+		\n 	- Louis Always Capped At +25%%%% Speed     \
+		\n \
 		\n SMG and Pistol (Not Magnum) Buffs:     \
 		\n 	- +15%%%% Reload Speed per Level\
 		\n ",
@@ -78,7 +81,7 @@ Action:LouisTalent1MenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -197,13 +200,14 @@ Action:LouisTalent4MenuDraw(iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		%s 					BOOM HEADSHOT! (Level %d):\
+		%s 							BOOM HEADSHOT! (Level %d):\
 		\n \
-		\n +40% Headshot Damage Multiplier per Level\
+		\n +40%%%% Headshot Damage Multiplier per Level\
+		\n \
 		\n Headshot Kill Bonuses:\
 		\n 	- CI: +1 HP, +1%%%% Speed for 60 Seconds, +5 Clip Ammo per Level\
 		\n 	- SI: +5 HP, +5%%%% Speed for 60 Seconds, +15 Clip Ammo per Level   \
-		\n  - Movement Speed capped at +25%%%%\
+		\n 	- Louis Is Always Capped At +25%%%% Speed\
 		\n ",
 		strStartingNewLines,
 		g_iLouisTalent4Level[iClient]);
@@ -212,7 +216,7 @@ Action:LouisTalent4MenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -244,6 +248,8 @@ Action:LouisTalent5MenuDraw(iClient)
 		%s 					Explosivo (Level %d):\
 		\n \
 		\n COMING SOON                                                           \
+		\n \
+		\n Bind 1: w4R3z 574t10n m3nU\
 		\n ",
 		strStartingNewLines,
 		g_iLouisTalent5Level[iClient]);
@@ -252,7 +258,7 @@ Action:LouisTalent5MenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -283,7 +289,19 @@ Action:LouisTalent6MenuDraw(iClient)
 	FormatEx(text, sizeof(text), "\
 		%s 					PILLS HERE! (Level %d):\
 		\n \
-		\n COMING SOON                                                           \
+		\n Hold Up To 5 Pill Bottles At Once\
+		\n \
+		\n [PRESS ZOOM] While Holding A MedKit:\
+		\n 	- Turn MedKit Into 3 Pill Bottles\
+		\n \
+		\n When Taking Pills (Stacks):\
+		\n 	- +1 Temp Health Per Level\
+		\n 	- +1%%%% Movement Speed per Level for 60 Seconds    \
+		\n 		- Louis Is Always Capped At +25%%%% Speed\
+		\n 	- +3%%%% Damage per Level for 60 Seconds\
+		\n 	- 5 Stacks Max\
+		\n \
+		\n Bind 2: 5cR1PT k1Dd13 3xPl0172 m3Nu\
 		\n ",
 		strStartingNewLines,
 		g_iLouisTalent6Level[iClient]);
@@ -292,7 +310,7 @@ Action:LouisTalent6MenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 

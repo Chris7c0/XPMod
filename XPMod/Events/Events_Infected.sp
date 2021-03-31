@@ -753,7 +753,7 @@ Action:Event_TankSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 			}
 
 			// Give temp health to ellis for tank spawn
-			AddTempHealthToSurvivor(i, float(g_iJamminLevel[i]) * 5);
+			AddTempHealthToSurvivor(i, float(g_iJamminLevel[i]) * 5, false);
 
 			if(g_iJamminLevel[i] == 5)
 			{

@@ -34,6 +34,30 @@ bool OnPlayerRunCmd_Louis(iClient, &iButtons)
 		g_bGameFrozen == true)
 		return false;
 
+	// Handle Medkit Conversion to Pills
+	if (g_iLouisTalent6Level[iClient] > 0 && iButtons & IN_ZOOM)
+	{
+		char strCurrentWeapon[32];
+		GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
+		if(StrContains(strCurrentWeapon, "first_aid_kit", false) != -1)
+		{
+			// Remove medkit
+			int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+			if (IsValidEntity(iActiveWeaponID))
+			{
+				AcceptEntityInput(iActiveWeaponID, "kill");
+
+				// Give 3 pills
+				RunCheatCommand(iClient, "give", "give pain_pills");
+				RunCheatCommand(iClient, "give", "give pain_pills");
+				RunCheatCommand(iClient, "give", "give pain_pills");
+
+				PrintToChat(iClient, "\x03[XPMod] \x05MedKit turned into 3 Pill Bottles.")
+			}
+		}
+	}
+
+	// Louis Teleport
 	if (g_iLouisTeleportChargeUses[iClient] <= g_iLouisTalent3Level[iClient] &&
 		g_bLouisTeleportCoolingDown[iClient] == false && 
 		iButtons & IN_SPEED && 
@@ -119,7 +143,9 @@ EventsHurt_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 			// PrintToChatAll("Louis iVictim %N START HP: %i", iVictim, iVictimHealth);
 
 			new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
-			new iAddtionalDamageAmount = RoundToNearest(float(iDmgHealth) * (g_iLouisTalent2Level[iAttacker] * 0.15));
+			new iAddtionalDamageAmount = RoundToNearest(float(iDmgHealth) * 
+				( (g_iLouisTalent2Level[iAttacker] * 0.15) + 
+				  (g_iPillsUsedStack[iAttacker] * g_iLouisTalent6Level[iAttacker] * 0.03) ));
 			new iNewDamageAmount = iDmgHealth + iAddtionalDamageAmount;
 
 			// Add even more damage if its a headshot
@@ -223,6 +249,141 @@ EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 // 		return;
 // 	SuppressNeverUsedWarning(hEvent, iAttacker);
 // }
+
+void EventsPillsUsed_Louis(int iClient)
+{
+	if (g_iChosenSurvivor[iClient] != LOUIS || g_bTalentsConfirmed[iClient] == false)
+		return;
+
+	// PrintToChat(iClient, "Pills Used: %i", GetPlayerWeaponSlot(iClient, 4));
+	
+	// Add to their pills used stack then reduce by 1 in 60 seconds
+	// This controls the damage and speed of Louis
+	if (g_iPillsUsedStack[iClient] < LOUIS_PILLS_USED_MAX_STACKS)
+	{
+		g_iPillsUsedStack[iClient]++;
+		CreateTimer(LOUIS_PILLS_USED_BONUS_DURATION, TimerLouisPillsUsedStackReduce, iClient, TIMER_FLAG_NO_MAPCHANGE);
+		PrintToChat(iClient, "\x03[XPMod] \x04Pills x%i", g_iPillsUsedStack[iClient]);
+	}
+
+	// Give extra speed (set by g_iPillsUsedStack)
+	SetClientSpeed(iClient);
+
+	// Give extra temp health
+	AddTempHealthToSurvivor(iClient, float(g_iLouisTalent6Level[iClient] * 5));
+
+	// Give stashed pills of they have more
+	if (g_iStashedInventoryPills[iClient] > 0)
+		CreateTimer(0.1, TimerGivePillsFromStashedInventory, iClient, TIMER_FLAG_NO_MAPCHANGE);
+}
+
+void EventsAdrenalineUsed_Louis(int iClient)
+{
+	// Give stashed pills of they have more
+	if (g_iStashedInventoryPills[iClient] > 0)
+		CreateTimer(0.1, TimerGivePillsFromStashedInventory, iClient, TIMER_FLAG_NO_MAPCHANGE);
+}
+
+void EventsItemPickUp_Louis(int iClient, const char[] strWeaponClass)
+{
+	if (g_iChosenSurvivor[iClient] != LOUIS || g_bTalentsConfirmed[iClient] == false)
+		return;
+
+	//PrintToChat(iClient, "LOUIS ITEM PICKUP %s", strWeaponClass);
+
+	if (g_iLouisTalent2Level[iClient] > 0)
+	{
+		new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
+
+		if (StrContains(strWeaponClass, "smg", false) != -1)
+		{
+			new iEntid = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+			if(iEntid  < 1 || IsValidEntity(iEntid) == false)
+				return;
+			
+			new iAmmo = GetEntData(iClient, iOffset_Ammo + 20);
+			SetEntData(iClient, iOffset_Ammo + 20, iAmmo - (g_iLouisTalent2Level[iClient] * 10));
+			
+			new iCurrentClipAmmo = GetEntProp(iEntid,Prop_Data,"m_iClip1");
+			SetEntData(iEntid, g_iOffset_Clip1, iCurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10), true);
+			g_iClientPrimaryClipSize[iClient] = iCurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10);
+		}
+		else if (StrEqual(strWeaponClass, "pistol", false) == true)
+		{
+			new iEntid = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+			if(iEntid  < 1 || IsValidEntity(iEntid) == false)
+				return;
+			
+			new iCurrentClipAmmo = GetEntProp(iEntid,Prop_Data,"m_iClip1");
+			SetEntData(iEntid, g_iOffset_Clip1, iCurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10), true);
+		}
+	}
+
+	if (g_iLouisTalent6Level[iClient] > 0)
+	{
+		// Save that the health boost was empty on last pick up
+		// This is for Louis's Pills here ability on Player Use event
+		if (g_bHealthBoostItemJustGivenByCheats[iClient] == false && 
+			(StrEqual(strWeaponClass, "pain_pills", false) == true || 
+			StrEqual(strWeaponClass, "adrenaline", false) == true))
+			g_bHealthBoostSlotWasEmptyOnLastPickUp[iClient] = true;
+
+		g_bHealthBoostItemJustGivenByCheats[iClient] = false;
+	}
+}
+
+void EventsPlayerUse_Louis(int iClient, int iTargetID)
+{
+	if (g_iChosenSurvivor[iClient] != LOUIS || g_bTalentsConfirmed[iClient] == false)
+		return;
+
+	// PrintToChat(iClient, "iTargetID: %i", iTargetID);
+	// PrintToChat(iClient, "Pills Slot: %i", GetPlayerWeaponSlot(iClient, 4));
+
+	int iSlotItemID = GetPlayerWeaponSlot(iClient, 4);
+	// char strSlotItemClassName[35];
+	// if (IsValidEntity(iSlotItemID))
+	// 	GetEdictClassname(iSlotItemID, strSlotItemClassName, sizeof(strSlotItemClassName));
+	// else
+	// 	strSlotItemClassName = NULL_STRING;
+	// PrintToChat(iClient, "strSlotItemClassName: %s" , strSlotItemClassName);
+
+	// Check if the item when into their weapon slot, if not, then continue to stash it.
+	if (g_iLouisTalent6Level[iClient] > 0 && 
+		iSlotItemID != iTargetID &&
+		g_bHealthBoostSlotWasEmptyOnLastPickUp[iClient] == false)
+	{
+		char strTargetClassName[35];
+		GetEdictClassname(iTargetID, strTargetClassName, sizeof(strTargetClassName));
+		// PrintToChat(iClient, "strTargetClassName: %s" , strTargetClassName);
+
+		if (StrContains(strTargetClassName,"weapon_pain_pills",false) != -1)
+		{
+			if (g_iStashedInventoryPills[iClient] < LOUIS_STASHED_INVENTORY_MAX_PILLS)
+			{
+				AcceptEntityInput(iTargetID, "Kill");
+
+				g_iStashedInventoryPills[iClient]++;
+				PrintToChat(iClient, "\x03[XPMod] \x05+1 Pills. \x04You have %i more Pill Bottle%s.",
+					g_iStashedInventoryPills[iClient],
+					g_iStashedInventoryPills[iClient] != 1 ? "s" : "");
+			}
+		}
+	}
+
+	g_bHealthBoostSlotWasEmptyOnLastPickUp[iClient] = false;
+}
+
+void HandleCheatCommandTasks_Louis(int iClient, const char [] strCommandWithArgs)
+{
+	if (g_iChosenSurvivor[iClient] != LOUIS || g_bTalentsConfirmed[iClient] == false)
+		return;
+	
+	// This is for the event ItemPickUp to not recognize this as a player use press pick up
+	if (StrEqual(strCommandWithArgs,"give pain_pills",false) == true ||
+		StrEqual(strCommandWithArgs,"give adrenaline",false) == true)
+		g_bHealthBoostItemJustGivenByCheats[iClient] = true;
+}
 
 LouisTeleport(iClient)
 {

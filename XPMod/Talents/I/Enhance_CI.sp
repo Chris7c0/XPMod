@@ -56,7 +56,7 @@ void PushZombieOnEnhancedCIEntitiesList(int iEntity, int iEnchancedCIType)
 	// Set the type for the Enhanced CI
 	g_listEnhancedCIEntities.Set(index, iEnchancedCIType, ENHANCED_CI_TYPE);
 	
-	PrintToServer("g_listEnhancedCIEntities %i: Type: %i", iEntity, iEnchancedCIType);
+	DebugLog(DEBUG_MODE_VERBOSE, "g_listEnhancedCIEntities %i: Type: %i", iEntity, iEnchancedCIType);
 }
 
 void PopZombieOffEnhancedCIEntitiesList(int iEntity)
@@ -71,7 +71,7 @@ void PopZombieOffEnhancedCIEntitiesList(int iEntity)
 	if (iEnhancedCIIndex >= 0)
 	{
 		g_listEnhancedCIEntities.Erase(iEnhancedCIIndex);
-		PrintToServer("Enhanced CI Destroyed %i", iEntity);
+		DebugLog(DEBUG_MODE_VERBOSE, "Enhanced CI Destroyed %i", iEntity);
 	}
 }
 

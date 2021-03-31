@@ -21,20 +21,31 @@ Action:Event_SpawnerGiveItem(Handle:hEvent, const String:strName[], bool:bDontBr
 
 Action:Event_UseTarget(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
-	//PrintToChatAll("Event_UseTarget");
+	// PrintToChatAll("Event_UseTarget");
 	return Plugin_Continue;
 }
 
 Action:Event_PlayerUse(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
-	//PrintToChatAll("Event_PlayerUse");
+	// PrintToChatAll("Event_PlayerUse");
+
+	int iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	if(RunClientChecks(iClient) == false || g_iClientTeam[iClient] != TEAM_SURVIVORS || IsPlayerAlive(iClient) == false)
+		return Plugin_Continue;
+
+	int iTargetID = GetEventInt(hEvent,"targetid");
+
+	if (IsValidEntity(iTargetID) == false)
+		return Plugin_Continue;
+
+	EventsPlayerUse_Louis(iClient, iTargetID);
+
 	return Plugin_Continue;
 }
 
 Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
-	int iUserID = GetEventInt(hEvent,"userid")
-	new iClient = GetClientOfUserId(iUserID);
+	new iClient = GetClientOfUserId( GetEventInt(hEvent,"userid"));
 	if(RunClientChecks(iClient) == false || g_iClientTeam[iClient] != TEAM_SURVIVORS || IsPlayerAlive(iClient) == false)
 		return Plugin_Continue;
 	
@@ -1106,38 +1117,9 @@ Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	}
 	else if(g_iChosenSurvivor[iClient] == LOUIS)
 	{
-		if (g_iLouisTalent2Level[iClient] > 0)
-		{
-			//PrintToChat(iClient, "LOUIS ITEM PICKUP %s", weaponclass);
-			if (StrContains(weaponclass, "smg", false) != -1)
-			{
-				new iEntid = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-				if(iEntid  < 1)
-					return Plugin_Continue;
-				if(IsValidEntity(iEntid)==false)
-					return Plugin_Continue;
-				
-
-				new iAmmo = GetEntData(iClient, iOffset_Ammo + 20);
-				SetEntData(iClient, iOffset_Ammo + 20, iAmmo - (g_iLouisTalent2Level[iClient] * 10));
-				
-				new iCurrentClipAmmo = GetEntProp(iEntid,Prop_Data,"m_iClip1");
-				SetEntData(iEntid, g_iOffset_Clip1, iCurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10), true);
-				g_iClientPrimaryClipSize[iClient] = iCurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10);
-			}
-			else if (StrEqual(weaponclass, "pistol", false) == true)
-			{
-				new iEntid = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-				if(iEntid  < 1)
-					return Plugin_Continue;
-				if(IsValidEntity(iEntid)==false)
-					return Plugin_Continue;
-				
-				new iCurrentClipAmmo = GetEntProp(iEntid,Prop_Data,"m_iClip1");
-				SetEntData(iEntid, g_iOffset_Clip1, iCurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10), true);
-			}
-		}
+		EventsItemPickUp_Louis(iClient, weaponclass);
 	}
+
 	return Plugin_Continue;
 }
 
@@ -1147,7 +1129,7 @@ Action:Event_WeaponDropped(Handle:hEvent, const String:strName[], bool:bDontBroa
 	decl String:droppeditem[32];
 	GetEventString(hEvent, "item", droppeditem, 32);
 	new iProp = GetEventInt(hEvent,"propid");
-	// PrintToChatAll("droppeditem = %s", droppeditem);
+	//PrintToChatAll("droppeditem = %s", droppeditem);
 	if(g_iStrongLevel[iClient] > 0)
 	{
 		if((StrContains(g_strCoachGrenadeSlot1, "empty", false) != -1) || (StrContains(g_strCoachGrenadeSlot2, "empty", false) != -1) || (StrContains(g_strCoachGrenadeSlot3, "empty", false) != -1))
@@ -1176,7 +1158,7 @@ Action:Event_WeaponDropped(Handle:hEvent, const String:strName[], bool:bDontBroa
 				//PrintToChatAll("Attempting to save dropped ammo...");
 				g_iEllisPrimarySavedClipSlot1[iClient] = GetEntProp(iProp, Prop_Data, "m_iClip1");
 				//g_iEllisPrimarySavedAmmoSlot1[iClient] = GetEntProp(iProp, Prop_Send, "m_iExtraPrimaryAmmo");
-				//g_iEllisPrimarySavedAmmoSlot1[iClient] = GetEntData(iProp, iOffset_Ammo + 12, iAmmo);
+				//g_iEllisPrimarySavedAmmoSlot1[iClient] = GetEntData(iProp, iOffset_Ammo + 12,w iAmmo);
 				//PrintToChatAll("g_iEllisPrimarySavedClipSlot1 %d", g_iEllisPrimarySavedClipSlot1[iClient]);
 				//PrintToChatAll("g_iEllisPrimarySavedAmmoSlot1 %d", g_iEllisPrimarySavedAmmoSlot1[iClient]);
 				//g_iEllisPrimarySavedAmmoSlot1[iClient] = GetEntProp(iProp, Prop_Data, iOffset_Ammo2);
@@ -1207,4 +1189,5 @@ Action:Event_WeaponDropped(Handle:hEvent, const String:strName[], bool:bDontBroa
 		//PrintToChatAll("Killing nicks pistols");
 	}
 	//g_bIsNickInSecondaryCycle[iClient] == true
+	
 }
