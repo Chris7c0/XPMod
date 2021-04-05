@@ -227,8 +227,8 @@ new bool:g_bClientSpectating[MAXPLAYERS + 1] = false;
 
 // Game Freezing Variables
 new bool:g_bGameFrozen = false;
-new bool:g_bPlayerPressedButtonThisRound = false;   // This is used to set thte countdown timer, it wont start till  someone presses a button
-new g_iUnfreezeNotifyRunTimes = 1;				    //for the unfreeze notify runtimes
+new bool:g_bPlayerPressedButtonThisRound = false;   // This is used to set the countdown timer, it wont start till someone presses a button
+new g_iUnfreezeNotifyRunTimes = 1;				    // This is for the unfreeze notify runtimes
 
 // Binds
 new g_iClientBindUses_1[MAXPLAYERS + 1];

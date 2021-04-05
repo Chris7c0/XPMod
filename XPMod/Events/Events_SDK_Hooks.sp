@@ -58,7 +58,7 @@ public Action:OnTakeDamage(victim, &attacker, &inflictor, &Float:damage, &damage
 		RunClientChecks(victim) == false &&
 		IsCommonInfected(victim, ""))
 	{
-		PrintToServer("OnTakeDamage %i: damage: %f, damageType: %i, weapon: %i", victim, damage, damageType, weapon);
+		//PrintToServer("OnTakeDamage %i: damage: %f, damageType: %i, weapon: %i", victim, damage, damageType, weapon);
 
 		// This is meant to be a cap for melee weapons, but may not be worth the check to do so.
 		// If problems occur, add this check in using weapon.

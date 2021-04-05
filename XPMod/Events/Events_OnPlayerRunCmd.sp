@@ -3,13 +3,13 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 	bool bButtonsChanged = false;
 
 	// If the round has not been unfrozen yet, check for input and then start unfreeze timer once input has been done
-	if (g_bPlayerPressedButtonThisRound == false && iButtons)
+	if (g_bEndOfRound == false && g_bPlayerPressedButtonThisRound == false && iButtons)
 	{
 		g_bPlayerPressedButtonThisRound = true;
 		// PrintToServer("**************************** Setting up unfreeze timer OnPlayerRunCmd");
 		SetupUnfreezeGameTimer(20.0);
 	}
-
+	
 	// // Get button released 
 	// if( GetEntProp( iClient, Prop_Data, "m_afButtonReleased" ) )
 	// 	PrintToServer("Button released =========================================< %i", GetEntProp( iClient, Prop_Data, "m_afButtonReleased" ));
