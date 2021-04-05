@@ -60,6 +60,9 @@ ResetVariablesForMap(iClient)
 	g_iBileCleansingKits[iClient] = 0;
 	g_iBileCleansingFrameTimeCtr[iClient] = -1;
 
+	// Unhook all of the OnTakeDamage in case there
+	// were any left over from the last map
+	UnhookAllOnTakeDamage();
 
 	g_iInfectedCharacter[iClient] = UNKNOWN_INFECTED;
 	RemoveAllEntitiesFromArrayList(g_listEnhancedCIEntities);

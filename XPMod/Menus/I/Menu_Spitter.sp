@@ -257,10 +257,10 @@ Action:BagOfSpitsMenuDraw(iClient)
 
 	AddMenuItem(menu, "option1",
 		"MINI ARMY\
-		\n	A lot of very tiny, very annoying, enhanced infected.");
+		\n	A dozen very tiny, very annoying, enhanced infected.");
 	AddMenuItem(menu, "option2", 
 		"MUSCLE CREW\
-		\n	Three roided out infected...lookin' for brainz gainz.");
+		\n	Six roided out infected...lookin' for brainz gainz.");
 	AddMenuItem(menu, "option3", 
 		"ENHANCED JIMMY\
 		\n	Big and Enhanced, for your pleasure.");

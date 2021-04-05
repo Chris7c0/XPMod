@@ -30,3 +30,18 @@ public Action:TimeScale(client, args)
 		ReplyToCommand(client, "[SM] Usage: sm_timescale <float>");
 	}	
 }
+
+void KillAllCI(iClient)
+{
+	for (int i=1; i < MAXENTITIES; i++)
+	{
+		if (IsValidEntity(i) && IsCommonInfected(i, ""))
+		{
+			DealDamage(i, iClient, 9999);
+			DealDamage(i, iClient, 9999);
+			DealDamage(i, iClient, 9999);
+			DealDamage(i, iClient, 9999);
+			DealDamage(i, iClient, 9999);
+		}
+	}
+}

@@ -425,7 +425,8 @@ DealDamage(iVictim, iAttacker, iAmount, iDamageType = DAMAGETYPE_INFECTED_MELEE)
 	//This function was originally written by AtomikStryker
 	decl Float:iVictimPosition[3], String:strDamage[16], String:strDamageType[16], String:strDamageTarget[16];
 	
-	GetClientEyePosition(iVictim, iVictimPosition);		
+	//GetClientEyePosition(iVictim, iVictimPosition);
+	GetEntPropVector(iVictim, Prop_Send, "m_vecOrigin", iVictimPosition);
 	IntToString(iAmount, strDamage, sizeof(strDamage));
 	IntToString(iDamageType, strDamageType, sizeof(strDamageType));
 	Format(strDamageTarget, sizeof(strDamageTarget), "hurtme%d", iVictim);

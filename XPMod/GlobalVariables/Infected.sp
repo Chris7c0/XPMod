@@ -14,6 +14,8 @@ new bool:g_iInfectedConvarsSet[MAXPLAYERS + 1];
 new bool:g_bCanBeGhost[MAXPLAYERS + 1];
 new bool:g_bIsGhost[MAXPLAYERS + 1];
 
+// CI hit max damage from survivor hit (meant for melee)
+#define CI_MAX_DAMAGE_PER_HIT   500.0
 // Uncommon Infected (Note: these correspond to their model string index)
 #define UNCOMMON_CI_NONE        -1
 #define UNCOMMON_CI_RANDOM      -2
@@ -48,10 +50,10 @@ new bool:g_bIsGhost[MAXPLAYERS + 1];
 #define CI_REALLY_SMALL_HEALTH      30
 #define CI_SMALL_MIN_HEALTH         100
 #define CI_SMALL_MAX_HEALTH         200
-#define CI_BIG_MIN_HEALTH           500
-#define CI_BIG_MAX_HEALTH           1500
-#define CI_REALLY_BIG_HEALTH        2500
-#define CI_REALLY_BIG_JIMMY_HEALTH  6000
+#define CI_BIG_MIN_HEALTH           1000
+#define CI_BIG_MAX_HEALTH           2000
+#define CI_REALLY_BIG_HEALTH        3000
+#define CI_REALLY_BIG_JIMMY_HEALTH  8000
 // Enhanced CI Types
 #define ENHANCED_CI_TYPE_RANDOM     -1
 #define ENHANCED_CI_TYPE_NONE       0
@@ -77,7 +79,7 @@ new ArrayList:g_listEnhancedCIEntities;
 #define ENHANCED_CI_NECRO_SPAWN_BIG_SMALL_CHANCE    0.66
 #define ENHANCED_CI_NECRO_SPAWN_ENHANCED_CHANCE     0.66
 // Vampiric CI
-#define ENHANCED_CI_VAMPIRIC_LIFE_STEAL_AMOUNT      30
+#define ENHANCED_CI_VAMPIRIC_LIFE_STEAL_AMOUNT      250
 
 // Smoker
 new g_iMaxTongueLength;

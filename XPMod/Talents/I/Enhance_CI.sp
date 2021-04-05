@@ -99,6 +99,9 @@ Action:TimerSpawnRandomlyEnhancedCIForDirector(Handle:timer, any:iEntity)
 
 EnhanceCommonInfected(iZombie, iBigOrSmall = CI_SMALL_OR_BIG_NONE, iEnhancedCISpecifiedType = ENHANCED_CI_TYPE_NONE)
 {
+	// Hook the CI so damage can be better handled, such as capping melee damage
+	SDKHook(iZombie, SDKHook_OnTakeDamage, OnTakeDamage);
+
 	if (iBigOrSmall == CI_SMALL_OR_BIG_RANDOM || iBigOrSmall == CI_BIG || iBigOrSmall == CI_SMALL)
 	{
 		new Float:fHealthAndSizeMultiplier = GetRandomFloat(0.0, 1.0);

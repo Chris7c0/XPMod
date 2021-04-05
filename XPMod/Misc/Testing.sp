@@ -13,23 +13,23 @@ Action:TestFunction1(iClient, args)
 	GetCmdArg(2, str2, sizeof(str2));
 
 
-	
+	KillAllCI(iClient);
 
-	// Print all grappled users
-	for (int i=1; i <= MaxClients; i++)
-	{
-		if (RunClientChecks(i) == false)
-			continue;
+	// // Print all grappled users
+	// for (int i=1; i <= MaxClients; i++)
+	// {
+	// 	if (RunClientChecks(i) == false)
+	// 		continue;
 
-		if (IsClientGrappled(i) == true)
-			PrintToChatAll("Grappled: %N", i);
+	// 	if (IsClientGrappled(i) == true)
+	// 		PrintToChatAll("Grappled: %N", i);
 
-		if (g_bIsClientDown[i])
-			PrintToChatAll("g_bIsClientDown: %N", i);
+	// 	if (g_bIsClientDown[i])
+	// 		PrintToChatAll("g_bIsClientDown: %N", i);
 
-		if (GetEntProp(i, Prop_Send, "m_isIncapacitated") == 1)
-			PrintToChatAll("Incap: %N", i);
-	}
+	// 	if (GetEntProp(i, Prop_Send, "m_isIncapacitated") == 1)
+	// 		PrintToChatAll("Incap: %N", i);
+	// }
 
 	//if (args < 1) return Plugin_Stop;
 
@@ -143,7 +143,6 @@ Action:TestFunction4(iClient, args)
 	char str1[99];
 	GetCmdArg(1, str1, sizeof(str1));
 
-
 	// decl String:strTimeScaleCmd[32];
 	// Format(strTimeScaleCmd, sizeof(strTimeScaleCmd), "host_timescale %3f", StringToFloat(str1));
 	// PrintToChat(iClient, "%s", strTimeScaleCmd);
@@ -153,7 +152,7 @@ Action:TestFunction4(iClient, args)
 	
 	//g_hTimeScale.FloatValue = StringToFloat(str1);
 
-	TimeScale(iClient, args)
+	//TimeScale(iClient, args)
 
 	
 	//OpenMOTDPanel(iClient, "t4" , " .", MOTDPANEL_TYPE_INDEX);
