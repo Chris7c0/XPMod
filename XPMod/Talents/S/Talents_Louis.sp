@@ -374,6 +374,17 @@ void EventsPlayerUse_Louis(int iClient, int iTargetID)
 	g_bHealthBoostSlotWasEmptyOnLastPickUp[iClient] = false;
 }
 
+void EventsWeaponGiven_Louis(int iClient)
+{
+	if (g_iChosenSurvivor[iClient] != LOUIS || g_bTalentsConfirmed[iClient] == false)
+		return;
+
+	// Check if the player has the ability, has stashed pills, and also if the weapon given
+	if (g_iLouisTalent6Level[iClient] > 0 && g_iStashedInventoryPills[iClient] > 0)
+		CreateTimer(0.1, TimerGivePillsFromStashedInventory, iClient, TIMER_FLAG_NO_MAPCHANGE);
+}
+
+
 void HandleCheatCommandTasks_Louis(int iClient, const char [] strCommandWithArgs)
 {
 	if (g_iChosenSurvivor[iClient] != LOUIS || g_bTalentsConfirmed[iClient] == false)

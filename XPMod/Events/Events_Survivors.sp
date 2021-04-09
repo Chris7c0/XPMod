@@ -1669,19 +1669,20 @@ Action:Event_AdrenalineUsed(Handle:hEvent, const String:strName[], bool:bDontBro
 	return Plugin_Continue;
 }
 
-//Temporarily removed to contain an exploit
-
-Action:Event_WeaponGiven(Handle:hEvent, const String:strName[], bool:bDontBroadcast)	//For Pills and Shots
+//For Pills and Shots
+Action:Event_WeaponGiven(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	//PrintToChatAll("Event_WeaponGiven");
-	/*
-	new iTaker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	new iGiver  = GetClientOfUserId(GetEventInt(hEvent,"giver"));
-	//Not needed because only adrenaline or pills can be given
-	//new iWeapon  = GetClientOfUserId(GetEventInt(hEvent,"weapon"));	
 	
-	GiveClientXP(iGiver, 25, g_iSprite_25XP, iTaker, "Health Boost given to player.");
-	*/
+	new iGiver  = GetClientOfUserId(GetEventInt(hEvent,"giver"));
+	// new iTaker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	// new iWeapon  = GetEventInt(hEvent,"weapon");	
+	
+	// Removed because of hand back and forth between two players
+	// GiveClientXP(iGiver, 25, g_iSprite_25XP, iTaker, "Health Boost given to player.");
+
+	EventsWeaponGiven_Louis(iGiver);
+	
 	return Plugin_Continue;
 }
 
