@@ -47,6 +47,10 @@ Action:TopSurvivorMenuDraw(iClient)
 //Choose Character Menu Draw
 Action:ChangeSurvivorMenuDraw(iClient)
 {
+	// Check that they are not already confirmed
+	if (g_bTalentsConfirmed[iClient])
+		return Plugin_Handled;
+	
 	Menu menu = CreateMenu(ChangeSurvivorMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 

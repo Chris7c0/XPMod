@@ -562,7 +562,15 @@ LoadoutMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			}
 			case 7: //Change Survivor
 			{
-				ChangeSurvivorMenuDraw(iClient);
+				if (g_bTalentsConfirmed[iClient] == false)
+				{
+					ChangeSurvivorMenuDraw(iClient);
+				}
+				else
+				{
+					PrintToChat(iClient, "\x03[XPMod] \x04You have already confirmed. You must wait until the next round to change your survivor.");
+					LoadoutMenuDraw(iClient);
+				}
 			}
 			case 8: //Back
 			{

@@ -50,6 +50,10 @@ Action:ChangeInfectedMenuDraw(iClient)
 {
 	DeleteAllMenuParticles(iClient);
 
+	// Check that they are not already confirmed
+	if (g_bTalentsConfirmed[iClient])
+		return Plugin_Handled;
+
 	Menu menu = CreateMenu(ChangeInfectedMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
