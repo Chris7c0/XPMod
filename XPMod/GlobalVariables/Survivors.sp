@@ -294,3 +294,31 @@ bool g_bWareStationClientAlreadyServiced[MAXPLAYERS + 1][MAXPLAYERS + 1];
 new g_iWareStationOwnerIDOfCurrentlyViewedStation[MAXPLAYERS + 1];
 float g_xyzWarezStationLocation[MAXPLAYERS + 1][3];
 float g_fWarezStationSpeedBoost[MAXPLAYERS + 1];
+float g_fLouisXMRWallet[MAXPLAYERS + 1];
+#define LOUIS_HEADSHOT_XMR_AMOUNT_CI                    0.1
+#define LOUIS_HEADSHOT_XMR_AMOUNT_SI                    0.5
+#define LOUIS_HEADSHOP_ITEM_SPEED_HAX                   1
+#define LOUIS_HEADSHOP_ITEM_MED_HAX                     2
+#define LOUIS_HEADSHOP_ITEM_NUB_WIPE                    3
+#define LOUIS_HEADSHOP_ITEM_HAK_TARGET                  4
+#define LOUIS_HEADSHOP_ITEM_TIME_OUT                    5
+#define LOUIS_HEADSHOP_ITEM_HAXOR_TEH_SERVER            6
+#define LOUIS_HEADSHOP_XMR_AMOUNT_SPEED_HAX             2.0
+#define LOUIS_HEADSHOP_XMR_AMOUNT_MED_HAX               3.0
+#define LOUIS_HEADSHOP_XMR_AMOUNT_NUB_WIPE              3.0
+#define LOUIS_HEADSHOP_XMR_AMOUNT_HAK_TARGET            4.20
+#define LOUIS_HEADSHOP_XMR_AMOUNT_TIME_OUT              5.0
+#define LOUIS_HEADSHOP_XMR_AMOUNT_HAXOR_TEH_SERVER      6.9
+bool g_bLouisSpeedHaxEnabled;
+bool g_bSpeedHaxInCooldown;
+#define LOUIS_SPEED_HAX_MOVEMENT_MULTIPLIER             2.0
+#define LOUIS_SPEED_HAX_DURATION                        10.0
+#define LOUIS_SPEED_HAX_COOLDOWN_DURATION               300.0
+bool g_bLouisMedHaxEnabled;
+#define LOUIS_MED_HAX_USE_DURATION                      0
+#define LOUIS_MED_HAX_DURATION                          30.0
+bool g_bHackTheServerInCooldown;
+#define LOUIS_HAK_TEH_SERVER_DURATION                   5.0     // The actual duration is a function of this...
+#define LOUIS_HAK_TEH_SERVER_TIME_SCALE_FACTOR          0.25    // multiplied by 1 over this
+#define LOUIS_HAK_TEH_SERVER_COOLDOWN_DURATION          300.0
+

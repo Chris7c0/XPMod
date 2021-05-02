@@ -24,7 +24,7 @@ Action:LouisMenuDraw(iClient)
 	AddMenuItem(menu, "option3", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	BOOM HEADSHOT!", g_iLouisTalent4Level[iClient]);
 	AddMenuItem(menu, "option4", text);
-	FormatEx(text, sizeof(text), "	[Level %d]	Explosivo (Bind 1)                  ", g_iLouisTalent5Level[iClient]);
+	FormatEx(text, sizeof(text), "	[Level %d]	Neurosurgeon (Bind 1)           ", g_iLouisTalent5Level[iClient]);
 	AddMenuItem(menu, "option5", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	PILLS HERE! (Bind 2)\n ", g_iLouisTalent6Level[iClient]);
 	AddMenuItem(menu, "option6", text);
@@ -245,7 +245,7 @@ Action:LouisTalent5MenuDraw(iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		%s 					Explosivo (Level %d):\
+		%s 					Neurosurgeon (Level %d):\
 		\n \
 		\n COMING SOON                                                           \
 		\n \
@@ -295,22 +295,27 @@ Action:LouisTalent6MenuDraw(iClient)
 		\n 	- Turn MedKit Into 3 Pill Bottles\
 		\n \
 		\n When Taking Pills (Stacks):\
-		\n 	- +1 Temp Health Per Level\
-		\n 	- +1%%%% Movement Speed per Level for 60 Seconds    \
-		\n 		- Louis Is Always Capped At +25%%%% Speed\
-		\n 	- +3%%%% Damage per Level for 60 Seconds\
-		\n 	- 5 Stacks Max\
+		\n	- +1 Temp Health Per Level\
+		\n	- +1%%%% Speed per Level for 60 Seconds\
+		\n		- Louis Capped At +25%%%% Speed\
+		\n	- +3%%%% Damage per Level for 60 Seconds  \
+		\n	- 5 Stacks Max\
 		\n \
-		\n Bind 2: 5cR1PT k1Dd13 3xPl0172 m3Nu\
+		\n Bind 2: H3D 5h0p\
+		\n	- Unlock 5cR1PT k1Dd13 3xPl0172 m3Nu\
+		\n		+ %0.1f XMR per CI Headshot Kill\
+		\n		+ %0.1f XMR per SI Headshot Kill\
 		\n ",
 		strStartingNewLines,
-		g_iLouisTalent6Level[iClient]);
+		g_iLouisTalent6Level[iClient],
+		LOUIS_HEADSHOT_XMR_AMOUNT_CI,
+		LOUIS_HEADSHOT_XMR_AMOUNT_SI);
 	SetMenuTitle(menu, text);
 
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 

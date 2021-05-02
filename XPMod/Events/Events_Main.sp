@@ -293,6 +293,10 @@ Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	SetConVarInt(FindConVar("pain_pills_health_threshold"), 999);	//So everyone can use pain pills above 99 health
 	SetConVarInt(FindConVar("sb_stop"), 1);				//So the bots dont run off before unfrozen
 	SetConVarFloat(FindConVar("upgrade_laser_sight_spread_factor"), 0.4);
+	// Louis's Bind2 abilities reset to the default values
+	SetConVarInt(FindConVar("survivor_revive_duration"), 5);
+	SetConVarInt(FindConVar("first_aid_kit_use_duration"), 5);
+	SetConVarInt(FindConVar("defibrillator_use_duration"), 3);
 	g_bCommonInfectedDoMoreDamage = false;
 	g_iNickResurrectUses = 0;
 	g_iHighestLeadLevel = 0;

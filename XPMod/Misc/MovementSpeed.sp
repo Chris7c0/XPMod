@@ -49,6 +49,13 @@ SetClientSpeed(iClient)
 	// PrintToChatAll("SetClientSpeed: %N: %f", iClient, fSpeed);
 }
 
+SetClientSpeedForAllSurvivors()
+{
+	for (int iClient=1; iClient <= MaxClients; iClient++)
+		if (g_iClientTeam[iClient] == TEAM_SURVIVORS)
+			SetClientSpeed(iClient);
+}
+
 // Action:TimerResetClientSpeed(Handle:timer, any:iClient)
 // {
 // 	SetClientSpeed(iClient);
@@ -365,6 +372,15 @@ bool SetClientSpeedOverrides(iClient, &Float:fSpeed)
 		g_iClientTeam[iClient] == TEAM_SURVIVORS)
 	{
 		fSpeed = (1.0 - g_fAdhesiveAffectAmount[iClient]);
+		return true;
+	}
+
+	// Louis's Bind 2 Global Survivor Speed Override
+	if(g_bLouisSpeedHaxEnabled == true &&
+		g_iClientTeam[iClient] == TEAM_SURVIVORS && 
+		IsClientGrappled(iClient) == false)
+	{
+		fSpeed = LOUIS_SPEED_HAX_MOVEMENT_MULTIPLIER;
 		return true;
 	}
 

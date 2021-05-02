@@ -13,8 +13,6 @@ Action:TestFunction1(iClient, args)
 	GetCmdArg(2, str2, sizeof(str2));
 
 
-	KillAllCI(iClient);
-
 	// // Print all grappled users
 	// for (int i=1; i <= MaxClients; i++)
 	// {
@@ -82,8 +80,6 @@ Action:TestFunction1(iClient, args)
 Action:TestFunction2(iClient, args)
 {
 	DebugLog(DEBUG_MODE_TESTING, "T2");
-
-	HealAllSurvivorsFully();
 
 	char str1[99];
 	char str2[99];

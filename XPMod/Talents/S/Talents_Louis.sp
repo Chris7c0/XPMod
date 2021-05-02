@@ -215,6 +215,9 @@ EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 				g_iLouisCIHeadshotCounter[iAttacker]++;
 				SetClientSpeed(iAttacker);
 				CreateTimer(LOUIS_HEADSHOT_SPEED_RETENTION_TIME_CI, TimerLouisCIHeadshotReduce, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
+
+				// Give XMR
+				g_fLouisXMRWallet[iAttacker] += LOUIS_HEADSHOT_XMR_AMOUNT_CI;
 			}
 			
 			// SI Headshot
@@ -238,6 +241,9 @@ EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 				g_iLouisSIHeadshotCounter[iAttacker]++;
 				SetClientSpeed(iAttacker);
 				CreateTimer(LOUIS_HEADSHOT_SPEED_RETENTION_TIME_SI, TimerLouisSIHeadshotReduce, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
+
+				// Give XMR
+				g_fLouisXMRWallet[iAttacker] += LOUIS_HEADSHOT_XMR_AMOUNT_SI;
 			}
 		}
 	}

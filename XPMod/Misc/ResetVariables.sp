@@ -118,6 +118,11 @@ ResetVariablesForMap(iClient)
 	g_iWareStationOwnerIDOfCurrentlyViewedStation[iClient] = -1;
 	g_xyzWarezStationLocation[iClient] = NULL_VECTOR;
 	g_fWarezStationSpeedBoost[iClient] = 0.0;
+	g_fLouisXMRWallet[iClient] = 0.0;
+	g_bLouisSpeedHaxEnabled = false;
+	g_bSpeedHaxInCooldown = false;
+	g_bLouisMedHaxEnabled = false;
+	g_bHackTheServerInCooldown = false;
 	
 	//Infected Talents
 	g_iInfectedConvarsSet[iClient] = false;
