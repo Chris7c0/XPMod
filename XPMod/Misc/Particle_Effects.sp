@@ -156,7 +156,7 @@ CreateParticle(String:type[], Float:time, entity, attach = ATTACH_NONE, bool:use
 	return particle;
 }
 
-int AttachParticle(target, String:particlename[], Float:time, Float:origin)
+int AttachParticle(target, String:particlename[], Float:time, Float:originOffset = 0.0)
 {
 	if (target > 0 && IsValidEntity(target))
 	{
@@ -166,7 +166,7 @@ int AttachParticle(target, String:particlename[], Float:time, Float:origin)
 		{
 			new Float:pos[3];
 			GetEntPropVector(target, Prop_Send, "m_vecOrigin", pos);
-			pos[2] += origin;
+			pos[2] += originOffset;
 			TeleportEntity(particle, pos, NULL_VECTOR, NULL_VECTOR);
 			decl String:tName[64];
 			Format(tName, sizeof(tName), "Attach%d", target);

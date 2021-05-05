@@ -285,6 +285,9 @@ new g_iLouisTeleportBlindnessAmount[MAXPLAYERS + 1] = 0;
 new g_iLouisTeleportMovementPenaltyStacks[MAXPLAYERS + 1] = 0;
 new g_iLouisCIHeadshotCounter[MAXPLAYERS + 1] = 0;
 new g_iLouisSIHeadshotCounter[MAXPLAYERS + 1] = 0;
+#define LOUIS_NEUROSURGEON_CI_CHANCE                    5 // Perecent Chance
+#define LOUIS_NEUROSURGEON_SI_CHANCE                    5 // Perecent Chance
+#define LOUIS_NEUROSURGEON_SI_XMR_REWARD_AMOUNT         5.0 // XMR
 new g_iStashedInventoryPills[MAXPLAYERS + 1] = 0;
 new g_iPillsUsedStack[MAXPLAYERS + 1] = 0;
 bool g_bHealthBoostItemJustGivenByCheats[MAXPLAYERS + 1] = false;

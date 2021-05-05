@@ -29,7 +29,7 @@ Action:ScriptKiddieExploitsMenuDraw(iClient)
 		5p3eD h4x\
 		\n	%.1f XMR	%s",
 		LOUIS_HEADSHOP_XMR_AMOUNT_SPEED_HAX,
-		g_bLouisSpeedHaxEnabled == false ? "" : "SOLD OUT");
+		g_bSpeedHaxInCooldown == false ? "" : "SOLD OUT");
 	AddMenuItem(menu, "option1", text);
 
 	FormatEx(text, sizeof(text), "\

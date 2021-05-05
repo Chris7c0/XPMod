@@ -247,9 +247,19 @@ Action:LouisTalent5MenuDraw(iClient)
 	FormatEx(text, sizeof(text), "\
 		%s 					Neurosurgeon (Level %d):\
 		\n \
-		\n COMING SOON                                                           \
+		\n Every Common Infected Headshot Kill Has A 5%%%% Chance To Drop:\
+		\n	- Pain Pills\
+		\n	- First Aid Kit\
+		\n	- Molotov\
+		\n	- Bile Jar\
+		\n	- Pipe bomb\
+		\n Every Special Infected Headshot Kill Has A 5%%%% Chance To:\
+		\n	- Get 5 Monero (XMR)\
+		\n	- Get Extra Warez Station\
 		\n \
-		\n Bind 1: w4R3z 574t10n m3nU\
+		\n Bind 1: w4R3z 574t10n u53r\
+		\n \
+		\n	Deploy and share your Warez with your team quickly and easily!\
 		\n ",
 		strStartingNewLines,
 		g_iLouisTalent5Level[iClient]);
@@ -258,7 +268,7 @@ Action:LouisTalent5MenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 

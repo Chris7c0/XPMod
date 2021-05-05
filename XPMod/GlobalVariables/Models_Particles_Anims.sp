@@ -55,6 +55,33 @@ new String:UNCOMMON_INFECTED_MODELS[][] =   {"models/infected/common_male_jimmy.
                                             "models/infected/common_male_riot.mdl",
                                             "models/infected/common_male_roadcrew.mdl"}
 
+// Game Item Models for spawning in game
+#define ITEM_FIRST_AID_KIT          0
+#define ITEM_PAIN_PILLS             1
+#define ITEM_ADRENALINE             2
+#define ITEM_DEFIBRILLATOR          3
+#define ITEM_MOLOTOV                4
+#define ITEM_BILE_JAR               5
+#define ITEM_PIPE_BOMB              6
+#define ITEM_COUNT                  6
+
+new String:ITEM_NAME[][] =              {"weapon_first_aid_kit",
+                                        "weapon_pain_pills",
+                                        "weapon_adrenaline",
+	                                    "weapon_defibrillator",
+                                        "weapon_molotov",
+                                        "weapon_vomitjar",
+	                                    "weapon_pipe_bomb"}
+
+new String:ITEM_MODEL_PATH[][] =        {"models/w_models/weapons/w_eq_medkit.mdl",
+                                        "models/w_models/weapons/w_eq_painpills.mdl",
+                                        "models/w_models/weapons/w_eq_adrenaline.mdl",
+	                                    "models/w_models/weapons/w_eq_defibrillator.mdl",
+                                        "models/w_models/weapons/w_eq_molotov.mdl",
+                                        "models/w_models/weapons/w_eq_bile_flask.mdl",
+	                                    "models/w_models/weapons/w_eq_pipebomb.mdl"}
+
+
 
 
 //Sprites

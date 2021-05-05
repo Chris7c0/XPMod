@@ -8,6 +8,7 @@
 #define SOUND_LEVELUP				        "ui/critical_event_1.wav"
 #define SOUND_TALENTS_LOAD1			        "player/orch_hit_csharp_short.wav"
 #define SOUND_HEADSHOT                      "level/timer_bell.wav"
+#define SOUND_HEADSHOT_REWARD               "level/light_on.wav"
 #define SOUND_FREEZE				        "physics/glass/glass_impact_bullet4.wav"
 #define SOUND_AMBTEST3				        "music/stmusic/deathisacarousel.wav"
 #define SOUND_PEEING				        "ambient/spacial_loops/4b_hospatrium_waterleak.wav"

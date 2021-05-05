@@ -216,6 +216,28 @@ EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 				SetClientSpeed(iAttacker);
 				CreateTimer(LOUIS_HEADSHOT_SPEED_RETENTION_TIME_CI, TimerLouisCIHeadshotReduce, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
 
+				// Give random item if chance rolled for the CI HS Kill
+				if (GetRandomInt(1,100) <= LOUIS_NEUROSURGEON_CI_CHANCE)
+				{
+					// Get the actual CI entity
+					new iCIVictim = GetEventInt(hEvent, "entityid");
+					// Get the CI entity's location to spawn the item
+					float xyzVictimLocation[3];
+					GetEntPropVector(iCIVictim, Prop_Send, "m_vecOrigin", xyzVictimLocation);
+					// Get a random item and spawn in the item on the CI entity
+					new iItem = SpawnItem(xyzVictimLocation, GetRandomInt(0, 6), 50.0);
+					// Attach particle effects to entity for awareness
+					AttachParticle(iItem, "item_defibrillator_body", 10.0);
+					AttachParticle(iItem, "item_defibrillator_body_b", 10.0);
+					AttachParticle(iItem, "railroad_light_blink1", 10.0);
+					AttachParticle(iItem, "railroad_light_blink1b", 10.0);
+					AttachParticle(iItem, "railroad_light_blink2", 10.0);
+					AttachParticle(iItem, "railroad_light_blink2b", 10.0);
+					// Play sound so its more apparent
+					EmitSoundToClient(iAttacker, SOUND_HEADSHOT_REWARD);
+					EmitSoundToClient(iAttacker, SOUND_HEADSHOT_REWARD);
+				}
+
 				// Give XMR
 				g_fLouisXMRWallet[iAttacker] += LOUIS_HEADSHOT_XMR_AMOUNT_CI;
 			}
@@ -241,6 +263,32 @@ EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 				g_iLouisSIHeadshotCounter[iAttacker]++;
 				SetClientSpeed(iAttacker);
 				CreateTimer(LOUIS_HEADSHOT_SPEED_RETENTION_TIME_SI, TimerLouisSIHeadshotReduce, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
+
+				// Give random item if chance rolled for the SI HS Kill
+				if (GetRandomInt(1,100) <= LOUIS_NEUROSURGEON_SI_CHANCE)
+				{
+					// Get a random item
+					switch (GetRandomInt(1, 2))
+					{
+						case 1:
+						{
+							// Give XMR Reward
+							g_fLouisXMRWallet[iAttacker] += LOUIS_NEUROSURGEON_SI_XMR_REWARD_AMOUNT;
+							PrintToChat(iAttacker, "\x03[XPMod] \x05You earned %0.1f XMR for your neurosurgery efforts!", LOUIS_NEUROSURGEON_SI_XMR_REWARD_AMOUNT);
+						}
+						case 2:
+						{
+							// Extra warez station
+							g_iClientBindUses_1[iAttacker] -= 1;
+							PrintToChat(iAttacker, "\x03[XPMod] \x05You earned an extra Warez Station for your neurosurgery efforts!");
+						}
+					}
+
+					// Play sound so its more apparent
+					EmitSoundToClient(iAttacker, SOUND_HEADSHOT_REWARD);
+					EmitSoundToClient(iAttacker, SOUND_HEADSHOT_REWARD);
+					EmitSoundToClient(iAttacker, SOUND_HEADSHOT_REWARD);
+				}
 
 				// Give XMR
 				g_fLouisXMRWallet[iAttacker] += LOUIS_HEADSHOT_XMR_AMOUNT_SI;

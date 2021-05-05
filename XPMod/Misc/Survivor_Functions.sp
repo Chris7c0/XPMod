@@ -271,3 +271,30 @@ int GetSurvivorTempHealth(int iClient)
     int tempHealth = RoundToCeil(GetEntPropFloat(iClient, Prop_Send, "m_healthBuffer") - ((GetGameTime() - GetEntPropFloat(iClient, Prop_Send, "m_healthBufferTime")) * flPainPillsDecay)) - 1;
     return tempHealth < 0 ? 0 : tempHealth;
 }
+
+int SpawnItem(float xyzLocation[3], int itemIndex, const float fZOffset = 0.0)
+{
+	//PrintToChatAll("spawn loc: %f, %f, %f", xyzLocation[0], xyzLocation[1], xyzLocation[2]);
+
+	int iEntity = -1;
+	iEntity = CreateEntityByName(ITEM_NAME[itemIndex]);
+	if( iEntity == -1 )
+	{
+		ThrowError("Failed to create entity '%s'", ITEM_NAME[itemIndex]);
+		return -1;
+	}
+
+	DispatchKeyValue(iEntity, "solid", "6");
+	DispatchKeyValue(iEntity, "model", ITEM_MODEL_PATH[itemIndex]);
+	DispatchKeyValue(iEntity, "rendermode", "3");
+	DispatchKeyValue(iEntity, "disableshadows", "1");
+
+	xyzLocation[2] += fZOffset;
+	float xyzVelocity[3] = {0.0, 0.0, 300.0};
+	DispatchSpawn(iEntity);
+
+	// Its required to teleport after spawn or velocity wont work
+	TeleportEntity(iEntity, xyzLocation, NULL_VECTOR, xyzVelocity);
+
+	return iEntity;
+}
