@@ -253,8 +253,8 @@ Action:LouisTalent5MenuDraw(iClient)
 		\n	- Molotov\
 		\n	- Bile Jar\
 		\n	- Pipe bomb\
-		\n Every Special Infected Headshot Kill Has A 5%%%% Chance To:\
-		\n	- Get 5 Monero (XMR)\
+		\n Every Special Infected Headshot Kill Has A 1%%%% Chance To:\
+		\n	- Get 6.9 Monero (XMR)\
 		\n	- Get Extra Warez Station\
 		\n \
 		\n Bind 1: w4R3z 574t10n u53r\
