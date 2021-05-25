@@ -213,8 +213,19 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 	// 	}
 	// }
 
+	// Louis's bind 2 player hacked, reverse movement and angles to cause confusion
+	if (g_bIsPLayerHacked[iClient])
+	{
+		fVelocity[0] *= -1.0;
+		fVelocity[1] *= -1.0;
+		fAngles[0] *= -1.0;
+		fAngles[1] *= -1.0;
+		return Plugin_Changed;
+	}
+
 	if (bButtonsChanged)
 		return Plugin_Changed;
+		
 
 	return Plugin_Continue;
 }

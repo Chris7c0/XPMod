@@ -31,6 +31,13 @@ void BindPress(int iClient, int iBindNumber)
 		return;
 	}
 
+	// Louis's TIME OUT bind 2, temporarily disable infected binds
+	if(g_bInfectedBindsDisabled == true && g_iClientTeam[iClient] == TEAM_INFECTED)
+	{
+		PrintToChat(iClient, "\x03[XPMod] \x04The Infected have been hacked. All Binds are corrupt.");
+		return;
+	}
+
 	if(g_iClientTeam[iClient] == TEAM_SURVIVORS)
 	{
 		switch(g_iChosenSurvivor[iClient])

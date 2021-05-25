@@ -28,6 +28,7 @@ TalentsLoad_Louis(iClient)
 
 bool OnPlayerRunCmd_Louis(iClient, &iButtons)
 {
+	// Louis abilities
 	if (g_iChosenSurvivor[iClient] != LOUIS || 
 		g_iLouisTalent3Level[iClient] <= 0 ||
 		g_iClientTeam[iClient] != TEAM_SURVIVORS || 
@@ -285,7 +286,6 @@ EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 					}
 
 					// Play sound so its more apparent
-					EmitSoundToClient(iAttacker, SOUND_HEADSHOT_REWARD);
 					EmitSoundToClient(iAttacker, SOUND_HEADSHOT_REWARD);
 					EmitSoundToClient(iAttacker, SOUND_HEADSHOT_REWARD);
 				}

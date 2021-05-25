@@ -33,39 +33,40 @@ Action:ScriptKiddieExploitsMenuDraw(iClient)
 	AddMenuItem(menu, "option1", text);
 
 	FormatEx(text, sizeof(text), "\
-		m3d h4Ckz\
-		\n	%.1f XMR	%s",
-		LOUIS_HEADSHOP_XMR_AMOUNT_MED_HAX,
-		g_bLouisMedHaxEnabled == false ? "" : "SOLD OUT");
-	AddMenuItem(menu, "option2", text);
-
-	FormatEx(text, sizeof(text), "\
 		nUb w1p3\
 		\n	%.1f XMR	%s",
 		LOUIS_HEADSHOP_XMR_AMOUNT_NUB_WIPE,
 		iClient != -1 ? "" : "SOLD OUT");
+	AddMenuItem(menu, "option2", text);
+
+	FormatEx(text, sizeof(text), "\
+		m3d h4Ckz\
+		\n	%.1f XMR	%s",
+		LOUIS_HEADSHOP_XMR_AMOUNT_MED_HAX,
+		g_bLouisMedHaxEnabled == false ? "" : "SOLD OUT");
 	AddMenuItem(menu, "option3", text);
 
 	FormatEx(text, sizeof(text), "\
 		h4k 74r9et\
 		\n	%.1f XMR	%s",
 		LOUIS_HEADSHOP_XMR_AMOUNT_HAK_TARGET,
-		iClient == -1 ? "" : "SOLD OUT");
+		iClient != -1 ? "" : "SOLD OUT");
 	AddMenuItem(menu, "option4",text);
 
 	FormatEx(text, sizeof(text), "\
-		t1m3 0u7\
+		h4x0r 73h 53RV3r\
 		\n	%.1f XMR	%s",
-		LOUIS_HEADSHOP_XMR_AMOUNT_TIME_OUT,
-		iClient == -1 ? "" : "SOLD OUT");
+		LOUIS_HEADSHOP_XMR_AMOUNT_HAXOR_TEH_SERVER,
+		g_bHackTheServerInCooldown == false ? "" : "SOLD OUT");
 	AddMenuItem(menu, "option5", text);
 
 	FormatEx(text, sizeof(text), "\
-		h4x0r 73h 53RV3r\
+		t1m3 0u7\
 		\n	%.1f XMR	%s\n ",
-		LOUIS_HEADSHOP_XMR_AMOUNT_HAXOR_TEH_SERVER,
-		g_bHackTheServerInCooldown == false ? "" : "SOLD OUT");
+		LOUIS_HEADSHOP_XMR_AMOUNT_TIME_OUT,
+		g_bTimeOutInCooldown == false ? "" : "SOLD OUT");
 	AddMenuItem(menu, "option6", text);
+
 
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
@@ -95,7 +96,7 @@ ScriptKiddieExploitsMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			IsFakeClient(iClient))
 			return;
 
-		if (IsClientGrappled(iClient) || GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1)
+		if (IsClientGrappled(iClient))// || GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1)
 		{
 			PrintToChat(iClient, "\x03[XPMod] \x04You cannot use Script Kiddies Exploits while Grappled or Incapacitated.");
 			ScriptKiddieExploitsMenuDraw(iClient);
@@ -106,23 +107,15 @@ ScriptKiddieExploitsMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 		{
 			// 5p3eD h4x
 			case 0: if (!SpeedHax(iClient)) ScriptKiddieExploitsMenuDraw(iClient);
-			// m3D h4Kz
-			case 1: if (!MedHax(iClient)) ScriptKiddieExploitsMenuDraw(iClient);
 			// nUb w1p3
-			case 2:	if (!NoobWipe(iClient)) ScriptKiddieExploitsMenuDraw(iClient);
-			case 3: // h4k 74r9et
-			{
-				PrintToChat(iClient, "\x03[XPMod] \x04This item is SOLD OUT!");
-				ScriptKiddieExploitsMenuDraw(iClient);
-			}
-			// t1m3 0u7
-			case 4: 
-			{
-				PrintToChat(iClient, "\x03[XPMod] \x04This item is SOLD OUT!");
-				ScriptKiddieExploitsMenuDraw(iClient);
-			}
+			case 1:	if (!NoobWipe(iClient)) ScriptKiddieExploitsMenuDraw(iClient);
+			// m3D h4Kz
+			case 2: if (!MedHax(iClient)) ScriptKiddieExploitsMenuDraw(iClient);
+			case 3: if (!HackTargetPlayer(iClient)) ScriptKiddieExploitsMenuDraw(iClient);
 			// h4x0r 73h 53RV3r
-			case 5:	if (!HackTheServer(iClient)) ScriptKiddieExploitsMenuDraw(iClient);
+			case 4:	if (!HackTheServer(iClient)) ScriptKiddieExploitsMenuDraw(iClient);
+			// t1m3 0u7
+			case 5: if (!TimeOut(iClient)) ScriptKiddieExploitsMenuDraw(iClient);
 		}
 	}
 }
@@ -245,6 +238,216 @@ bool NoobWipe(iClient)
 }
 
 
+bool HackTargetPlayer(iClient)
+{
+	// Check if the player has enough XMR
+	if (g_fLouisXMRWallet[iClient] < LOUIS_HEADSHOP_XMR_AMOUNT_HAK_TARGET)
+	{
+		PrintToChat(iClient, "\x03[XPMod] \x05You don't have enough XMR...do some more brain surgery.");
+		return false;
+	}
+
+	// Draw the hack target menu for the player to use
+	HackTargetPlayerMenuDraw(iClient)
+	
+	// // Remove the XMR from Louis's wallet for the hax
+	// g_fLouisXMRWallet[iClient] -= LOUIS_HEADSHOP_XMR_AMOUNT_HAK_TARGET;
+
+	return true;
+}
+
+// Hack Target Player Menu Draw
+Action:HackTargetPlayerMenuDraw(iClient)
+{
+	decl String:text[512], String:strTargetID[10];
+	
+	Menu menu = CreateMenu(HackTargetPlayerMenuHandler);
+	
+	FormatEx(text, sizeof(text), "\
+		\n				H4K  T@RG37\
+		\n					  v1.4.3\
+		\n			3XP10i7 |3Y ChrisP\
+		\n===============================\
+		\n		Select A Target To Hack\
+		\n		 Target Must Be Visible\
+		\n===============================\
+		\n ");
+	SetMenuTitle(menu, text);
+
+	AddMenuItem(menu, "Option0", " ***  Rescan  ***\n ");
+
+	// Store the client's position to use for checking if they can see the targets
+	decl Float:xyzClientLocation[3],Float:xyzTargetLocation[3];
+	GetClientEyePosition(iClient, xyzClientLocation);
+
+	for (int iTarget=1; iTarget <= MaxClients; iTarget++)
+	{
+		if(RunClientChecks(iTarget) == false ||
+			g_iClientTeam[iTarget] != TEAM_INFECTED ||
+			IsPlayerAlive(iTarget) ==  false)
+			continue;
+
+		// Get the target location
+		GetClientEyePosition(iTarget, xyzTargetLocation);
+		// Check that the client can see the target or not
+		if(IsVisibleTo(xyzClientLocation, xyzTargetLocation) == false)
+			continue;
+
+		FormatEx(text, sizeof(text), "\
+			%s: %N",
+			INFECTED_NAME[g_iInfectedCharacter[iTarget]],
+			iTarget);
+		FormatEx(strTargetID, sizeof(strTargetID), "%i", iTarget)
+		AddMenuItem(menu, strTargetID, text);
+	}
+
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
+
+	return Plugin_Handled;
+}
+
+// Hack Target Player Menu Handler
+HackTargetPlayerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+{	
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
+	{
+		if (RunClientChecks(iClient) == false || 
+			g_iClientTeam[iClient] != TEAM_SURVIVORS || 
+			IsFakeClient(iClient))
+			return;
+
+		// "Rescan" redraw the menu again
+		if (itemNum == 0)
+		{
+			HackTargetPlayerMenuDraw(iClient);
+			return;
+		}
+
+		char strInfo[128];
+		GetMenuItem(menu, itemNum, strInfo, sizeof(strInfo));
+		new iTarget = StringToInt(strInfo);
+
+		// Check if the selected target is viable
+		if (RunClientChecks(iTarget) == false ||
+			g_iClientTeam[iTarget] != TEAM_INFECTED ||
+			IsPlayerAlive(iTarget) == false)
+		{
+			PrintToChat(iClient, "\x03[XPMod] \x04Invalid Target Selected.");
+			HackTargetPlayerMenuDraw(iClient);
+			return;
+		}
+
+		// Check if the selected target is already hacked
+		if (g_bIsPLayerHacked[iTarget] == true)
+		{
+			PrintToChat(iClient, "\x03[XPMod] \x04Target has already been hacked.");
+			HackTargetPlayerMenuDraw(iClient);
+			return;
+		}
+
+		PrintToChat(iClient, "\x03[XPMod] \x05You hacked \x04%N\x05.", iTarget);
+
+		if (HackTargetPlayersControls(iTarget, LOUIS_HACK_TARGET_DURATION))
+		{
+			// If successful, then remove the XMR from Louis's wallet for the hax
+			g_fLouisXMRWallet[iClient] -= LOUIS_HEADSHOP_XMR_AMOUNT_HAK_TARGET;
+		}
+	}		
+}
+
+bool HackTargetPlayersControls(int iClient, float fDuration, bool bSpamChat = true, bool bSpamSounds =  true)
+{
+	if (RunClientChecks(iClient) == false || IsPlayerAlive(iClient) == false)
+		return false;
+
+	g_bIsPLayerHacked[iClient] = true;
+
+	// Do the extras if booleans are true for them
+	if (bSpamChat) CreateTimer(0.1, TimerSpamChatForHackedTargetPlayer, iClient, TIMER_REPEAT);
+	if (bSpamSounds) CreateTimer(1.0, TimerSpamRandomSoundsToHackedTargetPlayer, iClient, TIMER_REPEAT);
+
+	CreateTimer(fDuration, TimerUnhackTargetPlayersControls, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
+	return true;
+}
+
+Action TimerUnhackTargetPlayersControls(Handle:timer, int iClient)
+{
+	g_bIsPLayerHacked[iClient] = false;
+	return Plugin_Stop;
+}
+
+Action:TimerSpamChatForHackedTargetPlayer(Handle:timer, int iClient)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsFakeClient(iClient) == true ||
+		IsPlayerAlive(iClient) == false ||
+		g_bIsPLayerHacked[iClient] == false)
+		return Plugin_Stop;
+
+	static iSpamMessageIndex;
+	if (++iSpamMessageIndex > 10) iSpamMessageIndex = 0;
+
+	switch(iSpamMessageIndex)
+	{
+		case 0: PrintToChat(iClient, "\x03O9@N?CHR15PLO#SH6')4s/g5-mz#a#fLyZ#KJ=cbjNR#>~o>h1");
+		case 1: PrintToChat(iClient, "\x03p,:]p5UM#+Z.jPB1WK3^WkNrDLV]1zRV<o'8Q)Lv1QbIOfl(H4X;Mzj");
+		case 2: PrintToChat(iClient, "\x03/b#Z<Kvg^}ovA6e~?n2]K2h'gz9@&|uIWJ~FAJR++8NmKX9o2");
+		case 3: PrintToChat(iClient, "\x03kLUd#2c&iP!!?1337(YiEV`-A505$i-}YT#3^f}qy&4/ypwe.9Mz}^J");
+		case 4: PrintToChat(iClient, "\x03ScH~bIt<vvH2~.[_~F`$CCDZY-;(6fkz?qeLJLd#v+WoT~QCh=}O");
+		case 5: PrintToChat(iClient, "\x03+;SM@l.Bo@GQjD~#nQW9Jp|-P$c_`?|&vYf$n&kC&1hi/_:5z+!#");
+		case 6: PrintToChat(iClient, "\x03-7PObfgEe!q&](1M)_\\PT|P63o|G$.P3N15$fYJ:Pd?fK~Qf1;a~k_|");
+		case 7: PrintToChat(iClient, "\x03D@b`O!gXJ-g[OKC2.0U,WBtBnG5oG@1Y_&z2^g_XPelhC3!o3koYF");
+		case 8: PrintToChat(iClient, "\x03+u+5D7bkx(.2wlhojKQNb4]Hli4d+|c+HQBaVHo,/^h#;Z<sc3W@");
+		case 9: PrintToChat(iClient, "\x03z3+Y|[WKkuY!Qe(,H}pLn\\N-R#1`Y>}f7[PeXz:>3_?Qg|HDa\\4d`");
+		case 10: PrintToChat(iClient, "\x03EM[dc#pjuZ^.s=vQ\\1*gp+~/u(1o=#R4Cf4^}9tC}*v,6<h,jBO+");
+	}
+	
+	return Plugin_Continue;
+}
+
+Action:TimerSpamRandomSoundsToHackedTargetPlayer(Handle:timer, int iClient)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsFakeClient(iClient) == true ||
+		IsPlayerAlive(iClient) == false ||
+		g_bIsPLayerHacked[iClient] == false)
+		return Plugin_Stop;
+
+	switch(GetRandomInt(0, 21))
+	{
+		case 0: EmitSoundToClient(iClient, SOUND_WING_FLAP[0]);
+		case 1: EmitSoundToClient(iClient, SOUND_IGNITE);
+		case 2: EmitSoundToClient(iClient, SOUND_JPSTART);
+		case 3: EmitSoundToClient(iClient, SOUND_JEBUS);
+		case 4: EmitSoundToClient(iClient, SOUND_CHARGECOACH);
+		case 5: EmitSoundToClient(iClient, SOUND_SUITCHARGED);
+		case 6: EmitSoundToClient(iClient, SOUND_ZAP1);
+		case 7: EmitSoundToClient(iClient, SOUND_BOOMER_THROW[6]);
+		case 8: EmitSoundToClient(iClient, SOUND_JOCKEYLAUGH1);
+		case 9: EmitSoundToClient(iClient, SOUND_JOCKEYLAUGH2);
+		case 10: EmitSoundToClient(iClient, SOUND_BOOMER_EXPLODE);
+		case 11: EmitSoundToClient(iClient, SOUND_HOOKGRAB);
+		case 12: EmitSoundToClient(iClient, SOUND_BEEP);
+		case 13: EmitSoundToClient(iClient, SOUND_LOUIS_TELEPORT_OVERLOAD);
+		case 14: EmitSoundToClient(iClient, SOUND_AMBTEST3);
+		case 15: EmitSoundToClient(iClient, SOUND_FREEZE);
+		case 16: EmitSoundToClient(iClient, SOUND_LOUIS_TELEPORT_USE_REGEN);
+		case 17: EmitSoundToClient(iClient, SOUND_LEVELUPORIG);
+		case 18: EmitSoundToClient(iClient, SOUND_JOCKEYLAUGH1);
+		case 19: EmitSoundToClient(iClient, SOUND_JOCKEYLAUGH2);
+		case 20: EmitSoundToClient(iClient, SOUND_JOCKEYLAUGH1);
+		case 21: EmitSoundToClient(iClient, SOUND_JOCKEYLAUGH2);
+	}
+	
+	return Plugin_Continue;
+}
+
+
 bool HackTheServer(iClient)
 {
 	// Check if the player has enough XMR
@@ -336,12 +539,48 @@ void KillAllCI(iClient)
 	}
 }
 
+bool TimeOut(iClient)
+{
+	// Check if the player has enough XMR
+	if (g_fLouisXMRWallet[iClient] < LOUIS_HEADSHOP_XMR_AMOUNT_TIME_OUT)
+	{
+		PrintToChat(iClient, "\x03[XPMod] \x05You don't have enough XMR...do some more brain surgery.");
+		return false;
+	}
+
+	if (g_bTimeOutInCooldown)
+	{
+		PrintToChat(iClient, "\x03[XPMod] \x05The server has been patched from previous h4k...looking for more exploitz...");
+		return false;
+	}
+
+	g_bTimeOutInCooldown = true;
+	CreateTimer(LOUIS_TIME_OUT_COOLDOWN_DURATION, TimerLouisResetGlobalHeadShopCooldown, LOUIS_HEADSHOP_ITEM_TIME_OUT, TIMER_FLAG_NO_MAPCHANGE);
+
+	g_bInfectedBindsDisabled = true;
+	PrintToChatAll("\x03[XPMod] \x04%N\x05 hacked the Infected putting them in Time Out. Binds disabled for %0.0f seconds!", iClient, LOUIS_TIME_OUT_DURATION);
+	CreateTimer(LOUIS_TIME_OUT_DURATION, TimerReenableInfectedBinds, _, TIMER_FLAG_NO_MAPCHANGE);
+
+	// Remove the XMR from Louis's wallet for the hax
+	g_fLouisXMRWallet[iClient] -= LOUIS_HEADSHOP_XMR_AMOUNT_TIME_OUT;
+
+	return true;
+}
+
+Action:TimerReenableInfectedBinds(Handle:timer, int iClient)
+{
+	g_bInfectedBindsDisabled = false;
+	PrintToChatAll("\x03[XPMod] \x05Infected Binds have been fixed. Time Out is over.", iClient);
+	return Plugin_Stop;
+}
+
 Action:TimerLouisResetGlobalHeadShopCooldown(Handle:timer, int item)
 {
 	switch(item)
 	{
 		case LOUIS_HEADSHOP_ITEM_SPEED_HAX: 		g_bSpeedHaxInCooldown = false;
 		case LOUIS_HEADSHOP_ITEM_HAXOR_TEH_SERVER: 	g_bHackTheServerInCooldown = false;
+		case LOUIS_HEADSHOP_ITEM_TIME_OUT: 			g_bTimeOutInCooldown = false;
 	}
 	
 	return Plugin_Stop;

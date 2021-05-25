@@ -122,7 +122,10 @@ ResetVariablesForMap(iClient)
 	g_bLouisSpeedHaxEnabled = false;
 	g_bSpeedHaxInCooldown = false;
 	g_bLouisMedHaxEnabled = false;
+	g_bIsPLayerHacked[iClient] = false;
 	g_bHackTheServerInCooldown = false;
+	g_bTimeOutInCooldown =  false;
+	g_bInfectedBindsDisabled = false;
 	
 	//Infected Talents
 	g_iInfectedConvarsSet[iClient] = false;
