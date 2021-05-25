@@ -254,7 +254,7 @@ Action:LouisTalent5MenuDraw(iClient)
 		\n	- Bile Jar\
 		\n	- Pipe bomb\
 		\n Every Special Infected Headshot Kill Has A 1%%%% Chance To:\
-		\n	- Get 6.9 Monero (XMR)\
+		\n	- Get %0.1f Monero (XMR)\
 		\n	- Get Extra Warez Station\
 		\n \
 		\n Bind 1: w4R3z 574t10n u53r\
@@ -262,7 +262,8 @@ Action:LouisTalent5MenuDraw(iClient)
 		\n	Deploy and share your Warez with your team quickly and easily!\
 		\n ",
 		strStartingNewLines,
-		g_iLouisTalent5Level[iClient]);
+		g_iLouisTalent5Level[iClient],
+		LOUIS_NEUROSURGEON_SI_XMR_REWARD_AMOUNT);
 	SetMenuTitle(menu, text);
 
 	decl String:strFinalOptionText[250];

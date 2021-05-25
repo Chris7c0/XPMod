@@ -230,6 +230,7 @@ bool NoobWipe(iClient)
 	// }
 
 	KillAllCI(iClient);
+	PrintToChatAll("\x03[XPMod] \x04%N\x05 Noob Wiped all the Common Infected.", iClient);
 
 	// Remove the XMR from Louis's wallet for the hax
 	g_fLouisXMRWallet[iClient] -= LOUIS_HEADSHOP_XMR_AMOUNT_NUB_WIPE;
@@ -349,13 +350,13 @@ HackTargetPlayerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			return;
 		}
 
-		PrintToChat(iClient, "\x03[XPMod] \x05You hacked \x04%N\x05.", iTarget);
-
 		if (HackTargetPlayersControls(iTarget, LOUIS_HACK_TARGET_DURATION))
 		{
 			// If successful, then remove the XMR from Louis's wallet for the hax
 			g_fLouisXMRWallet[iClient] -= LOUIS_HEADSHOP_XMR_AMOUNT_HAK_TARGET;
 		}
+
+		PrintToChatAll("\x03[XPMod] \x04%N\x05 has hacked %\x04N.", iClient, iTarget);
 	}		
 }
 
