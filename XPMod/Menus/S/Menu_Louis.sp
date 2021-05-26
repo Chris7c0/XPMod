@@ -72,7 +72,7 @@ Action:LouisTalent1MenuDraw(iClient)
 		\n 	- Louis Always Capped At +25%%%% Speed     \
 		\n \
 		\n SMG and Pistol (Not Magnum) Buffs:     \
-		\n 	- +15%%%% Reload Speed per Level\
+		\n 	- +5%%%% Reload Speed per Level\
 		\n ",
 		strStartingNewLines,
 		g_iLouisTalent1Level[iClient]);
@@ -113,7 +113,7 @@ Action:LouisTalent2MenuDraw(iClient)
 		%s 		9mm Augmentation (Level %d):\
 		\n \
 		\n SMG and Pistol (Not Magnum) Buffs:\
-		\n 	- +15%%%% Damage per Level\
+		\n 	- +10%%%% Damage per Level\
 		\n 	- +10 Clip Size per Level\
 		\n 	- Automatic Laser Sight (SMGs Only)         \
 		\n ",

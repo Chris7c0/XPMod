@@ -145,7 +145,7 @@ EventsHurt_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 
 			new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
 			new iAddtionalDamageAmount = RoundToNearest(float(iDmgHealth) * 
-				( (g_iLouisTalent2Level[iAttacker] * 0.15) + 
+				( (g_iLouisTalent2Level[iAttacker] * 0.10) + 
 				  (g_iPillsUsedStack[iAttacker] * g_iLouisTalent6Level[iAttacker] * 0.03) ));
 			new iNewDamageAmount = iDmgHealth + iAddtionalDamageAmount;
 

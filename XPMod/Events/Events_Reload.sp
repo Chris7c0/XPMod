@@ -113,7 +113,7 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 			if (StrContains(stClass,"CSubMachinegun",false) != -1 || 
 				StrContains(stClass,"CSMG",false) != -1 ||
 				StrContains(stClass,"CPistol",false) != -1)
-				g_fReloadRate = 1.0 - (float(g_iLouisTalent1Level[iClient]) * 0.15);
+				g_fReloadRate = 1.0 - (float(g_iLouisTalent1Level[iClient]) * 0.05);
 		}
 
 		GetClientWeapon(iClient, g_strCurrentWeapon, sizeof(g_strCurrentWeapon));
