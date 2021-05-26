@@ -45,6 +45,12 @@ PrecacheAllParticles()
 	PrecacheParticle("nick_ulti_resurrect_trail");
 	PrecacheParticle("nick_bind_gamble");
 	PrecacheParticle("nick_lifesteal_recovery");
+
+	// Louis
+	PrecacheParticle("item_defibrillator_body_b");
+	PrecacheParticle("railroad_light_blink2");
+	PrecacheParticle("charger_motion_blur");
+	
 	
 	// Smoker
 	PrecacheParticle("bug_zapper_fly_cloud");

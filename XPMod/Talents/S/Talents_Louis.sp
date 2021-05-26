@@ -228,12 +228,12 @@ EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 					// Get a random item and spawn in the item on the CI entity
 					new iItem = SpawnItem(xyzVictimLocation, GetRandomInt(0, 6), 50.0);
 					// Attach particle effects to entity for awareness
-					AttachParticle(iItem, "item_defibrillator_body", 10.0);
-					AttachParticle(iItem, "item_defibrillator_body_b", 10.0);
-					AttachParticle(iItem, "railroad_light_blink1", 10.0);
-					AttachParticle(iItem, "railroad_light_blink1b", 10.0);
-					AttachParticle(iItem, "railroad_light_blink2", 10.0);
-					AttachParticle(iItem, "railroad_light_blink2b", 10.0);
+					//AttachParticle(iItem, "item_defibrillator_body", 10.0);
+					AttachParticle(iItem, "item_defibrillator_body_b", 2.0);
+					//AttachParticle(iItem, "railroad_light_blink1", 10.0);
+					//AttachParticle(iItem, "railroad_light_blink1b", 10.0);
+					AttachParticle(iItem, "railroad_light_blink2", 10.0, 10.0);
+					//AttachParticle(iItem, "railroad_light_blink2b", 10.0);
 					// Play sound so its more apparent
 					EmitSoundToClient(iAttacker, SOUND_HEADSHOT_REWARD);
 					EmitSoundToClient(iAttacker, SOUND_HEADSHOT_REWARD);
