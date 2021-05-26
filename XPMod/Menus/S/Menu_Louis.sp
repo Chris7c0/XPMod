@@ -159,7 +159,7 @@ Action:LouisTalent3MenuDraw(iClient)
 		\n [Press DIRECTION + Tap WALK] Move 30 ft in any direction.    \
 		\n	- +1 Use per level. Uses regenerate over time.\
 		\n	- +1 Overload Use. Causes much longer cooldown period.\
-		\n	- -5%%%% Speed for 15 secs after each use.\
+		\n	- -5%%%% Speed for 20 secs after each use.\
 		\n	- Progressively blinds you with each use. Fades over time.\
 		\n	- Cannot move through walls, CI, or SI.\
 		\n	- Travel less distance while severely hurt and limping.\

@@ -527,7 +527,7 @@ HandleLouisTeleportBlindingEffect(iClient)
 	//PrintToChat(iClient, "Blindness amount: %i", g_iLouisTeleportBlindnessAmount[iClient]);
 
 	g_fLouisTeleportLastUseGameTime[iClient] = fCurrentGameTime;
-	ShowHudOverlayColor(iClient, 40, 0, 5, g_iLouisTeleportBlindnessAmount[iClient], 3000, FADE_OUT);
+	ShowHudOverlayColor(iClient, 40, 0, 5, g_iLouisTeleportBlindnessAmount[iClient], LOUIS_TELEPORT_BLINDNESS_DURATION, FADE_OUT);
 }
 
 HandleLouisTeleportMovementSpeedPenalty(iClient)
