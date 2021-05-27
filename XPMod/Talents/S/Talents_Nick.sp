@@ -401,7 +401,7 @@ OGFSurvivorReload_Nick(iClient, const char[] currentweapon, ActiveWeaponID, Curr
 
 EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 {
-	if (IsFakeClient(iAttacker) || g_bTalentsConfirmed[iAttacker] == false)
+	if (IsFakeClient(iAttacker) || g_bTalentsConfirmed[iAttacker] == false || iVictim == iAttacker)
 		return;
 
 	if (g_iEnhancedLevel[iAttacker] > 0 && g_iClientTeam[iVictim] == TEAM_SURVIVORS)
