@@ -70,8 +70,8 @@ Action:OverMenuDraw(iClient)
 		\n+4 pill & shot health per level\
 		\n+8%%%% reload speed per level\
 		\n(Stacks) (Team) +1 second adrenaline duration per level\
-		\nIf within 20 points of max health:\
-		\n+2%% speed && +4%% damage to all guns per level\
+		\nIf within 30 points of max health:\
+		\n+2%%%% speed && +5%%%% damage to all guns per level\
 		\n \
 		\n \
 		\nSkill Uses:\
@@ -262,7 +262,7 @@ Action:MetalMenuDraw(iClient)
 		\n \
 		\nLevel 1:\
 		\n+4 clip size per level (SMG/Rifle/Sniper only)\
-		\n+6%%%% firing rate per level\
+		\n+7%%%% firing rate per level\
 		\n+8%%%% reload speed per level\
 		\n \
 		\nLevel 5:\
@@ -318,7 +318,7 @@ Action:FireMenuDraw(iClient)
 		\nLevel 1:\
 		\n+6 clip size per level (SMG/Rifle/Sniper only)\
 		\n+10%%%% reload speed per level\
-		\n+6%%%% firing rate per level\
+		\n+7%%%% firing rate per level\
 		\nFire immunity\
 		\n \
 		\n \

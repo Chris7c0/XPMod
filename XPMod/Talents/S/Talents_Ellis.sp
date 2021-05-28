@@ -894,7 +894,7 @@ EventsHurt_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 			new iCurrentHealth = GetEntProp(iAttacker,Prop_Data,"m_iHealth");
 			new iMaxHealth = GetEntProp(iAttacker,Prop_Data,"m_iMaxHealth");
 			new iTempHealth = GetSurvivorTempHealth(iAttacker);
-			if(iCurrentHealth + iTempHealth >= iMaxHealth - 20)
+			if(iCurrentHealth + iTempHealth >= iMaxHealth - 30)
 			{
 				decl String:strWeaponClass[32];
 				GetEventString(hEvent,"weapon",strWeaponClass,32);
@@ -910,10 +910,10 @@ EventsHurt_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 					// PrintToChatAll("Ellis iVictim %N START HP: %i", iVictim, iVictimHealth);
 
 					new iDmgAmount = GetEventInt(hEvent,"dmg_health");
-					new iAddtionalDmg = RoundToNearest(iDmgAmount * g_iOverLevel[iAttacker] * 0.04);
+					new iAddtionalDmg = RoundToNearest(iDmgAmount * (g_iOverLevel[iAttacker] * 0.05));
 					SetEntProp(iVictim, Prop_Data,"m_iHealth", iVictimHealth - CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
-					// PrintToChatAll("Ellis is doing %i original damage", iDmgAmount);
-					// PrintToChatAll("Ellis is doing %i additional damage", CalculateDamageForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
+					PrintToChatAll("Ellis is doing %i original damage", iDmgAmount);
+					PrintToChatAll("Ellis is doing %i additional damage", CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
 
 					// new iVictimHealth2 = GetEntProp(iVictim,Prop_Data,"m_iHealth");
 					// PrintToChatAll("Ellis iVictim %N   END HP: %i", iVictim, iVictimHealth2);
