@@ -12,6 +12,11 @@ Action:TestFunction1(iClient, args)
 	GetCmdArg(1, str1, sizeof(str1));
 	GetCmdArg(2, str2, sizeof(str2));
 
+	// char strEquipmentItem[32];
+	// int iGrenadeSlotItemID = GetPlayerWeaponSlot(iClient, 2);
+	// PrintToChatAll("%i", iGrenadeSlotItemID);
+	// GetEntityClassname(iGrenadeSlotItemID, strEquipmentItem, sizeof(strEquipmentItem));
+	// PrintToChatAll("%s", strEquipmentItem);
 
 	// // Print all grappled users
 	// for (int i=1; i <= MaxClients; i++)
@@ -84,7 +89,7 @@ Action:TestFunction2(iClient, args)
 	char str1[99];
 	char str2[99];
 	GetCmdArg(1, str1, sizeof(str1));
-	GetCmdArg(2, str2, sizeof(str2));	
+	GetCmdArg(2, str2, sizeof(str2));
 
 	// DebugLog(DEBUG_MODE_TESTING, "DEBUG_MODE_TESTING %N, %i, %i, %i, %i, %f, %f, %s, %s", iClient, 1, 2, 3, 4, 5.5, 6.6, "testing", "another test string!");
 	// DebugLog(DEBUG_MODE_TESTING, "DEBUG_MODE_TESTING");

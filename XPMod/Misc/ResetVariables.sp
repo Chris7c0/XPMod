@@ -97,6 +97,7 @@ ResetVariablesForMap(iClient)
 	g_fEllisOverSpeed[iClient] = 0.0;
 	g_fEllisJamminSpeed[iClient] = 0.0;
 	g_bEllisOverSpeedIncreased[iClient] = false;
+	g_iEllisAdrenalineStack = 15;
 	
 	//Nick 
 	g_bNickIsGettingBeatenUp[iClient] = false;

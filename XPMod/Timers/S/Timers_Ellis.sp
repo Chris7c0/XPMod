@@ -25,16 +25,16 @@ Action:TimerEllisPrimaryCycleReset(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerEllisJamminGiveExplosive(Handle:timer, any:iClient)
+Action:TimerEllisJamminGiveMolotov(Handle:timer, any:iClient)
 {
-	g_iEventWeaponFireCounter[iClient] = 0;
-	
-	if (RunClientChecks(iClient) == false || IsFakeClient(iClient))
+	// g_iEventWeaponFireCounter[iClient] = 0;
+
+	if (RunClientChecks(iClient) == false || 
+		IsFakeClient(iClient))
 		return Plugin_Stop;
-	
 
 	RunCheatCommand(iClient, "give", "give molotov");
-	
+
 	return Plugin_Stop;
 }
 

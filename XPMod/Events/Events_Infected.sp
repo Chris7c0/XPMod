@@ -736,29 +736,33 @@ Action:Event_TankSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 	
 	for(new i=1;i<=MaxClients;i++)
 	{
-		if(g_iJamminLevel[i] > 0 && g_iClientTeam[i] == TEAM_SURVIVORS && RunClientChecks(i))
+		if (RunClientChecks(i) == false || 
+			IsFakeClient(i) || 
+			g_bTalentsConfirmed[i] == false ||
+			IsPlayerAlive(i) == false ||
+			g_iClientTeam[i] != TEAM_SURVIVORS)
+			continue;
+
+		// Ellis's Jamin to the Music Talent Buffs
+		if(g_iJamminLevel[i] > 0)
 		{
-			//g_fEllisJamminSpeed[i] = (g_iJamminLevel[i] * 0.04);
-			PrintHintText(i,"Tank is near, your adrenaline pumps and you become stronger");
-
-			//RunCheatCommand(i, "give", "give molotov");
-
-			//if(tankspawnlvl speed > current ELLIS speed)
-			if(g_bGameFrozen == false)
-			{
-				if(g_iTankCounter > 0)
-				{
-					SetClientSpeed(i);
-				}
-			}
+			// Set Ellis's speed for the give amount of tanks spawned
+			if(g_iTankCounter > 0)
+				SetClientSpeed(i);
 
 			// Give temp health to ellis for tank spawn
 			AddTempHealthToSurvivor(i, float(g_iJamminLevel[i]) * 5, false);
 
 			if(g_iJamminLevel[i] == 5)
 			{
-				g_iEllisJamminGrenadeCounter[i]++;
+				// Check the grenade slot to see if they currently have a grenade
+				if (GetPlayerWeaponSlot(i, 2) > 0)
+					g_iEllisJamminGrenadeCounter[i]++;
+				else
+					RunCheatCommand(i, "give", "give molotov");
 			}
+
+			PrintHintText(i,"Tank is near, your adrenaline pumps and you become stronger");
 		}
 	}
 	return Plugin_Continue;

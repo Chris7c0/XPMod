@@ -30,8 +30,6 @@ TalentsLoad_Ellis(iClient)
 		g_iClientBindUses_1[iClient] = 3 - RoundToCeil(g_iMetalLevel[iClient] * 0.5);
 	}
 	
-	
-	
 	if(g_iFireLevel[iClient] > 0)
 	{
 		if(g_iClientBindUses_2[iClient] < 3)
@@ -67,8 +65,12 @@ TalentsLoad_Ellis(iClient)
 				SetClientSpeed(iClient);
 			}
 		}
-	}
 
+		// Set adrenaline counter for global Ellis
+		g_iEllisAdrenalineStack += (g_iOverLevel[iClient] * 2);
+		SetConVarFloat(FindConVar("adrenaline_duration"), float(g_iEllisAdrenalineStack));
+	}
+	
 	if(g_iJamminLevel[iClient] == 5)
 	{
 		g_iEllisJamminGrenadeCounter[iClient] = 0;
@@ -912,8 +914,8 @@ EventsHurt_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 					new iDmgAmount = GetEventInt(hEvent,"dmg_health");
 					new iAddtionalDmg = RoundToNearest(iDmgAmount * (g_iOverLevel[iAttacker] * 0.05));
 					SetEntProp(iVictim, Prop_Data,"m_iHealth", iVictimHealth - CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
-					PrintToChatAll("Ellis is doing %i original damage", iDmgAmount);
-					PrintToChatAll("Ellis is doing %i additional damage", CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
+					// PrintToChatAll("Ellis is doing %i original damage", iDmgAmount);
+					// PrintToChatAll("Ellis is doing %i additional damage", CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
 
 					// new iVictimHealth2 = GetEntProp(iVictim,Prop_Data,"m_iHealth");
 					// PrintToChatAll("Ellis iVictim %N   END HP: %i", iVictim, iVictimHealth2);

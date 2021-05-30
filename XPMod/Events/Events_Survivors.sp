@@ -5,7 +5,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	//Delete the players particle menu (VGUI) if its open and firing their weapon
 	if(g_bEnabledVGUI[iClient] == true && g_bShowingVGUI[iClient] == true)
 		DeleteAllMenuParticles(iClient);
-		
+
 	decl String:wclass[32];
 	GetEventString(hEvent,"weapon",wclass,32);
 	
@@ -720,14 +720,18 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 		CreateTimer(3.0, TimerGiveExplosive, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	}
 */
-	if((g_iJamminLevel[iClient] == 5) && (g_iEllisJamminGrenadeCounter[iClient] > 0) && (StrEqual(wclass,"pipe_bomb",false) == true || StrEqual(wclass,"molotov",false) == true || StrEqual(wclass,"vomitjar",false) == true))
+
+	// PrintToChat(iClient, "g_iEllisJamminGrenadeCounter %i", g_iEllisJamminGrenadeCounter[iClient]);
+	// PrintToChat(iClient, "g_iEventWeaponFireCounter %i", g_iEventWeaponFireCounter[iClient]);
+
+	if((g_iJamminLevel[iClient] == 5) && 
+		g_iEllisJamminGrenadeCounter[iClient] > 0 &&
+		(StrEqual(wclass,"pipe_bomb",false) == true || 
+		 StrEqual(wclass,"molotov",false) == true ||
+		 StrEqual(wclass,"vomitjar",false) == true))
 	{
-		g_iEventWeaponFireCounter[iClient]++;
-		if(g_iEventWeaponFireCounter[iClient] == 1)
-		{
-			CreateTimer(1.5, TimerEllisJamminGiveExplosive, iClient, TIMER_FLAG_NO_MAPCHANGE);
-			g_iEllisJamminGrenadeCounter[iClient]--;
-		}
+		CreateTimer(1.5, TimerEllisJamminGiveMolotov, iClient, TIMER_FLAG_NO_MAPCHANGE);
+		g_iEllisJamminGrenadeCounter[iClient]--;
 	}
 	if(g_iStrongLevel[iClient] > 0)
 	{
