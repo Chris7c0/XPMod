@@ -38,6 +38,13 @@ Action:TimerEllisJamminGiveMolotov(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
+Action:TimerRemoveEllisAdrenalineBuffs(Handle:timer, any:iClient)
+{
+	g_bEllisHasAdrenalineBuffs[iClient] = false;
+
+	return Plugin_Stop;
+}
+
 Action:TimerEllisLimitBreakReset(Handle:timer, any:iClient)
 {
 	g_bIsEllisLimitBreaking[iClient] = false;

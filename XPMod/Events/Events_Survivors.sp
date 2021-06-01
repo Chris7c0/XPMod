@@ -1499,33 +1499,43 @@ Action:Event_PillsUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 	
 	if(RunClientChecks(iClient) == false)
 		return Plugin_Continue;
+
+	// Ellis
+	if (g_iJamminLevel[iClient] > 0)
+	{
+		if(g_iEllisJamminAdrenalineCounter[iClient] > 0)
+		{
+			g_iEllisJamminAdrenalineCounter[iClient]--;
+			RunCheatCommand(iClient, "give", "give adrenaline");
+		}
+	}
 	
-	if(g_iOverLevel[iClient] > 0 && IsFakeClient(iClient) == false)
-	{
-		new iMaxHealth = GetEntProp(iClient, Prop_Data, "m_iMaxHealth");
-		new iHealth = GetEntProp(iClient, Prop_Data, "m_iHealth");
-		new Float:fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
+	// if(g_iOverLevel[iClient] > 0 && IsFakeClient(iClient) == false)
+	// {
+	// 	new iMaxHealth = GetEntProp(iClient, Prop_Data, "m_iMaxHealth");
+	// 	new iHealth = GetEntProp(iClient, Prop_Data, "m_iHealth");
+	// 	new Float:fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
 		
-		if(float(iHealth) + fTempHealth + (float(g_iOverLevel[iClient]) * 4.0) <= float(iMaxHealth))
-			fTempHealth = fTempHealth + (float(g_iOverLevel[iClient]) * 4.0);
-		else
-			fTempHealth = float(iMaxHealth) - float(iHealth);
+	// 	if(float(iHealth) + fTempHealth + (float(g_iOverLevel[iClient]) * 4.0) <= float(iMaxHealth))
+	// 		fTempHealth = fTempHealth + (float(g_iOverLevel[iClient]) * 4.0);
+	// 	else
+	// 		fTempHealth = float(iMaxHealth) - float(iHealth);
 		
-		SetEntDataFloat(iClient,g_iOffset_HealthBuffer, fTempHealth ,true);
-	}
-	else if(g_iEnhancedLevel[iClient] > 0 && IsFakeClient(iClient) == false)
-	{
-		new iMaxHealth = GetEntProp(iClient, Prop_Data, "m_iMaxHealth");
-		new iHealth = GetEntProp(iClient, Prop_Data, "m_iHealth");
-		new Float:fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
+	// 	SetEntDataFloat(iClient,g_iOffset_HealthBuffer, fTempHealth ,true);
+	// }
+	// else if(g_iEnhancedLevel[iClient] > 0 && IsFakeClient(iClient) == false)
+	// {
+	// 	new iMaxHealth = GetEntProp(iClient, Prop_Data, "m_iMaxHealth");
+	// 	new iHealth = GetEntProp(iClient, Prop_Data, "m_iHealth");
+	// 	new Float:fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
 		
-		if(float(iHealth) + fTempHealth + (float(g_iEnhancedLevel[iClient]) * 6.0) <= float(iMaxHealth))
-			fTempHealth = fTempHealth + (float(g_iEnhancedLevel[iClient]) * 6.0);
-		else
-			fTempHealth = float(iMaxHealth) - float(iHealth);
+	// 	if(float(iHealth) + fTempHealth + (float(g_iEnhancedLevel[iClient]) * 6.0) <= float(iMaxHealth))
+	// 		fTempHealth = fTempHealth + (float(g_iEnhancedLevel[iClient]) * 6.0);
+	// 	else
+	// 		fTempHealth = float(iMaxHealth) - float(iHealth);
 		
-		SetEntDataFloat(iClient,g_iOffset_HealthBuffer, fTempHealth ,true);
-	}
+	// 	SetEntDataFloat(iClient,g_iOffset_HealthBuffer, fTempHealth ,true);
+	// }
 	
 	// if(g_iOverLevel[iClient] > 0)
 	// {
@@ -1590,20 +1600,36 @@ Action:Event_AdrenalineUsed(Handle:hEvent, const String:strName[], bool:bDontBro
 	if(RunClientChecks(iClient) == false)
 		return Plugin_Continue;
 
-	if(g_iOverLevel[iClient] > 0 && IsFakeClient(iClient) == false)
+	// Ellis
+	if (g_iOverLevel[iClient] > 0 && IsFakeClient(iClient) == false)
 	{
+		// Give health to Ellis
 		new iMaxHealth = GetEntProp(iClient, Prop_Data, "m_iMaxHealth");
 		new iHealth = GetEntProp(iClient, Prop_Data, "m_iHealth");
 		new Float:fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
 		
-		if(float(iHealth) + fTempHealth + (float(g_iOverLevel[iClient]) * 4.0) <= float(iMaxHealth))
-			fTempHealth = fTempHealth + (float(g_iOverLevel[iClient]) * 4.0);
+		if(float(iHealth) + fTempHealth + (float(g_iOverLevel[iClient]) * 5.0) <= float(iMaxHealth))
+			fTempHealth = fTempHealth + (float(g_iOverLevel[iClient]) * 5.0);
 		else
 			fTempHealth = float(iMaxHealth) - float(iHealth);
 		
 		SetEntDataFloat(iClient,g_iOffset_HealthBuffer, fTempHealth ,true);
+
+		// Set the variable that will allow for damage buffs during adrenaline duration
+		g_bEllisHasAdrenalineBuffs[iClient] = true;
+		CreateTimer(float(g_iEllisAdrenalineStackDuration), TimerRemoveEllisAdrenalineBuffs, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	}
-	else if(g_iEnhancedLevel[iClient] > 0 && IsFakeClient(iClient) == false)
+	if (g_iJamminLevel[iClient] > 0)
+	{
+		if(g_iEllisJamminAdrenalineCounter[iClient] > 0)
+		{
+			g_iEllisJamminAdrenalineCounter[iClient]--;
+			RunCheatCommand(iClient, "give", "give adrenaline");
+		}
+	}
+
+	// Nick
+	if(g_iEnhancedLevel[iClient] > 0 && IsFakeClient(iClient) == false)
 	{
 		new iMaxHealth = GetEntProp(iClient, Prop_Data, "m_iMaxHealth");
 		new iHealth = GetEntProp(iClient, Prop_Data, "m_iHealth");
@@ -1616,6 +1642,7 @@ Action:Event_AdrenalineUsed(Handle:hEvent, const String:strName[], bool:bDontBro
 		
 		SetEntDataFloat(iClient,g_iOffset_HealthBuffer, fTempHealth ,true);
 	}
+
 	
 	// if(g_iOverLevel[iClient] > 0)
 	// {

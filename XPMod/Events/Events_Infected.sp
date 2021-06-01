@@ -760,6 +760,12 @@ Action:Event_TankSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 					g_iEllisJamminGrenadeCounter[i]++;
 				else
 					RunCheatCommand(i, "give", "give molotov");
+
+				// Check the grenade slot to see if they currently have a grenade
+				if (GetPlayerWeaponSlot(i, 3) > 0)
+					g_iEllisJamminAdrenalineCounter[i]++;
+				else
+					RunCheatCommand(i, "give", "give adrenaline");
 			}
 
 			PrintHintText(i,"Tank is near, your adrenaline pumps and you become stronger");

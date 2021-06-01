@@ -70,7 +70,7 @@ Action:OverMenuDraw(iClient)
 		\n+4 pill & shot health per level\
 		\n+8%%%% reload speed per level\
 		\n(Stacks) (Team) +2 seconds adrenaline duration per level\
-		\nIf within 30 points of max health:\
+		\nIf within %i points of max health:\
 		\n+2%%%% speed && +5%%%% damage to all guns per level\
 		\n \
 		\n \
@@ -78,6 +78,7 @@ Action:OverMenuDraw(iClient)
 		\nAdrenaline (Stacks) with itself\
 		\nUnlimited stacks\
 		\n ",
+		ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT,
 		strStartingNewLines,
 		g_iOverLevel[iClient]);
 	SetMenuTitle(menu, text);
@@ -219,7 +220,7 @@ Action:JamminMenuDraw(iClient)
 		\n+5 temp health per level\
 		\n \
 		\nLevel 5:\
-		\nGain a molotov\
+		\nGain adrenaline and a molotov\
 		\n ",
 		strStartingNewLines,
 		g_iJamminLevel[iClient]);

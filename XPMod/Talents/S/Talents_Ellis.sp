@@ -23,7 +23,7 @@ TalentsLoad_Ellis(iClient)
 	{
 		if((0.4 - (float(g_iWeaponsLevel[iClient])*0.08)) < g_fMaxLaserAccuracy)
 		{
-			g_fMaxLaserAccuracy = 0.4 - (float(g_iWeaponsLevel[iClient])*0.08);
+			g_fMaxLaserAccuracy = 0.4 - (float(g_iWeaponsLevel[iClient]) * 0.08);
 			SetConVarFloat(FindConVar("upgrade_laser_sight_spread_factor"), g_fMaxLaserAccuracy);
 		}
 		
@@ -49,7 +49,7 @@ TalentsLoad_Ellis(iClient)
 	{
 		new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
 		new iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
-		if(iCurrentHealth < (iMaxHealth - 20))
+		if (iCurrentHealth < (iMaxHealth - ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT))
 		{
 			if(g_bEllisOverSpeedIncreased[iClient])
 			{
@@ -57,7 +57,7 @@ TalentsLoad_Ellis(iClient)
 				SetClientSpeed(iClient);
 			}
 		}
-		else if(iCurrentHealth >= (iMaxHealth - 20))
+		else if (iCurrentHealth >= (iMaxHealth - ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT))
 		{
 			if(g_bEllisOverSpeedIncreased[iClient] == false)
 			{
@@ -67,13 +67,14 @@ TalentsLoad_Ellis(iClient)
 		}
 
 		// Set adrenaline counter for global Ellis
-		g_iEllisAdrenalineStack += (g_iOverLevel[iClient] * 2);
-		SetConVarFloat(FindConVar("adrenaline_duration"), float(g_iEllisAdrenalineStack));
+		g_iEllisAdrenalineStackDuration += (g_iOverLevel[iClient] * 2);
+		SetConVarFloat(FindConVar("adrenaline_duration"), float(g_iEllisAdrenalineStackDuration));
 	}
-	
+
 	if(g_iJamminLevel[iClient] == 5)
 	{
 		g_iEllisJamminGrenadeCounter[iClient] = 0;
+		g_iEllisJamminAdrenalineCounter[iClient] = 0;
 	}
 	
 	if(g_iWeaponsLevel[iClient] == 5)
@@ -896,17 +897,19 @@ EventsHurt_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 			new iCurrentHealth = GetEntProp(iAttacker,Prop_Data,"m_iHealth");
 			new iMaxHealth = GetEntProp(iAttacker,Prop_Data,"m_iMaxHealth");
 			new iTempHealth = GetSurvivorTempHealth(iAttacker);
-			if(iCurrentHealth + iTempHealth >= iMaxHealth - 30)
+
+			decl String:strWeaponClass[32];
+			GetEventString(hEvent,"weapon",strWeaponClass,32);
+			//PrintToChatAll("\x03-class of gun: \x01%s",strWeaponClass);
+			if ((StrContains(strWeaponClass,"shotgun",false) != -1) || 
+				(StrContains(strWeaponClass,"rifle",false) != -1) || 
+				(StrContains(strWeaponClass,"pistol",false) != -1) || 
+				(StrContains(strWeaponClass,"smg",false) != -1) || 
+				(StrContains(strWeaponClass,"sniper",false) != -1) || 
+				(StrContains(strWeaponClass,"launcher",false) != -1))
 			{
-				decl String:strWeaponClass[32];
-				GetEventString(hEvent,"weapon",strWeaponClass,32);
-				//PrintToChatAll("\x03-class of gun: \x01%s",strWeaponClass);
-				if ((StrContains(strWeaponClass,"shotgun",false) != -1) || 
-					(StrContains(strWeaponClass,"rifle",false) != -1) || 
-					(StrContains(strWeaponClass,"pistol",false) != -1) || 
-					(StrContains(strWeaponClass,"smg",false) != -1) || 
-					(StrContains(strWeaponClass,"sniper",false) != -1) || 
-					(StrContains(strWeaponClass,"launcher",false) != -1))
+				// Give dmg buff for being in health range for over confidence
+				if(iCurrentHealth + iTempHealth >= iMaxHealth - ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT)
 				{
 					new iVictimHealth = GetEntProp(iVictim,Prop_Data,"m_iHealth");
 					// PrintToChatAll("Ellis iVictim %N START HP: %i", iVictim, iVictimHealth);
@@ -914,8 +917,26 @@ EventsHurt_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 					new iDmgAmount = GetEventInt(hEvent,"dmg_health");
 					new iAddtionalDmg = RoundToNearest(iDmgAmount * (g_iOverLevel[iAttacker] * 0.05));
 					SetEntProp(iVictim, Prop_Data,"m_iHealth", iVictimHealth - CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
+
 					// PrintToChatAll("Ellis is doing %i original damage", iDmgAmount);
-					// PrintToChatAll("Ellis is doing %i additional damage", CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
+					// PrintToChatAll("Ellis is doing %i additional OVERCONFIDENCE damage", CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
+
+					// new iVictimHealth2 = GetEntProp(iVictim,Prop_Data,"m_iHealth");
+					// PrintToChatAll("Ellis iVictim %N   END HP: %i", iVictim, iVictimHealth2);
+				}
+
+				// Give dmg buff for being on adrenaline
+				if (g_bEllisHasAdrenalineBuffs[iAttacker])
+				{
+					new iVictimHealth = GetEntProp(iVictim,Prop_Data,"m_iHealth");
+					// PrintToChatAll("Ellis iVictim %N START HP: %i", iVictim, iVictimHealth);
+
+					new iDmgAmount = GetEventInt(hEvent,"dmg_health");
+					new iAddtionalDmg = RoundToNearest(iDmgAmount * (g_iOverLevel[iAttacker] * 0.05));
+					SetEntProp(iVictim, Prop_Data,"m_iHealth", iVictimHealth - CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
+
+					// PrintToChatAll("Ellis is doing %i original damage", iDmgAmount);
+					// PrintToChatAll("Ellis is doing %i additional ADRENALINE damage", CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
 
 					// new iVictimHealth2 = GetEntProp(iVictim,Prop_Data,"m_iHealth");
 					// PrintToChatAll("Ellis iVictim %N   END HP: %i", iVictim, iVictimHealth2);
@@ -951,8 +972,8 @@ EventsHurt_VictimEllis(Handle:hEvent, attacker, victim)
 		new iCurrentHealth = GetEntProp(victim,Prop_Data,"m_iHealth");
 		new iMaxHealth = GetEntProp(victim,Prop_Data,"m_iMaxHealth");
 		//new Float:fTempHealth = GetEntDataFloat(victim, g_iOffset_HealthBuffer);
-		//if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
-		if(iCurrentHealth < (iMaxHealth - 20.0))
+		//if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - float(ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT)))
+		if(iCurrentHealth < (iMaxHealth - ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT))
 		{
 			if(g_bEllisOverSpeedIncreased[victim])
 			{
@@ -961,8 +982,8 @@ EventsHurt_VictimEllis(Handle:hEvent, attacker, victim)
 				SetClientSpeed(victim);
 			}
 		}
-		//else if(float(iCurrentHealth) + fTempHealth > (float(iMaxHealth) - 20.0))
-		else if(iCurrentHealth >= (iMaxHealth - 20.0))
+		//else if(float(iCurrentHealth) + fTempHealth > (float(iMaxHealth) - float(ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT)))
+		else if(iCurrentHealth >= (iMaxHealth - ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT))
 		{
 			if(g_bEllisOverSpeedIncreased[victim] == false)
 			{

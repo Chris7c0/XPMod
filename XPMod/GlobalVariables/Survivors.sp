@@ -206,6 +206,7 @@ new g_iEllisPrimarySavedClipSlot2[MAXPLAYERS + 1];
 new g_iEllisPrimarySavedAmmoSlot1[MAXPLAYERS + 1];
 new g_iEllisPrimarySavedAmmoSlot2[MAXPLAYERS + 1];
 new g_iEllisJamminGrenadeCounter[MAXPLAYERS + 1];
+new g_iEllisJamminAdrenalineCounter[MAXPLAYERS + 1];
 new bool:g_bIsEllisInPrimaryCycle[MAXPLAYERS + 1];
 //g_bIsEllisInPrimaryCycle[iClient]
 new bool:g_bIsEllisCyclingEmptyWeapon[MAXPLAYERS + 1];
@@ -217,8 +218,10 @@ new String:g_strEllisUpgradeTypeSlot2[32];
 new bool:g_bIsEllisLimitBreaking[MAXPLAYERS + 1];
 new bool:g_bCanEllisLimitBreak[MAXPLAYERS + 1];
 new bool:g_bEllisLimitBreakInCooldown[MAXPLAYERS + 1];
+#define ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT        30
 new bool:g_bEllisOverSpeedIncreased[MAXPLAYERS + 1];
-new g_iEllisAdrenalineStack;
+new g_iEllisAdrenalineStackDuration;
+new bool:g_bEllisHasAdrenalineBuffs[MAXPLAYERS + 1];
 
 //Nicks Stuff
 new bool:g_bNickIsStealingLife[MAXPLAYERS + 1][MAXPLAYERS + 1];	//g_bNickIsStealingLife[victim][attacker]
