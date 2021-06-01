@@ -38,6 +38,7 @@ Action:Event_PlayerUse(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 	if (IsValidEntity(iTargetID) == false)
 		return Plugin_Continue;
 
+	EventsPlayerUse_Ellis(iClient, iTargetID);
 	EventsPlayerUse_Louis(iClient, iTargetID);
 
 	return Plugin_Continue;
@@ -386,6 +387,8 @@ Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	}
 	if(g_iChosenSurvivor[iClient] == ELLIS)		//Ellis
 	{
+		EventsItemPickUp_Ellis(iClient, weaponclass);
+
 		if(g_iMetalLevel[iClient]>0 || g_iFireLevel[iClient]>0)
 		{
 			//PrintToChat(iClient, "%s", weaponclass);

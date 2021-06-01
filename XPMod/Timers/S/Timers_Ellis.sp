@@ -38,6 +38,21 @@ Action:TimerEllisJamminGiveMolotov(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
+Action:TimerGiveAdrenalineFromStashedInventory(Handle:timer, int iClient)
+{
+	if (g_iStashedInventoryAdrenaline[iClient] > 0)
+	{
+		g_iStashedInventoryAdrenaline[iClient]--;
+		
+		RunCheatCommand(iClient, "give", "give adrenaline");
+		PrintToChat(iClient, "\x03[XPMod] \x04You have %i more Adrenaline Shot%s.",
+						g_iStashedInventoryAdrenaline[iClient],
+						g_iStashedInventoryAdrenaline[iClient] != 1 ? "s" : "");
+	}
+
+	return Plugin_Stop;
+}
+
 Action:TimerRemoveEllisAdrenalineBuffs(Handle:timer, any:iClient)
 {
 	g_bEllisHasAdrenalineBuffs[iClient] = false;

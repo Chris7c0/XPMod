@@ -99,6 +99,7 @@ ResetVariablesForMap(iClient)
 	g_bEllisOverSpeedIncreased[iClient] = false;
 	g_iEllisAdrenalineStackDuration = 15;
 	g_bEllisHasAdrenalineBuffs[iClient] = false;
+	g_iStashedInventoryAdrenaline[iClient] = 0;
 	
 	//Nick 
 	g_bNickIsGettingBeatenUp[iClient] = false;

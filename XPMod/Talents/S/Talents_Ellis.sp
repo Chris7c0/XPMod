@@ -1071,3 +1071,106 @@ EventsDeath_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 // {
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }
+
+void EventsPillsUsed_Ellis(int iClient)
+{
+	if (g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
+		return;
+
+	// PrintToChat(iClient, "Pills Used: %i", GetPlayerWeaponSlot(iClient, 4));
+
+	// Give stashed adrenaline if they have more
+	if (g_iStashedInventoryAdrenaline[iClient] > 0)
+		CreateTimer(0.1, TimerGiveAdrenalineFromStashedInventory, iClient, TIMER_FLAG_NO_MAPCHANGE);
+}
+
+void EventsAdrenalineUsed_Ellis(int iClient)
+{
+	// Give stashed adrenaline if they have more
+	if (g_iStashedInventoryAdrenaline[iClient] > 0)
+		CreateTimer(0.1, TimerGiveAdrenalineFromStashedInventory, iClient, TIMER_FLAG_NO_MAPCHANGE);
+}
+
+void EventsItemPickUp_Ellis(int iClient, const char[] strWeaponClass)
+{
+	if (g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
+		return;
+
+	//PrintToChat(iClient, "ELLIS ITEM PICKUP %s", strWeaponClass);
+
+	if (g_iJamminLevel[iClient] > 0)
+	{
+		// Save that the health boost was empty on last pick up
+		// This is for Ellis's Jamin ability on Player Use event
+		if (g_bHealthBoostItemJustGivenByCheats[iClient] == false && 
+			(StrEqual(strWeaponClass, "pain_pills", false) == true || 
+			StrEqual(strWeaponClass, "adrenaline", false) == true))
+			g_bHealthBoostSlotWasEmptyOnLastPickUp[iClient] = true;
+
+		g_bHealthBoostItemJustGivenByCheats[iClient] = false;
+	}
+}
+
+void EventsPlayerUse_Ellis(int iClient, int iTargetID)
+{
+	if (g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
+		return;
+
+	// PrintToChat(iClient, "iTargetID: %i", iTargetID);
+	// PrintToChat(iClient, "Adrenaline Slot: %i", GetPlayerWeaponSlot(iClient, 4));
+
+	int iSlotItemID = GetPlayerWeaponSlot(iClient, 4);
+	// char strSlotItemClassName[35];
+	// if (IsValidEntity(iSlotItemID))
+	// 	GetEdictClassname(iSlotItemID, strSlotItemClassName, sizeof(strSlotItemClassName));
+	// else
+	// 	strSlotItemClassName = NULL_STRING;
+	// PrintToChat(iClient, "strSlotItemClassName: %s" , strSlotItemClassName);
+
+	// Check if the item when into their weapon slot, if not, then continue to stash it.
+	if (g_iJamminLevel[iClient] > 0 && 
+		iSlotItemID != iTargetID &&
+		g_bHealthBoostSlotWasEmptyOnLastPickUp[iClient] == false)
+	{
+		char strTargetClassName[35];
+		GetEdictClassname(iTargetID, strTargetClassName, sizeof(strTargetClassName));
+		//PrintToChat(iClient, "strTargetClassName: %s" , strTargetClassName);
+
+		if (StrContains(strTargetClassName,"weapon_adrenaline",false) != -1)
+		{
+			if (g_iStashedInventoryAdrenaline[iClient] < ELLIS_STASHED_INVENTORY_MAX_ADRENALINE)
+			{
+				AcceptEntityInput(iTargetID, "Kill");
+
+				g_iStashedInventoryAdrenaline[iClient]++;
+				PrintToChat(iClient, "\x03[XPMod] \x05+1 Adrenaline. \x04You have %i more Adrenaline Shot%s.",
+					g_iStashedInventoryAdrenaline[iClient],
+					g_iStashedInventoryAdrenaline[iClient] != 1 ? "s" : "");
+			}
+		}
+	}
+
+	g_bHealthBoostSlotWasEmptyOnLastPickUp[iClient] = false;
+}
+
+void EventsWeaponGiven_Ellis(int iClient)
+{
+	if (g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
+		return;
+
+	// Check if the player has the ability, has stashed adrenaline, and also if the weapon given
+	if (g_iJamminLevel[iClient] > 0 && g_iStashedInventoryAdrenaline[iClient] > 0)
+		CreateTimer(0.1, TimerGiveAdrenalineFromStashedInventory, iClient, TIMER_FLAG_NO_MAPCHANGE);
+}
+
+
+void HandleCheatCommandTasks_Ellis(int iClient, const char [] strCommandWithArgs)
+{
+	if (g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
+		return;
+	
+	// This is for the event ItemPickUp to not recognize this as a player use press pick up
+	if (StrEqual(strCommandWithArgs,"give pain_pills",false) == true ||
+		StrEqual(strCommandWithArgs,"give adrenaline",false) == true)
+		g_bHealthBoostItemJustGivenByCheats[iClient] = true;
+}

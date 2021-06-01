@@ -134,7 +134,8 @@ bool RunCheatCommand(int iClient, const char [] strCommandName, const char [] st
 
 void HandleCheatCommandTasks(int iClient, const char [] strCommandWithArgs)
 {
-	HandleCheatCommandTasks_Louis(iClient, strCommandWithArgs)
+	HandleCheatCommandTasks_Ellis(iClient, strCommandWithArgs);
+	HandleCheatCommandTasks_Louis(iClient, strCommandWithArgs);
 }
 
 Action:Timer_ShowXPModInfoToServer(Handle:timer, any:data)

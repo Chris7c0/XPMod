@@ -222,6 +222,8 @@ new bool:g_bEllisLimitBreakInCooldown[MAXPLAYERS + 1];
 new bool:g_bEllisOverSpeedIncreased[MAXPLAYERS + 1];
 new g_iEllisAdrenalineStackDuration;
 new bool:g_bEllisHasAdrenalineBuffs[MAXPLAYERS + 1];
+#define ELLIS_STASHED_INVENTORY_MAX_ADRENALINE          3
+new g_iStashedInventoryAdrenaline[MAXPLAYERS + 1];
 
 //Nicks Stuff
 new bool:g_bNickIsStealingLife[MAXPLAYERS + 1][MAXPLAYERS + 1];	//g_bNickIsStealingLife[victim][attacker]

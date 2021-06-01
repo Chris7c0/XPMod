@@ -67,11 +67,12 @@ Action:OverMenuDraw(iClient)
 		%s 					Overconfidence (Level %d):\
 		\n \
 		\nLevel 1:\
-		\n+4 pill & shot health per level\
-		\n+8%%%% reload speed per level\
-		\n(Stacks) (Team) +2 seconds adrenaline duration per level\
-		\nIf within %i points of max health:\
-		\n+2%%%% speed && +5%%%% damage to all guns per level\
+		\n+5 Adrenaline Shot Health per Level\
+		\n+8%%%% Reload Speed per Level\
+		\n(Stacks) (Team) +2 Seconds Adrenaline Duration per Level\
+		\nIf Within %i Points Of Max Health:\
+		\n \
+		\n+2%%%% Speed && +5%%%% Damage To All Guns per Level\
 		\n \
 		\n \
 		\nSkill Uses:\
@@ -86,7 +87,7 @@ Action:OverMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -120,13 +121,13 @@ Action:BringMenuDraw(iClient)
 		\nOn Special Infected kill:\
 		\n \
 		\nLevel 1:\
-		\nRegen +1 temp health per level\
-		\n+20 clip ammo per level\
-		\n(Stacks) +1%%%% movement speed\
+		\nRegen +1 Temp Health per Level\
+		\n+20 Clip Ammo per Level\
+		\n(Stacks) +1%%%% Movement Speed\
 		\n \
 		\n \
 		\nSkill Uses:\
-		\n+4 max (Stacks) per level\
+		\n+4 Max (Stacks) per Level\
 		\n ",
 		strStartingNewLines,
 		g_iBringLevel[iClient]);
@@ -167,13 +168,13 @@ Action:WeaponsMenuDraw(iClient)
 		%s		Weapons Training (Level %d):\
 		\n \
 		\nLevel 1:\
-		\n+10%%%% reload speed per level\
-		\n(Team) +8%%%% laser accuracy per level\
+		\n+10%%%% Reload Speed per Level\
+		\n(Team) +8%%%% Laser Accuracy per Level\
 		\n \
 		\nLevel 5:\
-		\nAutomatic laser sight\
-		\nEllis can carry 2 primary weapons\
-		\n [WALK+ZOOM] to cycle weapons\
+		\nAutomatic Laser Sight\
+		\nEllis Can Carry 2 Primary Weapons\
+		\n [WALK+ZOOM] To Cycle Weapons\
 		\n ",
 		strStartingNewLines,
 		g_iWeaponsLevel[iClient]);
@@ -213,14 +214,18 @@ Action:JamminMenuDraw(iClient)
 	FormatEx(text, sizeof(text), "\
 		%s		Jammin' to the Music (Level %d):\
 		\n \
-		\nOn Tank spawn:\
+		\n Stash Up To 3 Extra Adrenaline Shots\
+		\n	- No Cap on Tank Spawned Shots\
 		\n \
-		\nLevel 1:\
-		\n+1%%%% movement speed per level\
-		\n+5 temp health per level\
+		\n On Tank spawn:\
 		\n \
-		\nLevel 5:\
-		\nGain adrenaline and a molotov\
+		\n	Level 1:\
+		\n	+1%%%% Movement Speed per Level\
+		\n	+5 Temp Health per Level\
+		\n \
+		\n	Level 5:\
+		\n	+1 Adrenaline Shot\
+		\n	+1 Molotov\
 		\n ",
 		strStartingNewLines,
 		g_iJamminLevel[iClient]);
@@ -229,7 +234,7 @@ Action:JamminMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -259,23 +264,22 @@ Action:MetalMenuDraw(iClient)
 	
 	FormatEx(text, sizeof(text), "\
 		%s				Mechanic Affinity (Level %d):\
-		\n					Requires Level 11\
 		\n \
 		\nLevel 1:\
-		\n+4 clip size per level (SMG/Rifle/Sniper only)\
-		\n+7%%%% firing rate per level\
-		\n+8%%%% reload speed per level\
+		\n+4 Clip Size per Level (SMG/Rifle/Sniper Only)\
+		\n+7%%%% Firing Rate per Level\
+		\n+8%%%% Reload Speed per Level\
 		\n \
 		\nLevel 5:\
-		\n [WALK+USE] Double firing rate for 5 seconds\
-		\nDestroys weapon after\
+		\n [WALK+USE] Double Firing Rate for 5 Seconds\
+		\n	- Destroys Weapon After\
 		\n \
 		\n \
 		\n					Bind 1: Ammo Refill\
-		\n				+1 use every other level\
+		\n				+1 Use Every Other Level\
 		\n \
 		\nLevel 1:\
-		\nDeploy an ammo stash\
+		\nDeploy An Ammo Stash\
 		\n ",
 		strStartingNewLines,
 		g_iMetalLevel[iClient]);
@@ -284,7 +288,7 @@ Action:MetalMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	
@@ -314,22 +318,21 @@ Action:FireMenuDraw(iClient)
 	
 	FormatEx(text, sizeof(text), "\
 		%s						Fire Storm(Level %d):\
-		\n						Requires Level 26\
 		\n \
 		\nLevel 1:\
-		\n+6 clip size per level (SMG/Rifle/Sniper only)\
-		\n+10%%%% reload speed per level\
-		\n+7%%%% firing rate per level\
-		\nFire immunity\
+		\n+6 Clip Size per Level (SMG/Rifle/Sniper Only)\
+		\n+10%%%% Reload Speed per Level\
+		\n+7%%%% Firing Rate per Level\
+		\nFire Immunity\
 		\n \
 		\n \
 		\n			Bind 2: Summon Kagu-Tsuchi's Wrath\
-		\n						+1 use every other level\
+		\n						+1 Use Every Other Level\
 		\n \
-		\nLevel 1: +6 seconds of incendiary attacks\
-		\nand burn duration per level\
-		\nBurning a calm Witch\
-		\nimmediately neutralizes her\
+		\nLevel 1: +6 Seconds Of Incendiary Attacks\
+		\nAnd Burn Duration per Level\
+		\nBurning A Calm Witch\
+		\nImmediately Neutralizes Her\
 		\n ",
 		strStartingNewLines,
 		g_iFireLevel[iClient]);
@@ -338,7 +341,7 @@ Action:FireMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	

@@ -1509,61 +1509,8 @@ Action:Event_PillsUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 			RunCheatCommand(iClient, "give", "give adrenaline");
 		}
 	}
-	
-	// if(g_iOverLevel[iClient] > 0 && IsFakeClient(iClient) == false)
-	// {
-	// 	new iMaxHealth = GetEntProp(iClient, Prop_Data, "m_iMaxHealth");
-	// 	new iHealth = GetEntProp(iClient, Prop_Data, "m_iHealth");
-	// 	new Float:fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
-		
-	// 	if(float(iHealth) + fTempHealth + (float(g_iOverLevel[iClient]) * 4.0) <= float(iMaxHealth))
-	// 		fTempHealth = fTempHealth + (float(g_iOverLevel[iClient]) * 4.0);
-	// 	else
-	// 		fTempHealth = float(iMaxHealth) - float(iHealth);
-		
-	// 	SetEntDataFloat(iClient,g_iOffset_HealthBuffer, fTempHealth ,true);
-	// }
-	// else if(g_iEnhancedLevel[iClient] > 0 && IsFakeClient(iClient) == false)
-	// {
-	// 	new iMaxHealth = GetEntProp(iClient, Prop_Data, "m_iMaxHealth");
-	// 	new iHealth = GetEntProp(iClient, Prop_Data, "m_iHealth");
-	// 	new Float:fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
-		
-	// 	if(float(iHealth) + fTempHealth + (float(g_iEnhancedLevel[iClient]) * 6.0) <= float(iMaxHealth))
-	// 		fTempHealth = fTempHealth + (float(g_iEnhancedLevel[iClient]) * 6.0);
-	// 	else
-	// 		fTempHealth = float(iMaxHealth) - float(iHealth);
-		
-	// 	SetEntDataFloat(iClient,g_iOffset_HealthBuffer, fTempHealth ,true);
-	// }
-	
-	// if(g_iOverLevel[iClient] > 0)
-	// {
-	// 	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
-	// 	new iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
-	// 	new Float:fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
-	// 	if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
-	// 	{
-	// 		g_fEllisOverSpeed[iClient] = 0.0;
-	// 		SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iClient] + g_fEllisBringSpeed[iClient] + g_fEllisOverSpeed[iClient]), true);
-	// 		//DeleteCode
-	// 		PrintToChatAll("Pills used, now setting g_fEllisOverSpeed");
-	// 		PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[iClient]);
-	// 		PrintToChatAll("g_fEllisBringSpeed = %f", g_fEllisBringSpeed[iClient]);
-	// 		PrintToChatAll("g_fEllisOverSpeed = %f", g_fEllisOverSpeed[iClient]);
-	// 	}
-	// 	else if(float(iCurrentHealth) + fTempHealth > (float(iMaxHealth) - 20.0))
-	// 	{
-	// 		g_fEllisOverSpeed[iClient] = (g_iOverLevel[iClient] * 0.02);
-	// 		SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iClient] + g_fEllisBringSpeed[iClient] + g_fEllisOverSpeed[iClient]), true);
-	// 		//DeleteCode
-	// 		PrintToChatAll("Pills used, now setting g_fEllisOverSpeed");
-	// 		PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[iClient]);
-	// 		PrintToChatAll("g_fEllisBringSpeed = %f", g_fEllisBringSpeed[iClient]);
-	// 		PrintToChatAll("g_fEllisOverSpeed = %f", g_fEllisOverSpeed[iClient]);
-	// 	}
-	// }
-	
+	EventsPillsUsed_Ellis(iClient);
+
 	decl i, iLoopedClientMaxHP, iLoopedClientCurrentHP;
 	for(i = 1; i <= MaxClients; i++)		//For all the Nicks on the team, increase their health for Enhanced Pain Killers Talent
 	{
@@ -1619,14 +1566,8 @@ Action:Event_AdrenalineUsed(Handle:hEvent, const String:strName[], bool:bDontBro
 		g_bEllisHasAdrenalineBuffs[iClient] = true;
 		CreateTimer(float(g_iEllisAdrenalineStackDuration), TimerRemoveEllisAdrenalineBuffs, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	}
-	if (g_iJamminLevel[iClient] > 0)
-	{
-		if(g_iEllisJamminAdrenalineCounter[iClient] > 0)
-		{
-			g_iEllisJamminAdrenalineCounter[iClient]--;
-			RunCheatCommand(iClient, "give", "give adrenaline");
-		}
-	}
+	EventsAdrenalineUsed_Ellis(iClient);
+
 
 	// Nick
 	if(g_iEnhancedLevel[iClient] > 0 && IsFakeClient(iClient) == false)
@@ -1643,34 +1584,6 @@ Action:Event_AdrenalineUsed(Handle:hEvent, const String:strName[], bool:bDontBro
 		SetEntDataFloat(iClient,g_iOffset_HealthBuffer, fTempHealth ,true);
 	}
 
-	
-	// if(g_iOverLevel[iClient] > 0)
-	// {
-	// 	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
-	// 	new iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
-	// 	new Float:fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
-	// 	if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
-	// 	{
-	// 		g_fEllisOverSpeed[iClient] = 0.0;
-	// 		SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iClient] + g_fEllisBringSpeed[iClient] + g_fEllisOverSpeed[iClient]), true);
-	// 		//DeleteCode
-	// 		PrintToChatAll("Adrenaline used, now setting g_fEllisOverSpeed");
-	// 		PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[iClient]);
-	// 		PrintToChatAll("g_fEllisBringSpeed = %f", g_fEllisBringSpeed[iClient]);
-	// 		PrintToChatAll("g_fEllisOverSpeed = %f", g_fEllisOverSpeed[iClient]);
-	// 	}
-	// 	else if(float(iCurrentHealth) + fTempHealth > (float(iMaxHealth) - 20.0))
-	// 	{
-	// 		g_fEllisOverSpeed[iClient] = (g_iOverLevel[iClient] * 0.02);
-	// 		SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iClient] + g_fEllisBringSpeed[iClient] + g_fEllisOverSpeed[iClient]), true);
-	// 		//DeleteCode
-	// 		PrintToChatAll("Adrenaline used, now setting g_fEllisOverSpeed");
-	// 		PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[iClient]);
-	// 		PrintToChatAll("g_fEllisBringSpeed = %f", g_fEllisBringSpeed[iClient]);
-	// 		PrintToChatAll("g_fEllisOverSpeed = %f", g_fEllisOverSpeed[iClient]);
-	// 	}
-	// }
-	
 	decl i, iLoopedClientMaxHP, iLoopedClientCurrentHP;
 	for(i = 1; i <= MaxClients; i++)		//For all the Nicks on the team, increase their health for Enhanced Pain Killers Talent
 	{
@@ -1712,6 +1625,7 @@ Action:Event_WeaponGiven(Handle:hEvent, const String:strName[], bool:bDontBroadc
 	// Removed because of hand back and forth between two players
 	// GiveClientXP(iGiver, 25, g_iSprite_25XP, iTaker, "Health Boost given to player.");
 
+	EventsWeaponGiven_Ellis(iGiver);
 	EventsWeaponGiven_Louis(iGiver);
 	
 	return Plugin_Continue;
