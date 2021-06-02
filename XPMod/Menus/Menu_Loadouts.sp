@@ -207,9 +207,10 @@ Action:HealthMenuDraw(iClient)
 	
 	AddMenuItem(menu, "option1", "First Aid Kit (250 XP)");
 	AddMenuItem(menu, "option2", "Defibrillator (500 XP)");
-	AddMenuItem(menu, "option3", "Explosive Ammo (1000 XP)");
-	AddMenuItem(menu, "option4", "Incendiary Ammo (500 XP)");
-	AddMenuItem(menu, "option5", "None\n ");
+	AddMenuItem(menu, "option3", "Incendiary Ammo (500 XP)");
+	// AddMenuItem(menu, "option4", "Explosive Ammo (1000 XP)");
+	AddMenuItem(menu, "option4", "None\n ");
+	AddMenuItem(menu, "option5", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
@@ -724,17 +725,17 @@ HealthMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 				g_iClientHealthSlotID[iClient] = 2;
 				LoadoutMenuDraw(iClient);
 			}
-			case 2: //Explosive Ammo
-			{
-				g_iClientHealthSlotID[iClient] = 3;
-				LoadoutMenuDraw(iClient);
-			}
-			case 3: //Incendiary Ammo
+			case 2: //Incendiary Ammo
 			{
 				g_iClientHealthSlotID[iClient] = 4;
 				LoadoutMenuDraw(iClient);
 			}
-			case 4: //None
+			// case 3: //Explosive Ammo
+			// {
+			// 	g_iClientHealthSlotID[iClient] = 3;
+			// 	LoadoutMenuDraw(iClient);
+			// }
+			case 3: //None
 			{
 				g_iClientHealthSlotID[iClient] = 0;
 				LoadoutMenuDraw(iClient);
@@ -1366,16 +1367,16 @@ GetWeaponNames(iClient)
 			g_strClientHealthSlot = "Defibrillator (500 XP)";
 			g_iClientHealthSlotCost[iClient] = 500;
 		}
-		case 3: //Explosive Ammo
-		{
-			g_strClientHealthSlot = "Explosive Ammo (1000 XP)";
-			g_iClientHealthSlotCost[iClient] = 1000;
-		}
-		case 4: //Incendiary Ammo
+		case 3: //Incendiary Ammo
 		{
 			g_strClientHealthSlot = "Incendiary Ammo (500 XP)";
 			g_iClientHealthSlotCost[iClient] = 500;
 		}
+		// case 4: //Explosive Ammo
+		// {
+		// 	g_strClientHealthSlot = "Explosive Ammo (1000 XP)";
+		// 	g_iClientHealthSlotCost[iClient] = 1000;
+		// }
 	}
 	switch(g_iClientBoostSlotID[iClient])
 	{
@@ -1852,17 +1853,7 @@ SpawnWeapons(iClient)
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Defibrillator");
 		}
-		case 3: //Explosive Ammo
-		{
-			if((g_iClientXP[iClient] - 1000) >= g_iClientPreviousLevelXPAmount[iClient])
-			{
-				g_iClientXP[iClient] -= 1000;
-				RunCheatCommand(iClient, "give", "give upgradepack_explosive");
-			}
-			else
-				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for \x04Explosive Ammo");
-		}
-		case 4: //Incendiary Ammo
+		case 3: //Incendiary Ammo
 		{
 			if((g_iClientXP[iClient] - 500) >= g_iClientPreviousLevelXPAmount[iClient])
 			{
@@ -1872,6 +1863,16 @@ SpawnWeapons(iClient)
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for \x04Incendiary Ammo");
 		}
+		// case 4: //Explosive Ammo
+		// {
+		// 	if((g_iClientXP[iClient] - 1000) >= g_iClientPreviousLevelXPAmount[iClient])
+		// 	{
+		// 		g_iClientXP[iClient] -= 1000;
+		// 		RunCheatCommand(iClient, "give", "give upgradepack_explosive");
+		// 	}
+		// 	else
+		// 		PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for \x04Explosive Ammo");
+		// }
 	}
 	switch(g_iClientBoostSlotID[iClient])
 	{
