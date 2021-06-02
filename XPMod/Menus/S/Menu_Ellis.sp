@@ -64,30 +64,31 @@ Action:OverMenuDraw(iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		%s 					Overconfidence (Level %d):\
+		%s 						Overconfidence (Level %d):\
 		\n \
 		\nLevel 1:\
-		\n+5 Adrenaline Shot Health per Level\
 		\n+8%%%% Reload Speed per Level\
-		\n(Stacks) (Team) +2 Seconds Adrenaline Duration per Level\
+		\n \
 		\nIf Within %i Points Of Max Health:\
+		\n	+2%%%% Speed\
+		\n	+5%%%% Damage To All Guns per Level\
 		\n \
-		\n+2%%%% Speed && +5%%%% Damage To All Guns per Level\
+		\nWhile On Adrenaline:\
+		\n	+5 Temp Health per Level\
+		\n	+5 Damage To All Guns per Level\
+		\n	(Team) +2 Seconds Duration per Level\
+		\n		- Stacks with every Ellis\
 		\n \
-		\n \
-		\nSkill Uses:\
-		\nAdrenaline (Stacks) with itself\
-		\nUnlimited stacks\
 		\n ",
-		ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT,
 		strStartingNewLines,
-		g_iOverLevel[iClient]);
+		g_iOverLevel[iClient],
+		ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT);
 	SetMenuTitle(menu, text);
 
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
