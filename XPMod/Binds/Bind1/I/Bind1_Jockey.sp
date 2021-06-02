@@ -1,6 +1,8 @@
 void Bind1Press_Jockey(iClient)
 {
-    if((g_iClientInfectedClass1[iClient] == JOCKEY) || (g_iClientInfectedClass2[iClient] == JOCKEY) || (g_iClientInfectedClass3[iClient] == JOCKEY))
+    if((g_iClientInfectedClass1[iClient] == JOCKEY) || 
+        (g_iClientInfectedClass2[iClient] == JOCKEY) || 
+        (g_iClientInfectedClass3[iClient] == JOCKEY))
     {
         if(g_iErraticLevel[iClient] > 0)
         {
@@ -16,22 +18,6 @@ void Bind1Press_Jockey(iClient)
                                 g_bCanJockeyPee[iClient] = false;
                                 
                                 GiveClientXP(iClient, 25, g_iSprite_25XP_SI, g_iJockeyVictim[iClient], "Pissed on survivor.");
-                                
-                                new iRandomTankSpawn = GetRandomInt(1, 100);
-                                switch (iRandomTankSpawn)
-                                {
-                                    case 1, 2, 3, 4, 5, 6, 7, 8 , 9, 10:
-                                    {
-                                        if(g_iErraticLevel[iClient] >= iRandomTankSpawn)
-                                        {
-                                            g_bTankStartingHealthXPModSpawn = true;
-                                            RunCheatCommand(iClient, "z_spawn_old", "z_spawn_old tank auto");
-
-                                            PrintToChatAll("\x03[XPMod] \x04Beware, a tank smells %N's jockey piss", iClient);
-                                            PrintHintText(iClient, "You attracted a tank with your piss!");
-                                        }
-                                    }
-                                }
                                 
                                 decl Float:vec[3];
                                 GetClientEyePosition(iClient, vec);
@@ -67,12 +53,23 @@ void Bind1Press_Jockey(iClient)
                                     PrintHintText(g_iJockeyVictim[iClient], "%N is pissing on you!", iClient);
                                     ShowHudOverlayColor(g_iJockeyVictim[iClient], 255, 255, 0, 65, 2900, FADE_OUT);
                                 }
-                                
+
                                 if(g_iErraticLevel[iClient] == 10)
                                 {
                                     RunCheatCommand(iClient, "z_spawn_old", "z_spawn_old mob auto");
                                     
                                     PrintHintText(iClient, "A hoard smells your piss, here they come!");
+                                }
+
+                                new iRandomTankSpawn = GetRandomInt(1, 100);
+                                if (iRandomTankSpawn <= JOCKEY_PISS_SPAWN_TANK_CHANCE && 
+                                    g_iErraticLevel[iClient] >= iRandomTankSpawn)
+                                {
+                                    g_bTankStartingHealthXPModSpawn = true;
+                                    RunCheatCommand(iClient, "z_spawn_old", "z_spawn_old tank auto");
+
+                                    PrintToChatAll("\x03[XPMod] \x04Beware, a tank smells %N's jockey piss", iClient);
+                                    PrintHintText(iClient, "You attracted a tank with your piss!");
                                 }
                                 
                                 g_iClientBindUses_1[iClient]++;

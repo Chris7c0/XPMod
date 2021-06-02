@@ -174,6 +174,7 @@ new g_iJockeysVictim[MAXPLAYERS + 1];
 new bool:g_bCanJockeyJump[MAXPLAYERS + 1] = false;
 new Float:g_fJockeyRideSpeed[MAXPLAYERS + 1] = 1.0;
 new Float:g_fJockeyRideSpeedVanishingActBoost[MAXPLAYERS + 1] = 0.0;
+#define JOCKEY_PISS_SPAWN_TANK_CHANCE       5 //%
 
 
 // Charger
