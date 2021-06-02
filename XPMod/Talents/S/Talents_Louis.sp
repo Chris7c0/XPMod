@@ -143,14 +143,18 @@ EventsHurt_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 			new iVictimHealth = GetEntProp(iVictim,Prop_Data,"m_iHealth");
 			// PrintToChatAll("Louis iVictim %N START HP: %i", iVictim, iVictimHealth);
 
+			// Store if its a headshot for use below
+			bool bIsHeadshot = GetEventInt(hEvent, "hitgroup") == HITGROUP_HEAD;
+
 			new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
 			new iAddtionalDamageAmount = RoundToNearest(float(iDmgHealth) * 
-				( (g_iLouisTalent2Level[iAttacker] * 0.10) + 
-				  (g_iPillsUsedStack[iAttacker] * g_iLouisTalent6Level[iAttacker] * 0.03) ));
+				( (g_iLouisTalent2Level[iAttacker] * 0.10) + // Damage Buff
+				  (bIsHeadshot ? 0.0 : (-1.0 * (g_iLouisTalent4Level[iAttacker] * 0.15))) + //Non-Headshot Penality
+				  (g_iPillsUsedStack[iAttacker] * g_iLouisTalent6Level[iAttacker] * 0.03) )); // Pills here buff dmg
 			new iNewDamageAmount = iDmgHealth + iAddtionalDamageAmount;
 
 			// Add even more damage if its a headshot
-			if (GetEventInt(hEvent, "hitgroup") == HITGROUP_HEAD)
+			if (bIsHeadshot)
 				iNewDamageAmount = iNewDamageAmount + (iNewDamageAmount * RoundToNearest(g_iLouisTalent4Level[iAttacker] * 0.40));
 
 			// Add or remove damage based on victim talents (Also subtract damage that will be already)

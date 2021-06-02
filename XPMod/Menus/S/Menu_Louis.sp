@@ -203,6 +203,7 @@ Action:LouisTalent4MenuDraw(iClient)
 		%s 							BOOM HEADSHOT! (Level %d):\
 		\n \
 		\n +40%%%% Headshot Damage Multiplier per Level\
+		\n -15%%%% Damage Penalty for Non-Headshots per Level\
 		\n \
 		\n Headshot Kill Bonuses:\
 		\n 	- CI: +1 HP, +1%%%% Speed for 60 Seconds, +5 Clip Ammo per Level\
@@ -216,7 +217,7 @@ Action:LouisTalent4MenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
