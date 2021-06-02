@@ -147,53 +147,6 @@ Action:BringMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-//Weapons Training
-Action:WeaponsMenuDraw(iClient) 
-{
-	decl String:text[512];
-
-	DeleteAllMenuParticles(iClient);
-	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	{
-		g_iPID_MD_Ellis_Weapons[iClient] = WriteParticle(iClient, "md_ellis_weapons", 0.0);
-		g_bShowingVGUI[iClient] =  true;
-	}
-	
-	Menu menu = CreateMenu(WeaponsMenuHandler);
-
-	char strStartingNewLines[32], strEndingNewLines[32];
-	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
-	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-		
-	FormatEx(text, sizeof(text), "\
-		%s		Weapons Training (Level %d):\
-		\n \
-		\nLevel 1:\
-		\n+10%%%% Reload Speed per Level\
-		\n(Team) +8%%%% Laser Accuracy per Level\
-		\n \
-		\nLevel 5:\
-		\nAutomatic Laser Sight\
-		\nEllis Can Carry 2 Primary Weapons\
-		\n [WALK+ZOOM] To Cycle Weapons\
-		\n ",
-		strStartingNewLines,
-		g_iWeaponsLevel[iClient]);
-	SetMenuTitle(menu, text);
-	
-	decl String:strFinalOptionText[250];
-	Format(strFinalOptionText, sizeof(strFinalOptionText),
-		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
-		strEndingNewLines);
-	AddMenuItem(menu, "option1", strFinalOptionText);
-
-	SetMenuExitButton(menu, false);
-	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
-
-	return Plugin_Handled;
-}
-
 //Jammin' to the Music
 Action:JamminMenuDraw(iClient) 
 {
@@ -236,6 +189,53 @@ Action:JamminMenuDraw(iClient)
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strEndingNewLines);
+	AddMenuItem(menu, "option1", strFinalOptionText);
+
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
+
+	return Plugin_Handled;
+}
+
+//Weapons Training
+Action:WeaponsMenuDraw(iClient) 
+{
+	decl String:text[512];
+
+	DeleteAllMenuParticles(iClient);
+	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
+	{
+		g_iPID_MD_Ellis_Weapons[iClient] = WriteParticle(iClient, "md_ellis_weapons", 0.0);
+		g_bShowingVGUI[iClient] =  true;
+	}
+	
+	Menu menu = CreateMenu(WeaponsMenuHandler);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
+		
+	FormatEx(text, sizeof(text), "\
+		%s		Weapons Training (Level %d):\
+		\n \
+		\nLevel 1:\
+		\n+10%%%% Reload Speed per Level\
+		\n(Team) +8%%%% Laser Accuracy per Level\
+		\n \
+		\nLevel 5:\
+		\nAutomatic Laser Sight\
+		\nEllis Can Carry 2 Primary Weapons\
+		\n [WALK+ZOOM] To Cycle Weapons\
+		\n ",
+		strStartingNewLines,
+		g_iWeaponsLevel[iClient]);
+	SetMenuTitle(menu, text);
+	
+	decl String:strFinalOptionText[250];
+	Format(strFinalOptionText, sizeof(strFinalOptionText),
+		"Back\
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -440,6 +440,24 @@ BringMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
     }
 }
 
+//Jammin to the Music Handler
+JamminMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+{
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
+	{
+		switch (itemNum)
+		{
+			case 0: //Back
+            {
+				EllisMenuDraw(iClient);
+            }        
+        }
+    }
+}
 
 //Weapons Training Handler
 WeaponsMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
@@ -460,27 +478,6 @@ WeaponsMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
     }
 }
 
-
-//Jammin to the Music Handler
-JamminMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
-{
-	if (action == MenuAction_End)
-	{
-		delete menu;
-	}
-	else if (action == MenuAction_Select)
-	{
-		switch (itemNum)
-		{
-			case 0: //Back
-            {
-				EllisMenuDraw(iClient);
-            }        
-        }
-    }
-}
-
-
 //Metal Storm Handler and Mechanic Affinity
 MetalMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
@@ -499,7 +496,6 @@ MetalMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
         }
     }
 }
-
 
 //Fire Storm Handler
 FireMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
