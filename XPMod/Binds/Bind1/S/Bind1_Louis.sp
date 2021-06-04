@@ -427,7 +427,7 @@ Action:TimerRemoveLightDynamicEntity(Handle:timer, any:iEntity)
 	// PrintToChatAll("strEntityClass: %s", strEntityClass);
 	if (StrEqual(strEntityClass, "CDynamicLight", true) == false)
 		return Plugin_Stop;
-
+	
 	AcceptEntityInput(iEntity, "TurnOff");
 	AcceptEntityInput(iEntity, "Kill");
 

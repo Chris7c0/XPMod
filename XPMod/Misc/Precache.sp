@@ -363,29 +363,3 @@ PrecacheLockedWeaponModels()	//Precache the locked weapon models
 	if (!IsModelPrecached("models/weapons/melee/v_golfclub.mdl"))
 		PrecacheModel("models/weapons/melee/v_golfclub.mdl");
 }
-
-
-// This is no longer need with the last stand update (also, this was causing crash when xpmod was replaced witth an update)
-// Action:Timer_PrepareCSWeapons(Handle:timer, any:iClient)
-// {
-// 	//Prepare the CounterStrike weapons for use by spawning and destroying
-// 	new iWeapon = CreateEntityByName("weapon_rifle_sg552");
-// 	DispatchSpawn(iWeapon);
-// 	AcceptEntityInput(iWeapon, "Kill");
-// 	iWeapon = CreateEntityByName("weapon_smg_mp5");
-// 	DispatchSpawn(iWeapon);
-// 	AcceptEntityInput(iWeapon, "Kill");
-// 	iWeapon = CreateEntityByName("weapon_sniper_awp");
-// 	DispatchSpawn(iWeapon);
-// 	AcceptEntityInput(iWeapon, "Kill");
-// 	iWeapon = CreateEntityByName("weapon_sniper_scout");
-// 	DispatchSpawn(iWeapon);
-// 	AcceptEntityInput(iWeapon, "Kill");
-	
-// 	//Reload the current map, so that the weapons works properly
-// 	decl String:Map[64];
-// 	GetCurrentMap(Map, sizeof(Map));
-// 	ForceChangeLevel(Map, "Preparing the CS Weapons for first use");
-	
-// 	return Plugin_Stop;
-// }

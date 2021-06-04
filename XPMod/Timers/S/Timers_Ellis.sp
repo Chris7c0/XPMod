@@ -22,6 +22,7 @@ Action:TimerStopFireStorm(Handle:timer, any:iClient)
 Action:TimerEllisPrimaryCycleReset(Handle:timer, any:iClient)
 {
 	g_bCanEllisPrimaryCycle[iClient] = true;
+
 	return Plugin_Stop;
 }
 
@@ -68,7 +69,7 @@ Action:TimerEllisLimitBreakReset(Handle:timer, any:iClient)
 	if (RunClientChecks(iClient) && IsFakeClient(iClient) == false)
 		PrintHintText(iClient, "Your weapon was destroyed and LIMIT BREAK is on cooldown! 60 seconds remaining");
 	
-	if((StrEqual(g_strEllisPrimarySlot1, "empty", false) == false) && (StrEqual(g_strEllisPrimarySlot2, "empty", false) == false))
+	if((StrEqual(g_strEllisPrimarySlot1[iClient], "empty", false) == false) && (StrEqual(g_strEllisPrimarySlot2[iClient], "empty", false) == false))
 	{
 		fnc_CycleWeapon(iClient);
 		fnc_DeterminePrimaryWeapon(iClient);
@@ -80,7 +81,7 @@ Action:TimerEllisLimitBreakReset(Handle:timer, any:iClient)
 	{
 		g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 0);
 
-		if (g_iPrimarySlotID[iClient] > -1)
+		if (g_iPrimarySlotID[iClient] > 0 && IsValidEntity(g_iPrimarySlotID[iClient]))
 			AcceptEntityInput(g_iPrimarySlotID[iClient], "Kill");
 
 		fnc_ClearAllWeaponData(iClient);
@@ -99,7 +100,7 @@ Action:TimerEllisLimitBreakReset(Handle:timer, any:iClient)
 	fnc_ClearSavedWeaponData(iClient);
 	*/
 	/*
-	if((StrEqual(g_strEllisPrimarySlot1, "empty", false) == true) || (StrEqual(g_strEllisPrimarySlot2, "empty", false) == true))
+	if((StrEqual(g_strEllisPrimarySlot1[iClient], "empty", false) == true) || (StrEqual(g_strEllisPrimarySlot2[iClient], "empty", false) == true))
 	{
 		g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 0);
 		AcceptEntityInput(g_iPrimarySlotID[iClient]);

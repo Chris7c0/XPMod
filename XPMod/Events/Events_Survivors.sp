@@ -25,10 +25,12 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 		}
 		case 3:		//Ellis Firing
 		{
-			if((StrEqual(g_strEllisPrimarySlot1, "empty", false) == true) || (StrEqual(g_strEllisPrimarySlot2, "empty", false) == true))
+			if((StrEqual(g_strEllisPrimarySlot1[iClient], "empty", false) == true) || (StrEqual(g_strEllisPrimarySlot2[iClient], "empty", false) == true))
 			{
 				fnc_DeterminePrimaryWeapon(iClient);
-				if((StrContains(g_strCurrentWeapon, "rifle", false) != -1) || (StrContains(g_strCurrentWeapon, "smg", false) != -1) || (StrContains(g_strCurrentWeapon, "shotgun", false) != -1) || (StrContains(g_strCurrentWeapon, "launcher", false) != -1) || (StrContains(g_strCurrentWeapon, "sniper", false) != -1))
+				new String:strCurrentWeapon[32];
+				GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
+				if((StrContains(strCurrentWeapon, "rifle", false) != -1) || (StrContains(strCurrentWeapon, "smg", false) != -1) || (StrContains(strCurrentWeapon, "shotgun", false) != -1) || (StrContains(strCurrentWeapon, "launcher", false) != -1) || (StrContains(strCurrentWeapon, "sniper", false) != -1))
 				{
 					fnc_SaveAmmo(iClient);
 				}
@@ -41,13 +43,16 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 			if((CurrentClipAmmo == 0) || (CurrentClipAmmo == 1))
 			{
 				fnc_DeterminePrimaryWeapon(iClient);
+				new String:strCurrentWeapon[32];
+				GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
+
 				if(g_iReserveAmmo[iClient] == 0)
 				{
 					//PrintToChatAll("Ammo is now 0");
-					if((g_iEllisCurrentPrimarySlot[iClient] == 0) && (StrEqual(g_strEllisPrimarySlot2, "empty", false) == false) && ((g_iEllisPrimarySavedClipSlot2[iClient] > 0) || (g_iEllisPrimarySavedAmmoSlot2[iClient] > 0)))
+					if((g_iEllisCurrentPrimarySlot[iClient] == 0) && (StrEqual(g_strEllisPrimarySlot2[iClient], "empty", false) == false) && ((g_iEllisPrimarySavedClipSlot2[iClient] > 0) || (g_iEllisPrimarySavedAmmoSlot2[iClient] > 0)))
 					{
 						//fnc_DeterminePrimaryWeapon(iClient);
-						if((StrContains(g_strCurrentWeapon, "rifle", false) != -1) || (StrContains(g_strCurrentWeapon, "smg", false) != -1) || (StrContains(g_strCurrentWeapon, "shotgun", false) != -1) || (StrContains(g_strCurrentWeapon, "launcher", false) != -1) || (StrContains(g_strCurrentWeapon, "sniper", false) != -1))
+						if((StrContains(strCurrentWeapon, "rifle", false) != -1) || (StrContains(strCurrentWeapon, "smg", false) != -1) || (StrContains(strCurrentWeapon, "shotgun", false) != -1) || (StrContains(strCurrentWeapon, "launcher", false) != -1) || (StrContains(strCurrentWeapon, "sniper", false) != -1))
 						{
 							g_bIsEllisCyclingEmptyWeapon[iClient] = true;
 							fnc_SaveAmmo(iClient);
@@ -55,10 +60,10 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 							//fnc_SetAmmo(iClient);
 						}
 					}
-					else if((g_iEllisCurrentPrimarySlot[iClient] == 1) && (StrEqual(g_strEllisPrimarySlot1, "empty", false) == false) && ((g_iEllisPrimarySavedClipSlot1[iClient] > 0) || (g_iEllisPrimarySavedAmmoSlot1[iClient] > 0)))
+					else if((g_iEllisCurrentPrimarySlot[iClient] == 1) && (StrEqual(g_strEllisPrimarySlot1[iClient], "empty", false) == false) && ((g_iEllisPrimarySavedClipSlot1[iClient] > 0) || (g_iEllisPrimarySavedAmmoSlot1[iClient] > 0)))
 					{
 						//fnc_DeterminePrimaryWeapon(iClient);
-						if((StrContains(g_strCurrentWeapon, "rifle", false) != -1) || (StrContains(g_strCurrentWeapon, "smg", false) != -1) || (StrContains(g_strCurrentWeapon, "shotgun", false) != -1) || (StrContains(g_strCurrentWeapon, "launcher", false) != -1) || (StrContains(g_strCurrentWeapon, "sniper", false) != -1))
+						if((StrContains(strCurrentWeapon, "rifle", false) != -1) || (StrContains(strCurrentWeapon, "smg", false) != -1) || (StrContains(strCurrentWeapon, "shotgun", false) != -1) || (StrContains(strCurrentWeapon, "launcher", false) != -1) || (StrContains(strCurrentWeapon, "sniper", false) != -1))
 						{
 							g_bIsEllisCyclingEmptyWeapon[iClient] = true;
 							fnc_SaveAmmo(iClient);
@@ -87,9 +92,9 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					
 				}
 				
-				if((g_iEllisCurrentPrimarySlot[iClient] == 0) && (StrEqual(g_strEllisPrimarySlot2, "empty", false) == false) && ((g_iEllisPrimarySavedClipSlot2[iClient] != 0) && (g_iEllisPrimarySavedAmmoSlot2[iClient] != 0)))
+				if((g_iEllisCurrentPrimarySlot[iClient] == 0) && (StrEqual(g_strEllisPrimarySlot2[iClient], "empty", false) == false) && ((g_iEllisPrimarySavedClipSlot2[iClient] != 0) && (g_iEllisPrimarySavedAmmoSlot2[iClient] != 0)))
 				{
-					if(StrEqual(g_strEllisPrimarySlot2, "weapon_autoshotgun", false) == true)
+					if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_autoshotgun", false) == true)
 					{
 						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
@@ -98,7 +103,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 32, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
-					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_grenade_launcher", false) == true)
+					else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_grenade_launcher", false) == true)
 					{
 						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
@@ -107,7 +112,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 68, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
-					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_hunting_rifle", false) == true)
+					else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_hunting_rifle", false) == true)
 					{
 						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
@@ -116,7 +121,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 36, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
-					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_pumpshotgun", false) == true)
+					else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_pumpshotgun", false) == true)
 					{
 						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
@@ -125,7 +130,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 28, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
-					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_rifle", false) == true)
+					else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_rifle", false) == true)
 					{
 						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
@@ -134,7 +139,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 12, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
-					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_rifle_ak47", false) == true)
+					else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_rifle_ak47", false) == true)
 					{
 						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
@@ -143,7 +148,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 12, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
-					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_rifle_desert", false) == true)
+					else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_rifle_desert", false) == true)
 					{
 						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
@@ -152,7 +157,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 12, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
-					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_rifle_m60", false) == true)
+					else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_rifle_m60", false) == true)
 					{
 						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
@@ -161,7 +166,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						//SetEntData(iClient, iOffset_Ammo + 32, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
-					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_rifle_sg552", false) == true)
+					else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_rifle_sg552", false) == true)
 					{
 						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
@@ -170,7 +175,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 12, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
-					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_shotgun_chrome", false) == true)
+					else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_shotgun_chrome", false) == true)
 					{
 						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
@@ -179,7 +184,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 28, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
-					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_shotgun_spas", false) == true)
+					else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_shotgun_spas", false) == true)
 					{
 						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
@@ -188,7 +193,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 32, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
-					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_smg", false) == true)
+					else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_smg", false) == true)
 					{
 						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
@@ -197,7 +202,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 20, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
-					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_smg_mp5", false) == true)
+					else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_smg_mp5", false) == true)
 					{
 						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
@@ -206,7 +211,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 20, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
-					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_smg_silenced", false) == true)
+					else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_smg_silenced", false) == true)
 					{
 						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
@@ -215,7 +220,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 20, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
-					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_sniper_awp", false) == true)
+					else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_sniper_awp", false) == true)
 					{
 						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
@@ -224,7 +229,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 40, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
-					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_sniper_military", false) == true)
+					else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_sniper_military", false) == true)
 					{
 						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
@@ -233,7 +238,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
 						SetEntData(iClient, iOffset_Ammo + 40, g_iEllisPrimarySavedAmmoSlot2[iClient]);
 					}
-					else if(StrEqual(g_strEllisPrimarySlot2, "weapon_sniper_scout", false) == true)
+					else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_sniper_scout", false) == true)
 					{
 						AcceptEntityInput(ActiveWeaponID);
 						g_iEllisCurrentPrimarySlot[iClient] = 1;
@@ -250,15 +255,18 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 		case 4:		//Nick Firing
 		{
 			fnc_DeterminePrimaryWeapon(iClient);
-			if((g_bRamboModeActive[iClient] == true) && (StrEqual(g_strCurrentWeapon, "weapon_rifle_m60", false) == true))
+			new String:strCurrentWeapon[32];
+			GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
+			
+			if((g_bRamboModeActive[iClient] == true) && (StrEqual(strCurrentWeapon, "weapon_rifle_m60", false) == true))
 			{
 				//PrintToChatAll("Nick is firing with m60 and rambo mode");
 				if (IsValidEntity(g_iPrimarySlotID[iClient]) && HasEntProp(g_iPrimarySlotID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded"))
 					SetEntProp(g_iPrimarySlotID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded", 251);
 			}
 			//g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 0);
-			GetClientWeapon(iClient, g_strCurrentWeapon, sizeof(g_strCurrentWeapon));
-			if((StrEqual(g_strCurrentWeapon, "weapon_pistol_magnum", false) == true) && (g_iMagnumLevel[iClient] > 0))
+			
+			if((StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == true) && (g_iMagnumLevel[iClient] > 0))
 			{
 				//PrintToChatAll("Weapon is magnum && Magnum level > 0");
 				g_iActiveWeaponID[iClient] = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);

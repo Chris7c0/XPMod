@@ -23,7 +23,7 @@ Action:TimerStopInfection(Handle:timer, any:iClient)
 
 Action:TimerRemoveSmoke(Handle:timer, any:entity)
 {
-	if(IsValidEntity(entity))	//check if is actually smoke too
+	if(entity > 0 && IsValidEntity(entity))	//check if is actually smoke too
 	{
 		decl String:entclass[16];
 		GetEntityNetClass(entity, entclass, 16);

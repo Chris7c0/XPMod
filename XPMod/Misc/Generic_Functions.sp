@@ -451,7 +451,9 @@ DealDamage(iVictim, iAttacker, iAmount, iDamageType = DAMAGETYPE_INFECTED_MELEE)
 	// Config, delete point_hurt
 	DispatchKeyValue(entPointHurt, "classname", "point_hurt");
 	DispatchKeyValue(iVictim, "targetname", "null");
-	AcceptEntityInput(entPointHurt, "Kill");
+
+	if (entPointHurt > 0 && IsValidEntity(entPointHurt))
+		AcceptEntityInput(entPointHurt, "Kill");
 }
 
 void ReduceDamageTakenForNewPlayers(int iVictim, int iDmgAmount)
@@ -1041,136 +1043,138 @@ bool:TraceRayDontHitSelf(entity, mask, any:data)
 
 fnc_DeterminePrimaryWeapon(iClient)
 {	
-	GetClientWeapon(iClient, g_strCurrentWeapon, sizeof(g_strCurrentWeapon));
-	if((StrEqual(g_strCurrentWeapon, "weapon_melee", false) == false) && (StrEqual(g_strCurrentWeapon, "weapon_pistol", false) == false) && (StrEqual(g_strCurrentWeapon, "weapon_pistol_magnum", false) == false))
-	{
-		//decl String:currentweapon[512];
-		//GetClientWeapon(iClient, g_strCurrentWeapon, sizeof(g_strCurrentWeapon));
-		//PrintToChatAll("Current Weapon is %s & weapon is not melee/pistol/magnum", g_strCurrentWeapon);
+	new String:strCurrentWeapon[32];
+	GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
+	// PrintToChatAll("Current Weapon is %s & weapon is not melee/pistol/magnum", strCurrentWeapon);
 
-		g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 0);
-		//PrintToChatAll("g_iPrimarySlotID = %d", g_iPrimarySlotID[iClient]);
-		if (g_iPrimarySlotID[iClient] > -1) g_iCurrentClipAmmo[iClient] = GetEntProp(g_iPrimarySlotID[iClient],Prop_Data,"m_iClip1");
-		
-		if((StrEqual(g_strCurrentWeapon, "weapon_rifle", false) == true) || (StrEqual(g_strCurrentWeapon, "weapon_rifle_ak47", false) == true) || (StrEqual(g_strCurrentWeapon, "weapon_rifle_sg552", false) == true) || (StrEqual(g_strCurrentWeapon, "weapon_rifle_desert", false) == true))
-		{
-			g_iAmmoOffset[iClient] = 12;
-		}
-		else if((StrEqual(g_strCurrentWeapon, "weapon_smg", false) == true) || (StrEqual(g_strCurrentWeapon, "weapon_smg_mp5", false) == true) || (StrEqual(g_strCurrentWeapon, "weapon_smg_silenced", false) == true))
-		{
-			g_iAmmoOffset[iClient] = 20;
-		}
-		else if((StrEqual(g_strCurrentWeapon, "weapon_pumpshotgun", false) == true) || (StrEqual(g_strCurrentWeapon, "weapon_shotgun_chrome", false) == true))
-		{
-			g_iAmmoOffset[iClient] = 28;
-		}
-		else if((StrEqual(g_strCurrentWeapon, "weapon_autoshotgun", false) == true) || (StrEqual(g_strCurrentWeapon, "weapon_shotgun_spas", false) == true))
-		{
-			g_iAmmoOffset[iClient] = 32;
-		}
-		else if(StrEqual(g_strCurrentWeapon, "weapon_hunting_rifle", false) == true)
-		{
-			g_iAmmoOffset[iClient] = 36;
-		}
-		else if((StrEqual(g_strCurrentWeapon, "weapon_sniper_military", false) == true) || (StrEqual(g_strCurrentWeapon, "weapon_sniper_awp", false) == true) || (StrEqual(g_strCurrentWeapon, "weapon_sniper_scout", false) == true))
-		{
-			g_iAmmoOffset[iClient] = 40;
-		}
-		else if(StrEqual(g_strCurrentWeapon, "weapon_grenade_launcher", false) == true)
-		{
-			g_iAmmoOffset[iClient] = 68;
-		}
-		else
-		{
-			g_iAmmoOffset[iClient] = 0;
-		}
-		//PrintToChatAll("g_iAmmoOffset = %d", g_iAmmoOffset[iClient]);
-		
-		
-		g_iOffset_Ammo[iClient] = FindDataMapInfo(iClient,"m_iAmmo");
-		//DONT FORGET THIS "g_iReserveAmmo" variable is here!
-		g_iReserveAmmo[iClient] = GetEntData(iClient, g_iOffset_Ammo[iClient] + g_iAmmoOffset[iClient]);
-		//PrintToChatAll("g_iReserveAmmo = %d", g_iReserveAmmo[iClient]);
-		//DONT FORGET THIS "g_iReserveAmmo" variable is here!
-		
-		
-		if(StrEqual(g_strCurrentWeapon, "weapon_rifle", false) == true)
-		{
-			g_strCurrentWeaponCmdName = "rifle";
-		}
-		else if(StrEqual(g_strCurrentWeapon, "weapon_rifle_ak47", false) == true)
-		{
-			g_strCurrentWeaponCmdName = "rifle_ak47";
-		}
-		else if(StrEqual(g_strCurrentWeapon, "weapon_rifle_sg552", false) == true)
-		{
-			g_strCurrentWeaponCmdName = "rifle_sg552";
-		}
-		else if(StrEqual(g_strCurrentWeapon, "weapon_rifle_desert", false) == true)
-		{
-			g_strCurrentWeaponCmdName = "rifle_desert";
-		}
-		else if(StrEqual(g_strCurrentWeapon, "weapon_smg", false) == true)
-		{
-			g_strCurrentWeaponCmdName = "smg";
-		}
-		else if(StrEqual(g_strCurrentWeapon, "weapon_smg_mp5", false) == true)
-		{
-			g_strCurrentWeaponCmdName = "smg_mp5";
-		}
-		else if(StrEqual(g_strCurrentWeapon, "weapon_smg_silenced", false) == true)
-		{
-			g_strCurrentWeaponCmdName = "smg_silenced";
-		}
-		else if(StrEqual(g_strCurrentWeapon, "weapon_pumpshotgun", false) == true)
-		{
-			g_strCurrentWeaponCmdName = "pumpshotgun";
-		}
-		else if(StrEqual(g_strCurrentWeapon, "weapon_shotgun_chrome", false) == true)
-		{
-			g_strCurrentWeaponCmdName = "shotgun_chrome";
-		}
-		else if(StrEqual(g_strCurrentWeapon, "weapon_autoshotgun", false) == true)
-		{
-			g_strCurrentWeaponCmdName = "autoshotgun";
-		}
-		else if(StrEqual(g_strCurrentWeapon, "weapon_shotgun_spas", false) == true)
-		{
-			g_strCurrentWeaponCmdName = "shotgun_spas";
-		}
-		else if(StrEqual(g_strCurrentWeapon, "weapon_hunting_rifle", false) == true)
-		{
-			g_strCurrentWeaponCmdName = "hunting_rifle";
-		}
-		else if(StrEqual(g_strCurrentWeapon, "weapon_sniper_military", false) == true)
-		{
-			g_strCurrentWeaponCmdName = "sniper_military";
-		}
-		else if(StrEqual(g_strCurrentWeapon, "weapon_sniper_awp", false) == true)
-		{
-			g_strCurrentWeaponCmdName = "sniper_awp";
-		}
-		else if(StrEqual(g_strCurrentWeapon, "weapon_sniper_scout", false) == true)
-		{
-			g_strCurrentWeaponCmdName = "sniper_scout";
-		}
-		else if(StrEqual(g_strCurrentWeapon, "weapon_grenade_launcher", false) == true)
-		{
-			g_strCurrentWeaponCmdName = "grenade_launcher";
-		}
-		else if(StrEqual(g_strCurrentWeapon, "weapon_rifle_m60", false) == true)
-		{
-			g_strCurrentWeaponCmdName = "rifle_m60";
-		}
-		//PrintToChatAll("g_strCurrentWeaponCmdName = %s", g_strCurrentWeaponCmdName);
-		if(g_iEllisCurrentPrimarySlot[iClient] == 0)
-		{
-			g_strEllisPrimarySlot1 = g_strCurrentWeapon;
-		}
-		else if(g_iEllisCurrentPrimarySlot[iClient] == 1)
-		{
-			g_strEllisPrimarySlot2 = g_strCurrentWeapon;
-		}
+	if ((StrEqual(strCurrentWeapon, "weapon_melee", false) == true) || 
+		(StrEqual(strCurrentWeapon, "weapon_pistol", false) == true) ||
+		(StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == true))
+		return;	
+
+	g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 0);
+	// PrintToChatAll("g_iPrimarySlotID = %d", g_iPrimarySlotID[iClient]);
+	if (g_iPrimarySlotID[iClient] > -1) g_iCurrentClipAmmo[iClient] = GetEntProp(g_iPrimarySlotID[iClient],Prop_Data,"m_iClip1");
+	
+	if((StrEqual(strCurrentWeapon, "weapon_rifle", false) == true) || (StrEqual(strCurrentWeapon, "weapon_rifle_ak47", false) == true) || (StrEqual(strCurrentWeapon, "weapon_rifle_sg552", false) == true) || (StrEqual(strCurrentWeapon, "weapon_rifle_desert", false) == true))
+	{
+		g_iAmmoOffset[iClient] = 12;
+	}
+	else if((StrEqual(strCurrentWeapon, "weapon_smg", false) == true) || (StrEqual(strCurrentWeapon, "weapon_smg_mp5", false) == true) || (StrEqual(strCurrentWeapon, "weapon_smg_silenced", false) == true))
+	{
+		g_iAmmoOffset[iClient] = 20;
+	}
+	else if((StrEqual(strCurrentWeapon, "weapon_pumpshotgun", false) == true) || (StrEqual(strCurrentWeapon, "weapon_shotgun_chrome", false) == true))
+	{
+		g_iAmmoOffset[iClient] = 28;
+	}
+	else if((StrEqual(strCurrentWeapon, "weapon_autoshotgun", false) == true) || (StrEqual(strCurrentWeapon, "weapon_shotgun_spas", false) == true))
+	{
+		g_iAmmoOffset[iClient] = 32;
+	}
+	else if(StrEqual(strCurrentWeapon, "weapon_hunting_rifle", false) == true)
+	{
+		g_iAmmoOffset[iClient] = 36;
+	}
+	else if((StrEqual(strCurrentWeapon, "weapon_sniper_military", false) == true) || (StrEqual(strCurrentWeapon, "weapon_sniper_awp", false) == true) || (StrEqual(strCurrentWeapon, "weapon_sniper_scout", false) == true))
+	{
+		g_iAmmoOffset[iClient] = 40;
+	}
+	else if(StrEqual(strCurrentWeapon, "weapon_grenade_launcher", false) == true)
+	{
+		g_iAmmoOffset[iClient] = 68;
+	}
+	else
+	{
+		g_iAmmoOffset[iClient] = 0;
+	}
+	//PrintToChatAll("g_iAmmoOffset = %d", g_iAmmoOffset[iClient]);
+	
+	
+	g_iOffset_Ammo[iClient] = FindDataMapInfo(iClient,"m_iAmmo");
+	//DONT FORGET THIS "g_iReserveAmmo" variable is here!
+	g_iReserveAmmo[iClient] = GetEntData(iClient, g_iOffset_Ammo[iClient] + g_iAmmoOffset[iClient]);
+	//PrintToChatAll("g_iReserveAmmo = %d", g_iReserveAmmo[iClient]);
+	//DONT FORGET THIS "g_iReserveAmmo" variable is here!
+	
+	if(StrEqual(strCurrentWeapon, "weapon_rifle", false) == true)
+	{
+		g_strPrimaryWeaponCmdName[iClient] = "rifle";
+	}
+	else if(StrEqual(strCurrentWeapon, "weapon_rifle_ak47", false) == true)
+	{
+		g_strPrimaryWeaponCmdName[iClient] = "rifle_ak47";
+	}
+	else if(StrEqual(strCurrentWeapon, "weapon_rifle_sg552", false) == true)
+	{
+		g_strPrimaryWeaponCmdName[iClient] = "rifle_sg552";
+	}
+	else if(StrEqual(strCurrentWeapon, "weapon_rifle_desert", false) == true)
+	{
+		g_strPrimaryWeaponCmdName[iClient] = "rifle_desert";
+	}
+	else if(StrEqual(strCurrentWeapon, "weapon_smg", false) == true)
+	{
+		g_strPrimaryWeaponCmdName[iClient] = "smg";
+	}
+	else if(StrEqual(strCurrentWeapon, "weapon_smg_mp5", false) == true)
+	{
+		g_strPrimaryWeaponCmdName[iClient] = "smg_mp5";
+	}
+	else if(StrEqual(strCurrentWeapon, "weapon_smg_silenced", false) == true)
+	{
+		g_strPrimaryWeaponCmdName[iClient] = "smg_silenced";
+	}
+	else if(StrEqual(strCurrentWeapon, "weapon_pumpshotgun", false) == true)
+	{
+		g_strPrimaryWeaponCmdName[iClient] = "pumpshotgun";
+	}
+	else if(StrEqual(strCurrentWeapon, "weapon_shotgun_chrome", false) == true)
+	{
+		g_strPrimaryWeaponCmdName[iClient] = "shotgun_chrome";
+	}
+	else if(StrEqual(strCurrentWeapon, "weapon_autoshotgun", false) == true)
+	{
+		g_strPrimaryWeaponCmdName[iClient] = "autoshotgun";
+	}
+	else if(StrEqual(strCurrentWeapon, "weapon_shotgun_spas", false) == true)
+	{
+		g_strPrimaryWeaponCmdName[iClient] = "shotgun_spas";
+	}
+	else if(StrEqual(strCurrentWeapon, "weapon_hunting_rifle", false) == true)
+	{
+		g_strPrimaryWeaponCmdName[iClient] = "hunting_rifle";
+	}
+	else if(StrEqual(strCurrentWeapon, "weapon_sniper_military", false) == true)
+	{
+		g_strPrimaryWeaponCmdName[iClient] = "sniper_military";
+	}
+	else if(StrEqual(strCurrentWeapon, "weapon_sniper_awp", false) == true)
+	{
+		g_strPrimaryWeaponCmdName[iClient] = "sniper_awp";
+	}
+	else if(StrEqual(strCurrentWeapon, "weapon_sniper_scout", false) == true)
+	{
+		g_strPrimaryWeaponCmdName[iClient] = "sniper_scout";
+	}
+	else if(StrEqual(strCurrentWeapon, "weapon_grenade_launcher", false) == true)
+	{
+		g_strPrimaryWeaponCmdName[iClient] = "grenade_launcher";
+	}
+	else if(StrEqual(strCurrentWeapon, "weapon_rifle_m60", false) == true)
+	{
+		g_strPrimaryWeaponCmdName[iClient] = "rifle_m60";
+	}
+
+	// PrintToChatAll("g_strPrimaryWeaponCmdName[iClient] = %s", g_strPrimaryWeaponCmdName[iClient]);
+
+	if(g_iEllisCurrentPrimarySlot[iClient] == 0)
+	{
+		g_strEllisPrimarySlot1[iClient] = strCurrentWeapon;
+	}
+	else if(g_iEllisCurrentPrimarySlot[iClient] == 1)
+	{
+		g_strEllisPrimarySlot2[iClient] = strCurrentWeapon;
 	}
 }
  
@@ -1192,8 +1196,9 @@ fnc_SaveAmmo(iClient)
 		}
 		case 3:		//Ellis
 		{
-			GetClientWeapon(iClient, g_strCurrentWeapon, sizeof(g_strCurrentWeapon));
-			if((StrEqual(g_strCurrentWeapon, "weapon_melee", false) == false) && (StrEqual(g_strCurrentWeapon, "weapon_pistol", false) == false) && (StrEqual(g_strCurrentWeapon, "weapon_pistol_magnum", false) == false))
+			new String:strCurrentWeapon[32];
+			GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
+			if((StrEqual(strCurrentWeapon, "weapon_melee", false) == false) && (StrEqual(strCurrentWeapon, "weapon_pistol", false) == false) && (StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == false))
 			{
 				if(g_iEllisCurrentPrimarySlot[iClient] == 0)
 				{
@@ -1258,8 +1263,8 @@ fnc_SaveAmmo(iClient)
 		}
 		case 4:		//Nick
 		{
-			g_strNickPrimarySaved = g_strCurrentWeaponCmdName;
-			//PrintToChatAll("Saved g_strNickPrimarySaved = %s", g_strNickPrimarySaved);
+			g_strNickPrimarySaved[iClient] = g_strPrimaryWeaponCmdName[iClient];
+			//PrintToChatAll("Saved g_strNickPrimarySaved[iClient] = %s", g_strNickPrimarySaved[iClient]);
 			g_iNickPrimarySavedClip[iClient] = g_iCurrentClipAmmo[iClient];
 			//PrintToChatAll("Saved g_iNickPrimarySavedClip = %d", g_iNickPrimarySavedClip[iClient]);
 			g_iNickPrimarySavedAmmo[iClient] = g_iReserveAmmo[iClient];
@@ -1304,82 +1309,82 @@ fnc_CycleWeapon(iClient)
 		}
 		case 3:		//Ellis
 		{
-			if((g_iEllisCurrentPrimarySlot[iClient] == 0) && (StrEqual(g_strEllisPrimarySlot2, "empty", false) == false))
+			if((g_iEllisCurrentPrimarySlot[iClient] == 0) && (StrEqual(g_strEllisPrimarySlot2[iClient], "empty", false) == false))
 			{
 				if(g_iLaserUpgradeCounter[iClient] > 0)
 				{
 					g_iLaserUpgradeCounter[iClient]--;
 				}
-				if(StrEqual(g_strEllisPrimarySlot2, "weapon_rifle", false) == true)
+				if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_rifle", false) == true)
 				{
 					g_strNextWeaponCmdName = "rifle";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot2, "weapon_rifle_ak47", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_rifle_ak47", false) == true)
 				{
 					g_strNextWeaponCmdName = "rifle_ak47";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot2, "weapon_rifle_sg552", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_rifle_sg552", false) == true)
 				{
 					g_strNextWeaponCmdName = "rifle_sg552";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot2, "weapon_rifle_desert", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_rifle_desert", false) == true)
 				{
 					g_strNextWeaponCmdName = "rifle_desert";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot2, "weapon_smg", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_smg", false) == true)
 				{
 					g_strNextWeaponCmdName = "smg";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot2, "weapon_smg_mp5", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_smg_mp5", false) == true)
 				{
 					g_strNextWeaponCmdName = "smg_mp5";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot2, "weapon_smg_silenced", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_smg_silenced", false) == true)
 				{
 					g_strNextWeaponCmdName = "smg_silenced";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot2, "weapon_pumpshotgun", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_pumpshotgun", false) == true)
 				{
 					g_strNextWeaponCmdName = "pumpshotgun";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot2, "weapon_shotgun_chrome", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_shotgun_chrome", false) == true)
 				{
 					g_strNextWeaponCmdName = "shotgun_chrome";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot2, "weapon_autoshotgun", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_autoshotgun", false) == true)
 				{
 					g_strNextWeaponCmdName = "autoshotgun";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot2, "weapon_shotgun_spas", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_shotgun_spas", false) == true)
 				{
 					g_strNextWeaponCmdName = "shotgun_spas";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot2, "weapon_hunting_rifle", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_hunting_rifle", false) == true)
 				{
 					g_strNextWeaponCmdName = "hunting_rifle";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot2, "weapon_sniper_military", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_sniper_military", false) == true)
 				{
 					g_strNextWeaponCmdName = "sniper_military";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot2, "weapon_sniper_awp", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_sniper_awp", false) == true)
 				{
 					g_strNextWeaponCmdName = "sniper_awp";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot2, "weapon_sniper_scout", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_sniper_scout", false) == true)
 				{
 					g_strNextWeaponCmdName = "sniper_scout";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot2, "weapon_grenade_launcher", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_grenade_launcher", false) == true)
 				{
 					g_strNextWeaponCmdName = "grenade_launcher";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot2, "weapon_rifle_m60", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot2[iClient], "weapon_rifle_m60", false) == true)
 				{
 					g_strNextWeaponCmdName = "rifle_m60";
 				}
 				
-				if (IsValidEdict(g_iPrimarySlotID[iClient]))
+				if (g_iPrimarySlotID[iClient] > 0 && IsValidEntity(g_iPrimarySlotID[iClient]))
 					AcceptEntityInput(g_iPrimarySlotID[iClient], "Kill");
 
 				if (RunClientChecks(iClient) && IsPlayerAlive(iClient))
@@ -1398,82 +1403,82 @@ fnc_CycleWeapon(iClient)
 					// PrintToChatAll("Cycling to next weapon using function...");
 				}
 			}
-			else if((g_iEllisCurrentPrimarySlot[iClient] == 1) && (StrEqual(g_strEllisPrimarySlot1, "empty", false) == false))
+			else if((g_iEllisCurrentPrimarySlot[iClient] == 1) && (StrEqual(g_strEllisPrimarySlot1[iClient], "empty", false) == false))
 			{
 				if(g_iLaserUpgradeCounter[iClient] > 0)
 				{
 					g_iLaserUpgradeCounter[iClient]--;
 				}
-				if(StrEqual(g_strEllisPrimarySlot1, "weapon_rifle", false) == true)
+				if(StrEqual(g_strEllisPrimarySlot1[iClient], "weapon_rifle", false) == true)
 				{
 					g_strNextWeaponCmdName = "rifle";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot1, "weapon_rifle_ak47", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot1[iClient], "weapon_rifle_ak47", false) == true)
 				{
 					g_strNextWeaponCmdName = "rifle_ak47";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot1, "weapon_rifle_sg552", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot1[iClient], "weapon_rifle_sg552", false) == true)
 				{
 					g_strNextWeaponCmdName = "rifle_sg552";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot1, "weapon_rifle_desert", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot1[iClient], "weapon_rifle_desert", false) == true)
 				{
 					g_strNextWeaponCmdName = "rifle_desert";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot1, "weapon_smg", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot1[iClient], "weapon_smg", false) == true)
 				{
 					g_strNextWeaponCmdName = "smg";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot1, "weapon_smg_mp5", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot1[iClient], "weapon_smg_mp5", false) == true)
 				{
 					g_strNextWeaponCmdName = "smg_mp5";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot1, "weapon_smg_silenced", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot1[iClient], "weapon_smg_silenced", false) == true)
 				{
 					g_strNextWeaponCmdName = "smg_silenced";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot1, "weapon_pumpshotgun", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot1[iClient], "weapon_pumpshotgun", false) == true)
 				{
 					g_strNextWeaponCmdName = "pumpshotgun";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot1, "weapon_shotgun_chrome", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot1[iClient], "weapon_shotgun_chrome", false) == true)
 				{
 					g_strNextWeaponCmdName = "shotgun_chrome";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot1, "weapon_autoshotgun", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot1[iClient], "weapon_autoshotgun", false) == true)
 				{
 					g_strNextWeaponCmdName = "autoshotgun";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot1, "weapon_shotgun_spas", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot1[iClient], "weapon_shotgun_spas", false) == true)
 				{
 					g_strNextWeaponCmdName = "shotgun_spas";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot1, "weapon_hunting_rifle", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot1[iClient], "weapon_hunting_rifle", false) == true)
 				{
 					g_strNextWeaponCmdName = "hunting_rifle";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot1, "weapon_sniper_military", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot1[iClient], "weapon_sniper_military", false) == true)
 				{
 					g_strNextWeaponCmdName = "sniper_military";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot1, "weapon_sniper_awp", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot1[iClient], "weapon_sniper_awp", false) == true)
 				{
 					g_strNextWeaponCmdName = "sniper_awp";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot1, "weapon_sniper_scout", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot1[iClient], "weapon_sniper_scout", false) == true)
 				{
 					g_strNextWeaponCmdName = "sniper_scout";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot1, "weapon_grenade_launcher", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot1[iClient], "weapon_grenade_launcher", false) == true)
 				{
 					g_strNextWeaponCmdName = "grenade_launcher";
 				}
-				else if(StrEqual(g_strEllisPrimarySlot1, "weapon_rifle_m60", false) == true)
+				else if(StrEqual(g_strEllisPrimarySlot1[iClient], "weapon_rifle_m60", false) == true)
 				{
 					g_strNextWeaponCmdName = "rifle_m60";
 				}
 
-				if (IsValidEdict(g_iPrimarySlotID[iClient]))
+				if (g_iPrimarySlotID[iClient] > 0 && IsValidEntity(g_iPrimarySlotID[iClient]))
 					AcceptEntityInput(g_iPrimarySlotID[iClient], "Kill");
 				
 				if (RunClientChecks(iClient) && IsPlayerAlive(iClient))
@@ -1482,7 +1487,7 @@ fnc_CycleWeapon(iClient)
 					decl String:strCommandWithArgs[64];
 					Format(strCommandWithArgs, sizeof(strCommandWithArgs), "give %s", g_strNextWeaponCmdName);
 					RunCheatCommand(iClient, "give", strCommandWithArgs);
-					//PrintToChatAll("Cycle function called, Primary Slot is %i, NextWpnCmdName = %s", g_iEllisCurrentPrimarySlot[iClient], g_strNextWeaponCmdName);
+					// PrintToChatAll("Cycle function called, Primary Slot is %i, NextWpnCmdName = %s", g_iEllisCurrentPrimarySlot[iClient], g_strNextWeaponCmdName);
 					//g_bEllisHasCycled[iClient] = true;
 					
 					// PrintToChatAll("Gave Weapon, now setting ammo/clip");
@@ -1501,16 +1506,16 @@ fnc_CycleWeapon(iClient)
 		}
 		case 4:		//Nick
 		{
-			if (IsValidEdict(g_iPrimarySlotID[iClient]))
+			if (g_iPrimarySlotID[iClient] > 0 && IsValidEdict(g_iPrimarySlotID[iClient]))
 				AcceptEntityInput(g_iPrimarySlotID[iClient], "Kill");
 			
 			if (RunClientChecks(iClient) && IsPlayerAlive(iClient))
 			{
 				//PrintToChatAll("Removed current weapon via fnc_CycleWeapon");
 				decl String:strCommandWithArgs[64];
-				Format(strCommandWithArgs, sizeof(strCommandWithArgs), "give %s", g_strNickPrimarySaved);
+				Format(strCommandWithArgs, sizeof(strCommandWithArgs), "give %s", g_strNickPrimarySaved[iClient]);
 				RunCheatCommand(iClient, "give", strCommandWithArgs);
-				//PrintToChatAll("Gave %s via fnc_CycleWeapon", g_strNickPrimarySaved);
+				//PrintToChatAll("Gave %s via fnc_CycleWeapon", g_strNickPrimarySaved[iClient]);
 				//SetEntData(g_iPrimarySlotID[iClient], g_iOffset_Clip1, g_iNickPrimarySavedClip[iClient], true);
 				//SetEntData(iClient, g_iOffset_Ammo[iClient] + g_iAmmoOffset[iClient], g_iNickPrimarySavedAmmo[iClient]);
 				
@@ -1569,31 +1574,32 @@ fnc_SetAmmo(iClient)
 
 fnc_DetermineMaxClipSize(iClient)
 {
-	GetClientWeapon(iClient, g_strCurrentWeapon, sizeof(g_strCurrentWeapon));
+	new String:strCurrentWeapon[32];
+	GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 	switch(g_iChosenSurvivor[iClient])
 	{
 		case 0:		//Bill
 		{
-			if(StrEqual(g_strCurrentWeapon, "weapon_rifle", false) == true)
+			if(StrEqual(strCurrentWeapon, "weapon_rifle", false) == true)
 			{
 				g_iCurrentMaxClipSize[iClient] = (50 + (g_iPromotionalLevel[iClient] * 20));
 			}
-			else if(StrEqual(g_strCurrentWeapon, "weapon_rifle_ak47", false) == true)
+			else if(StrEqual(strCurrentWeapon, "weapon_rifle_ak47", false) == true)
 			{
 				g_iCurrentMaxClipSize[iClient] = (40 + (g_iPromotionalLevel[iClient] * 20));
 			}
-			else if(StrEqual(g_strCurrentWeapon, "weapon_rifle_sg552", false) == true)
+			else if(StrEqual(strCurrentWeapon, "weapon_rifle_sg552", false) == true)
 			{
 				g_iCurrentMaxClipSize[iClient] = (50 + (g_iPromotionalLevel[iClient] * 20));
 			}
-			else if(StrEqual(g_strCurrentWeapon, "weapon_rifle_desert", false) == true)
+			else if(StrEqual(strCurrentWeapon, "weapon_rifle_desert", false) == true)
 			{
 				g_iCurrentMaxClipSize[iClient] = (60 + (g_iPromotionalLevel[iClient] * 20));
 			}
 		}
 		case 1:		//Rochelle
 		{
-			if(StrEqual(g_strCurrentWeapon, "weapon_hunting_rifle", false) == true)
+			if(StrEqual(strCurrentWeapon, "weapon_hunting_rifle", false) == true)
 			{
 				if(g_iSilentLevel[iClient] > 0)
 				{
@@ -1604,7 +1610,7 @@ fnc_DetermineMaxClipSize(iClient)
 					g_iCurrentMaxClipSize[iClient] = 15;
 				}
 			}
-			else if(StrEqual(g_strCurrentWeapon, "weapon_sniper_awp", false) == true)
+			else if(StrEqual(strCurrentWeapon, "weapon_sniper_awp", false) == true)
 			{
 				if(g_iSilentLevel[iClient] > 0)
 				{
@@ -1615,96 +1621,96 @@ fnc_DetermineMaxClipSize(iClient)
 					g_iCurrentMaxClipSize[iClient] = 20;
 				}
 			}
-			else if(StrEqual(g_strCurrentWeapon, "weapon_sniper_scout", false) == true)
+			else if(StrEqual(strCurrentWeapon, "weapon_sniper_scout", false) == true)
 			{
 				g_iCurrentMaxClipSize[iClient] = (20 - g_iSilentLevel[iClient]);
 			}
-			else if(StrEqual(g_strCurrentWeapon, "weapon_sniper_military", false) == true)
+			else if(StrEqual(strCurrentWeapon, "weapon_sniper_military", false) == true)
 			{
 				g_iCurrentMaxClipSize[iClient] = (30 + (g_iSilentLevel[iClient] * 6));
 			}
 		}
 		case 2:		//Coach
 		{
-			if((StrEqual(g_strCurrentWeapon, "weapon_pumpshotgun", false) == true) || (StrEqual(g_strCurrentWeapon, "weapon_shotgun_chrome", false) == true))
+			if((StrEqual(strCurrentWeapon, "weapon_pumpshotgun", false) == true) || (StrEqual(strCurrentWeapon, "weapon_shotgun_chrome", false) == true))
 			{
 				g_iCurrentMaxClipSize[iClient] = (8 + (g_iSprayLevel[iClient] * 2));
 			}
-			else if((StrEqual(g_strCurrentWeapon, "weapon_autoshotgun", false) == true) || (StrEqual(g_strCurrentWeapon, "weapon_shotgun_spas", false) == true))
+			else if((StrEqual(strCurrentWeapon, "weapon_autoshotgun", false) == true) || (StrEqual(strCurrentWeapon, "weapon_shotgun_spas", false) == true))
 			{
 				g_iCurrentMaxClipSize[iClient] = (10 + (g_iSprayLevel[iClient] * 2));
 			}
 		}
 		case 3:		//Ellis
 		{
-			if(StrEqual(g_strCurrentWeapon, "weapon_rifle", false) == true)
+			if(StrEqual(strCurrentWeapon, "weapon_rifle", false) == true)
 			{
 				g_iCurrentMaxClipSize[iClient] = (50 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
 			}
-			else if(StrEqual(g_strCurrentWeapon, "weapon_rifle_ak47", false) == true)
+			else if(StrEqual(strCurrentWeapon, "weapon_rifle_ak47", false) == true)
 			{
 				g_iCurrentMaxClipSize[iClient] = (40 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
 			}
-			else if(StrEqual(g_strCurrentWeapon, "weapon_rifle_sg552", false) == true)
+			else if(StrEqual(strCurrentWeapon, "weapon_rifle_sg552", false) == true)
 			{
 				g_iCurrentMaxClipSize[iClient] = (50 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
 			}
-			else if(StrEqual(g_strCurrentWeapon, "weapon_rifle_desert", false) == true)
+			else if(StrEqual(strCurrentWeapon, "weapon_rifle_desert", false) == true)
 			{
 				g_iCurrentMaxClipSize[iClient] = (60 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
 			}
-			else if(StrEqual(g_strCurrentWeapon, "weapon_smg", false) == true)
+			else if(StrEqual(strCurrentWeapon, "weapon_smg", false) == true)
 			{
 				g_iCurrentMaxClipSize[iClient] = (50 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
 			}
-			else if(StrEqual(g_strCurrentWeapon, "weapon_smg_mp5", false) == true)
+			else if(StrEqual(strCurrentWeapon, "weapon_smg_mp5", false) == true)
 			{
 				g_iCurrentMaxClipSize[iClient] = (50 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
 			}
-			else if(StrEqual(g_strCurrentWeapon, "weapon_smg_silenced", false) == true)
+			else if(StrEqual(strCurrentWeapon, "weapon_smg_silenced", false) == true)
 			{
 				g_iCurrentMaxClipSize[iClient] = (50 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
 			}
 			/*
-			else if(StrEqual(g_strCurrentWeapon, "weapon_pumpshotgun", false) == true)
+			else if(StrEqual(strCurrentWeapon, "weapon_pumpshotgun", false) == true)
 			{
 				g_strNextWeaponCmdName = "pumpshotgun";
 			}
-			else if(StrEqual(g_strCurrentWeapon, "weapon_shotgun_chrome", false) == true)
+			else if(StrEqual(strCurrentWeapon, "weapon_shotgun_chrome", false) == true)
 			{
 				g_strNextWeaponCmdName = "shotgun_chrome";
 			}
-			else if(StrEqual(g_strCurrentWeapon, "weapon_autoshotgun", false) == true)
+			else if(StrEqual(strCurrentWeapon, "weapon_autoshotgun", false) == true)
 			{
 				g_strNextWeaponCmdName = "autoshotgun";
 			}
-			else if(StrEqual(g_strCurrentWeapon, "weapon_shotgun_spas", false) == true)
+			else if(StrEqual(strCurrentWeapon, "weapon_shotgun_spas", false) == true)
 			{
 				g_strNextWeaponCmdName = "shotgun_spas";
 			}
 			*/
-			else if(StrEqual(g_strCurrentWeapon, "weapon_hunting_rifle", false) == true)
+			else if(StrEqual(strCurrentWeapon, "weapon_hunting_rifle", false) == true)
 			{
 				g_iCurrentMaxClipSize[iClient] = (15 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
 			}
-			else if(StrEqual(g_strCurrentWeapon, "weapon_sniper_military", false) == true)
+			else if(StrEqual(strCurrentWeapon, "weapon_sniper_military", false) == true)
 			{
 				g_iCurrentMaxClipSize[iClient] = (30 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
 			}
-			else if(StrEqual(g_strCurrentWeapon, "weapon_sniper_awp", false) == true)
+			else if(StrEqual(strCurrentWeapon, "weapon_sniper_awp", false) == true)
 			{
 				g_iCurrentMaxClipSize[iClient] = (20 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
 			}
-			else if(StrEqual(g_strCurrentWeapon, "weapon_sniper_scout", false) == true)
+			else if(StrEqual(strCurrentWeapon, "weapon_sniper_scout", false) == true)
 			{
 				g_iCurrentMaxClipSize[iClient] = (20 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
 			}
 			/*
-			else if(StrEqual(g_strCurrentWeapon, "weapon_grenade_launcher", false) == true)
+			else if(StrEqual(strCurrentWeapon, "weapon_grenade_launcher", false) == true)
 			{
 				g_strNextWeaponCmdName = "grenade_launcher";
 			}
-			else if(StrEqual(g_strCurrentWeapon, "weapon_rifle_m60", false) == true)
+			else if(StrEqual(strCurrentWeapon, "weapon_rifle_m60", false) == true)
 			{
 				g_strNextWeaponCmdName = "rifle_m60";
 			}
@@ -1712,11 +1718,11 @@ fnc_DetermineMaxClipSize(iClient)
 		}
 		case 4:		//Nick
 		{
-			if((g_bRamboModeActive[iClient] == true) && (StrEqual(g_strCurrentWeapon, "weapon_rifle_m60", false) == true))
+			if((g_bRamboModeActive[iClient] == true) && (StrEqual(strCurrentWeapon, "weapon_rifle_m60", false) == true))
 			{
 				g_iCurrentMaxClipSize[iClient] = 250;
 			}
-			else if((g_bRamboModeActive[iClient] == false) && (StrEqual(g_strCurrentWeapon, "weapon_rifle_m60", false) == true))
+			else if((g_bRamboModeActive[iClient] == false) && (StrEqual(strCurrentWeapon, "weapon_rifle_m60", false) == true))
 			{
 				g_iCurrentMaxClipSize[iClient] = 150;
 			}
@@ -1902,8 +1908,8 @@ fnc_ClearSavedWeaponData(iClient)
 				g_iEllisUpgradeAmmoSlot1[iClient] = 0;
 				g_strEllisUpgradeTypeSlot1 = "empty";
 				g_strCurrentAmmoUpgrade = "empty";
-				g_strEllisPrimarySlot1 = "empty";
-				//PrintToChatAll("g_strEllisPrimarySlot1 is now %s", g_strEllisPrimarySlot1);
+				g_strEllisPrimarySlot1[iClient] = "empty";
+				//PrintToChatAll("g_strEllisPrimarySlot1[iClient] is now %s", g_strEllisPrimarySlot1[iClient]);
 			}
 			else if(g_iEllisCurrentPrimarySlot[iClient] == 0)
 			{
@@ -1912,8 +1918,8 @@ fnc_ClearSavedWeaponData(iClient)
 				g_iEllisUpgradeAmmoSlot2[iClient] = 0;
 				g_strEllisUpgradeTypeSlot2 = "empty";
 				g_strCurrentAmmoUpgrade = "empty";
-				g_strEllisPrimarySlot2 = "empty";
-				//PrintToChatAll("g_strEllisPrimarySlot2 is now %s", g_strEllisPrimarySlot2);
+				g_strEllisPrimarySlot2[iClient] = "empty";
+				//PrintToChatAll("g_strEllisPrimarySlot2[iClient] is now %s", g_strEllisPrimarySlot2[iClient]);
 			}
 		}
 		case 4:		//Nick
@@ -1923,7 +1929,7 @@ fnc_ClearSavedWeaponData(iClient)
 			g_iNickUpgradeAmmo[iClient] = 0;
 			g_strNickUpgradeType = "empty";
 			g_strCurrentAmmoUpgrade = "empty";
-			g_strNickPrimarySaved = "empty";
+			g_strNickPrimarySaved[iClient] = "empty";
 		}
 	}
 }
@@ -1951,15 +1957,15 @@ fnc_ClearAllWeaponData(iClient)
 			g_iEllisUpgradeAmmoSlot1[iClient] = 0;
 			g_strEllisUpgradeTypeSlot1 = "empty";
 			g_strCurrentAmmoUpgrade = "empty";
-			g_strEllisPrimarySlot1 = "empty";
-			//PrintToChatAll("g_strEllisPrimarySlot1 is now %s", g_strEllisPrimarySlot1);
+			g_strEllisPrimarySlot1[iClient] = "empty";
+			//PrintToChatAll("g_strEllisPrimarySlot1[iClient] is now %s", g_strEllisPrimarySlot1[iClient]);
 			g_iEllisPrimarySavedClipSlot2[iClient] = 0;
 			g_iEllisPrimarySavedAmmoSlot2[iClient] = 0;
 			g_iEllisUpgradeAmmoSlot2[iClient] = 0;
 			g_strEllisUpgradeTypeSlot2 = "empty";
 			g_strCurrentAmmoUpgrade = "empty";
-			g_strEllisPrimarySlot2 = "empty";
-			//PrintToChatAll("g_strEllisPrimarySlot2 is now %s", g_strEllisPrimarySlot2);
+			g_strEllisPrimarySlot2[iClient] = "empty";
+			//PrintToChatAll("g_strEllisPrimarySlot2[iClient] is now %s", g_strEllisPrimarySlot2[iClient]);
 		}
 		case 4:		//Nick
 		{

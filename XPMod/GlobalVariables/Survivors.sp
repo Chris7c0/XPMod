@@ -45,13 +45,12 @@ new g_iLaserUpgradeCounter[MAXPLAYERS + 1];
 new g_iSavedClip[MAXPLAYERS + 1];
 new bool:g_bForceReload[MAXPLAYERS + 1];
 new g_iEventWeaponFireCounter[MAXPLAYERS + 1];
-new String:g_strCurrentWeaponCmdName[32];
+new String:g_strPrimaryWeaponCmdName[MAXPLAYERS + 1][32];
 new String:g_strNextWeaponCmdName[32];
 new g_iReserveAmmo[MAXPLAYERS + 1];
 new g_iAmmoOffset[MAXPLAYERS + 1];
 new g_iActiveWeaponID[MAXPLAYERS + 1];
 new g_iCurrentClipAmmo[MAXPLAYERS + 1];
-new String:g_strCurrentWeapon[32];
 new g_iOffset_Ammo[MAXPLAYERS + 1];
 new g_iCurrentMaxClipSize[MAXPLAYERS + 1];
 new String:g_strCurrentAmmoUpgrade[32];
@@ -198,8 +197,8 @@ new Float:g_fEllisOverSpeed[MAXPLAYERS + 1];
 new Float:g_fEllisBringSpeed[MAXPLAYERS + 1];
 new Float:g_fEllisJamminSpeed[MAXPLAYERS + 1];
 new bool:g_bCanEllisPrimaryCycle[MAXPLAYERS + 1];
-new String:g_strEllisPrimarySlot1[512];
-new String:g_strEllisPrimarySlot2[512];
+new String:g_strEllisPrimarySlot1[MAXPLAYERS + 1][512];
+new String:g_strEllisPrimarySlot2[MAXPLAYERS + 1][512];
 new g_iEllisCurrentPrimarySlot[MAXPLAYERS + 1];
 new g_iEllisPrimarySavedClipSlot1[MAXPLAYERS + 1];
 new g_iEllisPrimarySavedClipSlot2[MAXPLAYERS + 1];
@@ -207,8 +206,8 @@ new g_iEllisPrimarySavedAmmoSlot1[MAXPLAYERS + 1];
 new g_iEllisPrimarySavedAmmoSlot2[MAXPLAYERS + 1];
 new g_iEllisJamminGrenadeCounter[MAXPLAYERS + 1];
 new g_iEllisJamminAdrenalineCounter[MAXPLAYERS + 1];
-new bool:g_bIsEllisInPrimaryCycle[MAXPLAYERS + 1];
-//g_bIsEllisInPrimaryCycle[iClient]
+new bool:g_bIsInEllisInPrimaryCycle[MAXPLAYERS + 1];
+//g_bIsInEllisInPrimaryCycle[iClient]
 new bool:g_bIsEllisCyclingEmptyWeapon[MAXPLAYERS + 1];
 new g_iEllisUpgradeAmmoSlot1[MAXPLAYERS + 1];
 new g_iEllisUpgradeAmmoSlot2[MAXPLAYERS + 1];
@@ -264,7 +263,7 @@ new g_iNickPrimarySavedClip[MAXPLAYERS + 1];
 new g_iNickPrimarySavedAmmo[MAXPLAYERS + 1];
 new g_iNickUpgradeAmmo[MAXPLAYERS + 1];
 new String:g_strNickUpgradeType[32];
-new String:g_strNickPrimarySaved[32];
+new String:g_strNickPrimarySaved[MAXPLAYERS + 1][32];
 new bool:g_bNickStoresDroppedPistolAmmo[MAXPLAYERS + 1] = false;
 
 

@@ -53,10 +53,11 @@ void Bind1Press_Nick(iClient)
 							{
 								fnc_DeterminePrimaryWeapon(iClient);
 								fnc_SaveAmmo(iClient);
-								AcceptEntityInput(g_iPrimarySlotID[iClient], "Kill");
+								
+								if (g_iPrimarySlotID[iClient] > 0 && IsValidEntity(g_iPrimarySlotID[iClient]))
+									AcceptEntityInput(g_iPrimarySlotID[iClient], "Kill");
+								
 								g_bRamboModeActive[iClient] = true;
-
-
 
 								PrintHintText(iClient,"Rolled a 4\nAAAAAAAAAADDDRRRIIAAAAAAAAAAN!");
 								PrintToChatAll("\x03[XPMod] \x05%N has become RAMBO!!!", iClient);

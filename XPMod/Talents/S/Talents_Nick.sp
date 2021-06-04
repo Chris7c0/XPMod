@@ -227,7 +227,8 @@ OnGameFrame_Nick(iClient)
 						}
 					}
 					DispatchKeyValue(weapon, "ammo", "200");
-					AcceptEntityInput(ActiveWeaponID, "Kill");
+					if (ActiveWeaponID > 0 && IsValidEntity(ActiveWeaponID))
+						AcceptEntityInput(ActiveWeaponID, "Kill");
 					DispatchSpawn(grenade);
 					DispatchSpawn(weapon);
 					DispatchSpawn(boost);
@@ -303,7 +304,8 @@ OnGameFrame_Nick(iClient)
 						}
 						else
 						{
-							AcceptEntityInput(ActiveWeaponID, "Kill");
+							if (ActiveWeaponID > 0 && IsValidEntity(ActiveWeaponID))
+								AcceptEntityInput(ActiveWeaponID, "Kill");
 						}
 						g_iNickCurrentSecondarySlot[iClient] = 1;
 
@@ -331,7 +333,8 @@ OnGameFrame_Nick(iClient)
 						
 						if(StrEqual(g_strNickSecondarySlot1, "weapon_pistol_magnum", false) == true)
 						{
-							AcceptEntityInput(ActiveWeaponID, "Kill");
+							if (ActiveWeaponID > 0 && IsValidEntity(ActiveWeaponID))
+								AcceptEntityInput(ActiveWeaponID, "Kill");
 							g_iNickCurrentSecondarySlot[iClient] = 0;
 
 							RunCheatCommand(iClient, "give", "give pistol_magnum");
@@ -552,8 +555,9 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 				//PrintToChat(iAttacker, "your doing %d extra damage", dmg);
 				SetEntProp(iVictim,Prop_Data,"m_iHealth", hp - dmg);
 			}
-			GetClientWeapon(iAttacker, g_strCurrentWeapon, sizeof(g_strCurrentWeapon));
-			if(StrEqual(g_strCurrentWeapon, "weapon_pistol_magnum", false) == true)
+			new String:strCurrentWeapon[32];
+			GetClientWeapon(iAttacker, strCurrentWeapon, sizeof(strCurrentWeapon));
+			if(StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == true)
 			{
 				g_iNickMagnumShotCount[iAttacker]++;
 				//PrintToChatAll("g_iNickMagnumShotCount = %d", g_iNickMagnumShotCount[iAttacker]);

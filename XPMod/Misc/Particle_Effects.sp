@@ -193,32 +193,30 @@ int AttachParticle(target, String:particlename[], Float:time, Float:originOffset
 //Delete:
 Action:DeleteParticle(Handle:timer, any:Particle)
 {
-
 	//Validate:
-	if(IsValidEdict(Particle))
-		if(IsValidEntity(Particle))
+	if(Particle > 0 && IsValidEdict(Particle) &&IsValidEntity(Particle))
+	{
+		//Declare:
+		decl String:Classname[64];
+		
+		//Initialize:
+		GetEdictClassname(Particle, Classname, sizeof(Classname));
+		
+		//Is a Particle:
+		if(StrEqual(Classname, "info_particle_system", false))
 		{
-			//Declare:
-			decl String:Classname[64];
-			
-			//Initialize:
-			GetEdictClassname(Particle, Classname, sizeof(Classname));
-			
-			//Is a Particle:
-			if(StrEqual(Classname, "info_particle_system", false))
-			{
-				//Delete:
-				AcceptEntityInput(Particle, "Kill");
-				//PrintToChatAll("Deleted particle system with id: %d", Particle);
-			}
+			//Delete:
+			AcceptEntityInput(Particle, "Kill");
+			//PrintToChatAll("Deleted particle system with id: %d", Particle);
 		}
+	}
 	
 	return Plugin_Stop;
 }
 
 Action:DeleteParticleEntity(iParticle)
 {
-	if(IsValidEdict(iParticle) && IsValidEntity(iParticle))
+	if(iParticle > 0 && IsValidEdict(iParticle) && IsValidEntity(iParticle))
 	{
 		decl String:Classname[64];
 		GetEdictClassname(iParticle, Classname, sizeof(Classname));

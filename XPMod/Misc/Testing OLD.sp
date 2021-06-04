@@ -697,8 +697,8 @@ Action:CreateOverlay(iClient)
 // 	//xyzNewVelocity[1] = StringToFloat(number2);
 // 	//xyzNewVelocity[2] = StringToFloat(number3);
 // 	//TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, xyzNewVelocity);
-// 	//GetClientWeapon(iClient, g_strCurrentWeapon, sizeof(g_strCurrentWeapon));
-// 	//PrintToChatAll("Current Weapon is %s", g_strCurrentWeapon);
+// 	//GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
+// 	//PrintToChatAll("Current Weapon is %s", strCurrentWeapon);
 // 	//g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 1);
 // 	//PrintToChatAll("g_iSecondarySlotID Before = %d", g_iPrimarySlotID[iClient]);
 	

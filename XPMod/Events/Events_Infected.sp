@@ -443,8 +443,9 @@ Action:Event_JockeyRide(Handle:hEvent, const String:strName[], bool:bDontBroadca
 				if(iReserveAmmoDropChance <= g_iUnfairLevel[attacker])
 				{
 					fnc_DeterminePrimaryWeapon(victim);
-					GetClientWeapon(victim, g_strCurrentWeapon, sizeof(g_strCurrentWeapon));
-					if((StrEqual(g_strCurrentWeapon, "weapon_melee", false) == false) && (StrEqual(g_strCurrentWeapon, "weapon_pistol", false) == false) && (StrEqual(g_strCurrentWeapon, "weapon_pistol_magnum", false) == false))
+					new String:strCurrentWeapon[32];
+					GetClientWeapon(victim, strCurrentWeapon, sizeof(strCurrentWeapon));
+					if((StrEqual(strCurrentWeapon, "weapon_melee", false) == false) && (StrEqual(strCurrentWeapon, "weapon_pistol", false) == false) && (StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == false))
 					{
 						//PrintToChatAll("Reserve ammo was %i ...", g_iReserveAmmo[victim]);
 						//g_iReserveAmmo[victim] = (g_iReserveAmmo[victim] / 2)
@@ -636,8 +637,9 @@ Action:Event_InfectedHurt(Handle:hEvent, const String:strName[], bool:bDontBroad
 			{
 				if(g_iMagnumLevel[attacker] > 0)
 				{
-					GetClientWeapon(attacker, g_strCurrentWeapon, sizeof(g_strCurrentWeapon));
-					if(StrEqual(g_strCurrentWeapon, "weapon_pistol_magnum", false) == true)
+					new String:strCurrentWeapon[32];
+					GetClientWeapon(attacker, strCurrentWeapon, sizeof(strCurrentWeapon));
+					if(StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == true)
 					{
 						g_iNickMagnumShotCount[attacker]++;
 						//PrintToChatAll("g_iNickMagnumShotCount = %d", g_iNickMagnumShotCount[attacker]);

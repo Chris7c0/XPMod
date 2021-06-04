@@ -373,7 +373,7 @@ RemoveClone(iClient)
 {
 	new iClone = gClone[iClient];
 	gClone[iClient] = -1;
-	if (IsValidEntity(iClone))
+	if (iClone > 0 && IsValidEntity(iClone))
 		AcceptEntityInput(iClone, "Kill");
 }
 

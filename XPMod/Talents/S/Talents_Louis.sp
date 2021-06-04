@@ -44,7 +44,7 @@ bool OnPlayerRunCmd_Louis(iClient, &iButtons)
 		{
 			// Remove medkit
 			int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-			if (IsValidEntity(iActiveWeaponID))
+			if (iActiveWeaponID > 0 && IsValidEntity(iActiveWeaponID))
 			{
 				AcceptEntityInput(iActiveWeaponID, "kill");
 
@@ -419,7 +419,8 @@ void EventsPlayerUse_Louis(int iClient, int iTargetID)
 		{
 			if (g_iStashedInventoryPills[iClient] < LOUIS_STASHED_INVENTORY_MAX_PILLS)
 			{
-				AcceptEntityInput(iTargetID, "Kill");
+				if (iTargetID > 0 && IsValidEntity(iTargetID))
+					AcceptEntityInput(iTargetID, "Kill");
 
 				g_iStashedInventoryPills[iClient]++;
 				PrintToChat(iClient, "\x03[XPMod] \x05+1 Pills. \x04You have %i more Pill Bottle%s.",

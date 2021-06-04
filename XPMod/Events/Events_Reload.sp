@@ -29,8 +29,8 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 		case NICK:		//Nick
 		{
 		/*
-			GetClientWeapon(iClient, g_strCurrentWeapon, sizeof(g_strCurrentWeapon));
-			if((g_bCanNickStampedeReload[iClient] == true) && (StrEqual(g_strCurrentWeapon, "weapon_pistol_magnum", false) == true))
+			GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
+			if((g_bCanNickStampedeReload[iClient] == true) && (StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == true))
 			{
 				//PrintToChatAll("Stampede reloading...");
 				//PrintToChatAll("Reload rate before %f", g_fReloadRate);
@@ -116,8 +116,9 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 				g_fReloadRate = 1.0 - (float(g_iLouisTalent1Level[iClient]) * 0.05);
 		}
 
-		GetClientWeapon(iClient, g_strCurrentWeapon, sizeof(g_strCurrentWeapon));
-		if((g_bCanNickStampedeReload[iClient] == true) && (StrEqual(g_strCurrentWeapon, "weapon_pistol_magnum", false) == true))
+		new String:strCurrentWeapon[32];
+		GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
+		if((g_bCanNickStampedeReload[iClient] == true) && (StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == true))
 		{
 			//PrintToChatAll("Stampede reloading...");
 			//PrintToChatAll("Reload rate before %f", g_fReloadRate);
