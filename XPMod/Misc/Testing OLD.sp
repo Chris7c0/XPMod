@@ -721,7 +721,7 @@ Action:CreateOverlay(iClient)
 // 	/*
 // 	fnc_DeterminePrimaryWeapon(iClient);
 // 	fnc_SaveAmmo(iClient);
-// 	fnc_CycleWeapon(iClient);
+// 	CyclePlayerWeapon(iClient);
 // 	fnc_SetAmmo(iClient);
 // 	*/
 // 	/*

@@ -277,13 +277,12 @@ int SpawnItem(float xyzLocation[3], int itemIndex, const float fZOffset = 0.0)
 	//PrintToChatAll("spawn loc: %f, %f, %f", xyzLocation[0], xyzLocation[1], xyzLocation[2]);
 
 	int iEntity = -1;
-	iEntity = CreateEntityByName(ITEM_NAME[itemIndex]);
+	iEntity = CreateEntityByName(ITEM_CLASS_NAME[itemIndex]);
 	if( iEntity == -1 )
 	{
-		ThrowError("Failed to create entity '%s'", ITEM_NAME[itemIndex]);
+		ThrowError("Failed to create entity '%s'", ITEM_CLASS_NAME[itemIndex]);
 		return -1;
 	}
-
 	DispatchKeyValue(iEntity, "solid", "6");
 	DispatchKeyValue(iEntity, "model", ITEM_MODEL_PATH[itemIndex]);
 	DispatchKeyValue(iEntity, "rendermode", "3");

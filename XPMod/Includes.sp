@@ -22,6 +22,7 @@
 #include "XPMod/Misc/ConVars.sp"
 #include "XPMod/Misc/Particle_Effects.sp"
 #include "XPMod/Misc/Precache.sp"
+#include "XPMod/Misc/Weapons.sp"
 #include "XPMod/Misc/MovementSpeed.sp"
 #include "XPMod/Misc/Statistics.sp"
 #include "XPMod/Misc/Statistics_Panel.sp"

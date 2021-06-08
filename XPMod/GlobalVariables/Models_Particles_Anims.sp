@@ -55,31 +55,310 @@ new String:UNCOMMON_INFECTED_MODELS[][] =   {"models/infected/common_male_jimmy.
                                             "models/infected/common_male_riot.mdl",
                                             "models/infected/common_male_roadcrew.mdl"}
 
-// Game Item Models for spawning in game
-#define ITEM_FIRST_AID_KIT          0
-#define ITEM_PAIN_PILLS             1
-#define ITEM_ADRENALINE             2
-#define ITEM_DEFIBRILLATOR          3
-#define ITEM_MOLOTOV                4
-#define ITEM_BILE_JAR               5
-#define ITEM_PIPE_BOMB              6
-#define ITEM_COUNT                  6
+// Game Items
+#define ITEM_EMPTY                  0
+#define ITEM_ISRAELI_UZI            1
+#define ITEM_SILENCED_MAC_10        2
+#define ITEM_MP5                    3
+#define ITEM_AK47                   4
+#define ITEM_M16A2                  5
+#define ITEM_SIG_SG_552             6
+#define ITEM_SCAR_L                 7
+#define ITEM_REMINGTON_870          8
+#define ITEM_REMINGTON_870_CUSTOM   9
+#define ITEM_BENELLI_M1014          10
+#define ITEM_FRANCHI_SPAS_12        11
+#define ITEM_RUGER_MINI_14          12
+#define ITEM_HK_MSG90               13
+#define ITEM_SCOUT                  14
+#define ITEM_AWP                    15
+#define ITEM_GRENADE_LAUNCHER       16
+#define ITEM_M60                    17
+#define ITEM_P220                   18
+#define ITEM_GLOCK_P220             19
+#define ITEM_MAGNUM                 20
+#define ITEM_AXE                    21
+#define ITEM_CROWBAR                22
+#define ITEM_CRICKET_BAT            23
+#define ITEM_BASEBALL_BAT           24
+#define ITEM_KATANA                 25
+#define ITEM_ELECTRIC_GUITAR        26
+#define ITEM_MACHETE                27
+#define ITEM_FRYING_PAN             28
+#define ITEM_NIGHTSTICK             29
+#define ITEM_CHAINSAW               30
+#define ITEM_COMBAT_KNIFE           31
+#define ITEM_GOLF_CLUB              32
+#define ITEM_PITCH_FORK             33
+#define ITEM_PIPE_BOMB              34
+#define ITEM_MOLOTOV                35
+#define ITEM_BILE_JAR               36
+#define ITEM_FIRST_AID_KIT          37
+#define ITEM_DEFIBRILLATOR          38
+#define ITEM_INCENDIARY_AMMO        39
+#define ITEM_EXPLOSIVE_AMMO         40
+#define ITEM_PAIN_PILLS             41
+#define ITEM_ADRENALINE_SHOT        42
+// Total Item Count
+#define ITEM_COUNT                      42
+// Compare Modes for Finding Indexes
+#define ITEM_COMPARE_MODE_NAME          0
+#define ITEM_COMPARE_MODE_CLASS_NAME    1
+#define ITEM_COMPARE_MODE_CMD_NAME      2
+// Slots Ranges
+#define ITEM_RANGE_MIN_SLOT_PRIMARY     1
+#define ITEM_RANGE_MAX_SLOT_PRIMARY     17
+#define ITEM_RANGE_MIN_SLOT_SECONDARY   18
+#define ITEM_RANGE_MAX_SLOT_SECONDARY   33
+#define ITEM_RANGE_MIN_SLOT_EXPLOSIVE   34
+#define ITEM_RANGE_MAX_SLOT_EXPLOSIVE   36
+#define ITEM_RANGE_MIN_SLOT_HEALTH      37
+#define ITEM_RANGE_MAX_SLOT_HEALTH      40
+#define ITEM_RANGE_MIN_SLOT_BOOST       41
+#define ITEM_RANGE_MAX_SLOT_BOOST       42
+// Equipment Type Ranges
+#define ITEM_RANGE_MIN_SMG              1
+#define ITEM_RANGE_MAX_SMG              3
+#define ITEM_RANGE_MIN_RIFLE            4
+#define ITEM_RANGE_MAX_RIFLE            7
+#define ITEM_RANGE_MIN_SHOTGUN          8
+#define ITEM_RANGE_MAX_SHOTGUN          11
+#define ITEM_RANGE_MIN_SNIPER           12
+#define ITEM_RANGE_MAX_SNIPER           15
+#define ITEM_RANGE_MIN_SPECIAL          16
+#define ITEM_RANGE_MAX_SPECIAL          17
+#define ITEM_RANGE_MIN_PISTOL           18
+#define ITEM_RANGE_MAX_PISTOL           20
+#define ITEM_RANGE_MIN_MELEE            21
+#define ITEM_RANGE_MAX_MELEE            33
+#define ITEM_RANGE_MIN_EXPLOSIVE        34
+#define ITEM_RANGE_MAX_EXPLOSIVE        36
+#define ITEM_RANGE_MIN_HEALTH           37
+#define ITEM_RANGE_MAX_HEALTH           38
+#define ITEM_RANGE_MIN_BOOST            41
+#define ITEM_RANGE_MAX_BOOST            42
+// Item XPM Equipment Costs
+#define ITEM_COST_EMPTY                  0
+#define ITEM_COST_ISRAELI_UZI            55
+#define ITEM_COST_SILENCED_MAC_10        60
+#define ITEM_COST_MP5                    70
+#define ITEM_COST_AK47                   80
+#define ITEM_COST_M16A2                  80
+#define ITEM_COST_SIG_SG_552             100
+#define ITEM_COST_SCAR_L                 0
+#define ITEM_COST_REMINGTON_870          60
+#define ITEM_COST_REMINGTON_870_CUSTOM   60
+#define ITEM_COST_BENELLI_M1014          80
+#define ITEM_COST_FRANCHI_SPAS_12        80
+#define ITEM_COST_RUGER_MINI_14          60
+#define ITEM_COST_HK_MSG90               80
+#define ITEM_COST_SCOUT                  60
+#define ITEM_COST_AWP                    100
+#define ITEM_COST_GRENADE_LAUNCHER       400
+#define ITEM_COST_M60                    500
+#define ITEM_COST_P220                   0
+#define ITEM_COST_GLOCK_P220             15
+#define ITEM_COST_MAGNUM                 40
+#define ITEM_COST_AXE                    20
+#define ITEM_COST_CROWBAR                20
+#define ITEM_COST_CRICKET_BAT            25
+#define ITEM_COST_BASEBALL_BAT           25
+#define ITEM_COST_KATANA                 40
+#define ITEM_COST_ELECTRIC_GUITAR        20
+#define ITEM_COST_MACHETE                0
+#define ITEM_COST_FRYING_PAN             20
+#define ITEM_COST_NIGHTSTICK             50
+#define ITEM_COST_CHAINSAW               250
+#define ITEM_COST_COMBAT_KNIFE           50
+#define ITEM_COST_GOLF_CLUB              30
+#define ITEM_COST_PITCH_FORK             30
+#define ITEM_COST_PIPE_BOMB              30
+#define ITEM_COST_MOLOTOV                0
+#define ITEM_COST_BILE_JAR               40
+#define ITEM_COST_FIRST_AID_KIT          0
+#define ITEM_COST_DEFIBRILLATOR          500
+#define ITEM_COST_INCENDIARY_AMMO        500
+#define ITEM_COST_EXPLOSIVE_AMMO         1000
+#define ITEM_COST_PAIN_PILLS             0
+#define ITEM_COST_ADRENALINE_SHOT        50
+#define ITEM_COST_LASER_SIGHT            100
 
-new String:ITEM_NAME[][] =              {"weapon_first_aid_kit",
-                                        "weapon_pain_pills",
-                                        "weapon_adrenaline",
-	                                    "weapon_defibrillator",
+
+new String:ITEM_NAME[][] =              {"Empty",
+                                        "Israeli UZI",
+                                        "Silenced MAC-10",
+                                        "MP5",
+                                        "AK-47",
+                                        "M16A2",
+                                        "SIG SG 552",
+                                        "Scar-L",
+                                        "Remington 870",
+                                        "Remington 870 Custom",
+                                        "Benelli M1014",
+                                        "Franchi SPAS-12",
+                                        "Ruger Mini-14",
+                                        "H&K MSG90",
+                                        "Scout",
+                                        "AWP",
+                                        "Grenade Launcher",
+                                        "M60",
+                                        "P220",
+                                        "Glock + P220",
+                                        "Magnum",
+                                        "Axe",
+                                        "Crowbar",
+                                        "Cricket Bat",
+                                        "Baseball Bat",
+                                        "Katana",
+                                        "Electric Guitar",
+                                        "Machete",
+                                        "Frying Pan",
+                                        "Nightstick",
+                                        "Chainsaw",
+                                        "Combat Knife",
+                                        "Golf Club",
+                                        "Pitch Fork",
+                                        "Pipe Bomb",
+                                        "Molotov",
+                                        "Bile Jar",
+                                        "First Aid Kit",
+                                        "Defibrillator",
+                                        "Incendiary Ammo",
+                                        "Explosive Ammo",
+                                        "Pain Pills",
+                                        "Adrenaline Shot"}
+
+new String:ITEM_CLASS_NAME[][] =        {"empty",
+                                        "weapon_smg",
+                                        "weapon_smg_silenced",
+                                        "weapon_smg_mp5",
+                                        "weapon_rifle_ak47",
+                                        "weapon_rifle",
+                                        "weapon_rifle_sg552",
+                                        "weapon_rifle_desert",
+                                        "weapon_pumpshotgun",
+                                        "weapon_shotgun_chrome",
+                                        "weapon_autoshotgun",
+                                        "weapon_shotgun_spas",
+                                        "weapon_hunting_rifle",
+                                        "weapon_sniper_military",
+                                        "weapon_sniper_scout",
+                                        "weapon_sniper_awp",
+                                        "weapon_grenade_launcher",
+                                        "weapon_rifle_m60",
+                                        "weapon_pistol",
+                                        "weapon_pistol",
+                                        "weapon_pistol_magnum",
+                                        "weapon_fireaxe",
+                                        "weapon_crowbar",
+                                        "weapon_cricket_bat",
+                                        "weapon_baseball_bat",
+                                        "weapon_katana",
+                                        "weapon_electric_guitar",
+                                        "weapon_machete",
+                                        "weapon_frying_pan",
+                                        "weapon_tonfa",
+                                        "weapon_chainsaw",
+                                        "weapon_knife",
+                                        "weapon_golfclub",
+                                        "weapon_pitchfork",
+                                        "weapon_pipe_bomb",
                                         "weapon_molotov",
                                         "weapon_vomitjar",
-	                                    "weapon_pipe_bomb"}
+                                        "weapon_first_aid_kit",
+                                        "weapon_defibrillator",
+                                        "weapon_upgradepack_incendiary",
+                                        "weapon_upgradepack_explosive",
+                                        "weapon_pain_pills",
+                                        "weapon_adrenaline"}
 
-new String:ITEM_MODEL_PATH[][] =        {"models/w_models/weapons/w_eq_medkit.mdl",
-                                        "models/w_models/weapons/w_eq_painpills.mdl",
-                                        "models/w_models/weapons/w_eq_adrenaline.mdl",
-	                                    "models/w_models/weapons/w_eq_defibrillator.mdl",
+new String:ITEM_CMD_NAME[][] =         {"empty",
+                                        "smg",
+                                        "smg_silenced",
+                                        "smg_mp5",
+                                        "rifle_ak47",
+                                        "rifle",
+                                        "rifle_sg552",
+                                        "rifle_desert",
+                                        "pumpshotgun",
+                                        "shotgun_chrome",
+                                        "autoshotgun",
+                                        "shotgun_spas",
+                                        "hunting_rifle",
+                                        "sniper_military",
+                                        "sniper_scout",
+                                        "sniper_awp",
+                                        "grenade_launcher",
+                                        "rifle_m60",
+                                        "pistol",
+                                        "pistol",
+                                        "pistol_magnum",
+                                        "fireaxe",
+                                        "crowbar",
+                                        "cricket_bat",
+                                        "baseball_bat",
+                                        "katana",
+                                        "electric_guitar",
+                                        "machete",
+                                        "frying_pan",
+                                        "tonfa",
+                                        "chainsaw",
+                                        "knife",
+                                        "golfclub",
+                                        "pitchfork",
+                                        "pipe_bomb",
+                                        "molotov",
+                                        "vomitjar",
+                                        "first_aid_kit",
+                                        "defibrillator",
+                                        "upgradepack_incendiary",
+                                        "upgradepack_explosive",
+                                        "pain_pills",
+                                        "adrenaline"}
+
+new String:ITEM_MODEL_PATH[][] =        {"empty",
+                                        "models/w_models/weapons/w_smg_uzi.mdl",
+                                        "models/w_models/weapons/w_smg_a.mdl",
+                                        "models/w_models/weapons/w_smg_mp5.mdl",
+                                        "models/w_models/weapons/w_rifle_ak47.mdl",
+                                        "models/w_models/weapons/w_rifle_m16a2.mdl",
+                                        "models/w_models/weapons/w_rifle_sg552.mdl",
+                                        "models/w_models/weapons/w_desert_rifle.mdl",
+                                        "models/w_models/weapons/w_pumpshotgun_A.mdl",
+                                        "pumpshotgun_CUSTOM",
+                                        "models/w_models/weapons/w_autoshot_m4super.mdl",
+                                        "models/w_models/weapons/w_shotgun_spas.mdl",
+                                        "hunting_rifle",
+                                        "models/w_models/weapons/w_sniper_military.mdl",
+                                        "models/w_models/weapons/w_sniper_scout.mdl",
+                                        "models/w_models/weapons/w_sniper_awp.mdl",
+                                        "models/w_models/weapons/w_grenade_launcher.mdl",
+                                        "models/w_models/weapons/w_m60.mdl",
+                                        "models/w_models/weapons/w_pistol_a.mdl",
+                                        "models/w_models/weapons/w_pistol_a.mdl",
+                                        "models/w_models/weapons/w_desert_eagle.mdl",
+                                        "fireaxe",
+                                        "crowbar",
+                                        "cricket_bat",
+                                        "baseball_bat",
+                                        "katana",
+                                        "electric_guitar",
+                                        "machete",
+                                        "frying_pan",
+                                        "tonfa",
+                                        "models/weapons/melee/w_chainsaw.mdl",
+                                        "knife",
+                                        "golfclub",
+                                        "pitchfork",
+                                        "models/w_models/weapons/w_eq_pipebomb.mdl",
                                         "models/w_models/weapons/w_eq_molotov.mdl",
                                         "models/w_models/weapons/w_eq_bile_flask.mdl",
-	                                    "models/w_models/weapons/w_eq_pipebomb.mdl"}
+                                        "models/w_models/weapons/w_eq_medkit.mdl",
+                                        "models/w_models/weapons/w_eq_defibrillator.mdl",
+                                        "models/w_models/weapons/w_eq_incendiary_ammopack.mdl",
+                                        "models/w_models/weapons/w_eq_explosive_ammopack.mdl",
+                                        "models/w_models/weapons/w_eq_painpills.mdl",
+                                        "models/w_models/weapons/w_eq_adrenaline.mdl"}
 
 
 

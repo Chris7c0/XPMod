@@ -69,9 +69,9 @@ Action:TimerEllisLimitBreakReset(Handle:timer, any:iClient)
 	if (RunClientChecks(iClient) && IsFakeClient(iClient) == false)
 		PrintHintText(iClient, "Your weapon was destroyed and LIMIT BREAK is on cooldown! 60 seconds remaining");
 	
-	if((StrEqual(g_strEllisPrimarySlot1[iClient], "empty", false) == false) && (StrEqual(g_strEllisPrimarySlot2[iClient], "empty", false) == false))
+	if (g_iEllisPrimarySlot0[iClient] == ITEM_EMPTY && g_iEllisPrimarySlot1[iClient] == ITEM_EMPTY)
 	{
-		fnc_CycleWeapon(iClient);
+		CyclePlayerWeapon(iClient);
 		fnc_DeterminePrimaryWeapon(iClient);
 		fnc_SetAmmo(iClient);
 		fnc_SetAmmoUpgrade(iClient);
@@ -86,26 +86,7 @@ Action:TimerEllisLimitBreakReset(Handle:timer, any:iClient)
 
 		fnc_ClearAllWeaponData(iClient);
 	}
-	/* //////////////Old setup///////////////
-	fnc_ClearSavedWeaponData(iClient);
-	g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 0);
-	AcceptEntityInput(g_iPrimarySlotID[iClient]);
-	fnc_CycleWeapon(iClient);
-	*/
-	/* //Working but needs tweaking
-	fnc_CycleWeapon(iClient);
-	fnc_DeterminePrimaryWeapon(iClient);
-	fnc_SetAmmo(iClient);
-	fnc_SetAmmoUpgrade(iClient);
-	fnc_ClearSavedWeaponData(iClient);
-	*/
-	/*
-	if((StrEqual(g_strEllisPrimarySlot1[iClient], "empty", false) == true) || (StrEqual(g_strEllisPrimarySlot2[iClient], "empty", false) == true))
-	{
-		g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 0);
-		AcceptEntityInput(g_iPrimarySlotID[iClient]);
-	}
-	*/
+
 	return Plugin_Stop;
 }
 

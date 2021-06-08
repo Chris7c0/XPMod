@@ -6,7 +6,7 @@ Action:TimerStopRambo(Handle:timer, any:iClient)
 	
 	
 	//fnc_DetermineMaxClipSize(iClient);
-	fnc_CycleWeapon(iClient);
+	CyclePlayerWeapon(iClient);
 	g_bRamboModeActive[iClient] = false;
 	//fnc_DeterminePrimaryWeapon(iClient);
 	//fnc_SetAmmo(iClient);
