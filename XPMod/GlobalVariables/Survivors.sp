@@ -122,7 +122,6 @@ new Float:g_fDetectedDistance_Charger[MAXPLAYERS + 1];
 new Float:g_fDetectedDistance_Tank[MAXPLAYERS + 1];
 //For Shadow Ninja
 new bool:g_bUsingShadowNinja[MAXPLAYERS + 1];
-new bool:g_bFirstShadowNinjaSwing[MAXPLAYERS + 1];
 //For High Jump
 new g_iHighJumpChargeCounter[MAXPLAYERS + 1];
 new bool:g_bIsHighJumpCharged[MAXPLAYERS + 1];
@@ -199,15 +198,14 @@ new bool:g_bCanEllisPrimaryCycle[MAXPLAYERS + 1];
 new g_iEllisPrimarySlot0[MAXPLAYERS + 1];
 new g_iEllisPrimarySlot1[MAXPLAYERS + 1];
 new g_iEllisCurrentPrimarySlot[MAXPLAYERS + 1];
+new g_iEllisPrimarySavedClipSlot0[MAXPLAYERS + 1];
 new g_iEllisPrimarySavedClipSlot1[MAXPLAYERS + 1];
-new g_iEllisPrimarySavedClipSlot2[MAXPLAYERS + 1];
+new g_iEllisPrimarySavedAmmoSlot0[MAXPLAYERS + 1];
 new g_iEllisPrimarySavedAmmoSlot1[MAXPLAYERS + 1];
-new g_iEllisPrimarySavedAmmoSlot2[MAXPLAYERS + 1];
 new g_iEllisJamminGrenadeCounter[MAXPLAYERS + 1];
 new g_iEllisJamminAdrenalineCounter[MAXPLAYERS + 1];
-new bool:g_bIsInEllisInPrimaryCycle[MAXPLAYERS + 1];
-//g_bIsInEllisInPrimaryCycle[iClient]
-new bool:g_bIsEllisCyclingEmptyWeapon[MAXPLAYERS + 1];
+new bool:g_bIsEllisWeaponCycling[MAXPLAYERS + 1];
+new bool:g_bSetWeaponAmmoOnNextGameFrame[MAXPLAYERS + 1];
 new g_iEllisUpgradeAmmoSlot1[MAXPLAYERS + 1];
 new g_iEllisUpgradeAmmoSlot2[MAXPLAYERS + 1];
 new String:g_strEllisUpgradeTypeSlot1[32];
@@ -215,6 +213,7 @@ new String:g_strEllisUpgradeTypeSlot2[32];
 //new bool:g_bEllisHasCycled[MAXPLAYERS + 1];
 new bool:g_bIsEllisLimitBreaking[MAXPLAYERS + 1];
 new bool:g_bCanEllisLimitBreak[MAXPLAYERS + 1];
+new g_iLimitBreakWeaponIndex[MAXPLAYERS + 1];
 new bool:g_bEllisLimitBreakInCooldown[MAXPLAYERS + 1];
 #define ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT        30
 new bool:g_bEllisOverSpeedIncreased[MAXPLAYERS + 1];

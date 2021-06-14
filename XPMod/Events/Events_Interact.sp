@@ -27,7 +27,7 @@ Action:Event_UseTarget(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 
 Action:Event_PlayerUse(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
-	// PrintToChatAll("Event_PlayerUse");
+	//PrintToChatAll("Event_PlayerUse");
 
 	int iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	if(RunClientChecks(iClient) == false || g_iClientTeam[iClient] != TEAM_SURVIVORS || IsPlayerAlive(iClient) == false)
@@ -47,14 +47,16 @@ Action:Event_PlayerUse(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new iClient = GetClientOfUserId( GetEventInt(hEvent,"userid"));
-	if(RunClientChecks(iClient) == false || g_iClientTeam[iClient] != TEAM_SURVIVORS || IsPlayerAlive(iClient) == false)
+	if (RunClientChecks(iClient) == false || 
+		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
+		IsPlayerAlive(iClient) == false)
 		return Plugin_Continue;
 	
 	decl String:weaponclass[24];
 	GetEventString(hEvent,"item",weaponclass,24);
 
-	// if (IsFakeClient(iClient) == false)
-	// 	PrintToChatAll("%N %i: Event_ItemPickUp: %s", iClient, iClient, weaponclass);
+	if (IsFakeClient(iClient) == false)
+		PrintToChatAll("%N %i: Event_ItemPickUp: %s", iClient, iClient, weaponclass);
 	
 	new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 	if (RunEntityChecks(ActiveWeaponID) == false)
@@ -393,13 +395,13 @@ Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	{
 		if(g_bRamboModeActive[iClient] == true)
 		{
-			//PrintToChatAll("Picked up weapon with rambo mode active, running fnc_DeterminePrimaryWeapon");
-			fnc_DeterminePrimaryWeapon(iClient);
+			//PrintToChatAll("Picked up weapon with rambo mode active, running StoreCurrentPrimaryWeapon");
+			StoreCurrentPrimaryWeapon(iClient);
 			new String:strCurrentWeapon[32];
 			GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 			if(StrEqual(strCurrentWeapon, "weapon_rifle_m60", false) == false)
 			{
-				//PrintToChatAll("fnc_DeterminePrimaryWeapon showed the primary weapon is not the m60");
+				//PrintToChatAll("StoreCurrentPrimaryWeapon showed the primary weapon is not the m60");
 				fnc_SetAmmo(iClient);
 				fnc_SetAmmoUpgrade(iClient);
 				//PrintToChatAll("Ammo was set via weapon pickup");
@@ -407,22 +409,7 @@ Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadca
 				g_bRamboModeActive[iClient] = false;
 			}
 		}
-		/*
-		if(g_bRamboModeActive[iClient] == true)
-		{
-			//PrintToChatAll("Picked up weapon with rambo mode active, running fnc_DeterminePrimaryWeapon");
-			fnc_DeterminePrimaryWeapon(iClient);
-			if(StrEqual(strCurrentWeapon, "weapon_rifle_m60", false) == false)
-			{
-				//PrintToChatAll("fnc_DeterminePrimaryWeapon showed the primary weapon is not the m60");
-				fnc_SetAmmo(iClient);
-				fnc_SetAmmoUpgrade(iClient);
-				//PrintToChatAll("Ammo was set via weapon pickup");
-				fnc_ClearSavedWeaponData(iClient);
-				g_bRamboModeActive[iClient] = false;
-			}
-		}
-		*/
+
 		//PrintToChat(iClient, "%s", weaponclass);
 		if(g_iMagnumLevel[iClient]>0 || g_iRiskyLevel[iClient]>0)	//gives 68 with magnum pickup on loadout spawn
 		{
@@ -612,15 +599,15 @@ Action:Event_WeaponDropped(Handle:hEvent, const String:strName[], bool:bDontBroa
 				//new iOffset_Ammo3 = FindDataMapInfo(iProp,"m_iAmmo");
 				//new iAmmo = GetEntData(iProp, iOffset_Ammo + 12);
 				//PrintToChatAll("Attempting to save dropped ammo...");
-				g_iEllisPrimarySavedClipSlot1[iClient] = GetEntProp(iProp, Prop_Data, "m_iClip1");
-				//g_iEllisPrimarySavedAmmoSlot1[iClient] = GetEntProp(iProp, Prop_Send, "m_iExtraPrimaryAmmo");
-				//g_iEllisPrimarySavedAmmoSlot1[iClient] = GetEntData(iProp, iOffset_Ammo + 12,w iAmmo);
-				//PrintToChatAll("g_iEllisPrimarySavedClipSlot1 %d", g_iEllisPrimarySavedClipSlot1[iClient]);
-				//PrintToChatAll("g_iEllisPrimarySavedAmmoSlot1 %d", g_iEllisPrimarySavedAmmoSlot1[iClient]);
-				//g_iEllisPrimarySavedAmmoSlot1[iClient] = GetEntProp(iProp, Prop_Data, iOffset_Ammo2);
-				//PrintToChatAll("g_iEllisPrimarySavedAmmoSlot1 %d", g_iEllisPrimarySavedAmmoSlot1[iClient]);
-				//g_iEllisPrimarySavedAmmoSlot1[iClient] = GetEntProp(iProp, Prop_Data, iOffset_Ammo3);
-				//PrintToChatAll("g_iEllisPrimarySavedAmmoSlot1 %d", g_iEllisPrimarySavedAmmoSlot1[iClient]);
+				g_iEllisPrimarySavedClipSlot0[iClient] = GetEntProp(iProp, Prop_Data, "m_iClip1");
+				//g_iEllisPrimarySavedAmmoSlot0[iClient] = GetEntProp(iProp, Prop_Send, "m_iExtraPrimaryAmmo");
+				//g_iEllisPrimarySavedAmmoSlot0[iClient] = GetEntData(iProp, iOffset_Ammo + 12,w iAmmo);
+				//PrintToChatAll("g_iEllisPrimarySavedClipSlot0 %d", g_iEllisPrimarySavedClipSlot0[iClient]);
+				//PrintToChatAll("g_iEllisPrimarySavedAmmoSlot0 %d", g_iEllisPrimarySavedAmmoSlot0[iClient]);
+				//g_iEllisPrimarySavedAmmoSlot0[iClient] = GetEntProp(iProp, Prop_Data, iOffset_Ammo2);
+				//PrintToChatAll("g_iEllisPrimarySavedAmmoSlot0 %d", g_iEllisPrimarySavedAmmoSlot0[iClient]);
+				//g_iEllisPrimarySavedAmmoSlot0[iClient] = GetEntProp(iProp, Prop_Data, iOffset_Ammo3);
+				//PrintToChatAll("g_iEllisPrimarySavedAmmoSlot0 %d", g_iEllisPrimarySavedAmmoSlot0[iClient]);
 
 				if (iProp > 0 && IsValidEntity(iProp))
 					AcceptEntityInput(iProp, "Kill");

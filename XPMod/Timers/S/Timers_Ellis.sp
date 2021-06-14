@@ -65,17 +65,36 @@ Action:TimerEllisLimitBreakReset(Handle:timer, any:iClient)
 {
 	g_bIsEllisLimitBreaking[iClient] = false;
 	g_bEllisLimitBreakInCooldown[iClient] = true;
+	g_iLimitBreakWeaponIndex[iClient] = -1;
 
 	if (RunClientChecks(iClient) && IsFakeClient(iClient) == false)
 		PrintHintText(iClient, "Your weapon was destroyed and LIMIT BREAK is on cooldown! 60 seconds remaining");
+
+	PrintToChatAll("LIMIT BREAK RESET: %s, %s", ITEM_NAME[g_iEllisPrimarySlot0[iClient]], ITEM_NAME[g_iEllisPrimarySlot1[iClient]]);
 	
-	if (g_iEllisPrimarySlot0[iClient] == ITEM_EMPTY && g_iEllisPrimarySlot1[iClient] == ITEM_EMPTY)
+	if (g_iEllisPrimarySlot0[iClient] != ITEM_EMPTY && g_iEllisPrimarySlot1[iClient] != ITEM_EMPTY)
 	{
 		CyclePlayerWeapon(iClient);
-		fnc_DeterminePrimaryWeapon(iClient);
-		fnc_SetAmmo(iClient);
-		fnc_SetAmmoUpgrade(iClient);
-		fnc_ClearSavedWeaponData(iClient);
+		// fnc_ClearSavedWeaponData(iClient);
+		// StoreCurrentPrimaryWeapon(iClient);
+		g_bSetWeaponAmmoOnNextGameFrame[iClient] = true;
+
+		// Remove the now broken weapon from their stashed slot
+		if (g_iEllisCurrentPrimarySlot[iClient] == 0)
+		{
+			g_iEllisPrimarySlot1[iClient] = ITEM_EMPTY
+			g_iEllisPrimarySavedClipSlot1[iClient] = 0;
+			g_iEllisPrimarySavedAmmoSlot1[iClient] = 0;
+		}
+		else
+		{
+			g_iEllisPrimarySlot0[iClient] = ITEM_EMPTY
+			g_iEllisPrimarySavedClipSlot0[iClient] = 0;
+			g_iEllisPrimarySavedAmmoSlot0[iClient] = 0;
+		}
+			
+
+		PrintToChatAll("LIMIT BREAK AFTER: %s, %s", ITEM_NAME[g_iEllisPrimarySlot0[iClient]], ITEM_NAME[g_iEllisPrimarySlot1[iClient]]);
 	}
 	else
 	{

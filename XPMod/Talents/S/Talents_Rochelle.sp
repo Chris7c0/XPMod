@@ -583,3 +583,28 @@ ToggleDetectionHud(iClient)
 		PrintHintText(iClient, "You do not have an Infected Detection Device");
 	return;
 }
+
+bool HandleFastAttackingClients_Rochelle(const int iClient, const int iActiveWeaponID, const int iActiveWeaponSlot, const float fGameTime, const float fCurrentNextAttackTime, float &fAdjustedNextAttackTime)
+{
+	if (g_iShadowLevel[iClient] <= 0)
+		return false;
+
+	// Check if its a secondary weapon
+	if (iActiveWeaponSlot != 1)
+		return false;
+
+	// Check to make sure its a melee weapon
+	char strEntityClassName[32];
+	GetEntityClassname(iActiveWeaponID, strEntityClassName, 32);
+	// PrintToChat(iClient, "strEntityClassName: %s", strEntityClassName);
+	if (StrContains(strEntityClassName, "weapon_melee", true) == -1)
+		return false;
+
+	// All checks were passed, set the speed
+	fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * (1 / (1 + (g_iShadowLevel[iClient] * 0.3) ) )   + fGameTime;
+	// Show the particle effect
+	WriteParticle(iClient, "rochelle_silhouette", 0.0, 0.4);
+
+	return true;
+}
+

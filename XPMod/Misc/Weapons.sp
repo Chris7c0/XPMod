@@ -8,6 +8,19 @@ int FindWeaponItemIndex(const char [] strWeaponClass, const String:strCompareInd
 	return ITEM_EMPTY;
 }
 
+int FindWeaponItemIndexOfActiveWeapon(iClient)
+{
+	new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+	if (ActiveWeaponID <= 0 || IsValidEntity(ActiveWeaponID) == false)
+		return ITEM_EMPTY;
+
+	char strEntityClassName[32];
+	GetEntityClassname(ActiveWeaponID, strEntityClassName, 32);
+	// PrintToChat(iClient, "strEntityClassName: %s", strEntityClassName);
+
+	return FindWeaponItemIndex(strEntityClassName, ITEM_CLASS_NAME);
+}
+
 public bool IsWeaponIndexPrimarySlotItem(int iWeaponIndex)
 {
 	if (iWeaponIndex < ITEM_RANGE_MIN_SLOT_PRIMARY ||
@@ -54,16 +67,8 @@ public bool IsWeaponIndexBoostSlotItem(int iWeaponIndex)
 }
 
 
-fnc_DeterminePrimaryWeapon(iClient)
-{	
-	new String:strCurrentWeapon[32];
-	GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
-
-	// Get the weapon index and ensure its a primary weapon
-	new iWeaponIndex = FindWeaponItemIndex(strCurrentWeapon, ITEM_CLASS_NAME);
-	if (iWeaponIndex <= 0 || IsWeaponIndexPrimarySlotItem(iWeaponIndex) == false)
-		return;
-
+SetAmmoOffsetForPrimarySlotID(int iClient, int iWeaponIndex)
+{
 	g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 0);
 	// PrintToChatAll("g_iPrimarySlotID = %d", g_iPrimarySlotID[iClient]);
 
@@ -87,13 +92,28 @@ fnc_DeterminePrimaryWeapon(iClient)
 	else
 		g_iAmmoOffset[iClient] = 0;
 	//PrintToChatAll("g_iAmmoOffset = %d", g_iAmmoOffset[iClient]);
-	
-	
+
 	g_iOffset_Ammo[iClient] = FindDataMapInfo(iClient,"m_iAmmo");
 	g_iReserveAmmo[iClient] = GetEntData(iClient, g_iOffset_Ammo[iClient] + g_iAmmoOffset[iClient]);
 	//PrintToChatAll("g_iReserveAmmo = %d", g_iReserveAmmo[iClient]);
+}
 
-	//PrintToChatAll("iWeaponIndex = %s", ITEM_NAME[iWeaponIndex]);
+StoreCurrentPrimaryWeapon(iClient)
+{
+	g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 0);
+	// PrintToChatAll("g_iPrimarySlotID = %d", g_iPrimarySlotID[iClient]);
+
+	new String:strCurrentWeapon[32];
+	GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
+
+	// Get the weapon index and ensure its a primary weapon
+	new iWeaponIndex = FindWeaponItemIndex(strCurrentWeapon, ITEM_CLASS_NAME);
+	if (iWeaponIndex <= 0 || IsWeaponIndexPrimarySlotItem(iWeaponIndex) == false)
+		return;
+
+	SetAmmoOffsetForPrimarySlotID(iClient, iWeaponIndex);
+
+	// PrintToChatAll("iWeaponIndex = %s", ITEM_NAME[iWeaponIndex]);
 	// PrintToChatAll("DETERMINE strCurrentWeapon = %s", strCurrentWeapon);
 	// PrintToChatAll("DETERMINE PRIOR g_iEllisPrimarySlot0[iClient] = %s", ITEM_CLASS_NAME[g_iEllisPrimarySlot0[iClient]]);
 	// PrintToChatAll("DETERMINE PRIOR g_iEllisPrimarySlot1[iClient] = %s", ITEM_CLASS_NAME[g_iEllisPrimarySlot1[iClient]]);
@@ -113,6 +133,7 @@ fnc_DeterminePrimaryWeapon(iClient)
  
 fnc_SaveAmmo(iClient)
 {
+	
 	switch(g_iChosenSurvivor[iClient])
 	{
 		case 0:		//Bill
@@ -125,7 +146,7 @@ fnc_SaveAmmo(iClient)
 		}
 		case 2:		//Coach
 		{
-		
+			
 		}
 		case 3:		//Ellis
 		{
@@ -133,10 +154,11 @@ fnc_SaveAmmo(iClient)
 			GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 			if((StrEqual(strCurrentWeapon, "weapon_melee", false) == false) && (StrEqual(strCurrentWeapon, "weapon_pistol", false) == false) && (StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == false))
 			{
+				// PrintToChatAll("Saving Ammo: g_iEllisCurrentPrimarySlot[iClient] = %i, g_iCurrentClipAmmo[iClient] = %i, g_iReserveAmmo[iClient] = %i", g_iEllisCurrentPrimarySlot[iClient], g_iCurrentClipAmmo[iClient], g_iReserveAmmo[iClient]);
 				if(g_iEllisCurrentPrimarySlot[iClient] == 0)
 				{
-					g_iEllisPrimarySavedClipSlot1[iClient] = g_iCurrentClipAmmo[iClient];
-					g_iEllisPrimarySavedAmmoSlot1[iClient] = g_iReserveAmmo[iClient];
+					g_iEllisPrimarySavedClipSlot0[iClient] = g_iCurrentClipAmmo[iClient];
+					g_iEllisPrimarySavedAmmoSlot0[iClient] = g_iReserveAmmo[iClient];
 					//PrintToChatAll("Saving upgrade ammo to variable");
 
 					if (IsValidEntity(g_iPrimarySlotID[iClient]) && IsValidEdict(g_iPrimarySlotID[iClient]))
@@ -162,14 +184,14 @@ fnc_SaveAmmo(iClient)
 						g_strEllisUpgradeTypeSlot1 = g_strCurrentAmmoUpgrade;
 						//PrintToChatAll("g_strEllisUpgradeTypeSlot1 = %s", g_strEllisUpgradeTypeSlot1);
 					}
-					//PrintToChatAll("g_iEllisPrimarySavedClipSlot1 = %d", g_iEllisPrimarySavedClipSlot1[iClient]);
-					//PrintToChatAll("g_iEllisPrimarySavedAmmoSlot1 = %d", g_iEllisPrimarySavedAmmoSlot1[iClient]);
-					//PrintToChatAll("fnc_SaveAmmo: Slot = %i, Clip1 = %i, Ammo1 = %i, Upgrade1 = %s", g_iEllisCurrentPrimarySlot[iClient], g_iEllisPrimarySavedClipSlot1[iClient], g_iEllisPrimarySavedAmmoSlot1[iClient], g_strEllisUpgradeTypeSlot1);
+					//PrintToChatAll("g_iEllisPrimarySavedClipSlot0 = %d", g_iEllisPrimarySavedClipSlot0[iClient]);
+					//PrintToChatAll("g_iEllisPrimarySavedAmmoSlot0 = %d", g_iEllisPrimarySavedAmmoSlot0[iClient]);
+					//PrintToChatAll("fnc_SaveAmmo: Slot = %i, Clip1 = %i, Ammo1 = %i, Upgrade1 = %s", g_iEllisCurrentPrimarySlot[iClient], g_iEllisPrimarySavedClipSlot0[iClient], g_iEllisPrimarySavedAmmoSlot0[iClient], g_strEllisUpgradeTypeSlot1);
 				}
 				else if(g_iEllisCurrentPrimarySlot[iClient] == 1)
 				{
-					g_iEllisPrimarySavedClipSlot2[iClient] = g_iCurrentClipAmmo[iClient];
-					g_iEllisPrimarySavedAmmoSlot2[iClient] = g_iReserveAmmo[iClient];
+					g_iEllisPrimarySavedClipSlot1[iClient] = g_iCurrentClipAmmo[iClient];
+					g_iEllisPrimarySavedAmmoSlot1[iClient] = g_iReserveAmmo[iClient];
 					//PrintToChatAll("Saving upgrade ammo to variable");
 					if (IsValidEntity(g_iPrimarySlotID[iClient]) && HasEntProp(g_iPrimarySlotID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded"))
 						g_iEllisUpgradeAmmoSlot2[iClient] = GetEntProp(g_iPrimarySlotID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded");
@@ -186,9 +208,9 @@ fnc_SaveAmmo(iClient)
 						g_strEllisUpgradeTypeSlot2 = g_strCurrentAmmoUpgrade;
 						//PrintToChatAll("g_strEllisUpgradeTypeSlot2 = %s", g_strEllisUpgradeTypeSlot2);
 					}
-					//PrintToChatAll("g_iEllisPrimarySavedClipSlot2 = %d", g_iEllisPrimarySavedClipSlot2[iClient]);
-					//PrintToChatAll("g_iEllisPrimarySavedAmmoSlot2 = %d", g_iEllisPrimarySavedAmmoSlot2[iClient]);
-					//PrintToChatAll("fnc_SaveAmmo: Slot = %i, Clip2 = %i, Ammo2 = %i, Upgrade2 = %s", g_iEllisCurrentPrimarySlot[iClient], g_iEllisPrimarySavedClipSlot2[iClient], g_iEllisPrimarySavedAmmoSlot2[iClient], g_strEllisUpgradeTypeSlot2);
+					//PrintToChatAll("g_iEllisPrimarySavedClipSlot1 = %d", g_iEllisPrimarySavedClipSlot1[iClient]);
+					//PrintToChatAll("g_iEllisPrimarySavedAmmoSlot1 = %d", g_iEllisPrimarySavedAmmoSlot1[iClient]);
+					//PrintToChatAll("fnc_SaveAmmo: Slot = %i, Clip2 = %i, Ammo2 = %i, Upgrade2 = %s", g_iEllisCurrentPrimarySlot[iClient], g_iEllisPrimarySavedClipSlot1[iClient], g_iEllisPrimarySavedAmmoSlot1[iClient], g_strEllisUpgradeTypeSlot2);
 				}
 				//PrintToChatAll("g_iCurrentClipAmmo = %d", g_iCurrentClipAmmo[iClient]);
 				//PrintToChatAll("g_iReserveAmmo = %d", g_iReserveAmmo[iClient]);
@@ -247,9 +269,9 @@ CyclePlayerWeapon(iClient)
 				//SetEntData(iClient, g_iOffset_Ammo[iClient] + g_iAmmoOffset[iClient], g_iNickPrimarySavedAmmo[iClient]);
 				
 				// PrintToChatAll("Gave Weapon, now setting ammo/clip");
-				// SetEntData(g_iPrimarySlotID[iClient], g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
+				// SetEntData(g_iPrimarySlotID[iClient], g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot1[iClient], true);
 				// PrintToChatAll("Clip has been set");
-				// SetEntData(iClient, g_iOffset_Ammo[iClient] + g_iAmmoOffset[iClient], g_iEllisPrimarySavedAmmoSlot2[iClient]);
+				// SetEntData(iClient, g_iOffset_Ammo[iClient] + g_iAmmoOffset[iClient], g_iEllisPrimarySavedAmmoSlot1[iClient]);
 				// PrintToChatAll("Ammo has been set");
 				// PrintToChatAll("Cycling to next weapon using function...");
 			}
@@ -281,13 +303,13 @@ fnc_SetAmmo(iClient)
 		{
 			if(g_iEllisCurrentPrimarySlot[iClient] == 0)
 			{
-				SetEntData(g_iPrimarySlotID[iClient], g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot1[iClient], true);
-				SetEntData(iClient, g_iOffset_Ammo[iClient] + g_iAmmoOffset[iClient], g_iEllisPrimarySavedAmmoSlot1[iClient]);
+				SetEntData(g_iPrimarySlotID[iClient], g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot0[iClient], true);
+				SetEntData(iClient, g_iOffset_Ammo[iClient] + g_iAmmoOffset[iClient], g_iEllisPrimarySavedAmmoSlot0[iClient]);
 			}
 			else if(g_iEllisCurrentPrimarySlot[iClient] == 1)
 			{
-				SetEntData(g_iPrimarySlotID[iClient], g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot2[iClient], true);
-				SetEntData(iClient, g_iOffset_Ammo[iClient] + g_iAmmoOffset[iClient], g_iEllisPrimarySavedAmmoSlot2[iClient]);
+				SetEntData(g_iPrimarySlotID[iClient], g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot1[iClient], true);
+				SetEntData(iClient, g_iOffset_Ammo[iClient] + g_iAmmoOffset[iClient], g_iEllisPrimarySavedAmmoSlot1[iClient]);
 			}
 			//PrintToChatAll("Setting weapon ammo using functions...");
 		}
@@ -587,24 +609,24 @@ fnc_ClearSavedWeaponData(iClient)
 {
 	switch(g_iChosenSurvivor[iClient])
 	{
-		case 0:		//Bill
+		case BILL:
 		{
 		
 		}
-		case 1:		//Rochelle
+		case ROCHELLE:
 		{
 		
 		}
-		case 2:		//Coach
+		case COACH:
 		{
 		
 		}
-		case 3:		//Ellis
+		case ELLIS:
 		{
 			if(g_iEllisCurrentPrimarySlot[iClient] == 1)
 			{
-				g_iEllisPrimarySavedClipSlot1[iClient] = 0;
-				g_iEllisPrimarySavedAmmoSlot1[iClient] = 0;
+				g_iEllisPrimarySavedClipSlot0[iClient] = 0;
+				g_iEllisPrimarySavedAmmoSlot0[iClient] = 0;
 				g_iEllisUpgradeAmmoSlot1[iClient] = 0;
 				g_strEllisUpgradeTypeSlot1 = "empty";
 				g_strCurrentAmmoUpgrade = "empty";
@@ -613,8 +635,8 @@ fnc_ClearSavedWeaponData(iClient)
 			}
 			else if(g_iEllisCurrentPrimarySlot[iClient] == 0)
 			{
-				g_iEllisPrimarySavedClipSlot2[iClient] = 0;
-				g_iEllisPrimarySavedAmmoSlot2[iClient] = 0;
+				g_iEllisPrimarySavedClipSlot1[iClient] = 0;
+				g_iEllisPrimarySavedAmmoSlot1[iClient] = 0;
 				g_iEllisUpgradeAmmoSlot2[iClient] = 0;
 				g_strEllisUpgradeTypeSlot2 = "empty";
 				g_strCurrentAmmoUpgrade = "empty";
@@ -622,7 +644,7 @@ fnc_ClearSavedWeaponData(iClient)
 				//PrintToChatAll("g_iEllisPrimarySlot1[iClient] is now %s", g_iEllisPrimarySlot1[iClient]);
 			}
 		}
-		case 4:		//Nick
+		case NICK:
 		{
 			g_iNickPrimarySavedClip[iClient] = 0;
 			g_iNickPrimarySavedAmmo[iClient] = 0;
@@ -638,40 +660,41 @@ fnc_ClearAllWeaponData(iClient)
 {
 	switch(g_iChosenSurvivor[iClient])
 	{
-		case 0:		//Bill
+		case BILL:
 		{
 		
 		}
-		case 1:		//Rochelle
+		case ROCHELLE:
 		{
 		
 		}
-		case 2:		//Coach
+		case COACH:
 		{
 		
 		}
-		case 3:		//Ellis
+		case ELLIS:
 		{
-			g_iEllisPrimarySavedClipSlot1[iClient] = 0;
-			g_iEllisPrimarySavedAmmoSlot1[iClient] = 0;
+			g_iEllisPrimarySavedClipSlot0[iClient] = 0;
+			g_iEllisPrimarySavedAmmoSlot0[iClient] = 0;
 			g_iEllisUpgradeAmmoSlot1[iClient] = 0;
 			g_strEllisUpgradeTypeSlot1 = "empty";
 			g_strCurrentAmmoUpgrade = "empty";
 			g_iEllisPrimarySlot0[iClient] = ITEM_EMPTY;
 			//PrintToChatAll("g_iEllisPrimarySlot0[iClient] is now %s", g_iEllisPrimarySlot0[iClient]);
-			g_iEllisPrimarySavedClipSlot2[iClient] = 0;
-			g_iEllisPrimarySavedAmmoSlot2[iClient] = 0;
+
+			g_iEllisPrimarySavedClipSlot1[iClient] = 0;
+			g_iEllisPrimarySavedAmmoSlot1[iClient] = 0;
 			g_iEllisUpgradeAmmoSlot2[iClient] = 0;
 			g_strEllisUpgradeTypeSlot2 = "empty";
 			g_strCurrentAmmoUpgrade = "empty";
 			g_iEllisPrimarySlot1[iClient] = ITEM_EMPTY;
 			//PrintToChatAll("g_iEllisPrimarySlot1[iClient] is now %s", g_iEllisPrimarySlot1[iClient]);
 		}
-		case 4:		//Nick
+		case NICK:		//Nick
 		{
 			g_strNickSecondarySlot1 = "empty";
 			g_strNickSecondarySlot2 = "empty";
-			g_iNickCurrentSecondarySlot[iClient] = 0;
+			g_iNickCurrentSecondarySlot[iClient] = ITEM_EMPTY;
 		}
 	}
 }

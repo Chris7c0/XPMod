@@ -79,7 +79,6 @@ TalentsLoad_Ellis(iClient)
 	
 	if(g_iWeaponsLevel[iClient] == 5)
 	{
-		g_bIsInEllisInPrimaryCycle[iClient] = false;
 		g_iEllisCurrentPrimarySlot[iClient] = 0;
 		g_bCanEllisPrimaryCycle[iClient] = true;
 		g_iEllisPrimarySlot0[iClient] = ITEM_EMPTY;
@@ -91,31 +90,16 @@ TalentsLoad_Ellis(iClient)
 OnGameFrame_Ellis(iClient)
 {
 	HandleEllisSwitchToStashedPrimaryWeapon(iClient);
+	HandleEllisLimitBreak(iClient);
 
-	if(g_iMetalLevel[iClient] == 5)
+	// For Ellis's Weapon Cycling, set his ammo and clip after switching
+	if (g_bSetWeaponAmmoOnNextGameFrame[iClient] == true)
 	{
-		new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
-		
-		if(!(buttons & IN_SPEED) || !(buttons & IN_USE))
-			g_bWalkAndUseToggler[iClient] = false;
-			
-		if((g_bWalkAndUseToggler[iClient] == false) && ((buttons & IN_SPEED) && (buttons & IN_USE)))
-		{
-			g_bWalkAndUseToggler[iClient] = true;
-			if((g_bIsEllisLimitBreaking[iClient] == false) && (g_bCanEllisLimitBreak[iClient] == true))
-			{
-				g_bIsEllisLimitBreaking[iClient] = true;
-				g_bCanEllisLimitBreak[iClient] = false;
-				CreateTimer(5.0, TimerEllisLimitBreakReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
-				CreateTimer(65.0, TimerEllisLimitBreakCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
-				PrintHintText(iClient, "Double fire rate for 5 seconds; Your weapon will break afterward!");
-			}
-			else if(g_bEllisLimitBreakInCooldown[iClient] == true)
-			{
-				PrintHintText(iClient, "LIMIT BREAK is still cooling down");
-			}
-		}
+		g_bSetWeaponAmmoOnNextGameFrame[iClient] = false;
+		fnc_SetAmmo(iClient);
+		fnc_SetAmmoUpgrade(iClient);
 	}
+	
 	if((g_iMetalLevel[iClient] > 0) || (g_iFireLevel[iClient] > 0))
 	{
 		new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
@@ -124,7 +108,7 @@ OnGameFrame_Ellis(iClient)
 			decl String:currentweapon[32];
 			GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
 			new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-			if (IsValidEntity(ActiveWeaponID) == false)
+			if (RunEntityChecks(ActiveWeaponID) == false)
 				return;
 			new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
 			if((((StrEqual(currentweapon, "weapon_rifle", false) == true) || (StrEqual(currentweapon, "weapon_rifle_sg552", false) == true)) && (CurrentClipAmmo == 50)) || ((StrEqual(currentweapon, "weapon_rifle_ak47", false) == true) && (CurrentClipAmmo == 40)) || ((StrEqual(currentweapon, "weapon_rifle_desert", false) == true) && (CurrentClipAmmo == 60)))
@@ -183,7 +167,7 @@ OGFSurvivorReload_Ellis(iClient, const char[] currentweapon, ActiveWeaponID, Cur
 {
 	if(g_iEllisPrimarySlot0[iClient] == ITEM_EMPTY || g_iEllisPrimarySlot1[iClient] == ITEM_EMPTY)
 	{
-		fnc_DeterminePrimaryWeapon(iClient);
+		StoreCurrentPrimaryWeapon(iClient);
 		new String:strCurrentWeapon[32];
 		GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 		if((StrContains(strCurrentWeapon, "rifle", false) != -1) || (StrContains(strCurrentWeapon, "smg", false) != -1) || (StrContains(strCurrentWeapon, "shotgun", false) != -1) || (StrContains(strCurrentWeapon, "launcher", false) != -1) || (StrContains(strCurrentWeapon, "sniper", false) != -1))
@@ -529,180 +513,6 @@ void EventsItemPickUp_Ellis(int iClient, const char[] strWeaponClass)
 			SetEntData(iClient, iOffset_Ammo + 36, clip - (g_iMetalLevel[iClient]*4) - (g_iFireLevel[iClient]*6));
 		}
 	}
-	if(g_iWeaponsLevel[iClient] == 5)
-	{
-		new iWeaponIndex = FindWeaponItemIndex(strWeaponClass, ITEM_CMD_NAME);
-		if (iWeaponIndex <= ITEM_EMPTY)
-			return;
-
-		// PrintToChatAll("iWeaponIndex: %i, %s", iWeaponIndex, ITEM_CLASS_NAME[iWeaponIndex]);
-
-		if((StrContains(strWeaponClass,"shotgun",false) != -1) || (StrContains(strWeaponClass,"rifle",false) != -1) || (StrContains(strWeaponClass,"smg",false) != -1) || (StrContains(strWeaponClass,"sniper",false) != -1) || (StrContains(strWeaponClass,"launcher",false) != -1))
-		{
-			//PrintToChatAll("Picked up weapon qualifies, continuing");
-			//PrintToChatAll("g_bIsEllisCyclingEmptyWeapon = %d", g_bIsEllisCyclingEmptyWeapon[iClient]);
-			if(g_bIsEllisCyclingEmptyWeapon[iClient] == true)
-			{
-				//PrintToChatAll("Cycling empty weapon, setting ammo");
-				fnc_DeterminePrimaryWeapon(iClient);
-				fnc_SetAmmo(iClient);
-				fnc_SetAmmoUpgrade(iClient);
-				g_bIsEllisCyclingEmptyWeapon[iClient] = false;
-			}
-			if(g_iEllisPrimarySlot0[iClient] == ITEM_EMPTY && g_iEllisPrimarySlot1[iClient] == ITEM_EMPTY)
-			{
-				new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-				if (RunEntityChecks(ActiveWeaponID) == false)
-					return;
-
-				//new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
-				new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
-				if(g_iEllisCurrentPrimarySlot[iClient] == 0)
-				{
-					if((StrEqual(strWeaponClass, "rifle", false) == true) || (StrEqual(strWeaponClass, "rifle_ak47", false) == true) || (StrEqual(strWeaponClass, "rifle_sg552", false) == true) || (StrEqual(strWeaponClass, "rifle_desert", false) == true))
-					{
-						new iAmmo = GetEntData(iClient, iOffset_Ammo + 12);
-						g_iEllisPrimarySavedClipSlot1[iClient] = CurrentClipAmmo;
-						g_iEllisPrimarySavedAmmoSlot1[iClient] = iAmmo;
-					}
-					else if((StrEqual(strWeaponClass, "smg", false) == true) || (StrEqual(strWeaponClass, "smg_mp5", false) == true) || (StrEqual(strWeaponClass, "smg_silenced", false) == true) || (StrEqual(strWeaponClass, "rifle_desert", false) == true))
-					{
-						new iAmmo = GetEntData(iClient, iOffset_Ammo + 20);
-						g_iEllisPrimarySavedClipSlot1[iClient] = CurrentClipAmmo;
-						g_iEllisPrimarySavedAmmoSlot1[iClient] = iAmmo;
-					}
-					else if((StrEqual(strWeaponClass, "pumpshotgun", false) == true) || (StrEqual(strWeaponClass, "shotgun_chrome", false) == true))
-					{
-						new iAmmo = GetEntData(iClient, iOffset_Ammo + 28);
-						g_iEllisPrimarySavedClipSlot1[iClient] = CurrentClipAmmo;
-						g_iEllisPrimarySavedAmmoSlot1[iClient] = iAmmo;
-					}
-					else if((StrEqual(strWeaponClass, "autoshotgun", false) == true) || (StrEqual(strWeaponClass, "shotgun_spas", false) == true))
-					{
-						new iAmmo = GetEntData(iClient, iOffset_Ammo + 32);
-						g_iEllisPrimarySavedClipSlot1[iClient] = CurrentClipAmmo;
-						g_iEllisPrimarySavedAmmoSlot1[iClient] = iAmmo;
-					}
-					else if(StrEqual(strWeaponClass, "hunting_rifle", false) == true)
-					{
-						new iAmmo = GetEntData(iClient, iOffset_Ammo + 36);
-						g_iEllisPrimarySavedClipSlot1[iClient] = CurrentClipAmmo;
-						g_iEllisPrimarySavedAmmoSlot1[iClient] = iAmmo;
-					}
-					else if((StrEqual(strWeaponClass, "sniper_military", false) == true) || (StrEqual(strWeaponClass, "sniper_awp", false) == true) || (StrEqual(strWeaponClass, "sniper_scout", false) == true))
-					{
-						new iAmmo = GetEntData(iClient, iOffset_Ammo + 40);
-						g_iEllisPrimarySavedClipSlot1[iClient] = CurrentClipAmmo;
-						g_iEllisPrimarySavedAmmoSlot1[iClient] = iAmmo;
-					}
-					else if(StrEqual(strWeaponClass, "grenade_launcher", false) == true)
-					{
-						new iAmmo = GetEntData(iClient, iOffset_Ammo + 68);
-						g_iEllisPrimarySavedClipSlot1[iClient] = CurrentClipAmmo;
-						g_iEllisPrimarySavedAmmoSlot1[iClient] = iAmmo;
-					}
-					else if(StrEqual(strWeaponClass, "rifle_m60", false) == true)
-					{
-						//new iAmmo = GetEntData(iClient, iOffset_Ammo);
-						g_iEllisPrimarySavedClipSlot1[iClient] = CurrentClipAmmo;
-						g_iEllisPrimarySavedAmmoSlot1[iClient] = 0;
-					}
-				}
-				else if(g_iEllisCurrentPrimarySlot[iClient] == 1)
-				{
-					if((StrEqual(strWeaponClass, "rifle", false) == true) || (StrEqual(strWeaponClass, "rifle_ak47", false) == true) || (StrEqual(strWeaponClass, "rifle_sg552", false) == true) || (StrEqual(strWeaponClass, "rifle_desert", false) == true))
-					{
-						new iAmmo = GetEntData(iClient, iOffset_Ammo + 12);
-						g_iEllisPrimarySavedClipSlot2[iClient] = CurrentClipAmmo;
-						g_iEllisPrimarySavedAmmoSlot2[iClient] = iAmmo;
-					}
-					else if((StrEqual(strWeaponClass, "smg", false) == true) || (StrEqual(strWeaponClass, "smg_mp5", false) == true) || (StrEqual(strWeaponClass, "smg_silenced", false) == true) || (StrEqual(strWeaponClass, "rifle_desert", false) == true))
-					{
-						new iAmmo = GetEntData(iClient, iOffset_Ammo + 20);
-						g_iEllisPrimarySavedClipSlot2[iClient] = CurrentClipAmmo;
-						g_iEllisPrimarySavedAmmoSlot2[iClient] = iAmmo;
-					}
-					else if((StrEqual(strWeaponClass, "pumpshotgun", false) == true) || (StrEqual(strWeaponClass, "shotgun_chrome", false) == true))
-					{
-						new iAmmo = GetEntData(iClient, iOffset_Ammo + 28);
-						g_iEllisPrimarySavedClipSlot2[iClient] = CurrentClipAmmo;
-						g_iEllisPrimarySavedAmmoSlot2[iClient] = iAmmo;
-					}
-					else if((StrEqual(strWeaponClass, "autoshotgun", false) == true) || (StrEqual(strWeaponClass, "shotgun_spas", false) == true))
-					{
-						new iAmmo = GetEntData(iClient, iOffset_Ammo + 32);
-						g_iEllisPrimarySavedClipSlot2[iClient] = CurrentClipAmmo;
-						g_iEllisPrimarySavedAmmoSlot2[iClient] = iAmmo;
-					}
-					else if(StrEqual(strWeaponClass, "hunting_rifle", false) == true)
-					{
-						new iAmmo = GetEntData(iClient, iOffset_Ammo + 36);
-						g_iEllisPrimarySavedClipSlot2[iClient] = CurrentClipAmmo;
-						g_iEllisPrimarySavedAmmoSlot2[iClient] = iAmmo;
-					}
-					else if((StrEqual(strWeaponClass, "sniper_military", false) == true) || (StrEqual(strWeaponClass, "sniper_awp", false) == true) || (StrEqual(strWeaponClass, "sniper_scout", false) == true))
-					{
-						new iAmmo = GetEntData(iClient, iOffset_Ammo + 40);
-						g_iEllisPrimarySavedClipSlot2[iClient] = CurrentClipAmmo;
-						g_iEllisPrimarySavedAmmoSlot2[iClient] = iAmmo;
-					}
-					else if(StrEqual(strWeaponClass, "grenade_launcher", false) == true)
-					{
-						new iAmmo = GetEntData(iClient, iOffset_Ammo + 68);
-						g_iEllisPrimarySavedClipSlot2[iClient] = CurrentClipAmmo;
-						g_iEllisPrimarySavedAmmoSlot2[iClient] = iAmmo;
-					}
-					else if(StrEqual(strWeaponClass, "rifle_m60", false) == true)
-					{
-						//new iAmmo = GetEntData(iClient, iOffset_Ammo);
-						g_iEllisPrimarySavedClipSlot2[iClient] = CurrentClipAmmo;
-						g_iEllisPrimarySavedAmmoSlot2[iClient] = 0;
-					}
-				}
-			}
-			if(g_bIsInEllisInPrimaryCycle[iClient] == true)
-			{
-				fnc_DeterminePrimaryWeapon(iClient);
-				fnc_SetAmmo(iClient);
-				fnc_SetAmmoUpgrade(iClient);
-
-				g_bIsInEllisInPrimaryCycle[iClient] = false;
-			}
-			// Store the waeapon item index
-			if (g_iEllisPrimarySlot0[iClient] == ITEM_EMPTY)
-			{
-				g_iEllisCurrentPrimarySlot[iClient] = 0;
-				g_iEllisPrimarySlot0[iClient] = iWeaponIndex;
-				
-				// PrintToChatAll("pick up: g_iEllisPrimarySlot0[iClient] = %s", ITEM_CLASS_NAME[g_iEllisPrimarySlot0[iClient]]);
-			}
-			else if (g_iEllisPrimarySlot1[iClient] == ITEM_EMPTY)
-			{
-				g_iEllisCurrentPrimarySlot[iClient] = 1;
-				g_iEllisPrimarySlot1[iClient] = iWeaponIndex;
-
-				// PrintToChatAll("pick_up g_iEllisPrimarySlot1[iClient] = %s", ITEM_CLASS_NAME[g_iEllisPrimarySlot1[iClient]]);
-			}
-			// Handle when Ellis picks up the same weapon thats in the other slot 0
-			else if(g_iEllisCurrentPrimarySlot[iClient] == 0 && iWeaponIndex == g_iEllisPrimarySlot1[iClient])
-			{
-				g_iEllisPrimarySlot1[iClient] = g_iEllisPrimarySlot0[iClient];
-				g_iEllisPrimarySlot0[iClient] = iWeaponIndex;
-
-				g_iEllisPrimarySavedClipSlot2[iClient] = g_iEllisPrimarySavedClipSlot1[iClient];
-				g_iEllisPrimarySavedAmmoSlot2[iClient] = g_iEllisPrimarySavedAmmoSlot1[iClient];
-			}
-			// Handle when Ellis picks up the same weapon thats in the other slot 1
-			else if(g_iEllisCurrentPrimarySlot[iClient] == 1 && iWeaponIndex == g_iEllisPrimarySlot0[iClient])
-			{
-				g_iEllisPrimarySlot0[iClient] = g_iEllisPrimarySlot1[iClient];
-				g_iEllisPrimarySlot1[iClient] = iWeaponIndex;
-
-				g_iEllisPrimarySavedClipSlot1[iClient] = g_iEllisPrimarySavedClipSlot2[iClient];
-				g_iEllisPrimarySavedAmmoSlot1[iClient] = g_iEllisPrimarySavedAmmoSlot2[iClient];
-			}
-		}
-	}
 }
 
 void EventsPlayerUse_Ellis(int iClient, int iTargetID)
@@ -746,6 +556,10 @@ void EventsPlayerUse_Ellis(int iClient, int iTargetID)
 	}
 
 	g_bHealthBoostSlotWasEmptyOnLastPickUp[iClient] = false;
+
+
+	// Weapon Cycling
+	HandleWeaponPickUpForWeaponCycling(iClient);
 }
 
 void EventsWeaponGiven_Ellis(int iClient)
@@ -768,11 +582,13 @@ void HandleCheatCommandTasks_Ellis(int iClient, const char [] strCommandWithArgs
 	if (StrEqual(strCommandWithArgs,"give pain_pills",false) == true ||
 		StrEqual(strCommandWithArgs,"give adrenaline",false) == true)
 		g_bHealthBoostItemJustGivenByCheats[iClient] = true;
+
+	HandleWeaponPickUpForWeaponCycling(iClient);
 }
 
 CyclePlayerWeapon_Ellis(int iClient)
 {
-	if((g_iEllisCurrentPrimarySlot[iClient] == 0) && g_iEllisPrimarySlot1[iClient] >= ITEM_EMPTY)
+	if((g_iEllisCurrentPrimarySlot[iClient] == 0) && g_iEllisPrimarySlot1[iClient] > ITEM_EMPTY)
 	{
 		// Remove a laser upgrade counter to prevent flooding the server
 		if(g_iLaserUpgradeCounter[iClient] > 0)
@@ -784,13 +600,14 @@ CyclePlayerWeapon_Ellis(int iClient)
 
 		if (RunClientChecks(iClient) && IsPlayerAlive(iClient))
 		{
+			g_bIsEllisWeaponCycling[iClient] = true;
 			g_iEllisCurrentPrimarySlot[iClient] = 1;
 			decl String:strCommandWithArgs[64];
 			Format(strCommandWithArgs, sizeof(strCommandWithArgs), "give %s", ITEM_CMD_NAME[g_iEllisPrimarySlot1[iClient]]);
 			RunCheatCommand(iClient, "give", strCommandWithArgs);
 		}
 	}
-	else if((g_iEllisCurrentPrimarySlot[iClient] == 1) && g_iEllisPrimarySlot0[iClient] >= ITEM_EMPTY)
+	else if((g_iEllisCurrentPrimarySlot[iClient] == 1) && g_iEllisPrimarySlot0[iClient] > ITEM_EMPTY)
 	{
 		// Remove a laser upgrade counter to prevent flooding the server
 		if(g_iLaserUpgradeCounter[iClient] > 0)
@@ -802,11 +619,103 @@ CyclePlayerWeapon_Ellis(int iClient)
 		
 		if (RunClientChecks(iClient) && IsPlayerAlive(iClient))
 		{
+			g_bIsEllisWeaponCycling[iClient] = true;
 			g_iEllisCurrentPrimarySlot[iClient] = 0;
 			decl String:strCommandWithArgs[64];
 			Format(strCommandWithArgs, sizeof(strCommandWithArgs), "give %s", ITEM_CMD_NAME[g_iEllisPrimarySlot0[iClient]]);
 			RunCheatCommand(iClient, "give", strCommandWithArgs);
 		}
+	}
+}
+
+
+// Note: This function is typically called when the user has already picked up their weapon, so its not possible
+// To get the old weapon that was dropped unless storing it seomewhere else first.
+HandleWeaponPickUpForWeaponCycling(iClient)
+{
+	if(g_iWeaponsLevel[iClient] == 5)
+	{
+		// int iSlotItemID = GetPlayerWeaponSlot(iClient, 0);
+
+		// char strTargetClassName[35];
+		// GetEdictClassname(iSlotItemID, strTargetClassName, sizeof(strTargetClassName));
+		// PrintToChatAll("	strTargetClassName: %s", strTargetClassName);
+		// new iWeaponIndex = FindWeaponItemIndex(strTargetClassName, ITEM_CLASS_NAME);
+
+		new iWeaponIndex = FindWeaponItemIndexOfActiveWeapon(iClient);
+		// This check is required if its a cmd name (if its given through cheats)
+		// if (iWeaponIndex <= ITEM_EMPTY)
+		// 	iWeaponIndex = FindWeaponItemIndex(strTargetClassName, ITEM_CMD_NAME);
+		// PrintToChatAll("		iWeaponIndex: %i, %s", iWeaponIndex, ITEM_CLASS_NAME[iWeaponIndex]);
+		if (iWeaponIndex <= ITEM_EMPTY || IsWeaponIndexPrimarySlotItem(iWeaponIndex) == false)
+			return;
+
+		// PrintToChatAll("Looking at pickup for weapon cycle");
+
+
+		if(g_bIsEllisWeaponCycling[iClient] == true)
+		{
+			// PrintToChatAll("g_bIsEllisWeaponCycling call");
+			StoreCurrentPrimaryWeapon(iClient);
+
+			//CreateTimer(0.1, TimerDelayedSetAmmo, iClient, TIMER_FLAG_NO_MAPCHANGE);
+			// On the next game frame, call the set the weapon ammo
+			g_bSetWeaponAmmoOnNextGameFrame[iClient] = true;
+			// fnc_SetAmmo(iClient);
+			// fnc_SetAmmoUpgrade(iClient);
+			
+			g_bIsEllisWeaponCycling[iClient] = false;
+		}
+		// Store the weapon item index
+		else if (g_iEllisPrimarySlot0[iClient] == ITEM_EMPTY && iWeaponIndex != g_iEllisPrimarySlot1[iClient])
+		{
+			g_iEllisCurrentPrimarySlot[iClient] = 0;
+			StoreCurrentPrimaryWeapon(iClient);
+			fnc_SaveAmmo(iClient);
+			
+			// PrintToChatAll("pick up: g_iEllisPrimarySlot0[iClient] = %s\n%s", ITEM_NAME[g_iEllisPrimarySlot0[iClient]], ITEM_NAME[g_iEllisPrimarySlot1[iClient]]);
+		}
+		else if (g_iEllisPrimarySlot1[iClient] == ITEM_EMPTY && iWeaponIndex != g_iEllisPrimarySlot0[iClient])
+		{
+			g_iEllisCurrentPrimarySlot[iClient] = 1;
+			StoreCurrentPrimaryWeapon(iClient);
+			fnc_SaveAmmo(iClient);
+
+			// PrintToChatAll("pick_up g_iEllisPrimarySlot1[iClient] = %s\n%s", ITEM_NAME[g_iEllisPrimarySlot1[iClient]], ITEM_NAME[g_iEllisPrimarySlot0[iClient]]);
+		}
+		// Handle when Ellis picks up the same weapon thats in the other slot
+		else if(g_iEllisCurrentPrimarySlot[iClient] == 0 && iWeaponIndex == g_iEllisPrimarySlot1[iClient])
+		{
+			// PrintToChatAll("pick up matching on Slot 0");
+			g_iEllisPrimarySlot1[iClient] = g_iEllisPrimarySlot0[iClient];
+			g_iEllisPrimarySlot0[iClient] = iWeaponIndex;
+
+			g_iEllisPrimarySavedClipSlot1[iClient] = g_iEllisPrimarySavedClipSlot0[iClient];
+			g_iEllisPrimarySavedAmmoSlot1[iClient] = g_iEllisPrimarySavedAmmoSlot0[iClient];
+		}
+		// Handle when Ellis picks up the same weapon thats in the other slot
+		else if(g_iEllisCurrentPrimarySlot[iClient] == 1 && iWeaponIndex == g_iEllisPrimarySlot0[iClient])
+		{
+			// PrintToChatAll("pick up matching on Slot 1");
+			g_iEllisPrimarySlot0[iClient] = g_iEllisPrimarySlot1[iClient];
+			g_iEllisPrimarySlot1[iClient] = iWeaponIndex;
+
+			g_iEllisPrimarySavedClipSlot0[iClient] = g_iEllisPrimarySavedClipSlot1[iClient];
+			g_iEllisPrimarySavedAmmoSlot0[iClient] = g_iEllisPrimarySavedAmmoSlot1[iClient];
+		}
+		else
+		{
+			// PrintToChatAll("pick up last else");
+			// Store the current weapon
+			StoreCurrentPrimaryWeapon(iClient);
+			// Dont call save ammo here, it will overwrite with the newly picked up weapon
+			//fnc_SaveAmmo(iClient);
+		}
+
+		// PrintToChatAll("Finished pickup for weapon cycle");
+		PrintToChatAll("		> g_iEllisCurrentPrimarySlot %i", g_iEllisCurrentPrimarySlot[iClient])
+		PrintToChatAll("		> slot0 %s\n		> slot1 %s", ITEM_NAME[g_iEllisPrimarySlot0[iClient]], ITEM_NAME[g_iEllisPrimarySlot1[iClient]]);
+
 	}
 }
 
@@ -819,7 +728,7 @@ HandleEllisSwitchToStashedPrimaryWeapon(iClient)
 
 	// Only continue if the appropriate buttons have been pressed
 	new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
-	if ( ((buttons & IN_SPEED) && (buttons & IN_ZOOM)) == false )
+	if ( !(buttons & IN_SPEED) || !(buttons & IN_ZOOM) )
 		return;
 
 	// Only continue if the current weapon is a valid primary
@@ -834,8 +743,8 @@ HandleEllisSwitchToStashedPrimaryWeapon(iClient)
 		(StrContains(currentweapon,"launcher",false) == -1))
 		return;
 
-	// PrintToChatAll("%s g_iEllisPrimarySlot0[iClient]", g_iEllisPrimarySlot0[iClient]);
-	// PrintToChatAll("%s g_iEllisPrimarySlot1[iClient]", g_iEllisPrimarySlot1[iClient]);
+	PrintToChatAll("Stashed switch %s g_iEllisPrimarySlot0", ITEM_NAME[g_iEllisPrimarySlot0[iClient]]);
+	PrintToChatAll("Stashed switch %s g_iEllisPrimarySlot1", ITEM_NAME[g_iEllisPrimarySlot1[iClient]]);
 	
 	// Check that they have a stashed at least one weapon
 	if (g_iEllisPrimarySlot0[iClient] == ITEM_EMPTY && 
@@ -844,14 +753,116 @@ HandleEllisSwitchToStashedPrimaryWeapon(iClient)
 	
 	//PrintToChatAll("String contains a gun");
 	g_bCanEllisPrimaryCycle[iClient] = false;
-	g_bIsInEllisInPrimaryCycle[iClient] = true;
 	CreateTimer(0.5, TimerEllisPrimaryCycleReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	//new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 
 	//new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 	//new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
 	//PrintToChatAll("CurrentClipAmmo %d", CurrentClipAmmo);
-	fnc_DeterminePrimaryWeapon(iClient);
+	StoreCurrentPrimaryWeapon(iClient);
 	fnc_SaveAmmo(iClient);
 	CyclePlayerWeapon(iClient);
+}
+
+HandleEllisLimitBreak(iClient)
+{
+	// Check if they have the ability and havn't already toggled it
+	if (g_bTalentsConfirmed[iClient] == false || 
+		g_iMetalLevel[iClient] != 5)
+		return;
+
+	// Check if they have released the buttons after its been toggle already
+	new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
+	if(!(buttons & IN_SPEED) || !(buttons & IN_USE))
+	{
+		g_bWalkAndUseToggler[iClient] = false;
+		return;
+	}
+
+	// Check if already toggled it
+	if (g_bWalkAndUseToggler[iClient] == true)
+		return;
+	
+	// Ensure they are pressing the buttons, exit otherwise
+	if(((buttons & IN_SPEED) && (buttons & IN_USE)) == false)
+		return;
+
+	// Check if they are in cooldown
+	if(g_bEllisLimitBreakInCooldown[iClient] == true)
+	{
+		PrintHintText(iClient, "LIMIT BREAK is still cooling down");
+		return;
+	}
+
+	// Check that not already limit breaking, and that he can use limit break
+	if(g_bIsEllisLimitBreaking[iClient] == true || g_bCanEllisLimitBreak[iClient] == false)
+		return;
+
+	PrintToChatAll("HERE3");
+	
+	// Get the currently active weapon index
+	new iWeaponIndex = FindWeaponItemIndexOfActiveWeapon(iClient);
+
+	// Check if they have a primary weapon
+	if (IsWeaponIndexPrimarySlotItem(iWeaponIndex) == false)
+		return;
+
+	// At this point, they have toggled it and passed all checks. Do the limit break
+	g_iLimitBreakWeaponIndex[iClient] = iWeaponIndex;
+	g_bWalkAndUseToggler[iClient] = true;
+	g_bIsEllisLimitBreaking[iClient] = true;
+	g_bCanEllisLimitBreak[iClient] = false;
+	CreateTimer(5.0, TimerEllisLimitBreakReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	CreateTimer(10.0, TimerEllisLimitBreakCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	PrintHintText(iClient, "Double fire rate for 5 seconds; Your weapon will break afterward!");
+}
+
+bool HandleFastAttackingClients_Ellis(int iClient, const int iActiveWeaponID, const int iActiveWeaponSlot, const float fGameTime, const float fCurrentNextAttackTime, float &fAdjustedNextAttackTime)
+{
+	if (g_iMetalLevel[iClient] <= 0)
+		return false;
+	
+	// Ellis's limit break ability
+	if (g_bIsEllisLimitBreaking[iClient] == true)
+	{
+		// Ensure they are using their primary slot weapon
+		// Limit break should disabled elsewhere if they do a primary weapon switch or pick up another primary
+		if (iActiveWeaponSlot == 0)
+		{
+			// Also ensure that the class name matches the active weapon
+			// Do as last check for performance reasons
+			char strWeaponClassName[32];
+			GetEntityClassname(iActiveWeaponID, strWeaponClassName, 32);
+			// PrintToChatAll("lb check %i %s, lb stored: %s", iActiveWeaponID, strWeaponClassName, ITEM_CLASS_NAME[g_iLimitBreakWeaponIndex[iClient]]);
+			if (strcmp(strWeaponClassName, ITEM_CLASS_NAME[g_iLimitBreakWeaponIndex[iClient]], true) == 0)
+			{
+				// PrintToChatAll("	> Limit break applied to %N: %s", iClient, strWeaponClassName);
+				fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * (1/2) + fGameTime; // This was triple at .66666, changing to .5 to double
+				return true;
+			}
+		}
+	}
+
+	// Check that its pistol if its a secondary
+	if (iActiveWeaponSlot == 1)
+	{
+		char strEntityClassName[32];
+		GetEntityClassname(iActiveWeaponID, strEntityClassName, 32);
+		// PrintToChat(iClient, "strEntityClassName: %s", strEntityClassName);
+		if (StrContains(strEntityClassName, "weapon_pistol", true) == -1)
+			return false;
+	}
+
+	// Ellis's firerate normal primary and secondary attack speed buffs
+	// The formula is next normal fire rate wait time * (1/x) where x is the speed
+	// (1/1.00) would be 0% faster, (1/1.3) would be 30% faster, (1/3) would be 3 times faster
+	// We want 50% faster maxed out so 1.50x -> (1/1.5) = .666666 would be 50% faster
+	// this would be keeping .666666 of the existing wait time ( fCurrentNextAttackTime - fGameTime )				
+	fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * (1 / (1 + (g_iMetalLevel[iClient] * 0.07) + (g_iFireLevel[iClient] * 0.07) ) ) + fGameTime;
+	
+	// FOR TESTING
+	//fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * ((1 / g_fEllisTestFireRate))  + fGameTime;
+
+	// Return the slot that is used
+	return true;
 }

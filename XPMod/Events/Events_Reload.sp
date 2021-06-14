@@ -23,7 +23,7 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 		}
 		case ELLIS:		//Ellis
 		{
-			fnc_DeterminePrimaryWeapon(iClient);
+			StoreCurrentPrimaryWeapon(iClient);
 			fnc_SaveAmmo(iClient);
 		}
 		case NICK:		//Nick
@@ -133,13 +133,13 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 		
 		if (StrContains(stClass,"shotgun",false) == -1)
 		{
-			g_fGameTime = GetGameTime(); 
-			flNextTime_ret = GetEntDataFloat(iEntid,g_iOffset_NextPrimaryAttack);
+			float fGameTime = GetGameTime(); 
+			float flNextTime_ret = GetEntDataFloat(iEntid,g_iOffset_NextPrimaryAttack);
 				//this is a calculation of when the next primary attack
 				//will be after applying sleight of hand values
 				//NOTE: at this point, only calculate the interval itself,
 				//without the actual game engine time factored in
-			flNextTime_calc = ( flNextTime_ret - g_fGameTime ) * g_fReloadRate;
+			float flNextTime_calc = ( flNextTime_ret - fGameTime ) * g_fReloadRate;
 
 				//we change the playback rate of the gun
 				//just so the player can "see" the gun reloading faster
@@ -155,7 +155,7 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 			WritePackCell(hPack, iClient);
 			//this calculates the equivalent time for the reload to end
 			//if the survivor didn't have the SoH perk
-			new Float:flStartTime_calc = g_fGameTime - ( flNextTime_ret - g_fGameTime ) * ( 1 - g_fReloadRate ) ;
+			new Float:flStartTime_calc = fGameTime - ( flNextTime_ret - fGameTime ) * ( 1 - g_fReloadRate ) ;
 			WritePackFloat(hPack, flStartTime_calc);
 			
 			//now we create the timer that will prevent the annoying double playback
@@ -172,7 +172,7 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 			
 			//and finally we set the end reload time into the gun
 			//so the player can actually shoot with it at the end
-			flNextTime_calc += g_fGameTime;
+			flNextTime_calc += fGameTime;
 			SetEntDataFloat(iEntid, g_iOffset_TimeWeaponIdle, flNextTime_calc, true);
 			SetEntDataFloat(iEntid, g_iOffset_NextPrimaryAttack, flNextTime_calc, true);
 			SetEntDataFloat(iClient, g_iOffset_NextAttack, flNextTime_calc, true);

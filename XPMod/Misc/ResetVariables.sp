@@ -2,7 +2,7 @@
 ResetVariablesForMap(iClient)
 {
 	ResetTalentConfirmCountdown(iClient);
-	
+	g_bWalkAndUseToggler[iClient] = false;
 	g_iEllisMaxHealth[iClient] = 100;
 	g_iNickMaxHealth[iClient] = 100;
 	g_bSurvivorTalentsGivenThisRound[iClient] = false;
@@ -100,6 +100,9 @@ ResetVariablesForMap(iClient)
 	g_iEllisAdrenalineStackDuration = 15;
 	g_bEllisHasAdrenalineBuffs[iClient] = false;
 	g_iStashedInventoryAdrenaline[iClient] = 0;
+	g_bIsEllisLimitBreaking[iClient] = false;
+	g_bCanEllisLimitBreak[iClient] = false;
+	g_iLimitBreakWeaponIndex[iClient] = -1;
 	
 	//Nick 
 	g_bNickIsGettingBeatenUp[iClient] = false;
@@ -243,6 +246,11 @@ ResetAllVariables(iClient)
 	g_bSmokerGrappled[iClient] = false;
 	g_bJockeyGrappled[iClient] = false;
 	g_iJockeyVictim[iClient] = -1;
+
+	//Reset the stashed weapons
+	g_bIsEllisWeaponCycling[iClient] = false;
+	g_bSetWeaponAmmoOnNextGameFrame[iClient] = false;
+	fnc_ClearAllWeaponData(iClient);
 
 	//Reset Tank (Needed here for changing teams)
 	g_iTankChosen[iClient] = TANK_NOT_CHOSEN;

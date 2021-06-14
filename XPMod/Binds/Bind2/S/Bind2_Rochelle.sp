@@ -8,7 +8,6 @@ void Bind2Press_Rochelle(iClient)
             {
                 push(iClient);
                 g_bUsingShadowNinja[iClient] = true;
-                g_bFirstShadowNinjaSwing[iClient] = true;
                 g_iClientBindUses_2[iClient]++;
                 //PrintHintTextToAll("Rochelle disabled everyones glow for 12 seconds");
                 //SetConVarInt(FindConVar("sv_disable_glow_survivors"), 1);

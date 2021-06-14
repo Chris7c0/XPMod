@@ -34,7 +34,7 @@ new g_iOffset_NextActivation        = -1;
 new g_iOffset_ShovePenalty			= -1;
 new g_iOffset_ActiveWeapon			= -1;
 new g_iOffset_NextPrimaryAttack		= -1;
-new g_iOffset_NextSecondaryAttack	= -1;
+// new g_iOffset_NextSecondaryAttack	= -1;
 new g_iOffset_PlaybackRate			= -1;
 new g_iOffset_TimeWeaponIdle		= -1;
 new g_iOffset_NextAttack			= -1;
@@ -67,9 +67,6 @@ new Float:g_fReloadRate;
 
 new Float:g_fTimeStamp[MAXPLAYERS + 1] = -1.0;
 
-new Float:flNextTime_calc;
-new Float:flNextTime_ret;
-new Float:flNextTime2_ret;
-new Float:g_fGameTime;
-new g_iDTEntid[64] = -1;
-new Float:g_flDTNextTime[64] = -1.0;
+
+new g_iCurrentFasterAttackWeapon[64] = -1;
+new Float:g_fNextFasterAttackTime[64] = -1.0;

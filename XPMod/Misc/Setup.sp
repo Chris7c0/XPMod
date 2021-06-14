@@ -35,7 +35,7 @@ SetupGameOffsets()
 	g_iOffset_PlaybackRate			= FindSendPropInfo("CBaseCombatWeapon", "m_flPlaybackRate");
 	g_iOffset_ActiveWeapon			= FindSendPropInfo("CBaseCombatCharacter", "m_hActiveWeapon");
 	g_iOffset_NextPrimaryAttack		= FindSendPropInfo("CBaseCombatWeapon", "m_flNextPrimaryAttack");
-	g_iOffset_NextSecondaryAttack 	= FindSendPropInfo("CBaseCombatWeapon", "m_flNextSecondaryAttack");
+	// g_iOffset_NextSecondaryAttack 	= FindSendPropInfo("CBaseCombatWeapon", "m_flNextSecondaryAttack");
 	g_iOffset_TimeWeaponIdle		= FindSendPropInfo("CTerrorGun", "m_flTimeWeaponIdle");
 	g_iOffset_NextAttack			= FindSendPropInfo("CTerrorPlayer", "m_flNextAttack");
 	g_iOffset_ReloadStartDuration	= FindSendPropInfo("CBaseShotgun", "m_reloadStartDuration");

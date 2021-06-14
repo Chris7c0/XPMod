@@ -51,7 +51,7 @@ void Bind1Press_Nick(iClient)
 							}
 							case 4: //Rambo
 							{
-								fnc_DeterminePrimaryWeapon(iClient);
+								StoreCurrentPrimaryWeapon(iClient);
 								fnc_SaveAmmo(iClient);
 								
 								if (g_iPrimarySlotID[iClient] > 0 && IsValidEntity(g_iPrimarySlotID[iClient]))
@@ -65,7 +65,7 @@ void Bind1Press_Nick(iClient)
 								RunCheatCommand(iClient, "give", "give rifle_m60");
 
 								//g_iRamboWeaponID[iClient] = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-								fnc_DeterminePrimaryWeapon(iClient);
+								StoreCurrentPrimaryWeapon(iClient);
 								fnc_DetermineMaxClipSize(iClient);
 								RunCheatCommand(iClient, "upgrade_add", "upgrade_add LASER_SIGHT");
 								RunCheatCommand(iClient, "upgrade_add", "upgrade_add EXPLOSIVE_AMMO");
@@ -159,8 +159,7 @@ void Bind1Press_Nick(iClient)
 
 									PrintHintText(iClient,"Rolled an 11\nYou have received divine intervention from above...or below.");
 									PrintToChatAll("\x03[XPMod] \x05%N was given a fresh life.", iClient);
-
-
+									
 									g_bIsClientDown[iClient] = false;
 								}
 								else

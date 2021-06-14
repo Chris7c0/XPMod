@@ -442,7 +442,7 @@ Action:Event_JockeyRide(Handle:hEvent, const String:strName[], bool:bDontBroadca
 				new iReserveAmmoDropChance = GetRandomInt(1, 10);
 				if(iReserveAmmoDropChance <= g_iUnfairLevel[attacker])
 				{
-					fnc_DeterminePrimaryWeapon(victim);
+					StoreCurrentPrimaryWeapon(victim);
 					new String:strCurrentWeapon[32];
 					GetClientWeapon(victim, strCurrentWeapon, sizeof(strCurrentWeapon));
 					if((StrEqual(strCurrentWeapon, "weapon_melee", false) == false) && (StrEqual(strCurrentWeapon, "weapon_pistol", false) == false) && (StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == false))

@@ -27,7 +27,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 		{
 			if(g_iEllisPrimarySlot0[iClient] == ITEM_EMPTY || g_iEllisPrimarySlot1[iClient] == ITEM_EMPTY)
 			{
-				fnc_DeterminePrimaryWeapon(iClient);
+				StoreCurrentPrimaryWeapon(iClient);
 				new String:strCurrentWeapon[32];
 				GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 				if((StrContains(strCurrentWeapon, "rifle", false) != -1) || (StrContains(strCurrentWeapon, "smg", false) != -1) || (StrContains(strCurrentWeapon, "shotgun", false) != -1) || (StrContains(strCurrentWeapon, "launcher", false) != -1) || (StrContains(strCurrentWeapon, "sniper", false) != -1))
@@ -42,7 +42,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 
 			if((CurrentClipAmmo == 0) || (CurrentClipAmmo == 1))
 			{
-				fnc_DeterminePrimaryWeapon(iClient);
+				StoreCurrentPrimaryWeapon(iClient);
 				new String:strCurrentWeapon[32];
 				GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 
@@ -51,12 +51,11 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					//PrintToChatAll("Ammo is now 0");
 					if (g_iEllisCurrentPrimarySlot[iClient] == 0 &&
 						g_iEllisPrimarySlot1[iClient] == ITEM_EMPTY && 
-						(g_iEllisPrimarySavedClipSlot2[iClient] > 0 || g_iEllisPrimarySavedAmmoSlot2[iClient] > 0))
+						(g_iEllisPrimarySavedClipSlot1[iClient] > 0 || g_iEllisPrimarySavedAmmoSlot1[iClient] > 0))
 					{
-						//fnc_DeterminePrimaryWeapon(iClient);
+						//StoreCurrentPrimaryWeapon(iClient);
 						if((StrContains(strCurrentWeapon, "rifle", false) != -1) || (StrContains(strCurrentWeapon, "smg", false) != -1) || (StrContains(strCurrentWeapon, "shotgun", false) != -1) || (StrContains(strCurrentWeapon, "launcher", false) != -1) || (StrContains(strCurrentWeapon, "sniper", false) != -1))
 						{
-							g_bIsEllisCyclingEmptyWeapon[iClient] = true;
 							fnc_SaveAmmo(iClient);
 							CyclePlayerWeapon(iClient);
 							//fnc_SetAmmo(iClient);
@@ -64,12 +63,11 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					}
 					else if (g_iEllisCurrentPrimarySlot[iClient] == 1 && 
 							g_iEllisPrimarySlot0[iClient] == ITEM_EMPTY && 
-							(g_iEllisPrimarySavedClipSlot1[iClient] > 0 || g_iEllisPrimarySavedAmmoSlot1[iClient] > 0))
+							(g_iEllisPrimarySavedClipSlot0[iClient] > 0 || g_iEllisPrimarySavedAmmoSlot0[iClient] > 0))
 					{
-						//fnc_DeterminePrimaryWeapon(iClient);
+						//StoreCurrentPrimaryWeapon(iClient);
 						if((StrContains(strCurrentWeapon, "rifle", false) != -1) || (StrContains(strCurrentWeapon, "smg", false) != -1) || (StrContains(strCurrentWeapon, "shotgun", false) != -1) || (StrContains(strCurrentWeapon, "launcher", false) != -1) || (StrContains(strCurrentWeapon, "sniper", false) != -1))
 						{
-							g_bIsEllisCyclingEmptyWeapon[iClient] = true;
 							fnc_SaveAmmo(iClient);
 							CyclePlayerWeapon(iClient);
 							//fnc_SetAmmo(iClient);
@@ -80,7 +78,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 		}
 		case 4:		//Nick Firing
 		{
-			fnc_DeterminePrimaryWeapon(iClient);
+			StoreCurrentPrimaryWeapon(iClient);
 			new String:strCurrentWeapon[32];
 			GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 			
@@ -1481,7 +1479,7 @@ Action:Event_ReceiveUpgrade(Handle:hEvent, String:Event_name[], bool:dontBroadca
 	// 	g_strCurrentAmmoUpgrade = strUpgrade;
 	// }
 	// g_strCheckAmmoUpgrade = strUpgrade;
-	// // //fnc_DeterminePrimaryWeapon(iClient);
+	// // //StoreCurrentPrimaryWeapon(iClient);
 	// // //fnc_SaveAmmo(iClient);
 	// // fnc_DetermineMaxClipSize(iClient);
 	// // //fnc_SetAmmoUpgrade(iClient);

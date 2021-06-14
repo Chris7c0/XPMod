@@ -708,7 +708,7 @@ Action:CreateOverlay(iClient)
 // 	// PrintToChatAll("g_iPrimarySlotID After = %d", g_iPrimarySlotID[iClient]);
 	
 // 	//fnc_DeterminePrimarySlot(iClient);
-// 	//fnc_DeterminePrimaryWeapon(iClient);
+// 	//StoreCurrentPrimaryWeapon(iClient);
 // 	//SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd & ~FCVAR_CHEAT);
 // 	//RunCheatCommand(iClient, "upgrade_add", "upgrade_add EXPLOSIVE_AMMO");
 // 	//SetCommandFlags("upgrade_add", g_iFlag_UpgradeAdd);
@@ -719,7 +719,7 @@ Action:CreateOverlay(iClient)
 // 	// PrintToChatAll("Special Ammo = %d", SpecialAmmo);
 	
 // 	/*
-// 	fnc_DeterminePrimaryWeapon(iClient);
+// 	StoreCurrentPrimaryWeapon(iClient);
 // 	fnc_SaveAmmo(iClient);
 // 	CyclePlayerWeapon(iClient);
 // 	fnc_SetAmmo(iClient);
