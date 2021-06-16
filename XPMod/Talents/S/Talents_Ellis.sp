@@ -642,7 +642,7 @@ HandleWeaponPickUpForWeaponCycling(iClient)
 		// PrintToChatAll("	strTargetClassName: %s", strTargetClassName);
 		// new iWeaponIndex = FindWeaponItemIndex(strTargetClassName, ITEM_CLASS_NAME);
 
-		new iWeaponIndex = FindWeaponItemIndexOfActiveWeapon(iClient);
+		new iWeaponIndex = FindWeaponItemIndexOfWeaponID(iClient);
 		// This check is required if its a cmd name (if its given through cheats)
 		// if (iWeaponIndex <= ITEM_EMPTY)
 		// 	iWeaponIndex = FindWeaponItemIndex(strTargetClassName, ITEM_CMD_NAME);
@@ -713,8 +713,8 @@ HandleWeaponPickUpForWeaponCycling(iClient)
 		}
 
 		// PrintToChatAll("Finished pickup for weapon cycle");
-		PrintToChatAll("		> g_iEllisCurrentPrimarySlot %i", g_iEllisCurrentPrimarySlot[iClient])
-		PrintToChatAll("		> slot0 %s\n		> slot1 %s", ITEM_NAME[g_iEllisPrimarySlot0[iClient]], ITEM_NAME[g_iEllisPrimarySlot1[iClient]]);
+		// PrintToChatAll("		> g_iEllisCurrentPrimarySlot %i", g_iEllisCurrentPrimarySlot[iClient])
+		// PrintToChatAll("		> slot0 %s\n		> slot1 %s", ITEM_NAME[g_iEllisPrimarySlot0[iClient]], ITEM_NAME[g_iEllisPrimarySlot1[iClient]]);
 
 	}
 }
@@ -743,8 +743,8 @@ HandleEllisSwitchToStashedPrimaryWeapon(iClient)
 		(StrContains(currentweapon,"launcher",false) == -1))
 		return;
 
-	PrintToChatAll("Stashed switch %s g_iEllisPrimarySlot0", ITEM_NAME[g_iEllisPrimarySlot0[iClient]]);
-	PrintToChatAll("Stashed switch %s g_iEllisPrimarySlot1", ITEM_NAME[g_iEllisPrimarySlot1[iClient]]);
+	// PrintToChatAll("Stashed switch %s g_iEllisPrimarySlot0", ITEM_NAME[g_iEllisPrimarySlot0[iClient]]);
+	// PrintToChatAll("Stashed switch %s g_iEllisPrimarySlot1", ITEM_NAME[g_iEllisPrimarySlot1[iClient]]);
 	
 	// Check that they have a stashed at least one weapon
 	if (g_iEllisPrimarySlot0[iClient] == ITEM_EMPTY && 
@@ -797,11 +797,9 @@ HandleEllisLimitBreak(iClient)
 	// Check that not already limit breaking, and that he can use limit break
 	if(g_bIsEllisLimitBreaking[iClient] == true || g_bCanEllisLimitBreak[iClient] == false)
 		return;
-
-	PrintToChatAll("HERE3");
 	
 	// Get the currently active weapon index
-	new iWeaponIndex = FindWeaponItemIndexOfActiveWeapon(iClient);
+	new iWeaponIndex = FindWeaponItemIndexOfWeaponID(iClient);
 
 	// Check if they have a primary weapon
 	if (IsWeaponIndexPrimarySlotItem(iWeaponIndex) == false)
@@ -813,7 +811,7 @@ HandleEllisLimitBreak(iClient)
 	g_bIsEllisLimitBreaking[iClient] = true;
 	g_bCanEllisLimitBreak[iClient] = false;
 	CreateTimer(5.0, TimerEllisLimitBreakReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
-	CreateTimer(10.0, TimerEllisLimitBreakCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	CreateTimer(65.0, TimerEllisLimitBreakCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	PrintHintText(iClient, "Double fire rate for 5 seconds; Your weapon will break afterward!");
 }
 

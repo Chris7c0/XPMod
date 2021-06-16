@@ -8,14 +8,16 @@ int FindWeaponItemIndex(const char [] strWeaponClass, const String:strCompareInd
 	return ITEM_EMPTY;
 }
 
-int FindWeaponItemIndexOfActiveWeapon(iClient)
+int FindWeaponItemIndexOfWeaponID(int iClient, int iActiveWeaponID = -1)
 {
-	new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-	if (ActiveWeaponID <= 0 || IsValidEntity(ActiveWeaponID) == false)
+	if (iActiveWeaponID == -1)
+		iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+	
+	if (RunEntityChecks(iActiveWeaponID) == false)
 		return ITEM_EMPTY;
 
 	char strEntityClassName[32];
-	GetEntityClassname(ActiveWeaponID, strEntityClassName, 32);
+	GetEntityClassname(iActiveWeaponID, strEntityClassName, 32);
 	// PrintToChat(iClient, "strEntityClassName: %s", strEntityClassName);
 
 	return FindWeaponItemIndex(strEntityClassName, ITEM_CLASS_NAME);

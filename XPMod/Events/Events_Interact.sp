@@ -55,8 +55,8 @@ Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	decl String:weaponclass[24];
 	GetEventString(hEvent,"item",weaponclass,24);
 
-	if (IsFakeClient(iClient) == false)
-		PrintToChatAll("%N %i: Event_ItemPickUp: %s", iClient, iClient, weaponclass);
+	// if (IsFakeClient(iClient) == false)
+	// 	PrintToChatAll("%N %i: Event_ItemPickUp: %s", iClient, iClient, weaponclass);
 	
 	new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 	if (RunEntityChecks(ActiveWeaponID) == false)

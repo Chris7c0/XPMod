@@ -12,11 +12,10 @@ Action:TestFunction1(iClient, args)
 	GetCmdArg(1, str1, sizeof(str1));
 	GetCmdArg(2, str2, sizeof(str2));
 
-	// FindWeaponItemIndexOfActiveWeapon(iClient);
-	new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-	PrintToChatAll("	ActiveWeaponID = %i", ActiveWeaponID);
-	PrintToChatAll("		+ g_iEllisCurrentPrimarySlot %i", g_iEllisCurrentPrimarySlot[iClient])
-	PrintToChatAll("		+ slot0 %s\n		+ slot1 %s", ITEM_NAME[g_iEllisPrimarySlot0[iClient]], ITEM_NAME[g_iEllisPrimarySlot1[iClient]]);
+	// new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+	// PrintToChatAll("	ActiveWeaponID = %i", ActiveWeaponID);
+	// PrintToChatAll("		+ g_iEllisCurrentPrimarySlot %i", g_iEllisCurrentPrimarySlot[iClient])
+	// PrintToChatAll("		+ slot0 %s\n		+ slot1 %s", ITEM_NAME[g_iEllisPrimarySlot0[iClient]], ITEM_NAME[g_iEllisPrimarySlot1[iClient]]);
 
 	// char strEquipmentItem[32];
 	// int iGrenadeSlotItemID = GetPlayerWeaponSlot(iClient, 2);
