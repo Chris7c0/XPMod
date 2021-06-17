@@ -102,6 +102,10 @@ SetAmmoOffsetForPrimarySlotID(int iClient, int iWeaponIndex)
 
 StoreCurrentPrimaryWeapon(iClient)
 {
+	// Check if in rambo mode and have the M60 out
+	if (g_bRamboModeActive[iClient] && g_iRamboWeaponID[iClient] == GetPlayerWeaponSlot(iClient, 0))
+		return;
+
 	g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 0);
 	// PrintToChatAll("g_iPrimarySlotID = %d", g_iPrimarySlotID[iClient]);
 
@@ -126,31 +130,33 @@ StoreCurrentPrimaryWeapon(iClient)
 	else if (g_iEllisCurrentPrimarySlot[iClient] == 1)
 		g_iEllisPrimarySlot1[iClient] = iWeaponIndex;
 	
-	// Store for Nick
+	// Store for Nick's Rambo gamble
 	g_iStashedPrimarySlotWeaponIndex[iClient] = iWeaponIndex;
 
+	// PrintToChatAll("DETERMINE AFTER g_iStashedPrimarySlotWeaponIndex[iClient] = %s", ITEM_CLASS_NAME[g_iStashedPrimarySlotWeaponIndex[iClient]]);
+	
 	// PrintToChatAll("DETERMINE AFTER g_iEllisPrimarySlot0[iClient] = %s", ITEM_CLASS_NAME[g_iEllisPrimarySlot0[iClient]]);
 	// PrintToChatAll("DETERMINE AFTER g_iEllisPrimarySlot1[iClient] = %s", ITEM_CLASS_NAME[g_iEllisPrimarySlot1[iClient]]);
 }
  
-fnc_SaveAmmo(iClient)
+StoreCurrentPrimaryWeaponAmmo(iClient)
 {
-	
+	// PrintToChat(iClient, "StoreCurrentPrimaryWeaponAmmo start");
 	switch(g_iChosenSurvivor[iClient])
 	{
-		case 0:		//Bill
+		case BILL:		//Bill
 		{
 		
 		}
-		case 1:		//Rochelle
+		case ROCHELLE:		//Rochelle
 		{
 		
 		}
-		case 2:		//Coach
+		case COACH:		//Coach
 		{
 			
 		}
-		case 3:		//Ellis
+		case ELLIS:		//Ellis
 		{
 			new String:strCurrentWeapon[32];
 			GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
@@ -188,7 +194,7 @@ fnc_SaveAmmo(iClient)
 					}
 					//PrintToChatAll("g_iEllisPrimarySavedClipSlot0 = %d", g_iEllisPrimarySavedClipSlot0[iClient]);
 					//PrintToChatAll("g_iEllisPrimarySavedAmmoSlot0 = %d", g_iEllisPrimarySavedAmmoSlot0[iClient]);
-					//PrintToChatAll("fnc_SaveAmmo: Slot = %i, Clip1 = %i, Ammo1 = %i, Upgrade1 = %s", g_iEllisCurrentPrimarySlot[iClient], g_iEllisPrimarySavedClipSlot0[iClient], g_iEllisPrimarySavedAmmoSlot0[iClient], g_strEllisUpgradeTypeSlot1);
+					//PrintToChatAll("StoreCurrentPrimaryWeaponAmmo: Slot = %i, Clip1 = %i, Ammo1 = %i, Upgrade1 = %s", g_iEllisCurrentPrimarySlot[iClient], g_iEllisPrimarySavedClipSlot0[iClient], g_iEllisPrimarySavedAmmoSlot0[iClient], g_strEllisUpgradeTypeSlot1);
 				}
 				else if(g_iEllisCurrentPrimarySlot[iClient] == 1)
 				{
@@ -212,19 +218,40 @@ fnc_SaveAmmo(iClient)
 					}
 					//PrintToChatAll("g_iEllisPrimarySavedClipSlot1 = %d", g_iEllisPrimarySavedClipSlot1[iClient]);
 					//PrintToChatAll("g_iEllisPrimarySavedAmmoSlot1 = %d", g_iEllisPrimarySavedAmmoSlot1[iClient]);
-					//PrintToChatAll("fnc_SaveAmmo: Slot = %i, Clip2 = %i, Ammo2 = %i, Upgrade2 = %s", g_iEllisCurrentPrimarySlot[iClient], g_iEllisPrimarySavedClipSlot1[iClient], g_iEllisPrimarySavedAmmoSlot1[iClient], g_strEllisUpgradeTypeSlot2);
+					//PrintToChatAll("StoreCurrentPrimaryWeaponAmmo: Slot = %i, Clip2 = %i, Ammo2 = %i, Upgrade2 = %s", g_iEllisCurrentPrimarySlot[iClient], g_iEllisPrimarySavedClipSlot1[iClient], g_iEllisPrimarySavedAmmoSlot1[iClient], g_strEllisUpgradeTypeSlot2);
 				}
 				//PrintToChatAll("g_iCurrentClipAmmo = %d", g_iCurrentClipAmmo[iClient]);
 				//PrintToChatAll("g_iReserveAmmo = %d", g_iReserveAmmo[iClient]);
 			}
 		}
-		case 4:		//Nick
+		case NICK:		//Nick
 		{
+			int iCurrentPrimaryID = GetPlayerWeaponSlot(iClient, 0);
+			// PrintToChatAll("StoreCurrentPrimaryWeaponAmmo weapon %i", iCurrentPrimaryID);
+			if (RunEntityChecks(iCurrentPrimaryID) == false)
+			{
+				g_iNickPrimarySavedClip[iClient] = 0;
+				g_iNickPrimarySavedAmmo[iClient] = 0;
+				g_strNickUpgradeType = "empty";
+				g_strCurrentAmmoUpgrade = "empty";
+				return;
+			}
+
+			// PrintToChatAll("StoreCurrentPrimaryWeaponAmmo past RunEntityChecks");
+
+			// Don't store ammo of the rambo weapon
+			if (iCurrentPrimaryID == g_iRamboWeaponID[iClient])
+				return;
+
+			// PrintToChatAll("StoreCurrentPrimaryWeaponAmmo past g_iRamboWeaponID check");
+
 			//PrintToChatAll("Saved g_iStashedPrimarySlotWeaponIndex[iClient] = %s", ITEM_NAME[g_iStashedPrimarySlotWeaponIndex[iClient]]);
-			g_iNickPrimarySavedClip[iClient] = g_iCurrentClipAmmo[iClient];
-			//PrintToChatAll("Saved g_iNickPrimarySavedClip = %d", g_iNickPrimarySavedClip[iClient]);
+			g_iNickPrimarySavedClip[iClient] = GetEntProp(iCurrentPrimaryID,Prop_Data,"m_iClip1");
+			// PrintToChatAll("Saved g_iNickPrimarySavedClip = %d", g_iNickPrimarySavedClip[iClient]);
+			g_iOffset_Ammo[iClient] = FindDataMapInfo(iClient,"m_iAmmo");
+			g_iReserveAmmo[iClient] = GetEntData(iClient, g_iOffset_Ammo[iClient] + g_iAmmoOffset[iClient]);
 			g_iNickPrimarySavedAmmo[iClient] = g_iReserveAmmo[iClient];
-			//PrintToChatAll("Saved g_iNickPrimarySavedAmmo = %d", g_iNickPrimarySavedAmmo[iClient]);
+			// PrintToChatAll("Saved g_iNickPrimarySavedAmmo = %d", g_iNickPrimarySavedAmmo[iClient]);
 			//PrintToChatAll("Saving upgrade ammo to variable");
 			if (IsValidEntity(g_iPrimarySlotID[iClient]) && HasEntProp(g_iPrimarySlotID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded")) 
 				g_iNickUpgradeAmmo[iClient] = GetEntProp(g_iPrimarySlotID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded");
@@ -254,54 +281,32 @@ CyclePlayerWeapon(iClient)
 		// case BILL:
 		// case ROCHELLE:
 		// case COACH:
-		case ELLIS:	CyclePlayerWeapon_Ellis(iClient);
-		case NICK:		//Nick
-		{
-			if (g_iPrimarySlotID[iClient] > 0 && IsValidEdict(g_iPrimarySlotID[iClient]))
-				AcceptEntityInput(g_iPrimarySlotID[iClient], "Kill");
-			
-			if (RunClientChecks(iClient) && IsPlayerAlive(iClient))
-			{
-				//PrintToChatAll("Removed current weapon via CyclePlayerWeapon");
-				decl String:strCommandWithArgs[64];
-				Format(strCommandWithArgs, sizeof(strCommandWithArgs), "give %s", ITEM_CMD_NAME[g_iStashedPrimarySlotWeaponIndex[iClient]]);
-				RunCheatCommand(iClient, "give", strCommandWithArgs);
-				PrintToChatAll("Gave %s via CyclePlayerWeapon", ITEM_CMD_NAME[g_iStashedPrimarySlotWeaponIndex[iClient]]);
-				//SetEntData(g_iPrimarySlotID[iClient], g_iOffset_Clip1, g_iNickPrimarySavedClip[iClient], true);
-				//SetEntData(iClient, g_iOffset_Ammo[iClient] + g_iAmmoOffset[iClient], g_iNickPrimarySavedAmmo[iClient]);
-				
-				// PrintToChatAll("Gave Weapon, now setting ammo/clip");
-				// SetEntData(g_iPrimarySlotID[iClient], g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot1[iClient], true);
-				// PrintToChatAll("Clip has been set");
-				// SetEntData(iClient, g_iOffset_Ammo[iClient] + g_iAmmoOffset[iClient], g_iEllisPrimarySavedAmmoSlot1[iClient]);
-				// PrintToChatAll("Ammo has been set");
-				// PrintToChatAll("Cycling to next weapon using function...");
-			}
-		}
+		case ELLIS:		CyclePlayerWeapon_Ellis(iClient);
+		case NICK:		CyclePlayerWeapon_Nick(iClient);
 		// case LOUIS:
 	}
 }
 
 fnc_SetAmmo(iClient)
 {
-	if(RunClientChecks(iClient) ==  false || IsValidEntity(g_iPrimarySlotID[iClient]) == false)
+	if(RunClientChecks(iClient) ==  false || RunEntityChecks(g_iPrimarySlotID[iClient]) == false)
 		return;
 	
 	switch(g_iChosenSurvivor[iClient])
 	{
-		case 0:		//Bill
+		case BILL:		//Bill
 		{
 		
 		}
-		case 1:		//Rochelle
+		case ROCHELLE:		//Rochelle
 		{
 		
 		}
-		case 2:		//Coach
+		case COACH:		//Coach
 		{
 		
 		}
-		case 3:		//Ellis
+		case ELLIS:		//Ellis
 		{
 			if(g_iEllisCurrentPrimarySlot[iClient] == 0)
 			{
@@ -315,162 +320,162 @@ fnc_SetAmmo(iClient)
 			}
 			//PrintToChatAll("Setting weapon ammo using functions...");
 		}
-		case 4:		//Nick
+		case NICK:		//Nick
 		{
-			//PrintToChatAll("Set ammo via fnc_SetAmmo. Clip = %d, Ammo = %d", g_iNickPrimarySavedClip[iClient], g_iNickPrimarySavedAmmo[iClient]);
+			// PrintToChatAll("Set ammo via fnc_SetAmmo. Clip = %d, Ammo = %d", g_iNickPrimarySavedClip[iClient], g_iNickPrimarySavedAmmo[iClient]);
 			SetEntData(g_iPrimarySlotID[iClient], g_iOffset_Clip1, g_iNickPrimarySavedClip[iClient], true);
 			SetEntData(iClient, g_iOffset_Ammo[iClient] + g_iAmmoOffset[iClient], g_iNickPrimarySavedAmmo[iClient]);
 		}
 	}
 }
 
-fnc_DetermineMaxClipSize(iClient)
-{
-	new String:strCurrentWeapon[32];
-	GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
-	switch(g_iChosenSurvivor[iClient])
-	{
-		case 0:		//Bill
-		{
-			if(StrEqual(strCurrentWeapon, "weapon_rifle", false) == true)
-			{
-				g_iCurrentMaxClipSize[iClient] = (50 + (g_iPromotionalLevel[iClient] * 20));
-			}
-			else if(StrEqual(strCurrentWeapon, "weapon_rifle_ak47", false) == true)
-			{
-				g_iCurrentMaxClipSize[iClient] = (40 + (g_iPromotionalLevel[iClient] * 20));
-			}
-			else if(StrEqual(strCurrentWeapon, "weapon_rifle_sg552", false) == true)
-			{
-				g_iCurrentMaxClipSize[iClient] = (50 + (g_iPromotionalLevel[iClient] * 20));
-			}
-			else if(StrEqual(strCurrentWeapon, "weapon_rifle_desert", false) == true)
-			{
-				g_iCurrentMaxClipSize[iClient] = (60 + (g_iPromotionalLevel[iClient] * 20));
-			}
-		}
-		case 1:		//Rochelle
-		{
-			if(StrEqual(strCurrentWeapon, "weapon_hunting_rifle", false) == true)
-			{
-				if(g_iSilentLevel[iClient] > 0)
-				{
-					g_iCurrentMaxClipSize[iClient] = (17 - (g_iSilentLevel[iClient] * 2));
-				}
-				else
-				{
-					g_iCurrentMaxClipSize[iClient] = 15;
-				}
-			}
-			else if(StrEqual(strCurrentWeapon, "weapon_sniper_awp", false) == true)
-			{
-				if(g_iSilentLevel[iClient] > 0)
-				{
-					g_iCurrentMaxClipSize[iClient] = 3;
-				}
-				else
-				{
-					g_iCurrentMaxClipSize[iClient] = 20;
-				}
-			}
-			else if(StrEqual(strCurrentWeapon, "weapon_sniper_scout", false) == true)
-			{
-				g_iCurrentMaxClipSize[iClient] = (20 - g_iSilentLevel[iClient]);
-			}
-			else if(StrEqual(strCurrentWeapon, "weapon_sniper_military", false) == true)
-			{
-				g_iCurrentMaxClipSize[iClient] = (30 + (g_iSilentLevel[iClient] * 6));
-			}
-		}
-		case 2:		//Coach
-		{
-			if((StrEqual(strCurrentWeapon, "weapon_pumpshotgun", false) == true) || (StrEqual(strCurrentWeapon, "weapon_shotgun_chrome", false) == true))
-			{
-				g_iCurrentMaxClipSize[iClient] = (8 + (g_iSprayLevel[iClient] * 2));
-			}
-			else if((StrEqual(strCurrentWeapon, "weapon_autoshotgun", false) == true) || (StrEqual(strCurrentWeapon, "weapon_shotgun_spas", false) == true))
-			{
-				g_iCurrentMaxClipSize[iClient] = (10 + (g_iSprayLevel[iClient] * 2));
-			}
-		}
-		case 3:		//Ellis
-		{
-			if(StrEqual(strCurrentWeapon, "weapon_rifle", false) == true)
-			{
-				g_iCurrentMaxClipSize[iClient] = (50 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
-			}
-			else if(StrEqual(strCurrentWeapon, "weapon_rifle_ak47", false) == true)
-			{
-				g_iCurrentMaxClipSize[iClient] = (40 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
-			}
-			else if(StrEqual(strCurrentWeapon, "weapon_rifle_sg552", false) == true)
-			{
-				g_iCurrentMaxClipSize[iClient] = (50 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
-			}
-			else if(StrEqual(strCurrentWeapon, "weapon_rifle_desert", false) == true)
-			{
-				g_iCurrentMaxClipSize[iClient] = (60 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
-			}
-			else if(StrEqual(strCurrentWeapon, "weapon_smg", false) == true)
-			{
-				g_iCurrentMaxClipSize[iClient] = (50 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
-			}
-			else if(StrEqual(strCurrentWeapon, "weapon_smg_mp5", false) == true)
-			{
-				g_iCurrentMaxClipSize[iClient] = (50 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
-			}
-			else if(StrEqual(strCurrentWeapon, "weapon_smg_silenced", false) == true)
-			{
-				g_iCurrentMaxClipSize[iClient] = (50 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
-			}
-			else if(StrEqual(strCurrentWeapon, "weapon_hunting_rifle", false) == true)
-			{
-				g_iCurrentMaxClipSize[iClient] = (15 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
-			}
-			else if(StrEqual(strCurrentWeapon, "weapon_sniper_military", false) == true)
-			{
-				g_iCurrentMaxClipSize[iClient] = (30 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
-			}
-			else if(StrEqual(strCurrentWeapon, "weapon_sniper_awp", false) == true)
-			{
-				g_iCurrentMaxClipSize[iClient] = (20 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
-			}
-			else if(StrEqual(strCurrentWeapon, "weapon_sniper_scout", false) == true)
-			{
-				g_iCurrentMaxClipSize[iClient] = (20 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
-			}
-		}
-		case 4:		//Nick
-		{
-			if((g_bRamboModeActive[iClient] == true) && (StrEqual(strCurrentWeapon, "weapon_rifle_m60", false) == true))
-			{
-				g_iCurrentMaxClipSize[iClient] = 250;
-			}
-			else if((g_bRamboModeActive[iClient] == false) && (StrEqual(strCurrentWeapon, "weapon_rifle_m60", false) == true))
-			{
-				g_iCurrentMaxClipSize[iClient] = 150;
-			}
-		}
-	}
-}
+// fnc_DetermineMaxClipSize(iClient)
+// {
+// 	new String:strCurrentWeapon[32];
+// 	GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
+// 	switch(g_iChosenSurvivor[iClient])
+// 	{
+// 		case 0:		//Bill
+// 		{
+// 			if(StrEqual(strCurrentWeapon, "weapon_rifle", false) == true)
+// 			{
+// 				g_iCurrentMaxClipSize[iClient] = (50 + (g_iPromotionalLevel[iClient] * 20));
+// 			}
+// 			else if(StrEqual(strCurrentWeapon, "weapon_rifle_ak47", false) == true)
+// 			{
+// 				g_iCurrentMaxClipSize[iClient] = (40 + (g_iPromotionalLevel[iClient] * 20));
+// 			}
+// 			else if(StrEqual(strCurrentWeapon, "weapon_rifle_sg552", false) == true)
+// 			{
+// 				g_iCurrentMaxClipSize[iClient] = (50 + (g_iPromotionalLevel[iClient] * 20));
+// 			}
+// 			else if(StrEqual(strCurrentWeapon, "weapon_rifle_desert", false) == true)
+// 			{
+// 				g_iCurrentMaxClipSize[iClient] = (60 + (g_iPromotionalLevel[iClient] * 20));
+// 			}
+// 		}
+// 		case 1:		//Rochelle
+// 		{
+// 			if(StrEqual(strCurrentWeapon, "weapon_hunting_rifle", false) == true)
+// 			{
+// 				if(g_iSilentLevel[iClient] > 0)
+// 				{
+// 					g_iCurrentMaxClipSize[iClient] = (17 - (g_iSilentLevel[iClient] * 2));
+// 				}
+// 				else
+// 				{
+// 					g_iCurrentMaxClipSize[iClient] = 15;
+// 				}
+// 			}
+// 			else if(StrEqual(strCurrentWeapon, "weapon_sniper_awp", false) == true)
+// 			{
+// 				if(g_iSilentLevel[iClient] > 0)
+// 				{
+// 					g_iCurrentMaxClipSize[iClient] = 3;
+// 				}
+// 				else
+// 				{
+// 					g_iCurrentMaxClipSize[iClient] = 20;
+// 				}
+// 			}
+// 			else if(StrEqual(strCurrentWeapon, "weapon_sniper_scout", false) == true)
+// 			{
+// 				g_iCurrentMaxClipSize[iClient] = (20 - g_iSilentLevel[iClient]);
+// 			}
+// 			else if(StrEqual(strCurrentWeapon, "weapon_sniper_military", false) == true)
+// 			{
+// 				g_iCurrentMaxClipSize[iClient] = (30 + (g_iSilentLevel[iClient] * 6));
+// 			}
+// 		}
+// 		case 2:		//Coach
+// 		{
+// 			if((StrEqual(strCurrentWeapon, "weapon_pumpshotgun", false) == true) || (StrEqual(strCurrentWeapon, "weapon_shotgun_chrome", false) == true))
+// 			{
+// 				g_iCurrentMaxClipSize[iClient] = (8 + (g_iSprayLevel[iClient] * 2));
+// 			}
+// 			else if((StrEqual(strCurrentWeapon, "weapon_autoshotgun", false) == true) || (StrEqual(strCurrentWeapon, "weapon_shotgun_spas", false) == true))
+// 			{
+// 				g_iCurrentMaxClipSize[iClient] = (10 + (g_iSprayLevel[iClient] * 2));
+// 			}
+// 		}
+// 		case 3:		//Ellis
+// 		{
+// 			if(StrEqual(strCurrentWeapon, "weapon_rifle", false) == true)
+// 			{
+// 				g_iCurrentMaxClipSize[iClient] = (50 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
+// 			}
+// 			else if(StrEqual(strCurrentWeapon, "weapon_rifle_ak47", false) == true)
+// 			{
+// 				g_iCurrentMaxClipSize[iClient] = (40 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
+// 			}
+// 			else if(StrEqual(strCurrentWeapon, "weapon_rifle_sg552", false) == true)
+// 			{
+// 				g_iCurrentMaxClipSize[iClient] = (50 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
+// 			}
+// 			else if(StrEqual(strCurrentWeapon, "weapon_rifle_desert", false) == true)
+// 			{
+// 				g_iCurrentMaxClipSize[iClient] = (60 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
+// 			}
+// 			else if(StrEqual(strCurrentWeapon, "weapon_smg", false) == true)
+// 			{
+// 				g_iCurrentMaxClipSize[iClient] = (50 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
+// 			}
+// 			else if(StrEqual(strCurrentWeapon, "weapon_smg_mp5", false) == true)
+// 			{
+// 				g_iCurrentMaxClipSize[iClient] = (50 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
+// 			}
+// 			else if(StrEqual(strCurrentWeapon, "weapon_smg_silenced", false) == true)
+// 			{
+// 				g_iCurrentMaxClipSize[iClient] = (50 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
+// 			}
+// 			else if(StrEqual(strCurrentWeapon, "weapon_hunting_rifle", false) == true)
+// 			{
+// 				g_iCurrentMaxClipSize[iClient] = (15 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
+// 			}
+// 			else if(StrEqual(strCurrentWeapon, "weapon_sniper_military", false) == true)
+// 			{
+// 				g_iCurrentMaxClipSize[iClient] = (30 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
+// 			}
+// 			else if(StrEqual(strCurrentWeapon, "weapon_sniper_awp", false) == true)
+// 			{
+// 				g_iCurrentMaxClipSize[iClient] = (20 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
+// 			}
+// 			else if(StrEqual(strCurrentWeapon, "weapon_sniper_scout", false) == true)
+// 			{
+// 				g_iCurrentMaxClipSize[iClient] = (20 + (g_iMetalLevel[iClient] * 4) + (g_iFireLevel[iClient] * 6));
+// 			}
+// 		}
+// 		case 4:		//Nick
+// 		{
+// 			if((g_bRamboModeActive[iClient] == true) && (StrEqual(strCurrentWeapon, "weapon_rifle_m60", false) == true))
+// 			{
+// 				g_iCurrentMaxClipSize[iClient] = 250;
+// 			}
+// 			else if((g_bRamboModeActive[iClient] == false) && (StrEqual(strCurrentWeapon, "weapon_rifle_m60", false) == true))
+// 			{
+// 				g_iCurrentMaxClipSize[iClient] = 150;
+// 			}
+// 		}
+// 	}
+// }
 
 fnc_SetAmmoUpgrade(iClient)
 {
 	switch(g_iChosenSurvivor[iClient])
 	{
-		case 0:		//Bill
+		case BILL:
 		{
 		
 		}
-		case 1:		//Rochelle
+		case ROCHELLE:
 		{
 		
 		}
-		case 2:		//Coach
+		case COACH:
 		{
 		
 		}
-		case 3:		//Ellis
+		case ELLIS:
 		{
 			//PrintToChatAll("SWITCH REACHED");
 			/*
@@ -516,13 +521,9 @@ fnc_SetAmmoUpgrade(iClient)
 					SetEntProp(g_iPrimarySlotID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded", g_iEllisUpgradeAmmoSlot2[iClient]);
 					SetEntData(g_iPrimarySlotID[iClient], g_iOffset_Clip1, g_iEllisUpgradeAmmoSlot2[iClient], true);
 				}
-				
-
-
-				//g_iEllisUpgradeAmmoSlot2[iClient] = 0;
 			}
 		}
-		case 4:		//Nick
+		case NICK:
 		{
 			if (RunClientChecks(iClient) && IsPlayerAlive(iClient))
 			{
@@ -543,8 +544,6 @@ fnc_SetAmmoUpgrade(iClient)
 				{
 					RunCheatCommand(iClient, "upgrade_add", "upgrade_add LASER_SIGHT");
 				}
-
-
 			}
 		}
 	}
@@ -607,56 +606,56 @@ fnc_SetAmmoUpgrade(iClient)
 	
 // }
 
-fnc_ClearSavedWeaponData(iClient)
-{
-	switch(g_iChosenSurvivor[iClient])
-	{
-		case BILL:
-		{
+// fnc_ClearSavedWeaponData(iClient)
+// {
+// 	switch(g_iChosenSurvivor[iClient])
+// 	{
+// 		case BILL:
+// 		{
 		
-		}
-		case ROCHELLE:
-		{
+// 		}
+// 		case ROCHELLE:
+// 		{
 		
-		}
-		case COACH:
-		{
+// 		}
+// 		case COACH:
+// 		{
 		
-		}
-		case ELLIS:
-		{
-			if(g_iEllisCurrentPrimarySlot[iClient] == 1)
-			{
-				g_iEllisPrimarySavedClipSlot0[iClient] = 0;
-				g_iEllisPrimarySavedAmmoSlot0[iClient] = 0;
-				g_iEllisUpgradeAmmoSlot1[iClient] = 0;
-				g_strEllisUpgradeTypeSlot1 = "empty";
-				g_strCurrentAmmoUpgrade = "empty";
-				g_iEllisPrimarySlot0[iClient] = ITEM_EMPTY;
-				//PrintToChatAll("g_iEllisPrimarySlot0[iClient] is now %s", g_iEllisPrimarySlot0[iClient]);
-			}
-			else if(g_iEllisCurrentPrimarySlot[iClient] == 0)
-			{
-				g_iEllisPrimarySavedClipSlot1[iClient] = 0;
-				g_iEllisPrimarySavedAmmoSlot1[iClient] = 0;
-				g_iEllisUpgradeAmmoSlot2[iClient] = 0;
-				g_strEllisUpgradeTypeSlot2 = "empty";
-				g_strCurrentAmmoUpgrade = "empty";
-				g_iEllisPrimarySlot1[iClient] = ITEM_EMPTY;
-				//PrintToChatAll("g_iEllisPrimarySlot1[iClient] is now %s", g_iEllisPrimarySlot1[iClient]);
-			}
-		}
-		case NICK:
-		{
-			g_iNickPrimarySavedClip[iClient] = 0;
-			g_iNickPrimarySavedAmmo[iClient] = 0;
-			g_iNickUpgradeAmmo[iClient] = 0;
-			g_strNickUpgradeType = "empty";
-			g_strCurrentAmmoUpgrade = "empty";
-			g_iStashedPrimarySlotWeaponIndex[iClient] = ITEM_EMPTY;
-		}
-	}
-}
+// 		}
+// 		case ELLIS:
+// 		{
+// 			if(g_iEllisCurrentPrimarySlot[iClient] == 1)
+// 			{
+// 				g_iEllisPrimarySavedClipSlot0[iClient] = 0;
+// 				g_iEllisPrimarySavedAmmoSlot0[iClient] = 0;
+// 				g_iEllisUpgradeAmmoSlot1[iClient] = 0;
+// 				g_strEllisUpgradeTypeSlot1 = "empty";
+// 				g_strCurrentAmmoUpgrade = "empty";
+// 				g_iEllisPrimarySlot0[iClient] = ITEM_EMPTY;
+// 				//PrintToChatAll("g_iEllisPrimarySlot0[iClient] is now %s", g_iEllisPrimarySlot0[iClient]);
+// 			}
+// 			else if(g_iEllisCurrentPrimarySlot[iClient] == 0)
+// 			{
+// 				g_iEllisPrimarySavedClipSlot1[iClient] = 0;
+// 				g_iEllisPrimarySavedAmmoSlot1[iClient] = 0;
+// 				g_iEllisUpgradeAmmoSlot2[iClient] = 0;
+// 				g_strEllisUpgradeTypeSlot2 = "empty";
+// 				g_strCurrentAmmoUpgrade = "empty";
+// 				g_iEllisPrimarySlot1[iClient] = ITEM_EMPTY;
+// 				//PrintToChatAll("g_iEllisPrimarySlot1[iClient] is now %s", g_iEllisPrimarySlot1[iClient]);
+// 			}
+// 		}
+// 		case NICK:
+// 		{
+// 			g_iNickPrimarySavedClip[iClient] = 0;
+// 			g_iNickPrimarySavedAmmo[iClient] = 0;
+// 			g_iNickUpgradeAmmo[iClient] = 0;
+// 			g_strNickUpgradeType = "empty";
+// 			g_strCurrentAmmoUpgrade = "empty";
+// 			g_iStashedPrimarySlotWeaponIndex[iClient] = ITEM_EMPTY;
+// 		}
+// 	}
+// }
 
 fnc_ClearAllWeaponData(iClient)
 {
@@ -697,6 +696,9 @@ fnc_ClearAllWeaponData(iClient)
 			g_strNickSecondarySlot1 = "empty";
 			g_strNickSecondarySlot2 = "empty";
 			g_iNickCurrentSecondarySlot[iClient] = ITEM_EMPTY;
+			g_iStashedPrimarySlotWeaponIndex[iClient] = ITEM_EMPTY;
+			g_iNickPrimarySavedClip[iClient] = 0;
+			g_iNickPrimarySavedAmmo[iClient] = 0;
 		}
 	}
 }

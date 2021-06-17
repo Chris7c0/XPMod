@@ -24,7 +24,7 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 		case ELLIS:		//Ellis
 		{
 			StoreCurrentPrimaryWeapon(iClient);
-			fnc_SaveAmmo(iClient);
+			StoreCurrentPrimaryWeaponAmmo(iClient);
 		}
 		case NICK:		//Nick
 		{

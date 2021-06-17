@@ -52,24 +52,24 @@ void Bind1Press_Nick(iClient)
 							case 4: //Rambo
 							{
 								StoreCurrentPrimaryWeapon(iClient);
-								fnc_SaveAmmo(iClient);
+								StoreCurrentPrimaryWeaponAmmo(iClient);
 								
-								if (g_iPrimarySlotID[iClient] > 0 && IsValidEntity(g_iPrimarySlotID[iClient]))
+								if (RunEntityChecks(g_iPrimarySlotID[iClient]))
 									AcceptEntityInput(g_iPrimarySlotID[iClient], "Kill");
-								
+
 								g_bRamboModeActive[iClient] = true;
-
-								PrintHintText(iClient,"Rolled a 4\nAAAAAAAAAADDDRRRIIAAAAAAAAAAN!");
-								PrintToChatAll("\x03[XPMod] \x05%N has become RAMBO!!!", iClient);
-
 								RunCheatCommand(iClient, "give", "give rifle_m60");
+								// Store the rambo weapon id to give infinite ammo and destroy later
+								g_iRamboWeaponID[iClient] = GetPlayerWeaponSlot(iClient, 0);
+								// Update the ammo to infinite (must be done next game frame)
+								g_bSetWeaponAmmoOnNextGameFrame[iClient] = true;
 
-								//g_iRamboWeaponID[iClient] = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-								StoreCurrentPrimaryWeapon(iClient);
-								fnc_DetermineMaxClipSize(iClient);
 								RunCheatCommand(iClient, "upgrade_add", "upgrade_add LASER_SIGHT");
 								RunCheatCommand(iClient, "upgrade_add", "upgrade_add EXPLOSIVE_AMMO");
 								CreateTimer(30.0, TimerStopRambo, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
+								PrintHintText(iClient,"Rolled a 4\nAAAAAAAAAADDDRRRIIAAAAAAAAAAN!");
+								PrintToChatAll("\x03[XPMod] \x05%N has become RAMBO!!!", iClient);
 
 							}
 							case 5: //Crack Out on drugs

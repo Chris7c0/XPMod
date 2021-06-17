@@ -17,6 +17,11 @@ Action:TestFunction1(iClient, args)
 	// PrintToChatAll("		+ g_iEllisCurrentPrimarySlot %i", g_iEllisCurrentPrimarySlot[iClient])
 	// PrintToChatAll("		+ slot0 %s\n		+ slot1 %s", ITEM_NAME[g_iEllisPrimarySlot0[iClient]], ITEM_NAME[g_iEllisPrimarySlot1[iClient]]);
 
+	// PrintToChatAll("		+ g_iStashedPrimarySlotWeaponIndex[iClient] %s", ITEM_CMD_NAME[g_iStashedPrimarySlotWeaponIndex[iClient]]);
+	// PrintToChatAll("		+ g_iNickPrimarySavedClip = %d", g_iNickPrimarySavedClip[iClient]);
+	// PrintToChatAll("		+ g_iNickPrimarySavedAmmo = %d", g_iNickPrimarySavedAmmo[iClient]);
+
+
 	// char strEquipmentItem[32];
 	// int iGrenadeSlotItemID = GetPlayerWeaponSlot(iClient, 2);
 	// PrintToChatAll("%i", iGrenadeSlotItemID);

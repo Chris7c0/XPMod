@@ -720,7 +720,7 @@ Action:CreateOverlay(iClient)
 	
 // 	/*
 // 	StoreCurrentPrimaryWeapon(iClient);
-// 	fnc_SaveAmmo(iClient);
+// 	StoreCurrentPrimaryWeaponAmmo(iClient);
 // 	CyclePlayerWeapon(iClient);
 // 	fnc_SetAmmo(iClient);
 // 	*/

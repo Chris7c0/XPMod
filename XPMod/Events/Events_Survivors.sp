@@ -32,7 +32,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 				GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 				if((StrContains(strCurrentWeapon, "rifle", false) != -1) || (StrContains(strCurrentWeapon, "smg", false) != -1) || (StrContains(strCurrentWeapon, "shotgun", false) != -1) || (StrContains(strCurrentWeapon, "launcher", false) != -1) || (StrContains(strCurrentWeapon, "sniper", false) != -1))
 				{
-					fnc_SaveAmmo(iClient);
+					StoreCurrentPrimaryWeaponAmmo(iClient);
 				}
 			}
 			new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
@@ -56,7 +56,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 						//StoreCurrentPrimaryWeapon(iClient);
 						if((StrContains(strCurrentWeapon, "rifle", false) != -1) || (StrContains(strCurrentWeapon, "smg", false) != -1) || (StrContains(strCurrentWeapon, "shotgun", false) != -1) || (StrContains(strCurrentWeapon, "launcher", false) != -1) || (StrContains(strCurrentWeapon, "sniper", false) != -1))
 						{
-							fnc_SaveAmmo(iClient);
+							StoreCurrentPrimaryWeaponAmmo(iClient);
 							CyclePlayerWeapon(iClient);
 							//fnc_SetAmmo(iClient);
 						}
@@ -68,7 +68,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 						//StoreCurrentPrimaryWeapon(iClient);
 						if((StrContains(strCurrentWeapon, "rifle", false) != -1) || (StrContains(strCurrentWeapon, "smg", false) != -1) || (StrContains(strCurrentWeapon, "shotgun", false) != -1) || (StrContains(strCurrentWeapon, "launcher", false) != -1) || (StrContains(strCurrentWeapon, "sniper", false) != -1))
 						{
-							fnc_SaveAmmo(iClient);
+							StoreCurrentPrimaryWeaponAmmo(iClient);
 							CyclePlayerWeapon(iClient);
 							//fnc_SetAmmo(iClient);
 						}
@@ -78,15 +78,31 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 		}
 		case 4:		//Nick Firing
 		{
-			StoreCurrentPrimaryWeapon(iClient);
 			new String:strCurrentWeapon[32];
 			GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 			
-			if((g_bRamboModeActive[iClient] == true) && (StrEqual(strCurrentWeapon, "weapon_rifle_m60", false) == true))
+			// Handle Rambo Mode
+			if(g_bRamboModeActive[iClient] == true)
 			{
-				//PrintToChatAll("Nick is firing with m60 and rambo mode");
-				if (IsValidEntity(g_iPrimarySlotID[iClient]) && HasEntProp(g_iPrimarySlotID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded"))
-					SetEntProp(g_iPrimarySlotID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded", 251);
+				new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+				if (RunEntityChecks(ActiveWeaponID) == false)
+					return Plugin_Continue;
+
+				// Check if the currently active weapon is the rambo weapon
+				if (ActiveWeaponID == g_iRamboWeaponID[iClient])
+				{
+					//PrintToChatAll("Nick is firing with m60 and rambo mode");
+					if (IsValidEntity(g_iRamboWeaponID[iClient]) && HasEntProp(g_iRamboWeaponID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded"))
+					{
+						SetEntData(g_iRamboWeaponID[iClient], g_iOffset_Clip1, 250, true);
+						SetEntProp(g_iRamboWeaponID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded", 251);
+					}
+				}
+				// Otherwise, store the ammo of the current weapon if its not rambo
+				else
+				{
+					StoreCurrentPrimaryWeaponAmmo(iClient);
+				}
 			}
 			//g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 0);
 			
@@ -1480,7 +1496,7 @@ Action:Event_ReceiveUpgrade(Handle:hEvent, String:Event_name[], bool:dontBroadca
 	// }
 	// g_strCheckAmmoUpgrade = strUpgrade;
 	// // //StoreCurrentPrimaryWeapon(iClient);
-	// // //fnc_SaveAmmo(iClient);
+	// // //StoreCurrentPrimaryWeaponAmmo(iClient);
 	// // fnc_DetermineMaxClipSize(iClient);
 	// // //fnc_SetAmmoUpgrade(iClient);
 

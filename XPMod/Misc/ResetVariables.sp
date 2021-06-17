@@ -107,6 +107,7 @@ ResetVariablesForMap(iClient)
 	//Nick 
 	g_bNickIsGettingBeatenUp[iClient] = false;
 	g_iNickDesperateMeasuresStack = 0;
+	g_iRamboWeaponID[iClient] = -1;
 
 	//Louis
 	g_bLouisTeleportCoolingDown[iClient] = false;

@@ -135,6 +135,7 @@ bool RunCheatCommand(int iClient, const char [] strCommandName, const char [] st
 void HandleCheatCommandTasks(int iClient, const char [] strCommandWithArgs)
 {
 	HandleCheatCommandTasks_Ellis(iClient, strCommandWithArgs);
+	HandleCheatCommandTasks_Nick(iClient);
 	HandleCheatCommandTasks_Louis(iClient, strCommandWithArgs);
 }
 

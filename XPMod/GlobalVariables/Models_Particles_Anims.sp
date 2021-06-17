@@ -226,7 +226,7 @@ new String:UNCOMMON_INFECTED_MODELS[][] =   {"models/infected/common_male_jimmy.
 //                                         "Incendiary Ammo",
 //                                         "Explosive Ammo",
 //                                         "Pain Pills",
-                                        "Adrenaline Shot"}
+//                                         "Adrenaline Shot"}
 
 new String:ITEM_CLASS_NAME[][] =        {"empty",
                                         "weapon_smg",

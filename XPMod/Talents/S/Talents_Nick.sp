@@ -65,6 +65,30 @@ TalentsLoad_Nick(iClient)
 
 OnGameFrame_Nick(iClient)
 {
+	// For Nick's Rambo weapon return, set his ammo and clip after switching back
+	if (g_bSetWeaponAmmoOnNextGameFrame[iClient] == true)
+	{
+		g_bSetWeaponAmmoOnNextGameFrame[iClient] = false;
+		// If rambo, then set the rambo weapon to infinite
+		if (g_bRamboModeActive[iClient])
+		{
+			int iCurrentPrimaryID = GetPlayerWeaponSlot(iClient, 0);
+			if (RunEntityChecks(iCurrentPrimaryID) && 
+				iCurrentPrimaryID == g_iRamboWeaponID[iClient] &&
+				HasEntProp(g_iRamboWeaponID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded"))
+			{
+				SetEntData(g_iRamboWeaponID[iClient], g_iOffset_Clip1, 250, true);
+				SetEntProp(g_iRamboWeaponID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded", 250);
+			}
+				
+		}
+		// Otherwise just give the stored ammo
+		{
+			fnc_SetAmmo(iClient);
+			fnc_SetAmmoUpgrade(iClient);
+		}
+	}
+
 	if(g_iNicksRamboWeaponID[iClient] > 0)
 	{
 		new wID = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
@@ -615,6 +639,237 @@ EventsDeath_VictimNick(Handle:hEvent, iAttacker, iVictim)
 			}
 		}
 	}
+}
+
+
+void HandleCheatCommandTasks_Nick(int iClient)
+{
+	if (g_iChosenSurvivor[iClient] != NICK || g_bTalentsConfirmed[iClient] == false)
+		return;
+
+	// Weapon Storage for Rambo weapon return
+	StoreCurrentPrimaryWeapon(iClient);
+	StoreCurrentPrimaryWeaponAmmo(iClient);
+}
+
+
+void EventsPlayerUse_Nick(int iClient, int iTargetID)
+{
+	if (g_iChosenSurvivor[iClient] != NICK || g_bTalentsConfirmed[iClient] == false)
+		return;
+
+	SuppressNeverUsedWarning(iTargetID);
+
+	// Weapon Storage for Rambo weapon return
+	StoreCurrentPrimaryWeapon(iClient);
+	StoreCurrentPrimaryWeaponAmmo(iClient);
+}
+
+void EventsItemPickUp_Nick(int iClient, const char[] strWeaponClass)
+{
+	if (g_iChosenSurvivor[iClient] != NICK || g_bTalentsConfirmed[iClient] == false)
+		return;
+
+	// PrintToChat(iClient, "NICK ITEM PICKUP %s", strWeaponClass);
+
+	// if(g_bRamboModeActive[iClient] == true)
+	// {
+	// 	//PrintToChatAll("Picked up weapon with rambo mode active, running StoreCurrentPrimaryWeapon");
+	// 	StoreCurrentPrimaryWeapon(iClient);
+	// 	new String:strCurrentWeapon[32];
+	// 	GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
+	// 	if(StrEqual(strCurrentWeapon, "weapon_rifle_m60", false) == false)
+	// 	{
+	// 		//PrintToChatAll("StoreCurrentPrimaryWeapon showed the primary weapon is not the m60");
+	// 		fnc_SetAmmo(iClient);
+	// 		fnc_SetAmmoUpgrade(iClient);
+	// 		//PrintToChatAll("Ammo was set via weapon pickup");
+	// 		// fnc_ClearSavedWeaponData(iClient);
+	// 		g_bRamboModeActive[iClient] = false;
+	// 	}
+	// }
+
+	//PrintToChat(iClient, "%s", strWeaponClass);
+	if(g_iMagnumLevel[iClient]>0 || g_iRiskyLevel[iClient]>0)	//gives 68 with magnum pickup on loadout spawn
+	{
+		if (StrContains(strWeaponClass,"magnum",false) != -1)
+		{
+			new iEntid = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
+			if(iEntid < 1)
+				return;
+			if(IsValidEntity(iEntid)==false)
+				return;
+			SetEntData(iEntid, g_iOffset_Clip1, 3, true);
+		}
+		else if(StrContains(strWeaponClass,"pistol",false) != -1)
+		{
+			new iEntid = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
+			if(iEntid < 1)
+				return;
+			if(IsValidEntity(iEntid)==false)
+				return;
+			new clip = GetEntProp(iEntid,Prop_Data,"m_iClip1");
+			if(clip == 15)
+			{
+				SetEntData(iEntid, g_iOffset_Clip1, clip + (g_iRiskyLevel[iClient] * 6), true);
+			}
+			else if(clip == 30)
+			{
+				SetEntData(iEntid, g_iOffset_Clip1, clip + (g_iRiskyLevel[iClient] * 12), true);
+			}
+		}
+	}
+	/*
+	if(g_iNicksRamboWeaponID[iClient] > 0)
+	{
+		if(StrContains(strWeaponClass,"m60",false) != -1)
+		{
+			//Set ammo to 250
+			new wID = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
+			if(wID < 1)
+				return Plugin_Continue;
+			if(IsValidEntity(wID)==false)
+				return Plugin_Continue;
+			if(IsValidEntity(wID))
+				SetEntData(wID, g_iOffset_Clip1, 250, true);
+		}
+	}
+	*/
+	if(g_iRiskyLevel[iClient] == 5 && g_bTalentsConfirmed[iClient] == true)
+	{
+		
+		// PrintToChatAll("ClipSlot1 on pickup w slot undetermined = %d", g_iNickSecondarySavedClipSlot1[iClient]);
+		// new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
+		// PrintToChatAll("Current Clip Ammo on Pickup = %d", CurrentClipAmmo);
+		// PrintToChatAll("Current strWeaponClass on Pickup = %s", strWeaponClass);
+		
+		if((StrContains(strWeaponClass,"pistol",false) != -1) || (StrContains(strWeaponClass,"melee",false) != -1) || (StrContains(strWeaponClass,"chainsaw",false) != -1))
+		{
+			if(g_bIsNickInSecondaryCycle[iClient] == true)
+			{
+				if(g_iNickCurrentSecondarySlot[iClient] == 0)
+				{
+					if(StrEqual(strWeaponClass, "pistol_magnum", false) == true)
+					{
+						new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+						if (RunEntityChecks(ActiveWeaponID) == false)
+							return;
+						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iNickSecondarySavedClipSlot1[iClient], true);
+						//PrintToChatAll("Setting slot 1 clip ammo to %d", g_iNickSecondarySavedClipSlot1[iClient]);
+					}
+				}
+				else if((g_iNickCurrentSecondarySlot[iClient] == 1) && (StrEqual(strWeaponClass, "pistol", false) == true))
+				{
+					CreateTimer(0.1, TimerNickDualClipSize, iClient, TIMER_FLAG_NO_MAPCHANGE);
+					//PrintToChatAll("Setting slot 2 clip ammo to %d", g_iNickSecondarySavedClipSlot2[iClient]);
+					//PrintToChatAll("ClipSlot1 on pickup w slot 1 = %d", g_iNickSecondarySavedClipSlot1[iClient]);
+				}
+				g_bIsNickInSecondaryCycle[iClient] = false;
+			}
+			else if(g_bIsNickInSecondaryCycle[iClient] == false)
+			{
+				if(((StrContains(strWeaponClass,"melee",false) != -1) || (StrContains(strWeaponClass,"chainsaw",false) != -1)) && (StrEqual(g_strNickSecondarySlot1, "weapon_pistol_magnum", false) == true) && (g_iNickCurrentSecondarySlot[iClient] == 1))
+				{
+					//PrintToChatAll("Picked up melee with magnum saved in slot 1");
+					decl Float:wepvorigin[3], Float:vangles[3], Float:vdir[3];
+					GetClientEyeAngles(iClient, vangles);
+					GetAngleVectors(vangles, vdir, NULL_VECTOR, NULL_VECTOR);
+					vangles[0] = 0.0;
+					vangles[2] = 0.0;
+					GetClientAbsOrigin(iClient, wepvorigin);
+					wepvorigin[0]+=(vdir[0] * 30.0);
+					wepvorigin[1]+=(vdir[1] * 30.0);
+					wepvorigin[2]+=(vdir[2] * 50.0);
+					new weapon = CreateEntityByName("weapon_pistol_magnum");
+					DispatchKeyValue(weapon, "ammo", "200");
+					DispatchSpawn(weapon);
+					TeleportEntity(weapon, wepvorigin, vangles, NULL_VECTOR);
+				}
+				//PrintToChatAll("Cycle is false");
+				g_iNickCurrentSecondarySlot[iClient] = 0;
+				//PrintToChatAll("Cycle false, strWeaponClass = %s", strWeaponClass);
+				//PrintToChatAll("Cycle false, g_strNickSecondarySlot1 = %s", g_strNickSecondarySlot1);
+				
+				// if(StrContains(strWeaponClass, "chainsaw", false) != -1)
+				// {
+				// 	SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iNickSecondarySavedClipSlot1[iClient], true);
+				// 	PrintToChatAll("Setting chainsaw clip ammo to %d", g_iNickSecondarySavedClipSlot1[iClient]);
+				// }
+				
+				if((StrEqual(strWeaponClass, "pistol_magnum", false) == true) && (StrEqual(g_strNickSecondarySlot1, "weapon_pistol_magnum", false) == true))
+				{
+					//PrintToChatAll("strWeaponClass and slot 1 are both magnum");
+
+					RunCheatCommand(iClient, "give", "give pistol_magnum");
+				}
+				if(StrContains(g_strNickSecondarySlot1, "empty", false) != -1)
+				{
+					//PrintToChatAll("Slot 1 is empty");
+					//g_iNickCurrentSecondarySlot[iClient] = 0;
+					if(StrEqual(strWeaponClass, "pistol_magnum", false) == true)
+					{
+						g_strNickSecondarySlot1 = "weapon_pistol_magnum";
+						//PrintToChatAll("Slot 1 = %s", g_strNickSecondarySlot1);
+					}
+					else if(StrEqual(strWeaponClass, "pistol", false) == true)
+					{
+						g_strNickSecondarySlot1 = "weapon_pistol";
+					}
+					else if(StrContains(strWeaponClass,"melee",false) != -1)
+					{
+						g_strNickSecondarySlot1 = "weapon_melee";
+					}
+					else if(StrContains(strWeaponClass,"chainsaw",false) != -1)
+					{
+						g_strNickSecondarySlot1 = "weapon_chainsaw";
+					}
+				}
+			}
+			if(g_iNickCurrentSecondarySlot[iClient] == 0)
+			{
+				if(StrEqual(strWeaponClass, "pistol", false) == true)
+				{
+					g_iNickCurrentSecondarySlot[iClient] = 1;
+
+					RunCheatCommand(iClient, "give", "give pistol");
+					RunCheatCommand(iClient, "give", "give pistol");
+					CreateTimer(0.1, TimerNickDualClipSize, iClient, TIMER_FLAG_NO_MAPCHANGE);
+				}
+			}
+		}
+	}
+
+	return;
+}
+
+CyclePlayerWeapon_Nick(int iClient)
+{
+	if (RunClientChecks(iClient) && IsPlayerAlive(iClient))
+	{
+		//PrintToChatAll("Removed current weapon via CyclePlayerWeapon");
+		decl String:strCommandWithArgs[64];
+		Format(strCommandWithArgs, sizeof(strCommandWithArgs), "give %s", ITEM_CMD_NAME[g_iStashedPrimarySlotWeaponIndex[iClient]]);
+		RunCheatCommand(iClient, "give", strCommandWithArgs);
+		StoreCurrentPrimaryWeapon(iClient);
+		// PrintToChatAll("Gave %s via CyclePlayerWeapon", ITEM_CMD_NAME[g_iStashedPrimarySlotWeaponIndex[iClient]]);
+		//SetEntData(g_iPrimarySlotID[iClient], g_iOffset_Clip1, g_iNickPrimarySavedClip[iClient], true);
+		//SetEntData(iClient, g_iOffset_Ammo[iClient] + g_iAmmoOffset[iClient], g_iNickPrimarySavedAmmo[iClient]);
+		
+		// PrintToChatAll("Gave Weapon, now setting ammo/clip");
+		// SetEntData(g_iPrimarySlotID[iClient], g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot1[iClient], true);
+		// PrintToChatAll("Clip has been set");
+		// SetEntData(iClient, g_iOffset_Ammo[iClient] + g_iAmmoOffset[iClient], g_iEllisPrimarySavedAmmoSlot1[iClient]);
+		// PrintToChatAll("Ammo has been set");
+		// PrintToChatAll("Cycling to next weapon using function...");
+	}
+
+	// Destroy their rambo weapon
+	if (RunEntityChecks(g_iRamboWeaponID[iClient]) && 
+		FindWeaponItemIndexOfWeaponID(iClient, g_iRamboWeaponID[iClient]) == ITEM_M60)
+		AcceptEntityInput(g_iRamboWeaponID[iClient], "Kill");
+
+	// Reset the value of the RamboWeaponID to -1
+	g_iRamboWeaponID[iClient] = -1;
 }
 
 

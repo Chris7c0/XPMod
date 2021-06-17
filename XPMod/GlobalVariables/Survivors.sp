@@ -51,7 +51,7 @@ new g_iActiveWeaponID[MAXPLAYERS + 1];
 new g_iStashedPrimarySlotWeaponIndex[MAXPLAYERS + 1];
 new g_iCurrentClipAmmo[MAXPLAYERS + 1];
 new g_iOffset_Ammo[MAXPLAYERS + 1];
-new g_iCurrentMaxClipSize[MAXPLAYERS + 1];
+// new g_iCurrentMaxClipSize[MAXPLAYERS + 1];
 new String:g_strCurrentAmmoUpgrade[32];
 //new String:g_strCheckAmmoUpgrade[32];
 new g_iKitsUsed = 0;
@@ -243,7 +243,7 @@ new bool:g_bRamboModeActive[MAXPLAYERS + 1];
 //new g_iNickDesperateMeasuresDeathStack;
 //new g_iNickDesperateMeasuresIncapStack;
 new g_iNickDesperateMeasuresStack;
-//new g_iRamboWeaponID[MAXPLAYERS + 1];
+new g_iRamboWeaponID[MAXPLAYERS + 1];
 //g_bIsNickInSecondaryCycle
 //g_bCanNickZoomKit
 //Drug Effects

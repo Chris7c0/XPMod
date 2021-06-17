@@ -8,6 +8,9 @@ Action:TimerStopRambo(Handle:timer, any:iClient)
 	//fnc_DetermineMaxClipSize(iClient);
 	CyclePlayerWeapon(iClient);
 	g_bRamboModeActive[iClient] = false;
+	g_bSetWeaponAmmoOnNextGameFrame[iClient] = true;
+	// StoreCurrentPrimaryWeapon(iClient);
+
 	//StoreCurrentPrimaryWeapon(iClient);
 	//fnc_SetAmmo(iClient);
 	//fnc_SetAmmoUpgrade(iClient);

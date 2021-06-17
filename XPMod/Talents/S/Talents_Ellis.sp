@@ -172,7 +172,7 @@ OGFSurvivorReload_Ellis(iClient, const char[] currentweapon, ActiveWeaponID, Cur
 		GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 		if((StrContains(strCurrentWeapon, "rifle", false) != -1) || (StrContains(strCurrentWeapon, "smg", false) != -1) || (StrContains(strCurrentWeapon, "shotgun", false) != -1) || (StrContains(strCurrentWeapon, "launcher", false) != -1) || (StrContains(strCurrentWeapon, "sniper", false) != -1))
 		{
-			fnc_SaveAmmo(iClient);
+			StoreCurrentPrimaryWeaponAmmo(iClient);
 		}
 	}
 	if((((StrEqual(currentweapon, "weapon_rifle", false) == true) || (StrEqual(currentweapon, "weapon_rifle_sg552", false) == true)) && (CurrentClipAmmo == 50)) || ((StrEqual(currentweapon, "weapon_rifle_ak47", false) == true) && (CurrentClipAmmo == 40)) || ((StrEqual(currentweapon, "weapon_rifle_desert", false) == true) && (CurrentClipAmmo == 60)))
@@ -671,7 +671,7 @@ HandleWeaponPickUpForWeaponCycling(iClient)
 		{
 			g_iEllisCurrentPrimarySlot[iClient] = 0;
 			StoreCurrentPrimaryWeapon(iClient);
-			fnc_SaveAmmo(iClient);
+			StoreCurrentPrimaryWeaponAmmo(iClient);
 			
 			// PrintToChatAll("pick up: g_iEllisPrimarySlot0[iClient] = %s\n%s", ITEM_NAME[g_iEllisPrimarySlot0[iClient]], ITEM_NAME[g_iEllisPrimarySlot1[iClient]]);
 		}
@@ -679,7 +679,7 @@ HandleWeaponPickUpForWeaponCycling(iClient)
 		{
 			g_iEllisCurrentPrimarySlot[iClient] = 1;
 			StoreCurrentPrimaryWeapon(iClient);
-			fnc_SaveAmmo(iClient);
+			StoreCurrentPrimaryWeaponAmmo(iClient);
 
 			// PrintToChatAll("pick_up g_iEllisPrimarySlot1[iClient] = %s\n%s", ITEM_NAME[g_iEllisPrimarySlot1[iClient]], ITEM_NAME[g_iEllisPrimarySlot0[iClient]]);
 		}
@@ -709,7 +709,7 @@ HandleWeaponPickUpForWeaponCycling(iClient)
 			// Store the current weapon
 			StoreCurrentPrimaryWeapon(iClient);
 			// Dont call save ammo here, it will overwrite with the newly picked up weapon
-			//fnc_SaveAmmo(iClient);
+			//StoreCurrentPrimaryWeaponAmmo(iClient);
 		}
 
 		// PrintToChatAll("Finished pickup for weapon cycle");
@@ -760,7 +760,7 @@ HandleEllisSwitchToStashedPrimaryWeapon(iClient)
 	//new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
 	//PrintToChatAll("CurrentClipAmmo %d", CurrentClipAmmo);
 	StoreCurrentPrimaryWeapon(iClient);
-	fnc_SaveAmmo(iClient);
+	StoreCurrentPrimaryWeaponAmmo(iClient);
 	CyclePlayerWeapon(iClient);
 }
 
