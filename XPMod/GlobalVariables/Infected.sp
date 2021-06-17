@@ -174,7 +174,7 @@ new g_iJockeysVictim[MAXPLAYERS + 1];
 new bool:g_bCanJockeyJump[MAXPLAYERS + 1] = false;
 new Float:g_fJockeyRideSpeed[MAXPLAYERS + 1] = 1.0;
 new Float:g_fJockeyRideSpeedVanishingActBoost[MAXPLAYERS + 1] = 0.0;
-#define JOCKEY_PISS_SPAWN_TANK_CHANCE       5 //%
+#define JOCKEY_PISS_SPAWN_TANK_CHANCE       10 //%
 
 
 // Charger
@@ -202,7 +202,7 @@ new Float:g_fTankStartingHealthMultiplier[MAXPLAYERS + 1];
 // 90 would require a team of 3 (3x30) before getting max tank health.
 #define TANK_STARTING_HEALTH_REQUIRED_TEAM_LEVEL_FOR_MAX    60
 new bool:g_bTankStartingHealthXPModSpawn;
-#define TANK_STARTING_HEALTH_MULTIPLIER_XPMOD_SPAWN         0.40
+#define TANK_STARTING_HEALTH_MULTIPLIER_XPMOD_SPAWN         0.33
 // The amount of HP loss before a XPMod tank type is automatically selected for the player
 #define TANK_AUTOMATIC_SELECT_HP_LOSS   1000
 #define TANK_AUTOMATIC_SELECT_TYPE      TANK_FIRE
