@@ -12,6 +12,8 @@ Action:TestFunction1(iClient, args)
 	GetCmdArg(1, str1, sizeof(str1));
 	GetCmdArg(2, str2, sizeof(str2));
 
+	// PrintToChat(iClient, "players down = %i", GetIncapOrDeadSurvivorCount());
+
 	// new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 	// PrintToChatAll("	ActiveWeaponID = %i", ActiveWeaponID);
 	// PrintToChatAll("		+ g_iEllisCurrentPrimarySlot %i", g_iEllisCurrentPrimarySlot[iClient])

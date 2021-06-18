@@ -90,10 +90,6 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 
 Event_DeathResetAllVariables(iAttacker, iVictim)
 {
-	if(g_bIsClientDown[iVictim] == true)
-	{
-		g_bWasClientDownOnDeath[iVictim] = true;
-	}
 	g_bIsClientDown[iVictim] = false;
 	clienthanging[iVictim] = false;
 

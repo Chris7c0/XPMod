@@ -1353,8 +1353,7 @@ Action:CreateOverlay(iClient)
 // 	//SetCommandFlags("", cvarCheatsflags & ~FCVAR_CHEAT);
 // 	//FakeClientCommand(iClient, "boom");
 // 	//SetCommandFlags("boom", boomflags);
-	
-// 	//PrintToChatAll("\x03Desperatestack = %d", g_iNickDesperateMeasuresStack);
+
 // 	//VGUI
 // 	//WriteParticle(iClient, "loadoutmenu_top", 0.0, 20.0);
 	

@@ -622,106 +622,38 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 
 Action:Event_ReviveSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 {
-	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
-	new target = GetClientOfUserId(GetEventInt(hEvent, "subject"));
-
-	DebugLog(DEBUG_MODE_VERBOSE, "Event_ReviveSuccess");
-
-	g_bIsClientDown[target] = false;
-	clienthanging[target] = false;
-	EndSelfRevive(target);
-
-	if(RunClientChecks(target))
-		return Plugin_Continue;
-	SetClientSpeed(target);
-	SetClientRenderAndGlowColor(target);
-	/*
-	if(g_iOverLevel[target] > 0)
-	{
-		new iCurrentHealth = GetEntProp(target,Prop_Data,"m_iHealth");
-		new iMaxHealth = GetEntProp(target,Prop_Data,"m_iMaxHealth");
-		//new Float:fTempHealth = GetEntDataFloat(target, g_iOffset_HealthBuffer);
-		//if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
-		if(iCurrentHealth < (iMaxHealth - 20.0))
-		{
-			//g_fEllisOverSpeed[target] = 0.0;
-			SetEntDataFloat(target , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[target] + g_fEllisBringSpeed[target] + g_fEllisOverSpeed[target]), true);
-			//DeleteCode
-			//PrintToChatAll("Revive success, now setting g_fEllisOverSpeed");
-			//PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[target]);
-			//PrintToChatAll("g_fEllisBringSpeed = %f", g_fEllisBringSpeed[target]);
-			//PrintToChatAll("g_fEllisOverSpeed = %f", g_fEllisOverSpeed[target]);
-		}
-		//else if(float(iCurrentHealth) + fTempHealth > (float(iMaxHealth) - 20.0))
-		if(iCurrentHealth >= (iMaxHealth - 20.0))
-		{
-			g_fEllisOverSpeed[target] = (g_iOverLevel[target] * 0.02);
-			SetEntDataFloat(target , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[target] + g_fEllisBringSpeed[target] + g_fEllisOverSpeed[target]), true);
-		}
-	}
-	*/
-	/*
-	if(g_iNickDesperateMeasuresStack>0)
-	{
-		decl i;
-		if(g_iNickDesperateMeasuresStack > 0)	//Dont allow desperate stack to go over 3 times
-		{
-			g_iNickDesperateMeasuresStack--;
-			for(i=1;i<=MaxClients;i++)		//Check all the clients to see if they have despearate level up(Nick)
-			{
-				if(g_iDesperateLevel[i]>0)
-				{
-					if(RunClientChecks(i))
-					{
-						if(!IsFakeClient(i))
-						{
-							if(g_iClientTeam[i]==TEAM_SURVIVORS)
-							{
-								SetEntDataFloat(i , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0 + (float(g_iMagnumLevel[i]) * 0.03) + (float(g_iNickDesperateMeasuresStack) * float(g_iDesperateLevel[i]) * 0.02), true);
-								PrintHintText(i, "A teammate has been revived, your senses return to a weaker state.");
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	*/
-	//g_iNickDesperateMeasuresStack++;
-	if(g_iNickDesperateMeasuresStack > 3)
-	{
-		g_iNickDesperateMeasuresStack--;
-	}
-	else
-	{
-		decl i;
-		for(i=1;i<=MaxClients;i++)
-		{
-			if (g_iChosenSurvivor[i] == NICK &&
-				g_iDesperateLevel[i] > 0 &&
-				RunClientChecks(i) && 
-				g_iClientTeam[i]==TEAM_SURVIVORS && 
-				IsPlayerAlive(i) == true)
-			{
-				SetClientSpeed(i);
-				PrintHintText(i, "A teammate has been revived, your senses return to a weaker state.");
-			}
-		}
-		g_iNickDesperateMeasuresStack--;
-	}
+	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+	int iTarget = GetClientOfUserId(GetEventInt(hEvent, "subject"));
+	bool bWasHanging = GetEventBool(hEvent, "ledge_hang");
 	
+	//DebugLog(DEBUG_MODE_VERBOSE, "Event_ReviveSuccess, iClient %i, iTarget %i", iClient, iTarget);
+
+	g_bIsClientDown[iTarget] = false;
+	clienthanging[iTarget] = false;
+	EndSelfRevive(iTarget);
+
+	if(RunClientChecks(iTarget) == false)
+		return Plugin_Continue;
+
+	// Nicks Desperate Measures (dont run this on ledges)
+	if (!bWasHanging && SetAllNicksDesprateMeasuresStacks())
+		SetAllNicksDesprateMeasureSpeed("A teammate has been revived, your senses return to a weaker state.");
+	
+	SetClientSpeed(iTarget);
+	SetClientRenderAndGlowColor(iTarget);
+
 	if(IsFakeClient(iClient) == true)
 		return Plugin_Continue;
 	
 	if (iClient > 0 && iClient <= MaxClients)
 	{
-		if (iClient != target)
+		if (iClient != iTarget)
 		{
 			g_iClientXP[iClient] += 50;
 			CheckLevel(iClient);
 			
 			if(g_iXPDisplayMode[iClient] == 0)
-				ShowXPSprite(iClient, g_iSprite_50XP, target);
+				ShowXPSprite(iClient, g_iSprite_50XP, iTarget);
 			else if(g_iXPDisplayMode[iClient] == 1)
 				PrintToChat(iClient, "\x03[XPMod] Revived a teammate. You gain 50 XP.");
 		}
@@ -808,74 +740,11 @@ Action:Event_PlayerIncap(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	}
 	if (g_iClientTeam[iClient] == TEAM_SURVIVORS)
 	{
-		/*
-		if(g_iNickDesperateMeasuresStack < 3)	//Dont allow desperate stack to go over 3 times
-		{
-			g_iNickDesperateMeasuresStack++;
-			
-			decl i;
-			for(i=1;i<=MaxClients;i++)		//Check all the clients to see if they have despearate level up(Nick)
-			{
-				if(i == iClient)
-					continue;
-				if(g_iDesperateLevel[i] > 0)
-				{
-					if(RunClientChecks(i))
-					{
-						if(!IsFakeClient(i))
-						{
-							if(IsPlayerAlive(i) == true)
-								if(g_iClientTeam[i]==TEAM_SURVIVORS)
-								{
-									SetEntDataFloat(i , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0 + (float(g_iMagnumLevel[i]) * 0.03) + (float(g_iNickDesperateMeasuresStack) * float(g_iDesperateLevel[i]) * 0.02), true);
-									PrintHintText(i, "A teammate has fallen, your senses sharpen.");
-								}
-						}
-					}
-				}
-				if(g_iDiehardLevel[i] > 0)
-				{
-					if(IsClientInGame(i)==true)
-					{
-						if(!IsFakeClient(i))
-						{
-							if(g_iClientTeam[i]==TEAM_SURVIVORS)
-							{
-								if(IsPlayerAlive(i) == true)
-									if(g_bIsClientDown[i] == false)
-									{
-										new currentHP = GetEntProp(i,Prop_Data,"m_iHealth");
-										if((currentHP + (g_iDiehardLevel[i] * 6)) < (100 + (g_iWillLevel[i]*5) + (g_iDiehardLevel[i]*15)))
-											SetEntProp(i,Prop_Data,"m_iHealth", currentHP + (g_iDiehardLevel[i] * 6));
-										else
-											SetEntProp(i,Prop_Data,"m_iHealth", 100 + (g_iWillLevel[i]*5) + (g_iDiehardLevel[i]*15));
-										PrintHintText(i, "A teammate has fallen, you gain %d health.", (g_iDiehardLevel[i] * 6));
-									}
-							}
-						}
-					}
-				}
-			}
-		}
-		*/
-		g_iNickDesperateMeasuresStack++;
-		decl i;
-		for(i=1;i<=MaxClients;i++)
-		{
-			if (g_iChosenSurvivor[i] == NICK && 
-				g_iDesperateLevel[i] > 0 &&
-				RunClientChecks(i) && 
-				g_iClientTeam[i]==TEAM_SURVIVORS && 
-				IsPlayerAlive(i) == true)
-			{
-				if(g_iNickDesperateMeasuresStack <= 3)
-				{
-					SetClientSpeed(i);
-					PrintHintText(i, "A teammate has fallen, your senses sharpen.");
-				}
-			}
-		}
-		for(i=1;i<=MaxClients;i++)
+		// Update Nicks Desperate Measures Stacks
+		if (SetAllNicksDesprateMeasuresStacks())
+			SetAllNicksDesprateMeasureSpeed("A teammate has fallen, your senses sharpen.");
+
+		for(int i=1;i<=MaxClients;i++)
 		{
 			if(g_iDiehardLevel[i] > 0)
 			{
@@ -1328,6 +1197,11 @@ Action:Event_DefibUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 			//SetEntDataFloat(iSubject , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iSubject] + g_fEllisBringSpeed[iSubject] + g_fEllisOverSpeed[iSubject]), true);
 		}
 	}
+	
+	// Update Nicks Desperate Measures Stacks
+	if (SetAllNicksDesprateMeasuresStacks())
+		SetAllNicksDesprateMeasureSpeed("A teammate has been brought back, your senses return to a weaker state.");
+	
 	SetClientSpeed(iSubject);
 	return Plugin_Continue;
 }

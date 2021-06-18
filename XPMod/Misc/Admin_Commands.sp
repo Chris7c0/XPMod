@@ -129,6 +129,10 @@ int ResurrectPlayer(int iTarget, int iClient)
 
 	SetEntProp(iTarget, Prop_Data,"m_iHealth", 50);
 
+	// Update Nicks Desperate Measures Stacks
+	if (SetAllNicksDesprateMeasuresStacks())
+		SetAllNicksDesprateMeasureSpeed("A teammate has been brought back, your senses return to a weaker state.");
+
 	return iTarget;
 }
 

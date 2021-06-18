@@ -60,7 +60,6 @@ new Float:g_fMaxLaserAccuracy = 0.4;	        //max accuracy increase for survivo
 new g_iPrimarySlotID[MAXPLAYERS + 1];
 new g_iClientPrimaryClipSize[MAXPLAYERS + 1];   //g_iOffset_Clip1 for the clients primary weapon before addition of talents
 new bool:g_bDivineInterventionQueued[MAXPLAYERS + 1];
-new bool:g_bWasClientDownOnDeath[MAXPLAYERS + 1];
 new bool:g_bAdhesiveGooActive[MAXPLAYERS + 1];
 // Victim Health Meter
 #define VICTIM_HEALTH_METER_DISPLAY_TIME        3.0

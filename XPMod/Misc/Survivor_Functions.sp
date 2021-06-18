@@ -190,6 +190,24 @@ void EndSelfRevive(int iClient)
 	}
 }
 
+int GetIncapOrDeadSurvivorCount()
+{
+	int iDownedPlayerCount = 0;
+	for (int iPlayer=1; iPlayer <= MaxClients; iPlayer++)
+	{
+		if (g_iClientTeam[iPlayer] != TEAM_SURVIVORS ||
+			RunClientChecks(iPlayer) == false)
+			continue;
+		
+		if (IsPlayerAlive(iPlayer) == false ||
+			(GetEntProp(iPlayer, Prop_Send, "m_isIncapacitated") == 1 &&
+			GetEntProp(iPlayer, Prop_Send, "m_isHangingFromLedge") == 0))
+			iDownedPlayerCount++;
+	}
+
+	return iDownedPlayerCount;
+}
+
 void ResetTempHealthToSurvivor(iClient)
 {
 	if (!RunClientChecks(iClient) || 

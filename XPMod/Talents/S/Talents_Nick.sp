@@ -618,27 +618,9 @@ EventsDeath_VictimNick(Handle:hEvent, iAttacker, iVictim)
 
 	SuppressNeverUsedWarning(hEvent, iAttacker);
 	
-	// Nick's DesperateMeasuresStack
-	if(g_bWasClientDownOnDeath[iVictim] == true)
-		g_bWasClientDownOnDeath[iVictim] = false;
-	else
-	{
-		g_iNickDesperateMeasuresStack++;
-
-		for(int i=1; i <= MaxClients; i++)
-		{
-			if (RunClientChecks(i) && 
-				g_iClientTeam[i]==TEAM_SURVIVORS && 
-				IsPlayerAlive(i) == true)
-			{
-				if(g_iNickDesperateMeasuresStack <= 3)
-				{
-					SetClientSpeed(i);
-					PrintHintText(i, "A teammate has died, your senses sharpen.");
-				}
-			}
-		}
-	}
+	// Update Nicks Desperate Measures Stacks
+	if (SetAllNicksDesprateMeasuresStacks())
+		SetAllNicksDesprateMeasureSpeed("A teammate has died, your senses sharpen.");
 }
 
 
@@ -872,6 +854,39 @@ CyclePlayerWeapon_Nick(int iClient)
 	g_iRamboWeaponID[iClient] = -1;
 }
 
+bool SetAllNicksDesprateMeasuresStacks()
+{
+	// Set the Desperate Measures Stack
+	int iDownedCount = GetIncapOrDeadSurvivorCount();
+	
+	// Check if their was a change or not, if not, then return false
+	// Also, if its above the max (3) then return false, no change
+	if (g_iNickDesperateMeasuresStack == iDownedCount ||
+		iDownedCount > 3)
+		return false;
+
+	// Store the new value, and return true because there was a change
+	g_iNickDesperateMeasuresStack = iDownedCount;
+	return true;
+}
+
+void SetAllNicksDesprateMeasureSpeed(const char [] strMessage = "")
+{
+	for (int iPlayer=1; iPlayer <= MaxClients; iPlayer++)
+	{
+		if (g_iChosenSurvivor[iPlayer] != NICK ||
+			g_iDesperateLevel[iPlayer] <= 0 &&
+			g_iClientTeam[iPlayer] != TEAM_SURVIVORS ||
+			RunClientChecks(iPlayer) == false ||
+			IsPlayerAlive(iPlayer) == false)
+			continue;
+
+		SetClientSpeed(iPlayer);
+
+		if (IsFakeClient(iPlayer) == false)
+			PrintHintText(iPlayer, strMessage);
+	}
+}
 
 //Jebus Hand Menu
 Action:JebusHandBindMenuDraw(iClient) 
