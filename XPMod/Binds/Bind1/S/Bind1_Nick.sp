@@ -151,21 +151,12 @@ void Bind1Press_Nick(iClient)
 							{
 								if(IsClientGrappled(iClient) == false)
 								{
-									new Float:fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
-
-									RunCheatCommand(iClient, "give", "give health");
-									fTempHealth = 0.0;
-									SetEntDataFloat(iClient,g_iOffset_HealthBuffer, fTempHealth ,true);
-
-									PrintHintText(iClient,"Rolled an 11\nYou have received divine intervention from above...or below.");
-									PrintToChatAll("\x03[XPMod] \x05%N was given a fresh life.", iClient);
-									
-									g_bIsClientDown[iClient] = false;
+									CreateTimer(0.1, TimerApplyDivineIntervention, iClient, TIMER_FLAG_NO_MAPCHANGE);
 								}
 								else
 								{
 									g_bDivineInterventionQueued[iClient] = true;
-									PrintToChat(iClient, "Divine intervention will be applied when you break free!");
+									PrintToChat(iClient, "\x03[XPMod] \x05Divine intervention will be applied when you break free!");
 								}
 							}
 							case 12: //Gain 3 more bind2s
@@ -189,4 +180,22 @@ void Bind1Press_Nick(iClient)
 		}
 		else
 			PrintHintText(iClient, "You posses no talent for Bind 1");
+}
+
+Action:TimerApplyDivineIntervention(Handle hTimer, int iClient)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false)
+		return Plugin_Stop;
+
+	RunCheatCommand(iClient, "give", "give health");
+	ResetTempHealthToSurvivor(iClient);
+
+	PrintHintText(iClient,"Rolled an 11\nYou have received divine intervention from above...or below.");
+	PrintToChatAll("\x03[XPMod] \x05%N was given a fresh life.", iClient);
+	
+	g_bIsClientDown[iClient] = false;
+	g_bDivineInterventionQueued[iClient] = false;
+
+	return Plugin_Stop;
 }

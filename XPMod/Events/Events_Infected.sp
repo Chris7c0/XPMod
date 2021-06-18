@@ -209,18 +209,8 @@ Action:Event_ChargerPummelEnd(Handle:hEvent, const String:strName[], bool:bDontB
 	g_bChargerGrappled[victim] = false;
 	
 	if(g_bDivineInterventionQueued[victim] == true)
-	{
-		new Float:fTempHealth = GetEntDataFloat(victim, g_iOffset_HealthBuffer);
+		CreateTimer(0.1, TimerApplyDivineIntervention, victim, TIMER_FLAG_NO_MAPCHANGE);
 
-		RunCheatCommand(victim, "give", "give health");
-		fTempHealth = 0.0;
-		SetEntDataFloat(victim,g_iOffset_HealthBuffer, fTempHealth ,true);
-		PrintHintText(victim,"Rolled an 11\nYou have received divine intervention from above...or below.");
-		PrintToChat(victim, "\x03[XPMod] \x05You were given a fresh life.");
-
-		g_bIsClientDown[victim] = false;
-		g_bDivineInterventionQueued[victim] = false;
-	}
 	SetClientRenderAndGlowColor(victim);
 	return Plugin_Continue;
 }
@@ -270,18 +260,8 @@ Action:Event_ChokeEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast
 	SetClientSpeed(attacker);
 	
 	if(g_bDivineInterventionQueued[victim] == true)
-	{
-		new Float:fTempHealth = GetEntDataFloat(victim, g_iOffset_HealthBuffer);
-
-		RunCheatCommand(victim, "give", "give health");
-		fTempHealth = 0.0;
-		SetEntDataFloat(victim,g_iOffset_HealthBuffer, fTempHealth ,true);
-		PrintHintText(victim,"Rolled an 11\nYou have received divine intervention from above...or below.");
-		PrintToChat(victim, "\x03[XPMod] \x05You were given a fresh life.");
-
-		g_bIsClientDown[victim] = false;
-		g_bDivineInterventionQueued[victim] = false;
-	}
+		CreateTimer(0.1, TimerApplyDivineIntervention, victim, TIMER_FLAG_NO_MAPCHANGE);
+	
 	SetClientRenderAndGlowColor(victim);
 	return Plugin_Continue;
 }
@@ -478,7 +458,11 @@ Action:Event_JockeyRideEnd(Handle:hEvent, const String:strName[], bool:bDontBroa
 	g_fJockeyRideSpeedVanishingActBoost[victim] = 0.0;
 	SetClientSpeed(victim);
 
+	if(g_bDivineInterventionQueued[victim] == true)
+		CreateTimer(0.1, TimerApplyDivineIntervention, victim, TIMER_FLAG_NO_MAPCHANGE);
+
 	SetClientRenderAndGlowColor(victim);
+
 	return Plugin_Continue;
 }
 
@@ -587,18 +571,8 @@ Action:Event_HunterPounceStopped(Handle:hEvent, const String:strName[], bool:bDo
 	//ResetSurvivorSpeed(victim);
 	
 	if(g_bDivineInterventionQueued[victim] == true)
-	{
-		new Float:fTempHealth = GetEntDataFloat(victim, g_iOffset_HealthBuffer);
-
-		RunCheatCommand(victim, "give", "give health");
-		fTempHealth = 0.0;
-		SetEntDataFloat(victim,g_iOffset_HealthBuffer, fTempHealth ,true);
-		PrintHintText(victim,"Rolled an 11\nYou have received divine intervention from above...or below.");
-		PrintToChat(victim, "\x03[XPMod] \x05You were given a fresh life.");
-
-		g_bIsClientDown[victim] = false;
-		g_bDivineInterventionQueued[victim] = false;
-	}
+		CreateTimer(0.1, TimerApplyDivineIntervention, victim, TIMER_FLAG_NO_MAPCHANGE);
+	
 	SetClientRenderAndGlowColor(attacker);
 	SetClientRenderAndGlowColor(victim);
 	return Plugin_Continue;

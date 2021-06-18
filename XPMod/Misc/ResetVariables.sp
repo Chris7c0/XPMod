@@ -106,6 +106,7 @@ ResetVariablesForMap(iClient)
 	
 	//Nick 
 	g_bNickIsGettingBeatenUp[iClient] = false;
+	g_bDivineInterventionQueued[iClient] = false;
 	g_iNickDesperateMeasuresStack = 0;
 	g_iRamboWeaponID[iClient] = -1;
 
