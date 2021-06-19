@@ -820,6 +820,7 @@ Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 		SetEntProp(target,Prop_Data,"m_iHealth", maxHP);
 	else
 		SetEntProp(target,Prop_Data,"m_iHealth", currentHP + 100);
+	
 	if(g_iOverLevel[target] > 0)
 	{
 		new iCurrentHealth = GetEntProp(target,Prop_Data,"m_iHealth");
@@ -859,6 +860,9 @@ Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 			//PrintToChatAll("g_fEllisBringSpeed = %f", g_fEllisBringSpeed[target]);
 			//PrintToChatAll("g_fEllisOverSpeed = %f", g_fEllisOverSpeed[target]);
 		}
+
+		// Get all health converted to temp health for Ellis
+		ConvertEllisHealthToTemporary(iClient);
 	}
 	if(g_iChosenSurvivor[iClient] == 4)
 	{
@@ -1034,32 +1038,6 @@ Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 			}
 		}
 	}
-	/*
-	if((g_iChosenSurvivor[iClient] == 4) && (g_iSwindlerLevel[iClient] > 0))
-	{
-		if(g_bNickSwindlerHealthCapped[iClient] == false)
-		{
-			maxHP = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
-			currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
-			g_iNickSwindlerBonusHealth[iClient] += (g_iSwindlerLevel[iClient] * 3);
-			if(g_iNickSwindlerBonusHealth[iClient] < 100)
-			{
-				SetEntProp(iClient,Prop_Data,"m_iMaxHealth", maxHP + (g_iSwindlerLevel[iClient] * 3));
-				SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + (g_iSwindlerLevel[iClient] * 3));
-				//PrintToChatAll("g_iNickSwindlerBonusHealth[iClient] < 100");
-			}
-			else if(g_iNickSwindlerBonusHealth[iClient] > 100)
-			{
-				SetEntProp(iClient,Prop_Data,"m_iMaxHealth", maxHP + (100 - (g_iNickSwindlerBonusHealth[iClient] - (g_iSwindlerLevel[iClient] * 3))));
-				SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + (100 - (g_iNickSwindlerBonusHealth[iClient] - (g_iSwindlerLevel[iClient] * 3))));
-				//PrintToChatAll("g_iNickSwindlerBonusHealth[iClient] > 100");
-				g_bNickSwindlerHealthCapped[iClient] = true;
-			}
-			//g_iNickMaxHealth[iClient] = maxHP + (g_iSwindlerLevel[i] * 3);
-			//PrintToChatAll("g_iNickSwindlerBonusHealth == %d", g_iNickSwindlerBonusHealth[iClient]);
-		}
-	}
-	*/
 	for(new i=1;i<=MaxClients;i++)		//For talents that change cvars get the highest level for each before unfreezing
 	{
 		if(RunClientChecks(i) && IsPlayerAlive(i) == true)
@@ -1072,20 +1050,6 @@ Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					{
 						if(g_iClientTeam[i]==TEAM_SURVIVORS)
 						{
-							/*
-							maxHP = GetEntProp(i,Prop_Data,"m_iMaxHealth");
-							if(maxHP < 300)
-							{
-								SetEntProp(i,Prop_Data,"m_iMaxHealth", maxHP + (g_iSwindlerLevel[i] * 3));
-								g_iNickMaxHealth[i] = maxHP + (g_iSwindlerLevel[i] * 3);
-							}
-							
-							currentHP = GetEntProp(i,Prop_Data,"m_iHealth");
-							if(currentHP < 300)
-								SetEntProp(i,Prop_Data,"m_iHealth", currentHP + (g_iSwindlerLevel[i] * 3));
-							else
-								SetEntProp(i,Prop_Data,"m_iHealth", 300);
-							*/
 							if(g_bNickSwindlerHealthCapped[i] == false)
 							{
 								maxHP = GetEntProp(i,Prop_Data,"m_iMaxHealth");
@@ -1104,38 +1068,6 @@ Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 									//PrintToChatAll("g_iNickSwindlerBonusHealth[i] > 100");
 									g_bNickSwindlerHealthCapped[i] = true;
 								}
-								//SetEntProp(i,Prop_Data,"m_iMaxHealth", maxHP + (g_iSwindlerLevel[i] * 3));
-								//SetEntProp(i,Prop_Data,"m_iHealth", currentHP + (g_iSwindlerLevel[i] * 3));
-								//g_iNickMaxHealth[i] = maxHP + (g_iSwindlerLevel[i] * 3);
-								//PrintToChatAll("g_iNickSwindlerBonusHealth[iClient] < 100");
-								//PrintToChatAll("g_iNickSwindlerBonusHealth == %d", g_iNickSwindlerBonusHealth[i]);
-								
-								// if(g_iNickSwindlerBonusHealth[iClient] < 100)
-								// {
-								// 	g_iNickSwindlerBonusHealth[iClient] += (g_iSwindlerLevel[i] * 3);
-								// 	SetEntProp(i,Prop_Data,"m_iMaxHealth", maxHP + (g_iSwindlerLevel[i] * 3));
-								// 	g_iNickMaxHealth[i] = maxHP + (g_iSwindlerLevel[i] * 3);
-								// 	PrintToChatAll("g_iNickSwindlerBonusHealth[iClient] < 100");
-								// 	PrintToChatAll("g_iNickSwindlerBonusHealth == %d", g_iNickSwindlerBonusHealth[iClient]);
-								// }
-								// else if(g_iNickSwindlerBonusHealth[iClient] > 100)
-								// {
-								// 	g_iNickSwindlerBonusHealth[iClient] == 100;
-								// }
-								
-								// currentHP = GetEntProp(i,Prop_Data,"m_iHealth");
-								// if(g_iNickSwindlerBonusHealth[iClient] < 100)
-								// {
-								// 	PrintToChatAll("");
-								// 	SetEntProp(i,Prop_Data,"m_iHealth", currentHP + (g_iSwindlerLevel[i] * 3));
-								// }
-								
-								/*
-								else if(g_iNickSwindlerBonusHealth[iClient] > 100)
-								{
-									SetEntProp(i,Prop_Data,"m_iHealth", 300);
-								}
-								*/
 							}
 						}
 					}

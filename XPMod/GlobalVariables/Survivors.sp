@@ -186,8 +186,8 @@ new g_iCoachCIHeadshotCounter[MAXPLAYERS + 1];
 new g_iCoachSIHeadshotCounter[MAXPLAYERS + 1];
 
 //Ellis's Stuff
+#define ELLIS_STARTING_MAX_HEALTH           100
 new bool:g_bUsingFireStorm[MAXPLAYERS + 1];
-new g_iEllisMaxHealth[MAXPLAYERS + 1] = 100;
 new g_iEllisSpeedBoostCounter[MAXPLAYERS + 1];
 new bool:g_bWalkAndUseToggler[MAXPLAYERS + 1];
 new Float:g_fEllisOverSpeed[MAXPLAYERS + 1];
@@ -214,17 +214,17 @@ new bool:g_bIsEllisLimitBreaking[MAXPLAYERS + 1];
 new bool:g_bCanEllisLimitBreak[MAXPLAYERS + 1];
 new g_iLimitBreakWeaponIndex[MAXPLAYERS + 1];
 new bool:g_bEllisLimitBreakInCooldown[MAXPLAYERS + 1];
-#define ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT        30
+#define ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT            30
 new bool:g_bEllisOverSpeedIncreased[MAXPLAYERS + 1];
 new g_iEllisAdrenalineStackDuration;
 new bool:g_bEllisHasAdrenalineBuffs[MAXPLAYERS + 1];
-#define ELLIS_STASHED_INVENTORY_MAX_ADRENALINE          3
+#define ELLIS_STASHED_INVENTORY_MAX_ADRENALINE              3
+#define ELLIS_STASHED_INVENTORY_MAX_TANK_SPAWN_ADRENALINE   5
 new g_iStashedInventoryAdrenaline[MAXPLAYERS + 1];
 
 //Nicks Stuff
 new bool:g_bNickIsStealingLife[MAXPLAYERS + 1][MAXPLAYERS + 1];	//g_bNickIsStealingLife[victim][attacker]
 new g_iNickStealingLifeRuntimes[MAXPLAYERS + 1];
-new g_iNickMaxHealth[MAXPLAYERS + 1];
 new g_iNickResurrectUses = 0;
 new bool:g_bCanNickSecondaryCycle[MAXPLAYERS + 1];
 new String:g_strNickSecondarySlot1[512];

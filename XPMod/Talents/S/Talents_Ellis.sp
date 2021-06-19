@@ -1,11 +1,8 @@
 TalentsLoad_Ellis(iClient)
 {
-	SetEntProp(iClient,Prop_Data,"m_iMaxHealth", g_iEllisMaxHealth[iClient]);
-	new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
-	if(currentHP > g_iEllisMaxHealth[iClient])
-		SetEntProp(iClient,Prop_Data,"m_iHealth", g_iEllisMaxHealth[iClient]);
+	SetPlayerMaxHealth(iClient, ELLIS_STARTING_MAX_HEALTH);
 	
-	if(g_iMetalLevel[iClient]>0)
+	if(g_iMetalLevel[iClient] > 0)
 	{
 		g_bDoesClientAttackFast[iClient] = true;
 		g_bSomeoneAttacksFaster = true;
@@ -47,8 +44,8 @@ TalentsLoad_Ellis(iClient)
 		
 	if(g_iOverLevel[iClient] > 0)
 	{
-		new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
-		new iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
+		new iCurrentHealth = GetPlayerHealth(iClient);
+		new iMaxHealth = GetPlayerMaxHealth(iClient);
 		if (iCurrentHealth < (iMaxHealth - ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT))
 		{
 			if(g_bEllisOverSpeedIncreased[iClient])
@@ -269,8 +266,8 @@ EventsHurt_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 	{
 		if(g_iClientTeam[iVictim] == TEAM_INFECTED)
 		{
-			new iCurrentHealth = GetEntProp(iAttacker,Prop_Data,"m_iHealth");
-			new iMaxHealth = GetEntProp(iAttacker,Prop_Data,"m_iMaxHealth");
+			new iCurrentHealth = GetPlayerHealth(iAttacker);
+			new iMaxHealth = GetPlayerMaxHealth(iAttacker);
 			new iTempHealth = GetSurvivorTempHealth(iAttacker);
 
 			decl String:strWeaponClass[32];
@@ -286,7 +283,7 @@ EventsHurt_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 				// Give dmg buff for being in health range for over confidence
 				if(iCurrentHealth + iTempHealth >= iMaxHealth - ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT)
 				{
-					new iVictimHealth = GetEntProp(iVictim,Prop_Data,"m_iHealth");
+					new iVictimHealth = GetPlayerHealth(iVictim);
 					// PrintToChatAll("Ellis iVictim %N START HP: %i", iVictim, iVictimHealth);
 
 					new iDmgAmount = GetEventInt(hEvent,"dmg_health");
@@ -515,6 +512,23 @@ void EventsItemPickUp_Ellis(int iClient, const char[] strWeaponClass)
 	}
 }
 
+void ConvertEllisHealthToTemporary(int iClient)
+{
+	if (g_iBringLevel[iClient] <= 0 ||
+		g_iChosenSurvivor[iClient] != ELLIS ||
+		RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false)
+		return;
+
+	ConvertAllSurvivorHealthToTemporary(iClient);
+}
+
+void HandlePostSetPlayerHealth_Ellis(int iClient)
+{
+	ConvertEllisHealthToTemporary(iClient);
+}
+	
+
 void EventsPlayerUse_Ellis(int iClient, int iTargetID)
 {
 	if (g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
@@ -571,7 +585,6 @@ void EventsWeaponGiven_Ellis(int iClient)
 	if (g_iJamminLevel[iClient] > 0 && g_iStashedInventoryAdrenaline[iClient] > 0)
 		CreateTimer(0.1, TimerGiveAdrenalineFromStashedInventory, iClient, TIMER_FLAG_NO_MAPCHANGE);
 }
-
 
 void HandleCheatCommandTasks_Ellis(int iClient, const char [] strCommandWithArgs)
 {

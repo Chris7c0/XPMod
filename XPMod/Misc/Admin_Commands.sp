@@ -28,33 +28,6 @@ Action TimerPauseGame(Handle:timer, any:iClient)
     return Plugin_Stop;
 }
 
-HealClientFully(iClient)
-{
-	if (RunClientChecks(iClient) == false || IsPlayerAlive(iClient) == false)
-		return;
-
-	RunCheatCommand(iClient, "give", "give health");
-	ResetTempHealthToSurvivor(iClient);
-
-	g_bIsClientDown[iClient] = false;
-	
-	// new iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
-	// SetEntProp(iClient, Prop_Data, "m_iHealth", iMaxHealth);
-}
-
-HealAllSurvivorsFully()
-{
-	for(new i=1;i <= MaxClients;i++)
-	{
-		if (RunClientChecks(i) && 
-			IsPlayerAlive(i) && 
-			g_iClientTeam[i] == TEAM_SURVIVORS)
-		{
-			HealClientFully(i);
-		}
-	}
-}
-
 void MutePlayer(int iClient, bool bMute, bool bSilent = true)
 {
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)

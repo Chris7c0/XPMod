@@ -325,19 +325,10 @@ ImFeelingLuckyRoll(iClient)
 		}
 		case 8:		// Convert all health to temp health
 		{
-			// Store current health numbers
-			new iCurrentHealth = GetEntProp(iClient, Prop_Data, "m_iHealth");
-			new iTempHealth = GetSurvivorTempHealth(iClient);
-			// Change health to only be 1
-			SetEntProp(iClient, Prop_Data,"m_iHealth", 1);
-			// Change temp health to self revive health
-			if (iCurrentHealth > 1)
-			{
-				ResetTempHealthToSurvivor(iClient);
-				AddTempHealthToSurvivor(iClient, float(iCurrentHealth + iTempHealth));
-			}
-
-			PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04All Health Now Temp Health", iClient);
+			if (ConvertAllSurvivorHealthToTemporary(iClient))
+				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04All Health Now Temp Health", iClient);
+			else
+				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Absolutely Nothing", iClient);
 		}
 		case 9:		// Drop all currently equipped items
 		{

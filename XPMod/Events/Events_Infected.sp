@@ -733,17 +733,25 @@ Action:Event_TankSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 			{
 				// Check the grenade slot to see if they currently have a grenade
 				if (GetPlayerWeaponSlot(i, 2) > 0)
-					g_iEllisJamminGrenadeCounter[i]++;
+				{
+					if (g_iEllisJamminGrenadeCounter[i] < ELLIS_STASHED_INVENTORY_MAX_TANK_SPAWN_ADRENALINE)
+						g_iEllisJamminGrenadeCounter[i]++;
+				}
 				else
+				{
 					RunCheatCommand(i, "give", "give molotov");
+				}
 
 				// Check the boost slot to see if they currently have a adrenaline or pain pill
 				if (GetPlayerWeaponSlot(i, 4) > 0)
 				{
-					g_iStashedInventoryAdrenaline[i]++;
-					PrintToChat(i, "\x03[XPMod] \x05+1 Adrenaline. \x04You have %i more Adrenaline Shot%s.",
-						g_iStashedInventoryAdrenaline[i],
-						g_iStashedInventoryAdrenaline[i] != 1 ? "s" : "");
+					if (g_iStashedInventoryAdrenaline[i] < ELLIS_STASHED_INVENTORY_MAX_TANK_SPAWN_ADRENALINE)
+					{
+						g_iStashedInventoryAdrenaline[i]++;
+						PrintToChat(i, "\x03[XPMod] \x05+1 Adrenaline. \x04You have %i more Adrenaline Shot%s.",
+							g_iStashedInventoryAdrenaline[i],
+							g_iStashedInventoryAdrenaline[i] != 1 ? "s" : "");
+					}
 				}
 				else
 				{

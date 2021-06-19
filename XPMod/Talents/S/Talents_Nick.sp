@@ -19,13 +19,6 @@ TalentsLoad_Nick(iClient)
 		SetEntProp(iClient,Prop_Data,"m_iMaxHealth", maxHP + 100);
 		SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + 100);
 	}
-	//PrintToChatAll("MaxHP Post = %d", maxHP);
-	/*
-	SetEntProp(iClient,Prop_Data,"m_iMaxHealth", g_iNickMaxHealth[iClient]);
-	new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
-	if(currentHP > g_iNickMaxHealth[iClient])
-		SetEntProp(iClient,Prop_Data,"m_iHealth", g_iNickMaxHealth[iClient]);
-	*/
 	
 	if(g_iMagnumLevel[iClient] > 0)
 	{

@@ -70,7 +70,7 @@ Action:ChangeSurvivorMenuDraw(iClient)
 	AddMenuItem(menu, "option1", "Bill		   (Support)			   [EASY]");
 	AddMenuItem(menu, "option2", "Rochelle (Ninja)					  [PRO]");
 	AddMenuItem(menu, "option3", "Coach	 (Berserker)	 [NORMAL]");
-	AddMenuItem(menu, "option4", "Ellis		 (Weapons Expert) [EASY]");
+	AddMenuItem(menu, "option4", "Ellis		 (Weapons Expert)   [PRO]");
 	AddMenuItem(menu, "option5", "Nick		 (Gambler)				[PRO]");
 	AddMenuItem(menu, "option6", "Louis	  (Disruptor)			   [1337]      \n ");
 

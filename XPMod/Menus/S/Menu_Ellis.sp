@@ -119,6 +119,8 @@ Action:BringMenuDraw(iClient)
 	FormatEx(text, sizeof(text), "\
 		%s		Bring the Pain!(Level %d):\
 		\n \
+		\nAll Health Is Converted To Temp Health\
+		\n \
 		\nOn Special Infected kill:\
 		\n \
 		\nLevel 1:\
@@ -168,10 +170,10 @@ Action:JamminMenuDraw(iClient)
 	FormatEx(text, sizeof(text), "\
 		%s		Jammin' to the Music (Level %d):\
 		\n \
-		\n Stash Up To 3 Extra Adrenaline Shots\
-		\n	- No Cap on Tank Spawned Shots\
+		\n Stash Up To %i Extra Adrenaline Shots\
+		\n	- Stash Up To %i On Tank Spawned Shots    \
 		\n \
-		\n On Tank spawn:\
+		\n On Tank Spawn:\
 		\n \
 		\n	Level 1:\
 		\n	+1%%%% Movement Speed per Level\
@@ -182,7 +184,9 @@ Action:JamminMenuDraw(iClient)
 		\n	+1 Molotov\
 		\n ",
 		strStartingNewLines,
-		g_iJamminLevel[iClient]);
+		g_iJamminLevel[iClient],
+		ELLIS_STASHED_INVENTORY_MAX_ADRENALINE,
+		ELLIS_STASHED_INVENTORY_MAX_TANK_SPAWN_ADRENALINE);
 	SetMenuTitle(menu, text);
 	
 	decl String:strFinalOptionText[250];
