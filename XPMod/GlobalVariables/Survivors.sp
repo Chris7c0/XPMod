@@ -271,12 +271,12 @@ new bool:g_bNickStoresDroppedPistolAmmo[MAXPLAYERS + 1] = false;
 #define LOUIS_TELEPORT_BLINDNESS_DURATION               4100
 #define LOUIS_TELEPORT_BLINDNESS_FADE_TIME              12.0
 #define LOUIS_TELEPORT_BLINDNESS_STAY_FACTOR            2.5
-#define LOUIS_TELEPORT_MOVEMENT_PENALTY_TIME            20.0
-#define LOUIS_TELEPORT_MOVEMENT_PENALTY_AMOUNT          0.05
+#define LOUIS_TELEPORT_MOVEMENT_PENALTY_TIME            15.0
+#define LOUIS_TELEPORT_MOVEMENT_PENALTY_AMOUNT          0.15
 #define LOUIS_SPEED_MAX                                 1.25
 #define LOUIS_HEADSHOT_SPEED_RETENTION_TIME_CI          60.0
 #define LOUIS_HEADSHOT_SPEED_RETENTION_TIME_SI          60.0
-#define LOUIS_STASHED_INVENTORY_MAX_PILLS               4
+#define LOUIS_STASHED_INVENTORY_MAX_PILLS               3
 #define LOUIS_PILLS_USED_BONUS_DURATION                 60.0
 #define LOUIS_PILLS_USED_MAX_STACKS                     5
 bool g_bLouisTeleportCoolingDown[MAXPLAYERS + 1] = false;
@@ -287,9 +287,9 @@ new g_iLouisTeleportBlindnessAmount[MAXPLAYERS + 1] = 0;
 new g_iLouisTeleportMovementPenaltyStacks[MAXPLAYERS + 1] = 0;
 new g_iLouisCIHeadshotCounter[MAXPLAYERS + 1] = 0;
 new g_iLouisSIHeadshotCounter[MAXPLAYERS + 1] = 0;
-#define LOUIS_NEUROSURGEON_CI_CHANCE                    5   // Percent Chance
-#define LOUIS_NEUROSURGEON_SI_CHANCE                    1   // Percent Chance
-#define LOUIS_NEUROSURGEON_SI_XMR_REWARD_AMOUNT         6.9 // XMR
+#define LOUIS_NEUROSURGEON_CI_CHANCE                    5     // Percent Chance
+#define LOUIS_NEUROSURGEON_SI_CHANCE                    1     // Percent Chance
+#define LOUIS_NEUROSURGEON_SI_XMR_REWARD_AMOUNT         3.0   // XMR
 new g_iStashedInventoryPills[MAXPLAYERS + 1] = 0;
 new g_iPillsUsedStack[MAXPLAYERS + 1] = 0;
 bool g_bHealthBoostItemJustGivenByCheats[MAXPLAYERS + 1] = false;
@@ -300,20 +300,21 @@ new g_iWareStationOwnerIDOfCurrentlyViewedStation[MAXPLAYERS + 1];
 float g_xyzWarezStationLocation[MAXPLAYERS + 1][3];
 float g_fWarezStationSpeedBoost[MAXPLAYERS + 1];
 float g_fLouisXMRWallet[MAXPLAYERS + 1];
+#define LOUIS_HEADSHOT_XMR_STARTING_AMOUNT              3.0
 #define LOUIS_HEADSHOT_XMR_AMOUNT_CI                    0.1
 #define LOUIS_HEADSHOT_XMR_AMOUNT_SI                    0.5
 #define LOUIS_HEADSHOP_ITEM_SPEED_HAX                   1
-#define LOUIS_HEADSHOP_ITEM_MED_HAX                     2
-#define LOUIS_HEADSHOP_ITEM_NUB_WIPE                    4
+#define LOUIS_HEADSHOP_ITEM_NUB_WIPE                    2
+#define LOUIS_HEADSHOP_ITEM_MED_HAX                     3
 #define LOUIS_HEADSHOP_ITEM_HAK_TARGET                  4
-#define LOUIS_HEADSHOP_ITEM_TIME_OUT                    5
-#define LOUIS_HEADSHOP_ITEM_HAXOR_TEH_SERVER            6
-#define LOUIS_HEADSHOP_XMR_AMOUNT_SPEED_HAX             3.0
-#define LOUIS_HEADSHOP_XMR_AMOUNT_MED_HAX               5.0
-#define LOUIS_HEADSHOP_XMR_AMOUNT_NUB_WIPE              4.0
-#define LOUIS_HEADSHOP_XMR_AMOUNT_HAK_TARGET            6.0
-#define LOUIS_HEADSHOP_XMR_AMOUNT_TIME_OUT              8.0
-#define LOUIS_HEADSHOP_XMR_AMOUNT_HAXOR_TEH_SERVER      7.0
+#define LOUIS_HEADSHOP_ITEM_HAXOR_TEH_SERVER            5
+#define LOUIS_HEADSHOP_ITEM_TIME_OUT                    6
+#define LOUIS_HEADSHOP_XMR_AMOUNT_SPEED_HAX             6.0
+#define LOUIS_HEADSHOP_XMR_AMOUNT_NUB_WIPE              7.0
+#define LOUIS_HEADSHOP_XMR_AMOUNT_MED_HAX               8.0
+#define LOUIS_HEADSHOP_XMR_AMOUNT_HAK_TARGET            9.0
+#define LOUIS_HEADSHOP_XMR_AMOUNT_HAXOR_TEH_SERVER      10.0
+#define LOUIS_HEADSHOP_XMR_AMOUNT_TIME_OUT              11.0
 bool g_bLouisSpeedHaxEnabled;
 bool g_bSpeedHaxInCooldown;
 #define LOUIS_SPEED_HAX_MOVEMENT_MULTIPLIER             2.0

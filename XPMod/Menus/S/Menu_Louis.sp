@@ -159,7 +159,7 @@ Action:LouisTalent3MenuDraw(iClient)
 		\n [Press DIRECTION + Tap WALK] Move 30 ft in any direction.    \
 		\n	- +1 Use per level. Uses regenerate over time.\
 		\n	- +1 Overload Use. Causes much longer cooldown period.\
-		\n	- -5%%%% Speed for 20 secs after each use.\
+		\n	- -15%%%% Speed for 15 secs after each use.\
 		\n	- Progressively blinds you with each use. Fades over time.\
 		\n	- Cannot move through walls, CI, or SI.\
 		\n	- Travel less distance while severely hurt and limping.\
@@ -255,7 +255,7 @@ Action:LouisTalent5MenuDraw(iClient)
 		\n	- Bile Jar\
 		\n	- Pipe bomb\
 		\n Every Special Infected Headshot Kill Has A 1%%%% Chance To:\
-		\n	- Get %0.1f Monero (XMR)\
+		\n	- Get %.1f Monero (XMR)\
 		\n	- Get Extra Warez Station\
 		\n \
 		\n Bind 1: w4R3z 574t10n u53r\
@@ -301,7 +301,7 @@ Action:LouisTalent6MenuDraw(iClient)
 	FormatEx(text, sizeof(text), "\
 		%s 					PILLS HERE! (Level %d):\
 		\n \
-		\n Hold Up To 5 Pill Bottles At Once\
+		\n Stash Up To %i Extra Pill Bottles\
 		\n \
 		\n [PRESS ZOOM] While Holding A MedKit:\
 		\n 	- Turn MedKit Into 3 Pill Bottles\
@@ -320,6 +320,7 @@ Action:LouisTalent6MenuDraw(iClient)
 		\n ",
 		strStartingNewLines,
 		g_iLouisTalent6Level[iClient],
+		LOUIS_STASHED_INVENTORY_MAX_PILLS,
 		LOUIS_HEADSHOT_XMR_AMOUNT_CI,
 		LOUIS_HEADSHOT_XMR_AMOUNT_SI);
 	SetMenuTitle(menu, text);

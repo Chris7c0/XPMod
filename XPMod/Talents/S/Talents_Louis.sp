@@ -13,6 +13,9 @@ TalentsLoad_Louis(iClient)
 
 		SetClientSpeed(iClient);
 	}
+
+	// Give starting XMR
+	g_fLouisXMRWallet[iClient] = LOUIS_HEADSHOT_XMR_STARTING_AMOUNT;
 	
 	if( (g_iClientLevel[iClient] - (g_iClientLevel[iClient] - g_iSkillPoints[iClient])) <= (g_iClientLevel[iClient] - 1))
 		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Disruptor Talents \x05have been loaded.");
@@ -36,7 +39,9 @@ bool OnPlayerRunCmd_Louis(iClient, &iButtons)
 		return false;
 
 	// Handle Medkit Conversion to Pills
-	if (g_iLouisTalent6Level[iClient] > 0 && iButtons & IN_ZOOM)
+	if (g_iLouisTalent6Level[iClient] > 0 &&
+		g_iStashedInventoryPills[iClient] < LOUIS_STASHED_INVENTORY_MAX_PILLS &&
+		iButtons & IN_ZOOM)
 	{
 		char strCurrentWeapon[32];
 		GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
@@ -48,12 +53,17 @@ bool OnPlayerRunCmd_Louis(iClient, &iButtons)
 			{
 				AcceptEntityInput(iActiveWeaponID, "kill");
 
-				// Give 3 pills
-				RunCheatCommand(iClient, "give", "give pain_pills");
-				RunCheatCommand(iClient, "give", "give pain_pills");
-				RunCheatCommand(iClient, "give", "give pain_pills");
-
-				PrintToChat(iClient, "\x03[XPMod] \x05MedKit turned into 3 Pill Bottles.")
+				// Convert into 3 pills
+				// Check if they already have something equiped
+				// Put the first one into their equipment if they dont have one
+				if (GetPlayerWeaponSlot(iClient, 4) <= 0)
+					RunCheatCommand(iClient, "give", "give pain_pills");
+				else
+					StashPillsForLouis(iClient);
+				
+				// Stash the rest
+				StashPillsForLouis(iClient);
+				StashPillsForLouis(iClient);				
 			}
 		}
 	}
@@ -424,19 +434,11 @@ void EventsPlayerUse_Louis(int iClient, int iTargetID)
 		GetEdictClassname(iTargetID, strTargetClassName, sizeof(strTargetClassName));
 		// PrintToChat(iClient, "strTargetClassName: %s" , strTargetClassName);
 
+		// Stash Louis's pills, and kill the target if successful
 		if (StrContains(strTargetClassName,"weapon_pain_pills",false) != -1)
-		{
-			if (g_iStashedInventoryPills[iClient] < LOUIS_STASHED_INVENTORY_MAX_PILLS)
-			{
+			if(StashPillsForLouis(iClient))
 				if (iTargetID > 0 && IsValidEntity(iTargetID))
 					AcceptEntityInput(iTargetID, "Kill");
-
-				g_iStashedInventoryPills[iClient]++;
-				PrintToChat(iClient, "\x03[XPMod] \x05+1 Pills. \x04You have %i more Pill Bottle%s.",
-					g_iStashedInventoryPills[iClient],
-					g_iStashedInventoryPills[iClient] != 1 ? "s" : "");
-			}
-		}
 	}
 
 	g_bHealthBoostSlotWasEmptyOnLastPickUp[iClient] = false;
@@ -463,6 +465,20 @@ void HandleCheatCommandTasks_Louis(int iClient, const char [] strCommandWithArgs
 		StrEqual(strCommandWithArgs,"give adrenaline",false) == true)
 		g_bHealthBoostItemJustGivenByCheats[iClient] = true;
 }
+
+bool StashPillsForLouis(int iClient)
+{
+	if (g_iStashedInventoryPills[iClient] >= LOUIS_STASHED_INVENTORY_MAX_PILLS)
+		return false;
+
+	g_iStashedInventoryPills[iClient]++;
+	PrintToChat(iClient, "\x03[XPMod] \x05+1 Pills. \x04You have %i more Pill Bottle%s.",
+		g_iStashedInventoryPills[iClient],
+		g_iStashedInventoryPills[iClient] != 1 ? "s" : "");
+
+	return true;
+}
+					
 
 LouisTeleport(iClient)
 {
@@ -509,8 +525,6 @@ HandleLouisTeleportChargeUses(iClient)
 	}
 
 }
-
-
 
 HandleLouisTeleportBlindingEffect(iClient)
 {
