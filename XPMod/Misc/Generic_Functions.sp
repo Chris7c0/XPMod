@@ -35,6 +35,16 @@ bool RunEntityChecks(int iEntity)
 	return true;
 }
 
+int GetHumanPlayerCount()
+{
+	int iCount = 0;
+	for(int i=1;i <= MaxClients; i++)
+		if (RunClientChecks(i) && IsClientInGame(i) && !IsFakeClient(i))
+			iCount++;
+	
+	return iCount;
+}
+
 void StorePlayerHealth(int iClient)
 {
 	if (RunClientChecks(iClient) == false ||

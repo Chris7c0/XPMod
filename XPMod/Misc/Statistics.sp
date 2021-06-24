@@ -146,7 +146,7 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 		PrintToBufferServerOrClient(iClient, " ", strStoreBuffer, iStoreBufferSize);
 	}
 	
-	PrintToBufferServerOrClient(iClient, "\x05[	=	=	=	=	=	=	=	=	=	=	=	=	=	]", strStoreBuffer, iStoreBufferSize);
+	PrintToBufferServerOrClient(iClient, "\x05[	=	=	=	=	=	=	=	=	=	=	=	=	]", strStoreBuffer, iStoreBufferSize);
 }
 
 PrintToBufferServerOrClient(iClient, const char[] strText, char[] strStoreBuffer = "", iStoreBufferSize = -1)
@@ -186,17 +186,26 @@ Action:TimerLogXPMStatsToFile(Handle:timer, any:data)
 {
 	decl String:strStoreBuffer[2000];
 	strStoreBuffer = NULL_STRING;
+
+	// Store timestamp into a string
+	decl String:strTime[16];
+	FormatTime(strTime, sizeof(strTime), "%H:%M:%S", GetTime());
+
+	// Add Server info at the end
+	decl String:strServerInfo[50];
+	Format(strServerInfo, sizeof(strServerInfo), "%s   %i Humans   %s\n", strTime, GetHumanPlayerCount(), g_strServerName);
+	StrCat(strStoreBuffer, sizeof(strStoreBuffer), strServerInfo);
+
 	CreateXPMStatistics(-1, strStoreBuffer, sizeof(strStoreBuffer));
 
 	// Remove all the color codes
 	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "\x05", "", true);
 	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "\x04", "", true);
 	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "\x03", "", true);
-	
-	// Add a timestamp at the end
-	decl String:strTime[16];
-	FormatTime(strTime, sizeof(strTime), "%H:%M:%S", GetTime());
-	StrCat(strStoreBuffer, sizeof(strStoreBuffer), strTime);
+
+	// Reduce the spacing of the brackets
+	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "	=", " =", true);
+	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "=	", "= ", true);
 
 	SaveXPMStatsBufferToLogFile(strStoreBuffer);
 

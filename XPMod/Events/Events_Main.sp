@@ -221,6 +221,8 @@ public OnMapStart()
 	
 	// Set the filename for the log to the server name
 	GetConVarString(FindConVar("hostname"), g_strServerName, sizeof(g_strServerName));
+	// Remove the spaces if there are any, this is helpful when accessing in Linux
+	ReplaceString(g_strServerName, sizeof(g_strServerName), " ", "_");
 	// Get the log file name
 	SetXPMStatsLogFileName();
 	
