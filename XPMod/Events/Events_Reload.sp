@@ -7,6 +7,9 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	//PrintToChatAll("Entered reload event...");
 	new iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	if (g_bTalentsConfirmed[iClient] == false)
+		return;
+
 	switch(g_iChosenSurvivor[iClient])
 	{
 		case BILL:		//Bill

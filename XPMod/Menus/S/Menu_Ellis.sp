@@ -68,6 +68,7 @@ Action:OverMenuDraw(iClient)
 		\n \
 		\nLevel 1:\
 		\n+8%%%% Reload Speed per Level\
+		\nMax Health Reduced by 15 HP\
 		\n \
 		\nIf Within %i Points Of Max Health:\
 		\n	+2%%%% Speed\
@@ -88,7 +89,7 @@ Action:OverMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 

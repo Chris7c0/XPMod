@@ -186,7 +186,7 @@ new g_iCoachCIHeadshotCounter[MAXPLAYERS + 1];
 new g_iCoachSIHeadshotCounter[MAXPLAYERS + 1];
 
 //Ellis's Stuff
-#define ELLIS_STARTING_MAX_HEALTH           100
+#define ELLIS_STARTING_MAX_HEALTH           85
 new bool:g_bUsingFireStorm[MAXPLAYERS + 1];
 new g_iEllisSpeedBoostCounter[MAXPLAYERS + 1];
 new bool:g_bWalkAndUseToggler[MAXPLAYERS + 1];

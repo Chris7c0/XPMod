@@ -1,80 +1,87 @@
 int GetPlayerHealth(int iClient)
 {
-    if (RunClientChecks(iClient) == false ||
+	if (RunClientChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false ||
 		g_iClientTeam[iClient] == TEAM_SPECTATORS ||
-        (g_iClientTeam[iClient] == TEAM_SURVIVORS &&
+		(g_iClientTeam[iClient] == TEAM_SURVIVORS &&
 		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1))
 		return 0;
-        
-    return GetEntProp(iClient, Prop_Data, "m_iHealth");
+		
+	return GetEntProp(iClient, Prop_Data, "m_iHealth");
 }
 
 int GetPlayerMaxHealth(int iClient)
 {
-    if (RunClientChecks(iClient) == false ||
+	if (RunClientChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false)
 		return 0;
-        
-    return GetEntProp(iClient, Prop_Data, "m_iMaxHealth");
+		
+	return GetEntProp(iClient, Prop_Data, "m_iMaxHealth");
 }
 
 bool SetPlayerHealth(int iClient, int iHealthAmount, bool bAdditive = false, bool bClampWithTempHealth = true)
 {
-    if (iHealthAmount <= 0 ||
-        RunClientChecks(iClient) == false ||
+	if (iHealthAmount < 0 ||
+		RunClientChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false ||
-        g_iClientTeam[iClient] == TEAM_SPECTATORS ||
-        (g_iClientTeam[iClient] == TEAM_SURVIVORS &&
+		g_iClientTeam[iClient] == TEAM_SPECTATORS ||
+		(g_iClientTeam[iClient] == TEAM_SURVIVORS &&
 		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1))
 		return false;
 
-    int iMaxHealth = GetPlayerMaxHealth(iClient);
-    int iTempHealth = GetSurvivorTempHealth(iClient);
-    // Subtract temp health from MaxHealth to stop from going over
-    if (bClampWithTempHealth && iTempHealth > 0)
-        iMaxHealth = iMaxHealth - iTempHealth;
+	int iMaxHealth = GetPlayerMaxHealth(iClient);
+	int iTempHealth = GetSurvivorTempHealth(iClient);
+	// Subtract temp health from MaxHealth to stop from going over
+	if (bClampWithTempHealth && iTempHealth > 0)
+		iMaxHealth = iMaxHealth - iTempHealth;
 
-    // Add the health to existing health if its additive
-    if (bAdditive)
-        iHealthAmount += GetPlayerHealth(iClient);
+	// Add the health to existing health if its additive
+	if (bAdditive)
+		iHealthAmount += GetPlayerHealth(iClient);
 
-    // Clamp the players health to their max health bounds, then set it
-    SetEntProp(iClient, Prop_Data, "m_iHealth", iHealthAmount > iMaxHealth ? iMaxHealth : iHealthAmount);
+	// Clamp the players health to their max health bounds, then set it
+	SetEntProp(iClient, Prop_Data, "m_iHealth", iHealthAmount > iMaxHealth ? iMaxHealth : iHealthAmount);
 
-    HandlePostSetPlayerHealth(iClient);
+	HandlePostSetPlayerHealth(iClient);
 
-    return true;
+	return true;
 }
 
 bool SetPlayerMaxHealth(int iClient, int iHealthAmount, bool bAdditive = false, bool bAddHealthToFillGap = true)
 {
-    if (iHealthAmount <= 0 ||
-        RunClientChecks(iClient) == false ||
+	if (iHealthAmount <= 0 ||
+		RunClientChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false ||
-        g_iClientTeam[iClient] == TEAM_SPECTATORS ||
-        (g_iClientTeam[iClient] == TEAM_SURVIVORS &&
+		g_iClientTeam[iClient] == TEAM_SPECTATORS ||
+		(g_iClientTeam[iClient] == TEAM_SURVIVORS &&
 		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1))
 		return false;
 
-    int iCurrentMaxHealth = GetPlayerMaxHealth(iClient);
+	int iCurrentMaxHealth = GetPlayerMaxHealth(iClient);
 
-    // Add the health to existing max health if its additive
-    if (bAdditive)
-        iHealthAmount += iCurrentMaxHealth;
-    
-    SetEntProp(iClient, Prop_Data, "m_iMaxHealth", iHealthAmount);
+	// Add the health to existing max health if its additive
+	if (bAdditive)
+		iHealthAmount += iCurrentMaxHealth;
+	
+	SetEntProp(iClient, Prop_Data, "m_iMaxHealth", iHealthAmount);
 
-    // Give the player more health to fill in the gap created by giving max health
-    if (bAddHealthToFillGap && iHealthAmount > iCurrentMaxHealth)
-        SetPlayerHealth(iClient, iHealthAmount - iCurrentMaxHealth, true);
+	// Clamp the players health to their new max health
+	SetPlayerHealth(iClient, 0, true);
 
-    return true;
+	// Give the player more health to fill in the gap created by giving max health
+	if (bAddHealthToFillGap && iHealthAmount > iCurrentMaxHealth)
+		SetPlayerHealth(iClient, iHealthAmount - iCurrentMaxHealth, true);
+
+	
+
+	HandlePostSetPlayerHealth(iClient);
+	
+	return true;
 }
 
 void HandlePostSetPlayerHealth(int iClient)
 {
-    HandlePostSetPlayerHealth_Ellis(iClient);
+	HandlePostSetPlayerHealth_Ellis(iClient);
 }
 
 void ResetTempHealthToSurvivor(iClient)
@@ -83,7 +90,7 @@ void ResetTempHealthToSurvivor(iClient)
 		!IsPlayerAlive(iClient) || 
 		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
 		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1)
-        return;
+		return;
 	
 	SetEntPropFloat(iClient, Prop_Send, "m_healthBuffer", 0.0);
 }
@@ -93,7 +100,7 @@ void AddTempHealthToSurvivor(int iClient, float fAdditionalTempHealth, bool bRes
 	if (!RunClientChecks(iClient) || 
 		!IsPlayerAlive(iClient) || 
 		g_iClientTeam[iClient] != TEAM_SURVIVORS)
-        return;
+		return;
 	
 	// Calculate the current surivivors temp health
 	new iTempHealth = GetSurvivorTempHealth(iClient);
@@ -140,24 +147,29 @@ void AddTempHealthToSurvivor(int iClient, float fAdditionalTempHealth, bool bRes
 // buffer time times the decay rate for temp health.
 int GetSurvivorTempHealth(int iClient)
 {
-    if (!RunClientChecks(iClient) || 
+	if (!RunClientChecks(iClient) || 
 		!IsPlayerAlive(iClient) || 
 		g_iClientTeam[iClient] != TEAM_SURVIVORS)
-        return -1;
-    
-    if (cvarPainPillsDecay == INVALID_HANDLE)
-    {
-        cvarPainPillsDecay = FindConVar("pain_pills_decay_rate");
-        if (cvarPainPillsDecay == INVALID_HANDLE)
-            return -1;
-        
-        HookConVarChange(cvarPainPillsDecay, OnPainPillsDecayChanged);
-        flPainPillsDecay = cvarPainPillsDecay.FloatValue;
-    }
-    
-    int tempHealth = RoundToCeil(GetEntPropFloat(iClient, Prop_Send, "m_healthBuffer") - ((GetGameTime() - GetEntPropFloat(iClient, Prop_Send, "m_healthBufferTime")) * flPainPillsDecay)) - 1;
-    return tempHealth < 0 ? 0 : tempHealth;
+		return -1;
+	
+	if (cvarPainPillsDecay == INVALID_HANDLE)
+	{
+		cvarPainPillsDecay = FindConVar("pain_pills_decay_rate");
+		if (cvarPainPillsDecay == INVALID_HANDLE)
+			return -1;
+		
+		HookConVarChange(cvarPainPillsDecay, OnPainPillsDecayChanged);
+		flPainPillsDecay = cvarPainPillsDecay.FloatValue;
+	}
+	
+	int tempHealth = RoundToCeil(GetEntPropFloat(iClient, Prop_Send, "m_healthBuffer") - ((GetGameTime() - GetEntPropFloat(iClient, Prop_Send, "m_healthBufferTime")) * flPainPillsDecay)) - 1;
+	return tempHealth < 0 ? 0 : tempHealth;
 }
+
+// Action:TimerConvertAllSurvivorHealthToTemporary(Handle:timer, int iClient)
+// {
+// 	ConvertAllSurvivorHealthToTemporary(iClient);
+// }
 
 bool ConvertAllSurvivorHealthToTemporary(int iClient)
 {
@@ -171,7 +183,7 @@ bool ConvertAllSurvivorHealthToTemporary(int iClient)
 	new iCurrentHealth = GetPlayerHealth(iClient);
 	new iTempHealth = GetSurvivorTempHealth(iClient);
 	// Change health to only be 1
-    // Dont call SetPlayerHealth here, infinite loop because it calls this function
+	// Dont call SetPlayerHealth here, infinite loop because it calls this function
 	SetEntProp(iClient, Prop_Data, "m_iHealth", 1);
 	// Change temp health to self revive health
 	if (iCurrentHealth > 1)

@@ -62,7 +62,7 @@ TalentsLoad_Ellis(iClient)
 				SetClientSpeed(iClient);
 			}
 		}
-		
+
 		// Set adrenaline counter for global Ellis
 		g_iEllisAdrenalineStackDuration += (g_iOverLevel[iClient] * 2);
 		SetConVarFloat(FindConVar("adrenaline_duration"), float(g_iEllisAdrenalineStackDuration));
@@ -86,6 +86,9 @@ TalentsLoad_Ellis(iClient)
 
 OnGameFrame_Ellis(iClient)
 {
+	if(g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
+		return;
+	
 	HandleEllisSwitchToStashedPrimaryWeapon(iClient);
 	HandleEllisLimitBreak(iClient);
 
@@ -162,6 +165,9 @@ OnGameFrame_Ellis(iClient)
 
 OGFSurvivorReload_Ellis(iClient, const char[] currentweapon, ActiveWeaponID, CurrentClipAmmo, iOffset_Ammo)
 {
+	if(g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
+		return;
+	
 	if(g_iEllisPrimarySlot0[iClient] == ITEM_EMPTY || g_iEllisPrimarySlot1[iClient] == ITEM_EMPTY)
 	{
 		StoreCurrentPrimaryWeapon(iClient);
@@ -244,6 +250,9 @@ OGFSurvivorReload_Ellis(iClient, const char[] currentweapon, ActiveWeaponID, Cur
 
 EventsHurt_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 {
+	if(g_iChosenSurvivor[iAttacker] != ELLIS || g_bTalentsConfirmed[iAttacker] == false)
+		return;
+
 	if (IsFakeClient(iAttacker))
 		return;
 	
@@ -320,6 +329,9 @@ EventsHurt_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 
 EventsHurt_VictimEllis(Handle:hEvent, attacker, victim)
 {
+	if(g_iChosenSurvivor[victim] != ELLIS || g_bTalentsConfirmed[victim] == false)
+		return;
+		
 	if (IsFakeClient(victim))
 		return;
 
@@ -369,6 +381,9 @@ EventsHurt_VictimEllis(Handle:hEvent, attacker, victim)
 
 EventsDeath_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 {
+	if(g_iChosenSurvivor[iAttacker] != ELLIS || g_bTalentsConfirmed[iAttacker] == false)
+		return;
+
 	// Handle Ellis's speed boost with the tanks dying
 	if (g_iClientTeam[iVictim] == TEAM_INFECTED &&
 		g_bEndOfRound == false && 
@@ -458,6 +473,9 @@ void EventsPillsUsed_Ellis(int iClient)
 
 void EventsAdrenalineUsed_Ellis(int iClient)
 {
+	if (g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
+		return;
+
 	// Give stashed adrenaline if they have more
 	if (g_iStashedInventoryAdrenaline[iClient] > 0)
 		CreateTimer(0.1, TimerGiveAdrenalineFromStashedInventory, iClient, TIMER_FLAG_NO_MAPCHANGE);
@@ -520,14 +538,15 @@ void ConvertEllisHealthToTemporary(int iClient)
 		IsPlayerAlive(iClient) == false)
 		return;
 
+	//PrintToChatAll("Setting temp health");
 	ConvertAllSurvivorHealthToTemporary(iClient);
+	//CreateTimer(0.1, TimerConvertAllSurvivorHealthToTemporary, iClient);
 }
 
 void HandlePostSetPlayerHealth_Ellis(int iClient)
 {
 	ConvertEllisHealthToTemporary(iClient);
 }
-	
 
 void EventsPlayerUse_Ellis(int iClient, int iTargetID)
 {
@@ -601,6 +620,9 @@ void HandleCheatCommandTasks_Ellis(int iClient, const char [] strCommandWithArgs
 
 CyclePlayerWeapon_Ellis(int iClient)
 {
+	if (g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
+		return;
+
 	if((g_iEllisCurrentPrimarySlot[iClient] == 0) && g_iEllisPrimarySlot1[iClient] > ITEM_EMPTY)
 	{
 		// Remove a laser upgrade counter to prevent flooding the server
@@ -646,6 +668,9 @@ CyclePlayerWeapon_Ellis(int iClient)
 // To get the old weapon that was dropped unless storing it seomewhere else first.
 HandleWeaponPickUpForWeaponCycling(iClient)
 {
+	if (g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
+		return;
+
 	if(g_iWeaponsLevel[iClient] == 5)
 	{
 		// int iSlotItemID = GetPlayerWeaponSlot(iClient, 0);
@@ -734,6 +759,9 @@ HandleWeaponPickUpForWeaponCycling(iClient)
 
 HandleEllisSwitchToStashedPrimaryWeapon(iClient)
 {
+	if (g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
+		return;
+
 	// Check if Ellis can switch his weapon
 	if (g_iWeaponsLevel[iClient] < 5 || 
 		g_bCanEllisPrimaryCycle[iClient] == false)
@@ -779,6 +807,9 @@ HandleEllisSwitchToStashedPrimaryWeapon(iClient)
 
 HandleEllisLimitBreak(iClient)
 {
+	if (g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
+		return;
+
 	// Check if they have the ability and havn't already toggled it
 	if (g_bTalentsConfirmed[iClient] == false || 
 		g_iMetalLevel[iClient] != 5)
@@ -830,6 +861,9 @@ HandleEllisLimitBreak(iClient)
 
 bool HandleFastAttackingClients_Ellis(int iClient, const int iActiveWeaponID, const int iActiveWeaponSlot, const float fGameTime, const float fCurrentNextAttackTime, float &fAdjustedNextAttackTime)
 {
+	if (g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
+		return false;
+
 	if (g_iMetalLevel[iClient] <= 0)
 		return false;
 	

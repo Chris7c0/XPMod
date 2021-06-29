@@ -798,17 +798,13 @@ Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	new target = GetClientOfUserId(GetEventInt(hEvent, "subject"));
+
+	// PrintToChatAll("Event_HealSuccess: healer: %N, target: %N", iClient, target);
 	
 	g_iKitsUsed++;
 	//PrintToChatAll("g_iKitsUsed = %d", g_iKitsUsed);
 	
-	if(IsValidEntity(iClient) == false)
-		return Plugin_Continue;
-	if(IsClientInGame(iClient) == false)
-		return Plugin_Continue;
-	if(IsValidEntity(target) == false)
-		return Plugin_Continue;
-	if(IsClientInGame(target) == false)
+	if(RunClientChecks(iClient) == false || RunClientChecks(target) == false)
 		return Plugin_Continue;
 	
 	//Get their current health states
@@ -862,7 +858,7 @@ Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 		}
 
 		// Get all health converted to temp health for Ellis
-		ConvertEllisHealthToTemporary(iClient);
+		ConvertEllisHealthToTemporary(target);
 	}
 	if(g_iChosenSurvivor[iClient] == 4)
 	{
