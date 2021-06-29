@@ -12,10 +12,28 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 	decl String:strConfirmed[16];
 	decl String:strState[64];
 
+	PrintToBufferServerOrClient(iClient, "\x05[  =  =  =  =  =  =  =  =  =  =  =  =  =  ]", strStoreBuffer, iStoreBufferSize);
+
+	// Store timestamp into a string
+	decl String:strTime[16];
+	FormatTime(strTime, sizeof(strTime), "%H:%M:%S", GetTime());
+
+	// Add Server info
+	Format(strStatsTextBuffer, sizeof(strStatsTextBuffer),
+		"\x03  %s  \x04%i Humans  \x03%s\
+		\n\x04  Round %i  %s  %.1f Mins\x03 ", 
+		strTime,
+		GetHumanPlayerCount(),
+		g_strServerName,
+		g_iRoundCount,
+		g_strCurrentMap,
+		GetGameTime() / 60.0);
+	PrintToBufferServerOrClient(iClient, strStatsTextBuffer, strStoreBuffer, iStoreBufferSize);
+
 	// Construct the statistics strings
 	if(ProbeTeams(TEAM_SPECTATORS) == true)
 	{
-		PrintToBufferServerOrClient(iClient, "\x05[	=	=	=	=	=	Spectators	=	=	=	=	=	]\n ", strStoreBuffer, iStoreBufferSize);
+		PrintToBufferServerOrClient(iClient, "\x05[  =  =  =  =  = Spectators =  =  =  =  = ]\n ", strStoreBuffer, iStoreBufferSize);
 
 
 		for(new i = 1; i<= MaxClients; i++)
@@ -27,7 +45,7 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 
 				GetLoggedInAndConfirmedStrings(i, strLoggedIn, sizeof(strLoggedIn), strConfirmed, sizeof(strConfirmed));
 
-				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05	Lvl %d, %d XP%s%s", 
+				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05   Lvl %d %d XP%s%s", 
 					g_iClientLevel[i], 
 					g_iClientXP[i], 
 					strLoggedIn, 
@@ -40,7 +58,7 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 
 	if(ProbeTeams(TEAM_SURVIVORS) == true)
 	{
-		PrintToBufferServerOrClient(iClient, "\x05[	=	=	=	=	=	Survivors	=	=	=	=	=	]\n ", strStoreBuffer, iStoreBufferSize);
+		PrintToBufferServerOrClient(iClient, "\x05[  =  =  =  =  = Survivors =  =  =  =  =  ]\n ", strStoreBuffer, iStoreBufferSize);
 
 		for(new i = 1; i<= MaxClients; i++)
 		{
@@ -52,7 +70,7 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 				else if (GetEntProp(i, Prop_Send, "m_isIncapacitated") == 1)
 					Format(strState, sizeof(strState), "INCAPACITATED");
 				else if (GetEntProp(i,Prop_Data,"m_iHealth") > 0)
-					Format(strState, sizeof(strState), "(%i+%i of %i HP) %f Speed", 
+					Format(strState, sizeof(strState), "(%i+%i/%i HP) %.3f MS", 
 						GetEntProp(i,Prop_Data,"m_iHealth"), 
 						GetSurvivorTempHealth(i),
 						GetEntProp(i,Prop_Data,"m_iMaxHealth"),
@@ -65,7 +83,7 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 
 				GetLoggedInAndConfirmedStrings(i, strLoggedIn, sizeof(strLoggedIn), strConfirmed, sizeof(strConfirmed));
 
-				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05	Lvl %d, %d XP%s%s", 
+				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05   Lvl %d %d XP%s%s", 
 					g_iClientLevel[i], 
 					g_iClientXP[i], 
 					strLoggedIn, 
@@ -74,9 +92,8 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 				
 				if (g_bClientLoggedIn[i])
 				{
-					Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05	%s - %s\x04	CI-Kills: %d SI-Kills: %d HS: %d\x05 ",
+					Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05   %s\x04 K-CI: %d K-SI: %d HS: %d\x05 ",
 						SURVIVOR_NAME[g_iChosenSurvivor[i]],
-						SURVIVOR_CLASS_NAME[g_iChosenSurvivor[i]],
 						g_iStat_ClientCommonKilled[i], 
 						g_iStat_ClientInfectedKilled[i], 
 						g_iStat_ClientCommonHeadshots[i]);
@@ -89,7 +106,7 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 
 	if(ProbeTeams(TEAM_INFECTED) == true)
 	{
-		PrintToBufferServerOrClient(iClient, "\x05[	=	=	=	=	=	Infected	=	=	=	=	=	]\n ", strStoreBuffer, iStoreBufferSize);
+		PrintToBufferServerOrClient(iClient, "\x05[  =  =  =  =  = Infected  =  =  =  =  =  ]\n ", strStoreBuffer, iStoreBufferSize);
 
 		for(new i = 1; i<= MaxClients; i++)
 		{
@@ -107,7 +124,7 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 				else if (g_bCanBeGhost[i])
 					strState = "DEAD";
 				else if (IsPlayerAlive(i) && g_iInfectedCharacter[i] < 9)
-					Format(strState, sizeof(strState), "%s (%i of %i HP) %f Speed", 
+					Format(strState, sizeof(strState), "%s (%i/%i HP) %.3f MS", 
 						INFECTED_NAME[g_iInfectedCharacter[i]], 
 						GetEntProp(i,Prop_Data,"m_iHealth"), 
 						GetEntProp(i,Prop_Data,"m_iMaxHealth"), 
@@ -122,7 +139,7 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 				{
 					GetLoggedInAndConfirmedStrings(i, strLoggedIn, sizeof(strLoggedIn), strConfirmed, sizeof(strConfirmed));
 
-					Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05	Lvl %d, %d XP%s%s", 
+					Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05   Lvl %d %d XP%s%s", 
 						g_iClientLevel[i], 
 						g_iClientXP[i], 
 						strLoggedIn, 
@@ -132,7 +149,7 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 				
 				if (g_bClientLoggedIn[i])
 				{
-					Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05	%s, %s, %s\x04	Kills: %d Incaps: %d DMG: %d\x05 ", 
+					Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x05   %s|%s|%s\x04 K: %d I: %d DMG: %d\x05 ", 
 						g_strClientInfectedClass1[i], 
 						g_strClientInfectedClass2[i], 
 						g_strClientInfectedClass3[i],
@@ -146,7 +163,7 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 		PrintToBufferServerOrClient(iClient, " ", strStoreBuffer, iStoreBufferSize);
 	}
 	
-	PrintToBufferServerOrClient(iClient, "\x05[	=	=	=	=	=	=	=	=	=	=	=	=	]", strStoreBuffer, iStoreBufferSize);
+	PrintToBufferServerOrClient(iClient, "\x05[  =  =  =  =  =  =  =  =  =  =  =  =  =  ]", strStoreBuffer, iStoreBufferSize);
 }
 
 PrintToBufferServerOrClient(iClient, const char[] strText, char[] strStoreBuffer = "", iStoreBufferSize = -1)
@@ -172,12 +189,12 @@ PrintToBufferServerOrClient(iClient, const char[] strText, char[] strStoreBuffer
 GetLoggedInAndConfirmedStrings(iClient, char[] strLoggedIn, int iLoggedInMaxLen, char[] strConfirmed, int iConfirmedMaxLen)
 {
 	if (g_bClientLoggedIn[iClient])
-		Format(strLoggedIn, iLoggedInMaxLen, ", LoggedIn");
+		Format(strLoggedIn, iLoggedInMaxLen, " LoggedIn");
 	else
 		Format(strLoggedIn, iLoggedInMaxLen, "");
 
 	if (g_bTalentsConfirmed[iClient])
-		Format(strConfirmed, iConfirmedMaxLen, ", Confirmed");
+		Format(strConfirmed, iConfirmedMaxLen, " Confirmed");
 	else
 		Format(strConfirmed, iConfirmedMaxLen, "");
 }
@@ -187,25 +204,12 @@ Action:TimerLogXPMStatsToFile(Handle:timer, any:data)
 	decl String:strStoreBuffer[2000];
 	strStoreBuffer = NULL_STRING;
 
-	// Store timestamp into a string
-	decl String:strTime[16];
-	FormatTime(strTime, sizeof(strTime), "%H:%M:%S", GetTime());
-
-	// Add Server info at the end
-	decl String:strServerInfo[50];
-	Format(strServerInfo, sizeof(strServerInfo), "%s   %i Humans   %s\n", strTime, GetHumanPlayerCount(), g_strServerName);
-	StrCat(strStoreBuffer, sizeof(strStoreBuffer), strServerInfo);
-
 	CreateXPMStatistics(-1, strStoreBuffer, sizeof(strStoreBuffer));
 
 	// Remove all the color codes
 	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "\x05", "", true);
 	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "\x04", "", true);
 	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "\x03", "", true);
-
-	// Reduce the spacing of the brackets
-	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "	=", " =", true);
-	ReplaceString(strStoreBuffer, sizeof(strStoreBuffer), "=	", "= ", true);
 
 	SaveXPMStatsBufferToLogFile(strStoreBuffer);
 

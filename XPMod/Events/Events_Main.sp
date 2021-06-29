@@ -225,7 +225,8 @@ public OnMapStart()
 	ReplaceString(g_strServerName, sizeof(g_strServerName), " ", "_");
 	// Get the log file name
 	SetXPMStatsLogFileName();
-	
+
+	g_iRoundCount = 1;
 
 	DispatchKeyValue(0, "timeofday", "1"); //Set time of day to midnight
 	
@@ -250,6 +251,7 @@ Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	g_bPlayerPressedButtonThisRound = false;
 	
 	//g_bRoundStarted = true;
+	g_iRoundCount++;
 	g_bEndOfRound = false;
 	g_bCanSave = true;
 	

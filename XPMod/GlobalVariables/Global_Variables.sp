@@ -77,19 +77,19 @@ new Float:EMPTY_VECTOR[3] = 0.0;
 // #define     FRANCIS      6
 // #define     LOUIS     	7
 
-new String:SURVIVOR_NAME[][] =          {"BILL", 
-                                        "ROCHELLE",
-                                        "COACH",
-                                        "ELLIS",
-                                        "NICK",
-                                        "LOUIS"}
+public String:SURVIVOR_NAME[][] =          {"BILL", 
+                                            "ROCHELLE",
+                                            "COACH",
+                                            "ELLIS",
+                                            "NICK",
+                                            "LOUIS"}
 
-new String:SURVIVOR_CLASS_NAME[][] =    {"SUPPORT", 
-                                        "NINJA",
-                                        "BERSERKER",
-                                        "WEAPONS EXPERT",
-                                        "GAMBLER",
-                                        "DISRUPTOR"}
+public String:SURVIVOR_CLASS_NAME[][] =    {"SUPPORT", 
+                                            "NINJA",
+                                            "BERSERKER",
+                                            "WEAPONS EXPERT",
+                                            "GAMBLER",
+                                            "DISRUPTOR"}
 
 // new String:SURVIVOR_NAME[][] =          {"BILL", 
 //                                         "ROCHELLE",
@@ -218,7 +218,9 @@ new String:INFECTED_NAME[][] =          {"",
 #define RENDER_MODE_TRANSPARENT 3
 
 //Round/Map Variables
+char g_strCurrentMap[32] = "";
 //new bool:g_bRoundStarted = false;
+new g_iRoundCount;
 new bool:g_bEndOfRound = false;
 
 //Player Switching Teams timer
