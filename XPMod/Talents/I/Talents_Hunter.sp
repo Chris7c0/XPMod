@@ -12,8 +12,7 @@ TalentsLoad_Hunter(iClient)
 		if(g_bHasInfectedHealthBeenSet[iClient] == false)
 		{
 			g_bHasInfectedHealthBeenSet[iClient] = true;
-			SetEntProp(iClient,Prop_Data,"m_iHealth", 250 + (g_iBloodlustLevel[iClient] * 25));
-			SetEntProp(iClient,Prop_Data,"m_iMaxHealth", 250 + (g_iBloodlustLevel[iClient] * 25));
+			SetPlayerMaxHealth(iClient, (g_iBloodlustLevel[iClient] * 25), true);
 		}
 		g_bCanHunterDismount[iClient] = true;
 	}

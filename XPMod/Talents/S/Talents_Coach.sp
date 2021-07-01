@@ -4,16 +4,10 @@ TalentsLoad_Coach(iClient)
 	{					
 		g_iMeleeDamageCounter[iClient] = (g_iStrongLevel[iClient] * 30);
 		
-		g_iClientSurvivorMaxHealth[iClient] = 100 + (g_iBullLevel[iClient]*15) + (g_iWreckingLevel[iClient]*10) + (g_iStrongLevel[iClient]*10) + (g_iCoachTeamHealthStack * 5);
-		SetEntProp(iClient,Prop_Data,"m_iMaxHealth", g_iClientSurvivorMaxHealth[iClient]);
-		new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
-		if(currentHP > (100 +  g_iClientSurvivorMaxHealth[iClient]))
-				SetEntProp(iClient,Prop_Data,"m_iHealth", 100 +  g_iClientSurvivorMaxHealth[iClient]);
-			
+		SetPlayerMaxHealth(iClient, 100 + (g_iBullLevel[iClient]*15) + (g_iWreckingLevel[iClient]*10) + (g_iStrongLevel[iClient]*10) + (g_iCoachTeamHealthStack * 5), false, !g_bSurvivorTalentsGivenThisRound[iClient]);
+		
 		if(g_bSurvivorTalentsGivenThisRound[iClient] == false)
 		{
-			SetEntProp(iClient,Prop_Data,"m_iHealth", 100 + (g_iBullLevel[iClient]*15) + (g_iWreckingLevel[iClient]*10) + (g_iStrongLevel[iClient]*10) + (g_iCoachTeamHealthStack * 5));
-			
 			CreateTimer(3.0, TimerGiveFirstExplosive, iClient, TIMER_FLAG_NO_MAPCHANGE);
 		}
 	}
@@ -65,25 +59,23 @@ TalentsLoad_Coach(iClient)
 		
 		if(g_iLeadLevel[iClient] > 0)
 		{
-			g_iCoachTeamHealthStack += g_iLeadLevel[iClient];
-			if(g_iLeadLevel[iClient] > g_iHighestLeadLevel)	//Find the maximum level for setting the cvars
-				g_iHighestLeadLevel = g_iLeadLevel[iClient];
-			
-			//Set Max Health for all surviovrs higher
-			decl i;
-			for(i=1;i<=MaxClients;i++)
+			// Limit the amount of health stacks
+			if (g_iCoachTeamHealthStack < 20)
 			{
-				if(RunClientChecks(i) && IsPlayerAlive(i) == true)
-				{
-					if(g_iClientTeam[i]==TEAM_SURVIVORS)
-					{
-						new currentmaxHP=GetEntProp(i,Prop_Data,"m_iMaxHealth");
-						new currentHP=GetEntProp(i,Prop_Data,"m_iHealth");
-						SetEntProp(i,Prop_Data,"m_iMaxHealth", currentmaxHP + (g_iLeadLevel[iClient] * 5));
-						SetEntProp(i,Prop_Data,"m_iHealth", currentHP + (g_iLeadLevel[iClient] * 5));
-					}
-				}
+				g_iCoachTeamHealthStack += g_iLeadLevel[iClient];
+				// Cap this at 4 Coaches
+				if (g_iCoachTeamHealthStack > 20)
+					g_iCoachTeamHealthStack = 20;
+
+				//Set Max Health for all surviovrs higher
+				decl i;
+				for(i=1;i<=MaxClients;i++)
+					if(RunClientChecks(i) && IsPlayerAlive(i) == true && g_iClientTeam[i]==TEAM_SURVIVORS)
+						SetPlayerMaxHealth(i, (g_iLeadLevel[iClient] * 5), true, true);
 			}
+			
+			if(g_iLeadLevel[iClient] > g_iHighestLeadLevel)	//Find the maximum level for setting the cvars
+				g_iHighestLeadLevel = g_iLeadLevel[iClient];			
 
 			g_iScreenShakeAmount -= 10;
 			SetSurvivorScreenShakeAmount();

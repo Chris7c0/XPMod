@@ -5,12 +5,7 @@ TalentsLoad_Louis(iClient)
 
 	if(g_iLouisTalent1Level[iClient] > 0)
 	{
-		new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
-		new maxHP = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
-		
-		SetEntProp(iClient, Prop_Data, "m_iMaxHealth", maxHP + (g_iLouisTalent1Level[iClient] * 10));
-		SetEntProp(iClient, Prop_Data, "m_iHealth", currentHP + (g_iLouisTalent1Level[iClient] * 10));
-
+		SetPlayerMaxHealth(iClient, 100 + (g_iLouisTalent1Level[iClient] * 10) + (g_iCoachTeamHealthStack * 5), false, !g_bSurvivorTalentsGivenThisRound[iClient]);
 		SetClientSpeed(iClient);
 	}
 

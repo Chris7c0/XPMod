@@ -780,7 +780,7 @@ Action:Event_TankFrustrated(Handle:hEvent, const String:strName[], bool:bDontBro
 	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
 	g_fFrustratedTankTransferHealthPercentage = iCurrentHealth / float(iMaxHealth);
 	
-	//PrintToChatAll("%N ResetAllTankVariables m_iHealth = %i m_iMaxHealth = %i ", iClient, iCurrentHealth, iMaxHealth);
+	//PrintToChatAll("%N ResetAllTankVariables iHealth = %i MaxHealth = %i ", iClient, iCurrentHealth, iMaxHealth);
 	PrintToChatAll("\x03[XPMod] \x04%N's tank has been frustrated. Transfering tank with %3f health.", iClient, g_fFrustratedTankTransferHealthPercentage);
 
 	//Set the current health to max health so that the new tank player can get this full percentage

@@ -9,8 +9,6 @@ TalentsLoad_Charger(iClient)
 	}
 	if(g_iSpikedLevel[iClient] > 0)
 	{
-		//SetEntProp(iClient,Prop_Data,"m_iHealth", 600 + (g_iSpikedLevel[iClient] * 25));
-		//SetEntProp(iClient,Prop_Data,"m_iMaxHealth", 600 + (g_iSpikedLevel[iClient] * 25));
 		g_bIsChargerHealing[iClient] = false;
 		g_bCanChargerSuperCharge[iClient] = true;
 		g_bIsSpikedCharged[iClient] = false;
@@ -19,18 +17,14 @@ TalentsLoad_Charger(iClient)
 		g_bIsSuperCharger[iClient] = false;
 	}
 	if(g_iHillbillyLevel[iClient] > 0)
-	{
-		//SetEntProp(iClient,Prop_Data,"m_iHealth", 600 + (g_iSpikedLevel[iClient] * 25) + (g_iHillbillyLevel[iClient] * 35));
-		//SetEntProp(iClient,Prop_Data,"m_iMaxHealth", 600 + (g_iSpikedLevel[iClient] * 25) + (g_iHillbillyLevel[iClient] * 35));
-		
+	{		
 		SetClientSpeed(iClient);
 		g_bCanChargerEarthquake[iClient] = true;
 	}
 	if(g_bHasInfectedHealthBeenSet[iClient] == false)
 	{
 		g_bHasInfectedHealthBeenSet[iClient] = true;
-		SetEntProp(iClient,Prop_Data,"m_iHealth", 600 + (g_iSpikedLevel[iClient] * 25) + (g_iHillbillyLevel[iClient] * 35));
-		SetEntProp(iClient,Prop_Data,"m_iMaxHealth", 600 + (g_iSpikedLevel[iClient] * 25) + (g_iHillbillyLevel[iClient] * 35));
+		SetPlayerMaxHealth(iClient, (g_iSpikedLevel[iClient] * 25) + (g_iHillbillyLevel[iClient] * 35), true);
 	}
 }
 

@@ -18,14 +18,10 @@ TalentsLoad_Bill(iClient)
 	
 	if(g_iWillLevel[iClient] > 0)
 	{
-		SetEntProp(iClient,Prop_Data,"m_iMaxHealth", 100 + (g_iWillLevel[iClient]*5) + (g_iDiehardLevel[iClient]*15) + (g_iCoachTeamHealthStack * 5));
-		new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
-		if(currentHP > (100 + (g_iWillLevel[iClient]*5) + (g_iDiehardLevel[iClient]*15) + (g_iCoachTeamHealthStack * 5)))
-			SetEntProp(iClient,Prop_Data,"m_iHealth", 100 + (g_iWillLevel[iClient]*5) + (g_iDiehardLevel[iClient]*15) + (g_iCoachTeamHealthStack * 5));
+		SetPlayerMaxHealth(iClient, 100 + (g_iWillLevel[iClient]*5) + (g_iDiehardLevel[iClient]*15) + (g_iCoachTeamHealthStack * 5), false, !g_bSurvivorTalentsGivenThisRound[iClient]);
+
 		if(g_bSurvivorTalentsGivenThisRound[iClient] == false)
-		{
-			SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + (g_iWillLevel[iClient]*5) + (g_iDiehardLevel[iClient]*15) + (g_iCoachTeamHealthStack * 5));
-			
+		{			
 			//Set Convar for crawling speed
 			g_iCrawlSpeedMultiplier += g_iWillLevel[iClient] * 5;
 			SetConVarInt(FindConVar("survivor_crawl_speed"), (15 + g_iCrawlSpeedMultiplier),false,false);

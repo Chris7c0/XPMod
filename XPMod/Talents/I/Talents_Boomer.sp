@@ -50,14 +50,13 @@ Event_BoomerVomitOnPlayer(iAttacker, iVictim)
 								g_iClientBindUses_1[iAttacker] --;
 								g_iClientBindUses_2[iAttacker] --;
 							}
-							case 1:		//Set Health to 1000
+							case 1:		//Set Health
 							{
 								if(IsPlayerAlive(iAttacker))
 								{
 									PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. He becomes a \x04FAT Ninja!\x05", iAttacker);
-									SetEntProp(iAttacker,Prop_Data,"m_iMaxHealth", 750);
-									SetEntProp(iAttacker,Prop_Data,"m_iHealth", 750);
-
+									SetPlayerMaxHealth(iAttacker, 750, false, true);
+									SetPlayerHealth(iAttacker, 750)
 									g_bIsSuperSpeedBoomer[iAttacker] = true;
 									SetClientSpeed(iAttacker);
 									
@@ -85,11 +84,15 @@ Event_BoomerVomitOnPlayer(iAttacker, iVictim)
 										ok = true;
 									}
 								}
-								if(ok == false)	//If the iVictim is no longer alive, give health instead
+								if(ok == false)	//If the iVictim is no longer alive, fat ninja instead
 								{
-									PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. He gets 1000 Health", iAttacker);
-									SetEntProp(iAttacker,Prop_Data,"m_iMaxHealth", 1000);
-									SetEntProp(iAttacker,Prop_Data,"m_iHealth", 1000);
+									PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. He becomes a \x04FAT Ninja!\x05", iAttacker);
+									SetPlayerMaxHealth(iAttacker, 750, false, true);
+									SetPlayerHealth(iAttacker, 750)
+									g_bIsSuperSpeedBoomer[iAttacker] = true;
+									SetClientSpeed(iAttacker);
+									
+									CreateTimer(20.0, TimerResetFastBoomerSpeed, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
 								}
 							}
 							case 3:		//Zombies do more damage

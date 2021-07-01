@@ -6,6 +6,8 @@ int GetPlayerHealth(int iClient)
 		(g_iClientTeam[iClient] == TEAM_SURVIVORS &&
 		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1))
 		return 0;
+
+	// PrintToChatAll("GetPlayerHealth: %i", GetEntProp(iClient, Prop_Data, "m_iHealth"));
 		
 	return GetEntProp(iClient, Prop_Data, "m_iHealth");
 }
@@ -15,6 +17,8 @@ int GetPlayerMaxHealth(int iClient)
 	if (RunClientChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false)
 		return 0;
+
+	// PrintToChatAll("GetPlayerMaxHealth: %i", GetEntProp(iClient, Prop_Data, "m_iMaxHealth"));
 		
 	return GetEntProp(iClient, Prop_Data, "m_iMaxHealth");
 }
@@ -58,6 +62,7 @@ bool SetPlayerMaxHealth(int iClient, int iHealthAmount, bool bAdditive = false, 
 		return false;
 
 	int iCurrentMaxHealth = GetPlayerMaxHealth(iClient);
+	GetPlayerHealth(iClient);
 
 	// Add the health to existing max health if its additive
 	if (bAdditive)
@@ -72,8 +77,9 @@ bool SetPlayerMaxHealth(int iClient, int iHealthAmount, bool bAdditive = false, 
 	if (bAddHealthToFillGap && iHealthAmount > iCurrentMaxHealth)
 		SetPlayerHealth(iClient, iHealthAmount - iCurrentMaxHealth, true);
 
+	GetPlayerMaxHealth(iClient);
+	GetPlayerHealth(iClient);
 	
-
 	HandlePostSetPlayerHealth(iClient);
 	
 	return true;

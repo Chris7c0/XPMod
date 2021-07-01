@@ -3,28 +3,14 @@ TalentsLoad_Nick(iClient)
 	g_bDivineInterventionQueued[iClient] = false;
 	g_iNickMagnumShotCountCap[iClient] = 0;
 	g_bCanNickStampedeReload[iClient] = false;
-	g_bNickSwindlerHealthCapped[iClient] = false;
-	g_iNickSwindlerBonusHealth[iClient] = 0;
 	g_bRamboModeActive[iClient] = false;
-	new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
-	new maxHP = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
-	
-	if((g_iKitsUsed * (g_iSwindlerLevel[iClient] * 3)) < 100)
-	{
-		SetEntProp(iClient,Prop_Data,"m_iMaxHealth", maxHP + (g_iKitsUsed * (g_iSwindlerLevel[iClient] * 3)));
-		SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + (g_iKitsUsed * (g_iSwindlerLevel[iClient] * 3)));
-	}
-	else if((g_iKitsUsed * (g_iSwindlerLevel[iClient] * 3)) > 100)
-	{
-		SetEntProp(iClient,Prop_Data,"m_iMaxHealth", maxHP + 100);
-		SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + 100);
-	}
+
+	// Give nick more max health for each kit used, but cap it at +100 HP.
+	SetPlayerMaxHealth(iClient, 100 + (g_iKitsUsed * (g_iSwindlerLevel[iClient] * 3)) < 200 ? 
+		100 + (g_iKitsUsed * (g_iSwindlerLevel[iClient] * 3)) + (g_iCoachTeamHealthStack * 5) : 200 + (g_iCoachTeamHealthStack * 5), false, !g_bSurvivorTalentsGivenThisRound[iClient]);
 	
 	if(g_iMagnumLevel[iClient] > 0)
-	{
 		SetClientSpeed(iClient);
-	}
-		
 	
 	if(g_bSurvivorTalentsGivenThisRound[iClient] == false)
 		g_iClientBindUses_1[iClient] = 3 - RoundToCeil(g_iMagnumLevel[iClient] * 0.5);

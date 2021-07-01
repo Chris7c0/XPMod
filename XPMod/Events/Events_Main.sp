@@ -323,7 +323,6 @@ Action:Event_RoundEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast
 	//g_bRoundStarted = false;
 	g_bEndOfRound = true;
 	g_bPlayerPressedButtonThisRound = false;
-	g_iKitsUsed = 0;
 	
 	if(g_bCanSave == true)	//To prevent more than one run at the end of the round
 	{

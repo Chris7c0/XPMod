@@ -9,8 +9,7 @@ TalentsLoad_Jockey(iClient)
 		if(g_bHasInfectedHealthBeenSet[iClient] == false)
 		{
 			g_bHasInfectedHealthBeenSet[iClient] = true;
-			SetEntProp(iClient,Prop_Data,"m_iHealth", 325 + (g_iUnfairLevel[iClient] * 35));
-			SetEntProp(iClient,Prop_Data,"m_iMaxHealth", 325 + (g_iUnfairLevel[iClient] * 35));
+			SetPlayerMaxHealth(iClient, (g_iUnfairLevel[iClient] * 35), true);
 		}
 		
 		SetClientSpeed(iClient);

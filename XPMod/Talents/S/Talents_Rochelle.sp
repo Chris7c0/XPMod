@@ -23,16 +23,8 @@ TalentsLoad_Rochelle(iClient)
 		if(g_iClientBindUses_2[iClient] < 1)
 			g_iPID_RochelleCharge1[iClient] = WriteParticle(iClient, "rochelle_ulti_ninja_charge1", 0.0);
 		
-		if(g_iShadowLevel[iClient]>0)
-		{
-			SetEntProp(iClient,Prop_Data,"m_iMaxHealth", 100 + (g_iShadowLevel[iClient] * 5) + (g_iSniperLevel[iClient] * 5) + (g_iCoachTeamHealthStack * 5));
-			new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
-			if(currentHP > (100 + (g_iShadowLevel[iClient] * 5) + (g_iSniperLevel[iClient] * 5) + (g_iCoachTeamHealthStack * 5)))
-				SetEntProp(iClient,Prop_Data,"m_iHealth", 100 + (g_iShadowLevel[iClient] * 5) + (g_iSniperLevel[iClient] * 5) + (g_iCoachTeamHealthStack * 5));
-			
-			if(g_bSurvivorTalentsGivenThisRound[iClient] == false)
-				SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + (g_iShadowLevel[iClient] * 5) + (g_iSniperLevel[iClient] * 5) + (g_iCoachTeamHealthStack * 5));
-		}
+		if(g_iShadowLevel[iClient] > 0)
+			SetPlayerMaxHealth(iClient, 100 + (g_iShadowLevel[iClient] * 5) + (g_iSniperLevel[iClient] * 5) + (g_iCoachTeamHealthStack * 5), false, !g_bSurvivorTalentsGivenThisRound[iClient]);
 	}
 	
 	if(g_bSurvivorTalentsGivenThisRound[iClient] == false)

@@ -185,19 +185,19 @@ ResetTankHealth(int iClient)
 	//PrintToChatAll("iMaxHealthConVarSetting: %i", iMaxHealthConVarSetting);
 	new iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
 	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
-	// PrintToChatAll("%N ResetAllTankVariables m_iHealth = %i m_iMaxHealth = %i iMaxHealthConVarSetting = %i", iClient, iCurrentHealth, iMaxHealth, iMaxHealthConVarSetting);
+	// PrintToChatAll("%N ResetAllTankVariables m_iHealth = %i iMaxHealth = %i iMaxHealthConVarSetting = %i", iClient, iCurrentHealth, iMaxHealth, iMaxHealthConVarSetting);
 	
 	// Clamp Player MaxHealth to ConVar Health
 	if (iMaxHealth > iMaxHealthConVarSetting)
 		SetEntProp(iClient, Prop_Data, "m_iMaxHealth", iMaxHealthConVarSetting);
 
 	// iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
-	// PrintToChatAll("%N ResetAllTankVariables m_iHealth = %i m_iMaxHealth = %i iMaxHealthConVarSetting = %i", iClient, iCurrentHealth, iMaxHealth, iMaxHealthConVarSetting);
+	// PrintToChatAll("%N ResetAllTankVariables m_iHealth = %i iMaxHealth = %i iMaxHealthConVarSetting = %i", iClient, iCurrentHealth, iMaxHealth, iMaxHealthConVarSetting);
 
 	// Clamp Player Health to Max Health
 	if (iCurrentHealth > iMaxHealthConVarSetting)
 		SetEntProp(iClient, Prop_Data, "m_iHealth", iMaxHealthConVarSetting);
-	// PrintToChatAll("%N ResetAllTankVariables m_iHealth = %i m_iMaxHealth = %i iMaxHealthConVarSetting = %i", iClient, iCurrentHealth, iMaxHealth, iMaxHealthConVarSetting);
+	// PrintToChatAll("%N ResetAllTankVariables m_iHealth = %i iMaxHealth = %i iMaxHealthConVarSetting = %i", iClient, iCurrentHealth, iMaxHealth, iMaxHealthConVarSetting);
 }
 
 float CalculateTankHealthPercentageMultiplier()

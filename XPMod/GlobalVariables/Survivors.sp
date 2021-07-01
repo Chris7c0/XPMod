@@ -86,7 +86,6 @@ new g_iChargerVictim[MAXPLAYERS + 1];
 new g_iJockeyVictim[MAXPLAYERS + 1];    //g_iJockeyVictim[attacker] = victim;
 new g_iHunterShreddingVictim[MAXPLAYERS + 1];
 
-new g_iClientSurvivorMaxHealth[MAXPLAYERS + 1];		//Survivor max health for the iClient
 new bool:g_bIsClientDown[MAXPLAYERS + 1] = false;
 // Faster Shooting Variables
 new g_iFastAttackingClientsArray[MAXPLAYERS + 1];
@@ -251,8 +250,6 @@ new g_iDruggedRuntimesCounter[MAXPLAYERS + 1];
 new bool:g_bNickIsInvisible[MAXPLAYERS + 1] = false;
 new bool:g_bNickIsGettingBeatenUp[MAXPLAYERS + 1] = false;
 new g_iNicksRamboWeaponID[MAXPLAYERS + 1];
-new g_iNickSwindlerBonusHealth[MAXPLAYERS + 1];
-new bool:g_bNickSwindlerHealthCapped[MAXPLAYERS + 1];
 new g_iNickMagnumShotCount[MAXPLAYERS + 1];
 new bool:g_bCanNickStampedeReload[MAXPLAYERS + 1];
 new g_iNickMagnumShotCountCap[MAXPLAYERS + 1];

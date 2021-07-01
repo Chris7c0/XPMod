@@ -187,10 +187,7 @@ WarezStationMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			}
 			case 1: // Max Health
 			{
-				new iMaxHealth = GetEntProp(iClient, Prop_Data, "m_iMaxHealth");
-				new iCurrentHealth = GetEntProp(iClient, Prop_Data, "m_iHealth");
-				SetEntProp(iClient, Prop_Data, "m_iMaxHealth", iMaxHealth + 10);
-				SetEntProp(iClient, Prop_Data, "m_iHealth", iCurrentHealth + 10);
+				SetPlayerMaxHealth(iClient, 10, true, true);
 				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Max Health Boost", iClient);
 			}
 			case 2: // Team Screen Shake

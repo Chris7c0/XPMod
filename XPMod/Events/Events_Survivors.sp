@@ -1046,25 +1046,14 @@ Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					{
 						if(g_iClientTeam[i]==TEAM_SURVIVORS)
 						{
-							if(g_bNickSwindlerHealthCapped[i] == false)
-							{
-								maxHP = GetEntProp(i,Prop_Data,"m_iMaxHealth");
-								currentHP = GetEntProp(i,Prop_Data,"m_iHealth");
-								g_iNickSwindlerBonusHealth[i] += (g_iSwindlerLevel[i] * 3);
-								if(g_iNickSwindlerBonusHealth[i] < 100)
-								{
-									SetEntProp(i,Prop_Data,"m_iMaxHealth", maxHP + (g_iSwindlerLevel[i] * 3));
-									SetEntProp(i,Prop_Data,"m_iHealth", currentHP + (g_iSwindlerLevel[i] * 3));
-									//PrintToChatAll("g_iNickSwindlerBonusHealth[i] < 100");
-								}
-								else if(g_iNickSwindlerBonusHealth[i] > 100)
-								{
-									SetEntProp(i,Prop_Data,"m_iMaxHealth", maxHP + (100 - (g_iNickSwindlerBonusHealth[i] - (g_iSwindlerLevel[i] * 3))));
-									SetEntProp(i,Prop_Data,"m_iHealth", currentHP + (100 - (g_iNickSwindlerBonusHealth[i] - (g_iSwindlerLevel[i] * 3))));
-									//PrintToChatAll("g_iNickSwindlerBonusHealth[i] > 100");
-									g_bNickSwindlerHealthCapped[i] = true;
-								}
-							}
+							// Give nick more max health for each kit used, but cap it at +100 HP.
+							int iMaxHealth = GetPlayerMaxHealth(i);
+							if (iMaxHealth >= 200)
+								SetPlayerHealth(i, (g_iSwindlerLevel[i] * 3), true, true);
+							else if (iMaxHealth + (g_iSwindlerLevel[i] * 3) <= 200)
+								SetPlayerMaxHealth(i, (g_iSwindlerLevel[i] * 3), true, true)
+							else
+								SetPlayerMaxHealth(i, 200)
 						}
 					}
 				}
