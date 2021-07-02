@@ -66,7 +66,7 @@ Action:LouisTalent1MenuDraw(iClient)
 	FormatEx(text, sizeof(text), "\
 		%s			Manager's Prep (Level %d):\
 		\n \
-		\n +10 HP per Level\
+		\n +5 HP per Level\
 		\n \
 		\n +3%%%%% Movement Speed per Level\
 		\n 	- Louis Always Capped At +25%%%% Speed     \
@@ -77,7 +77,7 @@ Action:LouisTalent1MenuDraw(iClient)
 		strStartingNewLines,
 		g_iLouisTalent1Level[iClient]);
 	SetMenuTitle(menu, text);
-
+	
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\

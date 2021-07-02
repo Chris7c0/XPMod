@@ -5,7 +5,7 @@ TalentsLoad_Louis(iClient)
 
 	if(g_iLouisTalent1Level[iClient] > 0)
 	{
-		SetPlayerMaxHealth(iClient, 100 + (g_iLouisTalent1Level[iClient] * 10) + (g_iCoachTeamHealthStack * 5), false, !g_bSurvivorTalentsGivenThisRound[iClient]);
+		SetPlayerMaxHealth(iClient, 100 + (g_iLouisTalent1Level[iClient] * 5) + (g_iCoachTeamHealthStack * 5), false, !g_bSurvivorTalentsGivenThisRound[iClient]);
 		SetClientSpeed(iClient);
 	}
 
