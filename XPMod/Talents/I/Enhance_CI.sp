@@ -167,7 +167,7 @@ EnhanceCISetHealth(iZombie, iHealth = -1)
 		iHealth = GetRandomInt(CI_SMALL_MIN_HEALTH, CI_BIG_MAX_HEALTH);
 
 	// PrintToChatAll("CI_HEALTH: %i", iHealth);
-	SetEntProp(iZombie, Prop_Data, "m_iHealth", iHealth);
+	SetPlayerHealth(iZombie, iHealth);
 }
 
 EnhanceCISet_Fire(iZombie)
@@ -261,16 +261,16 @@ EnhanceCIHandleDamage_Vampiric(iAttacker, iVictim)
 {
 	DealDamage(iVictim, iAttacker, 1);
 
-	new iCurrentHealth = GetEntProp(iAttacker,Prop_Data,"m_iHealth");
+	new iCurrentHealth = GetPlayerHealth(iAttacker);
 	//PrintToChatAll("ENHANCED_CI_HEALTH_START_STEAL %i", iCurrentHealth);
 
 	// Clamp health and apply
 	if (iCurrentHealth + ENHANCED_CI_VAMPIRIC_LIFE_STEAL_AMOUNT <= CI_BIG_MAX_HEALTH)
-		SetEntProp(iAttacker, Prop_Data, "m_iHealth", iCurrentHealth + ENHANCED_CI_VAMPIRIC_LIFE_STEAL_AMOUNT);
+		SetPlayerHealth(iAttacker, iCurrentHealth + ENHANCED_CI_VAMPIRIC_LIFE_STEAL_AMOUNT);
 	else
-		SetEntProp(iAttacker, Prop_Data, "m_iHealth", CI_BIG_MAX_HEALTH);
+		SetPlayerHealth(iAttacker, CI_BIG_MAX_HEALTH);
 	
-	//iCurrentHealth = GetEntProp(iAttacker,Prop_Data,"m_iHealth");
+	//iCurrentHealth = GetPlayerHealth(iAttacker);
 	//PrintToChatAll("ENHANCED_CI_HEALTH_POST_STEAL %i", iCurrentHealth);
 }
 

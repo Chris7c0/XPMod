@@ -83,11 +83,11 @@ Action:TimerPoisonFade(Handle:timer, any:iClient)
 	if(IsValidEntity(iClient) == false || IsClientInGame(iClient)==false || IsPlayerAlive(iClient)==false)
 		return Plugin_Stop;
 	
-	new hp = GetEntProp(iClient,Prop_Data,"m_iHealth");
+	new hp = GetPlayerHealth(iClient);
 	if(hp < 16)
 		ForcePlayerSuicide(iClient);
 	else
-		SetEntProp(iClient,Prop_Data,"m_iHealth", hp - 25);
+		SetPlayerHealth(iClient, hp - 25);
 		
 	WriteParticle(iClient, "poison_bubbles", 0.0, 3.0);
 	

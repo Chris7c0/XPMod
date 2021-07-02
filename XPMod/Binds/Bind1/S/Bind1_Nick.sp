@@ -30,7 +30,7 @@ void Bind1Press_Nick(iClient)
 							}
 							case 2: // Slap
 							{
-								new iCurrentHP = GetEntProp(iClient, Prop_Data, "m_iHealth");
+								new iCurrentHP = GetPlayerHealth(iClient);
 								if(iCurrentHP > 15)
 									SlapPlayer(iClient, 15);
 								else

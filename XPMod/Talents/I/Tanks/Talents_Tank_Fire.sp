@@ -35,7 +35,7 @@ LoadFireTankTalents(iClient)
 		iNewHealth = RoundToNearest(iNewHealth * g_fFrustratedTankTransferHealthPercentage);
 		g_fFrustratedTankTransferHealthPercentage = 0.0;
 	}
-	SetEntProp(iClient, Prop_Data,"m_iHealth", iNewHealth > 100 ? iNewHealth : 100);
+	SetPlayerHealth(iClient, iNewHealth > 100 ? iNewHealth : 100);
 
 	// Stop Kiting (Bullet hits slowing tank down)
 	SetConVarInt(FindConVar("z_tank_damage_slow_min_range"), 0);
@@ -133,12 +133,12 @@ EventsHurt_VictimTank_Fire(Handle:hEvent, iAttacker, iVictimTank)
 	new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
 	new iDmgType = GetEventInt(hEvent, "type");
 
-	new iCurrentHealth = GetEntProp(iVictimTank,Prop_Data,"m_iHealth");
+	new iCurrentHealth = GetPlayerHealth(iVictimTank);
 	decl Float:fCurrentTankHealthPercentage;
 
 	//Prevent Fire Damage
 	if(iDmgType == DAMAGETYPE_FIRE1 || iDmgType == DAMAGETYPE_FIRE2 || iDmgType == DAMAGETYPE_IGNITED_ENTITY)
-		SetEntProp(iVictimTank, Prop_Data, "m_iHealth", iCurrentHealth + iDmgHealth);
+		SetPlayerHealth(iVictimTank, iCurrentHealth + iDmgHealth);
 	
 	fCurrentTankHealthPercentage = float(iCurrentHealth + iDmgHealth) / (TANK_HEALTH_FIRE * g_fTankStartingHealthMultiplier[iVictimTank]);
 	

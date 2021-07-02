@@ -112,7 +112,7 @@ OnGameFrame_Coach(iClient)
 
 					RunCheatCommand(iClient, "give", "give health");
 
-					SetEntProp(iClient,Prop_Data,"m_iHealth", preledgehealth[iClient]);
+					SetPlayerHealth(iClient, preledgehealth[iClient]);
 					if(preledgebuffer[iClient] > 1.1)
 						SetEntDataFloat(iClient,g_iOffset_HealthBuffer, (preledgebuffer[iClient] - 1.0) ,true);
 					else
@@ -427,12 +427,12 @@ OnGameFrame_Coach(iClient)
 					if(g_iCoachHealthRechargeCounter[iClient]>23)
 					{
 						g_iCoachHealthRechargeCounter[iClient] = 0;
-						new currentHP=GetEntProp(iClient,Prop_Data,"m_iHealth");
-						new maxHP = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
+						new currentHP=GetPlayerHealth(iClient);
+						new maxHP = GetPlayerMaxHealth(iClient);
 						if(currentHP < (maxHP - 1))
-							SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + 1);
+							SetPlayerHealth(iClient, currentHP + 1);
 						else if(currentHP >= (maxHP - 1))
-							SetEntProp(iClient,Prop_Data,"m_iHealth", maxHP);
+							SetPlayerHealth(iClient, maxHP);
 					}
 				}
 				else
@@ -498,48 +498,48 @@ OnGameFrame_Coach(iClient)
 				CreateTimer(20.0, TimerCoachRageReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
 				if(g_iCoachRageRegenCounter[iClient] < 2)
 				{
-					new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
-					new maxHP = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
+					new currentHP = GetPlayerHealth(iClient);
+					new maxHP = GetPlayerMaxHealth(iClient);
 					if(currentHP < (maxHP - 5))
-						SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + 5);
+						SetPlayerHealth(iClient, currentHP + 5);
 					else if(currentHP >= (maxHP - 5))
-						SetEntProp(iClient,Prop_Data,"m_iHealth", maxHP);
+						SetPlayerHealth(iClient, maxHP);
 				}
 				else if(g_iCoachRageRegenCounter[iClient] < 5)
 				{
-					new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
-					new maxHP = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
+					new currentHP = GetPlayerHealth(iClient);
+					new maxHP = GetPlayerMaxHealth(iClient);
 					if(currentHP < (maxHP - 4))
-						SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + 4);
+						SetPlayerHealth(iClient, currentHP + 4);
 					else if(currentHP >= (maxHP - 4))
-						SetEntProp(iClient,Prop_Data,"m_iHealth", maxHP);
+						SetPlayerHealth(iClient, maxHP);
 				}
 				else if(g_iCoachRageRegenCounter[iClient] < 9)
 				{
-					new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
-					new maxHP = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
+					new currentHP = GetPlayerHealth(iClient);
+					new maxHP = GetPlayerMaxHealth(iClient);
 					if(currentHP < (maxHP - 3))
-						SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + 3);
+						SetPlayerHealth(iClient, currentHP + 3);
 					else if(currentHP >= (maxHP - 3))
-						SetEntProp(iClient,Prop_Data,"m_iHealth", maxHP);
+						SetPlayerHealth(iClient, maxHP);
 				}
 				else if(g_iCoachRageRegenCounter[iClient] < 14)
 				{
-					new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
-					new maxHP = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
+					new currentHP = GetPlayerHealth(iClient);
+					new maxHP = GetPlayerMaxHealth(iClient);
 					if(currentHP < (maxHP - 2))
-						SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + 2);
+						SetPlayerHealth(iClient, currentHP + 2);
 					else if(currentHP >= (maxHP - 2))
-						SetEntProp(iClient,Prop_Data,"m_iHealth", maxHP);
+						SetPlayerHealth(iClient, maxHP);
 				}
 				else
 				{
-					new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
-					new maxHP = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
+					new currentHP = GetPlayerHealth(iClient);
+					new maxHP = GetPlayerMaxHealth(iClient);
 					if(currentHP < (maxHP - 1))
-						SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + 1);
+						SetPlayerHealth(iClient, currentHP + 1);
 					else if(currentHP >= (maxHP - 1))
-						SetEntProp(iClient,Prop_Data,"m_iHealth", maxHP);
+						SetPlayerHealth(iClient, maxHP);
 				}
 				g_iCoachRageRegenCounter[iClient]++;
 				CreateTimer(1.0, TimerCoachRageRegenTick, iClient, TIMER_FLAG_NO_MAPCHANGE);
@@ -758,7 +758,7 @@ EventsHurt_AttackerCoach(Handle:hEvent, attacker, victim)
 				}
 
 				g_bIsWreckingBallCharged[attacker] = false;
-				new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+				new hp = GetPlayerHealth(victim);
 				//new dmg = GetEventInt(hEvent,"dmg_health");
 				//PrintToChat(attacker, "predmg = %d", dmg);
 				//dmg = (g_iWreckingLevel[attacker]*200) + (g_iMeleeDamageCounter[attacker]);
@@ -770,31 +770,31 @@ EventsHurt_AttackerCoach(Handle:hEvent, attacker, victim)
 				EmitSoundToAll(SOUND_COACH_CHARGE_HIT, attacker, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
 				//CreateParticle("coach_melee_charge_splash", 0.0, attacker, NO_ATTACH);
 				WriteParticle(victim, "coach_melee_charge_splash", 3.0);
-				SetEntProp(victim,Prop_Data,"m_iHealth", hp - ((g_iWreckingLevel[attacker]*100) + g_iMeleeDamageCounter[attacker] + g_iCoachRageMeleeDamage[attacker]));
+				SetPlayerHealth(victim, hp - ((g_iWreckingLevel[attacker]*100) + g_iMeleeDamageCounter[attacker] + g_iCoachRageMeleeDamage[attacker]));
 			}
 			else if(g_iMeleeDamageCounter[attacker]>0)
 			{
-				new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+				new hp = GetPlayerHealth(victim);
 				//new dmg = GetEventInt(hEvent,"dmg_health");
 				//PrintToChat(attacker, "predmg = %d", dmg);
 				//dmg = g_iMeleeDamageCounter[attacker];
 				//PrintToChat(attacker, "\x03[XPMod] \x05You did %d extra melee damage", (g_iMeleeDamageCounter[attacker] + g_iCoachRageMeleeDamage[attacker]));
-				SetEntProp(victim,Prop_Data,"m_iHealth", hp - (g_iMeleeDamageCounter[attacker] + g_iCoachRageMeleeDamage[attacker]));
+				SetPlayerHealth(victim, hp - (g_iMeleeDamageCounter[attacker] + g_iCoachRageMeleeDamage[attacker]));
 			}
 			else if(g_bCoachRageIsActive[attacker] == true)
 			{
-				new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+				new hp = GetPlayerHealth(victim);
 				//PrintToChat(attacker, "\x03[XPMod] \x05You did %d extra melee damage", g_iCoachRageMeleeDamage[attacker]);
-				SetEntProp(victim,Prop_Data,"m_iHealth", hp - g_iCoachRageMeleeDamage[attacker]);
+				SetPlayerHealth(victim, hp - g_iCoachRageMeleeDamage[attacker]);
 			}
 		}
 		if(g_iSprayLevel[attacker] > 0 && StrContains(weaponclass,"shotgun",false) != -1)
 		{
-			new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+			new hp = GetPlayerHealth(victim);
 			//new dmg = GetEventInt(hEvent,"dmg_health");
 			//dmg = dmg + (g_iSprayLevel[attacker] * 2);
 			//PrintToChat(attacker, "your doing %d shotgun damage", (g_iSprayLevel[attacker] * 2));
-			SetEntProp(victim,Prop_Data,"m_iHealth", hp - CalculateDamageTakenForVictimTalents(victim, (g_iSprayLevel[attacker] * 2), weaponclass));
+			SetPlayerHealth(victim, hp - CalculateDamageTakenForVictimTalents(victim, (g_iSprayLevel[attacker] * 2), weaponclass));
 		}
 	}
 }

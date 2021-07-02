@@ -75,8 +75,8 @@ OnGameFrame_Bill(iClient)
 									{
 										if(g_bIsClientDown[g_iClientToHeal[iClient]] == false && IsClientGrappled(g_iClientToHeal[iClient]) == false)
 										{
-											maxHP = GetEntProp(g_iClientToHeal[iClient],Prop_Data,"m_iMaxHealth");
-											currentHP = GetEntProp(g_iClientToHeal[iClient],Prop_Data,"m_iHealth");
+											maxHP = GetPlayerMaxHealth(g_iClientToHeal[iClient]);
+											currentHP = GetPlayerHealth(g_iClientToHeal[iClient]);
 											if(currentHP == maxHP)
 												continue;
 											if((currentHP + g_iInspirationalLevel[iClient]) > maxHP)
@@ -243,20 +243,20 @@ EventsHurt_AttackerBill(Handle:hEvent, attacker, victim)
 				{
 					if(StrContains(strWeaponClass,"hunting_rifle",false) == -1)
 					{
-						new iCurrentHP = GetEntProp(victim,Prop_Data,"m_iHealth");
+						new iCurrentHP = GetPlayerHealth(victim);
 						new iDmgAmount = GetEventInt(hEvent,"dmg_health");
 						iDmgAmount = CalculateDamageTakenForVictimTalents(victim, RoundToNearest(iDmgAmount * (g_iExorcismLevel[attacker] * 0.04)), strWeaponClass);
 						//PrintToChat(attacker, "Your doing %d extra rifle damage", iDmgAmount);
-						SetEntProp(victim, Prop_Data, "m_iHealth", iCurrentHP - iDmgAmount);
+						SetPlayerHealth(victim, iCurrentHP - iDmgAmount);
 					}
 				}
 				else
 				{
-					new iCurrentHP = GetEntProp(victim,Prop_Data,"m_iHealth");
+					new iCurrentHP = GetPlayerHealth(victim);
 					new iDmgAmount = GetEventInt(hEvent,"dmg_health");
 					iDmgAmount = CalculateDamageTakenForVictimTalents(victim, RoundToNearest(iDmgAmount * (g_iPromotionalLevel[attacker] * 0.20)), strWeaponClass);
 					//PrintToChat(attacker, "Your doing %d extra M60 damage", iDmgAmount);
-					SetEntProp(victim,Prop_Data,"m_iHealth", iCurrentHP - iDmgAmount);
+					SetPlayerHealth(victim, iCurrentHP - iDmgAmount);
 				}
 			}
 		}

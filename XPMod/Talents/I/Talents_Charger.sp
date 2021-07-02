@@ -146,7 +146,7 @@ EventsHurt_AttackerCharger(Handle:hEvent, attacker, victim)
 	{
 		decl String:weapon[20];
 		GetEventString(hEvent,"weapon", weapon,20);
-		new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+		new hp = GetPlayerHealth(victim);
 
 		if(StrEqual(weapon,"charger_claw") == true)
 		{
@@ -211,8 +211,8 @@ EventsHurt_VictimCharger(Handle:hEvent, attacker, victim)
 		{
 			if(g_bChargerCarrying[victim] == true)
 			{
-				new iCurrentHP = GetEntProp(victim, Prop_Data, "m_iHealth");
-				SetEntProp(victim, Prop_Data, "m_iHealth", iCurrentHP + dmgHealth + RoundToNearest(dmgHealth * g_iHillbillyLevel[victim] * 0.05));
+				new iCurrentHP = GetPlayerHealth(victim);
+				SetPlayerHealth(victim, iCurrentHP + dmgHealth + RoundToNearest(dmgHealth * g_iHillbillyLevel[victim] * 0.05));
 				
 				//Add particle effect here later since Charger glow and color cannot be changed
 				

@@ -273,7 +273,7 @@ EventsHurt_AttackerHunter(Handle:hEvent, attacker, victim)
 		//GetEventString(hEvent,"weapon", weapon,20);
 		if(dmgtype == 128 &&  StrEqual(weapon,"hunter_claw") == true)
 		{
-			//new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+			//new hp = GetPlayerHealth(victim);
 			//new dmg = GetEventInt(hEvent,"dmg_health");
 			decl dmg;
 			if(g_iBloodlustLevel[attacker] < 5)
@@ -284,13 +284,13 @@ EventsHurt_AttackerHunter(Handle:hEvent, attacker, victim)
 				dmg = 3;
 			DealDamage(victim, attacker, dmg);
 			//if((hp - dmg) > 1)
-			//	SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
-			new hp = GetEntProp(attacker,Prop_Data,"m_iHealth");
-			new maxHP = GetEntProp(attacker,Prop_Data,"m_iHealth");
+			//	SetPlayerHealth(victim, hp - dmg);
+			new hp = GetPlayerHealth(attacker);
+			new maxHP = GetPlayerHealth(attacker);
 			if((hp + (g_iBloodlustLevel[attacker] * 3)) < (maxHP * 2))
-				SetEntProp(attacker,Prop_Data,"m_iHealth", hp + (g_iBloodlustLevel[attacker] * 3));
+				SetPlayerHealth(attacker, hp + (g_iBloodlustLevel[attacker] * 3));
 			else
-				SetEntProp(attacker,Prop_Data,"m_iHealth", (maxHP * 2));
+				SetPlayerHealth(attacker, (maxHP * 2));
 		}
 	}
 }

@@ -418,9 +418,9 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 		// Check that its a pistol
 		if (StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == true)
 		{
-			new iCurrentAttackerHealth = GetEntProp(iAttacker, Prop_Data, "m_iHealth");
-			new iCurrentVictimHealth = GetEntProp(iVictim, Prop_Data, "m_iHealth");
-			new iCurrentVictimMaxHealth = GetEntProp(iVictim, Prop_Data, "m_iMaxHealth");
+			new iCurrentAttackerHealth = GetPlayerHealth(iAttacker);
+			new iCurrentVictimHealth = GetPlayerHealth(iVictim);
+			new iCurrentVictimMaxHealth = GetPlayerMaxHealth(iVictim);
 			// Need this to remove friendly fire damage
 			new iDmgAmount = GetEventInt(hEvent, "dmg_health");
 
@@ -430,8 +430,8 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 				new iHealAmount = iCurrentVictimHealth + iDmgAmount + NICK_HEAL_MAGNUM_GIVE < iCurrentVictimMaxHealth ? 
 					iDmgAmount + NICK_HEAL_MAGNUM_GIVE : 
 					iCurrentVictimMaxHealth - iCurrentVictimHealth;
-				SetEntProp(iAttacker,Prop_Data,"m_iHealth", iCurrentAttackerHealth - NICK_HEAL_MAGNUM_TAKE);
-				SetEntProp(iVictim,Prop_Data,"m_iHealth", iCurrentVictimHealth + iHealAmount);
+				SetPlayerHealth(iAttacker, iCurrentAttackerHealth - NICK_HEAL_MAGNUM_TAKE);
+				SetPlayerHealth(iVictim, iCurrentVictimHealth + iHealAmount);
 
 				// Effects
 				WriteParticle(iVictim, "nick_lifesteal_recovery", 0.0, 3.0);
@@ -445,14 +445,14 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 			// Otherwise, just give friendly fire damage back to the survivor he shot
 			else
 			{
-				SetEntProp(iVictim,Prop_Data,"m_iHealth", iCurrentVictimHealth + iDmgAmount);
+				SetPlayerHealth(iVictim, iCurrentVictimHealth + iDmgAmount);
 			}
 		}
 		else if(StrEqual(strCurrentWeapon, "weapon_pistol", false) == true)
 		{
-			new iCurrentAttackerHealth = GetEntProp(iAttacker, Prop_Data, "m_iHealth");
-			new iCurrentVictimHealth = GetEntProp(iVictim, Prop_Data, "m_iHealth");
-			new iCurrentVictimMaxHealth = GetEntProp(iVictim, Prop_Data, "m_iMaxHealth");
+			new iCurrentAttackerHealth = GetPlayerHealth(iAttacker);
+			new iCurrentVictimHealth = GetPlayerHealth(iVictim);
+			new iCurrentVictimMaxHealth = GetPlayerMaxHealth(iVictim);
 			// Need this to remove friendly fire damage
 			new iDmgAmount = GetEventInt(hEvent, "dmg_health");
 
@@ -462,8 +462,8 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 				new iHealAmount = iCurrentVictimHealth + iDmgAmount + NICK_HEAL_PISTOL_GIVE < iCurrentVictimMaxHealth ? 
 					iDmgAmount + NICK_HEAL_PISTOL_GIVE : 
 					iCurrentVictimMaxHealth - iCurrentVictimHealth;
-				SetEntProp(iAttacker,Prop_Data,"m_iHealth", iCurrentAttackerHealth - NICK_HEAL_PISTOL_TAKE);
-				SetEntProp(iVictim,Prop_Data,"m_iHealth", iCurrentVictimHealth + iHealAmount);
+				SetPlayerHealth(iAttacker, iCurrentAttackerHealth - NICK_HEAL_PISTOL_TAKE);
+				SetPlayerHealth(iVictim, iCurrentVictimHealth + iHealAmount);
 
 				// Effects
 				WriteParticle(iVictim, "nick_lifesteal_recovery", 0.0, 3.0);
@@ -477,7 +477,7 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 			// Otherwise, just give friendly fire damage back to the survivor he shot
 			else
 			{
-				SetEntProp(iVictim,Prop_Data,"m_iHealth", iCurrentVictimHealth + iDmgAmount);
+				SetPlayerHealth(iVictim, iCurrentVictimHealth + iDmgAmount);
 			}
 		}
 	}
@@ -515,7 +515,7 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 		if(StrContains(weaponclass,"melee",false) == -1 && StrContains(weaponclass,"inferno",false) == -1 && 
 			StrContains(weaponclass,"pipe_bomb",false) == -1 && StrContains(weaponclass,"entityflame",false) == -1)
 		{
-			new hp = GetEntProp(iVictim,Prop_Data,"m_iHealth");
+			new hp = GetPlayerHealth(iVictim);
 			new dmg = GetEventInt(hEvent,"dmg_health");
 			
 			if(g_iNickDesperateMeasuresStack > 3)
@@ -526,7 +526,7 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 			dmg = CalculateDamageTakenForVictimTalents(iVictim, dmg, weaponclass);
 
 			//PrintToChat(iAttacker, "You are doing %d extra damage", dmg);
-			SetEntProp(iVictim,Prop_Data,"m_iHealth", hp - dmg);
+			SetPlayerHealth(iVictim, hp - dmg);
 		}
 	}
 	
@@ -538,25 +538,25 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 			GetEventString(hEvent,"weapon",weaponclass,32);
 			if (StrContains(weaponclass,"magnum",false) != -1)
 			{
-				new hp = GetEntProp(iVictim,Prop_Data,"m_iHealth");
+				new hp = GetPlayerHealth(iVictim);
 				new dmg = GetEventInt(hEvent,"dmg_health");
 
 				dmg = RoundToNearest(dmg * (g_iMagnumLevel[iAttacker] * 0.75));
 				dmg = CalculateDamageTakenForVictimTalents(iVictim, dmg, weaponclass);
 
 				//PrintToChat(iAttacker, "your doing %d extra magnum damage", dmg);
-				SetEntProp(iVictim,Prop_Data,"m_iHealth", hp - dmg);
+				SetPlayerHealth(iVictim, hp - dmg);
 			}
 			else if (StrContains(weaponclass,"pistol",false) != -1)
 			{
-				new hp = GetEntProp(iVictim,Prop_Data,"m_iHealth");
+				new hp = GetPlayerHealth(iVictim);
 				new dmg = GetEventInt(hEvent,"dmg_health");
 
 				dmg = RoundToNearest(dmg * (g_iRiskyLevel[iAttacker] * 0.2));
 				dmg = CalculateDamageTakenForVictimTalents(iVictim, dmg, weaponclass);
 
 				//PrintToChat(iAttacker, "your doing %d extra damage", dmg);
-				SetEntProp(iVictim,Prop_Data,"m_iHealth", hp - dmg);
+				SetPlayerHealth(iVictim, hp - dmg);
 			}
 			new String:strCurrentWeapon[32];
 			GetClientWeapon(iAttacker, strCurrentWeapon, sizeof(strCurrentWeapon));
@@ -916,20 +916,20 @@ JebusHandMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 					{
 						if(IsPlayerAlive(i)==true && g_bIsClientDown[i] == false)
 						{
-							currentHP = GetEntProp(i,Prop_Data,"m_iHealth");
-							maxHP = GetEntProp(i,Prop_Data,"m_iMaxHealth");
+							currentHP = GetPlayerHealth(i);
+							maxHP = GetPlayerMaxHealth(i);
 							//PrintToChatAll("max health for %N is %d", i, maxHP);
 							PrintHintText(i, "You have been partially healed by %N", iClient);
 							if((currentHP + (g_iDesperateLevel[iClient] * 4)) >= maxHP)
-								SetEntProp(i,Prop_Data,"m_iHealth", maxHP);
+								SetPlayerHealth(i, maxHP);
 							else
-								SetEntProp(i,Prop_Data,"m_iHealth", currentHP + (g_iDesperateLevel[iClient] * 4));
+								SetPlayerHealth(i, currentHP + (g_iDesperateLevel[iClient] * 4));
 						}
 						// Handle Ellis
 						if(g_iOverLevel[i] > 0)
 						{
-							new iCurrentHealth = GetEntProp(i,Prop_Data,"m_iHealth");
-							new iMaxHealth = GetEntProp(i,Prop_Data,"m_iMaxHealth");
+							new iCurrentHealth = GetPlayerHealth(i);
+							new iMaxHealth = GetPlayerMaxHealth(i);
 							//new Float:fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
 							//if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
 							if(iCurrentHealth < (iMaxHealth - 20.0))
@@ -981,7 +981,7 @@ JebusHandMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 							{
 								RunCheatCommand(i, "give", "give health");
 								PrintHintText(i, "You have been instantly revived by %N", iClient);
-								SetEntProp(i,Prop_Data,"m_iHealth", 20);
+								SetPlayerHealth(i, 20);
 								g_bIsClientDown[i] = false;
 								g_iClientBindUses_2[iClient] += 2;
 								decl Float:vec[3];
@@ -1014,7 +1014,7 @@ JebusHandMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 
 								RunCheatCommand(i, "give", "give health");
 
-								SetEntProp(i,Prop_Data,"m_iHealth", 20);
+								SetPlayerHealth(i, 20);
 								g_bIsClientDown[i] = false;
 								g_iClientBindUses_2[iClient] += 2;
 								decl Float:vec[3];

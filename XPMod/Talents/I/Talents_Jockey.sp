@@ -70,7 +70,7 @@ EventsHurt_AttackerJockey(Handle:hEvent, attacker, victim)
 				else
 					dmg = 3;
 					
-				new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+				new hp = GetPlayerHealth(victim);
 				if(hp > dmg)
 					DealDamage(victim, attacker, dmg);
 			}
@@ -92,12 +92,12 @@ EventsHurt_AttackerJockey(Handle:hEvent, attacker, victim)
 					dmg = 2;
 				else
 					dmg = 3;
-				//hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+				//hp = GetPlayerHealth(victim);
 				//PrintToChat(attacker, "pre hp = %d riding",hp);
-				new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+				new hp = GetPlayerHealth(victim);
 				if(hp > dmg)
 					DealDamage(victim, attacker, dmg);
-				//hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+				//hp = GetPlayerHealth(victim);
 				//PrintToChat(attacker, "    post hp = %d riding",hp);
 			}
 		}

@@ -713,8 +713,8 @@ Action:Event_PlayerIncap(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	
 	if(g_iWillLevel[iClient]>0)
 	{
-		new currentHP=GetEntProp(iClient,Prop_Data,"m_iHealth");
-		SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + (g_iWillLevel[iClient] * 50));
+		new currentHP=GetPlayerHealth(iClient);
+		SetPlayerHealth(iClient, currentHP + (g_iWillLevel[iClient] * 50));
 	}
 	if(incapper > 0)
 	{
@@ -752,11 +752,11 @@ Action:Event_PlayerIncap(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 				{
 					if(g_bIsClientDown[i] == false)
 					{
-						new currentHP = GetEntProp(i,Prop_Data,"m_iHealth");
+						new currentHP = GetPlayerHealth(i);
 						if((currentHP + (g_iDiehardLevel[i] * 6)) < (100 + (g_iWillLevel[i]*5) + (g_iDiehardLevel[i]*15)))
-							SetEntProp(i,Prop_Data,"m_iHealth", currentHP + (g_iDiehardLevel[i] * 6));
+							SetPlayerHealth(i, currentHP + (g_iDiehardLevel[i] * 6));
 						else
-							SetEntProp(i,Prop_Data,"m_iHealth", 100 + (g_iWillLevel[i]*5) + (g_iDiehardLevel[i]*15));
+							SetPlayerHealth(i, 100 + (g_iWillLevel[i]*5) + (g_iDiehardLevel[i]*15));
 						PrintHintText(i, "A teammate has fallen, you gain %d health.", (g_iDiehardLevel[i] * 6));
 					}
 				}
@@ -808,19 +808,19 @@ Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 		return Plugin_Continue;
 	
 	//Get their current health states
-	new currentHP = GetEntProp(target,Prop_Data,"m_iHealth");
-	new maxHP = GetEntProp(target,Prop_Data,"m_iMaxHealth");
+	new currentHP = GetPlayerHealth(target);
+	new maxHP = GetPlayerMaxHealth(target);
 	
 	//Set what their health should be after health kit use
 	if((currentHP + 100) > maxHP)
-		SetEntProp(target,Prop_Data,"m_iHealth", maxHP);
+		SetPlayerHealth(target, maxHP);
 	else
-		SetEntProp(target,Prop_Data,"m_iHealth", currentHP + 100);
+		SetPlayerHealth(target, currentHP + 100);
 	
 	if(g_iOverLevel[target] > 0)
 	{
-		new iCurrentHealth = GetEntProp(target,Prop_Data,"m_iHealth");
-		new iMaxHealth = GetEntProp(target,Prop_Data,"m_iMaxHealth");
+		new iCurrentHealth = GetPlayerHealth(target);
+		new iMaxHealth = GetPlayerMaxHealth(target);
 		//new Float:fTempHealth = GetEntDataFloat(target, g_iOffset_HealthBuffer);
 		//if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
 		if(iCurrentHealth < (iMaxHealth - 20.0))
@@ -1086,8 +1086,8 @@ Action:Event_DefibUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 	GiveClientXP(iClient, 100, g_iSprite_100XP, iSubject, "Defibrillated Player.");
 	if(g_iOverLevel[iSubject] > 0)
 	{
-		new iCurrentHealth = GetEntProp(iSubject,Prop_Data,"m_iHealth");
-		new iMaxHealth = GetEntProp(iSubject,Prop_Data,"m_iMaxHealth");
+		new iCurrentHealth = GetPlayerHealth(iSubject);
+		new iMaxHealth = GetPlayerMaxHealth(iSubject);
 		//new Float:fTempHealth = GetEntDataFloat(iSubject, g_iOffset_HealthBuffer);
 		//if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
 		if(iCurrentHealth < (iMaxHealth - 20.0))
@@ -1155,21 +1155,21 @@ Action:Event_PillsUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 	{
 		if(g_iEnhancedLevel[i] > 0 && i != iClient && g_iClientTeam[i] == TEAM_SURVIVORS && IsClientInGame(i)==true && IsFakeClient(i) == false)
 		{
-			iLoopedClientMaxHP = GetEntProp(i, Prop_Data, "m_iMaxHealth");			
-			iLoopedClientCurrentHP = GetEntProp(i, Prop_Data, "m_iHealth");
+			iLoopedClientMaxHP = GetPlayerMaxHealth(i);			
+			iLoopedClientCurrentHP = GetPlayerHealth(i);
 			if(g_iEnhancedLevel[i] < 5)
 			{
 				if(iLoopedClientCurrentHP + g_iEnhancedLevel[i] < iLoopedClientMaxHP)
-					SetEntProp(i, Prop_Data, "m_iHealth", iLoopedClientCurrentHP + g_iEnhancedLevel[i]);
+					SetPlayerHealth(i, iLoopedClientCurrentHP + g_iEnhancedLevel[i]);
 				else
-					SetEntProp(i , Prop_Data,"m_iHealth", iLoopedClientMaxHP);
+					SetPlayerHealth(i , iLoopedClientMaxHP);
 			}
 			else
 			{
 				if(iLoopedClientCurrentHP + g_iEnhancedLevel[i] < iLoopedClientMaxHP)
-					SetEntProp(i, Prop_Data, "m_iHealth", iLoopedClientCurrentHP + g_iEnhancedLevel[i] + 3);
+					SetPlayerHealth(i, iLoopedClientCurrentHP + g_iEnhancedLevel[i] + 3);
 				else
-					SetEntProp(i , Prop_Data,"m_iHealth", iLoopedClientMaxHP);
+					SetPlayerHealth(i , iLoopedClientMaxHP);
 			}
 		}
 	}
@@ -1190,8 +1190,8 @@ Action:Event_AdrenalineUsed(Handle:hEvent, const String:strName[], bool:bDontBro
 	if (g_iOverLevel[iClient] > 0 && IsFakeClient(iClient) == false)
 	{
 		// Give health to Ellis
-		new iMaxHealth = GetEntProp(iClient, Prop_Data, "m_iMaxHealth");
-		new iHealth = GetEntProp(iClient, Prop_Data, "m_iHealth");
+		new iMaxHealth = GetPlayerMaxHealth(iClient);
+		new iHealth = GetPlayerHealth(iClient);
 		new Float:fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
 		
 		if(float(iHealth) + fTempHealth + (float(g_iOverLevel[iClient]) * 5.0) <= float(iMaxHealth))
@@ -1211,8 +1211,8 @@ Action:Event_AdrenalineUsed(Handle:hEvent, const String:strName[], bool:bDontBro
 	// Nick
 	if(g_iEnhancedLevel[iClient] > 0 && IsFakeClient(iClient) == false)
 	{
-		new iMaxHealth = GetEntProp(iClient, Prop_Data, "m_iMaxHealth");
-		new iHealth = GetEntProp(iClient, Prop_Data, "m_iHealth");
+		new iMaxHealth = GetPlayerMaxHealth(iClient);
+		new iHealth = GetPlayerHealth(iClient);
 		new Float:fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
 		
 		if(float(iHealth) + fTempHealth + (float(g_iEnhancedLevel[iClient]) * 6.0) <= float(iMaxHealth))
@@ -1228,21 +1228,21 @@ Action:Event_AdrenalineUsed(Handle:hEvent, const String:strName[], bool:bDontBro
 	{
 		if(g_iEnhancedLevel[i] > 0 && i != iClient && g_iClientTeam[i] == TEAM_SURVIVORS && IsClientInGame(i)==true && IsFakeClient(i) == false)
 		{
-			iLoopedClientMaxHP = GetEntProp(i, Prop_Data, "m_iMaxHealth");			
-			iLoopedClientCurrentHP = GetEntProp(i, Prop_Data, "m_iHealth");
+			iLoopedClientMaxHP = GetPlayerMaxHealth(i);			
+			iLoopedClientCurrentHP = GetPlayerHealth(i);
 			if(g_iEnhancedLevel[i] < 5)
 			{
 				if(iLoopedClientCurrentHP + g_iEnhancedLevel[i] < iLoopedClientMaxHP)
-					SetEntProp(i, Prop_Data, "m_iHealth", iLoopedClientCurrentHP + g_iEnhancedLevel[i]);
+					SetPlayerHealth(i, iLoopedClientCurrentHP + g_iEnhancedLevel[i]);
 				else
-					SetEntProp(i , Prop_Data,"m_iHealth", iLoopedClientMaxHP);
+					SetPlayerHealth(i , iLoopedClientMaxHP);
 			}
 			else
 			{
 				if(iLoopedClientCurrentHP + g_iEnhancedLevel[i] < iLoopedClientMaxHP)
-					SetEntProp(i, Prop_Data, "m_iHealth", iLoopedClientCurrentHP + g_iEnhancedLevel[i] + 3);
+					SetPlayerHealth(i, iLoopedClientCurrentHP + g_iEnhancedLevel[i] + 3);
 				else
-					SetEntProp(i , Prop_Data,"m_iHealth", iLoopedClientMaxHP);
+					SetPlayerHealth(i , iLoopedClientMaxHP);
 			}
 		}
 	}

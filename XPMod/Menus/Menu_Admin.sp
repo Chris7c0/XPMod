@@ -476,7 +476,7 @@ Action:AdminReviveAndFullHealSurvivorMenuDraw(iClient)
 			Format(strSurvivorInfo, sizeof(strSurvivorInfo),"(%i) %N - (%i HP)",
 				i,
 				i,
-				GetEntProp(i, Prop_Data, "m_iHealth"));
+				GetPlayerHealth(i));
 
 			decl String:strID[8];
 			Format(strID, sizeof(strID), "%i", i);

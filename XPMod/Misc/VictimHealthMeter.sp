@@ -43,8 +43,8 @@ PrintVictimHealthMeterToSurvivorPlayer(int iClient)
 		return;
 	}
 
-	new iCurrentMaxHealth = GetEntProp(iVictim,Prop_Data,"m_iMaxHealth");
-	new iCurrentHealth = GetEntProp(iVictim,Prop_Data,"m_iHealth");
+	new iCurrentMaxHealth = GetPlayerMaxHealth(iVictim);
+	new iCurrentHealth = GetPlayerHealth(iVictim);
 	if (iCurrentHealth < 0) iCurrentHealth = 0;
 	new Float:fHealthPercentage = (iCurrentMaxHealth > 0) ? (float(iCurrentHealth) / float(iCurrentMaxHealth)) : 0.0;
 

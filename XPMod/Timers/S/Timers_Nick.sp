@@ -53,7 +53,7 @@ Action:TimerSlap(Handle:timer, any:iClient)
 	}
 	if(g_iSlapRunTimes[iClient]++ < 5)
 	{
-		new iCurrentHP = GetEntProp(iClient, Prop_Data, "m_iHealth");
+		new iCurrentHP = GetPlayerHealth(iClient);
 		if(iCurrentHP > 15)
 			SlapPlayer(iClient, 15);
 		else
@@ -161,25 +161,25 @@ Action:TimerLifeStealingFade(Handle:timer, any:pack)
 		decl stealamt;
 		stealamt = g_iSwindlerLevel[attacker];
 		//Take life from victim
-		new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+		new hp = GetPlayerHealth(victim);
 		if(hp <= stealamt)
 			ForcePlayerSuicide(victim);
 		else
-			SetEntProp(victim,Prop_Data,"m_iHealth", hp - stealamt);
+			SetPlayerHealth(victim, hp - stealamt);
 		//Give life to shooter
-		hp = GetEntProp(attacker,Prop_Data,"m_iHealth");
-		new maxhp = GetEntProp(attacker,Prop_Data,"m_iMaxHealth");
+		hp = GetPlayerHealth(attacker);
+		new maxhp = GetPlayerMaxHealth(attacker);
 		if(hp!=maxhp)
 		{
 			if(g_bIsClientDown[attacker] == false)
 			{
 				if(maxhp > (hp + RoundToCeil(stealamt*0.5)))
-					SetEntProp(attacker,Prop_Data,"m_iHealth", hp + RoundToCeil(stealamt*0.5));
+					SetPlayerHealth(attacker, hp + RoundToCeil(stealamt*0.5));
 				else
-					SetEntProp(attacker,Prop_Data,"m_iHealth", maxhp);
+					SetPlayerHealth(attacker, maxhp);
 			}
 			else
-				SetEntProp(attacker,Prop_Data,"m_iHealth", hp + RoundToCeil(stealamt*0.5));
+				SetPlayerHealth(attacker, hp + RoundToCeil(stealamt*0.5));
 				
 			WriteParticle(attacker, "nick_lifesteal_recovery", 0.0, 3.0);
 		}

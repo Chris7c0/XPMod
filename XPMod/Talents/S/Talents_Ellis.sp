@@ -297,29 +297,29 @@ EventsHurt_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 
 					new iDmgAmount = GetEventInt(hEvent,"dmg_health");
 					new iAddtionalDmg = RoundToNearest(iDmgAmount * (g_iOverLevel[iAttacker] * 0.05));
-					SetEntProp(iVictim, Prop_Data,"m_iHealth", iVictimHealth - CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
+					SetPlayerHealth(iVictim, iVictimHealth - CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
 
 					// PrintToChatAll("Ellis is doing %i original damage", iDmgAmount);
 					// PrintToChatAll("Ellis is doing %i additional OVERCONFIDENCE damage", CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
 
-					// new iVictimHealth2 = GetEntProp(iVictim,Prop_Data,"m_iHealth");
+					// new iVictimHealth2 = GetPlayerHealth(iVictim);
 					// PrintToChatAll("Ellis iVictim %N   END HP: %i", iVictim, iVictimHealth2);
 				}
 
 				// Give dmg buff for being on adrenaline
 				if (g_bEllisHasAdrenalineBuffs[iAttacker])
 				{
-					new iVictimHealth = GetEntProp(iVictim,Prop_Data,"m_iHealth");
+					new iVictimHealth = GetPlayerHealth(iVictim);
 					// PrintToChatAll("Ellis iVictim %N START HP: %i", iVictim, iVictimHealth);
 
 					new iDmgAmount = GetEventInt(hEvent,"dmg_health");
 					new iAddtionalDmg = RoundToNearest(iDmgAmount * (g_iOverLevel[iAttacker] * 0.05));
-					SetEntProp(iVictim, Prop_Data,"m_iHealth", iVictimHealth - CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
+					SetPlayerHealth(iVictim, iVictimHealth - CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
 
 					// PrintToChatAll("Ellis is doing %i original damage", iDmgAmount);
 					// PrintToChatAll("Ellis is doing %i additional ADRENALINE damage", CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
 
-					// new iVictimHealth2 = GetEntProp(iVictim,Prop_Data,"m_iHealth");
+					// new iVictimHealth2 = GetPlayerHealth(iVictim);
 					// PrintToChatAll("Ellis iVictim %N   END HP: %i", iVictim, iVictimHealth2);
 				}
 			}
@@ -347,14 +347,14 @@ EventsHurt_VictimEllis(Handle:hEvent, attacker, victim)
 		{
 			//PrintToChat(victim, "Prevent fire damage");
 			new currentHP = GetEventInt(hEvent,"health");
-			SetEntProp(victim,Prop_Data,"m_iHealth", dmgHealth + currentHP);
+			SetPlayerHealth(victim, dmgHealth + currentHP);
 		}
 	}
 
 	if(g_iOverLevel[victim] > 0)
 	{
-		new iCurrentHealth = GetEntProp(victim,Prop_Data,"m_iHealth");
-		new iMaxHealth = GetEntProp(victim,Prop_Data,"m_iMaxHealth");
+		new iCurrentHealth = GetPlayerHealth(victim);
+		new iMaxHealth = GetPlayerMaxHealth(victim);
 		//new Float:fTempHealth = GetEntDataFloat(victim, g_iOffset_HealthBuffer);
 		//if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - float(ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT)))
 		if(iCurrentHealth < (iMaxHealth - ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT))

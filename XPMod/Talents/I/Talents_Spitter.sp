@@ -216,7 +216,7 @@ DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 		{
 			if(GetEntProp(iVictim, Prop_Send, "m_isIncapacitated") == 0)
 			{
-				new iHealth = GetEntProp(iVictim, Prop_Data, "m_iHealth");
+				new iHealth = GetPlayerHealth(iVictim);
 				new Float:fTempHealth = GetEntDataFloat(iVictim, g_iOffset_HealthBuffer);
 				
 				if(fTempHealth < 1.0)
@@ -224,12 +224,12 @@ DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 				
 				if(iHealth > iDamageTaken + 2)
 				{
-					SetEntProp(iVictim , Prop_Data,"m_iHealth", iHealth - 2);
+					SetPlayerHealth(iVictim , iHealth - 2);
 					SetEntDataFloat(iVictim, g_iOffset_HealthBuffer, fTempHealth + iDamageTaken + 2.0, true);
 				}
 				else if(fTempHealth > iDamageTaken + 2.0)
 				{
-					SetEntProp(iVictim , Prop_Data,"m_iHealth", 1);
+					SetPlayerHealth(iVictim , 1);
 					SetEntDataFloat(iVictim, g_iOffset_HealthBuffer, fTempHealth - 2.0, true);
 				}
 			}

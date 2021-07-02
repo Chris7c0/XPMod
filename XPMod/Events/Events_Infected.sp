@@ -127,14 +127,14 @@ Action:Event_ChargerImpact(Handle:hEvent, const String:strName[], bool:bDontBroa
 			iDamage = (g_iGroundLevel[attacker] - 3);
 		else iDamage = 6;
 		
-		new iCurrentHealth = GetEntProp(victim,Prop_Data,"m_iHealth");
-		SetEntProp(victim, Prop_Data, "m_iHealth", iCurrentHealth - iDamage);
+		new iCurrentHealth = GetPlayerHealth(victim);
+		SetPlayerHealth(victim, iCurrentHealth - iDamage);
 	}
 	if(g_iSpikedLevel[attacker] > 0)
 	{
 		
-		new heal = GetEntProp(attacker,Prop_Data,"m_iHealth");
-		SetEntProp(attacker, Prop_Data, "m_iHealth", heal + (g_iSpikedLevel[attacker] * 33));
+		new heal = GetPlayerHealth(attacker);
+		SetPlayerHealth(attacker, heal + (g_iSpikedLevel[attacker] * 33));
 	}
 
 	return Plugin_Continue;
@@ -776,15 +776,15 @@ Action:Event_TankFrustrated(Handle:hEvent, const String:strName[], bool:bDontBro
 
 	g_iInfectedCharacter[iClient] = UNKNOWN_INFECTED;
 
-	new iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
-	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
+	new iMaxHealth = GetPlayerMaxHealth(iClient);
+	new iCurrentHealth = GetPlayerHealth(iClient);
 	g_fFrustratedTankTransferHealthPercentage = iCurrentHealth / float(iMaxHealth);
 	
 	//PrintToChatAll("%N ResetAllTankVariables iHealth = %i MaxHealth = %i ", iClient, iCurrentHealth, iMaxHealth);
 	PrintToChatAll("\x03[XPMod] \x04%N's tank has been frustrated. Transfering tank with %3f health.", iClient, g_fFrustratedTankTransferHealthPercentage);
 
 	//Set the current health to max health so that the new tank player can get this full percentage
-	SetEntProp(iClient, Prop_Data, "m_iHealth", iMaxHealth);
+	SetPlayerHealth(iClient, iMaxHealth);
 
 	return Plugin_Continue;
 }

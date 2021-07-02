@@ -69,11 +69,11 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 					strState = "DEAD";
 				else if (GetEntProp(i, Prop_Send, "m_isIncapacitated") == 1)
 					Format(strState, sizeof(strState), "INCAPACITATED");
-				else if (GetEntProp(i,Prop_Data,"m_iHealth") > 0)
+				else if (GetPlayerHealth(i) > 0)
 					Format(strState, sizeof(strState), "(%i+%i/%i HP) %.3f MS", 
-						GetEntProp(i,Prop_Data,"m_iHealth"), 
+						GetPlayerHealth(i), 
 						GetSurvivorTempHealth(i),
-						GetEntProp(i,Prop_Data,"m_iMaxHealth"),
+						GetPlayerMaxHealth(i),
 						GetEntDataFloat(i, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue")));
 				else
 					strState = "ERROR!";
@@ -126,8 +126,8 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 				else if (IsPlayerAlive(i) && g_iInfectedCharacter[i] < 9)
 					Format(strState, sizeof(strState), "%s (%i/%i HP) %.3f MS", 
 						INFECTED_NAME[g_iInfectedCharacter[i]], 
-						GetEntProp(i,Prop_Data,"m_iHealth"), 
-						GetEntProp(i,Prop_Data,"m_iMaxHealth"), 
+						GetPlayerHealth(i), 
+						GetPlayerMaxHealth(i), 
 						GetEntDataFloat(i, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue")));
 				else
 					strState = "ERROR!";

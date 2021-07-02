@@ -37,7 +37,7 @@ LoadVampiricTankTalents(iClient)
 		iNewHealth = RoundToNearest(iNewHealth * g_fFrustratedTankTransferHealthPercentage);
 		g_fFrustratedTankTransferHealthPercentage = 0.0;
 	}
-	SetEntProp(iClient, Prop_Data,"m_iHealth", iNewHealth > 100 ? iNewHealth : 100);
+	SetPlayerHealth(iClient, iNewHealth > 100 ? iNewHealth : 100);
 
 	// Stop Kiting (Bullet hits slowing tank down)
 	SetConVarInt(FindConVar("z_tank_damage_slow_min_range"), 0);
@@ -158,11 +158,11 @@ EventsHurt_VictimTank_Vampiric(Handle:hEvent, iAttacker, iVictimTank)
 	{
 		// Increase the melee damage
 		// Remember, the original damage will still process, so subtract that
-		new iCurrentHP = GetEntProp(iVictimTank,Prop_Data,"m_iHealth");
+		new iCurrentHP = GetPlayerHealth(iVictimTank);
 		//if (IsFakeClient(iVictimTank) == false) PrintToChat(iVictimTank, "\x03iCurrentHP: %i", iCurrentHP);
-		SetEntProp(iVictimTank,Prop_Data,"m_iHealth", iCurrentHP - ((iDmgHealth * VAMPIRIC_TANK_MELEE_DMG_TAKEN_MULTIPLIER) - iDmgHealth));
+		SetPlayerHealth(iVictimTank, iCurrentHP - ((iDmgHealth * VAMPIRIC_TANK_MELEE_DMG_TAKEN_MULTIPLIER) - iDmgHealth));
 		//if (IsFakeClient(iVictimTank) == false) PrintToChat(iVictimTank, "\x03Subtracting health: %i", ((iDmgHealth * VAMPIRIC_TANK_MELEE_DMG_TAKEN_MULTIPLIER) - iDmgHealth));
-		//new iCurrentHP2 = GetEntProp(iVictimTank,Prop_Data,"m_iHealth");
+		//new iCurrentHP2 = GetPlayerHealth(iVictimTank);
 		//if (IsFakeClient(iVictimTank) == false) PrintToChat(iVictimTank, "\x03iCurrentHP: %i", iCurrentHP2);
 	}
 	else if(StrContains(weaponclass,"pistol",false) != -1 ||
@@ -172,10 +172,10 @@ EventsHurt_VictimTank_Vampiric(Handle:hEvent, iAttacker, iVictimTank)
 		StrContains(weaponclass,"shotgun",false) != -1 ||
 		StrContains(weaponclass,"sniper",false) != -1)
 	{
-		new iCurrentHP = GetEntProp(iVictimTank,Prop_Data,"m_iHealth");
+		new iCurrentHP = GetPlayerHealth(iVictimTank);
 		// The life will be taken away, so we need to convert the gun damage taken multiplier to be a reduction of this.
 		// So, if we want to only take 1/3rd damage, then we add 2/3rds back here.  1 - 1/3rds = 2/3rds.
-		SetEntProp(iVictimTank,Prop_Data,"m_iHealth", iCurrentHP + RoundToCeil(iDmgHealth * (1.0 - VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER)) );
+		SetPlayerHealth(iVictimTank, iCurrentHP + RoundToCeil(iDmgHealth * (1.0 - VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER)) );
 		//if (IsFakeClient(iVictimTank) == false) PrintToChat(iVictimTank, "\x03Re-adding health: %i", RoundToCeil(iDmgHealth * (1.0 - VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER)) );
 	}
 	else
@@ -205,14 +205,14 @@ EventsHurt_AttackerTank_Vampiric(Handle:hEvent, iAttackerTank, iVictim)
 		iVampiricHealthGainAmount = iDmgHealth * VAMPIRIC_TANK_LIFESTEAL_MULTIPLIER;
 
 	// Get the current life level
-	new iCurrentHP = GetEntProp(iAttackerTank,Prop_Data,"m_iHealth");
+	new iCurrentHP = GetPlayerHealth(iAttackerTank);
 	new iCurrentMaxHP = RoundToNearest(TANK_HEALTH_VAMPIRIC * g_fTankStartingHealthMultiplier[iAttackerTank]);
 	if(iCurrentHP < iCurrentMaxHP)
 	{
 		if(iCurrentHP + iVampiricHealthGainAmount < iCurrentMaxHP)
-			SetEntProp(iAttackerTank,Prop_Data,"m_iHealth", iCurrentHP + iVampiricHealthGainAmount);
+			SetPlayerHealth(iAttackerTank, iCurrentHP + iVampiricHealthGainAmount);
 		else
-			SetEntProp(iAttackerTank,Prop_Data,"m_iHealth", iCurrentMaxHP);
+			SetPlayerHealth(iAttackerTank, iCurrentMaxHP);
 
 		// Show hud effect:
 		if(IsFakeClient(iAttackerTank)==false)

@@ -42,7 +42,7 @@ LoadNecroTankerTalents(iClient)
 		iNewHealth = RoundToNearest(iNewHealth * g_fFrustratedTankTransferHealthPercentage);
 		g_fFrustratedTankTransferHealthPercentage = 0.0;
 	}
-	SetEntProp(iClient, Prop_Data,"m_iHealth", iNewHealth > 100 ? iNewHealth : 100);
+	SetPlayerHealth(iClient, iNewHealth > 100 ? iNewHealth : 100);
 
 	//Stop Kiting (Bullet hits slowing tank down)
 	SetConVarInt(FindConVar("z_tank_damage_slow_min_range"), 0);
@@ -194,7 +194,7 @@ HandleNecroTankerInfectedConsumption(iClient, iInfectedEntity)
 	{
 		// Add it, Cap it, Set it
 		new iNewHealth = iCurrentHealth + iAdditionalHealth > iAbsoluteMaxHealth ? iAbsoluteMaxHealth : iCurrentHealth + iAdditionalHealth;
-		SetEntProp(iClient, Prop_Data,"m_iHealth", iNewHealth);
+		SetPlayerHealth(iClient, iNewHealth);
 	}
 }
 

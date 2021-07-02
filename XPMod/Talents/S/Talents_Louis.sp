@@ -145,7 +145,7 @@ EventsHurt_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 			StrEqual(weaponclass,"pistol",false) == true ||
 			StrEqual(weaponclass,"dual_pistols",false) == true)
 		{
-			new iVictimHealth = GetEntProp(iVictim,Prop_Data,"m_iHealth");
+			new iVictimHealth = GetPlayerHealth(iVictim);
 			// PrintToChatAll("Louis iVictim %N START HP: %i", iVictim, iVictimHealth);
 
 			// Store if its a headshot for use below
@@ -166,11 +166,11 @@ EventsHurt_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 			iNewDamageAmount = CalculateDamageTakenForVictimTalents(iVictim, iNewDamageAmount, weaponclass) - CalculateDamageTakenForVictimTalents(iVictim, iDmgHealth, weaponclass);
 
 			// Apply the new damage
-			SetEntProp(iVictim, Prop_Data, "m_iHealth", iVictimHealth - iNewDamageAmount);
+			SetPlayerHealth(iVictim, iVictimHealth - iNewDamageAmount);
 
 			// PrintToChat(iAttacker, "\x03Original Dmg: %i, New Add Dmg: %i ", iDmgHealth, iNewDamageAmount);
 
-			// new iVictimHealth2 = GetEntProp(iVictim,Prop_Data,"m_iHealth");
+			// new iVictimHealth2 = GetPlayerHealth(iVictim);
 			// PrintToChatAll("Louis iVictim %N END HP: %i", iVictim, iVictimHealth2);
 		}
 	}
@@ -208,10 +208,10 @@ EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 			if (iVictim < 1)
 			{
 				// Give health
-				new iAttackerMaxHealth = GetEntProp(iAttacker, Prop_Data, "m_iMaxHealth");
-				new iAttackerHealth = GetEntProp(iAttacker, Prop_Data, "m_iHealth");
+				new iAttackerMaxHealth = GetPlayerMaxHealth(iAttacker);
+				new iAttackerHealth = GetPlayerHealth(iAttacker);
 				if (iAttackerHealth + 1 <= iAttackerMaxHealth)
-					SetEntProp(iAttacker, Prop_Data, "m_iHealth", iAttackerHealth + 1);
+					SetPlayerHealth(iAttacker, iAttackerHealth + 1);
 
 				// Increase Clip Ammo
 				new iActiveWeaponID = GetEntDataEnt2(iAttacker, g_iOffset_ActiveWeapon);
@@ -265,10 +265,10 @@ EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 			if (iVictim > 0)
 			{
 				// Give health
-				new iAttackerMaxHealth = GetEntProp(iAttacker, Prop_Data, "m_iMaxHealth");
-				new iAttackerHealth = GetEntProp(iAttacker, Prop_Data, "m_iHealth");
+				new iAttackerMaxHealth = GetPlayerMaxHealth(iAttacker);
+				new iAttackerHealth = GetPlayerHealth(iAttacker);
 				if (iAttackerHealth + 5 <= iAttackerMaxHealth)
-					SetEntProp(iAttacker, Prop_Data, "m_iHealth", iAttackerHealth + 5);
+					SetPlayerHealth(iAttacker, iAttackerHealth + 5);
 
 				// Increase Clip Ammo
 				new iActiveWeaponID = GetEntDataEnt2(iAttacker, g_iOffset_ActiveWeapon);

@@ -237,7 +237,7 @@ OnGameFrame_Rochelle(iClient)
 
 				RunCheatCommand(iClient, "give", "give health");
 
-				SetEntProp(iClient,Prop_Data,"m_iHealth", preledgehealth[iClient]);
+				SetPlayerHealth(iClient, preledgehealth[iClient]);
 				if(preledgebuffer[iClient] > 1.1)
 					SetEntDataFloat(iClient,g_iOffset_HealthBuffer, (preledgebuffer[iClient] - 1.0) ,true);
 				else
@@ -319,51 +319,51 @@ EventsHurt_AttackerRochelle(Handle:hEvent, attacker, victim)
 			//PrintToChatAll("\x03-class of gun: \x01%s",weaponclass);
 			if(StrContains(weaponclass,"hunting_rifle",false) != -1)	//Rugar
 			{
-				new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+				new hp = GetPlayerHealth(victim);
 				new dmg = GetEventInt(hEvent,"dmg_health");
 
 				dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.13));
 				dmg = CalculateDamageTakenForVictimTalents(victim, dmg, weaponclass);
 
 				//PrintToChat(attacker, "your doing %d hunting rifle damage", dmg);
-				SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+				SetPlayerHealth(victim, hp - dmg);
 
 			}
 			else if(StrContains(weaponclass,"sniper_military",false) != -1)	//H&K MSG 90
 			{
 				IgniteEntity(victim, 5.0, false);
-				new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+				new hp = GetPlayerHealth(victim);
 				new dmg = GetEventInt(hEvent,"dmg_health");
 
 				dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.08));
 				dmg = CalculateDamageTakenForVictimTalents(victim, dmg, weaponclass);
 
 				//PrintToChat(attacker, "your doing %d sniper_military damage", dmg);
-				SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+				SetPlayerHealth(victim, hp - dmg);
 
 			}
 			else if(StrContains(weaponclass,"sniper_scout",false) != -1)
 			{
-				new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+				new hp = GetPlayerHealth(victim);
 				new dmg = GetEventInt(hEvent,"dmg_health");
 
 				dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.13)) + (g_iSilentSorrowHeadshotCounter[attacker] * g_iSilentLevel[attacker] * 3);
 				dmg = CalculateDamageTakenForVictimTalents(victim, dmg, weaponclass);
 
 				//PrintToChat(attacker, "your doing %d scout damage", dmg);
-				SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+				SetPlayerHealth(victim, hp - dmg);
 
 			}
 			else if(StrContains(weaponclass,"sniper_awp",false) != -1)
 			{
-				new hp = GetEntProp(victim,Prop_Data,"m_iHealth");
+				new hp = GetPlayerHealth(victim);
 				new dmg = GetEventInt(hEvent,"dmg_health");
 
 				dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.40) );
 				dmg = CalculateDamageTakenForVictimTalents(victim, dmg, weaponclass);
 
 				//PrintToChat(attacker, "your doing %d extra awp damage", dmg);
-				SetEntProp(victim,Prop_Data,"m_iHealth", hp - dmg);
+				SetPlayerHealth(victim, hp - dmg);
 			}
 		}
 	}

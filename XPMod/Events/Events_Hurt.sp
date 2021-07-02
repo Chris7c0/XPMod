@@ -235,7 +235,7 @@ void EventsHurt_IncreaseCommonInfectedDamage(iAttacker, iVictim)
 		RunClientChecks(iVictim) &&
 		IsPlayerAlive(iVictim))	
 	{
-		new hp = GetEntProp(iVictim,Prop_Data,"m_iHealth");
+		new hp = GetPlayerHealth(iVictim);
 		new Float:fTempHealth = GetEntDataFloat(iVictim, g_iOffset_HealthBuffer);
 		if(fTempHealth > 0)
 		{
@@ -243,7 +243,7 @@ void EventsHurt_IncreaseCommonInfectedDamage(iAttacker, iVictim)
 			SetEntDataFloat(iVictim, g_iOffset_HealthBuffer, fTempHealth ,true);
 		}
 		else
-			SetEntProp(iVictim,Prop_Data,"m_iHealth", hp - 1);
+			SetPlayerHealth(iVictim, hp - 1);
 	}
 }
 

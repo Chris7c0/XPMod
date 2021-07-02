@@ -134,48 +134,48 @@ Action:TimerCoachRageRegenTick(Handle:timer, any:iClient)
 	
 	if(g_iCoachRageRegenCounter[iClient] < 2)
 	{
-		new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
-		new maxHP = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
+		new currentHP = GetPlayerHealth(iClient);
+		new maxHP = GetPlayerMaxHealth(iClient);
 		if(currentHP < (maxHP - 5))
-			SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + 5);
+			SetPlayerHealth(iClient, currentHP + 5);
 		else if(currentHP >= (maxHP - 5))
-			SetEntProp(iClient,Prop_Data,"m_iHealth", maxHP);
+			SetPlayerHealth(iClient, maxHP);
 	}
 	else if(g_iCoachRageRegenCounter[iClient] < 5)
 	{
-		new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
-		new maxHP = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
+		new currentHP = GetPlayerHealth(iClient);
+		new maxHP = GetPlayerMaxHealth(iClient);
 		if(currentHP < (maxHP - 4))
-			SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + 4);
+			SetPlayerHealth(iClient, currentHP + 4);
 		else if(currentHP >= (maxHP - 4))
-			SetEntProp(iClient,Prop_Data,"m_iHealth", maxHP);
+			SetPlayerHealth(iClient, maxHP);
 	}
 	else if(g_iCoachRageRegenCounter[iClient] < 9)
 	{
-		new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
-		new maxHP = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
+		new currentHP = GetPlayerHealth(iClient);
+		new maxHP = GetPlayerMaxHealth(iClient);
 		if(currentHP < (maxHP - 3))
-			SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + 3);
+			SetPlayerHealth(iClient, currentHP + 3);
 		else if(currentHP >= (maxHP - 3))
-			SetEntProp(iClient,Prop_Data,"m_iHealth", maxHP);
+			SetPlayerHealth(iClient, maxHP);
 	}
 	else if(g_iCoachRageRegenCounter[iClient] < 14)
 	{
-		new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
-		new maxHP = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
+		new currentHP = GetPlayerHealth(iClient);
+		new maxHP = GetPlayerMaxHealth(iClient);
 		if(currentHP < (maxHP - 2))
-			SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + 2);
+			SetPlayerHealth(iClient, currentHP + 2);
 		else if(currentHP >= (maxHP - 2))
-			SetEntProp(iClient,Prop_Data,"m_iHealth", maxHP);
+			SetPlayerHealth(iClient, maxHP);
 	}
 	else
 	{
-		new currentHP = GetEntProp(iClient,Prop_Data,"m_iHealth");
-		new maxHP = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
+		new currentHP = GetPlayerHealth(iClient);
+		new maxHP = GetPlayerMaxHealth(iClient);
 		if(currentHP < (maxHP - 1))
-			SetEntProp(iClient,Prop_Data,"m_iHealth", currentHP + 1);
+			SetPlayerHealth(iClient, currentHP + 1);
 		else if(currentHP >= (maxHP - 1))
-			SetEntProp(iClient,Prop_Data,"m_iHealth", maxHP);
+			SetPlayerHealth(iClient, maxHP);
 	}
 	g_iCoachRageRegenCounter[iClient]++;
 	//PrintToChatAll("Rage Regen Counter = %d", g_iCoachRageRegenCounter[iClient]);

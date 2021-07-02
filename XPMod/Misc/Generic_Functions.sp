@@ -52,7 +52,7 @@ void StorePlayerHealth(int iClient)
 		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1)
 		return;
 	
-	g_iPlayerHealth[iClient] = GetEntProp(iClient, Prop_Data, "m_iHealth");
+	g_iPlayerHealth[iClient] = GetPlayerHealth(iClient);
 	g_iPlayerHealthTemp[iClient] =  GetSurvivorTempHealth(iClient);
 }
 
@@ -443,7 +443,7 @@ void ReduceDamageTakenForNewPlayers(int iVictim, int iDmgAmount)
 		GetEntProp(iVictim, Prop_Send, "m_isIncapacitated") == 1)
 		return;
 
-	new iCurrentHealth = GetEntProp(iVictim, Prop_Data, "m_iHealth");
+	new iCurrentHealth = GetPlayerHealth(iVictim);
 	new iReductionAmount = RoundToNearest(( iDmgAmount * ( NEW_PLAYER_MAX_DAMAGE_REDUCTION * (1.0 - (float(g_iClientLevel[iVictim]) / 30.0)) ) ) );
 	//Ensure at least 1 damage is done
 	if (iReductionAmount >= iDmgAmount)
@@ -459,10 +459,10 @@ void ReduceDamageTakenForNewPlayers(int iVictim, int iDmgAmount)
 	// 	SetEntDataFloat(iVictim, g_iOffset_HealthBuffer, fTempHealth ,true);
 	// }
 	// else
-	// 	SetEntProp(iVictim,Prop_Data,"m_iHealth", hp - 1);
+	// 	SetPlayerHealth(iVictim, hp - 1);
 
 	// PrintToChatAll("%N iCurrentHealth = %i dmg = %i, reduction %i", iVictim, iCurrentHealth, iDmgAmount, iReductionAmount);
-	SetEntProp(iVictim,Prop_Data,"m_iHealth", iCurrentHealth + iReductionAmount);
+	SetPlayerHealth(iVictim, iCurrentHealth + iReductionAmount);
 }
 
 // NOTE: This function is for additional damage, not handling the original damage amount
