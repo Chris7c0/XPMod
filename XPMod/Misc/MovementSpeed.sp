@@ -98,7 +98,7 @@ SetClientSpeedCoach(iClient, &Float:fSpeed)
 	if (g_bTalentsConfirmed[iClient] == false ||
 		g_iChosenSurvivor[iClient] != COACH)
 		return;
-
+	
 	// Bull Rush CI Kill boost
 	if (g_bCoachInCISpeed[iClient])
 		fSpeed += (g_iBullLevel[iClient] * 0.05);
@@ -110,6 +110,8 @@ SetClientSpeedCoach(iClient, &Float:fSpeed)
 	// Bull Rush Rage boost
 	if (g_bCoachRageIsActive[iClient])
 		fSpeed += (g_iBullLevel[iClient] * 0.05);
+	else if (g_bCoachRageIsInCooldown[iClient])
+		fSpeed -= (g_iBullLevel[iClient] * 0.03);
 
 	//PrintToChat(iClient, "SetClientSpeedCoach: %f", fSpeed);
 }

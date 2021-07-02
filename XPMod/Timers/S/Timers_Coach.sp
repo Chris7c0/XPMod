@@ -99,11 +99,9 @@ Action:TimerCoachSIHeadshotSpeedReset(Handle:timer, any:iClient)
 Action:TimerCoachRageReset(Handle:timer, any:iClient)
 {
 	g_bCoachRageIsActive[iClient] = false;
-	//g_fCoachRageSpeed[iClient] = -0.1;
 	g_iCoachRageMeleeDamage[iClient] = 0;
 	g_bCoachRageIsInCooldown[iClient] = true;
 	
-
 	SetClientSpeed(iClient);
 	CreateTimer(180.0, TimerCoachRageCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	
@@ -117,6 +115,8 @@ Action:TimerCoachRageCooldown(Handle:timer, any:iClient)
 {
 	g_bCoachRageIsAvailable[iClient] = true;
 	g_bCoachRageIsInCooldown[iClient] = false;
+
+	SetClientSpeed(iClient);
 
 	return Plugin_Stop;
 }

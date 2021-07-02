@@ -69,13 +69,14 @@ Action:BullMenuDraw(iClient)
 		\nLevel 1:\
 		\n+5 max health per level\
 		\nOn CI headshot with a melee weapon:\
-		\n+5%% speed per level for 5 seconds\
+		\n+5%%%% speed per level for 5 seconds\
 		\n \
 		\n [WALK+USE] to rage! For 20 seconds:\
-		\n+5%% speed per level\
+		\n+5%%%% speed per level\
 		\n+40 melee damage per level\
 		\nHealth regeneration\
 		\n3 Minute Cooldown. During Cooldown:\
+		\n-3%%%% speed per level\
 		\nCoach cannot regen or speed up\
 		\n ",
 		strStartingNewLines,
@@ -86,7 +87,7 @@ Action:BullMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
