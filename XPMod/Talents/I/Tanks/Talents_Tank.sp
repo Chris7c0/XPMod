@@ -189,7 +189,7 @@ ResetTankHealth(int iClient)
 	
 	// Clamp Player MaxHealth to ConVar Health
 	if (iMaxHealth > iMaxHealthConVarSetting)
-		SetEntProp(iClient, Prop_Data, "m_iMaxHealth", iMaxHealthConVarSetting);
+		SetPlayerMaxHealth(iClient, iMaxHealthConVarSetting);
 
 	// iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
 	// PrintToChatAll("%N ResetAllTankVariables m_iHealth = %i iMaxHealth = %i iMaxHealthConVarSetting = %i", iClient, iCurrentHealth, iMaxHealth, iMaxHealthConVarSetting);

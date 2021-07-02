@@ -28,9 +28,9 @@ LoadIceTankTalents(iClient)
 	
 	// Set Health
 	// Get Current Health/MaxHealth first, to add it back later
-	new iCurrentMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
-	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
-	SetEntProp(iClient, Prop_Data,"m_iMaxHealth", RoundToNearest(TANK_HEALTH_ICE * g_fTankStartingHealthMultiplier[iClient]));
+	new iCurrentMaxHealth = GetPlayerMaxHealth(iClient);
+	new iCurrentHealth = GetPlayerHealth(iClient);
+	SetPlayerMaxHealth(iClient,  RoundToNearest(TANK_HEALTH_ICE * g_fTankStartingHealthMultiplier[iClient]), false, false);
 	new iNewHealth = iCurrentHealth + RoundToNearest(TANK_HEALTH_ICE * g_fTankStartingHealthMultiplier[iClient]) - iCurrentMaxHealth;
 	// If this was a transfered frustrated tank, then set the health to this percentage
 	if (g_fFrustratedTankTransferHealthPercentage > 0.0)

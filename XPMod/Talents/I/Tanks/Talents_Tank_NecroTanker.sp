@@ -21,19 +21,19 @@ LoadNecroTankerTalents(iClient)
 	
 	// Set Health
 	// Get Current Health/MaxHealth first, to add it back later
-	new iCurrentMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
-	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
+	new iCurrentMaxHealth = GetPlayerMaxHealth(iClient);
+	new iCurrentHealth = GetPlayerHealth(iClient);
 	decl iNewHealth;
 	// If its a bot, then give max health starting
 	if (IsFakeClient(iClient))
 	{
-		SetEntProp(iClient, Prop_Data,"m_iMaxHealth", RoundToNearest(NECROTANKER_MAX_HEALTH * g_fTankStartingHealthMultiplier[iClient]));
+		SetPlayerMaxHealth(iClient,  RoundToNearest(NECROTANKER_MAX_HEALTH * g_fTankStartingHealthMultiplier[iClient]), false, false);
 		iNewHealth = iCurrentHealth + RoundToNearest(NECROTANKER_MAX_HEALTH * g_fTankStartingHealthMultiplier[iClient]) - iCurrentMaxHealth
 	}
 	// If its a human player, make them work for their health
 	else
 	{
-		SetEntProp(iClient, Prop_Data,"m_iMaxHealth", RoundToNearest(TANK_HEALTH_NECROTANKER * g_fTankStartingHealthMultiplier[iClient]));
+		SetPlayerMaxHealth(iClient,  RoundToNearest(TANK_HEALTH_NECROTANKER * g_fTankStartingHealthMultiplier[iClient]), false, false);
 		iNewHealth = iCurrentHealth + RoundToNearest(TANK_HEALTH_NECROTANKER * g_fTankStartingHealthMultiplier[iClient]) - iCurrentMaxHealth
 	}
 	// If this was a transfered frustrated tank, then set the health to this percentage
@@ -180,16 +180,16 @@ HandleNecroTankerInfectedConsumption(iClient, iInfectedEntity)
 
 	// Give the appropriate amount of Health & Max Health
 	// Check if should increase max health
-	new iCurrentMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
+	new iCurrentMaxHealth = GetPlayerMaxHealth(iClient);
 	new iAbsoluteMaxHealth = RoundToNearest(NECROTANKER_MAX_HEALTH * g_fTankStartingHealthMultiplier[iClient]);
 	if (iCurrentMaxHealth < iAbsoluteMaxHealth)
 	{
 		// Add it, Cap it, Set it
 		new iNewHealth = iCurrentMaxHealth + iAdditionalHealth > iAbsoluteMaxHealth ? iAbsoluteMaxHealth : iCurrentMaxHealth + iAdditionalHealth;
-		SetEntProp(iClient, Prop_Data,"m_iMaxHealth", iNewHealth);
+		SetPlayerMaxHealth(iClient,  iNewHealth, false, false);
 	}
 	// Check if should increase health
-	new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
+	new iCurrentHealth = GetPlayerHealth(iClient);
 	if (iCurrentHealth < iAbsoluteMaxHealth)
 	{
 		// Add it, Cap it, Set it
