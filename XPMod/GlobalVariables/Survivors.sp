@@ -297,7 +297,7 @@ new g_iWareStationOwnerIDOfCurrentlyViewedStation[MAXPLAYERS + 1];
 float g_xyzWarezStationLocation[MAXPLAYERS + 1][3];
 float g_fWarezStationSpeedBoost[MAXPLAYERS + 1];
 float g_fLouisXMRWallet[MAXPLAYERS + 1];
-#define LOUIS_HEADSHOT_XMR_STARTING_AMOUNT              3.0
+#define LOUIS_HEADSHOT_XMR_STARTING_AMOUNT              4.2
 #define LOUIS_HEADSHOT_XMR_AMOUNT_CI                    0.1
 #define LOUIS_HEADSHOT_XMR_AMOUNT_SI                    0.5
 #define LOUIS_HEADSHOP_ITEM_SPEED_HAX                   1
@@ -306,19 +306,19 @@ float g_fLouisXMRWallet[MAXPLAYERS + 1];
 #define LOUIS_HEADSHOP_ITEM_HAK_TARGET                  4
 #define LOUIS_HEADSHOP_ITEM_HAXOR_TEH_SERVER            5
 #define LOUIS_HEADSHOP_ITEM_TIME_OUT                    6
-#define LOUIS_HEADSHOP_XMR_AMOUNT_SPEED_HAX             6.0
-#define LOUIS_HEADSHOP_XMR_AMOUNT_NUB_WIPE              7.0
-#define LOUIS_HEADSHOP_XMR_AMOUNT_MED_HAX               8.0
-#define LOUIS_HEADSHOP_XMR_AMOUNT_HAK_TARGET            9.0
-#define LOUIS_HEADSHOP_XMR_AMOUNT_HAXOR_TEH_SERVER      10.0
-#define LOUIS_HEADSHOP_XMR_AMOUNT_TIME_OUT              11.0
+#define LOUIS_HEADSHOP_XMR_AMOUNT_SPEED_HAX             8.0
+#define LOUIS_HEADSHOP_XMR_AMOUNT_NUB_WIPE              9.0
+#define LOUIS_HEADSHOP_XMR_AMOUNT_MED_HAX               10.0
+#define LOUIS_HEADSHOP_XMR_AMOUNT_HAK_TARGET            11.0
+#define LOUIS_HEADSHOP_XMR_AMOUNT_HAXOR_TEH_SERVER      12.0
+#define LOUIS_HEADSHOP_XMR_AMOUNT_TIME_OUT              13.0
 bool g_bLouisSpeedHaxEnabled;
 bool g_bSpeedHaxInCooldown;
 #define LOUIS_SPEED_HAX_MOVEMENT_MULTIPLIER             2.0
 #define LOUIS_SPEED_HAX_DURATION                        10.0
 #define LOUIS_SPEED_HAX_COOLDOWN_DURATION               300.0
 bool g_bLouisMedHaxEnabled;
-#define LOUIS_MED_HAX_USE_DURATION                      0
+#define LOUIS_MED_HAX_USE_DURATION                      1
 #define LOUIS_MED_HAX_DURATION                          30.0
 bool g_bIsPLayerHacked[MAXPLAYERS + 1];
 #define LOUIS_HACK_TARGET_DURATION                      10.0

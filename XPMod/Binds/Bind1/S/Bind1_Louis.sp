@@ -135,8 +135,8 @@ Action:WarezStationMenuDraw(iClient)
 			g_iWareStationOwnerIDOfCurrentlyViewedStation[iClient] : iClient);
 	SetMenuTitle(menu, text);
 
-	AddMenuItem(menu, "option1", "+2% Speed Increase");
-	AddMenuItem(menu, "option2", "+10% Max Health");
+	AddMenuItem(menu, "option1", "+5% Speed Increase");
+	AddMenuItem(menu, "option2", "+10 HP Max Health");
 	AddMenuItem(menu, "option3", "-50% Team Screen Shake");
 	AddMenuItem(menu, "option4", "+1 Self Revive Kit");
 	AddMenuItem(menu, "option5", "+3 Bile Cleansing Kit");
@@ -181,7 +181,15 @@ WarezStationMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 		{
 			case 0: // Speed
 			{
-				g_fWarezStationSpeedBoost[iClient] += 0.02;
+				// If louis warez boost for this player is already at cap, then redraw menu and let them choose again.
+				if (g_fWarezStationSpeedBoost[iClient] >= 0.1)
+				{
+					PrintToChat(iClient, "\x03[XPMod] \x04Speed Increase is already at +10%%. Choose something else.");
+					WarezStationMenuDraw(iClient);
+					return;
+				}
+
+				g_fWarezStationSpeedBoost[iClient] += 0.05;
 				SetClientSpeed(iClient);
 				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Speed Increase", iClient);
 			}
