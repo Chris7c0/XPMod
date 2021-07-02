@@ -80,7 +80,6 @@ Action:BullMenuDraw(iClient)
 		\nCoach cannot regen or speed up\
 		\n ",
 		strStartingNewLines,
-		g_iSkillPoints[iClient], 
 		g_iBullLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
