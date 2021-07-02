@@ -4,7 +4,7 @@ TalentsLoad_Coach(iClient)
 	{					
 		g_iMeleeDamageCounter[iClient] = (g_iStrongLevel[iClient] * 30);
 		
-		SetPlayerMaxHealth(iClient, 100 + (g_iBullLevel[iClient]*15) + (g_iWreckingLevel[iClient]*10) + (g_iStrongLevel[iClient]*10) + (g_iCoachTeamHealthStack * 5), false, !g_bSurvivorTalentsGivenThisRound[iClient]);
+		SetPlayerMaxHealth(iClient, 100 + (g_iBullLevel[iClient]*5) + (g_iWreckingLevel[iClient]*10) + (g_iStrongLevel[iClient]*10) + (g_iCoachTeamHealthStack * 5), false, !g_bSurvivorTalentsGivenThisRound[iClient]);
 		
 		if(g_bSurvivorTalentsGivenThisRound[iClient] == false)
 		{

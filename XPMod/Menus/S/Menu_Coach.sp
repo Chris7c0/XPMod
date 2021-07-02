@@ -67,7 +67,7 @@ Action:BullMenuDraw(iClient)
 		%s			Bull Rush(Level %d):\
 		\n \
 		\nLevel 1:\
-		\n+15 max health per level\
+		\n+5 max health per level\
 		\nOn CI headshot with a melee weapon:\
 		\n+5%% speed per level for 5 seconds\
 		\n \
