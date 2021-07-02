@@ -72,10 +72,10 @@ Action:BullMenuDraw(iClient)
 		\n+5%% speed per level for 5 seconds\
 		\n \
 		\n [WALK+USE] to rage! For 20 seconds:\
-		\n+4%% speed per level\
-		\n+20 melee damage per level\
+		\n+5%% speed per level\
+		\n+40 melee damage per level\
 		\nHealth regeneration\
-		\n60 second cooldown. During cooldown:\
+		\n3 Minute Cooldown. During Cooldown:\
 		\nCoach cannot regen or speed up\
 		\n ",
 		strStartingNewLines,
@@ -124,7 +124,7 @@ Action:WreckingMenuDraw(iClient)
 		\nLevel 5:\
 		\nOn SI headshot w/ melee weapon & Wrecking Ball charged:\
 		\nInstantly recharge Wrecking Ball\
-		\n(Charge) +1 health regen every 0.75 seconds\
+		\n(Charge) +1 health regen every 2 seconds\
 		\n \
 		\n \
 		\nSkill Uses:\

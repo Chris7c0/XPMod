@@ -424,7 +424,7 @@ OnGameFrame_Coach(iClient)
 						g_bShowingChargeHealParticle[iClient] = true;
 					}
 					
-					if(g_iCoachHealthRechargeCounter[iClient]>23)
+					if(g_iCoachHealthRechargeCounter[iClient]>60)
 					{
 						g_iCoachHealthRechargeCounter[iClient] = 0;
 						new currentHP=GetPlayerHealth(iClient);
@@ -494,7 +494,7 @@ OnGameFrame_Coach(iClient)
 			g_bWalkAndUseToggler[iClient] = true;
 			if(g_bCoachRageIsAvailable[iClient] == true)
 			{
-				g_iCoachRageMeleeDamage[iClient] = (g_iBullLevel[iClient] * 20);
+				g_iCoachRageMeleeDamage[iClient] = (g_iBullLevel[iClient] * 40);
 				CreateTimer(20.0, TimerCoachRageReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
 				if(g_iCoachRageRegenCounter[iClient] < 2)
 				{
@@ -781,7 +781,8 @@ EventsHurt_AttackerCoach(Handle:hEvent, attacker, victim)
 				//PrintToChat(attacker, "\x03[XPMod] \x05You did %d extra melee damage", (g_iMeleeDamageCounter[attacker] + g_iCoachRageMeleeDamage[attacker]));
 				SetPlayerHealth(victim, hp - (g_iMeleeDamageCounter[attacker] + g_iCoachRageMeleeDamage[attacker]));
 			}
-			else if(g_bCoachRageIsActive[attacker] == true)
+			
+			if(g_bCoachRageIsActive[attacker] == true)
 			{
 				new hp = GetPlayerHealth(victim);
 				//PrintToChat(attacker, "\x03[XPMod] \x05You did %d extra melee damage", g_iCoachRageMeleeDamage[attacker]);

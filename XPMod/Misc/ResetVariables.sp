@@ -84,11 +84,16 @@ ResetVariablesForMap(iClient)
 	g_bIsRochellePoisoned[iClient] = false;
 	
 	//Coach
+	g_bCoachRageIsActive[iClient] = false;
+	g_iCoachRageMeleeDamage[iClient] = 0;
+	g_bCoachRageIsAvailable[iClient] = true;
+	g_bCoachRageIsInCooldown[iClient] = false;
 	g_bShowingChargeHealParticle[iClient] = false;
 	g_bCoachInCISpeed[iClient] = false;
 	g_bCoachInSISpeed[iClient] = false;
 	g_iCoachCIHeadshotCounter[iClient] = 0;
 	g_iCoachSIHeadshotCounter[iClient] = 0;
+
 	
 	//Ellis
 	g_bWalkAndUseToggler[iClient] = false;

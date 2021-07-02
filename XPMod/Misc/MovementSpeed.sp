@@ -109,7 +109,7 @@ SetClientSpeedCoach(iClient, &Float:fSpeed)
 
 	// Bull Rush Rage boost
 	if (g_bCoachRageIsActive[iClient])
-		fSpeed += (g_iBullLevel[iClient] * 0.04);
+		fSpeed += (g_iBullLevel[iClient] * 0.05);
 
 	//PrintToChat(iClient, "SetClientSpeedCoach: %f", fSpeed);
 }
