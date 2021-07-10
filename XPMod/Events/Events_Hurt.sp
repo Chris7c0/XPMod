@@ -3,6 +3,12 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"attacker"));
 	new iVictim  = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 
+	// // Reset bot action if hurt
+	// if (RunClientChecks(iVictim) && IsFakeClient(iVictim) && IsPlayerAlive(iVictim))
+	// {
+	// 	ResetBotCommand(iVictim);
+	// }
+
 	// PrintToChatAll("Hitbox: %d | m_flModelScale %f | Collision: %d\nSolidType: %d | SolidFlags: %d\n",
 	// 		GetEntProp(iVictim, Prop_Send, "m_nHitboxSet"),
 	// 		GetEntPropFloat(iVictim, Prop_Send, "m_flModelScale"),

@@ -35,6 +35,15 @@ bool RunEntityChecks(int iEntity)
 	return true;
 }
 
+bool KillEntitySafely(int iEntity)
+{
+	if (RunEntityChecks(iEntity) == false)
+		return false;
+
+	AcceptEntityInput(iEntity, "Kill");
+	return true;
+}
+
 int GetHumanPlayerCount()
 {
 	int iCount = 0;

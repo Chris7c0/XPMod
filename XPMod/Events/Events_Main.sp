@@ -10,6 +10,8 @@
 
 SetupXPMEvents()
 {
+	//AddTempEntHook("PlayerAnimEvent", OnPlayerAnimEvent);
+
 	//Hook user messages for silent renames for level tags
 	HookUserMessage(GetUserMessageId("SayText2"), Hook_SayText2, true);
 
@@ -211,8 +213,11 @@ public OnMapStart()
 
 	// Increase the uncommon limit for the NecroTanker and Spitter conjurer abilities
 	// Also, more is better...
-	SetConVarInt(FindConVar("z_common_limit"), 45);	
+	SetConVarInt(FindConVar("z_common_limit"), 45);
 	//SetConVarInt(FindConVar("z_background_limit"), 45);		// Not required
+
+	// This can be set so that the survivor bots dont teleport if they are entangled
+	//SetConVarInt(FindConVar("sb_enforce_proximity_range"), CONVAR_SB_ENFORCE_PROXIMITY_RANGE_DEFAULT);
 	
 	// Increases the spawn distance
 	// Commented out to ensure that zombies spawn closer to the action

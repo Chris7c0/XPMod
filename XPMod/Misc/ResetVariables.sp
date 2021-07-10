@@ -8,6 +8,8 @@ ResetVariablesForMap(iClient)
 	g_fTimeStamp[iClient] = -1.0;
 	g_iFastAttackingClientsArray[iClient] = -1;
 	g_bDoesClientAttackFast[iClient] = false;
+	g_bMovementLocked[iClient] = false;
+	g_bStopAllInput[iClient] = false;
 	g_iClientBindUses_1[iClient] = 0;
 	g_iClientBindUses_2[iClient] = 0;
 	g_iEllisSpeedBoostCounter[iClient] = 0;
@@ -58,6 +60,15 @@ ResetVariablesForMap(iClient)
 	// Bile Cleansing Kits
 	g_iBileCleansingKits[iClient] = 0;
 	g_iBileCleansingFrameTimeCtr[iClient] = -1;
+
+
+	// Scripting variables
+	g_fGameTimeOfLastGoalSet[iClient] =  -9999.0
+	g_fGameTimeOfLastDamageTaken[iClient] = -9999.0;
+	g_fGameTimeOfLastViableTargetSeen[iClient] = -9999.0;
+	g_bBotXPMGoalAccomplished[iClient] = true;
+	g_iBotXPMGoalTarget[iClient] = -1;
+	g_xyzBotXPMGoalLocation[iClient] = EMPTY_VECTOR;
 
 	// Unhook all of the OnTakeDamage in case there
 	// were any left over from the last map
@@ -146,6 +157,7 @@ ResetVariablesForMap(iClient)
 	g_iChokingVictim[iClient] = -1;
 	g_iMaxTongueLength = 0;
 	g_iMaxDragSpeed = 0;
+	SetMoveTypeBackToNormalOnNextGameFrame[iClient] = false;
 	g_bHasSmokersPoisonCloudOut[iClient] = false;
 	g_bIsElectricuting[iClient] = false;
 	g_bIsSmokeInfected[iClient] = false;
@@ -153,6 +165,9 @@ ResetVariablesForMap(iClient)
 	g_bTeleportCoolingDown[iClient] = false;
 	g_iSmokerTransparency[iClient] = 0;
 	g_bElectricutionCooldown[iClient] = false;
+	g_bIsEntangledInSmokerTongue[iClient] = false;
+	g_iEntangledSurvivorModelIndex[iClient] = -1;
+	g_iEntangledTongueModelIndex[iClient] = -1;
 	
 	//Boomer
 	g_bIsBoomerVomiting[iClient] = false;
@@ -277,6 +292,8 @@ DeleteAllGlobalTimerHandles(iClient)
 	delete g_hTimer_NickLifeSteal[iClient];
 	delete g_hTimer_BillDropBombs[iClient];
 	delete g_hTimer_LouisTeleportRegenerate[iClient];
+	delete g_hTimer_UntangleSurvivorCheck[iClient];
+	delete g_hTimer_TimerKeepBotFocusedOnXPModGoal[iClient];
 	delete g_hTimer_AdhesiveGooReset[iClient];
 	delete g_hTimer_DemiGooReset[iClient];
 	delete g_hTimer_ResetGlow[iClient];

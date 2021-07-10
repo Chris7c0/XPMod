@@ -1,16 +1,35 @@
 
 //Testing Functions//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//new Float:g_fEllisTestFireRate = 0.0;
 Action:TestFunction1(iClient, args)
 {
+	
 	DebugLog(DEBUG_MODE_TESTING, "T1");
 	//PrintToChat(iClient, "T1");
 	
 	char str1[99];
 	char str2[99];
+	char str3[99];
 	GetCmdArg(1, str1, sizeof(str1));
 	GetCmdArg(2, str2, sizeof(str2));
+	GetCmdArg(3, str3, sizeof(str2));
+
+	//SetPlayerAnimEvent(iClient, str1, str2, str3);
+
+	CatchAndReleasePlayer(StringToInt(str1));
+	//EntangleSurvivorInSmokerTongue(StringToInt(str1));
+
+	
+	//PrintToServer("%i", GetEntProp(iClient, Prop_Send, "m_nSequence"));
+	//PlayAnimTest(iClient);
+	//PrintToServer("%i", GetEntProp(iClient, Prop_Send, "m_nSequence"));
+
+	//sendPlayerAnimToAll(StringToInt(arg1), )
+
+	// SetVariantString("Idle_Tongued_choking_ground");
+	// AcceptEntityInput(StringToInt(str1), "SetAnimation");
+
+	// TogglePlayerNoClip(iClient);
 
 	// PrintToChat(iClient, "players down = %i", GetIncapOrDeadSurvivorCount());
 
@@ -103,6 +122,8 @@ Action:TestFunction2(iClient, args)
 	GetCmdArg(1, str1, sizeof(str1));
 	GetCmdArg(2, str2, sizeof(str2));
 
+	UntangleSurvivorFromSmokerTongue(StringToInt(str1));
+
 	// DebugLog(DEBUG_MODE_TESTING, "DEBUG_MODE_TESTING %N, %i, %i, %i, %i, %f, %f, %s, %s", iClient, 1, 2, 3, 4, 5.5, 6.6, "testing", "another test string!");
 	// DebugLog(DEBUG_MODE_TESTING, "DEBUG_MODE_TESTING");
 	// DebugLog(DEBUG_MODE_ERRORS, "DEBUG_MODE_ERRORS %N", iClient);
@@ -137,6 +158,12 @@ Action:TestFunction3(iClient, args)
 	GetCmdArg(1, str1, sizeof(str1));
 	char str2[99];
 	GetCmdArg(2, str2, sizeof(str2));
+	
+	for (int i=1; i<=MaxClients; i++)
+		if(RunClientChecks(i) && IsPlayerAlive(i))
+			PrintToChatAll("%i: %N", i, i)
+
+	//GotoFirstPerson(iClient);
 
 	//Testing glow
 	//SetClientGlow(StringToInt(str1), 0, 0, 0, StringToInt(str2));
@@ -155,6 +182,12 @@ Action:TestFunction4(iClient, args)
 	DebugLog(DEBUG_MODE_TESTING, "T4");
 	char str1[99];
 	GetCmdArg(1, str1, sizeof(str1));
+
+	//SmokerDismount(iClient);
+	//GotoThirdPerson(iClient);
+	decl Float:xyzLocation[3];
+	GetClientAbsOrigin(iClient, xyzLocation);
+	SendAllSurvivorBotsToLocation(xyzLocation);
 
 	// decl String:strTimeScaleCmd[32];
 	// Format(strTimeScaleCmd, sizeof(strTimeScaleCmd), "host_timescale %3f", StringToFloat(str1));

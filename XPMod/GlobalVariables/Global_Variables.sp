@@ -152,6 +152,7 @@ new String:INFECTED_NAME[][] =          {"",
 #define MOVETYPE_WALK 			2
 #define MOVETYPE_FLYGRAVITY 	5
 #define MOVETYPE_PUSH           7
+#define MOVETYPE_NOCLIP         8
 
 
 
@@ -244,6 +245,19 @@ new g_iPlayerHealthTemp[MAXPLAYERS + 1];
 bool g_bHideNameChangeMessage = false;
 #define NAME_CHANGE_STRING "#Cstrike_Name_Change"
 
+// Input restrictions
+bool g_bMovementLocked[MAXPLAYERS +1];
+bool g_bStopAllInput[MAXPLAYERS + 1];
+
+
+// Scripting variables
+float g_fGameTimeOfLastGoalSet[MAXPLAYERS + 1];
+float g_fGameTimeOfLastDamageTaken[MAXPLAYERS + 1];
+float g_fGameTimeOfLastViableTargetSeen[MAXPLAYERS + 1];
+bool g_bBotXPMGoalAccomplished[MAXPLAYERS + 1];
+new g_iBotXPMGoalTarget[MAXPLAYERS + 1];
+float g_xyzBotXPMGoalLocation[MAXPLAYERS + 1][3];
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////     Test Variables     /////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -257,3 +271,4 @@ new preledgehealth[MAXPLAYERS + 1];
 new Float:preledgebuffer[MAXPLAYERS + 1];
 new bool:clienthanging[MAXPLAYERS + 1];
 //new g_iAbility = 0;
+//new Float:g_fEllisTestFireRate = 0.0;

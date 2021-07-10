@@ -43,6 +43,12 @@ TalentsLoad_Smoker(iClient)
 
 OnGameFrame_Smoker(iClient)
 {
+	if (SetMoveTypeBackToNormalOnNextGameFrame[iClient] == true)
+	{
+		SetMoveTypeBackToNormalOnNextGameFrame[iClient] = false;
+		SetPlayerMoveType(iClient, MOVETYPE_WALK);
+	}
+
 	if(g_iDirtyLevel[iClient] > 0 && g_iSmokerTransparency[iClient] != 0)
 	{
 		if(g_iSmokerTransparency[iClient] > 1)

@@ -378,11 +378,17 @@ bool SetClientSpeedOverrides(iClient, &Float:fSpeed)
 	}
 
 	// Louis's Bind 2 Global Survivor Speed Override
-	if(g_bLouisSpeedHaxEnabled == true &&
+	if (g_bLouisSpeedHaxEnabled == true &&
 		g_iClientTeam[iClient] == TEAM_SURVIVORS && 
 		IsClientGrappled(iClient) == false)
 	{
 		fSpeed = LOUIS_SPEED_HAX_MOVEMENT_MULTIPLIER;
+		return true;
+	}
+
+	if (g_bMovementLocked[iClient] == true)
+	{
+		fSpeed = 0.0;
 		return true;
 	}
 

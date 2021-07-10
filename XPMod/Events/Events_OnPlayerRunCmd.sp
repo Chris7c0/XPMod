@@ -1,5 +1,12 @@
 public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], Float:fAngles[3], &iWeapon)
 {
+	// if (g_bStopAllInput[iClient]) return Plugin_Handled;
+
+	// if (g_bIsEntangledInSmokerTongue[iClient])
+	// {
+	// 	LockPlayerFromAttacking(iClient);
+	// }
+
 	bool bButtonsChanged = false;
 
 	// If the round has not been unfrozen yet, check for input and then start unfreeze timer once input has been done

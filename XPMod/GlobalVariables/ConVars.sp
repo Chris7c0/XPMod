@@ -34,3 +34,8 @@ new Handle:g_hCVar_DefaultInfecttedSlot2    = INVALID_HANDLE;
 new g_iDefaultInfectedSlot2                 = JOCKEY;
 new Handle:g_hCVar_DefaultInfecttedSlot3    = INVALID_HANDLE;
 new g_iDefaultInfectedSlot3                 = SMOKER;
+
+
+//Default and Max L4D2 Convar values
+#define CONVAR_SB_ENFORCE_PROXIMITY_RANGE_DEFAULT   1500
+#define CONVAR_SB_ENFORCE_PROXIMITY_RANGE_MAX       99999999

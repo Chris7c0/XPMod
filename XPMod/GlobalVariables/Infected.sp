@@ -85,14 +85,19 @@ new ArrayList:g_listEnhancedCIEntities;
 new g_iMaxTongueLength;
 new g_iMaxDragSpeed;
 new g_iChokingVictim[MAXPLAYERS + 1];
+bool SetMoveTypeBackToNormalOnNextGameFrame[MAXPLAYERS + 1];
 new bool:g_bIsElectricuting[MAXPLAYERS + 1];
 new bool:g_bIsSmokeInfected[MAXPLAYERS + 1];
 new bool:g_bIsSmokeEntityOff;
 new g_iSmokerInfectionCloudEntity[MAXPLAYERS + 1];
 new bool:g_bHasSmokersPoisonCloudOut[MAXPLAYERS + 1];
 new Float:g_xyzPoisonCloudOriginArray[MAXPLAYERS + 1][3];
-new bool:g_bTeleportCoolingDown[MAXPLAYERS + 1];
-new bool:g_bElectricutionCooldown[MAXPLAYERS + 1];
+bool:g_bTeleportCoolingDown[MAXPLAYERS + 1];
+bool:g_bElectricutionCooldown[MAXPLAYERS + 1];
+bool:g_bIsEntangledInSmokerTongue[MAXPLAYERS + 1];
+new g_iEntangledSurvivorModelIndex[MAXPLAYERS + 1];
+new g_iEntangledTongueModelIndex[MAXPLAYERS + 1];
+#define SMOKER_UNTANGLE_PLAYER_DISTANCE             100.0
 //For Teleport
 new Float:g_fMapsMaxTeleportHeight;
 new g_iSmokerTransparency[MAXPLAYERS + 1];

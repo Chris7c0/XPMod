@@ -5,7 +5,8 @@ public void OnEntityCreated(int iEntity, const char[] classname)
 	if (g_bPlayerPressedButtonThisRound == false)
 		return;
 	
-	//PrintToServer("OnEntityCreated %i", iEntity);
+	//PrintToServer("OnEntityCreated %i: classname: %s", iEntity, classname);
+
 	if (IsCommonInfected(iEntity, classname))
 	{
 		EnhanceCIIfNeeded(iEntity);
@@ -53,6 +54,8 @@ public void OnEntityDestroyed(int iEntity)
 
 public Action:OnTakeDamage(victim, &attacker, &inflictor, &Float:damage, &damageType, &weapon, Float:damageForce[3], Float:damagePosition[3]) 
 {
+	//PrintToChatAll("OnTakeDamage: %i", victim);
+
 	// Check that this is an uncommon infected and not world or bot/human player
 	if (victim > 0 &&
 		RunClientChecks(victim) == false &&

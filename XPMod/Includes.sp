@@ -15,6 +15,7 @@
 // Misc
 #include "XPMod/Misc/Debug.sp"
 #include "XPMod/Misc/Admin_Commands.sp"
+#include "XPMod/Misc/ScriptCommands.sp"
 #include "XPMod/Misc/Switch_Teams.sp"
 #include "XPMod/Misc/Generic_Functions.sp"
 #include "XPMod/Misc/Setup.sp"
