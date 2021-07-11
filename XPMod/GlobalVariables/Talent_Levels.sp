@@ -58,9 +58,9 @@ new g_iLouisTalent6Level[MAXPLAYERS + 1];
 ////////////////////////////////     INFECTED    /////////////////////////////////////
 
 //Smoker
-new g_iEnvelopmentLevel[MAXPLAYERS + 1];
-new g_iNoxiousLevel[MAXPLAYERS + 1];
-new g_iDirtyLevel[MAXPLAYERS + 1];
+new g_iSmokerTalent1Level[MAXPLAYERS + 1];
+new g_iSmokerTalent2Level[MAXPLAYERS + 1];
+new g_iSmokerTalent3Level[MAXPLAYERS + 1];
 
 //Boomer
 new g_iRapidLevel[MAXPLAYERS + 1];

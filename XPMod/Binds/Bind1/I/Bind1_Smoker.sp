@@ -3,7 +3,7 @@ void Bind1Press_Smoker(iClient)
     //Teleportation
     if((g_iClientInfectedClass1[iClient] == SMOKER) || (g_iClientInfectedClass2[iClient] == SMOKER) || (g_iClientInfectedClass3[iClient] == SMOKER))
     {
-        if(g_iDirtyLevel[iClient] > 0)
+        if(g_iSmokerTalent3Level[iClient] > 0)
         {
             if(g_bTeleportCoolingDown[iClient] == false)
             {
@@ -25,7 +25,7 @@ void Bind1Press_Smoker(iClient)
                             //PrintToChat(iClient, "vdir = %.4f, %.4f, %.4f", vdir[0], vdir[1], vdir[2]);
                             distance = GetVectorDistance(eyeorigin, endpos, false);
                             distance = distance * 0.08;
-                            if(distance <= (float(g_iDirtyLevel[iClient]) * 30.0))
+                            if(distance <= (float(g_iSmokerTalent3Level[iClient]) * 30.0))
                             {
                                 decl Float:vorigin[3];
                                 GetClientAbsOrigin(iClient, vorigin);
@@ -46,12 +46,12 @@ void Bind1Press_Smoker(iClient)
                                 CreateTimer(10.0, ReallowTeleport, iClient, TIMER_FLAG_NO_MAPCHANGE);	//After 10 seconds reallow teleportation fot the iClient
                                 
                                 //Make smoker transparent and set him to gradually become more opaque
-                                g_iSmokerTransparency[iClient] = g_iDirtyLevel[iClient] * 30;
+                                g_iSmokerTransparency[iClient] = g_iSmokerTalent3Level[iClient] * 30;
                                 SetEntityRenderMode(iClient, RenderMode:3);
                                 SetEntityRenderColor(iClient, 0, 0, 0, 0);
                             }
                             else
-                                PrintHintText(iClient, "You cannot teleport beyond %.0f ft.", (float(g_iDirtyLevel[iClient]) * 30.0));
+                                PrintHintText(iClient, "You cannot teleport beyond %.0f ft.", (float(g_iSmokerTalent3Level[iClient]) * 30.0));
                         }
                         else
                             PrintHintText(iClient, "You cannot teleport to this location.");

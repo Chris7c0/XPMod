@@ -224,8 +224,8 @@ SetClientSpeedSmoker(iClient, &Float:fSpeed)
 		g_iClientInfectedClass3[iClient] != SMOKER))
 		return;
 
-	if(g_iNoxiousLevel[iClient] > 0)
-		fSpeed += (g_iNoxiousLevel[iClient] * 0.02);
+	if(g_iSmokerTalent1Level[iClient] > 0)
+		fSpeed += (g_iSmokerTalent1Level[iClient] * 0.05);
 
 	//PrintToChat(iClient, "SetClientSpeedSmoker: %f", fSpeed);
 }
@@ -341,14 +341,14 @@ bool SetClientSpeedOverrides(iClient, &Float:fSpeed)
 	}
 
 	// If choking a victim, dont give other movement speed buffs
-	if (g_iDirtyLevel[iClient] > 0 &&
+	if (g_iSmokerTalent1Level[iClient] > 0 &&
 		g_iInfectedCharacter[iClient] == SMOKER &&
 		g_bTalentsConfirmed[iClient] == true &&
 		g_iChokingVictim[iClient] > 0 && 
 		g_iClientTeam[iClient] == TEAM_INFECTED &&
 		g_bSmokerGrappled[g_iChokingVictim[iClient]])
 	{
-		fSpeed = (0.01 * g_iDirtyLevel[iClient])
+		fSpeed = (0.01 * g_iSmokerTalent1Level[iClient])
 		return true;
 	}
 

@@ -1,4 +1,3 @@
-
 ResetVariablesForMap(iClient)
 {
 	ResetTalentConfirmCountdown(iClient);
@@ -155,8 +154,6 @@ ResetVariablesForMap(iClient)
 	
 	//Smoker
 	g_iChokingVictim[iClient] = -1;
-	g_iMaxTongueLength = 0;
-	g_iMaxDragSpeed = 0;
 	SetMoveTypeBackToNormalOnNextGameFrame[iClient] = false;
 	g_bHasSmokersPoisonCloudOut[iClient] = false;
 	g_bIsElectricuting[iClient] = false;
@@ -168,6 +165,7 @@ ResetVariablesForMap(iClient)
 	g_bIsEntangledInSmokerTongue[iClient] = false;
 	g_iEntangledSurvivorModelIndex[iClient] = -1;
 	g_iEntangledTongueModelIndex[iClient] = -1;
+	SetSmokerConvarBuffs();
 	
 	//Boomer
 	g_bIsBoomerVomiting[iClient] = false;

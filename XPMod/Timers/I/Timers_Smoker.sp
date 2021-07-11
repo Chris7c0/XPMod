@@ -110,7 +110,7 @@ Action:TimerElectricuteAgain(Handle:timer, any:iClient)
 	ShowHudOverlayColor(iClient, 255, 255, 255, alpha, 150, FADE_OUT);
 	ShowHudOverlayColor(g_iChokingVictim[iClient], 255, 255, 255, alpha, 150, FADE_OUT);
 	
-	DealDamage(g_iChokingVictim[iClient], iClient, g_iNoxiousLevel[iClient]);
+	DealDamage(g_iChokingVictim[iClient], iClient, g_iSmokerTalent2Level[iClient]);
 	
 	g_iClientXP[iClient] += 10;
 	CheckLevel(iClient);
@@ -151,7 +151,7 @@ Action:TimerElectricuteAgain(Handle:timer, any:iClient)
 			alpha = GetRandomInt(120,180);
 			ShowHudOverlayColor(i, 255, 255, 255, alpha, 150, FADE_OUT);
 			
-			DealDamage(i , iClient, RoundToCeil((g_iNoxiousLevel[iClient] * 0.5)));
+			DealDamage(i , iClient, RoundToCeil((g_iSmokerTalent2Level[iClient] * 0.5)));
 			
 			g_iClientXP[iClient] += 10;
 			CheckLevel(iClient);
@@ -242,7 +242,7 @@ Action:TimerPoisonCloud(Handle:timer, any:iClient)
 			ShowXPSprite(iClient, g_iSprite_3XP_SI, victim, 1.0);
 	}
 	
-	CreateTimer((3.0 - (g_iNoxiousLevel[iClient] * 0.25)), TimerPoisonCloud, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	CreateTimer((3.0 - (g_iSmokerTalent2Level[iClient] * 0.25)), TimerPoisonCloud, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	
 	return Plugin_Stop;
 }

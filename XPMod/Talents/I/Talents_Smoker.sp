@@ -1,55 +1,46 @@
-TalentsLoad_Smoker(iClient)
+void TalentsLoad_Smoker(iClient)
 {
-	//Set One Time Convars
-	// This should only be set on first spawn for this client
-	if(g_iInfectedConvarsSet[iClient] == false)
+	if(g_iSmokerTalent1Level[iClient] > 0)
 	{
-		g_iInfectedConvarsSet[iClient] = true;
-		
-		//Smoker
-		if(g_iClientTeam[iClient] == TEAM_INFECTED)
+		if(g_bHasInfectedHealthBeenSet[iClient] == false)
 		{
-			if(g_iEnvelopmentLevel[iClient] > 0)
-			{
-				g_iMaxTongueLength += g_iEnvelopmentLevel[iClient];
-				SetConVarFloat(FindConVar("tongue_range"), float(750 + (g_iMaxTongueLength * 25)), false, false);
-				SetConVarFloat(FindConVar("tongue_fly_speed"), float(1000 + (g_iMaxTongueLength * 30)),false,false);
-			}
-			if(g_iDirtyLevel[iClient] > 0)
-			{
-				g_iMaxDragSpeed += g_iDirtyLevel[iClient];
-				SetConVarFloat(FindConVar("tongue_victim_max_speed"), float(175 + (g_iMaxDragSpeed * 8)), false, false);
-			}
-			// if(g_iPredatorialLevel[iClient] > 0)
-			// {
-			// 	g_iStumbleRadius += (g_iPredatorialLevel[iClient] * 8);
-			// 	SetConVarInt(FindConVar("z_pounce_stumble_radius"), g_iStumbleRadius, false, false);
-			// 	// PrintToChatAll("Stumble radius = %i", g_iStumbleRadius);
-			// }
-			// if(g_iMutatedLevel[iClient] > 0)
-			// {
-			// 	g_iStumbleRadius += (g_iMutatedLevel[iClient] * 8);
-			// 	SetConVarInt(FindConVar("z_pounce_stumble_radius"), g_iStumbleRadius, false, false);
-			// 	// PrintToChatAll("Stumble radius = %i", g_iStumbleRadius);
-			// }
+			g_bHasInfectedHealthBeenSet[iClient] = true;
+			SetPlayerMaxHealth(iClient, (g_iSmokerTalent1Level[iClient] * SMOKER_BONUS_MAX_HEALTH_PER_LEVEL), true);
 		}
 	}
 
-	if(g_iEnvelopmentLevel[iClient] > 0)
+	// Enable global smoker tongue console variable buffs
+	SetSmokerConvarBuffs(FindHighestLevelSmokerAlive());
+
+	if(g_iSmokerTalent1Level[iClient] > 0)
 		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Smoker Talents \x05have been loaded.");
-	if(g_iNoxiousLevel[iClient] > 0)
+	if(g_iSmokerTalent2Level[iClient] > 0)
 		SetClientSpeed(iClient);
 }
 
-OnGameFrame_Smoker(iClient)
+void OnGameFrame_Smoker(iClient)
 {
-	if (SetMoveTypeBackToNormalOnNextGameFrame[iClient] == true)
-	{
-		SetMoveTypeBackToNormalOnNextGameFrame[iClient] = false;
-		SetPlayerMoveType(iClient, MOVETYPE_WALK);
-	}
+	if (g_bTalentsConfirmed[iClient] == false ||
+		g_iSmokerTalent1Level[iClient] <= 0)
+		return;
 
-	if(g_iDirtyLevel[iClient] > 0 && g_iSmokerTransparency[iClient] != 0)
+	// if (SetMoveTypeBackToNormalOnNextGameFrame[iClient] == true)
+	// {
+	// 	SetMoveTypeBackToNormalOnNextGameFrame[iClient] = false;
+	// 	SetPlayerMoveType(iClient, MOVETYPE_WALK);
+	// }
+
+	// Health Regeneration
+	// Every frame give 1 hp, 30 fps, so 30 hp per second
+	if (GetPlayerHealth(iClient) < SMOKER_STARTING_MAX_HEALTH + (g_iSmokerTalent1Level[iClient] * SMOKER_BONUS_MAX_HEALTH_PER_LEVEL))
+		SetPlayerHealth(iClient, SMOKER_HEALTH_REGEN_PER_FRAME, true);
+	
+	// if(g_fSmokerNextHealthRegenTime[iClient] > GetGameFrame())
+	// {
+
+	// }
+
+	if(g_iSmokerTalent3Level[iClient] > 0 && g_iSmokerTransparency[iClient] != 0)
 	{
 		if(g_iSmokerTransparency[iClient] > 1)
 		{
@@ -65,7 +56,7 @@ OnGameFrame_Smoker(iClient)
 	}
 }
 
-EventsHurt_AttackerSmoker(Handle:hEvent, attacker, victim)
+void EventsHurt_AttackerSmoker(Handle:hEvent, attacker, victim)
 {
 	if (IsFakeClient(attacker))
 		return;
@@ -76,7 +67,7 @@ EventsHurt_AttackerSmoker(Handle:hEvent, attacker, victim)
 	decl String:weapon[20];
 	GetEventString(hEvent,"weapon", weapon,20);
 
-	if (g_iDirtyLevel[attacker] > 0 && 
+	if (g_iSmokerTalent3Level[attacker] > 0 && 
 		g_bIsSmokeInfected[victim] == false && 
 		StrEqual(weapon, "smoker_claw") == true)
 	{
@@ -130,11 +121,18 @@ EventsHurt_AttackerSmoker(Handle:hEvent, attacker, victim)
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }
 
-EventsDeath_VictimSmoker(Handle:hEvent, iAttacker, iVictim)
+void EventsDeath_VictimSmoker(Handle:hEvent, iAttacker, iVictim)
 {
 	if (g_iInfectedCharacter[iVictim] != SMOKER ||
-		g_iClientTeam[iVictim] != TEAM_INFECTED ||
-		g_bTalentsConfirmed[iVictim] == false ||
+		g_iClientTeam[iVictim] != TEAM_INFECTED)
+		return;
+
+	// Check if there are any more smoker ability clients alive
+	// If not, then reset smoker convar buffs to default
+	// Note this needs to be done any time a smoker dies.
+	SetSmokerConvarBuffs(FindHighestLevelSmokerAlive());
+
+	if (g_bTalentsConfirmed[iVictim] == false ||
 		(g_iClientInfectedClass1[iVictim] != SMOKER &&
 		g_iClientInfectedClass2[iVictim] != SMOKER &&
 		g_iClientInfectedClass3[iVictim] != SMOKER) ||
@@ -144,11 +142,53 @@ EventsDeath_VictimSmoker(Handle:hEvent, iAttacker, iVictim)
 
 	SuppressNeverUsedWarning(hEvent, iAttacker);
 
-	if(g_iNoxiousLevel[iVictim] > 0)
+	if(g_iSmokerTalent2Level[iVictim] > 0)
 	{
 		g_bHasSmokersPoisonCloudOut[iVictim] = true;
 		GetClientEyePosition(iVictim, g_xyzPoisonCloudOriginArray[iVictim]);
 		CreateTimer(0.1, TimerPoisonCloud, iVictim, TIMER_FLAG_NO_MAPCHANGE);
-		CreateTimer( (float(g_iNoxiousLevel[iVictim]) * 2.0), TimerStopPoisonCloud, iVictim, TIMER_FLAG_NO_MAPCHANGE);
+		CreateTimer( (float(g_iSmokerTalent2Level[iVictim]) * 2.0), TimerStopPoisonCloud, iVictim, TIMER_FLAG_NO_MAPCHANGE);
 	}
+}
+
+void Event_TongueReleaseSmoker(int iAttacker, iVictim)
+{
+	g_bSmokerGrappled[iVictim] = false;
+	SetClientRenderAndGlowColor(iVictim);
+
+	// Before proceeding check to ensure they have smoker talent confirmed
+	if (g_bTalentsConfirmed[iAttacker] == false ||
+		g_iSmokerTalent1Level[iAttacker] <= 0)
+		return;
+
+	// Set the cooldown to enable the next tongue ability faster
+	SetSIAbilityCooldown(iAttacker, SMOKER_DEFAULT_TONGUE_COOLDOWN - (RoundToNearest(g_iSmokerTalent1Level[iAttacker] / 2.0) * SMOKER_COOLDOWN_REDUCTION_EVERY_OTHER_LEVEL) );
+}
+
+int FindHighestLevelSmokerAlive()
+{
+	int iHighestLevel = 0;
+	for (int iClient=1; iClient<=MaxClients; iClient++)
+		if (g_iSmokerTalent1Level[iClient] > iHighestLevel &&
+			g_bTalentsConfirmed[iClient] == true &&
+			g_iClientTeam[iClient] == TEAM_INFECTED &&
+			RunClientChecks(iClient) == true &&
+			IsPlayerAlive(iClient) == true &&
+			IsFakeClient(iClient) == false)
+			iHighestLevel = g_iSmokerTalent1Level[iClient];
+
+	return iHighestLevel;
+}
+
+// Setting iLevel to 0 will set to the default values
+void SetSmokerConvarBuffs(int iLevel = 0)
+{
+	SetConVarFloat(FindConVar("tongue_range"), 
+		float(CONVAR_SMOKER_TONGUE_RANGE_DEFAULT + (iLevel * CONVAR_SMOKER_TONGUE_RANGE_BUFF_PER_LEVEL)), false, false);
+	SetConVarFloat(FindConVar("tongue_fly_speed"), 
+		float(CONVAR_SMOKER_TONGUE_FLY_SPEED_DEFAULT + (iLevel * CONVAR_SMOKER_TONGUE_FLY_SPEED_BUFF_PER_LEVEL)),false,false);
+	SetConVarFloat(FindConVar("tongue_victim_max_speed"), 
+		float(CONVAR_SMOKER_TONGUE_DRAG_SPEED_DEFAULT + (iLevel * CONVAR_SMOKER_TONGUE_DRAG_SPEED_BUFF_PER_LEVEL)), false, false);
+	SetConVarFloat(FindConVar("tongue_health"), 
+		float(CONVAR_SMOKER_TONGUE_HEALTH_DEFAULT + (iLevel * CONVAR_SMOKER_TONGUE_HEALTH_BUFF_PER_LEVEL)), false, false);
 }

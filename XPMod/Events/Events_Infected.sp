@@ -234,11 +234,11 @@ Action:Event_ChokeStart(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	g_bSmokerGrappled[victim] = true;
 	g_iChokingVictim[attacker] = victim;
 	
-	if(g_iDirtyLevel[attacker] > 0)
+	if(g_iSmokerTalent3Level[attacker] > 0)
 	{
 		SetEntityMoveType(attacker, MOVETYPE_ISOMETRIC);
 		//Going to avoid using SetClientSpeed here because it would not fit well
-		//SetEntDataFloat(attacker, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (0.01 * g_iDirtyLevel[attacker]) , true);
+		//SetEntDataFloat(attacker, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (0.01 * g_iSmokerTalent3Level[attacker]) , true);
 		SetClientSpeed(attacker);
 		//CreateTimer(0.3, TimerCheckTongueDistance, attacker, TIMER_FLAG_NO_MAPCHANGE);
 	}
@@ -268,10 +268,10 @@ Action:Event_ChokeEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast
 
 Action:Event_TongueRelease(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
-	//new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
-	g_bSmokerGrappled[victim] = false;
-	SetClientRenderAndGlowColor(victim);
+	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
+
+	Event_TongueReleaseSmoker(iAttacker, iVictim);
 	return Plugin_Continue;
 }
 

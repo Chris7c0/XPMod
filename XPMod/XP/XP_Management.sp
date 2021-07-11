@@ -285,9 +285,9 @@ ResetAllInfectedClasses(iClient)
 	g_iClientInfectedClass3[iClient] = UNKNOWN_INFECTED;
 	g_strClientInfectedClass3[iClient] = "None";
 	//Smoker
-	g_iEnvelopmentLevel[iClient] = 0;
-	g_iNoxiousLevel[iClient] = 0;
-	g_iDirtyLevel[iClient] = 0;
+	g_iSmokerTalent1Level[iClient] = 0;
+	g_iSmokerTalent2Level[iClient] = 0;
+	g_iSmokerTalent3Level[iClient] = 0;
 	//Boomer
 	g_iRapidLevel[iClient] = 0;
 	g_iAcidicLevel[iClient] = 0;
@@ -654,18 +654,18 @@ LevelUpInfectedTalent(iClient, class)
 	{
 		if(g_iClientLevel[iClient] > 0 && g_iClientLevel[iClient] <= 10)
 		{
-			g_iEnvelopmentLevel[iClient] = g_iClientLevel[iClient];
+			g_iSmokerTalent1Level[iClient] = g_iClientLevel[iClient];
 		}
 		else if(g_iClientLevel[iClient] > 10 && g_iClientLevel[iClient] <= 20)
 		{
-			g_iEnvelopmentLevel[iClient] = 10;
-			g_iNoxiousLevel[iClient] = g_iClientLevel[iClient] - 10;
+			g_iSmokerTalent1Level[iClient] = 10;
+			g_iSmokerTalent2Level[iClient] = g_iClientLevel[iClient] - 10;
 		}
 		else if(g_iClientLevel[iClient] > 20)
 		{
-			g_iEnvelopmentLevel[iClient] = 10;
-			g_iNoxiousLevel[iClient] = 10;
-			g_iDirtyLevel[iClient] = g_iClientLevel[iClient] - 20;
+			g_iSmokerTalent1Level[iClient] = 10;
+			g_iSmokerTalent2Level[iClient] = 10;
+			g_iSmokerTalent3Level[iClient] = g_iClientLevel[iClient] - 20;
 		}
 	}
 	else if(class == BOOMER)
@@ -767,9 +767,9 @@ LevelDownInfectedTalent(iClient, class)
 	// PrintToServer("level down infected talent %i", class);
 	if(class == SMOKER)
 	{
-		g_iEnvelopmentLevel[iClient] = 0;
-		g_iNoxiousLevel[iClient] = 0;
-		g_iDirtyLevel[iClient] = 0;
+		g_iSmokerTalent1Level[iClient] = 0;
+		g_iSmokerTalent2Level[iClient] = 0;
+		g_iSmokerTalent3Level[iClient] = 0;
 	}
 	else if(class == BOOMER)
 	{

@@ -8,7 +8,7 @@ void Bind2Press_Smoker(iClient)
 		return;
 	}
 	
-	if (g_iDirtyLevel[iClient] <= 0)
+	if (g_iSmokerTalent3Level[iClient] <= 0)
 	{
 		PrintHintText(iClient, "You must have Dirty Tricks (Level 1) for Smoker Bind 2");
 		return;
@@ -40,7 +40,7 @@ SmokerDismount(iClient)
 	CreateTimer(0.1, TimerResetPlayerMoveType, iClient);
 }
 
-CatchAndReleasePlayer(iClient)
+stock CatchAndReleasePlayer(iClient)
 {
 	SmokerDismount(iClient);
 	EntangleSurvivorInSmokerTongue(g_iChokingVictim[iClient]);
@@ -386,7 +386,7 @@ ElectrocutePlayer(iClient)
 	ShowHudOverlayColor(iClient, 255, 255, 255, alpha, 150, FADE_OUT);
 	ShowHudOverlayColor(g_iChokingVictim[iClient], 255, 255, 255, alpha, 150, FADE_OUT);
 	
-	DealDamage(g_iChokingVictim[iClient], iClient, g_iDirtyLevel[iClient]);
+	DealDamage(g_iChokingVictim[iClient], iClient, g_iSmokerTalent3Level[iClient]);
 	
 	g_iClientXP[iClient] += 10;
 	CheckLevel(iClient);
@@ -427,7 +427,7 @@ ElectrocutePlayer(iClient)
 				alpha = GetRandomInt(120, 180);					
 				ShowHudOverlayColor(i, 255, 255, 255, alpha, 150, FADE_OUT);
 				
-				DealDamage(i , iClient, RoundToCeil((g_iDirtyLevel[iClient] * 0.5)));
+				DealDamage(i , iClient, RoundToCeil((g_iSmokerTalent3Level[iClient] * 0.5)));
 				
 				g_iClientXP[iClient] += 10;
 				CheckLevel(iClient);

@@ -82,8 +82,22 @@ new ArrayList:g_listEnhancedCIEntities;
 #define ENHANCED_CI_VAMPIRIC_LIFE_STEAL_AMOUNT      250
 
 // Smoker
-new g_iMaxTongueLength;
-new g_iMaxDragSpeed;
+#define SMOKER_STARTING_MAX_HEALTH                      250
+#define SMOKER_BONUS_MAX_HEALTH_PER_LEVEL               15
+#define SMOKER_HEALTH_REGEN_PER_FRAME                   2
+#define SMOKER_DEFAULT_TONGUE_COOLDOWN                  15.0
+#define SMOKER_COOLDOWN_REDUCTION_EVERY_OTHER_LEVEL     1.0
+// Global Smoker Tongue Buffs
+#define CONVAR_SMOKER_TONGUE_RANGE_DEFAULT              750
+#define CONVAR_SMOKER_TONGUE_RANGE_BUFF_PER_LEVEL       150
+#define CONVAR_SMOKER_TONGUE_FLY_SPEED_DEFAULT          1000
+#define CONVAR_SMOKER_TONGUE_FLY_SPEED_BUFF_PER_LEVEL   500
+#define CONVAR_SMOKER_TONGUE_DRAG_SPEED_DEFAULT         175
+#define CONVAR_SMOKER_TONGUE_DRAG_SPEED_BUFF_PER_LEVEL  70
+#define CONVAR_SMOKER_TONGUE_HEALTH_DEFAULT             100
+#define CONVAR_SMOKER_TONGUE_HEALTH_BUFF_PER_LEVEL      50
+
+
 new g_iChokingVictim[MAXPLAYERS + 1];
 bool SetMoveTypeBackToNormalOnNextGameFrame[MAXPLAYERS + 1];
 new bool:g_bIsElectricuting[MAXPLAYERS + 1];

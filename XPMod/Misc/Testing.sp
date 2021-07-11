@@ -16,7 +16,9 @@ Action:TestFunction1(iClient, args)
 
 	//SetPlayerAnimEvent(iClient, str1, str2, str3);
 
-	CatchAndReleasePlayer(StringToInt(str1));
+	SmokerDismount(iClient);
+
+	//CatchAndReleasePlayer(StringToInt(str1));
 	//EntangleSurvivorInSmokerTongue(StringToInt(str1));
 
 	
