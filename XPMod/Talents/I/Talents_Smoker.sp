@@ -161,6 +161,8 @@ bool Event_TongueGrab_Smoker(int iAttacker, int iVictim)
 	g_bSmokerIsCloaked[iAttacker] = true;
 	g_bSmokerVictimGlowDisabled[iVictim] = true;
 
+	SetClientRenderAndGlowColor(iAttacker);
+
 	return false;
 }
 

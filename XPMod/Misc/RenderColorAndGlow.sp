@@ -102,7 +102,7 @@ SetClientRenderAndGlowColor(int iClient)
 				// Cloak smoker while he has a victim
 				if (g_bSmokerIsCloaked[iClient] == true)
 				{
-					SetClientRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (g_iSmokeLevel[iClient] * 0.1))), RENDER_MODE_TRANSPARENT);
+					SetClientRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (g_iSmokerTalent2Level[iClient] * 0.095))), RENDER_MODE_TRANSPARENT);
 					return;
 				}
 			}
