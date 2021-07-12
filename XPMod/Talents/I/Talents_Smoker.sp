@@ -354,6 +354,16 @@ void SmokerTeleport(iClient)
 	SetEntityRenderColor(iClient, 0, 0, 0, 0);		
 }
 
+
+SmokerDismount(iClient)
+{
+	g_bMovementLocked[iClient] = true;
+	SetClientSpeed(iClient);
+	SetPlayerMoveType(iClient, MOVETYPE_NOCLIP);
+	// Note this needs to be done with some delay for it to work
+	CreateTimer(0.1, TimerResetPlayerMoveType, iClient);
+}
+
 void CreateSmokerDoppelganger(int iClient)
 {
 

@@ -405,6 +405,75 @@ GiveClientXP(iClient, iAmount, iSprite, iVictim, String:strMessage[64], bool:bCe
 	}	
 }
 
+void GotoThirdPerson(int iClient)
+{
+	SetEntPropEnt(iClient, Prop_Send, "m_hObserverTarget", 0);
+	SetEntProp(iClient, Prop_Send, "m_iObserverMode", 1);
+	SetEntProp(iClient, Prop_Send, "m_bDrawViewmodel", 0);
+}
+
+void GotoFirstPerson(int iClient)
+{
+	SetEntPropEnt(iClient, Prop_Send, "m_hObserverTarget", -1);
+	SetEntProp(iClient, Prop_Send, "m_iObserverMode", 0);
+	SetEntProp(iClient, Prop_Send, "m_bDrawViewmodel", 1);
+}
+
+Action TimerResetPlayerMoveType(Handle:timer, int iClient)
+{
+	g_bMovementLocked[iClient] = false;
+	SetClientSpeed(iClient);
+	SetPlayerMoveType(iClient);
+	return Plugin_Stop;
+}
+
+int SetPlayerMoveType(int iClient, int iMoveType = MOVETYPE_WALK)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false)
+		return -1;
+
+	SetEntProp(iClient, Prop_Send, "movetype", iMoveType, 1);
+
+	//PrintToChat(iClient, "movetype now %i", GetEntProp(iClient, Prop_Send, "movetype", 1));
+
+	return  GetEntProp(iClient, Prop_Send, "movetype", 1);
+}
+
+void LockPlayerFromAttacking(int iClient)
+{
+	PrintToChat(iClient, "LockPlayerFromAttacking start");
+	new iWeaponEntity = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
+	if (RunEntityChecks(iWeaponEntity) == false)
+		return;
+	
+	//float flNextTime_ret = GetEntDataFloat(iWeaponEntity,g_iOffset_NextPrimaryAttack);
+
+	SetEntDataFloat(iWeaponEntity, g_iOffset_TimeWeaponIdle, 999999.9, true);
+	SetEntDataFloat(iWeaponEntity, g_iOffset_NextPrimaryAttack, 999999.0, true);
+	SetEntDataFloat(iClient, g_iOffset_NextAttack, 999999.0, true);
+
+	PrintToChat(iClient, "LockPlayerFromAttacking end");
+}
+
+void UnlockPlayerFromAttacking(int iClient)
+{
+	PrintToChat(iClient, "UnlockPlayerFromAttacking start");
+	new iWeaponEntity = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
+	if (RunEntityChecks(iWeaponEntity) == false)
+		return;
+	
+	//float flNextTime_ret = GetEntDataFloat(iWeaponEntity,g_iOffset_NextPrimaryAttack);
+
+	float fGameTime = GetGameTime();
+
+	SetEntDataFloat(iWeaponEntity, g_iOffset_TimeWeaponIdle, fGameTime, true);
+	SetEntDataFloat(iWeaponEntity, g_iOffset_NextPrimaryAttack, fGameTime, true);
+	SetEntDataFloat(iClient, g_iOffset_NextAttack, fGameTime, true);
+
+	PrintToChat(iClient, "UnlockPlayerFromAttacking end");
+}
+
 
 // Note: this actually creates a damage event, so no need to reduce damage here
 DealDamage(iVictim, iAttacker, iAmount, iDamageType = DAMAGETYPE_INFECTED_MELEE)
