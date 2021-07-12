@@ -115,6 +115,7 @@ new g_iEntangledSurvivorModelIndex[MAXPLAYERS + 1];
 new g_iEntangledTongueModelIndex[MAXPLAYERS + 1];
 #define SMOKER_UNTANGLE_PLAYER_DISTANCE             100.0
 //For Teleport
+#define SMOKER_TELEPORT_COOLDOWN_PERIOD             5.0
 new Float:g_fMapsMaxTeleportHeight;
 new g_iSmokerTransparency[MAXPLAYERS + 1];
 new Float:g_fTeleportOriginalPositionX[MAXPLAYERS + 1];

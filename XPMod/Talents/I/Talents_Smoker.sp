@@ -56,6 +56,38 @@ void OnGameFrame_Smoker(iClient)
 	}
 }
 
+
+bool OnPlayerRunCmd_Smoker(iClient, &iButtons)
+{
+	// Smoker abilities
+	if (g_iInfectedCharacter[iClient] != SMOKER ||
+		g_iSmokerTalent3Level[iClient] <= 0 ||
+		g_bIsGhost[iClient] == true ||
+		g_iClientTeam[iClient] != TEAM_INFECTED || 
+		RunClientChecks(iClient) == false ||
+		g_bTalentsConfirmed[iClient] == false ||
+		g_bGameFrozen == true)
+		return false;
+
+	// Smoker Teleport
+	if (g_bTeleportCoolingDown[iClient] == false &&
+		iButtons & IN_SPEED)
+		SmokerTeleport(iClient);
+
+	// Smoker Dismount
+	if (g_iChokingVictim[iClient] > 0 &&
+		iButtons & IN_ATTACK)
+		SmokerDismount(iClient);
+
+	// Smoker Dismount
+	if (g_iChokingVictim[iClient] > 0 &&
+		iButtons & IN_RELOAD)
+		CreateSmokerDoppelganger(iClient);
+	
+	return false;
+}
+
+
 void EventsHurt_AttackerSmoker(Handle:hEvent, attacker, victim)
 {
 	if (IsFakeClient(attacker))
@@ -160,7 +192,6 @@ bool Event_TongueGrab_Smoker(int iAttacker, int iVictim)
 
 	g_bSmokerIsCloaked[iAttacker] = true;
 	g_bSmokerVictimGlowDisabled[iVictim] = true;
-
 	SetClientRenderAndGlowColor(iAttacker);
 
 	return false;
@@ -179,6 +210,8 @@ bool Event_TongueRelease_Smoker(int iAttacker, iVictim)
 	g_bSmokerIsCloaked[iAttacker] = false;
 	// Reset the victims glow
 	g_bSmokerVictimGlowDisabled[iVictim] = false;
+	SetClientRenderAndGlowColor(iAttacker);
+
 	// Set the cooldown to enable the next tongue ability faster
 	SetSIAbilityCooldown(iAttacker, SMOKER_DEFAULT_TONGUE_COOLDOWN - (RoundToNearest(g_iSmokerTalent1Level[iAttacker] / 2.0) * SMOKER_COOLDOWN_REDUCTION_EVERY_OTHER_LEVEL) );
 
@@ -199,6 +232,8 @@ bool Event_ChokeStart_Smoker(int iAttacker, int iVictim)
 	if(g_iSmokerTalent2Level[iAttacker] <= 0)
 		return false;
 
+	SetClientRenderAndGlowColor(iAttacker);
+
 	// Create smoke around the victim
 	CreateSmokeParticle(iVictim, NULL_VECTOR, 0, 255, 50, 255, 1, 100, 100, 300, 300, 200, 200, 10, 15.0);
 
@@ -208,6 +243,8 @@ bool Event_ChokeStart_Smoker(int iAttacker, int iVictim)
 bool Event_ChokeEnd_Smoker(int iAttacker, iVictim)
 {
 	SuppressNeverUsedWarning(iVictim);
+
+	SetClientRenderAndGlowColor(iAttacker);
 
 	SetEntityMoveType(iAttacker, MOVETYPE_CUSTOM);
 	SetClientSpeed(iAttacker);
@@ -241,4 +278,83 @@ void SetSmokerConvarBuffs(int iLevel = 0)
 		float(CONVAR_SMOKER_TONGUE_DRAG_SPEED_DEFAULT + (iLevel * CONVAR_SMOKER_TONGUE_DRAG_SPEED_BUFF_PER_LEVEL)), false, false);
 	SetConVarFloat(FindConVar("tongue_health"), 
 		float(CONVAR_SMOKER_TONGUE_HEALTH_DEFAULT + (iLevel * CONVAR_SMOKER_TONGUE_HEALTH_BUFF_PER_LEVEL)), false, false);
+}
+
+void SmokerTeleport(iClient)
+{
+	if(g_iChokingVictim[iClient] > 0)
+	{
+		PrintHintText(iClient, "You cannot teleport while choking a victim.");
+		return;
+	}
+
+	if(g_bTeleportCoolingDown[iClient] == true)
+	{
+		PrintHintText(iClient, "You must wait %i seconds between teleportations.", RoundToNearest(SMOKER_TELEPORT_COOLDOWN_PERIOD));
+		return;
+	}
+
+	decl Float:eyeorigin[3], Float:eyeangles[3], Float:endpos[3], Float:vdir[3], Float:distance;
+	GetClientEyePosition(iClient, eyeorigin);
+	GetClientEyeAngles(iClient, eyeangles);
+	GetAngleVectors(eyeangles, vdir, NULL_VECTOR, NULL_VECTOR);	//Get direction in which iClient is facing
+	new Handle:trace = TR_TraceRayFilterEx(eyeorigin, eyeangles, MASK_SHOT, RayType_Infinite, TraceRayDontHitSelf, iClient);
+	if(TR_DidHit(trace) == false)
+	{
+		PrintHintText(iClient, "You cannot teleport to this location.");
+		CloseHandle(trace);
+		return;
+	}
+	
+	TR_GetEndPosition(endpos, trace);
+	CloseHandle(trace);
+
+	// This limits the height of teleportation for each map, to prevent from walking in the sky
+	if(endpos[2] > g_fMapsMaxTeleportHeight)	
+	{
+		PrintHintText(iClient, "You cannot teleport to this location.");
+		return;
+	}
+
+	// Stert figuring out where to teleport to
+	endpos[0]-=(vdir[0] * 50.0);		//Spawn iClient right ahead of where they were looking
+	endpos[1]-=(vdir[1] * 50.0);
+	//endpos[2]-=(vdir[2] * 50.0);
+	//PrintToChat(iClient, "vdir = %.4f, %.4f, %.4f", vdir[0], vdir[1], vdir[2]);
+	distance = GetVectorDistance(eyeorigin, endpos, false);
+	distance = distance * 0.08;
+
+	if(distance > (float(g_iSmokerTalent3Level[iClient]) * 30.0))
+	{
+		PrintHintText(iClient, "You cannot teleport beyond %.0f ft.", (float(g_iSmokerTalent3Level[iClient]) * 30.0));
+		return;
+	}
+
+	decl Float:vorigin[3];
+	GetClientAbsOrigin(iClient, vorigin);
+	TeleportEntity(iClient, endpos, NULL_VECTOR, NULL_VECTOR);
+	EmitSoundToAll(SOUND_WARP_LIFE, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1,  endpos, NULL_VECTOR, true, 0.0);
+	EmitSoundToAll(SOUND_WARP, SOUND_FROM_PLAYER, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1,  endpos, NULL_VECTOR, true, 0.0);
+	WriteParticle(iClient, "teleport_warp", 0.0, 7.0);
+	PrintHintText(iClient, "You teleported %.1f ft.", distance);
+	PrintToChat(iClient, "<%f, %f, %f>", endpos[0], endpos[1], endpos[2]);
+	g_fTeleportOriginalPositionX[iClient] = vorigin[0];
+	g_fTeleportOriginalPositionY[iClient] = vorigin[1];
+	g_fTeleportOriginalPositionZ[iClient] = vorigin[2];
+	g_fTeleportEndPositionX[iClient] = endpos[0];
+	g_fTeleportEndPositionY[iClient] = endpos[1];
+	g_fTeleportEndPositionZ[iClient] = endpos[2];
+	CreateTimer(3.0, CheckIfStuck, iClient, TIMER_FLAG_NO_MAPCHANGE);		//Check if the player is stuck in a wall
+	g_bTeleportCoolingDown[iClient] = true;
+	CreateTimer(SMOKER_TELEPORT_COOLDOWN_PERIOD, ReallowTeleport, iClient, TIMER_FLAG_NO_MAPCHANGE);	//After 10 seconds reallow teleportation fot the iClient
+	
+	//Make smoker transparent and set him to gradually become more opaque
+	g_iSmokerTransparency[iClient] = g_iSmokerTalent3Level[iClient] * 30;
+	SetEntityRenderMode(iClient, RenderMode:3);
+	SetEntityRenderColor(iClient, 0, 0, 0, 0);		
+}
+
+void CreateSmokerDoppelganger(int iClient)
+{
+
 }
