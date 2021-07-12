@@ -231,6 +231,105 @@ Action:DeleteParticleEntity(iParticle)
 	}
 }
 
+CreateRochelleSmoke(iClient)
+{
+	//Make Smoke Entity
+	decl Float:vec[3];
+	GetClientAbsOrigin(iClient, vec);
+	
+	new smoke = CreateEntityByName("env_smokestack");
+	
+	new String:clientName[128], String:vecString[32];
+	Format(clientName, sizeof(clientName), "Smoke%i", iClient);
+	Format(vecString, sizeof(vecString), "%f %f %f", vec[0], vec[1], vec[2]);
+	
+	DispatchKeyValue(smoke,"targetname", clientName);
+	DispatchKeyValue(smoke,"Origin", vecString);
+	DispatchKeyValue(smoke,"BaseSpread", "0");		//Gap in the middle
+	DispatchKeyValue(smoke,"SpreadSpeed", "100");	//Speed the smoke moves outwards
+	DispatchKeyValue(smoke,"Speed", "100");			//Speed the smoke moves up
+	DispatchKeyValue(smoke,"StartSize", "200");
+	DispatchKeyValue(smoke,"EndSize", "250");
+	DispatchKeyValue(smoke,"Rate", "15");			//Amount of smoke created
+	DispatchKeyValue(smoke,"JetLength", "350");		//Smoke jets outside of the original
+	DispatchKeyValue(smoke,"Twist", "30"); 			//Amount of global twisting
+	DispatchKeyValue(smoke,"RenderColor", "100 0 255");
+	DispatchKeyValue(smoke,"RenderAmt", "255");		//Transparency
+	DispatchKeyValue(smoke,"SmokeMaterial", "particle/particle_smokegrenade1.vmt");
+	
+	DispatchSpawn(smoke);
+	AcceptEntityInput(smoke, "TurnOn");
+	
+	CreateTimer(8.0, TimerStopSmokeEntity, smoke, TIMER_FLAG_NO_MAPCHANGE);
+}
+
+
+// Generic Function for creating a smoke particle in the environment that all players can see
+int CreateSmokeParticle(
+	int iClient = -1,									// Target to attach to
+	float xyzPosition[3] = NULL_VECTOR,					// Position to create it
+	int iRed = 255, int iGreen = 255, int iBlue = 255, 	// Color of smoke
+	int iAlpha = 255,									// How Opaque
+	int iMiddleGapSize = 1,		// Gap in the middle
+	int iOutwardSpeed = 100,	// Speed the smoke moves outwards
+	int iUpwardSpeed = 100,		// Speed the smoke moves up
+	int iStartSize = 200,		// Amount of smoke created
+	int iEndSize = 400,			// Smoke jets outside of the original
+	int iSmokeRate = 20,		// Amount of global twisting
+	int iJetLength = 200,		// Color
+	int iTwist = 10,			// Transparency
+	float fDuration = -1.0		// Duration (-1.0 is never destroy)
+	)
+{
+	// Create the smoke entity
+	new iSmokeEntity = CreateEntityByName("env_smokestack");
+													
+	if (RunClientChecks(iClient))
+	{
+		char strClientName[128];
+		PrintToChatAll("SMOKE CLIENT: [%N]", iClient);
+		Format(strClientName, sizeof(strClientName), "Smoke%i", iClient);
+		DispatchKeyValue(iSmokeEntity,"targetname", strClientName);
+
+		if (xyzPosition[0] < 0.1 && xyzPosition[1] < 0.1 && xyzPosition[2] < 0.1)
+			GetClientEyePosition(iClient, xyzPosition);
+	}
+
+	char strPosition[32];
+	Format(strPosition, sizeof(strPosition), "%f %f %f", xyzPosition[0], xyzPosition[1], xyzPosition[2]);
+	PrintToChatAll("SMOKE POSTION: [%s]", strPosition);
+
+	char strTemp[16];
+	DispatchKeyValue(iSmokeEntity,"Origin", strPosition);
+	Format(strTemp, sizeof(strTemp), "%i", iMiddleGapSize);
+	DispatchKeyValue(iSmokeEntity,"BaseSpread", strTemp);
+	Format(strTemp, sizeof(strTemp), "%i", iOutwardSpeed);
+	DispatchKeyValue(iSmokeEntity,"SpreadSpeed", strTemp);
+	Format(strTemp, sizeof(strTemp), "%i", iUpwardSpeed);
+	DispatchKeyValue(iSmokeEntity,"Speed", strTemp);
+	Format(strTemp, sizeof(strTemp), "%i", iStartSize);
+	DispatchKeyValue(iSmokeEntity,"StartSize", strTemp);
+	Format(strTemp, sizeof(strTemp), "%i", iEndSize);
+	DispatchKeyValue(iSmokeEntity,"EndSize", strTemp);
+	Format(strTemp, sizeof(strTemp), "%i", iSmokeRate);
+	DispatchKeyValue(iSmokeEntity,"Rate", strTemp);
+	Format(strTemp, sizeof(strTemp), "%i", iJetLength);
+	DispatchKeyValue(iSmokeEntity,"JetLength", strTemp);
+	Format(strTemp, sizeof(strTemp), "%i", iTwist);
+	DispatchKeyValue(iSmokeEntity,"Twist", strTemp);
+	Format(strTemp, sizeof(strTemp), "%i %i %i", iRed, iGreen, iBlue);
+	DispatchKeyValue(iSmokeEntity,"RenderColor", strTemp);
+	Format(strTemp, sizeof(strTemp), "%i", iAlpha);
+	DispatchKeyValue(iSmokeEntity,"RenderAmt", strTemp);
+	DispatchKeyValue(iSmokeEntity,"SmokeMaterial", "particle/particle_smokegrenade1.vmt");		//THIS WAS CHANGED FROM THE PRECACHED TO SEE HOW IT IS
+	
+	DispatchSpawn(iSmokeEntity);
+	AcceptEntityInput(iSmokeEntity, "TurnOn");
+	
+	if (fDuration > 0.0)
+		CreateTimer(fDuration, TimerStopSmokeEntity, iSmokeEntity, TIMER_FLAG_NO_MAPCHANGE);
+}
+
 TurnOffAndDeleteSmokeStackParticle(iSmokeStackEntity)
 {
 	//PrintToChatAll("TurnOffAndDeleteSmokeStackParticle %i", iSmokeStackEntity);

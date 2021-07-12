@@ -161,6 +161,8 @@ ResetVariablesForMap(iClient)
 	g_iSmokerInfectionCloudEntity[iClient] = -1;
 	g_bTeleportCoolingDown[iClient] = false;
 	g_iSmokerTransparency[iClient] = 0;
+	g_bSmokerIsCloaked[iClient] = false;
+	g_bSmokerVictimGlowDisabled[iClient] = false;
 	g_bElectricutionCooldown[iClient] = false;
 	g_bIsEntangledInSmokerTongue[iClient] = false;
 	g_iEntangledSurvivorModelIndex[iClient] = -1;

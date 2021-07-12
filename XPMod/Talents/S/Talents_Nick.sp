@@ -803,6 +803,19 @@ void EventsItemPickUp_Nick(int iClient, const char[] strWeaponClass)
 	return;
 }
 
+bool Event_ChokeEnd_Nick(int iAttacker, int iVictim)
+{
+	if (g_iChosenSurvivor[iVictim] != NICK)
+		return false;
+	
+	SuppressNeverUsedWarning(iAttacker);
+
+	if (g_bDivineInterventionQueued[iVictim] == true)
+		CreateTimer(0.1, TimerApplyDivineIntervention, iVictim, TIMER_FLAG_NO_MAPCHANGE);
+	
+	return false;
+}
+
 CyclePlayerWeapon_Nick(int iClient)
 {
 	if (RunClientChecks(iClient) && IsPlayerAlive(iClient))

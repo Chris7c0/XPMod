@@ -6,13 +6,35 @@ Action:TestFunction1(iClient, args)
 	
 	DebugLog(DEBUG_MODE_TESTING, "T1");
 	//PrintToChat(iClient, "T1");
-	
-	char str1[99];
-	char str2[99];
-	char str3[99];
-	GetCmdArg(1, str1, sizeof(str1));
-	GetCmdArg(2, str2, sizeof(str2));
-	GetCmdArg(3, str3, sizeof(str2));
+
+	char strArg[20][99];
+	for (int i=0; i<20; i++)
+		GetCmdArg(i+1, strArg[i], sizeof(strArg[]));
+
+	float xyzPosition[3];
+	xyzPosition[0] = StringToFloat(strArg[1]);
+	xyzPosition[1] = StringToFloat(strArg[2]);
+	xyzPosition[2] = StringToFloat(strArg[3]);
+
+	PrintToChatAll("iClient = %i xyz: %f %f %f", StringToInt(strArg[0]), xyzPosition[0], xyzPosition[1], xyzPosition[2]);
+
+	//t1 -1 1322.153564 3479.936279 624.377 255 255 255 255 1 100 100 200 400 20 200 10 10
+	//t1 3 0 0 0 255 255 255 255 1 100 100 200 400 20 200 10 10
+	CreateSmokeParticle(StringToInt(strArg[0]),
+						xyzPosition,
+						StringToInt(strArg[4]),
+						StringToInt(strArg[5]),
+						StringToInt(strArg[6]),
+						StringToInt(strArg[7]),
+						StringToInt(strArg[8]),
+						StringToInt(strArg[9]),
+						StringToInt(strArg[10]),
+						StringToInt(strArg[11]),
+						StringToInt(strArg[12]),
+						StringToInt(strArg[13]),
+						StringToInt(strArg[14]),
+						StringToInt(strArg[15]),
+						StringToFloat(strArg[16]));
 
 	//SetPlayerAnimEvent(iClient, str1, str2, str3);
 

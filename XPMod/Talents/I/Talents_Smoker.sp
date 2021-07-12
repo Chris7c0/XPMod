@@ -151,18 +151,66 @@ void EventsDeath_VictimSmoker(Handle:hEvent, iAttacker, iVictim)
 	}
 }
 
-void Event_TongueReleaseSmoker(int iAttacker, iVictim)
+bool Event_TongueGrab_Smoker(int iAttacker, int iVictim)
 {
-	g_bSmokerGrappled[iVictim] = false;
-	SetClientRenderAndGlowColor(iVictim);
+	// Before proceeding check to ensure they have smoker talent confirmed
+	if (g_bTalentsConfirmed[iAttacker] == false ||
+		g_iSmokerTalent2Level[iAttacker] <= 0)
+		return false;
 
+	g_bSmokerIsCloaked[iAttacker] = true;
+	g_bSmokerVictimGlowDisabled[iVictim] = true;
+
+	return false;
+}
+
+bool Event_TongueRelease_Smoker(int iAttacker, iVictim)
+{
 	// Before proceeding check to ensure they have smoker talent confirmed
 	if (g_bTalentsConfirmed[iAttacker] == false ||
 		g_iSmokerTalent1Level[iAttacker] <= 0)
-		return;
+		return false;
 
+	SuppressNeverUsedWarning(iVictim);
+
+	// Reset the smokers opacity
+	g_bSmokerIsCloaked[iAttacker] = false;
+	// Reset the victims glow
+	g_bSmokerVictimGlowDisabled[iVictim] = false;
 	// Set the cooldown to enable the next tongue ability faster
 	SetSIAbilityCooldown(iAttacker, SMOKER_DEFAULT_TONGUE_COOLDOWN - (RoundToNearest(g_iSmokerTalent1Level[iAttacker] / 2.0) * SMOKER_COOLDOWN_REDUCTION_EVERY_OTHER_LEVEL) );
+
+	return false;
+}
+
+bool Event_ChokeStart_Smoker(int iAttacker, int iVictim)
+{
+	// Before proceeding check to ensure they have smoker talent confirmed
+	if (g_bTalentsConfirmed[iAttacker] == false ||
+		g_iSmokerTalent1Level[iAttacker] <= 0)
+		return false;
+
+	// Set ability for smoker to move
+	SetEntityMoveType(iAttacker, MOVETYPE_ISOMETRIC);
+	SetClientSpeed(iAttacker);
+
+	if(g_iSmokerTalent2Level[iAttacker] <= 0)
+		return false;
+
+	// Create smoke around the victim
+	CreateSmokeParticle(iVictim, NULL_VECTOR, 0, 255, 50, 255, 1, 100, 100, 300, 300, 200, 200, 10, 15.0);
+
+	return false;
+}
+
+bool Event_ChokeEnd_Smoker(int iAttacker, iVictim)
+{
+	SuppressNeverUsedWarning(iVictim);
+
+	SetEntityMoveType(iAttacker, MOVETYPE_CUSTOM);
+	SetClientSpeed(iAttacker);
+
+	return false;
 }
 
 int FindHighestLevelSmokerAlive()

@@ -401,6 +401,64 @@ EventsDeath_AttackerRochelle(Handle:hEvent, iAttacker, iVictim)
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }
 
+	
+bool Event_TongueGrab_Rochelle(int iAttacker, int iVictim)
+{
+	if (g_iChosenSurvivor[iVictim] != ROCHELLE || 
+		g_iSmokeLevel[iVictim] <= 0 ||
+		g_bTalentsConfirmed[iVictim] == false)
+		return false;
+
+	int percentchance;
+	switch(g_iSmokeLevel[iVictim])
+	{
+		case 1:
+			percentchance = GetRandomInt(1, 20);
+		case 2:
+			percentchance = GetRandomInt(1, 10);
+		case 3:
+			percentchance = GetRandomInt(1, 7);
+		case 4:
+			percentchance = GetRandomInt(1, 5);
+		case 5:
+			percentchance = GetRandomInt(1, 4);
+	}
+	if(percentchance == 1)
+	{
+		PrintHintText(iVictim, "You have ninja'd out of the Smoker's grasp");
+		
+		//Cloak
+		SetEntityRenderMode(iVictim, RenderMode:3);
+		SetEntityRenderColor(iVictim, 255, 255, 255, RoundToFloor(255 * (1.0 - (g_iSmokeLevel[iVictim] * 0.19))));
+		//Disable Glow
+		SetEntProp(iVictim, Prop_Send, "m_iGlowType", 3);
+		SetEntProp(iVictim, Prop_Send, "m_nGlowRange", 0);
+		SetEntProp(iVictim, Prop_Send, "m_glowColorOverride", 1);
+		ChangeEdictState(iVictim, 12);
+		
+		delete g_hTimer_ResetGlow[iVictim];
+		g_hTimer_ResetGlow[iVictim] = CreateTimer(5.0, Timer_ResetGlow, iVictim);
+
+		if(IsFakeClient(iAttacker)==false)
+		{
+			PrintHintText(iAttacker, "%N has ninja'd out of your tongue", iVictim);
+			SetEntProp(iAttacker, Prop_Send, "m_iHideHUD", 4);
+			CreateTimer(5.0, TimerGiveHudBack, iAttacker, TIMER_FLAG_NO_MAPCHANGE); 
+		}
+		GetClientAbsOrigin(iVictim, g_xyzOriginalPositionRochelle[iVictim]);
+		g_xyzOriginalPositionRochelle[iVictim][2] += 10;
+		
+		TeleportEntity(iVictim, g_xyzBreakFromSmokerVector, NULL_VECTOR, NULL_VECTOR);
+		
+		CreateTimer(0.1, Timer_BreakFreeOfSmoker, iVictim, TIMER_FLAG_NO_MAPCHANGE);
+
+		SetClientRenderAndGlowColor(iVictim);
+		return true;
+	}
+
+	return false;
+}
+
 
 DetectionHud(iClient)
 {

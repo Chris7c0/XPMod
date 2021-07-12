@@ -21,6 +21,7 @@
 #include "XPMod/Misc/Setup.sp"
 #include "XPMod/Misc/ResetVariables.sp"
 #include "XPMod/Misc/ConVars.sp"
+#include "XPMod/Misc/RenderColorAndGlow.sp"
 #include "XPMod/Misc/Particle_Effects.sp"
 #include "XPMod/Misc/Precache.sp"
 #include "XPMod/Misc/Weapons.sp"

@@ -226,43 +226,21 @@ Action:Event_ChargerKilled(Handle:hEvent, const String:strName[], bool:bDontBroa
 	return Plugin_Continue;
 }
 
-Action:Event_ChokeStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_TongueGrab(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
-	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
+	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 
-	g_bSmokerGrappled[victim] = true;
-	g_iChokingVictim[attacker] = victim;
+	PrintToChatAll("Event_TongueGrab: Attacker: %N Victim: %N", iAttacker, iVictim);
+
+	g_bSmokerGrappled[iVictim] = true;
 	
-	if(g_iSmokerTalent3Level[attacker] > 0)
-	{
-		SetEntityMoveType(attacker, MOVETYPE_ISOMETRIC);
-		//Going to avoid using SetClientSpeed here because it would not fit well
-		//SetEntDataFloat(attacker, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), (0.01 * g_iSmokerTalent3Level[attacker]) , true);
-		SetClientSpeed(attacker);
-		//CreateTimer(0.3, TimerCheckTongueDistance, attacker, TIMER_FLAG_NO_MAPCHANGE);
-	}
-
-	SetClientRenderAndGlowColor(victim);
-	return Plugin_Continue;
-}
-
-Action:Event_ChokeEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
-{
-	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
+	if (Event_TongueGrab_Rochelle(iAttacker, iVictim))
+		return Plugin_Continue;
+	Event_TongueGrab_Smoker(iAttacker, iVictim);
 	
-	SetEntityMoveType(attacker, MOVETYPE_CUSTOM);
-
-	g_bSmokerGrappled[victim] = false;
-	g_iChokingVictim[attacker] = -1;
-
-	SetClientSpeed(attacker);
-	
-	if(g_bDivineInterventionQueued[victim] == true)
-		CreateTimer(0.1, TimerApplyDivineIntervention, victim, TIMER_FLAG_NO_MAPCHANGE);
-	
-	SetClientRenderAndGlowColor(victim);
+	// Reset the players glow
+	SetClientRenderAndGlowColor(iVictim);
 	return Plugin_Continue;
 }
 
@@ -271,68 +249,50 @@ Action:Event_TongueRelease(Handle:hEvent, const String:strName[], bool:bDontBroa
 	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 
-	Event_TongueReleaseSmoker(iAttacker, iVictim);
+	PrintToChatAll("Event_TongueRelease: Attacker: %N Victim: %N", iAttacker, iVictim);
+
+	g_bSmokerGrappled[iVictim] = false;
+	g_iChokingVictim[iAttacker] = -1;
+
+	SetClientRenderAndGlowColor(iVictim);
+
+	Event_TongueRelease_Smoker(iAttacker, iVictim);
+
 	return Plugin_Continue;
 }
 
-
-Action:Event_TongueGrab(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_ChokeStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
-	//PrintToChatAll("toungue grab triggered");
-	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
-	g_bSmokerGrappled[victim] = true;
-	if(g_iSmokeLevel[victim]>0)
-	{
-		decl percentchance;
-		switch(g_iSmokeLevel[victim])
-		{
-			case 1:
-				percentchance = GetRandomInt(1, 20);
-			case 2:
-				percentchance = GetRandomInt(1, 10);
-			case 3:
-				percentchance = GetRandomInt(1, 7);
-			case 4:
-				percentchance = GetRandomInt(1, 5);
-			case 5:
-				percentchance = GetRandomInt(1, 4);
-		}
-		if(percentchance == 1)
-		{
-			PrintHintText(victim, "You have ninja'd out of the Smoker's grasp");
-			
-			//Cloak
-			SetEntityRenderMode(victim, RenderMode:3);
-			SetEntityRenderColor(victim, 255, 255, 255, RoundToFloor(255 * (1.0 - (g_iSmokeLevel[victim] * 0.19))));
-			//Disable Glow
-			SetEntProp(victim, Prop_Send, "m_iGlowType", 3);
-			SetEntProp(victim, Prop_Send, "m_nGlowRange", 0);
-			SetEntProp(victim, Prop_Send, "m_glowColorOverride", 1);
-			ChangeEdictState(victim, 12);
-			
-			delete g_hTimer_ResetGlow[victim];
-			g_hTimer_ResetGlow[victim] = CreateTimer(5.0, Timer_ResetGlow, victim);
+	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 
-			if(IsFakeClient(attacker)==false)
-			{
-				PrintHintText(attacker, "%N has ninja'd out of your tongue", victim);
-				SetEntProp(attacker, Prop_Send, "m_iHideHUD", 4);
-				CreateTimer(5.0, TimerGiveHudBack, attacker, TIMER_FLAG_NO_MAPCHANGE); 
-			}
-			GetClientAbsOrigin(victim, g_xyzOriginalPositionRochelle[victim]);
-			g_xyzOriginalPositionRochelle[victim][2] += 10;
-			
-			
-			TeleportEntity(victim, g_xyzBreakFromSmokerVector, NULL_VECTOR, NULL_VECTOR);
-			
-			CreateTimer(0.1, Timer_BreakFreeOfSmoker, victim, TIMER_FLAG_NO_MAPCHANGE);
-		}
-	}
-	SetClientRenderAndGlowColor(victim);
+	PrintToChatAll("Event_ChokeStart: Attacker: %N Victim: %N", iAttacker, iVictim);
+
+	g_bSmokerGrappled[iVictim] = true;
+	g_iChokingVictim[iAttacker] = iVictim;
+	
+	Event_ChokeStart_Smoker(iAttacker, iVictim);
+
+	SetClientRenderAndGlowColor(iVictim);
 	return Plugin_Continue;
 }
 
+Action:Event_ChokeEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+{
+	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
+
+	PrintToChatAll("Event_ChokeEnd: Attacker: %N Victim: %N", iAttacker, iVictim);
+
+	g_bSmokerGrappled[iVictim] = false;
+	g_iChokingVictim[iAttacker] = -1;
+
+	Event_ChokeEnd_Smoker(iAttacker, iVictim);
+	Event_ChokeEnd_Nick(iAttacker, iVictim);
+
+	SetClientRenderAndGlowColor(iVictim);
+	return Plugin_Continue;
+}
 
 Action:Event_JockeyRide(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
@@ -898,7 +858,7 @@ Action:Event_SpitBurst(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 			DispatchSpawn(smoke);
 			AcceptEntityInput(smoke, "TurnOn");
 			
-			CreateTimer(8.0, TimerStopSmokeEntity, smoke, TIMER_FLAG_NO_MAPCHANGE);	
+			CreateTimer(8.0, TimerStopSmokeEntity, smoke, TIMER_FLAG_NO_MAPCHANGE);
 		}
 		
 		if(g_iMaterialLevel[iClient] > 0)

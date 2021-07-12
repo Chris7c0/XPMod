@@ -99,6 +99,8 @@ new ArrayList:g_listEnhancedCIEntities;
 
 
 new g_iChokingVictim[MAXPLAYERS + 1];
+bool g_bSmokerIsCloaked[MAXPLAYERS + 1];
+bool g_bSmokerVictimGlowDisabled[MAXPLAYERS + 1];
 bool SetMoveTypeBackToNormalOnNextGameFrame[MAXPLAYERS + 1];
 new bool:g_bIsElectricuting[MAXPLAYERS + 1];
 new bool:g_bIsSmokeInfected[MAXPLAYERS + 1];
