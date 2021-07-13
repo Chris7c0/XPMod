@@ -181,18 +181,6 @@ Action:TimerResetSmokerDoppelgangerCooldown(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-// Action:TimerRegenerateSmokerDoppelganger(Handle:timer, any:iClient)
-// {
-// 	if (g_iSmokerDoppelgangerCount[iClient] >= SMOKER_DOPPELGANGER_MAX_CLONES)
-// 		return Plugin_Stop;
-	
-// 	g_iSmokerDoppelgangerCount[iClient]++;
-
-// 	PrintHintText(iClient, "Doppelganger Clones: %i", g_iSmokerDoppelgangerCount[iClient]);
-
-// 	return Plugin_Stop;
-// }
-
 Action:TimerStopElectricution(Handle:timer, any:iClient)
 {
 	g_bIsElectricuting[iClient] = false;

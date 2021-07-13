@@ -12,11 +12,11 @@ Action:SmokerTopMenuDraw(iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	decl String:title[256];
-	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n==========================\nSmoker Talents:\n==========================\n \nEnvelopment: Level %d\nNoxious Gasses: Level %d\nDirty Tricks: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iSmokerTalent1Level[iClient], g_iSmokerTalent2Level[iClient], g_iSmokerTalent3Level[iClient]);
+	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n==========================\nSmoker Talents:\n==========================\n \nRapid Cell Division: Level %d\nIllusive Trickster: Level %d\nAcute Toxicity: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iSmokerTalent1Level[iClient], g_iSmokerTalent2Level[iClient], g_iSmokerTalent3Level[iClient]);
 	SetMenuTitle(menu, title);
-	AddMenuItem(menu, "option1", "Envelopment");
-	AddMenuItem(menu, "option2", "Noxious Gasses");
-	AddMenuItem(menu, "option3", "Dirty Tricks\n ");
+	AddMenuItem(menu, "option1", "Rapid Cell Division");
+	AddMenuItem(menu, "option2", "Illusive Trickster");
+	AddMenuItem(menu, "option3", "Acute Toxicity\n ");
 	
 	AddMenuItem(menu, "option4", "Choose The Smoker\n ");
 	
@@ -52,23 +52,44 @@ Action:EnvelopmentMenuDraw(iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	SetMenuTitle(menu, "\
-		%s  			Envelopment (Level %d)\
+		%s  				Rapid Cell Division (Level %d)\
 		\n \
-		\nLevel 1:\
-		\n(Stacks) +3%% tongue range & fly speed\
+		\n+15 HP per Level\
 		\n \
+		\nRegenerate 60 HP per Second\
 		\n \
-		\nSkill Uses:\
-		\n+1 (Stack) for each Smoker with this talent\
-		\nUnlimited stacks\
+		\nRecuded Tongue Ability Cooldown\
+		\n	- -1 Second Every Other Level\
+		\n \
+		\nCan Move Slowly While Choking A Victim\
+		\n \
+		\nWhile Alive as Smoker, All Smokers Receive:\
+		\n	- +20%% Increased Tongue Range per Level\
+		\n	- +50%% Increased Tongue Travel Speed per Level    \
+		\n	- +40%% Increased Tongue Drag Speed per Level\
+		\n	- +50%% Increased Tongue Strength per level\
 		\n ",
 		strStartingNewLines,
 		g_iSmokerTalent1Level[iClient]);
+
+	// SetMenuTitle(menu, "
+	// 	%s  			Envelopment (Level %d)
+	// 	n 
+	// 	nLevel 1:
+	// 	n(Stacks) +3%% tongue range & fly speed
+	// 	n 
+	// 	n 
+	// 	nSkill Uses:
+	// 	n+1 (Stack) for each Smoker with this talent
+	// 	nUnlimited stacks
+	// 	n ",
+	// 	strStartingNewLines,
+	// 	g_iSmokerTalent1Level[iClient]);
 	
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -88,28 +109,45 @@ Action:NoxiousMenuDraw(iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	SetMenuTitle(menu, "\
-		%s									Noxious Gasses (Level %d)\
+		%s										Illusive Trickster (Level %d)\
 		\n \
-		\nLevel 1:\
-		\n1 cloud damage every tick\
-		\n-0.25 seconds between cloud ticks per level (Base: 3 seconds)\
-		\n+2%% movement speed per level\
+		\n 9.5%% Invisibility per Level While Pulling or Choking A Victim:\
+		\n	- [PRESS CROUCH] Toggle Invisibility\
 		\n \
+		\n While Choking Create A Thick Smoke Cloud Around Your Victim And Hide Their Glow\
 		\n \
-		\n						    Bind 1: Disperse\
-		\n				Unlimited uses; 10 second cooldown\
+		\n [PRESS RELOAD] Create Smoker Doppelganger Decoy On Your Crosshair\
+		\n	- Regenerates While Alive as Smoker (Max 5 Decoys)\
 		\n \
-		\nLevel 1:\
-		\nTeleport +30 feet per level\
-		\n100%% transparency after use, fades to 0%% over +1 second per level\
+		\n					Bind 1: Smoke Cloud Confusion\
+		\n	- Coming Soon!\
 		\n ",
 		strStartingNewLines,
 		g_iSmokerTalent2Level[iClient]);
+
+	// SetMenuTitle(menu, "
+	// 	%s									Noxious Gasses (Level %d)
+	// 	n 
+	// 	nLevel 1:
+	// 	n1 cloud damage every tick
+	// 	n-0.25 seconds between cloud ticks per level (Base: 3 seconds)
+	// 	n+2%% movement speed per level
+	// 	n 
+	// 	n 
+	// 	n						    Bind 1: Disperse
+	// 	n				Unlimited uses; 10 second cooldown
+	// 	n 
+	// 	nLevel 1:
+	// 	nTeleport +30 feet per level
+	// 	n100%% transparency after use, fades to 0%% over +1 second per level
+	// 	n ",
+	// 	strStartingNewLines,
+	// 	g_iSmokerTalent2Level[iClient]);
 	
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -129,28 +167,52 @@ Action:DirtyMenuDraw(iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	SetMenuTitle(menu, "\
-		%s					Dirty Tricks (Level %d)\
+		%s					Acute Toxicity (Level %d)\
 		\n \
-		\nLevel 1:\
-		\nAttacks infect for +2 sec per level\
-		\n+1%% speed when choking per level\
-		\n(Stacks) +8%% drag speed per level\
+		\n +5%% Speed per Level\
 		\n \
+		\n [CLICK ATTACK] Release Your Choking Victim\
+		\n \
+		\n [PRESS WALK] Teleport (5 Sec CD)\
+		\n	- Afterwards Briefly Become Invisible\
+		\n \
+		\n +1 Cloud Damage Every Tick\
+		\n	-0.25 Secs on Cloud Ticks per Level (Base: 3 sec)\
+		\n \
+		\n Tar Fingers: Attacks infect for +2 sec per level\
+		\n	- More Coming Soon.\
 		\n \
 		\n					Bind 2: The Electric Snare\
-		\n						 3 uses; 3 sec duration\
 		\n \
-		\nLevel 1:\
-		\nShock for 1 dmg per level every half sec\
-		\nArcs to survivors in line of sight for half damage\
-		\n \
-		\n \
-		\nSkill Uses:\
-		\n+1 (Stack) for each SMOKER w/ this talent\
-		\nUnlimited stacks\
+		\n - Shock for 1 DMG per Level Every Half Sec for 3 Sec\
+		\n - Arcs to survivors for half damage\
 		\n ",
 		strStartingNewLines,
 		g_iSmokerTalent3Level[iClient]);
+
+	// SetMenuTitle(menu, "
+	// 	%s					Dirty Tricks (Level %d)
+	// 	n 
+	// 	nLevel 1:
+	// 	nAttacks infect for +2 sec per level
+	// 	n+1%% speed when choking per level
+	// 	n(Stacks) +8%% drag speed per level
+	// 	n 
+	// 	n 
+	// 	n					Bind 2: The Electric Snare
+	// 	n						 3 uses; 3 sec duration
+	// 	n 
+	// 	nLevel 1:
+	// 	nShock for 1 dmg per level every half sec
+	// 	nArcs to survivors in line of sight for half damage
+	// 	n 
+	// 	n 
+	// 	nSkill Uses:
+	// 	n+1 (Stack) for each SMOKER w/ this talent
+	// 	nUnlimited stacks
+	// 	n ",
+	// 	strStartingNewLines,
+	// 	g_iSmokerTalent3Level[iClient]);
 	
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),

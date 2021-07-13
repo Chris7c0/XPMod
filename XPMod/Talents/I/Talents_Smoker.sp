@@ -9,7 +9,7 @@ void TalentsLoad_Smoker(iClient)
 		}
 	}
 
-	// Doppelganger clones
+	// Doppelganger Decoy clones
 	g_fNextSmokerDoppelGangerRegenTime[iClient] = GetGameTime() + SMOKER_DOPPELGANGER_REGEN_PERIOD;
 	g_bSmokerDoppelgangerCoolingDown[iClient] = false;
 
@@ -45,12 +45,12 @@ void OnGameFrame_Smoker(iClient)
 	// }
 
 
-	// Regeneration of Smoker Doppelganger Clones
+	// Regeneration of Smoker Doppelganger Decoy Clones
 	if(g_iSmokerDoppelgangerCount[iClient] < SMOKER_DOPPELGANGER_MAX_CLONES && 
 		g_fNextSmokerDoppelGangerRegenTime[iClient] <= GetGameTime())
 	{
 		g_iSmokerDoppelgangerCount[iClient]++;
-		PrintHintText(iClient, "Doppelganger Clones: %i", g_iSmokerDoppelgangerCount[iClient]);
+		PrintHintText(iClient, "Doppelganger Decoys: %i", g_iSmokerDoppelgangerCount[iClient]);
 		g_fNextSmokerDoppelGangerRegenTime[iClient] = GetGameTime() + SMOKER_DOPPELGANGER_REGEN_PERIOD;
 	}
 	
@@ -441,7 +441,7 @@ bool CreateSmokerDoppelganger(int iClient)
 	CreateTimer(SMOKER_DOPPELGANGER_DURATION, TimerRemoveSmokerDoppelganger, iCloneEntity, TIMER_FLAG_NO_MAPCHANGE);
 	
 	g_iSmokerDoppelgangerCount[iClient]--;
-	PrintHintText(iClient, "Doppelganger Clones: %i", g_iSmokerDoppelgangerCount[iClient]);
+	PrintHintText(iClient, "Doppelganger Decoys: %i", g_iSmokerDoppelgangerCount[iClient]);
 	g_fNextSmokerDoppelGangerRegenTime[iClient] = GetGameTime() + SMOKER_DOPPELGANGER_REGEN_PERIOD;
 
 	return true;
