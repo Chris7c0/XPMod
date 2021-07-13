@@ -267,7 +267,7 @@ CreateRochelleSmoke(iClient)
 // Generic Function for creating a smoke particle in the environment that all players can see
 int CreateSmokeParticle(
 	int iClient = -1,									// Target to attach to
-	float xyzPosition[3] = NULL_VECTOR,					// Position to create it
+	float xyzPosition[3],								// Position to create it 0,0,0 will force getting client location
 	int iRed = 255, int iGreen = 255, int iBlue = 255, 	// Color of smoke
 	int iAlpha = 255,									// How Opaque
 	int iMiddleGapSize = 1,		// Gap in the middle
@@ -291,7 +291,7 @@ int CreateSmokeParticle(
 		Format(strClientName, sizeof(strClientName), "Smoke%i", iClient);
 		DispatchKeyValue(iSmokeEntity,"targetname", strClientName);
 
-		if (xyzPosition[0] < 0.1 && xyzPosition[1] < 0.1 && xyzPosition[2] < 0.1)
+		if (xyzPosition[0] == 0.0 && xyzPosition[1] == 0.0 && xyzPosition[2] == 0.0)
 			GetClientEyePosition(iClient, xyzPosition);
 	}
 

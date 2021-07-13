@@ -146,7 +146,9 @@ Action:TestFunction2(iClient, args)
 	GetCmdArg(1, str1, sizeof(str1));
 	GetCmdArg(2, str2, sizeof(str2));
 
-	UntangleSurvivorFromSmokerTongue(StringToInt(str1));
+	PrintToServer("strAnimationGrab1: %i", GetEntProp(iClient, Prop_Data, "m_nSequence"));
+
+	//UntangleSurvivorFromSmokerTongue(StringToInt(str1));
 
 	// DebugLog(DEBUG_MODE_TESTING, "DEBUG_MODE_TESTING %N, %i, %i, %i, %i, %f, %f, %s, %s", iClient, 1, 2, 3, 4, 5.5, 6.6, "testing", "another test string!");
 	// DebugLog(DEBUG_MODE_TESTING, "DEBUG_MODE_TESTING");

@@ -588,6 +588,18 @@ bool:IsVisibleTo(Float:position[3], Float:targetposition[3])
 	return isVisible;
 }
 
+void GetLookAtAnglesFromPoints(const float xyzPositionStart[3], const float xyzPositionEnd[3], float vLookAtAngles[3])
+{
+	float vLookVectorLine[3];
+	MakeVectorFromPoints(xyzPositionStart, xyzPositionEnd, vLookVectorLine);
+	GetVectorAngles(vLookVectorLine, vLookAtAngles);
+
+	// PrintToChatAll("xyzPositionStart: %f %f %f", xyzPositionStart[0], xyzPositionStart[1], xyzPositionStart[2]);
+	// PrintToChatAll("xyzPositionEnd: %f %f %f", xyzPositionEnd[0], xyzPositionEnd[1], xyzPositionEnd[2]);
+	// PrintToChatAll("vLookVectorLine: %f %f %f", vLookVectorLine[0], vLookVectorLine[1], vLookVectorLine[2]);
+	// PrintToChatAll("vLookAtAngles: %f %f %f", vLookAtAngles[0], vLookAtAngles[1], vLookAtAngles[2]);
+}
+
 AttachInfected(i_Ent, Float:fOrigin[3])
 {
 	decl i_InfoEnt, String:s_TargetName[32];

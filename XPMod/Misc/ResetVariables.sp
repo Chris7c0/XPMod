@@ -163,6 +163,8 @@ ResetVariablesForMap(iClient)
 	g_iSmokerTransparency[iClient] = 0;
 	g_bSmokerIsCloaked[iClient] = false;
 	g_bSmokerVictimGlowDisabled[iClient] = false;
+	g_iSmokerDoppelgangerCount[iClient] =  0;
+	g_bSmokerDoppelgangerCoolingDown[iClient] =  false;
 	g_bElectricutionCooldown[iClient] = false;
 	g_bIsEntangledInSmokerTongue[iClient] = false;
 	g_iEntangledSurvivorModelIndex[iClient] = -1;

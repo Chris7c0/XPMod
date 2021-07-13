@@ -9,6 +9,10 @@ void TalentsLoad_Smoker(iClient)
 		}
 	}
 
+	// Doppelganger clones
+	g_fNextSmokerDoppelGangerRegenTime[iClient] = GetGameTime() + SMOKER_DOPPELGANGER_REGEN_PERIOD;
+	g_bSmokerDoppelgangerCoolingDown[iClient] = false;
+
 	// Enable global smoker tongue console variable buffs
 	SetSmokerConvarBuffs(FindHighestLevelSmokerAlive());
 
@@ -39,6 +43,17 @@ void OnGameFrame_Smoker(iClient)
 	// {
 
 	// }
+
+
+	// Regeneration of Smoker Doppelganger Clones
+	if(g_iSmokerDoppelgangerCount[iClient] < SMOKER_DOPPELGANGER_MAX_CLONES && 
+		g_fNextSmokerDoppelGangerRegenTime[iClient] <= GetGameTime())
+	{
+		g_iSmokerDoppelgangerCount[iClient]++;
+		PrintHintText(iClient, "Doppelganger Clones: %i", g_iSmokerDoppelgangerCount[iClient]);
+		g_fNextSmokerDoppelGangerRegenTime[iClient] = GetGameTime() + SMOKER_DOPPELGANGER_REGEN_PERIOD;
+	}
+	
 
 	if(g_iSmokerTalent3Level[iClient] > 0 && g_iSmokerTransparency[iClient] != 0)
 	{
@@ -79,8 +94,17 @@ bool OnPlayerRunCmd_Smoker(iClient, &iButtons)
 		iButtons & IN_ATTACK)
 		SmokerDismount(iClient);
 
-	// Smoker Dismount
+	// Toggle Cloaking
 	if (g_iChokingVictim[iClient] > 0 &&
+		iButtons & IN_DUCK)
+	{
+		g_bSmokerIsCloaked[iClient] = !g_bSmokerIsCloaked[iClient];
+		SetClientRenderAndGlowColor(iClient);
+	}
+
+	// Creating Smoker Doppelganger clone
+	if (g_iSmokerDoppelgangerCount[iClient] > 0 &&
+		g_bSmokerDoppelgangerCoolingDown[iClient] == false &&
 		iButtons & IN_RELOAD)
 		CreateSmokerDoppelganger(iClient);
 	
@@ -235,7 +259,8 @@ bool Event_ChokeStart_Smoker(int iAttacker, int iVictim)
 	SetClientRenderAndGlowColor(iAttacker);
 
 	// Create smoke around the victim
-	CreateSmokeParticle(iVictim, NULL_VECTOR, 0, 255, 50, 255, 1, 100, 100, 300, 300, 200, 200, 10, 15.0);
+	float xyzLocation[3];
+	CreateSmokeParticle(iVictim, xyzLocation, 0, 255, 50, 255, 1, 100, 100, 300, 300, 200, 200, 10, 15.0);
 
 	return false;
 }
@@ -294,56 +319,64 @@ void SmokerTeleport(iClient)
 		return;
 	}
 
-	decl Float:eyeorigin[3], Float:eyeangles[3], Float:endpos[3], Float:vdir[3], Float:distance;
-	GetClientEyePosition(iClient, eyeorigin);
-	GetClientEyeAngles(iClient, eyeangles);
-	GetAngleVectors(eyeangles, vdir, NULL_VECTOR, NULL_VECTOR);	//Get direction in which iClient is facing
-	new Handle:trace = TR_TraceRayFilterEx(eyeorigin, eyeangles, MASK_SHOT, RayType_Infinite, TraceRayDontHitSelf, iClient);
-	if(TR_DidHit(trace) == false)
-	{
-		PrintHintText(iClient, "You cannot teleport to this location.");
-		CloseHandle(trace);
-		return;
-	}
+	// decl Float:eyeorigin[3], Float:eyeangles[3], Float:endpos[3], Float:vdir[3], Float:distance;
+	// GetClientEyePosition(iClient, eyeorigin);
+	// GetClientEyeAngles(iClient, eyeangles);
+	// GetAngleVectors(eyeangles, vdir, NULL_VECTOR, NULL_VECTOR);	//Get direction in which iClient is facing
+	// new Handle:trace = TR_TraceRayFilterEx(eyeorigin, eyeangles, MASK_SHOT, RayType_Infinite, TraceRayDontHitSelf, iClient);
+	// if(TR_DidHit(trace) == false)
+	// {
+	// 	PrintHintText(iClient, "You cannot teleport to this location.");
+	// 	CloseHandle(trace);
+	// 	return;
+	// }
 	
-	TR_GetEndPosition(endpos, trace);
-	CloseHandle(trace);
+	// TR_GetEndPosition(endpos, trace);
+	// CloseHandle(trace);
 
+	float xyzOriginalLocation[3], xyzEndLocation[3], xyzEyeAngles[3];
+	GetClientAbsOrigin(iClient, xyzOriginalLocation);
+	if (GetCrosshairPosition(iClient, xyzEndLocation, xyzEyeAngles) == false)
+		return;
+	
 	// This limits the height of teleportation for each map, to prevent from walking in the sky
-	if(endpos[2] > g_fMapsMaxTeleportHeight)	
+	if(xyzEndLocation[2] > g_fMapsMaxTeleportHeight)	
 	{
 		PrintHintText(iClient, "You cannot teleport to this location.");
 		return;
 	}
+
+	//Get direction in which iClient is facing, to push out from this vector
+	float vDir[3];
+	GetAngleVectors(xyzEyeAngles, vDir, NULL_VECTOR, NULL_VECTOR);
 
 	// Stert figuring out where to teleport to
-	endpos[0]-=(vdir[0] * 50.0);		//Spawn iClient right ahead of where they were looking
-	endpos[1]-=(vdir[1] * 50.0);
-	//endpos[2]-=(vdir[2] * 50.0);
-	//PrintToChat(iClient, "vdir = %.4f, %.4f, %.4f", vdir[0], vdir[1], vdir[2]);
-	distance = GetVectorDistance(eyeorigin, endpos, false);
-	distance = distance * 0.08;
+	xyzEndLocation[0]-=(vDir[0] * 50.0);		//Spawn iClient right ahead of where they were looking
+	xyzEndLocation[1]-=(vDir[1] * 50.0);
+	//xyzEndLocation[2]-=(vDir[2] * 50.0);
+	//PrintToChat(iClient, "vDir = %.4f, %.4f, %.4f", vDir[0], vDir[1], vDir[2]);
+	float fDistance;
+	fDistance = GetVectorDistance(xyzOriginalLocation, xyzEndLocation, false);
+	fDistance = fDistance * 0.08;
 
-	if(distance > (float(g_iSmokerTalent3Level[iClient]) * 30.0))
+	if(fDistance > (float(g_iSmokerTalent3Level[iClient]) * 30.0))
 	{
 		PrintHintText(iClient, "You cannot teleport beyond %.0f ft.", (float(g_iSmokerTalent3Level[iClient]) * 30.0));
 		return;
 	}
-
-	decl Float:vorigin[3];
-	GetClientAbsOrigin(iClient, vorigin);
-	TeleportEntity(iClient, endpos, NULL_VECTOR, NULL_VECTOR);
-	EmitSoundToAll(SOUND_WARP_LIFE, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1,  endpos, NULL_VECTOR, true, 0.0);
-	EmitSoundToAll(SOUND_WARP, SOUND_FROM_PLAYER, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1,  endpos, NULL_VECTOR, true, 0.0);
+	
+	TeleportEntity(iClient, xyzEndLocation, NULL_VECTOR, NULL_VECTOR);
+	EmitSoundToAll(SOUND_WARP_LIFE, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1,  xyzEndLocation, NULL_VECTOR, true, 0.0);
+	EmitSoundToAll(SOUND_WARP, SOUND_FROM_PLAYER, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1,  xyzEndLocation, NULL_VECTOR, true, 0.0);
 	WriteParticle(iClient, "teleport_warp", 0.0, 7.0);
-	PrintHintText(iClient, "You teleported %.1f ft.", distance);
-	PrintToChat(iClient, "<%f, %f, %f>", endpos[0], endpos[1], endpos[2]);
-	g_fTeleportOriginalPositionX[iClient] = vorigin[0];
-	g_fTeleportOriginalPositionY[iClient] = vorigin[1];
-	g_fTeleportOriginalPositionZ[iClient] = vorigin[2];
-	g_fTeleportEndPositionX[iClient] = endpos[0];
-	g_fTeleportEndPositionY[iClient] = endpos[1];
-	g_fTeleportEndPositionZ[iClient] = endpos[2];
+	//PrintHintText(iClient, "You teleported %.1f ft.", fDistance);
+	//PrintToChat(iClient, "<%f, %f, %f>", xyzEndLocation[0], xyzEndLocation[1], xyzEndLocation[2]);
+	g_fTeleportOriginalPositionX[iClient] = xyzOriginalLocation[0];
+	g_fTeleportOriginalPositionY[iClient] = xyzOriginalLocation[1];
+	g_fTeleportOriginalPositionZ[iClient] = xyzOriginalLocation[2];
+	g_fTeleportEndPositionX[iClient] = xyzEndLocation[0];
+	g_fTeleportEndPositionY[iClient] = xyzEndLocation[1];
+	g_fTeleportEndPositionZ[iClient] = xyzEndLocation[2];
 	CreateTimer(3.0, CheckIfStuck, iClient, TIMER_FLAG_NO_MAPCHANGE);		//Check if the player is stuck in a wall
 	g_bTeleportCoolingDown[iClient] = true;
 	CreateTimer(SMOKER_TELEPORT_COOLDOWN_PERIOD, ReallowTeleport, iClient, TIMER_FLAG_NO_MAPCHANGE);	//After 10 seconds reallow teleportation fot the iClient
@@ -364,7 +397,123 @@ SmokerDismount(iClient)
 	CreateTimer(0.1, TimerResetPlayerMoveType, iClient);
 }
 
-void CreateSmokerDoppelganger(int iClient)
+bool CreateSmokerDoppelganger(int iClient)
 {
+	g_bSmokerDoppelgangerCoolingDown[iClient] = true;
+	CreateTimer(SMOKER_DOPPELGANGER_COOLDOWN_PERIOD, TimerResetSmokerDoppelgangerCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
+	float xyzLocation[3], xyzDirection[3];
+	if (GetCrosshairPosition(iClient, xyzLocation, xyzDirection) == false)
+		return false;
+	
+	if (RunEntityChecks(g_iChokingVictim[iClient]))
+	{
+		float xyzPositionEnd[3];
+		GetClientAbsOrigin(g_iChokingVictim[iClient], xyzPositionEnd);
+		GetLookAtAnglesFromPoints(xyzLocation, xyzPositionEnd, xyzDirection);
+	}
+
+	// Animation Strings (used before using m_nSequence instead)
+	// Idle_Upper_KNIFE
+	// tongue_attack_drag_survivor_idle
+	// tongue_attack_incap_survivor_idle
+
+	// Get the smoker's current animation sequence to use for the clone's animation
+	int iAnimationSequence = GetEntProp(iClient, Prop_Data, "m_nSequence");
+	// Replace the animation for blended states taht dont work with the clone function
+	switch (iAnimationSequence)
+	{
+		case 5: iAnimationSequence = 2;
+		case 7: iAnimationSequence = 4;
+	}
+
+	// Create the actual clone that will be used as the doppelganger
+	int iCloneEntity = CreatePlayerClone(iClient, xyzLocation, xyzDirection, iAnimationSequence);
+	CreateTimer(SMOKER_DOPPELGANGER_DURATION, TimerRemoveSmokerDoppelganger, iCloneEntity, TIMER_FLAG_NO_MAPCHANGE);
+	
+	g_iSmokerDoppelgangerCount[iClient]--;
+	PrintHintText(iClient, "Doppelganger Clones: %i", g_iSmokerDoppelgangerCount[iClient]);
+	g_fNextSmokerDoppelGangerRegenTime[iClient] = GetGameTime() + SMOKER_DOPPELGANGER_REGEN_PERIOD;
+
+	return true;
+}
+
+
+int CreatePlayerClone(int iClient, float xyzLocation[3], float xyzAngles[3], int iAnimationSequence = -1, char [] strAnimationName = "")
+{
+	char strModel[PLATFORM_MAX_PATH];
+	GetEntPropString(iClient, Prop_Data, "m_ModelName", strModel, sizeof(strModel));
+
+	// Create survivor model that will be entangled
+	int iClone = CreateEntityByName("prop_dynamic");		// Required for iAnimationSequence
+	//int iClone = CreateEntityByName("commentary_dummy");	// Might be required if not using iAnimationSequence
+	if (RunEntityChecks(iClone) == false)
+		return -1;
+
+	// Set the global reference that can be removed later
+	//g_iEntangledSurvivorModelIndex[iClient] = iClone;
+
+	SetEntityModel(iClone, strModel);
+
+	// // Get location the model should be placed
+	// float xyzLocation[3];
+	// float xyzAngles[3];
+	// GetClientAbsOrigin(iClient, xyzLocation);
+	// GetClientAbsAngles(iClient, xyzAngles);
+	// PrintToChatAll("xyzLocation: %f %f %f", xyzLocation[0], xyzLocation[1], xyzLocation[2]);
+
+	// Set angles and origin
+	TeleportEntity(iClone, xyzLocation, xyzAngles, NULL_VECTOR);
+
+	// Set playback rate for animation
+	SetEntPropFloat(iClone, Prop_Send, "m_flPlaybackRate", 1.0);
+	// Set the actual animation (two methods)
+	if (iAnimationSequence == -1)
+	{
+		SetVariantString(strAnimationName)
+		AcceptEntityInput(iClone, "SetAnimation");
+	}
+	else
+	{
+		//PrintToServer("iAnimationSequence: %i", iAnimationSequence);
+		SetEntProp(iClone, Prop_Send, "m_nSequence", iAnimationSequence);
+	}
+	
+
+	//SetEntProp(iClone, Prop_Send, "m_nSolidType", 1);
+
+	// // Hook the model so hits will register
+	// SDKHook(iClone, SDKHook_OnTakeDamage, OnTakeDamage);
+	// PrintToServer("HOOKING %i, %i", iClone, EntIndexToEntRef(iClone));
+	
+	return iClone;
+}
+
+
+bool GetCrosshairPosition(int iClient, float xyzLocation[3], float xyzEyeAngles[3], bool bClipXZRotation = true)
+{
+	decl Float:xyzEyeOrigin[3];
+	GetClientEyePosition(iClient, xyzEyeOrigin);
+	GetClientEyeAngles(iClient, xyzEyeAngles);
+	//Get direction in which iClient is facing, to push out from this vector later
+	//GetAngleVectors(xyzEyeAngles, vDir, NULL_VECTOR, NULL_VECTOR);
+	GetClientEyeAngles(iClient, xyzEyeAngles);
+	new Handle:trace = TR_TraceRayFilterEx(xyzEyeOrigin, xyzEyeAngles, MASK_SHOT, RayType_Infinite, TraceRayDontHitSelf, iClient);
+	if(TR_DidHit(trace) == false)
+	{
+		CloseHandle(trace);
+		return false;
+	}
+
+	if (bClipXZRotation == true)
+	{
+		xyzEyeAngles[0] = 0.0;
+		xyzEyeAngles[2] = 0.0;
+	}
+	
+	// Get the actual location
+	TR_GetEndPosition(xyzLocation, trace);
+	CloseHandle(trace);
+
+	return true;
 }

@@ -96,8 +96,6 @@ new ArrayList:g_listEnhancedCIEntities;
 #define CONVAR_SMOKER_TONGUE_DRAG_SPEED_BUFF_PER_LEVEL  70
 #define CONVAR_SMOKER_TONGUE_HEALTH_DEFAULT             100
 #define CONVAR_SMOKER_TONGUE_HEALTH_BUFF_PER_LEVEL      50
-
-
 new g_iChokingVictim[MAXPLAYERS + 1];
 bool g_bSmokerIsCloaked[MAXPLAYERS + 1];
 bool g_bSmokerVictimGlowDisabled[MAXPLAYERS + 1];
@@ -105,6 +103,13 @@ bool SetMoveTypeBackToNormalOnNextGameFrame[MAXPLAYERS + 1];
 new bool:g_bIsElectricuting[MAXPLAYERS + 1];
 new bool:g_bIsSmokeInfected[MAXPLAYERS + 1];
 new bool:g_bIsSmokeEntityOff;
+#define SMOKER_DOPPELGANGER_MAX_CLONES                  5
+#define SMOKER_DOPPELGANGER_DURATION                    15.0
+#define SMOKER_DOPPELGANGER_REGEN_PERIOD                10.0
+#define SMOKER_DOPPELGANGER_COOLDOWN_PERIOD             0.5
+float g_fNextSmokerDoppelGangerRegenTime[MAXPLAYERS + 1];
+new g_iSmokerDoppelgangerCount[MAXPLAYERS + 1];
+bool g_bSmokerDoppelgangerCoolingDown[MAXPLAYERS + 1];
 new g_iSmokerInfectionCloudEntity[MAXPLAYERS + 1];
 new bool:g_bHasSmokersPoisonCloudOut[MAXPLAYERS + 1];
 new Float:g_xyzPoisonCloudOriginArray[MAXPLAYERS + 1][3];
