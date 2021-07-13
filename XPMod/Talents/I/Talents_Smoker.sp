@@ -96,11 +96,14 @@ bool OnPlayerRunCmd_Smoker(iClient, &iButtons)
 
 	// Toggle Cloaking
 	if (g_iChokingVictim[iClient] > 0 &&
+		g_SmokerCloakingJustToggled[iClient] == false &&
 		iButtons & IN_DUCK)
-	{
-		g_bSmokerIsCloaked[iClient] = !g_bSmokerIsCloaked[iClient];
-		SetClientRenderAndGlowColor(iClient);
-	}
+		ToggleSmokerCloaking(iClient);
+
+	// Toggle Cloaking Button Release
+	if (g_SmokerCloakingJustToggled[iClient] == true &&
+		GetEntProp(iClient, Prop_Data, "m_afButtonReleased") & IN_DUCK)
+		g_SmokerCloakingJustToggled[iClient] = false;
 
 	// Creating Smoker Doppelganger clone
 	if (g_iSmokerDoppelgangerCount[iClient] > 0 &&
@@ -387,7 +390,6 @@ void SmokerTeleport(iClient)
 	SetEntityRenderColor(iClient, 0, 0, 0, 0);		
 }
 
-
 SmokerDismount(iClient)
 {
 	g_bMovementLocked[iClient] = true;
@@ -395,6 +397,13 @@ SmokerDismount(iClient)
 	SetPlayerMoveType(iClient, MOVETYPE_NOCLIP);
 	// Note this needs to be done with some delay for it to work
 	CreateTimer(0.1, TimerResetPlayerMoveType, iClient);
+}
+
+void ToggleSmokerCloaking(int iClient)
+{
+	g_SmokerCloakingJustToggled[iClient] = true;
+	g_bSmokerIsCloaked[iClient] = !g_bSmokerIsCloaked[iClient];
+	SetClientRenderAndGlowColor(iClient);
 }
 
 bool CreateSmokerDoppelganger(int iClient)

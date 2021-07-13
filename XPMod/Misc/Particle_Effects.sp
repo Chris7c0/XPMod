@@ -287,7 +287,7 @@ int CreateSmokeParticle(
 	if (RunClientChecks(iClient))
 	{
 		char strClientName[128];
-		PrintToChatAll("SMOKE CLIENT: [%N]", iClient);
+		//PrintToChatAll("SMOKE CLIENT: [%N]", iClient);
 		Format(strClientName, sizeof(strClientName), "Smoke%i", iClient);
 		DispatchKeyValue(iSmokeEntity,"targetname", strClientName);
 
@@ -297,7 +297,7 @@ int CreateSmokeParticle(
 
 	char strPosition[32];
 	Format(strPosition, sizeof(strPosition), "%f %f %f", xyzPosition[0], xyzPosition[1], xyzPosition[2]);
-	PrintToChatAll("SMOKE POSTION: [%s]", strPosition);
+	//PrintToChatAll("SMOKE POSTION: [%s]", strPosition);
 
 	char strTemp[16];
 	DispatchKeyValue(iSmokeEntity,"Origin", strPosition);

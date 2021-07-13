@@ -221,8 +221,8 @@ CreateEntangledSurvivorClone(int iClient)
 		SetEntProp(iClone, Prop_Send, "m_nSolidType", 1);
 
 		// Hook the model so hits will register
-		SDKHook(iClone, SDKHook_OnTakeDamage, OnTakeDamage);
-		PrintToServer("HOOKING %i, %i", iClone, EntIndexToEntRef(iClone));
+		//SDKHook(iClone, SDKHook_OnTakeDamage, OnTakeDamage);
+		//PrintToServer("HOOKING %i, %i", iClone, EntIndexToEntRef(iClone));
 	}
 
 	// Create the smoker tongue that wraps around the survivor
