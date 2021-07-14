@@ -156,7 +156,7 @@ CreateParticle(String:type[], Float:time, entity, attach = ATTACH_NONE, bool:use
 	return particle;
 }
 
-int AttachParticle(target, String:particlename[], Float:time, Float:originOffset = 0.0)
+int AttachParticle(target, String:particlename[], Float:fTime = -1.0, Float:originOffset = 0.0)
 {
 	if (target > 0 && IsValidEntity(target))
 	{
@@ -182,7 +182,7 @@ int AttachParticle(target, String:particlename[], Float:time, Float:originOffset
 			AcceptEntityInput(particle, "SetParent", particle, particle);
 			AcceptEntityInput(particle, "Enable");
 			AcceptEntityInput(particle, "start");
-			CreateTimer(time, DeleteParticle, particle, TIMER_FLAG_NO_MAPCHANGE);
+			if (fTime > 0.0) CreateTimer(fTime, DeleteParticle, particle, TIMER_FLAG_NO_MAPCHANGE);
 			return particle;
 		}
     }

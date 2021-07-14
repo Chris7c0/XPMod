@@ -97,7 +97,10 @@ new ArrayList:g_listEnhancedCIEntities;
 #define CONVAR_SMOKER_TONGUE_HEALTH_DEFAULT             100
 #define CONVAR_SMOKER_TONGUE_HEALTH_BUFF_PER_LEVEL      50
 new g_iChokingVictim[MAXPLAYERS + 1];
-bool g_SmokerCloakingJustToggled[MAXPLAYERS + 1];
+bool g_bSmokerSmokeScreenOnCooldown[MAXPLAYERS + 1];
+#define SMOKER_SMOKE_VICTIM_DURATION                    15.0
+#define SMOKER_SMOKE_VICTIM_COOLDOWN_DURATION           30.0
+bool g_bSmokerCloakingJustToggled[MAXPLAYERS + 1];
 bool g_bSmokerIsCloaked[MAXPLAYERS + 1];
 bool g_bSmokerVictimGlowDisabled[MAXPLAYERS + 1];
 bool SetMoveTypeBackToNormalOnNextGameFrame[MAXPLAYERS + 1];

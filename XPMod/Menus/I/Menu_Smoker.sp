@@ -114,7 +114,9 @@ Action:NoxiousMenuDraw(iClient)
 		\n 9.5%% Invisibility per Level While Pulling or Choking A Victim:\
 		\n	- [PRESS CROUCH] Toggle Invisibility\
 		\n \
-		\n While Choking Create A Thick Smoke Cloud Around Your Victim And Hide Their Glow\
+		\n While Choking A Victim:\
+		\n	- Hide Their Glow\
+		\n	- [PRESS WALK] Create A Smoke Screen Around Them\
 		\n \
 		\n [PRESS RELOAD] Create Smoker Doppelganger Decoy On Your Crosshair\
 		\n	- Regenerates While Alive as Smoker (Max 5 Decoys)\
@@ -147,7 +149,7 @@ Action:NoxiousMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 

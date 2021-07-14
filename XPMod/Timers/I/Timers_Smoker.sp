@@ -181,6 +181,12 @@ Action:TimerResetSmokerDoppelgangerCooldown(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
+Action:TimerResetSmokerSmokeScreenCooldown(Handle:timer, any:iClient)
+{
+	g_bSmokerSmokeScreenOnCooldown[iClient] = false;
+	return Plugin_Stop;
+}
+
 Action:TimerStopElectricution(Handle:timer, any:iClient)
 {
 	g_bIsElectricuting[iClient] = false;

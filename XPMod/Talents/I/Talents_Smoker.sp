@@ -86,6 +86,7 @@ bool OnPlayerRunCmd_Smoker(iClient, &iButtons)
 
 	// Smoker Teleport
 	if (g_bTeleportCoolingDown[iClient] == false &&
+		g_iChokingVictim[iClient] <= 0 &&
 		iButtons & IN_SPEED)
 		SmokerTeleport(iClient);
 
@@ -96,20 +97,25 @@ bool OnPlayerRunCmd_Smoker(iClient, &iButtons)
 
 	// Toggle Cloaking
 	if (g_iChokingVictim[iClient] > 0 &&
-		g_SmokerCloakingJustToggled[iClient] == false &&
+		g_bSmokerCloakingJustToggled[iClient] == false &&
 		iButtons & IN_DUCK)
 		ToggleSmokerCloaking(iClient);
 
 	// Toggle Cloaking Button Release
-	if (g_SmokerCloakingJustToggled[iClient] == true &&
+	if (g_bSmokerCloakingJustToggled[iClient] == true &&
 		GetEntProp(iClient, Prop_Data, "m_afButtonReleased") & IN_DUCK)
-		g_SmokerCloakingJustToggled[iClient] = false;
+		g_bSmokerCloakingJustToggled[iClient] = false;
 
 	// Creating Smoker Doppelganger clone
 	if (g_iSmokerDoppelgangerCount[iClient] > 0 &&
 		g_bSmokerDoppelgangerCoolingDown[iClient] == false &&
 		iButtons & IN_RELOAD)
 		CreateSmokerDoppelganger(iClient);
+
+	// Create Smoke Screen around the victim
+	if (g_iChokingVictim[iClient] > 0 &&
+		iButtons & IN_SPEED)
+		CreateSmokeScreenAroundVictim(iClient);
 	
 	return false;
 }
@@ -245,12 +251,16 @@ bool Event_TongueRelease_Smoker(int iAttacker, iVictim)
 	return false;
 }
 
+
+
 bool Event_ChokeStart_Smoker(int iAttacker, int iVictim)
 {
 	// Before proceeding check to ensure they have smoker talent confirmed
 	if (g_bTalentsConfirmed[iAttacker] == false ||
 		g_iSmokerTalent1Level[iAttacker] <= 0)
 		return false;
+
+	SuppressNeverUsedWarning(iVictim);
 
 	// Set ability for smoker to move
 	SetEntityMoveType(iAttacker, MOVETYPE_ISOMETRIC);
@@ -260,10 +270,6 @@ bool Event_ChokeStart_Smoker(int iAttacker, int iVictim)
 		return false;
 
 	SetClientRenderAndGlowColor(iAttacker);
-
-	// Create smoke around the victim
-	float xyzLocation[3];
-	CreateSmokeParticle(iVictim, xyzLocation, 0, 255, 50, 255, 1, 100, 100, 300, 300, 200, 200, 10, 15.0);
 
 	return false;
 }
@@ -401,9 +407,31 @@ SmokerDismount(iClient)
 
 void ToggleSmokerCloaking(int iClient)
 {
-	g_SmokerCloakingJustToggled[iClient] = true;
+	g_bSmokerCloakingJustToggled[iClient] = true;
 	g_bSmokerIsCloaked[iClient] = !g_bSmokerIsCloaked[iClient];
 	SetClientRenderAndGlowColor(iClient);
+}
+
+void CreateSmokeScreenAroundVictim(iClient)
+{
+	if (RunEntityChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false ||
+		IsFakeClient(iClient) == true ||
+		RunEntityChecks(g_iChokingVictim[iClient]) == false ||
+		IsPlayerAlive(g_iChokingVictim[iClient]) == false)
+		return;
+
+	if (g_bSmokerSmokeScreenOnCooldown[iClient] == true)
+	{
+		PrintHintText(iClient, "You don't have enough smoke for a Smoke Screen yet. Wait for it to regenerate.")
+		return;
+	}
+	
+	g_bSmokerSmokeScreenOnCooldown[iClient] = true;
+	CreateTimer(SMOKER_SMOKE_VICTIM_COOLDOWN_DURATION, TimerResetSmokerSmokeScreenCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
+	float xyzLocation[3];
+	CreateSmokeParticle(g_iChokingVictim[iClient], xyzLocation, 0, 255, 50, 255, 1, 100, 100, 400, 400, 50, 200, 10, SMOKER_SMOKE_VICTIM_DURATION);
 }
 
 bool CreateSmokerDoppelganger(int iClient)
@@ -438,8 +466,16 @@ bool CreateSmokerDoppelganger(int iClient)
 
 	// Create the actual clone that will be used as the doppelganger
 	int iCloneEntity = CreatePlayerClone(iClient, xyzLocation, xyzDirection, iAnimationSequence);
+	if (RunEntityChecks(iCloneEntity) == false)
+		return false;
 	CreateTimer(SMOKER_DOPPELGANGER_DURATION, TimerRemoveSmokerDoppelganger, iCloneEntity, TIMER_FLAG_NO_MAPCHANGE);
 	
+	// Attach smoker particles
+	//smoker_spore_trail
+	//smoker_spore_trail_cheap (for the cloud)
+	int iParticle = AttachParticle(iCloneEntity, "smoker_spore_trail", -1.0, 10.0);
+	int iParticle2 = AttachParticle(iCloneEntity, "smoker_spore_trail_cheap", -1.0, 10.0);
+
 	g_iSmokerDoppelgangerCount[iClient]--;
 	PrintHintText(iClient, "Doppelganger Decoys: %i", g_iSmokerDoppelgangerCount[iClient]);
 	g_fNextSmokerDoppelGangerRegenTime[iClient] = GetGameTime() + SMOKER_DOPPELGANGER_REGEN_PERIOD;

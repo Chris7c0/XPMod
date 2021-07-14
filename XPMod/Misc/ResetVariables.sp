@@ -159,6 +159,7 @@ ResetVariablesForMap(iClient)
 	g_bIsElectricuting[iClient] = false;
 	g_bIsSmokeInfected[iClient] = false;
 	g_iSmokerInfectionCloudEntity[iClient] = -1;
+	g_bSmokerSmokeScreenOnCooldown[iClient] = false;
 	g_bTeleportCoolingDown[iClient] = false;
 	g_iSmokerTransparency[iClient] = 0;
 	g_bSmokerIsCloaked[iClient] = false;
