@@ -85,7 +85,7 @@ int WriteParticle(iClient, String:strParticleName[], Float:fZOffset = 0.0, Float
 	return Particle;
 }
 
-CreateParticle(String:type[], Float:time, entity, attach = ATTACH_NONE, bool:useangles = false, Float:xOffs = 0.0, Float:yOffs = 0.0, Float:zOffs = 0.0)
+int CreateParticle(String:type[], Float:time, entity, attach = ATTACH_NONE, bool:useangles = false, Float:xOffs = 0.0, Float:yOffs = 0.0, Float:zOffs = 0.0)
 {
 	new particle = CreateEntityByName("info_particle_system");
 	
@@ -126,6 +126,7 @@ CreateParticle(String:type[], Float:time, entity, attach = ATTACH_NONE, bool:use
 				case ATTACH_WEAPON_BONE:		SetVariantString("weapon_bone");
 				case ATTACH_DEBRIS:				SetVariantString("debris");
 				case ATTACH_RSHOULDER:			SetVariantString("rshoulder");
+				case 99:						SetVariantString("smoker_mouth");
 				
 				/*
 				case ATTACH_FORWARD:			SetVariantString("forward");

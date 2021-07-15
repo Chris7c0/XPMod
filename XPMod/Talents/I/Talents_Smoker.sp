@@ -443,9 +443,9 @@ bool CreateSmokerDoppelganger(int iClient)
 	if (GetCrosshairPosition(iClient, xyzLocation, xyzDirection) == false)
 		return false;
 	
+	float xyzPositionEnd[3];
 	if (RunEntityChecks(g_iChokingVictim[iClient]))
 	{
-		float xyzPositionEnd[3];
 		GetClientAbsOrigin(g_iChokingVictim[iClient], xyzPositionEnd);
 		GetLookAtAnglesFromPoints(xyzLocation, xyzPositionEnd, xyzDirection);
 	}
@@ -469,6 +469,22 @@ bool CreateSmokerDoppelganger(int iClient)
 	if (RunEntityChecks(iCloneEntity) == false)
 		return false;
 	CreateTimer(SMOKER_DOPPELGANGER_DURATION, TimerRemoveSmokerDoppelganger, iCloneEntity, TIMER_FLAG_NO_MAPCHANGE);
+
+
+
+
+
+	// // TESTING for SMOKER TONGUE ATTACHEMNT
+	// if (g_iChokingVictim[iClient] > 0)
+	// {
+	// 	// TE_SetupBeamPoints(xyzLocation,xyzPositionEnd,g_iSprite_SmokerTongue,0,0,66,0.1,3.0,3.0,10,0.0,{70,40,15,255},1);
+	// 	// TE_SendToAll();
+	// 	int smokerMouth = CreateParticle("boomer_vomit", 2.0, iCloneEntity, 99, false);
+
+	// 	//PrintToChatAll("SMOKERMOUTHPARTICLE: %i", smokerMouth);
+	// 	effect_beaments(smokerMouth, g_iChokingVictim[iClient]);
+	// 	effect_beaments(iCloneEntity, g_iChokingVictim[iClient]);
+	// }
 	
 	// Attach smoker particles
 	//smoker_spore_trail

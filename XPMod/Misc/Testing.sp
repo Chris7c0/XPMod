@@ -177,6 +177,79 @@ Action:TestFunction2(iClient, args)
 }
 
 
+public effect_beaments(entity, eentity)//, frate, Float:life, Float:width, Float:ewidth, flength, Float:amp, r, g, b, a, speed)
+{
+	//est_effect_03
+	//new mindex = IsPrecached(model);
+	new haloindex = PrecacheModel("materials/sprites/halo01.vmt");
+	
+	
+	TE_Start("BeamEnts");
+	TE_WriteNum("m_nStartEntity", entity);
+	TE_WriteNum("m_nEndEntity", eentity);
+	TE_WriteNum("m_nModelIndex", g_iSprite_SmokerTongue);//mindex);
+	TE_WriteNum("m_nHaloIndex", haloindex);
+	TE_WriteNum("m_nStartFrame", 0);
+	TE_WriteNum("m_nFrameRate", 60);//frate);
+	TE_WriteFloat("m_fLife", 30.0);//life);
+	TE_WriteFloat("m_fWidth", 2.0);//width);
+	TE_WriteFloat("m_fEndWidth", 5.0);//ewidth);
+	TE_WriteNum("m_nFadeLength", 100);//flength);
+	TE_WriteFloat("m_fAmplitude", 0.1);//amp);
+	TE_WriteNum("m_nSpeed", 1);// speed);
+	TE_WriteNum("r", 255);//r);
+	TE_WriteNum("g", 255);//g);
+	TE_WriteNum("b", 255);//b);
+	TE_WriteNum("a", 255);//a);
+
+	//TE_WriteNum("m_nFlags", flags);
+	//SendEffect(filter);
+	TE_SendToAll();
+	
+	return;
+}
+
+
+// public CreateLaser(player1,player2){
+
+// 	new laser = CreateEntityByName("env_laser");
+// 	new String:sz_lasername[32];
+// 	Format(sz_lasername, sizeof(sz_lasername), "laser_%i", laser);
+// 	DispatchKeyValue(laser, "targetname", sz_lasername);
+// 	new String:steamid[20];
+// 	new String:steamid1[20];
+// 	GetClientAuthString(player1, steamid, sizeof(steamid));
+// 	GetClientAuthString(player2, steamid1, sizeof(steamid1));
+// 	DispatchKeyValue(laser, "targetname", steamid);
+// 	DispatchKeyValue(laser, "parentname", steamid);
+
+// 	// new String:clientName[128];
+// 	// Format(clientName, sizeof(clientName), "Smoke%i", iClient);
+// 	DispatchKeyValue(laser, "targetname", steamid);
+// 	DispatchKeyValue(laser, "parentname", steamid);
+// 	DispatchKeyValue(laser, "m_iszLaserTarget", steamid1);
+// 	DispatchKeyValue(laser, "texture", "materials/sprites/halo01.vmt");//"sprites/physbeam.vmt");
+	
+// 	DispatchKeyValue(laser, "m_Color", "200 200 255");
+// 	DispatchKeyValue(laser, "m_fWidth", "15");
+	
+	
+// 	DispatchSpawn(laser);
+	
+// 	AcceptEntityInput(laser, "TurnOn");  
+	
+// 	new Float:loc[3];
+// 	GetClientAbsOrigin(player1,loc);
+
+// 	loc[2] += 70.0;
+// 	ActivateEntity(laser);
+	
+// 	TeleportEntity(laser,loc,NULL_VECTOR,NULL_VECTOR);
+// 	SetVariantString(steamid);
+// 	AcceptEntityInput(laser, "SetParent");
+// } 
+
+
 Action:TestFunction3(iClient, args)
 {
 	DebugLog(DEBUG_MODE_TESTING, "T3");
@@ -184,10 +257,13 @@ Action:TestFunction3(iClient, args)
 	GetCmdArg(1, str1, sizeof(str1));
 	char str2[99];
 	GetCmdArg(2, str2, sizeof(str2));
-	
+
 	for (int i=1; i<=MaxClients; i++)
 		if(RunClientChecks(i) && IsPlayerAlive(i))
 			PrintToChatAll("%i: %N", i, i)
+
+	//CreateLaser(StringToInt(str1), StringToInt(str2));
+	effect_beaments(StringToInt(str1), StringToInt(str2));
 
 	//GotoFirstPerson(iClient);
 

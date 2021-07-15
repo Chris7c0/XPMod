@@ -11,14 +11,13 @@ Action:ShowRopeTimer(Handle:timer, any:iClient)
 {
 	if (IsServerProcessing()==false)
 		return Plugin_Continue;
-	if(g_bUsingTongueRope[iClient] == true)
-	{
-		TE_SetupBeamPoints(g_xyzClientLocation[iClient],g_xyzRopeEndLocation[iClient],g_iSprite_SmokerTongue,0,0,66,0.1,3.0,3.0,10,0.0,{70,40,15,255},1);
-		TE_SendToAll();
-		return Plugin_Continue;
-	}
-	else
+
+	if(g_bUsingTongueRope[iClient] == false)
 		return Plugin_Stop;
+
+	TE_SetupBeamPoints(g_xyzClientLocation[iClient],g_xyzRopeEndLocation[iClient],g_iSprite_SmokerTongue,0,0,66,0.1,3.0,3.0,10,0.0,{70,40,15,255},1);
+	TE_SendToAll();
+	return Plugin_Continue;
 }
 
 Action:TimerStopShadowNinja(Handle:timer, any:iClient)
