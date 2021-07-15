@@ -246,7 +246,7 @@ bool Event_TongueRelease_Smoker(int iAttacker, iVictim)
 	SetClientRenderAndGlowColor(iAttacker);
 
 	// Set the cooldown to enable the next tongue ability faster
-	SetSIAbilityCooldown(iAttacker, SMOKER_DEFAULT_TONGUE_COOLDOWN - (RoundToNearest(g_iSmokerTalent1Level[iAttacker] / 2.0) * SMOKER_COOLDOWN_REDUCTION_EVERY_OTHER_LEVEL) );
+	SetSIAbilityCooldown(iAttacker, SMOKER_DEFAULT_TONGUE_COOLDOWN - (RoundToNearest(g_iSmokerTalent1Level[iAttacker] / 3.0) * SMOKER_COOLDOWN_REDUCTION_EVERY_OTHER_LEVEL) );
 
 	return false;
 }

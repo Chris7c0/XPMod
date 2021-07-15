@@ -54,20 +54,20 @@ Action:EnvelopmentMenuDraw(iClient)
 	SetMenuTitle(menu, "\
 		%s  				Rapid Cell Division (Level %d)\
 		\n \
-		\n+15 HP per Level\
+		\n+5 HP per Level\
 		\n \
 		\nRegenerate 60 HP per Second\
 		\n \
 		\nRecuded Tongue Ability Cooldown\
-		\n	- -1 Second Every Other Level\
+		\n	- -1 Second Every Three Levels\
 		\n \
 		\nCan Move Slowly While Choking A Victim\
 		\n \
 		\nWhile Alive as Smoker, All Smokers Receive:\
 		\n	- +20%% Increased Tongue Range per Level\
-		\n	- +50%% Increased Tongue Travel Speed per Level    \
-		\n	- +40%% Increased Tongue Drag Speed per Level\
-		\n	- +50%% Increased Tongue Strength per level\
+		\n	- +20%% Increased Tongue Travel Speed per Level    \
+		\n	- +15%% Increased Tongue Drag Speed per Level\
+		\n	- +20%% Increased Tongue Strength per level\
 		\n ",
 		strStartingNewLines,
 		g_iSmokerTalent1Level[iClient]);
