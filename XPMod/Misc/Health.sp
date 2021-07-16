@@ -25,14 +25,17 @@ int GetPlayerMaxHealth(int iClient)
 
 bool SetPlayerHealth(int iClient, int iHealthAmount, bool bAdditive = false, bool bClampWithTempHealth = true)
 {
-	if (iHealthAmount < 0 ||
-		RunClientChecks(iClient) == false ||
+	if (RunClientChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false ||
 		g_iClientTeam[iClient] == TEAM_SPECTATORS ||
 		(g_iClientTeam[iClient] == TEAM_SURVIVORS &&
 		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1))
 		return false;
 
+	// Clamp the health
+	if (iHealthAmount < 0 && bAdditive == false)
+		iHealthAmount = 0;
+	
 	int iMaxHealth = GetPlayerMaxHealth(iClient);
 	int iTempHealth = GetSurvivorTempHealth(iClient);
 	// Subtract temp health from MaxHealth to stop from going over
