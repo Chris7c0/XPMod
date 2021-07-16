@@ -54,7 +54,7 @@ Action:EnvelopmentMenuDraw(iClient)
 	SetMenuTitle(menu, "\
 		%s  				Rapid Cell Division (Level %d)\
 		\n \
-		\n+5 HP per Level\
+		\n+2 HP per Level\
 		\n \
 		\nRegenerate 60 HP per Second\
 		\n \
@@ -111,7 +111,7 @@ Action:NoxiousMenuDraw(iClient)
 	SetMenuTitle(menu, "\
 		%s										Illusive Trickster (Level %d)\
 		\n \
-		\n 9.5%% Invisibility per Level While Pulling or Choking A Victim:\
+		\n 8.5%% Invisibility per Level While Pulling or Choking A Victim:\
 		\n	- [PRESS CROUCH] Toggle Invisibility\
 		\n \
 		\n While Choking A Victim:\
