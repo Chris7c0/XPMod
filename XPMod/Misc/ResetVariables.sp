@@ -156,7 +156,7 @@ ResetVariablesForMap(iClient)
 	g_iChokingVictim[iClient] = -1;
 	SetMoveTypeBackToNormalOnNextGameFrame[iClient] = false;
 	g_bHasSmokersPoisonCloudOut[iClient] = false;
-	g_bIsElectricuting[iClient] = false;
+	g_bIsElectrocuting[iClient] = false;
 	g_bIsSmokeInfected[iClient] = false;
 	g_iSmokerInfectionCloudEntity[iClient] = -1;
 	g_bSmokerSmokeScreenOnCooldown[iClient] = false;
@@ -166,7 +166,7 @@ ResetVariablesForMap(iClient)
 	g_bSmokerVictimGlowDisabled[iClient] = false;
 	g_iSmokerDoppelgangerCount[iClient] =  0;
 	g_bSmokerDoppelgangerCoolingDown[iClient] =  false;
-	g_bElectricutionCooldown[iClient] = false;
+	g_bElectrocutionCooldown[iClient] = false;
 	g_bIsEntangledInSmokerTongue[iClient] = false;
 	g_iEntangledSurvivorModelIndex[iClient] = -1;
 	g_iEntangledTongueModelIndex[iClient] = -1;

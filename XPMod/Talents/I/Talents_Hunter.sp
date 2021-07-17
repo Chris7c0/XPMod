@@ -247,7 +247,7 @@ EventsHurt_AttackerHunter(Handle:hEvent, attacker, victim)
 				new Handle:hunterpoisonpackage = CreateDataPack();
 				WritePackCell(hunterpoisonpackage, victim);
 				WritePackCell(hunterpoisonpackage, attacker);
-				g_iHunterPoisonRuntimesCounter[victim] = g_iKillmeleonLevel[attacker];
+				g_iHunterPoisonRunTimesCounter[victim] = g_iKillmeleonLevel[attacker];
 				g_bHunterLethalPoisoned[victim] = true;
 
 				delete g_hTimer_HunterPoison[victim];

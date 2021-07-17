@@ -63,7 +63,7 @@ Action:TimerHunterPoison(Handle:timer, any:pack)
 		return Plugin_Stop;
 	}
 
-	if(--g_iHunterPoisonRuntimesCounter[iClient] > 0)
+	if(--g_iHunterPoisonRunTimesCounter[iClient] > 0)
 	{
 		if(IsFakeClient(iClient)==false)
 			ShowHudOverlayColor(iClient, 0, 255, 0, 40, 140, FADE_IN);

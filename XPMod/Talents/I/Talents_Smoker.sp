@@ -10,7 +10,7 @@ void TalentsLoad_Smoker(iClient)
 	}
 
 	// Doppelganger Decoy clones
-	g_fNextSmokerDoppelGangerRegenTime[iClient] = GetGameTime() + SMOKER_DOPPELGANGER_REGEN_PERIOD;
+	g_fNextSmokerDoppelgangerRegenTime[iClient] = GetGameTime() + SMOKER_DOPPELGANGER_REGEN_PERIOD;
 	g_bSmokerDoppelgangerCoolingDown[iClient] = false;
 
 	// Enable global smoker tongue console variable buffs
@@ -43,15 +43,14 @@ void OnGameFrame_Smoker(iClient)
 	// {
 
 	// }
-
-
+	
 	// Regeneration of Smoker Doppelganger Decoy Clones
 	if(g_iSmokerDoppelgangerCount[iClient] < SMOKER_DOPPELGANGER_MAX_CLONES && 
-		g_fNextSmokerDoppelGangerRegenTime[iClient] <= GetGameTime())
+		g_fNextSmokerDoppelgangerRegenTime[iClient] <= GetGameTime())
 	{
 		g_iSmokerDoppelgangerCount[iClient]++;
 		PrintHintText(iClient, "Doppelganger Decoys: %i", g_iSmokerDoppelgangerCount[iClient]);
-		g_fNextSmokerDoppelGangerRegenTime[iClient] = GetGameTime() + SMOKER_DOPPELGANGER_REGEN_PERIOD;
+		g_fNextSmokerDoppelgangerRegenTime[iClient] = GetGameTime() + SMOKER_DOPPELGANGER_REGEN_PERIOD;
 	}
 	
 
@@ -388,7 +387,7 @@ void SmokerTeleport(iClient)
 	g_fTeleportEndPositionZ[iClient] = xyzEndLocation[2];
 	CreateTimer(3.0, CheckIfStuck, iClient, TIMER_FLAG_NO_MAPCHANGE);		//Check if the player is stuck in a wall
 	g_bTeleportCoolingDown[iClient] = true;
-	CreateTimer(SMOKER_TELEPORT_COOLDOWN_PERIOD, ReallowTeleport, iClient, TIMER_FLAG_NO_MAPCHANGE);	//After 10 seconds reallow teleportation fot the iClient
+	CreateTimer(SMOKER_TELEPORT_COOLDOWN_PERIOD, ReAllowTeleport, iClient, TIMER_FLAG_NO_MAPCHANGE);	//After 10 seconds re-allow teleportation fot the iClient
 	
 	//Make smoker transparent and set him to gradually become more opaque
 	g_iSmokerTransparency[iClient] = g_iSmokerTalent3Level[iClient] * 30;
@@ -457,7 +456,7 @@ bool CreateSmokerDoppelganger(int iClient)
 
 	// Get the smoker's current animation sequence to use for the clone's animation
 	int iAnimationSequence = GetEntProp(iClient, Prop_Data, "m_nSequence");
-	// Replace the animation for blended states taht dont work with the clone function
+	// Replace the animation for blended states that dont work with the clone function
 	switch (iAnimationSequence)
 	{
 		case 5: iAnimationSequence = 2;
@@ -494,7 +493,7 @@ bool CreateSmokerDoppelganger(int iClient)
 
 	g_iSmokerDoppelgangerCount[iClient]--;
 	PrintHintText(iClient, "Doppelganger Decoys: %i", g_iSmokerDoppelgangerCount[iClient]);
-	g_fNextSmokerDoppelGangerRegenTime[iClient] = GetGameTime() + SMOKER_DOPPELGANGER_REGEN_PERIOD;
+	g_fNextSmokerDoppelgangerRegenTime[iClient] = GetGameTime() + SMOKER_DOPPELGANGER_REGEN_PERIOD;
 
 	return true;
 }

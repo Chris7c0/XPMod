@@ -264,22 +264,22 @@ CreateEntangledSurvivorClone(int iClient)
 
 ElectrocutePlayer(iClient)
 {
-	if(g_bElectricutionCooldown[iClient] == true)
+	if(g_bElectrocutionCooldown[iClient] == true)
 	{
 		PrintHintText(iClient, "You must wait for your electricity to charge back up again.");
 		return;
 	}
 
-	if(g_bIsElectricuting[iClient] == true)
+	if(g_bIsElectrocuting[iClient] == true)
 	{
-		PrintHintText(iClient, "You are already electricuting a victim.");
+		PrintHintText(iClient, "You are already electrocuting a victim.");
 		return;
 	}
 
 	// Electrocute	
-	g_bIsElectricuting[iClient] = true;
-	g_bElectricutionCooldown[iClient] = true;
-	CreateTimer(15.0, Timer_ResetElectricuteCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	g_bIsElectrocuting[iClient] = true;
+	g_bElectrocutionCooldown[iClient] = true;
+	CreateTimer(15.0, Timer_ResetElectrocuteCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	
 	g_iClientBindUses_2[iClient]++;
 	
@@ -359,6 +359,6 @@ ElectrocutePlayer(iClient)
 		}
 	}
 	
-	CreateTimer(0.5, TimerElectricuteAgain, iClient, TIMER_FLAG_NO_MAPCHANGE);
-	CreateTimer(2.9, TimerStopElectricution, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	CreateTimer(0.5, TimerElectrocuteAgain, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	CreateTimer(2.9, TimerStopElectrocution, iClient, TIMER_FLAG_NO_MAPCHANGE);
 }

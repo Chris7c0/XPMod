@@ -67,7 +67,7 @@ new bool:g_bIsGhost[MAXPLAYERS + 1];
 // List that contains enhanced CI entities and their abilities properties
 new ArrayList:g_listEnhancedCIEntities;
 // The size of the above array list
-#define ENCHANCED_CI_ENTITIES_ARRAY_LIST_SIZE       2
+#define ENHANCED_CI_ENTITIES_ARRAY_LIST_SIZE       2
 // Enhanced CI Type Specific Variables
 // Fire CI
 #define ENHANCED_CI_FIRE_BURN_DURATION              2.5
@@ -104,21 +104,21 @@ bool g_bSmokerCloakingJustToggled[MAXPLAYERS + 1];
 bool g_bSmokerIsCloaked[MAXPLAYERS + 1];
 bool g_bSmokerVictimGlowDisabled[MAXPLAYERS + 1];
 bool SetMoveTypeBackToNormalOnNextGameFrame[MAXPLAYERS + 1];
-new bool:g_bIsElectricuting[MAXPLAYERS + 1];
+new bool:g_bIsElectrocuting[MAXPLAYERS + 1];
 new bool:g_bIsSmokeInfected[MAXPLAYERS + 1];
 new bool:g_bIsSmokeEntityOff;
 #define SMOKER_DOPPELGANGER_MAX_CLONES                  5
 #define SMOKER_DOPPELGANGER_DURATION                    15.0
 #define SMOKER_DOPPELGANGER_REGEN_PERIOD                10.0
 #define SMOKER_DOPPELGANGER_COOLDOWN_PERIOD             0.5
-float g_fNextSmokerDoppelGangerRegenTime[MAXPLAYERS + 1];
+float g_fNextSmokerDoppelgangerRegenTime[MAXPLAYERS + 1];
 new g_iSmokerDoppelgangerCount[MAXPLAYERS + 1];
 bool g_bSmokerDoppelgangerCoolingDown[MAXPLAYERS + 1];
 new g_iSmokerInfectionCloudEntity[MAXPLAYERS + 1];
 new bool:g_bHasSmokersPoisonCloudOut[MAXPLAYERS + 1];
 new Float:g_xyzPoisonCloudOriginArray[MAXPLAYERS + 1][3];
 bool:g_bTeleportCoolingDown[MAXPLAYERS + 1];
-bool:g_bElectricutionCooldown[MAXPLAYERS + 1];
+bool:g_bElectrocutionCooldown[MAXPLAYERS + 1];
 bool:g_bIsEntangledInSmokerTongue[MAXPLAYERS + 1];
 new g_iEntangledSurvivorModelIndex[MAXPLAYERS + 1];
 new g_iEntangledTongueModelIndex[MAXPLAYERS + 1];
@@ -155,7 +155,7 @@ new bool:g_bCanHunterPoisonVictim[MAXPLAYERS + 1];
 new bool:g_bIsHunterReadyToPoison[MAXPLAYERS + 1];
 new g_iHunterPounceDamageCharge[MAXPLAYERS + 1];
 new bool:g_bIsHunterPoisoned[MAXPLAYERS + 1];
-new g_iHunterPoisonRuntimesCounter[MAXPLAYERS + 1];
+new g_iHunterPoisonRunTimesCounter[MAXPLAYERS + 1];
 new bool:g_bHasInfectedHealthBeenSet[MAXPLAYERS + 1];
 new bool:g_bHunterLethalPoisoned[MAXPLAYERS + 1];
 new g_iHunterPounceDistance[MAXPLAYERS + 1];

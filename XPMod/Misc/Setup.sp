@@ -4,10 +4,10 @@ SetupConsoleCommands()
 	RegConsoleCmd("website", MotdPanel);
 	RegConsoleCmd("xpmhelp", OpenHelpMotdPanel);
 	//RegConsoleCmd("resetmyaccount", ResetAll);		//Reset Level, skillpoints, XP,  and talents (taking this out to avoid issues)
-	RegConsoleCmd("xpmbind1", Bind1Press);				//This is the binded key function for ultimate abilites, Bind 1
-	RegConsoleCmd("xpmbind2", Bind2Press);				//This is the binded key function for ultimate abilites, Bind 2
+	RegConsoleCmd("xpmbind1", Bind1Press);				//This is the bound key function for ultimate abilities, Bind 1
+	RegConsoleCmd("xpmbind2", Bind2Press);				//This is the bound key function for ultimate abilities, Bind 2
 	RegConsoleCmd("xpmbinduses", ShowBindsRemaining);	//Display the total number of bind1 and bind2 uses left
-	RegConsoleCmd("buy", ShowUserLoadoutMenu);			// People always use this buy command from other servers, show them that they can buy equipement in xpmod
+	RegConsoleCmd("buy", ShowUserLoadoutMenu);			// People always use this buy command from other servers, show them that they can buy equipment in xpmod
 	
 	RegConsoleCmd("say", SayCmd);
 	RegConsoleCmd("say_team", SayTeamCmd);
@@ -273,7 +273,7 @@ SetupInitialVariableValues()
 	}
 
     // Setup Global ArrayLists
-    g_listEnhancedCIEntities = CreateArray(ENCHANCED_CI_ENTITIES_ARRAY_LIST_SIZE);
+    g_listEnhancedCIEntities = CreateArray(ENHANCED_CI_ENTITIES_ARRAY_LIST_SIZE);
     g_listTankRockEntities = CreateArray(TANK_ROCK_ENTITIES_ARRAY_LIST_SIZE);
 }
 

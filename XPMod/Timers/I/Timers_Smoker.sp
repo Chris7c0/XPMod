@@ -72,16 +72,16 @@ Action:TimerMoveSmokePoof2(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerElectricuteAgain(Handle:timer, any:iClient)
+Action:TimerElectrocuteAgain(Handle:timer, any:iClient)
 {
-	if (g_bIsElectricuting[iClient] == false || 
+	if (g_bIsElectrocuting[iClient] == false || 
 		RunClientChecks(iClient) == false || 
 		IsPlayerAlive(iClient) == false || 
 		g_iChokingVictim[iClient] < 1 ||
 		RunClientChecks(g_iChokingVictim[iClient]) == false ||
 		IsPlayerAlive(g_iChokingVictim[iClient]) == false)
 	{
-		g_bIsElectricuting[iClient] = false;
+		g_bIsElectrocuting[iClient] = false;
 		
 		return Plugin_Stop;
 	}
@@ -163,7 +163,7 @@ Action:TimerElectricuteAgain(Handle:timer, any:iClient)
 		
 	}
 
-	CreateTimer(0.5, TimerElectricuteAgain, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	CreateTimer(0.5, TimerElectrocuteAgain, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 	return Plugin_Stop;
 }
@@ -187,16 +187,16 @@ Action:TimerResetSmokerSmokeScreenCooldown(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerStopElectricution(Handle:timer, any:iClient)
+Action:TimerStopElectrocution(Handle:timer, any:iClient)
 {
-	g_bIsElectricuting[iClient] = false;
+	g_bIsElectrocuting[iClient] = false;
 	return Plugin_Stop;
 }
 
 
-Action:Timer_ResetElectricuteCooldown(Handle:timer, any:iClient)
+Action:Timer_ResetElectrocuteCooldown(Handle:timer, any:iClient)
 {
-	g_bElectricutionCooldown[iClient] = false;
+	g_bElectrocutionCooldown[iClient] = false;
 	return Plugin_Stop;
 }
 
@@ -294,7 +294,7 @@ Action:CheckIfStuck(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:ReallowTeleport(Handle:timer, any:iClient)
+Action:ReAllowTeleport(Handle:timer, any:iClient)
 {
 	g_bTeleportCoolingDown[iClient] = false;
 	return Plugin_Stop;
