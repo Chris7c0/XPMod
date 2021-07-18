@@ -383,17 +383,16 @@ EventsDeath_AttackerRochelle(Handle:hEvent, iAttacker, iVictim)
 		RunClientChecks(iAttacker) == false ||
 		IsFakeClient(iAttacker) == true)
 		return;
-	
-	SuppressNeverUsedWarning(iVictim);
 
 	// Check if common infected headshot
-	if(g_iSilentLevel[iAttacker] > 0 && 
-		iVictim < 1 &&
-		GetEventBool(hEvent, "headshot"))
-	{
-		if(g_iSilentSorrowHeadshotCounter[iAttacker] < 20)
-			g_iSilentSorrowHeadshotCounter[iAttacker]++;
-	}
+	if(g_iSilentLevel[iAttacker] <= 0 || 
+		RunClientChecks(iVictim) == false ||
+		GetEventBool(hEvent, "headshot") == false ||
+		g_iSilentSorrowHeadshotCounter[iAttacker] >= 20)
+		return;
+
+	g_iSilentSorrowHeadshotCounter[iAttacker]++;
+	PrintToChat(iAttacker, "\x03[XPMod] \x04Silent Sorrow Headshots: \x05%i", g_iSilentSorrowHeadshotCounter[iAttacker]);
 }
 
 // EventsDeath_VictimRochelle(Handle:hEvent, iAttacker, iVictim)
