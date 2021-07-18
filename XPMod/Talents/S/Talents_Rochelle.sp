@@ -388,7 +388,7 @@ EventsDeath_AttackerRochelle(Handle:hEvent, iAttacker, iVictim)
 	if(g_iSilentLevel[iAttacker] <= 0 || 
 		RunClientChecks(iVictim) == false ||
 		GetEventBool(hEvent, "headshot") == false ||
-		g_iSilentSorrowHeadshotCounter[iAttacker] >= 20)
+		g_iSilentSorrowHeadshotCounter[iAttacker] > 20)
 		return;
 
 	g_iSilentSorrowHeadshotCounter[iAttacker]++;
