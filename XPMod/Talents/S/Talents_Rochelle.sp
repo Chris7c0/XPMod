@@ -384,11 +384,11 @@ EventsDeath_AttackerRochelle(Handle:hEvent, iAttacker, iVictim)
 		IsFakeClient(iAttacker) == true)
 		return;
 
-	// Check if common infected headshot
+	// Check if is common infected or is not headshot, return if so
 	if(g_iSilentLevel[iAttacker] <= 0 || 
 		RunClientChecks(iVictim) == false ||
 		GetEventBool(hEvent, "headshot") == false ||
-		g_iSilentSorrowHeadshotCounter[iAttacker] > 20)
+		g_iSilentSorrowHeadshotCounter[iAttacker] >= 20)
 		return;
 
 	g_iSilentSorrowHeadshotCounter[iAttacker]++;
