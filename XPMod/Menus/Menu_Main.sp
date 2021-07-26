@@ -475,11 +475,25 @@ ExtrasMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			}
 			case 3: //Get XPMod Addon
 			{
-				OpenMOTDPanel(iClient, "Download XPMod Addon", "http://xpmod.net/downloads/xpmod_ig_downloads.html", MOTDPANEL_TYPE_URL);
+				OpenMOTDPanel(iClient, "Download XPMod Addon", "\
+					You can download while in game by:\
+					\n \
+					\n1: Click on Join this server's Steam Group... at the bottom right.\
+					\n2: Click Get XPMod Addon.\
+					\n3: Click on + Subscribe.\
+					\n4: Relaunch Left4Dead2 or wait until next time.", MOTDPANEL_TYPE_TEXT);
 			}
 			case 4: //Website
 			{
-				OpenMOTDPanel(iClient, "", "http://xpmod.net/index.html", MOTDPANEL_TYPE_URL);
+				OpenMOTDPanel(iClient, "Access XPMod.net", "\
+					On your phone or any web browser, go to:\
+					\n \
+					\nxpmod.net\
+					\n \
+					\n \
+					\nOr:\
+					\n 1: Click Join this server's Steam Group... at the bottom right\
+					\n 2: Click Visit XPMod.net on the left", MOTDPANEL_TYPE_TEXT);
 			}
 			case 5: //Ban Me
 			{

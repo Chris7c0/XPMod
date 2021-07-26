@@ -66,7 +66,6 @@ Action:OverMenuDraw(iClient)
 	FormatEx(text, sizeof(text), "\
 		%s 						Overconfidence (Level %d):\
 		\n \
-		\nLevel 1:\
 		\n+8%%%% Reload Speed per Level\
 		\nMax Health Reduced by 15 HP\
 		\n \
@@ -89,7 +88,7 @@ Action:OverMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -123,15 +122,10 @@ Action:BringMenuDraw(iClient)
 		\nAll Health Is Converted To Temp Health\
 		\n \
 		\nOn Special Infected kill:\
-		\n \
-		\nLevel 1:\
-		\nRegen +1 Temp Health per Level\
-		\n+20 Clip Ammo per Level\
-		\n(Stacks) +1%%%% Movement Speed\
-		\n \
-		\n \
-		\nSkill Uses:\
-		\n+4 Max (Stacks) per Level\
+		\n	Regen +1 Temp Health per Level\
+		\n	+20 Clip Ammo per Level\
+		\n	+1%%%% Movement Speed (Stacks)\
+		\n		+4 Max Stacks per Level\
 		\n ",
 		strStartingNewLines,
 		g_iBringLevel[iClient]);
@@ -140,7 +134,7 @@ Action:BringMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -284,7 +278,6 @@ Action:MetalMenuDraw(iClient)
 		\n					Bind 1: Ammo Refill\
 		\n				+1 Use Every Other Level\
 		\n \
-		\nLevel 1:\
 		\nDeploy An Ammo Stash\
 		\n ",
 		strStartingNewLines,
@@ -294,7 +287,7 @@ Action:MetalMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	
@@ -325,7 +318,6 @@ Action:FireMenuDraw(iClient)
 	FormatEx(text, sizeof(text), "\
 		%s						Fire Storm(Level %d):\
 		\n \
-		\nLevel 1:\
 		\n+6 Clip Size per Level (SMG/Rifle/Sniper Only)\
 		\n+10%%%% Reload Speed per Level\
 		\n+7%%%% Firing Rate per Level\
@@ -335,7 +327,7 @@ Action:FireMenuDraw(iClient)
 		\n			Bind 2: Summon Kagu-Tsuchi's Wrath\
 		\n						+1 Use Every Other Level\
 		\n \
-		\nLevel 1: +6 Seconds Of Incendiary Attacks\
+		\n+6 Seconds Of Incendiary Attacks\
 		\nAnd Burn Duration per Level\
 		\nBurning A Calm Witch\
 		\nImmediately Neutralizes Her\
@@ -347,7 +339,7 @@ Action:FireMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	

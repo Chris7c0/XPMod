@@ -58,13 +58,13 @@ Action:EnvelopmentMenuDraw(iClient)
 		\n \
 		\nRegenerate 60 HP per Second\
 		\n \
-		\nRecuded Tongue Ability Cooldown\
+		\nReduced Tongue Ability Cooldown\
 		\n	- -1 Second Every Three Levels\
 		\n \
 		\nCan Move Slowly While Choking A Victim\
 		\n \
 		\nWhile Alive as Smoker, All Smokers Receive:\
-		\n	- +20%% Increased Tongue Range per Level\
+		\n	- +7.5%% Increased Tongue Range per Level\
 		\n	- +20%% Increased Tongue Travel Speed per Level    \
 		\n	- +15%% Increased Tongue Drag Speed per Level\
 		\n	- +20%% Increased Tongue Strength per level\
