@@ -59,7 +59,8 @@ ResetVariablesForMap(iClient)
 	// Bile Cleansing Kits
 	g_iBileCleansingKits[iClient] = 0;
 	g_iBileCleansingFrameTimeCtr[iClient] = -1;
-
+	// Give a Weapon Pile Cooldown
+	g_bGiveAlotOfWeaponsOnCooldown = false;
 
 	// Scripting variables
 	g_fGameTimeOfLastGoalSet[iClient] =  -9999.0

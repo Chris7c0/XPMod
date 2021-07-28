@@ -292,10 +292,6 @@ ImFeelingLuckyRoll(iClient)
 			RunCheatCommand(iClient, "give", "give first_aid_kit");
 			RunCheatCommand(iClient, "give", "give adrenaline");
 			RunCheatCommand(iClient, "give", "give adrenaline");
-			RunCheatCommand(iClient, "give", "give adrenaline");
-			RunCheatCommand(iClient, "give", "give adrenaline");
-			RunCheatCommand(iClient, "give", "give pain_pills");
-			RunCheatCommand(iClient, "give", "give pain_pills");
 			RunCheatCommand(iClient, "give", "give pain_pills");
 			RunCheatCommand(iClient, "give", "give pain_pills");
 
@@ -303,8 +299,17 @@ ImFeelingLuckyRoll(iClient)
 		}
 		case 4:		// Weapon Stash
 		{
-			GiveEveryWeaponToSurvivor(iClient);
-			PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Every Weapon & Upgrade", iClient);
+			// Check if its in cooldown first before giving (this is for performance reasons)
+			if (g_bGiveAlotOfWeaponsOnCooldown == false)
+			{
+				GiveEveryWeaponToSurvivor(iClient);
+				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Weapon & Upgrades", iClient);
+			}
+			else
+			{
+				// Roll again if its in cooldown
+				ImFeelingLuckyRoll(iClient);
+			}
 		}
 		case 5:		// Self Revives
 		{
@@ -439,6 +444,6 @@ Action:TimerWarezStationStopAndRemoveSound(Handle:timer, any:iEntity)
 
 		AcceptEntityInput(iEntity, "kill");
 	}
-
+	
 	return Plugin_Stop;
 }

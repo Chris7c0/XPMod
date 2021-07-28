@@ -73,9 +73,13 @@ new g_iSelfRevives[MAXPLAYERS + 1];
 new bool:g_bSelfReviving[MAXPLAYERS + 1];
 new Float:g_fSelfRevivingFinishTime[MAXPLAYERS + 1];
 // Bile Removal Kits
-#define BILE_CLEANSING_COMPLETION_FRAME     60
+#define BILE_CLEANSING_COMPLETION_FRAME             60
 new g_iBileCleansingKits[MAXPLAYERS + 1];
 new g_iBileCleansingFrameTimeCtr[MAXPLAYERS + 1];
+
+// Give a lot of weapons
+bool g_bGiveAlotOfWeaponsOnCooldown;
+#define GIVE_ALOT_OF_WEAPONS_COOLDOWN_DURATION      300.0
 
 // Grappled Checks
 new bool:g_bChargerGrappled[MAXPLAYERS + 1];

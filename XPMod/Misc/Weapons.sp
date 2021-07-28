@@ -806,4 +806,13 @@ GiveEveryWeaponToSurvivor(iClient)
 		SpawnItem(xyzClientLocation, iWeaponsToSpawn[i], 1.0);
 	}
 
+	// Add a cooldown to prevent the server from being overloaded with entities that have physics
+	g_bGiveAlotOfWeaponsOnCooldown =  true;
+	CreateTimer(GIVE_ALOT_OF_WEAPONS_COOLDOWN_DURATION, Timer_ResetGiveAlotOfWeaponsOnCooldown, _, TIMER_FLAG_NO_MAPCHANGE);
+}
+
+Action:Timer_ResetGiveAlotOfWeaponsOnCooldown(Handle:timer, any:data)
+{
+	g_bGiveAlotOfWeaponsOnCooldown = false;
+	return Plugin_Stop;
 }
