@@ -73,6 +73,7 @@ Action:TestFunction1(iClient, args)
 	// GetEntityClassname(iGrenadeSlotItemID, strEquipmentItem, sizeof(strEquipmentItem));
 	// PrintToChatAll("%s", strEquipmentItem);
 
+
 	// // Print all grappled users
 	// for (int i=1; i <= MaxClients; i++)
 	// {
@@ -145,6 +146,12 @@ Action:TestFunction2(iClient, args)
 	char str2[99];
 	GetCmdArg(1, str1, sizeof(str1));
 	GetCmdArg(2, str2, sizeof(str2));
+
+	char strEquipmentItem[32];
+	int iSlotItemID = GetPlayerWeaponSlot(iClient, StringToInt(str1));
+	PrintToChatAll("%i", iSlotItemID);
+	GetEntityClassname(iSlotItemID, strEquipmentItem, sizeof(strEquipmentItem));
+	PrintToChatAll("%s", strEquipmentItem);
 
 	PrintToServer("strAnimationGrab1: %i", GetEntProp(iClient, Prop_Data, "m_nSequence"));
 
@@ -285,11 +292,11 @@ Action:TestFunction4(iClient, args)
 	char str1[99];
 	GetCmdArg(1, str1, sizeof(str1));
 
-	//SmokerDismount(iClient);
-	//GotoThirdPerson(iClient);
-	decl Float:xyzLocation[3];
-	GetClientAbsOrigin(iClient, xyzLocation);
-	SendAllSurvivorBotsToLocation(xyzLocation);
+	GiveEveryWeaponToSurvivor(iClient);
+
+	// decl Float:xyzLocation[3];
+	// GetClientAbsOrigin(iClient, xyzLocation);
+	// SendAllSurvivorBotsToLocation(xyzLocation);
 
 	// decl String:strTimeScaleCmd[32];
 	// Format(strTimeScaleCmd, sizeof(strTimeScaleCmd), "host_timescale %3f", StringToFloat(str1));

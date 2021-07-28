@@ -68,6 +68,14 @@ public bool IsWeaponIndexBoostSlotItem(int iWeaponIndex)
 	return true;
 }
 
+public bool IsWeaponIndexMeleeWeapon(int iWeaponIndex)
+{
+	if (iWeaponIndex < ITEM_RANGE_MIN_MELEE ||
+		iWeaponIndex > ITEM_RANGE_MAX_MELEE)
+		return false
+	
+	return true;
+}
 
 SetAmmoOffsetForPrimarySlotID(int iClient, int iWeaponIndex)
 {
@@ -734,4 +742,68 @@ PropaneExplode(Float:xyzLocation[3])
 	SetEntData(iEntity, GetEntSendPropOffs(iEntity, "m_CollisionGroup"), 1, 1, true);
 	TeleportEntity(iEntity, xyzLocation, NULL_VECTOR, NULL_VECTOR);
 	AcceptEntityInput(iEntity, "Break");
+}
+
+int SpawnItem(float xyzLocation[3], int itemIndex, const float fZOffset = 0.0)
+{
+	//PrintToChatAll("spawn loc: %f, %f, %f", xyzLocation[0], xyzLocation[1], xyzLocation[2]);
+
+	int iEntity = -1;
+	iEntity = CreateEntityByName(ITEM_CLASS_NAME[itemIndex]);
+	if( iEntity == -1 )
+	{
+		ThrowError("Failed to create entity '%s'", ITEM_CLASS_NAME[itemIndex]);
+		return -1;
+	}
+	DispatchKeyValue(iEntity, "solid", "6");
+	DispatchKeyValue(iEntity, "model", ITEM_MODEL_PATH[itemIndex]);
+	//Add the required script name if its melee, otherwise it spawns hunter claws
+	if (IsWeaponIndexMeleeWeapon(itemIndex))
+		DispatchKeyValue(iEntity, "melee_script_name", ITEM_CMD_NAME[itemIndex]);
+	DispatchKeyValue(iEntity, "rendermode", "3");
+	DispatchKeyValue(iEntity, "disableshadows", "1");
+
+	xyzLocation[2] += fZOffset;
+	float xyzVelocity[3] = {0.0, 0.0, 300.0};
+	DispatchSpawn(iEntity);
+
+	// Its required to teleport after spawn or velocity wont work
+	TeleportEntity(iEntity, xyzLocation, NULL_VECTOR, xyzVelocity);
+
+	return iEntity;
+}
+
+GiveEveryWeaponToSurvivor(iClient)
+{
+	int iWeaponsToSpawn[] = {
+		ITEM_MP5,
+		ITEM_AK47,
+		ITEM_M16A2,
+		ITEM_SIG_SG_552,
+		ITEM_BENELLI_M1014,
+		ITEM_FRANCHI_SPAS_12,
+		ITEM_HK_MSG90,
+		ITEM_SCOUT,
+		ITEM_GRENADE_LAUNCHER,
+		ITEM_M60,
+		ITEM_MAGNUM,
+		ITEM_KATANA,
+		ITEM_NIGHTSTICK,
+		ITEM_CHAINSAW,
+		ITEM_PIPE_BOMB,
+		ITEM_BILE_JAR,
+		ITEM_MOLOTOV,
+		ITEM_INCENDIARY_AMMO
+	};
+
+
+	float xyzClientLocation[3];
+	GetClientEyePosition(iClient, xyzClientLocation);
+
+	for (int i=0; i < sizeof(iWeaponsToSpawn); i++)
+	{
+		// PrintToChat(iClient, "INDEX: %i, size %i", iWeaponsToSpawn[i], sizeof(iWeaponsToSpawn));
+		SpawnItem(xyzClientLocation, iWeaponsToSpawn[i], 1.0);
+	}
+
 }
