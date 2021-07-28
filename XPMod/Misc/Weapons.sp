@@ -757,15 +757,22 @@ int SpawnItem(float xyzLocation[3], int itemIndex, const float fZOffset = 0.0)
 	}
 	DispatchKeyValue(iEntity, "solid", "6");
 	DispatchKeyValue(iEntity, "model", ITEM_MODEL_PATH[itemIndex]);
+
 	//Add the required script name if its melee, otherwise it spawns hunter claws
 	if (IsWeaponIndexMeleeWeapon(itemIndex))
 		DispatchKeyValue(iEntity, "melee_script_name", ITEM_CMD_NAME[itemIndex]);
+	
 	DispatchKeyValue(iEntity, "rendermode", "3");
 	DispatchKeyValue(iEntity, "disableshadows", "1");
 
 	xyzLocation[2] += fZOffset;
 	float xyzVelocity[3] = {0.0, 0.0, 300.0};
 	DispatchSpawn(iEntity);
+
+	// Add ammo to the weapon if its a primary weapon
+	// Note that this conveniently gives the max amount of reserve ammo
+	if (RunEntityChecks(iEntity) == true && IsWeaponIndexPrimarySlotItem(itemIndex))
+		SetEntProp(iEntity, Prop_Send, "m_iExtraPrimaryAmmo", 999);
 
 	// Its required to teleport after spawn or velocity wont work
 	TeleportEntity(iEntity, xyzLocation, NULL_VECTOR, xyzVelocity);
