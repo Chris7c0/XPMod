@@ -41,7 +41,7 @@ NickGamblingProblemRollTheDice(int iClient)
 	{
 		case 1: //Raid the Medicine cabinet
 		{
-			PrintHintText(iClient,"Rolled a 1\nYou got in good with a random drug dealer.");
+			PrintHintText(iClient,"Rolled an 1\nYou got in good with a random drug dealer.");
 			PrintToChatAll("\x03[XPMod] \x05%N got \"Da Huk Up\"...pop those pillz.", iClient);
 			float xyzClientLocation[3];
 			GetClientEyePosition(iClient, xyzClientLocation);
@@ -174,7 +174,7 @@ NickGamblingProblemRollTheDice(int iClient)
 			
 			CreateTimer(0.8, TimerBlindFade, iClient, TIMER_FLAG_NO_MAPCHANGE);
 		}
-		case 11: //Revival; Return to maximum health, even when incapped
+		case 11: //Revival; Return to maximum health, even when incaped
 		{
 			if(IsClientGrappled(iClient) == false)
 			{
@@ -186,11 +186,20 @@ NickGamblingProblemRollTheDice(int iClient)
 				PrintToChat(iClient, "\x03[XPMod] \x05Divine intervention will be applied when you break free!");
 			}
 		}
-		case 12: //Gain 2 more bind2s
+		case 12: //Gain more bind2s
 		{
-			PrintHintText(iClient,"Rolled an 12\nA night of partying left you wanting more.");
-			PrintToChatAll("\x03[XPMod] \x05%N feels ready for more! +2 to Bind2!", iClient);
-			g_iClientBindUses_2[iClient] -= 2;
+			if (g_bNickAlreadyGivenMoreBind2s[iClient] == false)
+			{
+				g_bNickAlreadyGivenMoreBind2s[iClient] = true;
+				PrintHintText(iClient,"Rolled a 12\nA night of partying left you wanting more.");
+				PrintToChatAll("\x03[XPMod] \x05%N feels ready for more! +3 to Bind2!", iClient);
+				g_iClientBindUses_2[iClient] -= 3;
+			}
+			else
+			{
+				// Roll again if already given
+				NickGamblingProblemRollTheDice(iClient);
+			}
 		}
 	}
 }

@@ -119,9 +119,10 @@ ResetVariablesForMap(iClient)
 	g_bCanEllisLimitBreak[iClient] = false;
 	g_iLimitBreakWeaponIndex[iClient] = -1;
 	
-	//Nick 
+	//Nick
 	g_bNickIsGettingBeatenUp[iClient] = false;
 	g_bDivineInterventionQueued[iClient] = false;
+	g_bNickAlreadyGivenMoreBind2s[iClient] = false;
 	g_iNickDesperateMeasuresStack = 0;
 	g_iRamboWeaponID[iClient] = -1;
 
