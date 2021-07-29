@@ -87,7 +87,14 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 		
 	}
 	*/
-	if(g_iExorcismLevel[iClient]>0 || g_iPromotionalLevel[iClient]>0 || g_iFireLevel[iClient]>0 || g_iOverLevel[iClient]>0 || g_iWeaponsLevel[iClient]>0 || g_iMetalLevel[iClient]>0 || g_iMagnumLevel[iClient]>0 || g_iRiskyLevel[iClient]>0 || g_iSprayLevel[iClient]>0 || g_iSilentLevel[iClient]>0 || g_iLouisTalent1Level[iClient] > 0)
+	if (g_iExorcismLevel[iClient]>0 || 
+		g_iPromotionalLevel[iClient]>0 || 
+		g_iWeaponsLevel[iClient]>0 || 
+		g_iMagnumLevel[iClient]>0 || 
+		g_iRiskyLevel[iClient]>0 || 
+		g_iSprayLevel[iClient]>0 || 
+		g_iSilentLevel[iClient]>0 || 
+		g_iLouisTalent1Level[iClient] > 0)
 	{
 		new iEntid = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);//5565
 		if (IsValidEntity(iEntid)==false)
@@ -99,7 +106,7 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 		if (StrContains(stClass,"Grenade",false) != -1)
 			return;
 		
-		g_fReloadRate = 1.0 - (float(g_iExorcismLevel[iClient]) * 0.09) - (float(g_iPromotionalLevel[iClient]) * 0.04) - (float(g_iFireLevel[iClient]) * 0.05) - (float(g_iWeaponsLevel[iClient]) * 0.05) - (float(g_iOverLevel[iClient]) * 0.04) - (float(g_iMetalLevel[iClient]) * 0.04);
+		g_fReloadRate = 1.0 - (float(g_iExorcismLevel[iClient]) * 0.09) - (float(g_iPromotionalLevel[iClient]) * 0.04) - (float(g_iWeaponsLevel[iClient]) * 0.15);
 		
 		if(g_iRiskyLevel[iClient]>0)
 		{

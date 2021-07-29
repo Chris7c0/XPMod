@@ -64,10 +64,9 @@ Action:OverMenuDraw(iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		%s 						Overconfidence (Level %d):\
+		%s 		  Overconfidence (Level %d):\
 		\n \
-		\n+8%%%% Reload Speed per Level\
-		\nMax Health Reduced by 15 HP\
+		\nMax Health Reduced by 10 HP\
 		\n \
 		\nIf Within %i Points Of Max Health:\
 		\n	+1%%%% Speed\
@@ -76,7 +75,7 @@ Action:OverMenuDraw(iClient)
 		\nWhile On Adrenaline:\
 		\n	+5 Temp Health per Level\
 		\n	+5 Damage To All Guns per Level\
-		\n	(Team) +2 Seconds Duration per Level\
+		\n	(Team) +2 Seconds Duration per Level   \
 		\n		- Stacks with every Ellis\
 		\n \
 		\n ",
@@ -88,7 +87,7 @@ Action:OverMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -117,7 +116,7 @@ Action:BringMenuDraw(iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		%s		Bring the Pain!(Level %d):\
+		%s			  Bring the Pain!(Level %d):\
 		\n \
 		\nAll Health Is Converted To Temp Health\
 		\n \
@@ -134,7 +133,7 @@ Action:BringMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -219,7 +218,7 @@ Action:WeaponsMenuDraw(iClient)
 		%s		Weapons Training (Level %d):\
 		\n \
 		\nLevel 1:\
-		\n+10%%%% Reload Speed per Level\
+		\n+15%%%% Reload Speed per Level\
 		\n(Team) +8%%%% Laser Accuracy per Level\
 		\n \
 		\nLevel 5:\
@@ -266,9 +265,7 @@ Action:MetalMenuDraw(iClient)
 		%s				Mechanic Affinity (Level %d):\
 		\n \
 		\nLevel 1:\
-		\n+4 Clip Size per Level (SMG/Rifle/Sniper Only)\
-		\n+3%%%% Firing Rate per Level\
-		\n+8%%%% Reload Speed per Level\
+		\n+5%%%% Firing Rate per Level\
 		\n \
 		\nLevel 5:\
 		\n [WALK+USE] Double Firing Rate for 5 Seconds\
@@ -287,7 +284,7 @@ Action:MetalMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	
@@ -318,17 +315,15 @@ Action:FireMenuDraw(iClient)
 	FormatEx(text, sizeof(text), "\
 		%s						Fire Storm(Level %d):\
 		\n \
-		\n+6 Clip Size per Level (SMG/Rifle/Sniper Only)\
-		\n+10%%%% Reload Speed per Level\
-		\n+4%%%% Firing Rate per Level\
+		\n+10 Clip Size per Level (SMG/Rifle/Sniper Only)\
 		\nFire Immunity\
 		\n \
 		\n \
 		\n			Bind 2: Summon Kagu-Tsuchi's Wrath\
 		\n						+1 Use Every Other Level\
 		\n \
-		\n+3 Seconds Of Incendiary Attacks\
-		\nAnd Burn Duration per Level\
+		\nAll Bullets Are Incendiary Rounds\
+		\n	+3 Sec Duration per Level\
 		\nBurning A Calm Witch\
 		\nImmediately Neutralizes Her\
 		\n ",
@@ -339,7 +334,7 @@ Action:FireMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	

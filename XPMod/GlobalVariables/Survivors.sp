@@ -189,7 +189,7 @@ new g_iCoachCIHeadshotCounter[MAXPLAYERS + 1];
 new g_iCoachSIHeadshotCounter[MAXPLAYERS + 1];
 
 //Ellis's Stuff
-#define ELLIS_STARTING_MAX_HEALTH           85
+#define ELLIS_STARTING_MAX_HEALTH           90
 new bool:g_bUsingFireStorm[MAXPLAYERS + 1];
 new g_iEllisSpeedBoostCounter[MAXPLAYERS + 1];
 new bool:g_bWalkAndUseToggler[MAXPLAYERS + 1];
@@ -217,7 +217,7 @@ new bool:g_bIsEllisLimitBreaking[MAXPLAYERS + 1];
 new bool:g_bCanEllisLimitBreak[MAXPLAYERS + 1];
 new g_iLimitBreakWeaponIndex[MAXPLAYERS + 1];
 new bool:g_bEllisLimitBreakInCooldown[MAXPLAYERS + 1];
-#define ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT            30
+#define ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT            40
 new bool:g_bEllisOverSpeedIncreased[MAXPLAYERS + 1];
 new g_iEllisAdrenalineStackDuration;
 new bool:g_bEllisHasAdrenalineBuffs[MAXPLAYERS + 1];

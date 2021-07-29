@@ -178,74 +178,8 @@ OGFSurvivorReload_Ellis(iClient, const char[] currentweapon, ActiveWeaponID, Cur
 			StoreCurrentPrimaryWeaponAmmo(iClient);
 		}
 	}
-	if((((StrEqual(currentweapon, "weapon_rifle", false) == true) || (StrEqual(currentweapon, "weapon_rifle_sg552", false) == true)) && (CurrentClipAmmo == 50)) || ((StrEqual(currentweapon, "weapon_rifle_ak47", false) == true) && (CurrentClipAmmo == 40)) || ((StrEqual(currentweapon, "weapon_rifle_desert", false) == true) && (CurrentClipAmmo == 60)))
-	{
-		new iAmmo = GetEntData(iClient, iOffset_Ammo + 12);	//for rifle (+12)
-		if(iAmmo >= (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6))
-		{
-			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6)), true);
-			SetEntData(iClient, iOffset_Ammo + 12, iAmmo - (g_iMetalLevel[iClient]*4) - (g_iFireLevel[iClient]*6));
-		}
-		else if(iAmmo < (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6))
-		{
-			new NewAmmo = ((g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6) - iAmmo);
-			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6) - NewAmmo), true);
-			SetEntData(iClient, iOffset_Ammo + 12, 0);
-		}
-		g_bClientIsReloading[iClient] = false;
-		g_iReloadFrameCounter[iClient] = 0;
-	}
-	else if(((StrEqual(currentweapon, "weapon_smg", false) == true) || (StrEqual(currentweapon, "weapon_smg_silenced", false) == true) || (StrEqual(currentweapon, "weapon_smg_mp5", false) == true)) && (CurrentClipAmmo == 50))
-	{
-		new iAmmo = GetEntData(iClient, iOffset_Ammo + 20);	//for smg (+20)
-		if(iAmmo >= (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6))
-		{
-			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6)), true);
-			SetEntData(iClient, iOffset_Ammo + 20, iAmmo - (g_iMetalLevel[iClient]*4) - (g_iFireLevel[iClient]*6));
-		}
-		else if(iAmmo < (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6))
-		{
-			new NewAmmo = ((g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6) - iAmmo);
-			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + ((g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6) - NewAmmo)), true);
-			SetEntData(iClient, iOffset_Ammo + 20, 0);
-		}
-		g_bClientIsReloading[iClient] = false;
-		g_iReloadFrameCounter[iClient] = 0;
-	}
-	else if((StrEqual(currentweapon, "weapon_hunting_rifle", false) == true) && (CurrentClipAmmo == 15))
-	{
-		new iAmmo = GetEntData(iClient, iOffset_Ammo + 36);	//for hunting rifle (+36)
-		if(iAmmo >= (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6))
-		{
-			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6)), true);
-			SetEntData(iClient, iOffset_Ammo + 36, iAmmo - (g_iMetalLevel[iClient]*4) - (g_iFireLevel[iClient]*6));
-		}
-		else if(iAmmo < (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6))
-		{
-			new NewAmmo = ((g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6) - iAmmo);
-			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + ((g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6) - NewAmmo)), true);
-			SetEntData(iClient, iOffset_Ammo + 36, 0);
-		}
-		g_bClientIsReloading[iClient] = false;
-		g_iReloadFrameCounter[iClient] = 0;
-	}
-	else if(((StrEqual(currentweapon, "weapon_sniper_awp", false) == true) && (CurrentClipAmmo == 20)) || ((StrEqual(currentweapon, "weapon_sniper_military", false) == true) && (CurrentClipAmmo == 30)) || ((StrEqual(currentweapon, "weapon_sniper_scout", false) == true) && (CurrentClipAmmo == 15)))
-	{
-		new iAmmo = GetEntData(iClient, iOffset_Ammo + 40);	//for AWP, Scout, and Military Sniper (+40)
-		if(iAmmo >= (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6))
-		{
-			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6)), true);
-			SetEntData(iClient, iOffset_Ammo + 40, iAmmo - (g_iMetalLevel[iClient]*4) - (g_iFireLevel[iClient]*6));
-		}
-		else if(iAmmo < (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6))
-		{
-			new NewAmmo = ((g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6) - iAmmo);
-			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + ((g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6) - NewAmmo)), true);
-			SetEntData(iClient, iOffset_Ammo + 40, 0);
-		}
-		g_bClientIsReloading[iClient] = false;
-		g_iReloadFrameCounter[iClient] = 0;
-	}
+	
+	SetEllisClipSize(iClient, currentweapon, ActiveWeaponID, CurrentClipAmmo, iOffset_Ammo);
 }
 
 EventsHurt_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
@@ -516,16 +450,16 @@ void EventsItemPickUp_Ellis(int iClient, const char[] strWeaponClass)
 			//PrintToChatAll("iEntid!=-1 and is valid entry");
 			new clip = GetEntProp(iEntid,Prop_Data,"m_iClip1");
 			g_iClientPrimaryClipSize[iClient] = clip;
-			SetEntData(iEntid, g_iOffset_Clip1, clip + (g_iMetalLevel[iClient]*4) + (g_iFireLevel[iClient]*6), true);
+			SetEntData(iEntid, g_iOffset_Clip1, clip + (g_iFireLevel[iClient] * 10), true);
 			//new iOffset_Ammo=FindDataMapInfo(iClient,"m_iAmmo");
 			clip = GetEntData(iClient, iOffset_Ammo + 12);	//for rifle (+12)
-			SetEntData(iClient, iOffset_Ammo + 12, clip - (g_iMetalLevel[iClient]*4) - (g_iFireLevel[iClient]*6));
+			SetEntData(iClient, iOffset_Ammo + 12, clip - (g_iFireLevel[iClient] * 10));
 			clip = GetEntData(iClient, iOffset_Ammo + 20);	//for smg (+20)
-			SetEntData(iClient, iOffset_Ammo + 20, clip - (g_iMetalLevel[iClient]*4) - (g_iFireLevel[iClient]*6));
+			SetEntData(iClient, iOffset_Ammo + 20, clip - (g_iFireLevel[iClient] * 10));
 			clip = GetEntData(iClient, iOffset_Ammo + 32);	//for huntingrifle (+32)
-			SetEntData(iClient, iOffset_Ammo + 32, clip - (g_iMetalLevel[iClient]*4) - (g_iFireLevel[iClient]*6));
+			SetEntData(iClient, iOffset_Ammo + 32, clip - (g_iFireLevel[iClient] * 10));
 			clip = GetEntData(iClient, iOffset_Ammo + 36);	//for huntingrifle2? (+36)
-			SetEntData(iClient, iOffset_Ammo + 36, clip - (g_iMetalLevel[iClient]*4) - (g_iFireLevel[iClient]*6));
+			SetEntData(iClient, iOffset_Ammo + 36, clip - (g_iFireLevel[iClient] * 10));
 		}
 	}
 }
@@ -588,8 +522,7 @@ void EventsPlayerUse_Ellis(int iClient, int iTargetID)
 	}
 
 	g_bHealthBoostSlotWasEmptyOnLastPickUp[iClient] = false;
-
-
+	
 	// Weapon Cycling
 	HandleWeaponPickUpForWeaponCycling(iClient);
 }
@@ -615,6 +548,82 @@ void HandleCheatCommandTasks_Ellis(int iClient, const char [] strCommandWithArgs
 		g_bHealthBoostItemJustGivenByCheats[iClient] = true;
 
 	HandleWeaponPickUpForWeaponCycling(iClient);
+}
+
+void SetEllisClipSize(int iClient, const char[] currentweapon, int ActiveWeaponID, int CurrentClipAmmo, int iOffset_Ammo)
+{
+	if((((StrEqual(currentweapon, "weapon_rifle", false) == true) || (StrEqual(currentweapon, "weapon_rifle_sg552", false) == true)) && (CurrentClipAmmo == 50)) || 
+		((StrEqual(currentweapon, "weapon_rifle_ak47", false) == true) && (CurrentClipAmmo == 40)) || ((StrEqual(currentweapon, "weapon_rifle_desert", false) == true) && (CurrentClipAmmo == 60)))
+	{
+		new iAmmo = GetEntData(iClient, iOffset_Ammo + 12);	//for rifle (+12)
+		if(iAmmo >=  (g_iFireLevel[iClient] * 10))
+		{
+			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iFireLevel[iClient] * 10)), true);
+			SetEntData(iClient, iOffset_Ammo + 12, iAmmo - (g_iFireLevel[iClient] * 10));
+		}
+		else if(iAmmo <  (g_iFireLevel[iClient] * 10))
+		{
+			new NewAmmo = ( (g_iFireLevel[iClient] * 10) - iAmmo);
+			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iFireLevel[iClient] * 10) - NewAmmo), true);
+			SetEntData(iClient, iOffset_Ammo + 12, 0);
+		}
+		g_bClientIsReloading[iClient] = false;
+		g_iReloadFrameCounter[iClient] = 0;
+	}
+	else if(((StrEqual(currentweapon, "weapon_smg", false) == true) || (StrEqual(currentweapon, "weapon_smg_silenced", false) == true) || (StrEqual(currentweapon, "weapon_smg_mp5", false) == true)) && (CurrentClipAmmo == 50))
+	{
+		new iAmmo = GetEntData(iClient, iOffset_Ammo + 20);	//for smg (+20)
+		if(iAmmo >=  (g_iFireLevel[iClient] * 10))
+		{
+			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iFireLevel[iClient] * 10)), true);
+			SetEntData(iClient, iOffset_Ammo + 20, iAmmo - (g_iFireLevel[iClient] * 10));
+		}
+		else if(iAmmo <  (g_iFireLevel[iClient] * 10))
+		{
+			new NewAmmo = ( (g_iFireLevel[iClient] * 10) - iAmmo);
+			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + ( (g_iFireLevel[iClient] * 10) - NewAmmo)), true);
+			SetEntData(iClient, iOffset_Ammo + 20, 0);
+		}
+		g_bClientIsReloading[iClient] = false;
+		g_iReloadFrameCounter[iClient] = 0;
+	}
+	else if((StrEqual(currentweapon, "weapon_hunting_rifle", false) == true) && (CurrentClipAmmo == 15))
+	{
+		new iAmmo = GetEntData(iClient, iOffset_Ammo + 36);	//for hunting rifle (+36)
+		if(iAmmo >=  (g_iFireLevel[iClient] * 10))
+		{
+			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo +  (g_iFireLevel[iClient] * 10)), true);
+			SetEntData(iClient, iOffset_Ammo + 36, iAmmo - (g_iFireLevel[iClient] * 10));
+		}
+		else if(iAmmo <  (g_iFireLevel[iClient] * 10))
+		{
+			new NewAmmo = ( (g_iFireLevel[iClient] * 10) - iAmmo);
+			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + ( (g_iFireLevel[iClient] * 10) - NewAmmo)), true);
+			SetEntData(iClient, iOffset_Ammo + 36, 0);
+		}
+		g_bClientIsReloading[iClient] = false;
+		g_iReloadFrameCounter[iClient] = 0;
+	}
+	else if(
+		((StrEqual(currentweapon, "weapon_sniper_awp", false) == true) && (CurrentClipAmmo == 20)) || 
+		((StrEqual(currentweapon, "weapon_sniper_military", false) == true) && (CurrentClipAmmo == 30)) || 
+		((StrEqual(currentweapon, "weapon_sniper_scout", false) == true) && (CurrentClipAmmo == 15)))
+	{
+		new iAmmo = GetEntData(iClient, iOffset_Ammo + 40);	//for AWP, Scout, and Military Sniper (+40)
+		if(iAmmo >=  (g_iFireLevel[iClient] * 10))
+		{
+			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo +  (g_iFireLevel[iClient] * 10)), true);
+			SetEntData(iClient, iOffset_Ammo + 40, iAmmo - (g_iFireLevel[iClient] * 10));
+		}
+		else if(iAmmo <  (g_iFireLevel[iClient] * 10))
+		{
+			new NewAmmo = ( (g_iFireLevel[iClient] * 10) - iAmmo);
+			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + ( (g_iFireLevel[iClient] * 10) - NewAmmo)), true);
+			SetEntData(iClient, iOffset_Ammo + 40, 0);
+		}
+		g_bClientIsReloading[iClient] = false;
+		g_iReloadFrameCounter[iClient] = 0;
+	}
 }
 
 CyclePlayerWeapon_Ellis(int iClient)
@@ -902,7 +911,7 @@ bool HandleFastAttackingClients_Ellis(int iClient, const int iActiveWeaponID, co
 	// (1/1.00) would be 0% faster, (1/1.3) would be 30% faster, (1/3) would be 3 times faster
 	// We want 50% faster maxed out so 1.50x -> (1/1.5) = .666666 would be 50% faster
 	// this would be keeping .666666 of the existing wait time ( fCurrentNextAttackTime - fGameTime )				
-	fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * (1 / (1 + (g_iMetalLevel[iClient] * 0.03) + (g_iFireLevel[iClient] * 0.03) ) ) + fGameTime;
+	fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * (1 / (1 + (g_iMetalLevel[iClient] * 0.05) ) ) + fGameTime;
 	
 	// FOR TESTING
 	//fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * ((1 / g_fEllisTestFireRate))  + fGameTime;
