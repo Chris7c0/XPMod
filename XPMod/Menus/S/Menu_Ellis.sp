@@ -69,7 +69,7 @@ Action:OverMenuDraw(iClient)
 		\nMax Health Reduced by 10 HP\
 		\n \
 		\nIf Within %i Points Of Max Health:\
-		\n	+1%%%% Speed\
+		\n	+1%%%% Movement Speed\
 		\n	+5%%%% Damage To All Guns per Level\
 		\n \
 		\nWhile On Adrenaline:\
@@ -322,8 +322,9 @@ Action:FireMenuDraw(iClient)
 		\n			Bind 2: Summon Kagu-Tsuchi's Wrath\
 		\n						+1 Use Every Other Level\
 		\n \
-		\nAll Bullets Are Incendiary Rounds\
-		\n	+3 Sec Duration per Level\
+		\nTemporarily Grants Ellis Incendiary\
+		\nAttacks With All Weapons\
+		\n	+3 Sec Duration Added per Level\
 		\nBurning A Calm Witch\
 		\nImmediately Neutralizes Her\
 		\n ",
@@ -334,7 +335,7 @@ Action:FireMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	
