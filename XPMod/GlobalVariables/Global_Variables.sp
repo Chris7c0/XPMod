@@ -272,3 +272,4 @@ new Float:preledgebuffer[MAXPLAYERS + 1];
 new bool:clienthanging[MAXPLAYERS + 1];
 //new g_iAbility = 0;
 //new Float:g_fEllisTestFireRate = 0.0;
+float g_testingSpeedOverride[MAXPLAYERS + 1];

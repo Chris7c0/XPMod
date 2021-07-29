@@ -221,6 +221,7 @@ new bool:g_bIsChargerHealing[MAXPLAYERS + 1];
 new bool:g_bCanChargerEarthquake[MAXPLAYERS +1];
 
 // Tank
+#define TANK_BURN_DURATION                                  15.0
 new g_iTankCounter;
 float g_fFrustratedTankTransferHealthPercentage;
 #define TANK_FRUSTRATION_TIME_IN_SECONDS                    90

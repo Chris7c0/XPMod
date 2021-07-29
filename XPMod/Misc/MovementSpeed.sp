@@ -124,7 +124,7 @@ SetClientSpeedEllis(iClient, &Float:fSpeed)
 
 	// Overconfidence speed boost
 	if (g_bEllisOverSpeedIncreased[iClient])
-		fSpeed += (g_iOverLevel[iClient] * 0.02);
+		fSpeed += (g_iOverLevel[iClient] * 0.01);
 
 	// Bring The Pain SI Kill counter speed boost
 	if (g_iEllisSpeedBoostCounter[iClient] > 0)
@@ -332,6 +332,12 @@ SetClientSpeedTank(iClient, &Float:fSpeed)
 
 bool SetClientSpeedOverrides(iClient, &Float:fSpeed)
 {
+	if (g_testingSpeedOverride[iClient] > 0.0)
+	{
+		fSpeed = g_testingSpeedOverride[iClient];
+		return true;
+	}
+
 	// If they are an infected ghost, then give them fast speed.
 	if(g_iClientTeam[iClient] == TEAM_INFECTED &&
 		GetEntData(iClient, g_iOffset_IsGhost, 1) == 1)

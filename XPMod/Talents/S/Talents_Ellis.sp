@@ -446,7 +446,7 @@ EventsDeath_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 				//SetEntData(iEntid, clipsize2, clip2+30, true);	
 			}
 		}
-		if(g_iEllisSpeedBoostCounter[iAttacker] < (4 * g_iBringLevel[iAttacker]))
+		if(g_iEllisSpeedBoostCounter[iAttacker] < (2 * g_iBringLevel[iAttacker]))
 		{
 			g_iEllisSpeedBoostCounter[iAttacker]++;
 			SetClientSpeed(iAttacker);
@@ -880,7 +880,7 @@ bool HandleFastAttackingClients_Ellis(int iClient, const int iActiveWeaponID, co
 			// PrintToChatAll("lb check %i %s, lb stored: %s", iActiveWeaponID, strWeaponClassName, ITEM_CLASS_NAME[g_iLimitBreakWeaponIndex[iClient]]);
 			if (strcmp(strWeaponClassName, ITEM_CLASS_NAME[g_iLimitBreakWeaponIndex[iClient]], true) == 0)
 			{
-				// PrintToChatAll("	> Limit break applied to %N: %s", iClient, strWeaponClassName);
+				PrintToChatAll("	> Limit break applied to %N: %s", iClient, strWeaponClassName);
 				fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * (1/2) + fGameTime; // This was triple at .66666, changing to .5 to double
 				return true;
 			}
@@ -902,10 +902,12 @@ bool HandleFastAttackingClients_Ellis(int iClient, const int iActiveWeaponID, co
 	// (1/1.00) would be 0% faster, (1/1.3) would be 30% faster, (1/3) would be 3 times faster
 	// We want 50% faster maxed out so 1.50x -> (1/1.5) = .666666 would be 50% faster
 	// this would be keeping .666666 of the existing wait time ( fCurrentNextAttackTime - fGameTime )				
-	fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * (1 / (1 + (g_iMetalLevel[iClient] * 0.07) + (g_iFireLevel[iClient] * 0.07) ) ) + fGameTime;
+	fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * (1 / (1 + (g_iMetalLevel[iClient] * 0.03) + (g_iFireLevel[iClient] * 0.03) ) ) + fGameTime;
 	
 	// FOR TESTING
 	//fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * ((1 / g_fEllisTestFireRate))  + fGameTime;
+
+	PrintToChat(iClient, "fAdjustedNextAttackTime: %f, fGameTime: %f", fAdjustedNextAttackTime, fGameTime);
 
 	// Return the slot that is used
 	return true;

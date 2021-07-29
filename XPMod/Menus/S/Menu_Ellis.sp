@@ -70,7 +70,7 @@ Action:OverMenuDraw(iClient)
 		\nMax Health Reduced by 15 HP\
 		\n \
 		\nIf Within %i Points Of Max Health:\
-		\n	+2%%%% Speed\
+		\n	+1%%%% Speed\
 		\n	+5%%%% Damage To All Guns per Level\
 		\n \
 		\nWhile On Adrenaline:\
@@ -125,7 +125,7 @@ Action:BringMenuDraw(iClient)
 		\n	Regen +1 Temp Health per Level\
 		\n	+20 Clip Ammo per Level\
 		\n	+1%%%% Movement Speed (Stacks)\
-		\n		+4 Max Stacks per Level\
+		\n		+2 Max Stacks per Level\
 		\n ",
 		strStartingNewLines,
 		g_iBringLevel[iClient]);
@@ -267,7 +267,7 @@ Action:MetalMenuDraw(iClient)
 		\n \
 		\nLevel 1:\
 		\n+4 Clip Size per Level (SMG/Rifle/Sniper Only)\
-		\n+7%%%% Firing Rate per Level\
+		\n+3%%%% Firing Rate per Level\
 		\n+8%%%% Reload Speed per Level\
 		\n \
 		\nLevel 5:\
@@ -320,14 +320,14 @@ Action:FireMenuDraw(iClient)
 		\n \
 		\n+6 Clip Size per Level (SMG/Rifle/Sniper Only)\
 		\n+10%%%% Reload Speed per Level\
-		\n+7%%%% Firing Rate per Level\
+		\n+4%%%% Firing Rate per Level\
 		\nFire Immunity\
 		\n \
 		\n \
 		\n			Bind 2: Summon Kagu-Tsuchi's Wrath\
 		\n						+1 Use Every Other Level\
 		\n \
-		\n+6 Seconds Of Incendiary Attacks\
+		\n+3 Seconds Of Incendiary Attacks\
 		\nAnd Burn Duration per Level\
 		\nBurning A Calm Witch\
 		\nImmediately Neutralizes Her\

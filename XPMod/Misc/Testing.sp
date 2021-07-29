@@ -147,11 +147,14 @@ Action:TestFunction2(iClient, args)
 	GetCmdArg(1, str1, sizeof(str1));
 	GetCmdArg(2, str2, sizeof(str2));
 
-	char strEquipmentItem[32];
-	int iSlotItemID = GetPlayerWeaponSlot(iClient, StringToInt(str1));
-	PrintToChatAll("%i", iSlotItemID);
-	GetEntityClassname(iSlotItemID, strEquipmentItem, sizeof(strEquipmentItem));
-	PrintToChatAll("%s", strEquipmentItem);
+	g_testingSpeedOverride[iClient] = StringToFloat(str1);
+	SetClientSpeed(iClient);
+
+	// char strEquipmentItem[32];
+	// int iSlotItemID = GetPlayerWeaponSlot(iClient, StringToInt(str1));
+	// PrintToChatAll("%i", iSlotItemID);
+	// GetEntityClassname(iSlotItemID, strEquipmentItem, sizeof(strEquipmentItem));
+	// PrintToChatAll("%s", strEquipmentItem);
 
 	PrintToServer("strAnimationGrab1: %i", GetEntProp(iClient, Prop_Data, "m_nSequence"));
 
