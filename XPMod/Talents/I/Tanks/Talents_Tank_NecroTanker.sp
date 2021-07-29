@@ -80,11 +80,11 @@ SetClientSpeedTankNecroTanker(iClient, &Float:fSpeed)
 	if (g_iTankChosen[iClient] != TANK_NECROTANKER)
 		return;
 
-	fSpeed += 0.10;
+	fSpeed += 0.20;
 }
 
 OnGameFrame_Tank_NecroTanker(iClient)
-{	
+{
 	new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 	
 	//Check to see if ducking and not attacking before starting the charge

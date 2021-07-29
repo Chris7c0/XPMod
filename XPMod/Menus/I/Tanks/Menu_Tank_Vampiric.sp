@@ -16,7 +16,7 @@ Action:TankMenuDrawVampiric(iClient)
         \n - %i HP | Good At Close Range, Safe At Long Range\
         \n - Life Steal On Punch\
         \n    - Life Steal More From Incapacitated Victims\
-        \n - 20%% Faster\
+        \n - 30%% Faster\
         \n - Dodges Bullets (1/3rd Gun Damage Taken)\
         \n - Weak To Melee (3X Melee Damage Taken)\
         \n \
