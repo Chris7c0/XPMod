@@ -880,7 +880,7 @@ bool HandleFastAttackingClients_Ellis(int iClient, const int iActiveWeaponID, co
 			// PrintToChatAll("lb check %i %s, lb stored: %s", iActiveWeaponID, strWeaponClassName, ITEM_CLASS_NAME[g_iLimitBreakWeaponIndex[iClient]]);
 			if (strcmp(strWeaponClassName, ITEM_CLASS_NAME[g_iLimitBreakWeaponIndex[iClient]], true) == 0)
 			{
-				PrintToChatAll("	> Limit break applied to %N: %s", iClient, strWeaponClassName);
+				// PrintToChatAll("	> Limit break applied to %N: %s", iClient, strWeaponClassName);
 				fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * (1/2) + fGameTime; // This was triple at .66666, changing to .5 to double
 				return true;
 			}
@@ -907,7 +907,7 @@ bool HandleFastAttackingClients_Ellis(int iClient, const int iActiveWeaponID, co
 	// FOR TESTING
 	//fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * ((1 / g_fEllisTestFireRate))  + fGameTime;
 
-	PrintToChat(iClient, "fAdjustedNextAttackTime: %f, fGameTime: %f", fAdjustedNextAttackTime, fGameTime);
+	// PrintToChat(iClient, "fAdjustedNextAttackTime: %f, fGameTime: %f", fAdjustedNextAttackTime, fGameTime);
 
 	// Return the slot that is used
 	return true;

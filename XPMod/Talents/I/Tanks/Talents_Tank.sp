@@ -61,11 +61,11 @@ EventsHurt_VictimTank(Handle:hEvent, iAttacker, iVictimTank)
 	// Globally for all tanks, put them out after X seconds
 	new iDmgType = GetEventInt(hEvent, "type");
 
-	PrintToChatAll("check1: %N: iDmgType: %i", iVictimTank, iDmgType);
-	if (g_iTankChosen[iVictimTank] != TANK_FIRE && (iDmgType == DAMAGETYPE_FIRE1 || iDmgType == DAMAGETYPE_FIRE2 || iDmgType == DAMAGETYPE_IGNITED_ENTITY))
+	if (g_iTankChosen[iVictimTank] != TANK_FIRE && 
+		(iDmgType == DAMAGETYPE_FIRE1 || 
+		iDmgType == DAMAGETYPE_FIRE2 || 
+		iDmgType == DAMAGETYPE_IGNITED_ENTITY))
 	{
-
-		PrintToChatAll("check2: %N", iVictimTank);
 		// This will reset the timer each time they take new fire damage
 		if (iDmgType == DAMAGETYPE_IGNITED_ENTITY && g_hTimer_ExtinguishTank[iVictimTank] == null)
 		{
