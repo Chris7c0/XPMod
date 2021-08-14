@@ -80,7 +80,7 @@ SetClientSpeedTankNecroTanker(iClient, &Float:fSpeed)
 	if (g_iTankChosen[iClient] != TANK_NECROTANKER)
 		return;
 
-	fSpeed += 0.20;
+	fSpeed += 0.15;
 }
 
 OnGameFrame_Tank_NecroTanker(iClient)
