@@ -410,13 +410,15 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 	if (IsFakeClient(iAttacker) || g_bTalentsConfirmed[iAttacker] == false || iVictim == iAttacker)
 		return;
 
+	new iDmgType = GetEventInt(hEvent, "type");
+
 	if (g_iEnhancedLevel[iAttacker] > 0 && g_iClientTeam[iVictim] == TEAM_SURVIVORS)
 	{
 		decl String:strCurrentWeapon[32];
 		GetClientWeapon(iAttacker, strCurrentWeapon, sizeof(strCurrentWeapon));
 
 		// Check that its a pistol
-		if (StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == true)
+		if (iDmgType == DAMAGETYPE_PISTOL_MAGNUM && StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == true)
 		{
 			new iCurrentAttackerHealth = GetPlayerHealth(iAttacker);
 			new iCurrentVictimHealth = GetPlayerHealth(iVictim);
@@ -448,7 +450,7 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 				SetPlayerHealth(iVictim, iCurrentVictimHealth + iDmgAmount);
 			}
 		}
-		else if(StrEqual(strCurrentWeapon, "weapon_pistol", false) == true)
+		else if(iDmgType == DAMAGETYPE_PISTOL && StrEqual(strCurrentWeapon, "weapon_pistol", false) == true)
 		{
 			new iCurrentAttackerHealth = GetPlayerHealth(iAttacker);
 			new iCurrentVictimHealth = GetPlayerHealth(iVictim);
