@@ -867,7 +867,7 @@ void SetAllNicksDesprateMeasureSpeed(const char [] strMessage = "")
 	for (int iPlayer=1; iPlayer <= MaxClients; iPlayer++)
 	{
 		if (g_iChosenSurvivor[iPlayer] != NICK ||
-			g_iDesperateLevel[iPlayer] <= 0 &&
+			g_iDesperateLevel[iPlayer] <= 0 ||
 			g_iClientTeam[iPlayer] != TEAM_SURVIVORS ||
 			RunClientChecks(iPlayer) == false ||
 			IsPlayerAlive(iPlayer) == false)

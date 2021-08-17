@@ -47,18 +47,18 @@ Action:ScriptKiddieExploitsMenuDraw(iClient)
 	AddMenuItem(menu, "option3", text);
 
 	FormatEx(text, sizeof(text), "\
-		h4k 74r9et\
-		\n	%.1f XMR	%s",
-		LOUIS_HEADSHOP_XMR_AMOUNT_HAK_TARGET,
-		iClient != -1 ? "" : "SOLD OUT");
-	AddMenuItem(menu, "option4",text);
-
-	FormatEx(text, sizeof(text), "\
 		h4x0r 73h 53RV3r\
 		\n	%.1f XMR	%s",
 		LOUIS_HEADSHOP_XMR_AMOUNT_HAXOR_TEH_SERVER,
 		g_bHackTheServerInCooldown == false ? "" : "SOLD OUT");
 	AddMenuItem(menu, "option5", text);
+
+	FormatEx(text, sizeof(text), "\
+		h4k 74r9et\
+		\n	%.1f XMR	%s",
+		LOUIS_HEADSHOP_XMR_AMOUNT_HAK_TARGET,
+		iClient != -1 ? "" : "SOLD OUT");
+	AddMenuItem(menu, "option4",text);
 
 	FormatEx(text, sizeof(text), "\
 		t1m3 0u7\
@@ -111,9 +111,10 @@ ScriptKiddieExploitsMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			case 1:	if (!NoobWipe(iClient)) ScriptKiddieExploitsMenuDraw(iClient);
 			// m3D h4Kz
 			case 2: if (!MedHax(iClient)) ScriptKiddieExploitsMenuDraw(iClient);
-			case 3: if (!HackTargetPlayer(iClient)) ScriptKiddieExploitsMenuDraw(iClient);
 			// h4x0r 73h 53RV3r
-			case 4:	if (!HackTheServer(iClient)) ScriptKiddieExploitsMenuDraw(iClient);
+			case 3:	if (!HackTheServer(iClient)) ScriptKiddieExploitsMenuDraw(iClient);
+			// hak 7arG3t
+			case 4: if (!HackTargetPlayer(iClient)) ScriptKiddieExploitsMenuDraw(iClient);
 			// t1m3 0u7
 			case 5: if (!TimeOut(iClient)) ScriptKiddieExploitsMenuDraw(iClient);
 		}

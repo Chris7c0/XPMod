@@ -324,7 +324,9 @@ EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 
 void EventsPillsUsed_Louis(int iClient)
 {
-	if (g_iChosenSurvivor[iClient] != LOUIS || g_bTalentsConfirmed[iClient] == false)
+	if (g_iChosenSurvivor[iClient] != LOUIS || 
+		g_iClientTeam[iClient] != TEAM_SURVIVORS || 
+		g_bTalentsConfirmed[iClient] == false)
 		return;
 
 	// PrintToChat(iClient, "Pills Used: %i", GetPlayerWeaponSlot(iClient, 4));

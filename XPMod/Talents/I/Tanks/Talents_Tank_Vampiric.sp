@@ -178,10 +178,10 @@ EventsHurt_VictimTank_Vampiric(Handle:hEvent, iAttacker, iVictimTank)
 		SetPlayerHealth(iVictimTank, iCurrentHP + RoundToCeil(iDmgHealth * (1.0 - VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER)) );
 		//if (IsFakeClient(iVictimTank) == false) PrintToChat(iVictimTank, "\x03Re-adding health: %i", RoundToCeil(iDmgHealth * (1.0 - VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER)) );
 	}
-	else
-	{
-		if (IsFakeClient(iVictimTank) == false) PrintToChat(iVictimTank, "\x03NRMLDMG weapon: \x01%s \x03dmg: \x01%i",weaponclass, iDmgHealth);
-	}
+	// else
+	// {
+	// 	if (IsFakeClient(iVictimTank) == false) PrintToChat(iVictimTank, "\x03NRMLDMG weapon: \x01%s \x03dmg: \x01%i",weaponclass, iDmgHealth);
+	// }
 }
 
 EventsHurt_AttackerTank_Vampiric(Handle:hEvent, iAttackerTank, iVictim)
