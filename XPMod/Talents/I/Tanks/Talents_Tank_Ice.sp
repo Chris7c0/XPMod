@@ -245,9 +245,10 @@ EventsHurt_AttackerTank_Ice(Handle:hEvent, iAttackerTank, iVictim)
 
 	if(g_bFrozenByTank[iVictim] == false && g_bBlockTankFreezing[iVictim] == false)
 	{
-		if(StrEqual(weapon,"tank_rock") == true ||
-			(StrEqual(weapon,"tank_claw") == true && GetRandomInt(1, 3) == 1))
-			FreezePlayerByTank(iVictim, 4.2);
+		if(StrEqual(weapon,"tank_rock") == true)
+			FreezePlayerByTank(iVictim, TANK_ICE_FREEZE_DURATION_ROCK_DIRECT);
+		else if((StrEqual(weapon,"tank_claw") == true && GetRandomInt(1, 3) == 1))
+			FreezePlayerByTank(iVictim, TANK_ICE_FREEZE_DURATION_PUNCH);
 	}
 	else
 		UnfreezePlayerByTank(iVictim);
@@ -330,7 +331,7 @@ CreateIceRockDestroyEffect(int iRockEntity)
 	DispatchSpawn(smoke);
 	AcceptEntityInput(smoke, "TurnOn");
 	
-	CreateTimer(0.5, TimerStopSmokeEntity, smoke, TIMER_FLAG_NO_MAPCHANGE);
+	CreateTimer(1.5, TimerStopSmokeEntity, smoke, TIMER_FLAG_NO_MAPCHANGE);
 }
 
 CreateIceRockTrailEffect(int iRockEntity)
@@ -421,8 +422,8 @@ FreezeEveryoneCloseToExplodingIceTankRock(iRockEntity)
 			// Get the distance
 			new Float:fDistance = GetVectorDistance(xyzSurvivorPosition, xyzRockPosition, false);		
 			//Freeze if they are close enough
-			if(fDistance <= 180.0)
-				FreezePlayerByTank(iClient, 6.0);
+			if (fDistance <= TANK_ICE_ROCK_FREEZE_INDIRECT_HIT_RADIUS)
+				FreezePlayerByTank(iClient, TANK_ICE_FREEZE_DURATION_ROCK_INDIRECT);
 		}
 	}
 }

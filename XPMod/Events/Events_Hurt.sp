@@ -36,8 +36,10 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	// GetEventString(hEvent,"weapon", testweapon, 32);
 	// PrintToChatAll("\x03-weapon: \x01%s, dmgHealth: %i",testweapon, dmgHealth);
 
-	// Unfreeze player if they take any damage
-	if(g_bFrozenByTank[iVictim] == true && g_iClientTeam[iVictim] == TEAM_SURVIVORS)
+	// Unfreeze player if they take any damage from SI
+	if(g_bFrozenByTank[iVictim] == true && 
+		g_iClientTeam[iVictim] == TEAM_SURVIVORS && 
+		g_iClientTeam[iAttacker] == TEAM_INFECTED)
 	{
 		//Set Player Velocity To Zero
 		TeleportEntity(iVictim, NULL_VECTOR, NULL_VECTOR, EMPTY_VECTOR);
