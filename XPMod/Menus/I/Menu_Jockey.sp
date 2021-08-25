@@ -54,7 +54,6 @@ Action:MutatedMenuDraw(iClient)
 	SetMenuTitle(menu, "\
 		%s  				Mutated Tenacity (Level %d)\
 		\n \
-		\nLevel 1:\
 		\n+1 melee damage every 3 levels\
 		\n+6%% lunge distance per level\
 		\n-0.35 seconds from all lunge cooldowns per level\
@@ -65,7 +64,7 @@ Action:MutatedMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -87,7 +86,6 @@ Action:ErraticMenuDraw(iClient)
 	SetMenuTitle(menu, "\
 		%s						Erratic Domination (Level %d)\
 		\n \
-		\nLevel 1:\
 		\n+1 riding damage every 3 levels\
 		\n+3%% riding speed per level\
 		\n \
@@ -98,7 +96,7 @@ Action:ErraticMenuDraw(iClient)
 		\nLevel 1:\
 		\nWhile riding, urinate on your victim, attracting infected\
 		\nDisables survivors cloaking\
-		\n+1% per level to summon a tank\
+		\n+1%% per level to summon a tank\
 		\n \
 		\nLevel 10:\
 		\nSummon a horde\
@@ -131,7 +129,6 @@ Action:UnfairMenuDraw(iClient)
 	SetMenuTitle(menu, "\
 		%s	Unfair Advantage (Level %d)\
 		\n \
-		\nLevel 1:\
 		\n+35 max health per level\
 		\n+7%% movement speed per level\
 		\n \
@@ -139,7 +136,6 @@ Action:UnfairMenuDraw(iClient)
 		\n		Bind 2: Vanishing Act\
 		\n	3 uses; 10 second duration\
 		\n \
-		\nLevel 1:\
 		\n+9%% cloaking per level\
 		\nDisable Jockey & survivor glow\
 		\n+5%% riding speed per level\
@@ -151,7 +147,7 @@ Action:UnfairMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 

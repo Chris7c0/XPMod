@@ -67,10 +67,12 @@ Action:GatherMenuDraw(iClient)
 		\nLevel 1:\
 		\nD.E.A.D. Infected Detection Device upgrade every level\
 		\n \
+		\nLevel 5:\
+		\nHack the Infected communications to read their chat messages\
 		\n \
 		\nSkill Uses:\
 		\nPress [Walk + Use] to turn on or off\
-		\nDefault: [Shift + E]\
+		\nDefault: [Shift + E]\		
 		\n ",
 		strStartingNewLines,
 		g_iGatherLevel[iClient]);
@@ -79,7 +81,7 @@ Action:GatherMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -214,8 +216,7 @@ Action:SilentMenuDraw(iClient)
 		\nLevel 1:\
 		\nSniper upgrades every level\
 		\n \
-		\nSee \"Open In Website\" in the\
-		\nprevious menu for upgrade details\
+		\nSee xpmod.net for upgrade details\
 		\n ",
 		strStartingNewLines,
 		g_iSilentLevel[iClient]);
@@ -325,7 +326,7 @@ Action:ShadowMenuDraw(iClient)
 		\n+10%%%% movement speed per level\
 		\n+30%%%% melee attack speed per level\
 		\n+19%%%% stealth per level\
-		\nCloak glow from SI\
+		\nHide glow from SI\
 		\nGain a Katana\
 		\n ",
 		strStartingNewLines,

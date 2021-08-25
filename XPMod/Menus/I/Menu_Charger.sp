@@ -55,7 +55,6 @@ Action:GroundMenuDraw(iClient)
 	SetMenuTitle(menu, "\
 		%s  				Ground 'n Pound (Level %d)\
 		\n \
-		\nLevel 1:\
 		\n+1 knock damage per level\
 		\n+1 punch, pound, and slam damage every 3rd level\
 		\nafter the 1st level\
@@ -66,7 +65,7 @@ Action:GroundMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -89,7 +88,6 @@ Action:SpikedMenuDraw(iClient)
 	SetMenuTitle(menu, "\
 		%s				Spiked Carapace (Level %d)\
 		\n \
-		\nLevel 1:\
 		\nReflect 1 damage per level when meleed\
 		\n+25 max health per level\
 		\n+33 health per level when knocking survivors\
@@ -102,7 +100,6 @@ Action:SpikedMenuDraw(iClient)
 		\n					Bind 1: Heavy Carry\
 		\n				3 uses; 30 second cooldown\
 		\n \
-		\nLevel 1:\
 		\n+10%% per level to carry distance and speed\
 		\non next charge\
 		\nReset charge cooldown\
@@ -113,7 +110,7 @@ Action:SpikedMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -136,7 +133,6 @@ Action:HillbillyMenuDraw(iClient)
 	SetMenuTitle(menu, "\
 		%s						Hillbilly Madness! (Level %d)\
 		\n \
-		\nLevel 1:\
 		\n+35 max health per level\
 		\n+3%% movement speed & carry range per level\
 		\n-1 second from charger cooldown every other level\
@@ -158,7 +154,7 @@ Action:HillbillyMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 

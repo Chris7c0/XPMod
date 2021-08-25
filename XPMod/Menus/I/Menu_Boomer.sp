@@ -55,7 +55,6 @@ Action:RapidMenuDraw(iClient)
 	SetMenuTitle(menu, "\
 		%s  					Rapid Regurgitation (Level %d)\
 		\n \
-		\nLevel 1:\
 		\n-2 second vomit cooldown per level\
 		\nReduce movement penalty after vomiting by 10%% per level\
 		\n ",
@@ -65,7 +64,7 @@ Action:RapidMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -87,7 +86,6 @@ Action:AcidicMenuDraw(iClient)
 	SetMenuTitle(menu, "\
 		%s						Acidic Brew (Level %d)\
 		\n \
-		\nLevel 1:\
 		\nVomit victims lose their HUD for 2 seconds per level\
 		\n+1 damage per level to survivors near your death boom\
 		\n \
@@ -95,7 +93,6 @@ Action:AcidicMenuDraw(iClient)
 		\n						  Bind 1: Hot Meal\
 		\n					3 uses; 9 second duration\
 		\n \
-		\nLevel 1:\
 		\nConstant vomiting while active\
 		\n+10%% movement speed per level\
 		\n ",
@@ -105,7 +102,7 @@ Action:AcidicMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -137,7 +134,6 @@ Action:NorovirusMenuDraw(iClient)
 		\n						Bind 2: Suicide Boomer\
 		\n									3 uses\
 		\n \
-		\nLevel 1:\
 		\n+5x jump heighth per level\
 		\n+2 boom damage per level\
 		\n+20%% fling distance per level\
@@ -149,7 +145,7 @@ Action:NorovirusMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	

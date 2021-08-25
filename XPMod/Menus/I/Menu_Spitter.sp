@@ -57,7 +57,7 @@ Action:PuppetMenuDraw(iClient)
 		\n \
 		\nLevel 1:\
 		\nSpawn in with +1 CI per level\
-		\nWhen incapping a player, spawn +1 CI every other level on the victim\
+		\nWhen incaping a player, spawn +1 CI every other level on the victim\
 		\n25%% chance on hit to slow survivors by 2%%, 4%%, or 6%% per level\
 		\n \
 		\nLevel 6:\
@@ -95,7 +95,7 @@ Action:MaterialMenuDraw(iClient)
 		%s				Material Girl (Level %d)\
 		\n \
 		\nLevel 1:\
-		\nIf spit hits incapped player:\
+		\nIf spit hits incaped player:\
 		\nCloak victim +10%% per level\
 		\nHide victims' glow\
 		\n \

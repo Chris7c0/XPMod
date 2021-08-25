@@ -170,7 +170,6 @@ Action:SprayMenuDraw(iClient)
 	FormatEx(text, sizeof(text), "\
 		%s			Spray n' Pray(Level %d):\
 		\n \
-		\nLevel 1:\
 		\n+2 shotgun clip size per level\
 		\n+2 shotgun pellet damage per level\
 		\n ",
@@ -181,7 +180,7 @@ Action:SprayMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -327,11 +326,11 @@ Action:StrongMenuDraw(iClient)
 		\n+30 melee damage per level\
 		\n+10 max health per level\
 		\n+20%% Jockey resistance per level\
-		\nStart the round with grenades\
+		\nStart the round with a random explosive\
 		\n \
 		\nLevel 2:\
-		\n+1 bomb storage every other level\
-		\n [WALK+ZOOM] to cycle grenades\
+		\n+1 explosive storage every other level\
+		\n [WALK+ZOOM] to cycle explosives\
 		\n \
 		\n \
 		\n			Bind 2: D.E.A.D. Jetpack (Charge)\
@@ -339,7 +338,6 @@ Action:StrongMenuDraw(iClient)
 		\n \
 		\nLevel 1:\
 		\n+160 fuel per level\
-		\n \
 		\n \
 		\nSkill Uses:\
 		\n(Charge): Hold [WALK] to fly when jetpack is on\
@@ -351,7 +349,7 @@ Action:StrongMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	

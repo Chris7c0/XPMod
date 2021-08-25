@@ -118,9 +118,9 @@ Action:LeftoverMenuDraw(iClient)
 		\n+15%%%% chance to spawn items when you use a medkit per level\
 		\n \
 		\nLevel 5:\
-		\n [ZOOM] with a kit to destroy it and gain:\
+		\n Press [ZOOM] with a kit out to destroy it and gain:\
 		\n1 random weapon\
-		\n1 random grenade\1 shot or pills\
+		\n1 random grenade, 1 shot, or 1 pill\
 		\n ",
 		strStartingNewLines,
 		g_iSkillPoints[iClient],
@@ -169,7 +169,7 @@ Action:RiskyMenuDraw(iClient)
 		\n+6 clip size per level\
 		\n \
 		\nLevel 5:\
-		\n [WALK+ZOOM] cycle to dual pistols\
+		\n Press [WALK+ZOOM] cycle to dual pistols\
 		\nYou can cycle back to Magnums\
 		\n ",
 		strStartingNewLines,
@@ -211,11 +211,11 @@ Action:EnhancedMenuDraw(iClient)
 		%s					Enhanced Pain Killers(Level %d):\
 		\n \
 		\nLevel 1:\
-		\n+6 temp health from pills & shots per level\
+		\n+6 temp health per level from pills & shots\
 		\nRecover +1 health per level when anyone uses shots &   \
 		\npills (+8 at max)\
 		\n \
-		\nShoot Survivors with Pitols to heal them...at a cost.\
+		\nShoot Survivors with Pistols to heal them...at a cost.\
 		\n   Pistols:     +2 HP for Teammate, -1 HP for You\
 		\n   Magnum:  +7 HP for Teammate, -3 HP for You\
 		\n ",
@@ -259,18 +259,18 @@ Action:MagnumMenuDraw(iClient)
 		\n			    Requires Level 11\
 		\n \
 		\nLevel 1:\
+		\n+3%%%% movement speed per level\
 		\n-5 clip size(Magnum Only)\
 		\n+75%%%% damage per level (Magnum Only)\
-		\n+3%%%% movement speed per level\
 		\n \
 		\nLevel 5:\
-		\n50% faster reload on 3 consecutive hits (Magnum only)\
+		\n50%%%% faster reload on 3 consecutive hits (Magnum only)\
 		\n \
 		\n			Bind 1: Gambling Problem\
 		\n			+1 use every other level\
 		\n \
 		\nLevel 1:\
-		\nGamble for one of eleven random effects  \
+		\nGamble for a random effect  \
 		\n ",
 		strStartingNewLines,
 		g_iMagnumLevel[iClient]);
@@ -319,11 +319,11 @@ Action:DesperateMenuDraw(iClient)
 		\n				+1 use every other level\
 		\n \
 		\nLevel 1:\
-		\nHeal team +4 health per level; 1 use\
+		\nHeal team +4 health per level (costs 1 charge)\
 		\nLevel 3:\
-		\nRevive incapped ally; 2 uses\
+		\nRevive incapacitated ally (costs 2 charges)\
 		\nLevel 5:\
-		\nResurrect an ally; 3 uses\
+		\nResurrect a dead ally (costs 3 charges)\
 		\n \
 		\n \
 		\nSkill Uses:\

@@ -54,7 +54,6 @@ Action:PredatorialMenuDraw(iClient)
 	SetMenuTitle(menu, "\
 		%s  Predatorial Evolution (Level %d)\
 		\n \
-		\nLevel 1:\
 		\n+5%% movement speed per level\
 		\n+10%% pounce distance per level\
 		\n ",
@@ -64,7 +63,7 @@ Action:PredatorialMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -86,7 +85,6 @@ Action:BloodlustMenuDraw(iClient)
 	SetMenuTitle(menu, "\
 		%s				Blood Lust (Level %d)\
 		\n \
-		\nLevel 1:\
 		\n+1 shredding damage every 4 levels\
 		\n+25 max health per level\
 		\n+3 life stealing while shredding per level\
@@ -95,7 +93,6 @@ Action:BloodlustMenuDraw(iClient)
 		\n				Bind 1: Dismount\
 		\n	Unlimited uses; 15 second cooldown\
 		\n \
-		\nLevel 1:\
 		\nDismount a pounced survivor\
 		\n ",
 		strStartingNewLines,
@@ -104,7 +101,7 @@ Action:BloodlustMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -135,11 +132,10 @@ Action:KillmeleonMenuDraw(iClient)
 		\n											Bind 2: Lethal Injection\
 		\n													3 uses\
 		\n \
-		\nLevel 1:\
 		\nNext attack does 4 damage per second\
 		\n+1 second per level\
 		\nPoison prevents item exchanging\
-		\nSlow victims to 25%\
+		\nSlow victims to 25%%\
 		\n3 damage per 20 seconds permanently\
 		\n \
 		\n \
@@ -153,7 +149,7 @@ Action:KillmeleonMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
