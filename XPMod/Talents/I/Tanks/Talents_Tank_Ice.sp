@@ -62,6 +62,8 @@ ResetAllTankVariables_Ice(iClient)
 	g_bShowingIceSphere[iClient] = false;
 	g_bFrozenByTank[iClient] = false;
 	g_bBlockTankFreezing[iClient] = false;
+	g_fIceTankColdAuraSlowSpeedReduction[iClient] = 0.0;
+	g_bIceTankColdAuraDisabled[iClient] = false;
 	g_fTankHealthPercentage[iClient] = 0.0;
 	
 	DeleteParticleEntity(g_iPID_IceTankIcicles[iClient]);
@@ -85,6 +87,9 @@ OnGameFrame_Tank_Ice(iClient)
 	if(g_iTankChosen[iClient] == TANK_ICE && g_iIceTankLifePool[iClient] < 1)
 		return;
 	
+	// Check if there are players within the cold slow aura radius
+	CheckForPlayersInIceTanksColdAuraSlowRange(iClient);
+
 	new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 	
 	//Check to see if ducking and not attacking before starting the charge
@@ -242,6 +247,23 @@ EventsHurt_AttackerTank_Ice(Handle:hEvent, iAttackerTank, iVictim)
 
 	decl String:weapon[20];
 	GetEventString(hEvent,"weapon", weapon, 20);
+
+	// Temporarily disable Tank Slow Aura after the tank hits a victim only if they are already in the aura
+	if (g_fIceTankColdAuraSlowSpeedReduction[iVictim] > 0.0 &&
+		(StrEqual(weapon,"tank_rock") == true || 
+		StrEqual(weapon,"tank_claw") == true))
+	{
+		// PrintToChatAll("___ Disabling COLD AURA for %N", iVictim);
+		g_bIceTankColdAuraDisabled[iVictim] = true;
+		SetClientSpeed(iVictim);
+
+		// Reset the timer to disable only if doesn't already exist.
+		if (g_hTimer_IceTankColdSlowAuraEnableAgain[iVictim] == null)
+		{
+			delete g_hTimer_IceTankColdSlowAuraEnableAgain[iVictim];
+			g_hTimer_IceTankColdSlowAuraEnableAgain[iVictim] = CreateTimer(TANK_ICE_COLD_SLOW_AURA_HIT_DISABLE_DURATION, Timer_EnableIceTankColdSlowAura, iVictim, TIMER_FLAG_NO_MAPCHANGE);
+		}
+	}
 
 	if(g_bFrozenByTank[iVictim] == false && g_bBlockTankFreezing[iVictim] == false)
 	{
@@ -424,6 +446,47 @@ FreezeEveryoneCloseToExplodingIceTankRock(iRockEntity)
 			//Freeze if they are close enough
 			if (fDistance <= TANK_ICE_ROCK_FREEZE_INDIRECT_HIT_RADIUS)
 				FreezePlayerByTank(iClient, TANK_ICE_FREEZE_DURATION_ROCK_INDIRECT);
+		}
+	}
+}
+
+CheckForPlayersInIceTanksColdAuraSlowRange(iTank)
+{
+	new Float:xyzTankPosition[3];
+	GetClientEyePosition(iTank, xyzTankPosition);
+
+	for(new iClient=1; iClient <= MaxClients; iClient++)
+	{
+		if(RunClientChecks(iClient) &&
+			IsPlayerAlive(iClient) &&
+			g_iClientTeam[iClient] == TEAM_SURVIVORS)
+		{
+			// Get the survivor player location
+			new Float:xyzSurvivorPosition[3];
+			GetClientEyePosition(iClient, xyzSurvivorPosition);
+			// Check if player is within the radius to slow
+			// Get the distance
+			new Float:fDistance = GetVectorDistance(xyzSurvivorPosition, xyzTankPosition, false);		
+			//Freeze if they are close enough
+			if (fDistance < TANK_ICE_COLD_SLOW_AURA_RADIUS)
+			{
+				// Get the normalized distance and set their speed to be reduced that factor
+				float fSpeedReductionCalc = (1.0 - (fDistance / TANK_ICE_COLD_SLOW_AURA_RADIUS)) * TANK_ICE_COLD_SLOW_AURA_SPEED_REDUCE_AMOUNT;
+				
+				// Only set a new value if the delta is beyond a threshold
+				if (FloatAbs(fSpeedReductionCalc - g_fIceTankColdAuraSlowSpeedReduction[iClient]) > 0.01)
+				{
+					g_fIceTankColdAuraSlowSpeedReduction[iClient] = fSpeedReductionCalc;
+					SetClientSpeed(iClient);
+				}
+			}
+			// Reset the value of g_fIceTankColdAuraSlowSpeedReduction if its set and its beyond the distance
+			else if (g_fIceTankColdAuraSlowSpeedReduction[iClient] > 0.0)
+			{
+				PrintToChatAll("*** RESETTING COLD AURA SPEED %N", iClient);
+				g_fIceTankColdAuraSlowSpeedReduction[iClient] = 0.0;
+				SetClientSpeed(iClient);
+			}
 		}
 	}
 }

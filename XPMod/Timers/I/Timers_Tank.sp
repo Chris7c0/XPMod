@@ -117,6 +117,17 @@ Action:Timer_UnfreezePlayerByTank(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
+Action:Timer_EnableIceTankColdSlowAura(Handle:timer, any:iClient)
+{
+	// PrintToChatAll("___+++ REenabling COLD AURA for %N", iClient);
+	g_bIceTankColdAuraDisabled[iClient] = false;
+	SetClientSpeed(iClient);
+
+	g_hTimer_IceTankColdSlowAuraEnableAgain[iClient] = null;
+	return Plugin_Stop;
+}
+
+
 Action:Timer_UnblockTankFreezing(Handle:timer, any:iClient)
 {
 	g_bBlockTankFreezing[iClient] = false;

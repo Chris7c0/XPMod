@@ -338,6 +338,12 @@ bool SetClientSpeedOverrides(iClient, &Float:fSpeed)
 		return true;
 	}
 
+	if (g_bMovementLocked[iClient] == true)
+	{
+		fSpeed = 0.0;
+		return true;
+	}
+
 	// If they are an infected ghost, then give them fast speed.
 	if(g_iClientTeam[iClient] == TEAM_INFECTED &&
 		GetEntData(iClient, g_iOffset_IsGhost, 1) == 1)
@@ -392,9 +398,13 @@ bool SetClientSpeedOverrides(iClient, &Float:fSpeed)
 		return true;
 	}
 
-	if (g_bMovementLocked[iClient] == true)
+	// Ice Tank's cold slow AOE Aura
+	if (g_bIceTankColdAuraDisabled[iClient] == false &&
+		g_fIceTankColdAuraSlowSpeedReduction[iClient] > 0.0 &&
+		g_iClientTeam[iClient] == TEAM_SURVIVORS)
 	{
-		fSpeed = 0.0;
+		fSpeed = 1.0 - g_fIceTankColdAuraSlowSpeedReduction[iClient];
+		// PrintToChatAll("SETTING COLD AURA SPEED %N: %f", iClient, 1.0 - g_fIceTankColdAuraSlowSpeedReduction[iClient]);
 		return true;
 	}
 

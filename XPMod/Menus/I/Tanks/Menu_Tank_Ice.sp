@@ -15,12 +15,13 @@ Action:TankMenuDrawIce(iClient)
         \n Passive Abilities\
         \n - %i HP | Good At Close Range\
         \n - Freeze Survivors\
+		\n - Cold Aura: Slow Survivors When Near Them\
         \n - Weak To Fire, But Fire Goes Out Quickly\
         \n - 33%% Chance To Freeze Survivors On Punch\
         \n \
         \n Active Abilities\
         \n - [Hold CROUCH & Do Not Move] Regenerates Health\
-        \n    - Freezes Survivors Inside The Blizard Storm\
+        \n    - Freezes Survivors Inside The Blizzard Storm\
         \n - Rock Throw Freezes Survivors (No Cooldown)\
         \n ",
 		strStartingNewLines,
@@ -29,7 +30,7 @@ Action:TankMenuDrawIce(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 

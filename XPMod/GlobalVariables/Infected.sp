@@ -256,7 +256,7 @@ new bool:g_bTankOnFire[MAXPLAYERS + 1];     // Prevents constant XP rewarding
 #define TANK_ROCK_ENTITY_ID			0
 // Tank Rock Thrower (Owner)
 #define TANK_ROCK_OWNER_ID			1
-// Tank Rock Type storage in the 
+// Tank Rock Type storage in the
 #define TANK_ROCK_TYPE				2
 #define TANK_ROCK_PARTICLE_TRAIL	3
 // Tank Rock Entities that stores rock types
@@ -273,16 +273,21 @@ new bool:g_bBlockTankFirePunchCharge[MAXPLAYERS + 1];
 //new bool:g_bFireTankBaseSpeedIncreased[MAXPLAYERS + 1];
 new Float:g_fFireTankExtraSpeed[MAXPLAYERS + 1];
 // Ice Tank
-#define TANK_HEALTH_ICE                             20000
-#define TANK_ICE_REGEN_LIFE_POOL_SIZE               10000
-#define TANK_ICE_FREEZE_DURATION_PUNCH              5.0
-#define TANK_ICE_FREEZE_DURATION_ROCK_INDIRECT      6.0
-#define TANK_ICE_FREEZE_DURATION_ROCK_DIRECT        10.0
-#define TANK_ICE_ROCK_FREEZE_INDIRECT_HIT_RADIUS    350.0
+#define TANK_HEALTH_ICE                                 20000
+#define TANK_ICE_REGEN_LIFE_POOL_SIZE                   10000
+#define TANK_ICE_FREEZE_DURATION_PUNCH                  5.0
+#define TANK_ICE_FREEZE_DURATION_ROCK_INDIRECT          6.0
+#define TANK_ICE_FREEZE_DURATION_ROCK_DIRECT            10.0
+#define TANK_ICE_ROCK_FREEZE_INDIRECT_HIT_RADIUS        350.0
+#define TANK_ICE_COLD_SLOW_AURA_RADIUS                  400.0
+#define TANK_ICE_COLD_SLOW_AURA_SPEED_REDUCE_AMOUNT     1.0     //This will set their speed to 1.0 - this speed reduce amount
+#define TANK_ICE_COLD_SLOW_AURA_HIT_DISABLE_DURATION    4.0     // The amount of time to disable the 
 new g_iIceTankLifePool[MAXPLAYERS + 1];
-new bool:g_bShowingIceSphere[MAXPLAYERS + 1];
-new bool:g_bFrozenByTank[MAXPLAYERS + 1];
-new bool:g_bBlockTankFreezing[MAXPLAYERS + 1];
+bool g_bShowingIceSphere[MAXPLAYERS + 1];
+bool g_bFrozenByTank[MAXPLAYERS + 1];
+bool g_bBlockTankFreezing[MAXPLAYERS + 1];
+float g_fIceTankColdAuraSlowSpeedReduction[MAXPLAYERS + 1];
+bool g_bIceTankColdAuraDisabled[MAXPLAYERS + 1];
 new Float:g_fTankHealthPercentage[MAXPLAYERS + 1];
 new g_iTankCharge[MAXPLAYERS + 1];
 new Float:g_xyzClientTankPosition[MAXPLAYERS + 1][3];
