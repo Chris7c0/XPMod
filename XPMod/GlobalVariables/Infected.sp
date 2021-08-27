@@ -266,7 +266,8 @@ new ArrayList:g_listTankRockEntities;
 
 
 // Fire Tank
-#define TANK_HEALTH_FIRE                    11000
+#define TANK_HEALTH_FIRE                            11000
+#define FIRE_TANK_FIRE_PUNCH_COOLDOWN_DURATION      5.0
 new g_iFireDamageCounter[MAXPLAYERS + 1];
 new bool:g_bFireTankAttackCharged[MAXPLAYERS + 1];
 new bool:g_bBlockTankFirePunchCharge[MAXPLAYERS + 1];

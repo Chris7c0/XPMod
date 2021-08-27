@@ -188,7 +188,7 @@ EventsHurt_AttackerTank_Fire(Handle:hEvent, iAttackerTank, iVictim)
 			SetFireToPlayer(iVictim, iAttackerTank, 5.0);
 			
 			g_bBlockTankFirePunchCharge[iAttackerTank] = true;
-			CreateTimer(30.0, Timer_UnblockFirePunchCharge, iAttackerTank, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+			CreateTimer(FIRE_TANK_FIRE_PUNCH_COOLDOWN_DURATION, Timer_UnblockFirePunchCharge, iAttackerTank, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 		}
 		else if(GetRandomInt(1, 5) == 1)
 		{
