@@ -191,6 +191,7 @@ ResetVariablesForMap(iClient)
 	g_bCanHunterPoisonVictim[iClient] = true;
 	g_iHunterShreddingVictim[iClient] = -1;
 	g_iHunterPounceDamageCharge[iClient] = 0;
+	g_bIsHunterReadyToPoison[iClient] = false;
 	g_bIsHunterPoisoned[iClient] = false;
 	
 	//Jockey
