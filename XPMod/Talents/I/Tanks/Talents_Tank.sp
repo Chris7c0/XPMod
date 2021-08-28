@@ -114,7 +114,7 @@ EventsDeath_VictimTank(Handle:hEvent, iAttacker, iVictimTank)
 	switch(g_iTankChosen[iVictimTank])
 	{
 		case TANK_FIRE:			EventsDeath_VictimTank_Fire(hEvent, iAttacker, iVictimTank);
-		// case TANK_ICE:			EventsDeath_VictimTank_Ice(hEvent, iAttacker, iVictimTank);
+		case TANK_ICE:			EventsDeath_VictimTank_Ice(hEvent, iAttacker, iVictimTank);
 		// case TANK_NECROTANKER:	EventsDeath_VictimTank_NecroTanker(hEvent, iAttacker, iVictimTank);
 		// case TANK_VAMPIRIC:		EventsDeath_VictimTank_Vampiric(hEvent, iAttacker, iVictimTank);
 	}

@@ -276,6 +276,16 @@ EventsHurt_AttackerTank_Ice(Handle:hEvent, iAttackerTank, iVictim)
 		UnfreezePlayerByTank(iVictim);
 }
 
+EventsDeath_VictimTank_Ice(Handle:hEvent, iAttacker, iVictimTank)
+{
+	// if (RunClientChecks(iVictimTank) == false)
+	// 	return;
+
+	SuppressNeverUsedWarning(hEvent, iVictimTank, iAttacker);
+
+	ResetAllPlayersInIceTanksColdAuraSlowRange();
+}
+
 FreezePlayerByTank(iVictim, Float:fFreezeTime, Float:fStartTime = 0.2)
 {
 	if (iVictim < 1 || IsClientInGame(iVictim) == false)
@@ -483,10 +493,26 @@ CheckForPlayersInIceTanksColdAuraSlowRange(iTank)
 			// Reset the value of g_fIceTankColdAuraSlowSpeedReduction if its set and its beyond the distance
 			else if (g_fIceTankColdAuraSlowSpeedReduction[iClient] > 0.0)
 			{
-				PrintToChatAll("*** RESETTING COLD AURA SPEED %N", iClient);
+				// PrintToChatAll("*** RESETTING COLD AURA SPEED %N", iClient);
 				g_fIceTankColdAuraSlowSpeedReduction[iClient] = 0.0;
 				SetClientSpeed(iClient);
 			}
 		}
+	}
+}
+
+// On death, reset all players cold aura, it will be set again on next game frame if there is another Ice Tank
+ResetAllPlayersInIceTanksColdAuraSlowRange()
+{
+	for(new iClient=1; iClient <= MaxClients; iClient++)
+	{
+		// Reset for everyone
+		g_fIceTankColdAuraSlowSpeedReduction[iClient] = 0.0;
+		
+		// Reset the speed for any potential survivors
+		if(RunClientChecks(iClient) &&
+			IsPlayerAlive(iClient) &&
+			g_iClientTeam[iClient] == TEAM_SURVIVORS)
+			SetClientSpeed(iClient);
 	}
 }
