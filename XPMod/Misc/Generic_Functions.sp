@@ -442,7 +442,7 @@ int SetPlayerMoveType(int iClient, int iMoveType = MOVETYPE_WALK)
 
 void LockPlayerFromAttacking(int iClient)
 {
-	PrintToChat(iClient, "LockPlayerFromAttacking start");
+	// PrintToChat(iClient, "LockPlayerFromAttacking start");
 	new iWeaponEntity = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
 	if (RunEntityChecks(iWeaponEntity) == false)
 		return;
@@ -453,12 +453,12 @@ void LockPlayerFromAttacking(int iClient)
 	SetEntDataFloat(iWeaponEntity, g_iOffset_NextPrimaryAttack, 999999.0, true);
 	SetEntDataFloat(iClient, g_iOffset_NextAttack, 999999.0, true);
 
-	PrintToChat(iClient, "LockPlayerFromAttacking end");
+	// PrintToChat(iClient, "LockPlayerFromAttacking end");
 }
 
 void UnlockPlayerFromAttacking(int iClient)
 {
-	PrintToChat(iClient, "UnlockPlayerFromAttacking start");
+	// PrintToChat(iClient, "UnlockPlayerFromAttacking start");
 	new iWeaponEntity = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
 	if (RunEntityChecks(iWeaponEntity) == false)
 		return;
@@ -471,7 +471,7 @@ void UnlockPlayerFromAttacking(int iClient)
 	SetEntDataFloat(iWeaponEntity, g_iOffset_NextPrimaryAttack, fGameTime, true);
 	SetEntDataFloat(iClient, g_iOffset_NextAttack, fGameTime, true);
 
-	PrintToChat(iClient, "UnlockPlayerFromAttacking end");
+	// PrintToChat(iClient, "UnlockPlayerFromAttacking end");
 }
 
 

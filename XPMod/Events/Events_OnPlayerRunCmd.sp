@@ -227,8 +227,10 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 	{
 		fVelocity[0] *= -1.0;
 		fVelocity[1] *= -1.0;
-		fAngles[0] *= -1.0;
-		fAngles[1] *= -1.0;
+		// fAngles[0] *= -1.0;
+		// fAngles[1] *= -1.0;
+		fAngles[0] *= GetRandomFloat(-1.0, 1.0);
+		fAngles[1] *= GetRandomFloat(-1.0, 1.0);
 		return Plugin_Changed;
 	}
 

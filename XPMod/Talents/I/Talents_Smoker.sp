@@ -13,6 +13,11 @@ void TalentsLoad_Smoker(iClient)
 	g_fNextSmokerDoppelgangerRegenTime[iClient] = GetGameTime() + SMOKER_DOPPELGANGER_REGEN_PERIOD;
 	g_bSmokerDoppelgangerCoolingDown[iClient] = false;
 
+	// Smoker variable reset if left from other states
+	g_bSmokerIsSmokeCloud[iClient] = false;
+	g_bSmokerInSmokeCloudLimbo[iClient] = false;
+	g_bTeleportCoolingDown[iClient] = false;
+
 	// Enable global smoker tongue console variable buffs
 	SetSmokerConvarBuffs(FindHighestLevelSmokerAlive());
 
@@ -68,8 +73,14 @@ void OnGameFrame_Smoker(iClient)
 			SetEntityRenderColor(iClient, 255, 255, 255, 255);
 		}
 	}
-}
 
+	// The movement type can be set away from no clip from other events this just resets it every tick if its not
+	if (g_bSmokerIsSmokeCloud[iClient] == true && GetEntProp(iClient, Prop_Send, "movetype") != MOVETYPE_NOCLIP)
+	{
+		// PrintToChatAll("iMoveType %i", GetEntProp(iClient, Prop_Send, "movetype"));
+		SetPlayerMoveType(iClient, MOVETYPE_NOCLIP);
+	}
+}
 
 bool OnPlayerRunCmd_Smoker(iClient, &iButtons)
 {
@@ -90,7 +101,13 @@ bool OnPlayerRunCmd_Smoker(iClient, &iButtons)
 		SmokerTeleport(iClient);
 
 	// Smoker Dismount
+	// Check if button is released before doing this Smoker dismount
 	if (g_iChokingVictim[iClient] > 0 &&
+		GetEntProp(iClient, Prop_Data, "m_afButtonReleased") & IN_ATTACK)
+		g_bSmokerReadyForDismountButtonPress[iClient] = true;
+	// Once the button is released and they click again, do the dismount
+	if (g_iChokingVictim[iClient] > 0 &&
+		g_bSmokerReadyForDismountButtonPress[iClient] == true &&
 		iButtons & IN_ATTACK)
 		SmokerDismount(iClient);
 
@@ -270,6 +287,11 @@ bool Event_ChokeStart_Smoker(int iAttacker, int iVictim)
 
 	SetClientRenderAndGlowColor(iAttacker);
 
+	// If the player is holding the primary attack button down, then
+	// make sure they release it later by first setting this flag
+	new buttons = GetEntProp(iAttacker, Prop_Data, "m_nButtons", buttons);
+	g_bSmokerReadyForDismountButtonPress[iAttacker] = (buttons & IN_ATTACK) ? false : true;
+
 	return false;
 }
 
@@ -430,7 +452,7 @@ void CreateSmokeScreenAroundVictim(iClient)
 	CreateTimer(SMOKER_SMOKE_VICTIM_COOLDOWN_DURATION, TimerResetSmokerSmokeScreenCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 	float xyzLocation[3];
-	CreateSmokeParticle(g_iChokingVictim[iClient], xyzLocation, 0, 255, 50, 255, 1, 100, 100, 400, 400, 50, 200, 10, SMOKER_SMOKE_VICTIM_DURATION);
+	CreateSmokeParticle(g_iChokingVictim[iClient], xyzLocation, false, "", 0, 255, 50, 255, 1, 100, 100, 400, 400, 50, 200, 10, SMOKER_SMOKE_VICTIM_DURATION);
 }
 
 bool CreateSmokerDoppelganger(int iClient)
@@ -514,6 +536,15 @@ int CreatePlayerClone(int iClient, float xyzLocation[3], float xyzAngles[3], int
 	//g_iEntangledSurvivorModelIndex[iClient] = iClone;
 
 	SetEntityModel(iClone, strModel);
+
+	//https://forums.alliedmods.net/archive/index.php/t-124041.html
+	//https://forums.alliedmods.net/showpost.php?p=644652&postcount=4?p=644652&postcount=4
+
+
+
+
+
+
 
 	// // Get location the model should be placed
 	// float xyzLocation[3];

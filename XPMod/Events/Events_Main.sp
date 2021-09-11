@@ -36,6 +36,7 @@ SetupXPMEvents()
 	HookEvent("player_jump", Event_PlayerJump);
 	HookEvent("player_use", Event_PlayerUse);
 	HookEvent("friendly_fire", Event_FriendlyFire);
+	HookEvent("player_shoved", Event_PlayerShoved);
 	
 	//Survivor Events
 	HookEvent("weapon_fire", Event_WeaponFire);
@@ -719,4 +720,21 @@ Action:Event_FriendlyFire(Handle:hEvent, const String:strName[], bool:bDontBroad
 	// new type = GetEventInt(hEvent,"type");
 	// PrintToChatAll("Attacker = %d, Victim = %d, Guilty = %d, Type = %d", attacker, victim, guilty, type);
 	
+}
+
+Action:Event_PlayerShoved(Event event, const char[] name, bool dontBroadcast)
+{
+	// int iClient = GetClientOfUserId(event.GetInt("userid"));
+	// if (RunClientChecks(iClient) == false)
+	// 	return Plugin_Continue;
+
+	// if (g_bSmokerIsSmokeCloud[iClient] == true &&
+	// 	g_iClientTeam[iClient] == TEAM_INFECTED)
+	// {
+	// 	GetEntPropVector(iClient, Prop_Data, "m_vecVelocity", g_xyzPreShoveVelocity[iClient]);
+	// 	SDKHook(iClient, SDKHook_PreThink, PreThink);
+	// 	return Plugin_Stop;
+	// }
+
+	// return Plugin_Continue;
 }

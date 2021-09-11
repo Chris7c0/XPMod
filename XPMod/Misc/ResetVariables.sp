@@ -172,6 +172,8 @@ ResetVariablesForMap(iClient)
 	g_bIsEntangledInSmokerTongue[iClient] = false;
 	g_iEntangledSurvivorModelIndex[iClient] = -1;
 	g_iEntangledTongueModelIndex[iClient] = -1;
+	g_bSmokerIsSmokeCloud[iClient] = false;
+	g_bSmokerInSmokeCloudLimbo[iClient] = false;
 	SetSmokerConvarBuffs();
 	
 	//Boomer
@@ -299,6 +301,7 @@ DeleteAllGlobalTimerHandles(iClient)
 	delete g_hTimer_BillDropBombs[iClient];
 	delete g_hTimer_LouisTeleportRegenerate[iClient];
 	delete g_hTimer_UntangleSurvivorCheck[iClient];
+	delete g_hTimer_HandleSmokerSmokeCloudTick[iClient];
 	delete g_hTimer_TimerKeepBotFocusedOnXPModGoal[iClient];
 	delete g_hTimer_AdhesiveGooReset[iClient];
 	delete g_hTimer_DemiGooReset[iClient];

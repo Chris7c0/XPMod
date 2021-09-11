@@ -105,6 +105,13 @@ SetClientRenderAndGlowColor(int iClient)
 					SetClientRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (g_iSmokerTalent2Level[iClient] * 0.085))), RENDER_MODE_TRANSPARENT);
 					return;
 				}
+				// Hide smoker while he is a smoke cloud
+				if (g_bSmokerIsSmokeCloud[iClient] == true)
+				{
+					SetClientRenderColor(iClient, 255, 255, 255, 0, RENDER_MODE_TRANSPARENT);
+					SetClientGlow(iClient, 1, 0, 0, GLOWTYPE_CONSTANT);
+					return;
+				}
 			}
 			case HUNTER:
 			{

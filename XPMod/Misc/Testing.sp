@@ -20,25 +20,31 @@ Action:TestFunction1(iClient, args)
 
 	//t1 -1 1322.153564 3479.936279 624.377 255 255 255 255 1 100 100 200 400 20 200 10 10
 	//t1 3 0 0 0 255 255 255 255 1 100 100 200 400 20 200 10 10
-	CreateSmokeParticle(StringToInt(strArg[0]),
-						xyzPosition,
-						StringToInt(strArg[4]),
-						StringToInt(strArg[5]),
-						StringToInt(strArg[6]),
-						StringToInt(strArg[7]),
-						StringToInt(strArg[8]),
-						StringToInt(strArg[9]),
-						StringToInt(strArg[10]),
-						StringToInt(strArg[11]),
-						StringToInt(strArg[12]),
-						StringToInt(strArg[13]),
-						StringToInt(strArg[14]),
-						StringToInt(strArg[15]),
-						StringToFloat(strArg[16]));
+	// CreateSmokeParticle(StringToInt(strArg[0]),
+	// 					xyzPosition,
+	// 					false,
+	// 					StringToInt(strArg[4]),
+	// 					StringToInt(strArg[5]),
+	// 					StringToInt(strArg[6]),
+	// 					StringToInt(strArg[7]),
+	// 					StringToInt(strArg[8]),
+	// 					StringToInt(strArg[9]),
+	// 					StringToInt(strArg[10]),
+	// 					StringToInt(strArg[11]),
+	// 					StringToInt(strArg[12]),
+	// 					StringToInt(strArg[13]),
+	// 					StringToInt(strArg[14]),
+	// 					StringToInt(strArg[15]),
+	// 					StringToFloat(strArg[16]));
 
 	//SetPlayerAnimEvent(iClient, str1, str2, str3);
 
-	SmokerDismount(iClient);
+	// SmokerDismount(iClient);
+
+	if (g_bIsPlayerInSmokerSmokeCloud[iClient] == false)
+		SetPlayerInSmokerCloud(iClient, 23);
+	else
+		SetPlayerNotInSmokerCloud(iClient, 23);
 
 	//CatchAndReleasePlayer(StringToInt(str1));
 	//EntangleSurvivorInSmokerTongue(StringToInt(str1));
@@ -268,6 +274,7 @@ Action:TestFunction3(iClient, args)
 	char str2[99];
 	GetCmdArg(2, str2, sizeof(str2));
 
+
 	for (int i=1; i<=MaxClients; i++)
 		if(RunClientChecks(i) && IsPlayerAlive(i))
 			PrintToChatAll("%i: %N", i, i)
@@ -295,7 +302,14 @@ Action:TestFunction4(iClient, args)
 	char str1[99];
 	GetCmdArg(1, str1, sizeof(str1));
 
-	GiveEveryWeaponToSurvivor(iClient);
+	// GiveEveryWeaponToSurvivor(iClient);
+
+	int iTarget = StringToInt(str1);
+
+	if (g_bIsPlayerInSmokerSmokeCloud[iTarget] == false)
+		TurnSmokerIntoSmokeCloud(iTarget);
+	else
+		TurnBackToSmokerAfterSmokeCloud(iTarget);
 
 	// decl Float:xyzLocation[3];
 	// GetClientAbsOrigin(iClient, xyzLocation);

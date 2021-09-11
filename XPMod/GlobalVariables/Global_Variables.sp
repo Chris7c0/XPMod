@@ -155,6 +155,15 @@ new String:INFECTED_NAME[][] =          {"",
 #define MOVETYPE_FLYGRAVITY 	5
 #define MOVETYPE_PUSH           7
 #define MOVETYPE_NOCLIP         8
+// Solid Types
+#define SOLID_NONE 0        // no solid model
+#define SOLID_BSP 1         // a BSP tree
+#define SOLID_BBOX 2        // an AABB
+#define SOLID_OBB = 3       // an OBB (not implemented yet)
+#define SOLID_OBB_YAW 4     // an OBB, constrained so that it can only yaw
+#define SOLID_CUSTOM 5      // Always call into the entity for tests
+#define SOLID_VPHYSICS 6    // Solid vphysics object, get vcollide from the model and collide with that
+#define SOLID_LAST 7        //UNKNOWN
 
 
 

@@ -10,7 +10,7 @@ public void OnEntityCreated(int iEntity, const char[] classname)
 	if (IsCommonInfected(iEntity, classname))
 	{
 		EnhanceCIIfNeeded(iEntity);
-    }
+	}
 
 	if (IsTankRock(iEntity, classname))
 	{
@@ -20,7 +20,7 @@ public void OnEntityCreated(int iEntity, const char[] classname)
 		// PrintToServer("Rock Created %i", iEntityRef);
 
 		// CreateTimer(0.1, TrackRockPosition, iEntity, TIMER_FLAG_NO_MAPCHANGE);
-    }
+	}
 }
 
 public void OnEntityDestroyed(int iEntity)
@@ -42,19 +42,19 @@ public void OnEntityDestroyed(int iEntity)
 	{
 		SDKUnhook(iEntity, SDKHook_OnTakeDamage, OnTakeDamage);
 		PopZombieOffEnhancedCIEntitiesList(iEntity);
-    }
+	}
 
 	//PrintToServer("OnEntityDestroyed %i", entity);
 	if (IsTankRock(iEntity, strClassname))
 	{
 		HandleTankRockDestroy(iEntity);
 		PopRockOffTankRockEntitiesList(iEntity);
-    }
+	}
 }
 
 public Action:OnTakeDamage(victim, &attacker, &inflictor, &Float:damage, &damageType, &weapon, Float:damageForce[3], Float:damagePosition[3]) 
 {
-	//PrintToChatAll("OnTakeDamage: %i", victim);
+	// PrintToChatAll("OnTakeDamage: %i", victim);
 
 	// Check that this is an uncommon infected and not world or bot/human player
 	if (victim > 0 &&
@@ -68,6 +68,13 @@ public Action:OnTakeDamage(victim, &attacker, &inflictor, &Float:damage, &damage
 		damage = damage > CI_MAX_DAMAGE_PER_HIT ? CI_MAX_DAMAGE_PER_HIT : damage;
 		return Plugin_Changed;
 	}
+
+	
+	// if (g_bSmokerIsSmokeCloud[victim] == true)
+	// {
+	// 	damage = 0.0;
+	// 	return Plugin_Changed;
+	// }
 	
 	return Plugin_Continue;
 }
@@ -98,3 +105,13 @@ void UnhookAllOnTakeDamage()
 		SDKUnhook(i, SDKHook_OnTakeDamage, OnTakeDamage);
 	}
 }
+
+// THis is called on the next pre think after sdkhooked
+// public void PreThink(int iClient)
+// {
+// 	// This is for the Smokers smoke cloud when hes shoved
+// 	TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, g_xyzPreShoveVelocity[iClient]);
+
+// 	// Unhook now that the action is complete
+// 	SDKUnhook(iClient, SDKHook_PreThink, PreThink);
+// }

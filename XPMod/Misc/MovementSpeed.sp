@@ -381,6 +381,14 @@ bool SetClientSpeedOverrides(iClient, &Float:fSpeed)
 		return true;
 	}
 
+	// Smoker Smoke Cloud slow
+	if (g_bIsPlayerInSmokerSmokeCloud[iClient] &&
+		g_iClientTeam[iClient] == TEAM_SURVIVORS)
+	{
+		fSpeed = SMOKER_SMOKE_CLOUD_SURVIVOR_SPEED;
+		return true;
+	}
+
 	// Spitter adhession spit
 	if (g_fAdhesiveAffectAmount[iClient] > 0 &&
 		g_iClientTeam[iClient] == TEAM_SURVIVORS)
@@ -407,6 +415,16 @@ bool SetClientSpeedOverrides(iClient, &Float:fSpeed)
 		// PrintToChatAll("SETTING COLD AURA SPEED %N: %f", iClient, 1.0 - g_fIceTankColdAuraSlowSpeedReduction[iClient]);
 		return true;
 	}
+
+	// Smoker's Smoke Cloud Speed
+	if (g_bSmokerIsSmokeCloud[iClient] == true &&
+		g_iInfectedCharacter[iClient] == SMOKER &&
+		g_iClientTeam[iClient] == TEAM_INFECTED)
+	{
+		fSpeed = 0.4;
+		return true;
+	}
+	
 
 	return false;
 }

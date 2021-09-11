@@ -269,6 +269,8 @@ CreateRochelleSmoke(iClient)
 int CreateSmokeParticle(
 	int iClient = -1,									// Target to attach to
 	float xyzPosition[3],								// Position to create it 0,0,0 will force getting client location
+	bool bAttachToTarget = false,						// Attach to the target entity or not
+	const char strAttachTarget[] = "",					// Target to attach to
 	int iRed = 255, int iGreen = 255, int iBlue = 255, 	// Color of smoke
 	int iAlpha = 255,									// How Opaque
 	int iMiddleGapSize = 1,		// Gap in the middle
@@ -324,11 +326,22 @@ int CreateSmokeParticle(
 	DispatchKeyValue(iSmokeEntity,"RenderAmt", strTemp);
 	DispatchKeyValue(iSmokeEntity,"SmokeMaterial", "particle/particle_smokegrenade1.vmt");		//THIS WAS CHANGED FROM THE PRECACHED TO SEE HOW IT IS
 	
+	if (bAttachToTarget)
+	{
+		SetVariantString("!activator");
+		AcceptEntityInput(iSmokeEntity, "SetParent", iClient, iSmokeEntity, 0);
+
+		SetVariantString(strAttachTarget);
+		AcceptEntityInput(iSmokeEntity, "SetParentAttachmentMaintainOffset", iSmokeEntity, iSmokeEntity, 0);
+	}
+
 	DispatchSpawn(iSmokeEntity);
 	AcceptEntityInput(iSmokeEntity, "TurnOn");
 	
 	if (fDuration > 0.0)
 		CreateTimer(fDuration, TimerStopSmokeEntity, iSmokeEntity, TIMER_FLAG_NO_MAPCHANGE);
+
+	return iSmokeEntity;
 }
 
 TurnOffAndDeleteSmokeStackParticle(iSmokeStackEntity)

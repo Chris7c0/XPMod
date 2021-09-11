@@ -180,6 +180,27 @@ int GetSurvivorTempHealth(int iClient)
 // 	ConvertAllSurvivorHealthToTemporary(iClient);
 // }
 
+bool ConvertSomeSurvivorHealthToTemporary(int iClient, int iHealthConversionAmount)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
+		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1)
+		return false;
+	
+	// Store current health numbers
+	new iCurrentHealth = GetPlayerHealth(iClient);
+	// new iTempHealth = GetSurvivorTempHealth(iClient);
+	
+	if (iCurrentHealth <= 1)
+		return false;
+
+	SetPlayerHealth(iClient, -1 * iHealthConversionAmount, true);
+	AddTempHealthToSurvivor(iClient, float(iHealthConversionAmount));
+
+	return true;
+}
+
 bool ConvertAllSurvivorHealthToTemporary(int iClient)
 {
 	if (RunClientChecks(iClient) == false ||
