@@ -318,6 +318,7 @@ HackTargetPlayerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 	else if (action == MenuAction_Select)
 	{
 		if (RunClientChecks(iClient) == false || 
+			IsPlayerAlive(iClient) == false || 
 			g_iClientTeam[iClient] != TEAM_SURVIVORS || 
 			IsFakeClient(iClient))
 			return;
