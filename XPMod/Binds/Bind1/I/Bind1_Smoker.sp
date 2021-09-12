@@ -21,6 +21,12 @@ void Bind1Press_Smoker(iClient)
 		return;
 	}
 
+	if(g_bSmokerSmokeCloudInCooldown[iClient] == true)
+	{
+		PrintHintText(iClient, "In cooldown, you must wait for Smoke Cloud to recharge.");
+		return;
+	}
+
 	if (g_iSmokerTalent2Level[iClient] <= 0)
 	{
 		PrintHintText(iClient, "You are not high enough level for Smoker Bind 1");
@@ -36,6 +42,10 @@ void Bind1Press_Smoker(iClient)
 	TurnSmokerIntoSmokeCloud(iClient);
 
 	g_iClientBindUses_1[iClient]++;
+
+	// Create the cooldown
+	g_bSmokerSmokeCloudInCooldown[iClient] = true;
+	CreateTimer(SMOKER_SMOKE_CLOUD_COOLDOWN_DURATION, Timer_SmokerSmokeCloudCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
 }
 
 
@@ -117,7 +127,8 @@ TurnBackToSmokerAfterSmokeCloud(int iClient)
 	if (RunClientChecks(iClient) == true && 
 		IsPlayerAlive(iClient) == true && 
 		IsFakeClient(iClient) == false &&
-		g_iInfectedCharacter[iClient] == SMOKER)
+		g_iInfectedCharacter[iClient] == SMOKER &&
+		GetEntData(iClient, g_iOffset_IsGhost, 1) != 1)
 	{
 		PrintHintText(iClient, "Returned to Smoker form.");
 	}
@@ -147,7 +158,7 @@ Action TimerHandleSmokerInSmokeCloudLimbo(Handle:timer, int iClient)
 		g_iClientTeam[iClient] != TEAM_INFECTED ||
 		g_bSmokerInSmokeCloudLimbo[iClient] == false ||
 		RunClientChecks(iClient) == false ||
-		g_bIsGhost[iClient] == true ||
+		GetEntData(iClient, g_iOffset_IsGhost, 1) == 1 ||
 		IsPlayerAlive(iClient) == false)
 	{
 		TurnBackToSmokerAfterSmokeCloud(iClient)
@@ -169,11 +180,13 @@ Action TimerHandleSmokerSmokeCloudTick(Handle:timer, int iClient)
 		g_bSmokerIsSmokeCloud[iClient] == false ||
 		RunClientChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false ||
+		GetEntData(iClient, g_iOffset_IsGhost, 1) == 1 ||
 		g_iSmokerSmokeCloudTicksUsed[iClient] >= g_iSmokerSmokeCloudTicksPool[iClient])
 	{
 		if (g_iInfectedCharacter[iClient] == SMOKER && 
 			RunClientChecks(iClient) == true &&
-			IsPlayerAlive(iClient) == true)
+			IsPlayerAlive(iClient) == true &&
+			GetEntData(iClient, g_iOffset_IsGhost, 1) != 1)
 			// Set player in limbo if they are the Smoker still and are still valid and alive
 			PutSmokerWithExpiredSmokeCloudIntoLimbo(iClient);
 		else

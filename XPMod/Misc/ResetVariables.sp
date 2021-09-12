@@ -174,6 +174,7 @@ ResetVariablesForMap(iClient)
 	g_iEntangledTongueModelIndex[iClient] = -1;
 	g_bSmokerIsSmokeCloud[iClient] = false;
 	g_bSmokerInSmokeCloudLimbo[iClient] = false;
+	g_bSmokerSmokeCloudInCooldown[iClient] = false;
 	SetSmokerConvarBuffs();
 	
 	//Boomer

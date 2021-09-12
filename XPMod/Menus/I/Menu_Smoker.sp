@@ -109,20 +109,27 @@ Action:NoxiousMenuDraw(iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	SetMenuTitle(menu, "\
-		%s										Illusive Trickster (Level %d)\
+		%s								Illusive Trickster (Level %d)\
 		\n \
-		\n 8.5%% Invisibility per Level While Pulling or Choking A Victim:\
-		\n	- [PRESS CROUCH] Toggle Invisibility\
+		\n 8.5%% Invisibility per Level While Pulling or Choking:\
+		\n	- [PRESS CROUCH] Toggle\
 		\n \
-		\n While Choking A Victim:\
-		\n	- Hide Their Glow\
-		\n	- [PRESS WALK] Create A Smoke Screen Around Them\
+		\n While Choking:\
+		\n	- Hide Victim Glow\
+		\n	- [PRESS WALK] Create A Smoke Screen On Victim\
 		\n \
-		\n [PRESS RELOAD] Create Smoker Doppelganger Decoy On Your Crosshair\
-		\n	- Regenerates While Alive as Smoker (Max 5 Decoys)\
+		\n [PRESS RELOAD] Create Smoker Doppelganger Decoy On Crosshair\
+		\n	- Regenerates While Alive (Max 5)\
 		\n \
 		\n					Bind 1: Smoke Cloud Confusion\
-		\n	- Coming Soon!\
+		\n \
+		\n Turn Into Fast Moving Invulnerable Smoke Cloud\
+		\n \
+		\n Survivors\
+		\n	- Get Disorientated\
+		\n	- 2 HP per Sec Converted to Temp\
+		\n Infected\
+		\n	- +300 HP per Sec\
 		\n ",
 		strStartingNewLines,
 		g_iSmokerTalent2Level[iClient]);
@@ -149,7 +156,7 @@ Action:NoxiousMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 

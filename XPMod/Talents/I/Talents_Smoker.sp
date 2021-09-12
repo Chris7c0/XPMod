@@ -74,12 +74,13 @@ void OnGameFrame_Smoker(iClient)
 		}
 	}
 
-	// The movement type can be set away from no clip from other events this just resets it every tick if its not
-	if (g_bSmokerIsSmokeCloud[iClient] == true && GetEntProp(iClient, Prop_Send, "movetype") != MOVETYPE_NOCLIP)
-	{
-		// PrintToChatAll("iMoveType %i", GetEntProp(iClient, Prop_Send, "movetype"));
-		SetPlayerMoveType(iClient, MOVETYPE_NOCLIP);
-	}
+	// This is potentially causing a glitche where the player is stuck afterwards. Removing for now.
+	// // The movement type can be set away from no clip from other events this just resets it every tick if its not
+	// if (g_bSmokerIsSmokeCloud[iClient] == true && GetEntProp(iClient, Prop_Send, "movetype") != MOVETYPE_NOCLIP)
+	// {
+	// 	// PrintToChatAll("iMoveType %i", GetEntProp(iClient, Prop_Send, "movetype"));
+	// 	SetPlayerMoveType(iClient, MOVETYPE_NOCLIP);
+	// }
 }
 
 bool OnPlayerRunCmd_Smoker(iClient, &iButtons)
