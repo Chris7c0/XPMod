@@ -259,7 +259,7 @@ Action:TimerPoisonCloud(Handle:timer, any:iClient)
 		if(IsFakeClient(victim) == false)
 			PrintHintText(victim, "You have entered a poison cloud");
 		
-		DealDamage(victim, iClient, 1, DAMAGETYPE_SPITTER_GOO);
+		DealDamage(victim, iClient, 1, DAMAGETYPE_HUNTER_POUNCE);
 		
 		g_iClientXP[iClient] += 3;
 		CheckLevel(iClient);
