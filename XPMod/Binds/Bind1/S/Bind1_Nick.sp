@@ -78,6 +78,14 @@ NickGamblingProblemRollTheDice(int iClient)
 		}
 		case 4: //Rambo
 		{
+			// Dont give rambo if they are currently incap or grappled
+			if (IsClientGrappled(iClient) == true || GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1)
+			{
+				// Roll again
+				NickGamblingProblemRollTheDice(iClient);
+				return;
+			}
+
 			StoreCurrentPrimaryWeapon(iClient);
 			StoreCurrentPrimaryWeaponAmmo(iClient);
 			
