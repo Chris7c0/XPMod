@@ -302,7 +302,7 @@ new g_iWareStationOwnerIDOfCurrentlyViewedStation[MAXPLAYERS + 1];
 float g_xyzWarezStationLocation[MAXPLAYERS + 1][3];
 float g_fWarezStationSpeedBoost[MAXPLAYERS + 1];
 float g_fLouisXMRWallet[MAXPLAYERS + 1];
-#define LOUIS_HEADSHOT_XMR_STARTING_AMOUNT              94.20001
+#define LOUIS_HEADSHOT_XMR_STARTING_AMOUNT              4.20001
 #define LOUIS_HEADSHOT_XMR_AMOUNT_CI                    0.1
 #define LOUIS_HEADSHOT_XMR_AMOUNT_SI                    0.5
 #define LOUIS_HEADSHOP_ITEM_SPEED_HAX                   1
