@@ -46,7 +46,8 @@ Action:TestFunction1(iClient, args)
 	// else
 	// 	SetPlayerNotInSmokerCloud(iClient, 23);
 
-	TarFingersBlindPlayerIncrementally(iClient);
+	SmokerHitTarFingerVictim(iClient);
+	// TarFingersBlindPlayerIncrementally(iClient);
 
 	//CatchAndReleasePlayer(StringToInt(str1));
 	//EntangleSurvivorInSmokerTongue(StringToInt(str1));

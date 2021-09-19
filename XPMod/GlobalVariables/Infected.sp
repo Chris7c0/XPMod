@@ -147,8 +147,8 @@ new g_iSmokerSmokeCloudTicksUsed[MAXPLAYERS + 1];
 new g_iTarFingerVictimBlindAmount[MAXPLAYERS + 1];
 #define SMOKER_TAR_FINGERS_BLIND_FADE_DURATION_VALUE        4500
 #define SMOKER_TAR_FINGERS_BLIND_DURATION                   10.0
-#define SMOKER_TAR_FINGERS_BLIND_AMOUNT_START               100
-#define SMOKER_TAR_FINGERS_BLIND_AMOUNT_INCREMENT           50
+#define SMOKER_TAR_FINGERS_BLIND_AMOUNT_START               110
+#define SMOKER_TAR_FINGERS_BLIND_AMOUNT_INCREMENT           70
 #define SMOKER_TAR_FINGERS_BLIND_AMOUNT_MAX                 255
 //For Teleport
 #define SMOKER_TELEPORT_COOLDOWN_PERIOD             5.0

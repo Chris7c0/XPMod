@@ -573,7 +573,7 @@ bool GetCrosshairPosition(int iClient, float xyzLocation[3], float xyzEyeAngles[
 
 SmokerHitTarFingerVictim(int iVictim)
 {
-	PrintToChatAll("SmokerHitTarFingerVictim: %i", iVictim);
+	// PrintToChatAll("SmokerHitTarFingerVictim: %i", iVictim);
 
 	if (RunClientChecks(iVictim) == false ||
 		g_iClientTeam[iVictim] != TEAM_SURVIVORS ||
@@ -599,27 +599,28 @@ SmokerHitTarFingerVictim(int iVictim)
 	//Play fly sounds
 	//EmitSoundToAll(SOUND_FLIES, victim, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
 
-	float xyzPosition[3];
-	GetClientEyePosition(iVictim, xyzPosition);
-	xyzPosition[2] -= 80.0;
+	// Put the smoke slightly in front of the player to help it stay closer to in front of them.
+	float xyzPosition[3], vAngles[3];
+	GetLocationVectorInfrontOfClient(iVictim, xyzPosition, vAngles, 80.0);
+	
 	g_iSmokerInfectionCloudEntity[iVictim] = CreateSmokeParticle(
 		iVictim,		// Target to attach to
 		xyzPosition,	// Position to create it 0,0,0 will force getting client location
 		true,
-		"mouth",
+		"eyes",
 		40, 51, 1, 	// Color of smoke
 		255,			// How Opaque
 		1,				// Gap in the middle
-		100,				// Speed the smoke moves outwards
-		1,				// Speed the smoke moves up
-		75,				// Original Size
-		100,			// End Size
-		200,			// Amount of smoke created
-		50,				// Smoke jets outside of the original
+		50,			// Speed the smoke moves outwards
+		10,				// Speed the smoke moves up
+		100,			// Original Size
+		150,			// End Size
+		100,			// Amount of smoke created
+		50,			// Smoke jets outside of the original
 		10,				// Amount of global twisting
 		20.0			// Duration (-1.0 is never destroy)
 	);
-	
+
 	CreateTimer(20.0, TimerStopTarFingersInfection, iVictim, TIMER_FLAG_NO_MAPCHANGE);
 }
 
