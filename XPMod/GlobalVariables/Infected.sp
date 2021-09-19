@@ -106,8 +106,7 @@ bool g_bSmokerVictimGlowDisabled[MAXPLAYERS + 1];
 bool g_bSmokerReadyForDismountButtonPress[MAXPLAYERS + 1];
 bool SetMoveTypeBackToNormalOnNextGameFrame[MAXPLAYERS + 1];
 new bool:g_bIsElectrocuting[MAXPLAYERS + 1];
-new bool:g_bIsSmokeInfected[MAXPLAYERS + 1];
-new bool:g_bIsSmokeEntityOff;
+new bool:g_bIsTarFingerVictim[MAXPLAYERS + 1];
 #define SMOKER_DOPPELGANGER_MAX_CLONES                  5
 #define SMOKER_DOPPELGANGER_DURATION                    15.0
 #define SMOKER_DOPPELGANGER_REGEN_PERIOD                10.0
@@ -145,6 +144,12 @@ new g_iSmokerSmokeCloudTicksUsed[MAXPLAYERS + 1];
 #define SMOKER_SMOKE_CLOUD_TEMP_HEALTH_CONVERSION_PER_TICK  2
 #define SMOKER_SMOKE_CLOUD_INFECTED_HEAL_RATE_PER_TICK      300
 #define SMOKER_UNTANGLE_PLAYER_DISTANCE                     100.0
+new g_iTarFingerVictimBlindAmount[MAXPLAYERS + 1];
+#define SMOKER_TAR_FINGERS_BLIND_FADE_DURATION_VALUE        4500
+#define SMOKER_TAR_FINGERS_BLIND_DURATION                   10.0
+#define SMOKER_TAR_FINGERS_BLIND_AMOUNT_START               100
+#define SMOKER_TAR_FINGERS_BLIND_AMOUNT_INCREMENT           50
+#define SMOKER_TAR_FINGERS_BLIND_AMOUNT_MAX                 255
 //For Teleport
 #define SMOKER_TELEPORT_COOLDOWN_PERIOD             5.0
 new Float:g_fMapsMaxTeleportHeight;

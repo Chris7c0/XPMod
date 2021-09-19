@@ -41,10 +41,12 @@ Action:TestFunction1(iClient, args)
 
 	// SmokerDismount(iClient);
 
-	if (g_bIsPlayerInSmokerSmokeCloud[iClient] == false)
-		SetPlayerInSmokerCloud(iClient, 23);
-	else
-		SetPlayerNotInSmokerCloud(iClient, 23);
+	// if (g_bIsPlayerInSmokerSmokeCloud[iClient] == false)
+	// 	SetPlayerInSmokerCloud(iClient, 23);
+	// else
+	// 	SetPlayerNotInSmokerCloud(iClient, 23);
+
+	TarFingersBlindPlayerIncrementally(iClient);
 
 	//CatchAndReleasePlayer(StringToInt(str1));
 	//EntangleSurvivorInSmokerTongue(StringToInt(str1));

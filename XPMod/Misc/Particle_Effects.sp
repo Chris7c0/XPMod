@@ -148,7 +148,7 @@ int CreateParticle(String:type[], Float:time, entity, attach = ATTACH_NONE, bool
 		DispatchSpawn(particle);
 		ActivateEntity(particle);
 		AcceptEntityInput(particle, "Start");
-		if(time > 0.0)
+		if (time > 0.0)
 			CreateTimer(time, DeleteParticle, particle);
 	} 
 	else 
@@ -276,11 +276,11 @@ int CreateSmokeParticle(
 	int iMiddleGapSize = 1,		// Gap in the middle
 	int iOutwardSpeed = 100,	// Speed the smoke moves outwards
 	int iUpwardSpeed = 100,		// Speed the smoke moves up
-	int iStartSize = 200,		// Amount of smoke created
-	int iEndSize = 400,			// Smoke jets outside of the original
-	int iSmokeRate = 20,		// Amount of global twisting
-	int iJetLength = 200,		// Color
-	int iTwist = 10,			// Transparency
+	int iStartSize = 200,		// Original Size
+	int iEndSize = 400,			// End Size
+	int iSmokeRate = 20,		// Amount of smoke created
+	int iJetLength = 200,		// Smoke jets outside of the original
+	int iTwist = 10,			// Amount of global twisting
 	float fDuration = -1.0		// Duration (-1.0 is never destroy)
 	)
 {

@@ -361,11 +361,11 @@ CreateSmokerSmokeCloudParticle(iClient)
 		1,				// Gap in the middle
 		100,			// Speed the smoke moves outwards
 		100,			// Speed the smoke moves up
-		200,			// Amount of smoke created
-		400,			// Smoke jets outside of the original
-		20,				// Amount of global twisting
-		200,			// Color
-		10,				// Transparency
+		200,			// Original Size
+		400,			// End Size
+		20,				// Amount of smoke created
+		200,			// Smoke jets outside of the original
+		10,				// Amount of global twisting
 		1.5				// Duration (-1.0 is never destroy)
 	);
 }

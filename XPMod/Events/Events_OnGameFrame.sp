@@ -18,38 +18,6 @@ public OnGameFrame()
 		{
 			// Handle Victim Health Meters
 			PrintVictimHealthMeterToSurvivorPlayer(iClient);
-
-			if(g_bIsSmokeInfected[iClient] == true)
-			{
-				if(IsValidEntity(g_iSmokerInfectionCloudEntity[iClient]))
-				{
-					decl String:entclass[16];
-					GetEntityNetClass(g_iSmokerInfectionCloudEntity[iClient], entclass, 16);
-					if(StrEqual(entclass,"CSmokeStack",true) == true)
-					{
-						decl Float:xyzOrigin[3], Float:xyzAngles[3];
-						if(g_bIsSmokeEntityOff == true)
-						{
-							//DispatchKeyValue(g_iSmokerInfectionCloudEntity[iClient],"Rate", "30");
-							GetLocationVectorInfrontOfClient(iClient, xyzOrigin, xyzAngles, 1.0, -25.0);
-							
-							TeleportEntity(g_iSmokerInfectionCloudEntity[iClient], xyzOrigin, NULL_VECTOR, NULL_VECTOR);
-							
-							AcceptEntityInput(g_iSmokerInfectionCloudEntity[iClient], "TurnOn");
-							g_bIsSmokeEntityOff =  false;
-						}
-						else
-						{
-							//DispatchKeyValue(g_iSmokerInfectionCloudEntity[iClient],"Rate", "0");
-							GetLocationVectorInfrontOfClient(iClient, xyzOrigin, xyzAngles, 100.0, -25.0);
-							
-							TeleportEntity(g_iSmokerInfectionCloudEntity[iClient], xyzOrigin, NULL_VECTOR, NULL_VECTOR);
-							AcceptEntityInput(g_iSmokerInfectionCloudEntity[iClient], "TurnOff");
-							g_bIsSmokeEntityOff = true;
-						}
-					}
-				}
-			}
 			
 			if(g_bIsSurvivorVomiting[iClient] == true)
 			{

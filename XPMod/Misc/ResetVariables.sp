@@ -159,7 +159,7 @@ ResetVariablesForMap(iClient)
 	SetMoveTypeBackToNormalOnNextGameFrame[iClient] = false;
 	g_bHasSmokersPoisonCloudOut[iClient] = false;
 	g_bIsElectrocuting[iClient] = false;
-	g_bIsSmokeInfected[iClient] = false;
+	g_bIsTarFingerVictim[iClient] = false;
 	g_iSmokerInfectionCloudEntity[iClient] = -1;
 	g_bSmokerSmokeScreenOnCooldown[iClient] = false;
 	g_bTeleportCoolingDown[iClient] = false;
@@ -175,6 +175,7 @@ ResetVariablesForMap(iClient)
 	g_bSmokerIsSmokeCloud[iClient] = false;
 	g_bSmokerInSmokeCloudLimbo[iClient] = false;
 	g_bSmokerSmokeCloudInCooldown[iClient] = false;
+	g_iTarFingerVictimBlindAmount[iClient] = 0;
 	SetSmokerConvarBuffs();
 	
 	//Boomer
@@ -303,6 +304,7 @@ DeleteAllGlobalTimerHandles(iClient)
 	delete g_hTimer_LouisTeleportRegenerate[iClient];
 	delete g_hTimer_UntangleSurvivorCheck[iClient];
 	delete g_hTimer_HandleSmokerSmokeCloudTick[iClient];
+	delete g_hTimer_ResetTarFingerVictimBlindAmount[iClient];
 	delete g_hTimer_TimerKeepBotFocusedOnXPModGoal[iClient];
 	delete g_hTimer_AdhesiveGooReset[iClient];
 	delete g_hTimer_DemiGooReset[iClient];

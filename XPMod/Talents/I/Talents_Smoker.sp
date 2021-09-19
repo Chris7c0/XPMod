@@ -138,63 +138,24 @@ bool OnPlayerRunCmd_Smoker(iClient, &iButtons)
 }
 
 
-void EventsHurt_AttackerSmoker(Handle:hEvent, attacker, victim)
+void EventsHurt_AttackerSmoker(Handle:hEvent, iAttacker, iVictim)
 {
-	if (IsFakeClient(attacker))
+	if (IsFakeClient(iAttacker))
 		return;
 
-	if (g_iClientTeam[victim] != TEAM_SURVIVORS)
+	if (g_iClientTeam[iVictim] != TEAM_SURVIVORS)
 		return;
 	
-	decl String:weapon[20];
-	GetEventString(hEvent,"weapon", weapon,20);
+	decl String:strWeapon[20];
+	GetEventString(hEvent,"weapon", strWeapon, 20);
 
-	if (g_iSmokerTalent3Level[attacker] > 0 && 
-		g_bIsSmokeInfected[victim] == false && 
-		StrEqual(weapon, "smoker_claw") == true)
+	// Only call if hit by claw and not being choked by the attacking Smoker
+	// only actual melee counts
+	if (g_iSmokerTalent3Level[iAttacker] > 0 && 
+		StrEqual(strWeapon, "smoker_claw") == true &&
+		g_bSmokerGrappled[iVictim] == false)
 	{
-		CreateParticle("bug_zapper_fly_cloud", 20.0, victim, ATTACH_MOUTH, true);
-		CreateParticle("bug_zapper_fly_cloud", 20.0, victim, ATTACH_MOUTH, true);
-		CreateParticle("bug_zapper_fly_cloud", 20.0, victim, ATTACH_MOUTH, true);
-		//CreateParticle("smoke_gib_01", 10.0, iClient, ATTACH_MOUTH, true, 0.0, 0.0, -5.0);
-		//CreateParticle("smoker_spore_attack", 20.0, victim, ATTACH_NORMAL, true);
-		
-		
-		new Float:vec[3];
-		GetClientEyePosition(victim, vec);
-		
-		//Play fly sounds
-		//EmitSoundToAll(SOUND_FLIES, victim, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
-		
-		vec[2] -= 25.0;
-		
-		new smoke = CreateEntityByName("env_smokestack");
-							
-		new String:clientName[128], String:vecString[32];
-		Format(clientName, sizeof(clientName), "Smoke%i", victim);
-		Format(vecString, sizeof(vecString), "%f %f %f", vec[0], vec[1], vec[2]);
-		
-		DispatchKeyValue(smoke,"targetname", clientName);
-		DispatchKeyValue(smoke,"Origin", vecString);
-		DispatchKeyValue(smoke,"BaseSpread", "0");		//Gap in the middle
-		DispatchKeyValue(smoke,"SpreadSpeed", "100");	//Speed the smoke moves outwards
-		DispatchKeyValue(smoke,"Speed", "80");			//Speed the smoke moves up
-		DispatchKeyValue(smoke,"StartSize", "100");
-		DispatchKeyValue(smoke,"EndSize", "100");
-		DispatchKeyValue(smoke,"Rate", "20");			//Amount of smoke created
-		DispatchKeyValue(smoke,"JetLength", "100");		//Smoke jets outside of the original
-		DispatchKeyValue(smoke,"Twist", "10"); 			//Amount of global twisting
-		//DispatchKeyValue(smoke,"RenderColor", "200 200 40");
-		DispatchKeyValue(smoke,"RenderColor", "50 130 1");
-		DispatchKeyValue(smoke,"RenderAmt", "255");		//Transparency
-		DispatchKeyValue(smoke,"SmokeMaterial", "particle/particle_smokegrenade1.vmt");		//THIS WAS CHANGED FROM THE PRECACHED TO SEE HOW IT IS
-		
-		DispatchSpawn(smoke);
-		AcceptEntityInput(smoke, "TurnOn");
-		g_bIsSmokeInfected[victim] = true;
-		g_iSmokerInfectionCloudEntity[victim] = smoke;
-		CreateTimer(0.1, TimerMoveSmokePoof1, victim, TIMER_FLAG_NO_MAPCHANGE);
-		CreateTimer(20.0, TimerStopInfection, victim, TIMER_FLAG_NO_MAPCHANGE);
+		SmokerHitTarFingerVictim(iVictim);
 	}
 }
 
@@ -346,7 +307,7 @@ void SmokerTeleport(iClient)
 
 	if(g_bTeleportCoolingDown[iClient] == true)
 	{
-		PrintHintText(iClient, "You must wait %i seconds between teleportations.", RoundToNearest(SMOKER_TELEPORT_COOLDOWN_PERIOD));
+		PrintHintText(iClient, "You must wait %i seconds between teleportation.", RoundToNearest(SMOKER_TELEPORT_COOLDOWN_PERIOD));
 		return;
 	}
 
@@ -608,4 +569,79 @@ bool GetCrosshairPosition(int iClient, float xyzLocation[3], float xyzEyeAngles[
 	CloseHandle(trace);
 
 	return true;
+}
+
+SmokerHitTarFingerVictim(int iVictim)
+{
+	PrintToChatAll("SmokerHitTarFingerVictim: %i", iVictim);
+
+	if (RunClientChecks(iVictim) == false ||
+		g_iClientTeam[iVictim] != TEAM_SURVIVORS ||
+		g_bSmokerGrappled[iVictim] == true ||
+		IsPlayerAlive(iVictim) == false)
+		return;
+
+	TarFingersBlindPlayerIncrementally(iVictim);
+
+	// Create the effects if scratched for the first time, otherwise done here
+	if (g_bIsTarFingerVictim[iVictim] == true)
+		return;
+
+	g_bIsTarFingerVictim[iVictim] = true;
+	
+	// Create particles for first hit
+	CreateParticle("bug_zapper_fly_cloud", 20.0, iVictim, ATTACH_MOUTH, true);
+	CreateParticle("bug_zapper_fly_cloud", 20.0, iVictim, ATTACH_MOUTH, true);
+	CreateParticle("bug_zapper_fly_cloud", 20.0, iVictim, ATTACH_MOUTH, true);
+	//CreateParticle("smoke_gib_01", 10.0, iClient, ATTACH_MOUTH, true, 0.0, 0.0, -5.0);
+	//CreateParticle("smoker_spore_attack", 20.0, victim, ATTACH_NORMAL, true);
+	
+	//Play fly sounds
+	//EmitSoundToAll(SOUND_FLIES, victim, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
+
+	float xyzPosition[3];
+	GetClientEyePosition(iVictim, xyzPosition);
+	xyzPosition[2] -= 80.0;
+	g_iSmokerInfectionCloudEntity[iVictim] = CreateSmokeParticle(
+		iVictim,		// Target to attach to
+		xyzPosition,	// Position to create it 0,0,0 will force getting client location
+		true,
+		"mouth",
+		40, 51, 1, 	// Color of smoke
+		255,			// How Opaque
+		1,				// Gap in the middle
+		100,				// Speed the smoke moves outwards
+		1,				// Speed the smoke moves up
+		75,				// Original Size
+		100,			// End Size
+		200,			// Amount of smoke created
+		50,				// Smoke jets outside of the original
+		10,				// Amount of global twisting
+		20.0			// Duration (-1.0 is never destroy)
+	);
+	
+	CreateTimer(20.0, TimerStopTarFingersInfection, iVictim, TIMER_FLAG_NO_MAPCHANGE);
+}
+
+TarFingersBlindPlayerIncrementally(iVictim)
+{
+	if (RunClientChecks(iVictim) == false ||
+		IsFakeClient(iVictim) == true ||
+		g_iClientTeam[iVictim] != TEAM_SURVIVORS ||
+		IsPlayerAlive(iVictim) == false)
+		return;
+
+	// Calculate the blind amount
+	g_iTarFingerVictimBlindAmount[iVictim] = g_iTarFingerVictimBlindAmount[iVictim] == 0 ?
+		SMOKER_TAR_FINGERS_BLIND_AMOUNT_START :
+		g_iTarFingerVictimBlindAmount[iVictim] + SMOKER_TAR_FINGERS_BLIND_AMOUNT_INCREMENT > SMOKER_TAR_FINGERS_BLIND_AMOUNT_MAX ? 
+			SMOKER_TAR_FINGERS_BLIND_AMOUNT_MAX : 
+			g_iTarFingerVictimBlindAmount[iVictim] + SMOKER_TAR_FINGERS_BLIND_AMOUNT_INCREMENT;
+	
+	// Create Timer To Reset the blind amount
+	delete g_hTimer_ResetTarFingerVictimBlindAmount[iVictim];
+	g_hTimer_ResetTarFingerVictimBlindAmount[iVictim] = CreateTimer(SMOKER_TAR_FINGERS_BLIND_DURATION, TimerResetTarFingerVictimBlindAmount, iVictim, TIMER_FLAG_NO_MAPCHANGE);
+	
+	// Temp Blind the player
+	ShowHudOverlayColor(iVictim, 40, 51, 1, g_iTarFingerVictimBlindAmount[iVictim], SMOKER_TAR_FINGERS_BLIND_FADE_DURATION_VALUE, FADE_OUT);
 }

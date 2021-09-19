@@ -331,13 +331,7 @@ Action:Event_RoundEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast
 	g_bPlayerPressedButtonThisRound = false;
 	
 	if(g_bCanSave == true)	//To prevent more than one run at the end of the round
-	{
-		decl i;
-		for(i = 1; i <= MaxClients; i++)	//Check if needed
-		{
-			g_bIsSmokeInfected[i] = false;
-		}
-		
+	{		
 		//Reset Rewards
 		g_iReward_SIKills = 0;
 		g_iReward_CIKills = 0;
@@ -349,13 +343,13 @@ Action:Event_RoundEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast
 		GiveRewards();
 		StoreLastRoundClientsStats();
 		
-		for(i = 1; i <= MaxClients; i++)
+		for(new i = 1; i <= MaxClients; i++)
 		{
 			//Save their game
-			if(IsClientInGame(i) == true)
-				if(IsFakeClient(i) == false)
-					if(g_bClientLoggedIn[i] == true)
-						SaveUserData(i);
+			if (IsClientInGame(i) == true &&
+				IsFakeClient(i) == false &&
+				g_bClientLoggedIn[i] == true)
+					SaveUserData(i);
 		}
 
 		// Remove the player level tags until the next confirmation

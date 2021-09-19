@@ -476,7 +476,7 @@ void UnlockPlayerFromAttacking(int iClient)
 
 
 // Note: this actually creates a damage event, so no need to reduce damage here
-DealDamage(iVictim, iAttacker, iAmount, iDamageType = DAMAGETYPE_INFECTED_MELEE)
+void DealDamage(int iVictim, int iAttacker, int iAmount, int iDamageType = DAMAGETYPE_INFECTED_MELEE)
 {
 	//This function was originally written by AtomikStryker
 	decl Float:iVictimPosition[3], String:strDamage[16], String:strDamageType[16], String:strDamageTarget[16];

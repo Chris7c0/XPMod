@@ -1,74 +1,19 @@
 //Smoker
-Action:TimerStopInfection(Handle:timer, any:iClient)
+
+Action:TimerStopTarFingersInfection(Handle:timer, any:iClient)
 {
-	g_bIsSmokeInfected[iClient] = false;
-	
-	if(IsValidEntity(g_iSmokerInfectionCloudEntity[iClient]))
-	{
-		//StopSound(g_iSmokerInfectionCloudEntity[iClient], SNDCHAN_AUTO, SOUND_FLIES);	//didnt work
-		//StopSound(iClient, SNDCHAN_AUTO, SOUND_FLIES);
-		
-		decl String:entclass[16];
-		GetEntityNetClass(g_iSmokerInfectionCloudEntity[iClient], entclass, 16);
-		if(StrEqual(entclass,"CSmokeStack",true)==true)
-		{
-			//DispatchKeyValue(g_iSmokerInfectionCloudEntity[iClient],"Rate", "0");
-			//AcceptEntityInput(g_iSmokerInfectionCloudEntity[iClient], "TurnOn");
-			CreateTimer(6.0, TimerRemoveSmoke, g_iSmokerInfectionCloudEntity[iClient], TIMER_FLAG_NO_MAPCHANGE);
-		}
-	}
-	
+	g_bIsTarFingerVictim[iClient] = false;
+
 	return Plugin_Stop;
 }
 
-Action:TimerRemoveSmoke(Handle:timer, any:entity)
-{
-	if(entity > 0 && IsValidEntity(entity))	//check if is actually smoke too
-	{
-		decl String:entclass[16];
-		GetEntityNetClass(entity, entclass, 16);
-		if(StrEqual(entclass,"CSmokeStack",true)==true)
-		{
-			AcceptEntityInput(entity, "Kill");
-		}
-	}
-	
-	return Plugin_Stop;
-}
 
-Action:TimerMoveSmokePoof1(Handle:timer, any:iClient)
+Action TimerResetTarFingerVictimBlindAmount(Handle:timer, int iClient)
 {
-	if(IsClientInGame(iClient) == false)
-		return Plugin_Stop;
-	
-	if(IsValidEntity(g_iSmokerInfectionCloudEntity[iClient]))
-	{
-		decl Float:xyzOrigin[3], Float:xyzAngles[3];
-		GetLocationVectorInfrontOfClient(iClient, xyzOrigin, xyzAngles, 50.0, -25.0);
-		
-		TeleportEntity(g_iSmokerInfectionCloudEntity[iClient], xyzOrigin, NULL_VECTOR, NULL_VECTOR);
-		AcceptEntityInput(g_iSmokerInfectionCloudEntity[iClient], "TurnOff");
-		CreateTimer(0.1, TimerMoveSmokePoof2, iClient, TIMER_FLAG_NO_MAPCHANGE);
-	}
-	
-	return Plugin_Stop;
-}
+	g_iTarFingerVictimBlindAmount[iClient] = 0;
+	// PrintToChat(iClient, "ResetTarFingerVictimBlindAmount");
 
-Action:TimerMoveSmokePoof2(Handle:timer, any:iClient)
-{
-	if(IsClientInGame(iClient) == false)
-		return Plugin_Stop;
-	
-	if(IsValidEntity(g_iSmokerInfectionCloudEntity[iClient]))
-	{
-		decl Float:xyzOrigin[3], Float:xyzAngles[3];
-		GetLocationVectorInfrontOfClient(iClient, xyzOrigin, xyzAngles, 50.0, -25.0);
-		
-		TeleportEntity(g_iSmokerInfectionCloudEntity[iClient], xyzOrigin, NULL_VECTOR, NULL_VECTOR);
-		AcceptEntityInput(g_iSmokerInfectionCloudEntity[iClient], "TurnOn");
-		CreateTimer(0.1, TimerMoveSmokePoof1, iClient, TIMER_FLAG_NO_MAPCHANGE);
-	}
-	
+	g_hTimer_ResetTarFingerVictimBlindAmount[iClient] = null;
 	return Plugin_Stop;
 }
 
@@ -239,33 +184,38 @@ Action:TimerCheckTongueDistance(Handle:timer, any:Smoker)
 
 Action:TimerPoisonCloud(Handle:timer, any:iClient)
 {
-	if(IsClientInGame(iClient) == false || g_bHasSmokersPoisonCloudOut[iClient] == false)
+	if (RunClientChecks(iClient) == false || 
+		IsClientInGame(iClient) == false ||
+		g_bHasSmokersPoisonCloudOut[iClient] == false)
 		return Plugin_Stop;
 	
-	decl victim;
-	decl Float:victimVec[3];
-	decl Float:distance;
-	
-	for (victim = 1; victim <= MaxClients; victim++)
+	decl Float:xyzVictimPosition[3];
+	for (new iVictim = 1; iVictim <= MaxClients; iVictim++)
 	{
-		if((IsClientInGame(victim) == false) || (IsPlayerAlive(victim) == false) || (g_iClientTeam[victim] != TEAM_SURVIVORS))
+		if (RunClientChecks(iVictim) == false ||
+			IsClientInGame(iVictim) == false ||
+			IsPlayerAlive(iVictim) == false ||
+			g_iClientTeam[iVictim] != TEAM_SURVIVORS)
 			continue;
 		
-		GetClientEyePosition(victim, victimVec);
-		distance = GetVectorDistance(victimVec, g_xyzPoisonCloudOriginArray[iClient]);
+		// Check if they are in range (removed is visible to for consistency)
+		GetClientEyePosition(iVictim, xyzVictimPosition);
+		if (GetVectorDistance(xyzVictimPosition, g_xyzPoisonCloudOriginArray[iClient]) > 140.0)
+			// || IsVisibleTo(g_xyzPoisonCloudOriginArray[iClient], xyzVictimPosition) == false)
+			continue;
 		
-		if ((distance > 140.0) || IsVisibleTo(g_xyzPoisonCloudOriginArray[iClient], victimVec) == false) continue;
+		if(IsFakeClient(iVictim) == false)
+			PrintHintText(iVictim, "You have entered a poison cloud");
 		
-		if(IsFakeClient(victim) == false)
-			PrintHintText(victim, "You have entered a poison cloud");
-		
-		DealDamage(victim, iClient, 1, DAMAGETYPE_HUNTER_POUNCE);
+		DealDamage(iVictim, iClient, 1);
+		SetPlayerHealth(iVictim, 1, true)
+		ConvertSomeSurvivorHealthToTemporary(iVictim, 2);
 		
 		g_iClientXP[iClient] += 3;
 		CheckLevel(iClient);
 		
-		if(g_iXPDisplayMode[iClient] == 0)
-			ShowXPSprite(iClient, g_iSprite_3XP_SI, victim, 1.0);
+		if (g_iXPDisplayMode[iClient] == 0)
+			ShowXPSprite(iClient, g_iSprite_3XP_SI, iVictim, 1.0);
 	}
 	
 	CreateTimer((3.0 - (g_iSmokerTalent2Level[iClient] * 0.25)), TimerPoisonCloud, iClient, TIMER_FLAG_NO_MAPCHANGE);
