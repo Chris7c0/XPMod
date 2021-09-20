@@ -241,13 +241,6 @@ void HandlePlayersInSmokeCloud(int iClient)
 		} // Handle checks players that were already in the cloud
 		else
 		{
-			// Add the appropriate amount of smoke cloud ticks to the player's pool
-			if (g_iClientTeam[iPlayer] == TEAM_SURVIVORS && 
-				g_iSmokerSmokeCloudTicksPool[iClient] < SMOKER_SMOKE_CLOUD_TICK_COUNT_MAX_POOL_SIZE)
-				g_iSmokerSmokeCloudTicksPool[iClient] += IsFakeClient(iPlayer) ? 
-					SMOKER_SMOKE_CLOUD_TICK_GAIN_PER_SURVIVOR_BOT : 
-					SMOKER_SMOKE_CLOUD_TICK_GAIN_PER_SURVIVOR_PLAYER;
-
 			// Disable the cloud if they are no longer a valid target
 			if (RunClientChecks(iPlayer) == false || 
 				IsPlayerAlive(iPlayer) == false ||
@@ -257,6 +250,13 @@ void HandlePlayersInSmokeCloud(int iClient)
 				SetPlayerNotInSmokerCloud(iPlayer, iClient);
 				continue;
 			}
+
+			// Add the appropriate amount of smoke cloud ticks to the player's pool
+			if (g_iClientTeam[iPlayer] == TEAM_SURVIVORS && 
+				g_iSmokerSmokeCloudTicksPool[iClient] < SMOKER_SMOKE_CLOUD_TICK_COUNT_MAX_POOL_SIZE)
+				g_iSmokerSmokeCloudTicksPool[iClient] += IsFakeClient(iPlayer) ? 
+					SMOKER_SMOKE_CLOUD_TICK_GAIN_PER_SURVIVOR_BOT : 
+					SMOKER_SMOKE_CLOUD_TICK_GAIN_PER_SURVIVOR_PLAYER;
 		}
 
 		// Handle check for distance from Smoker Cloud to target

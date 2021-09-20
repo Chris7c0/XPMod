@@ -222,6 +222,10 @@ bool GetTankRockTypeAndOwner(iTankRockIndex)
 		// Get the actual rock game entity
 		new iRockEntity = g_listTankRockEntities.Get(iTankRockIndex, TANK_ROCK_ENTITY_ID);
 
+		if (RunEntityChecks(iRockEntity) == false ||
+			HasEntProp(iRockEntity, Prop_Send, "m_vecOrigin") == false)
+			return false;
+
 		// Get the rock entity position
 		decl Float:xyzRockPosition[3];
 		GetEntPropVector(iRockEntity, Prop_Send, "m_vecOrigin", xyzRockPosition);

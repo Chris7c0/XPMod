@@ -477,6 +477,9 @@ SaveUserData(iClient)
 		PrintToChatAll("Unable to connect to XPMod SQL Database.");
 		return;
 	}
+
+	if (RunClientChecks(iClient) == false)
+		return;
 	
 	if (!g_bClientLoggedIn[iClient] || g_iClientXP[iClient]<0)
 		return;

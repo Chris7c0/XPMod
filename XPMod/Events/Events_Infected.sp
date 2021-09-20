@@ -385,7 +385,12 @@ Action:Event_JockeyRide(Handle:hEvent, const String:strName[], bool:bDontBroadca
 					StoreCurrentPrimaryWeapon(victim);
 					new String:strCurrentWeapon[32];
 					GetClientWeapon(victim, strCurrentWeapon, sizeof(strCurrentWeapon));
-					if((StrEqual(strCurrentWeapon, "weapon_melee", false) == false) && (StrEqual(strCurrentWeapon, "weapon_pistol", false) == false) && (StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == false))
+					if (StrEqual(strCurrentWeapon, "weapon_melee", false) == false && 
+						StrEqual(strCurrentWeapon, "weapon_pistol", false) == false &&
+						StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == false && 
+						g_iOffset_Ammo[victim] > 0 &&
+						g_iAmmoOffset[victim] > 0 &&
+						g_iReserveAmmo[victim] > 0)
 					{
 						//PrintToChatAll("Reserve ammo was %i ...", g_iReserveAmmo[victim]);
 						//g_iReserveAmmo[victim] = (g_iReserveAmmo[victim] / 2)

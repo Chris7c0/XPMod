@@ -332,6 +332,9 @@ CreateNecroTankerRockDestroyEffect(int iRockEntity)
 
 BileEveryoneCloseToExplodingNecroTankerTankRock(iRockEntity)
 {
+	if (RunEntityChecks(iRockEntity) == false)
+		return;
+
 	// Get the rock location
 	new Float:xyzRockPosition[3];
 	GetEntPropVector(iRockEntity, Prop_Send, "m_vecOrigin", xyzRockPosition);

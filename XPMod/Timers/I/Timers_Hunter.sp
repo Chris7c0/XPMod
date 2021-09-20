@@ -1,5 +1,9 @@
 Action:TimerLungeFurther(Handle:timer, any:iClient)
 {
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false)
+		return Plugin_Stop;
+
 	decl Float:velocity[3];
 	GetEntPropVector(iClient, Prop_Data, "m_vecVelocity", velocity);
 	velocity[0] *= (1.0 + (g_iPredatorialLevel[iClient] * 0.05));

@@ -641,7 +641,7 @@ TarFingersBlindPlayerIncrementally(iVictim)
 	
 	// Create Timer To Reset the blind amount
 	delete g_hTimer_ResetTarFingerVictimBlindAmount[iVictim];
-	g_hTimer_ResetTarFingerVictimBlindAmount[iVictim] = CreateTimer(SMOKER_TAR_FINGERS_BLIND_DURATION, TimerResetTarFingerVictimBlindAmount, iVictim, TIMER_FLAG_NO_MAPCHANGE);
+	g_hTimer_ResetTarFingerVictimBlindAmount[iVictim] = CreateTimer(SMOKER_TAR_FINGERS_BLIND_DURATION, TimerResetTarFingerVictimBlindAmount, iVictim);
 	
 	// Temp Blind the player
 	ShowHudOverlayColor(iVictim, 40, 51, 1, g_iTarFingerVictimBlindAmount[iVictim], SMOKER_TAR_FINGERS_BLIND_FADE_DURATION_VALUE, FADE_OUT);

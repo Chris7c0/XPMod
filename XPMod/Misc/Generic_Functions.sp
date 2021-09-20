@@ -458,8 +458,12 @@ void LockPlayerFromAttacking(int iClient)
 
 void UnlockPlayerFromAttacking(int iClient)
 {
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false)
+		return;
+
 	// PrintToChat(iClient, "UnlockPlayerFromAttacking start");
-	new iWeaponEntity = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
+	new iWeaponEntity = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 	if (RunEntityChecks(iWeaponEntity) == false)
 		return;
 	
