@@ -131,6 +131,7 @@ new String:INFECTED_NAME[][] =          {"",
                                         "TANK"}
 
 // Damage Types
+#define DAMAGETYPE_GENERIC      	0
 #define DAMAGETYPE_INFECTED_MELEE	128
 #define DAMAGETYPE_HUNTER_POUNCE	1
 #define DAMAGETYPE_PISTOL           2

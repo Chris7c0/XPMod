@@ -608,15 +608,15 @@ SmokerHitTarFingerVictim(int iVictim)
 		xyzPosition,	// Position to create it 0,0,0 will force getting client location
 		true,
 		"eyes",
-		40, 51, 1, 	// Color of smoke
+		40, 51, 1, 		// Color of smoke
 		255,			// How Opaque
 		1,				// Gap in the middle
-		50,			// Speed the smoke moves outwards
+		50,				// Speed the smoke moves outwards
 		10,				// Speed the smoke moves up
 		100,			// Original Size
 		150,			// End Size
-		100,			// Amount of smoke created
-		50,			// Smoke jets outside of the original
+		25,				// Amount of smoke created
+		50,				// Smoke jets outside of the original
 		10,				// Amount of global twisting
 		20.0			// Duration (-1.0 is never destroy)
 	);
