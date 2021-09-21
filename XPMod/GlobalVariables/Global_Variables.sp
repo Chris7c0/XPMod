@@ -16,11 +16,12 @@
 #define TEAM_INFECTED 		3
 
 //Define GameTypes
-#define GAMEMODE_UNKNOWN	-1
-#define GAMEMODE_COOP 		0
-#define GAMEMODE_VERSUS 	1
-#define GAMEMODE_SCAVENGE 	2
-#define GAMEMODE_SURVIVAL 	3
+#define GAMEMODE_UNKNOWN	        -1
+#define GAMEMODE_COOP 		        0
+#define GAMEMODE_VERSUS 	        1
+#define GAMEMODE_SCAVENGE 	        2
+#define GAMEMODE_SURVIVAL 	        3
+#define GAMEMODE_VERSUS_SURVIVAL 	4
 
 //Gamemode
 new g_iGameMode;

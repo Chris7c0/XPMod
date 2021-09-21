@@ -68,7 +68,8 @@ bool SwitchPlayerToInfected(int iClient, int iTarget)
         PrintToChat(iClient, "\x03[XPMod] \x05%N is already on the \x04Infected Team\x05.", iTarget);
         return false;
     }
-    if(g_iGameMode == GAMEMODE_VERSUS)
+    if (g_iGameMode == GAMEMODE_VERSUS || 
+        g_iGameMode == GAMEMODE_VERSUS_SURVIVAL)
     {
         if(!IsTeamFull(TEAM_INFECTED))
         {

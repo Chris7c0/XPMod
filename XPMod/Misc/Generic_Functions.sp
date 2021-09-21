@@ -103,25 +103,78 @@ int GetClientAdminLevel(iClient)
 	return -1;
 }
 
+//Find the current gamemode and store it into this plugin
 void FindGameMode()
 {
-	decl String:g_strGameMode[20];
-	GetConVarString(FindConVar("mp_gamemode"), g_strGameMode, sizeof(g_strGameMode));
+	//Get the gamemode string from the game
+	decl String:strGameMode[20];
+	GetConVarString(FindConVar("mp_gamemode"), strGameMode, sizeof(strGameMode));
 	
-	if (StrEqual(g_strGameMode,"coop",true))
+	//Set the global gamemode int for this plugin
+	if(StrEqual(strGameMode, "coop"))
 		g_iGameMode = GAMEMODE_COOP;
-	else if (StrEqual(g_strGameMode,"versus",true))
+	else if(StrEqual(strGameMode, "realism"))
+		g_iGameMode = GAMEMODE_COOP;
+	else if(StrEqual(strGameMode,"versus"))
 		g_iGameMode = GAMEMODE_VERSUS;
-	else if (StrEqual(g_strGameMode,"teamversus",true))
-		g_iGameMode = GAMEMODE_UNKNOWN;
-	else if (StrEqual(g_strGameMode,"teamscavenge",true))
+	else if(StrEqual(strGameMode, "teamversus"))
+		g_iGameMode = GAMEMODE_VERSUS;
+	else if(StrEqual(strGameMode, "scavenge"))
 		g_iGameMode = GAMEMODE_SCAVENGE;
-	else if (StrEqual(g_strGameMode,"scavenge",true))
+	else if(StrEqual(strGameMode, "teamscavenge"))
 		g_iGameMode = GAMEMODE_SCAVENGE;
-	else if (StrEqual(g_strGameMode,"survival",true))
+	else if(StrEqual(strGameMode, "survival"))
 		g_iGameMode = GAMEMODE_SURVIVAL;
-	else if (StrEqual(g_strGameMode,"realism",true))
-		g_iGameMode = GAMEMODE_UNKNOWN;
+	else if(StrEqual(strGameMode, "mutation1"))		//Last Man On Earth
+		g_iGameMode = GAMEMODE_COOP;
+	else if(StrEqual(strGameMode, "mutation2"))		//Headshot!
+		g_iGameMode = GAMEMODE_COOP;
+	else if(StrEqual(strGameMode, "mutation3"))		//Bleed Out
+		g_iGameMode = GAMEMODE_COOP;
+	else if(StrEqual(strGameMode, "mutation4"))		//Hard Eight
+		g_iGameMode = GAMEMODE_COOP;
+	else if(StrEqual(strGameMode, "mutation5"))		//Four Swordsmen
+		g_iGameMode = GAMEMODE_COOP;
+	//else if(StrEqual(strGameMode, "mutation6"))	//Nothing here
+	//	g_iGameMode = GAMEMODE_COOP;
+	else if(StrEqual(strGameMode, "mutation7"))		//Chainsaw Massacre
+		g_iGameMode = GAMEMODE_COOP;
+	else if(StrEqual(strGameMode, "mutation8"))		//Ironman
+		g_iGameMode = GAMEMODE_COOP;
+	else if(StrEqual(strGameMode, "mutation9"))		//Last Gnome On Earth
+		g_iGameMode = GAMEMODE_COOP;
+	else if(StrEqual(strGameMode, "mutation10"))	//Room For One
+		g_iGameMode = GAMEMODE_COOP;
+	else if(StrEqual(strGameMode, "mutation11"))	//Healthpackalypse!
+		g_iGameMode = GAMEMODE_VERSUS;
+	else if(StrEqual(strGameMode, "mutation12"))	//Realism Versus
+		g_iGameMode = GAMEMODE_VERSUS;
+	else if(StrEqual(strGameMode, "mutation13"))	//Follow the Liter
+		g_iGameMode = GAMEMODE_SCAVENGE;
+	else if(StrEqual(strGameMode, "mutation14"))	//Gib Fest
+		g_iGameMode = GAMEMODE_COOP;
+	else if(StrEqual(strGameMode, "mutation15"))	//Versus Survival
+		g_iGameMode = GAMEMODE_VERSUS_SURVIVAL;
+	else if(StrEqual(strGameMode, "mutation16"))	//Hunting Party
+		g_iGameMode = GAMEMODE_COOP;
+	else if(StrEqual(strGameMode, "mutation17"))	//Lone Gunman
+		g_iGameMode = GAMEMODE_COOP;
+	else if(StrEqual(strGameMode, "mutation18"))	//Bleed Out Versus
+		g_iGameMode = GAMEMODE_VERSUS;
+	else if(StrEqual(strGameMode, "mutation19"))	//Taaannnkk!
+		g_iGameMode = GAMEMODE_VERSUS;
+	else if(StrEqual(strGameMode, "mutation20"))	//Healing Gnome
+		g_iGameMode = GAMEMODE_COOP;
+	else if(StrEqual(strGameMode, "community1"))	//Special Delivery
+		g_iGameMode = GAMEMODE_COOP;
+	else if(StrEqual(strGameMode, "community2"))	//Flu Season
+		g_iGameMode = GAMEMODE_COOP;
+	else if(StrEqual(strGameMode, "community3"))	//Riding My Survivor
+		g_iGameMode = GAMEMODE_VERSUS;
+	else if(StrEqual(strGameMode, "community4"))	//Nightmare
+		g_iGameMode = GAMEMODE_SURVIVAL;
+	else if(StrEqual(strGameMode, "community5"))	//Death's Door
+		g_iGameMode = GAMEMODE_COOP;
 	else
 		g_iGameMode = GAMEMODE_UNKNOWN;
 }

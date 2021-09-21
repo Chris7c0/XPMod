@@ -543,7 +543,7 @@ int CreatePlayerClone(int iClient, float xyzLocation[3], float xyzAngles[3], int
 }
 
 
-bool GetCrosshairPosition(int iClient, float xyzLocation[3], float xyzEyeAngles[3], bool bClipXZRotation = true)
+bool GetCrosshairPosition(int iClient, float xyzLocation[3], float xyzEyeAngles[3],  bool bClipXZRotation = true)
 {
 	decl Float:xyzEyeOrigin[3];
 	GetClientEyePosition(iClient, xyzEyeOrigin);
@@ -551,7 +551,7 @@ bool GetCrosshairPosition(int iClient, float xyzLocation[3], float xyzEyeAngles[
 	//Get direction in which iClient is facing, to push out from this vector later
 	//GetAngleVectors(xyzEyeAngles, vDir, NULL_VECTOR, NULL_VECTOR);
 	GetClientEyeAngles(iClient, xyzEyeAngles);
-	new Handle:trace = TR_TraceRayFilterEx(xyzEyeOrigin, xyzEyeAngles, MASK_SHOT, RayType_Infinite, TraceRayDontHitSelf, iClient);
+	new Handle:trace = TR_TraceRayFilterEx(xyzEyeOrigin, xyzEyeAngles, MASK_SOLID_BRUSHONLY, RayType_Infinite, TraceRayDontHitSelf, iClient);
 	if(TR_DidHit(trace) == false)
 	{
 		CloseHandle(trace);
