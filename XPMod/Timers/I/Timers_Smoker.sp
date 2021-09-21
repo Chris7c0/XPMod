@@ -195,7 +195,8 @@ Action:TimerPoisonCloud(Handle:timer, any:iClient)
 		if (RunClientChecks(iVictim) == false ||
 			IsClientInGame(iVictim) == false ||
 			IsPlayerAlive(iVictim) == false ||
-			g_iClientTeam[iVictim] != TEAM_SURVIVORS)
+			g_iClientTeam[iVictim] != TEAM_SURVIVORS ||
+			GetEntProp(iVictim, Prop_Send, "m_isIncapacitated") == 1)
 			continue;
 		
 		// Check if they are in range (removed is visible to for consistency)
