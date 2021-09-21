@@ -315,7 +315,7 @@ void SmokerTeleport(iClient)
 	// GetClientEyePosition(iClient, eyeorigin);
 	// GetClientEyeAngles(iClient, eyeangles);
 	// GetAngleVectors(eyeangles, vdir, NULL_VECTOR, NULL_VECTOR);	//Get direction in which iClient is facing
-	// new Handle:trace = TR_TraceRayFilterEx(eyeorigin, eyeangles, MASK_SHOT, RayType_Infinite, TraceRayDontHitSelf, iClient);
+	// new Handle:trace = TR_TraceRayFilterEx(eyeorigin, eyeangles, MASK_SHOT, RayType_Infinite, TraceEntityFilter_NotSelf, iClient);
 	// if(TR_DidHit(trace) == false)
 	// {
 	// 	PrintHintText(iClient, "You cannot teleport to this location.");
@@ -551,7 +551,7 @@ bool GetCrosshairPosition(int iClient, float xyzLocation[3], float xyzEyeAngles[
 	//Get direction in which iClient is facing, to push out from this vector later
 	//GetAngleVectors(xyzEyeAngles, vDir, NULL_VECTOR, NULL_VECTOR);
 	GetClientEyeAngles(iClient, xyzEyeAngles);
-	new Handle:trace = TR_TraceRayFilterEx(xyzEyeOrigin, xyzEyeAngles, MASK_SOLID_BRUSHONLY, RayType_Infinite, TraceRayDontHitSelf, iClient);
+	new Handle:trace = TR_TraceRayFilterEx(xyzEyeOrigin, xyzEyeAngles, MASK_SHOT, RayType_Infinite, TraceEntityFilter_NotAPlayer, iClient);
 	if(TR_DidHit(trace) == false)
 	{
 		CloseHandle(trace);

@@ -997,14 +997,27 @@ bool:TraceRayTryToHit(entity,mask)
 // 	return false;
 // }
 
-bool:TraceRayDontHitSelf(entity, mask, any:data)
-{
-    if(entity == data)	// Check if the TraceRay hit the itself.
-        return false;	// Don't let the entity be hit
+// bool:TraceEntityFilter_NotSelf(iEntity, mask, any:data)
+// {
+//     if (iEntity == data)	// Check if the TraceRay hit the itself.
+//         return false;	// Don't let the entity be hit
 		
-    return true;		// It didn't hit itself
-}
+//     return true;		// It didn't hit itself
+// }
 
+public bool:TraceEntityFilter_NotAPlayer(iEntity, iContentsMask, any:data)
+{
+	for(int iClient = 1; iClient <= MaxClients; iClient++)
+	{		
+		if(RunClientChecks(iClient) == false)
+			continue;
+
+		if (iEntity == iClient)	// Check if the TraceRay hit the a client.
+			return false;		// Don't let the entity be hit
+	}
+
+	return true;		// It didn't hit a client
+}
 
 bool IsClientGrappled(iClient)
 {
