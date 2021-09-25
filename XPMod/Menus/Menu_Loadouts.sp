@@ -727,12 +727,12 @@ HealthMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			}
 			case 2: //Incendiary Ammo
 			{
-				g_iClientHealthSlotID[iClient] = 4;
+				g_iClientHealthSlotID[iClient] = 3;
 				LoadoutMenuDraw(iClient);
 			}
 			// case 3: //Explosive Ammo
 			// {
-			// 	g_iClientHealthSlotID[iClient] = 3;
+			// 	g_iClientHealthSlotID[iClient] = 4;
 			// 	LoadoutMenuDraw(iClient);
 			// }
 			case 3: //None
