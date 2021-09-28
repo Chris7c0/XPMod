@@ -472,8 +472,8 @@ bool CreateSmokerDoppelganger(int iClient)
 	// Attach smoker particles
 	//smoker_spore_trail
 	//smoker_spore_trail_cheap (for the cloud)
-	int iParticle = AttachParticle(iCloneEntity, "smoker_spore_trail", -1.0, 10.0);
-	int iParticle2 = AttachParticle(iCloneEntity, "smoker_spore_trail_cheap", -1.0, 10.0);
+	// int iParticle = AttachParticle(iCloneEntity, "smoker_spore_trail", -1.0, 10.0);
+	// int iParticle2 = AttachParticle(iCloneEntity, "smoker_spore_trail_cheap", -1.0, 10.0);
 
 	g_iSmokerDoppelgangerCount[iClient]--;
 	PrintHintText(iClient, "Doppelganger Decoys: %i", g_iSmokerDoppelgangerCount[iClient]);
