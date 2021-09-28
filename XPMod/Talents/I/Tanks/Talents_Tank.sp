@@ -36,8 +36,11 @@ EventsHurt_VictimTank(Handle:hEvent, iAttacker, iVictimTank)
 		// Note: Valve multiplies the value with 1.5 so it becomes 4000 x 1.5 = 6000 hp.
 		new iMaxHealthConVarSetting = RoundToCeil(GetConVarInt(FindConVar("z_tank_health")) * 1.5);
 		new iCurrentHealth = GetPlayerHealth(iVictimTank);
+
+		// PrintToChat(iVictimTank, "iCurrentHealth: %i, iMaxHealthConVarSetting: %i,  g_fTankStartingHealthMultiplier[iClient]: %f", iCurrentHealth, iMaxHealthConVarSetting,  g_fTankStartingHealthMultiplier[iVictimTank]);
+
 		// Check if they lost enough HP yet
-		if (iCurrentHealth < iMaxHealthConVarSetting - TANK_AUTOMATIC_SELECT_HP_LOSS)
+		if (iCurrentHealth < RoundToNearest(iMaxHealthConVarSetting * g_fTankStartingHealthMultiplier[iVictimTank]) - TANK_AUTOMATIC_SELECT_HP_LOSS)
 		{
 			// Close their Tank selection menu
 			ClosePanel(iVictimTank);
