@@ -18,6 +18,16 @@ Action:TestFunction1(iClient, args)
 
 	PrintToChatAll("iClient = %i xyz: %f %f %f", StringToInt(strArg[0]), xyzPosition[0], xyzPosition[1], xyzPosition[2]);
 
+	for (int i = 1;i <= MaxClients;i++)
+	{
+		if (RunClientChecks(i) == false || 
+			IsPlayerAlive(i) == false ||
+			g_iClientTeam[i] != TEAM_INFECTED)
+			continue;
+		
+		PrintToChatAll("%N m_zombieClass = %i", i, GetEntProp(i, Prop_Send, "m_zombieClass"));
+	}
+
 	//t1 -1 1322.153564 3479.936279 624.377 255 255 255 255 1 100 100 200 400 20 200 10 10
 	//t1 3 0 0 0 255 255 255 255 1 100 100 200 400 20 200 10 10
 	// CreateSmokeParticle(StringToInt(strArg[0]),
@@ -46,7 +56,7 @@ Action:TestFunction1(iClient, args)
 	// else
 	// 	SetPlayerNotInSmokerCloud(iClient, 23);
 
-	SmokerHitTarFingerVictim(iClient);
+	//SmokerHitTarFingerVictim(iClient);
 	// TarFingersBlindPlayerIncrementally(iClient);
 
 	//CatchAndReleasePlayer(StringToInt(str1));
@@ -353,3 +363,33 @@ Action:GiveMoreBinds(admin, args)
 	g_iClientBindUses_1[admin] = -99;
 	g_iClientBindUses_2[admin] = -99;
 }
+
+Action:XPModDebugModeToggle(iClient, args)
+{
+	if (g_bDebugModeEnabled == false)
+	{
+		g_bDebugModeEnabled = true;
+		g_bStopCISpawning = true;
+
+		CreateTimer(1.0, Timer_ContinuallyKillAllCI, 0, TIMER_REPEAT);
+	}
+	else
+	{
+		g_bDebugModeEnabled = false;
+		g_bStopCISpawning = false;
+	}
+
+	PrintToChatAll("\x05XPMod Debug Mode %s", g_bDebugModeEnabled ? "ENABLED" : "DISABLED");
+}
+
+Action:Timer_ContinuallyKillAllCI(Handle:timer, any:data)
+{
+	// Debug Mode Kill all CI
+	if (g_bStopCISpawning == false)
+		return Plugin_Stop;
+	
+	KillAllCI(0);
+
+	return Plugin_Continue;
+}
+	

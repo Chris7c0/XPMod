@@ -17,6 +17,7 @@ SetupConsoleCommands()
 	RegAdminCmd("giveidxp", GiveXPbyID, ADMFLAG_RCON);
 	
 	//Misc. Commands
+	RegAdminCmd("xpmod_debug_mode", XPModDebugModeToggle, ADMFLAG_SLAY);
 	RegAdminCmd("t1", TestFunction1, ADMFLAG_SLAY);
 	RegAdminCmd("t2", TestFunction2, ADMFLAG_SLAY);
 	RegAdminCmd("t3", TestFunction3, ADMFLAG_SLAY);
