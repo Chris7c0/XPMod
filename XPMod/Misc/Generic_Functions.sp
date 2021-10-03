@@ -309,6 +309,8 @@ SetMoveType(iClient, movetype, movecollide)
 {
 	SetEntData(iClient, g_iOffset_MoveType, movetype);
 	SetEntData(iClient, g_iOffset_MoveCollide, movecollide);
+
+	// PrintToChatAll("SetMoveType: %N", iClient);
 }
 
 SetSurvivorModel(iClient)

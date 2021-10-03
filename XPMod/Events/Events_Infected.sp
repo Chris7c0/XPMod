@@ -665,15 +665,12 @@ Action:Event_TankSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 	g_iTankCounter++;
 	g_iClientTeam[iClient] = TEAM_INFECTED;
 	g_iInfectedCharacter[iClient] = TANK;
-	// Get the calucated hp multiplier to scale helath based on survivor team
+	// Get the calculated hp multiplier to scale health based on survivor team
 	g_fTankStartingHealthMultiplier[iClient] = CalculateTankHealthPercentageMultiplier();
 	// Reset all tank abilities if transitioning from another tank
 	// Note: this IS called for the bot, then the player, when officially giving tank to player and not haxored in
 	// Note2: This requires a timer, or it does not apply
 	CreateTimer(0.1, TimerResetAllTankVariables, iClient, TIMER_FLAG_NO_MAPCHANGE);
-
-	// Give bot XPMod abilities or ask the player to pick an XPMod tank
-	CreateTimer(0.2, Timer_AskWhatTankToUse, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	
 	for(new i=1;i<=MaxClients;i++)
 	{
@@ -739,17 +736,14 @@ Action:Event_TankFrustrated(Handle:hEvent, const String:strName[], bool:bDontBro
 	if(RunClientChecks(iClient) == false || IsPlayerAlive(iClient) == false)
 		return Plugin_Continue;
 
+	StorePassedOrFrustratedTanksHealthPercentage(iClient);
+
 	g_iInfectedCharacter[iClient] = UNKNOWN_INFECTED;
 
-	new iMaxHealth = GetPlayerMaxHealth(iClient);
-	new iCurrentHealth = GetPlayerHealth(iClient);
-	g_fFrustratedTankTransferHealthPercentage = iCurrentHealth / float(iMaxHealth);
-	
-	//PrintToChatAll("%N ResetAllTankVariables iHealth = %i MaxHealth = %i ", iClient, iCurrentHealth, iMaxHealth);
-	PrintToChatAll("\x03[XPMod] \x04%N's tank has been frustrated. Transfering tank with %3f health.", iClient, g_fFrustratedTankTransferHealthPercentage);
+	// new iMaxHealth = GetPlayerMaxHealth(iClient);
 
-	//Set the current health to max health so that the new tank player can get this full percentage
-	SetPlayerHealth(iClient, iMaxHealth);
+	// //Set the current health to max health so that the new tank player can get this full percentage
+	// SetPlayerHealth(iClient, iMaxHealth);
 
 	return Plugin_Continue;
 }

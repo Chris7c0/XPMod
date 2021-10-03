@@ -29,6 +29,7 @@ SetupXPMEvents()
 	HookEvent("player_disconnect", Event_PlayerDisconnect);
 	HookEvent("player_team", Event_PlayerChangeTeam);
 	AddCommandListener(CommandListener_JoinTeam, "jointeam"); // Specifically for interrupting M button
+	HookEvent("player_bot_replace", Event_PlayerBotReplace)
 	HookEvent("player_spawn", Event_PlayerSpawn);
 	HookEvent("player_death", Event_PlayerDeath);
 	HookEvent("player_hurt", Event_PlayerHurt);
@@ -421,7 +422,9 @@ Action:CommandListener_JoinTeam(iClient, const String:command[], argc)
 	CreateTimer(0.1, TimerCheckTeam, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 	//This needs to be at 0.2 because ResetAllVariables is called at 0.1 twice on change team
-	CreateTimer(0.2, TimerLoadTalentsDelay, iClient, TIMER_FLAG_NO_MAPCHANGE);	
+	CreateTimer(0.2, TimerLoadTalentsDelay, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
+	StorePassedOrFrustratedTanksHealthPercentage(iClient);
 
 	// We now do not know which infected they have, because they switched teams
 	// These need to take place in this order, set UNKNOWN, then set CanBeGhost
@@ -446,7 +449,9 @@ Action:Event_PlayerChangeTeam(Handle:hEvent, const String:strName[], bool:bDontB
 	CreateTimer(0.1, TimerCheckTeam, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 	//This needs to be at 0.2 because ResetAllVariables is called at 0.1 twice on change team
-	CreateTimer(0.2, TimerLoadTalentsDelay, iClient, TIMER_FLAG_NO_MAPCHANGE);	
+	CreateTimer(0.2, TimerLoadTalentsDelay, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
+	StorePassedOrFrustratedTanksHealthPercentage(iClient);
 
 	// We now do not know which infected they have, because they switched teams
 	// These need to take place in this order, set UNKNOWN, then set CanBeGhost
@@ -463,7 +468,7 @@ Action:Event_PlayerSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadc
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	// if (RunClientChecks(iClient) && IsFakeClient(iClient) == false)
 	// 		PrintToChat(iClient, "Event_PlayerSpawn ================================================================");
-	// PrintToServer("Event_PlayerSpawn ================================================================ %i", iClient);
+	//PrintToServer("Event_PlayerSpawn ================================================================ %i", iClient);
 	
 	if(IsClientInGame(iClient) == false)
 		return Plugin_Continue;
@@ -506,6 +511,38 @@ Action:Event_PlayerSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadc
 	CreateTimer(0.1, TimerStorePlayerHealth, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 	SetClientSpeed(iClient);
+
+	// Unsure if this is required still
+	g_bIsFrustratedTank[iClient] = false;
+	CreateTimer(0.1, TimerResetAllTankVariables, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
+	// Debug Mode Kill Bot SI
+	if (g_bStopSISpawning && 
+		IsFakeClient(iClient) == true &&
+		g_iInfectedCharacter[iClient] != TANK &&
+		g_iClientTeam[iClient] == TEAM_INFECTED)
+	{
+		DealDamage(iClient, 0, 99999);
+	}
+
+	
+	return Plugin_Continue;
+}
+
+
+
+Action:Event_PlayerBotReplace(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+{
+	new iReplacedPlayer = GetClientOfUserId(GetEventInt(hEvent, "player"));
+	new iBot = GetClientOfUserId(GetEventInt(hEvent, "bot"));
+
+	if(RunClientChecks(iBot) == false)
+		return Plugin_Continue;
+
+	if (g_iInfectedCharacter[iReplacedPlayer] == TANK)
+	{
+		g_bTankTakeOverBot[iBot] = true;
+	}
 	
 	return Plugin_Continue;
 }
@@ -563,7 +600,7 @@ Action:Event_PlayerConnect(Handle:hEvent, const String:strName[], bool:bDontBroa
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	if(RunClientChecks(iClient) == false)
 		return Plugin_Continue;
-
+	
 	if(IsFakeClient(iClient)==true)
 	{
 		// PrintToChatAll("FAKE CLIENT: %i: %N", iClient, iClient);

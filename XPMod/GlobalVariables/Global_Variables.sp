@@ -277,6 +277,7 @@ float g_xyzBotXPMGoalLocation[MAXPLAYERS + 1][3];
 
 bool g_bDebugModeEnabled;
 bool g_bStopCISpawning;
+bool g_bStopSISpawning;
 
 new gClone[MAXPLAYERS + 1];
 new bool:talentsJustGiven[MAXPLAYERS + 1] = false;

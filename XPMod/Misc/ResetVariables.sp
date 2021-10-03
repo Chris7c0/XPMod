@@ -45,6 +45,8 @@ ResetVariablesForMap(iClient)
 	g_iNicksRamboWeaponID[iClient] = 0;
 	g_bNickIsInvisible[iClient] = false;
 	g_bCanDropPoopBomb[iClient] = true;
+	g_bIsFrustratedTank[iClient] = false;
+	g_bTankTakeOverBot[iClient] = false;
 	g_bTankOnFire[iClient] = false;
 	g_bShowingVGUI[iClient] = false;
 	g_bExplosivesJustGiven[iClient] = false;

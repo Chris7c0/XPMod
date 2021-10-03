@@ -20,13 +20,16 @@ Action:TestFunction1(iClient, args)
 
 	for (int i = 1;i <= MaxClients;i++)
 	{
-		if (RunClientChecks(i) == false || 
-			IsPlayerAlive(i) == false ||
-			g_iClientTeam[i] != TEAM_INFECTED)
+		if (RunClientChecks(i) == false)// || 
+			// IsPlayerAlive(i) == false ||
+			// g_iClientTeam[i] != TEAM_INFECTED)
 			continue;
 		
-		PrintToChatAll("%N m_zombieClass = %i", i, GetEntProp(i, Prop_Send, "m_zombieClass"));
+		// PrintToChatAll("%N m_zombieClass = %i", i, GetEntProp(i, Prop_Send, "m_zombieClass"));
+		PrintToChatAll("%N g_bTankTakeOverBot[i] = %i, g_bIsFrustratedTank[i] = %i", i, g_bTankTakeOverBot[i], g_bIsFrustratedTank[i]);
 	}
+
+	//PrintToChatAll("%N m_zombieClass = %i", i, GetEntProp(i, Prop_Send, "m_zombieClass"));
 
 	//t1 -1 1322.153564 3479.936279 624.377 255 255 255 255 1 100 100 200 400 20 200 10 10
 	//t1 3 0 0 0 255 255 255 255 1 100 100 200 400 20 200 10 10
@@ -370,6 +373,7 @@ Action:XPModDebugModeToggle(iClient, args)
 	{
 		g_bDebugModeEnabled = true;
 		g_bStopCISpawning = true;
+		g_bStopSISpawning = true;
 
 		CreateTimer(1.0, Timer_ContinuallyKillAllCI, 0, TIMER_REPEAT);
 	}
@@ -377,6 +381,7 @@ Action:XPModDebugModeToggle(iClient, args)
 	{
 		g_bDebugModeEnabled = false;
 		g_bStopCISpawning = false;
+		g_bStopSISpawning = false;
 	}
 
 	PrintToChatAll("\x05XPMod Debug Mode %s", g_bDebugModeEnabled ? "ENABLED" : "DISABLED");
@@ -392,4 +397,3 @@ Action:Timer_ContinuallyKillAllCI(Handle:timer, any:data)
 
 	return Plugin_Continue;
 }
-	

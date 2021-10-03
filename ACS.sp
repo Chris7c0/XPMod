@@ -82,6 +82,7 @@
 //Define the number of campaigns and maps in rotation
 #define NUMBER_OF_CAMPAIGNS			14		/* CHANGE TO MATCH THE TOTAL NUMBER OF CAMPAIGNS */
 #define NUMBER_OF_SCAVENGE_MAPS		18		/* CHANGE TO MATCH THE TOTAL NUMBER OF SCAVENGE MAPS */
+#define NUMBER_OF_SURVIVAL_MAPS		18		/* CHANGE TO MATCH THE TOTAL NUMBER OF SCAVENGE MAPS */
 
 //Define the wait time after round before changing to the next map in each game mode
 #define WAIT_TIME_BEFORE_SWITCH_COOP			1.0
@@ -117,7 +118,9 @@ new String:g_strCampaignFirstMap[NUMBER_OF_CAMPAIGNS][32];		//Array of maps to s
 new String:g_strCampaignLastMap[NUMBER_OF_CAMPAIGNS][32];		//Array of maps to switch from
 new String:g_strCampaignName[NUMBER_OF_CAMPAIGNS][32];			//Array of names of the campaign
 new String:g_strScavengeMap[NUMBER_OF_SCAVENGE_MAPS][32];		//Array of scavenge maps
-new String:g_strScavengeMapName[NUMBER_OF_SCAVENGE_MAPS][32];	//Name of scaveenge maps
+new String:g_strScavengeMapName[NUMBER_OF_SCAVENGE_MAPS][32];	//Name of scavenge maps
+new String:g_strSurvivalMap[NUMBER_OF_SCAVENGE_MAPS][32];		//Array of Survival maps
+new String:g_strSurvivalMapName[NUMBER_OF_SCAVENGE_MAPS][32];	//Name of Survival maps
 
 //Voting Variables
 new bool:g_bVotingEnabled = true;							//Tells if the voting system is on
@@ -178,8 +181,8 @@ SetupMapStrings()
 	Format(g_strCampaignFirstMap[2], 32, "c10m1_caves");
 	Format(g_strCampaignFirstMap[3], 32, "c11m1_greenhouse");
 	Format(g_strCampaignFirstMap[4], 32, "c12m1_hilltop");
-	Format(g_strCampaignFirstMap[5], 32, "c1m1_hotel");
-	Format(g_strCampaignFirstMap[6], 32, "c7m1_docks");
+	Format(g_strCampaignFirstMap[5], 32, "c7m1_docks");
+	Format(g_strCampaignFirstMap[6], 32, "c1m1_hotel");
 	Format(g_strCampaignFirstMap[7], 32, "c6m1_riverbank");
 	Format(g_strCampaignFirstMap[8], 32, "c2m1_highway");
 	Format(g_strCampaignFirstMap[9], 32, "c3m1_plankcountry");
@@ -194,8 +197,8 @@ SetupMapStrings()
 	Format(g_strCampaignLastMap[2], 32, "c10m5_houseboat");
 	Format(g_strCampaignLastMap[3], 32, "c11m5_runway");
 	Format(g_strCampaignLastMap[4], 32, "c12m5_cornfield");
-	Format(g_strCampaignLastMap[5], 32, "c1m4_atrium");
-	Format(g_strCampaignLastMap[6], 32, "c7m3_port");
+	Format(g_strCampaignLastMap[5], 32, "c7m3_port");
+	Format(g_strCampaignLastMap[6], 32, "c1m4_atrium");
 	Format(g_strCampaignLastMap[7], 32, "c6m3_port");
 	Format(g_strCampaignLastMap[8], 32, "c2m5_concert");
 	Format(g_strCampaignLastMap[9], 32, "c3m4_plantation");
@@ -210,8 +213,8 @@ SetupMapStrings()
 	Format(g_strCampaignName[2], 32, "Death Toll");
 	Format(g_strCampaignName[3], 32, "Dead Air");
 	Format(g_strCampaignName[4], 32, "Blood Harvest");
-	Format(g_strCampaignName[5], 32, "Dead Center");
-	Format(g_strCampaignName[6], 32, "The Sacrifice");
+	Format(g_strCampaignName[5], 32, "The Sacrifice");
+	Format(g_strCampaignName[6], 32, "Dead Center");
 	Format(g_strCampaignName[7], 32, "The Passing");
 	Format(g_strCampaignName[8], 32, "Dark Carnival");
 	Format(g_strCampaignName[9], 32, "Swamp Fever");
@@ -233,9 +236,9 @@ SetupMapStrings()
 	Format(g_strScavengeMap[2], 32, "c10m3_ranchhouse");
 	Format(g_strScavengeMap[3], 32, "c11m4_terminal");
 	Format(g_strScavengeMap[4], 32, "c12m5_cornfield");
-	Format(g_strScavengeMap[5], 32, "c1m4_atrium");
-	Format(g_strScavengeMap[6], 32, "c7m1_docks");
-	Format(g_strScavengeMap[7], 32, "c7m2_barge");
+	Format(g_strScavengeMap[5], 32, "c7m1_docks");
+	Format(g_strScavengeMap[6], 32, "c7m2_barge");
+	Format(g_strScavengeMap[7], 32, "c1m4_atrium");
 	Format(g_strScavengeMap[8], 32, "c6m1_riverbank");
 	Format(g_strScavengeMap[9], 32, "c6m2_bedlam");
 	Format(g_strScavengeMap[10], 32, "c6m3_port");
@@ -253,9 +256,9 @@ SetupMapStrings()
 	Format(g_strScavengeMapName[2], 32, "The Church");
 	Format(g_strScavengeMapName[3], 32, "The Terminal");
 	Format(g_strScavengeMapName[4], 32, "The Farmhouse");
-	Format(g_strScavengeMapName[5], 32, "Mall Atrium");
-	Format(g_strScavengeMapName[6], 32, "Brick Factory");
-	Format(g_strScavengeMapName[7], 32, "Barge");
+	Format(g_strScavengeMapName[5], 32, "Brick Factory");
+	Format(g_strScavengeMapName[6], 32, "Barge");
+	Format(g_strScavengeMapName[7], 32, "Mall Atrium");
 	Format(g_strScavengeMapName[8], 32, "Riverbank");
 	Format(g_strScavengeMapName[9], 32, "Underground");
 	Format(g_strScavengeMapName[10], 32, "Port");
@@ -266,6 +269,48 @@ SetupMapStrings()
 	Format(g_strScavengeMapName[15], 32, "Park");
 	Format(g_strScavengeMapName[16], 32, "The Village");
 	Format(g_strScavengeMapName[17], 32, "The Lighthouse");
+
+	//The following string variables are only for Survival
+
+	//Survival Maps
+	Format(g_strSurvivalMap[0], 32, "c8m1_apartment");
+	Format(g_strSurvivalMap[1], 32, "c8m5_rooftop");
+	Format(g_strSurvivalMap[2], 32, "c10m3_ranchhouse");
+	Format(g_strSurvivalMap[3], 32, "c11m4_terminal");
+	Format(g_strSurvivalMap[4], 32, "c12m5_cornfield");
+	Format(g_strSurvivalMap[5], 32, "c7m1_docks");
+	Format(g_strSurvivalMap[6], 32, "c7m2_barge");
+	Format(g_strSurvivalMap[7], 32, "c1m4_atrium");
+	Format(g_strSurvivalMap[8], 32, "c6m1_riverbank");
+	Format(g_strSurvivalMap[9], 32, "c6m2_bedlam");
+	Format(g_strSurvivalMap[10], 32, "c6m3_port");
+	Format(g_strSurvivalMap[11], 32, "c2m1_highway");
+	Format(g_strSurvivalMap[12], 32, "c3m1_plankcountry");
+	Format(g_strSurvivalMap[13], 32, "c4m1_milltown_a");
+	Format(g_strSurvivalMap[14], 32, "c4m2_sugarmill_a");
+	Format(g_strSurvivalMap[15], 32, "c5m2_park");
+	Format(g_strSurvivalMap[16], 32, "c14m1_junkyard");
+	Format(g_strSurvivalMap[17], 32, "c14m2_lighthouse");
+	
+	//Survival Map Names
+	Format(g_strSurvivalMapName[0], 32, "Apartments");
+	Format(g_strSurvivalMapName[1], 32, "Rooftop");
+	Format(g_strSurvivalMapName[2], 32, "The Church");
+	Format(g_strSurvivalMapName[3], 32, "The Terminal");
+	Format(g_strSurvivalMapName[4], 32, "The Farmhouse");
+	Format(g_strSurvivalMapName[5], 32, "Brick Factory");
+	Format(g_strSurvivalMapName[6], 32, "Barge");
+	Format(g_strSurvivalMapName[7], 32, "Mall Atrium");
+	Format(g_strSurvivalMapName[8], 32, "Riverbank");
+	Format(g_strSurvivalMapName[9], 32, "Underground");
+	Format(g_strSurvivalMapName[10], 32, "Port");
+	Format(g_strSurvivalMapName[11], 32, "Motel");
+	Format(g_strSurvivalMapName[12], 32, "Plank Country");
+	Format(g_strSurvivalMapName[13], 32, "Milltown");
+	Format(g_strSurvivalMapName[14], 32, "Sugar Mill");
+	Format(g_strSurvivalMapName[15], 32, "Park");
+	Format(g_strSurvivalMapName[16], 32, "The Village");
+	Format(g_strSurvivalMapName[17], 32, "The Lighthouse");
 }
 
 /*======================================================================================
@@ -561,6 +606,8 @@ public Action:Event_PlayerLeftStartArea(Handle:hEvent, const String:strName[], b
 //Event fired when the Round Ends
 public Action:Event_RoundEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
+	PrintToServer("*************************** Event_RoundEnd Event triggered");
+
 	//Check to see if on a finale map, if so change to the next campaign after two rounds
 	if(g_iGameMode == GAMEMODE_VERSUS && OnFinaleOrScavengeMap() == true)
 	{
@@ -584,6 +631,8 @@ public Action:Event_RoundEnd(Handle:hEvent, const String:strName[], bool:bDontBr
 //Event fired when a finale is won
 public Action:Event_FinaleWin(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
+	PrintToServer("*************************** Event_FinaleWin Event triggered");
+
 	g_bFinaleWon = true;	//This is used so that the finale does not switch twice if this event
 							//happens to land on a max failure count as well as this
 	
@@ -597,6 +646,8 @@ public Action:Event_FinaleWin(Handle:hEvent, const String:strName[], bool:bDontB
 //Event fired when a map is finished for scavenge
 public Action:Event_ScavengeMapFinished(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
+	PrintToServer("*************************** Event_ScavengeMapFinished Event triggered");
+
 	//Change to the next Scavenge map
 	if(g_iGameMode == GAMEMODE_SCAVENGE)
 		ChangeScavengeMap();
@@ -1199,11 +1250,8 @@ SetTheCurrentVoteWinner()
 //Check if the current map is the last in the campaign if not in the Scavenge game mode
 bool:OnFinaleOrScavengeMap()
 {
-	if(g_iGameMode == GAMEMODE_SCAVENGE)
+	if(g_iGameMode == GAMEMODE_SCAVENGE || g_iGameMode == GAMEMODE_SURVIVAL)
 		return true;
-	
-	if(g_iGameMode == GAMEMODE_SURVIVAL)
-		return false;
 	
 	decl String:strCurrentMap[32];
 	GetCurrentMap(strCurrentMap,32);			//Get the current map from the game

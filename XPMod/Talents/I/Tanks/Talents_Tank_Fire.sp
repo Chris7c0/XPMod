@@ -23,19 +23,26 @@ LoadFireTankTalents(iClient)
 	IgniteEntity(iClient, 10000.0, false);
 	CreateTimer(10000.0, Timer_ReigniteFireTank, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	
-	// Set Health
-	// Get Current Health/MaxHealth first, to add it back later
-	new iCurrentMaxHealth = GetPlayerMaxHealth(iClient);
-	new iCurrentHealth = GetPlayerHealth(iClient);
-	SetPlayerMaxHealth(iClient,  RoundToNearest(TANK_HEALTH_FIRE * g_fTankStartingHealthMultiplier[iClient]), false, false);
-	new iNewHealth = iCurrentHealth + RoundToNearest(TANK_HEALTH_FIRE * g_fTankStartingHealthMultiplier[iClient]) - iCurrentMaxHealth;
-	// If this was a transfered frustrated tank, then set the health to this percentage
-	if (g_fFrustratedTankTransferHealthPercentage > 0.0)
-	{
-		iNewHealth = RoundToNearest(iNewHealth * g_fFrustratedTankTransferHealthPercentage);
-		g_fFrustratedTankTransferHealthPercentage = 0.0;
-	}
-	SetPlayerHealth(iClient, iNewHealth > 100 ? iNewHealth : 100);
+	// // Set Health
+	// // Get Current Health/MaxHealth first, to add it back later
+	// new iCurrentMaxHealth = GetPlayerMaxHealth(iClient);
+	// new iCurrentHealth = GetPlayerHealth(iClient);
+	// SetPlayerMaxHealth(iClient,  RoundToNearest(TANK_HEALTH_FIRE * g_fTankStartingHealthMultiplier[iClient]), false, false);
+	// new iNewHealth = iCurrentHealth + RoundToNearest(TANK_HEALTH_FIRE * g_fTankStartingHealthMultiplier[iClient]) - iCurrentMaxHealth;
+	// // If this was a transferred frustrated tank, then set the health to this percentage
+	// if (g_fFrustratedTankTransferHealthPercentage > 0.0)
+	// {
+	// 	iNewHealth = RoundToNearest(iNewHealth * g_fFrustratedTankTransferHealthPercentage);
+	// 	g_fFrustratedTankTransferHealthPercentage = 0.0;
+	// }
+	// SetPlayerHealth(iClient, iNewHealth > 100 ? iNewHealth : 100);
+
+
+	SetTanksTalentHealth(iClient, TANK_HEALTH_FIRE);
+
+
+
+
 
 	// Stop Kiting (Bullet hits slowing tank down)
 	SetConVarInt(FindConVar("z_tank_damage_slow_min_range"), 0);

@@ -250,7 +250,10 @@ new bool:g_bCanChargerEarthquake[MAXPLAYERS +1];
 // Tank
 #define TANK_BURN_DURATION                                  15.0
 new g_iTankCounter;
+bool g_bIsFrustratedTank[MAXPLAYERS +1];
 float g_fFrustratedTankTransferHealthPercentage;
+bool g_bTankTakeOverBot[MAXPLAYERS +1];
+bool g_bTankHealthJustSet[MAXPLAYERS +1];
 #define TANK_FRUSTRATION_TIME_IN_SECONDS                    90
 // The calculated amount of starting HP multiplier for scaling to skill level of survivors
 new Float:g_fTankStartingHealthMultiplier[MAXPLAYERS + 1];
