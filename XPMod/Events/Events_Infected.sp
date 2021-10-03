@@ -740,10 +740,7 @@ Action:Event_TankFrustrated(Handle:hEvent, const String:strName[], bool:bDontBro
 
 	g_iInfectedCharacter[iClient] = UNKNOWN_INFECTED;
 
-	// new iMaxHealth = GetPlayerMaxHealth(iClient);
-
-	// //Set the current health to max health so that the new tank player can get this full percentage
-	// SetPlayerHealth(iClient, iMaxHealth);
+	PrintToChatAll("\x03[XPMod] \x04%N's tank has been frustrated or passed. Transferring tank with %3f health.", iClient, g_fFrustratedTankTransferHealthPercentage);
 
 	return Plugin_Continue;
 }
