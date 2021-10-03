@@ -47,6 +47,8 @@ ResetVariablesForMap(iClient)
 	g_bCanDropPoopBomb[iClient] = true;
 	g_bIsFrustratedTank[iClient] = false;
 	g_bTankTakeOverBot[iClient] = false;
+	g_bTankHealthJustSet[iClient] = false;
+	g_fFrustratedTankTransferHealthPercentage = 0.0;
 	g_bTankOnFire[iClient] = false;
 	g_bShowingVGUI[iClient] = false;
 	g_bExplosivesJustGiven[iClient] = false;
