@@ -333,7 +333,7 @@ bool g_bHackTheServerInCooldown;
 #define LOUIS_HAK_TEH_SERVER_COOLDOWN_DURATION          300.0
 bool g_bTimeOutInCooldown;
 bool g_bInfectedBindsDisabled;
-#define LOUIS_TIME_OUT_DURATION                         30.0
+#define LOUIS_TIME_OUT_DURATION                         60.0
 #define LOUIS_TIME_OUT_COOLDOWN_DURATION                300.0
 
 
