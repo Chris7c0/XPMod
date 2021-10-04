@@ -230,7 +230,7 @@ EventsHurt_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 					// PrintToChatAll("Ellis iVictim %N START HP: %i", iVictim, iVictimHealth);
 
 					new iDmgAmount = GetEventInt(hEvent,"dmg_health");
-					new iAddtionalDmg = RoundToNearest(iDmgAmount * (g_iOverLevel[iAttacker] * 0.05));
+					new iAddtionalDmg = RoundToNearest(iDmgAmount * (g_iOverLevel[iAttacker] * 0.06));
 					SetPlayerHealth(iVictim, iVictimHealth - CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
 
 					// PrintToChatAll("Ellis is doing %i original damage", iDmgAmount);
@@ -239,7 +239,7 @@ EventsHurt_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 					// new iVictimHealth2 = GetPlayerHealth(iVictim);
 					// PrintToChatAll("Ellis iVictim %N   END HP: %i", iVictim, iVictimHealth2);
 				}
-
+				
 				// Give dmg buff for being on adrenaline
 				if (g_bEllisHasAdrenalineBuffs[iAttacker])
 				{
@@ -247,7 +247,7 @@ EventsHurt_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 					// PrintToChatAll("Ellis iVictim %N START HP: %i", iVictim, iVictimHealth);
 
 					new iDmgAmount = GetEventInt(hEvent,"dmg_health");
-					new iAddtionalDmg = RoundToNearest(iDmgAmount * (g_iOverLevel[iAttacker] * 0.05));
+					new iAddtionalDmg = RoundToNearest(iDmgAmount * (g_iOverLevel[iAttacker] * 0.06));
 					SetPlayerHealth(iVictim, iVictimHealth - CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
 
 					// PrintToChatAll("Ellis is doing %i original damage", iDmgAmount);
@@ -911,7 +911,7 @@ bool HandleFastAttackingClients_Ellis(int iClient, const int iActiveWeaponID, co
 	// (1/1.00) would be 0% faster, (1/1.3) would be 30% faster, (1/3) would be 3 times faster
 	// We want 50% faster maxed out so 1.50x -> (1/1.5) = .666666 would be 50% faster
 	// this would be keeping .666666 of the existing wait time ( fCurrentNextAttackTime - fGameTime )				
-	fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * (1 / (1 + (g_iMetalLevel[iClient] * 0.05) ) ) + fGameTime;
+	fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * (1 / (1 + (g_iMetalLevel[iClient] * 0.04) ) ) + fGameTime;
 	
 	// FOR TESTING
 	//fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * ((1 / g_fEllisTestFireRate))  + fGameTime;
