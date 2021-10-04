@@ -283,14 +283,17 @@ EventsHurt_AttackerHunter(Handle:hEvent, attacker, victim)
 			else
 				dmg = 3;
 			DealDamage(victim, attacker, dmg);
-			//if((hp - dmg) > 1)
-			//	SetPlayerHealth(victim, hp - dmg);
-			new hp = GetPlayerHealth(attacker);
-			new maxHP = GetPlayerHealth(attacker);
-			if((hp + (g_iBloodlustLevel[attacker] * 3)) < (maxHP * 2))
-				SetPlayerHealth(attacker, hp + (g_iBloodlustLevel[attacker] * 3));
+			
+			new iHealth = GetPlayerHealth(attacker);
+			new iMaxHealth = GetPlayerMaxHealth(attacker);
+			new iAdditionalHealth = g_iBloodlustLevel[attacker] * HUNTER_LIFE_STEAL_AMOUNT_PER_HIT_PER_LEVEL;
+
+			if (iHealth + iAdditionalHealth <= iMaxHealth)
+				SetPlayerHealth(attacker, iAdditionalHealth, true, true);
+			else if(iMaxHealth + iAdditionalHealth <= HUNTER_MAX_LIFE_STEAL_HEALTH)
+				SetPlayerMaxHealth(attacker, iAdditionalHealth, true, true);
 			else
-				SetPlayerHealth(attacker, (maxHP * 2));
+				SetPlayerMaxHealth(attacker, HUNTER_MAX_LIFE_STEAL_HEALTH, false);
 		}
 	}
 }

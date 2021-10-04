@@ -186,6 +186,8 @@ new g_iHunterPoisonRunTimesCounter[MAXPLAYERS + 1];
 new bool:g_bHasInfectedHealthBeenSet[MAXPLAYERS + 1];
 new bool:g_bHunterLethalPoisoned[MAXPLAYERS + 1];
 new g_iHunterPounceDistance[MAXPLAYERS + 1];
+#define HUNTER_MAX_LIFE_STEAL_HEALTH                3000
+#define HUNTER_LIFE_STEAL_AMOUNT_PER_HIT_PER_LEVEL  8
 
 // Spitter
 new bool:g_bBlockGooSwitching[MAXPLAYERS + 1];
