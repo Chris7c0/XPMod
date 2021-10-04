@@ -18,31 +18,6 @@ LoadNecroTankerTalents(iClient)
 	g_iTankChosen[iClient] = TANK_NECROTANKER;
 
 	g_iNecroTankerManaPool[iClient] = NECROTANKER_MANA_POOL_SIZE;
-	
-	// // // Set Health
-	// // Get Current Health/MaxHealth first, to add it back later
-	// new iCurrentMaxHealth = GetPlayerMaxHealth(iClient);
-	// new iCurrentHealth = GetPlayerHealth(iClient);
-	// decl iNewHealth;
-	// // If its a bot, then give max health starting
-	// if (IsFakeClient(iClient))
-	// {
-	// 	SetPlayerMaxHealth(iClient,  RoundToNearest(NECROTANKER_MAX_HEALTH * g_fTankStartingHealthMultiplier[iClient]), false, false);
-	// 	iNewHealth = iCurrentHealth + RoundToNearest(NECROTANKER_MAX_HEALTH * g_fTankStartingHealthMultiplier[iClient]) - iCurrentMaxHealth
-	// }
-	// // If its a human player, make them work for their health
-	// else
-	// {
-	// 	SetPlayerMaxHealth(iClient,  RoundToNearest(TANK_HEALTH_NECROTANKER * g_fTankStartingHealthMultiplier[iClient]), false, false);
-	// 	iNewHealth = iCurrentHealth + RoundToNearest(TANK_HEALTH_NECROTANKER * g_fTankStartingHealthMultiplier[iClient]) - iCurrentMaxHealth
-	// }
-	// // If this was a transfered frustrated tank, then set the health to this percentage
-	// if (g_fFrustratedTankTransferHealthPercentage > 0.0)
-	// {
-	// 	iNewHealth = RoundToNearest(iNewHealth * g_fFrustratedTankTransferHealthPercentage);
-	// 	g_fFrustratedTankTransferHealthPercentage = 0.0;
-	// }
-	// SetPlayerHealth(iClient, iNewHealth > 100 ? iNewHealth : 100);
 
 	SetTanksTalentHealth(iClient, IsFakeClient(iClient) ? NECROTANKER_MAX_HEALTH : TANK_HEALTH_NECROTANKER);
 

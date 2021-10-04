@@ -114,31 +114,8 @@ EventsDeath_VictimTank(Handle:hEvent, iAttacker, iVictimTank)
 	// Decrement the global Tank counter
 	g_iTankCounter--;
 
-	// TODO: Remove this once its confirmed to work
-	// Cant do this on death, because if a tank spawns while other tank is alive then it wont give full health.
-	// //**********IMPORTANT
-	// PrintToChatAll("\x05%N EventsDeath_VictimTank: IsPlayerAlive: %i, g_iInfectedCharacter: %i, m_zombieClass: %i, g_bIsFrustratedTank: %i",
-	// 	iVictimTank,
-	// 	IsPlayerAlive(iVictimTank),
-	// 	g_iInfectedCharacter[iVictimTank],
-	// 	GetEntProp(iVictimTank, Prop_Send, "m_zombieClass"),
-	// 	g_bIsFrustratedTank[iVictimTank])
-	// // Only tanks that wont reset the value when given the g_fFrustratedTankTransferHealthPercentage is the Bot Tanks
-	// // So for these, if they die, then reset the value
-	// // Reset the tanks health percentage that would be passed to the next tank
-	// // I think this is called once the tank is passed, so it resets before new tank spawns
-	// if (IsFakeClient(iVictimTank) == true && g_iInfectedCharacter[iVictimTank] == TANK && g_bIsFrustratedTank[iVictimTank] == false)
-	// {
-	// 	g_fFrustratedTankTransferHealthPercentage = 0.0;
-	// 	PrintToChatAll("\x05%N *** EventsDeath_VictimTank Resetting g_bIsFrustratedTank and g_fFrustratedTankTransferHealthPercentage", iVictimTank);
-	// }
-
+	// This is required for when a human or bot tank dies, to give full health if a transfer happens.
 	g_bIsFrustratedTank[iVictimTank] = false;
-
-	//Transfer
-	//[30] �Umbra� EventsDeath_VictimTank: IsPlayerAlive: 0, g_iInfectedCharacter: 0, m_zombieClass: 8
-	//sm_slay
-	//ChrisP EventsDeath_VictimTank: IsPlayerAlive: 0, g_iInfectedCharacter: 8, m_zombieClass: 8
 
 	switch(g_iTankChosen[iVictimTank])
 	{
@@ -226,33 +203,6 @@ void ResetAllTankVariables(iClient)
 	// PrintToChatAll("%N ResetAllTankVariables Ended", iClient);
 }
 
-// ResetTankHealth(int iClient)
-// {
-// 	// Clamp Player Max Health to ConVar Setting of Tank Max health
-// 	// Note: Valve multiplies the value with 1.5 so it becomes 4000 x 1.5 = 6000 hp.
-// 	new iMaxHealthConVarSetting = RoundToCeil(GetConVarInt(FindConVar("z_tank_health")) * 1.5);
-// 	// Scale the max health to the survivors levels or for XPMod spawn
-// 	iMaxHealthConVarSetting = RoundToNearest(iMaxHealthConVarSetting * g_fTankStartingHealthMultiplier[iClient]);
-// 	//PrintToChatAll("iMaxHealthConVarSetting: %i", iMaxHealthConVarSetting);
-// 	new iMaxHealth = GetPlayerMaxHealth(iClient);
-// 	new iCurrentHealth = GetPlayerHealth(iClient);
-// 	PrintToChatAll("%N ResetAllTankVariables iHealth = %i iMaxHealth = %i iMaxHealthConVarSetting = %i", iClient, iCurrentHealth, iMaxHealth, iMaxHealthConVarSetting);
-	
-// 	// Clamp Player MaxHealth to ConVar Health
-// 	if (iMaxHealth > iMaxHealthConVarSetting)
-// 		SetPlayerMaxHealth(iClient, iMaxHealthConVarSetting);
-
-// 	// iMaxHealth = GetPlayerMaxHealth(iClient);
-// 	PrintToChatAll("%N ResetAllTankVariables iHealth = %i iMaxHealth = %i iMaxHealthConVarSetting = %i", iClient, iCurrentHealth, iMaxHealth, iMaxHealthConVarSetting);
-
-// 	// Clamp Player Health to Max Health
-// 	if (iCurrentHealth > iMaxHealthConVarSetting)
-// 		SetPlayerHealth(iClient, iMaxHealthConVarSetting);
-// 	PrintToChatAll("%N ResetAllTankVariables iHealth = %i iMaxHealth = %i iMaxHealthConVarSetting = %i", iClient, iCurrentHealth, iMaxHealth, iMaxHealthConVarSetting);
-
-	
-// }
-
 
 ResetTankHealth(int iClient)
 {
@@ -272,9 +222,11 @@ ResetTankHealth(int iClient)
 	if (g_bTankHealthJustSet[iClient] == false && g_fFrustratedTankTransferHealthPercentage > 0.0)
 	{
 		iNewHealth = RoundToNearest(iNewHealth * g_fFrustratedTankTransferHealthPercentage);
-		// If they are a bot, then do not rest this value, because if they become the tank for real then it will never transfer to a human.
-		// But it has an issue where it transfers to bot first, then to human and its resetting g_fFrustratedTankTransferHealthPercentage 
-		if (g_bIsFrustratedTank[iClient] == false && g_bTankTakeOverBot[iClient] == false) // && IsFakeClient(iClient) == false Cant do this because if the bot tank is still alive and there is a transfer then the next tank will get the percentage health.
+		// If they are a take over bot (temporary holding the tank until human gets the tank. Happens when player goes
+		// to spectator, not when tank frustrated), then do not rest this value, because it will reset before the human gets it.
+		// Tried using IsFakeClient(iClient) == false here but cant do this because if the bot tank is
+		// still alive and there is a transfer then the next tank will get the percentage health.
+		if (g_bIsFrustratedTank[iClient] == false && g_bTankTakeOverBot[iClient] == false)
 			g_fFrustratedTankTransferHealthPercentage = 0.0;
 
 		// Create a timer to reset the g_bTankTakeOverBot
@@ -287,6 +239,9 @@ ResetTankHealth(int iClient)
 	if (g_bTankHealthJustSet[iClient] == false)
 		SetPlayerHealth(iClient, iNewHealth);
 
+	// This is so that the tank cant be set twice for the same player during a transfer
+	// Its required because this is called a few times for each player, because multiple
+	// events are required to capture every scenario
 	g_bTankHealthJustSet[iClient] = true;
 	CreateTimer(6.0, TimerResetTankHealthJustSet, iClient, TIMER_FLAG_NO_MAPCHANGE);
 }
@@ -306,6 +261,7 @@ Action:TimerResetTankTakeOverBot(Handle:timer, any:iClient)
 SetTanksTalentHealth(int iClient, int iMaxHealthAmount)
 {
 	//PrintToChatAll("SetTanksTalentHealth %N", iClient);
+	
 	// Get the normalized health percentage to apply with the new tanks max health
 	float fNormalizedHealthPercentage = float(GetPlayerHealth(iClient)) / float(GetPlayerMaxHealth(iClient));
 	new iNewMaxHealth = RoundToNearest(iMaxHealthAmount * g_fTankStartingHealthMultiplier[iClient])
@@ -355,14 +311,17 @@ float CalculateTankHealthPercentageMultiplier()
 
 StorePassedOrFrustratedTanksHealthPercentage(iClient)
 {
-	// if (g_iInfectedCharacter[iClient] != TANK)
-	// {
-	// 	PrintToChatAll("StorePassedOrFrustratedTanksHealthPercentage not TANK");
-	// 	return;
-	// }
-	
-	// This is required for later to know if it can reset the g_fFrustratedTankTransferHealthPercentage variable on death event
+	// This is required to not set the value of g_fFrustratedTankTransferHealthPercentage if the player is not a tank
+	// This function can be called from several places including player change team so need to check this.
+	if (RunClientChecks(iClient) == false || g_iInfectedCharacter[iClient] != TANK)
+	{
+		//PrintToChatAll("StorePassedOrFrustratedTanksHealthPercentage not TANK");
+		return;
+	}
+
+	// This is required for later to know if it can reset the g_fFrustratedTankTransferHealthPercentage variable
 	// It needs to know if the player was frustrated since the death event is fired even when transferring tank.
+	// Setting this this to true will make the tank reset skipped.
 	g_bIsFrustratedTank[iClient] = true;
 
 	new iMaxHealth = GetPlayerMaxHealth(iClient);

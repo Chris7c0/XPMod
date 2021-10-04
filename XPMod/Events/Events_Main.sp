@@ -512,8 +512,9 @@ Action:Event_PlayerSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadc
 
 	SetClientSpeed(iClient);
 
-	// Unsure if this is required still
-	g_bIsFrustratedTank[iClient] = false;
+	// If they just spawned then for sure they are not a frustrated tank
+	// Removed this because they should have it reset in the TimerResetAllTankVariables
+	//g_bIsFrustratedTank[iClient] = false;
 	CreateTimer(0.1, TimerResetAllTankVariables, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 	// Debug Mode Kill Bot SI
