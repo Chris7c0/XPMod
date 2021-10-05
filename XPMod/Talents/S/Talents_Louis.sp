@@ -36,7 +36,8 @@ bool OnPlayerRunCmd_Louis(iClient, &iButtons)
 	// Handle Medkit Conversion to Pills
 	if (g_iLouisTalent6Level[iClient] > 0 &&
 		g_iStashedInventoryPills[iClient] < LOUIS_STASHED_INVENTORY_MAX_PILLS &&
-		iButtons & IN_ZOOM)
+		iButtons & IN_ZOOM &&
+		!(iButtons & IN_ATTACK))
 	{
 		char strCurrentWeapon[32];
 		GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));

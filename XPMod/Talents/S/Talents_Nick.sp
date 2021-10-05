@@ -85,7 +85,7 @@ OnGameFrame_Nick(iClient)
 	if(g_iLeftoverLevel[iClient] == 5)
 	{
 		new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
-		if(buttons & IN_ZOOM)
+		if(buttons & IN_ZOOM && !(buttons & IN_ATTACK))
 		{
 			if(g_bCanNickZoomKit[iClient] == true)
 			{
