@@ -87,7 +87,8 @@ Action:BloodlustMenuDraw(iClient)
 		\n \
 		\n+1 shredding damage every 4 levels\
 		\n+25 max health per level\
-		\n+3 life stealing while shredding per level\
+		\n+8 life stealing while shredding per level\
+		\n	3000 HP Max\
 		\n \
 		\n \
 		\n				Bind 1: Dismount\
@@ -101,7 +102,7 @@ Action:BloodlustMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 

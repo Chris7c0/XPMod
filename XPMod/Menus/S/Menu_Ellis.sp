@@ -70,11 +70,11 @@ Action:OverMenuDraw(iClient)
 		\n \
 		\nIf Within %i Points Of Max Health:\
 		\n	+1%%%% Movement Speed\
-		\n	+5%%%% Damage To All Guns per Level\
+		\n	+6%%%% Damage To All Guns per Level\
 		\n \
 		\nWhile On Adrenaline:\
 		\n	+5 Temp Health per Level\
-		\n	+5 Damage To All Guns per Level\
+		\n	+6 Damage To All Guns per Level\
 		\n	(Team) +2 Seconds Duration per Level   \
 		\n		- Stacks with every Ellis\
 		\n \
@@ -265,7 +265,7 @@ Action:MetalMenuDraw(iClient)
 		%s				Mechanic Affinity (Level %d):\
 		\n \
 		\nLevel 1:\
-		\n+5%%%% Firing Rate per Level\
+		\n+4%%%% Firing Rate per Level\
 		\n \
 		\nLevel 5:\
 		\n [WALK+USE] Double Firing Rate for 5 Seconds\
