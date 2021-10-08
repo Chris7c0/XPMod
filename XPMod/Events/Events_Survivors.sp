@@ -930,26 +930,7 @@ Action:Event_AdrenalineUsed(Handle:hEvent, const String:strName[], bool:bDontBro
 	
 	if(RunClientChecks(iClient) == false)
 		return Plugin_Continue;
-
-	// Ellis
-	if (g_iOverLevel[iClient] > 0 && IsFakeClient(iClient) == false)
-	{
-		// Give health to Ellis
-		new iMaxHealth = GetPlayerMaxHealth(iClient);
-		new iHealth = GetPlayerHealth(iClient);
-		new Float:fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
-		
-		if(float(iHealth) + fTempHealth + (float(g_iOverLevel[iClient]) * 5.0) <= float(iMaxHealth))
-			fTempHealth = fTempHealth + (float(g_iOverLevel[iClient]) * 5.0);
-		else
-			fTempHealth = float(iMaxHealth) - float(iHealth);
-		
-		SetEntDataFloat(iClient,g_iOffset_HealthBuffer, fTempHealth ,true);
-
-		// Set the variable that will allow for damage buffs during adrenaline duration
-		g_bEllisHasAdrenalineBuffs[iClient] = true;
-		CreateTimer(float(g_iEllisAdrenalineStackDuration), TimerRemoveEllisAdrenalineBuffs, iClient, TIMER_FLAG_NO_MAPCHANGE);
-	}
+	
 	EventsAdrenalineUsed_Ellis(iClient);
 
 

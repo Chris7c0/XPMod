@@ -1,6 +1,9 @@
 public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], Float:fAngles[3], &iWeapon)
 {
-	// if (g_bStopAllInput[iClient]) return Plugin_Handled;
+	if (RunClientChecks(iClient) == false)
+		return Plugin_Continue;
+
+	//if (g_bStopAllInput[iClient]) return Plugin_Handled;
 
 	// if (g_bIsEntangledInSmokerTongue[iClient])
 	// {
@@ -78,8 +81,7 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 	// Move this to on game frame if doing more with ghost and need it before input given
 	if (g_bCanBeGhost[iClient] && 
 		g_iClientTeam[iClient] == TEAM_INFECTED &&
-		g_bIsGhost[iClient] == false &&
-		RunClientChecks(iClient))
+		g_bIsGhost[iClient] == false)
 	{
 		// Check if they have set a class already
 		if (g_iInfectedCharacter[iClient] == UNKNOWN_INFECTED)
@@ -104,8 +106,9 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 
 	OnPlayerRunCmd_SelfRevive(iClient, iButtons);
 
+	// If buttons are changed for more classes in the future, then this needs to be put into a switch statement
+	OnPlayerRunCmd_Ellis(iClient, iButtons);
 	bButtonsChanged = OnPlayerRunCmd_Louis(iClient, iButtons);
-
 	OnPlayerRunCmd_Smoker(iClient, iButtons);
 	
 	//Charger Earthquake

@@ -18,16 +18,16 @@ Action:TestFunction1(iClient, args)
 
 	PrintToChatAll("iClient = %i xyz: %f %f %f", StringToInt(strArg[0]), xyzPosition[0], xyzPosition[1], xyzPosition[2]);
 
-	for (int i = 1;i <= MaxClients;i++)
-	{
-		if (RunClientChecks(i) == false)// || 
-			// IsPlayerAlive(i) == false ||
-			// g_iClientTeam[i] != TEAM_INFECTED)
-			continue;
+	// for (int i = 1;i <= MaxClients;i++)
+	// {
+	// 	if (RunClientChecks(i) == false)// || 
+	// 		// IsPlayerAlive(i) == false ||
+	// 		// g_iClientTeam[i] != TEAM_INFECTED)
+	// 		continue;
 		
-		// PrintToChatAll("%N m_zombieClass = %i", i, GetEntProp(i, Prop_Send, "m_zombieClass"));
-		PrintToChatAll("%N g_bTankTakeOverBot[i] = %i, g_bIsFrustratedTank[i] = %i", i, g_bTankTakeOverBot[i], g_bIsFrustratedTank[i]);
-	}
+	// 	// PrintToChatAll("%N m_zombieClass = %i", i, GetEntProp(i, Prop_Send, "m_zombieClass"));
+	// 	PrintToChatAll("%N g_bTankTakeOverBot[i] = %i, g_bIsFrustratedTank[i] = %i", i, g_bTankTakeOverBot[i], g_bIsFrustratedTank[i]);
+	// }
 
 	//PrintToChatAll("%N m_zombieClass = %i", i, GetEntProp(i, Prop_Send, "m_zombieClass"));
 

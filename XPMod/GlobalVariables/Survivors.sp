@@ -223,6 +223,9 @@ new bool:g_bEllisHasAdrenalineBuffs[MAXPLAYERS + 1];
 #define ELLIS_STASHED_INVENTORY_MAX_ADRENALINE              3
 #define ELLIS_STASHED_INVENTORY_MAX_TANK_SPAWN_ADRENALINE   5
 new g_iStashedInventoryAdrenaline[MAXPLAYERS + 1];
+#define ELLIS_HEAL_AMOUNT_PILLS                             15
+#define ELLIS_MAX_TEMP_HEALTH                               125
+new g_iTempHealthBeforeUsingHealthBoostSlotItem[MAXPLAYERS + 1];
 
 //Nicks Stuff
 new bool:g_bNickIsStealingLife[MAXPLAYERS + 1][MAXPLAYERS + 1];	//g_bNickIsStealingLife[victim][attacker]

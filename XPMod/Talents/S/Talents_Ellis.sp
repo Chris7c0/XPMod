@@ -182,6 +182,33 @@ OGFSurvivorReload_Ellis(iClient, const char[] currentweapon, ActiveWeaponID, Cur
 	SetEllisClipSize(iClient, currentweapon, ActiveWeaponID, CurrentClipAmmo, iOffset_Ammo);
 }
 
+
+bool OnPlayerRunCmd_Ellis(iClient, &iButtons)
+{
+	// Ellis abilities
+	if (g_iChosenSurvivor[iClient] != ELLIS || 
+		g_iClientTeam[iClient] != TEAM_SURVIVORS || 
+		g_bGameFrozen == true)
+		return false;
+
+	// Handle Adrenaline/Pills Max Health Reset Bug
+	// Check the boost slot to see if they currently have a adrenaline or pain pill
+	if (g_iOverLevel[iClient] > 0 &&
+		iButtons & IN_ATTACK)
+	{
+		// Ensure they are holding the weapon in the health boost slot
+		int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+		if (RunEntityChecks(iActiveWeaponID) && iActiveWeaponID == GetPlayerWeaponSlot(iClient, 4))
+		{
+			// PrintToChatAll("OnPlayerRunCmd_Ellis: adrenaline temp: %i, health: %i", GetSurvivorTempHealth(iClient), GetPlayerHealth(iClient));
+			g_iTempHealthBeforeUsingHealthBoostSlotItem[iClient] = GetSurvivorTempHealth(iClient);
+		}
+	}
+
+	return false;
+}
+
+
 EventsHurt_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 {
 	if(g_iChosenSurvivor[iAttacker] != ELLIS || g_bTalentsConfirmed[iAttacker] == false)
@@ -276,12 +303,14 @@ EventsHurt_VictimEllis(Handle:hEvent, attacker, victim)
 
 	if(g_iFireLevel[victim] > 0)
 	{
+		// PrintToChat(victim, "dmgType: %i", dmgType);
 		//Prevent Fire Damage
 		if(dmgType == DAMAGETYPE_FIRE1 || dmgType == DAMAGETYPE_FIRE2)
 		{
-			//PrintToChat(victim, "Prevent fire damage");
-			new currentHP = GetEventInt(hEvent,"health");
-			SetPlayerHealth(victim, dmgHealth + currentHP);
+			// Still doesn't work while Ellis is incap
+			// It seems that temp health works a little different while incap
+			// PrintToChat(victim, "Prevent fire damage");
+			AddTempHealthToSurvivor(victim, float(dmgHealth), false);
 		}
 	}
 
@@ -354,7 +383,15 @@ EventsDeath_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 	if(g_iBringLevel[iAttacker] > 0)
 	{
 		// Give temp health on SI kill
-		AddTempHealthToSurvivor(iAttacker, float(g_iBringLevel[iAttacker]), false);
+		if (GetSurvivorTempHealth(iAttacker) + g_iBringLevel[iAttacker] <= ELLIS_MAX_TEMP_HEALTH)
+		{
+			AddTempHealthToSurvivor(iAttacker, float(g_iBringLevel[iAttacker]), false);
+		}
+		else
+		{
+			ResetTempHealthToSurvivor(iAttacker);
+			AddTempHealthToSurvivor(iAttacker, float(ELLIS_MAX_TEMP_HEALTH), false);
+		}
 		
 		// Increase clip size
 		new iEntid = GetEntDataEnt2(iAttacker, g_iOffset_ActiveWeapon);
@@ -395,10 +432,16 @@ EventsDeath_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 
 void EventsPillsUsed_Ellis(int iClient)
 {
-	if (g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
+	if (g_iChosenSurvivor[iClient] != ELLIS || 
+		g_bTalentsConfirmed[iClient] == false ||
+		g_iOverLevel[iClient] <= 0)
 		return;
 
 	// PrintToChat(iClient, "Pills Used: %i", GetPlayerWeaponSlot(iClient, 4));
+
+	// Give proper temp health to Ellis
+	new iPillHealthBonus = ELLIS_HEAL_AMOUNT_PILLS;
+	SetEllisHealthAfterUsingAdrenalineOrPills(iClient, iPillHealthBonus);
 
 	// Give stashed adrenaline if they have more
 	if (g_iStashedInventoryAdrenaline[iClient] > 0)
@@ -407,8 +450,21 @@ void EventsPillsUsed_Ellis(int iClient)
 
 void EventsAdrenalineUsed_Ellis(int iClient)
 {
-	if (g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
+	if (g_iChosenSurvivor[iClient] != ELLIS || 
+		g_iOverLevel[iClient] <= 0 ||
+		g_bTalentsConfirmed[iClient] == false ||
+		IsFakeClient(iClient) == true)
 		return;
+
+	// Give proper temp health to Ellis
+	new iAdrenalineHealthBonus = 25 + (g_iOverLevel[iClient] * 5);
+	SetEllisHealthAfterUsingAdrenalineOrPills(iClient, iAdrenalineHealthBonus);
+
+	// Set the variable that will allow for damage buffs during adrenaline duration
+	g_bEllisHasAdrenalineBuffs[iClient] = true;
+	CreateTimer(float(g_iEllisAdrenalineStackDuration), TimerRemoveEllisAdrenalineBuffs, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
+	//PrintToChatAll("adrenaline temp: %i, health: %i", GetSurvivorTempHealth(iClient), GetPlayerHealth(iClient));
 
 	// Give stashed adrenaline if they have more
 	if (g_iStashedInventoryAdrenaline[iClient] > 0)
@@ -920,4 +976,24 @@ bool HandleFastAttackingClients_Ellis(int iClient, const int iActiveWeaponID, co
 
 	// Return the slot that is used
 	return true;
+}
+
+void SetEllisHealthAfterUsingAdrenalineOrPills(int iClient, int iHealthBoostHealth)
+{
+	// The pills are capped at MAX Health by the game. To fix this, the temp health is stored
+	// in OnPlayerRunCMD and is applied here if needed.
+	if (g_iTempHealthBeforeUsingHealthBoostSlotItem[iClient] > 0)
+	{
+		new iNewTempHealth = g_iTempHealthBeforeUsingHealthBoostSlotItem[iClient] + iHealthBoostHealth >= ELLIS_MAX_TEMP_HEALTH ? 
+			ELLIS_MAX_TEMP_HEALTH :
+			g_iTempHealthBeforeUsingHealthBoostSlotItem[iClient] + iHealthBoostHealth;
+
+		// First reset to put them at 0
+		ResetTempHealthToSurvivor(iClient);
+		// Then add the temp health back (cap it at the max setting, if beyond)
+		AddTempHealthToSurvivor(iClient, 
+			float(iNewTempHealth), 
+			false);
+		g_iTempHealthBeforeUsingHealthBoostSlotItem[iClient] = 0;
+	}
 }

@@ -119,6 +119,7 @@ ResetVariablesForMap(iClient)
 	g_iEllisAdrenalineStackDuration = 15;
 	g_bEllisHasAdrenalineBuffs[iClient] = false;
 	g_iStashedInventoryAdrenaline[iClient] = 0;
+	g_iTempHealthBeforeUsingHealthBoostSlotItem[iClient] = 0;
 	g_bIsEllisLimitBreaking[iClient] = false;
 	g_bCanEllisLimitBreak[iClient] = false;
 	g_iLimitBreakWeaponIndex[iClient] = -1;

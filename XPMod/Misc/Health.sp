@@ -111,7 +111,7 @@ void AddTempHealthToSurvivor(int iClient, float fAdditionalTempHealth, bool bRes
 		g_iClientTeam[iClient] != TEAM_SURVIVORS)
 		return;
 	
-	// Calculate the current surivivors temp health
+	// Calculate the current survivors temp health
 	new iTempHealth = GetSurvivorTempHealth(iClient);
 	if (iTempHealth < 0)
 		return;
@@ -138,13 +138,9 @@ void AddTempHealthToSurvivor(int iClient, float fAdditionalTempHealth, bool bRes
 	}
 	else
 	{
-		// Get tthe current health buffer and add the specified amount to it
-		new Float:fTempHealth = GetEntPropFloat(iClient, Prop_Send, "m_healthBuffer")
+		// Get the current health buffer and add the specified amount to it
+		float fTempHealth = GetEntPropFloat(iClient, Prop_Send, "m_healthBuffer")
 		fTempHealth += fAdditionalTempHealth;
-
-		// Cap the temp health
-		//if(fTempHealth > 160.0)
-		//	fTempHealth = 160.0;
 
 		// Set it
 		SetEntPropFloat(iClient, Prop_Send, "m_healthBuffer", fTempHealth);
