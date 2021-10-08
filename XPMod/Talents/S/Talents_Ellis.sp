@@ -40,7 +40,7 @@ TalentsLoad_Ellis(iClient)
 	if( (g_iClientLevel[iClient] - (g_iClientLevel[iClient] - g_iSkillPoints[iClient])) <= (g_iClientLevel[iClient] - 1))
 		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Weapon Expert Talents \x05have been loaded.");
 	else
-		PrintToChat(iClient, "\x03[XPMod] \x05Your abilties will be automatically set as you level.");
+		PrintToChat(iClient, "\x03[XPMod] \x05Your abilities will be automatically set as you level.");
 		
 	if(g_iOverLevel[iClient] > 0)
 	{
@@ -62,6 +62,9 @@ TalentsLoad_Ellis(iClient)
 				SetClientSpeed(iClient);
 			}
 		}
+
+		// Give Ellis an extra adrenaline but do it delayed to give after any initial equipment
+		CreateTimer(0.1, TimerDelayedGiveEllisAnExtraAdrenaline, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 		// Set adrenaline counter for global Ellis
 		g_iEllisAdrenalineStackDuration += (g_iOverLevel[iClient] * 2);
@@ -996,4 +999,48 @@ void SetEllisHealthAfterUsingAdrenalineOrPills(int iClient, int iHealthBoostHeal
 			false);
 		g_iTempHealthBeforeUsingHealthBoostSlotItem[iClient] = 0;
 	}
+}
+
+void GiveEllisAnExtraMolotov(iClient)
+{
+	if (RunClientChecks(iClient) == false)
+		return;
+
+	// Check the grenade slot to see if they currently have a grenade
+	if (GetPlayerWeaponSlot(iClient, 2) > 0)
+	{
+		if (g_iEllisJamminGrenadeCounter[iClient] < ELLIS_STASHED_INVENTORY_MAX_TANK_SPAWN_ADRENALINE)
+			g_iEllisJamminGrenadeCounter[iClient]++;
+	}
+	else
+	{
+		RunCheatCommand(iClient, "give", "give molotov");
+	}
+}
+
+void GiveEllisAnExtraAdrenaline(iClient)
+{
+	if (RunClientChecks(iClient) == false)
+		return;
+
+	// Check the boost slot to see if they currently have a adrenaline or pain pill
+	if (GetPlayerWeaponSlot(iClient, 4) > 0)
+	{
+		if (g_iStashedInventoryAdrenaline[iClient] < ELLIS_STASHED_INVENTORY_MAX_TANK_SPAWN_ADRENALINE)
+		{
+			g_iStashedInventoryAdrenaline[iClient]++;
+			PrintToChat(iClient, "\x03[XPMod] \x05+1 Adrenaline. \x04You have %i more Adrenaline Shot%s.",
+				g_iStashedInventoryAdrenaline[iClient],
+				g_iStashedInventoryAdrenaline[iClient] != 1 ? "s" : "");
+		}
+	}
+	else
+	{
+		RunCheatCommand(iClient, "give", "give adrenaline");
+	}
+}
+
+Action:TimerDelayedGiveEllisAnExtraAdrenaline(Handle:timer, any:iClient)
+{
+	GiveEllisAnExtraAdrenaline(iClient);
 }

@@ -56,7 +56,7 @@ OnGameFrame_Bill(iClient)
 			{
 				if(g_iBillTeamHealCounter[iClient] > 180)	//This determines the length between each pause
 				{
-					decl maxHP, currentHP, counter;
+					decl counter;
 					if(g_iClientToHeal[iClient] < 1)	//Just in case
 						g_iClientToHeal[iClient] = 1;
 					counter = 0;
@@ -75,17 +75,8 @@ OnGameFrame_Bill(iClient)
 									{
 										if(g_bIsClientDown[g_iClientToHeal[iClient]] == false && IsClientGrappled(g_iClientToHeal[iClient]) == false)
 										{
-											maxHP = GetPlayerMaxHealth(g_iClientToHeal[iClient]);
-											currentHP = GetPlayerHealth(g_iClientToHeal[iClient]);
-											if(currentHP == maxHP)
-												continue;
-											if((currentHP + g_iInspirationalLevel[iClient]) > maxHP)
-												SetEntityHealth(g_iClientToHeal[iClient], maxHP);
-											else
-											{
-												currentHP += g_iInspirationalLevel[iClient];
-												SetEntityHealth(g_iClientToHeal[iClient], currentHP);
-											}
+											SetPlayerHealth(g_iClientToHeal[iClient], g_iInspirationalLevel[iClient], true);
+
 											decl Float:clientloc[3],Float:targetloc[3];
 											GetClientEyePosition(iClient,clientloc);
 											GetClientEyePosition(g_iClientToHeal[iClient],targetloc);
