@@ -67,6 +67,9 @@ Action:OverMenuDraw(iClient)
 		%s 		  Overconfidence (Level %d):\
 		\n \
 		\nMax Health Reduced by 10 HP\
+		\nStart with an extra shot\
+		\nPills only heal 15 HP\
+		\n125 HP Max Temp Health\
 		\n \
 		\nIf Within %i Points Of Max Health:\
 		\n	+1%%%% Movement Speed\
@@ -87,7 +90,7 @@ Action:OverMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
