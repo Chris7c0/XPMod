@@ -67,9 +67,9 @@ Action:OverMenuDraw(iClient)
 		%s 		  Overconfidence (Level %d):\
 		\n \
 		\nMax Health Reduced by 10 HP\
-		\nStart with an extra shot\
-		\nPills only heal 15 HP\
-		\n125 HP Max Temp Health\
+		\nMax Temp Health is 125 HP\
+		\nPills Only Heal 15 HP\
+		\nStart With An Extra Shot\
 		\n \
 		\nIf Within %i Points Of Max Health:\
 		\n	+1%%%% Movement Speed\
