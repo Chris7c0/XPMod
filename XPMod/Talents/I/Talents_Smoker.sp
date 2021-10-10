@@ -18,6 +18,10 @@ void TalentsLoad_Smoker(iClient)
 	g_bSmokerInSmokeCloudLimbo[iClient] = false;
 	g_bTeleportCoolingDown[iClient] = false;
 
+	//Grapples reset
+	g_bSmokerGrappled[iClient] = false;
+	g_iChokingVictim[iClient] = -1;
+
 	// Enable global smoker tongue console variable buffs
 	SetSmokerConvarBuffs(FindHighestLevelSmokerAlive());
 
