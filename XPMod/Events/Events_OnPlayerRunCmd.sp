@@ -239,9 +239,46 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 
 	if (bButtonsChanged)
 		return Plugin_Changed;
+
+
+	// For Smoker Bind 1, prevent bots from attacking the smoke cloud smoker
+	if (IsFakeClient(iClient) &&
+		iButtons & IN_ATTACK)
+	{
+		// Get the client the bot is aiming at
+		new iTarget = GetClientAimTarget(iClient, true);
+
+		// if (iTarget > 0)
+		// 	PrintToChatAll("%N is targeting %N", iClient, iTarget);
+
+		// Allow to attack CI if they are the target
+		if (iTarget != -1 && g_bBlockBotFromShooting[iClient] == true)
+			return Plugin_Handled;
 		
+		if (RunClientChecks(iTarget) && 
+			(g_bSmokerIsSmokeCloud[iTarget] || g_bSmokerInSmokeCloudLimbo[iTarget]) &&
+			g_iInfectedCharacter[iTarget] == SMOKER &&
+			g_iClientTeam[iTarget] == TEAM_INFECTED)
+		{
+			// PrintToChatAll("%N input stopped", iClient);
+			// PrintToChatAll("g_bSmokerIsSmokeCloud %i, g_bSmokerInSmokeCloudLimbo: %i", g_bSmokerIsSmokeCloud[iTarget], g_bSmokerInSmokeCloudLimbo[iTarget]);
+
+			ResetBotCommand(iClient);
+			
+			g_bBlockBotFromShooting[iClient] = true;
+			CreateTimer(0.3, TimerUnblockBotFromAttacking, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
+			return Plugin_Handled;
+		}
+	}
+
 
 	return Plugin_Continue;
+}
+
+Action:TimerUnblockBotFromAttacking(Handle:timer, any:iClient)
+{
+	g_bBlockBotFromShooting[iClient] = false;
 }
 
 // // Testing bot button presses

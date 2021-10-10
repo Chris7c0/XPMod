@@ -308,11 +308,22 @@ void SetPlayerNotInSmokerCloud(int iClient, int iSmoker = 0)
 		return;
 	
 	SetClientSpeed(iClient);
-	// Disable movement and random sound effects
-	g_bIsPLayerHacked[iClient] = false;
+	// Disable movement and random sound effects (make this delayed to allow them to get out easier)
+	CreateTimer(SMOKER_SMOKE_CLOUD_RETURN_HACKED_CONTROLS_DELAY, TimerDelayedResetPlayerHacked, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 	// Remove for the victim counter displayed to the smoker
 	if (RunClientChecks(iSmoker)) g_iSmokerSmokeCloudVictimCount[iSmoker]--;
+}
+
+Action:TimerDelayedResetPlayerHacked(Handle:timer, int iClient)
+{
+	// Make sure they are not currently in the smoker smoke cloud;
+	if (g_bIsPlayerInSmokerSmokeCloud[iClient] == true)
+		return Plugin_Stop;
+	
+	g_bIsPLayerHacked[iClient] = false;
+
+	return Plugin_Stop;
 }
 
 void SetAllPlayersNotInSmokerCloud()

@@ -139,6 +139,7 @@ new g_iSmokerSmokeCloudTicksUsed[MAXPLAYERS + 1];
 #define SMOKER_SMOKE_CLOUD_RADIUS                           250.0
 #define SMOKER_SMOKE_CLOUD_SURVIVOR_SPEED                   0.34
 #define SMOKER_SMOKE_CLOUD_TARGETED_PLAYER_TICK_RATE        1.0
+#define SMOKER_SMOKE_CLOUD_RETURN_HACKED_CONTROLS_DELAY     3.0
 #define SMOKER_SMOKE_CLOUD_BLIND_AMOUNT_MIN                 100
 #define SMOKER_SMOKE_CLOUD_BLIND_AMOUNT_MAX                 200
 #define SMOKER_SMOKE_CLOUD_TEMP_HEALTH_CONVERSION_PER_TICK  2
@@ -160,6 +161,7 @@ new Float:g_fTeleportOriginalPositionZ[MAXPLAYERS + 1];
 new Float:g_fTeleportEndPositionX[MAXPLAYERS + 1];
 new Float:g_fTeleportEndPositionY[MAXPLAYERS + 1];
 new Float:g_fTeleportEndPositionZ[MAXPLAYERS + 1];
+bool g_bBlockBotFromShooting[MAXPLAYERS + 1];
 
 // Boomer
 new bool:g_bIsSuicideBoomer[MAXPLAYERS + 1];
