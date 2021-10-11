@@ -96,6 +96,16 @@ TurnSmokerIntoSmokeCloud(int iClient)
 	// SetPlayerHealth(iClient, 30000);
 }
 
+// This is for if the smoker is able to attack or something happens while in smoke cloud or limbo, return them.
+ReturnSmokerFromSmokeCloudIfCurrentlySmokeCloud(iClient)
+{
+	if (g_bSmokerIsSmokeCloud[iClient] == false && 
+		g_bSmokerInSmokeCloudLimbo[iClient] == false)
+		return;
+
+	TurnBackToSmokerAfterSmokeCloud(iClient);
+}
+
 TurnBackToSmokerAfterSmokeCloud(int iClient)
 {
 	g_bSmokerIsSmokeCloud[iClient] = false;
@@ -149,12 +159,14 @@ PutSmokerWithExpiredSmokeCloudIntoLimbo(int iClient)
 		PrintToChat(iClient, "\x03[XPMod] \x04Get to a safe place then press Bind 1 again to return back to Smoker form.");
 	}
 
+	g_iSmokeCloudLimboTicks[iClient] =  0;
 	CreateTimer(5.0, TimerHandleSmokerInSmokeCloudLimbo, iClient, TIMER_REPEAT);
 }
 
 Action TimerHandleSmokerInSmokeCloudLimbo(Handle:timer, int iClient)
 {
-	if (g_iInfectedCharacter[iClient] != SMOKER ||
+	if (g_iSmokeCloudLimboTicks[iClient] == 3 ||
+		g_iInfectedCharacter[iClient] != SMOKER ||
 		g_iClientTeam[iClient] != TEAM_INFECTED ||
 		g_bSmokerInSmokeCloudLimbo[iClient] == false ||
 		RunClientChecks(iClient) == false ||
@@ -168,7 +180,11 @@ Action TimerHandleSmokerInSmokeCloudLimbo(Handle:timer, int iClient)
 	}
 	else
 	{
-		PrintHintText(iClient, "Smoke Cloud Dissipated.\n\nGet to a safe place then press Bind 1 again to return back to Smoker form.");
+		g_iSmokeCloudLimboTicks[iClient]++;
+
+		PrintHintText(iClient, "Get to a safe place then press Bind 1 again to return back to Smoker form.\
+			\n\nYou will be automatically returned in %i seconds.",
+			20 - g_iSmokeCloudLimboTicks[iClient] * 5);
 	}
 
 	return Plugin_Continue;

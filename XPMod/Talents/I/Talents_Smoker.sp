@@ -58,8 +58,11 @@ void OnGameFrame_Smoker(iClient)
 		g_fNextSmokerDoppelgangerRegenTime[iClient] <= GetGameTime())
 	{
 		g_iSmokerDoppelgangerCount[iClient]++;
-		PrintHintText(iClient, "Doppelganger Decoys: %i", g_iSmokerDoppelgangerCount[iClient]);
 		g_fNextSmokerDoppelgangerRegenTime[iClient] = GetGameTime() + SMOKER_DOPPELGANGER_REGEN_PERIOD;
+
+		// Display message, but dont display the message if a smoker smoke cloud
+		if (g_bSmokerIsSmokeCloud[iClient] == false && g_bSmokerInSmokeCloudLimbo[iClient] == false)
+			PrintHintText(iClient, "Doppelganger Decoys: %i", g_iSmokerDoppelgangerCount[iClient]);
 	}
 	
 
@@ -78,13 +81,17 @@ void OnGameFrame_Smoker(iClient)
 		}
 	}
 
-	// This is potentially causing a glitche where the player is stuck afterwards. Removing for now.
-	// // The movement type can be set away from no clip from other events this just resets it every tick if its not
-	// if (g_bSmokerIsSmokeCloud[iClient] == true && GetEntProp(iClient, Prop_Send, "movetype") != MOVETYPE_NOCLIP)
-	// {
-	// 	// PrintToChatAll("iMoveType %i", GetEntProp(iClient, Prop_Send, "movetype"));
-	// 	SetPlayerMoveType(iClient, MOVETYPE_NOCLIP);
-	// }
+	// This is potentially causing a glitch where the player is stuck afterwards.
+	// The movement type can be set away from no clip from other events this just resets it every tick if its not
+	if ((g_bSmokerIsSmokeCloud[iClient] == true || g_bSmokerInSmokeCloudLimbo[iClient] == true) &&
+		GetEntProp(iClient, Prop_Send, "movetype") != MOVETYPE_NOCLIP)
+	{
+		// PrintToChatAll("OGF iMoveType %i", GetEntProp(iClient, Prop_Send, "movetype"));
+		LockPlayerFromAttacking(iClient);
+		SetPlayerMoveType(iClient, MOVETYPE_NOCLIP);
+		// SetEntProp(iClient, Prop_Send, "m_bDrawViewmodel", 0);
+		// SetEntProp(iClient, Prop_Send, "m_nSolidType", 0);
+	}
 }
 
 bool OnPlayerRunCmd_Smoker(iClient, &iButtons)
@@ -161,6 +168,9 @@ void EventsHurt_AttackerSmoker(Handle:hEvent, iAttacker, iVictim)
 	{
 		SmokerHitTarFingerVictim(iVictim);
 	}
+
+	// If the smoker is somehow in limbo or a smoke cloud, then kick them out.
+	ReturnSmokerFromSmokeCloudIfCurrentlySmokeCloud(iVictim);
 }
 
 // EventsDeath_AttackerSmoker(Handle:hEvent, iAttacker, iVictim)
@@ -178,6 +188,9 @@ void EventsDeath_VictimSmoker(Handle:hEvent, iAttacker, iVictim)
 	// If not, then reset smoker convar buffs to default
 	// Note this needs to be done any time a smoker dies.
 	SetSmokerConvarBuffs(FindHighestLevelSmokerAlive());
+
+	// If the smoker is somehow in limbo or a smoke cloud, then kick them out.
+	ReturnSmokerFromSmokeCloudIfCurrentlySmokeCloud(iVictim);
 
 	if (g_bTalentsConfirmed[iVictim] == false ||
 		(g_iClientInfectedClass1[iVictim] != SMOKER &&
@@ -204,6 +217,9 @@ bool Event_TongueGrab_Smoker(int iAttacker, int iVictim)
 	if (g_bTalentsConfirmed[iAttacker] == false ||
 		g_iSmokerTalent2Level[iAttacker] <= 0)
 		return false;
+
+	// If the smoker is somehow in limbo or a smoke cloud, then kick them out.
+	ReturnSmokerFromSmokeCloudIfCurrentlySmokeCloud(iAttacker);
 
 	g_bSmokerIsCloaked[iAttacker] = true;
 	g_bSmokerVictimGlowDisabled[iVictim] = true;
@@ -243,6 +259,9 @@ bool Event_ChokeStart_Smoker(int iAttacker, int iVictim)
 		return false;
 
 	SuppressNeverUsedWarning(iVictim);
+
+	// If the smoker is somehow in limbo or a smoke cloud, then kick them out.
+	ReturnSmokerFromSmokeCloudIfCurrentlySmokeCloud(iAttacker);
 
 	// Set ability for smoker to move
 	SetEntityMoveType(iAttacker, MOVETYPE_ISOMETRIC);

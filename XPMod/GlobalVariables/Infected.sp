@@ -124,6 +124,7 @@ new g_iEntangledSurvivorModelIndex[MAXPLAYERS + 1];
 new g_iEntangledTongueModelIndex[MAXPLAYERS + 1];
 bool g_bSmokerIsSmokeCloud[MAXPLAYERS + 1];
 bool g_bSmokerInSmokeCloudLimbo[MAXPLAYERS + 1];
+new g_iSmokeCloudLimboTicks[MAXPLAYERS + 1];
 bool g_bSmokerSmokeCloudInCooldown[MAXPLAYERS + 1];
 bool g_bIsPlayerInSmokerSmokeCloud[MAXPLAYERS + 1];
 new g_iSmokerSmokeCloudVictimCount[MAXPLAYERS + 1];
@@ -139,7 +140,7 @@ new g_iSmokerSmokeCloudTicksUsed[MAXPLAYERS + 1];
 #define SMOKER_SMOKE_CLOUD_RADIUS                           250.0
 #define SMOKER_SMOKE_CLOUD_SURVIVOR_SPEED                   0.34
 #define SMOKER_SMOKE_CLOUD_TARGETED_PLAYER_TICK_RATE        1.0
-#define SMOKER_SMOKE_CLOUD_RETURN_HACKED_CONTROLS_DELAY     3.0
+#define SMOKER_SMOKE_CLOUD_RETURN_HACKED_CONTROLS_DELAY     1.5
 #define SMOKER_SMOKE_CLOUD_BLIND_AMOUNT_MIN                 100
 #define SMOKER_SMOKE_CLOUD_BLIND_AMOUNT_MAX                 200
 #define SMOKER_SMOKE_CLOUD_TEMP_HEALTH_CONVERSION_PER_TICK  2
