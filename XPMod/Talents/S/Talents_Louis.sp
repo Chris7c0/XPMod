@@ -240,8 +240,8 @@ EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 					switch (GetRandomInt(0, 4))
 					{
 						case 0: iItemIndex = ITEM_PAIN_PILLS;
-						case 1: iItemIndex = ITEM_FIRST_AID_KIT;
-						case 2: iItemIndex = ITEM_MOLOTOV;
+						case 1: iItemIndex = ITEM_ADRENALINE_SHOT;
+						case 2: iItemIndex = ITEM_FIRST_AID_KIT;
 						case 3: iItemIndex = ITEM_BILE_JAR;
 						case 4: iItemIndex = ITEM_PIPE_BOMB;
 					}
