@@ -17,7 +17,6 @@ LoadIceTankTalents(iClient)
 	
 	g_iTankChosen[iClient] = TANK_ICE;
 	g_fTankHealthPercentage[iClient] =  1.0;
-	g_iIceTankLifePool[iClient] = TANK_ICE_REGEN_LIFE_POOL_SIZE;
 	
 	// Stop Kiting (Bullet hits slowing tank down)
 	SetConVarInt(FindConVar("z_tank_damage_slow_min_range"), 0);
@@ -27,6 +26,7 @@ LoadIceTankTalents(iClient)
 	SetClientSpeed(iClient);
 
 	SetTanksTalentHealth(iClient, TANK_HEALTH_ICE);
+	g_iIceTankLifePool[iClient] = GetPlayerMaxHealth(iClient);
 
 	// Change Tank's Skin Color
 	SetClientRenderColor(iClient, 0, 255, 255, 255, RENDER_MODE_NORMAL);
