@@ -234,7 +234,8 @@ EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 				if (IsValidEntity(iActiveWeaponID))
 				{
 					iCurrentClipAmmo = GetEntProp(iActiveWeaponID, Prop_Data, "m_iClip1");
-					SetEntData(iActiveWeaponID, g_iOffset_Clip1, iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 5), true);
+					new iNewClipAmmo = iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 2) >= 250 ? 250 : iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 2);
+					SetEntData(iActiveWeaponID, g_iOffset_Clip1, iNewClipAmmo, true);
 				}
 				
 				g_iLouisCIHeadshotCounter[iAttacker]++;
@@ -291,7 +292,8 @@ EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 				if (IsValidEntity(iActiveWeaponID))
 				{
 					iCurrentClipAmmo = GetEntProp(iActiveWeaponID,Prop_Data,"m_iClip1");
-					SetEntData(iActiveWeaponID, g_iOffset_Clip1, iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 15), true);
+					new iNewClipAmmo = iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 10) >= 250 ? 250 : iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 10);
+					SetEntData(iActiveWeaponID, g_iOffset_Clip1, iNewClipAmmo, true);
 				}
 
 				g_iLouisSIHeadshotCounter[iAttacker]++;
