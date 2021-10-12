@@ -35,6 +35,11 @@ bool RunEntityChecks(int iEntity)
 	return true;
 }
 
+bool IsIncap(int iClient)
+{
+	return GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1;
+}
+
 bool KillEntitySafely(int iEntity)
 {
 	if (RunEntityChecks(iEntity) == false)
@@ -1101,7 +1106,7 @@ bool IsEntityUncommonInfected(iInfectedEntity)
 // 	decl Float:xyzClientOrigin[3], Float:xyzTargetOrigin[3];
 // 	GetClientEyePosition(iClient, xyzClientOrigin);	//Get clients location origin vectors
 
-// 	// Check if the model name corresponds to an uncommon one
+// 	// Loop through the survivors and find the closest by checking distances
 // 	for (new iTarget; iTarget <= MaxClients; iTarget++)
 // 	{
 // 		if (RunClientChecks(iTarget) && g_iClientTeam[iTarget] == TEAM_SURVIVORS)
@@ -1117,6 +1122,40 @@ bool IsEntityUncommonInfected(iInfectedEntity)
 // 	//PrintToChatAll("FindClosestSurvivorDistance %f", fdistance);
 // 	return fdistance;		
 // }
+
+int FindClosestSurvivor(int iClient, bool bIgnoreIncap = false)
+{
+	if (RunClientChecks(iClient) == false)
+		return -1;
+
+	int iClosestSurvivor = -1;
+	float fdistance = 999999.0;
+	float xyzClientOrigin[3], xyzTargetOrigin[3];
+	GetClientEyePosition(iClient, xyzClientOrigin);	//Get clients location origin vectors
+
+	// Loop through the survivors and find the closest by checking distances
+	for (new iTarget = 1; iTarget <= MaxClients; iTarget++)
+	{
+		if (iTarget == iClient || 
+			RunClientChecks(iTarget) == false || 
+			g_iClientTeam[iTarget] != TEAM_SURVIVORS ||
+			IsPlayerAlive(iTarget) == false ||
+			(bIgnoreIncap && IsIncap(iTarget))) // For ignoring incap players
+			continue;
+
+		GetClientEyePosition(iTarget, xyzTargetOrigin);
+		new Float:fNewDistance = GetVectorDistance(xyzTargetOrigin, xyzClientOrigin);
+
+		//PrintToChatAll("Checking: %N -> %f", iTarget, fNewDistance);
+		if (fNewDistance < fdistance)
+		{
+			fdistance = fNewDistance;
+			iClosestSurvivor =  iTarget;
+		}
+	}
+
+	return iClosestSurvivor;		
+}
 
 void GetLocationVectorInfrontOfClient(iClient, Float:xyzLocation[3], Float:xyzAngles[3], Float:fForwardOffset = 40.0, Float:fVerticleOffset = 1.0)
 {

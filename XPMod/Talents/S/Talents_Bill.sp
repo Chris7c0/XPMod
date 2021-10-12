@@ -47,120 +47,71 @@ TalentsLoad_Bill(iClient)
 
 OnGameFrame_Bill(iClient)
 {
-	if(g_bGameFrozen == false)
+	if (g_bGameFrozen)
+		return;
+
+	new iButtons = GetEntProp(iClient, Prop_Data, "m_nButtons", iButtons);
+	
+	HandleBillsTeamHealing(iClient, iButtons);
+
+	if(g_bBillSprinting[iClient] == false)
 	{
-		new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
-		if(g_iInspirationalLevel[iClient] > 0)
+		if(iButtons & IN_SPEED)
 		{
-			if(buttons & IN_DUCK && g_bIsClientDown[iClient] == false && IsClientGrappled(iClient) == false)
-			{
-				if(g_iBillTeamHealCounter[iClient] > 180)	//This determines the length between each pause
-				{
-					decl counter;
-					if(g_iClientToHeal[iClient] < 1)	//Just in case
-						g_iClientToHeal[iClient] = 1;
-					counter = 0;
-					for(;g_iClientToHeal[iClient] <= MaxClients; g_iClientToHeal[iClient]++)
-					{
-						if(counter++ == MaxClients)
-							break;
-						//PrintToChatAll("%d", g_iClientToHeal[iClient]);
-						if(g_iClientToHeal[iClient] == MaxClients)
-							g_iClientToHeal[iClient] = 1;
-						if(IsClientInGame(g_iClientToHeal[iClient]) == true)
-							if(g_iClientToHeal[iClient] != iClient)
-								if(g_iClientTeam[g_iClientToHeal[iClient]] == TEAM_SURVIVORS)
-								{
-									if(IsPlayerAlive(g_iClientToHeal[iClient]) == true)
-									{
-										if(g_bIsClientDown[g_iClientToHeal[iClient]] == false && IsClientGrappled(g_iClientToHeal[iClient]) == false)
-										{
-											SetPlayerHealth(g_iClientToHeal[iClient], g_iInspirationalLevel[iClient], true);
+			if(g_iBillSprintChargePower[iClient] == 1)
+				PrintHintText(iClient, "Powering on sprinting device...");
+			else if(g_iBillSprintChargePower[iClient] > 49)
+				PrintHintText(iClient, "Powering on sprinting device...%d%%", g_iBillSprintChargePower[iClient]);
+			
+			g_iBillSprintChargePower[iClient]++;
 
-											decl Float:clientloc[3],Float:targetloc[3];
-											GetClientEyePosition(iClient,clientloc);
-											GetClientEyePosition(g_iClientToHeal[iClient],targetloc);
-											clientloc[2] -= 10.0;
-											targetloc[2] -= 10.0;
-											new rand = GetRandomInt(1, 3);
-											decl String:zap[23];
-											switch(rand)
-											{
-												case 1: zap = SOUND_ZAP1;
-												case 2: zap = SOUND_ZAP2;
-												case 3: zap = SOUND_ZAP3;
-											}
-											new pitch = GetRandomInt(95, 130);
-											EmitSoundToAll(zap, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, 0.1, pitch, -1, clientloc, NULL_VECTOR, true, 0.0);
-											EmitSoundToAll(zap, g_iClientToHeal[iClient], SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, 0.1, pitch, -1, targetloc, NULL_VECTOR, true, 0.0);
-											TE_SetupBeamPoints(clientloc,targetloc,g_iSprite_Laser,0,0,66,0.3, 0.2, 0.2,0,4.0,{0,40,255,200},0);
-											TE_SendToAll();
-											g_iClientToHeal[iClient]++;
-											break;
-										}
-									}
-								}
-					}
-					g_iBillTeamHealCounter[iClient] = 0;
-				}
-				else
-					g_iBillTeamHealCounter[iClient]++;
-			}
-		}
-		if(g_bBillSprinting[iClient] == false)
-		{
-			if(buttons & IN_SPEED)
+			if(g_iBillSprintChargePower[iClient] == 100)
 			{
-				if(g_iBillSprintChargePower[iClient] == 1)
-					PrintHintText(iClient, "Powering on sprinting device...");
-				else if(g_iBillSprintChargePower[iClient] > 49)
-					PrintHintText(iClient, "Powering on sprinting device...%d%%", g_iBillSprintChargePower[iClient]);
-				
-				g_iBillSprintChargePower[iClient]++;
-
-				if(g_iBillSprintChargePower[iClient] == 100)
-				{
-					g_bBillSprinting[iClient] = true;
-					SetClientSpeed(iClient);
-					g_iBillSprintChargePower[iClient] =  0;
-				}
-			}
-			else
-			{
-				if(g_iBillSprintChargePower[iClient] > 0)
-					g_iBillSprintChargePower[iClient] =  0;
-				if(g_iBillSprintChargeCounter[iClient] == ((g_iGhillieLevel[iClient] * 600) - 1))
-				{
-					PrintHintText(iClient, "Your suit's sprinting device is fully charged");
-					decl Float:vec[3];
-					GetClientAbsOrigin(iClient, vec);
-					EmitSoundToAll(SOUND_SUITCHARGED, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
-				}
-				if(g_iBillSprintChargeCounter[iClient] < (g_iGhillieLevel[iClient] * 600))
-					g_iBillSprintChargeCounter[iClient]++;
+				g_bBillSprinting[iClient] = true;
+				SetClientSpeed(iClient);
+				g_iBillSprintChargePower[iClient] =  0;
 			}
 		}
 		else
 		{
-			PrintHintText(iClient, "Remaining Charge: %dW", g_iBillSprintChargeCounter[iClient] / 20);
-			g_iBillSprintChargeCounter[iClient]--;
-			if((buttons & IN_FORWARD) || (buttons & IN_BACK) || (buttons & (IN_LEFT|IN_MOVELEFT)) || (buttons & (IN_RIGHT|IN_MOVERIGHT)))
+			if(g_iBillSprintChargePower[iClient] > 0)
+				g_iBillSprintChargePower[iClient] =  0;
+			if(g_iBillSprintChargeCounter[iClient] == ((g_iGhillieLevel[iClient] * 600) - 1))
 			{
-				g_iBillSprintChargeCounter[iClient]-=9;
-				PrintHintText(iClient, "Remaining Charge: %dW", g_iBillSprintChargeCounter[iClient] / 20);
+				PrintHintText(iClient, "Your suit's sprinting device is fully charged");
+				decl Float:vec[3];
+				GetClientAbsOrigin(iClient, vec);
+				EmitSoundToAll(SOUND_SUITCHARGED, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
 			}
-			if(g_iBillSprintChargeCounter[iClient] < 11)
-			{
-				PrintHintText(iClient, "Sprinting Charge Depleted");
-				g_bBillSprinting[iClient] = false;
-				SetClientSpeed(iClient);
-			}
+			if(g_iBillSprintChargeCounter[iClient] < (g_iGhillieLevel[iClient] * 600))
+				g_iBillSprintChargeCounter[iClient]++;
 		}
 	}
+	else
+	{
+		PrintHintText(iClient, "Remaining Charge: %dW", g_iBillSprintChargeCounter[iClient] / 20);
+		g_iBillSprintChargeCounter[iClient]--;
+		if ((iButtons & IN_FORWARD) ||
+			(iButtons & IN_BACK) ||
+			(iButtons & (IN_LEFT|IN_MOVELEFT)) ||
+			(iButtons & (IN_RIGHT|IN_MOVERIGHT)))
+		{
+			g_iBillSprintChargeCounter[iClient]-=9;
+			PrintHintText(iClient, "Remaining Charge: %dW", g_iBillSprintChargeCounter[iClient] / 20);
+		}
+		if(g_iBillSprintChargeCounter[iClient] < 11)
+		{
+			PrintHintText(iClient, "Sprinting Charge Depleted");
+			g_bBillSprinting[iClient] = false;
+			SetClientSpeed(iClient);
+		}
+	}
+
 	if(g_iPromotionalLevel[iClient] > 0)
 	{
-		new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
-		if((buttons & IN_RELOAD) && g_bClientIsReloading[iClient] == false && g_bForceReload[iClient] == false)
+		if ((iButtons & IN_RELOAD) && 
+			g_bClientIsReloading[iClient] == false && 
+			g_bForceReload[iClient] == false)
 		{
 			decl String:currentweapon[32];
 			GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
@@ -366,6 +317,53 @@ RemoveClone(iClient)
 
 SetAlpha(target, alpha)
 {
-    SetEntityRenderMode(target, RENDER_TRANSCOLOR);
-    SetEntityRenderColor(target, 255, 255, 255, alpha);
+	SetEntityRenderMode(target, RENDER_TRANSCOLOR);
+	SetEntityRenderColor(target, 255, 255, 255, alpha);
+}
+
+void HandleBillsTeamHealing(int iClient, int iButtons)
+{
+	if (RunClientChecks(iClient) == false ||
+		g_iInspirationalLevel[iClient] < 0 ||
+		!(iButtons & IN_DUCK) ||
+		g_bIsClientDown[iClient] == true ||
+		IsClientGrappled(iClient) == true ||
+		IsPlayerAlive(iClient) == false)
+		return;
+
+	//This determines the length between each heal
+	g_iBillTeamHealCounter[iClient]++;
+	// If the length is not long enough then return;
+	if(g_iBillTeamHealCounter[iClient] < BILL_TEAM_HEAL_FRAME_COUNTER_REQUIREMENT * 30) // 30 FPS	
+		return;
+
+	// Reset after the heal time requirement has been met
+	g_iBillTeamHealCounter[iClient] = 0;
+
+	// Search for the closest survivor and heal them
+	int iTargetToHeal = FindClosestSurvivor(iClient, true);
+	if (iTargetToHeal == -1)
+		return;
+	
+	SetPlayerHealth(iTargetToHeal, BILL_TEAM_HEAL_HP_AMOUNT, true);
+
+	// Create the sound and particle effects
+	float xyzClientLocation[3], xyzTargetLocation[3];
+	GetClientEyePosition(iClient, xyzClientLocation);
+	GetClientEyePosition(iTargetToHeal, xyzTargetLocation);
+	xyzClientLocation[2] -= 10.0;
+	xyzTargetLocation[2] -= 10.0;
+	int iRandomSound = GetRandomInt(1, 3);
+	decl String:zap[23];
+	switch(iRandomSound)
+	{
+		case 1: zap = SOUND_ZAP1;
+		case 2: zap = SOUND_ZAP2;
+		case 3: zap = SOUND_ZAP3;
+	}
+	int pitch = GetRandomInt(95, 130);
+	EmitSoundToAll(zap, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, 0.1, pitch, -1, xyzClientLocation, NULL_VECTOR, true, 0.0);
+	EmitSoundToAll(zap, iTargetToHeal, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, 0.1, pitch, -1, xyzTargetLocation, NULL_VECTOR, true, 0.0);
+	TE_SetupBeamPoints(xyzClientLocation, xyzTargetLocation, g_iSprite_Laser, 0, 0, 66, 0.3, 0.2, 0.2, 0, 4.0, {0,40,255,200}, 0);
+	TE_SendToAll();
 }

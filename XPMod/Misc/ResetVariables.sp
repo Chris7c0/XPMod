@@ -41,7 +41,6 @@ ResetVariablesForMap(iClient)
 	clienthanging[iClient] = false;
 	g_iKitsUsed = 0;
 	g_iBillTeamHealCounter[iClient] = 0;
-	g_iClientToHeal[iClient] = 1;
 	g_iNicksRamboWeaponID[iClient] = 0;
 	g_bNickIsInvisible[iClient] = false;
 	g_bCanDropPoopBomb[iClient] = true;

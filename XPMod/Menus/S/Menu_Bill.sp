@@ -67,23 +67,20 @@ Action:InspirationalMenuDraw(iClient)
 	FormatEx(text, sizeof(text), "\
 		%s				Inspirational Leadership (Level %d)\
 		\n \
-		\nLevel 1:\
 		\n(Team) +10 bonus XP per level for teammates on SI kill\
-		\n(Charge) Regenerate 1 life to random ally per level\
-		\n \
-		\n \
-		\nSkill Uses:\
-		\n(Charge) HP Regeneration: Hold [CROUCH] to heal allies\
-		\nevery 6 seconds\
+		\nHold [CROUCH] to heal closest ally\
+		\n	- Heals %i HP every %i seconds\
 		\n ",
 		strStartingNewLines,
-		g_iInspirationalLevel[iClient]);
+		g_iInspirationalLevel[iClient],
+		BILL_TEAM_HEAL_HP_AMOUNT,
+		BILL_TEAM_HEAL_FRAME_COUNTER_REQUIREMENT);
 	SetMenuTitle(menu, text);
 	
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	
@@ -114,7 +111,6 @@ Action:GhillieMenuDraw(iClient)
 	FormatEx(text, sizeof(text), "\
 		%s				Ghillie Tactics(Level %d):\
 		\n \
-		\nLevel 1:\
 		\n+13%%%% cloaking per level\
 		\n(Charge) +30 sprinting stamina per level\
 		\n \
@@ -131,7 +127,7 @@ Action:GhillieMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -162,7 +158,6 @@ Action:WillMenuDraw(iClient)
 	FormatEx(text, sizeof(text), "\
 		%s					Will to Live(Level %d):\
 		\n \
-		\nLevel 1:\
 		\n+5 max health per level\
 		\n+50 incap health per level\
 		\n(Team) Allow crawling\
@@ -180,7 +175,7 @@ Action:WillMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -212,7 +207,6 @@ Action:ExorcismMenuDraw(iClient)
 	FormatEx(text, sizeof(text), "\
 		%s  Exorcism in a Barrel(Level %d):\
 		\n \
-		\nLevel 1:\
 		\n+4%%%% Assault Rifle damage per level\
 		\n+20%%%% Reload speed per level\
 		\n ",
@@ -223,7 +217,7 @@ Action:ExorcismMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -253,9 +247,7 @@ Action:DiehardMenuDraw(iClient)
 	
 	FormatEx(text, sizeof(text), "\
 		%s					Die Hard(Level %d):\
-		\n					Requires Level 11\
 		\n \
-		\nLevel 1:\
 		\n+15 max health per level\
 		\nRegen 6 health when ally incaps per level\
 		\n \
@@ -263,7 +255,6 @@ Action:DiehardMenuDraw(iClient)
 		\n		Bind 1: Improvised Explosives\
 		\n			+1 use every other level\
 		\n \
-		\nLevel 1:\
 		\nDrop +1 active pipebomb every other level\
 		\n ",
 		strStartingNewLines,
@@ -273,7 +264,7 @@ Action:DiehardMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	
@@ -303,9 +294,7 @@ Action:PromotionalMenuDraw(iClient)
 	
 	FormatEx(text, sizeof(text), "\
 		%s		Promotional Benefits(Level %d):\
-		\n			   Requires Level 26\
 		\n \
-		\nLevel 1:\
 		\n+8%%%% reload speed & cloaking per level\
 		\n+20 rifle clip size per level\
 		\n+20%%%% M60 damage per level\
@@ -316,7 +305,6 @@ Action:PromotionalMenuDraw(iClient)
 		\n				Bind 2: First Blood\
 		\n			+1 use every other level\
 		\n \
-		\nLevel 1:\
 		\nSpawn M60\
 		\n ",
 		strStartingNewLines,
@@ -326,7 +314,7 @@ Action:PromotionalMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	

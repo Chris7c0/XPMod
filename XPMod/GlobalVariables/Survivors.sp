@@ -100,7 +100,6 @@ float flPainPillsDecay = 0.27;
 
 //Bill's Stuff (Support)/////////////////////////////////////////////////////////////////////////////////////////////////////////
 new g_iBillTeamHealCounter[MAXPLAYERS + 1];
-new g_iClientToHeal[MAXPLAYERS + 1] = 1;
 new g_iCrawlSpeedMultiplier;
 new g_iBillSprintChargeCounter[MAXPLAYERS + 1];
 new g_iBillSprintChargePower[MAXPLAYERS + 1];
@@ -108,7 +107,8 @@ new bool:g_bBillSprinting[MAXPLAYERS + 1];
 new bool:g_bCanDropPoopBomb[MAXPLAYERS + 1];
 new g_iPoopBombOwnerID[MAXENTITIES + 1];
 new g_iDropBombsTimes[MAXPLAYERS + 1];
-//new Float:g_fBillSprintSpeed[MAXPLAYERS + 1];
+#define BILL_TEAM_HEAL_FRAME_COUNTER_REQUIREMENT    4   // Seconds
+#define BILL_TEAM_HEAL_HP_AMOUNT                    5   // HP
 
 //Rochelle's Stuff
 //For the Infected Detection Device(IDD) hud menu
