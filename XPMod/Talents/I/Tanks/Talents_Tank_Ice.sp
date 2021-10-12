@@ -98,12 +98,12 @@ OnGameFrame_Tank_Ice(iClient)
 			
 			if(g_iIceTankLifePool[iClient] > 0 && iCurrentHealth < iCurrentMaxHealth)
 			{
-				if(g_iIceTankLifePool[iClient] > 10)
+				if(g_iIceTankLifePool[iClient] > TANK_ICE_REGEN_RATE)
 				{
-					new iNewHealth = iCurrentHealth + 10 > iCurrentMaxHealth ? iCurrentMaxHealth : iCurrentHealth + 10;
+					new iNewHealth = iCurrentHealth + TANK_ICE_REGEN_RATE > iCurrentMaxHealth ? iCurrentMaxHealth : iCurrentHealth + TANK_ICE_REGEN_RATE;
 					SetPlayerHealth(iClient, iNewHealth);
 					fCurrentTankHealthPercentage = float(iNewHealth) / float(iCurrentMaxHealth);
-					g_iIceTankLifePool[iClient] -= 10;
+					g_iIceTankLifePool[iClient] -= TANK_ICE_REGEN_RATE;
 					
 					if (IsFakeClient(iClient) == false)
 						PrintHintText(iClient, "Life Pool Remaining: %d", g_iIceTankLifePool[iClient]);
