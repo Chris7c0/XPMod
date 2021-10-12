@@ -124,7 +124,7 @@ Action:WreckingMenuDraw(iClient)
 		\nLevel 5:\
 		\nOn SI headshot w/ melee weapon & Wrecking Ball charged:\
 		\nInstantly recharge Wrecking Ball\
-		\n(Charge) +1 health regen every 2 seconds\
+		\n(Charge) +1 health regen every half second\
 		\n \
 		\n \
 		\nSkill Uses:\

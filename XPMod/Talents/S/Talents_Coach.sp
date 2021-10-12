@@ -414,17 +414,18 @@ OnGameFrame_Coach(iClient)
 		{
 			if(g_bCoachRageIsInCooldown[iClient] == false)
 			{
-				if(buttons & IN_DUCK)
+				// Check that they are holding crouch and on the ground
+				if(buttons & IN_DUCK && (GetEntityFlags(iClient) & FL_ONGROUND))
 				{
 					g_iCoachHealthRechargeCounter[iClient]++;
 					
 					if(g_bShowingChargeHealParticle[iClient] == false)
 					{
-						g_iPID_CoachMeleeChargeHeal[iClient] = WriteParticle(iClient,"coach_melee_charge_heal",0.0);
+						g_iPID_CoachMeleeChargeHeal[iClient] = WriteParticle(iClient,"coach_melee_charge_heal", 0.0);
 						g_bShowingChargeHealParticle[iClient] = true;
 					}
 					
-					if(g_iCoachHealthRechargeCounter[iClient]>60)
+					if(g_iCoachHealthRechargeCounter[iClient] > 15)
 					{
 						g_iCoachHealthRechargeCounter[iClient] = 0;
 						new currentHP=GetPlayerHealth(iClient);
@@ -445,7 +446,7 @@ OnGameFrame_Coach(iClient)
 		}
 		if(g_bIsWreckingBallCharged[iClient]==false)
 		{
-			if(buttons & IN_DUCK)
+			if(buttons & IN_DUCK && (GetEntityFlags(iClient) & FL_ONGROUND))
 			{
 				g_iWreckingBallChargeCounter[iClient]++;
 				if(g_iWreckingBallChargeCounter[iClient]==20)
