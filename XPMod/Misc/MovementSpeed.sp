@@ -176,9 +176,9 @@ SetClientSpeedLouis(iClient, &Float:fSpeed)
 
 	// Base speed
 	if (g_iLouisTalent1Level[iClient] > 0)
-		fSpeed += (g_iLouisTalent1Level[iClient] * 0.03);
+		fSpeed += (g_iLouisTalent1Level[iClient] * 0.01);
 
-	// Teleport penatly
+	// Teleport penalty
 	if (g_iLouisTeleportMovementPenaltyStacks[iClient] > 0)
 		fSpeed -= (g_iLouisTeleportMovementPenaltyStacks[iClient] * LOUIS_TELEPORT_MOVEMENT_PENALTY_AMOUNT);
 
@@ -192,7 +192,7 @@ SetClientSpeedLouis(iClient, &Float:fSpeed)
 
 	// Pills Used Stack speed
 	if (g_iPillsUsedStack[iClient] > 0)
-		fSpeed += (g_iPillsUsedStack[iClient] * g_iLouisTalent6Level[iClient] * 0.01);
+		fSpeed += (g_iPillsUsedStack[iClient] * g_iLouisTalent6Level[iClient] * 0.02);
 
 	// Cap Louis's speed
 	if (fSpeed > LOUIS_SPEED_MAX)

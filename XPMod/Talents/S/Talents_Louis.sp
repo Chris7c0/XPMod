@@ -76,6 +76,20 @@ bool OnPlayerRunCmd_Louis(iClient, &iButtons)
 			LouisTeleport(iClient);
 	}
 
+	// Handle Pills Here Health give Health Reset Bug
+	// Check the boost slot to see if they currently have a adrenaline or pain pill
+	if (g_iLouisTalent5Level[iClient] > 0 &&
+		iButtons & IN_ATTACK)
+	{
+		// Ensure they are holding the weapon in the health boost slot
+		int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+		if (RunEntityChecks(iActiveWeaponID) && iActiveWeaponID == GetPlayerWeaponSlot(iClient, 4))
+		{
+			// PrintToChatAll("OnPlayerRunCmd_Ellis: adrenaline temp: %i, health: %i", GetSurvivorTempHealth(iClient), GetPlayerHealth(iClient));
+			g_iTempHealthBeforeUsingHealthBoostSlotItem[iClient] = GetSurvivorTempHealth(iClient);
+		}
+	}
+
 	// Disable walk key while teleporting
 	if(g_bLouisTeleportActive[iClient] == true && iButtons & IN_SPEED)
 	{
@@ -155,8 +169,8 @@ EventsHurt_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 			new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
 			new iAddtionalDamageAmount = RoundToNearest(float(iDmgHealth) * 
 				( (g_iLouisTalent2Level[iAttacker] * 0.10) + // Damage Buff
-				  (bIsHeadshot ? 0.0 : (-1.0 * (g_iLouisTalent4Level[iAttacker] * 0.15))) + //Non-Headshot Penality
-				  (g_iPillsUsedStack[iAttacker] * g_iLouisTalent6Level[iAttacker] * 0.03) )); // Pills here buff dmg
+				  (bIsHeadshot ? 0.0 : (-1.0 * (g_iLouisTalent4Level[iAttacker] * 0.20))) + //Non-Headshot Penality
+				  (g_iPillsUsedStack[iAttacker] * g_iLouisTalent6Level[iAttacker] * 0.05) )); // Pills here buff dmg
 			new iNewDamageAmount = iDmgHealth + iAddtionalDamageAmount;
 
 			// Add even more damage if its a headshot
@@ -344,8 +358,20 @@ void EventsPillsUsed_Louis(int iClient)
 	// Give extra speed (set by g_iPillsUsedStack)
 	SetClientSpeed(iClient);
 
-	// Give extra temp health
-	AddTempHealthToSurvivor(iClient, float(g_iLouisTalent6Level[iClient] * 5));
+	// Take Temp Health away from player for Pills Here talent, only if its not going enough above max health already
+	if (g_iLouisTalent5Level[iClient] > 0 &&
+		(GetPlayerHealth(iClient) +
+		g_iTempHealthBeforeUsingHealthBoostSlotItem[iClient] + 
+		50 - // Pill health default setting
+		(g_iLouisTalent5Level[iClient] * LOUIS_PILLS_USED_HEALTH_REDUCTION_PER_LEVEL) < 
+		GetPlayerMaxHealth(iClient)))
+	{
+		new iCurrentTempHealth = GetSurvivorTempHealth(iClient);
+		ResetTempHealthToSurvivor(iClient);
+		AddTempHealthToSurvivor(iClient, float(iCurrentTempHealth - g_iLouisTalent5Level[iClient] * LOUIS_PILLS_USED_HEALTH_REDUCTION_PER_LEVEL));
+
+		g_iTempHealthBeforeUsingHealthBoostSlotItem[iClient] = 0;
+	}
 
 	// Give stashed pills of they have more
 	if (g_iStashedInventoryPills[iClient] > 0)

@@ -68,7 +68,7 @@ Action:LouisTalent1MenuDraw(iClient)
 		\n \
 		\n +5 HP per Level\
 		\n \
-		\n +3%%%%% Movement Speed per Level\
+		\n +1%%%%% Movement Speed per Level\
 		\n 	- Louis Always Capped At +25%%%% Speed     \
 		\n \
 		\n SMG and Pistol (Not Magnum) Buffs:     \
@@ -203,7 +203,7 @@ Action:LouisTalent4MenuDraw(iClient)
 		%s 							BOOM HEADSHOT! (Level %d):\
 		\n \
 		\n +40%%%% Headshot Damage Multiplier per Level\
-		\n -15%%%% Damage Penalty for Non-Headshots per Level\
+		\n -20%%%% Damage Penalty for Non-Headshots per Level\
 		\n \
 		\n Headshot Kill Bonuses:\
 		\n 	- CI: +1 HP, +1%%%% Speed for 60 Seconds, +5 Clip Ammo per Level\
@@ -250,8 +250,8 @@ Action:LouisTalent5MenuDraw(iClient)
 		\n \
 		\n Every Common Infected Headshot Kill Has A 5%%%% Chance To Drop:\
 		\n	- Pain Pills\
+		\n	- Adrenaline\
 		\n	- First Aid Kit\
-		\n	- Molotov\
 		\n	- Bile Jar\
 		\n	- Pipe bomb\
 		\n Every Special Infected Headshot Kill Has A 1%%%% Chance To:\
@@ -307,11 +307,11 @@ Action:LouisTalent6MenuDraw(iClient)
 		\n 	- Turn MedKit Into 3 Pill Bottles\
 		\n \
 		\n When Taking Pills (Stacks):\
-		\n	- +1 Temp Health Per Level\
-		\n	- +1%%%% Speed per Level for 60 Seconds\
+		\n	- -2 Temp Health Per Level\
+		\n	- +2%%%% Speed per Level for 90 Seconds\
 		\n		- Louis Capped At +25%%%% Speed\
-		\n	- +3%%%% Damage per Level for 60 Seconds  \
-		\n	- 5 Stacks Max\
+		\n	- +5%%%% Damage per Level for 90 Seconds  \
+		\n	- 3 Stacks Max\
 		\n \
 		\n Bind 2: H3D 5h0p\
 		\n	- Unlock 5cR1PT k1Dd13 3xPl0172 m3Nu\

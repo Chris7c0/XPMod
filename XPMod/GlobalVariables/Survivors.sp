@@ -281,9 +281,10 @@ new bool:g_bNickStoresDroppedPistolAmmo[MAXPLAYERS + 1] = false;
 #define LOUIS_SPEED_MAX                                 1.25
 #define LOUIS_HEADSHOT_SPEED_RETENTION_TIME_CI          60.0
 #define LOUIS_HEADSHOT_SPEED_RETENTION_TIME_SI          60.0
-#define LOUIS_STASHED_INVENTORY_MAX_PILLS               3
-#define LOUIS_PILLS_USED_BONUS_DURATION                 60.0
-#define LOUIS_PILLS_USED_MAX_STACKS                     5
+#define LOUIS_STASHED_INVENTORY_MAX_PILLS               4
+#define LOUIS_PILLS_USED_BONUS_DURATION                 90.0
+#define LOUIS_PILLS_USED_HEALTH_REDUCTION_PER_LEVEL     2
+#define LOUIS_PILLS_USED_MAX_STACKS                     3
 bool g_bLouisTeleportCoolingDown[MAXPLAYERS + 1] = false;
 bool g_bLouisTeleportActive[MAXPLAYERS + 1] = false;
 new g_iLouisTeleportChargeUses[MAXPLAYERS + 1] = 0;
