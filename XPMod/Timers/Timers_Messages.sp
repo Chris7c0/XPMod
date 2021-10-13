@@ -46,19 +46,18 @@ Action:PrintXPModCreateAndConfirmMessageToAll(Handle:timer, any:data)
 Action:PrintXPModAdvertisementMessageToAll(Handle:timer, any:data)
 {
 	static iAdvertisementIndex;
-	if (++iAdvertisementIndex > 6)
+	if (++iAdvertisementIndex > 5)
 		iAdvertisementIndex = 0;
 	
 	decl String:strAdvertisementText[256];
 	switch (iAdvertisementIndex)
 	{
-		case 0: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05Confused about XPMod? You can go to \x03xpmod.net\x05 to learn more.");
-		case 1: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05Enjoy XPMod? You can support us at \x03xpmod.net/donate");
-		case 2: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05Go to \x03xpmod.net\x05 on your phone to learn about XPMod abilities.");
-		case 3: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05Found a bug in XPMod? Report it in Discord \x03xpmod.net/discord.");
-		case 4: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05Want to try the XPMod Addon? It adds new special effects.\n  Press \x03H\x05\n  Click \x03Join this server's Steam Group\x05\n  Click \x03Get XPMod Addons\x05\n  Click \x03Subscribe\x05\n  Restart Left4Dead2");
-		case 5: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05Want to join a XPMod server later? Then join our Steam Group.\n  Search for\x03XPMod Steam Group\x05 in your browser and Join.\n  You'll see all XPMod servers on the right when opening L4D2.");
-		case 6: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05Join us in Discord: \x03xpmod.net/discord\x05\n  You can get updates, give suggestions, and vote on changes.");
+		case 0: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05You can go to \x03xpmod.net\x05 to learn about XPMod abilities.");
+		case 1: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05\x03xpmod.net\x05 works on Mobile Phone and Desktop browsers.");
+		case 2: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05Need XPMod help? There is a Help section at \x03xpmod.net\x05 ");
+		case 3: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05Want to join a XPMod server later? Join the XPMod Steam Group.");
+		case 4: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05Want to see Special Effects? Get the XPMod Addon at \x03xpmod.net\x05 ");
+		case 5: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05Join us in Discord: \x03xpmod.net/discord\x05\n  You can get updates, give suggestions, or ask for help.");
 	}
 
 	PrintToChatAll(strAdvertisementText);
