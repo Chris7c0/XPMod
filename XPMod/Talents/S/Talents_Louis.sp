@@ -234,7 +234,7 @@ EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 				if (IsValidEntity(iActiveWeaponID))
 				{
 					iCurrentClipAmmo = GetEntProp(iActiveWeaponID, Prop_Data, "m_iClip1");
-					new iNewClipAmmo = iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 2) >= 250 ? 250 : iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 2);
+					new iNewClipAmmo = iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 3) >= 250 ? 250 : iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 3);
 					SetEntData(iActiveWeaponID, g_iOffset_Clip1, iNewClipAmmo, true);
 				}
 				

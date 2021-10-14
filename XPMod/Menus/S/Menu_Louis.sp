@@ -206,7 +206,7 @@ Action:LouisTalent4MenuDraw(iClient)
 		\n -20%%%% Damage Penalty for Non-Headshots per Level\
 		\n \
 		\n Headshot Kill Bonuses:\
-		\n 	- CI: +1 HP, +1%%%% Speed for 60 Seconds, +2 Clip Ammo per Level\
+		\n 	- CI: +1 HP, +1%%%% Speed for 60 Seconds, +3 Clip Ammo per Level\
 		\n 	- SI: +5 HP, +5%%%% Speed for 60 Seconds, +10 Clip Ammo per Level   \
 		\n 	- Louis Is Always Capped At +25%%%% Speed\
 		\n ",
