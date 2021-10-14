@@ -140,7 +140,7 @@ EventsHurt_AttackerSpitter(Handle:hEvent, attacker, victim)
 		{
 			DealSpecialSpitterGooCollision(attacker, victim, dmgHealth);
 			
-			if(g_iMaterialLevel[attacker] > 0 && GetEntProp(victim, Prop_Send, "m_isIncapacitated") != 0)
+			if(g_iMaterialLevel[attacker] > 0 && IsIncap(victim) == true)
 			{
 				if (g_hTimer_ResetGlow[victim] == null)
 				{
@@ -214,7 +214,7 @@ DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 	{
 		case GOO_MELTING:
 		{
-			if(GetEntProp(iVictim, Prop_Send, "m_isIncapacitated") == 0)
+			if (IsIncap(iVictim) == false)
 			{
 				new iHealth = GetPlayerHealth(iVictim);
 				new Float:fTempHealth = GetEntDataFloat(iVictim, g_iOffset_HealthBuffer);

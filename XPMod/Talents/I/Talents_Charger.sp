@@ -167,7 +167,7 @@ EventsHurt_AttackerCharger(Handle:hEvent, attacker, victim)
 			g_iChargerVictim[attacker] <= 0 && 
 			g_bIsChargerCharging[attacker] == false &&
 			StrEqual(weapon,"charger_claw") == true && 
-			GetEntProp(victim, Prop_Send, "m_isIncapacitated") == 0)
+			IsIncap(victim) == false)
 		{
 			decl Float: addAmount[3];
 			new Float:power = 577.0;

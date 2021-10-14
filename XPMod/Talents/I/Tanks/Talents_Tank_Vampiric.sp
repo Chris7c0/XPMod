@@ -187,7 +187,7 @@ EventsHurt_AttackerTank_Vampiric(Handle:hEvent, iAttackerTank, iVictim)
 
 	// Calculate the health to recieve (more for incap players)
 	decl iVampiricHealthGainAmount;
-	if (GetEntProp(iVictim, Prop_Send, "m_isIncapacitated") != 0)
+	if (IsIncap(iVictim) == true)
 		iVampiricHealthGainAmount = iDmgHealth * VAMPIRIC_TANK_LIFESTEAL_INCAP_MULTIPLIER;
 	else
 		iVampiricHealthGainAmount = iDmgHealth * VAMPIRIC_TANK_LIFESTEAL_MULTIPLIER;

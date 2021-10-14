@@ -67,7 +67,7 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 				// Determine the player state
 				if (IsPlayerAlive(i) == false)
 					strState = "DEAD";
-				else if (GetEntProp(i, Prop_Send, "m_isIncapacitated") == 1)
+				else if (IsIncap(i) == true)
 					Format(strState, sizeof(strState), "INCAPACITATED");
 				else if (GetPlayerHealth(i) > 0)
 					Format(strState, sizeof(strState), "(%i+%i/%i HP) %.3f MS", 

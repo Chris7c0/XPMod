@@ -241,7 +241,7 @@ EventsDeath_VictimBoomer(Handle:hEvent, iAttacker, iVictim)
 							SDKCall(g_hSDK_VomitOnPlayer, target, iVictim, true);
 							
 							//Fling Target Survivor (taken from "Tankroar 2.2" by Karma)
-							if(GetEntProp(target, Prop_Send, "m_isIncapacitated") == 0)
+							if (IsIncap(target) == false)
 							{
 								decl Float:svPos[3];
 								GetClientEyePosition(target, svPos);

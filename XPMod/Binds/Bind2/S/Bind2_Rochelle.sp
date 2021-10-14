@@ -4,7 +4,7 @@ void Bind2Press_Rochelle(iClient)
     {
         if(g_iClientBindUses_2[iClient] < 3)
         {
-            if(g_bUsingShadowNinja[iClient]==false && GetEntProp(iClient, Prop_Send, "m_isIncapacitated") != 1)
+            if(g_bUsingShadowNinja[iClient]==false && IsIncap(iClient) == false)
             {
                 push(iClient);
                 g_bUsingShadowNinja[iClient] = true;

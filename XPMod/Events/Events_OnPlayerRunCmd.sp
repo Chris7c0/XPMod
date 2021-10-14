@@ -152,7 +152,7 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 			decl iTarget;
 			for (iTarget = 1; iTarget <= MaxClients; iTarget++)
 			{
-				if(IsClientInGame(iTarget) && IsPlayerAlive(iTarget) && g_iClientTeam[iTarget] == TEAM_SURVIVORS && GetEntProp(iTarget, Prop_Send, "m_isIncapacitated") == 0)
+				if(IsClientInGame(iTarget) && IsPlayerAlive(iTarget) && g_iClientTeam[iTarget] == TEAM_SURVIVORS && IsIncap(iTarget) == false)
 				{
 					decl Float:xyzTargetLocation[3];
 					GetClientEyePosition(iTarget, xyzTargetLocation);
@@ -190,7 +190,7 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 	if(g_iCrawlSpeedMultiplier > 0 && IsFakeClient(iClient) == false)
 	{
 		// gClone[iClient] == -1 check is to make sure Animation isnt already playing 
-		if(gClone[iClient] == -1 && !g_bEndOfRound && iButtons & IN_FORWARD && GetEntProp(iClient, Prop_Send, "m_isIncapacitated")) 
+		if(gClone[iClient] == -1 && !g_bEndOfRound && iButtons & IN_FORWARD && IsIncap(iClient) == true) 
 		{
 			CreateTimer(0.1,tmrPlayAnim,iClient);		// Delay so we can get the correct angle/direction after they have moved
 			gClone[iClient] = -2;						// So we don't play the anim more than once if the player presses forward within the 0.1 delay

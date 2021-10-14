@@ -4,7 +4,7 @@ int GetPlayerHealth(int iClient)
 		IsPlayerAlive(iClient) == false ||
 		g_iClientTeam[iClient] == TEAM_SPECTATORS ||
 		(g_iClientTeam[iClient] == TEAM_SURVIVORS &&
-		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1))
+		IsIncap(iClient) == true))
 		return 0;
 
 	// PrintToChatAll("GetPlayerHealth: %i", GetEntProp(iClient, Prop_Data, "m_iHealth"));
@@ -29,7 +29,7 @@ bool SetPlayerHealth(int iClient, int iHealthAmount, bool bAdditive = false, boo
 		IsPlayerAlive(iClient) == false ||
 		g_iClientTeam[iClient] == TEAM_SPECTATORS ||
 		(g_iClientTeam[iClient] == TEAM_SURVIVORS &&
-		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1))
+		IsIncap(iClient) == true))
 		return false;
 
 	// Clamp the health
@@ -61,7 +61,7 @@ bool SetPlayerMaxHealth(int iClient, int iHealthAmount, bool bAdditive = false, 
 		IsPlayerAlive(iClient) == false ||
 		g_iClientTeam[iClient] == TEAM_SPECTATORS ||
 		(g_iClientTeam[iClient] == TEAM_SURVIVORS &&
-		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1))
+		IsIncap(iClient) == true))
 		return false;
 
 	int iCurrentMaxHealth = GetPlayerMaxHealth(iClient);
@@ -98,7 +98,7 @@ void ResetTempHealthToSurvivor(iClient)
 	if (!RunClientChecks(iClient) || 
 		!IsPlayerAlive(iClient) || 
 		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
-		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1)
+		IsIncap(iClient) == true)
 		return;
 	
 	SetEntPropFloat(iClient, Prop_Send, "m_healthBuffer", 0.0);
@@ -181,7 +181,7 @@ bool ConvertSomeSurvivorHealthToTemporary(int iClient, int iHealthConversionAmou
 	if (RunClientChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false ||
 		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
-		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1)
+		IsIncap(iClient) == true)
 		return false;
 	
 	// Store current health numbers
@@ -210,7 +210,7 @@ bool ConvertAllSurvivorHealthToTemporary(int iClient)
 	if (RunClientChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false ||
 		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
-		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1)
+		IsIncap(iClient) == true)
 		return false;
 	
 	// Store current health numbers

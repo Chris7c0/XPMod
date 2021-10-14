@@ -4,7 +4,7 @@ void OnPlayerRunCmd_BileCleanse(int iClient, &iButtons)
 	if (g_iBileCleansingFrameTimeCtr[iClient] >= 0 && 
 		(!(iButtons & IN_USE) || 
 		 IsClientGrappled(iClient) == true || 
-		 GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1) )
+		 IsIncap(iClient) == true) )
 	{
 		g_iBileCleansingFrameTimeCtr[iClient] = -1;
 
@@ -22,7 +22,7 @@ void OnPlayerRunCmd_BileCleanse(int iClient, &iButtons)
 		g_iClientTeam[iClient] != TEAM_SURVIVORS || 
 		RunClientChecks(iClient) == false ||
 		IsClientGrappled(iClient) == true ||
-		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1 ||
+		IsIncap(iClient) == true ||
 		IsFakeClient(iClient) == true)
 		return;
 
@@ -66,7 +66,7 @@ void OnPlayerRunCmd_SelfRevive(int iClient, &iButtons)
 		g_bSelfReviving[iClient] == true ||
 		g_iClientTeam[iClient] != TEAM_SURVIVORS || 
 		RunClientChecks(iClient) == false ||
-		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 0 ||
+		IsIncap(iClient) == false ||
 		IsFakeClient(iClient))
 		return;
 
@@ -87,7 +87,7 @@ void StartSelfRevive(int iClient)
 		IsClientGrappled(iClient) ||
 		RunClientChecks(iClient) == false ||
 		IsFakeClient(iClient) ||
-		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 0 ||
+		IsIncap(iClient) == false ||
 		GetEntPropEnt(iClient, Prop_Send, "m_reviveOwner") != -1)
 		return;
 	
@@ -108,7 +108,7 @@ Action:TimerSelfReviveCheck(Handle:timer, any:iClient)
 		IsClientGrappled(iClient) ||
 		RunClientChecks(iClient) == false ||
 		IsFakeClient(iClient) ||
-		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 0)
+		IsIncap(iClient) == false)
 	{
 		EndSelfRevive(iClient);
 		g_hTimer_SelfReviveCheck[iClient] = null;
@@ -200,7 +200,7 @@ int GetIncapOrDeadSurvivorCount()
 			continue;
 		
 		if (IsPlayerAlive(iPlayer) == false ||
-			(GetEntProp(iPlayer, Prop_Send, "m_isIncapacitated") == 1 &&
+			(IsIncap(iPlayer) == true &&
 			GetEntProp(iPlayer, Prop_Send, "m_isHangingFromLedge") == 0))
 			iDownedPlayerCount++;
 	}

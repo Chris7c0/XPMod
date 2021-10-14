@@ -429,7 +429,7 @@ void SummonNecroTankerPunchZombies(iAttackerTank, iVictim)
 {
 	if (RunClientChecks(iAttackerTank) == false || 
 		RunClientChecks(iVictim) == false ||
-		GetEntProp(iVictim, Prop_Send, "m_isIncapacitated") == 1)
+		IsIncap(iVictim) == true)
 		return;
 	
 	new iRoll = GetRandomInt(1,100);

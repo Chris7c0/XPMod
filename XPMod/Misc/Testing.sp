@@ -108,7 +108,7 @@ Action:TestFunction1(iClient, args)
 	// 	if (g_bIsClientDown[i])
 	// 		PrintToChatAll("g_bIsClientDown: %N", i);
 
-	// 	if (GetEntProp(i, Prop_Send, "m_isIncapacitated") == 1)
+	// 	if (IsIncap(i) == true)
 	// 		PrintToChatAll("Incap: %N", i);
 	// }
 

@@ -96,9 +96,9 @@ ScriptKiddieExploitsMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			IsFakeClient(iClient))
 			return;
 
-		if (IsClientGrappled(iClient))// || GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1)
+		if (IsClientGrappled(iClient))
 		{
-			PrintToChat(iClient, "\x03[XPMod] \x04You cannot use Script Kiddies Exploits while Grappled or Incapacitated.");
+			PrintToChat(iClient, "\x03[XPMod] \x04You cannot use Script Kiddies Exploits while Grappled.");
 			ScriptKiddieExploitsMenuDraw(iClient);
 			return;
 		}

@@ -8,7 +8,7 @@ void Bind1Press_Louis(iClient)
 		PrintHintText(iClient, "You are out of Warez Stations.");
 		return;
 	}
-	if (IsClientGrappled(iClient) || GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1)
+	if (IsClientGrappled(iClient) || IsIncap(iClient) == true)
 	{
 		PrintHintText(iClient, "You cannot deploy a Warez Station while Grappled or Incapacitated.")
 		return;
@@ -170,7 +170,7 @@ WarezStationMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			IsFakeClient(iClient))
 			return;
 
-		if (IsClientGrappled(iClient) || GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1)
+		if (IsClientGrappled(iClient) || IsIncap(iClient) == true)
 		{
 			PrintHintText(iClient, "You cannot recieve Warez while Grappled or Incapacitated.")
 			WarezStationMenuDraw(iClient);

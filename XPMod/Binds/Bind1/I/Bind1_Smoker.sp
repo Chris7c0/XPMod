@@ -251,7 +251,7 @@ void HandlePlayersInSmokeCloud(int iClient)
 			// Check for a valid target
 			if (RunClientChecks(iPlayer) == false || 
 				IsPlayerAlive(iPlayer) == false ||
-				GetEntProp(iPlayer, Prop_Send, "m_isIncapacitated") == 1 ||
+				IsIncap(iPlayer) == true ||
 				IsClientGrappled(iPlayer) == true)
 				continue;
 		} // Handle checks players that were already in the cloud
@@ -260,7 +260,7 @@ void HandlePlayersInSmokeCloud(int iClient)
 			// Disable the cloud if they are no longer a valid target
 			if (RunClientChecks(iPlayer) == false || 
 				IsPlayerAlive(iPlayer) == false ||
-				GetEntProp(iPlayer, Prop_Send, "m_isIncapacitated") == 1 ||
+				IsIncap(iPlayer) == true ||
 				IsClientGrappled(iPlayer) == true)
 			{
 				SetPlayerNotInSmokerCloud(iPlayer, iClient);

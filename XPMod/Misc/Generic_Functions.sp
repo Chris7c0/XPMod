@@ -63,7 +63,7 @@ void StorePlayerHealth(int iClient)
 {
 	if (RunClientChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false ||
-		GetEntProp(iClient, Prop_Send, "m_isIncapacitated") == 1)
+		IsIncap(iClient) == true)
 		return;
 	
 	g_iPlayerHealth[iClient] = GetPlayerHealth(iClient);
@@ -582,7 +582,7 @@ void ReduceDamageTakenForNewPlayers(int iVictim, int iDmgAmount)
 		g_iClientLevel[iVictim] == 30 || 
 		RunClientChecks(iVictim) == false ||
 		IsFakeClient(iVictim) || 
-		GetEntProp(iVictim, Prop_Send, "m_isIncapacitated") == 1)
+		IsIncap(iVictim) == true)
 		return;
 
 	new iCurrentHealth = GetPlayerHealth(iVictim);
