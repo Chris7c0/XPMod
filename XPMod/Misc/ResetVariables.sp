@@ -386,4 +386,5 @@ DeleteAllGlobalTimerHandles(iClient)
 	delete g_hTimer_ExtinguishTank[iClient];
 	delete g_hTimer_IceSphere[iClient];
 	delete g_hTimer_WingDashChargeRegenerate[iClient];
+	delete g_hTimer_VampiricTankCanRechargeStamina[iClient];
 }

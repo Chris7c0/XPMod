@@ -350,7 +350,14 @@ new g_iNecroTankerManaPool[MAXPLAYERS + 1];
 #define VAMPIRIC_TANK_WING_FLAP_UP_VELOCITY             600.0
 #define VAMPIRIC_TANK_WING_DASH_VELOCITY                800.0
 #define VAMPIRIC_TANK_WING_DASH_COOLDOWN                13.0
-new bool:g_bCanFlapVampiricTankWings[MAXPLAYERS + 1];
-new bool:g_bIsVampiricTankFlying[MAXPLAYERS + 1];
-new bool:g_bCanVampiricTankWingDash[MAXPLAYERS + 1];
+#define VAMPIRIC_TANK_STAMINA_MAX                       600
+#define VAMPIRIC_TANK_STAMINA_DEPLETION_FLAP            30
+#define VAMPIRIC_TANK_STAMINA_DEPLETION_DASH            60
+#define VAMPIRIC_TANK_STAMINA_REGENERATION_DELAY        2.0
+#define VAMPIRIC_TANK_STAMINA_REGENERATION_RATE         1       // Per GameFrame (30 FPS)
+bool g_bCanFlapVampiricTankWings[MAXPLAYERS + 1];
+bool g_bIsVampiricTankFlying[MAXPLAYERS + 1];
+bool g_bCanVampiricTankWingDash[MAXPLAYERS + 1];
 new g_iVampiricTankWingDashChargeCount[MAXPLAYERS + 1];
+new g_iVampiricTankStamina[MAXPLAYERS + 1];
+bool g_bVampiricTankCanRechargeStamina[MAXPLAYERS + 1];

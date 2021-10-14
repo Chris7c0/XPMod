@@ -21,6 +21,8 @@ LoadVampiricTankTalents(iClient)
 	g_bIsVampiricTankFlying[iClient] = false;
 	g_bCanVampiricTankWingDash[iClient] = true;
 	g_iVampiricTankWingDashChargeCount[iClient] = 3;
+	g_iVampiricTankStamina[iClient] = VAMPIRIC_TANK_STAMINA_MAX;
+	g_bVampiricTankCanRechargeStamina[iClient] = true;
 
 	// Set a really high rock cooldown so that the rock throw ability is deactivated
 	SetSIAbilityCooldown(iClient, 99999.0);
@@ -75,8 +77,12 @@ OnGameFrame_Tank_Vampiric(iClient)
 	new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 
 	//Check to see if pressing the fly button, if so, start flappling those wings
-	if (g_bCanFlapVampiricTankWings[iClient] && (buttons & IN_JUMP)) 
+	if (g_bCanFlapVampiricTankWings[iClient] &&
+		g_iVampiricTankStamina[iClient] >= VAMPIRIC_TANK_STAMINA_DEPLETION_FLAP &&
+		(buttons & IN_JUMP)) 
 	{
+		g_iVampiricTankStamina[iClient] -= VAMPIRIC_TANK_STAMINA_DEPLETION_FLAP;
+
 		g_bIsVampiricTankFlying[iClient] = true;
 		g_bCanFlapVampiricTankWings[iClient] = false;
 
@@ -91,13 +97,24 @@ OnGameFrame_Tank_Vampiric(iClient)
 		EmitAmbientSound(SOUND_WING_FLAP[ iRandomSoundNumber ], xyzClientPosition, iClient, SNDLEVEL_SCREAMING);
 		EmitAmbientSound(SOUND_WING_FLAP[ iRandomSoundNumber ], xyzClientPosition, iClient, SNDLEVEL_SCREAMING);
 		CreateTimer(1.0, TimerCanFlapVampiricTankWingsReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
+		
+		PrintVampiricTankMeters(iClient);
+
+		// Stop stamina recharging temporarily
+		g_bVampiricTankCanRechargeStamina[iClient] = false;
+		delete g_hTimer_VampiricTankCanRechargeStamina[iClient];
+		g_hTimer_VampiricTankCanRechargeStamina[iClient] = CreateTimer(VAMPIRIC_TANK_STAMINA_REGENERATION_DELAY, TimerVampiricTankCanRechargeStaminaReset, iClient);
 	}
 
 	// Flying Dash
-	if (g_bCanVampiricTankWingDash[iClient] && (buttons & IN_ATTACK2))
+	if (g_bCanVampiricTankWingDash[iClient] && 
+		g_iVampiricTankStamina[iClient] >= VAMPIRIC_TANK_STAMINA_DEPLETION_DASH &&
+		(buttons & IN_ATTACK2))
 	{
 		if (g_iVampiricTankWingDashChargeCount[iClient] > 0)
 		{
+			g_iVampiricTankStamina[iClient] -= VAMPIRIC_TANK_STAMINA_DEPLETION_DASH;
+
 			g_iVampiricTankWingDashChargeCount[iClient]--;
 			g_bCanVampiricTankWingDash[iClient] =  false;
 			g_bIsVampiricTankFlying[iClient] = true;
@@ -116,13 +133,30 @@ OnGameFrame_Tank_Vampiric(iClient)
 			EmitAmbientSound(SOUND_WING_FLAP[ iRandomSoundNumber ], xyzClientPosition, iClient, SNDLEVEL_SCREAMING);
 			EmitAmbientSound(SOUND_WING_FLAP[ iRandomSoundNumber ], xyzClientPosition, iClient, SNDLEVEL_SCREAMING);
 
-			PrintVampiricTankWingDashCharges(iClient);
+			PrintVampiricTankMeters(iClient);
 			
+			// Add a cooldown to the wing dash and start the regeneration timer
 			CreateTimer(0.5, TimerVampiricTankWingDashReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
 			delete g_hTimer_WingDashChargeRegenerate[iClient];
 			g_hTimer_WingDashChargeRegenerate[iClient] = CreateTimer(VAMPIRIC_TANK_WING_DASH_COOLDOWN, TimerVampiricTankWingDashChargeRegenerate, iClient);
+
+			// Stop stamina recharging temporarily
+			g_bVampiricTankCanRechargeStamina[iClient] = false;
+			delete g_hTimer_VampiricTankCanRechargeStamina[iClient];
+			g_hTimer_VampiricTankCanRechargeStamina[iClient] = CreateTimer(VAMPIRIC_TANK_STAMINA_REGENERATION_DELAY, TimerVampiricTankCanRechargeStaminaReset, iClient);
 		}
 	}
+
+	// Recharge Stamina
+	if (g_bVampiricTankCanRechargeStamina[iClient] == true && g_iVampiricTankStamina[iClient] < VAMPIRIC_TANK_STAMINA_MAX)
+	{
+		g_iVampiricTankStamina[iClient] = g_iVampiricTankStamina[iClient] + VAMPIRIC_TANK_STAMINA_REGENERATION_RATE > VAMPIRIC_TANK_STAMINA_MAX ?
+			VAMPIRIC_TANK_STAMINA_MAX :
+			g_iVampiricTankStamina[iClient] + VAMPIRIC_TANK_STAMINA_REGENERATION_RATE;
+		
+		PrintVampiricTankMeters(iClient);
+	}
+		
 
 	if (g_bIsVampiricTankFlying[iClient] && (GetEntityFlags(iClient) & FL_ONGROUND))
 	{
@@ -289,6 +323,14 @@ Action:TimerCanFlapVampiricTankWingsReset(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
+Action:TimerVampiricTankCanRechargeStaminaReset(Handle:timer, any:iClient)
+{
+	g_bVampiricTankCanRechargeStamina[iClient] = true;
+	
+	g_hTimer_VampiricTankCanRechargeStamina[iClient] = null;
+	return Plugin_Stop;
+}
+
 Action:TimerVampiricTankWingDashReset(Handle:timer, any:iClient)
 {
 	g_bCanVampiricTankWingDash[iClient] = true;
@@ -301,46 +343,55 @@ Action:TimerVampiricTankWingDashChargeRegenerate(Handle:timer, any:iClient)
 		IsPlayerAlive(iClient))
 	{
 		g_iVampiricTankWingDashChargeCount[iClient] = 3;
-		PrintVampiricTankWingDashCharges(iClient);
+		PrintVampiricTankMeters(iClient);
 	}
 	
 	g_hTimer_WingDashChargeRegenerate[iClient] = null;
 	return Plugin_Stop;
 }
 
-PrintVampiricTankWingDashCharges(iClient)
+PrintVampiricTankMeters(iClient)
 {
 	if (RunClientChecks(iClient) == false || 
 		IsPlayerAlive(iClient) == false || 
 		IsFakeClient(iClient) == true)
 		return;
 	
-	// Print the Wing Dash charges
+	decl String:strWingDashChargeMeter[80], String:strStaminaMeter[150];
+
+	// Grab the parts of the string to print to the player
+	BuildVampiricTankWingDashChargesString(iClient, strWingDashChargeMeter, sizeof(strWingDashChargeMeter));
+	BuildVampiricTankStatusString(iClient, strStaminaMeter, sizeof(strStaminaMeter));
+
+	PrintHintText(iClient,"%s\n\n%s", strWingDashChargeMeter, strStaminaMeter);
+}
+
+
+void BuildVampiricTankStatusString(int iClient, char[] strBuffer, int iBufferSize)
+{
+	decl String:strStaminaBar[128];
+	strStaminaBar = NULL_STRING;
+
+	float fNormalizedStamina = g_iVampiricTankStamina[iClient] / float(VAMPIRIC_TANK_STAMINA_MAX);
+
+	// Create the actual mana amount in the "progress meter"
+	for(int i = 0; i < RoundToCeil(fNormalizedStamina * 29.0); i++)
+		StrCat(strStaminaBar, sizeof(strStaminaBar), "▓");
+	// Create the rest of the string
+	for(int i = 29; i > RoundToCeil(fNormalizedStamina * 29.0); i--)
+		StrCat(strStaminaBar, sizeof(strStaminaBar), "░");
+
+	Format(strBuffer, iBufferSize, ":-=-=-<[%s]>-=-=-:", strStaminaBar);
+}
+
+void BuildVampiricTankWingDashChargesString(int iClient, char[] strBuffer, int iBufferSize)
+{
 	switch (g_iVampiricTankWingDashChargeCount[iClient])
 	{
-		case 0: PrintHintText(iClient, ":-=-=-=-<[░░░░░░░░░░░░░░░░░░]>-=-=-=-:");
-
-		case 1: PrintHintText(iClient, ":-=-=-=-<[▓▓▓▓▓▓░░░░░░░░░░░░]>-=-=-=-:");
-
-		case 2: PrintHintText(iClient, ":-=-=-=-<[▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░]>-=-=-=-:");
-
-		case 3: PrintHintText(iClient, ":-=-=-=-<[▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓]>-=-=-=-:");
-		// case 0: PrintHintText(iClient, ":-=-=-=-=-<[         ]>-=-=-=-=-:");
-		// case 1: PrintHintText(iClient, ":-=-=-=-=-<[[[[      ]>-=-=-=-=-:");
-		// case 2: PrintHintText(iClient, ":-=-=-=-=-<[[[[[[[   ]>-=-=-=-=-:");
-		// case 3: PrintHintText(iClient, ":-=-=-=-=-<[]]]]]]]]]]>-=-=-=-=-:");
-		// case 0: PrintHintText(iClient, ":-=-=-=-=-<[         ]>-=-=-=-=-:");
-		// case 1: PrintHintText(iClient, ":-=-=-=-=-<[|||      ]>-=-=-=-=-:");
-		// case 2: PrintHintText(iClient, ":-=-=-=-=-<[||||||   ]>-=-=-=-=-:");
-		// case 3: PrintHintText(iClient, ":-=-=-=-=-<[|||||||||]>-=-=-=-=-:");
-		// case 0: PrintHintText(iClient, ":-=-=-=-=-<[         ]>-=-=-=-=-:");
-		// case 1: PrintHintText(iClient, ":-=-=-=-=-<[ *       ]>-=-=-=-=-:");
-		// case 2: PrintHintText(iClient, ":-=-=-=-=-<[ *  *    ]>-=-=-=-=-:");
-		// case 3: PrintHintText(iClient, ":-=-=-=-=-<[ *  *  * ]>-=-=-=-=-:");
-		// case 0: PrintHintText(iClient, ":-=-=-=-=-<[         ]>-=-=-=-=-:");
-		// case 1: PrintHintText(iClient, ":-=-=-=-=-<[    *    ]>-=-=-=-=-:");
-		// case 2: PrintHintText(iClient, ":-=-=-=-=-<[  *   *  ]>-=-=-=-=-:");
-		// case 3: PrintHintText(iClient, ":-=-=-=-=-<[ *  *  * ]>-=-=-=-=-:");
+		case 0: Format(strBuffer, iBufferSize, ":-=-=-=-<[░░░░░░░░░░░░░░░░░░]>-=-=-=-:");
+		case 1: Format(strBuffer, iBufferSize, ":-=-=-=-<[▓▓▓▓▓▓░░░░░░░░░░░░]>-=-=-=-:");
+		case 2: Format(strBuffer, iBufferSize, ":-=-=-=-<[▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░]>-=-=-=-:");
+		case 3: Format(strBuffer, iBufferSize, ":-=-=-=-<[▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓]>-=-=-=-:");
 	}
 }
 
