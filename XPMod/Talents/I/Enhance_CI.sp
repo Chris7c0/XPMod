@@ -75,7 +75,7 @@ void PopZombieOffEnhancedCIEntitiesList(int iEntity)
 	}
 }
 
-void PrintAllInEnhancedCIEntityList()
+public void PrintAllInEnhancedCIEntityList()
 {
 	if (g_listEnhancedCIEntities == INVALID_HANDLE)
 		return;

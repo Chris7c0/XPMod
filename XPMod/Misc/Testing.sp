@@ -11,12 +11,24 @@ Action:TestFunction1(iClient, args)
 	for (int i=0; i<20; i++)
 		GetCmdArg(i+1, strArg[i], sizeof(strArg[]));
 
-	float xyzPosition[3];
-	xyzPosition[0] = StringToFloat(strArg[1]);
-	xyzPosition[1] = StringToFloat(strArg[2]);
-	xyzPosition[2] = StringToFloat(strArg[3]);
+	
 
-	PrintToChatAll("iClient = %i xyz: %f %f %f", StringToInt(strArg[0]), xyzPosition[0], xyzPosition[1], xyzPosition[2]);
+
+	
+	// TestingTempEnts(iClient, strArg[0], strArg[1]);
+
+	// float xyzPosition[3];
+	// xyzPosition[0] = StringToFloat(strArg[1]);
+	// xyzPosition[1] = StringToFloat(strArg[2]);
+	// xyzPosition[2] = StringToFloat(strArg[3]);
+
+	//PrintToChatAll("iClient = %i xyz: %f %f %f", StringToInt(strArg[0]), xyzPosition[0], xyzPosition[1], xyzPosition[2]);
+	
+	// Attach smoker particles
+	//smoker_spore_trail
+	//smoker_spore_trail_cheap (for the cloud)
+	// int iParticle = AttachParticle(iCloneEntity, "smoker_spore_trail", -1.0, 10.0);
+	// int iParticle2 = AttachParticle(iCloneEntity, "smoker_spore_trail_cheap", -1.0, 10.0);
 
 	// for (int i = 1;i <= MaxClients;i++)
 	// {
@@ -126,7 +138,7 @@ Action:TestFunction1(iClient, args)
 	// 	GetEntPropFloat(iClient, Prop_Send, "m_flProgressBarDuration"),
 	// 	GetEntPropEnt(iClient, Prop_Send, "m_reviveOwner"));
 
-	PrintAllInEnhancedCIEntityList();
+	// PrintAllInEnhancedCIEntityList();
 
 	// SDKCall(g_hSDK_VomitOnPlayer, StringToInt(str1), iClient, true);
 	
@@ -206,39 +218,6 @@ Action:TestFunction2(iClient, args)
 	//OpenMOTDPanel(iClient, "t1." , "<html><head><title>a</title><meta http-equiv = \"Content-Type\" content = \"text / html; charset = utf-8\" ></head><body bgcolor = \"# 000000\" ><p>test</p></body></html>", MOTDPANEL_TYPE_INDEX);
 
 	return Plugin_Stop;
-}
-
-
-public effect_beaments(entity, eentity)//, frate, Float:life, Float:width, Float:ewidth, flength, Float:amp, r, g, b, a, speed)
-{
-	//est_effect_03
-	//new mindex = IsPrecached(model);
-	new haloindex = PrecacheModel("materials/sprites/halo01.vmt");
-	
-	
-	TE_Start("BeamEnts");
-	TE_WriteNum("m_nStartEntity", entity);
-	TE_WriteNum("m_nEndEntity", eentity);
-	TE_WriteNum("m_nModelIndex", g_iSprite_SmokerTongue);//mindex);
-	TE_WriteNum("m_nHaloIndex", haloindex);
-	TE_WriteNum("m_nStartFrame", 0);
-	TE_WriteNum("m_nFrameRate", 60);//frate);
-	TE_WriteFloat("m_fLife", 30.0);//life);
-	TE_WriteFloat("m_fWidth", 2.0);//width);
-	TE_WriteFloat("m_fEndWidth", 5.0);//ewidth);
-	TE_WriteNum("m_nFadeLength", 100);//flength);
-	TE_WriteFloat("m_fAmplitude", 0.1);//amp);
-	TE_WriteNum("m_nSpeed", 1);// speed);
-	TE_WriteNum("r", 255);//r);
-	TE_WriteNum("g", 255);//g);
-	TE_WriteNum("b", 255);//b);
-	TE_WriteNum("a", 255);//a);
-
-	//TE_WriteNum("m_nFlags", flags);
-	//SendEffect(filter);
-	TE_SendToAll();
-	
-	return;
 }
 
 
@@ -397,3 +376,275 @@ Action:Timer_ContinuallyKillAllCI(Handle:timer, any:data)
 
 	return Plugin_Continue;
 }
+
+public void TestingTempEnts(int iClient, char[] strArg1, char[] strArg2)
+{
+	AttachBeam(3);
+
+	// TE_SetupBeamPoints(xyzLocation,xyzPositionEnd,g_iSprite_SmokerTongue,0,0,66,0.1,3.0,3.0,10,0.0,{70,40,15,255},1);
+	// TE_SendToAll();
+	// int smokerMouth = CreateParticle("boomer_vomit", 2.0, iCloneEntity, 99, false);
+
+	//PrintToChatAll("SMOKERMOUTHPARTICLE: %i", smokerMouth);
+	// effect_beaments(smokerMouth, StringToInt(strArg[0]));
+	//effect_beaments(iClient, StringToInt(strArg[0]));
+	// decl Float:vorigin[3], Float:vangles[3];
+	// GetLocationVectorInfrontOfClient(StringToInt(strArg[0]), vorigin, vangles);
+	// int iEntity = CreateEntityByName("prop_dynamic");
+	// if (RunEntityChecks(iEntity))
+	// {
+	// 	SetVariantString("!activator");
+	// 	AcceptEntityInput(iEntity, "SetParent", StringToInt(strArg[0]));
+
+	// 	TeleportEntity(iEntity, EMPTY_VECTOR, EMPTY_VECTOR, NULL_VECTOR);
+
+	// 	effect_beaments(iClient, iEntity);
+	// }
+
+	// char color[12];
+	// Format( color, sizeof( color ), "%i %i %i", 0, 255, 50 );
+
+	// g_iLight1 = MakeLightDynamic(StringToInt(strArg[0]));
+	// SetVariantEntity(g_iLight1);
+	// SetVariantString(color);
+	// AcceptEntityInput(g_iLight1, "color");
+	// AcceptEntityInput(g_iLight1, "TurnOn");
+
+	// g_iLight2 = MakeLightDynamic(StringToInt(strArg[1]));
+	// SetVariantEntity(g_iLight2);
+	// SetVariantString(color);
+	// AcceptEntityInput(g_iLight2, "color");
+	// AcceptEntityInput(g_iLight2, "TurnOn");
+
+	int g_iClient1 = StringToInt(strArg1);
+	int g_iClient2 = StringToInt(strArg2);
+	float xyzLocation1[3], xyzLocation2[3];
+	GetClientEyePosition(g_iClient1, xyzLocation1);
+	GetClientEyePosition(g_iClient2, xyzLocation2);
+
+	
+	// decl String:parentName[64];
+	// Format(parentName, sizeof(parentName), "%i:%N", client, client);
+	// DispatchKeyValue(client, "targetname", parentName);
+
+	// g_iEntity1 = CreateEntityByName("prop_dynamic");
+	// Format(end, sizeof(end), "end%i", g_iEntity1);
+	// DispatchKeyValue(g_iEntity1, "targetname", end); 
+	// DispatchKeyValue(g_iEntity1, "model", "models/advisor.mdl"); 
+	// DispatchKeyValue(g_iEntity1, "solid", "0");
+	// DispatchKeyValue(g_iEntity1, "rendermode", "10");
+	// DispatchSpawn(g_iEntity1);
+	// ActivateEntity(g_iEntity1);
+	// TeleportEntity(g_iEntity1, xyzLocation1, NULL_VECTOR, NULL_VECTOR);
+	// // SetVariantString(parentName);
+	// // AcceptEntityInput(endent, "SetParent");
+	// // SetVariantString("defusekit");
+	// // AcceptEntityInput(endent, "SetParentAttachmentMaintainOffset");
+
+	// g_iEntity2 = CreateEntityByName("prop_dynamic");
+	// Format(end, sizeof(end), "end%i", g_iEntity2);
+	// DispatchKeyValue(g_iEntity2, "targetname", end); 
+	// DispatchKeyValue(g_iEntity2, "model", "models/advisor.mdl"); 
+	// DispatchKeyValue(g_iEntity2, "solid", "0");
+	// DispatchKeyValue(g_iEntity2, "rendermode", "10");
+	// DispatchSpawn(g_iEntity2);
+	// ActivateEntity(g_iEntity2);
+	// TeleportEntity(g_iEntity2, xyzLocation2, NULL_VECTOR, NULL_VECTOR);
+	// // SetVariantString(parentName);
+	// // AcceptEntityInput(endent, "SetParent");
+	// // SetVariantString("defusekit");
+	// // AcceptEntityInput(endent, "SetParentAttachmentMaintainOffset");
+
+	// Used to figure out specific attachment points locations, what works
+	//CreateParticle("boomer_vomit", 2.0, 3, ATTACH_MUZZLE_FLASH, true);
+	//CreateParticle("boomer_vomit", 2.0, 2, ATTACH_DEBRIS, true);
+
+
+	// The below code works, now extracted to a helper function, CreateDummyEntity, in Particle_Effects.sp
+	
+	// float xyzClientLocation[3], xyzClientAngles[3];
+	// GetEntPropVector(g_iClient2, Prop_Send, "m_vecOrigin", xyzClientLocation);
+	// GetClientEyeAngles(g_iClient2, xyzClientAngles);
+
+	// decl String:strEntity[30];
+	// // decl String:strParentName[64];
+	// // Format(strParentName, sizeof(strParentName), "%i:%N", g_iClient2, g_iClient2);
+	
+	// g_iEntity1 = CreateEntityByName("prop_dynamic");
+	// Format(strEntity, sizeof(strEntity), "start%i", g_iEntity1);
+	// DispatchKeyValue(g_iEntity1, "targetname", strEntity); 
+	// DispatchKeyValue(g_iEntity1, "model", "models/NULL.mdl"); 
+	// DispatchKeyValue(g_iEntity1, "solid", "0");
+	// DispatchKeyValue(g_iEntity1, "rendermode", "10");
+
+	// TeleportEntity(g_iEntity1, xyzClientLocation, xyzClientAngles, NULL_VECTOR);
+	// SetVariantString("!activator");
+	// AcceptEntityInput(g_iEntity1, "SetParent", g_iClient2, g_iEntity1, 0);
+	// SetVariantString("muzzle_flash");
+	// AcceptEntityInput(g_iEntity1, "SetParentAttachmentMaintainOffset", g_iEntity1, g_iEntity1, 0);
+
+	// DispatchSpawn(g_iEntity1);
+	// ActivateEntity(g_iEntity1);
+
+
+	// decl Float:vorigin[3], Float:vangles[3];
+	// GetLocationVectorInfrontOfClient(iClient, vorigin, vangles);
+	// g_iEntity2 = CreateEntityByName("prop_dynamic");
+	// Format(strEntity, sizeof(strEntity), "end%i", g_iEntity2);
+	// DispatchKeyValue(g_iEntity2, "targetname", strEntity); 
+	// DispatchKeyValue(g_iEntity2, "model", "models/NULL.mdl"); 
+	// DispatchKeyValue(g_iEntity2, "solid", "0");
+	// DispatchKeyValue(g_iEntity2, "rendermode", "10");
+	// DispatchSpawn(g_iEntity2);
+	// ActivateEntity(g_iEntity2);
+	// TeleportEntity(g_iEntity2, vorigin, NULL_VECTOR, NULL_VECTOR);
+	// // SetVariantString(parentName);
+	// // AcceptEntityInput(g_iEntity2, "SetParent");
+	// // SetVariantString("weapon_bone");
+	// // AcceptEntityInput(g_iEntity2, "SetParentAttachmentMaintainOffset");
+
+
+
+	float xyzLocation[3];
+	int iDummyEntityAttachmentHand = CreateDummyEntity(xyzLocation, -1.0, g_iClient1, "muzzle_flash");
+
+	decl Float:vorigin[3], Float:vangles[3];
+	GetLocationVectorInfrontOfClient(iClient, vorigin, vangles);
+	int iDummyEntityAttachmentWall = CreateDummyEntity(vorigin);
+
+	effect_beaments(iDummyEntityAttachmentHand, iDummyEntityAttachmentWall);
+
+	// float xyzLocationTest1[3];
+	// GetEntPropVector(iDummyEntityAttachmentHand, Prop_Send, "m_vecOrigin", xyzLocationTest1);
+	// PrintToChatAll("iDummyEntityAttachmentHand = %i xyz: %f %f %f", iDummyEntityAttachmentHand, xyzLocationTest1[0], xyzLocationTest1[1], xyzLocationTest1[2]);
+	
+	// float xyzLocationTest2[3];
+	// GetEntPropVector(iDummyEntityAttachmentWall, Prop_Send, "m_vecOrigin", xyzLocationTest2);
+	// PrintToChatAll("iDummyEntityAttachmentWall = %i xyz: %f %f %f", iDummyEntityAttachmentWall, xyzLocationTest2[0], xyzLocationTest2[1], xyzLocationTest2[2]);
+	
+
+	// CreateTimer(2.0, TimerAttaachRope, iClient, TIMER_FLAG_NO_MAPCHANGE);
+}
+
+
+public AttachBeam(client)
+{
+	decl String:beamindex[30],String:start[30],String:end[30],String:parentName[64];
+	Format(parentName, sizeof(parentName), "%i:%N", client, client);
+	DispatchKeyValue(client, "targetname", parentName);
+	new Float:vec[3];
+	GetClientAbsOrigin(client, vec);
+	
+	new startent = CreateEntityByName("prop_dynamic");
+	Format(start, sizeof(start), "start%i", startent);
+	DispatchKeyValue(startent, "targetname", start); 
+	DispatchKeyValue(startent, "model", "models/advisor.mdl"); 
+	DispatchKeyValue(startent, "solid", "0");
+	DispatchKeyValue(startent, "rendermode", "10");
+	DispatchSpawn(startent);
+	ActivateEntity(startent);
+	vec[1] += 100; //add 100 to the y axis, so it's away from the player itself
+	TeleportEntity(startent, vec, NULL_VECTOR, NULL_VECTOR);
+	SetVariantString(parentName);
+	AcceptEntityInput(startent, "SetParent");
+	// SetVariantString("defusekit");
+	// AcceptEntityInput(startent, "SetParentAttachmentMaintainOffset");
+	
+	new endent = CreateEntityByName("prop_dynamic");
+	Format(end, sizeof(end), "end%i", endent);
+	DispatchKeyValue(endent, "targetname", end); 
+	DispatchKeyValue(endent, "model", "models/advisor.mdl"); 
+	DispatchKeyValue(endent, "solid", "0");
+	DispatchKeyValue(endent, "rendermode", "10");
+	DispatchSpawn(endent);
+	ActivateEntity(endent);
+	vec[1] -= 200; // do the same here, only reverse
+	TeleportEntity(endent, vec, NULL_VECTOR, NULL_VECTOR);
+	SetVariantString(parentName);
+	AcceptEntityInput(endent, "SetParent");
+	// SetVariantString("defusekit");
+	// AcceptEntityInput(endent, "SetParentAttachmentMaintainOffset");
+	
+	new beament  = CreateEntityByName("env_beam");
+	if (IsValidEdict(beament))
+	{
+		
+		Format(beamindex, sizeof(beamindex), "Beam%i", beament);
+		
+		// Set keyvalues on the beam.
+		DispatchKeyValue(beament, "damage", "0");
+		DispatchKeyValue(beament, "framestart", "0");
+		DispatchKeyValue(beament, "BoltWidth", "10");
+		DispatchKeyValue(beament, "renderfx", "0");
+		DispatchKeyValue(beament, "TouchType", "3");
+		DispatchKeyValue(beament, "framerate", "0");
+		DispatchKeyValue(beament, "decalname", "Bigshot");
+		DispatchKeyValue(beament, "TextureScroll", "35");
+		DispatchKeyValue(beament, "HDRColorScale", "1.0");
+		DispatchKeyValue(beament, "texture", "materials/sprites/laserbeam.vmt");
+		DispatchKeyValue(beament, "life", "0"); 
+		DispatchKeyValue(beament, "targetname", beamindex);
+		DispatchKeyValue(beament, "LightningStart", start);
+		DispatchKeyValue(beament, "LightningEnd", end); 
+		DispatchKeyValue(beament, "StrikeTime", "1"); 
+		DispatchKeyValue(beament, "spawnflags", "8"); 
+		DispatchKeyValue(beament, "NoiseAmplitude", "0"); 
+		DispatchKeyValue(beament, "Radius", "256");
+		DispatchKeyValue(beament, "rendercolor", "255 255 255");
+		DispatchKeyValue(beament, "renderamt", "100");
+		
+		DispatchSpawn(beament);
+		ActivateEntity(beament);
+		TeleportEntity(beament, vec, NULL_VECTOR, NULL_VECTOR);
+		CreateTimer(0.5, beam_enable, beament);
+	}
+}
+
+public Action:beam_enable(Handle:timer, any:beam)
+{
+	AcceptEntityInput(beam, "TurnOn");
+} 
+
+public effect_beaments(entity, eentity)//, frate, Float:life, Float:width, Float:ewidth, flength, Float:amp, r, g, b, a, speed)
+{
+	//est_effect_03
+	//new mindex = IsPrecached(model);
+	new haloindex = PrecacheModel("materials/sprites/halo01.vmt");
+	
+	
+	TE_Start("BeamEnts");
+	TE_WriteEncodedEnt("m_nStartEntity", entity);
+	TE_WriteEncodedEnt("m_nEndEntity", eentity);
+	TE_WriteNum("m_nModelIndex", g_iSprite_SmokerTongue);//mindex);
+	TE_WriteNum("m_nHaloIndex", haloindex);
+	TE_WriteNum("m_nStartFrame", 0);
+	TE_WriteNum("m_nFrameRate", 60);//frate);
+	TE_WriteFloat("m_fLife", 30.0);//life);
+	TE_WriteFloat("m_fWidth", 2.0);//width);
+	TE_WriteFloat("m_fEndWidth", 5.0);//ewidth);
+	TE_WriteNum("m_nFadeLength", 100);//flength);
+	TE_WriteFloat("m_fAmplitude", 0.1);//amp);
+	TE_WriteNum("m_nSpeed", 1);// speed);
+	TE_WriteNum("r", 255);//r);
+	TE_WriteNum("g", 255);//g);
+	TE_WriteNum("b", 255);//b);
+	TE_WriteNum("a", 255);//a);
+
+	//TE_WriteNum("m_nFlags", flags);
+	//SendEffect(filter);
+	TE_SendToAll();
+	
+	return;
+}
+
+// Action:TimerAttaachRope(Handle:timer, any:iClient)
+// {
+// 	PrintToChatAll("clients: %i, %i", g_iClient1, g_iClient2)
+// 	PrintToChatAll("ents: %i, %i", g_iEntity1, g_iEntity2)
+// 	effect_beaments(iClient, g_iEntity1);
+// 	// effect_beaments(g_iClient1, g_iEntity2);
+// 	// effect_beaments(g_iClient2, g_iEntity1);
+// 	//effect_beaments(g_iClient1, g_iClient2);
+
+// 	return Plugin_Stop;
+// }

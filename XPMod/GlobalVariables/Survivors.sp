@@ -137,11 +137,10 @@ new Float:g_xyzBreakFromSmokerVector[3];
 new bool:g_bUsingTongueRope[MAXPLAYERS + 1];
 new bool:g_bUsedTongueRope[MAXPLAYERS + 1];
 new g_iRopeCountDownTimer[MAXPLAYERS + 1];
-new Float:g_xyzRopeEndLocation[MAXPLAYERS + 1][3];
-new Float:g_xyzClientLocation[MAXPLAYERS + 1][3];
-new Float:g_xyzRopeDistance[MAXPLAYERS + 1];
-new Float:g_xyzOriginalRopeDistance[MAXPLAYERS + 1];
-
+new g_iRochelleRopeEntity[MAXPLAYERS + 1];
+new g_iRochelleRopeDummyEntityAttachmentHand[MAXPLAYERS + 1];
+new g_iRochelleRopeDummyEntityAttachmentWall[MAXPLAYERS + 1];
+float g_xyzRopeEndLocation[MAXPLAYERS + 1][3];
 
 //Coach's Stuff
 //For Coach's Jetpack

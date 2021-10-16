@@ -171,10 +171,10 @@ OnGameFrame_Rochelle(iClient)
 				velocity[2] = 33.333333;	//This is to counter act the falling rate.
 				
 				//Check the distance
-				g_xyzRopeDistance[iClient] = GetVectorDistance(clientloc,g_xyzRopeEndLocation[iClient], false);
-				g_xyzRopeDistance[iClient] *= 0.08;
-				//PrintHintText(iClient, "Rope Distance = %f", g_xyzRopeDistance[iClient]);
-				if(g_xyzRopeDistance[iClient] > ((float(g_iSmokeLevel[iClient])*40.0) + 5.0))
+				float fDistance = GetVectorDistance(clientloc,g_xyzRopeEndLocation[iClient], false);
+				fDistance *= 0.08;
+				//PrintHintText(iClient, "Rope Distance = %f", fDistance);
+				if(fDistance > ((float(g_iSmokeLevel[iClient]) * 40.0) + 5.0))
 				{
 					PrintHintText(iClient, "Your grappling hook doesnt reach beyond %.0f ft.", (float(g_iSmokeLevel[iClient]) * 40.0));
 					velocity[0] *= -0.5;	//Somehow slowly bring to stop to smoothen it
@@ -190,16 +190,12 @@ OnGameFrame_Rochelle(iClient)
 				}
 				else if(buttons & IN_DUCK)
 				{
-					if(g_xyzRopeDistance[iClient] < ((float(g_iSmokeLevel[iClient])*40.0) + 5.0))
+					if(fDistance < ((float(g_iSmokeLevel[iClient])*40.0) + 5.0))
 						velocity[2] = -230.0;
 				}
 				
-				//PrintHintText(iClient, "velocity = %.1f, %.1f, %f      Rope Distance = %.1f", velocity[0], velocity[1], velocity[2], g_xyzRopeDistance[iClient]);
-				TeleportEntity(iClient,NULL_VECTOR,NULL_VECTOR,velocity);
-				
-				g_xyzClientLocation[iClient][0] = clientloc[0];
-				g_xyzClientLocation[iClient][1] = clientloc[1];
-				g_xyzClientLocation[iClient][2] = clientloc[2] + 35.0;
+				//PrintHintText(iClient, "velocity = %.1f, %.1f, %f      Rope Distance = %.1f", velocity[0], velocity[1], velocity[2], fDistance);
+				TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, velocity);
 				
 				if(g_iRopeCountDownTimer[iClient] == 750)
 					PrintHintText(iClient,"Your about to stretch your SMOKER tongue beyond its breaking point");
@@ -207,6 +203,8 @@ OnGameFrame_Rochelle(iClient)
 				{
 					EmitSoundToAll(SOUND_HOOKRELEASE, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, NULL_VECTOR, NULL_VECTOR, true, 0.0);	// Emit sound from the end of the rope
 					g_bUsingTongueRope[iClient] = false;
+					KillAllNinjaRopeEntities(iClient);
+
 					PrintHintText(iClient,"Your have broken your SMOKER tongue rope");
 				}
 				else

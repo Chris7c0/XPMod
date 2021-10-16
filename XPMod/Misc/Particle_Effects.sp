@@ -676,3 +676,50 @@ CreateSphere(const Float:xyzOrigin[3], Float:fSphereDiameter, iRings, Float:fRin
 		TE_SendToAll();
 	}
 }
+
+int CreateDummyEntity(float xyzLocation[3], float fLifetime = -1.0, int iEntityToAttachTo = -1, char[] strAttachmentPoint = "NONE")
+{
+	// Create the entity
+	int iEntity = CreateEntityByName("prop_dynamic");
+	if (RunEntityChecks(iEntity) == false)
+		return -1;
+	
+	// Set up the values needed
+	decl String:strEntity[30];	
+	Format(strEntity, sizeof(strEntity), "start%i", iEntity);
+	DispatchKeyValue(iEntity, "targetname", strEntity); 
+	DispatchKeyValue(iEntity, "model", "models/NULL.mdl"); 
+	DispatchKeyValue(iEntity, "solid", "0");
+	DispatchKeyValue(iEntity, "rendermode", "10");
+
+	// Teleport the entity to appropriate location
+	if (RunEntityChecks(iEntityToAttachTo) ==  true)
+	{
+		float xyzAngles[3];
+		GetEntPropVector(iEntityToAttachTo, Prop_Send, "m_vecOrigin", xyzLocation);
+		GetClientEyeAngles(iEntityToAttachTo, xyzAngles);
+
+		TeleportEntity(iEntity, xyzLocation, xyzAngles, NULL_VECTOR);
+	}
+	else
+	{
+		TeleportEntity(iEntity, xyzLocation, NULL_VECTOR, NULL_VECTOR);
+	}	
+
+	// Attachment if required
+	if (RunEntityChecks(iEntityToAttachTo) ==  true)
+	{
+		SetVariantString("!activator");
+		AcceptEntityInput(iEntity, "SetParent", iEntityToAttachTo, iEntity, 0);
+		SetVariantString(strAttachmentPoint);
+		AcceptEntityInput(iEntity, "SetParentAttachmentMaintainOffset", iEntity, iEntity, 0);
+	}
+
+	DispatchSpawn(iEntity);
+	ActivateEntity(iEntity);
+
+	if (fLifetime > 0.0)
+		PrintToChatAll("CreateDummyEntity: fLifeTime not implemented yet.");
+
+	return iEntity;
+}
