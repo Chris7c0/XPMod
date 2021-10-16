@@ -659,7 +659,7 @@ CreateSphere(const Float:xyzOrigin[3], Float:fSphereDiameter, iRings, Float:fRin
 		TE_WriteFloat("m_flStartRadius",  fRingDiameter);
 		TE_WriteFloat("m_flEndRadius", fRingDiameter + 0.1);
 		TE_WriteNum("m_nModelIndex", g_iSprite_Laser);
-		TE_WriteNum("m_nHaloIndex", g_iSprite_Halo);
+		TE_WriteNum("m_nHaloIndex", g_iSprite_Glow);
 		TE_WriteNum("m_nStartFrame", 0);
 		TE_WriteNum("m_nFrameRate", 15); // 60
 		TE_WriteFloat("m_fLife", fLifeTime);
@@ -677,7 +677,11 @@ CreateSphere(const Float:xyzOrigin[3], Float:fSphereDiameter, iRings, Float:fRin
 	}
 }
 
-int CreateDummyEntity(float xyzLocation[3], float fLifetime = -1.0, int iEntityToAttachTo = -1, char[] strAttachmentPoint = "NONE")
+int CreateDummyEntity(
+	float xyzLocation[3],
+	float fLifetime = -1.0,
+	int iEntityToAttachTo = -1,
+	char[] strAttachmentPoint = "NONE")
 {
 	// Create the entity
 	int iEntity = CreateEntityByName("prop_dynamic");
@@ -685,10 +689,10 @@ int CreateDummyEntity(float xyzLocation[3], float fLifetime = -1.0, int iEntityT
 		return -1;
 	
 	// Set up the values needed
-	decl String:strEntity[30];	
-	Format(strEntity, sizeof(strEntity), "start%i", iEntity);
+	char strEntity[30];	
+	Format(strEntity, sizeof(strEntity), "start%i", iEntity);	// start/end, doesn't seem to matter if both are specified
 	DispatchKeyValue(iEntity, "targetname", strEntity); 
-	DispatchKeyValue(iEntity, "model", "models/NULL.mdl"); 
+	DispatchKeyValue(iEntity, "model", "models/NULL.mdl"); 	// confirmed that this is required, but doesn't matter if the model exists
 	DispatchKeyValue(iEntity, "solid", "0");
 	DispatchKeyValue(iEntity, "rendermode", "10");
 
@@ -722,4 +726,38 @@ int CreateDummyEntity(float xyzLocation[3], float fLifetime = -1.0, int iEntityT
 		PrintToChatAll("CreateDummyEntity: fLifeTime not implemented yet.");
 
 	return iEntity;
+}
+
+void CreateBeamEntity(
+	int iStartEntity,
+	int iEndEntity,
+	int iPrecachedModelIndex,
+	int iRed = 255, int iGreen = 255, int iBlue = 255, int iAlpha = 255,
+	float fLifeTime = 120.0,
+	float fStartWidth = 5.0, 
+	float fEndWidth = 5.0,
+	int iFadeLength = 100,
+	float fAmplitude = 0.1,
+	int iSpeed = 1,
+	int iFrameRate = 60)
+{		
+	TE_Start("BeamEnts");
+	TE_WriteEncodedEnt("m_nStartEntity", iStartEntity);
+	TE_WriteEncodedEnt("m_nEndEntity", iEndEntity);
+	TE_WriteNum("m_nModelIndex", iPrecachedModelIndex);
+	TE_WriteNum("m_nHaloIndex", g_iSprite_Halo);
+	TE_WriteNum("r", iRed);
+	TE_WriteNum("g", iGreen);
+	TE_WriteNum("b", iBlue);
+	TE_WriteNum("a", iAlpha);
+	TE_WriteFloat("m_fLife", fLifeTime);
+	TE_WriteFloat("m_fWidth", fStartWidth);
+	TE_WriteFloat("m_fEndWidth", fEndWidth);
+	TE_WriteNum("m_nFadeLength", iFadeLength);
+	TE_WriteFloat("m_fAmplitude", fAmplitude);
+	TE_WriteNum("m_nSpeed", iSpeed);
+	TE_WriteNum("m_nStartFrame", 0);
+	TE_WriteNum("m_nFrameRate", iFrameRate);
+
+	TE_SendToAll();
 }

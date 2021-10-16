@@ -34,7 +34,6 @@ ResetVariablesForMap(iClient)
 	g_bCanPlayHeadshotSound[iClient] = true;
 	g_bUsingTongueRope[iClient]=false;
 	g_iRopeCountDownTimer[iClient] = 0;
-	g_iRochelleRopeEntity[iClient] = 0;
 	g_iRochelleRopeDummyEntityAttachmentHand[iClient] = 0;
 	g_iRochelleRopeDummyEntityAttachmentWall[iClient] = 0;
 	canchangemovement[iClient]=true;

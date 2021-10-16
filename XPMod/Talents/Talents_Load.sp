@@ -81,7 +81,7 @@ LoadTalents(iClient)
 					TE_WriteFloat("m_flStartRadius", 10.0);
 					TE_WriteFloat("m_flEndRadius", 90.0);
 					TE_WriteNum("m_nModelIndex", g_iSprite_Laser);
-					TE_WriteNum("m_nHaloIndex", g_iSprite_Halo);
+					TE_WriteNum("m_nHaloIndex", g_iSprite_Glow);
 					TE_WriteNum("m_nStartFrame", 0);
 					TE_WriteNum("m_nFrameRate", 60);
 					TE_WriteFloat("m_fLife", 0.9);

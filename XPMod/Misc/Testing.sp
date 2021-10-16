@@ -274,9 +274,6 @@ Action:TestFunction3(iClient, args)
 		if(RunClientChecks(i) && IsPlayerAlive(i))
 			PrintToChatAll("%i: %N", i, i)
 
-	//CreateLaser(StringToInt(str1), StringToInt(str2));
-	effect_beaments(StringToInt(str1), StringToInt(str2));
-
 	//GotoFirstPerson(iClient);
 
 	//Testing glow
@@ -512,7 +509,7 @@ public void TestingTempEnts(int iClient, char[] strArg1, char[] strArg2)
 	GetLocationVectorInfrontOfClient(iClient, vorigin, vangles);
 	int iDummyEntityAttachmentWall = CreateDummyEntity(vorigin);
 
-	effect_beaments(iDummyEntityAttachmentHand, iDummyEntityAttachmentWall);
+	CreateBeamEntity(iDummyEntityAttachmentHand, iDummyEntityAttachmentWall, g_iSprite_Glow);
 
 	// float xyzLocationTest1[3];
 	// GetEntPropVector(iDummyEntityAttachmentHand, Prop_Send, "m_vecOrigin", xyzLocationTest1);
@@ -603,40 +600,7 @@ public AttachBeam(client)
 public Action:beam_enable(Handle:timer, any:beam)
 {
 	AcceptEntityInput(beam, "TurnOn");
-} 
-
-public effect_beaments(entity, eentity)//, frate, Float:life, Float:width, Float:ewidth, flength, Float:amp, r, g, b, a, speed)
-{
-	//est_effect_03
-	//new mindex = IsPrecached(model);
-	new haloindex = PrecacheModel("materials/sprites/halo01.vmt");
-	
-	
-	TE_Start("BeamEnts");
-	TE_WriteEncodedEnt("m_nStartEntity", entity);
-	TE_WriteEncodedEnt("m_nEndEntity", eentity);
-	TE_WriteNum("m_nModelIndex", g_iSprite_SmokerTongue);//mindex);
-	TE_WriteNum("m_nHaloIndex", haloindex);
-	TE_WriteNum("m_nStartFrame", 0);
-	TE_WriteNum("m_nFrameRate", 60);//frate);
-	TE_WriteFloat("m_fLife", 30.0);//life);
-	TE_WriteFloat("m_fWidth", 2.0);//width);
-	TE_WriteFloat("m_fEndWidth", 5.0);//ewidth);
-	TE_WriteNum("m_nFadeLength", 100);//flength);
-	TE_WriteFloat("m_fAmplitude", 0.1);//amp);
-	TE_WriteNum("m_nSpeed", 1);// speed);
-	TE_WriteNum("r", 255);//r);
-	TE_WriteNum("g", 255);//g);
-	TE_WriteNum("b", 255);//b);
-	TE_WriteNum("a", 255);//a);
-
-	//TE_WriteNum("m_nFlags", flags);
-	//SendEffect(filter);
-	TE_SendToAll();
-	
-	return;
 }
-
 // Action:TimerAttaachRope(Handle:timer, any:iClient)
 // {
 // 	PrintToChatAll("clients: %i, %i", g_iClient1, g_iClient2)

@@ -58,12 +58,14 @@ void CreateSmokerTongueNinjaRope(int iClient)
 	g_iRochelleRopeDummyEntityAttachmentHand[iClient] = CreateDummyEntity(xyzLocation, -1.0, iClient, "muzzle_flash");
 	g_iRochelleRopeDummyEntityAttachmentWall[iClient] = CreateDummyEntity(g_xyzRopeEndLocation[iClient]);
 	
-	g_iRochelleRopeEntity[iClient] = effect_beaments(g_iRochelleRopeDummyEntityAttachmentHand[iClient], g_iRochelleRopeDummyEntityAttachmentWall[iClient]);
+	CreateBeamEntity(
+		g_iRochelleRopeDummyEntityAttachmentHand[iClient], 
+		g_iRochelleRopeDummyEntityAttachmentWall[iClient],
+		g_iSprite_SmokerTongue);
 }
 
 void KillAllNinjaRopeEntities(int iClient)
 {
-	KillEntitySafely(g_iRochelleRopeEntity[iClient]);
 	KillEntitySafely(g_iRochelleRopeDummyEntityAttachmentWall[iClient]);
 	KillEntitySafely(g_iRochelleRopeDummyEntityAttachmentHand[iClient]);
 }

@@ -380,7 +380,7 @@ void DrawRing(const float xyzLocation[3])
 	xyzOffsetLocation[0] = xyzLocation[0];
 	xyzOffsetLocation[1] = xyzLocation[1];
 	xyzOffsetLocation[2] = xyzLocation[2] + 10.0;
-	TE_SetupBeamRingPoint(xyzOffsetLocation, 60.0, 59.0, g_iSprite_Laser, g_iSprite_Halo, 0, 15, 25.1, 5.0, 0.0, {0, 255, 30, 255}, 10, 0);
+	TE_SetupBeamRingPoint(xyzOffsetLocation, 60.0, 59.0, g_iSprite_Laser, g_iSprite_Glow, 0, 15, 25.1, 5.0, 0.0, {0, 255, 30, 255}, 10, 0);
 	TE_SendToAll();
 }
 

@@ -364,6 +364,7 @@ new String:ITEM_MODEL_PATH[][] =        {"empty",
 
 //Sprites
 new g_iSprite_Laser;
+new g_iSprite_Glow;
 new g_iSprite_Halo;
 new g_iSprite_SmokerTongue;
 new g_iSprite_AmmoBox;
