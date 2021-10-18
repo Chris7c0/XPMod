@@ -383,7 +383,7 @@ CreateSmokerSmokeCloudParticle(iClient)
 		xyzPosition,	// Position to create it 0,0,0 will force getting client location
 		true,
 		"smoker_mouth",
-		50, 255, 100, 	// Color of smoke
+		50, 200, 100, 	// Color of smoke
 		255,			// How Opaque
 		1,				// Gap in the middle
 		100,			// Speed the smoke moves outwards

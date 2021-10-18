@@ -437,7 +437,20 @@ void CreateSmokeScreenAroundVictim(iClient)
 	CreateTimer(SMOKER_SMOKE_VICTIM_COOLDOWN_DURATION, TimerResetSmokerSmokeScreenCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 	float xyzLocation[3];
-	CreateSmokeParticle(g_iChokingVictim[iClient], xyzLocation, false, "", 0, 255, 50, 255, 1, 100, 100, 400, 400, 50, 200, 10, SMOKER_SMOKE_VICTIM_DURATION);
+	CreateSmokeParticle(g_iChokingVictim[iClient], 
+		xyzLocation,
+		false,
+		"",
+		50, 200, 50, 100, 
+		1, 
+		100, 
+		100, 
+		400, 
+		400, 
+		20, 
+		200, 
+		10, 
+		SMOKER_SMOKE_VICTIM_DURATION);
 }
 
 bool CreateSmokerDoppelganger(int iClient)
