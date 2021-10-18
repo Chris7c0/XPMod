@@ -130,8 +130,14 @@ OnGameFrame_Rochelle(iClient)
 	}
 	if(g_iSmokeLevel[iClient] > 0)
 	{
-		//Rope
-		if(g_bUsingTongueRope[iClient])
+		// Rope when grappled
+		if (g_bUsingTongueRope[iClient] && IsClientGrappled(iClient) == true)
+		{
+			DisableNinjaRope(iClient);
+		}
+
+		// More rope handling
+		if (g_bUsingTongueRope[iClient])
 		{			
 			if(g_bHasDemiGravity[iClient] == false)
 			{
@@ -201,9 +207,7 @@ OnGameFrame_Rochelle(iClient)
 					PrintHintText(iClient,"Your about to stretch your SMOKER tongue beyond its breaking point");
 				if(g_iRopeCountDownTimer[iClient] >= 900)
 				{
-					EmitSoundToAll(SOUND_HOOKRELEASE, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, NULL_VECTOR, NULL_VECTOR, true, 0.0);	// Emit sound from the end of the rope
-					g_bUsingTongueRope[iClient] = false;
-					KillAllNinjaRopeEntities(iClient);
+					DisableNinjaRope(iClient);
 
 					PrintHintText(iClient,"Your have broken your SMOKER tongue rope");
 				}
@@ -212,8 +216,7 @@ OnGameFrame_Rochelle(iClient)
 			}
 			else
 			{
-				EmitSoundToAll(SOUND_HOOKRELEASE, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, NULL_VECTOR, NULL_VECTOR, true, 0.0);	// Emit sound from the end of the rope
-				g_bUsingTongueRope[iClient] = false;
+				DisableNinjaRope(iClient);
 			}
 		}
 		else if(g_bUsedTongueRope[iClient]==true)

@@ -448,7 +448,7 @@ Action:Event_PlayerIncap(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	new incapper = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
 	
-	g_bUsingTongueRope[iClient] = false;
+	DisableNinjaRope(iClient, false);
 	g_bIsClientDown[iClient] = true;
 	g_iJockeyVictim[incapper] = -1;
 	SetClientRenderAndGlowColor(iClient);

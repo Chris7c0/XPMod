@@ -691,8 +691,10 @@ int CreateDummyEntity(
 	// Set up the values needed
 	char strEntity[30];	
 	Format(strEntity, sizeof(strEntity), "start%i", iEntity);	// start/end, doesn't seem to matter if both are specified
-	DispatchKeyValue(iEntity, "targetname", strEntity); 
-	DispatchKeyValue(iEntity, "model", "models/NULL.mdl"); 	// confirmed that this is required, but doesn't matter if the model exists
+	DispatchKeyValue(iEntity, "targetname", strEntity);
+	// DispatchKeyValue(iEntity, "model", "models/v_models/v_painpills.mdl");
+	// DispatchKeyValue(iEntity, "model", "models/brokenglass_piece.mdl"); 
+	DispatchKeyValue(iEntity, "model", "models/brokenglass_piece.mdl"); 	// confirmed that this is required, if the model becomes visible, this will show
 	DispatchKeyValue(iEntity, "solid", "0");
 	DispatchKeyValue(iEntity, "rendermode", "10");
 

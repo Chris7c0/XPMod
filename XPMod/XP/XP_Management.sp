@@ -366,11 +366,11 @@ Action:ResetSurvivorTalents(iClient)
 	g_iLouisTalent6Level[iClient] = 0;
 	
 	//reset all abilities///////////////////////////////////////////////////////////////////////////
-	//Turn of everything
+	//Turn off everything
 	g_bUsingFireStorm[iClient] = false;
 	g_bUsingShadowNinja[iClient] = false;
 	g_bIsJetpackOn[iClient] = false;
-	g_bUsingTongueRope[iClient] = false;
+	DisableNinjaRope(iClient, false);
 	
 	
 	//For all talents

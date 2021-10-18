@@ -9,7 +9,7 @@ void Bind1Press_Rochelle(iClient)
 			{
 				if(g_bHasDemiGravity[iClient] == false)
 				{
-					if(!g_bUsingTongueRope[iClient])
+					if(g_bUsingTongueRope[iClient] == false)
 					{
 						if(canchangemovement[iClient] == true)
 						{							
@@ -38,9 +38,7 @@ void Bind1Press_Rochelle(iClient)
 					}
 					else
 					{
-						EmitSoundToAll(SOUND_HOOKRELEASE, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, NULL_VECTOR, NULL_VECTOR, true, 0.0);	// Emit sound from the end of the rope
-						g_bUsingTongueRope[iClient]=false;
-						KillAllNinjaRopeEntities(iClient)
+						DisableNinjaRope(iClient);
 					}
 				}	
 				else
@@ -61,7 +59,25 @@ void CreateSmokerTongueNinjaRope(int iClient)
 	CreateBeamEntity(
 		g_iRochelleRopeDummyEntityAttachmentHand[iClient], 
 		g_iRochelleRopeDummyEntityAttachmentWall[iClient],
-		g_iSprite_SmokerTongue);
+		g_iSprite_SmokerTongue,
+		125, 125, 125, 255,
+		60.0,
+		3.0,
+		3.0);
+}
+
+void DisableNinjaRope(int iClient, bool bPlaySound = true)
+{
+	if (g_bUsingTongueRope[iClient] == false)
+		return;
+
+	g_bUsingTongueRope[iClient]=false;
+	KillAllNinjaRopeEntities(iClient);
+
+	if (bPlaySound && 
+		RunClientChecks(iClient) && 
+		IsPlayerAlive(iClient))
+		EmitSoundToAll(SOUND_HOOKRELEASE, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, NULL_VECTOR, NULL_VECTOR, true, 0.0);	// Emit sound from the end of the rope
 }
 
 void KillAllNinjaRopeEntities(int iClient)

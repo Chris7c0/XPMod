@@ -174,7 +174,7 @@ Action:Event_ChargerCarryEnd(Handle:hEvent, const String:strName[], bool:bDontBr
 	
 	if(g_bUsingTongueRope[victim])
 	{
-		g_bUsingTongueRope[victim] = false;
+		DisableNinjaRope(victim);
 		SetMoveType(victim, MOVETYPE_WALK, MOVECOLLIDE_DEFAULT);
 	}
 	SetClientRenderAndGlowColor(victim);
