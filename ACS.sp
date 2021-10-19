@@ -3,7 +3,6 @@
 
 
 
-
 //////////////////////////////////////////
 // Automatic Campaign Switcher for L4D2 //
 // Version 1.2.4                        //
