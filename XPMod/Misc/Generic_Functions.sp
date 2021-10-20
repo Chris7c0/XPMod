@@ -1157,19 +1157,19 @@ int FindClosestSurvivor(int iClient, bool bIgnoreIncap = false)
 	return iClosestSurvivor;		
 }
 
-void GetLocationVectorInfrontOfClient(iClient, Float:xyzLocation[3], Float:xyzAngles[3], Float:fForwardOffset = 40.0, Float:fVerticleOffset = 1.0)
+void GetLocationVectorInfrontOfClient(iClient, float xyzLocation[3], float xyzAngles[3], float fForwardOffset = 40.0, float fVerticalOffset = 1.0)
 {
-	decl Float:vDirection[3];
+	float vDirection[3];
 
-	GetClientEyeAngles(iClient, xyzAngles);							// Get clients Eye Angles to know get what direction face
+	GetEntPropVector(iClient, Prop_Send, "m_angRotation", xyzAngles);	// Get clients Eye Angles to know get what direction face
 	GetAngleVectors(xyzAngles, vDirection, NULL_VECTOR, NULL_VECTOR);	// Get the direction the iClient is looking
 	xyzAngles[0] = 0.0;	//Lock x and z axis, in other words, only do rotation as if a person is standing up and turning
 	xyzAngles[2] = 0.0;
 
-	GetClientAbsOrigin(iClient, xyzLocation);		// Get Clients location origin vectors
-	xyzLocation[0] += (vDirection[0] * fForwardOffset);	// Offset x and y a bit forward of the players view
+	GetClientAbsOrigin(iClient, xyzLocation);				// Get Clients location origin vectors
+	xyzLocation[0] += (vDirection[0] * fForwardOffset);		// Offset x and y a bit forward of the players view
 	xyzLocation[1] += (vDirection[1] * fForwardOffset);
-	xyzLocation[2] += vDirection[2] + fVerticleOffset;			// Raise it up slightly to prevent glitches
+	xyzLocation[2] += (vDirection[2] + fVerticalOffset);	// Raise it up slightly to prevent glitches
 }
 
  
