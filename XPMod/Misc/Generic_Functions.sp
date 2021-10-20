@@ -1157,11 +1157,11 @@ int FindClosestSurvivor(int iClient, bool bIgnoreIncap = false)
 	return iClosestSurvivor;		
 }
 
-void GetLocationVectorInfrontOfClient(iClient, float xyzLocation[3], float xyzAngles[3], float fForwardOffset = 40.0, float fVerticalOffset = 1.0)
+void GetLocationVectorInfrontOfClient(iClient, float xyzLocation[3], float xyzAngles[3], float fForwardOffset = 40.0, float fVerticalOffset = 1.0, float fLeftRightOffset = 0.0)
 {
 	float vDirection[3];
 
-	GetEntPropVector(iClient, Prop_Send, "m_angRotation", xyzAngles);	// Get clients Eye Angles to know get what direction face
+	GetEntPropVector(iClient, Prop_Send, "m_angRotation", xyzAngles);	// Get clients Angles to know get what direction face
 	GetAngleVectors(xyzAngles, vDirection, NULL_VECTOR, NULL_VECTOR);	// Get the direction the iClient is looking
 	xyzAngles[0] = 0.0;	//Lock x and z axis, in other words, only do rotation as if a person is standing up and turning
 	xyzAngles[2] = 0.0;
@@ -1170,7 +1170,52 @@ void GetLocationVectorInfrontOfClient(iClient, float xyzLocation[3], float xyzAn
 	xyzLocation[0] += (vDirection[0] * fForwardOffset);		// Offset x and y a bit forward of the players view
 	xyzLocation[1] += (vDirection[1] * fForwardOffset);
 	xyzLocation[2] += (vDirection[2] + fVerticalOffset);	// Raise it up slightly to prevent glitches
+
+	// Check if need to move left or right before continuing
+	if (fLeftRightOffset == 0.0)
+		return;
+
+	// The goal here is move left or right from the point just figured out.
+	// To do this figure out a perpendicular vector from the forward direction and move along it -/+ direction to move left/right.
+	float vPerpendicularDirection[3], vRandomVector[3];
+	vRandomVector[0] = 32.1;
+	vRandomVector[1] = 32.1;
+	vRandomVector[2] = 32.1;
+	// Cross product will give a perpendicular vector when original vector is combined with an arbitrary vector
+	// Just chose a 32.1 at random.
+	GetVectorCrossProduct(vDirection, vRandomVector, vPerpendicularDirection);
+
+	// PrintToChatAll("vPerpendicularDirection: %f, %f, %f", vPerpendicularDirection[0], vPerpendicularDirection[1], vPerpendicularDirection[1]);
+	xyzLocation[0] += (vPerpendicularDirection[0] * fLeftRightOffset);		// Offset x and y a bit left or right of the current 3d point
+	xyzLocation[1] += (vPerpendicularDirection[1] * fLeftRightOffset);
 }
+
+
+// void GetLocationVectorInfrontOfClientEyes(iClient, float xyzLocation[3], float xyzAngles[3], float fForwardOffset = 40.0, float fVerticalOffset = 1.0, float perpOffset = 0.0)
+// {
+// 	float vDirection[3];
+
+// 	GetClientEyeAngles(iClient, xyzAngles);	// Get clients Eye Angles to know get what direction face
+// 	GetAngleVectors(xyzAngles, vDirection, NULL_VECTOR, NULL_VECTOR);	// Get the direction the iClient is looking
+// 	xyzAngles[0] = 0.0;	//Lock x and z axis, in other words, only do rotation as if a person is standing up and turning
+// 	xyzAngles[2] = 0.0;
+
+// 	GetClientEyePosition(iClient, xyzLocation);				// Get Clients location origin vectors
+// 	xyzLocation[0] += (vDirection[0] * fForwardOffset);		// Offset x and y a bit forward of the players view
+// 	xyzLocation[1] += (vDirection[1] * fForwardOffset);
+// 	xyzLocation[2] += (vDirection[2] + fVerticalOffset);	// Raise it up slightly to prevent glitches
+
+// 	float vPerpendicularDirection[3], vRandomVector[3];
+// 	vRandomVector[0] = 32.3;
+// 	vRandomVector[1] = 32.3;
+// 	vRandomVector[2] = 32.3;
+// 	GetVectorCrossProduct(vDirection, vRandomVector, vPerpendicularDirection);
+
+// 	PrintToChatAll("EYES vPerpendicularDirection: %f, %f, %f", vPerpendicularDirection[0], vPerpendicularDirection[1], vPerpendicularDirection[1]);
+
+// 	if (perpOffset != 0.0) xyzLocation[0] += (vPerpendicularDirection[0] * perpOffset);		// Offset x and y a bit forward of the players view
+// 	if (perpOffset != 0.0) xyzLocation[1] += (vPerpendicularDirection[1] * perpOffset);
+// }
 
  
 /**************************************************************************************************************************/

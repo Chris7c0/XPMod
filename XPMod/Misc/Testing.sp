@@ -11,10 +11,8 @@ Action:TestFunction1(iClient, args)
 	for (int i=0; i<20; i++)
 		GetCmdArg(i+1, strArg[i], sizeof(strArg[]));
 
-	
+	TestingBeamEntsBars(iClient);
 
-
-	
 	// TestingTempEnts(iClient, strArg[0], strArg[1]);
 
 	// float xyzPosition[3];
@@ -612,3 +610,271 @@ public Action:beam_enable(Handle:timer, any:beam)
 
 // 	return Plugin_Stop;
 // }
+
+
+
+
+
+// int CreateSpriteBarEyesForward(int entity, float height = 2.0, float width, float duration, int color[4], float offset[3])
+// {
+// 	float pos[3], angles[3];
+// 	GetClientEyePosition(entity, pos);
+// 	GetClientEyeAngles(entity, angles);
+// 	pos[0]+=offset[0];
+// 	pos[1]+=offset[1];
+// 	pos[2]+=offset[2];
+// 	int ent = CreateEntityByName("env_sprite");
+
+
+
+// 	//Target Name:
+// 	char tName[64];
+// 	Format(tName, sizeof(tName), "Entity%d", entity);
+// 	DispatchKeyValue(entity, "targetname", tName);
+// 	GetEntPropString(entity, Prop_Data, "m_iName", tName, sizeof(tName));
+// 	// DispatchKeyValue(ent, "parentname", tName);
+
+
+
+// 	if (ent > 0)
+// 	{
+// 		// DispatchKeyValueVector(ent, "origin", pos);
+// 		// DispatchKeyValueVector(ent, "rotation", angles);
+// 		//TeleportEntity(ent, pos, angles, NULL_VECTOR);
+// 		TeleportEntity(ent, pos, NULL_VECTOR, NULL_VECTOR);
+
+// 		//DispatchKeyValue(ent, "scale", "0.2");
+// 		DispatchKeyValue(ent, "model", "materials/sprites/white.vmt");
+// 		DispatchSpawn(ent);
+
+// 		DispatchKeyValue(ent, "parentname", tName);
+
+// 		// SetVariantString("!activator");
+// 		SetVariantString(tName);
+// 		AcceptEntityInput(ent, "SetParent", ent, ent);
+// 		// AcceptEntityInput(ent, "SetParent", entity, ent);
+
+// 		SetVariantString("forward");
+// 		AcceptEntityInput(ent, "SetParentAttachmentMaintainOffset", ent, ent, 0);
+
+// 		AcceptEntityInput(ent, "HideSprite");
+// 	}
+// 	pos[2]+=height;
+// 	int ent2 = CreateEntityByName("env_sprite");
+// 	if (ent2 > 0)
+// 	{
+// 		// DispatchKeyValueVector(ent2, "origin", pos);
+// 		// DispatchKeyValueVector(ent2, "rotation", angles);
+// 		//TeleportEntity(ent2, pos, angles, NULL_VECTOR);
+// 		TeleportEntity(ent2, pos, NULL_VECTOR, NULL_VECTOR);
+
+
+// 		DispatchKeyValue(ent2, "model", "materials/sprites/white.vmt");
+// 		DispatchSpawn(ent2);
+
+// 		DispatchKeyValue(ent2, "parentname", tName);
+
+// 		// SetVariantString("!activator");
+// 		SetVariantString(tName);
+// 		AcceptEntityInput(ent2, "SetParent", ent2, ent2);
+// 		//AcceptEntityInput(ent2, "SetParent", entity, ent2);
+		
+// 		SetVariantString("forward");
+// 		AcceptEntityInput(ent, "SetParentAttachmentMaintainOffset", ent, ent, 0);
+
+// 		AcceptEntityInput(ent2, "HideSprite");
+// 	}
+// 	TE_SendBeamBar(ent, ent2, width, duration, color);
+// 	return ent;
+// }
+
+
+
+
+
+
+
+int CreateSpriteBar(int entity, float height = 2.0, float width, float duration, int color[4], float offset[3], iSprite)
+{
+	float pos[3], angles[3];
+	GetEntPropVector(entity, Prop_Data, "m_vecAbsOrigin", pos);
+	GetEntPropVector(entity, Prop_Send, "m_angRotation", angles);
+	pos[0]+=offset[0];
+	pos[1]+=offset[1];
+	pos[2]+=offset[2];
+	int ent = CreateEntityByName("env_sprite");
+
+
+
+	// //Target Name:
+	// char tName[64];
+	// Format(tName, sizeof(tName), "Entity%d", entity);
+	// DispatchKeyValue(entity, "targetname", tName);
+	// GetEntPropString(entity, Prop_Data, "m_iName", tName, sizeof(tName));
+	// // DispatchKeyValue(ent, "parentname", tName);
+
+
+
+	if (ent > 0)
+	{
+		// DispatchKeyValueVector(ent, "origin", pos);
+		// DispatchKeyValueVector(ent, "rotation", angles);
+		//TeleportEntity(ent, pos, angles, NULL_VECTOR);
+		TeleportEntity(ent, pos, NULL_VECTOR, NULL_VECTOR);
+
+		//DispatchKeyValue(ent, "scale", "0.2");
+		DispatchKeyValue(ent, "model", "materials/sprites/white.vmt");
+		DispatchSpawn(ent);
+
+		// DispatchKeyValue(ent, "parentname", tName);
+
+		SetVariantString("!activator");
+		// SetVariantString(tName);
+		// AcceptEntityInput(ent, "SetParent", ent, ent);
+		AcceptEntityInput(ent, "SetParent", entity, ent);
+
+		// SetVariantString("spine");
+		// AcceptEntityInput(ent, "SetParentAttachmentMaintainOffset", ent, ent, 0);
+
+		AcceptEntityInput(ent, "HideSprite");
+	}
+	pos[2]+=height;
+	int ent2 = CreateEntityByName("env_sprite");
+	if (ent2 > 0)
+	{
+		// DispatchKeyValueVector(ent2, "origin", pos);
+		// DispatchKeyValueVector(ent2, "rotation", angles);
+		//TeleportEntity(ent2, pos, angles, NULL_VECTOR);
+		TeleportEntity(ent2, pos, NULL_VECTOR, NULL_VECTOR);
+
+
+		DispatchKeyValue(ent2, "model", "materials/sprites/white.vmt");
+		DispatchSpawn(ent2);
+
+		// DispatchKeyValue(ent2, "parentname", tName);
+
+		SetVariantString("!activator");
+		// SetVariantString(tName);
+		// AcceptEntityInput(ent2, "SetParent", ent2, ent2);
+		AcceptEntityInput(ent2, "SetParent", entity, ent2);
+		
+		// SetVariantString("spine");
+		// AcceptEntityInput(ent, "SetParentAttachmentMaintainOffset", ent, ent, 0);
+
+		AcceptEntityInput(ent2, "HideSprite");
+	}
+	TE_SendBeamBar(ent2, ent, width, duration, color, iSprite);
+	return ent;
+}
+
+TE_SendBeamBar(int startEnt, int endEnt, float size, float duration, int color[4], iSprite)
+{
+	TE_SetupBeamEnts(startEnt, endEnt, iSprite, g_iSprite_Glow, 0, 0, duration, size, size, 1, 1.0, color, 0);
+	TE_SendToAll();
+}
+
+stock void TE_SetupBeamEnts(int StartEntity, int EndEntity, int ModelIndex, int HaloIndex, int StartFrame, int FrameRate, float Life, float Width, float EndWidth, int FadeLength, float Amplitude, const int Color[4], int Speed)
+{
+	TE_Start("BeamEnts");
+	TE_WriteEncodedEnt("m_nStartEntity", StartEntity);
+	TE_WriteEncodedEnt("m_nEndEntity", EndEntity);
+	TE_WriteNum("m_nModelIndex", ModelIndex);
+	TE_WriteNum("m_nHaloIndex", HaloIndex);
+	TE_WriteNum("m_nStartFrame", StartFrame);
+	TE_WriteNum("m_nFrameRate", FrameRate);
+	TE_WriteFloat("m_fLife", Life);
+	TE_WriteFloat("m_fWidth", Width);
+	TE_WriteFloat("m_fEndWidth", EndWidth);
+	TE_WriteFloat("m_fAmplitude", Amplitude);
+	TE_WriteNum("r", Color[0]);
+	TE_WriteNum("g", Color[1]);
+	TE_WriteNum("b", Color[2]);
+	TE_WriteNum("a", Color[3]);
+	TE_WriteNum("m_nSpeed", Speed);
+	TE_WriteNum("m_nFadeLength", FadeLength);
+} 
+
+TestingBeamEntsBars(int iClient)
+{
+	// CreateSpriteBar(StringToInt(strArg[0]), 3.0, 10.0, 60.0, {0, 255, 0, 1500}, {0.0, 0.0, 80.0});
+	// CreateSpriteBar(StringToInt(strArg[0]), 3.0, 30.0, 60.0, {255, 255, 255, 20}, {0.0, 0.0, 80.0});
+
+	///////////////////////////////////////////////////////////////////////
+
+	int iSprite = g_iSprite_Bar_Background;
+	float xyzOffset[3], xyzClientLocation[3], xzyLocationInFrontOfClient[3], vAngles[3];
+	GetClientAbsOrigin(iClient, xyzClientLocation);
+
+	xyzOffset[2] = 37.0;
+
+	GetLocationVectorInfrontOfClient(iClient, xzyLocationInFrontOfClient, vAngles, 10.2, 1.0);
+	xyzOffset[0] = xzyLocationInFrontOfClient[0] - xyzClientLocation[0];
+	xyzOffset[1] = xzyLocationInFrontOfClient[1] - xyzClientLocation[1];
+	CreateSpriteBar(iClient, 3.0, 10.0, 60.0, {255, 255, 255, 15}, xyzOffset, iSprite);
+	GetLocationVectorInfrontOfClient(iClient, xzyLocationInFrontOfClient, vAngles, 10.1, 1.0);
+	xyzOffset[0] = xzyLocationInFrontOfClient[0] - xyzClientLocation[0];
+	xyzOffset[1] = xzyLocationInFrontOfClient[1] - xyzClientLocation[1];
+	CreateSpriteBar(iClient, 3.0, 8.0, 60.0, {0, 255, 0, 255}, xyzOffset, g_iSprite_Bar_Foreground);
+
+	xyzOffset[2] = 33.0;
+
+	GetLocationVectorInfrontOfClient(iClient, xzyLocationInFrontOfClient, vAngles, 10.2, 1.0);
+	xyzOffset[0] = xzyLocationInFrontOfClient[0] - xyzClientLocation[0];
+	xyzOffset[1] = xzyLocationInFrontOfClient[1] - xyzClientLocation[1];
+	CreateSpriteBar(iClient, 3.0, 10.0, 60.0, {255, 255, 255, 25}, xyzOffset, iSprite);
+	GetLocationVectorInfrontOfClient(iClient, xzyLocationInFrontOfClient, vAngles, 10.1, 1.0);
+	xyzOffset[0] = xzyLocationInFrontOfClient[0] - xyzClientLocation[0];
+	xyzOffset[1] = xzyLocationInFrontOfClient[1] - xyzClientLocation[1];
+	CreateSpriteBar(iClient, 3.0, 6.0, 60.0, {0, 255, 0, 255}, xyzOffset, g_iSprite_Bar_Foreground);
+
+	xyzOffset[2] = 5.0;
+
+	GetLocationVectorInfrontOfClient(iClient, xzyLocationInFrontOfClient, vAngles, 20.2, 1.0, -0.5);
+	xyzOffset[0] = xzyLocationInFrontOfClient[0] - xyzClientLocation[0];
+	xyzOffset[1] = xzyLocationInFrontOfClient[1] - xyzClientLocation[1];
+	CreateSpriteBar(iClient, 3.0, 6.0, 60.0, {255, 255, 255, 15}, xyzOffset, iSprite);
+	GetLocationVectorInfrontOfClient(iClient, xzyLocationInFrontOfClient, vAngles, 20.1, 1.0, -0.5);
+	xyzOffset[0] = xzyLocationInFrontOfClient[0] - xyzClientLocation[0];
+	xyzOffset[1] = xzyLocationInFrontOfClient[1] - xyzClientLocation[1];
+	CreateSpriteBar(iClient, 3.0, 1.0, 60.0, {25, 10, 255, 255}, xyzOffset, g_iSprite_Bar_Foreground);
+
+	GetLocationVectorInfrontOfClient(iClient, xzyLocationInFrontOfClient, vAngles, 20.2, 1.0, 0.5);
+	xyzOffset[0] = xzyLocationInFrontOfClient[0] - xyzClientLocation[0];
+	xyzOffset[1] = xzyLocationInFrontOfClient[1] - xyzClientLocation[1];
+	CreateSpriteBar(iClient, 3.0, 6.0, 60.0, {255, 255, 255, 15}, xyzOffset, iSprite);
+	GetLocationVectorInfrontOfClient(iClient, xzyLocationInFrontOfClient, vAngles, 20.1, 1.0, 0.5);
+	xyzOffset[0] = xzyLocationInFrontOfClient[0] - xyzClientLocation[0];
+	xyzOffset[1] = xzyLocationInFrontOfClient[1] - xyzClientLocation[1];
+	CreateSpriteBar(iClient, 3.0, 4.0, 60.0, {25, 10, 255, 255}, xyzOffset, g_iSprite_Bar_Foreground);
+
+	/////////////////////////////////////////////////////////////////////////
+	
+	// float xyzOffset[3], xyzClientLocation[3], xzyLocationInFrontOfClient[3], vAngles[3];
+	// GetClientAbsOrigin(iClient, xyzClientLocation);
+	// xyzOffset[2] = 0.0;
+
+
+	// GetLocationVectorInfrontOfClientEyes(iClient, xzyLocationInFrontOfClient, vAngles, 1.0, 1.0);
+	// xyzOffset[0] = xzyLocationInFrontOfClient[0] - xyzClientLocation[0];
+	// xyzOffset[1] = xzyLocationInFrontOfClient[1] - xyzClientLocation[1];
+
+	// CreateSpriteBar(iClient, 3.0, 5.0, 60.0, {0, 255, 0, 150}, xyzOffset);
+	// CreateSpriteBar(iClient, 3.0, 20.0, 60.0, {255, 255, 255, 20}, xyzOffset);
+
+
+	// GetLocationVectorInfrontOfClientEyes(iClient, xzyLocationInFrontOfClient, vAngles, 1.0, 1.0, 0.9);
+
+	// xyzOffset[0] = xzyLocationInFrontOfClient[0] - xyzClientLocation[0];
+	// xyzOffset[1] = xzyLocationInFrontOfClient[1] - xyzClientLocation[1];
+
+	// CreateSpriteBar(iClient, 3.0, 4.0, 60.0, {0, 255, 0, 150}, xyzOffset);
+	// CreateSpriteBar(iClient, 3.0, 6.0, 60.0, {255, 255, 255, 20}, xyzOffset);
+
+	// GetLocationVectorInfrontOfClientEyes(iClient, xzyLocationInFrontOfClient, vAngles, 1.0, 1.0, -0.9);
+
+	// xyzOffset[0] = xzyLocationInFrontOfClient[0] - xyzClientLocation[0];
+	// xyzOffset[1] = xzyLocationInFrontOfClient[1] - xyzClientLocation[1];
+
+	// CreateSpriteBar(iClient, 3.0, 1.0, 60.0, {0, 255, 0, 150}, xyzOffset);
+	// CreateSpriteBar(iClient, 3.0, 6.0, 60.0, {255, 255, 255, 20}, xyzOffset);
+}

@@ -217,6 +217,10 @@ PrecacheAllTextures()
 	g_iSprite_Laser			= PrecacheModel("materials/sprites/laserbeam.vmt");	
 	g_iSprite_Glow 			= PrecacheModel("materials/sprites/glow.vmt");
 	g_iSprite_Halo 			= PrecacheModel("materials/sprites/halo01.vmt");
+	g_iSprite_Bar_Background			= PrecacheModel("materials/sprites/white.vmt");
+	// g_iSprite_Bar_Background			= PrecacheModel("materials/vgui/white_additive.vmt");
+	// g_iSprite_Bar_Background			= PrecacheModel("materials/vgui/hud/scalablepanel_bgblack_outlinegrey_sm.vmt");
+	g_iSprite_Bar_Foreground	= PrecacheModel("materials/vgui/white.vmt");
 	//g_iSprite_Add_ToScreen   = PrecacheModel("materials/dev/halo_add_to_screen.vmt");
 	g_iSprite_SmokerTongue 	= PrecacheModel("materials/particle/smoker_tongue_beam.vmt");
 	g_iSprite_Arrow 		= PrecacheModel("materials/sprites/640_pain_up.vmt");

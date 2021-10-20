@@ -40,10 +40,10 @@ int WriteParticle(iClient, String:strParticleName[], Float:fZOffset = 0.0, Float
 		//PrintToChatAll("Particle Entity ID: %d", Particle);
 		//Declare:
 		decl Float:position[3];
-		decl Float:position2[3];
+		// decl Float:position2[3];
 		//Origin:
 		GetEntPropVector(iClient, Prop_Send, "m_vecOrigin", position);
-		GetEntPropVector(iClient, Prop_Send, "m_angRotation", position2);
+		// GetEntPropVector(iClient, Prop_Send, "m_angRotation", position2);
 		if(fZOffset != 0.0)
 			position[2] += fZOffset;
 		//Send:
@@ -186,7 +186,7 @@ int AttachParticle(target, String:particlename[], Float:fTime = -1.0, Float:orig
 			if (fTime > 0.0) CreateTimer(fTime, DeleteParticle, particle, TIMER_FLAG_NO_MAPCHANGE);
 			return particle;
 		}
-    }
+	}
 
 	return -1;
 }
@@ -684,33 +684,21 @@ int CreateDummyEntity(
 	char[] strAttachmentPoint = "NONE")
 {
 	// Create the entity
-	int iEntity = CreateEntityByName("prop_dynamic");
+	int iEntity = CreateEntityByName("env_sprite");
 	if (RunEntityChecks(iEntity) == false)
 		return -1;
 	
-	// Set up the values needed
-	char strEntity[30];	
-	Format(strEntity, sizeof(strEntity), "start%i", iEntity);	// start/end, doesn't seem to matter if both are specified
-	DispatchKeyValue(iEntity, "targetname", strEntity);
-	// DispatchKeyValue(iEntity, "model", "models/v_models/v_painpills.mdl");
-	// DispatchKeyValue(iEntity, "model", "models/brokenglass_piece.mdl"); 
-	DispatchKeyValue(iEntity, "model", "models/brokenglass_piece.mdl"); 	// confirmed that this is required, if the model becomes visible, this will show
-	DispatchKeyValue(iEntity, "solid", "0");
-	DispatchKeyValue(iEntity, "rendermode", "10");
+	// Set up the model (material for env_sprite, required for it to work)
+	DispatchKeyValue(iEntity, "model", "materials/sprites/white.vmt");
+	DispatchSpawn(iEntity);
+	AcceptEntityInput(iEntity, "HideSprite");
+
+	// set the attachment location if required
+	if (RunEntityChecks(iEntityToAttachTo) ==  true)
+		GetEntPropVector(iEntityToAttachTo, Prop_Send, "m_vecOrigin", xyzLocation);
 
 	// Teleport the entity to appropriate location
-	if (RunEntityChecks(iEntityToAttachTo) ==  true)
-	{
-		float xyzAngles[3];
-		GetEntPropVector(iEntityToAttachTo, Prop_Send, "m_vecOrigin", xyzLocation);
-		GetClientEyeAngles(iEntityToAttachTo, xyzAngles);
-
-		TeleportEntity(iEntity, xyzLocation, xyzAngles, NULL_VECTOR);
-	}
-	else
-	{
-		TeleportEntity(iEntity, xyzLocation, NULL_VECTOR, NULL_VECTOR);
-	}	
+	DispatchKeyValueVector(iEntity, "origin", xyzLocation);
 
 	// Attachment if required
 	if (RunEntityChecks(iEntityToAttachTo) ==  true)
@@ -721,7 +709,6 @@ int CreateDummyEntity(
 		AcceptEntityInput(iEntity, "SetParentAttachmentMaintainOffset", iEntity, iEntity, 0);
 	}
 
-	DispatchSpawn(iEntity);
 	ActivateEntity(iEntity);
 
 	if (fLifetime > 0.0)
@@ -747,7 +734,7 @@ void CreateBeamEntity(
 	TE_WriteEncodedEnt("m_nStartEntity", iStartEntity);
 	TE_WriteEncodedEnt("m_nEndEntity", iEndEntity);
 	TE_WriteNum("m_nModelIndex", iPrecachedModelIndex);
-	TE_WriteNum("m_nHaloIndex", g_iSprite_Halo);
+	// TE_WriteNum("m_nHaloIndex", g_iSprite_Halo);
 	TE_WriteNum("r", iRed);
 	TE_WriteNum("g", iGreen);
 	TE_WriteNum("b", iBlue);

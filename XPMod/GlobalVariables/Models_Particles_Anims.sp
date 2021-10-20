@@ -366,6 +366,9 @@ new String:ITEM_MODEL_PATH[][] =        {"empty",
 new g_iSprite_Laser;
 new g_iSprite_Glow;
 new g_iSprite_Halo;
+new g_iSprite_Bar_Background;
+new g_iSprite_Bar_Foreground;
+// new g_iSprite_HealthBarWhite;
 new g_iSprite_SmokerTongue;
 new g_iSprite_AmmoBox;
 new g_iSprite_Arrow;
