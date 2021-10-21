@@ -734,7 +734,7 @@ void CreateBeamEntity(
 	TE_WriteEncodedEnt("m_nStartEntity", iStartEntity);
 	TE_WriteEncodedEnt("m_nEndEntity", iEndEntity);
 	TE_WriteNum("m_nModelIndex", iPrecachedModelIndex);
-	// TE_WriteNum("m_nHaloIndex", g_iSprite_Halo);
+	TE_WriteNum("m_nHaloIndex", g_iSprite_Glow);
 	TE_WriteNum("r", iRed);
 	TE_WriteNum("g", iGreen);
 	TE_WriteNum("b", iBlue);

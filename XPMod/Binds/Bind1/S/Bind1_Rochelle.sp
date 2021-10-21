@@ -5,14 +5,14 @@ void Bind1Press_Rochelle(iClient)
 		//Smokers tongue rope
 		if(g_bIsClientDown[iClient] == false && IsClientGrappled(iClient) == false)
 		{
-			if (g_iRopeCountDownTimer[iClient] < 900)
+			if (g_iRopeCountDownTimer[iClient] < ROCHELLE_ROPE_DURATION)
 			{
 				if(g_bHasDemiGravity[iClient] == false)
 				{
 					if(g_bUsingTongueRope[iClient] == false)
 					{
 						if(canchangemovement[iClient] == true)
-						{							
+						{
 							float xyzClientLocation[3], xyzClientAngles[3];
 							GetClientEyePosition(iClient,xyzClientLocation); // Get the position of the player's ATTACH_EYES
 							GetClientEyeAngles(iClient,xyzClientAngles); // Get the angle the player is looking

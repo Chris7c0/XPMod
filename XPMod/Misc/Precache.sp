@@ -217,6 +217,7 @@ PrecacheAllTextures()
 	g_iSprite_Laser			= PrecacheModel("materials/sprites/laserbeam.vmt");	
 	g_iSprite_Glow 			= PrecacheModel("materials/sprites/glow.vmt");
 	g_iSprite_Halo 			= PrecacheModel("materials/sprites/halo01.vmt");
+	g_iSprite_White			= PrecacheModel("materials/sprites/white.vmt");
 	g_iSprite_Bar_Background			= PrecacheModel("materials/sprites/white.vmt");
 	// g_iSprite_Bar_Background			= PrecacheModel("materials/vgui/white_additive.vmt");
 	// g_iSprite_Bar_Background			= PrecacheModel("materials/vgui/hud/scalablepanel_bgblack_outlinegrey_sm.vmt");

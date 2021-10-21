@@ -140,6 +140,7 @@ new g_iRopeCountDownTimer[MAXPLAYERS + 1];
 new g_iRochelleRopeDummyEntityAttachmentHand[MAXPLAYERS + 1];
 new g_iRochelleRopeDummyEntityAttachmentWall[MAXPLAYERS + 1];
 float g_xyzRopeEndLocation[MAXPLAYERS + 1][3];
+#define ROCHELLE_ROPE_DURATION      900
 
 //Coach's Stuff
 //For Coach's Jetpack

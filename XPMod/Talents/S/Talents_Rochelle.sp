@@ -203,9 +203,9 @@ OnGameFrame_Rochelle(iClient)
 				//PrintHintText(iClient, "velocity = %.1f, %.1f, %f      Rope Distance = %.1f", velocity[0], velocity[1], velocity[2], fDistance);
 				TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, velocity);
 				
-				if(g_iRopeCountDownTimer[iClient] == 750)
+				if(g_iRopeCountDownTimer[iClient] == ROCHELLE_ROPE_DURATION - 250)
 					PrintHintText(iClient,"Your about to stretch your SMOKER tongue beyond its breaking point");
-				if(g_iRopeCountDownTimer[iClient] >= 900)
+				if(g_iRopeCountDownTimer[iClient] >= ROCHELLE_ROPE_DURATION)
 				{
 					DisableNinjaRope(iClient);
 
