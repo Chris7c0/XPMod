@@ -2,6 +2,24 @@
 #################                     E V E N T S                      #################
 ======================================================================================*/
 
+void SetUpEvents()
+{
+    //Hook the game events
+	HookEvent("player_left_start_area", Event_PlayerLeftStartArea);
+	// HookEvent("round_start", Event_RoundStart);
+	HookEvent("round_end", Event_RoundEnd);
+	HookEvent("finale_win", Event_FinaleWin);
+	// HookEvent("scavenge_match_finished", Event_ScavengeMapFinished);
+	HookEvent("player_disconnect", Event_PlayerDisconnect);
+
+	//Hook the Return to Lobby vote and Finale End return to lobby events
+	HookUserMessage(GetUserMessageId("VotePass"), OnDisconnectToLobby, true);
+	HookUserMessage(GetUserMessageId("DisconnectToLobby"), OnDisconnectToLobby, true);
+	// https://wiki.alliedmods.net/User_messages
+	HookUserMessage(GetUserMessageId("PZEndGamePanelMsg"), OnPZEndGamePanelMsg, true);
+	//HookUserMessage(GetUserMessageId("VoteStart"), OnVoteStart, true);
+}
+
 public void OnMapStart()
 {
 	//Execute config file
@@ -29,30 +47,26 @@ public void OnMapStart()
 	ResetAllVotes();				//Reset every player's vote
 }
 
-void SetUpEvents()
-{
-    //Hook the game events
-	//HookEvent("round_start", Event_RoundStart);
-	HookEvent("player_left_start_area", Event_PlayerLeftStartArea);
-	HookEvent("round_end", Event_RoundEnd);
-	HookEvent("finale_win", Event_FinaleWin);
-	HookEvent("scavenge_match_finished", Event_ScavengeMapFinished);
-	HookEvent("player_disconnect", Event_PlayerDisconnect);
-
-	//Hook the Return to Lobby vote and Finale End return to lobby events
-	HookUserMessage(GetUserMessageId("VotePass"), OnDisconnectToLobby, true);
-	HookUserMessage(GetUserMessageId("DisconnectToLobby"), OnDisconnectToLobby, true);
-}
-
 
 //Event fired when the Survivors leave the start area
 public Action Event_PlayerLeftStartArea(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {		
+	PrintToServer("*************************** Event_PlayerLeftStartArea Event triggered");
+
 	if(g_bVotingEnabled == true && OnFinaleOrScavengeOrSurvivalMap() == true)
 		CreateTimer(g_fVotingAdDelayTime, Timer_DisplayVoteAdToAll, _, TIMER_FLAG_NO_MAPCHANGE);
 	
 	return Plugin_Continue;
 }
+
+
+// //Event fired when the Round Starts
+// public Action Event_RoundStart(Handle hEvent, const char[] strName, bool bDontBroadcast)
+// {
+// 	PrintToServer("*************************** Event_RoundStart Event triggered");
+
+// 	return Plugin_Continue;
+// }
 
 //Event fired when the Round Ends
 public Action Event_RoundEnd(Handle hEvent, const char[] strName, bool bDontBroadcast)
@@ -62,16 +76,14 @@ public Action Event_RoundEnd(Handle hEvent, const char[] strName, bool bDontBroa
 	//Check to see if on a finale map, if so change to the next campaign after two rounds
 	switch (g_iGameMode)
 	{
-		case GAMEMODE_VERSUS:
-		{
-			if (OnFinaleOrScavengeOrSurvivalMap() == false)
-				return Plugin_Continue;
+		// case GAMEMODE_VERSUS:
+		// {
+		// 	if (OnFinaleOrScavengeOrSurvivalMap() == false)
+		// 		return Plugin_Continue;
 
-			g_iRoundEndCounter++;
-
-			if(IncrementRoundEndCounter() >= 2)
-				CheckMapForChange();
-		}
+		// 	if(IncrementRoundEndCounter() >= 2)
+		// 		ChangeMapIfNeeded();
+		// }
 		//If in Coop and on a finale, check to see if the surviors have lost the max amount of times
 		case GAMEMODE_COOP:
 		{
@@ -79,13 +91,22 @@ public Action Event_RoundEnd(Handle hEvent, const char[] strName, bool bDontBroa
 				g_iMaxCoopFinaleFailures > 0 && 
 				g_bFinaleWon == false &&
 				++g_iCoopFinaleFailureCount >= g_iMaxCoopFinaleFailures)
-				CheckMapForChange();
+				ChangeMapIfNeeded();
 		}
 		case GAMEMODE_SURVIVAL:
 		{
-			if(IncrementRoundEndCounter() >= 1)	
-				ChangeSurvivalMap();
+			if (IncrementRoundEndCounter() >= 2)	
+				ChangeMapIfNeeded();
 		}
+		// case GAMEMODE_VERSUS_SURVIVAL:
+		// {
+		// 	// The new rounds start indefinitely until the current team does worse than the previous team.
+		// 	// If no score is placed then it will just keep going until a score is placed.
+		// 	// Then the next team will have a chance to beat that score. This will keep going until
+		// 	// the current team does worse than the last team.
+		// 	if(IncrementRoundEndCounter() >= 12)	
+		// 		ChangeMapIfNeeded();
+		// }
 	}
 	return Plugin_Continue;
 }
@@ -100,22 +121,36 @@ public Action Event_FinaleWin(Handle hEvent, const char[] strName, bool bDontBro
 	
 	//Change to the next campaign
 	if(g_iGameMode == GAMEMODE_COOP)
-		CheckMapForChange();
+		ChangeMapIfNeeded();
 	
 	return Plugin_Continue;
 }
 
-//Event fired when a map is finished for scavenge
-public Action Event_ScavengeMapFinished(Handle hEvent, const char[] strName, bool bDontBroadcast)
-{
-	PrintToServer("*************************** Event_ScavengeMapFinished Event triggered");
+// //Event fired when a map is finished for scavenge
+// public Action Event_ScavengeMapFinished(Handle hEvent, const char[] strName, bool bDontBroadcast)
+// {
+// 	PrintToServer("*************************** Event_ScavengeMapFinished Event triggered");
 
-	//Change to the next Scavenge map
-	if(g_iGameMode == GAMEMODE_SCAVENGE)
-		ChangeScavengeMap();
+// 	//Change to the next Scavenge map
+// 	if(g_iGameMode == GAMEMODE_SCAVENGE)
+// 		ChangeMapIfNeeded();
 	
-	return Plugin_Continue;
-}
+// 	return Plugin_Continue;
+// }
+
+// //Event fired when the Vote Starts
+// public Action Event_VoteStarted(Handle hEvent, const char[] strName, bool bDontBroadcast)
+// {
+// 	PrintToServer("*************************** Event_VoteStarted Event triggered");
+
+// 	int iVoterInt = GetEventInt(hEvent,"initiator");
+// 	PrintToServer("*************************** iVoterInt: %i", iVoterInt);
+// 	int iVoterUser  = GetClientOfUserId(GetEventInt(hEvent,"initiator"));
+// 	PrintToServer("*************************** iVoterUser: %i", iVoterUser);
+
+// 	return Plugin_Continue;
+// }
+
 
 //Event fired when a player disconnects from the server
 public Action Event_PlayerDisconnect(Handle hEvent, const char[] strName, bool bDontBroadcast)
@@ -156,6 +191,21 @@ public Action OnDisconnectToLobby(UserMsg msg_id, Handle bf, const int[] players
 		bAllowDisconnect = false;
 		return Plugin_Continue;
 	}
+
+	return Plugin_Handled;
+}
+
+// Event
+public Action OnPZEndGamePanelMsg(UserMsg msg_id, Handle bf, const int[] players, int playersNum, bool reliable, bool init)
+{
+	if (g_bStopACSChangeMap == true)
+		return Plugin_Handled;
+
+	char sBuffer[128];
+	BfReadString(bf, sBuffer, sizeof(sBuffer));
+	PrintToServer("OnPZEndGamePanelMsg ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| %s", sBuffer);
+
+	ChangeMapIfNeeded();
 
 	return Plugin_Handled;
 }

@@ -128,7 +128,7 @@ void SetupMapStrings()
 	//The following string variables are only for Survival
 
 	//Survival Maps
-	//Format(g_strSurvivalMap[0], 32, "c8m1_apartment");
+	Format(g_strSurvivalMap[0], 32, "c8m2_subway");
 	Format(g_strSurvivalMap[1], 32, "c8m5_rooftop");
 	Format(g_strSurvivalMap[2], 32, "c10m3_ranchhouse");
 	Format(g_strSurvivalMap[3], 32, "c11m4_terminal");
@@ -148,9 +148,7 @@ void SetupMapStrings()
 	Format(g_strSurvivalMap[17], 32, "c14m2_lighthouse");
 	
 	//Survival Map Names
-	// No mercy
-	// Generator Room
-	//Format(g_strSurvivalMapName[0], 32, "Apartments");
+	Format(g_strSurvivalMapName[0], 32, "Generator Room");
 	Format(g_strSurvivalMapName[1], 32, "Rooftop");
 	Format(g_strSurvivalMapName[2], 32, "The Church");
 	Format(g_strSurvivalMapName[3], 32, "The Terminal");

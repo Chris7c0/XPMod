@@ -3,7 +3,7 @@
 #################              F I N D   G A M E   M O D E             #################
 ======================================================================================*/
 
-//Find the current gamemode and store it into this plugin
+//Find the current Game Mode and store it into this plugin
 void FindGameMode()
 {
 	//Get the gamemode string from the game
@@ -54,7 +54,7 @@ void FindGameMode()
 	else if(StrEqual(strGameMode, "mutation14"))	//Gib Fest
 		g_iGameMode = GAMEMODE_COOP;
 	else if(StrEqual(strGameMode, "mutation15"))	//Versus Survival
-		g_iGameMode = GAMEMODE_SURVIVAL;
+		g_iGameMode = GAMEMODE_VERSUS_SURVIVAL;
 	else if(StrEqual(strGameMode, "mutation16"))	//Hunting Party
 		g_iGameMode = GAMEMODE_COOP;
 	else if(StrEqual(strGameMode, "mutation17"))	//Lone Gunman
@@ -79,10 +79,35 @@ void FindGameMode()
 		g_iGameMode = GAMEMODE_UNKNOWN;
 }
 
+bool IsGameModeValid(int iGameMode)
+{
+	if (iGameMode != GAMEMODE_UNKNOWN)
+		return true;
+	
+	LogError("ACS Error: Invalid Game Mode!");
+	return false;
+}
+
+int GetMapListArraySizeForGameMode(int iGameMode)
+{
+	switch(iGameMode)
+	{
+		case GAMEMODE_COOP:				return sizeof(g_strCampaignLastMap);
+		case GAMEMODE_VERSUS:			return sizeof(g_strCampaignLastMap);
+		case GAMEMODE_SCAVENGE:			return sizeof(g_strScavengeMap);
+		case GAMEMODE_SURVIVAL:			return sizeof(g_strSurvivalMap);
+		case GAMEMODE_VERSUS_SURVIVAL:	return sizeof(g_strSurvivalMap);
+	}
+
+	return 0;
+}
+
 //Check if the current map is the last in the campaign if not in the Scavenge game mode
 bool OnFinaleOrScavengeOrSurvivalMap()
 {
-	if(g_iGameMode == GAMEMODE_SCAVENGE || g_iGameMode == GAMEMODE_SURVIVAL)
+	if (g_iGameMode == GAMEMODE_SCAVENGE ||
+		g_iGameMode == GAMEMODE_SURVIVAL ||
+		g_iGameMode == GAMEMODE_VERSUS_SURVIVAL)
 		return true;
 	
 	char strCurrentMap[32];
@@ -96,17 +121,35 @@ bool OnFinaleOrScavengeOrSurvivalMap()
 	return false;
 }
 
+bool IsMapIndexValid(int iMapIndex)
+{
+	bool bIsMapValid = false;
+	switch(g_iGameMode)
+	{
+		case GAMEMODE_COOP:				bIsMapValid = IsMapValid(g_strCampaignLastMap[iMapIndex]);
+		case GAMEMODE_VERSUS:			bIsMapValid = IsMapValid(g_strCampaignLastMap[iMapIndex]);
+		case GAMEMODE_SCAVENGE:			bIsMapValid = IsMapValid(g_strScavengeMap[iMapIndex]);
+		case GAMEMODE_SURVIVAL:			bIsMapValid = IsMapValid(g_strSurvivalMap[iMapIndex]);
+		case GAMEMODE_VERSUS_SURVIVAL:	bIsMapValid = IsMapValid(g_strSurvivalMap[iMapIndex]);
+	}
+
+	if (bIsMapValid == false)
+		LogError("ACS Error: %i is an invalid map index!", iMapIndex);
+
+	return bIsMapValid;
+}
+
 int IncrementRoundEndCounter()
 {
 	if (g_bCanIncrementRoundEndCounter == false)
 		return g_iRoundEndCounter;
 	
 	g_bCanIncrementRoundEndCounter = false;
-	CreateTimer(30.0, TimerResetCanIncrementRoundEndCounter, _);
+	CreateTimer(REALLOW_ROUND_END_INCREMENT_DELAY, TimerResetCanIncrementRoundEndCounter, _, TIMER_FLAG_NO_MAPCHANGE);
 	
 	PrintToServer("======================== INCREMENTING g_iRoundEndCounter: %i", g_iRoundEndCounter + 1);
 
-	return g_iRoundEndCounter++;
+	return ++g_iRoundEndCounter;
 }
 
 // This is required because the RoundEnd can fire multiple times

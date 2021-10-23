@@ -26,12 +26,18 @@
 		Community 1-5
 
 	Change Log
-		v1.2.5 (Oct 20, 2021)	- Converted to new syntax
-								- Added Survival GameMode because it has its own map rotation set.
+		v1.2.5 (Oct 20, 2021)	- Converted everything to new syntax
 								- Updated all the maps for every game mode.
+								- Added all the new stock mutations *****************************************************
+								- Added hook for OnPZEndGamePanelMsg that intercepts the vote at the end of 
+								  a campaign where it asks to play with the group again. This is also used
+								  as a simpler method for knowing its time to switch to next campaign.  This
+								  works for all modes except for Coop and Survival that will continue forever.
+								- Added Survival map list because it has its own map rotation set.
 								- Supplemented hardcoded maps by adding optional campaign maps config file ***********************
 								- Made map comparisons case insensitive							************************
 								- Fixed config file not loading changes ******************************************************
+								- Rewrote many functions to be more generic and reusable
 
 		v1.2.4 (Dec 31, 2020)	- Added new maps for the Last Stand Update
 								- Added precache of witch models to fix bug in The Passing campaign 

@@ -3,23 +3,33 @@
 #define NUMBER_OF_SCAVENGE_MAPS		18		/* CHANGE TO MATCH THE TOTAL NUMBER OF SCAVENGE MAPS */
 #define NUMBER_OF_SURVIVAL_MAPS		18		/* CHANGE TO MATCH THE TOTAL NUMBER OF SCAVENGE MAPS */
 
-//Define the wait time after round before changing to the next map in each game mode
-#define WAIT_TIME_BEFORE_SWITCH_COOP			1.0
-#define WAIT_TIME_BEFORE_SWITCH_VERSUS			1.0
-#define WAIT_TIME_BEFORE_SWITCH_SCAVENGE		1.0
-#define WAIT_TIME_BEFORE_SWITCH_SURVIVAL		1.0
 
 //Define Game Modes
-#define GAMEMODE_UNKNOWN	-1
-#define GAMEMODE_COOP 		0
-#define GAMEMODE_VERSUS 	1
-#define GAMEMODE_SCAVENGE 	2
-#define GAMEMODE_SURVIVAL 	3
+#define GAMEMODE_UNKNOWN	        -1
+#define GAMEMODE_COOP 		        0
+#define GAMEMODE_VERSUS 	        1
+#define GAMEMODE_SCAVENGE 	        2
+#define GAMEMODE_SURVIVAL 	        3
+#define GAMEMODE_VERSUS_SURVIVAL 	4
 
 #define DISPLAY_MODE_DISABLED	0
 #define DISPLAY_MODE_HINT		1
 #define DISPLAY_MODE_CHAT		2
 #define DISPLAY_MODE_MENU		3
+
+// Define the wait time after round before changing to the next map in each game mode
+// These must line up the game modes array
+float g_fWaitTimeBeforeSwitch[] = {
+    10.0,   // Coop
+    5.0,    // Versus
+    10.0,   // Scavenge
+    10.0,   // Survival
+    10.0    // Versus Survival
+};
+
+// Miscellaneous config
+#define REALLOW_ACS_MAP_CHANGE_DELAY        20.0    //Seconds, used to prevent multiple triggers for 1 round end
+#define REALLOW_ROUND_END_INCREMENT_DELAY   20.0    //Seconds, used to prevent multiple triggers for 1 round end
 
 #define SOUND_NEW_VOTE_START	"ui/Beep_SynthTone01.wav"
 #define SOUND_NEW_VOTE_WINNER	"ui/alert_clink.wav"
@@ -28,6 +38,7 @@
 //Global Variables
 int g_iGameMode;					    //Integer to store the gamemode
 int g_iRoundEndCounter;				    //Round end event counter for versus
+bool g_bStopACSChangeMap;
 bool g_bCanIncrementRoundEndCounter;    // Prevents incrementing the round end counter twice from multiple event triggers
 int g_iCoopFinaleFailureCount;		    //Number of times the Survivors have lost the current finale
 int g_iMaxCoopFinaleFailures = 5;	    //Amount of times Survivors can fail before ACS switches in coop

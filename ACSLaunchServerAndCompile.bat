@@ -10,4 +10,4 @@ spcomp .\ACS\acs.sp -v 0
 xcopy ".\acs.smx" %l4d2pluginfolder% /Y >NUL
 xcopy ".\acs.smx" %l4d2networkfolder% /Y >NUL
 
-start .\LaunchServer.lnk
+rem start .\LaunchServer.lnk
