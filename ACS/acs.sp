@@ -93,6 +93,7 @@
 #include "ACS/ConsoleCommands.sp"
 #include "ACS/CVars.sp"
 #include "ACS/Events.sp"
+#include "ACS/FileIO.sp"
 #include "ACS/UtilityFunctions.sp"
 #include "ACS/VoteSystem.sp"
 
@@ -111,8 +112,13 @@ public Plugin myinfo =
 
 public void OnPluginStart()
 {
-	//Get the strings for all of the maps that are in rotation
-	SetupMapStrings();
+	// Create the map list file if there its not there already
+	CreateNewMapListFileIfDoesNotExist();
+
+	// Get the strings for all of the maps that are in rotation for every game mode
+	SetupMapListArrayFromFile();
+
+	PrintTheCurrentMapListArrayInfo();
 	
 	SetUpCVars();
 	

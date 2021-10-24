@@ -33,16 +33,8 @@ void ChangeMapIfNeeded()
 // Change campaign using its index
 Action Timer_ChangeMap(Handle timer, int iMapIndex)
 {
-	//Change the campaign using the array for its game mode
-	switch (g_iGameMode)
-	{
-		case GAMEMODE_COOP:				ServerCommand("changelevel %s", g_strCampaignFirstMap[iMapIndex]);
-		case GAMEMODE_VERSUS:			ServerCommand("changelevel %s", g_strCampaignFirstMap[iMapIndex]);
-		case GAMEMODE_SCAVENGE:			ServerCommand("changelevel %s", g_strScavengeMap[iMapIndex]);
-		case GAMEMODE_SURVIVAL:			ServerCommand("changelevel %s", g_strSurvivalMap[iMapIndex]);
-		case GAMEMODE_VERSUS_SURVIVAL:	ServerCommand("changelevel %s", g_strSurvivalMap[iMapIndex]);
-	}
-	
+	ServerCommand("changelevel %s", g_strMapListArray[iMapIndex][MAP_LIST_COLUMN_MAP_NAME_START]);
+
 	return Plugin_Stop;
 }
 
@@ -57,23 +49,16 @@ Action TimerResetCanACSChangeMap(Handle timer, int iData)
 
 int FindCurrentMapIndex()
 {
+	if (g_iMapsIndexStartForCurrentGameMode == -1)
+		return -1;
+
 	char strCurrentMap[32];
 	GetCurrentMap(strCurrentMap, 32);	//Get the current map from the game
 
-	// PrintToServer("               ===========                                  FindCurrentMapIndex %i", GetMapListArraySizeForGameMode(g_iGameMode));
-
 	//Go through all maps and to find which map index it is on, and then switch to the next map
-	for(int iMapIndex = 0; iMapIndex < GetMapListArraySizeForGameMode(g_iGameMode); iMapIndex++)
-	{
-		switch(g_iGameMode)
-		{
-			case GAMEMODE_COOP:				if (StrEqual(strCurrentMap, g_strCampaignLastMap[iMapIndex]) == true) return iMapIndex;
-			case GAMEMODE_VERSUS:			if (StrEqual(strCurrentMap, g_strCampaignLastMap[iMapIndex]) == true) return iMapIndex;
-			case GAMEMODE_SCAVENGE:			if (StrEqual(strCurrentMap, g_strScavengeMap[iMapIndex]) == true) return iMapIndex;
-			case GAMEMODE_SURVIVAL:			if (StrEqual(strCurrentMap, g_strSurvivalMap[iMapIndex]) == true) return iMapIndex;
-			case GAMEMODE_VERSUS_SURVIVAL:	if (StrEqual(strCurrentMap, g_strSurvivalMap[iMapIndex]) == true) return iMapIndex;
-		}
-	}
+	for(int iMapIndex = g_iMapsIndexStartForCurrentGameMode; iMapIndex < g_iMapsIndexEndForCurrentGameMode; iMapIndex++)
+		if (StrEqual(g_strMapListArray[iMapIndex][MAP_LIST_COLUMN_MAP_NAME_END], strCurrentMap, false) == true)
+			return iMapIndex;
 
 	return -1;
 }
@@ -84,14 +69,14 @@ int FindNextMapIndex()
 	if (iCurrentMapIndex == -1)
 		return -1;
 
-	// PrintToServer("               ===========                                  FindCurrentMapIndex %i", iCurrentMapIndex);
+	PrintToServer("               ===========                                  FindCurrentMapIndex %i", iCurrentMapIndex);
 
 	int iNextCampaignMapIndex = iCurrentMapIndex + 1;							// Get the next campaign map index
 
-	if(iCurrentMapIndex == GetMapListArraySizeForGameMode(g_iGameMode) - 1)		// Check to see if its the end of the array
+	if (iNextCampaignMapIndex > g_iMapsIndexEndForCurrentGameMode)				// Check to see if its the end of the array
 		iNextCampaignMapIndex = 0;												// If so, set it to the first map index
 
-	// PrintToServer("               ===========                                  FindNextMapIndex %i", iNextCampaignMapIndex);
+	PrintToServer("               ===========                                  FindNextMapIndex %i", iNextCampaignMapIndex);
 
 	return iNextCampaignMapIndex;
 }

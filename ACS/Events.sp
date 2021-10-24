@@ -28,7 +28,10 @@ public void OnMapStart()
 	AutoExecConfig(true, strFileName);
 	
 	//Set the game mode
-	FindGameMode();
+	bool bGameModeChanged = FindGameMode();
+
+	if (bGameModeChanged == true)
+		SetCurrentMapIndexRangeForCurrentGameMode();
 	
 	//Precache models (This fixes missing Witch model on "The Passing")
 	if(IsModelPrecached("models/infected/witch.mdl") == false)

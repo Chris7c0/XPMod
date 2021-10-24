@@ -1,16 +1,22 @@
-//Define the number of campaigns and maps in rotation
-#define NUMBER_OF_CAMPAIGNS			14		/* CHANGE TO MATCH THE TOTAL NUMBER OF CAMPAIGNS */
-#define NUMBER_OF_SCAVENGE_MAPS		18		/* CHANGE TO MATCH THE TOTAL NUMBER OF SCAVENGE MAPS */
-#define NUMBER_OF_SURVIVAL_MAPS		18		/* CHANGE TO MATCH THE TOTAL NUMBER OF SCAVENGE MAPS */
+#define ACS_MAP_LIST_FILE_PATH      "/gamedata/acs_map_list.txt"
 
 
-//Define Game Modes
+// Define Game Modes
 #define GAMEMODE_UNKNOWN	        -1
 #define GAMEMODE_COOP 		        0
 #define GAMEMODE_VERSUS 	        1
 #define GAMEMODE_SCAVENGE 	        2
 #define GAMEMODE_SURVIVAL 	        3
 #define GAMEMODE_VERSUS_SURVIVAL 	4
+
+// Game Mode Map List Strings (corresponds to the above game modes order)
+char g_strGameModeString[][] = {
+    "CAMPAIGN", //GAMEMODE_COOP
+    "CAMPAIGN", //GAMEMODE_VERSUS
+    "SCAVENGE", //GAMEMODE_SCAVENGE
+    "SURVIVAL", //GAMEMODE_SURVIVAL
+    "SURVIVAL"  //GAMEMODE_VERSUS_SURVIVAL
+};
 
 #define DISPLAY_MODE_DISABLED	0
 #define DISPLAY_MODE_HINT		1
@@ -40,18 +46,21 @@ int g_iGameMode;					    //Integer to store the gamemode
 int g_iRoundEndCounter;				    //Round end event counter for versus
 bool g_bStopACSChangeMap;
 bool g_bCanIncrementRoundEndCounter;    // Prevents incrementing the round end counter twice from multiple event triggers
-int g_iCoopFinaleFailureCount;		    //Number of times the Survivors have lost the current finale
-int g_iMaxCoopFinaleFailures = 5;	    //Amount of times Survivors can fail before ACS switches in coop
-bool g_bFinaleWon;				        //Indicates whether a finale has be beaten or not
+int g_iCoopFinaleFailureCount;		    // Number of times the Survivors have lost the current finale
+int g_iMaxCoopFinaleFailures = 5;	    // Amount of times Survivors can fail before ACS switches in coop
+bool g_bFinaleWon;				        // Indicates whether a finale has be beaten or not
+char g_strMapListFilePath[256]  = "";   // Path of the map file list
 
-//Campaign and map strings/names
-char g_strCampaignFirstMap[NUMBER_OF_CAMPAIGNS][32];		//Array of maps to switch to
-char g_strCampaignLastMap[NUMBER_OF_CAMPAIGNS][32];		//Array of maps to switch from
-char g_strCampaignName[NUMBER_OF_CAMPAIGNS][32];			//Array of names of the campaign
-char g_strScavengeMap[NUMBER_OF_SCAVENGE_MAPS][32];		//Array of scavenge maps
-char g_strScavengeMapName[NUMBER_OF_SCAVENGE_MAPS][32];	//Name of scavenge maps
-char g_strSurvivalMap[NUMBER_OF_SCAVENGE_MAPS][32];		//Array of Survival maps
-char g_strSurvivalMapName[NUMBER_OF_SCAVENGE_MAPS][32];	//Name of Survival maps
+// Map List Rotation For All GameModes
+char g_strMapListArray[100][4][64];
+// Map List Columns
+#define MAP_LIST_COLUMN_GAMEMODE          0
+#define MAP_LIST_COLUMN_MAP_DESCRIPTION   1
+#define MAP_LIST_COLUMN_MAP_NAME_START    2
+#define MAP_LIST_COLUMN_MAP_NAME_END      3
+// Keep track of indexes that are relevent to the current game mode
+int g_iMapsIndexStartForCurrentGameMode;
+int g_iMapsIndexEndForCurrentGameMode;
 
 //Voting Variables
 bool g_bVotingEnabled = true;							    //Tells if the voting system is on
