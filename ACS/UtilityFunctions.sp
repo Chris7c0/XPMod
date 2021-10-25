@@ -17,9 +17,11 @@ bool OnFinaleOrScavengeOrSurvivalMap()
 	
 	char strCurrentMap[32];
 	GetCurrentMap(strCurrentMap,32);			//Get the current map from the game
+
+	// PrintToChatAll("OnFinaleOrScavengeOrSurvivalMap start %i end %i", g_iMapsIndexStartForCurrentGameMode, g_iMapsIndexEndForCurrentGameMode);
 	
 	//Run through all the maps, if the current map is a last campaign map, return true
-	for (int iMapIndex = g_iMapsIndexStartForCurrentGameMode; iMapIndex < g_iMapsIndexEndForCurrentGameMode; iMapIndex++)
+	for (int iMapIndex = g_iMapsIndexStartForCurrentGameMode; iMapIndex <= g_iMapsIndexEndForCurrentGameMode; iMapIndex++)
 		if (StrEqual(strCurrentMap, g_strMapListArray[iMapIndex][MAP_LIST_COLUMN_MAP_NAME_END], false) == true)
 			return true;
 	
@@ -58,7 +60,8 @@ Action TimerResetCanIncrementRoundEndCounter(Handle timer, int iData)
 	return Plugin_Stop;
 }
 
-//Find the current Game Mode and store it into this plugin
+// Find the current Game Mode and store it into this plugin
+// Returns true if the game mode has changed.
 bool FindGameMode()
 {
 	// This will say if the game mode has changed since last time it was checked

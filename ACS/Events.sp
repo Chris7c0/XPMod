@@ -87,7 +87,7 @@ public Action Event_RoundEnd(Handle hEvent, const char[] strName, bool bDontBroa
 		// 	if(IncrementRoundEndCounter() >= 2)
 		// 		ChangeMapIfNeeded();
 		// }
-		//If in Coop and on a finale, check to see if the surviors have lost the max amount of times
+		//If in Coop and on a finale, check to see if the survivors have lost the max amount of times
 		case GAMEMODE_COOP:
 		{
 			if (OnFinaleOrScavengeOrSurvivalMap() == true &&

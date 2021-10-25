@@ -8,17 +8,17 @@ char g_strDefaultMapListArray[][][64] = {
     {"CAMPAIGN", "Blood Harvest", "c12m1_hilltop", "c12m5_cornfield"},
 
     // Scavenge
-    {"SCAVENGE", "Apartments", "c8m1_apartment", "c8m1_apartment"},
-    {"SCAVENGE", "Rooftop", "c8m5_rooftop", "c8m5_rooftop"},
-    {"SCAVENGE", "The Church", "c10m3_ranchhouse", "c10m3_ranchhouse"},
-    {"SCAVENGE", "The Terminal", "c11m4_terminal", "c11m4_terminal"},
-    {"SCAVENGE", "The Farmhouse", "c12m5_cornfield", "c12m5_cornfield"},
+    {"SCAVENGE", "No Mercy: Apartments", "c8m1_apartment", "c8m1_apartment"},
+    {"SCAVENGE", "No Mercy: Rooftop", "c8m5_rooftop", "c8m5_rooftop"},
+    {"SCAVENGE", "Death Toll: The Church", "c10m3_ranchhouse", "c10m3_ranchhouse"},
+    {"SCAVENGE", "Dead Air: The Terminal", "c11m4_terminal", "c11m4_terminal"},
+    {"SCAVENGE", "Blood Harvest: The Farmhouse", "c12m5_cornfield", "c12m5_cornfield"},
 
     // Survival
-    {"SURVIVAL", "Generator Room", "c8m2_subway", "c8m2_subway"},
-    {"SURVIVAL", "Rooftop", "c8m5_rooftop", "c8m5_rooftop"},
-    {"SURVIVAL", "The Church", "c10m3_ranchhouse", "c10m3_ranchhouse"},
-    {"SURVIVAL", "The Terminal", "c10m3_ranchhouse", "c10m3_ranchhouse"},
-    {"SURVIVAL", "The Farmhouse", "c12m5_cornfield", "c12m5_cornfield"},
+    {"SURVIVAL", "No Mercy: Generator Room", "c8m2_subway", "c8m2_subway"},
+    {"SURVIVAL", "No Mercy: Rooftop", "c8m5_rooftop", "c8m5_rooftop"},
+    {"SURVIVAL", "Death Toll: The Church", "c10m3_ranchhouse", "c10m3_ranchhouse"},
+    {"SURVIVAL", "Dead Air: The Terminal", "c10m3_ranchhouse", "c10m3_ranchhouse"},
+    {"SURVIVAL", "Blood Harvest: The Farmhouse", "c12m5_cornfield", "c12m5_cornfield"},
 };
 

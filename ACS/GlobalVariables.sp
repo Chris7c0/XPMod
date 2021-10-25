@@ -1,7 +1,7 @@
 #define ACS_MAP_LIST_FILE_PATH      "/gamedata/acs_map_list.txt"
 
-
 // Define Game Modes
+int g_iGameMode = -1;   //Store the gamemode
 #define GAMEMODE_UNKNOWN	        -1
 #define GAMEMODE_COOP 		        0
 #define GAMEMODE_VERSUS 	        1
@@ -18,19 +18,14 @@ char g_strGameModeString[][] = {
     "SURVIVAL"  //GAMEMODE_VERSUS_SURVIVAL
 };
 
-#define DISPLAY_MODE_DISABLED	0
-#define DISPLAY_MODE_HINT		1
-#define DISPLAY_MODE_CHAT		2
-#define DISPLAY_MODE_MENU		3
-
 // Define the wait time after round before changing to the next map in each game mode
 // These must line up the game modes array
 float g_fWaitTimeBeforeSwitch[] = {
-    10.0,   // Coop
-    5.0,    // Versus
-    10.0,   // Scavenge
-    10.0,   // Survival
-    10.0    // Versus Survival
+    5.0,    // GAMEMODE_COOP
+    2.0,    // GAMEMODE_VERSUS
+    8.0,    // GAMEMODE_SCAVENGE
+    5.0,    // GAMEMODE_SURVIVAL
+    5.0     // GAMEMODE_VERSUS_SURVIVAL
 };
 
 // Miscellaneous config
@@ -40,9 +35,8 @@ float g_fWaitTimeBeforeSwitch[] = {
 #define SOUND_NEW_VOTE_START	"ui/Beep_SynthTone01.wav"
 #define SOUND_NEW_VOTE_WINNER	"ui/alert_clink.wav"
 
-
 //Global Variables
-int g_iGameMode;					    //Integer to store the gamemode
+
 int g_iRoundEndCounter;				    //Round end event counter for versus
 bool g_bStopACSChangeMap;
 bool g_bCanIncrementRoundEndCounter;    // Prevents incrementing the round end counter twice from multiple event triggers
@@ -52,17 +46,24 @@ bool g_bFinaleWon;				        // Indicates whether a finale has be beaten or not
 char g_strMapListFilePath[256]  = "";   // Path of the map file list
 
 // Map List Rotation For All GameModes
-char g_strMapListArray[100][4][64];
+#define MAX_TOTAL_MAP_COUNT                     200
+char g_strMapListArray[MAX_TOTAL_MAP_COUNT][4][64];
 // Map List Columns
 #define MAP_LIST_COLUMN_GAMEMODE          0
 #define MAP_LIST_COLUMN_MAP_DESCRIPTION   1
 #define MAP_LIST_COLUMN_MAP_NAME_START    2
 #define MAP_LIST_COLUMN_MAP_NAME_END      3
-// Keep track of indexes that are relevent to the current game mode
+// Keep track of indexes that are relevant to the current game mode
 int g_iMapsIndexStartForCurrentGameMode;
 int g_iMapsIndexEndForCurrentGameMode;
 
-//Voting Variables
+// Map and Advertising display modes
+#define DISPLAY_MODE_DISABLED	0
+#define DISPLAY_MODE_HINT		1
+#define DISPLAY_MODE_CHAT		2
+#define DISPLAY_MODE_MENU		3
+
+// Voting Variables
 bool g_bVotingEnabled = true;							    //Tells if the voting system is on
 int g_iVotingAdDisplayMode = DISPLAY_MODE_MENU;				//The way to advertise the voting system
 float g_fVotingAdDelayTime = 1.0;						//Time to wait before showing advertising
@@ -75,7 +76,7 @@ int g_iClientVote[MAXPLAYERS + 1];							//The value of the clients vote
 int g_iWinningMapIndex;										//Winning map/campaign's index
 int g_iWinningMapVotes;										//Winning map/campaign's number of votes
 
-//Console Variables (CVars)
+// Console Variables (CVars)
 Handle g_hCVar_VotingEnabled			= INVALID_HANDLE;
 Handle g_hCVar_VoteWinnerSoundEnabled	= INVALID_HANDLE;
 Handle g_hCVar_VotingAdMode				= INVALID_HANDLE;

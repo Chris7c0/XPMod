@@ -9,7 +9,7 @@ void ChangeMapIfNeeded()
 	
 	// This is required because the Events can fire multiple times
 	g_bStopACSChangeMap = true;
-	CreateTimer(REALLOW_ACS_MAP_CHANGE_DELAY, TimerResetCanACSChangeMap, _);
+	CreateTimer(REALLOW_ACS_MAP_CHANGE_DELAY, TimerResetCanACSChangeMap);
 
 	//Check to see if someone voted for a map, if so, then change to the winning map
 	if(g_bVotingEnabled == true && g_iWinningMapVotes > 0 && g_iWinningMapIndex >= 0)
@@ -46,7 +46,6 @@ Action TimerResetCanACSChangeMap(Handle timer, int iData)
 	return Plugin_Stop;
 }
 
-
 int FindCurrentMapIndex()
 {
 	if (g_iMapsIndexStartForCurrentGameMode == -1)
@@ -55,8 +54,8 @@ int FindCurrentMapIndex()
 	char strCurrentMap[32];
 	GetCurrentMap(strCurrentMap, 32);	//Get the current map from the game
 
-	//Go through all maps and to find which map index it is on, and then switch to the next map
-	for(int iMapIndex = g_iMapsIndexStartForCurrentGameMode; iMapIndex < g_iMapsIndexEndForCurrentGameMode; iMapIndex++)
+	//Go through all maps and to find which map index it is on
+	for(int iMapIndex = g_iMapsIndexStartForCurrentGameMode; iMapIndex <= g_iMapsIndexEndForCurrentGameMode; iMapIndex++)
 		if (StrEqual(g_strMapListArray[iMapIndex][MAP_LIST_COLUMN_MAP_NAME_END], strCurrentMap, false) == true)
 			return iMapIndex;
 
@@ -71,10 +70,9 @@ int FindNextMapIndex()
 
 	PrintToServer("               ===========                                  FindCurrentMapIndex %i", iCurrentMapIndex);
 
-	int iNextCampaignMapIndex = iCurrentMapIndex + 1;							// Get the next campaign map index
-
-	if (iNextCampaignMapIndex > g_iMapsIndexEndForCurrentGameMode)				// Check to see if its the end of the array
-		iNextCampaignMapIndex = 0;												// If so, set it to the first map index
+	int iNextCampaignMapIndex = iCurrentMapIndex + 1;				// Get the next campaign map index
+	if (iNextCampaignMapIndex > g_iMapsIndexEndForCurrentGameMode)	// Check to see if its the end of the array. If so,
+		iNextCampaignMapIndex = 0;									// set it to the first map index fro the game mode
 
 	PrintToServer("               ===========                                  FindNextMapIndex %i", iNextCampaignMapIndex);
 
