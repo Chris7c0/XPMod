@@ -2,9 +2,9 @@ void CreateNewMapListFileIfDoesNotExist()
 {
 	SetACSMapListFilePath();
 
-	// // Check to make sure the file doesn't already exist
-	// if (FileExists(g_strMapListFilePath))
-	// 	return;
+	// Check to make sure the file doesn't already exist
+	if (FileExists(g_strMapListFilePath))
+		return;
 
 	WriteDefaultMapListToFile();
 }
