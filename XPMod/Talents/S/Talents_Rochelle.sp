@@ -1,9 +1,8 @@
 TalentsLoad_Rochelle(iClient)
 {
-	if((g_iHunterLevel[iClient] > 0) || (g_iShadowLevel[iClient] > 0) || (g_iSniperLevel[iClient] > 0))
-	{
-		SetClientSpeed(iClient);
-	}
+	SetPlayerTalentMaxHealth_Rochelle(iClient, !g_bSurvivorTalentsGivenThisRound[iClient]);
+	SetClientSpeed(iClient);
+
 	//Sets the iClient to hear all the infected's voice comms
 	if(g_iGatherLevel[iClient] == 5)
 	{
@@ -22,9 +21,6 @@ TalentsLoad_Rochelle(iClient)
 			g_iPID_RochelleCharge2[iClient] = WriteParticle(iClient, "rochelle_ulti_ninja_charge2", 0.0);
 		if(g_iClientBindUses_2[iClient] < 1)
 			g_iPID_RochelleCharge1[iClient] = WriteParticle(iClient, "rochelle_ulti_ninja_charge1", 0.0);
-		
-		if(g_iShadowLevel[iClient] > 0)
-			SetPlayerMaxHealth(iClient, 100 + (g_iShadowLevel[iClient] * 5) + (g_iSniperLevel[iClient] * 5) + (g_iCoachTeamHealthStack * 5), false, !g_bSurvivorTalentsGivenThisRound[iClient]);
 	}
 	
 	if(g_bSurvivorTalentsGivenThisRound[iClient] == false)
@@ -39,6 +35,22 @@ TalentsLoad_Rochelle(iClient)
 		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Ninja Talents \x05have been loaded.");
 	else
 		PrintToChat(iClient, "\x03[XPMod] \x05Your abilties will be automatically set as you level.");
+}
+
+void SetPlayerTalentMaxHealth_Rochelle(int iClient, bool bFillInHealthGap = true)
+{
+	if (g_bTalentsConfirmed[iClient] == false ||
+		g_iChosenSurvivor[iClient] != ROCHELLE ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS)
+		return;
+	
+	SetPlayerMaxHealth(iClient, 
+		100 + 
+		(g_iShadowLevel[iClient] * 5) + 
+		(g_iSniperLevel[iClient] * 5) + 
+		(g_iCoachTeamHealthStack * 5), 
+		false, 
+		bFillInHealthGap);
 }
 
 OnGameFrame_Rochelle(iClient)

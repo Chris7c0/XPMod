@@ -3,11 +3,8 @@ TalentsLoad_Louis(iClient)
 	g_bLouisTeleportCoolingDown[iClient] = false;
 	g_iLouisTeleportChargeUses[iClient] = 0;
 
-	if(g_iLouisTalent1Level[iClient] > 0)
-	{
-		SetPlayerMaxHealth(iClient, 100 + (g_iLouisTalent1Level[iClient] * 5) + (g_iCoachTeamHealthStack * 5), false, !g_bSurvivorTalentsGivenThisRound[iClient]);
-		SetClientSpeed(iClient);
-	}
+	SetPlayerTalentMaxHealth_Louis(iClient, !g_bSurvivorTalentsGivenThisRound[iClient]);
+	SetClientSpeed(iClient);
 
 	// Give starting XMR
 	g_fLouisXMRWallet[iClient] = LOUIS_HEADSHOT_XMR_STARTING_AMOUNT;
@@ -16,6 +13,21 @@ TalentsLoad_Louis(iClient)
 		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Disruptor Talents \x05have been loaded.");
 	else
 		PrintToChat(iClient, "\x03[XPMod] \x05Your abilties will be automatically set as you level.");
+}
+
+void SetPlayerTalentMaxHealth_Louis(int iClient, bool bFillInHealthGap = true)
+{
+	if (g_bTalentsConfirmed[iClient] == false ||
+		g_iChosenSurvivor[iClient] != LOUIS ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS)
+		return;
+
+	SetPlayerMaxHealth(iClient,
+		100 + 
+		(g_iLouisTalent1Level[iClient] * 5) + 
+		(g_iCoachTeamHealthStack * 5), 
+		false, 
+		bFillInHealthGap);
 }
 
 

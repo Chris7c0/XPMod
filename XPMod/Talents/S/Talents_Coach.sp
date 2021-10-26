@@ -1,10 +1,11 @@
 TalentsLoad_Coach(iClient)
 {
+	SetPlayerTalentMaxHealth_Coach(iClient, !g_bSurvivorTalentsGivenThisRound[iClient]);
+	SetClientSpeed(iClient);
+
 	if(g_iBullLevel[iClient]>0 || g_iWreckingLevel[iClient]>0 || g_iStrongLevel[iClient]>0)
 	{					
 		g_iMeleeDamageCounter[iClient] = (g_iStrongLevel[iClient] * 30);
-		
-		SetPlayerMaxHealth(iClient, 100 + (g_iBullLevel[iClient]*5) + (g_iWreckingLevel[iClient]*10) + (g_iStrongLevel[iClient]*10) + (g_iCoachTeamHealthStack * 5), false, !g_bSurvivorTalentsGivenThisRound[iClient]);
 		
 		if(g_bSurvivorTalentsGivenThisRound[iClient] == false)
 		{
@@ -59,20 +60,7 @@ TalentsLoad_Coach(iClient)
 		
 		if(g_iLeadLevel[iClient] > 0)
 		{
-			// Limit the amount of health stacks
-			if (g_iCoachTeamHealthStack < 20)
-			{
-				g_iCoachTeamHealthStack += g_iLeadLevel[iClient];
-				// Cap this at 4 Coaches
-				if (g_iCoachTeamHealthStack > 20)
-					g_iCoachTeamHealthStack = 20;
-
-				//Set Max Health for all surviovrs higher
-				decl i;
-				for(i=1;i<=MaxClients;i++)
-					if(RunClientChecks(i) && IsPlayerAlive(i) == true && g_iClientTeam[i]==TEAM_SURVIVORS)
-						SetPlayerMaxHealth(i, (g_iLeadLevel[iClient] * 5), true, true);
-			}
+			SetCoachesHealthStacks();
 			
 			if(g_iLeadLevel[iClient] > g_iHighestLeadLevel)	//Find the maximum level for setting the cvars
 				g_iHighestLeadLevel = g_iLeadLevel[iClient];			
@@ -96,6 +84,23 @@ TalentsLoad_Coach(iClient)
 		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Berserker Talents \x05have been loaded.");
 	else
 		PrintToChat(iClient, "\x03[XPMod] \x05Your abilties will be automatically set as you level.");
+}
+
+void SetPlayerTalentMaxHealth_Coach(int iClient, bool bFillInHealthGap = true)
+{
+	if (g_bTalentsConfirmed[iClient] == false ||
+		g_iChosenSurvivor[iClient] != COACH ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS)
+		return;
+	
+	SetPlayerMaxHealth(iClient, 
+	100 + 
+	(g_iBullLevel[iClient]*5) + 
+	(g_iWreckingLevel[iClient]*10) + 
+	(g_iStrongLevel[iClient]*10) + 
+	(g_iCoachTeamHealthStack * 5), 
+	false, 
+	bFillInHealthGap);
 }
 
 OnGameFrame_Coach(iClient)
@@ -859,4 +864,35 @@ AddUpwardVelocity(iClient, Float:speed)
 		vecVelocity[2] += speed;
 
 	TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, vecVelocity);
+}
+
+//Find the number of coaches and set the health stack to that
+SetCoachesHealthStacks()
+{
+	g_iCoachTeamHealthStack = 0;
+
+	//Find the number of confirmed talent coaches and add it up
+	for(int i=1 ; i <= MaxClients; i++)
+		if (g_bTalentsConfirmed[i] == true &&
+			g_iChosenSurvivor[i] == COACH &&
+			g_iLeadLevel[i] > 0 &&
+			RunClientChecks(i) &&
+			IsPlayerAlive(i) == true &&
+			g_iClientTeam[i]==TEAM_SURVIVORS)
+			g_iCoachTeamHealthStack += g_iLeadLevel[i];
+	
+	// Cap this at 4 Coaches
+	if (g_iCoachTeamHealthStack > 20)
+		g_iCoachTeamHealthStack = 20;
+
+	//Set Max Health for all survivors higher
+	for(int i=1; i <= MaxClients; i++)
+	{
+		if (RunClientChecks(i) == false ||
+			IsPlayerAlive(i) == false ||
+			g_iClientTeam[i] != TEAM_SURVIVORS)
+			continue;
+		
+		SetAppropriateMaxHealthForPlayer(i, true);
+	}
 }

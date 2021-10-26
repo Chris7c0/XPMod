@@ -1,5 +1,8 @@
 TalentsLoad_Bill(iClient)
 {
+	SetPlayerTalentMaxHealth_Bill(iClient, !g_bSurvivorTalentsGivenThisRound[iClient]);
+	SetClientSpeed(iClient);
+
 	if (g_iGhillieLevel[iClient] > 0 || g_iPromotionalLevel[iClient] > 0)
 	{
 		if (g_bGameFrozen == false)
@@ -18,7 +21,6 @@ TalentsLoad_Bill(iClient)
 	
 	if(g_iWillLevel[iClient] > 0)
 	{
-		SetPlayerMaxHealth(iClient, 100 + (g_iWillLevel[iClient]*5) + (g_iDiehardLevel[iClient]*15) + (g_iCoachTeamHealthStack * 5), false, !g_bSurvivorTalentsGivenThisRound[iClient]);
 
 		if(g_bSurvivorTalentsGivenThisRound[iClient] == false)
 		{			
@@ -43,6 +45,23 @@ TalentsLoad_Bill(iClient)
 		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Support Talents \x05have been loaded.");
 	else
 		PrintToChat(iClient, "\x03[XPMod] \x05Your abilties will be automatically set as you level.");
+}
+
+
+void SetPlayerTalentMaxHealth_Bill(int iClient, bool bFillInHealthGap = true)
+{
+	if (g_bTalentsConfirmed[iClient] == false ||
+		g_iChosenSurvivor[iClient] != BILL ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS)
+		return;
+	
+	SetPlayerMaxHealth(iClient,
+	100 + 
+	(g_iWillLevel[iClient]*5) + 
+	(g_iDiehardLevel[iClient]*15) + 
+	(g_iCoachTeamHealthStack * 5), 
+	false, 
+	bFillInHealthGap);
 }
 
 OnGameFrame_Bill(iClient)

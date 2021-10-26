@@ -29,7 +29,9 @@ SetupXPMEvents()
 	HookEvent("player_disconnect", Event_PlayerDisconnect);
 	HookEvent("player_team", Event_PlayerChangeTeam);
 	AddCommandListener(CommandListener_JoinTeam, "jointeam"); // Specifically for interrupting M button
-	HookEvent("player_bot_replace", Event_PlayerBotReplace)
+	HookEvent("player_bot_replace", Event_PlayerReplacedByBot);
+	HookEvent("bot_player_replace", Event_BotReplacedByPlayer);
+	HookEvent("survivor_rescued", Event_SurvivorRescued);
 	HookEvent("player_spawn", Event_PlayerSpawn);
 	HookEvent("player_death", Event_PlayerDeath);
 	HookEvent("player_hurt", Event_PlayerHurt);
@@ -532,21 +534,57 @@ Action:Event_PlayerSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadc
 
 
 
-Action:Event_PlayerBotReplace(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action:Event_PlayerReplacedByBot(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new iReplacedPlayer = GetClientOfUserId(GetEventInt(hEvent, "player"));
 	new iBot = GetClientOfUserId(GetEventInt(hEvent, "bot"));
+
+	// PrintToChatAll("Event_PlayerReplacedByBot: %i %i", iReplacedPlayer, iBot);
 
 	if(RunClientChecks(iBot) == false)
 		return Plugin_Continue;
 
 	if (g_iInfectedCharacter[iReplacedPlayer] == TANK)
-	{
 		g_bTankTakeOverBot[iBot] = true;
-	}
 	
 	return Plugin_Continue;
 }
+
+Action:Event_BotReplacedByPlayer(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+{
+	new iPlayer = GetClientOfUserId(GetEventInt(hEvent, "player"));
+	new iReplacedBot = GetClientOfUserId(GetEventInt(hEvent, "bot"));
+
+	// PrintToChatAll("Event_BotReplacedByPlayer: %i %i", iPlayer, iReplacedBot);
+
+	if(RunClientChecks(iPlayer) == false)
+		return Plugin_Continue;
+
+	// This is for when the player goes idle
+	// set the bots health to the players health after the game does it
+	if (g_iClientTeam[iPlayer] == TEAM_SURVIVORS)
+		SetPlayerTalentMaxHealth(iPlayer, false);
+	
+	return Plugin_Continue;
+}
+
+Action:Event_SurvivorRescued(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+{
+	new iClient = GetClientOfUserId(GetEventInt(hEvent, "victim"));
+
+	PrintToChatAll("Event_SurvivorRescued: %N", iClient);
+
+	if(RunClientChecks(iClient) == false)
+		return Plugin_Continue;
+
+	// This is for when the player goes idle
+	// set the bots health to the players health after the game does it
+	if (g_iClientTeam[iClient] == TEAM_SURVIVORS)
+		SetPlayerTalentMaxHealth(iClient, false);
+	
+	return Plugin_Continue;
+}
+
 
 SetupUnfreezeGameTimer(Float:unfreezeWaitTime)
 {	
@@ -572,6 +610,10 @@ SetupUnfreezeGameTimer(Float:unfreezeWaitTime)
 		CreateTimer(0.3, TimerUnfreeze, 0, TIMER_FLAG_NO_MAPCHANGE);
 	}
 }
+
+
+
+
 
 public OnClientPutInServer(iClient)
 {

@@ -253,3 +253,67 @@ HealAllSurvivorsFully()
 			HealClientFully(i);
 	}
 }
+
+// Used for things like Defibs or resurrection as well as coaches max health increase
+void SetAppropriateMaxHealthForPlayer(int iClient, bool bFillInHealthGap = true)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false)
+		return;
+
+	if (g_bTalentsConfirmed[iClient])
+		SetPlayerTalentMaxHealth(iClient, bFillInHealthGap);
+	else
+		SetPlayerNonTalentedMaxHealth(iClient);
+}
+
+// Set max health for people confirmed and are not bots
+void SetPlayerTalentMaxHealth(int iClient, bool bFillInHealthGap = true)
+{
+	if (g_iClientTeam[iClient] == TEAM_SURVIVORS)
+	{
+		switch(g_iChosenSurvivor[iClient])
+		{
+			case BILL:		SetPlayerTalentMaxHealth_Bill(iClient, bFillInHealthGap);
+			case ROCHELLE:	SetPlayerTalentMaxHealth_Rochelle(iClient, bFillInHealthGap);
+			case COACH:		SetPlayerTalentMaxHealth_Coach(iClient, bFillInHealthGap);
+			case ELLIS:		SetPlayerTalentMaxHealth_Ellis(iClient, bFillInHealthGap);
+			case NICK:		SetPlayerTalentMaxHealth_Nick(iClient, bFillInHealthGap);
+			case LOUIS:		SetPlayerTalentMaxHealth_Louis(iClient, bFillInHealthGap);
+		}
+	}
+	// else if (g_iClientTeam[iClient] == TEAM_INFECTED)
+	// {
+	// 	switch(g_iChosenSurvivor[iClient])
+	// 	{
+	// 		case BILL:		SetPlayerTalentMaxHealth_Bill(iClient);
+	// 		case ROCHELLE:	SetPlayerTalentMaxHealth_Rochelle(iClient);
+	// 		case COACH:		SetPlayerTalentMaxHealth_Coach(iClient);
+	// 		case ELLIS:		SetPlayerTalentMaxHealth_Ellis(iClient);
+	// 		case NICK:		SetPlayerTalentMaxHealth_Nick(iClient);
+	// 		case LOUIS:		SetPlayerTalentMaxHealth_Louis(iClient);
+	// 	}
+	// }
+}
+
+// Set max health for people not confirmed or bots
+// This is for Coaches Team health buff only for now
+void SetPlayerNonTalentedMaxHealth(int iClient)
+{
+	if (g_iClientTeam[iClient] == TEAM_SURVIVORS)
+	{
+		SetPlayerMaxHealth(iClient,	100 + (g_iCoachTeamHealthStack * 5), false, true);
+	}
+	// else if (g_iClientTeam[iClient] == TEAM_INFECTED)
+	// {
+	// 	switch(g_iChosenSurvivor[iClient])
+	// 	{
+	// 		case BILL:		SetPlayerTalentMaxHealth_Bill(iClient);
+	// 		case ROCHELLE:	SetPlayerTalentMaxHealth_Rochelle(iClient);
+	// 		case COACH:		SetPlayerTalentMaxHealth_Coach(iClient);
+	// 		case ELLIS:		SetPlayerTalentMaxHealth_Ellis(iClient);
+	// 		case NICK:		SetPlayerTalentMaxHealth_Nick(iClient);
+	// 		case LOUIS:		SetPlayerTalentMaxHealth_Louis(iClient);
+	// 	}
+	// }
+}

@@ -5,12 +5,8 @@ TalentsLoad_Nick(iClient)
 	g_bCanNickStampedeReload[iClient] = false;
 	g_bRamboModeActive[iClient] = false;
 
-	// Give nick more max health for each kit used, but cap it at +100 HP.
-	SetPlayerMaxHealth(iClient, 100 + (g_iKitsUsed * (g_iSwindlerLevel[iClient] * 3)) < 200 ? 
-		100 + (g_iKitsUsed * (g_iSwindlerLevel[iClient] * 3)) + (g_iCoachTeamHealthStack * 5) : 200 + (g_iCoachTeamHealthStack * 5), false, !g_bSurvivorTalentsGivenThisRound[iClient]);
-	
-	if(g_iMagnumLevel[iClient] > 0)
-		SetClientSpeed(iClient);
+	SetPlayerTalentMaxHealth_Nick(iClient, !g_bSurvivorTalentsGivenThisRound[iClient]);
+	SetClientSpeed(iClient);
 	
 	if(g_bSurvivorTalentsGivenThisRound[iClient] == false)
 		g_iClientBindUses_1[iClient] = 3 - RoundToCeil(g_iMagnumLevel[iClient] * 0.5);
@@ -40,6 +36,23 @@ TalentsLoad_Nick(iClient)
 		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Gambler Talents \x05have been loaded.");
 	else
 		PrintToChat(iClient, "\x03[XPMod] \x05Your abilties will be automatically set as you level.");
+}
+
+void SetPlayerTalentMaxHealth_Nick(int iClient, bool bFillInHealthGap = true)
+{
+	if (g_bTalentsConfirmed[iClient] == false ||
+		g_iChosenSurvivor[iClient] != NICK ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS)
+		return;
+	
+	// Give nick more max health for each kit used, but cap it at +100 HP.
+	SetPlayerMaxHealth(iClient,
+		100 + 
+		(g_iKitsUsed * (g_iSwindlerLevel[iClient] * 3)) < 200 ? 
+			100 + (g_iKitsUsed * (g_iSwindlerLevel[iClient] * 3)) + (g_iCoachTeamHealthStack * 5) : 
+			200 + (g_iCoachTeamHealthStack * 5),
+			false,
+			bFillInHealthGap);
 }
 
 OnGameFrame_Nick(iClient)

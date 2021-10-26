@@ -827,6 +827,8 @@ Action:Event_DefibUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 {
 	new iSubject = GetClientOfUserId(GetEventInt(hEvent,"subject"));
 	new iClient  = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+
+	SetAppropriateMaxHealthForPlayer(iSubject, false);
 	
 	GiveClientXP(iClient, 100, g_iSprite_100XP, iSubject, "Defibrillated Player.");
 	if(g_iOverLevel[iSubject] > 0)

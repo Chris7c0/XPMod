@@ -1,6 +1,7 @@
 TalentsLoad_Ellis(iClient)
 {
-	SetPlayerMaxHealth(iClient, ELLIS_STARTING_MAX_HEALTH + (g_iCoachTeamHealthStack * 5), false, !g_bSurvivorTalentsGivenThisRound[iClient]);
+	SetPlayerTalentMaxHealth_Ellis(iClient, !g_bSurvivorTalentsGivenThisRound[iClient]);
+	SetClientSpeed(iClient);
 	
 	if(g_iMetalLevel[iClient] > 0)
 	{
@@ -85,6 +86,20 @@ TalentsLoad_Ellis(iClient)
 		g_iEllisPrimarySlot1[iClient] = ITEM_EMPTY;
 		//PrintToChatAll("Ellis primary slots are now empty");
 	}
+}
+
+void SetPlayerTalentMaxHealth_Ellis(int iClient, bool bFillInHealthGap = true)
+{
+	if (g_bTalentsConfirmed[iClient] == false ||
+		g_iChosenSurvivor[iClient] != ELLIS ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS)
+		return;
+
+	SetPlayerMaxHealth(iClient, 
+		ELLIS_STARTING_MAX_HEALTH + 
+		(g_iCoachTeamHealthStack * 5),
+		false,
+		bFillInHealthGap);
 }
 
 OnGameFrame_Ellis(iClient)
