@@ -2,6 +2,7 @@ TalentsLoad_Louis(iClient)
 {
 	g_bLouisTeleportCoolingDown[iClient] = false;
 	g_iLouisTeleportChargeUses[iClient] = 0;
+	g_iLouisTeleportMovementPenaltyStacks[iClient] = 0;
 
 	SetPlayerTalentMaxHealth_Louis(iClient, !g_bSurvivorTalentsGivenThisRound[iClient]);
 	SetClientSpeed(iClient);
