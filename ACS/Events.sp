@@ -4,20 +4,20 @@
 
 void SetUpEvents()
 {
-    //Hook the game events
+    // Hook the game events
 	HookEvent("player_left_start_area", Event_PlayerLeftStartArea);
-	// HookEvent("round_start", Event_RoundStart);
 	HookEvent("round_end", Event_RoundEnd);
 	HookEvent("finale_win", Event_FinaleWin);
-	// HookEvent("scavenge_match_finished", Event_ScavengeMapFinished);
 	HookEvent("player_disconnect", Event_PlayerDisconnect);
 
-	//Hook the Return to Lobby vote and Finale End return to lobby events
+	// This one is important. It is used to intercept the end of game vote panel
+	// as well as capture when the map should be switched for all the game modes other
+	// than Coop and Survival.
+	// https://wiki.alliedmods.net/User_messages was very helpful here
+	HookUserMessage(GetUserMessageId("PZEndGamePanelMsg"), OnPZEndGamePanelMsg, true);
+	// Hook the Return to Lobby events
 	HookUserMessage(GetUserMessageId("VotePass"), OnDisconnectToLobby, true);
 	HookUserMessage(GetUserMessageId("DisconnectToLobby"), OnDisconnectToLobby, true);
-	// https://wiki.alliedmods.net/User_messages
-	HookUserMessage(GetUserMessageId("PZEndGamePanelMsg"), OnPZEndGamePanelMsg, true);
-	//HookUserMessage(GetUserMessageId("VoteStart"), OnVoteStart, true);
 }
 
 public void OnMapStart()
@@ -27,19 +27,21 @@ public void OnMapStart()
 	Format(strFileName, sizeof(strFileName), "Automatic_Campaign_Switcher_%s", PLUGIN_VERSION);
 	AutoExecConfig(true, strFileName);
 	
-	//Set the game mode
+	// Set the game mode
 	bool bGameModeChanged = FindGameMode();
 
+	// If the game mode has changed, it needs to adjust the index range to match 
+	// the game mode so that other functions know which maps to look at.
 	if (bGameModeChanged == true)
 		SetCurrentMapIndexRangeForCurrentGameMode();
 	
-	//Precache models (This fixes missing Witch model on "The Passing")
+	// Precache models (This fixes missing Witch model on "The Passing")
 	if(IsModelPrecached("models/infected/witch.mdl") == false)
 		PrecacheModel("models/infected/witch.mdl");
 	if(IsModelPrecached("models/infected/witch_bride.mdl") == false)
 		PrecacheModel("models/infected/witch_bride.mdl");
 
-	//Precache sounds
+	// Precache sounds
 	PrecacheSound(SOUND_NEW_VOTE_START);
 	PrecacheSound(SOUND_NEW_VOTE_WINNER);
 	
@@ -50,43 +52,21 @@ public void OnMapStart()
 	ResetAllVotes();				//Reset every player's vote
 }
 
-
 //Event fired when the Survivors leave the start area
 public Action Event_PlayerLeftStartArea(Handle hEvent, const char[] strName, bool bDontBroadcast)
-{		
-	PrintToServer("*************************** Event_PlayerLeftStartArea Event triggered");
-
+{
 	if(g_bVotingEnabled == true && OnFinaleOrScavengeOrSurvivalMap() == true)
 		CreateTimer(g_fVotingAdDelayTime, Timer_DisplayVoteAdToAll, _, TIMER_FLAG_NO_MAPCHANGE);
 	
 	return Plugin_Continue;
 }
 
-
-// //Event fired when the Round Starts
-// public Action Event_RoundStart(Handle hEvent, const char[] strName, bool bDontBroadcast)
-// {
-// 	PrintToServer("*************************** Event_RoundStart Event triggered");
-
-// 	return Plugin_Continue;
-// }
-
 //Event fired when the Round Ends
 public Action Event_RoundEnd(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	PrintToServer("*************************** Event_RoundEnd Event triggered");
-
 	//Check to see if on a finale map, if so change to the next campaign after two rounds
 	switch (g_iGameMode)
 	{
-		// case GAMEMODE_VERSUS:
-		// {
-		// 	if (OnFinaleOrScavengeOrSurvivalMap() == false)
-		// 		return Plugin_Continue;
-
-		// 	if(IncrementRoundEndCounter() >= 2)
-		// 		ChangeMapIfNeeded();
-		// }
 		//If in Coop and on a finale, check to see if the survivors have lost the max amount of times
 		case GAMEMODE_COOP:
 		{
@@ -96,20 +76,14 @@ public Action Event_RoundEnd(Handle hEvent, const char[] strName, bool bDontBroa
 				++g_iCoopFinaleFailureCount >= g_iMaxCoopFinaleFailures)
 				ChangeMapIfNeeded();
 		}
+		//If in Survival, check to see if round ends have reached the max amount of times
 		case GAMEMODE_SURVIVAL:
 		{
+			// This uses round end counter to check the rounds
+			// This can be fired multiple times, and this function helps handle that
 			if (IncrementRoundEndCounter() >= 2)	
 				ChangeMapIfNeeded();
 		}
-		// case GAMEMODE_VERSUS_SURVIVAL:
-		// {
-		// 	// The new rounds start indefinitely until the current team does worse than the previous team.
-		// 	// If no score is placed then it will just keep going until a score is placed.
-		// 	// Then the next team will have a chance to beat that score. This will keep going until
-		// 	// the current team does worse than the last team.
-		// 	if(IncrementRoundEndCounter() >= 12)	
-		// 		ChangeMapIfNeeded();
-		// }
 	}
 	return Plugin_Continue;
 }
@@ -117,8 +91,6 @@ public Action Event_RoundEnd(Handle hEvent, const char[] strName, bool bDontBroa
 //Event fired when a finale is won
 public Action Event_FinaleWin(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	PrintToServer("*************************** Event_FinaleWin Event triggered");
-
 	g_bFinaleWon = true;	//This is used so that the finale does not switch twice if this event
 							//happens to land on a max failure count as well as this
 	
@@ -128,32 +100,6 @@ public Action Event_FinaleWin(Handle hEvent, const char[] strName, bool bDontBro
 	
 	return Plugin_Continue;
 }
-
-// //Event fired when a map is finished for scavenge
-// public Action Event_ScavengeMapFinished(Handle hEvent, const char[] strName, bool bDontBroadcast)
-// {
-// 	PrintToServer("*************************** Event_ScavengeMapFinished Event triggered");
-
-// 	//Change to the next Scavenge map
-// 	if(g_iGameMode == GAMEMODE_SCAVENGE)
-// 		ChangeMapIfNeeded();
-	
-// 	return Plugin_Continue;
-// }
-
-// //Event fired when the Vote Starts
-// public Action Event_VoteStarted(Handle hEvent, const char[] strName, bool bDontBroadcast)
-// {
-// 	PrintToServer("*************************** Event_VoteStarted Event triggered");
-
-// 	int iVoterInt = GetEventInt(hEvent,"initiator");
-// 	PrintToServer("*************************** iVoterInt: %i", iVoterInt);
-// 	int iVoterUser  = GetClientOfUserId(GetEventInt(hEvent,"initiator"));
-// 	PrintToServer("*************************** iVoterUser: %i", iVoterUser);
-
-// 	return Plugin_Continue;
-// }
-
 
 //Event fired when a player disconnects from the server
 public Action Event_PlayerDisconnect(Handle hEvent, const char[] strName, bool bDontBroadcast)
@@ -171,6 +117,22 @@ public Action Event_PlayerDisconnect(Handle hEvent, const char[] strName, bool b
 	SetTheCurrentVoteWinner();
 	
 	return Plugin_Continue;
+}
+
+
+// This event is responsible for most of the map transitions in every game mode except 
+// for Coop and Survival where it is not triggered because they can continue forever.
+// It also intercepts the vote to play with the team again or return to lobby
+public Action OnPZEndGamePanelMsg(UserMsg msg_id, Handle bf, const int[] players, int playersNum, bool reliable, bool init)
+{
+	// Only change the map one time, this is attached to a 
+	// cool down timer after the map was just changed by ACS
+	if (g_bStopACSChangeMap == true)
+		return Plugin_Handled;
+
+	ChangeMapIfNeeded();
+
+	return Plugin_Handled;
 }
 
 // This function was written by MasterMind420 preventing the Return to Lobby issue
@@ -194,21 +156,6 @@ public Action OnDisconnectToLobby(UserMsg msg_id, Handle bf, const int[] players
 		bAllowDisconnect = false;
 		return Plugin_Continue;
 	}
-
-	return Plugin_Handled;
-}
-
-// Event
-public Action OnPZEndGamePanelMsg(UserMsg msg_id, Handle bf, const int[] players, int playersNum, bool reliable, bool init)
-{
-	if (g_bStopACSChangeMap == true)
-		return Plugin_Handled;
-
-	char sBuffer[128];
-	BfReadString(bf, sBuffer, sizeof(sBuffer));
-	PrintToServer("OnPZEndGamePanelMsg ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| %s", sBuffer);
-
-	ChangeMapIfNeeded();
 
 	return Plugin_Handled;
 }

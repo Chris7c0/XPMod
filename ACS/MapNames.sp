@@ -1,4 +1,4 @@
-// The order in which these are defined sets the map rotation
+// The order these are defined for each game mode sets the map rotation
 char g_strDefaultMapListArray[][][64] = {
 
     // GAMEMODE  MAP_DESCRIPTION                    START_MAP_NAME          END_MAP_NAME

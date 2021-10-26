@@ -2,8 +2,11 @@
 #################             A C S   C H A N G E   M A P              #################
 ======================================================================================*/
 
+// Checks conditions to see if the map needs to be changed by ACS now
+// If the map needs to be changed this will also change it
 void ChangeMapIfNeeded()
 {
+	// Ensure the game mode has been set to a valid one before continuing
 	if (IsGameModeValid(g_iGameMode) == false)
 		return;
 	
@@ -11,7 +14,7 @@ void ChangeMapIfNeeded()
 	g_bStopACSChangeMap = true;
 	CreateTimer(REALLOW_ACS_MAP_CHANGE_DELAY, TimerResetCanACSChangeMap);
 
-	//Check to see if someone voted for a map, if so, then change to the winning map
+	// Check to see if someone voted for a map, if so, then change to the winning map
 	if(g_bVotingEnabled == true && g_iWinningMapVotes > 0 && g_iWinningMapIndex >= 0)
 	{
 		if (IsMapIndexValid(g_iWinningMapIndex) == false)
@@ -21,12 +24,12 @@ void ChangeMapIfNeeded()
 		return;
 	}
 	
-	//If no map was chosen in the vote, then go with the automatic map rotation
+	// If no player has chosen a map by voting, then go with the automatic map rotation cycle
 	int iNextMapIndex = FindNextMapIndex();
 	if (IsMapIndexValid(iNextMapIndex) == false)
 		return;
-
-	// Delayed call to 
+	
+	// Delayed call to change the map
 	CreateTimer(g_fWaitTimeBeforeSwitch[g_iGameMode], Timer_ChangeMap, iNextMapIndex);
 }
 
@@ -46,15 +49,17 @@ Action TimerResetCanACSChangeMap(Handle timer, int iData)
 	return Plugin_Stop;
 }
 
+// Finds the map list array index of the map the players are currently on
 int FindCurrentMapIndex()
 {
 	if (g_iMapsIndexStartForCurrentGameMode == -1)
 		return -1;
 
+	// Get the current map from the game
 	char strCurrentMap[32];
-	GetCurrentMap(strCurrentMap, 32);	//Get the current map from the game
+	GetCurrentMap(strCurrentMap, 32);	
 
-	//Go through all maps and to find which map index it is on
+	// Go through all maps and to find which map index it is on
 	for(int iMapIndex = g_iMapsIndexStartForCurrentGameMode; iMapIndex <= g_iMapsIndexEndForCurrentGameMode; iMapIndex++)
 		if (StrEqual(g_strMapListArray[iMapIndex][MAP_LIST_COLUMN_MAP_NAME_END], strCurrentMap, false) == true)
 			return iMapIndex;
@@ -62,19 +67,16 @@ int FindCurrentMapIndex()
 	return -1;
 }
 
+// Finds the next map index item to know what map comes after the existing one
 int FindNextMapIndex()
 {
 	int iCurrentMapIndex = FindCurrentMapIndex();
 	if (iCurrentMapIndex == -1)
 		return -1;
 
-	PrintToServer("               ===========                                  FindCurrentMapIndex %i", iCurrentMapIndex);
-
 	int iNextCampaignMapIndex = iCurrentMapIndex + 1;				// Get the next campaign map index
 	if (iNextCampaignMapIndex > g_iMapsIndexEndForCurrentGameMode)	// Check to see if its the end of the array. If so,
 		iNextCampaignMapIndex = 0;									// set it to the first map index fro the game mode
-
-	PrintToServer("               ===========                                  FindNextMapIndex %i", iNextCampaignMapIndex);
 
 	return iNextCampaignMapIndex;
 }

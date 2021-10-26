@@ -1,3 +1,4 @@
+// Check that ACS knows the game mode provided by the parameter
 bool IsGameModeValid(int iGameMode)
 {
 	if (iGameMode != GAMEMODE_UNKNOWN)
@@ -7,7 +8,7 @@ bool IsGameModeValid(int iGameMode)
 	return false;
 }
 
-//Check if the current map is the last in the campaign if not in the Scavenge game mode
+// Check if the current map is the last in the campaign if not in the Scavenge game mode
 bool OnFinaleOrScavengeOrSurvivalMap()
 {
 	if (g_iGameMode == GAMEMODE_SCAVENGE ||
@@ -15,12 +16,11 @@ bool OnFinaleOrScavengeOrSurvivalMap()
 		g_iGameMode == GAMEMODE_VERSUS_SURVIVAL)
 		return true;
 	
+	// Get the current map from the game
 	char strCurrentMap[32];
-	GetCurrentMap(strCurrentMap,32);			//Get the current map from the game
+	GetCurrentMap(strCurrentMap,32);
 
-	// PrintToChatAll("OnFinaleOrScavengeOrSurvivalMap start %i end %i", g_iMapsIndexStartForCurrentGameMode, g_iMapsIndexEndForCurrentGameMode);
-	
-	//Run through all the maps, if the current map is a last campaign map, return true
+	// Run through all the maps, if the current map is a last campaign map, return true
 	for (int iMapIndex = g_iMapsIndexStartForCurrentGameMode; iMapIndex <= g_iMapsIndexEndForCurrentGameMode; iMapIndex++)
 		if (StrEqual(strCurrentMap, g_strMapListArray[iMapIndex][MAP_LIST_COLUMN_MAP_NAME_END], false) == true)
 			return true;
@@ -28,6 +28,7 @@ bool OnFinaleOrScavengeOrSurvivalMap()
 	return false;
 }
 
+// Check that the map index corresponds to an actual valid map
 bool IsMapIndexValid(int iMapIndex)
 {
 	if (iMapIndex < 0 || IsMapValid(g_strMapListArray[iMapIndex][MAP_LIST_COLUMN_MAP_NAME_START]) == false)
@@ -39,15 +40,17 @@ bool IsMapIndexValid(int iMapIndex)
 	return true;
 }
 
+// This is for the infinite game modes, namely coop and survival.
+// It will keep track of how many rounds end took place so it 
+// knows when to force a switch to the next campaign/map
 int IncrementRoundEndCounter()
 {
+	// Ensure that this is not fired multiple times for the same round
 	if (g_bCanIncrementRoundEndCounter == false)
 		return g_iRoundEndCounter;
 	
 	g_bCanIncrementRoundEndCounter = false;
 	CreateTimer(REALLOW_ROUND_END_INCREMENT_DELAY, TimerResetCanIncrementRoundEndCounter, _, TIMER_FLAG_NO_MAPCHANGE);
-	
-	PrintToServer("======================== INCREMENTING g_iRoundEndCounter: %i", g_iRoundEndCounter + 1);
 
 	return ++g_iRoundEndCounter;
 }
@@ -67,11 +70,11 @@ bool FindGameMode()
 	// This will say if the game mode has changed since last time it was checked
 	int iOldGameMode = g_iGameMode;
 
-	//Get the gamemode string from the game
+	// Get the gamemode string from the game
 	char strGameMode[20];
 	GetConVarString(FindConVar("mp_gamemode"), strGameMode, sizeof(strGameMode));
 	
-	//Set the global gamemode int for this plugin
+	// Set the global gamemode int for this plugin
 	if(StrEqual(strGameMode, "coop"))
 		g_iGameMode = GAMEMODE_COOP;
 	else if(StrEqual(strGameMode, "realism"))

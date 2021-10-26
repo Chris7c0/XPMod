@@ -1,20 +1,18 @@
 //////////////////////////////////////////
 // Automatic Campaign Switcher for L4D2 //
-// Version 1.2.5                        //
-// Compiled Oct 20, 2021                //
-// Programmed by Chris Pringle          //
+// Version 2.0.0 (Oct 30, 2021)         //
+// Developed by Chris Pringle           //
 //////////////////////////////////////////
 
 /*==================================================================================================
 
 	This plugin was written in response to the server kicking everyone if the vote is not passed
 	at the end of the campaign. It will automatically switch to the appropriate map at all the
-	points a vote would be automatically called, by the game, to go to the lobby or play again.
-	ACS also includes a voting system in which people can vote for their favorite campaign/map
-	on a finale or scavenge map.  The winning campaign/map will become the next map the server
-	loads.
+	points a vote would be automatically called, by the game to go to the lobby or play again.
+	ACS also includes a voting system in which people can vote for their favorite campaign/map. The 
+	winning campaign/map will become the next map the server loads.
 
-	Supported Game Modes in Left 4 Dead 2
+	ACS supports all of the stock Game Modes in Left 4 Dead 2. This includes:
 	
 		Coop
 		Realism
@@ -26,27 +24,30 @@
 		Community 1-5
 
 	Change Log
-		v1.2.5 (Oct 20, 2021)	- Converted everything to new syntax
-								- Updated all the maps for every game mode.
-								- Added all the new stock mutations *****************************************************
-								- Added hook for OnPZEndGamePanelMsg that intercepts the vote at the end of 
-								  a campaign where it asks to play with the group again. This is also used
-								  as a simpler method for knowing its time to switch to next campaign.  This
-								  works for all modes except for Coop and Survival that will continue forever.
-								- Added Survival map list because it has its own map rotation set.
-								- Supplemented hardcoded maps by adding optional campaign maps config file ***********************
-								- Made map comparisons case insensitive							************************
+		v2.0.0 (Oct 30, 2021)	- Overhauled most the code, rewriting many functions to be more generic and reusable
+								- Changed to a single map list array with indexes that adjust based on gamemode
+								- Added a map list config file thats plain text and can be easily configured
+									- This file can be edited to set up any custom map for any game mode with any order
+									- Just run the plugin and this file will generate itself with the default maps 
+									  the first time ACS is ran.
+								- Updated all the default maps for every game mode
+								- Added hook for OnPZEndGamePanelMsg that intercepts and removes the vote at the 
+								  end of a campaign where it asks to play with the group again. This is also used
+								  as a better method for knowing its time to switch to next campaign.  This method
+								  works without the need for a separate signatures file. It works for all modes 
+								  except for Coop and Survival that will continue forever. These modes are handled
+								  through event hooks.
 								- Fixed config file not loading changes ******************************************************
-								- Rewrote many functions to be more generic and reusable
+								- Converted everything to new syntax
 
 		v1.2.4 (Dec 31, 2020)	- Added new maps for the Last Stand Update
-								- Added precache of witch models to fix bug in The Passing campaign 
-								  transition crash
+								- Added precache of witch models to fix bug in The Passing campaign transition crash
+								- Made map comparisons case insensitive
 								- Fixed several infinite loop bugs when on the last campaign
 								- Changed Timer_AdvertiseNextMap to not have TIMER_REPEAT and TIMER_FLAG_NO_MAPCHANGE together
 								- Removed FCVAR_PLUGIN
 								- Removed global menu handle
-								- Added the code from [L4D/L4D2] Return To Lobby Fix from MasterMind420. Thank you!!
+								- Added the code from [L4D/L4D2] Return To Lobby Fix from MasterMind420. Thank you!
 		
 		v1.2.3 (Jan 8, 2012)	- Added the new L4D2 campaigns
 		
@@ -78,7 +79,7 @@
 
 ===================================================================================================*/
 
-#define PLUGIN_VERSION	"v1.2.5"
+#define PLUGIN_VERSION	"v2.0.0"
 
 #pragma semicolon 1
 #pragma newdecls required
@@ -118,12 +119,16 @@ public void OnPluginStart()
 	// Get the strings for all of the maps that are in rotation for every game mode
 	SetupMapListArrayFromFile();
 
+	// For debugging the config file
 	PrintTheCurrentMapListArrayInfo();
 	
+	// Set up all the ACS specific configurable variables
 	SetUpCVars();
 	
+	// Hook all the events ACS needs
 	SetUpEvents();
 	
+	// Set up the player input command listeners
 	SetupConsoleCommands();
 
 	//Repeating Timers
