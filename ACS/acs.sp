@@ -30,6 +30,7 @@
 									- This file can be edited to set up any custom map for any game mode with any order
 									- Just run the plugin and this file will generate itself with the default maps 
 									  the first time ACS is ran.
+								- Added Maps Listing in console output to help with configuring custom maps
 								- Updated all the default maps for every game mode
 								- Added hook for OnPZEndGamePanelMsg that intercepts and removes the vote at the 
 								  end of a campaign where it asks to play with the group again. This is also used

@@ -1,5 +1,5 @@
 // This is the location ACS looks for the map list config file
-#define ACS_MAP_LIST_FILE_PATH      "/gamedata/acs_map_list.txt"
+#define ACS_MAP_LIST_FILE_PATH      "gamedata/acs_map_list.txt"
 
 // Define Game Modes
 int g_iGameMode = -1;   //Store the gamemode
