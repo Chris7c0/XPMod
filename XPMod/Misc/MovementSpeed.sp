@@ -372,7 +372,7 @@ bool SetClientSpeedOverrides(iClient, &Float:fSpeed)
 		fSpeed = g_fJockeyRideSpeed[iClient] + g_fJockeyRideSpeedVanishingActBoost[iClient];
 		return true;
 	}
-
+	
 	// Lethal Injection poison slow
 	if (g_bIsHunterPoisoned[iClient] &&
 		g_iClientTeam[iClient] == TEAM_SURVIVORS)
