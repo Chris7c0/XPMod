@@ -309,7 +309,7 @@ void SetPlayerInSmokerCloud(int iClient, int iSmoker = 0)
 		return;
 	
 	SetClientSpeed(iClient);
-	HackTargetPlayersControls(iClient, 60.0, false, true);
+	// HackTargetPlayersControls(iClient, 60.0, false, true);
 	
 	// Add for the victim counter displayed to the smoker
 	if (RunClientChecks(iSmoker)) g_iSmokerSmokeCloudVictimCount[iSmoker]++;
@@ -325,7 +325,7 @@ void SetPlayerNotInSmokerCloud(int iClient, int iSmoker = 0)
 	
 	SetClientSpeed(iClient);
 	// Disable movement and random sound effects (make this delayed to allow them to get out easier)
-	CreateTimer(SMOKER_SMOKE_CLOUD_RETURN_HACKED_CONTROLS_DELAY, TimerDelayedResetPlayerHacked, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	// CreateTimer(SMOKER_SMOKE_CLOUD_RETURN_HACKED_CONTROLS_DELAY, TimerDelayedResetPlayerHacked, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 	// Remove for the victim counter displayed to the smoker
 	if (RunClientChecks(iSmoker)) g_iSmokerSmokeCloudVictimCount[iSmoker]--;
@@ -361,7 +361,7 @@ Action:TimerHandleSmokerCloudTickOnPlayer(Handle:timer, int iClient)
 		ConvertSomeSurvivorHealthToTemporary(iClient, SMOKER_SMOKE_CLOUD_TEMP_HEALTH_CONVERSION_PER_TICK);
 
 		// Temp Blind the player
-		ShowHudOverlayColor(iClient, 5, 255, 50, GetRandomInt(SMOKER_SMOKE_CLOUD_BLIND_AMOUNT_MIN,SMOKER_SMOKE_CLOUD_BLIND_AMOUNT_MAX), 1000, FADE_OUT);
+		ShowHudOverlayColor(iClient, 40, 51, 1, GetRandomInt(SMOKER_SMOKE_CLOUD_BLIND_AMOUNT_MIN,SMOKER_SMOKE_CLOUD_BLIND_AMOUNT_MAX), 1000, FADE_OUT);
 	}
 	else if (g_iClientTeam[iClient] == TEAM_INFECTED)
 	{
@@ -383,20 +383,19 @@ CreateSmokerSmokeCloudParticle(iClient)
 		xyzPosition,	// Position to create it 0,0,0 will force getting client location
 		true,
 		"smoker_mouth",
-		50, 200, 100, 	// Color of smoke
-		255,			// How Opaque
+		40, 51, 1, 		// Color of smoke
+		150,			// How Opaque
 		1,				// Gap in the middle
 		100,			// Speed the smoke moves outwards
 		100,			// Speed the smoke moves up
-		200,			// Original Size
-		400,			// End Size
+		700,			// Original Size
+		900,			// End Size
 		20,				// Amount of smoke created
-		200,			// Smoke jets outside of the original
+		RoundToNearest(SMOKER_SMOKE_CLOUD_RADIUS),			// Smoke jets outside of the original
 		10,				// Amount of global twisting
 		1.5				// Duration (-1.0 is never destroy)
 	);
 }
-
 
 // UpdateSmokerSmokeCloudParticleLocation(iClient)
 // {
@@ -411,3 +410,8 @@ CreateSmokerSmokeCloudParticle(iClient)
 // 	SetVariantString("!activator");
 // 	AcceptEntityInput(g_iSmokerSmokeCloudParticleEntity[iClient], "SetParent", iClient, g_iSmokerSmokeCloudParticleEntity[iClient], 0);
 // }
+
+void GetAllCommonInfectedInARadius(float xyzLocation[3], int ids[])
+{
+	
+}

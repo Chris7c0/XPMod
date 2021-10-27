@@ -32,11 +32,8 @@ bool OnFinaleOrScavengeOrSurvivalMap()
 bool IsMapIndexValid(int iMapIndex)
 {
 	if (iMapIndex < 0 || IsMapValid(g_strMapListArray[iMapIndex][MAP_LIST_COLUMN_MAP_NAME_START]) == false)
-	{
-		LogError("ACS Error: %i is an invalid map index!", iMapIndex);
 		return false;
-	}
-
+	
 	return true;
 }
 
