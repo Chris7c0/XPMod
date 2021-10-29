@@ -11,3 +11,4 @@ xcopy ".\acs.smx" %l4d2pluginfolder% /Y >NUL
 xcopy ".\acs.smx" %l4d2networkfolder% /Y >NUL
 
 rem start .\LaunchServer.lnk
+@echo               %time%
