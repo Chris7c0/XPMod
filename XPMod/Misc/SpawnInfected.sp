@@ -1,4 +1,4 @@
-int SpawnCommonInfected(Float:xyzLocation[3], int iAmount = 1, int iUncommon = UNCOMMON_CI_NONE, int iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, int iEnhancedCIType = ENHANCED_CI_TYPE_RANDOM, Float:fTimeToWaitForMob = -1.0)
+int SpawnCommonInfected(float xyzLocation[3], int iAmount = 1, int iUncommon = UNCOMMON_CI_NONE, int iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, int iEnhancedCIType = ENHANCED_CI_TYPE_RANDOM, float fTimeToWaitForMob = -1.0)
 {
 	xyzLocation[2] += 1;
 
@@ -67,7 +67,7 @@ Action:TimerSetMobRush(Handle:timer, any:iZombieEntity)
 	return Plugin_Stop;
 }
 
-void SpawnCIAroundLocation(Float:xyzLocation[3], iAmount = 1, iUncommon = UNCOMMON_CI_NONE, int iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, int iEnhancedCISpecifiedType = ENHANCED_CI_TYPE_RANDOM, Float:fTimeToWaitForMob = -1.0)
+void SpawnCIAroundLocation(float xyzLocation[3], int iAmount = 1, int iUncommon = UNCOMMON_CI_NONE, int iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, int iEnhancedCISpecifiedType = ENHANCED_CI_TYPE_RANDOM, float fTimeToWaitForMob = -1.0)
 {
 	// Get the angle increments then convert to radians
 	// We need it in radians so convert it by multiplying by 0.0174532925
@@ -91,7 +91,36 @@ void SpawnCIAroundLocation(Float:xyzLocation[3], iAmount = 1, iUncommon = UNCOMM
 	}
 }
 
-Action:TimerSpawnCIAroundPlayer(Handle:timer, any:hDataPackage)
+void SpawnCIAroundPlayer(int iClient, int iAmount = 1, int iUncommon = UNCOMMON_CI_NONE, int iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, int iEnhancedCISpecifiedType = ENHANCED_CI_TYPE_RANDOM)
+{
+	if (RunClientChecks(iClient) == false)
+		return;
+
+	// Get player location to spawn infected around
+	decl Float:xyzLocation[3];
+	GetClientAbsOrigin(iClient, xyzLocation);
+
+	SpawnCIAroundLocation(xyzLocation, iAmount, iUncommon, iBigOrSmall, iEnhancedCISpecifiedType);
+}
+
+
+void SpawnCIAroundPlayerDelayed(int iClient, float fDelay, int iAmount = 1, int iUncommon = UNCOMMON_CI_NONE, int iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, int iEnhancedCISpecifiedType = ENHANCED_CI_TYPE_RANDOM)
+{
+	if (RunClientChecks(iClient) == false)
+		return;
+
+	Handle hDataPackage = CreateDataPack();
+	WritePackCell(hDataPackage, iClient);
+	WritePackCell(hDataPackage, iAmount);
+	WritePackCell(hDataPackage, iUncommon);
+	WritePackCell(hDataPackage, iBigOrSmall);
+	WritePackCell(hDataPackage, iEnhancedCISpecifiedType);
+
+	CreateTimer(fDelay, TimerSpawnCIAroundPlayer, hDataPackage);
+}
+
+
+Action:TimerSpawnCIAroundPlayer(Handle:timer, Handle hDataPackage)
 {
 	ResetPack(hDataPackage);
 	new iClient = ReadPackCell(hDataPackage);
@@ -101,14 +130,7 @@ Action:TimerSpawnCIAroundPlayer(Handle:timer, any:hDataPackage)
 	new iEnhancedCISpecifiedType = ReadPackCell(hDataPackage);
 	CloseHandle(hDataPackage);
 
-	if (RunClientChecks(iClient) == false)
-		return Plugin_Stop;
-
-	// Get player location to spawn infected around
-	decl Float:xyzLocation[3];
-	GetClientAbsOrigin(iClient, xyzLocation);
-
-	SpawnCIAroundLocation(xyzLocation, iAmount, iUncommon, iBigOrSmall, iEnhancedCISpecifiedType);
+	SpawnCIAroundPlayer(iClient, iAmount, iUncommon, iBigOrSmall, iEnhancedCISpecifiedType);
 
 	return Plugin_Stop;
 }

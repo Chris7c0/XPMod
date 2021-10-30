@@ -9,7 +9,7 @@ void Bind1Press_Smoker(iClient)
 	}
 
 	// If the player has an expired smoke cloud and needs to turn back into smoker (in limbo)
-	if (g_bSmokerInSmokeCloudLimbo[iClient] == true)
+	if (g_iSmokerInSmokeCloudLimbo == iClient)
 	{
 		TurnBackToSmokerAfterSmokeCloud(iClient);
 		return;
@@ -21,9 +21,9 @@ void Bind1Press_Smoker(iClient)
 		return;
 	}
 
-	if(g_bSmokerSmokeCloudInCooldown[iClient] == true)
+	if(g_bSmokerSmokeCloudInCooldown == true)
 	{
-		PrintHintText(iClient, "In cooldown, you must wait for Smoke Cloud to recharge.");
+		PrintHintText(iClient, "Global cooldown triggered. You must wait to use the Smoke Cloud.");
 		return;
 	}
 
@@ -44,8 +44,8 @@ void Bind1Press_Smoker(iClient)
 	g_iClientBindUses_1[iClient]++;
 
 	// Create the cooldown
-	g_bSmokerSmokeCloudInCooldown[iClient] = true;
-	CreateTimer(SMOKER_SMOKE_CLOUD_COOLDOWN_DURATION, Timer_SmokerSmokeCloudCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	g_bSmokerSmokeCloudInCooldown = true;
+	CreateTimer(SMOKER_SMOKE_CLOUD_GLOBAL_COOLDOWN_DURATION, Timer_SmokerSmokeCloudCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
 }
 
 
@@ -53,8 +53,9 @@ TurnSmokerIntoSmokeCloud(int iClient)
 {
 	// SDKHook(iClient, SDKHook_OnTakeDamage, OnTakeDamage);
 
-	g_bSmokerIsSmokeCloud[iClient] = true;
-	g_bSmokerInSmokeCloudLimbo[iClient] = false;
+	g_iSmokerSmokeCloudPlayer = iClient;
+	g_iSmokerInSmokeCloudLimbo = -1;
+	g_iSmokerSmokeCloudStage = 1
 
 	// Disable the Smoker's teleport
 	g_bTeleportCoolingDown[iClient] = true;
@@ -80,9 +81,9 @@ TurnSmokerIntoSmokeCloud(int iClient)
 
 	CreateSmokerSmokeCloudParticle(iClient);
 
-	g_iSmokerSmokeCloudVictimCount[iClient] = 0;
-	g_iSmokerSmokeCloudTicksUsed[iClient] = 0;
-	g_iSmokerSmokeCloudTicksPool[iClient] = SMOKER_SMOKE_CLOUD_TICK_COUNT_STARTING_POOL;
+	g_iSmokerSmokeCloudVictimCount = 0;
+	g_iSmokerSmokeCloudTicksUsed = 0;
+	g_iSmokerSmokeCloudTicksPool = SMOKER_SMOKE_CLOUD_TICK_COUNT_STARTING_POOL;
 	
 
 	delete g_hTimer_HandleSmokerSmokeCloudTick[iClient];
@@ -99,8 +100,8 @@ TurnSmokerIntoSmokeCloud(int iClient)
 // This is for if the smoker is able to attack or something happens while in smoke cloud or limbo, return them.
 ReturnSmokerFromSmokeCloudIfCurrentlySmokeCloud(iClient)
 {
-	if (g_bSmokerIsSmokeCloud[iClient] == false && 
-		g_bSmokerInSmokeCloudLimbo[iClient] == false)
+	if (g_iSmokerSmokeCloudPlayer != iClient && 
+		g_iSmokerInSmokeCloudLimbo != iClient)
 		return;
 
 	TurnBackToSmokerAfterSmokeCloud(iClient);
@@ -108,8 +109,8 @@ ReturnSmokerFromSmokeCloudIfCurrentlySmokeCloud(iClient)
 
 TurnBackToSmokerAfterSmokeCloud(int iClient)
 {
-	g_bSmokerIsSmokeCloud[iClient] = false;
-	g_bSmokerInSmokeCloudLimbo[iClient] = false;
+	g_iSmokerSmokeCloudPlayer = -1;
+	g_iSmokerInSmokeCloudLimbo = -1;
 
 	// Enable the Smoker's teleport
 	g_bTeleportCoolingDown[iClient] = false;
@@ -146,8 +147,8 @@ TurnBackToSmokerAfterSmokeCloud(int iClient)
 
 PutSmokerWithExpiredSmokeCloudIntoLimbo(int iClient)
 {
-	g_bSmokerInSmokeCloudLimbo[iClient] = true;
-	g_bSmokerIsSmokeCloud[iClient] = false;
+	g_iSmokerInSmokeCloudLimbo = iClient;
+	g_iSmokerSmokeCloudPlayer = iClient;
 
 	// Display the first message
 	if (g_iInfectedCharacter[iClient] == SMOKER &&
@@ -168,7 +169,7 @@ Action TimerHandleSmokerInSmokeCloudLimbo(Handle:timer, int iClient)
 	if (g_iSmokeCloudLimboTicks[iClient] == 3 ||
 		g_iInfectedCharacter[iClient] != SMOKER ||
 		g_iClientTeam[iClient] != TEAM_INFECTED ||
-		g_bSmokerInSmokeCloudLimbo[iClient] == false ||
+		g_iSmokerInSmokeCloudLimbo != iClient ||
 		RunClientChecks(iClient) == false ||
 		GetEntData(iClient, g_iOffset_IsGhost, 1) == 1 ||
 		IsPlayerAlive(iClient) == false)
@@ -193,11 +194,11 @@ Action TimerHandleSmokerInSmokeCloudLimbo(Handle:timer, int iClient)
 Action TimerHandleSmokerSmokeCloudTick(Handle:timer, int iClient)
 {
 	if (g_iInfectedCharacter[iClient] != SMOKER ||
-		g_bSmokerIsSmokeCloud[iClient] == false ||
+		g_iSmokerSmokeCloudPlayer != iClient ||
 		RunClientChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false ||
 		GetEntData(iClient, g_iOffset_IsGhost, 1) == 1 ||
-		g_iSmokerSmokeCloudTicksUsed[iClient] >= g_iSmokerSmokeCloudTicksPool[iClient])
+		g_iSmokerSmokeCloudTicksUsed >= g_iSmokerSmokeCloudTicksPool)
 	{
 		if (g_iInfectedCharacter[iClient] == SMOKER && 
 			RunClientChecks(iClient) == true &&
@@ -216,20 +217,23 @@ Action TimerHandleSmokerSmokeCloudTick(Handle:timer, int iClient)
 	}
 
 	HandlePlayersInSmokeCloud(iClient);
+	HandleEntitiesInSmokerCloudRadius(iClient, SMOKER_SMOKE_CLOUD_RADIUS);
 
 	// Add the ticks used to the used amount
-	g_iSmokerSmokeCloudTicksUsed[iClient] += SMOKER_SMOKE_CLOUD_TICK_USE_RATE;
+	g_iSmokerSmokeCloudTicksUsed += SMOKER_SMOKE_CLOUD_TICK_USE_RATE;
 
 	// Display current victim count, remaining ticks, and the duration
 	// Wait for x ticks before showing to allow hint text to pop up
-	if (IsFakeClient(iClient) == false && g_iSmokerSmokeCloudTicksUsed[iClient] > SMOKER_SMOKE_CLOUD_TICK_USE_RATE * 10)
-		PrintHintText(iClient, "%i Victims\nCloud Remaining: %0.1fs\nDuration: %0.1fs", 
-			g_iSmokerSmokeCloudVictimCount[iClient],
-			(g_iSmokerSmokeCloudTicksPool[iClient] - g_iSmokerSmokeCloudTicksUsed[iClient]) * SMOKER_SMOKE_CLOUD_TICK_RATE / SMOKER_SMOKE_CLOUD_TICK_USE_RATE,
-			g_iSmokerSmokeCloudTicksUsed[iClient] * SMOKER_SMOKE_CLOUD_TICK_RATE / SMOKER_SMOKE_CLOUD_TICK_USE_RATE);
+	if (IsFakeClient(iClient) == false && g_iSmokerSmokeCloudTicksUsed > SMOKER_SMOKE_CLOUD_TICK_USE_RATE * 10)
+		PrintHintText(iClient, "%i Victim%s        Stage %i\nCloud Remaining: %0.1fs\nDuration: %0.1fs",
+			g_iSmokerSmokeCloudVictimCount,
+			g_iSmokerSmokeCloudVictimCount == 1 ? "" : "s",
+			g_iSmokerSmokeCloudStage,
+			(g_iSmokerSmokeCloudTicksPool - g_iSmokerSmokeCloudTicksUsed) * SMOKER_SMOKE_CLOUD_TICK_RATE / SMOKER_SMOKE_CLOUD_TICK_USE_RATE,
+			g_iSmokerSmokeCloudTicksUsed * SMOKER_SMOKE_CLOUD_TICK_RATE / SMOKER_SMOKE_CLOUD_TICK_USE_RATE);
 
 	// Create a new smoke cloud particle after 1 second
-	if (g_iSmokerSmokeCloudTicksUsed[iClient] % (SMOKER_SMOKE_CLOUD_TICK_USE_RATE * 10) == 0)
+	if (g_iSmokerSmokeCloudTicksUsed % (SMOKER_SMOKE_CLOUD_TICK_USE_RATE * 10) == 0)
 		CreateSmokerSmokeCloudParticle(iClient);
 
 	return Plugin_Continue;
@@ -269,8 +273,8 @@ void HandlePlayersInSmokeCloud(int iClient)
 
 			// Add the appropriate amount of smoke cloud ticks to the player's pool
 			if (g_iClientTeam[iPlayer] == TEAM_SURVIVORS && 
-				g_iSmokerSmokeCloudTicksPool[iClient] < SMOKER_SMOKE_CLOUD_TICK_COUNT_MAX_POOL_SIZE)
-				g_iSmokerSmokeCloudTicksPool[iClient] += IsFakeClient(iPlayer) ? 
+				g_iSmokerSmokeCloudTicksPool < SMOKER_SMOKE_CLOUD_TICK_COUNT_MAX_POOL_SIZE)
+				g_iSmokerSmokeCloudTicksPool += IsFakeClient(iPlayer) ? 
 					SMOKER_SMOKE_CLOUD_TICK_GAIN_PER_SURVIVOR_BOT : 
 					SMOKER_SMOKE_CLOUD_TICK_GAIN_PER_SURVIVOR_PLAYER;
 		}
@@ -297,7 +301,6 @@ void HandlePlayersInSmokeCloud(int iClient)
 	}
 }
 
-
 void SetPlayerInSmokerCloud(int iClient, int iSmoker = 0)
 {
 	g_bIsPlayerInSmokerSmokeCloud[iClient] = true;
@@ -308,11 +311,8 @@ void SetPlayerInSmokerCloud(int iClient, int iSmoker = 0)
 	if (g_iClientTeam[iClient] != TEAM_SURVIVORS)
 		return;
 	
-	SetClientSpeed(iClient);
-	// HackTargetPlayersControls(iClient, 60.0, false, true);
-	
 	// Add for the victim counter displayed to the smoker
-	if (RunClientChecks(iSmoker)) g_iSmokerSmokeCloudVictimCount[iSmoker]++;
+	if (RunClientChecks(iSmoker)) g_iSmokerSmokeCloudVictimCount++;
 }
 
 void SetPlayerNotInSmokerCloud(int iClient, int iSmoker = 0)
@@ -322,24 +322,9 @@ void SetPlayerNotInSmokerCloud(int iClient, int iSmoker = 0)
 	// The rest of this function only handle survivor tasks
 	if (g_iClientTeam[iClient] != TEAM_SURVIVORS)
 		return;
-	
-	SetClientSpeed(iClient);
-	// Disable movement and random sound effects (make this delayed to allow them to get out easier)
-	// CreateTimer(SMOKER_SMOKE_CLOUD_RETURN_HACKED_CONTROLS_DELAY, TimerDelayedResetPlayerHacked, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 	// Remove for the victim counter displayed to the smoker
-	if (RunClientChecks(iSmoker)) g_iSmokerSmokeCloudVictimCount[iSmoker]--;
-}
-
-Action:TimerDelayedResetPlayerHacked(Handle:timer, int iClient)
-{
-	// Make sure they are not currently in the smoker smoke cloud;
-	if (g_bIsPlayerInSmokerSmokeCloud[iClient] == true)
-		return Plugin_Stop;
-	
-	g_bIsPLayerHacked[iClient] = false;
-
-	return Plugin_Stop;
+	if (RunClientChecks(iSmoker)) g_iSmokerSmokeCloudVictimCount--;
 }
 
 void SetAllPlayersNotInSmokerCloud()
@@ -357,11 +342,11 @@ Action:TimerHandleSmokerCloudTickOnPlayer(Handle:timer, int iClient)
 
 	if (g_iClientTeam[iClient] == TEAM_SURVIVORS)
 	{
-		// Convert some survivor health to temp health
-		ConvertSomeSurvivorHealthToTemporary(iClient, SMOKER_SMOKE_CLOUD_TEMP_HEALTH_CONVERSION_PER_TICK);
-
 		// Temp Blind the player
-		ShowHudOverlayColor(iClient, 40, 51, 1, GetRandomInt(SMOKER_SMOKE_CLOUD_BLIND_AMOUNT_MIN,SMOKER_SMOKE_CLOUD_BLIND_AMOUNT_MAX), 1000, FADE_OUT);
+		ShowHudOverlayColor(iClient, 40, 51, 1, GetRandomInt(SMOKER_SMOKE_CLOUD_BLIND_AMOUNT_MIN,SMOKER_SMOKE_CLOUD_BLIND_AMOUNT_MAX), 1300, FADE_OUT);
+
+		// Handle spawning entities on directly on players
+		SmokerSmokeCloudSpawnCIOnPlayer(iClient);
 	}
 	else if (g_iClientTeam[iClient] == TEAM_INFECTED)
 	{
@@ -369,7 +354,7 @@ Action:TimerHandleSmokerCloudTickOnPlayer(Handle:timer, int iClient)
 		SetPlayerHealth(iClient, SMOKER_SMOKE_CLOUD_INFECTED_HEAL_RATE_PER_TICK, true);
 
 		// Temp Blind the player
-		ShowHudOverlayColor(iClient, 255, 5, 50, 50, 1000, FADE_OUT);
+		ShowHudOverlayColor(iClient, 255, 5, 50, 50, 1300, FADE_OUT);
 	}
 
 	return Plugin_Continue;
@@ -388,8 +373,8 @@ CreateSmokerSmokeCloudParticle(iClient)
 		1,				// Gap in the middle
 		100,			// Speed the smoke moves outwards
 		100,			// Speed the smoke moves up
-		700,			// Original Size
-		900,			// End Size
+		1300,			// Original Size
+		1500,			// End Size
 		20,				// Amount of smoke created
 		RoundToNearest(SMOKER_SMOKE_CLOUD_RADIUS),			// Smoke jets outside of the original
 		10,				// Amount of global twisting
@@ -411,7 +396,108 @@ CreateSmokerSmokeCloudParticle(iClient)
 // 	AcceptEntityInput(g_iSmokerSmokeCloudParticleEntity[iClient], "SetParent", iClient, g_iSmokerSmokeCloudParticleEntity[iClient], 0);
 // }
 
-void GetAllCommonInfectedInARadius(float xyzLocation[3], int ids[])
+void HandleEntitiesInSmokerCloudRadius(int iClient, float fRadius)
 {
+	char strClassName[32];
+	float xyzEntityLocation[3], xyzClientLocation[3];
+	GetEntPropVector(iClient, Prop_Send, "m_vecOrigin", xyzClientLocation);
+
+	SetSmokerCloudSmokeStage();
+
+	for (int iEntity=1; iEntity < MAXENTITIES; iEntity++)
+	{
+		if (IsValidEntity(iEntity) == false)
+			continue;
+
+		// Any entities needed will have vecOrigin property so check for that first
+		if (HasEntProp(iEntity, Prop_Send, "m_vecOrigin") == false)
+			continue;
+
+		// Get the radius location and check how far away the entity is before continuing
+		GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", xyzEntityLocation);
+		if (GetVectorDistance(xyzClientLocation, xyzEntityLocation) > fRadius)
+			continue;
+
+		strClassName = "";
+		GetEntityClassname(iEntity, strClassName, 32);
+		// PrintToServer("HandleEntitiesInSmokerCloudRadius: i: %i, className = %s", iEntity, strClassName)
+
+		// Handle putting out molotov or other sources of fires and projectiles
+		if (StrEqual(strClassName, "inferno", true) ||					// Molotov and gascan
+			StrEqual(strClassName, "pipe_bomb_projectile", true) ||		// Pipe bomb
+			StrEqual(strClassName, "info_goal_infected_chase", true))	// Bile Jar
+		{
+			KillEntitySafely(iEntity);
+			continue;
+		}
+		
+		// Handle CI that are not already enhanced
+		if (IsCommonInfected(iEntity, strClassName) && GetEntProp(iEntity, Prop_Data, "m_iHealth") > 0)
+		{
+			ExtinguishEntity(iEntity);
+
+			// Find if the Enhanced CI entity in the list
+			int iEnhancedCIIndex = FindIndexInArrayListUsingValue(g_listEnhancedCIEntities, iEntity, ENHANCED_CI_ENTITY_ID);
+			// If the Enhanced CI is in the list, move on and continue the search
+			if (iEnhancedCIIndex >= 0)
+				continue;
+
+			// PrintToChatAll("iHealth = %i", GetEntProp(iEntity, Prop_Data, "m_iHealth"));
+			// PrintToChatAll("fDistance = %f", GetVectorDistance(xyzClientLocation, xyzEntityLocation));
+			// PrintToChatAll("%f, %f, %f", xyzEntityLocation[0], xyzEntityLocation[1], xyzEntityLocation[2]);
+
+			SetEntProp(iEntity, Prop_Data, "m_iHealth", 0);	
+
+			switch (g_iSmokerSmokeCloudStage)
+			{
+				case 1:	SpawnCIAroundLocation(xyzEntityLocation, 1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_RANDOM, 0.1);
+				case 2:	SpawnCIAroundLocation(xyzEntityLocation, 1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_RANDOM, 0.1);
+				case 3:	SpawnCIAroundLocation(xyzEntityLocation, 1, UNCOMMON_CI_RANDOM, CI_REALLY_SMALL, ENHANCED_CI_TYPE_RANDOM, 0.1);
+			}
+		}
+	}
+}
+
+void SmokerSmokeCloudSpawnCIOnPlayer(int iClient)
+{
+	if (RunClientChecks(g_iSmokerSmokeCloudPlayer) == false ||
+		g_bSmokeCloudVictimCanCISpawnOn[iClient] == false)
+		return;
+
+	g_bSmokeCloudVictimCanCISpawnOn[iClient] = false;
+	CreateTimer(SMOKER_SMOKE_CLOUD_SPAWN_CI_ON_PLAYER_INTERVAL, TimerResetCanSmokerSmokeCloudSpawnCIOnPlayer, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	
+	SetSmokerCloudSmokeStage();
+
+	switch(g_iSmokerSmokeCloudStage)
+	{
+		case 1:	SpawnCIAroundPlayer(iClient, SMOKER_SMOKE_CLOUD_SPAWN_CI_ON_PLAYER_AMOUNT_S1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_RANDOM);
+		case 2: SpawnCIAroundPlayer(iClient, SMOKER_SMOKE_CLOUD_SPAWN_CI_ON_PLAYER_AMOUNT_S2, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_RANDOM);
+		case 3:
+		{
+			// Roll for a chance to spawn enlarged jimmy
+			if (GetRandomInt(1, 100) <= SMOKER_SMOKE_CLOUD_SPAWN_CI_S3_JIMMY_CHANCE)
+				SpawnCIAroundPlayer(iClient, 1, UNCOMMON_CI_JIMMY, CI_REALLY_BIG_JIMMY, ENHANCED_CI_TYPE_RANDOM);
+			else
+				SpawnCIAroundPlayer(iClient, SMOKER_SMOKE_CLOUD_SPAWN_CI_ON_PLAYER_AMOUNT_S3, UNCOMMON_CI_RANDOM, CI_REALLY_BIG, ENHANCED_CI_TYPE_RANDOM);	
+		}
+	}
+		
+}
+
+Action TimerResetCanSmokerSmokeCloudSpawnCIOnPlayer(Handle hTimer, int iClient)
+{
+	g_bSmokeCloudVictimCanCISpawnOn[iClient] = true;
+	return Plugin_Stop;
+}
+
+int SetSmokerCloudSmokeStage()
+{
+	switch (g_iSmokerSmokeCloudStage)
+	{
+		case 1: if (g_iSmokerSmokeCloudTicksUsed >= SMOKER_SMOKE_CLOUD_USAGE_STAGE_2) g_iSmokerSmokeCloudStage = 2;
+		case 2: if (g_iSmokerSmokeCloudTicksUsed >= SMOKER_SMOKE_CLOUD_USAGE_STAGE_3) g_iSmokerSmokeCloudStage = 3;
+	}
+
+	return g_iSmokerSmokeCloudStage;
 }

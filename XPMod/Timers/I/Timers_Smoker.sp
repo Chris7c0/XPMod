@@ -134,7 +134,7 @@ Action:TimerResetSmokerSmokeScreenCooldown(Handle:timer, any:iClient)
 
 Action:Timer_SmokerSmokeCloudCooldown(Handle:timer, any:iClient)
 {
-	g_bSmokerSmokeCloudInCooldown[iClient] = false;
+	g_bSmokerSmokeCloudInCooldown = false;
 	return Plugin_Stop;
 }
 

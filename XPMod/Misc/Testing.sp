@@ -1,6 +1,15 @@
 
 //Testing Functions//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+public Action Timer_Testing(Handle hTimer, int iClient)
+{
+	// float xyzLocation[3];
+	// GetClientAbsOrigin(iClient, xyzLocation)
+	// GetAllCommonInfectedInARadius(xyzLocation, 500.0);
+	
+	return Plugin_Continue;
+}
+
 Action:TestFunction1(iClient, args)
 {
 	
@@ -11,7 +20,16 @@ Action:TestFunction1(iClient, args)
 	for (int i=0; i<20; i++)
 		GetCmdArg(i+1, strArg[i], sizeof(strArg[]));
 
-	TestingBeamEntsBars(iClient);
+
+	// HandleEntitiesInSmokerCloudRadius(iClient, 100.0);
+
+	// PrintToChatAll("g_iSmokerSmokeCloudPlayer: %i g_iSmokerInSmokeCloudLimbo %i", 
+	// 	g_iSmokerSmokeCloudPlayer, 
+	// 	g_iSmokerInSmokeCloudLimbo);
+
+	// CreateTimer(0.1, Timer_Testing, iClient, TIMER_REPEAT);
+
+	//TestingBeamEntsBars(iClient);
 
 	// TestingTempEnts(iClient, strArg[0], strArg[1]);
 
@@ -694,7 +712,7 @@ public Action:beam_enable(Handle:timer, any:beam)
 
 
 
-int CreateSpriteBar(int entity, float height = 2.0, float width, float duration, int color[4], float offset[3], iSprite)
+public int CreateSpriteBar(int entity, float fHeight, float fWidth, float duration, int color[4], float offset[3], iSprite)
 {
 	float pos[3], angles[3];
 	GetEntPropVector(entity, Prop_Data, "m_vecAbsOrigin", pos);
@@ -738,7 +756,7 @@ int CreateSpriteBar(int entity, float height = 2.0, float width, float duration,
 
 		AcceptEntityInput(ent, "HideSprite");
 	}
-	pos[2]+=height;
+	pos[2]+=fHeight;
 	int ent2 = CreateEntityByName("env_sprite");
 	if (ent2 > 0)
 	{
@@ -763,11 +781,11 @@ int CreateSpriteBar(int entity, float height = 2.0, float width, float duration,
 
 		AcceptEntityInput(ent2, "HideSprite");
 	}
-	TE_SendBeamBar(ent2, ent, width, duration, color, iSprite);
+	TE_SendBeamBar(ent2, ent, fWidth, duration, color, iSprite);
 	return ent;
 }
 
-TE_SendBeamBar(int startEnt, int endEnt, float size, float duration, int color[4], iSprite)
+public TE_SendBeamBar(int startEnt, int endEnt, float size, float duration, int color[4], iSprite)
 {
 	TE_SetupBeamEnts(startEnt, endEnt, iSprite, g_iSprite_Glow, 0, 0, duration, size, size, 1, 1.0, color, 0);
 	TE_SendToAll();
@@ -794,7 +812,7 @@ stock void TE_SetupBeamEnts(int StartEntity, int EndEntity, int ModelIndex, int 
 	TE_WriteNum("m_nFadeLength", FadeLength);
 } 
 
-TestingBeamEntsBars(int iClient)
+public TestingBeamEntsBars(int iClient)
 {
 	// CreateSpriteBar(StringToInt(strArg[0]), 3.0, 10.0, 60.0, {0, 255, 0, 1500}, {0.0, 0.0, 80.0});
 	// CreateSpriteBar(StringToInt(strArg[0]), 3.0, 30.0, 60.0, {255, 255, 255, 20}, {0.0, 0.0, 80.0});

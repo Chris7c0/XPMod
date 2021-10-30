@@ -380,15 +380,7 @@ bool SetClientSpeedOverrides(iClient, &Float:fSpeed)
 		fSpeed = 0.25;
 		return true;
 	}
-
-	// Smoker Smoke Cloud slow
-	if (g_bIsPlayerInSmokerSmokeCloud[iClient] &&
-		g_iClientTeam[iClient] == TEAM_SURVIVORS)
-	{
-		fSpeed = SMOKER_SMOKE_CLOUD_SURVIVOR_SPEED;
-		return true;
-	}
-
+	
 	// Spitter adhession spit
 	if (g_fAdhesiveAffectAmount[iClient] > 0 &&
 		g_iClientTeam[iClient] == TEAM_SURVIVORS)
@@ -417,7 +409,7 @@ bool SetClientSpeedOverrides(iClient, &Float:fSpeed)
 	}
 
 	// Smoker's Smoke Cloud Speed
-	if (g_bSmokerIsSmokeCloud[iClient] == true &&
+	if (g_iSmokerSmokeCloudPlayer == iClient &&
 		g_iInfectedCharacter[iClient] == SMOKER &&
 		g_iClientTeam[iClient] == TEAM_INFECTED)
 	{

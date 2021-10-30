@@ -178,9 +178,10 @@ ResetVariablesForMap(iClient)
 	g_bIsEntangledInSmokerTongue[iClient] = false;
 	g_iEntangledSurvivorModelIndex[iClient] = -1;
 	g_iEntangledTongueModelIndex[iClient] = -1;
-	g_bSmokerIsSmokeCloud[iClient] = false;
-	g_bSmokerInSmokeCloudLimbo[iClient] = false;
-	g_bSmokerSmokeCloudInCooldown[iClient] = false;
+	g_iSmokerSmokeCloudPlayer = -1;
+	g_iSmokerInSmokeCloudLimbo = -1;
+	g_bSmokerSmokeCloudInCooldown = false;
+	g_bSmokeCloudVictimCanCISpawnOn[iClient] = true;
 	g_iTarFingerVictimBlindAmount[iClient] = 0;
 	SetSmokerConvarBuffs();
 	g_bBlockBotFromShooting[iClient] = false;
@@ -275,6 +276,11 @@ ResetAllVariables(iClient)
 	g_bIsClientDown[iClient] = false;
 	pop(iClient);
 	g_bDoesClientAttackFast[iClient] = false;
+	if (g_iSmokerSmokeCloudPlayer == iClient || g_iSmokerInSmokeCloudLimbo == iClient)
+	{
+		g_iSmokerSmokeCloudPlayer = -1;
+		g_iSmokerInSmokeCloudLimbo = -1;
+	}
 
 	//Grapples
 	g_bHunterGrappled[iClient] = false;

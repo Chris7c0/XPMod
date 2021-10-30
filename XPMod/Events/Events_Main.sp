@@ -553,7 +553,7 @@ Action:Event_PlayerReplacedByBot(Handle:hEvent, const String:strName[], bool:bDo
 Action:Event_BotReplacedByPlayer(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
 	new iPlayer = GetClientOfUserId(GetEventInt(hEvent, "player"));
-	new iReplacedBot = GetClientOfUserId(GetEventInt(hEvent, "bot"));
+	// new iReplacedBot = GetClientOfUserId(GetEventInt(hEvent, "bot"));
 
 	// PrintToChatAll("Event_BotReplacedByPlayer: %i %i", iPlayer, iReplacedBot);
 
@@ -802,7 +802,7 @@ Action:Event_PlayerShoved(Event event, const char[] name, bool dontBroadcast)
 	// if (RunClientChecks(iClient) == false)
 	// 	return Plugin_Continue;
 
-	// if (g_bSmokerIsSmokeCloud[iClient] == true &&
+	// if (g_iSmokerSmokeCloudPlayer == iClient &&
 	// 	g_iClientTeam[iClient] == TEAM_INFECTED)
 	// {
 	// 	GetEntPropVector(iClient, Prop_Data, "m_vecVelocity", g_xyzPreShoveVelocity[iClient]);

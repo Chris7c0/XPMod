@@ -256,12 +256,12 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 			return Plugin_Handled;
 		
 		if (RunClientChecks(iTarget) && 
-			(g_bSmokerIsSmokeCloud[iTarget] || g_bSmokerInSmokeCloudLimbo[iTarget]) &&
+			(g_iSmokerSmokeCloudPlayer == iTarget || g_iSmokerInSmokeCloudLimbo == iTarget) &&
 			g_iInfectedCharacter[iTarget] == SMOKER &&
 			g_iClientTeam[iTarget] == TEAM_INFECTED)
 		{
 			// PrintToChatAll("%N input stopped", iClient);
-			// PrintToChatAll("g_bSmokerIsSmokeCloud %i, g_bSmokerInSmokeCloudLimbo: %i", g_bSmokerIsSmokeCloud[iTarget], g_bSmokerInSmokeCloudLimbo[iTarget]);
+			// PrintToChatAll("g_iSmokerSmokeCloudPlayer %i, g_iSmokerInSmokeCloudLimbo: %i", g_iSmokerSmokeCloudPlayer, g_iSmokerInSmokeCloudLimbo);
 
 			ResetBotCommand(iClient);
 			

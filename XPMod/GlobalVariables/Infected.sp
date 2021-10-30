@@ -122,28 +122,35 @@ bool:g_bElectrocutionCooldown[MAXPLAYERS + 1];
 bool:g_bIsEntangledInSmokerTongue[MAXPLAYERS + 1];
 new g_iEntangledSurvivorModelIndex[MAXPLAYERS + 1];
 new g_iEntangledTongueModelIndex[MAXPLAYERS + 1];
-bool g_bSmokerIsSmokeCloud[MAXPLAYERS + 1];
-bool g_bSmokerInSmokeCloudLimbo[MAXPLAYERS + 1];
+int g_iSmokerSmokeCloudPlayer = -1;
+int g_iSmokerInSmokeCloudLimbo = -1;
 new g_iSmokeCloudLimboTicks[MAXPLAYERS + 1];
-bool g_bSmokerSmokeCloudInCooldown[MAXPLAYERS + 1];
+bool g_bSmokerSmokeCloudInCooldown;
 bool g_bIsPlayerInSmokerSmokeCloud[MAXPLAYERS + 1];
-new g_iSmokerSmokeCloudVictimCount[MAXPLAYERS + 1];
-new g_iSmokerSmokeCloudTicksPool[MAXPLAYERS + 1];
-new g_iSmokerSmokeCloudTicksUsed[MAXPLAYERS + 1];
-#define SMOKER_SMOKE_CLOUD_COOLDOWN_DURATION                60.0
+int g_iSmokerSmokeCloudVictimCount;
+int g_iSmokerSmokeCloudTicksPool;
+int g_iSmokerSmokeCloudTicksUsed;
+#define SMOKER_SMOKE_CLOUD_GLOBAL_COOLDOWN_DURATION         180.0
 #define SMOKER_SMOKE_CLOUD_TICK_RATE                        0.1
 #define SMOKER_SMOKE_CLOUD_TICK_COUNT_MAX_POOL_SIZE         60000   //Max amount of smoker smoke cloud time
 #define SMOKER_SMOKE_CLOUD_TICK_COUNT_STARTING_POOL         10000   //Determines duration which is Tick Count * Tick Rate / Tick Use Rate
 #define SMOKER_SMOKE_CLOUD_TICK_USE_RATE                    100     //Amount of Ticks used per timer tick rate
-#define SMOKER_SMOKE_CLOUD_TICK_GAIN_PER_SURVIVOR_PLAYER    35
-#define SMOKER_SMOKE_CLOUD_TICK_GAIN_PER_SURVIVOR_BOT       10
-#define SMOKER_SMOKE_CLOUD_RADIUS                           500.0
-#define SMOKER_SMOKE_CLOUD_SURVIVOR_SPEED                   0.90
+#define SMOKER_SMOKE_CLOUD_TICK_GAIN_PER_SURVIVOR_PLAYER    40
+#define SMOKER_SMOKE_CLOUD_TICK_GAIN_PER_SURVIVOR_BOT       5
+int g_iSmokerSmokeCloudStage;
+#define SMOKER_SMOKE_CLOUD_USAGE_STAGE_1                    0
+#define SMOKER_SMOKE_CLOUD_USAGE_STAGE_2                    20000
+#define SMOKER_SMOKE_CLOUD_USAGE_STAGE_3                    40000
+#define SMOKER_SMOKE_CLOUD_SPAWN_CI_ON_PLAYER_INTERVAL      4.9
+#define SMOKER_SMOKE_CLOUD_SPAWN_CI_ON_PLAYER_AMOUNT_S1     1
+#define SMOKER_SMOKE_CLOUD_SPAWN_CI_ON_PLAYER_AMOUNT_S2     1
+#define SMOKER_SMOKE_CLOUD_SPAWN_CI_ON_PLAYER_AMOUNT_S3     1
+#define SMOKER_SMOKE_CLOUD_SPAWN_CI_S3_JIMMY_CHANCE         10
+bool g_bSmokeCloudVictimCanCISpawnOn[MAXPLAYERS + 1];
+#define SMOKER_SMOKE_CLOUD_RADIUS                           600.0
 #define SMOKER_SMOKE_CLOUD_TARGETED_PLAYER_TICK_RATE        1.0
-#define SMOKER_SMOKE_CLOUD_RETURN_HACKED_CONTROLS_DELAY     1.5
 #define SMOKER_SMOKE_CLOUD_BLIND_AMOUNT_MIN                 175
 #define SMOKER_SMOKE_CLOUD_BLIND_AMOUNT_MAX                 205
-#define SMOKER_SMOKE_CLOUD_TEMP_HEALTH_CONVERSION_PER_TICK  1
 #define SMOKER_SMOKE_CLOUD_INFECTED_HEAL_RATE_PER_TICK      300
 #define SMOKER_UNTANGLE_PLAYER_DISTANCE                     100.0
 new g_iTarFingerVictimBlindAmount[MAXPLAYERS + 1];

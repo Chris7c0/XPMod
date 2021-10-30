@@ -70,7 +70,7 @@ public Action:OnTakeDamage(victim, &attacker, &inflictor, &Float:damage, &damage
 	}
 
 	
-	// if (g_bSmokerIsSmokeCloud[victim] == true)
+	// if (g_iSmokerSmokeCloudPlayer ==iVictim)
 	// {
 	// 	damage = 0.0;
 	// 	return Plugin_Changed;

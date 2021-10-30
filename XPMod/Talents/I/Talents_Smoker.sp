@@ -14,8 +14,11 @@ void TalentsLoad_Smoker(iClient)
 	g_bSmokerDoppelgangerCoolingDown[iClient] = false;
 
 	// Smoker variable reset if left from other states
-	g_bSmokerIsSmokeCloud[iClient] = false;
-	g_bSmokerInSmokeCloudLimbo[iClient] = false;
+	if (g_iSmokerSmokeCloudPlayer == iClient || g_iSmokerInSmokeCloudLimbo == iClient)
+	{
+		g_iSmokerSmokeCloudPlayer = -1;
+		g_iSmokerInSmokeCloudLimbo = -1;
+	}
 	g_bTeleportCoolingDown[iClient] = false;
 
 	//Grapples reset
@@ -61,7 +64,7 @@ void OnGameFrame_Smoker(iClient)
 		g_fNextSmokerDoppelgangerRegenTime[iClient] = GetGameTime() + SMOKER_DOPPELGANGER_REGEN_PERIOD;
 
 		// Display message, but dont display the message if a smoker smoke cloud
-		if (g_bSmokerIsSmokeCloud[iClient] == false && g_bSmokerInSmokeCloudLimbo[iClient] == false)
+		if (g_iSmokerSmokeCloudPlayer != iClient && g_iSmokerInSmokeCloudLimbo != iClient)
 			PrintHintText(iClient, "Doppelganger Decoys: %i", g_iSmokerDoppelgangerCount[iClient]);
 	}
 	
@@ -83,7 +86,7 @@ void OnGameFrame_Smoker(iClient)
 
 	// This is potentially causing a glitch where the player is stuck afterwards.
 	// The movement type can be set away from no clip from other events this just resets it every tick if its not
-	if ((g_bSmokerIsSmokeCloud[iClient] == true || g_bSmokerInSmokeCloudLimbo[iClient] == true) &&
+	if ((g_iSmokerSmokeCloudPlayer == iClient || g_iSmokerInSmokeCloudLimbo == iClient) &&
 		GetEntProp(iClient, Prop_Send, "movetype") != MOVETYPE_NOCLIP)
 	{
 		// PrintToChatAll("OGF iMoveType %i", GetEntProp(iClient, Prop_Send, "movetype"));

@@ -358,7 +358,7 @@ BileEveryoneCloseToExplodingNecroTankerTankRock(iRockEntity)
 
 CreateNecroTankerRockTrailEffect(int iRockEntity)
 {
-	new Float:xyzRockPosition[3];
+	float xyzRockPosition[3];
 	GetEntPropVector(iRockEntity, Prop_Send, "m_vecOrigin", xyzRockPosition);
 
 	// Play a random sound effect name from the the boomer throw selection
@@ -371,7 +371,7 @@ CreateNecroTankerRockTrailEffect(int iRockEntity)
 void SummonNecroTankerCrouchAndWalkAbility(iClient, bool bEnhancedCI)
 {
 	// Get a location in front of the player to spawn the infected to prevent collision with others
-	decl Float:xyzLocation[3], Float:xyzAngles[3];
+	float xyzLocation[3], xyzAngles[3];
 	// Set a random distance in front of the player
 	GetLocationVectorInfrontOfClient(iClient, xyzLocation, xyzAngles, GetRandomFloat(60.0, 81.0));
 	// Offset X and Y also
@@ -387,9 +387,9 @@ void SummonNecroTankerCrouchAndWalkAbility(iClient, bool bEnhancedCI)
 
 	// Scrath all of this, they disappear seemingly randomly even if they are within range.
 	// So, just set it to 2.0 no matter what.
-	new Float:fTimeToWaitForMob = 2.0;//FindClosestSurvivorDistance(iClient) > 1500.0 ? 2.0 : 2.0;
+	float fTimeToWaitForMob = 2.0;//FindClosestSurvivorDistance(iClient) > 1500.0 ? 2.0 : 2.0;
 
-	new iZombie = -1;
+	int iZombie = -1;
 	if (bEnhancedCI == false)
 	{
 		iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_NONE, fTimeToWaitForMob);
@@ -432,7 +432,7 @@ void SummonNecroTankerPunchZombies(iAttackerTank, iVictim)
 		IsIncap(iVictim) == true)
 		return;
 	
-	new iRoll = GetRandomInt(1,100);
+	int iRoll = GetRandomInt(1,100);
 	
 	// Testing different rolls
 	//iRoll = 20;
@@ -449,14 +449,7 @@ void SummonNecroTankerPunchZombies(iAttackerTank, iVictim)
 		// Roll the dice for an Enhanced CI properties
 		new iEnhancedCISpecifiedType = GetRandomFloat(0.0, 1.0) <= NECROTANKER_ENHANCE_CI_CHANCE_PUNCH ? ENHANCED_CI_TYPE_RANDOM : ENHANCED_CI_TYPE_NONE;
 
-		new Handle:hDataPackage = CreateDataPack();
-		WritePackCell(hDataPackage, iVictim);
-		WritePackCell(hDataPackage, 6);
-		WritePackCell(hDataPackage, UNCOMMON_CI_NONE);
-		WritePackCell(hDataPackage, iBigOrSmall);
-		WritePackCell(hDataPackage, iEnhancedCISpecifiedType);
-
-		CreateTimer(1.0, TimerSpawnCIAroundPlayer, hDataPackage);
+		SpawnCIAroundPlayerDelayed(iVictim, 1.0, 6, UNCOMMON_CI_NONE, iBigOrSmall, iEnhancedCISpecifiedType);
 		return;
 	}
 
@@ -464,18 +457,11 @@ void SummonNecroTankerPunchZombies(iAttackerTank, iVictim)
 	if (iRoll > 10 && iRoll <= 35)
 	{
 		// Roll the dice for Big or Small
-		new iBigOrSmall = GetRandomFloat(0.0, 1.0) <= NECROTANKER_ENHANCE_CI_CHANCE_PUNCH ? CI_SMALL_OR_BIG_RANDOM : CI_SMALL_OR_BIG_NONE;
+		int iBigOrSmall = GetRandomFloat(0.0, 1.0) <= NECROTANKER_ENHANCE_CI_CHANCE_PUNCH ? CI_SMALL_OR_BIG_RANDOM : CI_SMALL_OR_BIG_NONE;
 		// Roll the dice for an Enhanced CI properties
-		new iEnhancedCISpecifiedType = GetRandomFloat(0.0, 1.0) <= NECROTANKER_ENHANCE_CI_CHANCE_PUNCH ? ENHANCED_CI_TYPE_RANDOM : ENHANCED_CI_TYPE_NONE;
+		int iEnhancedCISpecifiedType = GetRandomFloat(0.0, 1.0) <= NECROTANKER_ENHANCE_CI_CHANCE_PUNCH ? ENHANCED_CI_TYPE_RANDOM : ENHANCED_CI_TYPE_NONE;
 		
-		new Handle:hDataPackage = CreateDataPack();
-		WritePackCell(hDataPackage, iVictim);
-		WritePackCell(hDataPackage, 5);
-		WritePackCell(hDataPackage, UNCOMMON_CI_RANDOM);
-		WritePackCell(hDataPackage, iBigOrSmall);
-		WritePackCell(hDataPackage, iEnhancedCISpecifiedType);
-
-		CreateTimer(1.0, TimerSpawnCIAroundPlayer, hDataPackage);
+		SpawnCIAroundPlayerDelayed(iVictim, 1.0, 5, UNCOMMON_CI_RANDOM, iBigOrSmall, iEnhancedCISpecifiedType);
 		return;
 	}
 

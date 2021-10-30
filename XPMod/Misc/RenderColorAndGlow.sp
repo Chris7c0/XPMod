@@ -106,7 +106,7 @@ SetClientRenderAndGlowColor(int iClient)
 					return;
 				}
 				// Hide smoker while he is a smoke cloud
-				if (g_bSmokerIsSmokeCloud[iClient] == true)
+				if (g_iSmokerSmokeCloudPlayer == iClient)
 				{
 					SetClientRenderColor(iClient, 255, 255, 255, 0, RENDER_MODE_TRANSPARENT);
 					SetClientGlow(iClient, 1, 0, 0, GLOWTYPE_CONSTANT);
