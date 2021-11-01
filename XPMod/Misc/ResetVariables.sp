@@ -1,5 +1,6 @@
 ResetVariablesForMap(iClient)
 {
+	ResetAllEntityVariablesForMap();
 	ResetTalentConfirmCountdown(iClient);
 	g_bWalkAndUseToggler[iClient] = false;
 	g_bSurvivorTalentsGivenThisRound[iClient] = false;
@@ -172,7 +173,7 @@ ResetVariablesForMap(iClient)
 	g_iSmokerTransparency[iClient] = 0;
 	g_bSmokerIsCloaked[iClient] = false;
 	g_bSmokerVictimGlowDisabled[iClient] = false;
-	g_iSmokerDoppelgangerCount[iClient] =  0;
+	g_iSmokerDoppelgangerCount[iClient] =  SMOKER_DOPPELGANGER_MAX_CLONES;
 	g_bSmokerDoppelgangerCoolingDown[iClient] =  false;
 	g_bElectrocutionCooldown[iClient] = false;
 	g_bIsEntangledInSmokerTongue[iClient] = false;
@@ -300,6 +301,16 @@ ResetAllVariables(iClient)
 	//Reset Tank (Needed here for changing teams)
 	g_iTankChosen[iClient] = TANK_NOT_CHOSEN;
 	ResetAllTankVariables(iClient);
+}
+
+void ResetAllEntityVariablesForMap()
+{
+
+	for (int iEntity=0; iEntity <= MAXENTITIES; iEntity++)
+	{
+		g_iXPModEntityType[iEntity] = XPMOD_ENTITY_TYPE_NONE;
+		g_fXPModEntityHealth[iEntity] = -1.0;
+	}
 }
 
 Event_DeathResetAllVariables(iAttacker, iVictim)

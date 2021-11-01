@@ -5,7 +5,7 @@ public void OnEntityCreated(int iEntity, const char[] classname)
 	if (g_bPlayerPressedButtonThisRound == false)
 		return;
 	
-	//PrintToServer("OnEntityCreated %i: classname: %s", iEntity, classname);
+	// PrintToServer("OnEntityCreated %i: classname: %s", iEntity, classname);
 
 	if (IsCommonInfected(iEntity, classname))
 	{
@@ -30,8 +30,17 @@ public void OnEntityDestroyed(int iEntity)
 	if (g_bPlayerPressedButtonThisRound == false)
 		return;
 
-	if (IsValidEntity(iEntity) ==  false)
+	if (RunEntityChecks(iEntity) == false)
 		return;
+
+	// Remove any hooks for Entities with health
+	if (g_iXPModEntityType[iEntity] != XPMOD_ENTITY_TYPE_NONE)
+	{
+		g_iXPModEntityType[iEntity] = XPMOD_ENTITY_TYPE_NONE;
+		g_fXPModEntityHealth[iEntity] = -1.0;
+
+		SDKUnhook(iEntity, SDKHook_OnTakeDamage, OnTakeDamage);
+	}
 
 	// Get classname for the entity to check what it is later
 	new String:strClassname[100];
@@ -52,27 +61,36 @@ public void OnEntityDestroyed(int iEntity)
 	}
 }
 
-public Action:OnTakeDamage(victim, &attacker, &inflictor, &Float:damage, &damageType, &weapon, Float:damageForce[3], Float:damagePosition[3]) 
+public Action OnTakeDamage(iVictim, &iAttacker, &iInflictor, &Float:fDamage, &iDamageType, &iWeapon, Float:damageForce[3], Float:damagePosition[3]) 
 {
-	// PrintToChatAll("OnTakeDamage: %i", victim);
+	// PrintToChatAll("OnTakeDamage: %i", iVictim);
 
 	// Check that this is an uncommon infected and not world or bot/human player
-	if (victim > 0 &&
-		RunClientChecks(victim) == false &&
-		IsCommonInfected(victim, ""))
+	if (iVictim > 0 &&
+		RunClientChecks(iVictim) == false &&
+		IsCommonInfected(iVictim, ""))
 	{
-		//PrintToServer("OnTakeDamage %i: damage: %f, damageType: %i, weapon: %i", victim, damage, damageType, weapon);
+		//PrintToServer("OnTakeDamage %i: damage: %f, damageType: %i, weapon: %i", iVictim, fDamage, damageType, weapon);
 
 		// This is meant to be a cap for melee weapons, but may not be worth the check to do so.
 		// If problems occur, add this check in using weapon.
-		damage = damage > CI_MAX_DAMAGE_PER_HIT ? CI_MAX_DAMAGE_PER_HIT : damage;
+		fDamage = fDamage > CI_MAX_DAMAGE_PER_HIT ? CI_MAX_DAMAGE_PER_HIT : fDamage;
 		return Plugin_Changed;
 	}
 
-	
-	// if (g_iSmokerSmokeCloudPlayer ==iVictim)
+	// For tracked XPMod entities
+	if (g_iXPModEntityType[iVictim] != XPMOD_ENTITY_TYPE_NONE)
+	{
+		// Handle the entities based on their types
+		switch (g_iXPModEntityType[iVictim])
+		{
+			case XPMOD_ENTITY_TYPE_SMOKER_CLONE: OnTakeDamage_SmokerClone(iVictim, iAttacker, fDamage, iDamageType);
+		}
+	}
+
+	// if (g_iSmokerSmokeCloudPlayer == iVictim)
 	// {
-	// 	damage = 0.0;
+	// 	fDamage = 0.0;
 	// 	return Plugin_Changed;
 	// }
 	

@@ -262,6 +262,13 @@ bool g_bHideNameChangeMessage = false;
 bool g_bMovementLocked[MAXPLAYERS +1];
 bool g_bStopAllInput[MAXPLAYERS + 1];
 
+// XPMod SDK Hooked Entities
+int g_iXPModEntityType[MAXENTITIES + 1];
+float g_fXPModEntityHealth[MAXENTITIES + 1];
+
+// Entity types
+#define XPMOD_ENTITY_TYPE_NONE          0
+#define XPMOD_ENTITY_TYPE_SMOKER_CLONE  1
 
 // Scripting variables
 float g_fGameTimeOfLastGoalSet[MAXPLAYERS + 1];

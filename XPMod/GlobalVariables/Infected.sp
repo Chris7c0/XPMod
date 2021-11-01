@@ -107,13 +107,16 @@ bool g_bSmokerReadyForDismountButtonPress[MAXPLAYERS + 1];
 bool SetMoveTypeBackToNormalOnNextGameFrame[MAXPLAYERS + 1];
 new bool:g_bIsElectrocuting[MAXPLAYERS + 1];
 new bool:g_bIsTarFingerVictim[MAXPLAYERS + 1];
-#define SMOKER_DOPPELGANGER_MAX_CLONES                  5
+#define SMOKER_DOPPELGANGER_MAX_CLONES                  2
 #define SMOKER_DOPPELGANGER_DURATION                    15.0
-#define SMOKER_DOPPELGANGER_REGEN_PERIOD                10.0
+#define SMOKER_DOPPELGANGER_REGEN_PERIOD                30.0
 #define SMOKER_DOPPELGANGER_COOLDOWN_PERIOD             0.5
+#define SMOKER_DOPPELGANGER_FADE_IN_PERIOD              2.5
+#define SMOKER_DOPPELGANGER_CI_SPAWN_COUNT              5
 float g_fNextSmokerDoppelgangerRegenTime[MAXPLAYERS + 1];
 new g_iSmokerDoppelgangerCount[MAXPLAYERS + 1];
 bool g_bSmokerDoppelgangerCoolingDown[MAXPLAYERS + 1];
+float g_iSmokerDoppelgangerFadeRunTime[MAXENTITIES + 1];
 new g_iSmokerInfectionCloudEntity[MAXPLAYERS + 1];
 new bool:g_bHasSmokersPoisonCloudOut[MAXPLAYERS + 1];
 new Float:g_xyzPoisonCloudOriginArray[MAXPLAYERS + 1][3];

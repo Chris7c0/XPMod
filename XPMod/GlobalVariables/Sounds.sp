@@ -38,6 +38,7 @@
 #define SOUND_FLIES					        "ambient/creatures/flies_loop.wav"
 #define SOUND_HOOKGRAB				        "player/smoker/miss/smoker_reeltonguein_02.wav"
 #define SOUND_HOOKRELEASE			        "player/smoker/miss/smoker_reeltonguein_01.wav"
+#define SOUND_CLOWN_SHOVE			        "player/survivor/hit/rifle_swing_hit_clown.wav"
 #define SOUND_JOCKEYPEE				        "ambient/spacial_loops/4b_hospatrium_waterleak.wav"
 #define SOUND_JOCKEYLAUGH1			        "player/jockey/voice/idle/jockey_lurk03.wav"
 #define SOUND_JOCKEYLAUGH2			        "player/jockey/voice/idle/jockey_lurk09.wav"

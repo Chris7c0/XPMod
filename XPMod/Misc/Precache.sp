@@ -55,6 +55,7 @@ PrecacheAllParticles()
 	// Smoker
 	PrecacheParticle("bug_zapper_fly_cloud");
 	PrecacheParticle("electrical_arc_01_system");
+	PrecacheParticle("smoker_smokecloud");
 	// PrecacheParticle("smoker_spore_attack");
 	PrecacheParticle("teleport_warp");
 	
@@ -127,6 +128,7 @@ PrecacheAllParticles()
 	
 	// Misc
 	PrecacheParticle("mini_fireworks");
+	PrecacheParticle("fireworks_explosion_03");
 	PrecacheParticle("drugged_effect");
 	PrecacheParticle("poison_bubbles");
 }
@@ -175,6 +177,7 @@ PrecacheAllSounds()
 	PrecacheSound(SOUND_ZAP2);
 	PrecacheSound(SOUND_ZAP3);
 	//Infected Sounds
+	PrecacheSound(SOUND_CLOWN_SHOVE);
 	PrecacheSound(SOUND_JOCKEYPEE);
 	PrecacheSound(SOUND_BOOMER_EXPLODE);
 	for(new i=0; i < sizeof(SOUND_BOOMER_THROW); i++)

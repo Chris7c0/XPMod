@@ -95,22 +95,22 @@ Action:NoxiousMenuDraw(iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	SetMenuTitle(menu, "\
-		%s							Illusive Trickster (Level %d)\
+		%s					Illusive Trickster (Level %d)\
 		\n \
-		\n 8.5%% Invisibility per Lvl While Tonguing\
+		\n 8.5%% Invisibility per Lvl When Tonguing\
 		\n	[PRESS CROUCH] Toggle\
 		\n \
-		\n While Choking:\
+		\n When Choking:\
 		\n	Hide Victim Glow\
 		\n	[PRESS WALK] Create Smoke Screen On Victim\
 		\n \
-		\n [PRESS RELOAD] Create Doppelganger Decoy On Crosshair\
-		\n	Regenerates(Max 5)\
+		\n [PRESS RELOAD] Create Doppelganger On Crosshair\
+		\n	Spawns Tiny Clowns If Hit\
+		\n	Regens(Max 2)\
 		\n \
 		\n					Bind 1: Cloud Conversion\
 		\n \
 		\n Become Fast Moving Invulnerable Smoke\
-		\n 3 Min CD\
 		\n 3 Stages\
 		\n In Smoke:\
 		\n	CI Are Enhanced\
@@ -124,7 +124,7 @@ Action:NoxiousMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n",
+		%s\n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 

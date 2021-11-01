@@ -129,13 +129,13 @@ void TrackAllRocks()
 						case TANK_ROCK_TYPE_FIRE:
 						{
 							SetEntityRenderMode(iTankRockEntity, RenderMode:0);
-							SetEntityRenderColor(iTankRockEntity,255,30,255,255);
+							SetEntityRenderColor(iTankRockEntity, 215, 53, 2,255);
 							CreateTimer(0.1, WaitForNonZeroOriginVectorAndSetUpTankRock, iTankRockEntity, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 						}
 						case TANK_ROCK_TYPE_ICE:
 						{
 							SetEntityRenderMode(iTankRockEntity, RenderMode:3);
-							SetEntityRenderColor(iTankRockEntity,180,230,255,240);
+							SetEntityRenderColor(iTankRockEntity, 180, 230, 255, 240);
 							CreateTimer(0.1, WaitForNonZeroOriginVectorAndSetUpTankRock, iTankRockEntity, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 						}
 						case TANK_ROCK_TYPE_NECROTANKER:

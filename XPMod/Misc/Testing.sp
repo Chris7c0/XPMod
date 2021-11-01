@@ -4,21 +4,42 @@
 public Action Timer_Testing(Handle hTimer, int iClient)
 {
 	// float xyzLocation[3];
-	// GetClientAbsOrigin(iClient, xyzLocation)
+	// GetClientAbsOrigin(iClient, xyzLocation);
 	// GetAllCommonInfectedInARadius(xyzLocation, 500.0);
+
+	// // Hook the model so hits will register
+	// SDKHook(iClient, SDKHook_OnTakeDamage, OnTakeDamage);
+	// //SDKHook(EntIndexToEntRef(iClient), SDKHook_OnTakeDamage, OnTakeDamage);
+	// PrintToServer("HOOKING %i, %i", iClient, EntIndexToEntRef(iClient));
+
+	//SDKHook(iClient, SDKHook_OnTakeDamageAlivePost, OnTakeDamageAlivePost);
 	
 	return Plugin_Continue;
 }
 
 Action:TestFunction1(iClient, args)
 {
-	
 	DebugLog(DEBUG_MODE_TESTING, "T1");
 	//PrintToChat(iClient, "T1");
 
 	char strArg[20][99];
 	for (int i=0; i<20; i++)
 		GetCmdArg(i+1, strArg[i], sizeof(strArg[]));
+
+
+	CreateSmokerDoppelganger(iClient);
+
+	// float xyzLocation[3], xyzDirection[3];
+	// if (GetCrosshairPosition(iClient, xyzLocation, xyzDirection) == false)
+	// 	return Plugin_Continue;
+
+	// xyzLocation[2] += 20.0;
+
+	// int iClone = CreatePlayerClone(iClient, xyzLocation, xyzDirection, 2);
+	// CreateTimer(0.1, Timer_Testing, iClone);
+
+	// int iCan = CreatGasCan(iClient, xyzLocation, xyzDirection, 2);
+	// CreateTimer(0.1, Timer_Testing, iCan);
 
 
 	// HandleEntitiesInSmokerCloudRadius(iClient, 100.0);

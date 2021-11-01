@@ -490,6 +490,13 @@ bool CreateSmokerDoppelganger(int iClient)
 	int iCloneEntity = CreatePlayerClone(iClient, xyzLocation, xyzDirection, iAnimationSequence);
 	if (RunEntityChecks(iCloneEntity) == false)
 		return false;
+
+	//Create the fade in effect
+	SetEntityRenderMode(iCloneEntity, RenderMode:3);
+	SetEntityRenderColor(iCloneEntity, 255, 255, 255, 0);
+	g_iSmokerDoppelgangerFadeRunTime[iCloneEntity] = 0.0;
+	CreateTimer(0.1, TimerFadeInDoppelgangerAndThenHookOnTakeDamage, iCloneEntity, TIMER_REPEAT);
+
 	CreateTimer(SMOKER_DOPPELGANGER_DURATION, TimerRemoveSmokerDoppelganger, iCloneEntity, TIMER_FLAG_NO_MAPCHANGE);
 
 
@@ -526,6 +533,9 @@ int CreatePlayerClone(int iClient, float xyzLocation[3], float xyzAngles[3], int
 {
 	char strModel[PLATFORM_MAX_PATH];
 	GetEntPropString(iClient, Prop_Data, "m_ModelName", strModel, sizeof(strModel));
+	//PrintToServer("MODEL STRING: %s", strModel);
+
+	//"models/infected/smoker.mdl"
 
 	// Create survivor model that will be entangled
 	int iClone = CreateEntityByName("prop_dynamic");		// Required for iAnimationSequence
@@ -556,8 +566,34 @@ int CreatePlayerClone(int iClient, float xyzLocation[3], float xyzAngles[3], int
 
 	// Set angles and origin
 	TeleportEntity(iClone, xyzLocation, xyzAngles, NULL_VECTOR);
+	
+	// SetEntProp(iClone, Prop_Data, "m_iBreakableSkin", 1);
+	// SetEntProp(iClone, Prop_Data, "m_iMinHealthDmg", 1);
+	// SetEntProp(iClone, Prop_Data, "m_iMaxHealth", 1000);
+	// SetEntProp(iClone, Prop_Data, "m_iHealth", 1000);
+	// SetEntProp(iClone, Prop_Data, "m_takedamage", 2 );
+	
+	
+	//SetEntProp(iClone, Prop_Send, "m_nSolidType", SOLID_VPHYSICS);
+	// SetEntProp(iClone, Prop_Send, "m_nSolidType", 2);
+	
+	// // https://forums.alliedmods.net/showthread.php?t=325668
+	// int iFlags = GetEntProp(iClone, Prop_Data, "m_usSolidFlags", 2);
+	// iFlags = iFlags |= 0x0004;
+	// SetEntProp(iClone, Prop_Data, "m_usSolidFlags", iFlags, 2);
 
-	// Set playback rate for animation
+	// SetEntProp(iClone, Prop_Send, "m_usSolidFlags", 12);
+	SetEntProp(iClone, Prop_Data, "m_nSolidType", 2);
+	SetEntProp(iClone, Prop_Send, "m_CollisionGroup", 1);
+
+	DispatchSpawn(iClone);
+
+	g_iXPModEntityType[iClone] = XPMOD_ENTITY_TYPE_SMOKER_CLONE;
+	g_fXPModEntityHealth[iClone] = 1.0;
+	
+	// AcceptEntityInput(iClone, "TurnOn");
+
+		// Set playback rate for animation
 	SetEntPropFloat(iClone, Prop_Send, "m_flPlaybackRate", 1.0);
 	// Set the actual animation (two methods)
 	if (iAnimationSequence == -1)
@@ -570,15 +606,36 @@ int CreatePlayerClone(int iClient, float xyzLocation[3], float xyzAngles[3], int
 		//PrintToServer("iAnimationSequence: %i", iAnimationSequence);
 		SetEntProp(iClone, Prop_Send, "m_nSequence", iAnimationSequence);
 	}
-	
 
-	//SetEntProp(iClone, Prop_Send, "m_nSolidType", 1);
-
-	// // Hook the model so hits will register
-	// SDKHook(iClone, SDKHook_OnTakeDamage, OnTakeDamage);
-	// PrintToServer("HOOKING %i, %i", iClone, EntIndexToEntRef(iClone));
-	
 	return iClone;
+}
+
+Action TimerFadeInDoppelgangerAndThenHookOnTakeDamage(Handle hTimer, int iEntity)
+{
+	if (RunEntityChecks(iEntity) == false)
+		return Plugin_Stop;
+
+	g_iSmokerDoppelgangerFadeRunTime[iEntity] += 0.1;
+
+	if (g_iSmokerDoppelgangerFadeRunTime[iEntity] >= SMOKER_DOPPELGANGER_FADE_IN_PERIOD)
+	{
+		// Set the render mode back to normal
+		SetEntityRenderMode(iEntity, RenderMode:0);
+		SetEntityRenderColor(iEntity, 255, 255, 255, 255);
+
+		// Hook the model so hits will register
+		SDKHook(iEntity, SDKHook_OnTakeDamage, OnTakeDamage);
+
+		return Plugin_Stop;
+	}
+
+	// PrintToChatAll("%i", RoundToNearest((g_iSmokerDoppelgangerFadeRunTime[iEntity] / SMOKER_DOPPELGANGER_FADE_IN_PERIOD) * 255));
+
+	SetEntityRenderMode(iEntity, RenderMode:3);
+	SetEntityRenderColor(iEntity, 255, 255, 255, 
+		RoundToNearest((g_iSmokerDoppelgangerFadeRunTime[iEntity] / SMOKER_DOPPELGANGER_FADE_IN_PERIOD) * 255));
+
+	return Plugin_Continue;
 }
 
 
@@ -608,6 +665,51 @@ bool GetCrosshairPosition(int iClient, float xyzLocation[3], float xyzEyeAngles[
 	CloseHandle(trace);
 
 	return true;
+}
+
+void OnTakeDamage_SmokerClone(int iEntity, int iAttacker, float fDamage, int iDamageType)
+{
+	if (g_fXPModEntityHealth[iEntity] <= 0.0 ||
+		RunEntityChecks(iEntity) == false)
+		return;
+
+	// Dont take damage from anyone except for HUMAN Survivors
+	if (RunClientChecks(iAttacker) == false || 
+		IsFakeClient(iAttacker) == true ||
+		g_iClientTeam[iAttacker] != TEAM_SURVIVORS)
+		return;
+
+	// Handle the damage
+	g_fXPModEntityHealth[iEntity] = g_fXPModEntityHealth[iEntity] - fDamage > 0.0 ? 
+		g_fXPModEntityHealth[iEntity] - fDamage : 0.0;
+
+	// Pipebomb damage 134217792
+	// PrintToChatAll("OnTakeDamage_SmokerClone:\n	Entity: %i Health: %0.2f, fDamage: %0.2f, iDamageType: %i", 
+	// 	iEntity, g_fXPModEntityHealth[iEntity], fDamage, iDamageType);
+
+	if (g_fXPModEntityHealth[iEntity] > 0.0)
+		return;
+
+	// Get the entity Location
+	float xyzLocation[3];
+	GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", xyzLocation);
+
+	// Spawn the Clowns
+	SpawnCIAroundLocation(xyzLocation, SMOKER_DOPPELGANGER_CI_SPAWN_COUNT, UNCOMMON_CI_CLOWN, CI_REALLY_SMALL, ENHANCED_CI_TYPE_RANDOM, 0.1);
+
+	// Play the Sound Effect
+	EmitAmbientSound(SOUND_CLOWN_SHOVE, xyzLocation, iEntity, SNDLEVEL_NORMAL);
+	EmitAmbientSound(SOUND_CLOWN_SHOVE, xyzLocation, iEntity, SNDLEVEL_NORMAL);
+	EmitSoundToClient(iAttacker, SOUND_CLOWN_SHOVE);
+
+	// Show the Particle Effects
+	//WriteParticle(iEntity, "smoker_smokecloud", 0.0, 10.0);
+	//WriteParticle(iEntity, "fireworks_explosion_03", 0.0, 10.0);
+
+	// Kill the entity
+	KillEntitySafely(iEntity);
+
+	SuppressNeverUsedWarning(iDamageType);
 }
 
 SmokerHitTarFingerVictim(int iVictim)
