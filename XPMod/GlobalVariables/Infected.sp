@@ -164,7 +164,7 @@ new g_iTarFingerVictimBlindAmount[MAXPLAYERS + 1];
 #define SMOKER_TAR_FINGERS_BLIND_AMOUNT_MAX                 255
 //For Teleport
 #define SMOKER_TELEPORT_COOLDOWN_PERIOD             5.0
-new Float:g_fMapsMaxTeleportHeight;
+// new Float:g_fMapsMaxTeleportHeight;
 new g_iSmokerTransparency[MAXPLAYERS + 1];
 new Float:g_fTeleportOriginalPositionX[MAXPLAYERS + 1];
 new Float:g_fTeleportOriginalPositionY[MAXPLAYERS + 1];

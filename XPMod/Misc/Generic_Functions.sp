@@ -1014,6 +1014,10 @@ bool:TraceRayTryToHit(entity,mask)
 
 public bool:TraceEntityFilter_NotAPlayer(iEntity, iContentsMask, any:data)
 {
+	// Check for collision with self
+	if (iEntity == data)
+		return false;
+
 	for(int iClient = 1; iClient <= MaxClients; iClient++)
 	{		
 		if(RunClientChecks(iClient) == false)

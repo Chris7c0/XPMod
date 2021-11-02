@@ -357,12 +357,13 @@ void SmokerTeleport(iClient)
 	if (GetCrosshairPosition(iClient, xyzEndLocation, xyzEyeAngles) == false)
 		return;
 	
+	// Replaced this with checking m_WorldMaxs as well as TR_PointOutsideWorld + small offset 
 	// This limits the height of teleportation for each map, to prevent from walking in the sky
-	if(xyzEndLocation[2] > g_fMapsMaxTeleportHeight)	
-	{
-		PrintHintText(iClient, "You cannot teleport to this location.");
-		return;
-	}
+	// if(xyzEndLocation[2] > g_fMapsMaxTeleportHeight)	
+	// {
+	// 	PrintHintText(iClient, "You cannot teleport to this location.");
+	// 	return;
+	// }
 
 	//Get direction in which iClient is facing, to push out from this vector
 	float vDir[3];
@@ -377,9 +378,9 @@ void SmokerTeleport(iClient)
 	fDistance = GetVectorDistance(xyzOriginalLocation, xyzEndLocation, false);
 	fDistance = fDistance * 0.08;
 
-	if(fDistance > (float(g_iSmokerTalent3Level[iClient]) * 30.0))
+	if(fDistance > (float(g_iSmokerTalent3Level[iClient]) * 15.0))
 	{
-		PrintHintText(iClient, "You cannot teleport beyond %.0f ft.", (float(g_iSmokerTalent3Level[iClient]) * 30.0));
+		PrintHintText(iClient, "You cannot teleport beyond %.0f ft.", (float(g_iSmokerTalent3Level[iClient]) * 15.0));
 		return;
 	}
 	
@@ -646,13 +647,21 @@ bool GetCrosshairPosition(int iClient, float xyzLocation[3], float xyzEyeAngles[
 	GetClientEyeAngles(iClient, xyzEyeAngles);
 	//Get direction in which iClient is facing, to push out from this vector later
 	//GetAngleVectors(xyzEyeAngles, vDir, NULL_VECTOR, NULL_VECTOR);
-	GetClientEyeAngles(iClient, xyzEyeAngles);
-	new Handle:trace = TR_TraceRayFilterEx(xyzEyeOrigin, xyzEyeAngles, MASK_SHOT, RayType_Infinite, TraceEntityFilter_NotAPlayer, iClient);
+	// GetClientEyeAngles(iClient, xyzEyeAngles);
+
+	Handle trace = TR_TraceRayFilterEx(xyzEyeOrigin, xyzEyeAngles, MASK_SHOT, RayType_Infinite, TraceEntityFilter_NotAPlayer, iClient);
+	
 	if(TR_DidHit(trace) == false)
 	{
 		CloseHandle(trace);
 		return false;
 	}
+
+	// // Crashes server without proper trace
+	// char surface[64];
+	// surface = "";
+	// TR_GetSurfaceName(null, surface, sizeof(surface));
+	// PrintToChatAll("Surface: %s", surface);
 
 	if (bClipXZRotation == true)
 	{
@@ -663,6 +672,23 @@ bool GetCrosshairPosition(int iClient, float xyzLocation[3], float xyzEyeAngles[
 	// Get the actual location
 	TR_GetEndPosition(xyzLocation, trace);
 	CloseHandle(trace);
+
+	// Get the world mesh bounds adn check that the player isnt aiming at the skybox
+	float xyzWorldMaxs[3];
+	GetEntPropVector(0, Prop_Data, "m_WorldMaxs", xyzWorldMaxs);
+	// PrintToChatAll("xyzWorldMaxs: %0.1f, %0.1f, %0.1f", xyzWorldMaxs[0], xyzWorldMaxs[1], xyzWorldMaxs[2]);
+	// PrintToChatAll("xyzEndLocation: %0.1f, %0.1f, %0.1f", xyzLocation[0], xyzLocation[1], xyzLocation[2]);
+	// PrintToChatAll("delta: %0.1f", FloatAbs(xyzWorldMaxs[2] - xyzLocation[2]));
+	if (FloatAbs(xyzWorldMaxs[2] - xyzLocation[2])  < 100.0)
+		return false;
+
+	// Check that the end location isnt almost outside the world
+	float xyzTestLocation[3];
+	xyzTestLocation[0] = xyzLocation[0];
+	xyzTestLocation[1] = xyzLocation[1];
+	xyzTestLocation[2] = xyzLocation[2] + 200.0;
+	if (TR_PointOutsideWorld(xyzTestLocation) == true)
+		return false;
 
 	return true;
 }

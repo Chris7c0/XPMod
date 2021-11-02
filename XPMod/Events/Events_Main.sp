@@ -249,7 +249,7 @@ public OnMapStart()
 	PrecacheAllSounds();
 	
 	//Set the max teleport height for the map
-	SetMapsMaxTeleportHeight();
+	//SetMapsMaxTeleportHeight();
 }
 
 Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
