@@ -825,3 +825,69 @@ Action:Timer_ResetGiveAlotOfWeaponsOnCooldown(Handle:timer, any:data)
 	g_bGiveAlotOfWeaponsOnCooldown = false;
 	return Plugin_Stop;
 }
+
+
+
+// This is to remove all the weapons that are too close to each other
+// For cleaning up weapons so server does not crash or slow down from physics
+void RunCloseProximityWeaponCleanUp()
+{
+	char strClassName[32];
+	float fAllPrimaryEntityLocations[MAXENTITIES + 1][3]; 
+
+	for (int iEntity=1; iEntity <= MAXENTITIES; iEntity++)
+	{
+		if (RunEntityChecks(iEntity) == false)
+			continue;
+		
+		// Get the class name to check
+		strClassName = "";
+		GetEntityClassname(iEntity, strClassName, 32);
+		if (StrContains(strClassName, "weapon") == -1)
+			continue;
+		if (StrContains(strClassName, "spawn") > -1)
+			continue;
+
+		// Get the weapon item index
+		int iWeaponIndex = FindWeaponItemIndex(strClassName, ITEM_CLASS_NAME);
+		
+		// If the weapon is a primary weapon, then store the location for check later
+		if (IsWeaponIndexPrimarySlotItem(iWeaponIndex))
+		{
+			// PrintToServer("%i) %i: %s", iEntity, iWeaponIndex, strClassName);
+			GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", fAllPrimaryEntityLocations[iEntity]);
+		}
+	}
+
+	// Loop through array of fAllPrimaryEntityLocations and check if 
+	// there are any more weapons too close to it. Note we dont do the last
+	// item entity here
+	for (int iEntity1=1; iEntity1 < MAXENTITIES; iEntity1++)
+	{
+		if (fAllPrimaryEntityLocations[iEntity1][0] == 0.0)
+			continue;
+		
+		// Check all the secondary entities that can be close to Entity1.  Note: Only
+		// check the ones that are after iEntity1 since the previous have already been checked
+		for (int iEntity2=iEntity1 + 1; iEntity2 <= MAXENTITIES; iEntity2++)
+		{
+			if (fAllPrimaryEntityLocations[iEntity2][0] == 0.0)
+				continue;
+
+			// PrintToChatAll("%0.1f, %0.1f, %0.1f", fAllPrimaryEntityLocations[iEntity1][0], fAllPrimaryEntityLocations[iEntity1][1], fAllPrimaryEntityLocations[iEntity1][2])
+			// PrintToChatAll("GetVectorDistance: %f", GetVectorDistance(fAllPrimaryEntityLocations[iEntity1], fAllPrimaryEntityLocations[iEntity2]));
+
+			if (GetVectorDistance(fAllPrimaryEntityLocations[iEntity1], 
+				fAllPrimaryEntityLocations[iEntity2], false) <
+				WEAPON_PROXIMITY_CLEAN_UP_TRIGGER_THRESHOLD)
+			{
+				// PrintToChatAll("%0.1f, %0.1f, %0.1f", fAllPrimaryEntityLocations[iEntity2][0], fAllPrimaryEntityLocations[iEntity2][1], fAllPrimaryEntityLocations[iEntity2][2])
+				// PrintToChatAll("GetVectorDistance: %f", GetVectorDistance(fAllPrimaryEntityLocations[iEntity1], fAllPrimaryEntityLocations[iEntity2]));
+				KillEntitySafely(iEntity2);
+				fAllPrimaryEntityLocations[iEntity2][0] = 0.0;
+				fAllPrimaryEntityLocations[iEntity2][1] = 0.0;
+				fAllPrimaryEntityLocations[iEntity2][2] = 0.0;
+			}
+		}
+	}
+}

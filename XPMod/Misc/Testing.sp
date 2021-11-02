@@ -27,7 +27,7 @@ Action:TestFunction1(iClient, args)
 		GetCmdArg(i+1, strArg[i], sizeof(strArg[]));
 
 
-	CreateSmokerDoppelganger(iClient);
+	//CreateSmokerDoppelganger(iClient);
 
 	// float xyzLocation[3], xyzDirection[3];
 	// if (GetCrosshairPosition(iClient, xyzLocation, xyzDirection) == false)

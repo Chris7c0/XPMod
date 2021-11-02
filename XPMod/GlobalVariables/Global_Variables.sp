@@ -258,6 +258,10 @@ new g_iPlayerHealthTemp[MAXPLAYERS + 1];
 bool g_bHideNameChangeMessage = false;
 #define NAME_CHANGE_STRING "#Cstrike_Name_Change"
 
+// Weapon Physics Server Performance fix
+#define WEAPON_PROXIMITY_CLEAN_UP_TRIGGER_ITEM_PICKUP_COUNT 8
+#define WEAPON_PROXIMITY_CLEAN_UP_TRIGGER_THRESHOLD		    50.0
+
 // Input restrictions
 bool g_bMovementLocked[MAXPLAYERS +1];
 bool g_bStopAllInput[MAXPLAYERS + 1];

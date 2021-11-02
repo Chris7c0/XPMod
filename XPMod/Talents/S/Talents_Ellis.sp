@@ -707,7 +707,7 @@ CyclePlayerWeapon_Ellis(int iClient)
 
 	if((g_iEllisCurrentPrimarySlot[iClient] == 0) && g_iEllisPrimarySlot1[iClient] > ITEM_EMPTY)
 	{
-		// Remove a laser upgrade counter to prevent flooding the server
+		// Remove a laser upgrade counter to allow for infinite swapping
 		if(g_iLaserUpgradeCounter[iClient] > 0)
 			g_iLaserUpgradeCounter[iClient]--;
 
@@ -726,7 +726,7 @@ CyclePlayerWeapon_Ellis(int iClient)
 	}
 	else if((g_iEllisCurrentPrimarySlot[iClient] == 1) && g_iEllisPrimarySlot0[iClient] > ITEM_EMPTY)
 	{
-		// Remove a laser upgrade counter to prevent flooding the server
+		// Remove a laser upgrade counter to allow for infinite swapping
 		if(g_iLaserUpgradeCounter[iClient] > 0)
 			g_iLaserUpgradeCounter[iClient]--;
 

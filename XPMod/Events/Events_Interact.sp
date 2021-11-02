@@ -85,8 +85,7 @@ Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadca
 
 	// Automatic laser site upgrades
 	if (g_bTalentsConfirmed[iClient] &&
-		(g_iWeaponsLevel[iClient] > 0 || g_iPromotionalLevel[iClient] > 0) && 
-		g_iLaserUpgradeCounter[iClient] < 10 &&
+		(g_iWeaponsLevel[iClient] > 0 || g_iPromotionalLevel[iClient] > 0) &&
 		(StrContains(weaponclass, "rifle", false) != -1 || StrContains(weaponclass, "shotgun", false) != -1 ||
 		StrContains(weaponclass, "smg", false) != -1 || StrContains(weaponclass, "sniper", false) != -1 || 
 		StrContains(weaponclass, "grenade", false) != -1))
@@ -97,8 +96,7 @@ Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadca
 		g_iLaserUpgradeCounter[iClient]++;
 	}
 	else if (g_bTalentsConfirmed[iClient] &&
-		g_iLouisTalent2Level[iClient] > 0 && 
-		g_iLaserUpgradeCounter[iClient] < 10 &&
+		g_iLouisTalent2Level[iClient] > 0 &&
 		StrContains(weaponclass, "smg", false) != -1)
 	{
 		RunCheatCommand(iClient, "upgrade_add", "upgrade_add LASER_SIGHT");
@@ -401,6 +399,13 @@ Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadca
 		EventsItemPickUp_Louis(iClient, weaponclass);
 	}
 
+	// If the player picked up X number of lasers, then run a clean up to prevent server slowness
+	if (g_iLaserUpgradeCounter[iClient] > WEAPON_PROXIMITY_CLEAN_UP_TRIGGER_ITEM_PICKUP_COUNT)
+	{
+		RunCloseProximityWeaponCleanUp();
+		g_iLaserUpgradeCounter[iClient] = 0;
+	}
+	
 	return Plugin_Continue;
 }
 
