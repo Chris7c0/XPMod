@@ -848,6 +848,10 @@ void RunCloseProximityWeaponCleanUp()
 		if (StrContains(strClassName, "spawn") > -1)
 			continue;
 
+		// Do not check if has it an owner
+		if (GetEntProp(iEntity, Prop_Send, "m_hOwnerEntity") != -1)
+			continue;
+
 		// Get the weapon item index
 		int iWeaponIndex = FindWeaponItemIndex(strClassName, ITEM_CLASS_NAME);
 		
@@ -889,5 +893,35 @@ void RunCloseProximityWeaponCleanUp()
 				fAllPrimaryEntityLocations[iEntity2][2] = 0.0;
 			}
 		}
+	}
+}
+
+
+// This is to remove all pistols, created for Nicks swapping glitch
+// For cleaning up weapons so server does not crash or slow down from physics
+void PistolWeaponCleanUp()
+{
+	char strClassName[32];
+	for (int iEntity=1; iEntity <= MAXENTITIES; iEntity++)
+	{
+		if (RunEntityChecks(iEntity) == false)
+			continue;
+		
+		// Get the class name to check
+		strClassName = "";
+		GetEntityClassname(iEntity, strClassName, 32);
+		if (StrEqual(strClassName, "weapon_pistol", false) == false &&
+			StrEqual(strClassName, "weapon_pistol_magnum", false) == false)
+			continue;
+
+		// Do not remove if the pistol has an owner
+		if (GetEntProp(iEntity, Prop_Send, "m_hOwnerEntity") != -1)
+			continue;
+
+		// PrintToServer("%i, %s: owner %i", iEntity, strClassName, 
+		// 	GetEntProp(iEntity, Prop_Send, "m_hOwnerEntity"));
+
+		// Remove the pistol
+		KillEntitySafely(iEntity);
 	}
 }

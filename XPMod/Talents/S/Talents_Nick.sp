@@ -320,8 +320,7 @@ OnGameFrame_Nick(iClient)
 						}
 						else
 						{
-							if (ActiveWeaponID > 0 && IsValidEntity(ActiveWeaponID))
-								AcceptEntityInput(ActiveWeaponID, "Kill");
+							KillEntitySafely(ActiveWeaponID);
 						}
 						g_iNickCurrentSecondarySlot[iClient] = 1;
 
@@ -349,13 +348,19 @@ OnGameFrame_Nick(iClient)
 						
 						if(StrEqual(g_strNickSecondarySlot1, "weapon_pistol_magnum", false) == true)
 						{
-							if (ActiveWeaponID > 0 && IsValidEntity(ActiveWeaponID))
-								AcceptEntityInput(ActiveWeaponID, "Kill");
+							KillEntitySafely(ActiveWeaponID);
 							g_iNickCurrentSecondarySlot[iClient] = 0;
 
 							RunCheatCommand(iClient, "give", "give pistol_magnum");
 							if (IsValidEntity(ActiveWeaponID) == true)
 								SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iNickSecondarySavedClipSlot1[iClient], true);
+
+							// Remove all the pistols that are left behind 
+							if (++g_iNickPistolSwaps[iClient] >= WEAPON_PROXIMITY_CLEAN_UP_TRIGGER_ITEM_PICKUP_COUNT)
+							{
+								g_iNickPistolSwaps[iClient] = 0;
+								PistolWeaponCleanUp();
+							}
 						}
 						
 						// if(StrEqual(g_strNickSecondarySlot1, "weapon_melee", false) == true)

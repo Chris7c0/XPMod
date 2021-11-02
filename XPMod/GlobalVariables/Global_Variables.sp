@@ -261,6 +261,7 @@ bool g_bHideNameChangeMessage = false;
 // Weapon Physics Server Performance fix
 #define WEAPON_PROXIMITY_CLEAN_UP_TRIGGER_ITEM_PICKUP_COUNT 8
 #define WEAPON_PROXIMITY_CLEAN_UP_TRIGGER_THRESHOLD		    50.0
+int g_iNickPistolSwaps[MAXPLAYERS + 1];
 
 // Input restrictions
 bool g_bMovementLocked[MAXPLAYERS +1];

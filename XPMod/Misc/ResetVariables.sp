@@ -132,6 +132,7 @@ ResetVariablesForMap(iClient)
 	g_bNickAlreadyGivenMoreBind2s[iClient] = false;
 	g_iNickDesperateMeasuresStack = 0;
 	g_iRamboWeaponID[iClient] = -1;
+	g_iNickPistolSwaps[iClient] = 0;
 
 	//Louis
 	g_bLouisTeleportCoolingDown[iClient] = false;

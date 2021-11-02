@@ -415,15 +415,15 @@ Action:Event_WeaponDropped(Handle:hEvent, const String:strName[], bool:bDontBroa
 	decl String:droppeditem[32];
 	GetEventString(hEvent, "item", droppeditem, 32);
 	new iProp = GetEventInt(hEvent,"propid");
-	//PrintToChatAll("droppeditem = %s", droppeditem);
+	// PrintToChatAll("droppeditem = %s", droppeditem);
+
 	if(g_iStrongLevel[iClient] > 0)
 	{
 		if((StrContains(g_strCoachGrenadeSlot1, "empty", false) != -1) || (StrContains(g_strCoachGrenadeSlot2, "empty", false) != -1) || (StrContains(g_strCoachGrenadeSlot3, "empty", false) != -1))
 		{
 			if((StrContains(droppeditem, "pipe_bomb", false) != -1) || (StrContains(droppeditem, "molotov", false) != -1) || (StrContains(droppeditem, "vomitjar", false) != -1))
 			{
-				if (iProp > 0 && IsValidEntity(iProp))
-					AcceptEntityInput(iProp, "Kill");
+				KillEntitySafely(iProp);
 			}
 		}
 	}
@@ -453,8 +453,7 @@ Action:Event_WeaponDropped(Handle:hEvent, const String:strName[], bool:bDontBroa
 				//g_iEllisPrimarySavedAmmoSlot0[iClient] = GetEntProp(iProp, Prop_Data, iOffset_Ammo3);
 				//PrintToChatAll("g_iEllisPrimarySavedAmmoSlot0 %d", g_iEllisPrimarySavedAmmoSlot0[iClient]);
 
-				if (iProp > 0 && IsValidEntity(iProp))
-					AcceptEntityInput(iProp, "Kill");
+				KillEntitySafely(iProp);
 			}
 		}
 	}
@@ -468,16 +467,12 @@ Action:Event_WeaponDropped(Handle:hEvent, const String:strName[], bool:bDontBroa
 		{
 			g_bNickStoresDroppedPistolAmmo[iClient] = true;
 		}
-		//PrintToChatAll("Saving dropped pistol ammo");
-		//PrintToChatAll("ClipSlot1 on drop w drop pistol = %d", g_iNickSecondarySavedClipSlot1[iClient]);
+		// PrintToChatAll("Saving dropped pistol ammo");
+		// PrintToChatAll("ClipSlot1 on drop w drop pistol = %d", g_iNickSecondarySavedClipSlot1[iClient]);
 	}
 	if((g_iRiskyLevel[iClient] == 5) && (g_bIsNickInSecondaryCycle[iClient] == false) && (StrEqual(droppeditem, "pistol", false) == true))
 	{
-		if (iProp > 0 && IsValidEntity(iProp))
-		{
-			AcceptEntityInput(iProp, "Kill");
-			//PrintToChatAll("Killing nicks pistols");
-		}
+		KillEntitySafely(iProp);
 	}
 	//g_bIsNickInSecondaryCycle[iClient] == true
 	
