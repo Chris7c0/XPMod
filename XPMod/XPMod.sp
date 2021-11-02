@@ -80,6 +80,8 @@ public OnPluginStart()
 	SetupInitialVariableValues();
 	//Precache locked weapon models
 	PrecacheLockedWeaponModels();
+	//Handle any users that are already connected
+	HandleAnyConnectedUsers();
 	
 	//Start the repeating timers
 	CreateTimer(1.0, TimerCheckAndOpenCharacterSelectionMenuForAll, 0, TIMER_REPEAT);

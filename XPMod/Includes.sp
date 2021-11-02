@@ -14,6 +14,7 @@
 #include "XPMod/Misc/Testing.sp"
 // Misc
 #include "XPMod/Misc/Debug.sp"
+#include "XPMod/Misc/Client_Connect_Disconnect.sp"
 #include "XPMod/Misc/Admin_Commands.sp"
 #include "XPMod/Misc/ScriptCommands.sp"
 #include "XPMod/Misc/Switch_Teams.sp"
