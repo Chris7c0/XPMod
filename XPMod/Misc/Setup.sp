@@ -254,8 +254,8 @@ SetupSDKCalls()
 
 SetupInitialVariableValues()
 {
-    // Client variables
-    for(new i = 0; i <= MaxClients; i++)
+	// Set Client variables
+	for(int i = 0; i <= MaxClients; i++)
 	{
 		g_iClientNextLevelXPAmount[i] = RoundToFloor(LEVEL_1 * XP_MULTIPLIER);
 		
@@ -266,16 +266,16 @@ SetupInitialVariableValues()
 		g_strClientInfectedClass1[i] = "None"; 
 		g_strClientInfectedClass2[i] = "None";
 		g_strClientInfectedClass3[i] = "None";
-
-		ResetVariablesForMap(i);
 		
 		//Initially set the client name to all null characters
 		for(new l=0; l<23; l++)
 			clientidname[i][l] = '\0';
 	}
 
-    // Setup Global ArrayLists
-    g_listEnhancedCIEntities = CreateArray(ENHANCED_CI_ENTITIES_ARRAY_LIST_SIZE);
-    g_listTankRockEntities = CreateArray(TANK_ROCK_ENTITIES_ARRAY_LIST_SIZE);
+	ResetAllVariablesForRound();
+
+	// Setup Global ArrayLists
+	g_listEnhancedCIEntities = CreateArray(ENHANCED_CI_ENTITIES_ARRAY_LIST_SIZE);
+	g_listTankRockEntities = CreateArray(TANK_ROCK_ENTITIES_ARRAY_LIST_SIZE);
 }
 

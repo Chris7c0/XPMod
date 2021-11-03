@@ -64,23 +64,23 @@ public OnPluginStart()
 
 	// Set up ConVars
 	SetupXPMConVars();
-	//Setup the handle that will link to the MySQL Database
+	// Setup the handle that will link to the MySQL Database
 	SetUpTheDBConnection();
-	//Setup Included Files
+	// Setup Included Files
 	SetupLoadouts();
-	//Setup Hooks
+	// Setup Hooks
 	SetupXPMEvents();
-	//Setup Console Commands clients can use
+	// Setup Console Commands clients can use
 	SetupConsoleCommands();
-	//FindGameOffsets
+	// FindGameOffsets
 	SetupGameOffsets();
-	//Prep the SDK Call commands
+	// Prep the SDK Call commands
 	SetupSDKCalls();
-	//Set initial values for variables
+	// Set initial values for variables
 	SetupInitialVariableValues();
-	//Precache locked weapon models
+	// Precache locked weapon models
 	PrecacheLockedWeaponModels();
-	//Handle any users that are already connected
+	// Handle any users that are already connected
 	HandleAnyConnectedUsers();
 	
 	//Start the repeating timers

@@ -211,6 +211,9 @@ public OnMapStart()
 {
 	//PrintToServer("OnMapStart ========================================================================================================")
 	
+	//Get current map name
+	GetCurrentMap(g_strCurrentMap,32);
+
 	GetXPMConVarValues();
 
 	SQLGetTopXPModPlayerStatistics();
@@ -264,62 +267,7 @@ Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	g_bEndOfRound = false;
 	g_bCanSave = true;
 	
-	//Reset Variables
-	for(new i = 1; i <= MaxClients; i++)
-	{
-		CheckLevel(i);
-		
-		//Reset all the client variables to their initial state
-		ResetVariablesForMap(i);
-		DeleteAllMenuParticles(i);
-		
-		//Sets voice comns back to default setting
-		if(IsClientInGame(i) == true)
-		{
-			for(new other = 1; other <= MaxClients; other++)
-			{
-				if(IsClientInGame(other) == true && IsFakeClient(other) == false)
-					SetListenOverride(i, other, Listen_Default);
-			}
-		}
-	}
-	
-	for(new i = 0; i < MAXENTITIES; i++)
-		g_iPoopBombOwnerID[i] = 0;
-	
-	//Reset CVars and XPMod Variables for the round
-	//SetConVarInt(FindConVar("z_frustration"), 0);
-	SetConVarInt(FindConVar("z_frustration_lifetime"), TANK_FRUSTRATION_TIME_IN_SECONDS);
-	SetConVarInt(FindConVar("z_common_limit"), 30);
-	g_iScreenShakeAmount = SCREEN_SHAKE_AMOUNT_DEFAULT;
-	SetSurvivorScreenShakeAmount();
-	SetConVarInt(FindConVar("sv_disable_glow_survivors"), 0);
-	SetConVarInt(FindConVar("chainsaw_attack_force"), 400);
-	SetConVarInt(FindConVar("chainsaw_damage"), 100);
-	SetConVarFloat(FindConVar("chainsaw_hit_interval"), 0.1, false, false);
-	SetConVarInt(FindConVar("survivor_crawl_speed"), 15,false,false);
-	SetConVarInt(FindConVar("survivor_allow_crawling"),0,false,false);
-	SetConVarFloat(FindConVar("z_vomit_fatigue"),0.0,false,false);	//So players can move on vomit
-	//////////////////////////////////////////////////////////////////////////////////////////////////////SetConVarFloat(FindConVar("z_spit_fatigue"),0.0,false,false);	//So players can move on spit
-	SetConVarInt(FindConVar("first_aid_kit_max_heal"), 999);		//So everyone can heal to their max using medkit
-	SetConVarFloat(FindConVar("first_aid_heal_percent"),0.0,false,false);	//So it doesnt heal at all (this is handled in the heal success event)
-	SetConVarInt(FindConVar("pain_pills_health_threshold"), 999);	//So everyone can use pain pills above 99 health
-	SetConVarInt(FindConVar("sb_stop"), 1);				//So the bots dont run off before unfrozen
-	SetConVarFloat(FindConVar("upgrade_laser_sight_spread_factor"), 0.4);
-	// Louis's Bind2 abilities reset to the default values
-	SetConVarInt(FindConVar("survivor_revive_duration"), 5);
-	SetConVarInt(FindConVar("first_aid_kit_use_duration"), 5);
-	SetConVarInt(FindConVar("defibrillator_use_duration"), 3);
-	g_bCommonInfectedDoMoreDamage = false;
-	g_iNickResurrectUses = 0;
-	g_iHighestLeadLevel = 0;
-	g_iCoachTeamHealthStack = 0;
-	g_iCrawlSpeedMultiplier = 0;
-	g_iNickDesperateMeasuresStack = 0;
-	g_fMaxLaserAccuracy = 0.4;
-	g_bSomeoneAttacksFaster = false;
-	// Turn off all the cheat flags, just incase the code errored somewhere
-	// ...which totally never happens
+	ResetAllVariablesForRound();
 		
 	return Plugin_Continue;
 }
