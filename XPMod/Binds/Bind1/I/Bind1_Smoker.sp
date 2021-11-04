@@ -432,7 +432,12 @@ void HandleEntitiesInSmokerCloudRadius(int iClient, float fRadius)
 		}
 		
 		// Handle CI that are not already enhanced
-		if (IsCommonInfected(iEntity, strClassName) && GetEntProp(iEntity, Prop_Data, "m_iHealth") > 0)
+		// Check the CI is still alive, by checking health and also
+		// importantly if the CI is a ragdoll because health can not
+		// go to 0 and they are still dead in the game.
+		if (IsCommonInfected(iEntity, strClassName) && 
+			GetEntProp(iEntity, Prop_Data, "m_iHealth") > 0 &&
+			GetEntProp(iEntity, Prop_Data, "m_bClientSideRagdoll") == 0)
 		{
 			ExtinguishEntity(iEntity);
 
@@ -442,11 +447,12 @@ void HandleEntitiesInSmokerCloudRadius(int iClient, float fRadius)
 			if (iEnhancedCIIndex >= 0)
 				continue;
 
-			// PrintToChatAll("iHealth = %i", GetEntProp(iEntity, Prop_Data, "m_iHealth"));
+			// PrintToChatAll("%i) iHealth = %i", iEntity, GetEntProp(iEntity, Prop_Data, "m_iHealth"));
+			// PrintToChatAll("%i) m_bClientSideRagdoll = %i", iEntity, GetEntProp(iEntity, Prop_Data, "m_bClientSideRagdoll"));
 			// PrintToChatAll("fDistance = %f", GetVectorDistance(xyzClientLocation, xyzEntityLocation));
 			// PrintToChatAll("%f, %f, %f", xyzEntityLocation[0], xyzEntityLocation[1], xyzEntityLocation[2]);
 
-			SetEntProp(iEntity, Prop_Data, "m_iHealth", 0);	
+			SetEntProp(iEntity, Prop_Data, "m_iHealth", 0); 
 
 			switch (g_iSmokerSmokeCloudStage)
 			{
