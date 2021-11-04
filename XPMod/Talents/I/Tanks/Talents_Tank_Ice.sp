@@ -245,12 +245,10 @@ EventsHurt_AttackerTank_Ice(Handle:hEvent, iAttackerTank, iVictim)
 		g_bIceTankColdAuraDisabled[iVictim] = true;
 		SetClientSpeed(iVictim);
 
-		// Reset the timer to disable only if doesn't already exist.
-		if (g_hTimer_IceTankColdSlowAuraEnableAgain[iVictim] == null)
-		{
-			delete g_hTimer_IceTankColdSlowAuraEnableAgain[iVictim];
-			g_hTimer_IceTankColdSlowAuraEnableAgain[iVictim] = CreateTimer(TANK_ICE_COLD_SLOW_AURA_HIT_DISABLE_DURATION, Timer_EnableIceTankColdSlowAura, iVictim, TIMER_FLAG_NO_MAPCHANGE);
-		}
+		// Reset the timer to enable cold aura again, if punched again it will wait an additional X seconds.
+		delete g_hTimer_IceTankColdSlowAuraEnableAgain[iVictim];
+		g_hTimer_IceTankColdSlowAuraEnableAgain[iVictim] = CreateTimer(TANK_ICE_COLD_SLOW_AURA_HIT_DISABLE_DURATION, Timer_EnableIceTankColdSlowAura, iVictim, TIMER_FLAG_NO_MAPCHANGE);
+
 	}
 
 	if(g_bFrozenByTank[iVictim] == false && g_bBlockTankFreezing[iVictim] == false)
