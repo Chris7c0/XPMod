@@ -46,7 +46,7 @@ void PopRockOffTankRockEntitiesList(int iEntity)
 	//PrintToServer("Rock Destroyed %i", iEntity);
 }
 
-void RemoveAllEntitiesFromArrayList(ArrayList:list)
+void RemoveAllEntitiesFromArrayList(ArrayList list)
 {
 	if (list == INVALID_HANDLE)
 		return;
@@ -187,94 +187,128 @@ void TrackAllRocks()
 
 bool GetTankRockTypeAndOwner(iTankRockIndex)
 {
-	//If one tank is spawned in then we can determine the type of rock easily by checking this tank type
-	if (g_iTankCounter <= 1)
+	// Get the actual rock game entity
+	int iRockEntityID = g_listTankRockEntities.Get(iTankRockIndex, TANK_ROCK_ENTITY_ID);
+	if (RunEntityChecks(iRockEntityID) == false ||
+		HasEntProp(iRockEntityID, Prop_Send, "m_hOwnerEntity") == false)
+		return false;
+	
+	// Get the rock's owner id, the tank that threw it
+	int iRockOwner = GetEntPropEnt(iRockEntityID, Prop_Send, "m_hOwnerEntity");
+	if (RunClientChecks(iRockOwner) == false || 
+		IsPlayerAlive(iRockOwner) == false)
+		return false;
+
+	// Store the rock thrower (owner)
+	g_listTankRockEntities.Set(iTankRockIndex, iRockOwner, TANK_ROCK_OWNER_ID);
+
+	// Get the tank rock type using its owner's Tank type
+	int iRockTankType = TANK_ROCK_TYPE_GENERIC;
+	switch(g_iTankChosen[iRockOwner])
 	{
-		// Determine Tank Rock type based on the tank spawned in:
-		for (int iClient=1; iClient <= MaxClients; iClient++)
-		{
-			if(RunClientChecks(iClient) && 
-				IsPlayerAlive(iClient) && 
-				GetEntProp(iClient, Prop_Send, "m_zombieClass") == TANK)
-			{
-				// Store the rock thrower (owner)
-				g_listTankRockEntities.Set(iTankRockIndex, iClient, TANK_ROCK_OWNER_ID);
-
-				new iRockTankType = TANK_ROCK_TYPE_GENERIC;
-				switch(g_iTankChosen[iClient])
-				{
-					case TANK_FIRE: 			iRockTankType = TANK_ROCK_TYPE_FIRE;
-					case TANK_ICE: 				iRockTankType = TANK_ROCK_TYPE_ICE;
-					case TANK_NECROTANKER: 		iRockTankType = TANK_ROCK_TYPE_NECROTANKER;
-				}
-
-				// Store the tank rock type
-				g_listTankRockEntities.Set(iTankRockIndex, iRockTankType, TANK_ROCK_TYPE);
-
-				return true;
-			}
-		}
-	}
-	// If multiple tanks are spawned in, then determine who threw the rock
-	// based on how close each tank is relative to the rock
-	else
-	{
-		// Get the actual rock game entity
-		new iRockEntity = g_listTankRockEntities.Get(iTankRockIndex, TANK_ROCK_ENTITY_ID);
-
-		if (RunEntityChecks(iRockEntity) == false ||
-			HasEntProp(iRockEntity, Prop_Send, "m_vecOrigin") == false)
-			return false;
-
-		// Get the rock entity position
-		decl Float:xyzRockPosition[3];
-		GetEntPropVector(iRockEntity, Prop_Send, "m_vecOrigin", xyzRockPosition);
-		
-		// If the rock entities vectors are still 0, 0, 0 then we cant determine its proximity to the tank yet
-		// return -1 and check again later
-		if (xyzRockPosition[0] == 0 && xyzRockPosition[1] == 0 && xyzRockPosition[2] == 0)
-			return false;
-
-		// Loop through each client, determine if they are a tank, and finally check how close they are to the rock
-		for (int iClient=1; iClient<= MaxClients; iClient++)
-		{
-			if(RunClientChecks(iClient) == true &&
-				IsPlayerAlive(iClient) == true &&
-				GetEntProp(iClient, Prop_Send, "m_zombieClass") == TANK)
-			{
-				decl Float:xyzTankOrigin[3];
-				GetClientAbsOrigin(iClient, xyzTankOrigin);
-
-				//PrintToChatAll("tank origin:  %f,%f,%f", xyzTankOrigin[0],xyzTankOrigin[1],xyzTankOrigin[2]);
-				//PrintToChatAll("rock origin:  %f,%f,%f", xyzRockPosition[0],xyzRockPosition[1],xyzRockPosition[2]);
-				//PrintToChatAll("rock distance from tank: %f\n ", GetVectorDistance(xyzTankOrigin,xyzRockPosition, false));
-
-				if (GetVectorDistance(xyzTankOrigin,xyzRockPosition, false) < 400.0)
-				{
-					// Store the rock thrower (owner)
-					g_listTankRockEntities.Set(iTankRockIndex, iClient, TANK_ROCK_OWNER_ID);
-
-					new iRockTankType = TANK_ROCK_TYPE_GENERIC;
-					switch(g_iTankChosen[iClient])
-					{
-						case TANK_FIRE: 			iRockTankType = TANK_ROCK_TYPE_FIRE;
-						case TANK_ICE: 				iRockTankType = TANK_ROCK_TYPE_ICE;
-						case TANK_NECROTANKER: 		iRockTankType = TANK_ROCK_TYPE_NECROTANKER;
-					}
-
-					// Store the tank rock type
-					g_listTankRockEntities.Set(iTankRockIndex, iRockTankType, TANK_ROCK_TYPE);
-
-					return true;
-				}
-			}
-		}
+		case TANK_FIRE: 			iRockTankType = TANK_ROCK_TYPE_FIRE;
+		case TANK_ICE: 				iRockTankType = TANK_ROCK_TYPE_ICE;
+		case TANK_NECROTANKER: 		iRockTankType = TANK_ROCK_TYPE_NECROTANKER;
 	}
 
-	return false;
+	// Store the tank rock type
+	g_listTankRockEntities.Set(iTankRockIndex, iRockTankType, TANK_ROCK_TYPE);
+
+	return true;
 }
 
-Action:WaitForNonZeroOriginVectorAndSetUpTankRock(Handle:timer, any:iRockEntity)
+
+// // Old method before using m_hOwnerEntity
+// bool GetTankRockTypeAndOwner(iTankRockIndex)
+// {
+// 	//If one tank is spawned in then we can determine the type of rock easily by checking this tank type
+// 	if (g_iTankCounter <= 1)
+// 	{
+// 		// Determine Tank Rock type based on the tank spawned in:
+// 		for (int iClient=1; iClient <= MaxClients; iClient++)
+// 		{
+// 			if(RunClientChecks(iClient) && 
+// 				IsPlayerAlive(iClient) && 
+// 				GetEntProp(iClient, Prop_Send, "m_zombieClass") == TANK)
+// 			{
+// 				// Store the rock thrower (owner)
+// 				g_listTankRockEntities.Set(iTankRockIndex, iClient, TANK_ROCK_OWNER_ID);
+
+// 				new iRockTankType = TANK_ROCK_TYPE_GENERIC;
+// 				switch(g_iTankChosen[iClient])
+// 				{
+// 					case TANK_FIRE: 			iRockTankType = TANK_ROCK_TYPE_FIRE;
+// 					case TANK_ICE: 				iRockTankType = TANK_ROCK_TYPE_ICE;
+// 					case TANK_NECROTANKER: 		iRockTankType = TANK_ROCK_TYPE_NECROTANKER;
+// 				}
+
+// 				// Store the tank rock type
+// 				g_listTankRockEntities.Set(iTankRockIndex, iRockTankType, TANK_ROCK_TYPE);
+
+// 				return true;
+// 			}
+// 		}
+// 	}
+// 	// If multiple tanks are spawned in, then determine who threw the rock
+// 	// based on how close each tank is relative to the rock
+// 	else
+// 	{
+// 		// Get the actual rock game entity
+// 		new iRockEntity = g_listTankRockEntities.Get(iTankRockIndex, TANK_ROCK_ENTITY_ID);
+
+// 		if (RunEntityChecks(iRockEntity) == false ||
+// 			HasEntProp(iRockEntity, Prop_Send, "m_vecOrigin") == false)
+// 			return false;
+
+// 		// Get the rock entity position
+// 		decl Float:xyzRockPosition[3];
+// 		GetEntPropVector(iRockEntity, Prop_Send, "m_vecOrigin", xyzRockPosition);
+		
+// 		// If the rock entities vectors are still 0, 0, 0 then we cant determine its proximity to the tank yet
+// 		// return -1 and check again later
+// 		if (xyzRockPosition[0] == 0 && xyzRockPosition[1] == 0 && xyzRockPosition[2] == 0)
+// 			return false;
+
+// 		// Loop through each client, determine if they are a tank, and finally check how close they are to the rock
+// 		for (int iClient=1; iClient<= MaxClients; iClient++)
+// 		{
+// 			if(RunClientChecks(iClient) == true &&
+// 				IsPlayerAlive(iClient) == true &&
+// 				GetEntProp(iClient, Prop_Send, "m_zombieClass") == TANK)
+// 			{
+// 				decl Float:xyzTankOrigin[3];
+// 				GetClientAbsOrigin(iClient, xyzTankOrigin);
+
+// 				//PrintToChatAll("tank origin:  %f,%f,%f", xyzTankOrigin[0],xyzTankOrigin[1],xyzTankOrigin[2]);
+// 				//PrintToChatAll("rock origin:  %f,%f,%f", xyzRockPosition[0],xyzRockPosition[1],xyzRockPosition[2]);
+// 				//PrintToChatAll("rock distance from tank: %f\n ", GetVectorDistance(xyzTankOrigin,xyzRockPosition, false));
+
+// 				if (GetVectorDistance(xyzTankOrigin,xyzRockPosition, false) < 400.0)
+// 				{
+// 					// Store the rock thrower (owner)
+// 					g_listTankRockEntities.Set(iTankRockIndex, iClient, TANK_ROCK_OWNER_ID);
+
+// 					new iRockTankType = TANK_ROCK_TYPE_GENERIC;
+// 					switch(g_iTankChosen[iClient])
+// 					{
+// 						case TANK_FIRE: 			iRockTankType = TANK_ROCK_TYPE_FIRE;
+// 						case TANK_ICE: 				iRockTankType = TANK_ROCK_TYPE_ICE;
+// 						case TANK_NECROTANKER: 		iRockTankType = TANK_ROCK_TYPE_NECROTANKER;
+// 					}
+
+// 					// Store the tank rock type
+// 					g_listTankRockEntities.Set(iTankRockIndex, iRockTankType, TANK_ROCK_TYPE);
+
+// 					return true;
+// 				}
+// 			}
+// 		}
+// 	}
+
+// 	return false;
+// }
+
+Action WaitForNonZeroOriginVectorAndSetUpTankRock(Handle:timer, any:iRockEntity)
 {
 	//Ensure there is a valid entitty here, remove it from the array otherwise
 	if (IsValidEntity(iRockEntity) == false)
