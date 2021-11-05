@@ -83,7 +83,7 @@ new ArrayList:g_listEnhancedCIEntities;
 
 // Smoker
 #define SMOKER_STARTING_MAX_HEALTH                      250
-#define SMOKER_BONUS_MAX_HEALTH_PER_LEVEL               2
+// #define SMOKER_BONUS_MAX_HEALTH_PER_LEVEL               2
 #define SMOKER_HEALTH_REGEN_PER_FRAME                   2
 #define SMOKER_DEFAULT_TONGUE_COOLDOWN                  15.0
 #define SMOKER_COOLDOWN_REDUCTION_EVERY_OTHER_LEVEL     1.0

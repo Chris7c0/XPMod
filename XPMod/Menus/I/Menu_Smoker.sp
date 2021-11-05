@@ -54,8 +54,6 @@ Action:EnvelopmentMenuDraw(iClient)
 	SetMenuTitle(menu, "\
 		%s  				Rapid Cell Division (Level %d)\
 		\n \
-		\n+2 HP per Level\
-		\n \
 		\nRegenerate 60 HP per Second\
 		\n \
 		\nReduced Tongue Ability Cooldown\
@@ -75,7 +73,7 @@ Action:EnvelopmentMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
