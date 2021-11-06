@@ -246,6 +246,9 @@ bool Event_TongueRelease_Smoker(int iAttacker, iVictim)
 	g_bSmokerVictimGlowDisabled[iVictim] = false;
 	SetClientRenderAndGlowColor(iAttacker);
 
+	SetEntityMoveType(iAttacker, MOVETYPE_CUSTOM);
+	SetClientSpeed(iAttacker);
+
 	// Set the cooldown to enable the next tongue ability faster
 	SetSIAbilityCooldown(iAttacker, SMOKER_DEFAULT_TONGUE_COOLDOWN - (RoundToNearest(g_iSmokerTalent1Level[iAttacker] / 3.0) * SMOKER_COOLDOWN_REDUCTION_EVERY_OTHER_LEVEL) );
 
@@ -279,18 +282,6 @@ bool Event_ChokeStart_Smoker(int iAttacker, int iVictim)
 	// make sure they release it later by first setting this flag
 	new buttons = GetEntProp(iAttacker, Prop_Data, "m_nButtons", buttons);
 	g_bSmokerReadyForDismountButtonPress[iAttacker] = (buttons & IN_ATTACK) ? false : true;
-
-	return false;
-}
-
-bool Event_ChokeEnd_Smoker(int iAttacker, iVictim)
-{
-	SuppressNeverUsedWarning(iVictim);
-
-	SetClientRenderAndGlowColor(iAttacker);
-
-	SetEntityMoveType(iAttacker, MOVETYPE_CUSTOM);
-	SetClientSpeed(iAttacker);
 
 	return false;
 }

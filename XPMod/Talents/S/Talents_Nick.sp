@@ -823,7 +823,7 @@ void EventsItemPickUp_Nick(int iClient, const char[] strWeaponClass)
 	return;
 }
 
-bool Event_ChokeEnd_Nick(int iAttacker, int iVictim)
+bool Event_TongueRelease_Nick(int iAttacker, int iVictim)
 {
 	if (g_iChosenSurvivor[iVictim] != NICK)
 		return false;

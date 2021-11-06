@@ -26,7 +26,17 @@ Action:TestFunction1(iClient, args)
 	for (int i=0; i<20; i++)
 		GetCmdArg(i+1, strArg[i], sizeof(strArg[]));
 
+	
+	//PrintToChatAll("TESTING 1: %i", GetEntProp(iClient, Prop_Data, "m_hObserverTarget"));
+	// PrintToChatAll("TESTING 2: %i", GetEntPropEnt(iClient, Prop_Data, "m_hObserverTarget"));
 
+	// for(int iPlayer = 0; iPlayer <= MaxClients; iPlayer++)
+	// {
+	// 	if (RunClientChecks(iPlayer) == false || IsFakeClient(iPlayer) == true)
+	// 		continue;
+
+	// 	PrintToChatAll("%N: g_iChokingVictim %i, g_bIsElectrocuting %i,", iPlayer, g_iChokingVictim[iPlayer], g_bIsElectrocuting[iClient]);
+	// }
 	//CreateSmokerDoppelganger(iClient);
 
 	// float xyzLocation[3], xyzDirection[3];

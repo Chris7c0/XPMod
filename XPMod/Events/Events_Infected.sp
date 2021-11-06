@@ -231,7 +231,7 @@ Action:Event_TongueGrab(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 
-	//PrintToChatAll("Event_TongueGrab: Attacker: %N Victim: %N", iAttacker, iVictim);
+	PrintToChatAll("Event_TongueGrab: Attacker: %N Victim: %N", iAttacker, iVictim);
 
 	g_bSmokerGrappled[iVictim] = true;
 	
@@ -249,14 +249,16 @@ Action:Event_TongueRelease(Handle:hEvent, const String:strName[], bool:bDontBroa
 	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 
-	//PrintToChatAll("Event_TongueRelease: Attacker: %N Victim: %N", iAttacker, iVictim);
+	PrintToChatAll("Event_TongueRelease: Attacker: %N Victim: %N", iAttacker, iVictim);
 
 	g_bSmokerGrappled[iVictim] = false;
 	g_iChokingVictim[iAttacker] = -1;
 
 	SetClientRenderAndGlowColor(iVictim);
+	Event_TongueRelease_Nick(iAttacker, iVictim);
 
 	Event_TongueRelease_Smoker(iAttacker, iVictim);
+	
 
 	return Plugin_Continue;
 }
@@ -266,7 +268,7 @@ Action:Event_ChokeStart(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 
-	//PrintToChatAll("Event_ChokeStart: Attacker: %N Victim: %N", iAttacker, iVictim);
+	PrintToChatAll("Event_ChokeStart: Attacker: %N Victim: %N", iAttacker, iVictim);
 
 	g_bSmokerGrappled[iVictim] = true;
 	g_iChokingVictim[iAttacker] = iVictim;
@@ -277,22 +279,24 @@ Action:Event_ChokeStart(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	return Plugin_Continue;
 }
 
-Action:Event_ChokeEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
-{
-	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
+// Removed because this is triggered multiple times when the smoker moves, and 
+// looks to Event_TongueRelease happen reliably anyway.
+// Action:Event_ChokeEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+// {
+// 	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+// 	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 
-	//PrintToChatAll("Event_ChokeEnd: Attacker: %N Victim: %N", iAttacker, iVictim);
+// 	PrintToChatAll("Event_ChokeEnd: Attacker: %N Victim: %N", iAttacker, iVictim);
 
-	g_bSmokerGrappled[iVictim] = false;
-	g_iChokingVictim[iAttacker] = -1;
+// 	// g_bSmokerGrappled[iVictim] = false;
+// 	// g_iChokingVictim[iAttacker] = -1;
 
-	Event_ChokeEnd_Smoker(iAttacker, iVictim);
-	Event_ChokeEnd_Nick(iAttacker, iVictim);
+// 	// Event_ChokeEnd_Smoker(iAttacker, iVictim);
+	
 
-	SetClientRenderAndGlowColor(iVictim);
-	return Plugin_Continue;
-}
+// 	// SetClientRenderAndGlowColor(iVictim);
+// 	return Plugin_Continue;
+// }
 
 Action:Event_JockeyRide(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {

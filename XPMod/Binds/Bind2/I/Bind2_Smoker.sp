@@ -28,7 +28,7 @@ void Bind2Press_Smoker(iClient)
 
 	//CatchAndReleasePlayer(iClient);
 
-	ElectrocutePlayer(iClient);
+	StartElectrocutingPlayer(iClient);
 }
 
 stock CatchAndReleasePlayer(iClient)
@@ -262,7 +262,7 @@ CreateEntangledSurvivorClone(int iClient)
 	// Hide weapons
 }
 
-ElectrocutePlayer(iClient)
+StartElectrocutingPlayer(iClient)
 {
 	if(g_bElectrocutionCooldown[iClient] == true)
 	{
@@ -276,31 +276,69 @@ ElectrocutePlayer(iClient)
 		return;
 	}
 
-	// Electrocute	
+	// Electrocution can commence
 	g_bIsElectrocuting[iClient] = true;
 	g_bElectrocutionCooldown[iClient] = true;
 	CreateTimer(15.0, Timer_ResetElectrocuteCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	
 	g_iClientBindUses_2[iClient]++;
 	
-	decl Float:clientloc[3],Float:targetloc[3];
-	GetClientEyePosition(iClient,clientloc);
-	GetClientEyePosition(g_iChokingVictim[iClient],targetloc);
-	clientloc[2] -= 10.0;
-	targetloc[2] -= 20.0;
-	new rand = GetRandomInt(1, 3);
-	decl String:zap[23];
-	switch(rand)
+	// Do the initial electrocution and then the timed ones
+	SmokerElectrocutePlayerAndChainToOthers(iClient);
+	CreateTimer(0.5, TimerSmokerElectrocutePlayerAndChainToOthers, iClient, TIMER_REPEAT);
+	CreateTimer(2.9, TimerStopElectrocution, iClient, TIMER_FLAG_NO_MAPCHANGE);
+}
+
+
+Action TimerSmokerElectrocutePlayerAndChainToOthers(Handle hTimer, int iClient)
+{
+	if (g_bIsElectrocuting[iClient] == false || 
+		RunClientChecks(iClient) == false || 
+		IsPlayerAlive(iClient) == false ||
+		g_iInfectedCharacter[iClient] != SMOKER ||
+		g_iChokingVictim[iClient] < 1 ||
+		RunClientChecks(g_iChokingVictim[iClient]) == false ||
+		IsPlayerAlive(g_iChokingVictim[iClient]) == false)
 	{
-		case 1: zap = SOUND_ZAP1; 
-		case 2: zap = SOUND_ZAP2;
-		case 3: zap = SOUND_ZAP3;
+		g_bIsElectrocuting[iClient] = false;
+		
+		return Plugin_Stop;
+	}
+	
+	SmokerElectrocutePlayerAndChainToOthers(iClient);
+
+	return Plugin_Continue;
+}
+
+Action TimerStopElectrocution(Handle hTimer, int iClient)
+{
+	g_bIsElectrocuting[iClient] = false;
+	return Plugin_Stop;
+}
+
+
+void SmokerElectrocutePlayerAndChainToOthers(iClient)
+{
+	float xyzClientLocation[3], xyzTargetLocation[3];
+	GetClientEyePosition(iClient,xyzClientLocation);
+	GetClientEyePosition(g_iChokingVictim[iClient],xyzTargetLocation);
+	xyzClientLocation[2] -= 10.0;
+	xyzTargetLocation[2] -= 20.0;
+
+	char strZapSound[23];
+	switch(GetRandomInt(1, 3))
+	{
+		case 1: strZapSound = SOUND_ZAP1; 
+		case 2: strZapSound = SOUND_ZAP2;
+		case 3: strZapSound = SOUND_ZAP3;
 	}
 	new pitch = GetRandomInt(95, 130);
-	EmitSoundToAll(zap, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, pitch, -1, clientloc, NULL_VECTOR, true, 0.0);
-	EmitSoundToAll(zap, g_iChokingVictim[iClient], SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, pitch, -1, targetloc, NULL_VECTOR, true, 0.0);
-	TE_SetupBeamPoints(clientloc,targetloc,g_iSprite_Laser,0,0,66,0.3, 0.5, 0.5,0,4.0,{0,40,255,200},0);
+	EmitSoundToAll(strZapSound, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, pitch, -1, xyzClientLocation, NULL_VECTOR, true, 0.0);
+	EmitSoundToAll(strZapSound, g_iChokingVictim[iClient], SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, pitch, -1, xyzTargetLocation, NULL_VECTOR, true, 0.0);
+	
+	TE_SetupBeamPoints(xyzClientLocation, xyzTargetLocation, g_iSprite_Laser, 0, 0, 66, 0.3, 0.5, 0.5, 0, 4.0, {0,40,255,200}, 0);
 	TE_SendToAll();
+
 	CreateParticle("electrical_arc_01_system", 1.5, g_iChokingVictim[iClient], ATTACH_EYES, true);
 
 	new alpha = GetRandomInt(80,140);										
@@ -311,54 +349,45 @@ ElectrocutePlayer(iClient)
 	
 	g_iClientXP[iClient] += 10;
 	CheckLevel(iClient);
-	
 	if(g_iXPDisplayMode[iClient] == 0)
 		ShowXPSprite(iClient, g_iSprite_10XP_SI, g_iChokingVictim[iClient], 1.0);
 	
-	decl i;
-	for(i = 1;i <= MaxClients;i++)
-	{
-		if(i == g_iChokingVictim[iClient])
+	// Chain the lighting
+	for(int iChainVictim = 1; iChainVictim <= MaxClients; iChainVictim++)
+	{		
+		if (iChainVictim == g_iChokingVictim[iClient] ||
+			g_iClientTeam[iChainVictim] != TEAM_SURVIVORS || 
+			RunClientChecks(iChainVictim) == false ||
+			RunClientChecks(g_iChokingVictim[iClient]) == false)
 			continue;
+
+		GetClientEyePosition(g_iChokingVictim[iClient], xyzClientLocation);
+		GetClientEyePosition(iChainVictim, xyzTargetLocation);
 		
-		if(g_iChokingVictim[iClient] < 1 || IsValidEntity(i) == false || IsValidEntity(g_iChokingVictim[iClient]) == false)
+		if(IsVisibleTo(xyzClientLocation, xyzTargetLocation) == false)
 			continue;
-		
-		if(IsClientInGame(i) && g_iClientTeam[i] == TEAM_SURVIVORS)
+
+		xyzTargetLocation[2] -= 20.0;
+		switch(GetRandomInt(1, 3))
 		{
-			GetClientEyePosition(g_iChokingVictim[iClient], clientloc);
-			GetClientEyePosition(i, targetloc);
-			
-			if(IsVisibleTo(clientloc, targetloc))
-			{
-				targetloc[2] -= 20.0;
-				rand = GetRandomInt(1, 3);
-				switch(rand)
-				{
-					case 1: zap = SOUND_ZAP1; 
-					case 2: zap = SOUND_ZAP2;
-					case 3: zap = SOUND_ZAP3;
-				}
-				pitch = GetRandomInt(95, 130);
-				EmitSoundToAll(zap, i, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, pitch, -1, targetloc, NULL_VECTOR, true, 0.0);
-				TE_SetupBeamPoints(clientloc,targetloc,g_iSprite_Laser,0,0,66,0.3, 0.5, 0.5,0,4.0,{0,40,255,200},0);
-				TE_SendToAll();
-				CreateParticle("electrical_arc_01_system", 0.8, i, ATTACH_EYES, true);
-				
-				alpha = GetRandomInt(120, 180);					
-				ShowHudOverlayColor(i, 255, 255, 255, alpha, 150, FADE_OUT);
-				
-				DealDamage(i , iClient, RoundToCeil((g_iSmokerTalent3Level[iClient] * 0.5)));
-				
-				g_iClientXP[iClient] += 10;
-				CheckLevel(iClient);
-				
-				if(g_iXPDisplayMode[iClient] == 0)
-					ShowXPSprite(iClient, g_iSprite_10XP_SI, i, 1.0);
-			}
+			case 1: strZapSound = SOUND_ZAP1; 
+			case 2: strZapSound = SOUND_ZAP2;
+			case 3: strZapSound = SOUND_ZAP3;
 		}
+
+		EmitSoundToAll(strZapSound, iChainVictim, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, GetRandomInt(95, 130), -1, xyzTargetLocation, NULL_VECTOR, true, 0.0);
+		TE_SetupBeamPoints(xyzClientLocation, xyzTargetLocation, g_iSprite_Laser, 0, 0, 66, 0.3, 0.5, 0.5, 0, 4.0, {0,40,255,200}, 0);
+		TE_SendToAll();
+
+		CreateParticle("electrical_arc_01_system", 0.8, iChainVictim, ATTACH_EYES, true);
+					
+		ShowHudOverlayColor(iChainVictim, 255, 255, 255, GetRandomInt(120, 180), 150, FADE_OUT);
+		
+		DealDamage(iChainVictim , iClient, RoundToCeil((g_iSmokerTalent3Level[iClient] * 0.5)));
+		
+		g_iClientXP[iClient] += 10;
+		CheckLevel(iClient);
+		if(g_iXPDisplayMode[iClient] == 0)
+			ShowXPSprite(iClient, g_iSprite_10XP_SI, iChainVictim, 1.0);
 	}
-	
-	CreateTimer(0.5, TimerElectrocuteAgain, iClient, TIMER_FLAG_NO_MAPCHANGE);
-	CreateTimer(2.9, TimerStopElectrocution, iClient, TIMER_FLAG_NO_MAPCHANGE);
 }

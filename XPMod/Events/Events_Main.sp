@@ -72,7 +72,7 @@ SetupXPMEvents()
 	HookEvent("tongue_grab", Event_TongueGrab);
 	HookEvent("tongue_release", Event_TongueRelease);
 	HookEvent("choke_start", Event_ChokeStart);
-	HookEvent("choke_end", Event_ChokeEnd);
+	// HookEvent("choke_end", Event_ChokeEnd);
 	HookEvent("jockey_ride_end", Event_JockeyRideEnd);
 	HookEvent("lunge_pounce", Event_HunterPounceStart);
 	HookEvent("pounce_end", Event_HunterPounceStopped);
