@@ -231,7 +231,7 @@ Action:Event_TongueGrab(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 
-	PrintToChatAll("Event_TongueGrab: Attacker: %N Victim: %N", iAttacker, iVictim);
+	// PrintToChatAll("Event_TongueGrab: Attacker: %N Victim: %N", iAttacker, iVictim);
 
 	g_bSmokerGrappled[iVictim] = true;
 	
@@ -249,7 +249,7 @@ Action:Event_TongueRelease(Handle:hEvent, const String:strName[], bool:bDontBroa
 	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 
-	PrintToChatAll("Event_TongueRelease: Attacker: %N Victim: %N", iAttacker, iVictim);
+	// PrintToChatAll("Event_TongueRelease: Attacker: %N Victim: %N", iAttacker, iVictim);
 
 	g_bSmokerGrappled[iVictim] = false;
 	g_iChokingVictim[iAttacker] = -1;
@@ -268,7 +268,7 @@ Action:Event_ChokeStart(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 
-	PrintToChatAll("Event_ChokeStart: Attacker: %N Victim: %N", iAttacker, iVictim);
+	// PrintToChatAll("Event_ChokeStart: Attacker: %N Victim: %N", iAttacker, iVictim);
 
 	g_bSmokerGrappled[iVictim] = true;
 	g_iChokingVictim[iAttacker] = iVictim;
