@@ -252,7 +252,7 @@ SetupSDKCalls()
 // 	}
 // }
 
-SetupInitialVariableValues()
+void SetupInitialVariableValues()
 {
 	// Set Client variables
 	for(int i = 0; i <= MaxClients; i++)

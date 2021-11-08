@@ -234,25 +234,25 @@ new String:INFECTED_NAME[][] =          {"",
 //Round/Map Variables
 char g_strCurrentMap[32] = "";
 //new bool:g_bRoundStarted = false;
-new g_iRoundCount;
-new bool:g_bEndOfRound = false;
+int g_iRoundCount;
+bool g_bEndOfRound = false;
 
 //Player Switching Teams timer
-new bool:g_bPlayerInTeamChangeCoolDown[MAXPLAYERS + 1];
-new bool:g_bClientSpectating[MAXPLAYERS + 1] = false;
+bool g_bPlayerInTeamChangeCoolDown[MAXPLAYERS + 1];
+bool g_bClientSpectating[MAXPLAYERS + 1] = false;
 
 // Game Freezing Variables
-new bool:g_bGameFrozen = false;
-new bool:g_bPlayerPressedButtonThisRound = false;   // This is used to set the countdown timer, it wont start till someone presses a button
-new g_iUnfreezeNotifyRunTimes = 1;				    // This is for the unfreeze notify runtimes
+bool g_bGameFrozen = false;
+bool g_bPlayerPressedButtonThisRound = true;   // This is used to set the countdown timer, it wont start till someone presses a button
+int g_iUnfreezeNotifyRunTimes = 1;				    // This is for the unfreeze notify runtimes
 
 // Binds
-new g_iClientBindUses_1[MAXPLAYERS + 1];
-new g_iClientBindUses_2[MAXPLAYERS + 1];
+int g_iClientBindUses_1[MAXPLAYERS + 1];
+int g_iClientBindUses_2[MAXPLAYERS + 1];
 
 // Storage of player health for when needed and not provided
-new g_iPlayerHealth[MAXPLAYERS + 1];
-new g_iPlayerHealthTemp[MAXPLAYERS + 1];
+int g_iPlayerHealth[MAXPLAYERS + 1];
+int g_iPlayerHealthTemp[MAXPLAYERS + 1];
 
 // Name Change Message Blocking
 bool g_bHideNameChangeMessage = false;
@@ -280,7 +280,7 @@ float g_fGameTimeOfLastGoalSet[MAXPLAYERS + 1];
 float g_fGameTimeOfLastDamageTaken[MAXPLAYERS + 1];
 float g_fGameTimeOfLastViableTargetSeen[MAXPLAYERS + 1];
 bool g_bBotXPMGoalAccomplished[MAXPLAYERS + 1];
-new g_iBotXPMGoalTarget[MAXPLAYERS + 1];
+int g_iBotXPMGoalTarget[MAXPLAYERS + 1];
 float g_xyzBotXPMGoalLocation[MAXPLAYERS + 1][3];
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -291,14 +291,14 @@ bool g_bDebugModeEnabled;
 bool g_bStopCISpawning;
 bool g_bStopSISpawning;
 
-new gClone[MAXPLAYERS + 1];
-new bool:talentsJustGiven[MAXPLAYERS + 1] = false;
-new bool:testtoggle[MAXPLAYERS + 1];
-new Float:rspeed;
-new bool:canchangemovement[MAXPLAYERS + 1];
-new preledgehealth[MAXPLAYERS + 1];
-new Float:preledgebuffer[MAXPLAYERS + 1];
-new bool:clienthanging[MAXPLAYERS + 1];
-//new g_iAbility = 0;
-//new Float:g_fEllisTestFireRate = 0.0;
+int gClone[MAXPLAYERS + 1];
+bool talentsJustGiven[MAXPLAYERS + 1] = false;
+bool testtoggle[MAXPLAYERS + 1];
+float rspeed;
+bool canchangemovement[MAXPLAYERS + 1];
+int preledgehealth[MAXPLAYERS + 1];
+float preledgebuffer[MAXPLAYERS + 1];
+bool clienthanging[MAXPLAYERS + 1];
+//int g_iAbility = 0;
+//float g_fEllisTestFireRate = 0.0;
 float g_testingSpeedOverride[MAXPLAYERS + 1];
