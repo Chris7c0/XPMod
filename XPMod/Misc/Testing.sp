@@ -17,6 +17,8 @@ public Action Timer_Testing(Handle hTimer, int iClient)
 	return Plugin_Continue;
 }
 
+int iSeenEntities[MAXENTITIES+1];
+
 Action:TestFunction1(iClient, args)
 {
 	DebugLog(DEBUG_MODE_TESTING, "T1");
@@ -26,9 +28,79 @@ Action:TestFunction1(iClient, args)
 	for (int i=0; i<20; i++)
 		GetCmdArg(i+1, strArg[i], sizeof(strArg[]));
 
+	// for(int iPlayer = 1; iPlayer <= MaxClients; iPlayer++)
+	// {
+	// 	if (RunClientChecks(iPlayer) == false || g_iClientTeam[iPlayer] !=  TEAM_INFECTED)
+	// 		continue;
+
+	// 	SetEntityRenderMode(iPlayer, RenderMode:3);
+	// 	SetEntityRenderColor(iPlayer, 255, 255, 255, RoundToFloor(255 * (1.0 - 0.9)));
+
+	// 	// SetEntProp(iPlayer, Prop_Send, "m_fEffects", StringToInt(strArg[0]));
+	// 	// PrintToChatAll("%i) m_fEffects: %i", iPlayer, GetEntProp(iPlayer, Prop_Send, "m_fEffects")); // maybe this is for flashlight only
+
+	// 	//SetEntProp(iPlayer, Prop_Send, "m_iTextureFrameIndex", 0);
+	// 	PrintToChatAll("%i) m_iTextureFrameIndex: %i", iPlayer, GetEntProp(iPlayer, Prop_Send, "m_iTextureFrameIndex"));
+	// 	//PrintToChatAll("%i) m_OnUser1: %i", iPlayer, GetEntPropEnt(iPlayer, Prop_Send, "m_OnUser1"));
+
+	// 	AcceptEntityInput(iPlayer, "DisableDamageForces");
+		
+	// }
+
+	// for(int iEntity = 1; iEntity <= MAXENTITIES; iEntity++)
+	// {
+	// 	if (RunEntityChecks(iEntity) == false)
+	// 		continue;
+		
+	// 	if (iSeenEntities[iEntity] != 0)
+	// 		continue;
+	// 	iSeenEntities[iEntity] = 1;
+
+	// 	char className[32];
+	// 	GetEntityClassname(iEntity, className, 32)
+
+	// 	PrintToServer("%i	%s", iEntity, className);
+
+	// 	if (StrContains(className, "particle", false) > -1)
+	// 	{
+	// 		PrintToChatAll("Killing Entity: %i", iEntity);
+	// 		AcceptEntityInput(iEntity, "stop");
+	// 		KillEntitySafely(iEntity);
+	// 	}
+
+	// 	if (StrContains(className, "ability_lunge", false) > -1)
+	// 	{
+	// 		TeleportEntity(iEntity, EMPTY_VECTOR, EMPTY_VECTOR, NULL_VECTOR);
+	// 		PrintToChatAll("ability_lunge Entity: %i", iEntity);
+	// 		// PrintToChatAll("m_fadeMinDist: %i", GetEntProp(iEntity, Prop_Data, "m_fadeMinDist"));
+	// 		//m_vecOrigin
+	// 		//m_vecAbsOrigin
+	// 		//m_fadeMinDist
+	// 		//m_fadeMaxDist
+	// 		//m_flFadeScale
+	// 		//KillEntitySafely(iEntity);
+	// 		//SetEntProp(iEntity, Prop_Send, "m_fEffects", 32);
+	// 		//PrintToChatAll("%i) ability_lunge m_fEffects: %i", iEntity, GetEntProp(iEntity, Prop_Send, "m_fEffects")); // maybe this is for flashlight only
+	// 	}
+
+	// 	// if (StrContains(className, "weapon_hunter_claw", false) > -1)
+	// 	// {
+	// 	// 	TeleportEntity(iEntity, EMPTY_VECTOR, EMPTY_VECTOR, NULL_VECTOR);
+	// 	// 	PrintToChatAll("weapon_hunter_claw Entity: %i", iEntity);
+	// 	// 	PrintToChatAll("m_nRenderFX: %i", GetEntProp(iEntity, Prop_Data, "m_nRenderFX"));
+	// 	// 	PrintToChatAll("m_hEffectEntity: %i", GetEntPropEnt(iEntity, Prop_Data, "m_hEffectEntity"));
+	// 	// 	KillEntitySafely(iEntity);
+	// 	// }
+	// }
+
+	// PrintToChatAll("TESTING 1: %i", GetEntProp(iClient, Prop_Data, "m_hEffectEntity"));
+	// PrintToChatAll("TESTING 2: %i", GetEntPropEnt(iClient, Prop_Data, "m_hEffectEntity"));	// Fire screen effect not blur particle
+	//m_fEffects
+
 	
-	//PrintToChatAll("TESTING 1: %i", GetEntProp(iClient, Prop_Data, "m_hObserverTarget"));
-	// PrintToChatAll("TESTING 2: %i", GetEntPropEnt(iClient, Prop_Data, "m_hObserverTarget"));
+	
+	//PrintToChatAll("TESTING 1: %i", GetEntProp(iClient, Prop_Data, "m_hEffectEntity"));
+	// PrintToChatAll("TESTING 2: %i", GetEntPropEnt(iClient, Prop_Data, "m_hEffectEntity"));
 
 	// for(int iPlayer = 0; iPlayer <= MaxClients; iPlayer++)
 	// {
@@ -230,6 +302,11 @@ Action:TestFunction2(iClient, args)
 
 	g_testingSpeedOverride[iClient] = StringToFloat(str1);
 	SetClientSpeed(iClient);
+
+	for(int iEntity = 1; iEntity <= MAXENTITIES; iEntity++)
+	{		
+		iSeenEntities[iEntity] = 0;
+	}
 
 	// char strEquipmentItem[32];
 	// int iSlotItemID = GetPlayerWeaponSlot(iClient, StringToInt(str1));
