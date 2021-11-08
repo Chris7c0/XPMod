@@ -286,3 +286,27 @@ EventsDeath_VictimBoomer(Handle:hEvent, iAttacker, iVictim)
 		}
 	}
 }
+
+void Event_AbilityUse_Boomer(int iClient, Handle hEvent)
+{
+	if (g_iInfectedCharacter[iClient] != BOOMER ||
+		g_bTalentsConfirmed[iClient] == false)
+		return;
+
+	char strAbility[20];
+	GetEventString(hEvent,"ability", strAbility, 20);
+	if (StrEqual(strAbility,"ability_vomit",false) == false)
+		return;
+	
+	g_bIsBoomerVomiting[iClient] = true;
+
+	// Reset after if not serving hot meal
+	if(g_bIsServingHotMeal[iClient] == true)
+		return;
+	
+	SetClientSpeed(iClient);
+
+	CreateTimer(1.5, TimerResetBoomerSpeed, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	if(g_iRapidLevel[iClient] > 0)
+		CreateTimer(1.0, TimerSetBoomerCooldown, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+}

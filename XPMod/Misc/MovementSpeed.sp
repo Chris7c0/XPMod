@@ -8,13 +8,13 @@ SetClientSpeed(iClient)
 
 	new Float:fSpeed = 1.0;
 
-	// Interupt speed abilities
+	// Interrupt speed abilities
 	if (SetClientSpeedOverrides(iClient, fSpeed))
 	{
 		SetEntDataFloat(iClient, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), fSpeed, true);
 		// if (IsFakeClient(iClient) == false)
 		// 	PrintToChat(iClient, "SetClientSpeedOverride: %N: %f", iClient, fSpeed);
-		//PrintToChatAll("SetClientSpeedOverride: %N: %f", iClient, fSpeed);
+		// PrintToChatAll("SetClientSpeedOverride: %N: %f", iClient, fSpeed);
 		return;
 	}
 	
@@ -264,7 +264,7 @@ SetClientSpeedHunter(iClient, &Float:fSpeed)
 	if (g_iPredatorialLevel[iClient] > 0)
 		fSpeed += (g_iPredatorialLevel[iClient] * 0.08);
 	
-	//PrintToChat(iClient, "SetClientSpeedHunter: %f", fSpeed);
+	// PrintToChat(iClient, "SetClientSpeedHunter: %f", fSpeed);
 }
 
 SetClientSpeedSpitter(iClient, &Float:fSpeed)
@@ -373,6 +373,21 @@ bool SetClientSpeedOverrides(iClient, &Float:fSpeed)
 		return true;
 	}
 	
+	// Hunter lunging speed value
+	if (g_iInfectedCharacter[iClient] == HUNTER &&
+		g_bHunterIsLunging[iClient] == true &&
+		g_iHunterLungeState[iClient] != HUNTER_LUNGE_STATE_NONE)
+	{
+		switch (g_iHunterLungeState[iClient])
+		{
+			case HUNTER_LUNGE_STATE_BASE: fSpeed = HUNTER_LUNGE_MOVEMENT_SPEED_BASE;
+			case HUNTER_LUNGE_STATE_DASH: fSpeed = HUNTER_LUNGE_MOVEMENT_SPEED_DASH;
+			case HUNTER_LUNGE_STATE_FLOAT: fSpeed = HUNTER_LUNGE_MOVEMENT_SPEED_FLOAT;
+		}
+
+		return true;
+	}
+
 	// Lethal Injection poison slow
 	if (g_bIsHunterPoisoned[iClient] &&
 		g_iClientTeam[iClient] == TEAM_SURVIVORS)

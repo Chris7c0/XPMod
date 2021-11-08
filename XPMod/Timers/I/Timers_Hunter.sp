@@ -1,39 +1,24 @@
-Action:TimerLungeFurther(Handle:timer, any:iClient)
-{
-	if (RunClientChecks(iClient) == false ||
-		IsPlayerAlive(iClient) == false)
-		return Plugin_Stop;
-
-	decl Float:velocity[3];
-	GetEntPropVector(iClient, Prop_Data, "m_vecVelocity", velocity);
-	velocity[0] *= (1.0 + (g_iPredatorialLevel[iClient] * 0.05));
-	velocity[1] *= (1.0 + (g_iPredatorialLevel[iClient] * 0.05));
-	velocity[2] *= (1.0 + (g_iPredatorialLevel[iClient] * 0.05));
-	TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, velocity);
-	return Plugin_Stop;
-}
-
-Action:TimerHunterPounceDamage(Handle:timer, any:pack)
-{	
-	ResetPack(pack);
-	new iVictim = ReadPackCell(pack);
-	new iAttacker = ReadPackCell(pack);
-	new iDamage = ReadPackCell(pack);
-	CloseHandle(pack);
+// Action:TimerHunterPounceDamage(Handle:timer, any:pack)
+// {	
+// 	ResetPack(pack);
+// 	new iVictim = ReadPackCell(pack);
+// 	new iAttacker = ReadPackCell(pack);
+// 	new iDamage = ReadPackCell(pack);
+// 	CloseHandle(pack);
 	
-	if (IsClientInGame(iVictim)==false || 
-		IsPlayerAlive(iVictim)==false || 
-		IsValidEntity(iVictim) == false || 
-		g_bGameFrozen == true)
-		return Plugin_Stop;
+// 	if (IsClientInGame(iVictim)==false || 
+// 		IsPlayerAlive(iVictim)==false || 
+// 		IsValidEntity(iVictim) == false || 
+// 		g_bGameFrozen == true)
+// 		return Plugin_Stop;
 	
-	DealDamage(iVictim, iAttacker, iDamage, DAMAGETYPE_BLOCK_REVIVING);
+// 	DealDamage(iVictim, iAttacker, iDamage, DAMAGETYPE_BLOCK_REVIVING);
 	
-	if(IsClientInGame(iAttacker) == true && IsPlayerAlive(iAttacker) == true)
-		PrintHintText(iAttacker, "You did %d extra pounce damage",  iDamage);
+// 	if(IsClientInGame(iAttacker) == true && IsPlayerAlive(iAttacker) == true)
+// 		PrintHintText(iAttacker, "You did %d extra pounce damage",  iDamage);
 	
-	return Plugin_Stop;
-}
+// 	return Plugin_Stop;
+// }
 
 Action:TimerResetHunterDismount(Handle:timer, any:iClient)
 {

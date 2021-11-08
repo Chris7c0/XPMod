@@ -256,6 +256,9 @@ void ResetClientVariablesForRound(int iClient)
 	g_bIsSuperSpeedBoomer[iClient] = false;
 
 	//Hunter
+	g_bHunterIsLunging[iClient] = false;
+	g_iHunterLungeState[iClient] = HUNTER_LUNGE_STATE_NONE;
+	g_bHunterLungeEndDelayCheck[iClient] = false;
 	g_bIsCloakedHunter[iClient] = false;
 	g_bCanHunterDismount[iClient] = true;
 	g_bCanHunterPoisonVictim[iClient] = true;
@@ -395,6 +398,9 @@ Event_DeathResetAllVariables(iAttacker, iVictim)
 	g_bIsHillbillyEarthquakeReady[iVictim] = false;
 	g_iBagOfSpitsSelectedSpit[iVictim] = BAG_OF_SPITS_NONE;
 
+	g_bHunterIsLunging[iVictim] = false;
+	g_iHunterLungeState[iVictim] = HUNTER_LUNGE_STATE_NONE;
+	g_bHunterLungeEndDelayCheck[iVictim] = false;
 	if(g_iHunterShreddingVictim[iVictim] > 0)
 		SetClientSpeed(g_iHunterShreddingVictim[iVictim]);
 	

@@ -27,6 +27,11 @@ TalentsLoad_Hunter(iClient)
 
 OnGameFrame_Hunter(iClient)
 {
+	if (g_bTalentsConfirmed[iClient] == false)
+		return;
+
+	HandleHunterLunging(iClient);
+
 	if(g_iKillmeleonLevel[iClient] > 0)		//Dynamic Cloaking for kill-meleon
 	{						
 		new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
@@ -62,6 +67,11 @@ OnGameFrame_Hunter(iClient)
 			}
 		}
 		*/
+
+		
+			
+
+
 		if((buttons & IN_DUCK))
 		{
 			if(g_iHunterPounceDamageCharge[iClient] > 0)
@@ -330,3 +340,156 @@ EventsHurt_VictimHunter(Handle:hEvent, attacker, victim)
 // {
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }
+
+
+void Event_HunterPounceStart_Hunter(int iAttacker, int iVictim, int iDistance)
+{
+	
+	g_iHunterPounceDistance[iAttacker] = iDistance;
+	PrintToChat(iAttacker, "\x03[XPMod] \x04Pounce Distance: %i", g_iHunterPounceDistance[iAttacker]);
+
+	if(g_iClientTeam[iAttacker] != TEAM_INFECTED)
+		return;
+	
+	GiveClientXP(iAttacker, 50, g_iSprite_50XP_SI, iVictim, "Grappled A Survivor.");
+
+	// if(g_iKillmeleonLevel[attacker] <= 0 && g_iHunterPounceDamageCharge[attacker] <= 20)
+	// 	return;
+	
+	// decl iDamage;
+	// iDamage = RoundToFloor(g_iHunterPounceDamageCharge[attacker] / 21.0);
+	// new Handle:iDataPack = CreateDataPack();
+	// WritePackCell(iDataPack, victim);
+	// WritePackCell(iDataPack, attacker);
+	// WritePackCell(iDataPack, iDamage);
+	// CreateTimer(0.1, TimerHunterPounceDamage, iDataPack);
+}
+
+// void Event_HunterPounceStopped_Hunter(int iAttacker, int iVictim, int iDistance)
+// {
+
+// }
+
+void Event_AbilityUse_Hunter(int iClient, Handle hEvent)
+{
+	if (g_iPredatorialLevel[iClient] <= 0 || 
+		g_iInfectedCharacter[iClient] != HUNTER ||
+		g_bTalentsConfirmed[iClient] == false)
+		return;
+
+	char strAbility[20];
+	GetEventString(hEvent,"ability", strAbility,20);
+	if (StrEqual(strAbility,"ability_lunge",false) == false)
+		return;
+	
+	g_bHunterIsLunging[iClient] = true;
+	SetClientSpeed(iClient);
+	
+	g_bHunterLungeEndDelayCheck[iClient] = true;
+	CreateTimer(0.1, TimerHandleHunterPostLunge, iClient, TIMER_FLAG_NO_MAPCHANGE);
+}
+
+Action TimerHandleHunterPostLunge(Handle hTimer, int iClient)
+{
+	// Allow to check if the hunter is on the ground or not
+	g_bHunterLungeEndDelayCheck[iClient] = false;
+
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false)
+		return Plugin_Stop;
+
+	// Set the initial velocity boost
+	decl Float:velocity[3];
+	GetEntPropVector(iClient, Prop_Data, "m_vecVelocity", velocity);
+	velocity[0] *= (1.0 + HUNTER_LUNGE_VELOCITY_MULTIPLIER_START);
+	velocity[1] *= (1.0 + HUNTER_LUNGE_VELOCITY_MULTIPLIER_START);
+	velocity[2] *= (1.0 + HUNTER_LUNGE_VELOCITY_MULTIPLIER_START);
+	TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, velocity);
+	
+
+	return Plugin_Stop;
+}
+
+void HandleHunterLunging(int iClient)
+{
+	// If Hunter is lunging then check if on ground, if so reset the value to false
+	if (g_bHunterIsLunging[iClient] == true && 
+		g_bHunterLungeEndDelayCheck[iClient] == false &&
+		GetEntityFlags(iClient) & FL_ONGROUND)
+	{
+		g_bHunterIsLunging[iClient] = false;
+		g_iHunterLungeState[iClient] = HUNTER_LUNGE_STATE_NONE;
+		SetClientSpeed(iClient);
+
+		// PrintToChatAll("%N: g_bHunterIsLunging = false", iClient);
+	}
+
+	if(g_bHunterIsLunging[iClient] == false)
+		return;
+
+	// Get the Hunter's current velocity
+	float velocity[3];
+	GetEntPropVector(iClient, Prop_Data, "m_vecVelocity", velocity);
+
+	// Get the buttons the Hunter is pressing
+	int iButtons = GetEntProp(iClient, Prop_Data, "m_nButtons", iButtons);
+
+	// Dash Lunge (Check the velocity make sure they are falling down before continuing here)
+	if (iButtons & IN_ATTACK && velocity[2] < 0.0)
+	{
+		// Set the speed if not set already
+		if (g_iHunterLungeState[iClient] != HUNTER_LUNGE_STATE_DASH)
+		{
+			g_iHunterLungeState[iClient] = HUNTER_LUNGE_STATE_DASH;
+			SetClientSpeed(iClient);
+		}
+		
+		float xyzAngles[3];
+		float vDirection[3];
+		GetClientEyeAngles(iClient, xyzAngles);								// Get clients Eye Angles to know get what direction face
+		GetAngleVectors(xyzAngles, vDirection, NULL_VECTOR, NULL_VECTOR);	// Get the direction the iClient is looking
+
+		// if (IsFakeClient(iClient) == false) PrintToChat(iClient, "vDirection: %2f, %2f, %2f", vDirection[0], vDirection[1], vDirection[2]);
+
+		// Grab thew new dash velocity
+		velocity[0] += (vDirection[0] * HUNTER_LUNGE_VELOCITY_ADDITION_DASH_SPEED);
+		velocity[1] += (vDirection[1] * HUNTER_LUNGE_VELOCITY_ADDITION_DASH_SPEED);
+		// Cap the velocity
+		if (velocity[0] > HUNTER_LUNGE_VELOCITY_SPEED_CAP_DASH) velocity[0] = HUNTER_LUNGE_VELOCITY_SPEED_CAP_DASH;
+		if (velocity[0] < -1.0 * HUNTER_LUNGE_VELOCITY_SPEED_CAP_DASH) velocity[0] = -1.0 * HUNTER_LUNGE_VELOCITY_SPEED_CAP_DASH;
+		if (velocity[1] > HUNTER_LUNGE_VELOCITY_SPEED_CAP_DASH) velocity[1] = HUNTER_LUNGE_VELOCITY_SPEED_CAP_DASH;
+		if (velocity[1] < -1.0 * HUNTER_LUNGE_VELOCITY_SPEED_CAP_DASH) velocity[1] = -1.0 * HUNTER_LUNGE_VELOCITY_SPEED_CAP_DASH;
+		TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, velocity);
+
+		// PrintToChat(iClient, "DASH vel %0.1f, %0.1f, %0.1f", velocity[0], velocity[1], velocity[2]);
+	}
+	// Float Lunge (flying squirrel)
+	else if(iButtons & IN_JUMP)
+	{
+		// Set the speed if not set already
+		if (g_iHunterLungeState[iClient] != HUNTER_LUNGE_STATE_FLOAT)
+		{
+			g_iHunterLungeState[iClient] = HUNTER_LUNGE_STATE_FLOAT;
+			SetClientSpeed(iClient);
+		}
+
+		// Remove some velocity and push the player up to give flying squirrel effect
+		velocity[0] *= (1.0 - HUNTER_LUNGE_VELOCITY_MULTIPLIER_FLOAT);
+		velocity[1] *= (1.0 - HUNTER_LUNGE_VELOCITY_MULTIPLIER_FLOAT);
+		// If they are moving down at a rate fast enough, start to push them up
+		if (velocity[2] < HUNTER_LUNGE_VELOCITY_FLOAT_Z_PUSH_START)
+			velocity[2] += HUNTER_LUNGE_VELOCITY_ADDITION_FLOAT_SPEED;
+		TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, velocity);
+
+		// PrintToChat(iClient, "FLOAT vel %0.1f, %0.1f, %0.1f", velocity[0], velocity[1], velocity[2]);
+	}
+	// Base Lunge
+	else
+	{
+		if (g_iHunterLungeState[iClient] != HUNTER_LUNGE_STATE_BASE)
+		{
+			g_iHunterLungeState[iClient] = HUNTER_LUNGE_STATE_BASE;
+			SetClientSpeed(iClient);
+		}
+	}
+}
