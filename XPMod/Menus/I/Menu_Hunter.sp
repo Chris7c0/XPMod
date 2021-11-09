@@ -67,7 +67,7 @@ Action:PredatorialMenuDraw(iClient)
 		\n	- [HOLD JUMP] Controlled Descent\
 		\n		- Like A Flying Squirrel\
 		\n \
-		\n	- [HOLD ATTACK] Lunge Dash\
+		\n	- [HOLD ATTACK] Dive Bomb\
 		\n		- Dash Forward Toward Target\
 		\n		- Uses Momentum and Aim Direction\
 		\n ",
