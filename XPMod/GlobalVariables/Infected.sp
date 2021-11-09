@@ -204,6 +204,9 @@ bool g_bHunterLungeEndDelayCheck[MAXPLAYERS + 1];
 #define HUNTER_LUNGE_VELOCITY_ADDITION_FLOAT_SPEED  12.0    // OGF additional Up direction push (Z)
 #define HUNTER_LUNGE_VELOCITY_ADDITION_DASH_SPEED   70.0    // OGF additional Forward direction push (X & Y)
 #define HUNTER_LUNGE_VELOCITY_SPEED_CAP_DASH        1350.0  // Velocity cap to limit insane speeds from dash
+#define HUNTER_LUNGE_EXTRA_DAMAGE_DISTANCE_MIN      150     // The min amount of distance (FT) before extra damage
+#define HUNTER_LUNGE_EXTRA_DAMAGE_DISTANCE_MAX      350     // The max amount of distance (FT) to get all extra damage
+#define HUNTER_LUNGE_EXTRA_DAMAGE_MAX               20      // The max amount of extra damage if max distance reached
 bool g_bIsCloakedHunter[MAXPLAYERS + 1];
 int g_iHunterCloakCounter[MAXPLAYERS + 1];
 bool g_bCanHunterDismount[MAXPLAYERS + 1];
@@ -214,8 +217,7 @@ bool g_bIsHunterPoisoned[MAXPLAYERS + 1];
 int g_iHunterPoisonRunTimesCounter[MAXPLAYERS + 1];
 bool g_bHasInfectedHealthBeenSet[MAXPLAYERS + 1];
 bool g_bHunterLethalPoisoned[MAXPLAYERS + 1];
-int g_iHunterPounceDistance[MAXPLAYERS + 1];
-#define HUNTER_MAX_LIFE_STEAL_HEALTH                3000
+#define HUNTER_MAX_LIFE_STEAL_HEALTH                1500
 #define HUNTER_LIFE_STEAL_AMOUNT_PER_HIT_PER_LEVEL  8
 
 // Spitter

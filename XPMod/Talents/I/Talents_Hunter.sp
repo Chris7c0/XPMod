@@ -32,204 +32,7 @@ OnGameFrame_Hunter(iClient)
 
 	HandleHunterLunging(iClient);
 
-	if(g_iKillmeleonLevel[iClient] > 0)		//Dynamic Cloaking for kill-meleon
-	{						
-		new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
-		//For pounce crouch charge
-		/*
-		if((buttons & IN_DUCK))
-		{
-			if(g_iHunterPounceDamageCharge[iClient] > 0)
-			{
-				if(g_iHunterShreddingVictim[iClient]  > 0)
-				{
-					g_iHunterPounceDamageCharge[iClient] = 0;
-				}
-			}
-			
-			if(g_iHunterShreddingVictim[iClient] == -1)
-				if((GetEntityFlags(iClient) & FL_ONGROUND))
-					if(g_iHunterPounceDamageCharge[iClient] <= (g_iKillmeleonLevel[iClient] * 120))
-						g_iHunterPounceDamageCharge[iClient]++;
-			
-			
-			if(g_iHunterPounceDamageCharge[iClient] > 59)
-				PrintHintText(iClient, "Pounce Attack Charge: %d", g_iHunterPounceDamageCharge[iClient] / 60);
-			else if(g_iHunterPounceDamageCharge[iClient] == 30)
-				PrintHintText(iClient, "Pounce Attack Charge: 0");
-		}
-		else
-		{
-			if(g_iHunterPounceDamageCharge[iClient] > 0)
-			{	
-				g_iHunterPounceDamageCharge[iClient] = 0;
-				PrintHintText(iClient, "Pounce Attack Charge: 0");
-			}
-		}
-		*/
-
-		
-			
-
-
-		if((buttons & IN_DUCK))
-		{
-			if(g_iHunterPounceDamageCharge[iClient] > 0)
-			{
-				if(g_iHunterShreddingVictim[iClient]  > 0)
-				{
-					g_iHunterPounceDamageCharge[iClient] = 0;
-				}
-			}
-			
-			if(g_iHunterShreddingVictim[iClient] == -1)
-				if((GetEntityFlags(iClient) & FL_ONGROUND))
-					if(g_iHunterPounceDamageCharge[iClient] <= (g_iKillmeleonLevel[iClient] * 42))
-						g_iHunterPounceDamageCharge[iClient]++;
-			
-			switch(g_iHunterPounceDamageCharge[iClient])
-			{
-				case 21:
-				{
-					PrintHintText(iClient, "Pounce Attack Charge: %d", g_iHunterPounceDamageCharge[iClient] / 21);
-				}
-				case 42:
-				{
-					PrintHintText(iClient, "Pounce Attack Charge: %d", g_iHunterPounceDamageCharge[iClient] / 21);
-				}
-				case 63:
-				{
-					PrintHintText(iClient, "Pounce Attack Charge: %d", g_iHunterPounceDamageCharge[iClient] / 21);
-				}
-				case 84:
-				{
-					PrintHintText(iClient, "Pounce Attack Charge: %d", g_iHunterPounceDamageCharge[iClient] / 21);
-				}
-				case 105:
-				{
-					PrintHintText(iClient, "Pounce Attack Charge: %d", g_iHunterPounceDamageCharge[iClient] / 21);
-				}
-				case 126:
-				{
-					PrintHintText(iClient, "Pounce Attack Charge: %d", g_iHunterPounceDamageCharge[iClient] / 21);
-				}
-				case 147:
-				{
-					PrintHintText(iClient, "Pounce Attack Charge: %d", g_iHunterPounceDamageCharge[iClient] / 21);
-				}
-				case 168:
-				{
-					PrintHintText(iClient, "Pounce Attack Charge: %d", g_iHunterPounceDamageCharge[iClient] / 21);
-				}
-				case 189:
-				{
-					PrintHintText(iClient, "Pounce Attack Charge: %d", g_iHunterPounceDamageCharge[iClient] / 21);
-				}
-				case 210:
-				{
-					PrintHintText(iClient, "Pounce Attack Charge: %d", g_iHunterPounceDamageCharge[iClient] / 21);
-				}
-				case 231:
-				{
-					PrintHintText(iClient, "Pounce Attack Charge: %d", g_iHunterPounceDamageCharge[iClient] / 21);
-				}
-				case 252:
-				{
-					PrintHintText(iClient, "Pounce Attack Charge: %d", g_iHunterPounceDamageCharge[iClient] / 21);
-				}
-				case 273:
-				{
-					PrintHintText(iClient, "Pounce Attack Charge: %d", g_iHunterPounceDamageCharge[iClient] / 21);
-				}
-				case 294:
-				{
-					PrintHintText(iClient, "Pounce Attack Charge: %d", g_iHunterPounceDamageCharge[iClient] / 21);
-				}
-				case 315:
-				{
-					PrintHintText(iClient, "Pounce Attack Charge: %d", g_iHunterPounceDamageCharge[iClient] / 21);
-				}
-				case 336:
-				{
-					PrintHintText(iClient, "Pounce Attack Charge: %d", g_iHunterPounceDamageCharge[iClient] / 21);
-				}
-				case 357:
-				{
-					PrintHintText(iClient, "Pounce Attack Charge: %d", g_iHunterPounceDamageCharge[iClient] / 21);
-				}
-				case 378:
-				{
-					PrintHintText(iClient, "Pounce Attack Charge: %d", g_iHunterPounceDamageCharge[iClient] / 21);
-				}
-				case 399:
-				{
-					PrintHintText(iClient, "Pounce Attack Charge: %d", g_iHunterPounceDamageCharge[iClient] / 21);
-				}
-				case 420:
-				{
-					PrintHintText(iClient, "Pounce Attack Charge: %d", g_iHunterPounceDamageCharge[iClient] / 21);
-				}
-			}
-		}
-		else
-		{
-			if(g_iHunterPounceDamageCharge[iClient] > 0)
-			{	
-				g_iHunterPounceDamageCharge[iClient] = 0;
-				PrintHintText(iClient, "Pounce Attack Charge: 0");
-			}
-		}
-		//For camouflage
-		if(g_bIsCloakedHunter[iClient] == true)
-		{
-			if( (buttons) || (!(GetEntityFlags(iClient) & FL_ONGROUND)) )
-			{
-				if( (!(buttons & IN_DUCK)) || (!(GetEntityFlags(iClient) & FL_ONGROUND)) )
-				{
-					//SetEntityRenderMode(iClient, RenderMode:3);	probably dont need this
-					SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (float(g_iKillmeleonLevel[iClient]) * 0.010) )));
-					g_bIsCloakedHunter[iClient] = false;
-					g_iHunterCloakCounter[iClient] = 0;
-				}
-			}
-		}
-		else
-		{
-			if(g_iHunterCloakCounter[iClient] >= 0)
-			{
-				g_iHunterCloakCounter[iClient]++;
-				if( (buttons) || (!(GetEntityFlags(iClient) & FL_ONGROUND)) )			//If iClient moves or pushes buttons, resset the counter
-				{
-					if( (!(buttons & IN_DUCK)) || (!(GetEntityFlags(iClient) & FL_ONGROUND)) )
-					{
-						if(g_iHunterCloakCounter[iClient] > 20)
-						{
-							SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (float(g_iKillmeleonLevel[iClient]) * 0.010) )));
-						}
-						g_iHunterCloakCounter[iClient] = 0;
-					}
-				}
-				if(g_iHunterCloakCounter[iClient] == 100)
-				{
-					g_iHunterCloakCounter[iClient] = -1; // -1 means iClient is cloaked
-					PrintCenterText(iClient, "Camouflaged");
-					SetEntityRenderMode(iClient, RenderMode:3);
-					SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (float(g_iKillmeleonLevel[iClient]) * 0.090) )));
-					g_bIsCloakedHunter[iClient] = true;
-				}
-				else if(g_iHunterCloakCounter[iClient] > 20)
-				{
-					if(g_iHunterCloakCounter[iClient] == 35)
-						PrintCenterText(iClient, "Blending in with surroundings");
-					SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - ((float(g_iKillmeleonLevel[iClient]) * (0.009 + (float(g_iHunterCloakCounter[iClient] - 20) * 0.001)))) )));
-				}
-			}
-		}
-		if(g_iHunterShreddingVictim[iClient] > 0)
-		{
-			
-		}
-	}
+	HandleHunterCloaking(iClient);
 }
 
 EventsHurt_AttackerHunter(Handle:hEvent, attacker, victim)
@@ -344,25 +147,34 @@ EventsHurt_VictimHunter(Handle:hEvent, attacker, victim)
 
 void Event_HunterPounceStart_Hunter(int iAttacker, int iVictim, int iDistance)
 {
-	
-	g_iHunterPounceDistance[iAttacker] = iDistance;
-	PrintToChat(iAttacker, "\x03[XPMod] \x04Pounce Distance: %i", g_iHunterPounceDistance[iAttacker]);
-
-	if(g_iClientTeam[iAttacker] != TEAM_INFECTED)
+	if (g_iPredatorialLevel[iAttacker] <= 0 || 
+		g_iInfectedCharacter[iAttacker] != HUNTER ||
+		g_iClientTeam[iAttacker] != TEAM_INFECTED ||
+		g_bTalentsConfirmed[iAttacker] == false)
 		return;
-	
+
 	GiveClientXP(iAttacker, 50, g_iSprite_50XP_SI, iVictim, "Grappled A Survivor.");
 
-	// if(g_iKillmeleonLevel[attacker] <= 0 && g_iHunterPounceDamageCharge[attacker] <= 20)
-	// 	return;
+	// I'm making a guess that this distance is in 100 Hammer Units.
+	// 100 HU * (1 FT / 12 HU) = 8.33333 FT per 100 HU
+	// distance (in 100 HU) / 8.33333 FT = X FT
+	int iDistanceFeet = RoundToNearest(float(iDistance) / 8.33333);
+
+	if(iDistanceFeet < HUNTER_LUNGE_EXTRA_DAMAGE_DISTANCE_MIN)
+	{
+		PrintHintText(iAttacker, "Pounce Distance:	%i ft", iDistanceFeet);
+		return;
+	}
+
+	float fNormalizedDistance = float(iDistanceFeet - HUNTER_LUNGE_EXTRA_DAMAGE_DISTANCE_MIN) /
+		float(HUNTER_LUNGE_EXTRA_DAMAGE_DISTANCE_MAX - HUNTER_LUNGE_EXTRA_DAMAGE_DISTANCE_MIN);
+
+	int iDamageAmount =  fNormalizedDistance >= 1.0 ? 1 :
+		RoundToNearest(fNormalizedDistance * HUNTER_LUNGE_EXTRA_DAMAGE_MAX);
 	
-	// decl iDamage;
-	// iDamage = RoundToFloor(g_iHunterPounceDamageCharge[attacker] / 21.0);
-	// new Handle:iDataPack = CreateDataPack();
-	// WritePackCell(iDataPack, victim);
-	// WritePackCell(iDataPack, attacker);
-	// WritePackCell(iDataPack, iDamage);
-	// CreateTimer(0.1, TimerHunterPounceDamage, iDataPack);
+	DealDamage(iVictim, iAttacker, iDamageAmount);
+	
+	PrintHintText(iAttacker, "Pounce Distance: %i ft\n\nPounce Damage: %i", iDistanceFeet, 25 + iDamageAmount);
 }
 
 // void Event_HunterPounceStopped_Hunter(int iAttacker, int iVictim, int iDistance)
@@ -490,6 +302,60 @@ void HandleHunterLunging(int iClient)
 		{
 			g_iHunterLungeState[iClient] = HUNTER_LUNGE_STATE_BASE;
 			SetClientSpeed(iClient);
+		}
+	}
+}
+
+void HandleHunterCloaking(int iClient)
+{
+	if (g_iKillmeleonLevel[iClient] <= 0)
+		return;
+	
+	int buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
+	
+	if(g_bIsCloakedHunter[iClient] == true)
+	{
+		if( (buttons) || (!(GetEntityFlags(iClient) & FL_ONGROUND)) )
+		{
+			if( (!(buttons & IN_DUCK)) || (!(GetEntityFlags(iClient) & FL_ONGROUND)) )
+			{
+				SetEntityRenderMode(iClient, RenderMode:3);
+				SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (float(g_iKillmeleonLevel[iClient]) * 0.010) )));
+				g_bIsCloakedHunter[iClient] = false;
+				g_iHunterCloakCounter[iClient] = 0;
+			}
+		}
+	}
+	else
+	{
+		if(g_iHunterCloakCounter[iClient] >= 0)
+		{
+			g_iHunterCloakCounter[iClient]++;
+			if( (buttons) || (!(GetEntityFlags(iClient) & FL_ONGROUND)) )			//If iClient moves or pushes buttons, resset the counter
+			{
+				if( (!(buttons & IN_DUCK)) || (!(GetEntityFlags(iClient) & FL_ONGROUND)) )
+				{
+					if(g_iHunterCloakCounter[iClient] > 20)
+					{
+						SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (float(g_iKillmeleonLevel[iClient]) * 0.010) )));
+					}
+					g_iHunterCloakCounter[iClient] = 0;
+				}
+			}
+			if(g_iHunterCloakCounter[iClient] == 100)
+			{
+				g_iHunterCloakCounter[iClient] = -1; // -1 means iClient is cloaked
+				PrintCenterText(iClient, "Camouflaged");
+				SetEntityRenderMode(iClient, RenderMode:3);
+				SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (float(g_iKillmeleonLevel[iClient]) * 0.090) )));
+				g_bIsCloakedHunter[iClient] = true;
+			}
+			else if(g_iHunterCloakCounter[iClient] > 20)
+			{
+				if(g_iHunterCloakCounter[iClient] == 35)
+					PrintCenterText(iClient, "Blending in with surroundings");
+				SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - ((float(g_iKillmeleonLevel[iClient]) * (0.009 + (float(g_iHunterCloakCounter[iClient] - 20) * 0.001)))) )));
+			}
 		}
 	}
 }

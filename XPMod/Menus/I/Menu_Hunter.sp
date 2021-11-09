@@ -52,13 +52,21 @@ Action:PredatorialMenuDraw(iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	SetMenuTitle(menu, "\
-		%s  Predatorial Evolution (Level %d)            \
+		%s       Predatorial Evolution (Level %d)        \
 		\n \
-		\n+8%% Movement Speed per Level\
-		\nEvolved Lunge:\
+		\n +8%% Movement Speed per Level\
+		\n \
+		\n Gain Evolved Lunge:\
 		\n	- Lunge Much Faster and Further\
+		\n \
+		\n	- Extra Damage For A Far Pounce\
+		\n		- Up To 20 Extra Damage\
+		\n		- Min: 150 FT\
+		\n		- Max: 350 FT\
+		\n \
 		\n	- [HOLD JUMP] Controlled Descent\
 		\n		- Like A Flying Squirrel\
+		\n \
 		\n	- [HOLD ATTACK] Lunge Dash\
 		\n		- Dash Forward Toward Target\
 		\n		- Uses Momentum and Aim Direction\
@@ -69,7 +77,7 @@ Action:PredatorialMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -94,7 +102,7 @@ Action:BloodlustMenuDraw(iClient)
 		\n+1 shredding damage every 4 levels\
 		\n+25 max health per level\
 		\n+8 life stealing while shredding per level\
-		\n	3000 HP Max\
+		\n	%i HP Max\
 		\n \
 		\n \
 		\n				Bind 1: Dismount\
@@ -103,7 +111,8 @@ Action:BloodlustMenuDraw(iClient)
 		\nDismount a pounced survivor\
 		\n ",
 		strStartingNewLines,
-		g_iBloodlustLevel[iClient]);
+		g_iBloodlustLevel[iClient],
+		HUNTER_MAX_LIFE_STEAL_HEALTH);
 	
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -128,16 +137,17 @@ Action:KillmeleonMenuDraw(iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	SetMenuTitle(menu, "\
-		%s											Kill-meleon (Level %d)\
+		%s				Kill-meleon (Level %d)\
 		\n \
 		\nLevel 1:\
-		\n(Charge) +9%% stealth & pounce damage per 0.35 seconds\
+		\n(Charge) +9%% stealth 0.35 seconds\
+		\n \
 		\nLevel 5:\
 		\nHide glow when pounced\
 		\n \
 		\n \
-		\n											Bind 2: Lethal Injection\
-		\n													3 uses\
+		\n				Bind 2: Lethal Injection\
+		\n						3 uses\
 		\n \
 		\nNext attack does 4 damage per second\
 		\n+1 second per level\
@@ -145,10 +155,6 @@ Action:KillmeleonMenuDraw(iClient)
 		\nSlow victims to 25%%\
 		\n3 damage per 20 seconds permanently\
 		\n \
-		\n \
-		\nSkill Uses:\
-		\n(Charge) Hold [CROUCH] to stealth & build damage\
-		\n+2 damage per level\
 		\n ",
 		strStartingNewLines,
 		g_iKillmeleonLevel[iClient]);
@@ -156,7 +162,7 @@ Action:KillmeleonMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
