@@ -199,9 +199,9 @@ bool g_bHunterLungeEndDelayCheck[MAXPLAYERS + 1];
 #define HUNTER_LUNGE_MOVEMENT_SPEED_FLOAT           0.9     // Controls the gravity drop as well as how fast
 #define HUNTER_LUNGE_MOVEMENT_SPEED_DASH            1.65    // Controls the gravity drop as well as how fast
 #define HUNTER_LUNGE_VELOCITY_MULTIPLIER_START      1.1     // 1.0 + X
-#define HUNTER_LUNGE_VELOCITY_MULTIPLIER_FLOAT      0.01    // 1.0 - X
+#define HUNTER_LUNGE_VELOCITY_MULTIPLIER_FLOAT      0.005   // 1.0 - X
 #define HUNTER_LUNGE_VELOCITY_FLOAT_Z_PUSH_START    -150.0  // Z velocity required before start pushing hunter up
-#define HUNTER_LUNGE_VELOCITY_ADDITION_FLOAT_SPEED  10.0    // OGF additional Up direction push (Z)
+#define HUNTER_LUNGE_VELOCITY_ADDITION_FLOAT_SPEED  12.0    // OGF additional Up direction push (Z)
 #define HUNTER_LUNGE_VELOCITY_ADDITION_DASH_SPEED   70.0    // OGF additional Forward direction push (X & Y)
 #define HUNTER_LUNGE_VELOCITY_SPEED_CAP_DASH        1350.0  // Velocity cap to limit insane speeds from dash
 bool g_bIsCloakedHunter[MAXPLAYERS + 1];

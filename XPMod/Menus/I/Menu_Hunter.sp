@@ -52,10 +52,16 @@ Action:PredatorialMenuDraw(iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	SetMenuTitle(menu, "\
-		%s  Predatorial Evolution (Level %d)\
+		%s  Predatorial Evolution (Level %d)            \
 		\n \
-		\n+5%% movement speed per level\
-		\n+10%% pounce distance per level\
+		\n+8%% Movement Speed per Level\
+		\nEvolved Lunge:\
+		\n	- Lunge Much Faster and Further\
+		\n	- [HOLD JUMP] Controlled Descent\
+		\n		- Like A Flying Squirrel\
+		\n	- [HOLD ATTACK] Lunge Dash\
+		\n		- Dash Forward Toward Target\
+		\n		- Uses Momentum and Aim Direction\
 		\n ",
 		strStartingNewLines,
 		g_iPredatorialLevel[iClient]);
@@ -63,7 +69,7 @@ Action:PredatorialMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
