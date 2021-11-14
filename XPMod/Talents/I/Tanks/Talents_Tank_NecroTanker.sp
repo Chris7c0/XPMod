@@ -392,17 +392,17 @@ void SummonNecroTankerCrouchAndWalkAbility(iClient, bool bEnhancedCI)
 	int iZombie = -1;
 	if (bEnhancedCI == false)
 	{
-		iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_NONE, fTimeToWaitForMob);
+		iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_NONE, true, fTimeToWaitForMob);
 	}
 	else
 	{
 		new iUncommonAndEnhancedChanceRoll = GetRandomInt(1,100);
 		if (iUncommonAndEnhancedChanceRoll <= 25)
-			iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_RANDOM, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_RANDOM, fTimeToWaitForMob);
+			iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_RANDOM, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_RANDOM, true, fTimeToWaitForMob);
 		else if (iUncommonAndEnhancedChanceRoll <= 75)
-			iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_RANDOM, fTimeToWaitForMob);
+			iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_RANDOM, true, fTimeToWaitForMob);
 		else if (iUncommonAndEnhancedChanceRoll <= 100)
-			iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_RANDOM, fTimeToWaitForMob);
+			iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_RANDOM, true, fTimeToWaitForMob);
 	}
 	
 

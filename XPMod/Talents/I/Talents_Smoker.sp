@@ -712,7 +712,7 @@ void OnTakeDamage_SmokerClone(int iEntity, int iAttacker, float fDamage, int iDa
 	GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", xyzLocation);
 
 	// Spawn the Clowns
-	SpawnCIAroundLocation(xyzLocation, SMOKER_DOPPELGANGER_CI_SPAWN_COUNT, UNCOMMON_CI_CLOWN, CI_REALLY_SMALL, ENHANCED_CI_TYPE_RANDOM, 0.1);
+	SpawnCIAroundLocation(xyzLocation, SMOKER_DOPPELGANGER_CI_SPAWN_COUNT, UNCOMMON_CI_CLOWN, CI_REALLY_SMALL, ENHANCED_CI_TYPE_RANDOM);
 
 	// Play the Sound Effect
 	EmitAmbientSound(SOUND_CLOWN_SHOVE, xyzLocation, iEntity, SNDLEVEL_NORMAL);

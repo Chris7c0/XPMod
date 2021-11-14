@@ -1,4 +1,4 @@
-int SpawnCommonInfected(float xyzLocation[3], int iAmount = 1, int iUncommon = UNCOMMON_CI_NONE, int iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, int iEnhancedCIType = ENHANCED_CI_TYPE_RANDOM, float fTimeToWaitForMob = -1.0)
+int SpawnCommonInfected(float xyzLocation[3], int iAmount = 1, int iUncommon = UNCOMMON_CI_NONE, int iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, int iEnhancedCIType = ENHANCED_CI_TYPE_RANDOM, bool bShowParticles = true, float fTimeToWaitForMob = -1.0)
 {
 	xyzLocation[2] += 1;
 
@@ -43,8 +43,10 @@ int SpawnCommonInfected(float xyzLocation[3], int iAmount = 1, int iUncommon = U
 		// Create the FX
 		// Play a random sound effect name from the several zombie slices
 		EmitSoundToAll(SOUND_ZOMBIE_SLASHES[ GetRandomInt(0 ,sizeof(SOUND_ZOMBIE_SLASHES) - 1) ], iZombie, SNDCHAN_AUTO, SNDLEVEL_TRAIN, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, xyzLocation, NULL_VECTOR, true, 0.0);
+		
 		// Show the particle effect
-		WriteParticle(iZombie, "vomit_jar_b", 0.0, 2.0);
+		if (bShowParticles)
+			WriteParticle(iZombie, "vomit_jar_b", 0.0, 2.0);
 
 		if (iAmount == 1)
 			return iZombie;
@@ -67,7 +69,7 @@ Action:TimerSetMobRush(Handle:timer, any:iZombieEntity)
 	return Plugin_Stop;
 }
 
-void SpawnCIAroundLocation(float xyzLocation[3], int iAmount = 1, int iUncommon = UNCOMMON_CI_NONE, int iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, int iEnhancedCISpecifiedType = ENHANCED_CI_TYPE_RANDOM, float fTimeToWaitForMob = -1.0)
+void SpawnCIAroundLocation(float xyzLocation[3], int iAmount = 1, int iUncommon = UNCOMMON_CI_NONE, int iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, int iEnhancedCISpecifiedType = ENHANCED_CI_TYPE_RANDOM, bool bShowParticles = true)
 {
 	// Get the angle increments then convert to radians
 	// We need it in radians so convert it by multiplying by 0.0174532925
@@ -87,11 +89,11 @@ void SpawnCIAroundLocation(float xyzLocation[3], int iAmount = 1, int iUncommon 
 		xyzLocation[0] += fXOffset;
 		xyzLocation[1] += fYOffset;
 
-		SpawnCommonInfected(xyzLocation, 1, iUncommon, iBigOrSmall, iEnhancedCISpecifiedType, fTimeToWaitForMob);
+		SpawnCommonInfected(xyzLocation, 1, iUncommon, iBigOrSmall, iEnhancedCISpecifiedType, bShowParticles);
 	}
 }
 
-void SpawnCIAroundPlayer(int iClient, int iAmount = 1, int iUncommon = UNCOMMON_CI_NONE, int iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, int iEnhancedCISpecifiedType = ENHANCED_CI_TYPE_RANDOM)
+void SpawnCIAroundPlayer(int iClient, int iAmount = 1, int iUncommon = UNCOMMON_CI_NONE, int iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, int iEnhancedCISpecifiedType = ENHANCED_CI_TYPE_RANDOM, bool bShowParticles = true)
 {
 	if (RunClientChecks(iClient) == false)
 		return;
@@ -100,11 +102,11 @@ void SpawnCIAroundPlayer(int iClient, int iAmount = 1, int iUncommon = UNCOMMON_
 	decl Float:xyzLocation[3];
 	GetClientAbsOrigin(iClient, xyzLocation);
 
-	SpawnCIAroundLocation(xyzLocation, iAmount, iUncommon, iBigOrSmall, iEnhancedCISpecifiedType);
+	SpawnCIAroundLocation(xyzLocation, iAmount, iUncommon, iBigOrSmall, iEnhancedCISpecifiedType, bShowParticles);
 }
 
 
-void SpawnCIAroundPlayerDelayed(int iClient, float fDelay, int iAmount = 1, int iUncommon = UNCOMMON_CI_NONE, int iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, int iEnhancedCISpecifiedType = ENHANCED_CI_TYPE_RANDOM)
+void SpawnCIAroundPlayerDelayed(int iClient, float fDelay, int iAmount = 1, int iUncommon = UNCOMMON_CI_NONE, int iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, int iEnhancedCISpecifiedType = ENHANCED_CI_TYPE_RANDOM, bool bShowParticles = true)
 {
 	if (RunClientChecks(iClient) == false)
 		return;
@@ -115,6 +117,7 @@ void SpawnCIAroundPlayerDelayed(int iClient, float fDelay, int iAmount = 1, int 
 	WritePackCell(hDataPackage, iUncommon);
 	WritePackCell(hDataPackage, iBigOrSmall);
 	WritePackCell(hDataPackage, iEnhancedCISpecifiedType);
+	WritePackCell(hDataPackage, bShowParticles);
 
 	CreateTimer(fDelay, TimerSpawnCIAroundPlayer, hDataPackage);
 }
@@ -123,14 +126,15 @@ void SpawnCIAroundPlayerDelayed(int iClient, float fDelay, int iAmount = 1, int 
 Action:TimerSpawnCIAroundPlayer(Handle:timer, Handle hDataPackage)
 {
 	ResetPack(hDataPackage);
-	new iClient = ReadPackCell(hDataPackage);
-	new iAmount = ReadPackCell(hDataPackage);
-	new iUncommon = ReadPackCell(hDataPackage);
-	new iBigOrSmall = ReadPackCell(hDataPackage);
-	new iEnhancedCISpecifiedType = ReadPackCell(hDataPackage);
+	int iClient = ReadPackCell(hDataPackage);
+	int iAmount = ReadPackCell(hDataPackage);
+	int iUncommon = ReadPackCell(hDataPackage);
+	int iBigOrSmall = ReadPackCell(hDataPackage);
+	int iEnhancedCISpecifiedType = ReadPackCell(hDataPackage);
+	bool bShowParticles = ReadPackCell(hDataPackage);
 	CloseHandle(hDataPackage);
 
-	SpawnCIAroundPlayer(iClient, iAmount, iUncommon, iBigOrSmall, iEnhancedCISpecifiedType);
+	SpawnCIAroundPlayer(iClient, iAmount, iUncommon, iBigOrSmall, iEnhancedCISpecifiedType, bShowParticles);
 
 	return Plugin_Stop;
 }

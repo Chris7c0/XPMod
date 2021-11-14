@@ -116,7 +116,7 @@ Action:TimerConjureCommonInfected(Handle:timer, any:hDataPackage)
 	xyzLocation[2] = ReadPackFloat(hDataPackage);
 	CloseHandle(hDataPackage);
 	
-	SpawnCommonInfected(xyzLocation, RoundToFloor(g_iPuppetLevel[iClient] * 0.5), UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_NONE, 0.1);
+	SpawnCommonInfected(xyzLocation, RoundToFloor(g_iPuppetLevel[iClient] * 0.5), UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_NONE);
 	
 	return Plugin_Stop;
 }
@@ -135,7 +135,7 @@ Action:TimerConjureUncommonInfected(Handle:timer, any:hDataPackage)
 	// Figure out how many to spawn 2 at level 10 and 1 otherwise
 	new iSpawnCount = g_iMaterialLevel[iClient] == 10 ? 2 : 1
 
-	SpawnCommonInfected(xyzLocation, iSpawnCount, UNCOMMON_CI_RANDOM, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_NONE, 0.1);
+	SpawnCommonInfected(xyzLocation, iSpawnCount, UNCOMMON_CI_RANDOM, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_NONE);
 	
 	return Plugin_Stop;
 }

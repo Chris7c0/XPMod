@@ -375,7 +375,7 @@ CreateSmokerSmokeCloudParticle(iClient)
 		100,			// Speed the smoke moves up
 		1300,			// Original Size
 		1500,			// End Size
-		20,				// Amount of smoke created
+		15,				// Amount of smoke created (this value 15 was tested on a 1050ti to have keep 144 fps)
 		RoundToNearest(SMOKER_SMOKE_CLOUD_RADIUS),			// Smoke jets outside of the original
 		10,				// Amount of global twisting
 		1.5				// Duration (-1.0 is never destroy)
@@ -456,9 +456,9 @@ void HandleEntitiesInSmokerCloudRadius(int iClient, float fRadius)
 
 			switch (g_iSmokerSmokeCloudStage)
 			{
-				case 1:	SpawnCIAroundLocation(xyzEntityLocation, 1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_RANDOM, 0.1);
-				case 2:	SpawnCIAroundLocation(xyzEntityLocation, 1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_RANDOM, 0.1);
-				case 3:	SpawnCIAroundLocation(xyzEntityLocation, 1, UNCOMMON_CI_RANDOM, CI_REALLY_SMALL, ENHANCED_CI_TYPE_RANDOM, 0.1);
+				case 1:	SpawnCIAroundLocation(xyzEntityLocation, 1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_RANDOM, false);
+				case 2:	SpawnCIAroundLocation(xyzEntityLocation, 1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_RANDOM, false);
+				case 3:	SpawnCIAroundLocation(xyzEntityLocation, 1, UNCOMMON_CI_RANDOM, CI_REALLY_SMALL, ENHANCED_CI_TYPE_RANDOM, false);
 			}
 		}
 	}
@@ -477,15 +477,15 @@ void SmokerSmokeCloudSpawnCIOnPlayer(int iClient)
 
 	switch(g_iSmokerSmokeCloudStage)
 	{
-		case 1:	SpawnCIAroundPlayer(iClient, SMOKER_SMOKE_CLOUD_SPAWN_CI_ON_PLAYER_AMOUNT_S1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_RANDOM);
-		case 2: SpawnCIAroundPlayer(iClient, SMOKER_SMOKE_CLOUD_SPAWN_CI_ON_PLAYER_AMOUNT_S2, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_RANDOM);
+		case 1:	SpawnCIAroundPlayer(iClient, SMOKER_SMOKE_CLOUD_SPAWN_CI_ON_PLAYER_AMOUNT_S1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_RANDOM, false);
+		case 2: SpawnCIAroundPlayer(iClient, SMOKER_SMOKE_CLOUD_SPAWN_CI_ON_PLAYER_AMOUNT_S2, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_RANDOM, false);
 		case 3:
 		{
 			// Roll for a chance to spawn enlarged jimmy
 			if (GetRandomInt(1, 100) <= SMOKER_SMOKE_CLOUD_SPAWN_CI_S3_JIMMY_CHANCE)
-				SpawnCIAroundPlayer(iClient, 1, UNCOMMON_CI_JIMMY, CI_REALLY_BIG_JIMMY, ENHANCED_CI_TYPE_RANDOM);
+				SpawnCIAroundPlayer(iClient, 1, UNCOMMON_CI_JIMMY, CI_REALLY_BIG_JIMMY, ENHANCED_CI_TYPE_RANDOM, false);
 			else
-				SpawnCIAroundPlayer(iClient, SMOKER_SMOKE_CLOUD_SPAWN_CI_ON_PLAYER_AMOUNT_S3, UNCOMMON_CI_RANDOM, CI_REALLY_BIG, ENHANCED_CI_TYPE_RANDOM);	
+				SpawnCIAroundPlayer(iClient, SMOKER_SMOKE_CLOUD_SPAWN_CI_ON_PLAYER_AMOUNT_S3, UNCOMMON_CI_RANDOM, CI_REALLY_BIG, ENHANCED_CI_TYPE_RANDOM, false);	
 		}
 	}
 		
