@@ -1,6 +1,6 @@
 //////////////////////////////////////////
 // Automatic Campaign Switcher for L4D2 //
-// Version 2.0.0 (Oct 30, 2021)         //
+// Version 2.0.0 (Nov 14, 2021)         //
 // Developed by Chris Pringle           //
 //////////////////////////////////////////
 
@@ -24,21 +24,22 @@
 		Community 1-5
 
 	Change Log
-		v2.0.0 (Oct 30, 2021)	- Overhauled most the code, rewriting many functions to be more generic and reusable
+		v2.0.0 (Nov 14, 2021)	- Overhauled most the code, rewriting many functions to be more generic and reusable
 								- Changed to a single map list array with indexes that adjust based on gamemode
 								- Added a map list config file thats plain text and can be easily configured
 									- This file can be edited to set up any custom map for any game mode with any order
 									- Just run the plugin and this file will generate itself with the default maps 
 									  the first time ACS is ran.
 								- Added Maps Listing in console output to help with configuring custom maps
-								- Updated all the default maps for every game mode
+								- Updated all the default maps for every stock game mode
 								- Added hook for OnPZEndGamePanelMsg that intercepts and removes the vote at the 
 								  end of a campaign where it asks to play with the group again. This is also used
 								  as a better method for knowing its time to switch to next campaign.  This method
 								  works without the need for a separate signatures file. It works for all modes 
 								  except for Coop and Survival that will continue forever. These modes are handled
 								  through event hooks.
-								- Fixed config file not loading changes ******************************************************
+								- Added file modified detection for Map List Config that will update ACS on map change.
+								- Fixed config file not loading changes
 								- Converted everything to new syntax
 
 		v1.2.4 (Dec 31, 2020)	- Added new maps for the Last Stand Update
