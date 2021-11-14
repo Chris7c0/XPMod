@@ -26,6 +26,12 @@ public void OnMapStart()
 	char strFileName[64];
 	Format(strFileName, sizeof(strFileName), "Automatic_Campaign_Switcher_%s", PLUGIN_VERSION);
 	AutoExecConfig(true, strFileName);
+
+	// Check if the Maps List File has changed, if so reload it into the Map List Array
+	int iNewMapListFileTimeStamp = GetACSMapListFileTimeStampValue();
+	if (iNewMapListFileTimeStamp > 0 && 
+		iNewMapListFileTimeStamp > g_iUsedMapListFileModifiedTimeStamp)
+		SetupMapListArrayFromFile();
 	
 	// Set the game mode
 	bool bGameModeChanged = FindGameMode();

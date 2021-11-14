@@ -119,9 +119,6 @@ public void OnPluginStart()
 
 	// Get the strings for all of the maps that are in rotation for every game mode
 	SetupMapListArrayFromFile();
-
-	// For debugging the config file
-	PrintTheCurrentMapListArrayInfo();
 	
 	// Set up all the ACS specific configurable variables
 	SetUpCVars();

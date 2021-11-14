@@ -9,12 +9,21 @@ void CreateNewMapListFileIfDoesNotExist()
 		return;
 
 	WriteDefaultMapListToFile();
+
+	// Store the file last updated timestamp value to check if its been modified later
+	g_iUsedMapListFileModifiedTimeStamp = GetACSMapListFileTimeStampValue();
 }
 
 // Set up the path that the map list config file will be using
 void SetACSMapListFilePath()
 {	
 	BuildPath(Path_SM, g_strMapListFilePath, PLATFORM_MAX_PATH, ACS_MAP_LIST_FILE_PATH);
+}
+
+// Returns a time stamp for the last time the ACS Map List file was modified
+int GetACSMapListFileTimeStampValue()
+{
+	return GetFileTime(g_strMapListFilePath, FileTime_LastChange);
 }
 
 // Create the map list config file and populate it with the default
@@ -145,6 +154,12 @@ void SetupMapListArrayFromFile()
 
 	// Close the handle to the file
 	CloseHandle(hFile);
+
+	// Store the file last updated timestamp value to check if its been modified later
+	g_iUsedMapListFileModifiedTimeStamp = GetACSMapListFileTimeStampValue();
+
+	// For debugging the config file
+	PrintTheCurrentMapListArrayInfo();
 }
 
 // Prints the actual array to the console
