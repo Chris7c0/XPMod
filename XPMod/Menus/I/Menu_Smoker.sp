@@ -113,7 +113,7 @@ Action:NoxiousMenuDraw(iClient)
 		\n In Smoke:\
 		\n	CI Are Enhanced\
 		\n	Enhanced CI Spawn on Survivors\
-		\n	SI Get +300 HP/s\
+		\n	SI Get +150 HP/s\
 		\n	Fire, Vomit, PipeBombs Vanish\
 		\n ",
 		strStartingNewLines,

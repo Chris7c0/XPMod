@@ -135,26 +135,26 @@ int g_iSmokerSmokeCloudTicksPool;
 int g_iSmokerSmokeCloudTicksUsed;
 #define SMOKER_SMOKE_CLOUD_GLOBAL_COOLDOWN_DURATION         180.0
 #define SMOKER_SMOKE_CLOUD_TICK_RATE                        0.1
-#define SMOKER_SMOKE_CLOUD_TICK_COUNT_MAX_POOL_SIZE         60000   //Max amount of smoker smoke cloud time
-#define SMOKER_SMOKE_CLOUD_TICK_COUNT_STARTING_POOL         10000   //Determines duration which is Tick Count * Tick Rate / Tick Use Rate
+#define SMOKER_SMOKE_CLOUD_TICK_COUNT_MAX_POOL_SIZE         40000   //Max amount of smoker smoke cloud time
+#define SMOKER_SMOKE_CLOUD_TICK_COUNT_STARTING_POOL         15000   //Determines duration which is Tick Count * Tick Rate / Tick Use Rate
 #define SMOKER_SMOKE_CLOUD_TICK_USE_RATE                    100     //Amount of Ticks used per timer tick rate
-#define SMOKER_SMOKE_CLOUD_TICK_GAIN_PER_SURVIVOR_PLAYER    40
-#define SMOKER_SMOKE_CLOUD_TICK_GAIN_PER_SURVIVOR_BOT       5
+#define SMOKER_SMOKE_CLOUD_TICK_GAIN_PER_SURVIVOR_PLAYER    20
+#define SMOKER_SMOKE_CLOUD_TICK_GAIN_PER_SURVIVOR_BOT       10
 int g_iSmokerSmokeCloudStage;
 #define SMOKER_SMOKE_CLOUD_USAGE_STAGE_1                    0
-#define SMOKER_SMOKE_CLOUD_USAGE_STAGE_2                    20000
-#define SMOKER_SMOKE_CLOUD_USAGE_STAGE_3                    40000
-#define SMOKER_SMOKE_CLOUD_SPAWN_CI_ON_PLAYER_INTERVAL      9.9
+#define SMOKER_SMOKE_CLOUD_USAGE_STAGE_2                    15000
+#define SMOKER_SMOKE_CLOUD_USAGE_STAGE_3                    30000
+#define SMOKER_SMOKE_CLOUD_SPAWN_CI_ON_PLAYER_INTERVAL      7.4
 #define SMOKER_SMOKE_CLOUD_SPAWN_CI_ON_PLAYER_AMOUNT_S1     1
 #define SMOKER_SMOKE_CLOUD_SPAWN_CI_ON_PLAYER_AMOUNT_S2     1
-#define SMOKER_SMOKE_CLOUD_SPAWN_CI_ON_PLAYER_AMOUNT_S3     1
+#define SMOKER_SMOKE_CLOUD_SPAWN_CI_ON_PLAYER_AMOUNT_S3     2
 #define SMOKER_SMOKE_CLOUD_SPAWN_CI_S3_JIMMY_CHANCE         10
 bool g_bSmokeCloudVictimCanCISpawnOn[MAXPLAYERS + 1];
-#define SMOKER_SMOKE_CLOUD_RADIUS                           600.0
+#define SMOKER_SMOKE_CLOUD_RADIUS                           375.0 // (45 ft radius, 90 ft diameter)
 #define SMOKER_SMOKE_CLOUD_TARGETED_PLAYER_TICK_RATE        1.0
 #define SMOKER_SMOKE_CLOUD_BLIND_AMOUNT_MIN                 175
 #define SMOKER_SMOKE_CLOUD_BLIND_AMOUNT_MAX                 205
-#define SMOKER_SMOKE_CLOUD_INFECTED_HEAL_RATE_PER_TICK      300
+#define SMOKER_SMOKE_CLOUD_INFECTED_HEAL_RATE_PER_TICK      150
 #define SMOKER_UNTANGLE_PLAYER_DISTANCE                     100.0
 new g_iTarFingerVictimBlindAmount[MAXPLAYERS + 1];
 #define SMOKER_TAR_FINGERS_BLIND_FADE_DURATION_VALUE        4500

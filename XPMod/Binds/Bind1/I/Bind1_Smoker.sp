@@ -373,8 +373,8 @@ CreateSmokerSmokeCloudParticle(iClient)
 		1,				// Gap in the middle
 		100,			// Speed the smoke moves outwards
 		100,			// Speed the smoke moves up
-		1300,			// Original Size
-		1500,			// End Size
+		900,			// Original Size
+		1200,			// End Size
 		15,				// Amount of smoke created (this value 15 was tested on a 1050ti to have keep 144 fps)
 		RoundToNearest(SMOKER_SMOKE_CLOUD_RADIUS),			// Smoke jets outside of the original
 		10,				// Amount of global twisting
