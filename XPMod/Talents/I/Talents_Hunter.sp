@@ -27,11 +27,11 @@ TalentsLoad_Hunter(iClient)
 
 OnGameFrame_Hunter(iClient)
 {
-	if (g_bTalentsConfirmed[iClient] == false)
+	if (g_iPredatorialLevel[iClient] <= 0 ||
+		g_bTalentsConfirmed[iClient] == false)
 		return;
 
 	HandleHunterLunging(iClient);
-
 	HandleHunterCloaking(iClient);
 }
 
@@ -207,7 +207,10 @@ Action TimerHandleHunterPostLunge(Handle hTimer, int iClient)
 	g_bHunterLungeEndDelayCheck[iClient] = false;
 
 	if (RunClientChecks(iClient) == false ||
-		IsPlayerAlive(iClient) == false)
+		IsPlayerAlive(iClient) == false ||
+		g_iInfectedCharacter[iClient] != HUNTER ||
+		g_iPredatorialLevel[iClient] <= 0 ||
+		g_bTalentsConfirmed[iClient] == false)
 		return Plugin_Stop;
 
 	// Set the initial velocity boost
@@ -308,7 +311,8 @@ void HandleHunterLunging(int iClient)
 
 void HandleHunterCloaking(int iClient)
 {
-	if (g_iKillmeleonLevel[iClient] <= 0)
+	if (g_iKillmeleonLevel[iClient] <= 0 ||
+		g_bTalentsConfirmed[iClient] == false)
 		return;
 	
 	int buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
