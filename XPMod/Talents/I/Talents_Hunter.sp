@@ -169,7 +169,7 @@ void Event_HunterPounceStart_Hunter(int iAttacker, int iVictim, int iDistance)
 	float fNormalizedDistance = float(iDistanceFeet - HUNTER_LUNGE_EXTRA_DAMAGE_DISTANCE_MIN) /
 		float(HUNTER_LUNGE_EXTRA_DAMAGE_DISTANCE_MAX - HUNTER_LUNGE_EXTRA_DAMAGE_DISTANCE_MIN);
 
-	int iDamageAmount =  fNormalizedDistance >= 1.0 ? 1 :
+	int iDamageAmount =  fNormalizedDistance >= 1.0 ? HUNTER_LUNGE_EXTRA_DAMAGE_MAX :
 		RoundToNearest(fNormalizedDistance * HUNTER_LUNGE_EXTRA_DAMAGE_MAX);
 	
 	DealDamage(iVictim, iAttacker, iDamageAmount);
