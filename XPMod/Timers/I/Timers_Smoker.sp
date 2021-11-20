@@ -129,14 +129,19 @@ Action:TimerStopPoisonCloud(Handle:timer, any:iClient)
 
 Action:CheckIfStuck(Handle:timer, any:iClient)
 {
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false)
+		return Plugin_Stop;
+
 	decl Float:vorigin[3];
 	GetClientAbsOrigin(iClient, vorigin);
+
 	//PrintToChat(iClient, "vorigin = %f, %f, %f		endpos = %f, %f, %f", vorigin[0], vorigin[1], vorigin[2], g_fTeleportEndPositionX[iClient], g_fTeleportEndPositionY[iClient], g_fTeleportEndPositionZ[iClient]);
 	if (vorigin[0] == g_fTeleportEndPositionX[iClient] && 
 		vorigin[1] == g_fTeleportEndPositionY[iClient] &&
 		vorigin[2] == g_fTeleportEndPositionZ[iClient])
 	{
-		PrintHintText(iClient, "\x03[XPMod] \x05You appear to be stuck, Teleporting you back to where you started");
+		PrintHintText(iClient, "\x03[XPMod] \x05You appear to be stuck. Sending you back.");
 		decl Float:origpos[3];
 		origpos[0] = g_fTeleportOriginalPositionX[iClient];
 		origpos[1] = g_fTeleportOriginalPositionY[iClient];
@@ -145,6 +150,7 @@ Action:CheckIfStuck(Handle:timer, any:iClient)
 		WriteParticle(iClient, "teleport_warp", 0.0, 3.0);
 		g_bTeleportCoolingDown[iClient] = false;
 	}
+	
 	return Plugin_Stop;
 }
 
