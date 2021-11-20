@@ -106,7 +106,8 @@ Action:TimerPoopBombBeep3(Handle:timer, any:iEntity)
 
 Action:TimerBlowUpPoopBomb(Handle:timer, any:iEntity)
 {
-	if(RunEntityChecks(iEntity) == false)
+	if (RunEntityChecks(iEntity) == false ||
+		HasEntProp(iEntity, Prop_Send, "m_vecOrigin") == false)
 		return Plugin_Stop;
 
 	decl Float:xyzEntityOrigin[3];
