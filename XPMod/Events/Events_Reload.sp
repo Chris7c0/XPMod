@@ -403,6 +403,9 @@ Action:SoH_ShotgunEnd (Handle:timer, any:iEntid2)
 
 		new Float:flTime=GetGameTime()+0.2;
 
+		if (HasEntProp(iEntid2, Prop_Data, "m_hOwner") == false)
+			return Plugin_Stop;
+
 		new iClient = GetEntPropEnt(iEntid2,Prop_Data,"m_hOwner");
 		if (RunClientChecks(iClient) == false || IsPlayerAlive(iClient) == false)
 			return Plugin_Stop;
