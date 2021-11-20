@@ -343,14 +343,8 @@ BileEveryoneCloseToExplodingNecroTankerTankRock(iRockEntity)
 				// Roll the dice for an Enhanced CI properties
 				new iEnhancedCISpecifiedType = GetRandomFloat(0.0, 1.0) <= NECROTANKER_ENHANCE_CI_CHANCE_THROW ? ENHANCED_CI_TYPE_RANDOM : ENHANCED_CI_TYPE_NONE;
 
-				new Handle:hDataPackage = CreateDataPack();
-				WritePackCell(hDataPackage, iClient);
-				WritePackCell(hDataPackage, 3);
-				WritePackCell(hDataPackage, UNCOMMON_CI_NONE);
-				WritePackCell(hDataPackage, iBigOrSmall);
-				WritePackCell(hDataPackage, iEnhancedCISpecifiedType);
-
-				CreateTimer(0.1, TimerSpawnCIAroundPlayer, hDataPackage);
+				// Delayed Spawn the CI around the player
+				SpawnCIAroundPlayerDelayed(iClient, 0.1, 3, UNCOMMON_CI_NONE, iBigOrSmall, iEnhancedCISpecifiedType);
 			}
 		}
 	}
