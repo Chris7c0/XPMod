@@ -107,8 +107,9 @@ public OnClientPostAdminCheck(client)
 	new String:country[3]
 	new String:steamID[128]
 	new String:playerIP[50]
-	
-	GetClientAuthId(client, AuthId_Steam2, steamID, sizeof(steamID))
+
+	if (GetClientAuthId(client, AuthId_Steam2, steamID, sizeof(steamID)) == false)
+		steamID = "";
 
 	/* Get 2 digit country code for current player */
 	if(GetClientIP(client, playerIP, sizeof(playerIP), true) == false) {
@@ -145,17 +146,20 @@ public Action:event_PlayerDisconnect(Handle:event, const String:name[], bool:don
 
 	if (client < 1 || 
 		IsValidEntity(client) == false ||
+		IsClientConnected(client) == false ||
 		IsFakeClient(client)) 
 		return Plugin_Continue
 
 	new String:msg[2048]
 	new String:time[21]
 	new String:country[3]
+	new String:strClientName[34]
 	new String:reason[65];
 	new String:steamID[128]
 	new String:playerIP[50]
 	
-	GetClientAuthId(client, AuthId_Steam2, steamID, sizeof(steamID))
+	if (GetClientAuthId(client, AuthId_Steam2, steamID, sizeof(steamID)) == false)
+		steamID = "";
 
 	/* Get 2 digit country code for current player */
 	if(GetClientIP(client, playerIP, sizeof(playerIP), true) == false) {
@@ -167,18 +171,21 @@ public Action:event_PlayerDisconnect(Handle:event, const String:name[], bool:don
 	}
 
 	GetEventString(event, "reason", reason, sizeof(reason));
+	GetClientName(client, strClientName, sizeof(strClientName));
 
 	FormatTime(time, sizeof(time), "%H:%M:%S", -1)
-	//Format(msg, sizeof(msg), "[%s] [%s] %-35N LEFT (%s) (%s | %s)",
-	Format(msg, sizeof(msg), "[%s] [%s] %-35N [%i Humans] LEFT (%s) (%s)",
+
+	//Format(msg, sizeof(msg), "[%s] [%s] %-35s LEFT (%s) (%s | %s)",
+	Format(msg, sizeof(msg), "[%s] [%s] %-35s [%i Humans] LEFT (%s) (%s)",
 		time,
 		country,
-		client,
+		strClientName,
 		GetHumanPlayerCount() - 1,
 		reason,
 		steamID) // -1 to remove the player thats disconnecting here
 		//playerIP)
 
+	// Format(msg, sizeof(msg), "%s DISCONNECT (%s)", strClientName, steamID)
 
 	SaveMessage(msg)
 
@@ -252,6 +259,13 @@ public Action:event_PlayerDisconnect(Handle:event, const String:name[], bool:don
  */
 public LogChat(client, args, bool:teamchat)
 {
+	if (client <= 0 ||
+		IsValidEntity(client) == false ||
+		IsClientConnected(client) == false ||
+		IsFakeClient(client) == true ||
+		IsClientInGame(client) == false)
+		return;
+
 	new String:msg[2048]
 	new String:time[21]
 	new String:text[1024]
