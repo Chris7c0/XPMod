@@ -40,7 +40,7 @@
 #include <sha1>
 
 // XPMod Include Files
-#include "Includes.sp"
+#include "XPMod/Includes.sp"
 
 public Plugin:myinfo =
 {
