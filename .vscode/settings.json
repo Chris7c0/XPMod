@@ -71,5 +71,6 @@
         "XPMOD",
         "xpmstats"
     ],
-    "sourcepawn.MainPath": "d:\\Dropbox\\AppDev\\Projects\\XPMod\\source\\XPMod\\XPMod\\XPMod.sp"
+    "sourcepawn.MainPath": "xpmod.sp",
+    "sourcepawn.enableLinter": false
 }
