@@ -204,14 +204,9 @@ EventsHurt_VictimTank_Ice(Handle:hEvent, iAttacker, iVictimTank)
 
 	//Add More Fire Damage
 	if(iDmgType == DAMAGETYPE_FIRE1 || iDmgType == DAMAGETYPE_FIRE2)
-	{
-		SetPlayerHealth(iVictimTank, iCurrentHealth - 216);
-	}
+		SetPlayerHealth(iVictimTank, iCurrentHealth - TANK_FIRE_DAMAGE_IN_FIRE);
 	else if(iDmgType == DAMAGETYPE_IGNITED_ENTITY)
-	{
-		SetPlayerHealth(iVictimTank, iCurrentHealth + 28);
 		ExtinguishEntity(iVictimTank);
-	}
 	
 	fCurrentTankHealthPercentage = float(iCurrentHealth + iDmgHealth) / (TANK_HEALTH_ICE * g_fTankStartingHealthMultiplier[iVictimTank]);
 	

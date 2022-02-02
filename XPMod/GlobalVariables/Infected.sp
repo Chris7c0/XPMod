@@ -337,8 +337,10 @@ new bool:g_bBlockTankFirePunchCharge[MAXPLAYERS + 1];
 //new bool:g_bFireTankBaseSpeedIncreased[MAXPLAYERS + 1];
 new Float:g_fFireTankExtraSpeed[MAXPLAYERS + 1];
 // Ice Tank
-#define TANK_HEALTH_ICE                                 15000
+#define TANK_HEALTH_ICE                                 14000
 #define TANK_ICE_REGEN_RATE                             40
+#define TANK_FIRE_DAMAGE_IN_FIRE                        750
+#define TANK_FIRE_DAMAGE_FIRE_BULLETS_MULTIPLIER        1.5
 #define TANK_ICE_FREEZE_DURATION_PUNCH                  5.0
 #define TANK_ICE_FREEZE_DURATION_ROCK_INDIRECT          6.0
 #define TANK_ICE_FREEZE_DURATION_ROCK_DIRECT            10.0
