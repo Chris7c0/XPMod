@@ -146,6 +146,10 @@ new String:INFECTED_NAME[][] =          {"",
 // Hitgroups
 #define HITGROUP_HEAD               1
 
+// Found in Switch Upgrade Ammo Types by Silvers
+#define UPGRADETYPE_INCENDIARY			(1<<0)
+#define UPGRADETYPE_EXPLOSIVE			(1<<1)
+
 // Movement Collide
 #define MOVECOLLIDE_DEFAULT     0	//Default behavior
 #define MOVECOLLIDE_FLY_BOUNCE  1   //Entity bounces, reflects, based on elasticity of surface and object - applies friction (adjust velocity)

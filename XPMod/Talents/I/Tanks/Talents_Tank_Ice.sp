@@ -192,6 +192,8 @@ OnGameFrame_Tank_Ice(iClient)
 	}
 }
 
+
+
 EventsHurt_VictimTank_Ice(Handle:hEvent, iAttacker, iVictimTank)
 {
 	SuppressNeverUsedWarning(hEvent, iAttacker);
@@ -202,11 +204,8 @@ EventsHurt_VictimTank_Ice(Handle:hEvent, iAttacker, iVictimTank)
 	new iCurrentHealth = GetPlayerHealth(iVictimTank);
 	decl Float:fCurrentTankHealthPercentage;
 
-	//Add More Fire Damage
-	if(iDmgType == DAMAGETYPE_FIRE1 || iDmgType == DAMAGETYPE_FIRE2)
-		SetPlayerHealth(iVictimTank, iCurrentHealth - TANK_FIRE_DAMAGE_IN_FIRE);
-	else if(iDmgType == DAMAGETYPE_IGNITED_ENTITY)
-		ExtinguishEntity(iVictimTank);
+	// Add More Fire Damage
+	HandleFireDamageVictimIceTank(iAttacker, iVictimTank, iDmgHealth, iDmgType);
 	
 	fCurrentTankHealthPercentage = float(iCurrentHealth + iDmgHealth) / (TANK_HEALTH_ICE * g_fTankStartingHealthMultiplier[iVictimTank]);
 	
@@ -265,6 +264,56 @@ EventsDeath_VictimTank_Ice(Handle:hEvent, iAttacker, iVictimTank)
 	SuppressNeverUsedWarning(hEvent, iVictimTank, iAttacker);
 
 	ResetAllPlayersInIceTanksColdAuraSlowRange();
+}
+
+void HandleFireDamageVictimIceTank(int iAttacker, int iVictimTank, int iDmgHealth, int iDmgType)
+{
+	//PrintToChatAll("DMG TYPE: %i, DMG_HEALTH: %i, ", iDmgType, iDmgHealth);
+
+	if (iDmgType == DAMAGETYPE_FIRE1 || iDmgType == DAMAGETYPE_FIRE2)
+	{
+		SetPlayerHealth(iVictimTank, (-1 * TANK_FIRE_DAMAGE_IN_FIRE), true);
+		return;
+	}
+
+	if (iDmgType == DAMAGETYPE_IGNITED_ENTITY)
+	{
+		ExtinguishEntity(iVictimTank);
+		return;
+	}
+
+	// From here on, make sure the attacker is a Survivor
+	if (g_iClientTeam[iAttacker] != TEAM_SURVIVORS)
+		return;
+
+	int iWeapon = GetEntPropEnt(iAttacker, Prop_Send, "m_hActiveWeapon");
+
+	// Check if the Attacker is Ellis with bind 2 enabled
+	if (g_iChosenSurvivor[iAttacker] == ELLIS && g_bUsingFireStorm[iAttacker] == true)
+	{
+		//Check if the player is using anything other than a melee before proceeding
+		char strEntityClassName[32];
+		GetEntityClassname(iWeapon, strEntityClassName, 32);
+		if (StrContains(strEntityClassName, "weapon_melee", true) == -1)
+		{
+			// Handle the extra damage and return
+			SetPlayerHealth(iVictimTank, RoundToNearest(-1.0 * iDmgHealth * TANK_FIRE_DAMAGE_FIRE_BULLETS_ADD_MULTIPLIER) + iDmgHealth, true);
+			return;
+		}
+	}
+	
+	// Find out of they are currently using a primary weapon and if have has fire bullets, exit if not
+	if (RunEntityChecks(iWeapon) == false || HasEntProp(iWeapon, Prop_Send, "m_nUpgradedPrimaryAmmoLoaded") == false)
+		return;
+
+	int iUpgradedType = GetEntProp(iWeapon, Prop_Send, "m_upgradeBitVec");
+
+	// If its not fire rounds, then return
+	if (!(iUpgradedType & UPGRADETYPE_INCENDIARY))
+		return;
+	
+	//PrintToChatAll("FIRE AMMO DMG: %i", RoundToNearest(-1.0 * iDmgHealth * TANK_FIRE_DAMAGE_FIRE_BULLETS_ADD_MULTIPLIER) + iDmgHealth);
+	SetPlayerHealth(iVictimTank, RoundToNearest(-1.0 * iDmgHealth * TANK_FIRE_DAMAGE_FIRE_BULLETS_ADD_MULTIPLIER) + iDmgHealth, true);
 }
 
 FreezePlayerByTank(iVictim, Float:fFreezeTime, Float:fStartTime = 0.2)

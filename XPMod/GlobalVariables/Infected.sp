@@ -339,8 +339,8 @@ new Float:g_fFireTankExtraSpeed[MAXPLAYERS + 1];
 // Ice Tank
 #define TANK_HEALTH_ICE                                 14000
 #define TANK_ICE_REGEN_RATE                             40
-#define TANK_FIRE_DAMAGE_IN_FIRE                        750
-#define TANK_FIRE_DAMAGE_FIRE_BULLETS_MULTIPLIER        1.5
+#define TANK_FIRE_DAMAGE_IN_FIRE                        500
+#define TANK_FIRE_DAMAGE_FIRE_BULLETS_ADD_MULTIPLIER    1.5     // Adds this multiplier value to the damage
 #define TANK_ICE_FREEZE_DURATION_PUNCH                  5.0
 #define TANK_ICE_FREEZE_DURATION_ROCK_INDIRECT          6.0
 #define TANK_ICE_FREEZE_DURATION_ROCK_DIRECT            10.0
