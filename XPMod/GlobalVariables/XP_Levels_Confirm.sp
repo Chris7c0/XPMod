@@ -55,6 +55,9 @@ new g_iClientTotalXPCost[MAXPLAYERS + 1];
 #define LEVEL_29 43500
 #define LEVEL_30 46500
 
+//Vote Kick Immunity
+#define VOTE_KICK_IMMUNITY_XP_THRESHOLD 200000
+
 //Stats
 new g_iStat_ClientInfectedKilled[MAXPLAYERS + 1];
 new g_iStat_ClientCommonKilled[MAXPLAYERS + 1];	

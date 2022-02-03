@@ -19,10 +19,13 @@ SetupXPMEvents()
 	HookEvent("round_start", Event_RoundStart, EventHookMode_Post);
 	HookEvent("round_end", Event_RoundEnd, EventHookMode_Pre);
 
-	//Pause game
+	//Command Listeners
+	//Pause Game
 	AddCommandListener(CommandListener_Pause,	"pause");
 	AddCommandListener(CommandListener_Setpause,"setpause");
 	AddCommandListener(CommandListener_Unpause,	"unpause");
+	//Vote Preventions
+	AddCommandListener(CommandListener_CallVote, "callvote");
 	
 	//Player Events
 	HookEvent("player_connect_full", Event_PlayerConnect);
@@ -329,6 +332,38 @@ public Action:CommandListener_Unpause(client, const String:command[], argc) {
 		return Plugin_Continue;
 	
 	return Plugin_Handled;
+}
+
+public Action:CommandListener_CallVote(int iVoteCaller, const String:strCommand[], argc)
+{
+	char strVoteType[32], strVoteTarget[32];
+	GetCmdArg(1, strVoteType, sizeof(strVoteType));
+	GetCmdArg(2, strVoteTarget, sizeof(strVoteTarget));
+	int iTarget = GetClientOfUserId(StringToInt(strVoteTarget));
+
+	PrintToChat(iVoteCaller, "Vote Called: %s", strVoteType);
+
+	// Check each of the vote types and return plugin handled if it should be prevented
+	if (HandleCallVote_Kick(iVoteCaller, iTarget, strVoteType)) return Plugin_Handled;
+
+	// Nothing has prevented the vote so allow it
+	return Plugin_Continue;
+}
+
+bool HandleCallVote_Kick(int iVoteCaller, int iTarget, char[] strVoteType)
+{
+	// Ensure its a kick vote before continuing
+	if (StrEqual(strVoteType, "kick", false) == false)
+		return false;
+
+	// Check client level if they are under threshold allow the vote
+	if (g_iClientXP[iTarget] < VOTE_KICK_IMMUNITY_XP_THRESHOLD)
+		return false;
+
+	PrintToChat(iVoteCaller, "\x03[XPMod] \x05Player is immune to vote kicking.\n    You can report players at xpmod.net/discord.");
+	
+	// Interrupt the vote
+	return true;
 }
 
 Event_PlayerJump(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
