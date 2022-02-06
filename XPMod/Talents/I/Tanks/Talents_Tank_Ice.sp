@@ -303,7 +303,9 @@ void HandleFireDamageVictimIceTank(int iAttacker, int iVictimTank, int iDmgHealt
 	}
 	
 	// Find out of they are currently using a primary weapon and if have has fire bullets, exit if not
-	if (RunEntityChecks(iWeapon) == false || HasEntProp(iWeapon, Prop_Send, "m_nUpgradedPrimaryAmmoLoaded") == false)
+	if (RunEntityChecks(iWeapon) == false || 
+		iWeapon != GetPlayerWeaponSlot(iAttacker, 0) ||
+		HasEntProp(iWeapon, Prop_Send, "m_nUpgradedPrimaryAmmoLoaded") == false)
 		return;
 
 	int iUpgradedType = GetEntProp(iWeapon, Prop_Send, "m_upgradeBitVec");
