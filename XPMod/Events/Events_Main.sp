@@ -341,7 +341,7 @@ public Action:CommandListener_CallVote(int iVoteCaller, const String:strCommand[
 	GetCmdArg(2, strVoteTarget, sizeof(strVoteTarget));
 	int iTarget = GetClientOfUserId(StringToInt(strVoteTarget));
 
-	PrintToChat(iVoteCaller, "Vote Called: %s", strVoteType);
+	//PrintToChat(iVoteCaller, "Vote Called: %s", strVoteType);
 
 	// Check each of the vote types and return plugin handled if it should be prevented
 	if (HandleCallVote_Kick(iVoteCaller, iTarget, strVoteType)) return Plugin_Handled;
@@ -555,7 +555,7 @@ Action:Event_SurvivorRescued(Handle:hEvent, const String:strName[], bool:bDontBr
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "victim"));
 
-	PrintToChatAll("Event_SurvivorRescued: %N", iClient);
+	// PrintToChatAll("Event_SurvivorRescued: %N", iClient);
 
 	if(RunClientChecks(iClient) == false)
 		return Plugin_Continue;
