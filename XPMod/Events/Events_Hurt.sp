@@ -161,6 +161,9 @@ void EventsHurt_GiveXP(Handle:hEvent, iAttacker, iVictim)
 	new iDmgType = GetEventInt(hEvent, "type");
 	new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
 
+	if (GetPlayerHealth(iVictim) <= 0)
+		return;
+
 	if (g_iClientTeam[iVictim] == TEAM_SURVIVORS && 
 		g_iClientTeam[iAttacker] == TEAM_INFECTED && 
 		IsClientInGame(iAttacker) == true && 
