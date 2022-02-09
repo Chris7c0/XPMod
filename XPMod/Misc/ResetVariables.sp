@@ -269,6 +269,7 @@ void ResetClientVariablesForRound(int iClient)
 	
 	//Jockey
 	g_bCanJockeyPee[iClient] = true;
+	g_bJockeyPissVictim[iClient] = false;
 	g_bCanJockeyCloak[iClient] = true;
 	g_bJockeyIsRiding[iClient] = false;
 	g_iJockeyVictim[iClient] = -1;

@@ -398,62 +398,61 @@ CreateSmokerSmokeCloudParticle(iClient)
 
 void HandleEntitiesInSmokerCloudRadius(int iClient, float fRadius)
 {
-	char strClassName[32];
-	float xyzEntityLocation[3], xyzClientLocation[3];
-	GetEntPropVector(iClient, Prop_Send, "m_vecOrigin", xyzClientLocation);
-
+	// Set this value incase g_iSmokerSmokeCloudStage is required later in this function
 	SetSmokerCloudSmokeStage();
 
-	for (int iEntity=1; iEntity < MAXENTITIES; iEntity++)
+	int iEntity;
+	char strEntityClassName[32];
+	float xyzEntityLocation[3];
+	int iAllVaiableEntities[MAXENTITIES];
+	char strClasses[4][32] = {"infected", "inferno", "pipe_bomb_projectile", "info_goal_infected_chase"};
+	for (int iIndex=0; iIndex < GetAllEntitiesInRadiusOfEntity(iClient, fRadius, iAllVaiableEntities, strClasses, sizeof(strClasses)); iIndex++)
 	{
-		if (IsValidEntity(iEntity) == false)
-			continue;
+		// Not needed because will only run for valid indexes
+		// // When 0, there are no more viable values
+		// if (iAllVaiableEntities[iIndex] == 0)
+		// 	break;
 
-		// Any entities needed will have vecOrigin property so check for that first
-		if (HasEntProp(iEntity, Prop_Send, "m_vecOrigin") == false)
-			continue;
+		iEntity = iAllVaiableEntities[iIndex];
 
-		// Get the radius location and check how far away the entity is before continuing
-		GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", xyzEntityLocation);
-		if (GetVectorDistance(xyzClientLocation, xyzEntityLocation) > fRadius)
-			continue;
+		// // Skip if its the Smoker
+		// if (iEntity == iClient)
+		// 	continue;
 
-		strClassName = "";
-		GetEntityClassname(iEntity, strClassName, 32);
-		// PrintToServer("HandleEntitiesInSmokerCloudRadius: i: %i, className = %s", iEntity, strClassName)
+		strEntityClassName = "";
+		GetEntityClassname(iEntity, strEntityClassName, 32);
+		PrintToServer("HandleEntitiesInSmokerCloudRadius: i: %i, className = %s", iEntity, strEntityClassName)
 
 		// Handle putting out molotov or other sources of fires and projectiles
-		if (StrEqual(strClassName, "inferno", true) ||					// Molotov and gascan
-			StrEqual(strClassName, "pipe_bomb_projectile", true) ||		// Pipe bomb
-			StrEqual(strClassName, "info_goal_infected_chase", true))	// Bile Jar
+		if (StrEqual(strEntityClassName, "inferno", true) ||					// Molotov and gascan
+			StrEqual(strEntityClassName, "pipe_bomb_projectile", true) ||		// Pipe bomb
+			StrEqual(strEntityClassName, "info_goal_infected_chase", true))	// Bile Jar
 		{
 			KillEntitySafely(iEntity);
 			continue;
 		}
 		
 		// Handle CI that are not already enhanced
-		// Check the CI is still alive, by checking health and also
-		// importantly if the CI is a ragdoll because health can not
-		// go to 0 and they are still dead in the game.
-		if (IsCommonInfected(iEntity, strClassName) && 
-			GetEntProp(iEntity, Prop_Data, "m_iHealth") > 0 &&
-			GetEntProp(iEntity, Prop_Data, "m_bClientSideRagdoll") == 0)
+		if (IsCommonInfected(iEntity, strEntityClassName) && IsCommonInfectedAlive(iEntity))
 		{
 			ExtinguishEntity(iEntity);
-
-			// Find if the Enhanced CI entity in the list
-			int iEnhancedCIIndex = FindIndexInArrayListUsingValue(g_listEnhancedCIEntities, iEntity, ENHANCED_CI_ENTITY_ID);
-			// If the Enhanced CI is in the list, move on and continue the search
-			if (iEnhancedCIIndex >= 0)
+			
+			// If already Enhanced CI, move on and continue the search
+			if (IsEnhancedCI(iEntity) == true)
 				continue;
 
-			// PrintToChatAll("%i) iHealth = %i", iEntity, GetEntProp(iEntity, Prop_Data, "m_iHealth"));
+			//PrintToChatAll("%i) iHealth = %i", iEntity, GetEntProp(iEntity, Prop_Data, "m_iHealth"));
 			// PrintToChatAll("%i) m_bClientSideRagdoll = %i", iEntity, GetEntProp(iEntity, Prop_Data, "m_bClientSideRagdoll"));
 			// PrintToChatAll("fDistance = %f", GetVectorDistance(xyzClientLocation, xyzEntityLocation));
 			// PrintToChatAll("%f, %f, %f", xyzEntityLocation[0], xyzEntityLocation[1], xyzEntityLocation[2]);
 
+			// Get the location of where to spawn new enhanced CI
+			GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", xyzEntityLocation);
+
+			// Kill the current non enhanced CI entity
 			SetEntProp(iEntity, Prop_Data, "m_iHealth", 0); 
 
+			// Spawn an Enhanced CI in the location of the killed CI's place
 			switch (g_iSmokerSmokeCloudStage)
 			{
 				case 1:	SpawnCIAroundLocation(xyzEntityLocation, 1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_RANDOM, false);

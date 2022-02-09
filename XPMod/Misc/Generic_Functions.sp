@@ -49,6 +49,62 @@ bool KillEntitySafely(int iEntity)
 	return true;
 }
 
+// Returns the count of records found
+int GetAllEntitiesInRadiusOfEntity(int iEntity, float fRadius, int iReturnEntities[MAXENTITIES], const char[][] strClassNames, int iClassNameCount = 0)
+{
+	float xyzLocation[3];
+	GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", xyzLocation);
+
+	return GetAllEntitiesInRadiusOfVector(xyzLocation, fRadius, iReturnEntities, strClassNames, iClassNameCount);
+}
+
+// Returns the count of records found
+int GetAllEntitiesInRadiusOfVector(float xyzLocation[3], float fRadius, int iReturnEntities[MAXENTITIES], const char[][] strClassNames, int iClassNameCount = 0)
+{
+	float xyzEntityLocation[3];
+	char strEntityClassName[32];
+
+	int iValidEntityCtr = 0;
+
+	for (int iEntity=1; iEntity < MAXENTITIES; iEntity++)
+	{
+		if (IsValidEntity(iEntity) == false)
+			continue;
+
+		// Any entities needed will have vecOrigin property so check for that first
+		if (HasEntProp(iEntity, Prop_Send, "m_vecOrigin") == false)
+			continue;
+
+		// Get the radius location and check how far away the entity is before continuing
+		GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", xyzEntityLocation);
+		if (GetVectorDistance(xyzLocation, xyzEntityLocation) > fRadius)
+			continue;
+
+		// If not checking against class names then add to list of return entities and move on to next
+		if (iClassNameCount <= 0)
+		{
+			iReturnEntities[iValidEntityCtr++] = iEntity;
+			continue;
+		}
+
+		strEntityClassName = "";
+		GetEntityClassname(iEntity, strEntityClassName, 32);
+		//PrintToServer("GetAllEntitiesInRadiusOfVector: i: %i, GetEntityClassname = %s", iEntity, strEntityClassName)
+		
+		// Check each, add to the list of return entities only if its an exact classname match
+		for (int iIndex=0; iIndex < iClassNameCount; iIndex++)
+		{
+			if (strcmp(strEntityClassName, strClassNames[iIndex], true) == 0)
+			{
+				iReturnEntities[iValidEntityCtr++] = iEntity;
+				continue;
+			}
+		}
+	}
+
+	return iValidEntityCtr;
+}
+
 int GetHumanPlayerCount()
 {
 	int iCount = 0;

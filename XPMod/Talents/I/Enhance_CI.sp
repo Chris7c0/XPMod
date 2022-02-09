@@ -1,17 +1,45 @@
-bool IsCommonInfected(int entity, const char[] classname)
-{
-	if (strlen(classname) > 0)
+bool IsCommonInfected(int iEntity, const char[] strKnownClassname)
+{	
+	if (strlen(strKnownClassname) > 0)
+		return StrEqual(strKnownClassname, "infected");
+	
+	if (RunEntityChecks(iEntity))
 	{
-		return StrEqual(classname, "infected");
-	}
-	else if (IsValidEntity(entity))
-	{
-		new String:strClassname[100];
-		GetEntityClassname(entity,strClassname,100);
+		char strClassname[100];
+		GetEntityClassname(iEntity,strClassname,100);
 		return StrEqual(strClassname, "infected");
 	}
 
 	return false;
+}
+
+// Check the CI is still alive, by checking health and also
+// importantly if the CI is a ragdoll because health can not
+// go to 0 and they are still dead in the game.
+bool IsCommonInfectedAlive(int iEntity)
+{
+	if (RunEntityChecks(iEntity) &&
+		GetEntProp(iEntity, Prop_Data, "m_iHealth") > 0 &&
+		GetEntProp(iEntity, Prop_Data, "m_bClientSideRagdoll") == 0)
+		return true;
+
+	return false;
+}
+
+bool IsEnhancedCI(int iEntity)
+{
+	// Find if the Enhanced CI entity in the list, if so they are enchanced
+	if (GetEnhancedCIListIndexID(iEntity) >= 0)
+		return true;
+	
+	return false;
+}
+
+// Returns 0 if the infected is not in the enhanced infected list
+int GetEnhancedCIListIndexID(int iEntity)
+{
+	// Find the Enhanced CI index ID using the entity ID in the list
+	return FindIndexInArrayListUsingValue(g_listEnhancedCIEntities, iEntity, ENHANCED_CI_ENTITY_ID);
 }
 
 void EnhanceCIIfNeeded(int iEntity)

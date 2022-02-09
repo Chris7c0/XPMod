@@ -10,44 +10,6 @@ Action:TimerJumpFurther(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerStopJockeyPeeSound(Handle:timer, any:iClient)
-{
-	StopSound(iClient, SNDCHAN_AUTO, SOUND_JOCKEYPEE);
-	
-	return Plugin_Stop;
-}
-
-Action:TimerStopJockeyPee(Handle:timer, any:iClient)
-{
-	if(iClient > 0 || IsClientInGame(iClient) == false)
-		return Plugin_Stop;
-
-	StopSound(iClient, SNDCHAN_AUTO, SOUND_JOCKEYPEE);
-
-	if(IsFakeClient(iClient) == false)
-		ShowHudOverlayColor(iClient, 255, 255, 0, 65, 1000, FADE_OUT);
-	
-	return Plugin_Stop;
-}
-
-Action:TimerRemovePeeFX(Handle:timer, any:iClient)
-{
-	if(IsValidEntity(iClient) == false || IsClientInGame(iClient) ==  false)
-		return Plugin_Stop;
-	
-	SetClientRenderAndGlowColor(iClient);
-	//ResetGlow(iClient);
-	
-	return Plugin_Stop;
-}
-	
-Action:TimerEnableJockeyPee(Handle:timer, any:iClient)
-{
-	g_bCanJockeyPee[iClient] = true;
-
-	return Plugin_Stop;
-}
-
 Action:TimerRemoveJockeyCloak(Handle:timer, any:iClient)
 {
 	g_bCanJockeyCloak[iClient] = true;

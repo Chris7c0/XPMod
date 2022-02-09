@@ -259,13 +259,15 @@ new g_iBagOfSpitsSelectedSpit[MAXPLAYERS + 1] = BAG_OF_SPITS_NONE;
 
 // Jockey
 new bool:g_bCanJockeyPee[MAXPLAYERS + 1] = true;
+new bool:g_bJockeyPissVictim[MAXPLAYERS + 1] = true;
 new bool:g_bCanJockeyCloak[MAXPLAYERS + 1] = true;
 new bool:g_bJockeyIsRiding[MAXPLAYERS + 1] = false;
 new g_iJockeysVictim[MAXPLAYERS + 1];
 new bool:g_bCanJockeyJump[MAXPLAYERS + 1] = false;
 new Float:g_fJockeyRideSpeed[MAXPLAYERS + 1] = 1.0;
 new Float:g_fJockeyRideSpeedVanishingActBoost[MAXPLAYERS + 1] = 0.0;
-#define JOCKEY_PISS_SPAWN_TANK_CHANCE       10 //%
+#define JOCKEY_PISS_CONVERSION_RADIUS           200.0
+//#define JOCKEY_PISS_SPAWN_JIMMY_CHANCE       10 //%
 
 
 // Charger
