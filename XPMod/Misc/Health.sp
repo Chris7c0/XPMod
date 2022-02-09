@@ -32,7 +32,7 @@ bool SetPlayerHealth(int iClient, int iHealthAmount, bool bAdditive = false, boo
 		IsIncap(iClient) == true))
 		return false;
 
-	// Clamp the health
+	// Clamp the health to lower bounds of 0 when not additive
 	if (iHealthAmount < 0 && bAdditive == false)
 		iHealthAmount = 0;
 	
@@ -46,9 +46,13 @@ bool SetPlayerHealth(int iClient, int iHealthAmount, bool bAdditive = false, boo
 	if (bAdditive)
 		iHealthAmount += GetPlayerHealth(iClient);
 
-	// Clamp the players health to their max health bounds, then set it
-	SetEntProp(iClient, Prop_Data, "m_iHealth", iHealthAmount > iMaxHealth ? iMaxHealth : iHealthAmount);
-
+	// Set the players health
+	// Clamp the players health to their max health upper bounds and 0 for the lower bound
+	SetEntProp(iClient, Prop_Data, "m_iHealth", 
+		iHealthAmount > iMaxHealth ? iMaxHealth : 
+		iHealthAmount < 0 ? 0 : 
+		iHealthAmount);
+	
 	HandlePostSetPlayerHealth(iClient);
 
 	return true;

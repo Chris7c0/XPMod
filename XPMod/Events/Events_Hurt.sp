@@ -161,7 +161,8 @@ void EventsHurt_GiveXP(Handle:hEvent, iAttacker, iVictim)
 	new iDmgType = GetEventInt(hEvent, "type");
 	new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
 
-	if (GetPlayerHealth(iVictim) <= 0)
+	// Prevent Infinite Tank XP from stuck death animation
+	if (GetPlayerHealth(iVictim) < 0 || IsPlayerAlive(iVictim) == false)
 		return;
 
 	if (g_iClientTeam[iVictim] == TEAM_SURVIVORS && 
@@ -215,10 +216,14 @@ void EventsHurt_GiveXP(Handle:hEvent, iAttacker, iVictim)
 	{
 		if(IsClientInGame(g_iVomitVictimAttacker[iVictim]) == true && IsFakeClient(g_iVomitVictimAttacker[iVictim]) == false)
 		{
-			if(iDmgHealth < 250)
-				g_iStat_ClientDamageToSurvivors[g_iVomitVictimAttacker[iVictim]] += iDmgHealth;
-			else
-				g_iStat_ClientDamageToSurvivors[g_iVomitVictimAttacker[iVictim]] += 250;
+			// Only keep track of damage dealt for reward later if the assist is from an infected
+			if (g_iClientTeam[g_iVomitVictimAttacker[iVictim]] == TEAM_INFECTED)
+			{
+				if(iDmgHealth < 250)
+					g_iStat_ClientDamageToSurvivors[g_iVomitVictimAttacker[iVictim]] += iDmgHealth;
+				else
+					g_iStat_ClientDamageToSurvivors[g_iVomitVictimAttacker[iVictim]] += 250;
+			}
 			
 			decl String:iMessage[64];
 			Format(iMessage, sizeof(iMessage), "Assited against %N.", iVictim);
