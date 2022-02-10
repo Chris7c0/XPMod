@@ -30,6 +30,8 @@
 //                                                                                                             //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+#define PLUGIN_VERSION "0.8.5.0000"
+
 #include <sourcemod>
 #include <sdktools>
 #include <sdkhooks>
@@ -42,7 +44,7 @@
 // XPMod Include Files
 #include "XPMod/Includes.sp"
 
-public Plugin:myinfo =
+public Plugin myinfo =
 {
 	name = "XPMod",
 	author = "Chris Pringle and Ezekiel Keener",
@@ -61,7 +63,7 @@ public OnPluginStart()
 		SetFailState("XPMod only works in Left4Dead 2.");
 	else
 		CreateTimer(10.0, Timer_ShowXPModInfoToServer, _);
-
+	
 	// Set up ConVars
 	SetupXPMConVars();
 	// Setup the handle that will link to the MySQL Database
