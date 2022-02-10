@@ -1240,6 +1240,6 @@ GiveRewards()
 	{
 		if(IsClientInGame(g_iReward_SurDmgID) == true)
 			if(IsFakeClient(g_iReward_SurDmgID) == false)
-				g_iClientXP[g_iReward_SurDmgID] += g_iReward_SurDmg;
+				g_iClientXP[g_iReward_SurDmgID] += g_iReward_SurDmg > 10000 ? 10000 : g_iReward_SurDmg;
 	}
 }
