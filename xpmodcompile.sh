@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# increment xpmod build version
+./IncrementVersion.sh
+
 # compile xpmod
 ./spcomp xpmod.sp -v:0
 

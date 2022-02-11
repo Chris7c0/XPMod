@@ -10,7 +10,7 @@
 void ShowXPModInfoToServer()
 {
 	PrintToServer(":---------<|============================================|>---------:");
-	PrintToServer(":---------<|                XP Mod %s              |>---------:", PLUGIN_VERSION);
+	PrintToServer(":---------<|              XP Mod %s             |>---------:", PLUGIN_VERSION);
 	PrintToServer(":---------<|============================================|>---------:");
 	PrintToServer(":---------<| Created by: Chris Pringle & Ezekiel Keener |>---------:");
 	PrintToServer(":---------<|============================================|>---------:");
