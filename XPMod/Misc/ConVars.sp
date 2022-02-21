@@ -2,7 +2,7 @@ GetXPMConVarValues()
 {
 	//Execute config file
 	decl String:strFileName[64];
-	Format(strFileName, sizeof(strFileName), "xpmod_%s", PLUGIN_VERSION);
+	Format(strFileName, sizeof(strFileName), "xpmod");
 	AutoExecConfig(true, strFileName);
 }
 
@@ -18,7 +18,7 @@ SetupXPMConVars()
 	HookConVarChange(g_hCVar_DebugMode, CVarChange_DebugMode);
 
 	// XP Saving for high XP players
-	g_hCVar_XPSaveForHighLevelsEnabled = CreateConVar("xpm_xp_save_enabled", "1", "Sets if XP will be saved for players above 2x Max Level XP amount [0 = XP DISABLED, 1 = XP ENABLED]", 0, true, 0.0, true, 1.0);
+	g_hCVar_XPSaveForHighLevelsEnabled = CreateConVar("xpm_xp_save_enabled", "1", "Sets if XP will be saved for players above 2x Max Level XP amount [0 = XP Saving DISABLED, 1 = XP Saving ENABLED]", 0, true, 0.0, true, 1.0);
 	HookConVarChange(g_hCVar_XPSaveForHighLevelsEnabled, CVarChange_XPSaveForHighLevelsEnabled);
 
 	// // TalentSelectionMode
@@ -61,9 +61,9 @@ CVarChange_XPSaveForHighLevelsEnabled(Handle:hCVar, const String:strOldValue[], 
 	if(StrEqual(strOldValue, strNewValue) == true)
 		return;
 	
-	XPSaveForHighLevelsEnabled =  StringToInt(strNewValue) == 1 ? true : false;
-	PrintToServer("[XPM] ConVar changed: XP is now %s on this server.", XPSaveForHighLevelsEnabled ? "ENABLED" : "DISABLED");
-	PrintToChatAll("[XPM] ConVar changed: XP is now %s on this server.", XPSaveForHighLevelsEnabled ? "ENABLED" : "DISABLED");
+	XPSaveForHighLevelsEnabled =  StringToInt(strNewValue) == 0 ? false : true;
+	PrintToServer("[XPM] ConVar changed: XP saving for high XP players is now %s on this server.", XPSaveForHighLevelsEnabled ? "ENABLED" : "DISABLED");
+	PrintToChatAll("[XPM] ConVar changed: XP saving for high XP players is now %s on this server.", XPSaveForHighLevelsEnabled ? "ENABLED" : "DISABLED");
 }
 
 
