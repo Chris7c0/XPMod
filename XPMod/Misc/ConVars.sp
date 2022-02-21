@@ -13,9 +13,13 @@ SetupXPMConVars()
 	CreateConVar("xpm_version", PLUGIN_VERSION, "XPMod Version loaded", FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY|FCVAR_DONTRECORD);
 	CreateConVar("xpmod_version", PLUGIN_VERSION, "XPMod Version loaded", FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY|FCVAR_DONTRECORD);
 
-	// Default Survivor Class
+	// Debug Mode
 	g_hCVar_DebugMode = CreateConVar("xpm_debug", "0", "Sets the level of debug logging [0 = DEBUG_MODE_OFF, 1 = DEBUG_MODE_ERRORS, 2 = DEBUG_MODE_TIMERS, 3 = DEBUG_MODE_VERBOSE, 4 = DEBUG_MODE_EVERYTHING, -1 = DEBUG_MODE_TESTING]", 0, true, -1.0, true, 4.0);
 	HookConVarChange(g_hCVar_DebugMode, CVarChange_DebugMode);
+
+	// XP Loadout Use and Gain Enabled
+	g_hCVar_XPGainAndUseEnabled = CreateConVar("xpm_xp_enabled", "1", "Sets if XP will be gained and used for loadouts on this server [0 = XP DISABLED, 1 = XP ENABLED]", 0, true, 0.0, true, 1.0);
+	HookConVarChange(g_hCVar_XPGainAndUseEnabled, CVarChange_XPGainAndUseEnabled);
 
 	// // TalentSelectionMode
 	// g_hCVar_TalentSelectionMode = CreateConVar("xpm_talent_selection_mode", "1", "Sets the talent selection mode when players choose characters [0 = MENU, 1 = WEBSITE]", 0, true, 0.0, true, 1.0);
@@ -38,7 +42,7 @@ SetupXPMConVars()
 	HookConVarChange(g_hCVar_DefaultInfecttedSlot3, CVarChange_DefaultInfectedSlot3);
 }
 
-//Callback function for updating the default survivor
+//Callback function for updating the Debug Mode
 CVarChange_DebugMode(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
 {
 	//If the value was not changed, then do nothing
@@ -49,6 +53,19 @@ CVarChange_DebugMode(Handle:hCVar, const String:strOldValue[], const String:strN
 	PrintToServer("[XPM] ConVar changed: DebugMode is now %i", g_iDebugMode);
 	PrintToChatAll("[XPM] ConVar changed: DebugMode is now %i", g_iDebugMode);
 }
+
+//Callback function for updating the XP Gain and Use on the Server
+CVarChange_XPGainAndUseEnabled(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
+{
+	//If the value was not changed, then do nothing
+	if(StrEqual(strOldValue, strNewValue) == true)
+		return;
+	
+	g_bXPGainAndUseEnabled =  StringToInt(strNewValue) == 1 ? true : false;
+	PrintToServer("[XPM] ConVar changed: XP is now %s on this server.", g_bXPGainAndUseEnabled ? "ENABLED" : "DISABLED");
+	PrintToChatAll("[XPM] ConVar changed: XP is now %s on this server.", g_bXPGainAndUseEnabled ? "ENABLED" : "DISABLED");
+}
+
 
 //Callback function for enabling or disabling the new vote winner sound
 // CVarChange_TalentSelectionMode(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
