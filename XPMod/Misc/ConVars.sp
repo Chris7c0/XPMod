@@ -17,9 +17,9 @@ SetupXPMConVars()
 	g_hCVar_DebugMode = CreateConVar("xpm_debug", "0", "Sets the level of debug logging [0 = DEBUG_MODE_OFF, 1 = DEBUG_MODE_ERRORS, 2 = DEBUG_MODE_TIMERS, 3 = DEBUG_MODE_VERBOSE, 4 = DEBUG_MODE_EVERYTHING, -1 = DEBUG_MODE_TESTING]", 0, true, -1.0, true, 4.0);
 	HookConVarChange(g_hCVar_DebugMode, CVarChange_DebugMode);
 
-	// XP Loadout Use and Gain Enabled
-	g_hCVar_XPGainAndUseEnabled = CreateConVar("xpm_xp_enabled", "1", "Sets if XP will be gained and used for loadouts on this server [0 = XP DISABLED, 1 = XP ENABLED]", 0, true, 0.0, true, 1.0);
-	HookConVarChange(g_hCVar_XPGainAndUseEnabled, CVarChange_XPGainAndUseEnabled);
+	// XP Saving for high XP players
+	g_hCVar_XPSaveForHighLevelsEnabled = CreateConVar("xpm_xp_save_enabled", "1", "Sets if XP will be saved for players above 2x Max Level XP amount [0 = XP DISABLED, 1 = XP ENABLED]", 0, true, 0.0, true, 1.0);
+	HookConVarChange(g_hCVar_XPSaveForHighLevelsEnabled, CVarChange_XPSaveForHighLevelsEnabled);
 
 	// // TalentSelectionMode
 	// g_hCVar_TalentSelectionMode = CreateConVar("xpm_talent_selection_mode", "1", "Sets the talent selection mode when players choose characters [0 = MENU, 1 = WEBSITE]", 0, true, 0.0, true, 1.0);
@@ -55,15 +55,15 @@ CVarChange_DebugMode(Handle:hCVar, const String:strOldValue[], const String:strN
 }
 
 //Callback function for updating the XP Gain and Use on the Server
-CVarChange_XPGainAndUseEnabled(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
+CVarChange_XPSaveForHighLevelsEnabled(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
 {
 	//If the value was not changed, then do nothing
 	if(StrEqual(strOldValue, strNewValue) == true)
 		return;
 	
-	g_bXPGainAndUseEnabled =  StringToInt(strNewValue) == 1 ? true : false;
-	PrintToServer("[XPM] ConVar changed: XP is now %s on this server.", g_bXPGainAndUseEnabled ? "ENABLED" : "DISABLED");
-	PrintToChatAll("[XPM] ConVar changed: XP is now %s on this server.", g_bXPGainAndUseEnabled ? "ENABLED" : "DISABLED");
+	XPSaveForHighLevelsEnabled =  StringToInt(strNewValue) == 1 ? true : false;
+	PrintToServer("[XPM] ConVar changed: XP is now %s on this server.", XPSaveForHighLevelsEnabled ? "ENABLED" : "DISABLED");
+	PrintToChatAll("[XPM] ConVar changed: XP is now %s on this server.", XPSaveForHighLevelsEnabled ? "ENABLED" : "DISABLED");
 }
 
 

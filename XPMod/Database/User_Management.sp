@@ -582,42 +582,71 @@ SaveUserData(iClient)
 	IntToString(g_bAnnouncerOn[iClient], strOption[i++], 2);
 	IntToString(g_bEnabledVGUI[iClient], strOption[i++], 2);
 	IntToString(g_iXPDisplayMode[iClient], strOption[i++], 2);
-	
-	//Save the new user data into the SQL database with the matching Steam ID
-	decl String:strQuery[1024];
+
+	// Build the user's query data to save
+	char strQuery[1024], strQueryPart[1024];
+	// Start the query
 	Format(strQuery, sizeof(strQuery), "\
-		UPDATE %s SET \
-		user_name = '%s', \
-		xp = %s, \
+		UPDATE %s SET ", 
+		DB_TABLENAME_USERS);
+
+	// Client Name update
+	Format(strQueryPart, sizeof(strQuery), "\
+		user_name = '%s', ", 
+		strClientName);
+	StrCat(strQuery, sizeof(strQuery), strQueryPart);
+
+	// XP
+	// Only save new xp if its enabled or the player is below 2x the Max Level XP Amount
+	if (XPSaveForHighLevelsEnabled || g_iClientXP[iClient] < LEVEL_30 * 2)
+	{
+		Format(strQueryPart, sizeof(strQueryPart), "\
+		xp = %s, ", 
+		strClientXP);
+		StrCat(strQuery, sizeof(strQuery), strQueryPart);
+	}
+
+	// Classes
+	Format(strQueryPart, sizeof(strQueryPart), "\
 		survivor_id = %s, \
 		infected_id_1 = %s, \
 		infected_id_2 = %s, \
-		infected_id_3 = %s, \
+		infected_id_3 = %s, ", 
+		strSurvivorID,
+		strInfectedID[0],
+		strInfectedID[1],
+		strInfectedID[2]);
+	StrCat(strQuery, sizeof(strQuery), strQueryPart);
+
+	// Equipment
+	Format(strQueryPart, sizeof(strQueryPart), "\
 		equipment_primary = %s, \
 		equipment_secondary = %s, \
 		equipment_explosive = %s, \
 		equipment_health = %s, \
 		equipment_boost = %s, \
-		equipment_laser = %s, \
-		option_announcer  = %s, \
-		option_display_xp = %s \
-		WHERE user_id = '%i'", 
-		DB_TABLENAME_USERS, 
-		strClientName, 
-		strClientXP, 
-		strSurvivorID,
-		strInfectedID[0],
-		strInfectedID[1],
-		strInfectedID[2],
+		equipment_laser = %s, ", 
 		strEquipmentSlotID[0],
 		strEquipmentSlotID[1],
 		strEquipmentSlotID[2],
 		strEquipmentSlotID[3],
 		strEquipmentSlotID[4],
-		strEquipmentSlotID[5],
+		strEquipmentSlotID[5]);
+	StrCat(strQuery, sizeof(strQuery), strQueryPart);
+
+	// Options
+	Format(strQueryPart, sizeof(strQueryPart), "\
+		option_announcer  = %s, \
+		option_display_xp = %s ", 
 		strOption[0],
-		strOption[2],
+		strOption[2]);
+	StrCat(strQuery, sizeof(strQuery), strQueryPart);
+
+	// WHERE Criteria Clause
+	Format(strQueryPart, sizeof(strQueryPart), "\
+		WHERE user_id = '%i'", 
 		g_iDBUserID[iClient]);
+	StrCat(strQuery, sizeof(strQuery), strQueryPart);
 	
 	SQL_TQuery(g_hDatabase, SQLSaveUserDataCallback, strQuery, iClient);
 }
