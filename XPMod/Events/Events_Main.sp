@@ -28,6 +28,7 @@ SetupXPMEvents()
 	AddCommandListener(CommandListener_CallVote, "callvote");
 	
 	//Player Events
+	HookEvent("player_changename", Event_PlayerChangeName);
 	HookEvent("player_connect_full", Event_PlayerConnect);
 	HookEvent("player_disconnect", Event_PlayerDisconnect);
 	HookEvent("player_team", Event_PlayerChangeTeam);
@@ -92,8 +93,7 @@ SetupXPMEvents()
 	HookEvent("player_now_it", Event_PlayerNowIt);
 	HookEvent("player_no_longer_it", Event_PlayerNoLongerIt);
 	//HookEvent("ghost_spawn_time", Event_GhostSpawnTime);
-	//HookEvent("entered_spit", Event_EnteredSpit);
-	
+	//HookEvent("entered_spit", Event_EnteredSpit);	
 }
 
 /**************************************************************************************************************************
@@ -178,10 +178,37 @@ Action:SayTeamCmd(iClient, args)
 	return Plugin_Continue;
 }
 
+Action:Event_PlayerChangeName(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+{
+
+	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+	//PrintToServer("Event_PlayerChangeName: %i %N", iClient, iClient);
+
+	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
+		return Plugin_Continue;
+
+	if (g_bHideNameChangeMessage == false)
+		KickClient(iClient, "You cannot change your name on XPMod servers");
+
+	// GetEventString(hEvent, "newname", g_strNewName[client], 32);
+
+	return Plugin_Continue;
+}
+
 // This is purely to block the name change message when updating a name to have the XPMod Level tags
 // Originally from https://forums.alliedmods.net/showthread.php?t=302085
 Action Hook_SayText2(UserMsg msg_id, any msg, const int[] players, int playersNum, bool reliable, bool init)
 {
+	// // check all players in server
+	// for (int i=0; i<playersNum; i++)
+	// {
+	// 	char strClientName[32];
+	// 	GetClientName(players[i], strClientName, sizeof(strClientName))
+	// 	PrintToServer("id=%i name=%N storedname=%s", players[i], players[i], strClientName);
+	// }
+
+	// PrintToServer("%s", msg);
+
 	// Continue as usual if we arent hiding the name change messages currently
 	if(g_bHideNameChangeMessage == false)
 		return Plugin_Continue;
