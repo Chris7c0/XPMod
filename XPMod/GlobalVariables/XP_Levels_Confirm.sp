@@ -8,6 +8,7 @@ new bool:g_bCanSave = true;
 new bool:g_bSurvivorTalentsGivenThisRound[MAXPLAYERS + 1] = false;
 new g_iClientXP[MAXPLAYERS + 1];
 new g_iClientLevel[MAXPLAYERS + 1];
+new g_iClientPrestigePoints[MAXPLAYERS + 1];
 new g_iChosenSurvivor[MAXPLAYERS + 1];
 new g_iClientNextLevelXPAmount[MAXPLAYERS + 1];
 new g_iClientPreviousLevelXPAmount[MAXPLAYERS + 1];

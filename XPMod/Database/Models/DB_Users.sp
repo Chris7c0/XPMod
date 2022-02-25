@@ -15,6 +15,8 @@
 #define DB_COL_INDEX_USERS_EQUIPMENT_LASER       14
 #define DB_COL_INDEX_USERS_OPTION_ANNOUNCER      15
 #define DB_COL_INDEX_USERS_OPTION_DISPLAY_XP     16
+#define DB_COL_INDEX_PRESTIGE_POINTS             17
+#define DB_COL_INDEX_PUSH_UPDATE_FROM_DB         18
 
 new String:strUsersTableColumnNames[][] = {
     "user_id",
@@ -34,6 +36,8 @@ new String:strUsersTableColumnNames[][] = {
     "equipment_laser",
     "option_announcer",
     "option_display_xp",
+    "prestige_points",
+    "push_update_from_db"
 };
 
 // enum UsersTableColumnIndex

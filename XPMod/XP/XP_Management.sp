@@ -238,6 +238,7 @@ ResetAll(iClient)
 	g_bPlayerInTeamChangeCoolDown[iClient] = false;
 	g_iClientXP[iClient] = 0;
 	g_iClientLevel[iClient] = 0;
+	g_iClientPrestigePoints[iClient] = 0;
 	g_iInfectedLevel[iClient] = 0;
 	g_iClientNextLevelXPAmount[iClient] = RoundToFloor(LEVEL_1 * XP_MULTIPLIER);
 	//Equipment

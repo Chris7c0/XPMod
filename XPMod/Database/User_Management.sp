@@ -196,6 +196,15 @@ SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[], any:hD
 			}
 		}
 
+		//Get Client Prestige Points from the SQL database and level up player accordingly
+		iFieldIndex = DB_COL_INDEX_PRESTIGE_POINTS - startFieldIndexOffset;
+		if(SQL_FetchString(hQuery, iFieldIndex, strData, sizeof(strData)) != 0)
+		{
+			g_iClientPrestigePoints[iClient] = StringToInt(strData);
+		}
+		else
+			LogError("SQL Error getting Prestige Points string from query");
+
 		// Reset Survivor Classes and Talent Levels
 		ResetSurvivorTalents(iClient);
 
@@ -332,7 +341,7 @@ GetUserData(any:iClient, bool:bOnlyWebsiteChangableData = false, bool:bDrawConfi
 	decl String:strQuery[1024] = "";
 	decl String:strAttributes[1024] = "";
 	// Build the attribute strings for the query
-	GetAttributesStringForQuery(strAttributes, sizeof(strAttributes), DB_COL_INDEX_USERS_XP, DB_COL_INDEX_USERS_OPTION_DISPLAY_XP);
+	GetAttributesStringForQuery(strAttributes, sizeof(strAttributes), DB_COL_INDEX_USERS_XP, DB_COL_INDEX_PUSH_UPDATE_FROM_DB);
 	// Combine it all into the query
 	Format(strQuery, sizeof(strQuery), "SELECT %s FROM %s WHERE user_id = %i", strAttributes, DB_TABLENAME_USERS, g_iDBUserID[iClient]);
 	
