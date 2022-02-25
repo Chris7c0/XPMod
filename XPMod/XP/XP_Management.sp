@@ -17,7 +17,10 @@ RenamePlayerWithLevelTags(iClient, bool:bRemoveTags = false)
 	// PrintToChatAll("%s: %i",strClientName, strlen(strClientName));
 
 	// Create the Level Tag regex to check against
-	new Handle:hTagRegex = CompileRegex("\\[[0-9]{0,2}\\] ..*");
+	// Needs to match tagged names below (one with prestige and one without)
+	// [30] ChrisP
+	// [☆111] Test
+	new Handle:hTagRegex = CompileRegex("\\[.{0,3}[0-9]{0,3}\\] ..*");
 
 	// Check if XPMod Level tag is already added before continuing
 	// If its already there, then remove it to obtain base name
@@ -31,18 +34,29 @@ RenamePlayerWithLevelTags(iClient, bool:bRemoveTags = false)
 	// The string [30] is 5 chars with the space. Max name length is 31.
 	// So check to make sure the name is not longer than 31 - 5 = 26
 	// before continuing.
-	if (strlen(strClientBaseName) > 26)
+	// This has changed with Prestige Points, now its 31 - 9 = 22
+	if (strlen(strClientBaseName) > 22)
 		return;
 
 	// PrintToServer("%s: %i",strClientBaseName, strlen(strClientBaseName));
 
-	// Get the client level into a string
-	decl String:strClientLevel[3];
-	IntToString(g_iClientLevel[iClient], strClientLevel, sizeof(strClientLevel))
-
-	// Combine it into the final name
+	// Add the tag to the players name if needed
 	if (bRemoveTags == false)
-		Format(strClientName, sizeof(strClientName), "[%s] %s", strClientLevel, strClientBaseName);
+	{
+		// Get the client level into a string and combine it into the final name
+		char strClientLevel[4];
+		if (g_iClientPrestigePoints[iClient] == 0)
+		{
+			IntToString(g_iClientLevel[iClient], strClientLevel, sizeof(strClientLevel));
+			Format(strClientName, sizeof(strClientName), "[%s] %s", strClientLevel, strClientBaseName);
+		}
+		else
+		{
+			IntToString(g_iClientPrestigePoints[iClient], strClientLevel, sizeof(strClientLevel));
+			Format(strClientName, sizeof(strClientName), "[☆%s] %s", strClientLevel, strClientBaseName);
+		}
+	}
+	
 
 	// PrintToServer("%s: %i",strClientName, strlen(strClientName));
 
