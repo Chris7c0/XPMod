@@ -458,8 +458,15 @@ CreateNewUser(iClient)
 	SQL_TQuery(g_hDatabase, SQLCreateNewUserCallback, strQuery, iClient);
 }
 
+SaveUserData(int iClient)
+{
+	// First get if the player has updated data from the database
+	// After this, this will save the new data in the database
+	SQLCheckForChangeThenSaveData(iClient);
+}
+
 //Callback function for an SQL SaveUserData
-SQLSaveUserDataCallback(Handle:owner, Handle:hQuery, const String:error[], any:iClient)
+SQLSaveUserDataInDatabaseCallback(Handle:owner, Handle:hQuery, const String:error[], any:iClient)
 {
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -474,7 +481,7 @@ SQLSaveUserDataCallback(Handle:owner, Handle:hQuery, const String:error[], any:i
 	// PrintToServer("Save User Data Callback Complete. %i: %N", iClient, iClient);
 }
 
-SaveUserData(iClient)
+SaveUserDataInDatabase(iClient)
 {
 	// PrintToChatAll("Save User Data. %i: %N", iClient, iClient);
 	// PrintToServer("Save User Data. %i: %N", iClient, iClient);
@@ -646,9 +653,16 @@ SaveUserData(iClient)
 	// Options
 	Format(strQueryPart, sizeof(strQueryPart), "\
 		option_announcer  = %s, \
-		option_display_xp = %s ", 
+		option_display_xp = %s, ", 
 		strOption[0],
 		strOption[2]);
+	StrCat(strQuery, sizeof(strQuery), strQueryPart);
+
+	// Set the Push Update Flag to 0 since
+	// it should have already grabbed before running this
+	Format(strQueryPart, sizeof(strQueryPart), "\
+		push_update_from_db = %i ", 
+		0);
 	StrCat(strQuery, sizeof(strQuery), strQueryPart);
 
 	// WHERE Criteria Clause
@@ -656,9 +670,108 @@ SaveUserData(iClient)
 		WHERE user_id = '%i'", 
 		g_iDBUserID[iClient]);
 	StrCat(strQuery, sizeof(strQuery), strQueryPart);
+
+	// PrintToServer("                   %s", strQuery);
 	
-	SQL_TQuery(g_hDatabase, SQLSaveUserDataCallback, strQuery, iClient);
+	SQL_TQuery(g_hDatabase, SQLSaveUserDataInDatabaseCallback, strQuery, iClient);
 }
+
+//Callback function for an SQL SQLCheckForChangeThenSaveData
+SQLCheckForChangeThenSaveDataCallback(Handle:owner, Handle:hQuery, const String:error[], any:iClient)
+{
+	// PrintToChatAll("SQLCheckForChangeThenSaveDataCallback Started. %i: %N", iClient, iClient);
+	// PrintToServer("SQLCheckForChangeThenSaveDataCallback Started. %i: %N", iClient, iClient);
+
+	if (g_hDatabase == INVALID_HANDLE)
+	{
+		PrintToChatAll("Unable to connect to XPMod SQL Database.");
+		return;
+	}
+
+	if (IsValidEntity(iClient) == false || IsFakeClient(iClient))
+	{
+		//LogError("SQLGetUserIDAndTokenCallback: INVALID ENTITY OR IS FAKE CLIENT");
+		return;
+	}
+	
+	if(!StrEqual("", error))
+	{
+		LogError("SQL Error: %s", error);
+		return;
+	}
+	
+	decl String:strData[50];
+	
+	if(SQL_FetchRow(hQuery) == false)
+	{
+		LogError("SQL Error SQL_FetchRow failed");
+		return;
+	}
+
+	// Get Client's Push Update From Database flag
+	if(SQL_FetchString(hQuery, 0, strData, sizeof(strData)) == 0)
+	{
+		LogError("SQL Error getting USER_ID string from query");
+		return;
+	}
+
+	
+	if (StringToInt(strData) == 1)
+	{
+		// Get Client's XP from the database and overwrite current xp in the server
+		if(SQL_FetchString(hQuery, 1, strData, sizeof(strData)) == 0)
+		{
+			LogError("SQL Error getting XP string from query");
+			return;
+		}
+
+		g_iClientXP[iClient] = StringToInt(strData);
+	}
+	
+	// Now we can safely save the XP
+	SaveUserDataInDatabase(iClient);
+
+	// PrintToChatAll("SQLCheckForChangeThenSaveData Callback Complete.  %i: %N", iClient, iClient);
+	// PrintToServer("SQLCheckForChangeThenSaveData Callback Complete.  %i: %N", iClient, iClient);
+}
+
+// This is for when an update happens in the database and the user connected needs to have his XP force updated on the server they are playing
+void SQLCheckForChangeThenSaveData(any:iClient)
+{
+	// PrintToChatAll("SQLCheckForChangeThenSaveData. %i: %N", iClient, iClient);
+	// PrintToServer("SQLCheckForChangeThenSaveData. %i: %N", iClient, iClient);
+	if(iClient == 0)
+		iClient = 1;
+	
+	if (g_hDatabase == INVALID_HANDLE)
+	{
+		PrintToChatAll("Unable to connect to XPMod SQL Database.");
+		return;
+	}
+	
+	if (RunClientChecks(iClient) == false || g_bClientLoggedIn[iClient] == false)
+		return;
+	
+	//Get Steam Auth ID, if this returns false, then do not proceed
+	decl String:strSteamID[32];
+	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
+	{
+		PrintToChat(iClient, "[XPMod] Unable to obtain your Steam Auth ID. \
+			Please close L4D2, restart Steam, then restart L4D2 with Steam already open.");
+		LogError("GetUserIDAndToken: GetClientAuthId failed for %N", iClient);
+		return;
+	}
+	
+	// Get if there was an update we need to force push to the player in the server SQL database with the matching Steam ID
+	decl String:strQuery[1024] = "";
+	// Combine it all into the query
+	Format(strQuery, sizeof(strQuery), "SELECT %s,%s FROM %s WHERE steam_id = %s", strUsersTableColumnNames[DB_COL_INDEX_PUSH_UPDATE_FROM_DB], strUsersTableColumnNames[DB_COL_INDEX_USERS_XP], DB_TABLENAME_USERS, strSteamID);
+
+	// PrintToServer("                   %s", strQuery);
+
+	SQL_TQuery(g_hDatabase, SQLCheckForChangeThenSaveDataCallback, strQuery, iClient);
+}
+
 
 Logout(iClient)
 {
