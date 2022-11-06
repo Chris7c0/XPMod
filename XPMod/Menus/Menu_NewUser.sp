@@ -207,7 +207,9 @@ BanConfirmMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 				// Add user to the bans table in the xpmod database
 				SQLAddBannedUserToDatabase(iClient, g_iBanDurationInMinutes[iClient] * 60, "XPMod Banned");
 				// Ban the user, regardless of being able to add to the database or not
-				BanClient(iClient, g_iBanDurationInMinutes[iClient], BANFLAG_AUTHID, "XPMod Banned", "Banned from XPMod. Have a nice day");
+				// Banning was changed to only kick, to fix issue with lingering bans after unban
+				// BanClient(iClient, g_iBanDurationInMinutes[iClient], BANFLAG_AUTHID, "XPMod Banned", "Banned from XPMod. Have a nice day");
+				KickClient(iClient, "You have been banned from XPMod servers")
 			}
 			case 1: // No
 			{

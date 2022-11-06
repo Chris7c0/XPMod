@@ -27,13 +27,19 @@ SQLCheckIfUserIsInBanListCallback(Handle:owner, Handle:hQuery, const String:erro
 			// If the user was found in the bans table, ban them again
 			// Note: this occurs when the server has been restarted and their ban is not currently in memory.
 			// Once it has been added to memory, they will no longer be able to join to get to this point.
-			if (iBanDurationSeconds > 60)
-				BanClient(iClient, RoundToFloor(iBanDurationSeconds / 60.0), BANFLAG_AUTHID, "XPMod Banned", "You are currently banned from XPMod servers");
+			// if (iBanDurationSeconds > 60)
+			// 	BanClient(iClient, RoundToFloor(iBanDurationSeconds / 60.0), BANFLAG_AUTHID, "XPMod Banned", "You are currently banned from XPMod servers");
+
+			// Banning was changed to only kick, to fix issue with lingering bans after unban
+			if (iBanDurationSeconds > 0)
+				KickClient(iClient, "You are currently banned from XPMod servers")
 		}
 		else
 		{
 			// User has been banned with a NULL expiration_timer so ban for a long time
-			BanClient(iClient, 9999999, BANFLAG_AUTHID, "XPMod Banned", "You are permanently banned from XPMod servers");
+			// BanClient(iClient, 9999999, BANFLAG_AUTHID, "XPMod Banned", "You are permanently banned from XPMod servers");
+			// Banning was changed to only kick, to fix issue with lingering bans after unban
+			KickClient(iClient, "You are permanently banned from XPMod servers")
 		}
 	}
 	

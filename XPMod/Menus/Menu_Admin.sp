@@ -267,8 +267,8 @@ KickPlayerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			return;
 		}
 		
-		PrintToChat(iClient, "\x03[XPMod] \x04Banning %N...", iTarget);
-		KickClient(iTarget, "Peace");
+		PrintToChat(iClient, "\x03[XPMod] \x04Kicking %N...", iTarget);
+		KickClient(iTarget, "You were kicked by an Admin");
 	}
 }
 
@@ -305,10 +305,14 @@ BanPlayerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 
 		PrintToChat(iClient, "\x03[XPMod] \x04Banning %N...", iTarget);
 		
+		// Construct the ban string reason
+		decl String:strBanString[1024] = "";
+		Format(strBanString, sizeof(strBanString), "Permanently banned by %N", iClient);
 		// Add user to the bans table in the xpmod database
-		SQLAddBannedUserToDatabase(iTarget, 0, "Banned by Admin");
+		SQLAddBannedUserToDatabase(iTarget, 0, strBanString);
 		// Ban the user, regardless of being able to add to the database or not
-		BanClient(iTarget, 999999, BANFLAG_AUTHID, "Banned by Admin", "Banned from XPMod");
+		// Banning was changed to only kick, to fix issue with lingering bans after unban
+		KickClient(iClient, "You are permanently banned from XPMod servers")
 	}
 }
 

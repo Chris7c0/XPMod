@@ -76,9 +76,7 @@ GetUserIDAndToken(any:iClient)
 	decl String:strSteamID[32];
 	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
 	{
-		PrintToChat(iClient, "[XPMod] Unable to obtain your Steam Auth ID. \
-			Please close L4D2, restart Steam, then restart L4D2 with Steam already open.");
-		LogError("GetUserIDAndToken: GetClientAuthId failed for %N", iClient);
+		KickClientCannotGetSteamID(iClient);
 		return;
 	}
 	
@@ -399,9 +397,7 @@ CreateNewUser(iClient)
 	decl String:strSteamID[32];
 	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
 	{
-		PrintToChat(iClient, "[XPMod] Unable to obtain your Steam Auth ID. \
-			Please close L4D2, restart Steam, then restart L4D2 with Steam already open.");
-		LogError("CreateNewUser: GetClientAuthId failed for %N", iClient);
+		KickClientCannotGetSteamID(iClient);
 		return;
 	}
 	
@@ -511,9 +507,7 @@ SaveUserDataInDatabase(iClient)
 	decl String:strSteamID[32];
 	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
 	{
-		PrintToChat(iClient, "[XPMod] Unable to obtain your Steam Auth ID. \
-			Please close L4D2, restart Steam, then restart L4D2 with Steam already open.");
-		LogError("SaveUserData: GetClientAuthId failed for %N", iClient);
+		KickClientCannotGetSteamID(iClient);
 		return;
 	}
 	
@@ -756,9 +750,7 @@ void SQLCheckForChangeThenSaveData(any:iClient)
 	decl String:strSteamID[32];
 	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
 	{
-		PrintToChat(iClient, "[XPMod] Unable to obtain your Steam Auth ID. \
-			Please close L4D2, restart Steam, then restart L4D2 with Steam already open.");
-		LogError("GetUserIDAndToken: GetClientAuthId failed for %N", iClient);
+		KickClientCannotGetSteamID(iClient);
 		return;
 	}
 	
@@ -841,3 +833,11 @@ SanitizeValueStringForQuery(char[] strValue, iStringSize)
 	ReplaceString(strValue, iStringSize, "\"", "-", true);
 	ReplaceString(strValue, iStringSize, "\\", "-", true);
 }
+
+KickClientCannotGetSteamID(iClient)
+{
+	KickClient(iClient, "Unable to obtain your Steam Auth ID. \
+		Please close L4D2, restart Steam, then restart L4D2 with Steam already open");
+	LogError("GetClientAuthId failed for %N", iClient);
+}
+
