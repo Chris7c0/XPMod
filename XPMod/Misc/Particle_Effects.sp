@@ -270,7 +270,7 @@ int CreateSmokeParticle(
 	int iClient = -1,									// Target to attach to
 	float xyzPosition[3],								// Position to create it 0,0,0 will force getting client location
 	bool bAttachToTarget = false,						// Attach to the target entity or not
-	const char strAttachTarget[] = "",					// Target to attach to
+	const char[] strAttachTarget = "",						// Target to attach to
 	int iRed = 255, int iGreen = 255, int iBlue = 255, 	// Color of smoke
 	int iAlpha = 255,									// How Opaque
 	int iMiddleGapSize = 1,		// Gap in the middle

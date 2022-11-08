@@ -280,7 +280,8 @@ bool Event_ChokeStart_Smoker(int iAttacker, int iVictim)
 
 	// If the player is holding the primary attack button down, then
 	// make sure they release it later by first setting this flag
-	new buttons = GetEntProp(iAttacker, Prop_Data, "m_nButtons", buttons);
+	int buttons;
+	buttons = GetEntProp(iAttacker, Prop_Data, "m_nButtons", buttons);
 	g_bSmokerReadyForDismountButtonPress[iAttacker] = (buttons & IN_ATTACK) ? false : true;
 
 	return false;

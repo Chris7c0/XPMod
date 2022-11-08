@@ -42,7 +42,8 @@ OnGameFrame_Spitter(iClient)
 {
 	if(g_iPuppetLevel[iClient] > 5)
 	{
-		new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
+		int buttons;
+		buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 		
 		if(!(buttons & IN_SPEED))
 			g_bWalkAndUseToggler[iClient] = false;

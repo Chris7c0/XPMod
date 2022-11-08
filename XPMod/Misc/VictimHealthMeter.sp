@@ -9,7 +9,7 @@ MonitorVictimHealthMeterForSurvivorPlayer(iAttacker, iVictim)
 	g_hTimer_VictimHealthMeterStop[iAttacker] = CreateTimer(VICTIM_HEALTH_METER_DISPLAY_TIME, Timer_VictimHealthMeterStop, iAttacker);
 }
 
-Action Timer_VictimHealthMeterStop(Handle:timer, Handle:iClient)
+Action Timer_VictimHealthMeterStop(Handle:timer, int iClient)
 {
 	// Disable showing the client the victim health meter
 	g_bVictimHealthMeterActive[iClient] = false;

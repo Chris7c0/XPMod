@@ -107,7 +107,8 @@ OnGameFrame_Coach(iClient)
 {
 	if(g_iStrongLevel[iClient] > 0)
 	{
-		new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
+		int buttons;
+		buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 		if(clienthanging[iClient] == true)
 		{
 			if(g_bIsJetpackOn[iClient]==true)
@@ -414,7 +415,8 @@ OnGameFrame_Coach(iClient)
 	}
 	if(g_iWreckingLevel[iClient] > 0 && g_bIsFlyingWithJetpack[iClient] == false && g_bIsClientDown[iClient] == false && IsClientGrappled(iClient) == false)		//Wrecking ball charge up
 	{
-		new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
+		int buttons;
+		buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 		if(g_iWreckingLevel[iClient] == 5)
 		{
 			if(g_bCoachRageIsInCooldown[iClient] == false)
@@ -492,7 +494,8 @@ OnGameFrame_Coach(iClient)
 	}
 	if(g_iBullLevel[iClient] > 0)
 	{
-		new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
+		int buttons;
+		buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 		if(!(buttons & IN_SPEED) || !(buttons & IN_USE))
 			g_bWalkAndUseToggler[iClient] = false;
 		if((g_bWalkAndUseToggler[iClient] == false) && ((buttons & IN_SPEED) && (buttons & IN_USE)))
@@ -562,7 +565,8 @@ OnGameFrame_Coach(iClient)
 	}
 	if(g_iSprayLevel[iClient] > 0)
 	{
-		new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
+		int buttons;
+		buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 		if((buttons & IN_RELOAD) && g_bCoachShotgunForceReload[iClient] == false && g_bClientIsReloading[iClient] == false)
 		{
 			decl String:currentweapon[32];

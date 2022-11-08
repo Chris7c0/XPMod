@@ -74,7 +74,8 @@ SetClientSpeedTankVampiric(iClient, &Float:fSpeed)
 
 OnGameFrame_Tank_Vampiric(iClient)
 {
-	new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
+	int buttons;
+	buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 
 	//Check to see if pressing the fly button, if so, start flappling those wings
 	if (g_bCanFlapVampiricTankWings[iClient] &&

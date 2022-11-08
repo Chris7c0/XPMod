@@ -120,7 +120,8 @@ OnGameFrame_Ellis(iClient)
 	
 	if((g_iMetalLevel[iClient] > 0) || (g_iFireLevel[iClient] > 0))
 	{
-		new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
+		int buttons;
+		buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 		if((buttons & IN_RELOAD) && g_bClientIsReloading[iClient] == false && g_bForceReload[iClient] == false)
 		{
 			decl String:currentweapon[32];
@@ -850,7 +851,8 @@ HandleEllisSwitchToStashedPrimaryWeapon(iClient)
 		return;
 
 	// Only continue if the appropriate buttons have been pressed
-	new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
+	int buttons;
+	buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 	if ( !(buttons & IN_SPEED) || !(buttons & IN_ZOOM) )
 		return;
 
@@ -898,7 +900,8 @@ HandleEllisLimitBreak(iClient)
 		return;
 
 	// Check if they have released the buttons after its been toggle already
-	new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
+	int buttons;
+	buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 	if(!(buttons & IN_SPEED) || !(buttons & IN_USE))
 	{
 		g_bWalkAndUseToggler[iClient] = false;

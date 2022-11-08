@@ -328,9 +328,9 @@ void SmokerElectrocutePlayerAndChainToOthers(iClient)
 	char strZapSound[23];
 	switch(GetRandomInt(1, 3))
 	{
-		case 1: strZapSound = SOUND_ZAP1; 
-		case 2: strZapSound = SOUND_ZAP2;
-		case 3: strZapSound = SOUND_ZAP3;
+		case 1: strcopy(strZapSound, sizeof(strZapSound),SOUND_ZAP1);
+		case 2: strcopy(strZapSound, sizeof(strZapSound),SOUND_ZAP2);
+		case 3: strcopy(strZapSound, sizeof(strZapSound),SOUND_ZAP3);
 	}
 	new pitch = GetRandomInt(95, 130);
 	EmitSoundToAll(strZapSound, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, pitch, -1, xyzClientLocation, NULL_VECTOR, true, 0.0);
@@ -370,9 +370,9 @@ void SmokerElectrocutePlayerAndChainToOthers(iClient)
 		xyzTargetLocation[2] -= 20.0;
 		switch(GetRandomInt(1, 3))
 		{
-			case 1: strZapSound = SOUND_ZAP1; 
-			case 2: strZapSound = SOUND_ZAP2;
-			case 3: strZapSound = SOUND_ZAP3;
+			case 1: strcopy(strZapSound, sizeof(strZapSound),SOUND_ZAP1);
+			case 2: strcopy(strZapSound, sizeof(strZapSound),SOUND_ZAP2);
+			case 3: strcopy(strZapSound, sizeof(strZapSound),SOUND_ZAP3);
 		}
 
 		EmitSoundToAll(strZapSound, iChainVictim, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, GetRandomInt(95, 130), -1, xyzTargetLocation, NULL_VECTOR, true, 0.0);

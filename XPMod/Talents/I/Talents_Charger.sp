@@ -34,7 +34,8 @@ OnGameFrame_Charger(iClient)
 	{
 		if(g_bIsSpikedCharged[iClient] == false)
 		{
-			new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
+			int buttons;
+			buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 			if(buttons & IN_DUCK)
 			{
 				if(g_bCanChargerSpikedCharge[iClient] == true)

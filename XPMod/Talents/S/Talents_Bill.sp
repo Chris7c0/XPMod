@@ -69,7 +69,8 @@ OnGameFrame_Bill(iClient)
 	if (g_bGameFrozen)
 		return;
 
-	new iButtons = GetEntProp(iClient, Prop_Data, "m_nButtons", iButtons);
+	int iButtons;
+	iButtons = GetEntProp(iClient, Prop_Data, "m_nButtons", iButtons);
 	
 	HandleBillsTeamHealing(iClient, iButtons);
 
@@ -373,16 +374,16 @@ void HandleBillsTeamHealing(int iClient, int iButtons)
 	xyzClientLocation[2] -= 10.0;
 	xyzTargetLocation[2] -= 10.0;
 	int iRandomSound = GetRandomInt(1, 3);
-	decl String:zap[23];
+	decl String:strZapSound[23];
 	switch(iRandomSound)
 	{
-		case 1: zap = SOUND_ZAP1;
-		case 2: zap = SOUND_ZAP2;
-		case 3: zap = SOUND_ZAP3;
+		case 1: strcopy(strZapSound, sizeof(strZapSound),SOUND_ZAP1);
+		case 2: strcopy(strZapSound, sizeof(strZapSound),SOUND_ZAP2);
+		case 3: strcopy(strZapSound, sizeof(strZapSound),SOUND_ZAP3);
 	}
 	int pitch = GetRandomInt(95, 130);
-	EmitSoundToAll(zap, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, 0.1, pitch, -1, xyzClientLocation, NULL_VECTOR, true, 0.0);
-	EmitSoundToAll(zap, iTargetToHeal, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, 0.1, pitch, -1, xyzTargetLocation, NULL_VECTOR, true, 0.0);
+	EmitSoundToAll(strZapSound, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, 0.1, pitch, -1, xyzClientLocation, NULL_VECTOR, true, 0.0);
+	EmitSoundToAll(strZapSound, iTargetToHeal, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, 0.1, pitch, -1, xyzTargetLocation, NULL_VECTOR, true, 0.0);
 	TE_SetupBeamPoints(xyzClientLocation, xyzTargetLocation, g_iSprite_Laser, 0, 0, 66, 0.3, 0.2, 0.2, 0, 4.0, {0,40,255,200}, 0);
 	TE_SendToAll();
 }

@@ -24,7 +24,8 @@ OnGameFrame_Jockey(iClient)
 	if((g_iUnfairLevel[iClient] > 0) && (g_bJockeyIsRiding[iClient] == true))
 	{
 		//PrintToChatAll("g_iUnfairLevel is higher than 0 and the jockey is riding");
-		new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
+		int buttons;
+		buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 		if(buttons & IN_JUMP)
 		{
 			if (RunClientChecks(iClient) == true && RunClientChecks(g_iJockeysVictim[iClient]) == true)

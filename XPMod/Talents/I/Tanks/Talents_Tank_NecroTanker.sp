@@ -62,7 +62,8 @@ SetClientSpeedTankNecroTanker(iClient, &Float:fSpeed)
 
 OnGameFrame_Tank_NecroTanker(iClient)
 {
-	new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
+	int buttons;
+	buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 	
 	//Check to see if ducking and not attacking before starting the charge
 	if((buttons & IN_SPEED || buttons & IN_DUCK) && !(buttons & IN_ATTACK2)) // && !(buttons & IN_ATTACK)

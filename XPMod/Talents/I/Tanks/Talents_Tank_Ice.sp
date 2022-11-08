@@ -78,7 +78,8 @@ OnGameFrame_Tank_Ice(iClient)
 	// Check if there are players within the cold slow aura radius
 	CheckForPlayersInIceTanksColdAuraSlowRange(iClient);
 
-	new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
+	int buttons;
+	buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 	
 	//Check to see if ducking and not attacking before starting the charge
 	if((buttons & IN_DUCK) && !(buttons & IN_ATTACK) && !(buttons & IN_ATTACK2))

@@ -247,7 +247,8 @@ void HandleHunterLunging(int iClient)
 	GetEntPropVector(iClient, Prop_Data, "m_vecVelocity", velocity);
 
 	// Get the buttons the Hunter is pressing
-	int iButtons = GetEntProp(iClient, Prop_Data, "m_nButtons", iButtons);
+	int iButtons;
+	iButtons = GetEntProp(iClient, Prop_Data, "m_nButtons", iButtons);
 
 	// Dash Lunge (Check the velocity make sure they are falling down before continuing here)
 	if (iButtons & IN_ATTACK && velocity[2] < 0.0)
@@ -315,7 +316,8 @@ void HandleHunterCloaking(int iClient)
 		g_bTalentsConfirmed[iClient] == false)
 		return;
 	
-	int buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
+	int buttons;
+	buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 	
 	if(g_bIsCloakedHunter[iClient] == true)
 	{
