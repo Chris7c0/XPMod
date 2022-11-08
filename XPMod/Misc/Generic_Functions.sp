@@ -1133,6 +1133,30 @@ int FindIndexInArrayListUsingValue(ArrayList list, iValueToFind, iColumn=0)
 	return -1;
 }
 
+int FindIndexInStringArrayUsingValue(const char[][] strArray, const iSizeOfArray, const char[] strValue)
+{
+	for (int i=0; i < iSizeOfArray; i++)
+	{
+		// PrintToServer("%i sizeofarray %i, value=%s", i, iSizeOfArray, strValue);
+		if (strcmp(strArray[i], strValue, true) == 0)
+			return i;
+	}
+
+	return -1;
+}
+
+void ShiftArrayOfStrings(char[][] strArray, const int iStringSize, const int iStartPoint=0, const int iEndPoint=1)
+{
+	for (int i=iEndPoint-1; i >= iStartPoint; i--)
+	{
+		// This needs to be done with the temp string
+		// If doing strArray[i+1] = strArray[i] directly it fails
+		char strTemp[256] = "";
+		strcopy(strTemp, iStringSize, strArray[i]);
+		strcopy(strArray[i+1], iStringSize, strTemp);
+	}
+}
+
 bool IsEntityUncommonInfected(iInfectedEntity)
 {
 	// Get the infected entity type (common or uncommon)

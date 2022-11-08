@@ -71,7 +71,8 @@ OnGameFrame_Tank_Fire(iClient)
 	if(g_iTankChosen[iClient] == TANK_FIRE && g_bFireTankAttackCharged[iClient] == true)
 		return;
 	
-	new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
+	int buttons;
+	buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 	
 	//Check to see if ducking and not attacking before starting the charge
 	if((buttons & IN_DUCK) && !(buttons & IN_ATTACK) && !(buttons & IN_ATTACK2))

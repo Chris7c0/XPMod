@@ -127,7 +127,11 @@ void HandleClientDisconnect(int iClient)
 
 		return;
 	}
+
 	SaveUserData(iClient);
+
+	StorePlayerInDisconnectedPlayerList(iClient);
+
 	for(new l=0; l<23; l++)
 	{
 		clientidname[iClient][l] = '\0';	//WAS clientidname[iClient][l] = 9999;
@@ -146,4 +150,50 @@ void HandleClientDisconnect(int iClient)
 		pop(iClient);
 		testtoggle[iClient] = false;
 	}
+}
+
+void StorePlayerInDisconnectedPlayerList(iClient)
+{
+	// Get Steam Auth ID, if this returns false, then do not proceed
+	char strSteamID[32];
+	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
+		return;
+
+	// // Check if the steamid already exists in the disconnected player list
+	int existingIndex = FindIndexInStringArrayUsingValue(
+		g_strDisconnectedConnectedPlayerSteamID, 
+		g_iDisconnectedPlayerCnt,
+		strSteamID);
+	
+	// Choose the stopping point at the end if the value was not found, otherwise chose the location of the value to replace
+	int iStoppingPoint = existingIndex >= 0 ? existingIndex : g_iDisconnectedPlayerCnt;
+
+	// Shift the array of strings to make room for the new value at slot 0
+	ShiftArrayOfStrings(g_strDisconnectedConnectedPlayerNames, 
+		sizeof(g_strDisconnectedConnectedPlayerNames[]), 0, iStoppingPoint)
+	ShiftArrayOfStrings(g_strDisconnectedConnectedPlayerSteamID, 
+		sizeof(g_strDisconnectedConnectedPlayerSteamID[]), 0, iStoppingPoint)
+	
+	// Set the new player at the first item in the list
+	Format(g_strDisconnectedConnectedPlayerNames[0], 
+		sizeof(g_strDisconnectedConnectedPlayerNames[]),
+		"%N", iClient);
+	Format(g_strDisconnectedConnectedPlayerSteamID[0], 
+		sizeof(g_strDisconnectedConnectedPlayerSteamID[]),
+		"%s", strSteamID);
+	
+	// Increment the size of the array (note that array is fixed to size of DISCONNECTED_PLAYER_STORAGE_COUNT)
+	if (existingIndex == -1)
+		g_iDisconnectedPlayerCnt = g_iDisconnectedPlayerCnt >= DISCONNECTED_PLAYER_STORAGE_COUNT ? DISCONNECTED_PLAYER_STORAGE_COUNT : g_iDisconnectedPlayerCnt + 1;
+	
+	// // Print for debugging
+	// PrintToServer("\n----------------------------------------");
+	// PrintToServer("Existing index: %i", existingIndex);
+	// for (int i = 0; i < DISCONNECTED_PLAYER_STORAGE_COUNT; i++)
+	// {
+	// 	PrintToServer("%i: %s, %s", i, 
+	// 		g_strDisconnectedConnectedPlayerNames[i], 
+	// 		g_strDisconnectedConnectedPlayerSteamID[i]);
+	// }
+	// PrintToServer("----------------------------------------\n ");
 }

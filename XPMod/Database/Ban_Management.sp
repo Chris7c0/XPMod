@@ -92,18 +92,18 @@ SQLAddBannedUserToDatabaseCallback(Handle:owner, Handle:hQuery, const String:err
 		return;
 	}
 	
-	// PrintToChatAll("SQLAddBannedUserToDatabase Callback Complete.");
-	// PrintToServer("SQLAddBannedUserToDatabase Callback Complete.");
+	// PrintToChatAll("SQLAddBannedUserToDatabaseUsingClientID Callback Complete.");
+	// PrintToServer("SQLAddBannedUserToDatabaseUsingClientID Callback Complete.");
 }
 
 
-SQLAddBannedUserToDatabase(iClient, int iBanDurationSeconds = 0, const char [] strBanReason)
+SQLAddBannedUserToDatabaseUsingClientID(iClient, int iBanDurationSeconds = 0, const char [] strBanReason)
 {
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return;
 	
-	// PrintToChatAll("AddBannedUserToDatabase  %i: %N", iClient, iClient);
-	// PrintToServer("AddBannedUserToDatabase  %i: %N", iClient, iClient);
+	// PrintToChatAll("SQLAddBannedUserToDatabaseUsingClientID  %i: %N", iClient, iClient);
+	// PrintToServer("SQLAddBannedUserToDatabaseUsingClientID  %i: %N", iClient, iClient);
 	
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -141,6 +141,39 @@ SQLAddBannedUserToDatabase(iClient, int iBanDurationSeconds = 0, const char [] s
 		strExpiriationTime,
 		strBanReason);
 	SQL_TQuery(g_hDatabase, SQLAddBannedUserToDatabaseCallback, strQuery, iClient);
+}
+
+SQLAddBannedUserToDatabaseUsingNameAndSteamID(char [] strClientName, const int iClientNameSize, const char [] strSteamID, int iBanDurationSeconds = 0, const char [] strBanReason)
+{	
+	// PrintToChatAll("SQLAddBannedUserToDatabaseUsingNameAndSteamID  %i: %N", iClient, iClient);
+	// PrintToServer("SQLAddBannedUserToDatabaseUsingNameAndSteamID  %i: %N", iClient, iClient);
+	
+	if (g_hDatabase == INVALID_HANDLE)
+	{
+		PrintToChatAll("Unable to connect to XPMod SQL Database.");
+		return;
+	}
+	
+	// Sanitize Inputs for Query
+	SanitizeValueStringForQuery(strClientName, iClientNameSize);
+
+	char strExpiriationTime[32];
+	GetBanExpirationTimestamp(strExpiriationTime, sizeof(strExpiriationTime), iBanDurationSeconds);
+	
+	//Create new entry into the SQL database with the users information
+	decl String:strQuery[512] = "";
+	Format(strQuery, sizeof(strQuery), "INSERT INTO %s (\
+		steam_id,\
+		user_name,\
+		expiration_time,\
+		reason)\
+		VALUES ('%s','%s',%s,'%s')", 
+		DB_TABLENAME_BANS,
+		strSteamID,
+		strClientName,
+		strExpiriationTime,
+		strBanReason);
+	SQL_TQuery(g_hDatabase, SQLAddBannedUserToDatabaseCallback, strQuery, 0);
 }
 
 GetBanExpirationTimestamp(char [] strExpirationTimeStampValue, int iExpirationTimeStampValueSize, int iBanDurationSeconds) 

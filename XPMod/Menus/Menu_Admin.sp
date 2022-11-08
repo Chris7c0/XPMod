@@ -98,7 +98,7 @@ Action:SwitchPlayersTeamMenuDraw(iClient)
 	
 	SetMenuTitle(menu, "Select a team for Whom?\n ");
 	
-	AddAllPlayersToMenu(menu, iClient);
+	AddAllCurrentPlayersToMenu(menu, iClient);
 
 	SetMenuExitButton(menu, true);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -115,8 +115,8 @@ SwitchPlayersTeamMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 	}
 	else if (action == MenuAction_Select)
 	{
-		int iTarget; char strSteamID[32];
-		if (GetTargetIDandSteamIDFromMenuParameters(iClient, menu, itemNum, iTarget, strSteamID, sizeof(strSteamID)) == false)
+		int iTarget; char strSteamID[32]; char strClientName[32];
+		if (GetTargetIDandSteamIDFromMenuParameters(iClient, menu, itemNum, iTarget, strSteamID, sizeof(strSteamID), strClientName, sizeof(strClientName)) == false)
 		{
 			PrintToChat(iClient, "Error obtaining client info for team switch.");
 			LogError("BanPlayerMenuHandler: Error obtaining client info for team switch", iTarget);
@@ -203,7 +203,7 @@ Action:MutePlayerMenuDraw(iClient)
 	
 	SetMenuTitle(menu, "Mute or Unmute Whom?\n ");
 	
-	AddAllPlayersToMenu(menu, iClient);
+	AddAllCurrentPlayersToMenu(menu, iClient);
 
 	SetMenuExitButton(menu, true);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -220,8 +220,8 @@ MutePlayerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 	}
 	else if (action == MenuAction_Select)
 	{
-		int iTarget; char strSteamID[32];
-		if (GetTargetIDandSteamIDFromMenuParameters(iClient, menu, itemNum, iTarget, strSteamID, sizeof(strSteamID)) == false)
+		int iTarget; char strSteamID[32]; char strClientName[32];
+		if (GetTargetIDandSteamIDFromMenuParameters(iClient, menu, itemNum, iTarget, strSteamID, sizeof(strSteamID), strClientName, sizeof(strClientName)) == false)
 		{
 			PrintToChat(iClient, "Error obtaining client info for ban.");
 			LogError("BanPlayerMenuHandler: Error obtaining client info for ban", iTarget);
@@ -242,7 +242,7 @@ Action:KickPlayerMenuDraw(iClient)
 	
 	SetMenuTitle(menu, "Kick Whom?\n ");
 	
-	AddAllPlayersToMenu(menu, iClient);
+	AddAllCurrentPlayersToMenu(menu, iClient);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -259,8 +259,8 @@ KickPlayerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 	}
 	else if (action == MenuAction_Select)
 	{
-		int iTarget; char strSteamID[32];
-		if (GetTargetIDandSteamIDFromMenuParameters(iClient, menu, itemNum, iTarget, strSteamID, sizeof(strSteamID)) == false)
+		int iTarget; char strSteamID[32]; char strClientName[32];
+		if (GetTargetIDandSteamIDFromMenuParameters(iClient, menu, itemNum, iTarget, strSteamID, sizeof(strSteamID), strClientName, sizeof(strClientName)) == false)
 		{
 			PrintToChat(iClient, "Error obtaining client info for ban.");
 			LogError("BanPlayerMenuHandler: Error obtaining client info for ban", iTarget);
@@ -272,20 +272,29 @@ KickPlayerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 	}
 }
 
+
 Action:BanPlayerMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(BanPlayerMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
+
+	SetMenuTitle(menu, "Are they still in the server?\n ");
 	
-	SetMenuTitle(menu, "Permanently Ban Whom?\n ");
-	
-	AddAllPlayersToMenu(menu, iClient);
+	AddMenuItem(menu, "option1", "They are in still in the server");
+	AddMenuItem(menu, "option2", "They disconnected\n \n \n \n \n ");
+	AddMenuItem(menu, "option3", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option4", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option5", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back to Admin Menu");
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
-
 
 BanPlayerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
@@ -295,8 +304,48 @@ BanPlayerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 	}
 	else if (action == MenuAction_Select)
 	{
-		int iTarget; char strSteamID[32];
-		if (GetTargetIDandSteamIDFromMenuParameters(iClient, menu, itemNum, iTarget, strSteamID, sizeof(strSteamID)) == false)
+		switch (itemNum)
+		{
+			case 0: //Player in game server now
+			{
+				BanPlayerInServerMenuDraw(iClient);
+			}
+			case 1: //Disconnected Player
+			{
+				BanPlayerDisconnectedMenuDraw(iClient);
+			}
+			case 8: //Back to Admin Menu
+			{
+				AdminMenuDraw(iClient);
+			}
+		}
+	}
+}
+
+Action:BanPlayerInServerMenuDraw(iClient)
+{
+	Menu menu = CreateMenu(BanPlayerInServerMenuHandler);
+	
+	SetMenuTitle(menu, "Permanently Ban Whom?\n ");
+	
+	AddAllCurrentPlayersToMenu(menu, iClient);
+
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
+
+	return Plugin_Handled;
+}
+
+BanPlayerInServerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+{
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
+	{
+		int iTarget; char strSteamID[32]; char strClientName[32];
+		if (GetTargetIDandSteamIDFromMenuParameters(iClient, menu, itemNum, iTarget, strSteamID, sizeof(strSteamID), strClientName, sizeof(strClientName)) == false)
 		{
 			PrintToChat(iClient, "Error obtaining client info for ban.");
 			LogError("BanPlayerMenuHandler: Error obtaining client info for ban", iTarget);
@@ -309,14 +358,55 @@ BanPlayerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 		decl String:strBanString[1024] = "";
 		Format(strBanString, sizeof(strBanString), "Permanently banned by %N", iClient);
 		// Add user to the bans table in the xpmod database
-		SQLAddBannedUserToDatabase(iTarget, 0, strBanString);
+		SQLAddBannedUserToDatabaseUsingClientID(iTarget, 0, strBanString);
 		// Ban the user, regardless of being able to add to the database or not
 		// Banning was changed to only kick, to fix issue with lingering bans after unban
-		KickClient(iClient, "You are permanently banned from XPMod servers")
+		KickClient(iTarget, "You are permanently banned from XPMod servers")
 	}
 }
 
-void AddAllPlayersToMenu(Menu menu, int iClient)
+Action:BanPlayerDisconnectedMenuDraw(iClient)
+{
+	Menu menu = CreateMenu(BanPlayerDisconnectedMenuHandler);
+	
+	SetMenuTitle(menu, "Permanently Ban Whom?\n ");
+	
+	AddAllDisconnectedPlayersToMenu(menu);
+
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
+
+	return Plugin_Handled;
+}
+
+
+BanPlayerDisconnectedMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+{
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
+	{
+		int iTarget; char strSteamID[32]; char strClientName[32];
+		if (GetTargetIDandSteamIDFromMenuParameters(iClient, menu, itemNum, iTarget, strSteamID, sizeof(strSteamID), strClientName, sizeof(strClientName), false) == false)
+		{
+			PrintToChat(iClient, "Error obtaining client info for ban.");
+			LogError("BanPlayerMenuHandler: Error obtaining client info for ban", iTarget);
+			return;
+		}
+
+		PrintToChat(iClient, "\x03[XPMod] \x04Banning %s...", strClientName);
+		
+		// Construct the ban string reason
+		decl String:strBanString[1024] = "";
+		Format(strBanString, sizeof(strBanString), "Permanently banned by %N", iClient);
+		// Add user to the bans table in the xpmod database
+		SQLAddBannedUserToDatabaseUsingNameAndSteamID(strClientName, sizeof(strClientName), strSteamID, 0, strBanString);
+	}
+}
+
+void AddAllCurrentPlayersToMenu(Menu menu, int iClient)
 {
 	for(new iTarget = 1; iTarget <= MaxClients; iTarget++)
 	{
@@ -326,19 +416,21 @@ void AddAllPlayersToMenu(Menu menu, int iClient)
 			decl String:strSteamID[32];
 			if (GetClientAuthId(iTarget, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
 			{
-				PrintToChat(iClient, "AddAllPlayersToMenu: GetClientAuthId failed for %N", iTarget);
-				LogError("AddAllPlayersToMenu: GetClientAuthId failed for %N", iTarget);
+				PrintToChat(iClient, "AddAllCurrentPlayersToMenu: GetClientAuthId failed for %N", iTarget);
+				LogError("AddAllCurrentPlayersToMenu: GetClientAuthId failed for %N", iTarget);
 				continue;
 			}
 
 			// Get the in game client id
 			decl String:strParameters[32];
-			Format(strParameters, sizeof(strParameters),"%i;%s", iTarget, strSteamID)
+			Format(strParameters, sizeof(strParameters),"%i;%s;%N", 
+				iTarget, strSteamID, iTarget)
 			
 			// Combine the info into a string that the admin will see
 			decl String:strTargetInfo[50];
-			Format(strTargetInfo, sizeof(strTargetInfo), " (%s) %N",
-			strParameters,
+			Format(strTargetInfo, sizeof(strTargetInfo), " (%i: %s) %N",
+			iTarget,
+			strSteamID,
 			iTarget);
 
 			AddMenuItem(menu, strParameters, strTargetInfo);
@@ -346,15 +438,51 @@ void AddAllPlayersToMenu(Menu menu, int iClient)
 	}
 }
 
-bool GetTargetIDandSteamIDFromMenuParameters(int iClient, Menu menu, int itemNum, int &iTarget, char[] strSteamID, int iSteamIDSize)
+void AddAllDisconnectedPlayersToMenu(Menu menu)
+{
+	for (int i = 0; i < g_iDisconnectedPlayerCnt; i++)
+	{
+		// PrintToServer("%i: %s, %s", i, 
+		// 	g_strDisconnectedConnectedPlayerNames[i], 
+		// 	g_strDisconnectedConnectedPlayerSteamID[i]);
+
+		// Get the in game client id
+		decl String:strParameters[32];
+		Format(strParameters, sizeof(strParameters),"%i;%s;%s",
+			i, 
+			g_strDisconnectedConnectedPlayerSteamID[i],
+			g_strDisconnectedConnectedPlayerNames[i])
+		
+		// Combine the info into a string that the admin will see
+		decl String:strTargetInfo[50];
+		Format(strTargetInfo, sizeof(strTargetInfo), " (%i: %s) %s",
+		i,
+		g_strDisconnectedConnectedPlayerSteamID[i],
+		g_strDisconnectedConnectedPlayerNames[i]);
+
+		AddMenuItem(menu, strParameters, strTargetInfo);
+	}
+}
+
+bool GetTargetIDandSteamIDFromMenuParameters(int iClient, Menu menu, int itemNum, int &iTarget, char[] strSteamID, int iSteamIDSize, char[] strClientName, int iClientNameSize, bool bVerifyTargetEqualsSteamID=true)
 {
 	// Get the client parameters
-	char strInfo[128], strParameters[2][32];
+	char strInfo[128], strParameters[3][32];
 	GetMenuItem(menu, itemNum, strInfo, sizeof(strInfo));
 	ExplodeString(strInfo, ";", strParameters, sizeof(strParameters), sizeof(strParameters[]));
 
 	// PrintToChat(iClient, "param1: %s", strParameters[0]);
 	// PrintToChat(iClient, "param2: %s", strParameters[1]);
+	// PrintToChat(iClient, "param3: %s", strParameters[2]);
+
+	// This is for if the targ3et is not in the server anymore
+	if (bVerifyTargetEqualsSteamID == false)
+	{
+		// Store the steamid parameter
+		Format(strSteamID, iSteamIDSize, "%s", strParameters[1]);
+		Format(strClientName, iClientNameSize, "%s", strParameters[2]);
+		return true;
+	}
 
 	iTarget = StringToInt(strParameters[0]);
 
@@ -375,6 +503,7 @@ bool GetTargetIDandSteamIDFromMenuParameters(int iClient, Menu menu, int itemNum
 
 	// Store the steamid parameter
 	Format(strSteamID, iSteamIDSize, "%s", strParameters[1]);
+	Format(strClientName, iClientNameSize, "%s", strParameters[2]);
 
 	return true;
 }

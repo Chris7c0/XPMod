@@ -205,7 +205,7 @@ BanConfirmMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			{
 				ClosePanel(iClient);
 				// Add user to the bans table in the xpmod database
-				SQLAddBannedUserToDatabase(iClient, g_iBanDurationInMinutes[iClient] * 60, "XPMod Banned");
+				SQLAddBannedUserToDatabaseUsingClientID(iClient, g_iBanDurationInMinutes[iClient] * 60, "Self Ban");
 				// Ban the user, regardless of being able to add to the database or not
 				// Banning was changed to only kick, to fix issue with lingering bans after unban
 				// BanClient(iClient, g_iBanDurationInMinutes[iClient], BANFLAG_AUTHID, "XPMod Banned", "Banned from XPMod. Have a nice day");
@@ -220,7 +220,7 @@ BanConfirmMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			// {
 			// 	ClosePanel(iClient);
 			// 	// Add user to the bans table in the xpmod database
-			// 	SQLAddBannedUserToDatabase(iClient, 86400, "XPMod Banned for 1 Day");
+			// 	SQLAddBannedUserToDatabaseUsingClientID(iClient, 86400, "XPMod Banned for 1 Day");
 			// 	// Ban the user, regardless of being able to add to the database or not
 			// 	BanClient(iClient, 1440, BANFLAG_AUTHID, "XPMod Banned for 1 Day", "You are banned for 1 day. Thanks, have a nice day");
 			// }
@@ -228,7 +228,7 @@ BanConfirmMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			// {
 			// 	ClosePanel(iClient);
 			// 	// Add user to the bans table in the xpmod database
-			// 	SQLAddBannedUserToDatabase(iClient, 604800, "XPMod Banned for 1 Week");
+			// 	SQLAddBannedUserToDatabaseUsingClientID(iClient, 604800, "XPMod Banned for 1 Week");
 			// 	// Ban the user, regardless of being able to add to the database or not
 			// 	BanClient(iClient, 10080, BANFLAG_AUTHID, "XPMod Banned for 1 Week", "You are banned for 1 week. Thanks, have a nice day");
 			// }
@@ -236,7 +236,7 @@ BanConfirmMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			// {
 			// 	ClosePanel(iClient);
 			// 	// Add user to the bans table in the xpmod database
-			// 	SQLAddBannedUserToDatabase(iClient, 2592000, "XPMod Banned for 1 Month");
+			// 	SQLAddBannedUserToDatabaseUsingClientID(iClient, 2592000, "XPMod Banned for 1 Month");
 			// 	// Ban the user, regardless of being able to add to the database or not
 			// 	BanClient(iClient, 43200, BANFLAG_AUTHID, "XPMod Banned for 1 Month", "You are banned for 1 month. Thanks, have a nice day");
 			// }

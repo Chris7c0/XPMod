@@ -28,6 +28,17 @@ Action:TestFunction1(iClient, args)
 	for (int i=0; i<20; i++)
 		GetCmdArg(i+1, strArg[i], sizeof(strArg[]));
 
+
+	
+
+	// int testValue = StringToInt(strArg[0])
+	// if (testValue > 0) {
+	// 	StorePlayerInDisconnectedPlayerList(iClient, testValue);
+	// }
+	// else {
+	// 	StorePlayerInDisconnectedPlayerList(iClient);
+	// }
+
 	// for(int iPlayer = 1; iPlayer <= MaxClients; iPlayer++)
 	// {
 	// 	if (RunClientChecks(iPlayer) == false || g_iClientTeam[iPlayer] !=  TEAM_INFECTED)

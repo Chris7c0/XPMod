@@ -71,6 +71,6 @@
         "XPMOD",
         "xpmstats"
     ],
-    "sourcepawn.MainPath": "/home/chris/Projects/XPMod/XPMod/Includes.sp",
-    "sourcepawn.enableLinter": false
+    "sourcepawn.MainPath": "/home/chris/Projects/XPMod/xpmod.sp",
+    "sourcepawn.enableLinter": true
 }
