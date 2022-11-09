@@ -277,7 +277,7 @@ new bool:g_bNickStoresDroppedPistolAmmo[MAXPLAYERS + 1] = {false, ...};
 #define LOUIS_TELEPORT_BLINDNESS_STAY_FACTOR            2.5
 #define LOUIS_TELEPORT_MOVEMENT_PENALTY_TIME            15.0
 #define LOUIS_TELEPORT_MOVEMENT_PENALTY_AMOUNT          0.15
-#define LOUIS_SPEED_MAX                                 1.25
+#define LOUIS_SPEED_MAX                                 1.15
 #define LOUIS_HEADSHOT_SPEED_RETENTION_TIME_CI          60.0
 #define LOUIS_HEADSHOT_SPEED_RETENTION_TIME_SI          60.0
 #define LOUIS_STASHED_INVENTORY_MAX_PILLS               4

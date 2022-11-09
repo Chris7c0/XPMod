@@ -174,10 +174,6 @@ SetClientSpeedLouis(iClient, &Float:fSpeed)
 		return;
 	}
 
-	// Base speed
-	if (g_iLouisTalent1Level[iClient] > 0)
-		fSpeed += (g_iLouisTalent1Level[iClient] * 0.01);
-
 	// Teleport penalty
 	if (g_iLouisTeleportMovementPenaltyStacks[iClient] > 0)
 		fSpeed -= (g_iLouisTeleportMovementPenaltyStacks[iClient] * LOUIS_TELEPORT_MOVEMENT_PENALTY_AMOUNT);

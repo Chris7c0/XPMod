@@ -68,9 +68,6 @@ Action:LouisTalent1MenuDraw(iClient)
 		\n \
 		\n +5 HP per Level\
 		\n \
-		\n +1%%%%% Movement Speed per Level\
-		\n 	- Louis Always Capped At +25%%%% Speed     \
-		\n \
 		\n SMG and Pistol (Not Magnum) Buffs:     \
 		\n 	- +5%%%% Reload Speed per Level\
 		\n ",
@@ -81,7 +78,7 @@ Action:LouisTalent1MenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -208,7 +205,7 @@ Action:LouisTalent4MenuDraw(iClient)
 		\n Headshot Kill Bonuses:\
 		\n 	- CI: +1 HP, +1%%%% Speed for 60 Seconds, +3 Clip Ammo per Level\
 		\n 	- SI: +5 HP, +5%%%% Speed for 60 Seconds, +10 Clip Ammo per Level   \
-		\n 	- Louis Is Always Capped At +25%%%% Speed\
+		\n 	- Louis Is Always Capped At +15%%%% Speed\
 		\n ",
 		strStartingNewLines,
 		g_iLouisTalent4Level[iClient]);
@@ -309,7 +306,7 @@ Action:LouisTalent6MenuDraw(iClient)
 		\n When Taking Pills (Stacks):\
 		\n	- -2 Temp Health Per Level\
 		\n	- +2%%%% Speed per Level for 90 Seconds\
-		\n		- Louis Capped At +25%%%% Speed\
+		\n		- Louis Capped At +15%%%% Speed\
 		\n	- +5%%%% Damage per Level for 90 Seconds  \
 		\n	- 3 Stacks Max\
 		\n \
