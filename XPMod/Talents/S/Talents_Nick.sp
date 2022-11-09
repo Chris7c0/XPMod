@@ -332,7 +332,7 @@ OnGameFrame_Nick(iClient)
 					}
 					else if(g_iNickCurrentSecondarySlot[iClient] == 1)
 					{
-						g_strNickSecondarySlot2 = currentweapon;
+						// g_strNickSecondarySlot2 = currentweapon;
 						//PrintToChatAll("Current Weapon is %s", currentweapon);
 						//PrintToChatAll("Second Check %s", g_strNickSecondarySlot2[iClient]);
 						

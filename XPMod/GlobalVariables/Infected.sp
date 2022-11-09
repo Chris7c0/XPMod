@@ -2,9 +2,9 @@
 ///////////////////////////////////////////////     INFECTED VARIABLES     ///////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-new g_iClientInfectedClass1[MAXPLAYERS + 1]	= UNKNOWN_INFECTED;
-new g_iClientInfectedClass2[MAXPLAYERS + 1]	= UNKNOWN_INFECTED;
-new g_iClientInfectedClass3[MAXPLAYERS + 1]	= UNKNOWN_INFECTED;
+new g_iClientInfectedClass1[MAXPLAYERS + 1]	= {UNKNOWN_INFECTED, ...};
+new g_iClientInfectedClass2[MAXPLAYERS + 1]	= {UNKNOWN_INFECTED, ...};
+new g_iClientInfectedClass3[MAXPLAYERS + 1]	= {UNKNOWN_INFECTED, ...};
 new String:g_strClientInfectedClass1[MAXPLAYERS + 1][10]; 
 new String:g_strClientInfectedClass2[MAXPLAYERS + 1][10]; 
 new String:g_strClientInfectedClass3[MAXPLAYERS + 1][10];
@@ -254,18 +254,18 @@ new Float:g_fAdhesiveAffectAmount[MAXPLAYERS + 1];
 #define BAG_OF_SPITS_KILLER_KLOWNS  4
 
 #define BAG_OF_SPITS_SPIT_COUNT     5
-new g_iBagOfSpitsSelectedSpit[MAXPLAYERS + 1] = BAG_OF_SPITS_NONE;
+new g_iBagOfSpitsSelectedSpit[MAXPLAYERS + 1] = {BAG_OF_SPITS_NONE, ...};
 
 
 // Jockey
-new bool:g_bCanJockeyPee[MAXPLAYERS + 1] = true;
-new bool:g_bJockeyPissVictim[MAXPLAYERS + 1] = true;
-new bool:g_bCanJockeyCloak[MAXPLAYERS + 1] = true;
-new bool:g_bJockeyIsRiding[MAXPLAYERS + 1] = false;
-new g_iJockeysVictim[MAXPLAYERS + 1];
-new bool:g_bCanJockeyJump[MAXPLAYERS + 1] = false;
-new Float:g_fJockeyRideSpeed[MAXPLAYERS + 1] = 1.0;
-new Float:g_fJockeyRideSpeedVanishingActBoost[MAXPLAYERS + 1] = 0.0;
+bool:g_bCanJockeyPee[MAXPLAYERS + 1] = {true, ...};
+bool:g_bJockeyPissVictim[MAXPLAYERS + 1] = {true, ...};
+bool:g_bCanJockeyCloak[MAXPLAYERS + 1] = {true, ...};
+bool:g_bJockeyIsRiding[MAXPLAYERS + 1] = {false, ...};
+g_iJockeysVictim[MAXPLAYERS + 1];
+bool:g_bCanJockeyJump[MAXPLAYERS + 1] = {false, ...};
+Float:g_fJockeyRideSpeed[MAXPLAYERS + 1] = {1.0, ...};
+Float:g_fJockeyRideSpeedVanishingActBoost[MAXPLAYERS + 1] = {0.0, ...};
 #define JOCKEY_PISS_CONVERSION_RADIUS           200.0
 //#define JOCKEY_PISS_SPAWN_JIMMY_CHANCE       10 //%
 

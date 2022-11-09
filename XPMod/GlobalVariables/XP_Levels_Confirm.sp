@@ -2,10 +2,10 @@
 new clientidname[MAXPLAYERS + 1][32];			//SHOULD BE A STRING?
 new g_iClientTeam[MAXPLAYERS + 1];
 new bool:g_bClientLoggedIn[MAXPLAYERS + 1];
-new g_iDBUserID[MAXPLAYERS + 1] = -1;
+new g_iDBUserID[MAXPLAYERS + 1] = {-1, ...};
 new String:g_strDBUserToken[MAXPLAYERS + 1][41];
 new bool:g_bCanSave = true;
-new bool:g_bSurvivorTalentsGivenThisRound[MAXPLAYERS + 1] = false;
+new bool:g_bSurvivorTalentsGivenThisRound[MAXPLAYERS + 1] = {false, ...};
 new g_iClientXP[MAXPLAYERS + 1];
 new g_iClientLevel[MAXPLAYERS + 1];
 new g_iClientPrestigePoints[MAXPLAYERS + 1];

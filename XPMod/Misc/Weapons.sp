@@ -702,7 +702,7 @@ fnc_ClearAllWeaponData(iClient)
 		case NICK:		//Nick
 		{
 			g_strNickSecondarySlot1 = "empty";
-			g_strNickSecondarySlot2 = "empty";
+			// g_strNickSecondarySlot2 = "empty";
 			g_iNickCurrentSecondarySlot[iClient] = ITEM_EMPTY;
 			g_iStashedPrimarySlotWeaponIndex[iClient] = ITEM_EMPTY;
 			g_iNickPrimarySavedClip[iClient] = 0;

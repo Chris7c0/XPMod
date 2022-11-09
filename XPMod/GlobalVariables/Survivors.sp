@@ -89,7 +89,7 @@ new g_iChargerVictim[MAXPLAYERS + 1];
 new g_iJockeyVictim[MAXPLAYERS + 1];    //g_iJockeyVictim[attacker] = victim;
 new g_iHunterShreddingVictim[MAXPLAYERS + 1];
 
-new bool:g_bIsClientDown[MAXPLAYERS + 1] = false;
+new bool:g_bIsClientDown[MAXPLAYERS + 1] = {false, ...};
 // Faster Shooting Variables
 new g_iFastAttackingClientsArray[MAXPLAYERS + 1];
 new bool:g_bSomeoneAttacksFaster;
@@ -232,7 +232,7 @@ new g_iNickStealingLifeRuntimes[MAXPLAYERS + 1];
 new g_iNickResurrectUses = 0;
 new bool:g_bCanNickSecondaryCycle[MAXPLAYERS + 1];
 new String:g_strNickSecondarySlot1[512];
-new String:g_strNickSecondarySlot2[512];
+// new String:g_strNickSecondarySlot2[512];
 new g_iNickCurrentSecondarySlot[MAXPLAYERS + 1];
 new g_iNickSecondarySavedClipSlot1[MAXPLAYERS + 1];
 new g_iNickSecondarySavedClipSlot2[MAXPLAYERS + 1];
@@ -254,8 +254,8 @@ new g_iRamboWeaponID[MAXPLAYERS + 1];
 //Drug Effects
 new g_iDruggedRuntimesCounter[MAXPLAYERS + 1];
 //Gambling
-new bool:g_bNickIsInvisible[MAXPLAYERS + 1] = false;
-new bool:g_bNickIsGettingBeatenUp[MAXPLAYERS + 1] = false;
+new bool:g_bNickIsInvisible[MAXPLAYERS + 1] = {false, ...};
+new bool:g_bNickIsGettingBeatenUp[MAXPLAYERS + 1] = {false, ...};
 new g_iNicksRamboWeaponID[MAXPLAYERS + 1];
 new g_iNickMagnumShotCount[MAXPLAYERS + 1];
 new bool:g_bCanNickStampedeReload[MAXPLAYERS + 1];
@@ -264,7 +264,7 @@ new g_iNickPrimarySavedClip[MAXPLAYERS + 1];
 new g_iNickPrimarySavedAmmo[MAXPLAYERS + 1];
 new g_iNickUpgradeAmmo[MAXPLAYERS + 1];
 new String:g_strNickUpgradeType[32];
-new bool:g_bNickStoresDroppedPistolAmmo[MAXPLAYERS + 1] = false;
+new bool:g_bNickStoresDroppedPistolAmmo[MAXPLAYERS + 1] = {false, ...};
 
 
 // Louis
@@ -284,21 +284,21 @@ new bool:g_bNickStoresDroppedPistolAmmo[MAXPLAYERS + 1] = false;
 #define LOUIS_PILLS_USED_BONUS_DURATION                 90.0
 #define LOUIS_PILLS_USED_HEALTH_REDUCTION_PER_LEVEL     2
 #define LOUIS_PILLS_USED_MAX_STACKS                     3
-bool g_bLouisTeleportCoolingDown[MAXPLAYERS + 1] = false;
-bool g_bLouisTeleportActive[MAXPLAYERS + 1] = false;
-new g_iLouisTeleportChargeUses[MAXPLAYERS + 1] = 0;
-new Float:g_fLouisTeleportLastUseGameTime[MAXPLAYERS + 1] = 0.0;
-new g_iLouisTeleportBlindnessAmount[MAXPLAYERS + 1] = 0;
-new g_iLouisTeleportMovementPenaltyStacks[MAXPLAYERS + 1] = 0;
-new g_iLouisCIHeadshotCounter[MAXPLAYERS + 1] = 0;
-new g_iLouisSIHeadshotCounter[MAXPLAYERS + 1] = 0;
+bool g_bLouisTeleportCoolingDown[MAXPLAYERS + 1] = {false, ...};
+bool g_bLouisTeleportActive[MAXPLAYERS + 1] = {false, ...};
+new g_iLouisTeleportChargeUses[MAXPLAYERS + 1] = {0, ...};
+new Float:g_fLouisTeleportLastUseGameTime[MAXPLAYERS + 1] = {0.0, ...};
+new g_iLouisTeleportBlindnessAmount[MAXPLAYERS + 1] = {0, ...};
+new g_iLouisTeleportMovementPenaltyStacks[MAXPLAYERS + 1] = {0, ...};
+new g_iLouisCIHeadshotCounter[MAXPLAYERS + 1] = {0, ...};
+new g_iLouisSIHeadshotCounter[MAXPLAYERS + 1] = {0, ...};
 #define LOUIS_NEUROSURGEON_CI_CHANCE                    5     // Percent Chance
 #define LOUIS_NEUROSURGEON_SI_CHANCE                    1     // Percent Chance
 #define LOUIS_NEUROSURGEON_SI_XMR_REWARD_AMOUNT         3.0   // XMR
-new g_iStashedInventoryPills[MAXPLAYERS + 1] = 0;
-new g_iPillsUsedStack[MAXPLAYERS + 1] = 0;
-bool g_bHealthBoostItemJustGivenByCheats[MAXPLAYERS + 1] = false;
-bool g_bHealthBoostSlotWasEmptyOnLastPickUp[MAXPLAYERS + 1] = false;
+new g_iStashedInventoryPills[MAXPLAYERS + 1] = {0, ...};
+new g_iPillsUsedStack[MAXPLAYERS + 1] = {0, ...};
+bool g_bHealthBoostItemJustGivenByCheats[MAXPLAYERS + 1] = {false, ...};
+bool g_bHealthBoostSlotWasEmptyOnLastPickUp[MAXPLAYERS + 1] = {false, ...};
 bool g_bWareStationActive[MAXPLAYERS + 1];
 bool g_bWareStationClientAlreadyServiced[MAXPLAYERS + 1][MAXPLAYERS + 1];
 new g_iWareStationOwnerIDOfCurrentlyViewedStation[MAXPLAYERS + 1];

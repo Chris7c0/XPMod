@@ -34,9 +34,9 @@ SetClientRenderAndGlowColor(int iClient)
 		return;
 	}
 
-	if(g_iClientTeam[iClient] == TEAM_SURVIVORS)
+	if(g_iClientTeam[iClient] == TEAM_SURVIVORS && g_bTalentsConfirmed[iClient])
 	{
-		switch(g_iChosenSurvivor[iClient] && g_bTalentsConfirmed[iClient])
+		switch(g_iChosenSurvivor[iClient])
 		{
 			case BILL:
 			{

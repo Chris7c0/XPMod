@@ -54,7 +54,7 @@ new Handle:g_hDatabase = INVALID_HANDLE;
 
 // Math
 new Float:PI = 3.1415926;
-new Float:EMPTY_VECTOR[3] = 0.0;
+new Float:EMPTY_VECTOR[3] = {0.0, ...};
 
 //Survivor Character ID Definitions
 #define UNKNOWN_SURVIVOR    -1
@@ -241,7 +241,7 @@ bool g_bEndOfRound = false;
 
 //Player Switching Teams timer
 bool g_bPlayerInTeamChangeCoolDown[MAXPLAYERS + 1];
-bool g_bClientSpectating[MAXPLAYERS + 1] = false;
+bool g_bClientSpectating[MAXPLAYERS + 1] = {false, ...};
 
 // Game Freezing Variables
 bool g_bGameFrozen = false;
@@ -294,7 +294,7 @@ bool g_bStopCISpawning;
 bool g_bStopSISpawning;
 
 int gClone[MAXPLAYERS + 1];
-bool talentsJustGiven[MAXPLAYERS + 1] = false;
+bool talentsJustGiven[MAXPLAYERS + 1] = {false, ...};
 bool testtoggle[MAXPLAYERS + 1];
 float rspeed;
 bool canchangemovement[MAXPLAYERS + 1];

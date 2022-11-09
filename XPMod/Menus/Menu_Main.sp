@@ -608,5 +608,5 @@ OptionMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 
 int EmptyPanelHandler(Menu menu, MenuAction action, int param1, int param2)
 {
-
+	return 0;
 }
