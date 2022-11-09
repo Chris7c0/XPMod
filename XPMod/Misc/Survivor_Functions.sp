@@ -170,6 +170,8 @@ void SuccessfulSelfRevive(int iClient)
 
 	// Remove the self revive from the client
 	g_iSelfRevives[iClient]--;
+
+	HandlePostSelfRevive(iClient);
 }
 
 void EndSelfRevive(int iClient)
@@ -188,6 +190,11 @@ void EndSelfRevive(int iClient)
 		SetEntPropFloat(iClient, Prop_Send, "m_flProgressBarDuration", 0.0);
 		SetEntPropEnt(iClient, Prop_Send, "m_reviveOwner", -1);
 	}
+}
+
+void HandlePostSelfRevive(iClient)
+{
+	HandleEllisSelfRevive(iClient);
 }
 
 int GetIncapOrDeadSurvivorCount()

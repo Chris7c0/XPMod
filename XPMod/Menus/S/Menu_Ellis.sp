@@ -123,6 +123,10 @@ Action:BringMenuDraw(iClient)
 		\n \
 		\nAll Health Is Converted To Temp Health\
 		\n \
+		\nStart With A Self Revive Kit\
+		\n \
+		\n+1 Adrenaline Shot on Self Revive Kit Use\
+		\n \
 		\nOn Special Infected kill:\
 		\n	Regen +1 Temp Health per Level\
 		\n	+20 Clip Ammo per Level\
@@ -136,7 +140,7 @@ Action:BringMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 

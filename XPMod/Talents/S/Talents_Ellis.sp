@@ -2,7 +2,7 @@ TalentsLoad_Ellis(iClient)
 {
 	SetPlayerTalentMaxHealth_Ellis(iClient, !g_bSurvivorTalentsGivenThisRound[iClient]);
 	SetClientSpeed(iClient);
-	
+
 	if(g_iMetalLevel[iClient] > 0)
 	{
 		g_bDoesClientAttackFast[iClient] = true;
@@ -66,6 +66,13 @@ TalentsLoad_Ellis(iClient)
 
 		// Give Ellis an extra adrenaline but do it delayed to give after any initial equipment
 		CreateTimer(0.1, TimerDelayedGiveEllisAnExtraAdrenaline, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
+		// Give Ellis his self revive kit
+		if(g_iBringLevel[iClient] > 0)
+		{
+			g_iSelfRevives[iClient]++;
+			PrintToChat(iClient, "\x03[XPMod] \x05+1 Self Revive Kit.");
+		}
 
 		// Set adrenaline counter for global Ellis
 		g_iEllisAdrenalineStackDuration += (g_iOverLevel[iClient] * 2);
@@ -1061,4 +1068,13 @@ void GiveEllisAnExtraAdrenaline(iClient)
 Action:TimerDelayedGiveEllisAnExtraAdrenaline(Handle:timer, any:iClient)
 {
 	GiveEllisAnExtraAdrenaline(iClient);
+}
+
+void HandleEllisSelfRevive(iClient)
+{
+	if (g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
+		return;
+
+	if (g_iBringLevel[iClient] > 0)
+		GiveEllisAnExtraAdrenaline(iClient);
 }
