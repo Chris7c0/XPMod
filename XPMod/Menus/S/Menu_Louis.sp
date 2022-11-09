@@ -115,7 +115,7 @@ Action:LouisTalent2MenuDraw(iClient)
 		\n SMG and Pistol (Not Magnum) Buffs:\
 		\n 	- +10%%%% Damage per Level\
 		\n 	- +10 Clip Size per Level\
-		\n 	- Automatic Laser Sight (SMGs Only)         \
+		\n 	- Can No Longer Acquire Laser Sights         \
 		\n ",
 		strStartingNewLines,
 		g_iLouisTalent2Level[iClient]);

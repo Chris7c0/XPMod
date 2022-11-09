@@ -95,14 +95,14 @@ Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadca
 
 		g_iLaserUpgradeCounter[iClient]++;
 	}
-	else if (g_bTalentsConfirmed[iClient] &&
-		g_iLouisTalent2Level[iClient] > 0 &&
-		StrContains(weaponclass, "smg", false) != -1)
-	{
-		RunCheatCommand(iClient, "upgrade_add", "upgrade_add LASER_SIGHT");
+	// else if (g_bTalentsConfirmed[iClient] &&
+	// 	g_iLouisTalent2Level[iClient] > 0 &&
+	// 	StrContains(weaponclass, "smg", false) != -1)
+	// {
+	// 	RunCheatCommand(iClient, "upgrade_add", "upgrade_add LASER_SIGHT");
 
-		g_iLaserUpgradeCounter[iClient]++;
-	}
+	// 	g_iLaserUpgradeCounter[iClient]++;
+	// }
 	
 	if(g_iChosenSurvivor[iClient] == BILL)
 	{

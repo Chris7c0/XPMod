@@ -9,6 +9,10 @@ TalentsLoad_Louis(iClient)
 
 	// Give starting XMR
 	g_fLouisXMRWallet[iClient] = LOUIS_HEADSHOT_XMR_STARTING_AMOUNT;
+
+	// Remove laser sight
+	if (g_iLouisTalent2Level[iClient] > 0)
+		RunCheatCommand(iClient, "upgrade_remove", "upgrade_remove LASER_SIGHT");
 	
 	if( (g_iClientLevel[iClient] - (g_iClientLevel[iClient] - g_iSkillPoints[iClient])) <= (g_iClientLevel[iClient] - 1))
 		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Disruptor Talents \x05have been loaded.");
@@ -413,6 +417,9 @@ void EventsItemPickUp_Louis(int iClient, const char[] strWeaponClass)
 
 		if (StrContains(strWeaponClass, "smg", false) != -1)
 		{
+			// Remove laser sights
+			RunCheatCommand(iClient, "upgrade_remove", "upgrade_remove LASER_SIGHT");
+
 			new iEntid = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 			if(iEntid  < 1 || IsValidEntity(iEntid) == false)
 				return;
@@ -445,6 +452,18 @@ void EventsItemPickUp_Louis(int iClient, const char[] strWeaponClass)
 			g_bHealthBoostSlotWasEmptyOnLastPickUp[iClient] = true;
 
 		g_bHealthBoostItemJustGivenByCheats[iClient] = false;
+	}
+}
+
+void EventsReceiveUpgrade_Louis(int iClient, const char[] strUpgrade)
+{
+	if (g_iChosenSurvivor[iClient] != LOUIS || g_bTalentsConfirmed[iClient] == false)
+		return;
+
+	if (g_iLouisTalent2Level[iClient] > 0)
+	{
+		if (StrEqual(strUpgrade, "LASER_SIGHT", false) == true)
+			RunCheatCommand(iClient, "upgrade_remove", "upgrade_remove LASER_SIGHT");
 	}
 }
 
