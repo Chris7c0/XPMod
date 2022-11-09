@@ -1,0 +1,9 @@
+{
+    "version": "2.0.0",
+    "tasks": [{
+        "label": "compile and run xpmod",
+        "command": "${workspaceFolder}/xpmodcompile.sh",
+        "args": [""],
+        "type": "shell"
+    }]
+}
