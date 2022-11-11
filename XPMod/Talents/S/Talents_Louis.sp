@@ -483,6 +483,9 @@ void EventsPlayerUse_Louis(int iClient, int iTargetID)
 	// 	strSlotItemClassName = NULL_STRING;
 	// PrintToChat(iClient, "strSlotItemClassName: %s" , strSlotItemClassName);
 
+	if (g_iLouisTalent2Level[iClient] > 0)
+		RunCheatCommand(iClient, "upgrade_remove", "upgrade_remove LASER_SIGHT");
+
 	// Check if the item when into their weapon slot, if not, then continue to stash it.
 	if (g_iLouisTalent6Level[iClient] > 0 && 
 		iSlotItemID != iTargetID &&
