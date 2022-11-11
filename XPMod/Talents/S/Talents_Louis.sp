@@ -269,13 +269,12 @@ EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 					GetEntPropVector(iCIVictim, Prop_Send, "m_vecOrigin", xyzVictimLocation);
 					// Get a random item and spawn in the item on the CI entity
 					new iItemIndex = ITEM_EMPTY;
-					switch (GetRandomInt(0, 4))
+					switch (GetRandomInt(0, 3))
 					{
 						case 0: iItemIndex = ITEM_PAIN_PILLS;
 						case 1: iItemIndex = ITEM_ADRENALINE_SHOT;
-						case 2: iItemIndex = ITEM_FIRST_AID_KIT;
-						case 3: iItemIndex = ITEM_BILE_JAR;
-						case 4: iItemIndex = ITEM_PIPE_BOMB;
+						case 2: iItemIndex = ITEM_BILE_JAR;
+						case 3: iItemIndex = ITEM_PIPE_BOMB;
 					}
 					new iItem = SpawnItem(xyzVictimLocation, iItemIndex, 50.0);
 					// Attach particle effects to entity for awareness

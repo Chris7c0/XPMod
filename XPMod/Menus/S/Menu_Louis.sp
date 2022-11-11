@@ -248,7 +248,6 @@ Action:LouisTalent5MenuDraw(iClient)
 		\n Every Common Infected Headshot Kill Has A 5%%%% Chance To Drop:\
 		\n	- Pain Pills\
 		\n	- Adrenaline\
-		\n	- First Aid Kit\
 		\n	- Bile Jar\
 		\n	- Pipe bomb\
 		\n Every Special Infected Headshot Kill Has A 1%%%% Chance To:\
@@ -267,7 +266,7 @@ Action:LouisTalent5MenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
