@@ -1366,3 +1366,19 @@ SetSIAbilityCooldown(iClient, Float:fTimeToWait = 0.0, bool bCalculateFromCurren
 
 	//PrintToChatAll("POST fNextActivationGameTime: %f, GetGameTime()%f", fNewNextActivationGameTime, GetGameTime());
 }
+
+RandomSortIntArray(int[] iArray, int iArraySize, int iPasses)
+{
+	int slot1, slot2;
+	for(int i=0; i<iPasses; i++)
+	{
+		slot1 = GetRandomInt(0, iArraySize - 1);
+		slot2 = GetRandomInt(0, iArraySize - 1);
+		if (slot1 == slot2)
+			continue;
+		
+		int tmp = iArray[slot1];
+		iArray[slot1] = iArray[slot2];
+		iArray[slot2] = tmp;
+	}
+}

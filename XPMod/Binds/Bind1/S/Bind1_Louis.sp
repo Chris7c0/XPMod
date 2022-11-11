@@ -136,14 +136,13 @@ Action:WarezStationMenuDraw(iClient)
 	SetMenuTitle(menu, text);
 
 	AddMenuItem(menu, "option1", "+5% Speed Increase");
-	AddMenuItem(menu, "option2", "+10 HP Max Health");
-	AddMenuItem(menu, "option3", "-50% Team Screen Shake");
-	AddMenuItem(menu, "option4", "+1 Self Revive Kit");
-	AddMenuItem(menu, "option5", "+3 Bile Cleansing Kit");
-	AddMenuItem(menu, "option6", "Receive Medkit + Pills");
-	AddMenuItem(menu, "option7", "Receive Full Ammo");
-	AddMenuItem(menu, "option8", "I'm Feeling Lucky\n ")
-
+	AddMenuItem(menu, "option2", "+25 HP Max Health");
+	AddMenuItem(menu, "option3", "-25% Team Screen Shake");
+	AddMenuItem(menu, "option4", "+5 Bile Cleansing Kits");
+	AddMenuItem(menu, "option5", "Receive Medkit + Pills");
+	AddMenuItem(menu, "option6", "Receive Full Ammo");
+	AddMenuItem(menu, "option7", "I'm Feeling Lucky\n ")
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option9", "", ITEMDRAW_NOTEXT);
 
 	AddMenuItem(menu, "option10", "Nothing For Now.\
@@ -195,7 +194,7 @@ WarezStationMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			}
 			case 1: // Max Health
 			{
-				SetPlayerMaxHealth(iClient, 10, true, true);
+				SetPlayerMaxHealth(iClient, 25, true, true);
 				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Max Health Boost", iClient);
 			}
 			case 2: // Team Screen Shake
@@ -211,32 +210,27 @@ WarezStationMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 				// Print Message to Survivors
 				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Screen Shake Reduced", iClient);
 
-				g_iScreenShakeAmount -= 10;
+				g_iScreenShakeAmount -= 5;
 				SetSurvivorScreenShakeAmount();
 			}
-			case 3: // Self revive
+			case 3: // Bile Cleansing Kits
 			{
-				g_iSelfRevives[iClient]++;
-				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Self Revive Kit", iClient);
-			}
-			case 4: // Bile Cleansing Kits
-			{
-				g_iBileCleansingKits[iClient] += 3;
-				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04+3 Bile Cleansing Kits", iClient);
+				g_iBileCleansingKits[iClient] += 5;
+				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04+5 Bile Cleansing Kits", iClient);
 				PrintToChat(iClient, "\x03[XPMod] \x04While biled, HOLD USE to use a Bile Cleansing Kit.");
 			}
-			case 5:	// Med supplies
+			case 4:	// Med supplies
 			{
 				RunCheatCommand(iClient, "give", "give first_aid_kit");
 				RunCheatCommand(iClient, "give", "give pain_pills");
 				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Medical Supplies", iClient);
 			}
-			case 6:	// Ammo
+			case 5:	// Ammo
 			{
 				RunCheatCommand(iClient, "give", "give ammo");
 				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Full Ammo", iClient);
 			}
-			case 7:	// I'm Feeling Lucky
+			case 6:	// I'm Feeling Lucky
 			{
 				ImFeelingLuckyRoll(iClient);
 			}
@@ -289,7 +283,6 @@ ImFeelingLuckyRoll(iClient)
 			RunCheatCommand(iClient, "give", "give first_aid_kit");
 			RunCheatCommand(iClient, "give", "give first_aid_kit");
 			RunCheatCommand(iClient, "give", "give first_aid_kit");
-			RunCheatCommand(iClient, "give", "give first_aid_kit");
 			RunCheatCommand(iClient, "give", "give adrenaline");
 			RunCheatCommand(iClient, "give", "give adrenaline");
 			RunCheatCommand(iClient, "give", "give pain_pills");
@@ -303,7 +296,7 @@ ImFeelingLuckyRoll(iClient)
 			if (g_bGiveAlotOfWeaponsOnCooldown == false)
 			{
 				GiveEveryWeaponToSurvivor(iClient);
-				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Weapon & Upgrades", iClient);
+				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Weapons & Upgrades", iClient);
 			}
 			else
 			{
@@ -313,25 +306,18 @@ ImFeelingLuckyRoll(iClient)
 		}
 		case 5:		// Self Revives
 		{
-			g_iSelfRevives[iClient] += 10;
-			PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04+10 Self Revive Kits", iClient);
+			g_iSelfRevives[iClient] += 3;
+			PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04+3 Self Revive Kits", iClient);
 		}
-		case 6:		// Electric zap damage
+		case 6:		// Deadly Electric zap damage
 		{
-			DealDamage(iClient, iClient, 30);
-			PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Electricution", iClient);
+			DealDamage(iClient, iClient, 99);
+			PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Deadly Electricution", iClient);
 		}
-		case 7:		// Lose all primary ammo
+		case 7: 	// Electric zap damage
 		{
-			// Replace this later
-			DealDamage(iClient, iClient, 30);
+			DealDamage(iClient, iClient, 50);
 			PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Electricution", iClient);
-
-			//new iAmmoOffset = FindDataMapInfo(client, "m_iAmmo");
-			//GetEntProp(targetgun, Prop_Data, "m_iExtraPrimaryAmmo", 4);
-			//SetEntData(iClient, iOffset_Ammo + 40, iAmmo - (g_iMetalLevel[iClient]*4) - (g_iFireLevel[iClient]*6));
-
-			//PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x0410 No Primary Ammo", iClient);
 		}
 		case 8:		// Convert all health to temp health
 		{
@@ -340,13 +326,39 @@ ImFeelingLuckyRoll(iClient)
 			else
 				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Absolutely Nothing", iClient);
 		}
-		case 9:		// Drop all currently equipped items
+		case 9:		// Lose 1 to 5 random items
 		{
-			// Replace this later
-			DealDamage(iClient, iClient, 30);
-			PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Electricution", iClient);
+			// Find all equiped items
+			int iEquippedItemsIDsArray[5] = {0, ...}, iItemCtr = 0;
+			for (int i=0; i<5; i++)
+			{
+				int iItemID = GetPlayerWeaponSlot(iClient, i);
+				if (iItemID > 0)
+					iEquippedItemsIDsArray[iItemCtr++] = iItemID
+			}
 
-			//PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x0410 Drop Gear", iClient);
+			// Player has no items so say they got nothing
+			if (iItemCtr == 0)
+				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Absolutely Nothing", iClient);
+
+			// Get number of items to destroy, also, cap it to all the items in their inventory
+			int iNumItemsToRemove = GetRandomInt(1, 5);
+			if (iNumItemsToRemove > iItemCtr)
+				iNumItemsToRemove = iItemCtr;
+
+			// Random sort the array 20 passes
+			RandomSortIntArray(iEquippedItemsIDsArray, iItemCtr, 20);
+
+			// Destroy the items
+			for (int i=0; i<iNumItemsToRemove; i++)
+			{
+				if (iEquippedItemsIDsArray[i] > 0)
+					KillEntitySafely(iEquippedItemsIDsArray[i]);
+			}
+
+			PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Lost %i Random Equipped Items", iClient, iNumItemsToRemove);
+
+			// TODO: Add some sort of way to handle things like extra items, grenades, pills, shots, etc.
 		}
 	}
 }
