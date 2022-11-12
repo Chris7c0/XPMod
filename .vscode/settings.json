@@ -74,6 +74,7 @@
     "sourcepawn.MainPath": "/home/chris/Projects/XPMod/xpmod.sp",
     "sourcepawn.enableLinter": true,
     "sourcepawn.optionalIncludeDirsPaths": [
-        "/home/chris/Projects/XPMod"
+        "/home/chris/Projects/XPMod",
+        "/home/chris/Projects/XPMod/XPMod"
     ],
 }
