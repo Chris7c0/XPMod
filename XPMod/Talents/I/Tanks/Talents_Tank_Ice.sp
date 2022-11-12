@@ -66,6 +66,8 @@ SetClientSpeedTankIce(iClient, &Float:fSpeed)
 {
 	if (g_iTankChosen[iClient] != TANK_ICE)
 		return;
+
+	fSpeed += 0.05;
 }
 
 
