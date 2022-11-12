@@ -96,7 +96,7 @@ void SetPlayerTalentMaxHealth_Coach(int iClient, bool bFillInHealthGap = true)
 	SetPlayerMaxHealth(iClient, 
 	100 + 
 	(g_iBullLevel[iClient]*5) + 
-	(g_iWreckingLevel[iClient]*10) + 
+	(g_iWreckingLevel[iClient]*5) + 
 	(g_iStrongLevel[iClient]*10) + 
 	(g_iCoachTeamHealthStack * 5), 
 	false, 

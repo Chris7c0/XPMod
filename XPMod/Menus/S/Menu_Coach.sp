@@ -119,7 +119,7 @@ Action:WreckingMenuDraw(iClient)
 		\n \
 		\nLevel 1:\
 		\n(Charge) +100 melee dmg per level\
-		\n+10 max health per level\
+		\n+5 max health per level\
 		\n \
 		\nLevel 5:\
 		\nOn SI headshot w/ melee weapon & Wrecking Ball charged:\
