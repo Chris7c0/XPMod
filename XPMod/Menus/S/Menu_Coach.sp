@@ -316,36 +316,36 @@ Action:StrongMenuDraw(iClient)
 	
 	FormatEx(text, sizeof(text), "\
 		%s					Strong Arm(Level %d):\
-		\n					 Requires Level 26\
 		\n \
 		\nLevel 1:\
-		\n+30 melee damage per level\
-		\n+10 max health per level\
-		\n+20%% Jockey resistance per level\
-		\nStart the round with a random explosive\
+		\n+30 Melee Damage per Level\
+		\n+10 Max Health per Level\
+		\n+20%% Jockey Resistance per Level\
+		\nStart The Round With A Random Explosive\
 		\n \
 		\nLevel 2:\
-		\n+1 explosive storage every other level\
-		\n [WALK+ZOOM] to cycle explosives\
+		\n+1 Explosive Storage Every Other Level\
+		\n [WALK+ZOOM] to Cycle Explosives\
 		\n \
-		\n \
-		\n			Bind 2: D.E.A.D. Jetpack (Charge)\
-		\n						Limited Fuel\
+		\n			Bind 2: CEDA JPack Mk. 6\
 		\n \
 		\nLevel 1:\
-		\n+160 fuel per level\
+		\nPress Bind 2 to Turn On Jetpack\
+		\n+%i Max Fuel per Level\
+		\nWhile Jetpack Is Off, Fuel Regenerates Over Time\
 		\n \
 		\nSkill Uses:\
-		\n(Charge): Hold [WALK] to fly when jetpack is on\
+		\nHold [WALK] to Fly When Jetpack Is On\
 		\n ",
 		strStartingNewLines,
-		g_iStrongLevel[iClient]);
+		g_iStrongLevel[iClient],
+		COACH_JETPACK_FUEL_PER_LEVEL);
 	SetMenuTitle(menu, text);
 	
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	
