@@ -129,59 +129,69 @@ Action:FreezeColor(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerResetMelee(Handle:timer, any:data)
+Action:Timer2SecondGlobalRepeating(Handle:timer, any:data)
 {
-	if (IsServerProcessing()==false)
-		return Plugin_Continue;
-	//PrintToChatAll("timer called");
 	for(new iClient = 1;iClient<= MaxClients; iClient++)
 	{
-		if(IsClientInGame(iClient)==true)
+		if (RunClientChecks(iClient)==false || 
+			g_bTalentsConfirmed[iClient] == false ||
+			IsPlayerAlive(iClient) == false)
+			continue;
+		
+		if (GetClientTeam(iClient)==TEAM_SURVIVORS)
 		{
-			if(g_iSniperLevel[iClient]==5)
+			if (g_iChosenSurvivor[iClient] == ROCHELLE)
 			{
-				if(IsClientInGame(iClient)==true)
-				{
-					if(GetClientTeam(iClient)==TEAM_SURVIVORS)
-					{
-						SetEntData(iClient,g_iOffset_ShovePenalty,0);
-					}
-				}
-			}
-			else if(g_iHomerunLevel[iClient]==5)
-			{
-				if(IsClientInGame(iClient)==true)
-				{
-					if(GetClientTeam(iClient)==TEAM_SURVIVORS)
-					{
-						SetEntData(iClient,g_iOffset_ShovePenalty,0);
-					}
-				}
-			}
-			if(g_bIsJetpackOn[iClient]==true)
-			{
-				g_iClientJetpackFuel = g_iClientJetpackFuelUsed[iClient]--;
-				if(g_iWreckingBallChargeCounter[iClient]==0)
-					PrintHintText(iClient, "%d Fuel Left", g_iClientJetpackFuel);
-				if(g_iClientJetpackFuelUsed[iClient]<0)
-				{
-					CreateTimer(0.5, DeleteParticle, g_iPID_CoachJetpackStream[iClient], TIMER_FLAG_NO_MAPCHANGE);
-					StopSound(iClient, SNDCHAN_AUTO, SOUND_JPHIGHREV);
-					StopSound(iClient, SNDCHAN_AUTO, SOUND_JPIDLEREV);
-					new Float:vec[3];
-					GetClientAbsOrigin(iClient, vec);
-					EmitSoundToAll(SOUND_JPDIE, iClient, SNDCHAN_AUTO,	SNDLEVEL_NORMAL, SND_NOFLAGS, 0.3, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
-					g_bIsJetpackOn[iClient] = false;
-					g_bIsFlyingWithJetpack[iClient] = false;
-					SetMoveType(iClient, MOVETYPE_WALK, MOVECOLLIDE_DEFAULT);
-					PrintHintText(iClient, "Out Of Fuel");
-				}
-			}
-			if(g_iGatherLevel[iClient]>0)
-				if(g_bClientIDDToggle[iClient]==true)
+				if (g_iSniperLevel[iClient]==5)
+					SetEntData(iClient,g_iOffset_ShovePenalty,0);
+
+				if (g_iGatherLevel[iClient] > 0 && g_bClientIDDToggle[iClient] == true)
 					DetectionHud(iClient);
+			}
+			
+			if (g_iChosenSurvivor[iClient] == COACH)
+			{
+				if (g_iHomerunLevel[iClient]==5)
+					SetEntData(iClient,g_iOffset_ShovePenalty,0);
+
+				if (g_iStrongLevel[iClient] > 0)
+				{
+					if(g_bIsJetpackOn[iClient]==true)
+					{
+						// Take away small amount of fuel for running jetpack on idle
+						g_iClientJetpackFuel[iClient]--;
+
+						PrintCoachJetpackFuelGauge(iClient);
+
+						if(g_iClientJetpackFuel[iClient]<0)
+						{
+							CreateTimer(0.5, DeleteParticle, g_iPID_CoachJetpackStream[iClient], TIMER_FLAG_NO_MAPCHANGE);
+							StopSound(iClient, SNDCHAN_AUTO, SOUND_JPHIGHREV);
+							StopSound(iClient, SNDCHAN_AUTO, SOUND_JPIDLEREV);
+							new Float:vec[3];
+							GetClientAbsOrigin(iClient, vec);
+							EmitSoundToAll(SOUND_JPDIE, iClient, SNDCHAN_AUTO,	SNDLEVEL_NORMAL, SND_NOFLAGS, 0.3, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
+							g_bIsJetpackOn[iClient] = false;
+							g_bIsFlyingWithJetpack[iClient] = false;
+							SetMoveType(iClient, MOVETYPE_WALK, MOVECOLLIDE_DEFAULT);
+							g_iClientJetpackFuel[iClient] = 0;
+							PrintCoachJetpackFuelGauge(iClient);
+						}
+					}
+					else if (g_iClientJetpackFuel[iClient] < (g_iStrongLevel[iClient] * COACH_JETPACK_FUEL_PER_LEVEL))
+					{
+						// Jetpack fuel regeneration while jetpack is off
+						g_iClientJetpackFuel[iClient] = g_iClientJetpackFuel[iClient] + COACH_JETPACK_FUEL_REGEN_PER_2_SEC_TICK > (g_iStrongLevel[iClient] * COACH_JETPACK_FUEL_PER_LEVEL) ? 
+							(g_iStrongLevel[iClient] * COACH_JETPACK_FUEL_PER_LEVEL) :
+							g_iClientJetpackFuel[iClient] + COACH_JETPACK_FUEL_REGEN_PER_2_SEC_TICK;
+						
+						PrintCoachJetpackFuelGauge(iClient);
+					}
+				}
+			}
 		}
 	}
+
 	return Plugin_Continue;
 }
 

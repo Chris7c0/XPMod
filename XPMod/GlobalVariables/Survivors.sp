@@ -144,9 +144,10 @@ float g_xyzRopeEndLocation[MAXPLAYERS + 1][3];
 
 //Coach's Stuff
 //For Coach's Jetpack
+#define COACH_JETPACK_FUEL_PER_LEVEL                60
+#define COACH_JETPACK_FUEL_REGEN_PER_2_SEC_TICK     5
 new bool:g_bIsFlyingWithJetpack[MAXPLAYERS + 1];
-new g_iClientJetpackFuel;
-new g_iClientJetpackFuelUsed[MAXPLAYERS + 1];
+new g_iClientJetpackFuel[MAXPLAYERS + 1];
 new bool:g_bIsJetpackOn[MAXPLAYERS + 1];
 new bool:g_bIsMovementTypeFly[MAXPLAYERS + 1];
 new g_iExtraExplosiveUses[MAXPLAYERS + 1];

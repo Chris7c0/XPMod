@@ -7,6 +7,7 @@ Action:TimerStartJetPack(Handle:timer, any:iClient)
 	GetClientAbsOrigin(iClient, vec);
 	EmitSoundToAll(SOUND_JPIDLEREV, iClient, SNDCHAN_AUTO,	SNDLEVEL_NORMAL, SND_NOFLAGS, 0.3, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
 	g_bIsJetpackOn[iClient] = true;
+	PrintCoachJetpackFuelGauge(iClient)
 	return Plugin_Stop;
 }
 

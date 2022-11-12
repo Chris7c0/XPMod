@@ -32,9 +32,7 @@ TalentsLoad_Coach(iClient)
 	if(g_bSurvivorTalentsGivenThisRound[iClient] == false)
 	{
 		if(g_iStrongLevel[iClient]>0)
-		{
-			g_iClientJetpackFuelUsed[iClient] = g_iStrongLevel[iClient] * 160;
-		}
+			g_iClientJetpackFuel[iClient] = g_iStrongLevel[iClient] * COACH_JETPACK_FUEL_PER_LEVEL
 		
 		if(g_iLeadLevel[iClient]> 0)
 		{
@@ -135,6 +133,8 @@ OnGameFrame_Coach(iClient)
 			preledgebuffer[iClient] = GetEntDataFloat(iClient,g_iOffset_HealthBuffer);
 			//PrintToChat(iClient, "%d", preledgehealth[iClient]);
 		}
+
+		// Jetpack
 		if(g_bIsJetpackOn[iClient] == true)
 		{
 			if (buttons & IN_SPEED && g_bIsClientDown[iClient] == false && IsClientGrappled(iClient) == false)
@@ -160,6 +160,7 @@ OnGameFrame_Coach(iClient)
 				}
 			}
 		}
+
 		if(g_bCanCoachGrenadeCycle[iClient] == true)
 		{
 			if((buttons & IN_SPEED) && (buttons & IN_ZOOM))
@@ -826,11 +827,13 @@ Action:StartFlying(iClient)
 		g_iPID_CoachJetpackStream[iClient] = WriteParticle(iClient, "jetpack_stream", 0.0);
 		//g_iPID_CoachJetpackStream[iClient] = CreateParticle("jetpack_stream", 0.0, iClient, ATTACH_SURVIVOR_LIGHT);
 	}
-	g_iClientJetpackFuel = g_iClientJetpackFuelUsed[iClient]--;
-	PrintHintText(iClient, "%d Fuel Left", g_iClientJetpackFuel);
+
+	g_iClientJetpackFuel[iClient]--;
+	PrintCoachJetpackFuelGauge(iClient);
+
 	AddUpwardVelocity(iClient, 50.0);
 	g_bIsFlyingWithJetpack[iClient]=true;
-	if(g_iClientJetpackFuelUsed[iClient]<0)
+	if(g_iClientJetpackFuel[iClient] <= 0)
 	{
 		CreateTimer(0.5, DeleteParticle, g_iPID_CoachJetpackStream[iClient], TIMER_FLAG_NO_MAPCHANGE);
 		StopSound(iClient, SNDCHAN_AUTO, SOUND_JPHIGHREV);
@@ -841,8 +844,10 @@ Action:StartFlying(iClient)
 		g_bIsJetpackOn[iClient] = false;
 		g_bIsFlyingWithJetpack[iClient] = false;
 		SetMoveType(iClient, MOVETYPE_WALK, MOVECOLLIDE_DEFAULT);
-		PrintHintText(iClient, "Out Of Fuel");
+		g_iClientJetpackFuel[iClient] = 0;
+		PrintCoachJetpackFuelGauge(iClient);
 	}
+
 	return Plugin_Continue;
 }
 
