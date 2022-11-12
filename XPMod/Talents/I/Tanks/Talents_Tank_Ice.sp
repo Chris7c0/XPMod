@@ -321,7 +321,7 @@ void HandleFireDamageVictimIceTank(int iAttacker, int iVictimTank, int iDmgHealt
 
 FreezePlayerByTank(iVictim, Float:fFreezeTime, Float:fStartTime = 0.2)
 {
-	if (iVictim < 1 || IsClientInGame(iVictim) == false)
+	if (RunClientChecks(iVictim) == false)
 		return;
 	
 	CreateTimer(fStartTime, Timer_FreezePlayerByTank, iVictim, TIMER_FLAG_NO_MAPCHANGE);
@@ -337,8 +337,8 @@ UnfreezePlayerByTank(iClient)
 	g_bFrozenByTank[iClient] =  false;
 	g_bBlockTankFreezing[iClient] = true;
 	
-	//Reset To Allow The Player To Freeze Again
-	CreateTimer(3.0, Timer_UnblockTankFreezing, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	//Reset To Allow The Player To Be Frozen Again
+	CreateTimer(TANK_ICE_FREEZE_COOLDOWN_AFTER_UNFREEZE, Timer_UnblockTankFreezing, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	
 	//Play Ice Break Sound
 	new Float:vec[3];

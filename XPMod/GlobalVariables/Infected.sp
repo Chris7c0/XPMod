@@ -346,6 +346,7 @@ new Float:g_fFireTankExtraSpeed[MAXPLAYERS + 1];
 #define TANK_ICE_FREEZE_DURATION_PUNCH                  5.0
 #define TANK_ICE_FREEZE_DURATION_ROCK_INDIRECT          6.0
 #define TANK_ICE_FREEZE_DURATION_ROCK_DIRECT            10.0
+#define TANK_ICE_FREEZE_COOLDOWN_AFTER_UNFREEZE         7.0
 #define TANK_ICE_ROCK_FREEZE_INDIRECT_HIT_RADIUS        350.0
 #define TANK_ICE_COLD_SLOW_AURA_RADIUS                  400.0
 #define TANK_ICE_COLD_SLOW_AURA_SPEED_REDUCE_AMOUNT     0.75    // This will set their speed to 1.0 - this speed reduce amount
