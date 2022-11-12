@@ -266,10 +266,10 @@ Action:LeadMenuDraw(iClient)
 		\n \
 		\nLevel 1:\
 		\n(Team) +10%%%% chainsaw fuel per level\
-		\n(Stacks) (Team) +5 max health per level\
+		\n(Team) +5 max health per level\
 		\n \
 		\nLevel 5:\
-		\n(Stacks) (Team) Reduce screen shaking when\
+		\n(Team) (Stacks) Reduce screen shaking when\
 		\n   taking damage by 50%%%%\
 		\n \
 		\n \
@@ -278,10 +278,6 @@ Action:LeadMenuDraw(iClient)
 		\n \
 		\nLevel 1:\
 		\nDeploy Turrets\
-		\n \
-		\n \
-		\nSkill Uses:\
-		\n(Team) max health (Stacks) with itself\
 		\n ",
 		strStartingNewLines,
 		g_iLeadLevel[iClient]);
@@ -290,7 +286,7 @@ Action:LeadMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	

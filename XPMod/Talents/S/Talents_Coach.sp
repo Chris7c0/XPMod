@@ -885,9 +885,9 @@ SetCoachesHealthStacks()
 			g_iClientTeam[i]==TEAM_SURVIVORS)
 			g_iCoachTeamHealthStack += g_iLeadLevel[i];
 	
-	// Cap this at 4 Coaches
-	if (g_iCoachTeamHealthStack > 20)
-		g_iCoachTeamHealthStack = 20;
+	// Cap this at 1 Coach (remove stacking)
+	if (g_iCoachTeamHealthStack > 5)
+		g_iCoachTeamHealthStack = 5;
 
 	//Set Max Health for all survivors higher
 	for(int i=1; i <= MaxClients; i++)
