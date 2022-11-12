@@ -135,7 +135,7 @@ EventsHurt_AttackerTank_NecroTanker(Handle:hEvent, iAttackerTank, iVictim)
 		// Reset boomer throw ability if they now have mana for it
 		if (iPreviousMana < NECROTANKER_MANA_COST_BOOMER_THROW && 
 			g_iNecroTankerManaPool[iAttackerTank] >= NECROTANKER_MANA_COST_BOOMER_THROW)
-			SetSIAbilityCooldown(iAttackerTank, 6.0);
+			SetSIAbilityCooldown(iAttackerTank, NECROTANKER_BOOMER_THROW_ABILITY_COOLDOWN);
 	}
 }
 
