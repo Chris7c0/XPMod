@@ -366,7 +366,7 @@ void HandleHunterCloaking(int iClient)
 		if(g_iHunterCloakCounter[iClient] >= 0)
 		{
 			g_iHunterCloakCounter[iClient]++;
-			if( (buttons) || (!(GetEntityFlags(iClient) & FL_ONGROUND)) )			//If iClient moves or pushes buttons, resset the counter
+			if( (buttons) || (!(GetEntityFlags(iClient) & FL_ONGROUND)) )			//If iClient moves or pushes buttons, reset the counter
 			{
 				if( (!(buttons & IN_DUCK)) || (!(GetEntityFlags(iClient) & FL_ONGROUND)) )
 				{
@@ -489,8 +489,20 @@ void HandleHunterVisibleBloodLustMeterGain(int iClient)
 		g_iInfectedCharacter[iClient] != HUNTER || 
 		g_bTalentsConfirmed[iClient] == false || 
 		g_iBloodLustLevel[iClient] <= 0 ||
-		g_iBloodLustStage[iClient] >= 3)
+		g_iBloodLustStage[iClient] >= 3 ||
+		g_bGameFrozen == true)
 		return;
+
+	// Check the hunter's current position against the last one stored, and if they moved, return
+	float xyzCurrentPosition[3];
+	GetClientAbsOrigin(iClient, xyzCurrentPosition);
+	if (GetVectorDistance(xyzCurrentPosition, g_fLastHunterPosition[iClient], false) > 3.0)
+	{
+		PrintToChat(iClient, "You moved too far, Blood Lust meter reset");
+		// Store current position in last position for next time
+		GetClientAbsOrigin(iClient, g_fLastHunterPosition[iClient]);
+		return;
+	}
 
 	float xyzClientLocation[3], xyzTargetLocation[3], fDistance, fDistanceNormalized;
 
