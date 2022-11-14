@@ -8,16 +8,19 @@ TalentsLoad_Hunter(iClient)
 
 		g_bCanHunterDismount[iClient] = true;
 	}
-	// if(g_iBloodLustLevel[iClient] > 0)
-	// {
-		
-	// }
 	if(g_iKillmeleonLevel[iClient] > 0)
 	{
+		if(g_bHasInfectedHealthBeenSet[iClient] == false)
+		{
+			g_bHasInfectedHealthBeenSet[iClient] = true;
+			SetPlayerMaxHealth(iClient, 500, false);
+		}
+
+		// TODO: Check if this can be removed
 		g_iHunterCloakCounter[iClient] = -1;	// -1 means iClient is cloaked
 		g_bIsCloakedHunter[iClient] = true;
 		SetEntityRenderMode(iClient, RenderMode:3);
-		SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (float(g_iKillmeleonLevel[iClient]) * 0.09) )));
+		SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (float(g_iKillmeleonLevel[iClient]) * 0.095) )));
 	}
 }
 
@@ -33,7 +36,7 @@ OnGameFrame_Hunter(iClient)
 
 	// Health Regeneration
 	// Every frame give 1 hp, 30 fps, so 30 hp per second
-	if (GetPlayerHealth(iClient) < SMOKER_STARTING_MAX_HEALTH)
+	if (GetPlayerHealth(iClient) < SMOKER_STARTING_MAX_HEALTH + (g_iKillmeleonLevel[iClient] > 0 ? 250 : 0))
 		SetPlayerHealth(iClient, g_iBloodLustStage[iClient], true);
 }
 
@@ -100,7 +103,6 @@ EventsHurt_AttackerHunter(Handle:hEvent, attacker, victim)
 
 				delete g_hTimer_HunterPoison[victim];
 				g_hTimer_HunterPoison[victim] = CreateTimer(1.0, TimerHunterPoison, hunterpoisonpackage, TIMER_REPEAT);
-				//CreateTimer(20.0, TimerContinuousHunterPoison, hunterpoisonpackage, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 				if(IsFakeClient(victim)==false)
 					PrintHintText(victim, "\%N has injected venom into your flesh", attacker);
 				PrintHintText(attacker, "You poisoned %N, You have enough venom for %d more injections.", victim, (3 - g_iClientBindUses_2[attacker]) );
@@ -370,7 +372,7 @@ void HandleHunterCloaking(int iClient)
 				{
 					if(g_iHunterCloakCounter[iClient] > 20)
 					{
-						SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (float(g_iKillmeleonLevel[iClient]) * 0.010) )));
+						SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (float(g_iKillmeleonLevel[iClient]) * 0.005) )));
 					}
 					g_iHunterCloakCounter[iClient] = 0;
 				}
@@ -387,7 +389,7 @@ void HandleHunterCloaking(int iClient)
 			{
 				if(g_iHunterCloakCounter[iClient] == 35)
 					PrintCenterText(iClient, "Blending in with surroundings");
-				SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - ((float(g_iKillmeleonLevel[iClient]) * (0.009 + (float(g_iHunterCloakCounter[iClient] - 20) * 0.001)))) )));
+				SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - ((float(g_iKillmeleonLevel[iClient]) * (0.0095 + (float(g_iHunterCloakCounter[iClient] - 20) * 0.001)))) )));
 			}
 		}
 	}
@@ -514,7 +516,7 @@ void HandleHunterVisibleBloodLustMeterGain(int iClient)
 				fDistanceNormalized = 1.0 - (fDistance / 1500.0);
 
 				int iAmount = RoundToNearest(fDistanceNormalized * BLOOD_LUST_METER_GAINED_VISIBILITY_SCALE_FACTOR);
-				PrintToChat(iClient, "Distance: %f, Normalized: %f, iAmount: %i", fDistance, fDistanceNormalized, iAmount);
+				// PrintToChat(iClient, "Distance: %f, Normalized: %f, iAmount: %i", fDistance, fDistanceNormalized, iAmount);
 				BuildBloodLustMeter(iClient, iAmount);
 
 			}

@@ -106,12 +106,11 @@ Action:BloodlustMenuDraw(iClient)
 		\n	+75% Movement Speed per Stage\
 		\n	+30% Non Lunging Stealth per Stage\
 		\n	+1 Shredding Damage per Stage\
-		\n	+30 Health/Second Regeneration per Stag\
+		\n	+30 Health/Second Regeneration per Stage   \
 		\n \
-		\n				Bind 1: Dismount\
-		\n	Unlimited uses; 15 second cooldown\
+		\n			Bind 1: Immobilization Area\
 		\n \
-		\nDismount a pounced survivor\
+		\nComing soon.\
 		\n ",
 		strStartingNewLines,
 		g_iBloodLustLevel[iClient]);
@@ -141,21 +140,23 @@ Action:KillmeleonMenuDraw(iClient)
 	SetMenuTitle(menu, "\
 		%s				Kill-meleon (Level %d)\
 		\n \
-		\nLevel 1:\
-		\n(Charge) +9%% stealth 0.35 seconds\
+		\n+250 Max Health\
+		\nHide Glow While On A Victim\
 		\n \
-		\nLevel 5:\
-		\nHide glow when pounced\
-		\n \
+		\nDo Not Move to Build Your Stealth\
+		\n	- Up to 95%% Invisible\
+		\n	- While Invisible and Survivors Can See You:\
+		\n		- Rapidly Charges Blood Lust Meter\
+		\n		- The Closer the Survivors, The Faster The       \
+		\n			Blood Lust Meter Fills\
 		\n \
 		\n				Bind 2: Lethal Injection\
 		\n						3 uses\
 		\n \
-		\nNext attack does 4 damage per second\
-		\n+1 second per level\
-		\nPoison prevents item exchanging\
-		\nSlow victims to 25%%\
-		\n3 damage per 20 seconds permanently\
+		\nNext Attack Does 4 Dmg/Sec\
+		\n+1 Sec/Lvl\
+		\nPoison Prevents Item Exchanging\
+		\nSlow Victims to 25%%\
 		\n \
 		\n ",
 		strStartingNewLines,
@@ -164,7 +165,7 @@ Action:KillmeleonMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
