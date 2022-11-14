@@ -1050,7 +1050,7 @@ public void Sub_DetermineClass(any Client, any ZClass)
 	{
 		do
 		{
-			PrintToServer("Looping through Sub_CheckPerClassLimits...");
+			// PrintToServer("Looping through Sub_CheckPerClassLimits...");
 
 			if (Sub_IsTank(Client))
 				return;
@@ -1116,7 +1116,7 @@ public void Sub_DetermineClass(any Client, any ZClass)
 		int WeaponIndex;
 		while ((WeaponIndex = GetPlayerWeaponSlot(Client, 0)) != -1)
 		{
-			PrintToServer("Looping through RemovePlayerItem...");
+			// PrintToServer("Looping through RemovePlayerItem...");
 			RemovePlayerItem(Client, WeaponIndex);
 			
 			// Removed this due to this: https://forums.alliedmods.net/showpost.php?p=2536790&postcount=12
