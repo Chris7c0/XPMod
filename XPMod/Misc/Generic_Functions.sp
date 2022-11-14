@@ -708,6 +708,32 @@ bool:IsVisibleTo(Float:position[3], Float:targetposition[3])
 	return isVisible;
 }
 
+// Check if player can be seen by other players, return their distance in the array
+void GetAllVisiblePlayersForClient(int iClient, float[] fVisibleClientDistance, int iTeamToCheck=-1)
+{
+	float xyzClientLocation[3], xyzTargetLocation[3], fDistance;
+	GetClientEyePosition(iClient, xyzClientLocation);
+
+	// Check for visible targets that are within range
+	for (int iTarget; iTarget <= MaxClients; iTarget++)
+	{
+		if (RunClientChecks(iTarget) == false || 
+			(iTeamToCheck != -1 && g_iClientTeam[iTarget] != iTeamToCheck) ||
+			IsPlayerAlive(iTarget) == false)
+			continue;
+
+		GetClientEyePosition(iTarget, xyzTargetLocation);
+		fDistance = GetVectorDistance(xyzClientLocation, xyzTargetLocation);
+		// Get if the target is visible to and check the range if target to worry about
+		if (IsVisibleTo(xyzClientLocation, xyzTargetLocation))
+		{
+			PrintToChatAll("Viable Target %N Spotted by %N", iTarget, iClient);
+			fVisibleClientDistance[iTarget] = fDistance;
+		}
+	}
+}
+
+
 void GetLookAtAnglesFromPoints(const float xyzPositionStart[3], const float xyzPositionEnd[3], float vLookAtAngles[3])
 {
 	float vLookVectorLine[3];

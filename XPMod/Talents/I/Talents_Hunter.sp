@@ -33,6 +33,7 @@ OnGameFrame_Hunter(iClient)
 	HandleHunterLunging(iClient);
 	HandleHunterCloaking(iClient);
 	// HandleHunterVisibleBloodLustMeterGain(iClient);
+	HandleAllSurvivorsInHunterMobilityZone(iClient);
 
 	// Health Regeneration
 	// Every frame give 1 hp, 30 fps, so 30 hp per second
@@ -498,7 +499,6 @@ void HandleHunterVisibleBloodLustMeterGain(int iClient)
 	GetClientAbsOrigin(iClient, xyzCurrentPosition);
 	if (GetVectorDistance(xyzCurrentPosition, g_fLastHunterPosition[iClient], false) > 3.0)
 	{
-		PrintToChat(iClient, "You moved too far, Blood Lust meter reset");
 		// Store current position in last position for next time
 		GetClientAbsOrigin(iClient, g_fLastHunterPosition[iClient]);
 		return;

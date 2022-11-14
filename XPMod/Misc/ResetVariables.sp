@@ -267,6 +267,8 @@ void ResetClientVariablesForRound(int iClient)
 	g_iHunterPounceDamageCharge[iClient] = 0;
 	g_bIsHunterReadyToPoison[iClient] = false;
 	g_bIsHunterPoisoned[iClient] = false;
+	g_bIsInImmobilityZone[iClient] = false;
+	g_bIsImmobilityZoneOnGlobalCooldown = false;
 	
 	//Jockey
 	g_bCanJockeyPee[iClient] = true;

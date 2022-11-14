@@ -384,11 +384,18 @@ bool SetClientSpeedOverrides(iClient, &Float:fSpeed)
 		return true;
 	}
 
+	// Hunter Immobility Zone Speed
+	if (g_bIsInImmobilityZone[iClient] == true)
+	{
+		fSpeed = HUNTER_IMMOBILITY_ZONE_SPEED;
+		return true;
+	}
+
 	// Lethal Injection poison slow
 	if (g_bIsHunterPoisoned[iClient] &&
 		g_iClientTeam[iClient] == TEAM_SURVIVORS)
 	{
-		fSpeed = 0.25;
+		fSpeed = HUNTER_POISON_VICTIM_SPEED;
 		return true;
 	}
 	

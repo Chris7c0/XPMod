@@ -190,7 +190,7 @@ new bool:g_bIsSuperSpeedBoomer[MAXPLAYERS + 1];
 new bool:g_bCommonInfectedDoMoreDamage;
 
 // Hunter
-#define HUNTER_STARTING_MAX_HEALTH                      250
+#define HUNTER_STARTING_MAX_HEALTH                  250
 bool g_bHunterIsLunging[MAXPLAYERS + 1];
 int g_iHunterLungeState[MAXPLAYERS + 1];
 bool g_bHunterLungeEndDelayCheck[MAXPLAYERS + 1];
@@ -223,6 +223,7 @@ float g_fLastHunterPosition[MAXPLAYERS + 1][3];             // Last Hunter posit
 bool g_bIsCloakedHunter[MAXPLAYERS + 1];
 int g_iHunterCloakCounter[MAXPLAYERS + 1];
 bool g_bCanHunterDismount[MAXPLAYERS + 1];
+#define HUNTER_POISON_VICTIM_SPEED                  0.25
 bool g_bCanHunterPoisonVictim[MAXPLAYERS + 1];
 bool g_bIsHunterReadyToPoison[MAXPLAYERS + 1];
 int g_iHunterPounceDamageCharge[MAXPLAYERS + 1];                            
@@ -230,8 +231,13 @@ bool g_bIsHunterPoisoned[MAXPLAYERS + 1];
 int g_iHunterPoisonRunTimesCounter[MAXPLAYERS + 1];
 bool g_bHasInfectedHealthBeenSet[MAXPLAYERS + 1];
 bool g_bHunterLethalPoisoned[MAXPLAYERS + 1];
-#define HUNTER_MAX_LIFE_STEAL_HEALTH                1500
-#define HUNTER_LIFE_STEAL_AMOUNT_PER_HIT_PER_LEVEL  8
+float g_fHunterImmobilityZone[MAXPLAYERS + 1][3];
+bool g_bIsInImmobilityZone[MAXPLAYERS + 1];
+bool g_bIsImmobilityZoneOnGlobalCooldown;
+#define HUNTER_IMMOBILITY_ZONE_RADIUS               150.0
+#define HUNTER_IMMOBILITY_ZONE_DURATION             30.0
+#define HUNTER_IMMOBILITY_ZONE_GLOBAL_COOLDOWN      120.0
+#define HUNTER_IMMOBILITY_ZONE_SPEED                0.15
 
 // Spitter
 new bool:g_bBlockGooSwitching[MAXPLAYERS + 1];

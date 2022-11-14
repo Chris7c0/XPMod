@@ -97,7 +97,7 @@ Action:BloodlustMenuDraw(iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	SetMenuTitle(menu, "\
-		%s				Blood Lust (Level %d)\
+		%s					Blood Lust (Level %d)\
 		\n \
 		\nPounce or Claw a Victim to Feed Your\
 		\nBlood Lust Meter.\
@@ -106,11 +106,15 @@ Action:BloodlustMenuDraw(iClient)
 		\n	+75% Movement Speed per Stage\
 		\n	+30% Non Lunging Stealth per Stage\
 		\n	+1 Shredding Damage per Stage\
-		\n	+30 Health/Second Regeneration per Stage   \
+		\n	+30 Health/Second Regeneration per Stage\
 		\n \
 		\n			Bind 1: Immobilization Area\
 		\n \
-		\nComing soon.\
+		\nDeploy an Immobilization Cloud\
+		\n	- Survivors Speed While In Cloud 15%%\
+		\n	- Cannot be activated while seen by Survivors    \
+		\n	- 30 Sec Duration\
+		\n	- 120 Sec Global Cooldown\
 		\n ",
 		strStartingNewLines,
 		g_iBloodLustLevel[iClient]);
@@ -118,7 +122,7 @@ Action:BloodlustMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
