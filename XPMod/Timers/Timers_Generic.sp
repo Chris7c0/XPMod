@@ -131,6 +131,8 @@ Action:FreezeColor(Handle:timer, any:iClient)
 
 Action:Timer2SecondGlobalRepeating(Handle:timer, any:data)
 {
+	
+
 	for(new iClient = 1;iClient<= MaxClients; iClient++)
 	{
 		if (RunClientChecks(iClient)==false || 
@@ -190,6 +192,9 @@ Action:Timer2SecondGlobalRepeating(Handle:timer, any:data)
 				}
 			}
 		}
+
+		// TODO: replace this with a timer later
+		HandleHunterVisibleBloodLustMeterGain(iClient);
 	}
 
 	return Plugin_Continue;

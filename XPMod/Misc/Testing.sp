@@ -27,12 +27,7 @@ Action:TestFunction1(iClient, args)
 	char strArg[20][99];
 	for (int i=0; i<20; i++)
 		GetCmdArg(i+1, strArg[i], sizeof(strArg[]));
-
-	g_iBloodLustStage[iClient]++;
-	if (g_iBloodLustStage[iClient] > 3)
-		g_iBloodLustStage[iClient] = 0;
-
-	SetHunterBloodLustAbilities(iClient);
+	
 	
 
 	// int testValue = StringToInt(strArg[0])

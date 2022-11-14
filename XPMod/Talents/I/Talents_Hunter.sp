@@ -29,11 +29,14 @@ OnGameFrame_Hunter(iClient)
 
 	HandleHunterLunging(iClient);
 	HandleHunterCloaking(iClient);
+	// HandleHunterVisibleBloodLustMeterGain(iClient);
 
 	// Health Regeneration
 	// Every frame give 1 hp, 30 fps, so 30 hp per second
 	if (GetPlayerHealth(iClient) < SMOKER_STARTING_MAX_HEALTH)
 		SetPlayerHealth(iClient, g_iBloodLustStage[iClient], true);
+
+	
 }
 
 
@@ -400,7 +403,7 @@ void HunterDismount(iClient)
 	CreateTimer(15.0, TimerResetHunterDismount, iClient,  TIMER_FLAG_NO_MAPCHANGE);
 }
 
-void BuildBloodLustMeter(int iClient)
+void BuildBloodLustMeter(int iClient, int iAmount = 0)
 {
 	if (g_iInfectedCharacter[iClient] != HUNTER || 
 		g_bTalentsConfirmed[iClient] == false || 
@@ -408,7 +411,9 @@ void BuildBloodLustMeter(int iClient)
 		g_iBloodLustStage[iClient] >= 3)
 		return;
 
-	if (g_iHunterShreddingVictim[iClient] > 0)  // While on top of a victim
+	if (iAmount > 0)
+		g_iBloodLustMeter[iClient] += iAmount;
+	else if (g_iHunterShreddingVictim[iClient] > 0)  // While on top of a victim
 		g_iBloodLustMeter[iClient] += BLOOD_LUST_METER_GAINED_ON_VICTIM;
 	else  										// While scratching a victim, not on them
 		g_iBloodLustMeter[iClient] += BLOOD_LUST_METER_GAINED_OFF_VICTIM;
@@ -462,4 +467,59 @@ void PrintBloodLustMeter(iClient)
 		Format(strEntireHintTextString, sizeof(strEntireHintTextString), "Blood Lust Stage %i\n<<%s>>", g_iBloodLustStage[iClient], strBloodLustMeter);
 
 	PrintHintText(iClient, strEntireHintTextString);
+}
+
+void HandleHunterVisibleBloodLustMeterGain(int iClient)
+{
+	// PrintToChatAll("TEST1 %i: %i", RoundToFloor(GetGameTime()), RoundToFloor(GetGameTime()) % 3);
+
+	// // Only run this every X seconds
+	// // 5 will update every 5 second
+	// // Needs to be ran only one time though
+	// if ((RoundToFloor(GetGameTime()) % 3) != 0)
+	// 	return;
+
+	// PrintToChatAll("TEST2");
+
+
+	if (g_bIsCloakedHunter[iClient] == false ||  // Ensure the hunter is cloaked
+		g_iInfectedCharacter[iClient] != HUNTER || 
+		g_bTalentsConfirmed[iClient] == false || 
+		g_iBloodLustLevel[iClient] <= 0 ||
+		g_iBloodLustStage[iClient] >= 3)
+		return;
+
+	float xyzClientLocation[3], xyzTargetLocation[3], fDistance, fDistanceNormalized;
+
+	// Loop through all of the clients to find the survivors
+	// then check their distance from the hunter
+	for(int iTarget = 0; iTarget < MaxClients; iTarget++)
+	{
+		if (iClient == iTarget ||
+			RunClientChecks(iTarget) == false ||
+			// g_iClientTeam[iTarget] != TEAM_SURVIVORS ||
+			IsPlayerAlive(iTarget) == false)
+			continue;
+
+		GetClientEyePosition(iClient, xyzClientLocation);
+		GetClientEyePosition(iTarget, xyzTargetLocation);
+		fDistance = GetVectorDistance(xyzClientLocation, xyzTargetLocation, false);
+		
+		if(IsVisibleTo(xyzClientLocation, xyzTargetLocation) == true)
+		{
+			if (fDistance <= 1500.0)
+			{
+				// Normalize the distance
+				fDistanceNormalized = 1.0 - (fDistance / 1500.0);
+
+				int iAmount = RoundToNearest(fDistanceNormalized * BLOOD_LUST_METER_GAINED_VISIBILITY_SCALE_FACTOR);
+				PrintToChat(iClient, "Distance: %f, Normalized: %f, iAmount: %i", fDistance, fDistanceNormalized, iAmount);
+				BuildBloodLustMeter(iClient, iAmount);
+
+			}
+			// PrintToChatAll("VISIBLE %N %f", iTarget, fDistance);
+		}
+			
+	}
+	
 }
