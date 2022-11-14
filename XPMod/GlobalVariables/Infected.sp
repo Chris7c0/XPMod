@@ -10,6 +10,9 @@ new String:g_strClientInfectedClass2[MAXPLAYERS + 1][10];
 new String:g_strClientInfectedClass3[MAXPLAYERS + 1][10];
 new bool:g_iInfectedConvarsSet[MAXPLAYERS + 1];
 
+// Dismounting
+bool g_bReadyForDismountButtonPress[MAXPLAYERS + 1];
+
 // Ghost Spawn Capturing
 new bool:g_bCanBeGhost[MAXPLAYERS + 1];
 new bool:g_bIsGhost[MAXPLAYERS + 1];
@@ -103,7 +106,6 @@ bool g_bSmokerSmokeScreenOnCooldown[MAXPLAYERS + 1];
 bool g_bSmokerCloakingJustToggled[MAXPLAYERS + 1];
 bool g_bSmokerIsCloaked[MAXPLAYERS + 1];
 bool g_bSmokerVictimGlowDisabled[MAXPLAYERS + 1];
-bool g_bSmokerReadyForDismountButtonPress[MAXPLAYERS + 1];
 bool SetMoveTypeBackToNormalOnNextGameFrame[MAXPLAYERS + 1];
 new bool:g_bIsElectrocuting[MAXPLAYERS + 1];
 new bool:g_bIsTarFingerVictim[MAXPLAYERS + 1];
@@ -188,6 +190,7 @@ new bool:g_bIsSuperSpeedBoomer[MAXPLAYERS + 1];
 new bool:g_bCommonInfectedDoMoreDamage;
 
 // Hunter
+#define HUNTER_STARTING_MAX_HEALTH                      250
 bool g_bHunterIsLunging[MAXPLAYERS + 1];
 int g_iHunterLungeState[MAXPLAYERS + 1];
 bool g_bHunterLungeEndDelayCheck[MAXPLAYERS + 1];
@@ -207,6 +210,14 @@ bool g_bHunterLungeEndDelayCheck[MAXPLAYERS + 1];
 #define HUNTER_LUNGE_EXTRA_DAMAGE_DISTANCE_MIN      150     // The min amount of distance (FT) before extra damage
 #define HUNTER_LUNGE_EXTRA_DAMAGE_DISTANCE_MAX      350     // The max amount of distance (FT) to get all extra damage
 #define HUNTER_LUNGE_EXTRA_DAMAGE_MAX               20      // The max amount of extra damage if max distance reached
+int g_iBloodLustStage[MAXPLAYERS + 1];                      // Blood Lust Stage per client
+int g_iBloodLustMeter[MAXPLAYERS + 1];                      // Blood Lust Meter per client
+#define BLOOD_LUST_METER_GAINED_ON_VICTIM           10      // Blood Lust Meter gained per scratch on victim (to 100)
+#define BLOOD_LUST_METER_GAINED_OFF_VICTIM          35      // Blood Lust Meter gained per scratch off victim (to 100)
+#define BLOOD_LUST_RESET_TIMER_DURATION             30.0    // Blood Lust Meter reset timer duration
+#define BLOOD_LUST_SPEED_BOOST_PER_STAGE            0.75    // Speed boost per Blood Lust stage
+#define BLOOD_LUST_STEALTH_PER_STAGE                0.3     // % Non Lunge Stealth per Blood Lust stage
+#define BLOOD_LUST_EXTRA_SHRED_DAMAGE_PER_STAGE     1       // Speed boost per Blood Lust stage
 bool g_bIsCloakedHunter[MAXPLAYERS + 1];
 int g_iHunterCloakCounter[MAXPLAYERS + 1];
 bool g_bCanHunterDismount[MAXPLAYERS + 1];

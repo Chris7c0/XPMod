@@ -69,7 +69,7 @@ new g_iNorovirusLevel[MAXPLAYERS + 1];
 
 //Hunter
 new g_iPredatorialLevel[MAXPLAYERS + 1];
-new g_iBloodlustLevel[MAXPLAYERS + 1];
+new g_iBloodLustLevel[MAXPLAYERS + 1];
 new g_iKillmeleonLevel[MAXPLAYERS + 1];
 
 //Spitter

@@ -257,8 +257,8 @@ SetClientSpeedHunter(iClient, &Float:fSpeed)
 		g_iClientInfectedClass3[iClient] != HUNTER))
 		return;
 
-	if (g_iPredatorialLevel[iClient] > 0)
-		fSpeed += (g_iPredatorialLevel[iClient] * 0.08);
+	if (g_iBloodLustStage[iClient] > 0)
+		fSpeed += (g_iBloodLustStage[iClient] * BLOOD_LUST_SPEED_BOOST_PER_STAGE);
 	
 	// PrintToChat(iClient, "SetClientSpeedHunter: %f", fSpeed);
 }

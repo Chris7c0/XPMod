@@ -20,19 +20,28 @@
 // 	return Plugin_Stop;
 // }
 
-Action:TimerResetHunterDismount(Handle:timer, any:iClient)
+Action TimerHunterBloodLustReset(Handle timer, any iClient)
+{
+	g_iBloodLustStage[iClient] = 0;
+	g_iBloodLustMeter[iClient] = 0;
+	SetHunterBloodLustAbilities(iClient);
+	PrintBloodLustMeter(iClient);
+	return Plugin_Stop;
+}
+
+Action TimerResetHunterDismount(Handle timer, any iClient)
 {
 	g_bCanHunterDismount[iClient] = true;
 	return Plugin_Stop;
 }
 
-Action:TimerResetCanHunterPoison(Handle:timer, any:iClient)
+Action TimerResetCanHunterPoison(Handle timer, any iClient)
 {
 	g_bCanHunterPoisonVictim[iClient] = true;
 	return Plugin_Stop;
 }
 
-Action:TimerHunterPoison(Handle:timer, any:pack)
+Action TimerHunterPoison(Handle timer, any pack)
 {
 	if (pack == INVALID_HANDLE)
 		return Plugin_Stop;

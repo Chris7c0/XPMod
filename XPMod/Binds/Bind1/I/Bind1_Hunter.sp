@@ -3,7 +3,7 @@ void Bind1Press_Hunter(iClient)
     if((g_iClientInfectedClass1[iClient] == HUNTER) || (g_iClientInfectedClass2[iClient] == HUNTER) || (g_iClientInfectedClass3[iClient] == HUNTER))
     {
         // PrintToChatAll("Hunter is a chosen class...");
-        if(g_iBloodlustLevel[iClient] > 0)
+        if(g_iBloodLustLevel[iClient] > 0)
         {
             // PrintToChatAll("Bloodlust is greater than 0...");
             if(g_iHunterShreddingVictim[iClient] > 0)
@@ -11,16 +11,10 @@ void Bind1Press_Hunter(iClient)
                 // PrintToChatAll("Hunter is shredding a victim...");
                 if(g_bCanHunterDismount[iClient] == true)
                 {
-                    // PrintToChatAll("Hunter attempting dismount...");
-                    SDKCall(g_hSDK_OnPounceEnd,iClient);
-                    SetClientSpeed(g_iHunterShreddingVictim[iClient]);
-                    //ResetSurvivorSpeed(g_iHunterShreddingVictim[iClient]);
-                    g_iHunterShreddingVictim[iClient] = -1;
-                    g_bCanHunterDismount[iClient] = false;
-                    CreateTimer(15.0, TimerResetHunterDismount, iClient,  TIMER_FLAG_NO_MAPCHANGE);
+                    HunterDismount(iClient);
                 }
                 else
-                    PrintHintText(iClient, "Wait 15 seconds after dismounting");
+                    PrintToChat(iClient, "\x03[XPMod] \x0415 second cooldown after dismounting.");
             }
             else
                 PrintHintText(iClient, "You are not mounted on a victim");

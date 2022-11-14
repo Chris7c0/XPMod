@@ -119,10 +119,10 @@ bool OnPlayerRunCmd_Smoker(iClient, &iButtons)
 	// Check if button is released before doing this Smoker dismount
 	if (g_iChokingVictim[iClient] > 0 &&
 		GetEntProp(iClient, Prop_Data, "m_afButtonReleased") & IN_ATTACK)
-		g_bSmokerReadyForDismountButtonPress[iClient] = true;
+		g_bReadyForDismountButtonPress[iClient] = true;
 	// Once the button is released and they click again, do the dismount
 	if (g_iChokingVictim[iClient] > 0 &&
-		g_bSmokerReadyForDismountButtonPress[iClient] == true &&
+		g_bReadyForDismountButtonPress[iClient] == true &&
 		iButtons & IN_ATTACK)
 		SmokerDismount(iClient);
 
@@ -282,7 +282,7 @@ bool Event_ChokeStart_Smoker(int iAttacker, int iVictim)
 	// make sure they release it later by first setting this flag
 	int buttons;
 	buttons = GetEntProp(iAttacker, Prop_Data, "m_nButtons", buttons);
-	g_bSmokerReadyForDismountButtonPress[iAttacker] = (buttons & IN_ATTACK) ? false : true;
+	g_bReadyForDismountButtonPress[iAttacker] = (buttons & IN_ATTACK) ? false : true;
 
 	return false;
 }

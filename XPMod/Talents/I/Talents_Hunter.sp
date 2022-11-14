@@ -5,17 +5,13 @@ TalentsLoad_Hunter(iClient)
 	{
 		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Hunter Talents \x05have been loaded.");
 		SetClientSpeed(iClient);
-	}
-	if(g_iBloodlustLevel[iClient] > 0)
-	{
-		//PrintToChatAll("g_bHasInfectedHealthBeenSet = %d", g_bHasInfectedHealthBeenSet[iClient]);
-		if(g_bHasInfectedHealthBeenSet[iClient] == false)
-		{
-			g_bHasInfectedHealthBeenSet[iClient] = true;
-			SetPlayerMaxHealth(iClient, (g_iBloodlustLevel[iClient] * 25), true);
-		}
+
 		g_bCanHunterDismount[iClient] = true;
 	}
+	// if(g_iBloodLustLevel[iClient] > 0)
+	// {
+		
+	// }
 	if(g_iKillmeleonLevel[iClient] > 0)
 	{
 		g_iHunterCloakCounter[iClient] = -1;	// -1 means iClient is cloaked
@@ -33,6 +29,44 @@ OnGameFrame_Hunter(iClient)
 
 	HandleHunterLunging(iClient);
 	HandleHunterCloaking(iClient);
+
+	// Health Regeneration
+	// Every frame give 1 hp, 30 fps, so 30 hp per second
+	if (GetPlayerHealth(iClient) < SMOKER_STARTING_MAX_HEALTH)
+		SetPlayerHealth(iClient, g_iBloodLustStage[iClient], true);
+}
+
+
+bool OnPlayerRunCmd_Hunter(iClient, &iButtons)
+{
+	// Smoker abilities
+	if (g_iInfectedCharacter[iClient] != HUNTER ||
+		g_iPredatorialLevel[iClient] <= 0 ||
+		g_bIsGhost[iClient] == true ||
+		g_iClientTeam[iClient] != TEAM_INFECTED || 
+		RunClientChecks(iClient) == false ||
+		g_bTalentsConfirmed[iClient] == false ||
+		g_bGameFrozen == true)
+		return false;
+
+	// Hunter Dismount
+	// Check if button is released before doing this dismount
+	if (g_iHunterShreddingVictim[iClient] > 0 &&
+		GetEntProp(iClient, Prop_Data, "m_afButtonReleased") & IN_ATTACK)
+		g_bReadyForDismountButtonPress[iClient] = true;
+	// Once the button is released and they click again, do the dismount
+	if (g_iHunterShreddingVictim[iClient] > 0 &&
+		g_bReadyForDismountButtonPress[iClient] == true &&
+		iButtons & IN_ATTACK)
+		{
+			if (g_bCanHunterDismount[iClient] == true)
+				HunterDismount(iClient);
+			else
+				PrintToChat(iClient, "\x03[XPMod] \x0415 second cooldown after dismounting.");
+		}
+		
+	
+	return false;
 }
 
 EventsHurt_AttackerHunter(Handle:hEvent, attacker, victim)
@@ -79,34 +113,17 @@ EventsHurt_AttackerHunter(Handle:hEvent, attacker, victim)
 		}
 	}
 
-	if(g_iBloodlustLevel[attacker] > 0)
+	if(g_iBloodLustLevel[attacker] > 0)
 	{
 		new dmgtype = GetEventInt(hEvent, "type");
 		//decl String:weapon[20];
 		//GetEventString(hEvent,"weapon", weapon,20);
 		if(dmgtype == 128 &&  StrEqual(weapon,"hunter_claw") == true)
-		{
-			//new hp = GetPlayerHealth(victim);
-			//new dmg = GetEventInt(hEvent,"dmg_health");
-			decl dmg;
-			if(g_iBloodlustLevel[attacker] < 5)
-				dmg = 1;
-			else if(g_iBloodlustLevel[attacker] < 9)
-				dmg = 2;
-			else
-				dmg = 3;
-			DealDamage(victim, attacker, dmg);
+		{			
+			if (g_iBloodLustStage[attacker] > 0)
+				DealDamage(victim, attacker, g_iBloodLustStage[attacker]);
 			
-			new iHealth = GetPlayerHealth(attacker);
-			new iMaxHealth = GetPlayerMaxHealth(attacker);
-			new iAdditionalHealth = g_iBloodlustLevel[attacker] * HUNTER_LIFE_STEAL_AMOUNT_PER_HIT_PER_LEVEL;
-
-			if (iHealth + iAdditionalHealth <= iMaxHealth)
-				SetPlayerHealth(attacker, iAdditionalHealth, true, true);
-			else if(iMaxHealth + iAdditionalHealth <= HUNTER_MAX_LIFE_STEAL_HEALTH)
-				SetPlayerMaxHealth(attacker, iAdditionalHealth, true, true);
-			else
-				SetPlayerMaxHealth(attacker, HUNTER_MAX_LIFE_STEAL_HEALTH, false);
+			BuildBloodLustMeter(attacker);
 		}
 	}
 }
@@ -154,6 +171,12 @@ void Event_HunterPounceStart_Hunter(int iAttacker, int iVictim, int iDistance)
 		return;
 
 	GiveClientXP(iAttacker, 50, g_iSprite_50XP_SI, iVictim, "Grappled A Survivor.");
+
+	// If the player is holding the primary attack button down, then
+	// make sure they release it later by first setting this flag
+	int buttons;
+	buttons = GetEntProp(iAttacker, Prop_Data, "m_nButtons", buttons);
+	g_bReadyForDismountButtonPress[iAttacker] = (buttons & IN_ATTACK) ? false : true;
 
 	// I'm making a guess that this distance is in 100 Hammer Units.
 	// 100 HU * (1 FT / 12 HU) = 8.33333 FT per 100 HU
@@ -364,4 +387,79 @@ void HandleHunterCloaking(int iClient)
 			}
 		}
 	}
+}
+
+void HunterDismount(iClient)
+{
+	// PrintToChatAll("Hunter attempting dismount...");
+	SDKCall(g_hSDK_OnPounceEnd,iClient);
+	SetClientSpeed(g_iHunterShreddingVictim[iClient]);
+	//ResetSurvivorSpeed(g_iHunterShreddingVictim[iClient]);
+	g_iHunterShreddingVictim[iClient] = -1;
+	g_bCanHunterDismount[iClient] = false;
+	CreateTimer(15.0, TimerResetHunterDismount, iClient,  TIMER_FLAG_NO_MAPCHANGE);
+}
+
+void BuildBloodLustMeter(int iClient)
+{
+	if (g_iInfectedCharacter[iClient] != HUNTER || 
+		g_bTalentsConfirmed[iClient] == false || 
+		g_iBloodLustLevel[iClient] <= 0 ||
+		g_iBloodLustStage[iClient] >= 3)
+		return;
+
+	if (g_iHunterShreddingVictim[iClient] > 0)  // While on top of a victim
+		g_iBloodLustMeter[iClient] += BLOOD_LUST_METER_GAINED_ON_VICTIM;
+	else  										// While scratching a victim, not on them
+		g_iBloodLustMeter[iClient] += BLOOD_LUST_METER_GAINED_OFF_VICTIM;
+
+	if (g_iBloodLustMeter[iClient] >= 100)
+	{
+		g_iBloodLustMeter[iClient] = 0;
+		g_iBloodLustStage[iClient]++;
+		SetHunterBloodLustAbilities(iClient);
+	}
+
+	PrintBloodLustMeter(iClient);
+}
+
+void SetHunterBloodLustAbilities(int iClient)
+{
+	if (g_bTalentsConfirmed[iClient] == false)
+		return;
+	
+	SetClientSpeed(iClient);
+
+	if (g_iBloodLustStage[iClient] == 3)
+		CreateTimer(BLOOD_LUST_RESET_TIMER_DURATION, TimerHunterBloodLustReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
+}
+
+void PrintBloodLustMeter(iClient)
+{
+	if (RunClientChecks(iClient) == false || IsFakeClient(iClient))
+		return;
+	
+	if (g_iBloodLustStage[iClient] == 3)
+	{
+		PrintHintText(iClient, "<<<Blood Lust Stage 3>>>");
+		return;
+	}
+	
+	decl String:strEntireHintTextString[556], String:strBloodLustMeter[256];
+	strEntireHintTextString = NULL_STRING;
+	strBloodLustMeter = NULL_STRING;
+
+	// Create the actual amount in the "progress meter"
+	for(int i = 0; i < RoundToCeil(g_iBloodLustMeter[iClient] / 10.0); i++)
+		StrCat(strBloodLustMeter, sizeof(strBloodLustMeter), "▓")
+	// Create the rest of the string to fill in the progress meter
+	for(int i = RoundToCeil(100 / 10.0); i > RoundToCeil(g_iBloodLustMeter[iClient] / 10.0); i--)
+		StrCat(strBloodLustMeter, sizeof(strBloodLustMeter), "░")
+
+	if (g_iBloodLustStage[iClient] == 0)
+		Format(strEntireHintTextString, sizeof(strEntireHintTextString), "Blood Lust\n<<<%s>>>", strBloodLustMeter);
+	else
+		Format(strEntireHintTextString, sizeof(strEntireHintTextString), "Blood Lust Stage %i\n<<%s>>", g_iBloodLustStage[iClient], strBloodLustMeter);
+
+	PrintHintText(iClient, strEntireHintTextString);
 }

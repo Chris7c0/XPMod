@@ -259,6 +259,7 @@ void ResetClientVariablesForRound(int iClient)
 	g_bHunterIsLunging[iClient] = false;
 	g_iHunterLungeState[iClient] = HUNTER_LUNGE_STATE_NONE;
 	g_bHunterLungeEndDelayCheck[iClient] = false;
+	g_iBloodLustStage[iClient] = 0;
 	g_bIsCloakedHunter[iClient] = false;
 	g_bCanHunterDismount[iClient] = true;
 	g_bCanHunterPoisonVictim[iClient] = true;

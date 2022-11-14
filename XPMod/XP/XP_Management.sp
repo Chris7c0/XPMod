@@ -309,7 +309,7 @@ ResetAllInfectedClasses(iClient)
 	g_iNorovirusLevel[iClient] = 0;
 	//Hunter
 	g_iPredatorialLevel[iClient] = 0;
-	g_iBloodlustLevel[iClient] = 0;
+	g_iBloodLustLevel[iClient] = 0;
 	g_iKillmeleonLevel[iClient] = 0;
 	//Spitter
 	g_iPuppetLevel[iClient] = 0;
@@ -710,12 +710,12 @@ LevelUpInfectedTalent(iClient, class)
 		else if(g_iClientLevel[iClient] > 10 && g_iClientLevel[iClient] <= 20)
 		{
 			g_iPredatorialLevel[iClient] = 10;
-			g_iBloodlustLevel[iClient] = g_iClientLevel[iClient] - 10;
+			g_iBloodLustLevel[iClient] = g_iClientLevel[iClient] - 10;
 		}
 		else if(g_iClientLevel[iClient] > 20)
 		{
 			g_iPredatorialLevel[iClient] = 10;
-			g_iBloodlustLevel[iClient] = 10;
+			g_iBloodLustLevel[iClient] = 10;
 			g_iKillmeleonLevel[iClient] = g_iClientLevel[iClient] - 20;
 		}
 	}
@@ -795,7 +795,7 @@ LevelDownInfectedTalent(iClient, class)
 	else if(class == HUNTER)
 	{
 		g_iPredatorialLevel[iClient] = 0;
-		g_iBloodlustLevel[iClient] = 0;
+		g_iBloodLustLevel[iClient] = 0;
 		g_iKillmeleonLevel[iClient] = 0;
 	}
 	else if(class == SPITTER)

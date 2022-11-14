@@ -12,7 +12,7 @@ Action:HunterTopMenuDraw(iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	decl String:title[256];
-	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n==========================\nHunter Talents:\n==========================\n \nPredatorial Evolution: Level %d\nBlood Lust: Level %d\nKill-meleon: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iPredatorialLevel[iClient], g_iBloodlustLevel[iClient], g_iKillmeleonLevel[iClient]);
+	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n==========================\nHunter Talents:\n==========================\n \nPredatorial Evolution: Level %d\nBlood Lust: Level %d\nKill-meleon: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iPredatorialLevel[iClient], g_iBloodLustLevel[iClient], g_iKillmeleonLevel[iClient]);
 	SetMenuTitle(menu, title);
 	AddMenuItem(menu, "option1", "Predatorial Evolution");
 	AddMenuItem(menu, "option2", "Blood Lust");
@@ -54,7 +54,7 @@ Action:PredatorialMenuDraw(iClient)
 	SetMenuTitle(menu, "\
 		%s       Predatorial Evolution (Level %d)        \
 		\n \
-		\n +8%% Movement Speed per Level\
+		\n [HOLD ATTACK] Dismount Victims\
 		\n \
 		\n Gain Evolved Lunge:\
 		\n	- Lunge Much Faster and Further\
@@ -99,11 +99,14 @@ Action:BloodlustMenuDraw(iClient)
 	SetMenuTitle(menu, "\
 		%s				Blood Lust (Level %d)\
 		\n \
-		\n+1 shredding damage every 4 levels\
-		\n+25 max health per level\
-		\n+8 life stealing while shredding per level\
-		\n	%i HP Max\
+		\nPounce or Claw a Victim to Feed Your\
+		\nBlood Lust Meter.\
 		\n \
+		\n3 Blood Lust Stages:\
+		\n	+75% Movement Speed per Stage\
+		\n	+30% Non Lunging Stealth per Stage\
+		\n	+1 Shredding Damage per Stage\
+		\n	+30 Health/Second Regeneration per Stag\
 		\n \
 		\n				Bind 1: Dismount\
 		\n	Unlimited uses; 15 second cooldown\
@@ -111,13 +114,12 @@ Action:BloodlustMenuDraw(iClient)
 		\nDismount a pounced survivor\
 		\n ",
 		strStartingNewLines,
-		g_iBloodlustLevel[iClient],
-		HUNTER_MAX_LIFE_STEAL_HEALTH);
+		g_iBloodLustLevel[iClient]);
 	
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 

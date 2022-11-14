@@ -110,6 +110,7 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 	OnPlayerRunCmd_Ellis(iClient, iButtons);
 	bButtonsChanged = OnPlayerRunCmd_Louis(iClient, iButtons);
 	OnPlayerRunCmd_Smoker(iClient, iButtons);
+	OnPlayerRunCmd_Hunter(iClient, iButtons);
 	
 	//Charger Earthquake
 	if(g_bIsHillbillyEarthquakeReady[iClient] == true && g_bCanChargerEarthquake[iClient] == true && iButtons & IN_ATTACK2 && g_iInfectedCharacter[iClient] == CHARGER)
