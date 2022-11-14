@@ -35,8 +35,6 @@ OnGameFrame_Hunter(iClient)
 	// Every frame give 1 hp, 30 fps, so 30 hp per second
 	if (GetPlayerHealth(iClient) < SMOKER_STARTING_MAX_HEALTH)
 		SetPlayerHealth(iClient, g_iBloodLustStage[iClient], true);
-
-	
 }
 
 
@@ -336,6 +334,9 @@ void HandleHunterLunging(int iClient)
 	}
 }
 
+
+// This code is so gross,
+// TODO: Fix this later
 void HandleHunterCloaking(int iClient)
 {
 	if (g_iKillmeleonLevel[iClient] <= 0 ||
@@ -352,7 +353,7 @@ void HandleHunterCloaking(int iClient)
 			if( (!(buttons & IN_DUCK)) || (!(GetEntityFlags(iClient) & FL_ONGROUND)) )
 			{
 				SetEntityRenderMode(iClient, RenderMode:3);
-				SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (float(g_iKillmeleonLevel[iClient]) * 0.010) )));
+				SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (float(g_iKillmeleonLevel[iClient]) * 0.005) )));
 				g_bIsCloakedHunter[iClient] = false;
 				g_iHunterCloakCounter[iClient] = 0;
 			}
@@ -379,7 +380,7 @@ void HandleHunterCloaking(int iClient)
 				g_iHunterCloakCounter[iClient] = -1; // -1 means iClient is cloaked
 				PrintCenterText(iClient, "Camouflaged");
 				SetEntityRenderMode(iClient, RenderMode:3);
-				SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (float(g_iKillmeleonLevel[iClient]) * 0.090) )));
+				SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (float(g_iKillmeleonLevel[iClient]) * 0.095) )));
 				g_bIsCloakedHunter[iClient] = true;
 			}
 			else if(g_iHunterCloakCounter[iClient] > 20)

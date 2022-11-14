@@ -131,8 +131,6 @@ Action:FreezeColor(Handle:timer, any:iClient)
 
 Action:Timer2SecondGlobalRepeating(Handle:timer, any:data)
 {
-	
-
 	for(new iClient = 1;iClient<= MaxClients; iClient++)
 	{
 		if (RunClientChecks(iClient)==false || 
