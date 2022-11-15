@@ -88,9 +88,9 @@ Action:PredatorialMenuDraw(iClient)
 }
 
 //Blood Lust Menu Draw
-Action:BloodlustMenuDraw(iClient)
+Action:BloodLustMenuDraw(iClient)
 {
-	Menu menu = CreateMenu(BloodlustMenuHandler);
+	Menu menu = CreateMenu(BloodLustMenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
@@ -218,7 +218,7 @@ HunterTopMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			}
 			case 1: //Blood Lust
 			{
-				BloodlustMenuDraw(iClient);
+				BloodLustMenuDraw(iClient);
 			}
 			case 2: //Kill-meleon
 			{
@@ -279,7 +279,7 @@ PredatorialMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Blood Lust Menu Handler
-BloodlustMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+BloodLustMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -295,11 +295,11 @@ BloodlustMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			}
 /*			case 1: //Talent Info
 			{
-				BloodlustDescMenuDraw(iClient);
+				BloodLustDescMenuDraw(iClient);
 			}
 			case 2: //Bind Info
 			{
-				BloodlustBindMenuDraw(iClient);
+				BloodLustBindMenuDraw(iClient);
 			}
 			case 3: //How To Use Binds
 			{

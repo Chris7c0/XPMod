@@ -6,7 +6,7 @@ Action:AdminMenuDraw(iClient)
 	// 	return Plugin_Handled
 	// }
 
-	// Reset all selected options so nothing is falsly selected
+	// Reset all selected options so nothing is falsely selected
 	ResetAllAdminMenuSelectionVariables(iClient);
 
 	Menu menu = CreateMenu(AdminMenuHandler);
@@ -475,7 +475,7 @@ bool GetTargetIDandSteamIDFromMenuParameters(int iClient, Menu menu, int itemNum
 	// PrintToChat(iClient, "param2: %s", strParameters[1]);
 	// PrintToChat(iClient, "param3: %s", strParameters[2]);
 
-	// This is for if the targ3et is not in the server anymore
+	// This is for if the target is not in the server anymore
 	if (bVerifyTargetEqualsSteamID == false)
 	{
 		// Store the steamid parameter
