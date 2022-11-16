@@ -75,6 +75,14 @@ void Bind1Press_Hunter(iClient)
 Action RemoveHunterImmobilityZone(Handle timer, int iClient)
 {
 	g_fHunterImmobilityZone[iClient] = NULL_VECTOR;
+
+	// Remove the Immobility Zone from anyone who was in it
+	for (int iTarget = 1; iTarget <= MaxClients; iTarget++)
+	{
+		g_bIsInImmobilityZone[iTarget] = false;
+		SetClientSpeed(iTarget);
+	}
+	
 	return Plugin_Handled;
 }
 
@@ -86,6 +94,7 @@ Action ResetGlobalHunterImmobilityZoneCooldown(Handle timer, any data)
 
 void HandleAllSurvivorsInHunterMobilityZone(int iClient)
 {
+	// // Check if the vector is Null
 	// if (g_fHunterImmobilityZone[iClient] == NULL_VECTOR)
 	// 	return;
 
