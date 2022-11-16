@@ -26,17 +26,26 @@ void Bind1Press_Hunter(iClient)
 		return;
 	}
 
+	if (g_bBind1InCooldown[iClient] == true)
+	{
+		PrintToChat(iClient, "\x03[XPMod] \x05Bind 1 activation attempt is on cooldown");
+		return;
+	}
+
+	g_bBind1InCooldown[iClient] = true;
+	CreateTimer(BIND1_ATTEMPT_COOLDOWN_DURATION,ResetBind1AttemptCooldown,iClient,TIMER_FLAG_NO_MAPCHANGE);
+
 	// Check if the Hunter can be seen by any survivors
 	bool bCanBeSeen;
 	float fVisibleClientDistance[MAXPLAYERS+1];
-	GetAllVisiblePlayersForClient(iClient, fVisibleClientDistance, TEAM_SURVIVORS);
+	GetAllVisiblePlayersForClient(iClient, fVisibleClientDistance, TEAM_SURVIVORS, HUNTER_IMMOBILITY_ZONE_RADIUS * 2.0);
 	for(int iTarget; iTarget < MaxClients; iTarget++)
 		if(fVisibleClientDistance[iTarget] > 0.0)
 			bCanBeSeen = true;
 	
 	if (bCanBeSeen)
 	{
-		PrintToChat(iClient, "\x03[XPMod] \x05You must be hidden from all survivors to use Hunter Bind 1");
+		PrintToChat(iClient, "\x03[XPMod] \x05You must be hidden and far enough from all survivors to use Hunter Bind 1");
 		return;
 	}
 

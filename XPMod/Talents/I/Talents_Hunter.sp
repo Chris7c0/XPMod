@@ -1,6 +1,8 @@
 TalentsLoad_Hunter(iClient)
 {
 	g_iHunterShreddingVictim[iClient] = -1;
+	g_iBloodLustStage[iClient] = 0;
+
 	if(g_iPredatorialLevel[iClient] > 0)
 	{
 		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Hunter Talents \x05have been loaded.");

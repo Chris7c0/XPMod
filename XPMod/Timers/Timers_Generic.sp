@@ -19,6 +19,19 @@ Action:TimerGiveHudBack(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
+Action ResetBind1AttemptCooldown(Handle timer, int iClient)
+{
+	g_bBind1InCooldown[iClient] = false;
+	return Plugin_Handled;
+}
+
+// Action ResetBind2AttemptCooldown(Handle timer, int iClient)
+// {
+// 	g_bBind2InCooldown[iClient] = false;
+// 	return Plugin_Handled;
+// }
+
+
 /*Action:TimerResetCommonLimit(Handle:timer, any:iClient)
 {
 	SetConVarInt(FindConVar("z_common_limit"), 30);

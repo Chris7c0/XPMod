@@ -68,6 +68,8 @@ void ResetClientVariablesForRound(int iClient)
 	g_bStopAllInput[iClient] = false;
 	g_iClientBindUses_1[iClient] = 0;
 	g_iClientBindUses_2[iClient] = 0;
+	g_bBind1InCooldown[iClient] = false;
+	g_bBind2InCooldown[iClient] = false;
 	g_iEllisSpeedBoostCounter[iClient] = 0;
 	g_bIsFlyingWithJetpack[iClient] = false;
 	g_iClientJetpackFuel[iClient] = 0;

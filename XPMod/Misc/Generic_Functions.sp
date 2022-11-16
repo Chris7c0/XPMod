@@ -709,7 +709,7 @@ bool:IsVisibleTo(Float:position[3], Float:targetposition[3])
 }
 
 // Check if player can be seen by other players, return their distance in the array
-void GetAllVisiblePlayersForClient(int iClient, float[] fVisibleClientDistance, int iTeamToCheck=-1)
+void GetAllVisiblePlayersForClient(int iClient, float[] fVisibleClientDistance, int iTeamToCheck=-1, float fMinDistanceOverride=0.0)
 {
 	float xyzClientLocation[3], xyzTargetLocation[3], fDistance;
 	GetClientEyePosition(iClient, xyzClientLocation);
@@ -725,9 +725,10 @@ void GetAllVisiblePlayersForClient(int iClient, float[] fVisibleClientDistance, 
 		GetClientEyePosition(iTarget, xyzTargetLocation);
 		fDistance = GetVectorDistance(xyzClientLocation, xyzTargetLocation);
 		// Get if the target is visible to and check the range if target to worry about
-		if (IsVisibleTo(xyzClientLocation, xyzTargetLocation))
+		if (IsVisibleTo(xyzClientLocation, xyzTargetLocation) || 
+			(fMinDistanceOverride > 0.0 && fDistance <= fMinDistanceOverride))
 		{
-			PrintToChatAll("Viable Target %N Spotted by %N", iTarget, iClient);
+			// PrintToChat(iClient, "Viable Target %N Spotted by %N", iTarget, iClient);
 			fVisibleClientDistance[iTarget] = fDistance;
 		}
 	}

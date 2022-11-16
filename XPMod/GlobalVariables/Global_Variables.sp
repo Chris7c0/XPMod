@@ -251,6 +251,10 @@ int g_iUnfreezeNotifyRunTimes = 1;				    // This is for the unfreeze notify run
 // Binds
 int g_iClientBindUses_1[MAXPLAYERS + 1];
 int g_iClientBindUses_2[MAXPLAYERS + 1];
+bool g_bBind1InCooldown[MAXPLAYERS + 1];
+bool g_bBind2InCooldown[MAXPLAYERS + 1];
+#define BIND1_ATTEMPT_COOLDOWN_DURATION         1.0
+#define BIND2_ATTEMPT_COOLDOWN_DURATION         1.0
 
 // Storage of player health for when needed and not provided
 int g_iPlayerHealth[MAXPLAYERS + 1];
