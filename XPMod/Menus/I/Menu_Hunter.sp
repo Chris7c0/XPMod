@@ -104,7 +104,7 @@ Action:BloodLustMenuDraw(iClient)
 		\n \
 		\n3 Blood Lust Stages:\
 		\n	+75% Movement Speed per Stage\
-		\n	+30% Non Lunging Stealth per Stage\
+		\n	+25% Non Lunging Stealth per Stage\
 		\n	+1 Shredding Damage per Stage\
 		\n	+30 Health/Second Regeneration per Stage\
 		\n \
@@ -145,7 +145,7 @@ Action:KillmeleonMenuDraw(iClient)
 		%s				Kill-meleon (Level %d)\
 		\n \
 		\n+250 Max Health\
-		\nHide Glow While On A Victim\
+		\nHide Glow\
 		\n \
 		\nDo Not Move to Build Your Stealth\
 		\n	- Up to 95%% Invisible\

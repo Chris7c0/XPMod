@@ -115,22 +115,28 @@ SetClientRenderAndGlowColor(int iClient)
 			}
 			case HUNTER:
 			{
-				// Hunter Killmeleon hidden glow and transparency
-				// Note, the transisitioning transparency is handled elsewhere, being called frequently
-				if((g_iHunterShreddingVictim[iClient] != -1) && (g_iKillmeleonLevel[iClient] >= 5))
-				{
-					// Hide the glow
-					SetClientRenderColor(iClient, 255, 255, 255, 255, RENDER_MODE_TRANSPARENT);
+				// Hunter Killmeleon hidden glow
+				if (g_iKillmeleonLevel[iClient] > 0)
 					SetClientGlow(iClient, 1, 0, 0, GLOWTYPE_CONSTANT);
-					return;
-				}
-				else if((g_iHunterShreddingVictim[iClient] == -1) && (g_iKillmeleonLevel[iClient] >= 5))
+
+				// Set Fully Cloaked alpha value
+				int iFullyCloakedAlpha = RoundToFloor(255 * (1.0 - 0.95));
+
+				// Hunter that is already fully cloaked (95%)
+				if (g_bIsCloakedHunter[iClient] == true)
 				{
-					// Show the glow
-					SetClientRenderColor(iClient);
-					SetClientGlow(iClient);
+					SetClientRenderColor(iClient, 255, 255, 255, iFullyCloakedAlpha, RENDER_MODE_TRANSPARENT);
 					return;
 				}
+
+				int iAlpha = RoundToFloor( 255 * ( 1.0 - ( (g_iBloodLustStage[iClient] * 0.25) + (g_iHunterCloakCounter[iClient] * 0.01) ) ) );
+				// Cap at the fully cloaked value
+				if (iAlpha < iFullyCloakedAlpha)
+					iAlpha = iFullyCloakedAlpha;
+				// PrintToChat(iClient, "g_iHunterCloakCounter: %i, Hunter Glow: %i", g_iHunterCloakCounter[iClient], iAlpha);
+
+				SetClientRenderColor(iClient, 255, 255, 255, iAlpha, RENDER_MODE_TRANSPARENT);
+				return;
 			}
 		}
 	}

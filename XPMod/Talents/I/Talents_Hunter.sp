@@ -2,6 +2,9 @@ TalentsLoad_Hunter(iClient)
 {
 	g_iHunterShreddingVictim[iClient] = -1;
 	g_iBloodLustStage[iClient] = 0;
+	g_iHunterCloakCounter[iClient] = 0;
+	g_bIsCloakedHunter[iClient] = false;
+	SetClientRenderAndGlowColor(iClient);
 
 	if(g_iPredatorialLevel[iClient] > 0)
 	{
@@ -17,12 +20,6 @@ TalentsLoad_Hunter(iClient)
 			g_bHasInfectedHealthBeenSet[iClient] = true;
 			SetPlayerMaxHealth(iClient, 500, false);
 		}
-
-		// TODO: Check if this can be removed
-		g_iHunterCloakCounter[iClient] = -1;	// -1 means iClient is cloaked
-		g_bIsCloakedHunter[iClient] = true;
-		SetEntityRenderMode(iClient, RenderMode:3);
-		SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (float(g_iKillmeleonLevel[iClient]) * 0.095) )));
 	}
 }
 
@@ -150,10 +147,9 @@ EventsHurt_VictimHunter(Handle:hEvent, attacker, victim)
 
 	if(g_bIsCloakedHunter[victim] == true)
 	{
-		//SetEntityRenderMode(victim, RenderMode:3);	// Probably dont need this
-		SetEntityRenderColor(victim, 255, 255, 255, RoundToFloor(255 * (1.0 - (float(g_iKillmeleonLevel[victim]) * 0.012) )));
 		g_bIsCloakedHunter[victim] = false;
 		g_iHunterCloakCounter[victim] = 0;
+		SetClientRenderAndGlowColor(victim);
 	}
 }
 
@@ -339,63 +335,69 @@ void HandleHunterLunging(int iClient)
 	}
 }
 
-
-// This code is so gross,
-// TODO: Fix this later
 void HandleHunterCloaking(int iClient)
 {
 	if (g_iKillmeleonLevel[iClient] <= 0 ||
 		g_bTalentsConfirmed[iClient] == false)
 		return;
 	
+	// If hunter is already cloaked, do checks if should uncloak then done
+	if (g_bIsCloakedHunter[iClient] == true)
+	{
+		int buttons;
+		buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
+		if ((buttons) && (!(buttons & IN_DUCK)) || !(GetEntityFlags(iClient) & FL_ONGROUND))
+		{
+			g_bIsCloakedHunter[iClient] = false;
+			g_iHunterCloakCounter[iClient] = 0;
+			SetClientRenderAndGlowColor(iClient);
+		}
+
+		return;
+	}
+
+	// g_bIsCloakedHunter[iClient] == false at this point
+	// Check for 100% cloaked
+	if (g_iHunterCloakCounter[iClient] >= 100)
+	{
+		g_iHunterCloakCounter[iClient] = 0;
+		g_bIsCloakedHunter[iClient] = true;
+		SetClientRenderAndGlowColor(iClient);
+
+		PrintCenterText(iClient, "Camouflaged");
+		return;
+	}
+
+	// Increment the cloak counter (0 to 100)
+	g_iHunterCloakCounter[iClient]++;
+
+	// Wait for enough counter (1 second) before processing anything else
+	if (g_iHunterCloakCounter[iClient] < 30)
+		return;
+
+	// If hunter is not on the ground, reset the counter
+	if (!(GetEntityFlags(iClient) & FL_ONGROUND))
+	{
+		g_iHunterCloakCounter[iClient] = 0;
+		SetClientRenderAndGlowColor(iClient);
+	}
+
+	// If hunter moves or presses buttons, reset the counter
 	int buttons;
 	buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
-	
-	if(g_bIsCloakedHunter[iClient] == true)
+	if ((buttons) && (!(buttons & IN_DUCK)))
 	{
-		if( (buttons) || (!(GetEntityFlags(iClient) & FL_ONGROUND)) )
-		{
-			if( (!(buttons & IN_DUCK)) || (!(GetEntityFlags(iClient) & FL_ONGROUND)) )
-			{
-				SetEntityRenderMode(iClient, RenderMode:3);
-				SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (float(g_iKillmeleonLevel[iClient]) * 0.005) )));
-				g_bIsCloakedHunter[iClient] = false;
-				g_iHunterCloakCounter[iClient] = 0;
-			}
-		}
+		g_iHunterCloakCounter[iClient] = 0;
+		SetClientRenderAndGlowColor(iClient);
+		return;
 	}
-	else
-	{
-		if(g_iHunterCloakCounter[iClient] >= 0)
-		{
-			g_iHunterCloakCounter[iClient]++;
-			if( (buttons) || (!(GetEntityFlags(iClient) & FL_ONGROUND)) )			//If iClient moves or pushes buttons, reset the counter
-			{
-				if( (!(buttons & IN_DUCK)) || (!(GetEntityFlags(iClient) & FL_ONGROUND)) )
-				{
-					if(g_iHunterCloakCounter[iClient] > 20)
-					{
-						SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (float(g_iKillmeleonLevel[iClient]) * 0.005) )));
-					}
-					g_iHunterCloakCounter[iClient] = 0;
-				}
-			}
-			if(g_iHunterCloakCounter[iClient] == 100)
-			{
-				g_iHunterCloakCounter[iClient] = -1; // -1 means iClient is cloaked
-				PrintCenterText(iClient, "Camouflaged");
-				SetEntityRenderMode(iClient, RenderMode:3);
-				SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (float(g_iKillmeleonLevel[iClient]) * 0.095) )));
-				g_bIsCloakedHunter[iClient] = true;
-			}
-			else if(g_iHunterCloakCounter[iClient] > 20)
-			{
-				if(g_iHunterCloakCounter[iClient] == 35)
-					PrintCenterText(iClient, "Blending in with surroundings");
-				SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - ((float(g_iKillmeleonLevel[iClient]) * (0.0095 + (float(g_iHunterCloakCounter[iClient] - 20) * 0.001)))) )));
-			}
-		}
-	}
+
+	// Print message to hunter
+	if(g_iHunterCloakCounter[iClient] == 35)
+			PrintCenterText(iClient, "Blending in with surroundings");
+
+	// Set the render values
+	SetClientRenderAndGlowColor(iClient);
 }
 
 void HunterDismount(iClient)
@@ -514,7 +516,7 @@ void HandleHunterVisibleBloodLustMeterGain(int iClient)
 	{
 		if (iClient == iTarget ||
 			RunClientChecks(iTarget) == false ||
-			// g_iClientTeam[iTarget] != TEAM_SURVIVORS ||
+			g_iClientTeam[iTarget] != TEAM_SURVIVORS ||
 			IsPlayerAlive(iTarget) == false)
 			continue;
 
@@ -530,7 +532,7 @@ void HandleHunterVisibleBloodLustMeterGain(int iClient)
 				fDistanceNormalized = 1.0 - (fDistance / 1500.0);
 
 				int iAmount = RoundToNearest(fDistanceNormalized * BLOOD_LUST_METER_GAINED_VISIBILITY_SCALE_FACTOR);
-				// PrintToChat(iClient, "Distance: %f, Normalized: %f, iAmount: %i", fDistance, fDistanceNormalized, iAmount);
+				//PrintToChat(iClient, "Distance: %f, Normalized: %f, iAmount: %i", fDistance, fDistanceNormalized, iAmount);
 				BuildBloodLustMeter(iClient, iAmount);
 
 			}
