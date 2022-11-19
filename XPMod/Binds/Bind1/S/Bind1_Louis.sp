@@ -110,7 +110,9 @@ Action:TimerWarezStationCheckForSurvivorToService(Handle:timer, any:iClient)
 Action:TimerWarezStationDisable(Handle:timer, any:iClient)
 {
 	g_bWareStationActive[iClient] = false;
-	g_xyzWarezStationLocation[iClient] = NULL_VECTOR;
+	g_xyzWarezStationLocation[iClient][0] = EMPTY_VECTOR[0];
+	g_xyzWarezStationLocation[iClient][1] = EMPTY_VECTOR[1];
+	g_xyzWarezStationLocation[iClient][2] = EMPTY_VECTOR[2];
 
 	return Plugin_Stop;
 }

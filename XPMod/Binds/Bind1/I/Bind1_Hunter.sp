@@ -83,7 +83,9 @@ void Bind1Press_Hunter(iClient)
 
 Action RemoveHunterImmobilityZone(Handle timer, int iClient)
 {
-	g_fHunterImmobilityZone[iClient] = NULL_VECTOR;
+	g_fHunterImmobilityZone[iClient][0] = EMPTY_VECTOR[0];
+	g_fHunterImmobilityZone[iClient][1] = EMPTY_VECTOR[1];
+	g_fHunterImmobilityZone[iClient][2] = EMPTY_VECTOR[2];
 
 	// Remove the Immobility Zone from anyone who was in it
 	for (int iTarget = 1; iTarget <= MaxClients; iTarget++)
@@ -103,9 +105,11 @@ Action ResetGlobalHunterImmobilityZoneCooldown(Handle timer, any data)
 
 void HandleAllSurvivorsInHunterMobilityZone(int iClient)
 {
-	// // Check if the vector is Null
-	// if (g_fHunterImmobilityZone[iClient] == NULL_VECTOR)
-	// 	return;
+	// Check if the vector is Null
+	if (g_fHunterImmobilityZone[iClient][0] == EMPTY_VECTOR[0] &&
+		g_fHunterImmobilityZone[iClient][1] == EMPTY_VECTOR[1] &&
+		g_fHunterImmobilityZone[iClient][2] == EMPTY_VECTOR[2])
+		return;
 
 	int iSurvivor;
 	float flDistance;

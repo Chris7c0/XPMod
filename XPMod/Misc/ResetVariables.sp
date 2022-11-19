@@ -132,7 +132,9 @@ void ResetClientVariablesForRound(int iClient)
 	g_fGameTimeOfLastViableTargetSeen[iClient] = -9999.0;
 	g_bBotXPMGoalAccomplished[iClient] = true;
 	g_iBotXPMGoalTarget[iClient] = -1;
-	g_xyzBotXPMGoalLocation[iClient] = EMPTY_VECTOR;
+	g_xyzBotXPMGoalLocation[iClient][0] = EMPTY_VECTOR[0];
+	g_xyzBotXPMGoalLocation[iClient][1] = EMPTY_VECTOR[1];
+	g_xyzBotXPMGoalLocation[iClient][2] = EMPTY_VECTOR[2];
 
 	// Unhook all of the OnTakeDamage in case there
 	// were any left over from the last map
@@ -206,7 +208,9 @@ void ResetClientVariablesForRound(int iClient)
 	for(new i=1;i <= MaxClients;i++)
 		g_bWareStationClientAlreadyServiced[iClient][i] = false;
 	g_iWareStationOwnerIDOfCurrentlyViewedStation[iClient] = -1;
-	g_xyzWarezStationLocation[iClient] = NULL_VECTOR;
+	g_xyzWarezStationLocation[iClient][0] = EMPTY_VECTOR[0];
+	g_xyzWarezStationLocation[iClient][1] = EMPTY_VECTOR[1];
+	g_xyzWarezStationLocation[iClient][2] = EMPTY_VECTOR[2];
 	g_fWarezStationSpeedBoost[iClient] = 0.0;
 	g_fLouisXMRWallet[iClient] = 0.0;
 	g_bLouisSpeedHaxEnabled = false;
