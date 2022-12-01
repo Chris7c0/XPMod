@@ -56,6 +56,8 @@ Action:PredatorialMenuDraw(iClient)
 		\n \
 		\n [HOLD ATTACK] Dismount Victims\
 		\n \
+		\n +5%% Movement Speed per Level\
+		\n \
 		\n Gain Evolved Lunge:\
 		\n	- Lunge Much Faster and Further\
 		\n \
@@ -77,7 +79,7 @@ Action:PredatorialMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
