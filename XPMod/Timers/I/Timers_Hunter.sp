@@ -37,6 +37,12 @@ Action TimerResetHunterDismount(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
+Action TimerResetHunterPounceLandCooldown(Handle timer, any iClient)
+{
+	g_bHunterInPounceLandCooldown[iClient] = false;
+	return Plugin_Stop;
+}
+
 Action TimerResetCanHunterPoison(Handle timer, any iClient)
 {
 	g_bCanHunterPoisonVictim[iClient] = true;

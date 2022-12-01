@@ -43,7 +43,7 @@ OnGameFrame_Hunter(iClient)
 
 bool OnPlayerRunCmd_Hunter(iClient, &iButtons)
 {
-	// Smoker abilities
+	// Hunter abilities
 	if (g_iInfectedCharacter[iClient] != HUNTER ||
 		g_iPredatorialLevel[iClient] <= 0 ||
 		g_bIsGhost[iClient] == true ||
@@ -54,12 +54,14 @@ bool OnPlayerRunCmd_Hunter(iClient, &iButtons)
 		return false;
 
 	// Hunter Dismount
-	// Check if button is released before doing this dismount
+	// Check if button has been released before doing this dismount
 	if (g_iHunterShreddingVictim[iClient] > 0 &&
 		GetEntProp(iClient, Prop_Data, "m_afButtonReleased") & IN_ATTACK)
 		g_bReadyForDismountButtonPress[iClient] = true;
-	// Once the button is released and they click again, do the dismount
-	if (g_iHunterShreddingVictim[iClient] > 0 &&
+	// Once the button is released and they are past the pounce land cooldown 
+	// period then they click again, do the dismount
+	if (g_bHunterInPounceLandCooldown[iClient] == false &&
+		g_iHunterShreddingVictim[iClient] > 0 &&
 		g_bReadyForDismountButtonPress[iClient] == true &&
 		iButtons & IN_ATTACK)
 		{
@@ -179,6 +181,10 @@ void Event_HunterPounceStart_Hunter(int iAttacker, int iVictim, int iDistance)
 	int buttons;
 	buttons = GetEntProp(iAttacker, Prop_Data, "m_nButtons", buttons);
 	g_bReadyForDismountButtonPress[iAttacker] = (buttons & IN_ATTACK) ? false : true;
+
+	// Prevent player from dismounting for a short period
+	g_bHunterInPounceLandCooldown[iAttacker] = true;
+	CreateTimer(1.0, TimerResetHunterPounceLandCooldown, iAttacker,  TIMER_FLAG_NO_MAPCHANGE);
 
 	// I'm making a guess that this distance is in 100 Hammer Units.
 	// 100 HU * (1 FT / 12 HU) = 8.33333 FT per 100 HU
