@@ -200,6 +200,10 @@ void Event_HunterPounceStart_Hunter(int iAttacker, int iVictim, int iDistance)
 	DealDamage(iVictim, iAttacker, iDamageAmount);
 	
 	PrintHintText(iAttacker, "Pounce Distance: %i ft\n\nPounce Damage: %i", iDistanceFeet, 25 + iDamageAmount);
+
+	// Build the blood lust meter based on the normalized distance (cap at +100, +1 stage)
+	int iAmount = RoundToCeil(fNormalizedDistance * 100.0 * BLOOD_LUST_METER_GAINED_VISIBILITY_SCALE_FACTOR)
+	BuildBloodLustMeter(iAttacker, iAmount > 100 ? 100 : iAmount);
 }
 
 // void Event_HunterPounceStopped_Hunter(int iAttacker, int iVictim, int iDistance)
@@ -428,8 +432,10 @@ void BuildBloodLustMeter(int iClient, int iAmount = 0)
 
 	if (g_iBloodLustMeter[iClient] >= 100)
 	{
-		g_iBloodLustMeter[iClient] = 0;
 		g_iBloodLustStage[iClient]++;
+		PrintToChat(iClient, "\x03[XPMod] \x05Blood Lust Stage %i", g_iBloodLustStage[iClient]);
+
+		g_iBloodLustMeter[iClient] = g_iBloodLustStage[iClient] < 3 && g_iBloodLustMeter[iClient] > 100 ? g_iBloodLustMeter[iClient] - 100 : 0;
 		SetHunterBloodLustAbilities(iClient);
 	}
 

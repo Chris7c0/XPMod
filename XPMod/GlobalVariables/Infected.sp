@@ -214,6 +214,7 @@ int g_iBloodLustStage[MAXPLAYERS + 1];                      // Blood Lust Stage 
 int g_iBloodLustMeter[MAXPLAYERS + 1];                      // Blood Lust Meter per client
 #define BLOOD_LUST_METER_GAINED_ON_VICTIM           10      // Blood Lust Meter gained per scratch on victim (to 100)
 #define BLOOD_LUST_METER_GAINED_OFF_VICTIM          50      // Blood Lust Meter gained per scratch off victim (to 100)
+#define BLOOD_LUST_METER_GAINED_POUNCE_MULTIPLIER   2.0     // Blood Lust Meter as a multiplier of normalized pounce distance when pouncing * 100
 #define BLOOD_LUST_METER_GAINED_VISIBILITY_SCALE_FACTOR 25.0       // Blood Lust Meter gained while visible to survivors in stealth mode
 #define BLOOD_LUST_RESET_TIMER_DURATION             30.0    // Blood Lust Meter reset timer duration
 #define BLOOD_LUST_SPEED_BOOST_PER_STAGE            0.60    // Speed boost per Blood Lust stage

@@ -25,6 +25,8 @@ Action TimerHunterBloodLustReset(Handle timer, any iClient)
 	g_iBloodLustStage[iClient] = 0;
 	g_iBloodLustMeter[iClient] = 0;
 	SetHunterBloodLustAbilities(iClient);
+
+	PrintToChat(iClient, "\x03[XPMod] \x05Blood Lust Reset");
 	PrintBloodLustMeter(iClient);
 	return Plugin_Stop;
 }
