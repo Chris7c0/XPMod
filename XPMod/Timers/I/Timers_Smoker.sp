@@ -1,21 +1,21 @@
 //Smoker
 
-Action:TimerStopTarFingersInfection(Handle:timer, any:iClient)
-{
-	g_bIsTarFingerVictim[iClient] = false;
+// Action:TimerStopTarFingersInfection(Handle:timer, any:iClient)
+// {
+// 	g_bIsTarFingerVictim[iClient] = false;
 
-	return Plugin_Stop;
-}
+// 	return Plugin_Stop;
+// }
 
 
-Action TimerResetTarFingerVictimBlindAmount(Handle:timer, int iClient)
-{
-	g_iTarFingerVictimBlindAmount[iClient] = 0;
-	// PrintToChat(iClient, "ResetTarFingerVictimBlindAmount");
+// Action TimerResetTarFingerVictimBlindAmount(Handle:timer, int iClient)
+// {
+// 	g_iTarFingerVictimBlindAmount[iClient] = 0;
+// 	// PrintToChat(iClient, "ResetTarFingerVictimBlindAmount");
 
-	g_hTimer_ResetTarFingerVictimBlindAmount[iClient] = null;
-	return Plugin_Stop;
-}
+// 	g_hTimer_ResetTarFingerVictimBlindAmount[iClient] = null;
+// 	return Plugin_Stop;
+// }
 
 
 Action:TimerRemoveSmokerDoppelganger(Handle:timer, any:iEntity)

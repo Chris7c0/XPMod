@@ -156,8 +156,6 @@ Action:DirtyMenuDraw(iClient)
 		\n	-0.25 Secs per Level on Ticks (Base 3s)\
 		\n	+2s Duration per Level\
 		\n \
-		\n Scratching Increasingly Blinds Survivors\
-		\n \
 		\n				Bind 2: The Electric Snare\
 		\n \
 		\n Shock for 1 DMG per Level Every 0.5s for 3s\
@@ -169,7 +167,7 @@ Action:DirtyMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 

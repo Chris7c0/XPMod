@@ -108,7 +108,7 @@ bool g_bSmokerIsCloaked[MAXPLAYERS + 1];
 bool g_bSmokerVictimGlowDisabled[MAXPLAYERS + 1];
 bool SetMoveTypeBackToNormalOnNextGameFrame[MAXPLAYERS + 1];
 new bool:g_bIsElectrocuting[MAXPLAYERS + 1];
-new bool:g_bIsTarFingerVictim[MAXPLAYERS + 1];
+// new bool:g_bIsTarFingerVictim[MAXPLAYERS + 1];
 #define SMOKER_DOPPELGANGER_MAX_CLONES                  2
 #define SMOKER_DOPPELGANGER_DURATION                    15.0
 #define SMOKER_DOPPELGANGER_REGEN_PERIOD                30.0

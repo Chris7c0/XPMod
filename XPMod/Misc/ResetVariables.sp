@@ -229,7 +229,7 @@ void ResetClientVariablesForRound(int iClient)
 	SetMoveTypeBackToNormalOnNextGameFrame[iClient] = false;
 	g_bHasSmokersPoisonCloudOut[iClient] = false;
 	g_bIsElectrocuting[iClient] = false;
-	g_bIsTarFingerVictim[iClient] = false;
+	// g_bIsTarFingerVictim[iClient] = false;
 	g_iSmokerInfectionCloudEntity[iClient] = -1;
 	g_bSmokerSmokeScreenOnCooldown[iClient] = false;
 	g_bTeleportCoolingDown[iClient] = false;
