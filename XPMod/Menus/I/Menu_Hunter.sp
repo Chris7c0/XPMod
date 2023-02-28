@@ -105,7 +105,7 @@ Action:BloodLustMenuDraw(iClient)
 		\nBlood Lust Meter.\
 		\n \
 		\n3 Blood Lust Stages:\
-		\n	+60% Movement Speed per Stage\
+		\n	+35% Movement Speed per Stage\
 		\n	+25% Non Lunging Stealth per Stage\
 		\n	+1 Shredding Damage per Stage\
 		\n	+30 Health/Second Regeneration per Stage\

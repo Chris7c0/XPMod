@@ -74,7 +74,10 @@ void Bind1Press_Hunter(iClient)
 	);
 
 	g_iClientBindUses_1[iClient]++;
-	
+
+	delete g_hTimer_HunterImmobilityZone[iClient];
+	g_hTimer_HunterImmobilityZone[iClient] = CreateTimer(0.1, TimerHandleAllSurvivorsInHunterMobilityZone, iClient, TIMER_REPEAT);
+
 	CreateTimer(HUNTER_IMMOBILITY_ZONE_DURATION, RemoveHunterImmobilityZone, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 	g_bIsImmobilityZoneOnGlobalCooldown = true;
@@ -100,16 +103,21 @@ Action RemoveHunterImmobilityZone(Handle timer, int iClient)
 Action ResetGlobalHunterImmobilityZoneCooldown(Handle timer, any data)
 {
 	g_bIsImmobilityZoneOnGlobalCooldown = false;
+
 	return Plugin_Handled;
 }
 
-void HandleAllSurvivorsInHunterMobilityZone(int iClient)
-{
+Action TimerHandleAllSurvivorsInHunterMobilityZone(Handle timer, int iClient)
+{	
+	// PrintToChatAll("g_fHunterImmobilityZone %f %f %f", g_fHunterImmobilityZone[iClient][0], g_fHunterImmobilityZone[iClient][1], g_fHunterImmobilityZone[iClient][2]);
+
 	// Check if the vector is Null
 	if (g_fHunterImmobilityZone[iClient][0] == EMPTY_VECTOR[0] &&
 		g_fHunterImmobilityZone[iClient][1] == EMPTY_VECTOR[1] &&
-		g_fHunterImmobilityZone[iClient][2] == EMPTY_VECTOR[2])
-		return;
+		g_fHunterImmobilityZone[iClient][2] == EMPTY_VECTOR[2]) {
+			g_hTimer_HunterImmobilityZone[iClient] = null;
+			return Plugin_Stop;
+		}
 
 	int iSurvivor;
 	float flDistance;
@@ -135,4 +143,6 @@ void HandleAllSurvivorsInHunterMobilityZone(int iClient)
 			SetClientSpeed(iSurvivor);
 		}
 	}
+
+	return Plugin_Continue;
 }

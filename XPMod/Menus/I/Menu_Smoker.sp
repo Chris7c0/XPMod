@@ -54,7 +54,7 @@ Action:EnvelopmentMenuDraw(iClient)
 	SetMenuTitle(menu, "\
 		%s  				Rapid Cell Division (Level %d)\
 		\n \
-		\nRegenerate 60 HP per Second\
+		\nRegenerate 30 HP per Second\
 		\n \
 		\nReduced Tongue Ability Cooldown\
 		\n	- -1 Second Every Three Levels\

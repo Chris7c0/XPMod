@@ -427,6 +427,7 @@ CreateNewUser(iClient)
 		user_name,\
 		token,\
 		xp,\
+		prestige_points,\
 		survivor_id,\
 		infected_id_1,\
 		infected_id_2,\
@@ -436,12 +437,13 @@ CreateNewUser(iClient)
 		equipment_health,\
 		equipment_explosive,\
 		equipment_boost)\
-		VALUES ('%s','%s','%s',%s,%i,%i,%i,%i,%i,%i,%i,%i,%i)", 
+		VALUES ('%s','%s','%s',%s,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i)", 
 		DB_TABLENAME_USERS,
 		strSteamID,
 		strClientName,
 		strUserToken,
 		strClientXP,
+		0,
 		g_iDefaultSurvivor,
 		g_iDefaultInfectedSlot1,
 		g_iDefaultInfectedSlot2,

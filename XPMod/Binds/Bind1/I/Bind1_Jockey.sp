@@ -16,7 +16,7 @@ void Bind1Press_Jockey(iClient)
 
 	if (g_iClientBindUses_1[iClient] >= 3)
 	{
-		PrintHintText(iClient, "Your out of piss");
+		PrintHintText(iClient, "You're out of piss");
 		return;
 	}
 

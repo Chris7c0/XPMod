@@ -465,6 +465,7 @@ DeleteAllGlobalTimerHandles(iClient)
 	delete g_hTimer_SlapPlayer[iClient];
 	delete g_hTimer_RochellePoison[iClient];
 	delete g_hTimer_HunterPoison[iClient];
+	delete g_hTimer_HunterImmobilityZone[iClient];
 	delete g_hTimer_NickLifeSteal[iClient];
 	delete g_hTimer_BillDropBombs[iClient];
 	delete g_hTimer_LouisTeleportRegenerate[iClient];

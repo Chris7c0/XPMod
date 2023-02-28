@@ -15,7 +15,7 @@ Action:TankMenuDrawFire(iClient)
         \n Passive Abilities\
         \n - %i HP | Good At All Ranges\
         \n - High Damage Output, Immune To Fire\
-        \n - 25-50%% Faster (More Pain = More Speed)\
+        \n - 20-70%% Faster (More Pain = More Speed)\
         \n - 20%% Chance To Ignite Survivors On Punch\
         \n \
         \n Active Abilities\

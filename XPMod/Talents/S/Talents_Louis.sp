@@ -82,7 +82,7 @@ bool OnPlayerRunCmd_Louis(iClient, &iButtons)
 	}
 
 	// Louis Teleport
-	if (g_iLouisTeleportChargeUses[iClient] <= g_iLouisTalent3Level[iClient] &&
+	if (g_iLouisTeleportChargeUses[iClient] <= LOUIS_TELEPORT_TOTAL_CHARGES && //g_iLouisTalent3Level[iClient] &&
 		g_bLouisTeleportCoolingDown[iClient] == false && 
 		iButtons & IN_SPEED && 
 		(iButtons & IN_FORWARD || iButtons & IN_BACK || iButtons & IN_MOVELEFT || iButtons & IN_MOVERIGHT) &&
@@ -570,7 +570,7 @@ HandleLouisTeleportChargeUses(iClient)
 	PrintLouisTeleportCharges(iClient);
 
 	// If they burned 5 charges, punish them with a longer cooldown
-	if (g_iLouisTeleportChargeUses[iClient] == g_iLouisTalent3Level[iClient] + 1)
+	if (g_iLouisTeleportChargeUses[iClient] == LOUIS_TELEPORT_TOTAL_CHARGES + 1) //g_iLouisTalent3Level[iClient] + 1)
 	{
 		delete g_hTimer_LouisTeleportRegenerate[iClient];
 		CreateTimer(LOUIS_TELEPORT_CHARGE_MAXED_REGENERATE_TIME, TimerLouisTeleportChargeResetAll, iClient, TIMER_FLAG_NO_MAPCHANGE);
@@ -636,20 +636,17 @@ PrintLouisTeleportCharges(iClient)
 		return;
 	
 	// Print the Louis Teleport charges
-	switch (g_iLouisTalent3Level[iClient] + 1 - g_iLouisTeleportChargeUses[iClient])
+	// switch (g_iLouisTalent3Level[iClient] + 1 - g_iLouisTeleportChargeUses[iClient])
+	switch (LOUIS_TELEPORT_TOTAL_CHARGES + 1 - g_iLouisTeleportChargeUses[iClient])
 	{
 		case 0: PrintHintText(iClient, "( XxX.xX.xX..xXX.X..Xxx.xX..XxxX..xX.XXx.xx.X.Xxx..xX )");
 
 		case 1: PrintHintText(iClient, "( ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ )");
 
-		case 2: PrintHintText(iClient, "( ▓▓▓▓▓▓░░░░░░░░░░░░░░░░░░░░░░░░ )");
+		case 2: PrintHintText(iClient, "( ▓▓▓▓▓▓▓▓▓▓░░░░░░░░░░░░░░░░░░░░ )");
 
-		case 3: PrintHintText(iClient, "( ▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░░░░░░░░░░ )");
+		case 3: PrintHintText(iClient, "( ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░░ )");
 
-		case 4: PrintHintText(iClient, "( ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░░░░ )");
-
-		case 5: PrintHintText(iClient, "( ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░ )");
-
-		case 6: PrintHintText(iClient, "( ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ )");
+		case 4: PrintHintText(iClient, "( ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ )");
 	}
 }

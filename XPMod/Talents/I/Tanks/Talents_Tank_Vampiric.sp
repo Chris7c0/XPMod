@@ -217,6 +217,7 @@ EventsHurt_AttackerTank_Vampiric(Handle:hEvent, iAttackerTank, iVictim)
 
 	if (RunClientChecks(iAttackerTank) == false || RunClientChecks(iVictim) == false ||
 		IsPlayerAlive(iAttackerTank) == false || IsPlayerAlive(iVictim) == false || 
+		g_iClientTeam[iVictim] != TEAM_SURVIVORS ||
 		StrEqual(strWeapon,"tank_claw") == false)
 		return;
 

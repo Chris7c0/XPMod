@@ -33,7 +33,7 @@ void Bind2Press_Ellis(iClient)
                 SetEntityRenderMode(iClient, RenderMode:3);
                 //SetEntityRenderColor(iClient, 255, 99, 18, 255);
                 SetEntityRenderColor(iClient, 210, 88, 30, 255);
-                PrintHintText(iClient, "You have pleased the fire god Kagu-Tsuchi and are granted the gift of fire for %3.0f seconds.", time);
+                PrintHintText(iClient, "You have pleased the fire god Kagu-Tsuchi and are granted the gift of fire for%3.0f seconds.", time);
                 g_iClientBindUses_2[iClient]++;
             }
         }

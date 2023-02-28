@@ -120,4 +120,5 @@
         "/home/chris/Projects/XPMod/XPMod/Menus/I/Tanks",
         "/home/chris/Projects/XPMod/XPMod/Menus/S",
     ],
+    "sourcepawn.SourcemodHome": "/home/chris/Projects/XPMod/include",
 }

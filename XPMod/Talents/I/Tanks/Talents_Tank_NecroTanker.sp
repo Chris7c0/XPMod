@@ -118,7 +118,10 @@ EventsHurt_AttackerTank_NecroTanker(Handle:hEvent, iAttackerTank, iVictim)
 	decl String:strWeapon[20];
 	GetEventString(hEvent,"weapon", strWeapon, 20);
 
-	if (StrEqual(strWeapon,"tank_claw"))
+	if (g_iClientTeam[iVictim] == TEAM_SURVIVORS &&
+		RunClientChecks(iVictim) == true &&
+		IsPlayerAlive(iVictim) == true &&
+		StrEqual(strWeapon,"tank_claw"))
 	{
 		SummonNecroTankerPunchZombies(iAttackerTank, iVictim);
 

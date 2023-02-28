@@ -87,7 +87,7 @@ new ArrayList:g_listEnhancedCIEntities;
 // Smoker
 #define SMOKER_STARTING_MAX_HEALTH                      250
 // #define SMOKER_BONUS_MAX_HEALTH_PER_LEVEL               2
-#define SMOKER_HEALTH_REGEN_PER_FRAME                   2
+#define SMOKER_HEALTH_REGEN_PER_FRAME                   1
 #define SMOKER_DEFAULT_TONGUE_COOLDOWN                  15.0
 #define SMOKER_COOLDOWN_REDUCTION_EVERY_OTHER_LEVEL     1.0
 // Global Smoker Tongue Buffs
@@ -217,7 +217,7 @@ int g_iBloodLustMeter[MAXPLAYERS + 1];                      // Blood Lust Meter 
 #define BLOOD_LUST_METER_GAINED_POUNCE_MULTIPLIER   2.0     // Blood Lust Meter as a multiplier of normalized pounce distance when pouncing * 100
 #define BLOOD_LUST_METER_GAINED_VISIBILITY_SCALE_FACTOR 25.0       // Blood Lust Meter gained while visible to survivors in stealth mode
 #define BLOOD_LUST_RESET_TIMER_DURATION             30.0    // Blood Lust Meter reset timer duration
-#define BLOOD_LUST_SPEED_BOOST_PER_STAGE            0.60    // Speed boost per Blood Lust stage
+#define BLOOD_LUST_SPEED_BOOST_PER_STAGE            0.35    // Speed boost per Blood Lust stage
 #define BLOOD_LUST_STEALTH_PER_STAGE                0.3     // % Non Lunge Stealth per Blood Lust stage
 #define BLOOD_LUST_EXTRA_SHRED_DAMAGE_PER_STAGE     1       // Speed boost per Blood Lust stage
 float g_fLastHunterPosition[MAXPLAYERS + 1][3];             // Last Hunter position for Blood Lust meter gain
@@ -353,6 +353,8 @@ new ArrayList:g_listTankRockEntities;
 
 // Fire Tank
 #define TANK_HEALTH_FIRE                            11000
+#define TANK_FIRE_BASE_SPEED                        0.20
+#define TANK_FIRE_EXTRA_SPEED_MAX                   0.50
 #define FIRE_TANK_FIRE_PUNCH_COOLDOWN_DURATION      5.0
 new g_iFireDamageCounter[MAXPLAYERS + 1];
 new bool:g_bFireTankAttackCharged[MAXPLAYERS + 1];

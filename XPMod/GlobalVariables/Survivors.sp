@@ -269,15 +269,16 @@ new bool:g_bNickStoresDroppedPistolAmmo[MAXPLAYERS + 1] = {false, ...};
 
 
 // Louis
+#define LOUIS_TELEPORT_TOTAL_CHARGES                    3
 #define LOUIS_TELEPORT_MOVEMENT_SPEED                   8.0
-#define LOUIS_TELEPORT_CHARGE_REGENERATE_TIME           10.0
+#define LOUIS_TELEPORT_CHARGE_REGENERATE_TIME           5.0
 #define LOUIS_TELEPORT_CHARGE_MAXED_REGENERATE_TIME     90.0
-#define LOUIS_TELEPORT_BLINDNESS_ADDITIVE_AMOUNT        86
+#define LOUIS_TELEPORT_BLINDNESS_ADDITIVE_AMOUNT        69
 #define LOUIS_TELEPORT_BLINDNESS_DURATION               4100
 #define LOUIS_TELEPORT_BLINDNESS_FADE_TIME              12.0
-#define LOUIS_TELEPORT_BLINDNESS_STAY_FACTOR            2.5
-#define LOUIS_TELEPORT_MOVEMENT_PENALTY_TIME            15.0
-#define LOUIS_TELEPORT_MOVEMENT_PENALTY_AMOUNT          0.15
+#define LOUIS_TELEPORT_BLINDNESS_STAY_FACTOR            1.5
+#define LOUIS_TELEPORT_MOVEMENT_PENALTY_TIME            10.0
+#define LOUIS_TELEPORT_MOVEMENT_PENALTY_AMOUNT          0.05
 #define LOUIS_SPEED_MAX                                 1.15
 #define LOUIS_HEADSHOT_SPEED_RETENTION_TIME_CI          60.0
 #define LOUIS_HEADSHOT_SPEED_RETENTION_TIME_SI          60.0
@@ -306,7 +307,7 @@ new g_iWareStationOwnerIDOfCurrentlyViewedStation[MAXPLAYERS + 1];
 float g_xyzWarezStationLocation[MAXPLAYERS + 1][3];
 float g_fWarezStationSpeedBoost[MAXPLAYERS + 1];
 float g_fLouisXMRWallet[MAXPLAYERS + 1];
-#define LOUIS_HEADSHOT_XMR_STARTING_AMOUNT              4.20001
+#define LOUIS_HEADSHOT_XMR_STARTING_AMOUNT              2.6
 #define LOUIS_HEADSHOT_XMR_AMOUNT_CI                    0.1
 #define LOUIS_HEADSHOT_XMR_AMOUNT_SI                    0.5
 #define LOUIS_HEADSHOP_ITEM_SPEED_HAX                   1
@@ -315,12 +316,12 @@ float g_fLouisXMRWallet[MAXPLAYERS + 1];
 #define LOUIS_HEADSHOP_ITEM_HAXOR_TEH_SERVER            4
 #define LOUIS_HEADSHOP_ITEM_HAK_TARGET                  5
 #define LOUIS_HEADSHOP_ITEM_TIME_OUT                    6
-#define LOUIS_HEADSHOP_XMR_AMOUNT_SPEED_HAX             8.0
-#define LOUIS_HEADSHOP_XMR_AMOUNT_NUB_WIPE              9.0
-#define LOUIS_HEADSHOP_XMR_AMOUNT_MED_HAX               10.0
-#define LOUIS_HEADSHOP_XMR_AMOUNT_HAXOR_TEH_SERVER      10.0
-#define LOUIS_HEADSHOP_XMR_AMOUNT_HAK_TARGET            11.0
-#define LOUIS_HEADSHOP_XMR_AMOUNT_TIME_OUT              12.0
+#define LOUIS_HEADSHOP_XMR_AMOUNT_SPEED_HAX             6.0
+#define LOUIS_HEADSHOP_XMR_AMOUNT_NUB_WIPE              6.0
+#define LOUIS_HEADSHOP_XMR_AMOUNT_MED_HAX               7.0
+#define LOUIS_HEADSHOP_XMR_AMOUNT_HAXOR_TEH_SERVER      8.0
+#define LOUIS_HEADSHOP_XMR_AMOUNT_HAK_TARGET            8.0
+#define LOUIS_HEADSHOP_XMR_AMOUNT_TIME_OUT              8.0
 bool g_bLouisSpeedHaxEnabled;
 bool g_bSpeedHaxInCooldown;
 #define LOUIS_SPEED_HAX_MOVEMENT_MULTIPLIER             2.0

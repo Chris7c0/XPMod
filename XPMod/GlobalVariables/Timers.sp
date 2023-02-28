@@ -10,6 +10,7 @@ new Handle:g_hTimer_HallucinatePlayer[MAXPLAYERS + 1]		        = {null, ...};
 new Handle:g_hTimer_SlapPlayer[MAXPLAYERS + 1] 				        = {null, ...};
 new Handle:g_hTimer_RochellePoison[MAXPLAYERS + 1] 			        = {null, ...};
 new Handle:g_hTimer_HunterPoison[MAXPLAYERS + 1] 			        = {null, ...};
+new Handle:g_hTimer_HunterImmobilityZone[MAXPLAYERS + 1] 			= {null, ...};
 new Handle:g_hTimer_NickLifeSteal[MAXPLAYERS + 1] 			        = {null, ...};
 new Handle:g_hTimer_BillDropBombs[MAXPLAYERS + 1] 			        = {null, ...};
 new Handle:g_hTimer_LouisTeleportRegenerate[MAXPLAYERS + 1]         = {null, ...};
