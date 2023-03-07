@@ -268,6 +268,7 @@ void ResetClientVariablesForRound(int iClient)
 	g_iBloodLustStage[iClient] = 0;
 	g_bIsCloakedHunter[iClient] = false;
 	g_bCanHunterDismount[iClient] = true;
+	g_bHunterPounceMessageVisible[iClient] = false;
 	g_bHunterInPounceLandCooldown[iClient] = false;
 	g_bCanHunterPoisonVictim[iClient] = true;
 	g_iHunterShreddingVictim[iClient] = -1;

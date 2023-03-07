@@ -31,6 +31,13 @@ Action TimerHunterBloodLustReset(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
+Action TimerHunterPounceDamageMessageDone(Handle timer, any iClient)
+{
+	g_bHunterPounceMessageVisible[iClient] = false;
+	return Plugin_Stop;
+}
+
+
 Action TimerResetHunterDismount(Handle timer, any iClient)
 {
 	g_bCanHunterDismount[iClient] = true;

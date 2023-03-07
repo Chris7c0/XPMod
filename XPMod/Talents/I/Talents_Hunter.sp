@@ -193,6 +193,8 @@ void Event_HunterPounceStart_Hunter(int iAttacker, int iVictim, int iDistance)
 	if(iDistanceFeet < HUNTER_LUNGE_EXTRA_DAMAGE_DISTANCE_MIN)
 	{
 		PrintHintText(iAttacker, "Pounce Distance:	%i ft", iDistanceFeet);
+		g_bHunterPounceMessageVisible[iAttacker] = true;
+		CreateTimer(3.0, TimerHunterPounceDamageMessageDone, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
 		return;
 	}
 
@@ -205,6 +207,8 @@ void Event_HunterPounceStart_Hunter(int iAttacker, int iVictim, int iDistance)
 	DealDamage(iVictim, iAttacker, iDamageAmount);
 	
 	PrintHintText(iAttacker, "Pounce Distance: %i ft\n\nPounce Damage: %i", iDistanceFeet, 25 + iDamageAmount);
+	g_bHunterPounceMessageVisible[iAttacker] = true;
+	CreateTimer(3.0, TimerHunterPounceDamageMessageDone, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
 
 	// Build the blood lust meter based on the normalized distance (cap at +100, +1 stage)
 	int iAmount = RoundToCeil(fNormalizedDistance * 100.0 * BLOOD_LUST_METER_GAINED_VISIBILITY_SCALE_FACTOR)
@@ -460,7 +464,9 @@ void SetHunterBloodLustAbilities(int iClient)
 
 void PrintBloodLustMeter(iClient)
 {
-	if (RunClientChecks(iClient) == false || IsFakeClient(iClient))
+	if (RunClientChecks(iClient) == false || 
+		IsFakeClient(iClient) == true ||
+		g_bHunterPounceMessageVisible[iClient] == true)
 		return;
 	
 	if (g_iBloodLustStage[iClient] == 3)

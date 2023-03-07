@@ -224,6 +224,7 @@ float g_fLastHunterPosition[MAXPLAYERS + 1][3];             // Last Hunter posit
 bool g_bIsCloakedHunter[MAXPLAYERS + 1];
 int g_iHunterCloakCounter[MAXPLAYERS + 1];
 bool g_bCanHunterDismount[MAXPLAYERS + 1];
+bool g_bHunterPounceMessageVisible[MAXPLAYERS + 1];
 bool g_bHunterInPounceLandCooldown[MAXPLAYERS + 1];
 #define HUNTER_POISON_VICTIM_SPEED                  0.25
 bool g_bCanHunterPoisonVictim[MAXPLAYERS + 1];
