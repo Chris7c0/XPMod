@@ -6,7 +6,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	if(g_bEnabledVGUI[iClient] == true && g_bShowingVGUI[iClient] == true)
 		DeleteAllMenuParticles(iClient);
 
-	decl String:wclass[32];
+	char wclass[32];
 	GetEventString(hEvent,"weapon",wclass,32);
 	
 	switch(g_iChosenSurvivor[iClient])
@@ -17,7 +17,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 		}
 		case 1:		//Rochelle Firing
 		{
-		
+			Event_WeaponFire_Rochelle(iClient, wclass)
 		}
 		case 2:		//Coach Firing
 		{

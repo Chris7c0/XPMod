@@ -534,7 +534,7 @@ Action:Event_InfectedHurt(Handle:hEvent, const String:strName[], bool:bDontBroad
 			}
 			case 1:		//Rochelle
 			{
-			
+				EventsInfectedHurt_Rochelle(attacker, victim);
 			}
 			case 2:		//Coach
 			{

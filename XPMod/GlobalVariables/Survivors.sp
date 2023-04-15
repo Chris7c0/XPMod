@@ -141,6 +141,23 @@ new g_iRochelleRopeDummyEntityAttachmentHand[MAXPLAYERS + 1];
 new g_iRochelleRopeDummyEntityAttachmentWall[MAXPLAYERS + 1];
 float g_xyzRopeEndLocation[MAXPLAYERS + 1][3];
 #define ROCHELLE_ROPE_DURATION      900
+// SCOUT
+#define ROCHELLE_SILENT_SORROW_SCOUT_MAX_HEADSHOT_COUNTER 10
+#define ROCHELLE_SILENT_SORROW_SCOUT_EXTRA_DMG_PER_STACK 35
+// Ruger
+new g_iRochelleRugerHitCounter[MAXPLAYERS + 1];
+new g_iRochelleRugerStacks[MAXPLAYERS + 1];
+new g_iRochelleRugerLastHitStackCount[MAXPLAYERS + 1];
+#define ROCHELLE_RUGER_MAX_STACKS           100
+#define ROCHELLE_RUGER_DMG_PER_STACK        0.05
+#define ROCHELLE_RUGER_STACKS_GAINED_CI     1
+#define ROCHELLE_RUGER_STACKS_GAINED_SI     10
+#define ROCHELLE_RUGER_STACKS_GAINED_TANK   3
+#define ROCHELLE_RUGER_STACKS_LOST_ON_MISS  20
+// AWP
+new g_iRochelleAWPChargeLevel[MAXPLAYERS + 1];
+bool g_bRochelleAWPCharged[MAXPLAYERS + 1];
+#define ROCHELLE_AWP_CHARGED_SHOT_DAMAGE    2000
 
 //Coach's Stuff
 //For Coach's Jetpack

@@ -1,4 +1,37 @@
 
+Action:Timer_RochelleRugerHitCheck(Handle:timer, any:iClient)
+{
+	// Check for an Infected bullet Miss. It being greater than 0 means the stack was not removed
+	// This will take back any pre given stacks that were given during the event hit processes
+	if (g_iRochelleRugerHitCounter[iClient] > 0 ) {
+		g_iRochelleRugerStacks[iClient] -= (ROCHELLE_RUGER_STACKS_LOST_ON_MISS + g_iRochelleRugerLastHitStackCount[iClient]);
+
+		if (g_iRochelleRugerStacks[iClient] <= 0)
+			g_iRochelleRugerStacks[iClient] = 0
+	}
+	
+	// Reset the values for the next bullet shot
+	g_iRochelleRugerHitCounter[iClient] = 0;
+	g_iRochelleRugerLastHitStackCount[iClient] = 0;
+
+	PrintToChat(iClient, "\x03[XPMod] \x04 Hunting Rifle Dmg: \x05+%i%", 
+		RoundToNearest(100 * (g_iRochelleRugerStacks[iClient] * ROCHELLE_RUGER_DMG_PER_STACK)) );
+	
+	return Plugin_Stop;
+}
+
+Action:Timer_RochelleAWPResetChargeLevel(Handle:timer, any:iClient)
+{
+	if (g_bRochelleAWPCharged[iClient] == true)
+		PrintToChat(iClient, "\x03[XPMod] \x04AWP Charge: \x01EMPTY");
+
+	g_bRochelleAWPCharged[iClient] = false;
+	g_iRochelleAWPChargeLevel[iClient] = 0;
+
+	return Plugin_Stop;
+}
+
+
 Action:Timer_BreakFreeOfSmoker(Handle:timer, any:iClient)
 {
 	TeleportEntity(iClient, g_xyzOriginalPositionRochelle[iClient], NULL_VECTOR, NULL_VECTOR);

@@ -295,7 +295,11 @@ OnGameFrame_Rochelle(iClient)
 
 EventsHurt_AttackerRochelle(Handle:hEvent, attacker, victim)
 {
-	if (IsFakeClient(attacker))
+	if (g_iChosenSurvivor[attacker] != ROCHELLE ||
+		g_bTalentsConfirmed[attacker] == false ||
+		g_iClientTeam[attacker] != TEAM_SURVIVORS ||
+		RunClientChecks(attacker) == false ||
+		IsFakeClient(attacker) == true)
 		return;
 
 	if (g_iClientTeam[victim] != TEAM_INFECTED)
@@ -323,72 +327,84 @@ EventsHurt_AttackerRochelle(Handle:hEvent, attacker, victim)
 			}
 	}
 	
-	if(g_iSilentLevel[attacker] >0)
+	if (g_iSilentLevel[attacker] > 0)
 	{
-		if(g_iClientTeam[victim] == TEAM_INFECTED)
+		char strWeaponClass[32];
+		GetEventString(hEvent,"weapon",strWeaponClass,32);
+		//PrintToChatAll("\x03-class of gun: \x01%s",strWeaponClass);
+
+		new hp = GetPlayerHealth(victim);
+		new dmg = GetEventInt(hEvent,"dmg_health");
+		// PrintToChat(attacker, "Base DMG: %d", dmg);
+
+		if (StrContains(strWeaponClass,"hunting_rifle",false) != -1)	//Ruger
 		{
-			decl String:weaponclass[32];
-			GetEventString(hEvent,"weapon",weaponclass,32);
-			//PrintToChatAll("\x03-class of gun: \x01%s",weaponclass);
-			if(StrContains(weaponclass,"hunting_rifle",false) != -1)	//Rugar
-			{
-				new hp = GetPlayerHealth(victim);
-				new dmg = GetEventInt(hEvent,"dmg_health");
+			dmg = RoundToNearest(dmg * (g_iRochelleRugerStacks[attacker] * ROCHELLE_RUGER_DMG_PER_STACK));
+			dmg = CalculateDamageTakenForVictimTalents(victim, dmg, strWeaponClass);
 
-				dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.13));
-				dmg = CalculateDamageTakenForVictimTalents(victim, dmg, weaponclass);
+			// PrintToChat(attacker, "Doing %d extra hunting rifle DMG", dmg);
+			SetPlayerHealth(victim, hp - dmg);
 
-				//PrintToChat(attacker, "your doing %d hunting rifle damage", dmg);
-				SetPlayerHealth(victim, hp - dmg);
-
+			// Add to the Ruger Stacks
+			// Handle if its a tank first
+			if (g_iInfectedCharacter[victim] == TANK) {
+				g_iRochelleRugerStacks[attacker] += ROCHELLE_RUGER_STACKS_GAINED_TANK;
+				g_iRochelleRugerLastHitStackCount[attacker] = ROCHELLE_RUGER_STACKS_GAINED_TANK;
 			}
-			else if(StrContains(weaponclass,"sniper_military",false) != -1)	//H&K MSG 90
-			{
-				IgniteEntity(victim, 5.0, false);
-				new hp = GetPlayerHealth(victim);
-				new dmg = GetEventInt(hEvent,"dmg_health");
-
-				dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.08));
-				dmg = CalculateDamageTakenForVictimTalents(victim, dmg, weaponclass);
-
-				//PrintToChat(attacker, "your doing %d sniper_military damage", dmg);
-				SetPlayerHealth(victim, hp - dmg);
-
+			else { // Handle if its a regular SI hit
+				g_iRochelleRugerStacks[attacker] += ROCHELLE_RUGER_STACKS_GAINED_SI;
+				g_iRochelleRugerLastHitStackCount[attacker] = ROCHELLE_RUGER_STACKS_GAINED_SI;
 			}
-			else if(StrContains(weaponclass,"sniper_scout",false) != -1)
+			if (g_iRochelleRugerStacks[attacker] >= ROCHELLE_RUGER_MAX_STACKS)
+				g_iRochelleRugerStacks[attacker] = ROCHELLE_RUGER_MAX_STACKS;
+
+			g_iRochelleRugerHitCounter[attacker] = 0;
+			// PrintToChat(attacker, "Ruger Hit Counter: %d", g_iRochelleRugerHitCounter[attacker]);
+		}
+		else if (StrContains(strWeaponClass,"sniper_military",false) != -1)	//H&K MSG 90
+		{
+			IgniteEntity(victim, 5.0, false);
+
+			dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.08));
+			dmg = CalculateDamageTakenForVictimTalents(victim, dmg, strWeaponClass);
+
+			// PrintToChat(attacker, "Doing %d extra military rifle DMG", dmg);
+			SetPlayerHealth(victim, hp - dmg);
+		}
+		else if (StrContains(strWeaponClass,"sniper_scout",false) != -1)	// Scout
+		{
+			dmg = RoundToNearest( (dmg * (g_iSilentLevel[attacker] * 0.15)) + 
+				(g_iSilentSorrowHeadshotCounter[attacker] * ROCHELLE_SILENT_SORROW_SCOUT_EXTRA_DMG_PER_STACK) );
+			dmg = CalculateDamageTakenForVictimTalents(victim, dmg, strWeaponClass);
+
+			// PrintToChat(attacker, "Doing %d extra scout DMG", dmg);
+			SetPlayerHealth(victim, hp - dmg);
+		}
+		else if (StrContains(strWeaponClass,"sniper_awp",false) != -1)		// AWP
+		{
+			if (g_bRochelleAWPCharged[attacker] == true)
 			{
-				new hp = GetPlayerHealth(victim);
-				new dmg = GetEventInt(hEvent,"dmg_health");
-
-				dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.13)) + (g_iSilentSorrowHeadshotCounter[attacker] * g_iSilentLevel[attacker] * 3);
-				dmg = CalculateDamageTakenForVictimTalents(victim, dmg, weaponclass);
-
-				//PrintToChat(attacker, "your doing %d scout damage", dmg);
-				SetPlayerHealth(victim, hp - dmg);
-
+				dmg = ROCHELLE_AWP_CHARGED_SHOT_DAMAGE - dmg;
 			}
-			else if(StrContains(weaponclass,"sniper_awp",false) != -1)
+			else
 			{
-				new hp = GetPlayerHealth(victim);
-				new dmg = GetEventInt(hEvent,"dmg_health");
-
-				dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.40) );
-				dmg = CalculateDamageTakenForVictimTalents(victim, dmg, weaponclass);
-
-				//PrintToChat(attacker, "your doing %d extra awp damage", dmg);
-				SetPlayerHealth(victim, hp - dmg);
+				dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.45) );
+				dmg = CalculateDamageTakenForVictimTalents(victim, dmg, strWeaponClass);
 			}
+
+			// PrintToChat(attacker, "Doing %d extra awp DMG", dmg);
+			SetPlayerHealth(victim, hp - dmg);
 		}
 	}
 }
 
 // EventsHurt_VictimRochelle(Handle:hEvent, attacker, victim)
 // {
-// 	if (IsFakeClient(victim))
 // 		return;
+// 	if (IsFakeClient(victim))
 // }
 
-EventsDeath_AttackerRochelle(Handle:hEvent, iAttacker, iVictim)
+EventsInfectedHurt_Rochelle(iAttacker, iVictim)
 {
 	if (g_iChosenSurvivor[iAttacker] != ROCHELLE ||
 		g_bTalentsConfirmed[iAttacker] == false ||
@@ -397,21 +413,106 @@ EventsDeath_AttackerRochelle(Handle:hEvent, iAttacker, iVictim)
 		IsFakeClient(iAttacker) == true)
 		return;
 
-	// Check if is common infected or is not headshot, return if so
-	if(g_iSilentLevel[iAttacker] <= 0 || 
-		RunClientChecks(iVictim) == false ||
-		GetEventBool(hEvent, "headshot") == false ||
-		g_iSilentSorrowHeadshotCounter[iAttacker] >= 20)
+	if (g_iSilentLevel[iAttacker] < 0)
 		return;
 
-	g_iSilentSorrowHeadshotCounter[iAttacker]++;
-	PrintToChat(iAttacker, "\x03[XPMod] \x04Silent Sorrow Headshots: \x05%i", g_iSilentSorrowHeadshotCounter[iAttacker]);
+	new String:strCurrentWeapon[32];
+	GetClientWeapon(iAttacker, strCurrentWeapon, sizeof(strCurrentWeapon));
+	// PrintToChatAll("%s", strCurrentWeapon);
+
+	// Ruger Stacks when shooting a common
+	if (StrEqual(strCurrentWeapon, "weapon_hunting_rifle", false) == true) {
+		g_iRochelleRugerLastHitStackCount[iAttacker] = ROCHELLE_RUGER_STACKS_GAINED_CI;
+		g_iRochelleRugerStacks[iAttacker] += ROCHELLE_RUGER_STACKS_GAINED_CI;
+		if (g_iRochelleRugerStacks[iAttacker] >= ROCHELLE_RUGER_MAX_STACKS)
+			g_iRochelleRugerStacks[iAttacker] = ROCHELLE_RUGER_MAX_STACKS;
+		
+		// This is a hacky solution for telling if they missed a CI or not
+		g_iRochelleRugerHitCounter[iAttacker] = 0;
+		// PrintToChat(attacker,"Ruger Hit Counter: %d", g_iRochelleRugerHitCounter[attacker]);
+	}
+
+	SuppressNeverUsedWarning(iVictim);
+}
+
+EventsDeath_AttackerRochelle(Handle:hEvent, int iAttacker, int iVictim)
+{
+	if (g_iChosenSurvivor[iAttacker] != ROCHELLE ||
+		g_bTalentsConfirmed[iAttacker] == false ||
+		g_iClientTeam[iAttacker] != TEAM_SURVIVORS ||
+		RunClientChecks(iAttacker) == false ||
+		RunClientChecks(iVictim) == false ||
+		IsFakeClient(iAttacker) == true)
+		return;
+	
+	if (g_iSilentLevel[iAttacker] <= 0)
+		return;
+
+	
+	char strWeaponClass[32];
+	GetEventString(hEvent,"weapon",strWeaponClass,32);
+	// PrintToChatAll("%s", strWeaponClass);
+
+	// Handle Rochelle's different sniper weapons
+	if (StrContains(strWeaponClass,"sniper_scout",false) != -1)			// Scout
+	{
+		// Check if is common infected or is not headshot, return if so
+		if (GetEventBool(hEvent, "headshot") == false ||
+			g_iSilentSorrowHeadshotCounter[iAttacker] >= ROCHELLE_SILENT_SORROW_SCOUT_MAX_HEADSHOT_COUNTER)
+			return;
+			
+		g_iSilentSorrowHeadshotCounter[iAttacker]++;
+		PrintToChat(iAttacker, "\x03[XPMod] \x04Scout Headshot Kills: \x05%i", g_iSilentSorrowHeadshotCounter[iAttacker]);
+	}
+	else if (StrContains(strWeaponClass,"sniper_awp",false) != -1)	// AWP
+	{
+		if (g_iRochelleAWPChargeLevel[iAttacker] == 3)
+			return;
+
+		g_iRochelleAWPChargeLevel[iAttacker]++;
+		
+		switch (g_iRochelleAWPChargeLevel[iAttacker]) 
+		{
+			case 1: PrintToChat(iAttacker, "\x03[XPMod] \x04AWP Charge: \x01LOW");
+			case 2: PrintToChat(iAttacker, "\x03[XPMod] \x04AWP Charge: \x01MEDIUM");
+			case 3: PrintToChat(iAttacker, "\x03[XPMod] \x04AWP Charge: \x05FULL");
+		}
+	}
+	
 }
 
 // EventsDeath_VictimRochelle(Handle:hEvent, iAttacker, iVictim)
 // {
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }
+
+Event_WeaponFire_Rochelle(int iClient, char[] strWeaponClass)
+{
+	if (g_iChosenSurvivor[iClient] != ROCHELLE ||
+		g_bTalentsConfirmed[iClient] == false ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
+		RunClientChecks(iClient) == false ||
+		IsFakeClient(iClient) == true)
+		return;
+
+	if (g_iSilentLevel[iClient] < 0)
+		return;
+
+	if (StrContains(strWeaponClass,"hunting_rifle", false) != -1)	//Ruger
+	{
+		// PrintToChat(iClient, "Ruger Hit Counter: %d", g_iRochelleRugerHitCounter[iClient]);
+		// This is a hacky solution for telling if they missed an infected or not
+		if (++g_iRochelleRugerHitCounter[iClient] > 1)
+			CreateTimer(0.1, Timer_RochelleRugerHitCheck, iClient, TIMER_FLAG_NO_MAPCHANGE)
+	}
+	else if (StrContains(strWeaponClass,"sniper_awp", false) != -1)	//AWP
+	{
+		if (g_bRochelleAWPCharged[iClient] == true)
+		{
+			CreateTimer(0.1, Timer_RochelleAWPResetChargeLevel, iClient, TIMER_FLAG_NO_MAPCHANGE)
+		}
+	}
+}
 
 	
 bool Event_TongueGrab_Rochelle(int iAttacker, int iVictim)
@@ -581,10 +682,19 @@ OGFSurvivorReload_Rochelle(iClient, const char[] currentweapon, ActiveWeaponID, 
 	else if((StrEqual(currentweapon, "weapon_sniper_awp", false) == true) && (g_iSilentLevel[iClient] > 1) && (CurrentClipAmmo != 0))
 	{
 		new iAmmo = GetEntData(iClient, iOffset_Ammo + 40);	//for AWP, Scout, and Military Sniper (+40)
-		if((iAmmo + CurrentClipAmmo) > 3)
+		new iCurrentAWPClipSize = g_iRochelleAWPChargeLevel[iClient] >= 3 ? 1 : 3;
+
+		// Enable a charged AWP shot
+		if (g_iRochelleAWPChargeLevel[iClient] >= 3)
+		{
+			PrintToChat(iClient, "\x03[XPMod] \x04AWP Charge: \x03PRIMED");
+			g_bRochelleAWPCharged[iClient] = true;
+		}
+
+		if((iAmmo + CurrentClipAmmo) > iCurrentAWPClipSize)
 		{
 			SetEntData(iClient, iOffset_Ammo + 40, iAmmo + (CurrentClipAmmo - 3));
-			SetEntData(ActiveWeaponID, g_iOffset_Clip1, 3, true);
+			SetEntData(ActiveWeaponID, g_iOffset_Clip1, iCurrentAWPClipSize, true);
 		}
 		g_bClientIsReloading[iClient] = false;
 		g_iReloadFrameCounter[iClient] = 0;

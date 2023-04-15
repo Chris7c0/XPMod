@@ -82,6 +82,8 @@ void ResetClientVariablesForRound(int iClient)
 	g_iBillSprintChargeCounter[iClient] = 0;
 	g_bBillSprinting[iClient] = false;
 	g_iSilentSorrowHeadshotCounter[iClient] = 0;
+	g_iRochelleAWPChargeLevel[iClient] = 0;
+	g_bRochelleAWPCharged[iClient] = false;
 	g_bUsingFireStorm[iClient] = false;
 	g_bUsingShadowNinja[iClient] = false;
 	g_iStat_ClientInfectedKilled[iClient] = 0;
@@ -93,6 +95,9 @@ void ResetClientVariablesForRound(int iClient)
 	g_bCanPlayHeadshotSound[iClient] = true;
 	g_bUsingTongueRope[iClient]=false;
 	g_iRopeCountDownTimer[iClient] = 0;
+	g_iRochelleRugerHitCounter[iClient] = 0;
+	g_iRochelleRugerStacks[iClient] = 0;
+	g_iRochelleRugerLastHitStackCount[iClient] = 0;
 	g_iRochelleRopeDummyEntityAttachmentHand[iClient] = 0;
 	g_iRochelleRopeDummyEntityAttachmentWall[iClient] = 0;
 	canchangemovement[iClient]=true;
