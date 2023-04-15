@@ -216,7 +216,7 @@ Action:Event_TongueGrab(Handle:hEvent, const String:strName[], bool:bDontBroadca
 
 	g_bSmokerGrappled[iVictim] = true;
 	
-	if (Event_TongueGrab_Rochelle(iAttacker, iVictim))
+	if (Event_TongueGrab_Rochelle(iAttacker, iVictim) == true)
 		return Plugin_Continue;
 	Event_TongueGrab_Smoker(iAttacker, iVictim);
 	
@@ -316,51 +316,9 @@ Action:Event_JockeyRide(Handle:hEvent, const String:strName[], bool:bDontBroadca
 				SetClientSpeed(victim);
 			}
 
-			if(g_iSmokeLevel[victim]>0)
+			if (g_iSmokeLevel[victim] > 0)
 			{
-				decl percentchance;
-				switch(g_iSmokeLevel[victim])
-				{
-					case 1:
-						percentchance = GetRandomInt(1, 20);
-					case 2:
-						percentchance = GetRandomInt(1, 10);
-					case 3:
-						percentchance = GetRandomInt(1, 7);
-					case 4:
-						percentchance = GetRandomInt(1, 5);
-					case 5:
-						percentchance = GetRandomInt(1, 4);
-				}
-				if(percentchance == 1)
-				{
-					PrintHintText(victim, "You have ninja'd out of the Jockey's grasp");
-					
-					//Cloak
-					SetEntityRenderMode(victim, RenderMode:3);
-					SetEntityRenderColor(victim, 255, 255, 255, RoundToFloor(255 * (1.0 - (g_iSmokeLevel[victim] * 0.19))));
-					//Disable Glow
-					SetEntProp(victim, Prop_Send, "m_iGlowType", 3);
-					SetEntProp(victim, Prop_Send, "m_nGlowRange", 0);
-					SetEntProp(victim, Prop_Send, "m_glowColorOverride", 1);
-					ChangeEdictState(victim, 12);
-					
-					delete g_hTimer_ResetGlow[victim];
-					g_hTimer_ResetGlow[victim] = CreateTimer(5.0, Timer_ResetGlow, victim);
-					
-					if(IsFakeClient(attacker) == false)
-					{
-						PrintHintText(attacker, "%N has ninja'd out of your grasp", victim);
-						SetEntProp(attacker, Prop_Send, "m_iHideHUD", 4);
-						CreateTimer(5.0, TimerGiveHudBack, attacker, TIMER_FLAG_NO_MAPCHANGE); 
-					}
-					
-					RunCheatCommand(attacker, "dismount", "dismount");
-					//WriteParticle(victim, "rochelle_smoke", 0.0, 10.0);
-					CreateRochelleSmoke(victim);
-
-					return Plugin_Continue;
-				}
+				HandleRochelleNinjaEscapeGrasp(attacker, victim);
 			}
 			if(g_iUnfairLevel[attacker] > 0)
 			{
@@ -419,79 +377,23 @@ Action:Event_JockeyRideEnd(Handle:hEvent, const String:strName[], bool:bDontBroa
 
 Action:Event_HunterPounceStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
-	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
-	int distance = GetEventInt(hEvent, "distance");
+	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
+	int iDistance = GetEventInt(hEvent, "distance");
 
-	g_bHunterGrappled[victim] = true;
-	g_iHunterShreddingVictim[attacker] = victim;
+	g_bHunterGrappled[iVictim] = true;
+	g_iHunterShreddingVictim[iAttacker] = iVictim;
 
-	SetClientRenderAndGlowColor(attacker);
-	SetClientRenderAndGlowColor(victim);
+	SetClientRenderAndGlowColor(iAttacker);
+	SetClientRenderAndGlowColor(iVictim);
+
+	if (RunClientChecks(iVictim) == false ||
+		RunClientChecks(iAttacker) == false)
+		return Plugin_Continue;
 	
-	Event_HunterPounceStart_Hunter(attacker, victim, distance);
-
+	Event_HunterPounceStart_Hunter(iAttacker, iVictim, iDistance);
 		
-	//For ROCHELLE ninja break free skills
-	if(g_iSmokeLevel[victim]>0)		
-	{
-		decl percentchance;
-		switch(g_iSmokeLevel[victim])
-		{
-			case 1:
-				percentchance = GetRandomInt(1, 20);
-			case 2:
-				percentchance = GetRandomInt(1, 10);
-			case 3:
-				percentchance = GetRandomInt(1, 7);
-			case 4:
-				percentchance = GetRandomInt(1, 5);
-			case 5:
-				percentchance = GetRandomInt(1, 4);
-		}
-		if(attacker > 0)
-		{
-			if(IsClientInGame(attacker) == true)
-			{
-				if(percentchance == 1)
-				{
-					if(attacker > 0 && victim > 0)
-					{
-						SDKCall(g_hSDK_OnPounceEnd,attacker);
-						//WriteParticle(victim, "rochelle_smoke", 0.0, 10.0);
-						CreateRochelleSmoke(victim);
-						
-						g_bHunterGrappled[victim] = false;
-						g_iHunterShreddingVictim[attacker] = -1;
-						
-						SetClientSpeed(victim);
-						//ResetSurvivorSpeed(victim);
-						
-						PrintHintText(victim, "You have ninja'd out of the Hunter's grasp");
-						
-						//Cloak
-						SetEntityRenderMode(victim, RenderMode:3);
-						SetEntityRenderColor(victim, 255, 255, 255, RoundToFloor(255 * (1.0 - (g_iSmokeLevel[victim] * 0.19))));
-						//Disable Glow
-						SetEntProp(victim, Prop_Send, "m_iGlowType", 3);
-						SetEntProp(victim, Prop_Send, "m_nGlowRange", 0);
-						SetEntProp(victim, Prop_Send, "m_glowColorOverride", 1);
-						ChangeEdictState(victim, 12);
-						
-						delete g_hTimer_ResetGlow[victim];
-						g_hTimer_ResetGlow[victim] = CreateTimer(5.0, Timer_ResetGlow, victim);
-						
-						if(IsFakeClient(attacker) == false)
-						{
-							PrintHintText(attacker, "%N has ninja'd out of your grasp", victim);
-							SetEntProp(attacker, Prop_Send, "m_iHideHUD", 4);
-							CreateTimer(5.0, TimerGiveHudBack, attacker, TIMER_FLAG_NO_MAPCHANGE); 
-						}
-					}
-				}
-			}
-		}
-	}
+	Event_HunterPounceStart_Rochelle(iAttacker, iVictim, iDistance);
 	
 	return Plugin_Continue;
 }

@@ -258,7 +258,7 @@ Action:SmokeMenuDraw(iClient)
 		\n					  Requires Level 11\
 		\n \
 		\nLevel 1:\
-		\n+5%%%% chance to escape a hold per level\
+		\n+3%%%% chance to escape a hold per level\
 		\n \
 		\nOn break for 5 seconds:\
 		\nCloak glow & Hide infected HUD\
@@ -269,7 +269,7 @@ Action:SmokeMenuDraw(iClient)
 		\n					30 second lifetime\
 		\n \
 		\nLevel 1:\
-		\n+40 feet rope distance per level\
+		\n+60 feet rope distance per level\
 		\n \
 		\n \
 		\nSkill Uses:\
@@ -323,7 +323,7 @@ Action:ShadowMenuDraw(iClient)
 		\n+1 use every other level; 12 second duration\
 		\n \
 		\nLevel 1:\
-		\n+10%%%% movement speed per level\
+		\n+6%%%% movement speed per level\
 		\n+30%%%% melee attack speed per level\
 		\n+19%%%% stealth per level\
 		\nHide glow from SI\

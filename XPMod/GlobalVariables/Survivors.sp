@@ -111,6 +111,7 @@ new g_iDropBombsTimes[MAXPLAYERS + 1];
 #define BILL_TEAM_HEAL_HP_AMOUNT                    5   // HP
 
 //Rochelle's Stuff
+#define ROCHELLE_ESCAPE_CHANCE_PER_LEVEL            3
 //For the Infected Detection Device(IDD) hud menu
 new bool:g_bDrawIDD[MAXPLAYERS + 1];
 new bool:g_bClientIDDToggle[MAXPLAYERS + 1];
@@ -140,7 +141,8 @@ new g_iRopeCountDownTimer[MAXPLAYERS + 1];
 new g_iRochelleRopeDummyEntityAttachmentHand[MAXPLAYERS + 1];
 new g_iRochelleRopeDummyEntityAttachmentWall[MAXPLAYERS + 1];
 float g_xyzRopeEndLocation[MAXPLAYERS + 1][3];
-#define ROCHELLE_ROPE_DURATION      900
+#define ROCHELLE_ROPE_DURATION                  900
+#define ROCHELLE_ROPE_MAX_DISTANCE_FT_PER_LEVEL 60.0
 // SCOUT
 #define ROCHELLE_SILENT_SORROW_SCOUT_MAX_HEADSHOT_COUNTER 10
 #define ROCHELLE_SILENT_SORROW_SCOUT_EXTRA_DMG_PER_STACK 35

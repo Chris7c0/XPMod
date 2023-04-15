@@ -192,9 +192,9 @@ OnGameFrame_Rochelle(iClient)
 				float fDistance = GetVectorDistance(clientloc,g_xyzRopeEndLocation[iClient], false);
 				fDistance *= 0.08;
 				//PrintHintText(iClient, "Rope Distance = %f", fDistance);
-				if(fDistance > ((float(g_iSmokeLevel[iClient]) * 40.0) + 5.0))
+				if(fDistance > ((float(g_iSmokeLevel[iClient]) * ROCHELLE_ROPE_MAX_DISTANCE_FT_PER_LEVEL) + 5.0))
 				{
-					PrintHintText(iClient, "Your grappling hook doesnt reach beyond %.0f ft.", (float(g_iSmokeLevel[iClient]) * 40.0));
+					PrintHintText(iClient, "Your grappling hook doesnt reach beyond %.0f ft.", (float(g_iSmokeLevel[iClient]) * ROCHELLE_ROPE_MAX_DISTANCE_FT_PER_LEVEL));
 					velocity[0] *= -0.5;	//Somehow slowly bring to stop to smoothen it
 					velocity[1] *= -0.5;
 					if(g_xyzRopeEndLocation[iClient][2] > (clientloc[2] + 100.0))
@@ -522,56 +522,84 @@ bool Event_TongueGrab_Rochelle(int iAttacker, int iVictim)
 		g_bTalentsConfirmed[iVictim] == false)
 		return false;
 
-	int percentchance;
-	switch(g_iSmokeLevel[iVictim])
-	{
-		case 1:
-			percentchance = GetRandomInt(1, 20);
-		case 2:
-			percentchance = GetRandomInt(1, 10);
-		case 3:
-			percentchance = GetRandomInt(1, 7);
-		case 4:
-			percentchance = GetRandomInt(1, 5);
-		case 5:
-			percentchance = GetRandomInt(1, 4);
-	}
-	if(percentchance == 1)
-	{
-		PrintHintText(iVictim, "You have ninja'd out of the Smoker's grasp");
-		
-		//Cloak
-		SetEntityRenderMode(iVictim, RenderMode:3);
-		SetEntityRenderColor(iVictim, 255, 255, 255, RoundToFloor(255 * (1.0 - (g_iSmokeLevel[iVictim] * 0.19))));
-		//Disable Glow
-		SetEntProp(iVictim, Prop_Send, "m_iGlowType", 3);
-		SetEntProp(iVictim, Prop_Send, "m_nGlowRange", 0);
-		SetEntProp(iVictim, Prop_Send, "m_glowColorOverride", 1);
-		ChangeEdictState(iVictim, 12);
-		
-		delete g_hTimer_ResetGlow[iVictim];
-		g_hTimer_ResetGlow[iVictim] = CreateTimer(5.0, Timer_ResetGlow, iVictim);
-
-		if(IsFakeClient(iAttacker)==false)
-		{
-			PrintHintText(iAttacker, "%N has ninja'd out of your tongue", iVictim);
-			SetEntProp(iAttacker, Prop_Send, "m_iHideHUD", 4);
-			CreateTimer(5.0, TimerGiveHudBack, iAttacker, TIMER_FLAG_NO_MAPCHANGE); 
-		}
-		GetClientAbsOrigin(iVictim, g_xyzOriginalPositionRochelle[iVictim]);
-		g_xyzOriginalPositionRochelle[iVictim][2] += 10;
-		
-		TeleportEntity(iVictim, g_xyzBreakFromSmokerVector, NULL_VECTOR, NULL_VECTOR);
-		
-		CreateTimer(0.1, Timer_BreakFreeOfSmoker, iVictim, TIMER_FLAG_NO_MAPCHANGE);
-
-		SetClientRenderAndGlowColor(iVictim);
-		return true;
-	}
-
-	return false;
+	// Return true if she broke from from grasp
+	// Used to check for Event_TongueGrab for Smoker abilities
+	return HandleRochelleNinjaEscapeGrasp(iAttacker, iVictim);
 }
 
+bool Event_HunterPounceStart_Rochelle(iAttacker, iVictim, distance) {
+	HandleRochelleNinjaEscapeGrasp(iAttacker, iVictim);
+
+	SuppressNeverUsedWarning(distance);
+}
+
+bool HandleRochelleNinjaEscapeGrasp(iAttacker, iVictim) {
+	if (g_iChosenSurvivor[iVictim] != ROCHELLE || 
+		RunClientChecks(iVictim) == false ||
+		RunClientChecks(iAttacker) == false ||
+		g_bTalentsConfirmed[iVictim] == false ||
+		g_iSmokeLevel[iVictim] == 0)
+		return false;
+	
+	// Roll for a chance to escape an infected grapple, if she dont get it then leave
+	if (GetRandomInt(0, 100) >= g_iSmokeLevel[iVictim] * ROCHELLE_ESCAPE_CHANCE_PER_LEVEL)
+		return false;
+	
+	// Handle for each type of infected
+	switch (GetEntProp(iAttacker, Prop_Send, "m_zombieClass"))
+	{
+		case HUNTER:
+		{
+			SDKCall(g_hSDK_OnPounceEnd,iAttacker);
+			g_bHunterGrappled[iVictim] = false;
+			g_iHunterShreddingVictim[iAttacker] = -1;
+			PrintToChat(iVictim, "\x03[XPMod] \x05You have ninja'd out of the Hunter's grasp");
+			PrintHintText(iVictim, "You have ninja'd out of the Hunter's grasp");
+		}
+		case JOCKEY:
+		{
+			RunCheatCommand(iAttacker, "dismount", "dismount");
+			PrintToChat(iVictim, "\x03[XPMod] \x05You have ninja'd out of the Jockey's grasp");
+			PrintHintText(iVictim, "You have ninja'd out of the Jockey's grasp");
+		}
+		case SMOKER:
+		{
+			GetClientAbsOrigin(iVictim, g_xyzOriginalPositionRochelle[iVictim]);
+			g_xyzOriginalPositionRochelle[iVictim][2] += 10;
+			TeleportEntity(iVictim, g_xyzBreakFromSmokerVector, NULL_VECTOR, NULL_VECTOR);
+			CreateTimer(0.1, Timer_BreakFreeOfSmoker, iVictim, TIMER_FLAG_NO_MAPCHANGE);
+
+			PrintToChat(iVictim, "\x03[XPMod] \x05You have ninja'd out of the Smoker's grasp");
+			PrintHintText(iVictim, "You have ninja'd out of the Smoker's grasp");
+		}
+	}
+
+	CreateRochelleSmoke(iVictim);
+	SetClientSpeed(iVictim);
+
+	//Cloak
+	SetEntityRenderMode(iVictim, RenderMode:3);
+	SetEntityRenderColor(iVictim, 255, 255, 255, RoundToFloor(255 * (1.0 - (g_iSmokeLevel[iVictim] * 0.19))));
+	//Disable Glow
+	SetEntProp(iVictim, Prop_Send, "m_iGlowType", 3);
+	SetEntProp(iVictim, Prop_Send, "m_nGlowRange", 0);
+	SetEntProp(iVictim, Prop_Send, "m_glowColorOverride", 1);
+	ChangeEdictState(iVictim, 12);
+	
+	delete g_hTimer_ResetGlow[iVictim];
+	g_hTimer_ResetGlow[iVictim] = CreateTimer(5.0, Timer_ResetGlow, iVictim);
+	
+	// Print message and hide hud for the attacker only if they are an actual player
+	if (IsFakeClient(iAttacker) == false)
+	{
+		SetEntProp(iAttacker, Prop_Send, "m_iHideHUD", 4);
+		CreateTimer(5.0, TimerGiveHudBack, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
+		PrintToChat(iAttacker, "\x03[XPMod] \x05%N has ninja'd out of your grasp", iVictim);
+		PrintHintText(iAttacker, "%N has ninja'd out of your grasp", iVictim);
+	}
+
+	return true;
+}
 
 DetectionHud(iClient)
 {

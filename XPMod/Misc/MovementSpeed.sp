@@ -88,9 +88,9 @@ SetClientSpeedRochelle(iClient, &Float:fSpeed)
 
 	// Silent Assassin
 	if (g_bUsingShadowNinja[iClient])
-		fSpeed += (g_iShadowLevel[iClient] * 0.10);
+		fSpeed += (g_iShadowLevel[iClient] * 0.06);
 
-	//PrintToChat(iClient, "SetClientSpeedRochelle: %f", fSpeed);
+	// PrintToChat(iClient, "SetClientSpeedRochelle: %f", fSpeed);
 }
 
 SetClientSpeedCoach(iClient, &Float:fSpeed)

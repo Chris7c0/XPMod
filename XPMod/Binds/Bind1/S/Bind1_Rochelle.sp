@@ -20,9 +20,9 @@ void Bind1Press_Rochelle(iClient)
 							TR_GetEndPosition(g_xyzRopeEndLocation[iClient]); // Get the end xyz coordinate of where a player is looking
 							float fRopeDistance = GetVectorDistance(xyzClientLocation,g_xyzRopeEndLocation[iClient], false);
 							fRopeDistance *= 0.08;
-							if(fRopeDistance > (float(g_iSmokeLevel[iClient]) * 40.0))
+							if(fRopeDistance > (float(g_iSmokeLevel[iClient]) * ROCHELLE_ROPE_MAX_DISTANCE_FT_PER_LEVEL))
 							{
-								PrintHintText(iClient, "Your smoker tongue rope doesn't reach beyond %.0f ft.", (float(g_iSmokeLevel[iClient]) * 40.0));
+								PrintHintText(iClient, "Your smoker tongue rope doesn't reach beyond %.0f ft.", (float(g_iSmokeLevel[iClient]) * ROCHELLE_ROPE_MAX_DISTANCE_FT_PER_LEVEL));
 								return;
 							}
 
