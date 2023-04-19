@@ -252,7 +252,7 @@ EventsHurt_AttackerRochelle(Handle:hEvent, attacker, victim)
 		}
 		else if (StrContains(strWeaponClass,"sniper_scout",false) != -1)	// Scout
 		{
-			dmg = g_iSilentSorrowHeadshotCounter[attacker] * ROCHELLE_SILENT_SORROW_SCOUT_EXTRA_DMG_PER_STACK;
+			dmg = RoundToNearest(dmg * ROCHELLE_SILENT_SORROW_SCOUT_EXTRA_DMG_PER_STACK * g_iSilentSorrowHeadshotCounter[attacker]);
 			dmg = CalculateDamageTakenForVictimTalents(victim, dmg, strWeaponClass);
 
 			// PrintToChat(attacker, "Doing %d extra scout DMG", dmg);

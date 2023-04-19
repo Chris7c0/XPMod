@@ -223,7 +223,7 @@ Action:SilentMenuDraw(iClient)
 		\n		1 Round Clip\
 		\n \
 		\n Ruger Mini-14 (Hunting Rifle):\
-		\n	+5%%%% Dmg per Stack (+500%%%% Max)    \
+		\n	+5%%%% Dmg per Stack (+500%%%% Max)\
 		\n	Hit: Gain Stacks\
 		\n	Miss: -15 Stacks\
 		\n \
@@ -233,7 +233,7 @@ Action:SilentMenuDraw(iClient)
 		\n	Ignite Enemies\
 		\n \
 		\n Steyr Scout:\
-		\n	+100 Dmg per Headshot (Max 8)\
+		\n	+100 Dmg%%%% per Headshot (Max 8)     \
 		\n	-5 Clip Size\
 		\n ",
 		strStartingNewLines,
