@@ -160,6 +160,8 @@ Action:Timer2SecondGlobalRepeating(Handle:timer, any:data)
 
 				if (g_iGatherLevel[iClient] > 0 && g_bClientIDDToggle[iClient] == true)
 					DetectionHud(iClient);
+
+				HandleRochelleRopeGain(iClient);
 			}
 			
 			if (g_iChosenSurvivor[iClient] == COACH)

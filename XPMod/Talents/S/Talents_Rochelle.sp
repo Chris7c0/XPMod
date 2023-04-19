@@ -27,7 +27,7 @@ TalentsLoad_Rochelle(iClient)
 	{
 		if(g_iSmokeLevel[iClient]>0)
 		{
-			g_iRopeCountDownTimer[iClient] = 0;
+			g_iRochelleRopeDurability[iClient] = ROCHELLE_ROPE_MAX_DURABILITY;
 		}
 	}
 	
@@ -55,11 +55,14 @@ void SetPlayerTalentMaxHealth_Rochelle(int iClient, bool bFillInHealthGap = true
 
 OnGameFrame_Rochelle(iClient)
 {
-	decl buttons;
+	int buttons;
 	if(g_iSniperLevel[iClient] > 0 || g_iSmokeLevel[iClient] > 0 || g_iGatherLevel[iClient] > 0)
 	{
 		buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 	}
+
+	OnGameFrame_HandleNinjaRope(iClient, buttons);
+
 	if(g_iGatherLevel[iClient] > 0)
 	{					
 		if(!(buttons & IN_SPEED) || !(buttons & IN_USE))
@@ -71,6 +74,7 @@ OnGameFrame_Rochelle(iClient)
 			ToggleDetectionHud(iClient);
 		}
 	}
+
 	if(g_iSniperLevel[iClient] > 0)
 	{
 		if(g_bUsingTongueRope[iClient] == false)
@@ -140,132 +144,7 @@ OnGameFrame_Rochelle(iClient)
 			}
 		}
 	}
-	if(g_iSmokeLevel[iClient] > 0)
-	{
-		// Rope when grappled
-		if (g_bUsingTongueRope[iClient] && IsClientGrappled(iClient) == true)
-		{
-			DisableNinjaRope(iClient);
-		}
 
-		// More rope handling
-		if (g_bUsingTongueRope[iClient])
-		{			
-			if(g_bHasDemiGravity[iClient] == false)
-			{
-				decl Float:clientloc[3];
-				GetClientAbsOrigin(iClient,clientloc);
-				if(g_xyzRopeEndLocation[iClient][2] < (clientloc[2] + 50.0))
-					return;																											//Get rid of this return
-				
-				decl Float:velocity[3],Float:velocity2[3];
-				
-				velocity2[0] = (g_xyzRopeEndLocation[iClient][0] - clientloc[0]) * 3.0;
-				velocity2[1] = (g_xyzRopeEndLocation[iClient][1] - clientloc[1]) * 3.0;
-				new Float:y_coord,Float:x_coord;
-				y_coord = velocity2[0]*velocity2[0] + velocity2[1]*velocity2[1];
-				//x_coord=(GetConVarFloat(cvarRopeSpeed)*20.0)/SquareRoot(y_coord);
-				x_coord = (10.0) / (SquareRoot(y_coord));
-				
-				GetEntDataVector(iClient, g_iOffset_VecVelocity, velocity);
-				velocity[0] += velocity2[0] * x_coord;
-				velocity[1] += velocity2[1] * x_coord;
-				
-				if(velocity[0] < 0.0)		//Limit the speed velocity for x and y
-				{
-					if(velocity[0] < -300.0)
-						velocity[0] = -300.0;
-				}
-				else if(velocity[0] > 300.0)
-					velocity[0] = 300.0;
-				if(velocity[1] < 0.0)
-				{
-					if(velocity[1] < -300.0)
-						velocity[1] = -300.0;
-				}
-				else if(velocity[1] > 300.0)
-					velocity[1] = 300.0;
-				
-				velocity[2] = 33.333333;	//This is to counter act the falling rate.
-				
-				//Check the distance
-				float fDistance = GetVectorDistance(clientloc,g_xyzRopeEndLocation[iClient], false);
-				fDistance *= 0.08;
-				//PrintHintText(iClient, "Rope Distance = %f", fDistance);
-				if(fDistance > ((float(g_iSmokeLevel[iClient]) * ROCHELLE_ROPE_MAX_DISTANCE_FT_PER_LEVEL) + 5.0))
-				{
-					PrintHintText(iClient, "Your grappling hook doesnt reach beyond %.0f ft.", (float(g_iSmokeLevel[iClient]) * ROCHELLE_ROPE_MAX_DISTANCE_FT_PER_LEVEL));
-					velocity[0] *= -0.5;	//Somehow slowly bring to stop to smoothen it
-					velocity[1] *= -0.5;
-					if(g_xyzRopeEndLocation[iClient][2] > (clientloc[2] + 100.0))
-						velocity[2] = 175.0;
-				}
-				
-				if(buttons & IN_JUMP)
-				{
-					if(g_xyzRopeEndLocation[iClient][2] > (clientloc[2] + 100.0))
-						velocity[2] = 175.0;
-				}
-				else if(buttons & IN_DUCK)
-				{
-					if(fDistance < ((float(g_iSmokeLevel[iClient])*40.0) + 5.0))
-						velocity[2] = -230.0;
-				}
-				
-				//PrintHintText(iClient, "velocity = %.1f, %.1f, %f      Rope Distance = %.1f", velocity[0], velocity[1], velocity[2], fDistance);
-				TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, velocity);
-				
-				if(g_iRopeCountDownTimer[iClient] == ROCHELLE_ROPE_DURATION - 250)
-					PrintHintText(iClient,"Your about to stretch your SMOKER tongue beyond its breaking point");
-				if(g_iRopeCountDownTimer[iClient] >= ROCHELLE_ROPE_DURATION)
-				{
-					DisableNinjaRope(iClient);
-
-					PrintHintText(iClient,"Your have broken your SMOKER tongue rope");
-				}
-				else
-					g_iRopeCountDownTimer[iClient]++;
-			}
-			else
-			{
-				DisableNinjaRope(iClient);
-			}
-		}
-		else if(g_bUsedTongueRope[iClient]==true)
-		{
-			if(canchangemovement[iClient] == true)
-			{
-				if(g_bIsHighJumping[iClient] == false)
-					if(GetEntityFlags(iClient) & FL_ONGROUND)
-					{
-						SetMoveType(iClient, MOVETYPE_WALK, MOVECOLLIDE_DEFAULT);
-						g_bUsedTongueRope[iClient] = false;
-					}
-			}
-		}
-		if(clienthanging[iClient] == true)
-		{
-			if(buttons & IN_SPEED)
-			{
-
-				RunCheatCommand(iClient, "give", "give health");
-
-				SetPlayerHealth(iClient, preledgehealth[iClient]);
-				if(preledgebuffer[iClient] > 1.1)
-					SetEntDataFloat(iClient,g_iOffset_HealthBuffer, (preledgebuffer[iClient] - 1.0) ,true);
-				else
-					SetEntDataFloat(iClient,g_iOffset_HealthBuffer, 0.0 ,true);
-				
-				g_bIsClientDown[iClient] = false;
-				clienthanging[iClient] = false;
-			}
-		}
-		else
-		{
-			preledgehealth[iClient] = GetClientHealth(iClient);
-			preledgebuffer[iClient] = GetEntDataFloat(iClient,g_iOffset_HealthBuffer);
-		}
-	}
 	if(g_iSilentLevel[iClient] > 0)
 	{
 		buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);

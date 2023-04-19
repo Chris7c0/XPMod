@@ -213,10 +213,28 @@ Action:SilentMenuDraw(iClient)
 	FormatEx(text, sizeof(text), "\
 		%s			Silent Sorrow(Level %d):\
 		\n \
-		\nLevel 1:\
-		\nSniper upgrades every level\
+		\nSniper Weapon Upgrades\
 		\n \
-		\nSee xpmod.net for upgrade details\
+		\n AWP:\
+		\n	+85%%%% Dmg per Level\
+		\n	3 Round Clip\
+		\n	3 SI Kills Gain: Charged Shot:\
+		\n		2000 Dmg\
+		\n		1 Round Clip\
+		\n \
+		\n Ruger Mini-14 (Hunting Rifle):\
+		\n	+5%%%% Dmg per Stack (+500%%%% Max)    \
+		\n	Hit: Gain Stacks\
+		\n	Miss: -15 Stacks\
+		\n \
+		\n H & K (Miliatry Rifle):\
+		\n	+8% Dmg per Level\
+		\n	+6 Clip Size per Level\
+		\n	Ignite Enemies\
+		\n \
+		\n Steyr Scout:\
+		\n	+100 Dmg per Headshot (Max 6)\
+		\n	-5 Clip Size\
 		\n ",
 		strStartingNewLines,
 		g_iSilentLevel[iClient]);
@@ -225,7 +243,7 @@ Action:SilentMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -255,26 +273,19 @@ Action:SmokeMenuDraw(iClient)
 	
 	FormatEx(text, sizeof(text), "\
 		%s				Smoke and Mirrors(Level %d):\
-		\n					  Requires Level 11\
 		\n \
-		\nLevel 1:\
-		\n+3%%%% chance to escape a hold per level\
-		\n \
-		\nOn break for 5 seconds:\
-		\nCloak glow & Hide infected HUD\
-		\n+19%%%% stealth per level\
+		\n +3%%%% Chance to Escape a Hold per Level     \
+		\n On Break: For 5 Seconds:\
+		\n	Cloak Glow & Hide Infected HUD\
+		\n	+19%%%% Stealth per Level\
 		\n \
 		\n \
 		\n					Bind 1: Rope Master\
-		\n					30 second lifetime\
 		\n \
-		\nLevel 1:\
-		\n+60 feet rope distance per level\
-		\n \
-		\n \
-		\nSkill Uses:\
-		\nRope:[JUMP]/[CROUCH] to climb/descend,\
-		\nfall damage immunity\
+		\n 10 Second Max Durability (Regenerates)\
+		\n +60 Feet Rope Distance per Level\
+		\n [JUMP]/[CROUCH] to Climb/Descend\
+		\n Fall Damage Immunity\
 		\n ",
 		strStartingNewLines,
 		g_iSmokeLevel[iClient]);
@@ -283,7 +294,7 @@ Action:SmokeMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -313,16 +324,13 @@ Action:ShadowMenuDraw(iClient)
 	
 	FormatEx(text, sizeof(text), "\
 		%s				Shadow Ninja(Level %d):\
-		\n				  Requires Level 26\
 		\n \
-		\nLevel 1:\
 		\n+2%%%% movement speed per level\
 		\n+5 max health per level\
 		\n \
 		\n				Bind 2: Silent Assassin\
 		\n+1 use every other level; 12 second duration\
 		\n \
-		\nLevel 1:\
 		\n+6%%%% movement speed per level\
 		\n+30%%%% melee attack speed per level\
 		\n+19%%%% stealth per level\
@@ -336,7 +344,7 @@ Action:ShadowMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 

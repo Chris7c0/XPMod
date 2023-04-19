@@ -94,7 +94,7 @@ void ResetClientVariablesForRound(int iClient)
 	g_iStat_ClientDamageToSurvivors[iClient] = 0;
 	g_bCanPlayHeadshotSound[iClient] = true;
 	g_bUsingTongueRope[iClient]=false;
-	g_iRopeCountDownTimer[iClient] = 0;
+	g_iRochelleRopeDurability[iClient] = ROCHELLE_ROPE_MAX_DURABILITY;
 	g_iRochelleRugerHitCounter[iClient] = 0;
 	g_iRochelleRugerStacks[iClient] = 0;
 	g_iRochelleRugerLastHitStackCount[iClient] = 0;

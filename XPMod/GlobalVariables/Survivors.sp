@@ -137,12 +137,14 @@ new Float:g_xyzBreakFromSmokerVector[3];
 // Smoker Tongue Rope
 new bool:g_bUsingTongueRope[MAXPLAYERS + 1];
 new bool:g_bUsedTongueRope[MAXPLAYERS + 1];
-new g_iRopeCountDownTimer[MAXPLAYERS + 1];
+new g_iRochelleRopeDurability[MAXPLAYERS + 1];
 new g_iRochelleRopeDummyEntityAttachmentHand[MAXPLAYERS + 1];
 new g_iRochelleRopeDummyEntityAttachmentWall[MAXPLAYERS + 1];
 float g_xyzRopeEndLocation[MAXPLAYERS + 1][3];
-#define ROCHELLE_ROPE_DURATION                  900
-#define ROCHELLE_ROPE_MAX_DISTANCE_FT_PER_LEVEL 60.0
+#define ROCHELLE_ROPE_MAX_DURABILITY                300     // 30 = 1 second
+#define ROCHELLE_ROPE_DEPLOYMENT_COST               15
+#define ROCHELLE_ROPE_REGEN_PER_2_SEC_TICK          10
+#define ROCHELLE_ROPE_MAX_DISTANCE_FT_PER_LEVEL     60.0
 // SCOUT
 #define ROCHELLE_SILENT_SORROW_SCOUT_MAX_HEADSHOT_COUNTER 10
 #define ROCHELLE_SILENT_SORROW_SCOUT_EXTRA_DMG_PER_STACK 35
