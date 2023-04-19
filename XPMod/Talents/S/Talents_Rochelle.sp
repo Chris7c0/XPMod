@@ -252,8 +252,7 @@ EventsHurt_AttackerRochelle(Handle:hEvent, attacker, victim)
 		}
 		else if (StrContains(strWeaponClass,"sniper_scout",false) != -1)	// Scout
 		{
-			dmg = RoundToNearest( (dmg * (g_iSilentLevel[attacker] * 0.15)) + 
-				(g_iSilentSorrowHeadshotCounter[attacker] * ROCHELLE_SILENT_SORROW_SCOUT_EXTRA_DMG_PER_STACK) );
+			dmg = g_iSilentSorrowHeadshotCounter[attacker] * ROCHELLE_SILENT_SORROW_SCOUT_EXTRA_DMG_PER_STACK;
 			dmg = CalculateDamageTakenForVictimTalents(victim, dmg, strWeaponClass);
 
 			// PrintToChat(attacker, "Doing %d extra scout DMG", dmg);
@@ -262,14 +261,11 @@ EventsHurt_AttackerRochelle(Handle:hEvent, attacker, victim)
 		else if (StrContains(strWeaponClass,"sniper_awp",false) != -1)		// AWP
 		{
 			if (g_bRochelleAWPCharged[attacker] == true)
-			{
 				dmg = ROCHELLE_AWP_CHARGED_SHOT_DAMAGE - dmg;
-			}
 			else
-			{
-				dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.45) );
-				dmg = CalculateDamageTakenForVictimTalents(victim, dmg, strWeaponClass);
-			}
+				dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.85) );
+
+			dmg = CalculateDamageTakenForVictimTalents(victim, dmg, strWeaponClass);
 
 			// PrintToChat(attacker, "Doing %d extra awp DMG", dmg);
 			SetPlayerHealth(victim, hp - dmg);
