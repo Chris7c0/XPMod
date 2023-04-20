@@ -238,6 +238,7 @@ char g_strCurrentMap[32] = "";
 //new bool:g_bRoundStarted = false;
 int g_iRoundCount;
 bool g_bEndOfRound = false;
+bool g_bPlayerLeftStartArea = false;
 
 //Player Switching Teams timer
 bool g_bPlayerInTeamChangeCoolDown[MAXPLAYERS + 1];

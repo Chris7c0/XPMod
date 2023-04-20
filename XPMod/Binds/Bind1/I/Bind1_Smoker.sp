@@ -21,6 +21,12 @@ void Bind1Press_Smoker(iClient)
 		return;
 	}
 
+	if(g_bSmokerSmokeCloudRoundStartWaiting == true)
+	{
+		PrintHintText(iClient, "Wait until Survivors left Safe Area for 30 seconds before using Smoke Cloud");
+		return;
+	}
+
 	if(g_bSmokerSmokeCloudInCooldown == true)
 	{
 		PrintHintText(iClient, "Global cooldown triggered. You must wait to use the Smoke Cloud.");
@@ -36,6 +42,19 @@ void Bind1Press_Smoker(iClient)
 	if (g_iChokingVictim[iClient] > 0)
 	{
 		PrintHintText(iClient, "You cannot turn into smoke while choking a victim");
+		return;
+	}
+
+	// Check if the Smoker can be seen by any survivors
+	bool bCanBeSeen;
+	float fVisibleClientDistance[MAXPLAYERS+1];
+	GetAllVisiblePlayersForClient(iClient, fVisibleClientDistance, TEAM_SURVIVORS);
+	for(int iTarget; iTarget < MaxClients; iTarget++)
+		if(fVisibleClientDistance[iTarget] > 0.0)
+			bCanBeSeen = true;
+	if (bCanBeSeen)
+	{
+		PrintHintText(iClient, "You cannot turn into smoke while visible to survivors");
 		return;
 	}
 
@@ -493,6 +512,12 @@ void SmokerSmokeCloudSpawnCIOnPlayer(int iClient)
 Action TimerResetCanSmokerSmokeCloudSpawnCIOnPlayer(Handle hTimer, int iClient)
 {
 	g_bSmokeCloudVictimCanCISpawnOn[iClient] = true;
+	return Plugin_Stop;
+}
+
+Action TimerAllowSmokersToUseBind1AfterSafeRoomDoorOpened(Handle hTimer, int iClient)
+{
+	g_bSmokerSmokeCloudRoundStartWaiting = false
 	return Plugin_Stop;
 }
 

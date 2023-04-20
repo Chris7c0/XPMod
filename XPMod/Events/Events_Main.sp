@@ -26,6 +26,9 @@ SetupXPMEvents()
 	AddCommandListener(CommandListener_Unpause,	"unpause");
 	//Vote Preventions
 	AddCommandListener(CommandListener_CallVote, "callvote");
+
+	//Misc Events
+	HookEvent("player_left_start_area", Event_PlayerLeftStartArea);
 	
 	//Player Events
 	HookEvent("player_changename", Event_PlayerChangeName);
@@ -291,6 +294,7 @@ Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	//PrintToServer("**************************** FREEZING GAME");
 	g_bGameFrozen = true;
 	g_bPlayerPressedButtonThisRound = false;
+	g_bPlayerLeftStartArea = false;
 	
 	//g_bRoundStarted = true;
 	g_iRoundCount++;
@@ -691,4 +695,26 @@ Action:Event_PlayerShoved(Event event, const char[] name, bool dontBroadcast)
 	// }
 
 	// return Plugin_Continue;
+}
+
+// Triggered when player opens safe room door and walks out
+Action Event_PlayerLeftStartArea(Handle hEvent, const char[] name, bool dontBroadcast)
+{
+	// PrintToServer("Event_PlayerLeftStartArea TRIGGERED");
+
+	if (g_bPlayerLeftStartArea == true || 
+		g_bGameFrozen == true || 
+		g_bEndOfRound == true ||
+		g_bPlayerPressedButtonThisRound == false)
+		return Plugin_Continue;
+
+	g_bPlayerLeftStartArea = true;
+
+	// Smoker global wait on Smoke Cloud until thats triggered after safe room door has been opened
+	CreateTimer(SMOKER_SMOKE_CLOUD_GLOBAL_SAFE_ROOM_WAIT_DURATION, TimerAllowSmokersToUseBind1AfterSafeRoomDoorOpened, _, TIMER_FLAG_NO_MAPCHANGE);
+
+	// PrintToServer("Event_PlayerLeftStartArea");
+	// PrintToChatAll("Event_PlayerLeftStartArea");
+
+	return Plugin_Continue;
 }

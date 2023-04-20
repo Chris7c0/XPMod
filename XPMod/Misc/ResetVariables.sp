@@ -250,6 +250,7 @@ void ResetClientVariablesForRound(int iClient)
 	g_iSmokerSmokeCloudPlayer = -1;
 	g_iSmokerInSmokeCloudLimbo = -1;
 	g_bSmokerSmokeCloudInCooldown = false;
+	g_bSmokerSmokeCloudRoundStartWaiting = true;
 	g_bSmokeCloudVictimCanCISpawnOn[iClient] = true;
 	g_iTarFingerVictimBlindAmount[iClient] = 0;
 	SetSmokerConvarBuffs();

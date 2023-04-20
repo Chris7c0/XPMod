@@ -46,9 +46,10 @@ void OnGameFrame_Smoker(iClient)
 	// 	SetPlayerMoveType(iClient, MOVETYPE_WALK);
 	// }
 
-	// Health Regeneration
+	// Health Regeneration (Only while choking a victim)
 	// Every frame give 1 hp, 30 fps, so 30 hp per second
-	if (GetPlayerHealth(iClient) < SMOKER_STARTING_MAX_HEALTH) // + (g_iSmokerTalent1Level[iClient] * SMOKER_BONUS_MAX_HEALTH_PER_LEVEL))
+	if (g_iChokingVictim[iClient] > 0 &&
+		GetPlayerHealth(iClient) < SMOKER_STARTING_MAX_HEALTH) // + (g_iSmokerTalent1Level[iClient] * SMOKER_BONUS_MAX_HEALTH_PER_LEVEL))
 		SetPlayerHealth(iClient, SMOKER_HEALTH_REGEN_PER_FRAME, true);
 	
 	// if(g_fSmokerNextHealthRegenTime[iClient] > GetGameFrame())
@@ -356,7 +357,7 @@ void SmokerTeleport(iClient)
 	// 	PrintHintText(iClient, "You cannot teleport to this location.");
 	// 	return;
 	// }
-
+	
 	//Get direction in which iClient is facing, to push out from this vector
 	float vDir[3];
 	GetAngleVectors(xyzEyeAngles, vDir, NULL_VECTOR, NULL_VECTOR);
@@ -370,9 +371,9 @@ void SmokerTeleport(iClient)
 	fDistance = GetVectorDistance(xyzOriginalLocation, xyzEndLocation, false);
 	fDistance = fDistance * 0.08;
 
-	if(fDistance > (float(g_iSmokerTalent3Level[iClient]) * 15.0))
+	if(fDistance > (float(g_iSmokerTalent3Level[iClient]) * SMOKER_TELEPORT_MAX_DISTANCE_PER_LEVEL))
 	{
-		PrintHintText(iClient, "You cannot teleport beyond %.0f ft.", (float(g_iSmokerTalent3Level[iClient]) * 15.0));
+		PrintHintText(iClient, "You cannot teleport beyond %.0f ft.", (float(g_iSmokerTalent3Level[iClient]) * SMOKER_TELEPORT_MAX_DISTANCE_PER_LEVEL));
 		return;
 	}
 	
@@ -713,7 +714,8 @@ void OnTakeDamage_SmokerClone(int iEntity, int iAttacker, float fDamage, int iDa
 	GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", xyzLocation);
 
 	// Spawn the Clowns
-	SpawnCIAroundLocation(xyzLocation, SMOKER_DOPPELGANGER_CI_SPAWN_COUNT, UNCOMMON_CI_CLOWN, CI_REALLY_SMALL, ENHANCED_CI_TYPE_RANDOM);
+	SpawnCIAroundLocation(xyzLocation, SMOKER_DOPPELGANGER_CI_SPAWN_COUNT, UNCOMMON_CI_CLOWN, CI_REALLY_BIG, ENHANCED_CI_TYPE_RANDOM);
+	SpawnCIAroundLocation(xyzLocation, 1, UNCOMMON_CI_JIMMY, CI_REALLY_BIG_JIMMY, ENHANCED_CI_TYPE_RANDOM);
 
 	// Play the Sound Effect
 	EmitAmbientSound(SOUND_CLOWN_SHOVE, xyzLocation, iEntity, SNDLEVEL_NORMAL);

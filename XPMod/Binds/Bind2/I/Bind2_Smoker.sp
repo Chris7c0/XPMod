@@ -364,7 +364,12 @@ void SmokerElectrocutePlayerAndChainToOthers(iClient)
 		GetClientEyePosition(g_iChokingVictim[iClient], xyzClientLocation);
 		GetClientEyePosition(iChainVictim, xyzTargetLocation);
 		
+		// Check if they are being blocked by anything like walls or large objects
 		if(IsVisibleTo(xyzClientLocation, xyzTargetLocation) == false)
+			continue;
+
+		// Check the distance is below the maximum distance cut off
+		if (GetVectorDistance(xyzClientLocation, xyzTargetLocation, false) > SMOKER_ELECTORUCTION_MAX_DISTANCE)
 			continue;
 
 		xyzTargetLocation[2] -= 20.0;
@@ -383,7 +388,8 @@ void SmokerElectrocutePlayerAndChainToOthers(iClient)
 					
 		ShowHudOverlayColor(iChainVictim, 255, 255, 255, GetRandomInt(120, 180), 150, FADE_OUT);
 		
-		DealDamage(iChainVictim , iClient, RoundToCeil((g_iSmokerTalent3Level[iClient] * 0.5)));
+		// Using DAMAGETYPE_BLOCK_REVIVING to not screenshake and also allow affected players to jump
+		DealDamage(iChainVictim , iClient, RoundToCeil((g_iSmokerTalent3Level[iClient] * 0.5)), DAMAGETYPE_BLOCK_REVIVING);
 		
 		g_iClientXP[iClient] += 10;
 		CheckLevel(iClient);

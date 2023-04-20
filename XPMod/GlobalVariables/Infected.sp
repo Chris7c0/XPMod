@@ -92,13 +92,13 @@ new ArrayList:g_listEnhancedCIEntities;
 #define SMOKER_COOLDOWN_REDUCTION_EVERY_OTHER_LEVEL     1.0
 // Global Smoker Tongue Buffs
 #define CONVAR_SMOKER_TONGUE_RANGE_DEFAULT              750
-#define CONVAR_SMOKER_TONGUE_RANGE_BUFF_PER_LEVEL       57
+#define CONVAR_SMOKER_TONGUE_RANGE_BUFF_PER_LEVEL       75      // Precalculated based on % of default value
 #define CONVAR_SMOKER_TONGUE_FLY_SPEED_DEFAULT          1000
-#define CONVAR_SMOKER_TONGUE_FLY_SPEED_BUFF_PER_LEVEL   200
+#define CONVAR_SMOKER_TONGUE_FLY_SPEED_BUFF_PER_LEVEL   200     // Precalculated based on % of default value
 #define CONVAR_SMOKER_TONGUE_DRAG_SPEED_DEFAULT         175
-#define CONVAR_SMOKER_TONGUE_DRAG_SPEED_BUFF_PER_LEVEL  27
+#define CONVAR_SMOKER_TONGUE_DRAG_SPEED_BUFF_PER_LEVEL  27      // Precalculated based on % of default value
 #define CONVAR_SMOKER_TONGUE_HEALTH_DEFAULT             100
-#define CONVAR_SMOKER_TONGUE_HEALTH_BUFF_PER_LEVEL      20
+#define CONVAR_SMOKER_TONGUE_HEALTH_BUFF_PER_LEVEL      10      // Precalculated based on % of default value
 new g_iChokingVictim[MAXPLAYERS + 1];
 bool g_bSmokerSmokeScreenOnCooldown[MAXPLAYERS + 1];
 #define SMOKER_SMOKE_VICTIM_DURATION                    15.0
@@ -108,13 +108,14 @@ bool g_bSmokerIsCloaked[MAXPLAYERS + 1];
 bool g_bSmokerVictimGlowDisabled[MAXPLAYERS + 1];
 bool SetMoveTypeBackToNormalOnNextGameFrame[MAXPLAYERS + 1];
 new bool:g_bIsElectrocuting[MAXPLAYERS + 1];
+#define SMOKER_ELECTORUCTION_MAX_DISTANCE               1200.0  // 150ft, Units here divided by 8 is close to number of feet in game
 // new bool:g_bIsTarFingerVictim[MAXPLAYERS + 1];
 #define SMOKER_DOPPELGANGER_MAX_CLONES                  2
 #define SMOKER_DOPPELGANGER_DURATION                    15.0
 #define SMOKER_DOPPELGANGER_REGEN_PERIOD                30.0
 #define SMOKER_DOPPELGANGER_COOLDOWN_PERIOD             0.5
 #define SMOKER_DOPPELGANGER_FADE_IN_PERIOD              2.5
-#define SMOKER_DOPPELGANGER_CI_SPAWN_COUNT              5
+#define SMOKER_DOPPELGANGER_CI_SPAWN_COUNT              4
 float g_fNextSmokerDoppelgangerRegenTime[MAXPLAYERS + 1];
 new g_iSmokerDoppelgangerCount[MAXPLAYERS + 1];
 bool g_bSmokerDoppelgangerCoolingDown[MAXPLAYERS + 1];
@@ -136,6 +137,8 @@ int g_iSmokerSmokeCloudVictimCount;
 int g_iSmokerSmokeCloudTicksPool;
 int g_iSmokerSmokeCloudTicksUsed;
 #define SMOKER_SMOKE_CLOUD_GLOBAL_COOLDOWN_DURATION         180.0
+#define SMOKER_SMOKE_CLOUD_GLOBAL_SAFE_ROOM_WAIT_DURATION   30.0
+bool g_bSmokerSmokeCloudRoundStartWaiting;
 #define SMOKER_SMOKE_CLOUD_TICK_RATE                        0.1
 #define SMOKER_SMOKE_CLOUD_TICK_COUNT_MAX_POOL_SIZE         40000   //Max amount of smoker smoke cloud time
 #define SMOKER_SMOKE_CLOUD_TICK_COUNT_STARTING_POOL         15000   //Determines duration which is Tick Count * Tick Rate / Tick Use Rate
@@ -165,7 +168,8 @@ new g_iTarFingerVictimBlindAmount[MAXPLAYERS + 1];
 #define SMOKER_TAR_FINGERS_BLIND_AMOUNT_INCREMENT           25
 #define SMOKER_TAR_FINGERS_BLIND_AMOUNT_MAX                 255
 //For Teleport
-#define SMOKER_TELEPORT_COOLDOWN_PERIOD             5.0
+#define SMOKER_TELEPORT_COOLDOWN_PERIOD             15.0
+#define SMOKER_TELEPORT_MAX_DISTANCE_PER_LEVEL      10.0
 // new Float:g_fMapsMaxTeleportHeight;
 new g_iSmokerTransparency[MAXPLAYERS + 1];
 new Float:g_fTeleportOriginalPositionX[MAXPLAYERS + 1];

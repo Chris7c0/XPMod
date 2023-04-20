@@ -54,18 +54,18 @@ Action:EnvelopmentMenuDraw(iClient)
 	SetMenuTitle(menu, "\
 		%s  				Rapid Cell Division (Level %d)\
 		\n \
-		\nRegenerate 30 HP per Second\
+		\nWhile Choking a Victim:\
+		\n	- Regenerate 30 HP per Second\
+		\n	- Can Move Slowly\
 		\n \
 		\nReduced Tongue Ability Cooldown\
 		\n	- -1 Second Every Three Levels\
 		\n \
-		\nCan Move Slowly While Choking A Victim\
-		\n \
 		\nWhile Alive as Smoker, All Smokers Receive:\
-		\n	- +7.5%% Increased Tongue Range per Level\
+		\n	- +10%% Increased Tongue Range per Level\
 		\n	- +20%% Increased Tongue Travel Speed per Level    \
 		\n	- +15%% Increased Tongue Drag Speed per Level\
-		\n	- +20%% Increased Tongue Strength per level\
+		\n	- +10%% Increased Tongue Strength per level\
 		\n ",
 		strStartingNewLines,
 		g_iSmokerTalent1Level[iClient]);
@@ -73,7 +73,7 @@ Action:EnvelopmentMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -148,7 +148,7 @@ Action:DirtyMenuDraw(iClient)
 		\n \
 		\n [CLICK ATTACK] Release Tongued Victim\
 		\n \
-		\n [PRESS WALK] Teleport (5 Sec CD)\
+		\n [PRESS WALK] Teleport (15 Sec CD)\
 		\n	- Afterwards Briefly Become Invisible\
 		\n \
 		\n Smoke Cloud Created On Death\
