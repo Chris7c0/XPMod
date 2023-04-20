@@ -100,10 +100,10 @@ Action:NoxiousMenuDraw(iClient)
 		\n \
 		\n When Choking:\
 		\n	Hide Victim Glow\
-		\n	[PRESS WALK] Create Smoke Screen On Victim\
+		\n	[PRESS WALK] Create Smoke On Victim\
 		\n \
 		\n [PRESS RELOAD] Create Doppelganger On Crosshair\
-		\n	Spawns Tiny Clowns If Hit\
+		\n	Spawn Clowns & JumboJimmy If Hit\
 		\n	Regens(Max 2)\
 		\n \
 		\n					Bind 1: Cloud Conversion\
