@@ -98,7 +98,7 @@ new ArrayList:g_listEnhancedCIEntities;
 #define CONVAR_SMOKER_TONGUE_DRAG_SPEED_DEFAULT         175
 #define CONVAR_SMOKER_TONGUE_DRAG_SPEED_BUFF_PER_LEVEL  27      // Precalculated based on % of default value
 #define CONVAR_SMOKER_TONGUE_HEALTH_DEFAULT             100
-#define CONVAR_SMOKER_TONGUE_HEALTH_BUFF_PER_LEVEL      10      // Precalculated based on % of default value
+#define CONVAR_SMOKER_TONGUE_HEALTH_BUFF_PER_LEVEL      20      // Precalculated based on % of default value
 new g_iChokingVictim[MAXPLAYERS + 1];
 bool g_bSmokerSmokeScreenOnCooldown[MAXPLAYERS + 1];
 #define SMOKER_SMOKE_VICTIM_DURATION                    15.0
@@ -168,7 +168,7 @@ new g_iTarFingerVictimBlindAmount[MAXPLAYERS + 1];
 #define SMOKER_TAR_FINGERS_BLIND_AMOUNT_INCREMENT           25
 #define SMOKER_TAR_FINGERS_BLIND_AMOUNT_MAX                 255
 //For Teleport
-#define SMOKER_TELEPORT_COOLDOWN_PERIOD             15.0
+#define SMOKER_TELEPORT_COOLDOWN_PERIOD             10.0
 #define SMOKER_TELEPORT_MAX_DISTANCE_PER_LEVEL      10.0
 // new Float:g_fMapsMaxTeleportHeight;
 new g_iSmokerTransparency[MAXPLAYERS + 1];

@@ -65,7 +65,7 @@ Action:EnvelopmentMenuDraw(iClient)
 		\n	- +10%% Increased Tongue Range per Level\
 		\n	- +20%% Increased Tongue Travel Speed per Level    \
 		\n	- +15%% Increased Tongue Drag Speed per Level\
-		\n	- +10%% Increased Tongue Strength per level\
+		\n	- +20%% Increased Tongue Strength per level\
 		\n ",
 		strStartingNewLines,
 		g_iSmokerTalent1Level[iClient]);
@@ -148,7 +148,7 @@ Action:DirtyMenuDraw(iClient)
 		\n \
 		\n [CLICK ATTACK] Release Tongued Victim\
 		\n \
-		\n [PRESS WALK] Teleport (15 Sec CD)\
+		\n [PRESS WALK] Teleport (10 Sec CD)\
 		\n	- Afterwards Briefly Become Invisible\
 		\n \
 		\n Smoke Cloud Created On Death\

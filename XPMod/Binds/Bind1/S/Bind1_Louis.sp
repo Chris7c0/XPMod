@@ -140,7 +140,7 @@ Action:WarezStationMenuDraw(iClient)
 	AddMenuItem(menu, "option1", "+5% Speed Increase");
 	AddMenuItem(menu, "option2", "+25 HP Max Health");
 	AddMenuItem(menu, "option3", "-25% Team Screen Shake");
-	AddMenuItem(menu, "option4", "+5 Bile Cleansing Kits");
+	AddMenuItem(menu, "option4", "+3 Bile Cleansing Kits");
 	AddMenuItem(menu, "option5", "Receive Medkit + Pills");
 	AddMenuItem(menu, "option6", "Receive Full Ammo");
 	AddMenuItem(menu, "option7", "I'm Feeling Lucky\n ")
@@ -217,7 +217,7 @@ WarezStationMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			}
 			case 3: // Bile Cleansing Kits
 			{
-				g_iBileCleansingKits[iClient] += 5;
+				g_iBileCleansingKits[iClient] += 3;
 				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04+5 Bile Cleansing Kits", iClient);
 				PrintToChat(iClient, "\x03[XPMod] \x04While biled, HOLD USE to use a Bile Cleansing Kit.");
 			}
@@ -344,7 +344,7 @@ ImFeelingLuckyRoll(iClient)
 				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Absolutely Nothing", iClient);
 
 			// Get number of items to destroy, also, cap it to all the items in their inventory
-			int iNumItemsToRemove = GetRandomInt(1, 5);
+			int iNumItemsToRemove = GetRandomInt(1, 3);
 			if (iNumItemsToRemove > iItemCtr)
 				iNumItemsToRemove = iItemCtr;
 
