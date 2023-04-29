@@ -233,7 +233,7 @@ Action:SilentMenuDraw(iClient)
 		\n	Ignite Enemies\
 		\n \
 		\n Steyr Scout:\
-		\n	+100 Dmg%%%% per Headshot (Max 8)     \
+		\n	+100%%%% Dmg per Headshot (Max 8)     \
 		\n	-5 Clip Size\
 		\n ",
 		strStartingNewLines,
