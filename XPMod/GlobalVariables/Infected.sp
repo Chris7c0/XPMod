@@ -389,13 +389,13 @@ new Float:g_fTankHealthPercentage[MAXPLAYERS + 1];
 new g_iTankCharge[MAXPLAYERS + 1];
 new Float:g_xyzClientTankPosition[MAXPLAYERS + 1][3];
 // NecroTanker
-#define TANK_HEALTH_NECROTANKER                     6660
+#define TANK_HEALTH_NECROTANKER                     10000
 #define NECROTANKER_MAX_HEALTH                      13666
 #define NECROTANKER_CONSUME_COMMON_HP               250
 #define NECROTANKER_CONSUME_UNCOMMON_HP             500
 #define NECROTANKER_CONSUME_SI_HP                   1000    //Currently not used
 #define NECROTANKER_MANA_POOL_SIZE                  100
-#define NECROTANKER_MANA_GAIN_PUNCH                 30
+#define NECROTANKER_MANA_GAIN_PUNCH                 40
 #define NECROTANKER_MANA_COST_SUMMON_NORMAL_CI      2
 #define NECROTANKER_MANA_COST_SUMMON_ENHANCED_CI    5
 #define NECROTANKER_MANA_COST_BOOMER_THROW          30
