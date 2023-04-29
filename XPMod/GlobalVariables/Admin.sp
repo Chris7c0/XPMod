@@ -12,7 +12,7 @@ new g_iAdminSelectedSteamID[MAXPLAYERS + 1];
 new g_iAdminSelectedDuration[MAXPLAYERS + 1];
 
 // Recently Disconnected Connected Players
-#define DISCONNECTED_PLAYER_STORAGE_COUNT 100
+#define DISCONNECTED_PLAYER_STORAGE_COUNT 500
 new g_iDisconnectedPlayerCnt;
 char g_strDisconnectedConnectedPlayerNames[DISCONNECTED_PLAYER_STORAGE_COUNT][32];
 char g_strDisconnectedConnectedPlayerSteamID[DISCONNECTED_PLAYER_STORAGE_COUNT][32];
