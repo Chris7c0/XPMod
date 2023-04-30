@@ -96,7 +96,7 @@ Action:ErraticMenuDraw(iClient)
 		\nLevel 1:\
 		\nWhile riding, urinate on your victim, attracting infected\
 		\nDisables survivors cloaking\
-		\n+1%% per level to summon a tank\
+		\nAll Nearby CI Are Upgraded to BIG Enhanced CEDA Workers\
 		\n \
 		\nLevel 10:\
 		\nSummon a horde\
