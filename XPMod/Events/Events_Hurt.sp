@@ -16,15 +16,6 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	// 		GetEntProp(iVictim, Prop_Send, "m_nSolidType"),
 	// 		GetEntProp(iVictim, Prop_Send, "m_usSolidFlags"));
 
-	// Note, this is never going to be called because this is not triggered for CI/UI
-	// // Check if the iVictim is a CI/UI
-	// if (iVictim < 1)
-	// {
-	// 	// No reason to address ci/ui being hurt. For now, its
-	// 	// their death that matters, not hurt.
-	// 	return Plugin_Continue;
-	// }
-
 	// // Testing Damage Here
 	// new dmgHealth  = GetEventInt(hEvent,"dmg_health");
 	// new dmgType = GetEventInt(hEvent, "type");
@@ -59,6 +50,8 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 
 	// Reduce damage for low level human survivor players that are not incaped
 	ReduceDamageTakenForNewPlayers(iVictim, GetEventInt(hEvent, "dmg_health"));
+
+	// PrintToChatAll("%N armor = %d = health = %i health_dmg = %i", iVictim, GetEventFloat(hEvent, "dmg_armor"), GetEventInt(hEvent, "health"), GetEventInt(hEvent, "dmg_health"));
 	
 	EventsHurt_IncreaseCommonInfectedDamage(iAttacker, iVictim);
 
@@ -236,6 +229,7 @@ void EventsHurt_GiveXP(Handle:hEvent, iAttacker, iVictim)
 		IsFakeClient(iAttacker) == false && 
 		iAttacker != iVictim && 
 		g_iClientTeam[iAttacker] == g_iClientTeam[iVictim] &&
+		g_iChosenSurvivor[iAttacker] != NICK && // For Nick's Life Sharing
 		g_iClientXP[iAttacker] > g_iClientPreviousLevelXPAmount[iAttacker])
 	{
 		g_iClientXP[iAttacker] -= 2;

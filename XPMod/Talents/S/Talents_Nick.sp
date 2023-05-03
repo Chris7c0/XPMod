@@ -434,6 +434,10 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 
 	if (g_iEnhancedLevel[iAttacker] > 0 && g_iClientTeam[iVictim] == TEAM_SURVIVORS)
 	{
+		// Check if the victim is another Nick, if so prevent healing
+		if (g_bTalentsConfirmed[iVictim] == true && g_iChosenSurvivor[iVictim] == NICK)
+			return;
+
 		decl String:strCurrentWeapon[32];
 		GetClientWeapon(iAttacker, strCurrentWeapon, sizeof(strCurrentWeapon));
 
@@ -454,6 +458,10 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 					iCurrentVictimMaxHealth - iCurrentVictimHealth;
 				SetPlayerHealth(iAttacker, iCurrentAttackerHealth - NICK_HEAL_MAGNUM_TAKE);
 				SetPlayerHealth(iVictim, iCurrentVictimHealth + iHealAmount);
+
+				// Give XP
+				g_iClientXP[iAttacker] += 3;
+				CheckLevel(iAttacker);
 
 				// Effects
 				WriteParticle(iVictim, "nick_lifesteal_recovery", 0.0, 3.0);
@@ -486,6 +494,10 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 					iCurrentVictimMaxHealth - iCurrentVictimHealth;
 				SetPlayerHealth(iAttacker, iCurrentAttackerHealth - NICK_HEAL_PISTOL_TAKE);
 				SetPlayerHealth(iVictim, iCurrentVictimHealth + iHealAmount);
+
+				// Give XP
+				g_iClientXP[iAttacker] += 2;
+				CheckLevel(iAttacker);
 
 				// Effects
 				WriteParticle(iVictim, "nick_lifesteal_recovery", 0.0, 3.0);

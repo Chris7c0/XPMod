@@ -660,7 +660,7 @@ void ReduceDamageTakenForNewPlayers(int iVictim, int iDmgAmount)
 	// 	SetPlayerHealth(iVictim, hp - 1);
 
 	// PrintToChatAll("%N iCurrentHealth = %i dmg = %i, reduction %i", iVictim, iCurrentHealth, iDmgAmount, iReductionAmount);
-	SetPlayerHealth(iVictim, iCurrentHealth + iReductionAmount);
+	SetPlayerHealth(iVictim, iReductionAmount, true);
 }
 
 // NOTE: This function is for additional damage, not handling the original damage amount
