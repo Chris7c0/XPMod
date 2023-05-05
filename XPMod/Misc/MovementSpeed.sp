@@ -206,7 +206,7 @@ SetClientSpeedNewPlayer(iClient, &Float:fSpeed)
 
 	fSpeed += ( NEW_PLAYER_MAX_MOVEMENT_SPEED * ( 1.0 - (float(g_iClientLevel[iClient]) / 30.0) ) );
 	
-	//PrintToChat(iClient, "SetClientSpeedNewPlayer: %f", fSpeed);
+	// PrintToChatAll("%N: SetClientSpeedNewPlayer: %f", iClient, fSpeed);
 }
 
 

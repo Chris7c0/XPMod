@@ -344,11 +344,16 @@ SetAlpha(target, alpha)
 void HandleBillsTeamHealing(int iClient, int iButtons)
 {
 	if (RunClientChecks(iClient) == false ||
+		g_bTalentsConfirmed[iClient] ==  false ||
 		g_iInspirationalLevel[iClient] < 0 ||
 		!(iButtons & IN_DUCK) ||
 		g_bIsClientDown[iClient] == true ||
 		IsClientGrappled(iClient) == true ||
 		IsPlayerAlive(iClient) == false)
+		return;
+
+	// If Bill has run out of healing pool then return
+	if (g_iBillsTeamHealthPool <= 0)
 		return;
 
 	//This determines the length between each heal
@@ -364,13 +369,32 @@ void HandleBillsTeamHealing(int iClient, int iButtons)
 	int iTargetToHeal = FindClosestSurvivor(iClient, true);
 	if (iTargetToHeal == -1)
 		return;
-	
-	SetPlayerHealth(iTargetToHeal, BILL_TEAM_HEAL_HP_AMOUNT, true);
 
-	// Create the sound and particle effects
 	float xyzClientLocation[3], xyzTargetLocation[3];
 	GetClientEyePosition(iClient, xyzClientLocation);
 	GetClientEyePosition(iTargetToHeal, xyzTargetLocation);
+	if (GetVectorDistance(xyzClientLocation, xyzTargetLocation) > BILL_TEAM_HEAL_MAX_DISTANCE)
+		return;
+	
+	int iCurrentHealth = GetPlayerHealth(iTargetToHeal);
+	int iMaxHealth = GetPlayerMaxHealth(iTargetToHeal);
+
+	if (iCurrentHealth >= iMaxHealth)
+		return;
+
+	int iHealAmount = iMaxHealth - iCurrentHealth > BILL_TEAM_HEAL_HP_AMOUNT ? BILL_TEAM_HEAL_HP_AMOUNT : iMaxHealth - iCurrentHealth;
+
+	// Check that the pool has enough health to heal the full amount, cap if not
+	iHealAmount = iHealAmount > g_iBillsTeamHealthPool ? g_iBillsTeamHealthPool : iHealAmount;
+
+	SetPlayerHealth(iTargetToHeal, iHealAmount, true);
+
+	g_iBillsTeamHealthPool -= iHealAmount;
+
+	// Print health pool message
+	PrintHintText(iClient, "Team Support Health Pool: %i", g_iBillsTeamHealthPool);
+
+	// Create the sound and particle effects
 	xyzClientLocation[2] -= 10.0;
 	xyzTargetLocation[2] -= 10.0;
 	int iRandomSound = GetRandomInt(1, 3);

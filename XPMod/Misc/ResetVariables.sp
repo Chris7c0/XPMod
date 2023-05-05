@@ -107,6 +107,7 @@ void ResetClientVariablesForRound(int iClient)
 	clienthanging[iClient] = false;
 	g_iKitsUsed = 0;
 	g_iBillTeamHealCounter[iClient] = 0;
+	g_iBillsTeamHealthPool = BILL_TEAM_HEAL_HP_POOL;
 	g_iNicksRamboWeaponID[iClient] = 0;
 	g_bNickIsInvisible[iClient] = false;
 	g_bCanDropPoopBomb[iClient] = true;

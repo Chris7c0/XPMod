@@ -631,33 +631,39 @@ void DealDamage(int iVictim, int iAttacker, int iAmount, int iDamageType = DAMAG
 		AcceptEntityInput(entPointHurt, "Kill");
 }
 
-void ReduceDamageTakenForNewPlayers(int iVictim, int iDmgAmount)
+void ReduceDamageTakenForNewPlayers(int iVictim, int iAttacker, int iDmgAmount)
 {
 	// Reduce damage for low level human survivor players that are not incaped
 	if (g_iClientTeam[iVictim] != TEAM_SURVIVORS || 
 		g_iClientLevel[iVictim] == 30 || 
 		RunClientChecks(iVictim) == false ||
-		IsFakeClient(iVictim) || 
+		// IsFakeClient(iVictim) || 
 		IsIncap(iVictim) == true)
 		return;
 
-	new iCurrentHealth = GetPlayerHealth(iVictim);
-	new iReductionAmount = RoundToNearest(( iDmgAmount * ( NEW_PLAYER_MAX_DAMAGE_REDUCTION * (1.0 - (float(g_iClientLevel[iVictim]) / 30.0)) ) ) );
+	// Skip if the attacker is a Nick (could be using pistol healing)
+	if (g_iChosenSurvivor[iAttacker] == NICK &&
+		g_iClientTeam[iAttacker] == TEAM_SURVIVORS &&
+		g_bTalentsConfirmed[iAttacker] == true &&
+		RunClientChecks(iAttacker) == true)
+		return
+
+	// new iCurrentHealth = GetPlayerHealth(iVictim);
+	new iReductionAmount = RoundToFloor(( iDmgAmount * ( NEW_PLAYER_MAX_DAMAGE_REDUCTION * (1.0 - (float(g_iClientLevel[iVictim]) / 30.0)) ) ) );
 	//Ensure at least 1 damage is done
 	if (iReductionAmount >= iDmgAmount)
 		iReductionAmount = iDmgAmount - 1;
-	//Dont take more health
+
+	// There is a cvar called z_hit_from_behind_factor that reduces player damage from CI when hit behind by 50% default
+	// This is problematic here, because the player_hurt event does not have a way of capturing this
+	// The compromise made here is when its an infected common attacking, limit to never give more than half damage - 1 more health
+	// This will make it so that the player always loses at least 1 health when hit by common infected
+	if ( iAttacker <= 0 && iDmgAmount >= 2 && iReductionAmount > (RoundToNearest(iDmgAmount * 0.5) - 1) )
+		iReductionAmount = RoundToNearest(iDmgAmount * 0.5) - 1;
+
+	// Dont take more health
 	if (iReductionAmount < 1)
 		return;
-
-	// new Float:fTempHealth = GetEntDataFloat(iVictim, g_iOffset_HealthBuffer);
-	// if(fTempHealth > 0)
-	// {
-	// 	fTempHealth -= 1.0;
-	// 	SetEntDataFloat(iVictim, g_iOffset_HealthBuffer, fTempHealth ,true);
-	// }
-	// else
-	// 	SetPlayerHealth(iVictim, hp - 1);
 
 	// PrintToChatAll("%N iCurrentHealth = %i dmg = %i, reduction %i", iVictim, iCurrentHealth, iDmgAmount, iReductionAmount);
 	SetPlayerHealth(iVictim, iReductionAmount, true);

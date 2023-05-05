@@ -49,7 +49,7 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	EventsHurt_PlayHeadshotDingSoundForHeadshots(hEvent, iAttacker, iVictim);
 
 	// Reduce damage for low level human survivor players that are not incaped
-	ReduceDamageTakenForNewPlayers(iVictim, GetEventInt(hEvent, "dmg_health"));
+	ReduceDamageTakenForNewPlayers(iVictim, iAttacker, GetEventInt(hEvent, "dmg_health"));
 
 	// PrintToChatAll("%N armor = %d = health = %i health_dmg = %i", iVictim, GetEventFloat(hEvent, "dmg_armor"), GetEventInt(hEvent, "health"), GetEventInt(hEvent, "dmg_health"));
 	

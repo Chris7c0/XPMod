@@ -30,7 +30,7 @@ void Bind1Press_Nick(iClient)
 	WriteParticle(iClient, "nick_bind_gamble", 0.0, 35.0);
 	g_iClientBindUses_1[iClient]++;
 
-	PrintToChatAll("\x03[XPMod] \x04%You have \x05%i \x04gamble%s left.",
+	PrintToChat(iClient, "\x03[XPMod] \x04%You have \x05%i \x04gamble%s left.",
 		3 - g_iClientBindUses_1[iClient],
 		(3 - g_iClientBindUses_1[iClient]) != 1 ? "s" : "");
 }

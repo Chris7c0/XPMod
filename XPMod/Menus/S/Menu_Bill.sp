@@ -68,19 +68,23 @@ Action:InspirationalMenuDraw(iClient)
 		%s				Inspirational Leadership (Level %d)\
 		\n \
 		\n(Team) +10 bonus XP per level for teammates on SI kill\
+		\n \
 		\nHold [CROUCH] to heal closest ally\
-		\n	- Heals %i HP every %i seconds\
+		\n	- Heals %i HP every %i second\
+		\n	- Health Pool of %i HP shared with all Bills\
+		\n	- Maximum distance of 100 ft\
 		\n ",
 		strStartingNewLines,
 		g_iInspirationalLevel[iClient],
 		BILL_TEAM_HEAL_HP_AMOUNT,
-		BILL_TEAM_HEAL_FRAME_COUNTER_REQUIREMENT);
+		BILL_TEAM_HEAL_FRAME_COUNTER_REQUIREMENT,
+		BILL_TEAM_HEAL_HP_POOL);
 	SetMenuTitle(menu, text);
 	
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	
