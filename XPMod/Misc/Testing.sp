@@ -36,6 +36,12 @@ Action:TestFunction1(iClient, args)
 		PrintToChat(iClient, "Player %i, %N", iPlayer, iPlayer);
 	}
 
+	// new Float:xyzClientPosition[3], Float:xyzClientEyeAngles[3];
+	// GetClientAbsOrigin(iClient, xyzClientPosition);
+	// GetClientAbsAngles(iClient,xyzClientEyeAngles); // Get the angle the player is looking
+	// PrintToChat(iClient, "position: %%f %f %f", xyzClientPosition[0], xyzClientPosition[1], xyzClientPosition[2]);
+	// PrintToChat(iClient, "angles: %f %f %f", xyzClientEyeAngles[0], xyzClientEyeAngles[1], xyzClientEyeAngles[2]);
+
 	// SetEntityRenderMode(StringToInt(strArg[0]), RenderMode:3);
 	// SetEntityRenderColor(StringToInt(strArg[0]), 255, 255, 255, RoundToFloor( 255 * (1.0 - StringToFloat(strArg[1])) ) );
 

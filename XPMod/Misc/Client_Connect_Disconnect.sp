@@ -218,6 +218,9 @@ void LoopThroughAllPlayersAndHandleAFKPlayers()
 			g_fLastPlayerLastButtonPressTime[iClient] == 0.0)
 			continue;
 
+		if (IsPlayerAlive(iClient) == false || g_bIsGhost[iClient] == true)
+			continue;
+
 		float fAFKTime = GetGameTime() - g_fLastPlayerLastButtonPressTime[iClient];
 
 		if (fAFKTime >= AFK_IDLE_PLAYER_KICK_WARNING_START_TIME)

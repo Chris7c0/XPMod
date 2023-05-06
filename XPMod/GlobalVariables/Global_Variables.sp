@@ -251,8 +251,8 @@ int g_iUnfreezeNotifyRunTimes = 1;				    // This is for the unfreeze notify run
 
 // AFK Idle Player Handling
 float g_fLastPlayerLastButtonPressTime[MAXPLAYERS + 1];
-#define AFK_IDLE_PLAYER_KICK_WARNING_START_TIME     90
-#define AFK_IDLE_PLAYER_KICK_TIME                   120
+#define AFK_IDLE_PLAYER_KICK_WARNING_START_TIME     120
+#define AFK_IDLE_PLAYER_KICK_TIME                   180
 
 // Binds
 int g_iClientBindUses_1[MAXPLAYERS + 1];
