@@ -346,7 +346,6 @@ void HandleBillsTeamHealing(int iClient, int iButtons)
 	if (RunClientChecks(iClient) == false ||
 		g_bTalentsConfirmed[iClient] ==  false ||
 		g_iInspirationalLevel[iClient] < 0 ||
-		!(iButtons & IN_DUCK) ||
 		g_bIsClientDown[iClient] == true ||
 		IsClientGrappled(iClient) == true ||
 		IsPlayerAlive(iClient) == false)
@@ -357,7 +356,11 @@ void HandleBillsTeamHealing(int iClient, int iButtons)
 		return;
 
 	//This determines the length between each heal
-	g_iBillTeamHealCounter[iClient]++;
+	if ((iButtons & IN_DUCK))
+		g_iBillTeamHealCounter[iClient]++;
+	else
+		g_iBillTeamHealCounter[iClient] = 0;
+
 	// If the length is not long enough then return;
 	if(g_iBillTeamHealCounter[iClient] < BILL_TEAM_HEAL_FRAME_COUNTER_REQUIREMENT * 30) // 30 FPS	
 		return;
@@ -378,11 +381,13 @@ void HandleBillsTeamHealing(int iClient, int iButtons)
 	
 	int iCurrentHealth = GetPlayerHealth(iTargetToHeal);
 	int iMaxHealth = GetPlayerMaxHealth(iTargetToHeal);
+	int iTempHealth = GetSurvivorTempHealth(iTargetToHeal);
 
-	if (iCurrentHealth >= iMaxHealth)
+	if (iCurrentHealth + iTempHealth >= iMaxHealth)
 		return;
 
-	int iHealAmount = iMaxHealth - iCurrentHealth > BILL_TEAM_HEAL_HP_AMOUNT ? BILL_TEAM_HEAL_HP_AMOUNT : iMaxHealth - iCurrentHealth;
+	int iHealAmount = iMaxHealth - iCurrentHealth - iTempHealth > BILL_TEAM_HEAL_HP_AMOUNT ? BILL_TEAM_HEAL_HP_AMOUNT : iMaxHealth - iCurrentHealth - iTempHealth;
+	PrintToChat(iClient, "%i", iHealAmount);
 
 	// Check that the pool has enough health to heal the full amount, cap if not
 	iHealAmount = iHealAmount > g_iBillsTeamHealthPool ? g_iBillsTeamHealthPool : iHealAmount;

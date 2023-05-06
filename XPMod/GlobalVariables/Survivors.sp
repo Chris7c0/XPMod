@@ -9,7 +9,7 @@
 #define NEW_PLAYER_MAX_DAMAGE_REDUCTION     0.50
 // Movement speed buff
 // SpeedBuff = ( NEW_PLAYER_MAX_MOVEMENT_SPEED * ( 1.0 - (float(g_iClientLevel[iClient]) / 30.0) ) );
-#define NEW_PLAYER_MAX_MOVEMENT_SPEED       0.50
+#define NEW_PLAYER_MAX_MOVEMENT_SPEED       0.40
 
 //Loadout Variables
 new String:g_strClientPrimarySlot[32];
@@ -106,7 +106,7 @@ new bool:g_bBillSprinting[MAXPLAYERS + 1];
 new bool:g_bCanDropPoopBomb[MAXPLAYERS + 1];
 new g_iPoopBombOwnerID[MAXENTITIES + 1];
 new g_iDropBombsTimes[MAXPLAYERS + 1];
-#define BILL_TEAM_HEAL_FRAME_COUNTER_REQUIREMENT    1       // Seconds
+#define BILL_TEAM_HEAL_FRAME_COUNTER_REQUIREMENT    2       // Seconds
 #define BILL_TEAM_HEAL_HP_AMOUNT                    10      // HP per tick
 #define BILL_TEAM_HEAL_HP_POOL                      400     // Health Pool for the round shared amongst all Bills
 #define BILL_TEAM_HEAL_MAX_DISTANCE                 800.0    // Precalculated 8 * Ft = value -> 800.0 / 8 = 100 ft
