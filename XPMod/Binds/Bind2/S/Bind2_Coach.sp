@@ -53,3 +53,42 @@ void PrintCoachJetpackFuelGauge(iClient)
     Format(strEntireHintTextString, sizeof(strEntireHintTextString), "CEDA JPack Mk. 6%s\n|%s|", g_bIsJetpackOn[iClient] ? " [Active Flight Mode]": " [Regenerative Mode]", strFuelMeter);
     PrintHintText(iClient, strEntireHintTextString);
 }
+
+void HandleCoachJetPack2SecondTick(int iClient)
+{
+    if (g_iStrongLevel[iClient] == 0)
+        return;
+
+    if(g_bIsJetpackOn[iClient] == true)
+    {
+        // Take away small amount of fuel for running jetpack on idle
+        g_iClientJetpackFuel[iClient]--;
+
+        PrintCoachJetpackFuelGauge(iClient);
+
+        if(g_iClientJetpackFuel[iClient]<0)
+        {
+            CreateTimer(0.5, DeleteParticle, g_iPID_CoachJetpackStream[iClient], TIMER_FLAG_NO_MAPCHANGE);
+            StopSound(iClient, SNDCHAN_AUTO, SOUND_JPHIGHREV);
+            StopSound(iClient, SNDCHAN_AUTO, SOUND_JPIDLEREV);
+            new Float:vec[3];
+            GetClientAbsOrigin(iClient, vec);
+            EmitSoundToAll(SOUND_JPDIE, iClient, SNDCHAN_AUTO,	SNDLEVEL_NORMAL, SND_NOFLAGS, 0.3, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
+            
+            g_bIsJetpackOn[iClient] = false;
+            g_bIsFlyingWithJetpack[iClient] = false;
+            SetMoveType(iClient, MOVETYPE_WALK, MOVECOLLIDE_DEFAULT);
+            g_iClientJetpackFuel[iClient] = 0;
+            PrintCoachJetpackFuelGauge(iClient);
+        }
+    }
+    else if (g_iClientJetpackFuel[iClient] < (g_iStrongLevel[iClient] * COACH_JETPACK_FUEL_PER_LEVEL))
+    {
+        // Jetpack fuel regeneration while jetpack is off
+        g_iClientJetpackFuel[iClient] = g_iClientJetpackFuel[iClient] + COACH_JETPACK_FUEL_REGEN_PER_2_SEC_TICK > (g_iStrongLevel[iClient] * COACH_JETPACK_FUEL_PER_LEVEL) ? 
+            (g_iStrongLevel[iClient] * COACH_JETPACK_FUEL_PER_LEVEL) :
+            g_iClientJetpackFuel[iClient] + COACH_JETPACK_FUEL_REGEN_PER_2_SEC_TICK;
+        
+        PrintCoachJetpackFuelGauge(iClient);
+    }
+}

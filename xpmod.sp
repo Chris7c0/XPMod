@@ -30,7 +30,7 @@
 //                                                                                                             //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define PLUGIN_VERSION "0.8.5.0170"
+#define PLUGIN_VERSION "0.8.5.0171"
 
 #include <sourcemod>
 #include <sdktools>
@@ -88,6 +88,7 @@ public OnPluginStart()
 	//Start the repeating timers
 	CreateTimer(1.0, TimerCheckAndOpenCharacterSelectionMenuForAll, 0, TIMER_REPEAT);
 	CreateTimer(5.0, TimerLogXPMStatsToFile, 0, TIMER_REPEAT);
+	CreateTimer(1.0, Timer1SecondGlobalRepeating, 0, TIMER_REPEAT);
 	CreateTimer(2.0, Timer2SecondGlobalRepeating, 0, TIMER_REPEAT);
 	CreateTimer(1.0, TimerRepeatStoreAllPlayersHealth, 0, TIMER_REPEAT);
 	CreateTimer(0.1, TimerIDD, 0, TIMER_REPEAT);

@@ -2,6 +2,93 @@
 ///////////////////////////////////////////////           TIMERS           ///////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+Action Timer1SecondGlobalRepeating(Handle timer, any data)
+{
+	// Non Client specific Functions
+	LoopThroughAllPlayersAndHandleAFKPlayers();
+
+	// Client specific Functions
+	for(int iClient = 1;iClient <= MaxClients; iClient++)
+	{
+		if (RunClientChecks(iClient)==false || 
+			g_bTalentsConfirmed[iClient] == false ||
+			IsPlayerAlive(iClient) == false)
+			continue;
+		
+		if(g_iClientTeam[iClient] == TEAM_SURVIVORS)
+		{
+			// switch(g_iChosenSurvivor[iClient])
+			// {
+			// 	case BILL:		Handle1SecondClientTimers_Bill(iClient);
+			// 	case ROCHELLE:	Handle1SecondClientTimers_Rochelle(iClient);
+			// 	case COACH:		Handle1SecondClientTimers_Coach(iClient);
+			// 	case ELLIS:		Handle1SecondClientTimers_Ellis(iClient);
+			// 	case NICK:		Handle1SecondClientTimers_Nick(iClient);
+			// 	case LOUIS:		Handle1SecondClientTimers_Louis(iClient);
+			// }
+		}
+		else if(g_iClientTeam[iClient] == TEAM_INFECTED)
+		{
+			switch(g_iInfectedCharacter[iClient])
+			{
+				// case SMOKER:	Handle1SecondClientTimers_Smoker(iClient);
+				// case BOOMER:	Handle1SecondClientTimers_Boomer(iClient);
+				case HUNTER:	Handle1SecondClientTimers_Hunter(iClient);
+				// case SPITTER:	Handle1SecondClientTimers_Spitter(iClient);
+				// case JOCKEY:	Handle1SecondClientTimers_Jockey(iClient);
+				// case CHARGER:	Handle1SecondClientTimers_Charger(iClient);
+			}
+		}
+	}
+
+	
+}
+
+Action Timer2SecondGlobalRepeating(Handle timer, any data)
+{
+	// Non Client specific Functions
+
+
+	// Client specific Functions
+	for(int iClient = 1;iClient <= MaxClients; iClient++)
+	{
+		if (RunClientChecks(iClient)==false || 
+			g_bTalentsConfirmed[iClient] == false ||
+			IsPlayerAlive(iClient) == false)
+			continue;
+		
+		if(g_iClientTeam[iClient] == TEAM_SURVIVORS)
+		{
+			switch(g_iChosenSurvivor[iClient])
+			{
+				// case BILL:		Handle2SecondClientTimers_Bill(iClient);
+				case ROCHELLE:	Handle2SecondClientTimers_Rochelle(iClient);
+				case COACH:		Handle2SecondClientTimers_Coach(iClient);
+				// case ELLIS:		Handle2SecondClientTimers_Ellis(iClient);
+				// case NICK:		Handle2SecondClientTimers_Nick(iClient);
+				// case LOUIS:		Handle2SecondClientTimers_Louis(iClient);
+			}
+		}
+		// else if(g_iClientTeam[iClient] == TEAM_INFECTED)
+		// {
+		// 	switch(g_iInfectedCharacter[iClient])
+		// 	{
+		// 		case SMOKER:	Handle2SecondClientTimers_Smoker(iClient);
+		// 		case BOOMER:	Handle2SecondClientTimers_Boomer(iClient);
+		// 		case HUNTER:	Handle2SecondClientTimers_Hunter(iClient);
+		// 		case SPITTER:	Handle2SecondClientTimers_Spitter(iClient);
+		// 		case JOCKEY:	Handle2SecondClientTimers_Jockey(iClient);
+		// 		case CHARGER:	Handle2SecondClientTimers_Charger(iClient);
+		// 	}
+		// }
+	}
+
+	return Plugin_Continue;
+}
+
+
+
 Action:Timer_ResetGlow(Handle:timer, any:iClient)
 {
 	SetClientRenderAndGlowColor(iClient);
@@ -140,77 +227,6 @@ Action:FreezeColor(Handle:timer, any:iClient)
 	SetEntityRenderColor(iClient, 0, 180, 255, 160);
 	
 	return Plugin_Stop;
-}
-
-Action:Timer2SecondGlobalRepeating(Handle:timer, any:data)
-{
-	for(new iClient = 1;iClient<= MaxClients; iClient++)
-	{
-		if (RunClientChecks(iClient)==false || 
-			g_bTalentsConfirmed[iClient] == false ||
-			IsPlayerAlive(iClient) == false)
-			continue;
-		
-		if (GetClientTeam(iClient)==TEAM_SURVIVORS)
-		{
-			if (g_iChosenSurvivor[iClient] == ROCHELLE)
-			{
-				if (g_iSniperLevel[iClient]==5)
-					SetEntData(iClient,g_iOffset_ShovePenalty,0);
-
-				if (g_iGatherLevel[iClient] > 0 && g_bClientIDDToggle[iClient] == true)
-					DetectionHud(iClient);
-
-				HandleRochelleRopeGain(iClient);
-			}
-			
-			if (g_iChosenSurvivor[iClient] == COACH)
-			{
-				if (g_iHomerunLevel[iClient]==5)
-					SetEntData(iClient,g_iOffset_ShovePenalty,0);
-
-				if (g_iStrongLevel[iClient] > 0)
-				{
-					if(g_bIsJetpackOn[iClient]==true)
-					{
-						// Take away small amount of fuel for running jetpack on idle
-						g_iClientJetpackFuel[iClient]--;
-
-						PrintCoachJetpackFuelGauge(iClient);
-
-						if(g_iClientJetpackFuel[iClient]<0)
-						{
-							CreateTimer(0.5, DeleteParticle, g_iPID_CoachJetpackStream[iClient], TIMER_FLAG_NO_MAPCHANGE);
-							StopSound(iClient, SNDCHAN_AUTO, SOUND_JPHIGHREV);
-							StopSound(iClient, SNDCHAN_AUTO, SOUND_JPIDLEREV);
-							new Float:vec[3];
-							GetClientAbsOrigin(iClient, vec);
-							EmitSoundToAll(SOUND_JPDIE, iClient, SNDCHAN_AUTO,	SNDLEVEL_NORMAL, SND_NOFLAGS, 0.3, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
-							g_bIsJetpackOn[iClient] = false;
-							g_bIsFlyingWithJetpack[iClient] = false;
-							SetMoveType(iClient, MOVETYPE_WALK, MOVECOLLIDE_DEFAULT);
-							g_iClientJetpackFuel[iClient] = 0;
-							PrintCoachJetpackFuelGauge(iClient);
-						}
-					}
-					else if (g_iClientJetpackFuel[iClient] < (g_iStrongLevel[iClient] * COACH_JETPACK_FUEL_PER_LEVEL))
-					{
-						// Jetpack fuel regeneration while jetpack is off
-						g_iClientJetpackFuel[iClient] = g_iClientJetpackFuel[iClient] + COACH_JETPACK_FUEL_REGEN_PER_2_SEC_TICK > (g_iStrongLevel[iClient] * COACH_JETPACK_FUEL_PER_LEVEL) ? 
-							(g_iStrongLevel[iClient] * COACH_JETPACK_FUEL_PER_LEVEL) :
-							g_iClientJetpackFuel[iClient] + COACH_JETPACK_FUEL_REGEN_PER_2_SEC_TICK;
-						
-						PrintCoachJetpackFuelGauge(iClient);
-					}
-				}
-			}
-		}
-
-		// TODO: replace this with a timer later
-		HandleHunterVisibleBloodLustMeterGain(iClient);
-	}
-
-	return Plugin_Continue;
 }
 
 Action:TimerUnfreeze(Handle:timer, any:data)

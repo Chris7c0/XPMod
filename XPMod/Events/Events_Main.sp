@@ -302,7 +302,7 @@ Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	g_bCanSave = true;
 	
 	ResetAllVariablesForRound();
-		
+	
 	return Plugin_Continue;
 }
 
@@ -314,6 +314,9 @@ Action:Event_RoundEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast
 	//g_bRoundStarted = false;
 	g_bEndOfRound = true;
 	g_bPlayerPressedButtonThisRound = false;
+
+	// Stop recording and kicking AFK PLayers until someone moves next round
+	LoopThroughAllPlayersAndSetAFKRecordingTime(true);
 	
 	if(g_bCanSave == true)	//To prevent more than one run at the end of the round
 	{		

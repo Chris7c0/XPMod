@@ -10,6 +10,10 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 	// 	LockPlayerFromAttacking(iClient);
 	// }
 
+	// Set the AFK last button press time
+	if(IsFakeClient(iClient) == false && iButtons)
+		g_fLastPlayerLastButtonPressTime[iClient] = GetGameTime();
+
 	bool bButtonsChanged = false;
 
 	// If the round has not been unfrozen yet, check for input and then start unfreeze timer once input has been done
@@ -18,6 +22,9 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 		g_bPlayerPressedButtonThisRound = true;
 		// PrintToServer("**************************** Setting up unfreeze timer OnPlayerRunCmd");
 		SetupUnfreezeGameTimer(20.0);
+
+		// Set everyones AFK timer to start recording time for kicking idle players
+		LoopThroughAllPlayersAndSetAFKRecordingTime();
 	}
 	
 	// // Get button released 

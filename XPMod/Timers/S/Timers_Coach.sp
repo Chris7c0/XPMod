@@ -1,3 +1,11 @@
+void Handle2SecondClientTimers_Coach(int iClient)
+{
+	if (g_iHomerunLevel[iClient] == 5)
+		SetEntData(iClient, g_iOffset_ShovePenalty,0);
+
+	HandleCoachJetPack2SecondTick(iClient);
+}
+
 Action:TimerStartJetPack(Handle:timer, any:iClient)
 {
 	if(RunClientChecks(iClient)==false || IsPlayerAlive(iClient)==false)

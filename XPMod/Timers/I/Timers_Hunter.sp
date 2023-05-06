@@ -1,24 +1,8 @@
-// Action:TimerHunterPounceDamage(Handle:timer, any:pack)
-// {	
-// 	ResetPack(pack);
-// 	new iVictim = ReadPackCell(pack);
-// 	new iAttacker = ReadPackCell(pack);
-// 	new iDamage = ReadPackCell(pack);
-// 	CloseHandle(pack);
-	
-// 	if (IsClientInGame(iVictim)==false || 
-// 		IsPlayerAlive(iVictim)==false || 
-// 		IsValidEntity(iVictim) == false || 
-// 		g_bGameFrozen == true)
-// 		return Plugin_Stop;
-	
-// 	DealDamage(iVictim, iAttacker, iDamage, DAMAGETYPE_BLOCK_REVIVING);
-	
-// 	if(IsClientInGame(iAttacker) == true && IsPlayerAlive(iAttacker) == true)
-// 		PrintHintText(iAttacker, "You did %d extra pounce damage",  iDamage);
-	
-// 	return Plugin_Stop;
-// }
+
+void Handle1SecondClientTimers_Hunter(int iClient)
+{
+	HandleHunterVisibleBloodLustMeterGain(iClient);
+}
 
 Action TimerHunterBloodLustReset(Handle timer, any iClient)
 {

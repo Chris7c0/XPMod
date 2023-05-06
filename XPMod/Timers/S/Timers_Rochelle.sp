@@ -1,3 +1,13 @@
+void Handle2SecondClientTimers_Rochelle(int iClient)
+{
+	if (g_iSniperLevel[iClient]==5)
+		SetEntData(iClient,g_iOffset_ShovePenalty,0);
+
+	if (g_iGatherLevel[iClient] > 0 && g_bClientIDDToggle[iClient] == true)
+		DetectionHud(iClient);
+
+	HandleRochelleRopeGain(iClient);
+}
 
 Action:Timer_RochelleRugerHitCheck(Handle:timer, any:iClient)
 {

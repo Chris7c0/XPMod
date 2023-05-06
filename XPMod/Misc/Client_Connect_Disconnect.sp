@@ -99,6 +99,9 @@ void HandleClientConnect(int iClient)
 
 		SQLCheckIfUserIsInBanList(iClient);
 		GetUserIDAndToken(iClient);
+
+		// Set the AFK last button press time
+		g_fLastPlayerLastButtonPressTime[iClient] =  GetGameTime();
 	}
 	else	//They were already in game
 	{
@@ -106,6 +109,8 @@ void HandleClientConnect(int iClient)
 			CreateTimer(0.1, TimerChangeSpectator, iClient, TIMER_FLAG_NO_MAPCHANGE);
 		//PrintToChatAll("PCONNECT FULL: %d: %s already in database", iClient, clientname);
 	}
+
+	
 
 	// Close menu panel in case it was glitched out
 	ClosePanel(iClient);
@@ -115,8 +120,13 @@ void HandleClientDisconnect(int iClient)
 {
 	if(iClient	< 1)
 		return;
+	
+	// Reset the AFK last button press
+	g_fLastPlayerLastButtonPressTime[iClient] =  0.0;
+
 	g_bClientSpectating[iClient] = false;
 	g_bSurvivorTalentsGivenThisRound[iClient] = false;
+
 	if(IsFakeClient(iClient)==true)
 	{
 		// PrintToChatAll("Player Disconnect: %i: %N", iClient, iClient);
@@ -196,4 +206,41 @@ void StorePlayerInDisconnectedPlayerList(iClient)
 	// 		g_strDisconnectedConnectedPlayerSteamID[i]);
 	// }
 	// PrintToServer("----------------------------------------\n ");
+}
+
+void LoopThroughAllPlayersAndHandleAFKPlayers()
+{
+	for(new iClient = 1;iClient <= MaxClients; iClient++)
+	{
+		if (RunClientChecks(iClient) == false ||
+			IsFakeClient(iClient) == true ||
+			GetClientTeam(iClient)==TEAM_SPECTATORS ||
+			g_fLastPlayerLastButtonPressTime[iClient] == 0.0)
+			continue;
+
+		float fAFKTime = GetGameTime() - g_fLastPlayerLastButtonPressTime[iClient];
+
+		if (fAFKTime >= AFK_IDLE_PLAYER_KICK_WARNING_START_TIME)
+		{
+			PrintToChat(iClient, "\x04You appear AFK. Move or be kicked in %0.0f seconds!", AFK_IDLE_PLAYER_KICK_TIME - fAFKTime);
+		}
+
+		if (fAFKTime >= AFK_IDLE_PLAYER_KICK_TIME)
+			KickClient(iClient, "You were kicked for being AFK");
+	}
+}
+
+void LoopThroughAllPlayersAndSetAFKRecordingTime(bool bStopRecording=false)
+{
+	float fCurrentGameTime = GetGameTime();
+
+	for(new iClient = 1;iClient <= MaxClients; iClient++)
+	{
+		if (RunClientChecks(iClient) == false ||
+			IsFakeClient(iClient) == true ||
+			GetClientTeam(iClient) == TEAM_SPECTATORS)
+			continue;
+		
+		g_fLastPlayerLastButtonPressTime[iClient] = bStopRecording == false ? fCurrentGameTime : 0.0;
+	}
 }
