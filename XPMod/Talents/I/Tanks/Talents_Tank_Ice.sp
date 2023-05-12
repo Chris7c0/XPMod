@@ -22,7 +22,10 @@ LoadIceTankTalents(iClient)
 	SetConVarInt(FindConVar("z_tank_damage_slow_min_range"), 0);
 	SetConVarInt(FindConVar("z_tank_damage_slow_max_range"), 0);
 
-	// Set Movement Speed	
+	g_bIceTankSliding[iClient] = false;
+	g_bIceTankSlideInCooldown[iClient] = false;
+
+	// Set Movement Speed
 	SetClientSpeed(iClient);
 
 	SetTanksTalentHealth(iClient, TANK_HEALTH_ICE);
@@ -67,6 +70,12 @@ SetClientSpeedTankIce(iClient, &Float:fSpeed)
 	if (g_iTankChosen[iClient] != TANK_ICE)
 		return;
 
+	if (g_bIceTankSliding[iClient] == true)
+	{
+		fSpeed += TANK_ICE_SLIDE_SPEED;
+		return;
+	}
+
 	fSpeed += 0.05;
 }
 
@@ -74,17 +83,41 @@ SetClientSpeedTankIce(iClient, &Float:fSpeed)
 OnGameFrame_Tank_Ice(iClient)
 {
 	//Check to see if the charging has already taken place or depleted
-	if(g_iTankChosen[iClient] == TANK_ICE && g_iIceTankLifePool[iClient] < 1)
+	if(g_iTankChosen[iClient] != TANK_ICE)
 		return;
 	
 	// Check if there are players within the cold slow aura radius
 	CheckForPlayersInIceTanksColdAuraSlowRange(iClient);
 
+	int iButtons;
+	iButtons = GetEntProp(iClient, Prop_Data, "m_nButtons", iButtons);
+	if (g_bIceTankSliding[iClient] == true)
+	{
+
+		if(!(iButtons & IN_SPEED))
+		{
+			g_bIceTankSlideInCooldown[iClient] = true;
+			g_bIceTankSliding[iClient] = false;
+			SetClientSpeed(iClient);
+
+			// Create a timer to reset the cooldown
+			CreateTimer(TANK_ICE_SLIDE_COOLDOWN, TimerResetIceTankSlideCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
+		}
+		
+		// Bleed off health as the Ice Tank is sliding
+		SetPlayerHealth(iClient, -1 * TANK_ICE_SLIDE_LIFE_DECAY, true);
+
+		g_iIceTankLifePool[iClient] += RoundToNearest(TANK_ICE_SLIDE_LIFE_DECAY * 0.5);
+	}
+
+	if (g_iIceTankLifePool[iClient] < 1)
+		return;
+
 	int buttons;
 	buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 	
 	//Check to see if ducking and not attacking before starting the charge
-	if((buttons & IN_DUCK) && !(buttons & IN_ATTACK) && !(buttons & IN_ATTACK2))
+	if((buttons & IN_DUCK) && !(buttons & IN_ATTACK) && !(buttons & IN_ATTACK2) && !(buttons & IN_WALK))
 	{
 		CheckIfTankMovedWhileChargingAndIncrementCharge(iClient);
 
@@ -93,24 +126,37 @@ OnGameFrame_Tank_Ice(iClient)
 			PrintHintText(iClient, "Charging Up Health Regeneration"); 
 		
 		//Charged for long enough, now handle ice tank regen
-		if(g_iTankCharge[iClient] >= 150)
+		if (g_iTankCharge[iClient] >= TANK_ICE_REGEN_START_DURATION_REQUIREMENT)
 		{
 			decl Float:fCurrentTankHealthPercentage;
 			new iCurrentHealth = GetPlayerHealth(iClient);
 			new iCurrentMaxHealth = RoundToNearest(TANK_HEALTH_ICE * g_fTankStartingHealthMultiplier[iClient]);
 			
-			if(g_iIceTankLifePool[iClient] > 0 && iCurrentHealth < iCurrentMaxHealth)
+			if (g_iIceTankLifePool[iClient] > 0 && iCurrentHealth < iCurrentMaxHealth)
 			{
-				if(g_iIceTankLifePool[iClient] > TANK_ICE_REGEN_RATE)
+				// Clamps health to Max Health
+				int iExtraHealth = iCurrentHealth + TANK_ICE_REGEN_RATE > iCurrentMaxHealth ? iCurrentMaxHealth : iCurrentHealth + TANK_ICE_REGEN_RATE;
+				// clamp to g_iIceTankLifePool
+				iExtraHealth = g_iIceTankLifePool[iClient] < TANK_ICE_REGEN_RATE ? g_iIceTankLifePool[iClient] : TANK_ICE_REGEN_RATE;
+				SetPlayerHealth(iClient, iExtraHealth, true);
+				fCurrentTankHealthPercentage = float(iCurrentHealth + iExtraHealth) / float(iCurrentMaxHealth);
+				// Set new Life Pool and clamp to 0
+				g_iIceTankLifePool[iClient] = g_iIceTankLifePool[iClient] - TANK_ICE_REGEN_RATE > 0 ? g_iIceTankLifePool[iClient] - TANK_ICE_REGEN_RATE : 0;
+				
+				if (IsFakeClient(iClient) == false)
 				{
-					new iNewHealth = iCurrentHealth + TANK_ICE_REGEN_RATE > iCurrentMaxHealth ? iCurrentMaxHealth : iCurrentHealth + TANK_ICE_REGEN_RATE;
-					SetPlayerHealth(iClient, iNewHealth);
-					fCurrentTankHealthPercentage = float(iNewHealth) / float(iCurrentMaxHealth);
-					g_iIceTankLifePool[iClient] -= TANK_ICE_REGEN_RATE;
-					
-					if (IsFakeClient(iClient) == false)
+					if (g_iIceTankLifePool[iClient] > 0)
 						PrintHintText(iClient, "Life Pool Remaining: %d", g_iIceTankLifePool[iClient]);
-					
+					else
+						PrintHintText(iClient, "Life Pool Depleted");
+				}
+
+				if (g_iIceTankLifePool[iClient] == 0)
+				{
+					g_bShowingIceSphere[iClient] = false;
+				}
+				else
+				{
 					//Show the ice sphere around the Ice Tank
 					g_bShowingIceSphere[iClient] = true;
 					
@@ -164,18 +210,6 @@ OnGameFrame_Tank_Ice(iClient)
 							CreateTimer(0.1, Timer_FreezePlayerByTank, iVictim, TIMER_FLAG_NO_MAPCHANGE);
 					}
 				}
-				else
-				{
-					new iNewHealth = iCurrentHealth + g_iIceTankLifePool[iClient] > iCurrentMaxHealth ? iCurrentMaxHealth : iCurrentHealth + g_iIceTankLifePool[iClient];
-					SetPlayerHealth(iClient, iNewHealth);
-					fCurrentTankHealthPercentage = float(iCurrentHealth + g_iIceTankLifePool[iClient]) / float(iCurrentMaxHealth);
-					g_iIceTankLifePool[iClient] = 0;
-					
-					if (IsFakeClient(iClient) == false)
-						PrintHintText(iClient, "Life Pool Depleted");
-					
-					g_bShowingIceSphere[iClient] = false;
-				}
 				
 				//Set the color of the tank to match his current health percentage
 				new iGreen	= 20 + RoundToNearest(235 * fCurrentTankHealthPercentage);
@@ -185,14 +219,28 @@ OnGameFrame_Tank_Ice(iClient)
 			}
 		}
 	}
-	else if(g_iTankCharge[iClient] > 0)
+	else if(g_iTankCharge[iClient] > 0 && g_bIceTankSliding[iClient] == false && !(buttons & IN_WALK))
 	{
-		if(g_iTankCharge[iClient] > 31 && IsFakeClient(iClient) == false)
-			PrintHintText(iClient, "Charge Interrupted");
+		// PrintToChatAll("g_iIceTankLifePool[iClient]: %i", g_iIceTankLifePool[iClient]);
+
+		if (g_iIceTankLifePool[iClient] > 0 && 
+			g_iTankCharge[iClient] > 31 && 
+			IsFakeClient(iClient) == false &&
+			IsPlayerAlive(iClient) == true &&
+			GetPlayerHealth(iClient) < RoundToNearest(TANK_HEALTH_ICE * g_fTankStartingHealthMultiplier[iClient]))
+			PrintHintText(iClient, "Health Regeneration Charge Interrupted");
 		
 		g_iTankCharge[iClient] = 0;
 		g_bShowingIceSphere[iClient] = false;
 	}
+}
+
+OnPlayerRunCmd_Tank_Ice(iClient, iButtons)
+{
+	if (g_iTankChosen[iClient] != TANK_ICE)
+		return;
+
+	HandleIceTankSlideRunCommand(iClient, iButtons);
 }
 
 
@@ -209,6 +257,10 @@ EventsHurt_VictimTank_Ice(Handle:hEvent, iAttacker, iVictimTank)
 
 	// Add More Fire Damage
 	HandleFireDamageVictimIceTank(iAttacker, iVictimTank, iDmgHealth, iDmgType);
+
+	// Add More Damage if the Tank is sliding
+	if (g_bIceTankSliding[iVictimTank] == true)
+		SetPlayerHealth(iVictimTank, RoundToNearest(-1.0 * iDmgHealth * TANK_ICE_SLIDE_DAMAGE_RECIEVED_MULTIPLIER) + iDmgHealth, true);
 	
 	fCurrentTankHealthPercentage = float(iCurrentHealth + iDmgHealth) / (TANK_HEALTH_ICE * g_fTankStartingHealthMultiplier[iVictimTank]);
 	
@@ -497,41 +549,46 @@ FreezeEveryoneCloseToExplodingIceTankRock(iRockEntity)
 
 CheckForPlayersInIceTanksColdAuraSlowRange(iTank)
 {
+	// Stop Cold Aura if the player is or has just been ice sliding
+	if (g_bIceTankSliding[iTank] == true ||
+		g_bIceTankSlideInCooldown[iTank] == true)
+		return;
+
 	new Float:xyzTankPosition[3];
 	GetClientEyePosition(iTank, xyzTankPosition);
 
 	for(new iClient=1; iClient <= MaxClients; iClient++)
 	{
-		if(RunClientChecks(iClient) &&
-			IsPlayerAlive(iClient) &&
-			g_iClientTeam[iClient] == TEAM_SURVIVORS)
+		if(RunClientChecks(iClient) == false ||
+			IsPlayerAlive(iClient) == false ||
+			g_iClientTeam[iClient] != TEAM_SURVIVORS)
+			continue;
+
+		// Get the survivor player location
+		new Float:xyzSurvivorPosition[3];
+		GetClientEyePosition(iClient, xyzSurvivorPosition);
+		// Check if player is within the radius to slow
+		// Get the distance
+		new Float:fDistance = GetVectorDistance(xyzSurvivorPosition, xyzTankPosition, false);		
+		//Freeze if they are close enough
+		if (fDistance < TANK_ICE_COLD_SLOW_AURA_RADIUS)
 		{
-			// Get the survivor player location
-			new Float:xyzSurvivorPosition[3];
-			GetClientEyePosition(iClient, xyzSurvivorPosition);
-			// Check if player is within the radius to slow
-			// Get the distance
-			new Float:fDistance = GetVectorDistance(xyzSurvivorPosition, xyzTankPosition, false);		
-			//Freeze if they are close enough
-			if (fDistance < TANK_ICE_COLD_SLOW_AURA_RADIUS)
+			// Get the normalized distance and set their speed to be reduced that factor
+			float fSpeedReductionCalc = (1.0 - (fDistance / TANK_ICE_COLD_SLOW_AURA_RADIUS)) * TANK_ICE_COLD_SLOW_AURA_SPEED_REDUCE_AMOUNT;
+			
+			// Only set a new value if the delta is beyond a threshold
+			if (FloatAbs(fSpeedReductionCalc - g_fIceTankColdAuraSlowSpeedReduction[iClient]) > 0.01)
 			{
-				// Get the normalized distance and set their speed to be reduced that factor
-				float fSpeedReductionCalc = (1.0 - (fDistance / TANK_ICE_COLD_SLOW_AURA_RADIUS)) * TANK_ICE_COLD_SLOW_AURA_SPEED_REDUCE_AMOUNT;
-				
-				// Only set a new value if the delta is beyond a threshold
-				if (FloatAbs(fSpeedReductionCalc - g_fIceTankColdAuraSlowSpeedReduction[iClient]) > 0.01)
-				{
-					g_fIceTankColdAuraSlowSpeedReduction[iClient] = fSpeedReductionCalc;
-					SetClientSpeed(iClient);
-				}
-			}
-			// Reset the value of g_fIceTankColdAuraSlowSpeedReduction if its set and its beyond the distance
-			else if (g_fIceTankColdAuraSlowSpeedReduction[iClient] > 0.0)
-			{
-				// PrintToChatAll("*** RESETTING COLD AURA SPEED %N", iClient);
-				g_fIceTankColdAuraSlowSpeedReduction[iClient] = 0.0;
+				g_fIceTankColdAuraSlowSpeedReduction[iClient] = fSpeedReductionCalc;
 				SetClientSpeed(iClient);
 			}
+		}
+		// Reset the value of g_fIceTankColdAuraSlowSpeedReduction if its set and its beyond the distance
+		else if (g_fIceTankColdAuraSlowSpeedReduction[iClient] > 0.0)
+		{
+			// PrintToChatAll("*** RESETTING COLD AURA SPEED %N", iClient);
+			g_fIceTankColdAuraSlowSpeedReduction[iClient] = 0.0;
+			SetClientSpeed(iClient);
 		}
 	}
 }
@@ -550,4 +607,31 @@ ResetAllPlayersInIceTanksColdAuraSlowRange()
 			g_iClientTeam[iClient] == TEAM_SURVIVORS)
 			SetClientSpeed(iClient);
 	}
+}
+
+HandleIceTankSlideRunCommand(iClient, iButtons)
+{
+	if (!(iButtons & IN_SPEED))
+		return;
+
+	if (g_bIceTankSlideInCooldown[iClient] == true)
+	{
+		PrintHintText(iClient, "Ice Slide is in cooldown");
+		return;
+	}
+	
+	if (g_iTankCharge[iClient] > 0 && g_iIceTankLifePool[iClient] > 0)
+	{
+		PrintHintText(iClient, "Cannot use Ice Slide while regenerating health");
+		return;
+	}
+	
+	g_bIceTankSliding[iClient] = true;
+	SetClientSpeed(iClient);
+}
+
+Action TimerResetIceTankSlideCooldown(Handle timer, int iClient)
+{
+	g_bIceTankSlideInCooldown[iClient] = false;
+	return Plugin_Stop;
 }

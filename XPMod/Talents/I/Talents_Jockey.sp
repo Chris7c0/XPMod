@@ -98,6 +98,8 @@ EventsHurt_AttackerJockey(Handle:hEvent, attacker, victim)
 				new hp = GetPlayerHealth(victim);
 				if(hp > dmg)
 					DealDamage(victim, attacker, dmg);
+
+				// PrintToChat(attacker, "dmg");
 				//hp = GetPlayerHealth(victim);
 				//PrintToChat(attacker, "    post hp = %d riding",hp);
 			}

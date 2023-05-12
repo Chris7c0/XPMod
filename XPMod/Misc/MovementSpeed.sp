@@ -1,4 +1,4 @@
-// Calculatet player movement speed given all values
+// Calculate player movement speed given all values
 SetClientSpeed(iClient)
 {
 	if (RunClientChecks(iClient) == false || 

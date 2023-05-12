@@ -156,7 +156,9 @@ new String:INFECTED_NAME[][] =          {"",
 #define MOVECOLLIDE_COUNT       4	//Number of different movecollides
 // Movement Types
 #define MOVETYPE_WALK 			2
+#define MOVETYPE_FLY 	        4
 #define MOVETYPE_FLYGRAVITY 	5
+#define MOVETYPE_VPHYSICS 	    6
 #define MOVETYPE_PUSH           7
 #define MOVETYPE_NOCLIP         8
 // Solid Types

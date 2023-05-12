@@ -20,9 +20,10 @@ Action:TankMenuDrawIce(iClient)
         \n - 33%% Chance To Freeze Survivors On Punch\
         \n \
         \n Active Abilities\
-        \n - [Hold CROUCH & Do Not Move] Regenerates Health\
-        \n    - Freezes Survivors Inside The Blizzard Storm\
-        \n - Rock Throw Freezes Survivors (No Cooldown)\
+        \n - [Hold CROUCH & Don't Move] Regens HP\
+        \n    - Freezes Survivors In Blizzard Storm\
+		\n - Hold [WALK] to Ice Slide\
+        \n - Rock Throw Freezes Survivors(No CD)\
         \n ",
 		strStartingNewLines,
         TANK_HEALTH_ICE);
@@ -30,7 +31,7 @@ Action:TankMenuDrawIce(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 

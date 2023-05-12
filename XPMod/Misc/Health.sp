@@ -52,6 +52,10 @@ bool SetPlayerHealth(int iClient, int iHealthAmount, bool bAdditive = false, boo
 		iHealthAmount > iMaxHealth ? iMaxHealth : 
 		iHealthAmount < 0 ? 0 : 
 		iHealthAmount);
+
+	// This is required for when the player gets to 0 health and they dont trigger death
+	if (iHealthAmount <= 0)
+		DealDamage(iClient, iClient, 1);
 	
 	HandlePostSetPlayerHealth(iClient);
 

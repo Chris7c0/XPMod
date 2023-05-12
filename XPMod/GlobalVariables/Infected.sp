@@ -369,6 +369,7 @@ new Float:g_fFireTankExtraSpeed[MAXPLAYERS + 1];
 // Ice Tank
 #define TANK_HEALTH_ICE                                 14000
 #define TANK_ICE_REGEN_RATE                             40
+#define TANK_ICE_REGEN_START_DURATION_REQUIREMENT       90
 #define TANK_FIRE_DAMAGE_IN_FIRE                        350
 #define TANK_FIRE_DAMAGE_FIRE_BULLETS_ADD_MULTIPLIER    1.5     // Adds this multiplier value to the damage
 #define TANK_ICE_FREEZE_DURATION_PUNCH                  5.0
@@ -379,15 +380,21 @@ new Float:g_fFireTankExtraSpeed[MAXPLAYERS + 1];
 #define TANK_ICE_COLD_SLOW_AURA_RADIUS                  400.0
 #define TANK_ICE_COLD_SLOW_AURA_SPEED_REDUCE_AMOUNT     0.75    // This will set their speed to 1.0 - this speed reduce amount
 #define TANK_ICE_COLD_SLOW_AURA_HIT_DISABLE_DURATION    5.0     // The amount of time to disable the cold aura
+#define TANK_ICE_SLIDE_SPEED                            5.0
+#define TANK_ICE_SLIDE_LIFE_DECAY                       33      // Precalculated Life lost per server tick (30ticks/s)
+#define TANK_ICE_SLIDE_COOLDOWN                         10.0    // Cooldown after using slide
+#define TANK_ICE_SLIDE_DAMAGE_RECIEVED_MULTIPLIER       3       // While Ice Sliding, the damage mulitplier the Ice Tank Gets
 new g_iIceTankLifePool[MAXPLAYERS + 1];
 bool g_bShowingIceSphere[MAXPLAYERS + 1];
 bool g_bFrozenByTank[MAXPLAYERS + 1];
 bool g_bBlockTankFreezing[MAXPLAYERS + 1];
 float g_fIceTankColdAuraSlowSpeedReduction[MAXPLAYERS + 1];
 bool g_bIceTankColdAuraDisabled[MAXPLAYERS + 1];
-new Float:g_fTankHealthPercentage[MAXPLAYERS + 1];
+float g_fTankHealthPercentage[MAXPLAYERS + 1];
 new g_iTankCharge[MAXPLAYERS + 1];
-new Float:g_xyzClientTankPosition[MAXPLAYERS + 1][3];
+float g_xyzClientTankPosition[MAXPLAYERS + 1][3];
+bool g_bIceTankSliding[MAXPLAYERS + 1];
+bool g_bIceTankSlideInCooldown[MAXPLAYERS + 1];
 // NecroTanker
 #define TANK_HEALTH_NECROTANKER                     10000
 #define NECROTANKER_MAX_HEALTH                      13666

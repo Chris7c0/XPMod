@@ -36,6 +36,8 @@ Action:TestFunction1(iClient, args)
 		PrintToChat(iClient, "Player %i, %N", iPlayer, iPlayer);
 	}
 
+	SetPlayerHealth(iClient, -1000, true);
+
 	// new Float:xyzClientPosition[3], Float:xyzClientEyeAngles[3];
 	// GetClientAbsOrigin(iClient, xyzClientPosition);
 	// GetClientAbsAngles(iClient,xyzClientEyeAngles); // Get the angle the player is looking
