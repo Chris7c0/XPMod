@@ -292,8 +292,11 @@ SetClientSpeedJockey(iClient, &Float:fSpeed)
 	
 	if (g_iUnfairLevel[iClient] > 0)
 		fSpeed += (g_iUnfairLevel[iClient] * 0.07);
+
+	if (g_bHasSuperJockeySpeed[iClient] == true)
+		fSpeed += (g_iUnfairLevel[iClient] * 0.03);
 	
-	//PrintToChat(iClient, "SetClientSpeedJockey: %f", fSpeed);
+	// PrintToChat(iClient, "SetClientSpeedJockey: %f", fSpeed);
 }
 
 SetClientSpeedCharger(iClient, &Float:fSpeed)

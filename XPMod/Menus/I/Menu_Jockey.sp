@@ -89,6 +89,11 @@ Action:ErraticMenuDraw(iClient)
 		\n+1 riding damage every 3 levels\
 		\n+3%% riding speed per level\
 		\n \
+		\n Drag Race:\
+		\n	- Drag Victims for Tiered Rewards\
+		\n	- Tier 1: 50 Ft.\
+		\n	- Tier 2: 100 Ft.\
+		\n	- Tier 3: 150 Ft.\
 		\n \
 		\n						  Bind 1: Golden Shower\
 		\n							 		3 uses\
@@ -107,7 +112,7 @@ Action:ErraticMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 

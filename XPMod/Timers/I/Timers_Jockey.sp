@@ -1,3 +1,9 @@
+Handle1SecondClientTimers_Jockey(iClient)
+{
+	CheckDistanceRidenAndPrintMessage(iClient);
+}
+
+
 Action:TimerJumpFurther(Handle:timer, any:iClient)
 {
 	decl Float:velocity[3];

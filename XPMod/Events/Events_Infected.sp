@@ -281,70 +281,18 @@ Action:Event_ChokeStart(Handle:hEvent, const String:strName[], bool:bDontBroadca
 
 Action:Event_JockeyRide(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 {
-	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
-	new	classnum = GetEntProp(attacker, Prop_Send, "m_zombieClass");
-	
-	g_bJockeyIsRiding[attacker] = true;
-	g_bJockeyGrappled[victim] = true;
-	g_iJockeysVictim[attacker] = victim;
-	SetClientRenderAndGlowColor(victim);
+	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
+	new	iClassNum = GetEntProp(iAttacker, Prop_Send, "m_zombieClass");
 
-	GiveClientXP(attacker, 50, g_iSprite_50XP_SI, victim, "Grappled A Survivor.");
-	
-	if(classnum == JOCKEY)	//If the attacker truely is the JOCKEY(this function is called for more than just JOCKEY for some reason)
-	{
-		g_iJockeyVictim[attacker] = victim;
-		if(g_iClientTeam[victim] == TEAM_SURVIVORS)
-		{
-			if(g_iStrongLevel[victim] > 0)
-			{
-				g_fJockeyRideSpeed[victim] = 0.0;
-				SetClientSpeed(victim);
-			}
-			else if(g_iErraticLevel[attacker] > 0)
-			{
-				//SetEntDataFloat(victim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ((1.0 + (g_iErraticLevel[attacker] * 0.03)) - ((g_iStrongLevel[victim] * 0.2) + ((g_iErraticLevel[attacker] * 0.03) * (g_iStrongLevel[victim] * 0.2)))), true);
-				//PrintToChatAll("JOCKEY RIDESPEED SET: %f", ( 1.0 - (g_iStrongLevel[victim] * 0.2) + (g_iErraticLevel[attacker] * 0.03)) );
-				//SetEntDataFloat(victim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ( 1.0 - (g_iStrongLevel[victim] * 0.2) + (g_iErraticLevel[attacker] * 0.03) ), true);
-				g_fJockeyRideSpeed[victim] = 1.0 + (g_iErraticLevel[attacker] * 0.03);
-				SetClientSpeed(victim);
-			}
-			else
-			{
-				g_fJockeyRideSpeed[victim] = 1.0;
-				SetClientSpeed(victim);
-			}
+	if (iClassNum != JOCKEY)	//If the attacker truely is the JOCKEY(this function is called for more than just JOCKEY for some reason)
+		return Plugin_Continue;
 
-			if (g_iSmokeLevel[victim] > 0)
-			{
-				HandleRochelleNinjaEscapeGrasp(attacker, victim);
-			}
-			if(g_iUnfairLevel[attacker] > 0)
-			{
-				new iReserveAmmoDropChance = GetRandomInt(1, 10);
-				if(iReserveAmmoDropChance <= g_iUnfairLevel[attacker])
-				{
-					StoreCurrentPrimaryWeapon(victim);
-					new String:strCurrentWeapon[32];
-					GetClientWeapon(victim, strCurrentWeapon, sizeof(strCurrentWeapon));
-					if (StrEqual(strCurrentWeapon, "weapon_melee", false) == false && 
-						StrEqual(strCurrentWeapon, "weapon_pistol", false) == false &&
-						StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == false && 
-						g_iOffset_Ammo[victim] > 0 &&
-						g_iAmmoOffset[victim] > 0 &&
-						g_iReserveAmmo[victim] > 0)
-					{
-						//PrintToChatAll("Reserve ammo was %i ...", g_iReserveAmmo[victim]);
-						//g_iReserveAmmo[victim] = (g_iReserveAmmo[victim] / 2)
-						//PrintToChatAll("Is this a float = %i", g_iReserveAmmo[victim]);
-						SetEntData(victim, g_iOffset_Ammo[victim] + g_iAmmoOffset[victim], (g_iReserveAmmo[victim] / 2));
-						//PrintToChatAll("... and is now %i", GetEntData(victim, g_iOffset_Ammo[victim] + g_iAmmoOffset[victim]));
-					}
-				}
-			}
-		}
-	}
+	// Rochelle's ninja escape
+	if (g_iSmokeLevel[iVictim] > 0)
+		HandleRochelleNinjaEscapeGrasp(iAttacker, iVictim);
+	
+	Event_JockeyRide_Jockey(iAttacker, iVictim);
 	
 	return Plugin_Continue;
 }
@@ -354,6 +302,8 @@ Action:Event_JockeyRideEnd(Handle:hEvent, const String:strName[], bool:bDontBroa
 {
 	new rider = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
+
+	HandleDragRaceRewards(rider, victim);
 
 	if(g_iMutatedLevel[rider] > 0 && RunClientChecks(rider)  == true && IsPlayerAlive(rider) == true)
 		CreateTimer(1.0, TimerSetJockeyCooldown, rider, TIMER_FLAG_NO_MAPCHANGE);

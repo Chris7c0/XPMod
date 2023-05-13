@@ -290,10 +290,14 @@ bool:g_bCanJockeyCloak[MAXPLAYERS + 1] = {true, ...};
 bool:g_bJockeyIsRiding[MAXPLAYERS + 1] = {false, ...};
 g_iJockeysVictim[MAXPLAYERS + 1];
 bool:g_bCanJockeyJump[MAXPLAYERS + 1] = {false, ...};
+float g_xyzJockeyStartRideLocation[MAXPLAYERS + 1][3];
+float g_fJockeyRideDistance[MAXPLAYERS + 1];
 Float:g_fJockeyRideSpeed[MAXPLAYERS + 1] = {1.0, ...};
 Float:g_fJockeyRideSpeedVanishingActBoost[MAXPLAYERS + 1] = {0.0, ...};
 #define JOCKEY_PISS_CONVERSION_RADIUS           200.0
 //#define JOCKEY_PISS_SPAWN_JIMMY_CHANCE       10 //%
+new g_fJockeyNextSpawnUpgradeLevel[MAXPLAYERS + 1];
+bool g_bHasSuperJockeySpeed[MAXPLAYERS + 1];
 
 
 // Charger

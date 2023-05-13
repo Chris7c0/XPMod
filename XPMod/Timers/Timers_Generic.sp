@@ -36,7 +36,7 @@ Action Timer1SecondGlobalRepeating(Handle timer, any data)
 				// case BOOMER:	Handle1SecondClientTimers_Boomer(iClient);
 				case HUNTER:	Handle1SecondClientTimers_Hunter(iClient);
 				// case SPITTER:	Handle1SecondClientTimers_Spitter(iClient);
-				// case JOCKEY:	Handle1SecondClientTimers_Jockey(iClient);
+				case JOCKEY:	Handle1SecondClientTimers_Jockey(iClient);
 				// case CHARGER:	Handle1SecondClientTimers_Charger(iClient);
 			}
 		}
