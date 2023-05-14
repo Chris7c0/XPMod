@@ -21,22 +21,24 @@ new g_iXPDisplayMode[MAXPLAYERS + 1];						//Default 0 = Show Sprites; 1 = Show 
 
 
 // ConVars
-new Handle:g_hCVar_DebugMode                    = INVALID_HANDLE;
-new g_iDebugMode                                = DEBUG_MODE_OFF;
+ConVar g_hCVar_DebugModeLogLevel;
+new g_iDebugModeLogLevel = DEBUG_MODE_OFF;
+ConVar g_hCVar_DebugModeEnabled;
+ConVar g_hCVar_IdleKickEnabled;
 // XP Loadout Use and Gain Enabled
-new Handle:g_hCVar_XPSaveForHighLevelsEnabled   = INVALID_HANDLE;
-new XPSaveForHighLevelsEnabled                      = true;
+ConVar g_hCVar_XPSaveForHighLevelsEnabled;
+new XPSaveForHighLevelsEnabled = true;
 // Talent selection mode website or through in game menu
-//new Handle:g_hCVar_TalentSelectionMode        = INVALID_HANDLE;
+// ConVar g_hCVar_TalentSelectionMode ;
 //new g_iTalentSelectionMode                    = CONVAR_WEBSITE;
 // Default Classes
-new Handle:g_hCVar_DefaultSurvivor              = INVALID_HANDLE;
+ConVar g_hCVar_DefaultSurvivor;
 new g_iDefaultSurvivor                          = BILL;
-new Handle:g_hCVar_DefaultInfecttedSlot1        = INVALID_HANDLE;
+ConVar g_hCVar_DefaultInfecttedSlot1;
 new g_iDefaultInfectedSlot1                     = BOOMER;
-new Handle:g_hCVar_DefaultInfecttedSlot2        = INVALID_HANDLE;
+ConVar g_hCVar_DefaultInfecttedSlot2;
 new g_iDefaultInfectedSlot2                     = JOCKEY;
-new Handle:g_hCVar_DefaultInfecttedSlot3        = INVALID_HANDLE;
+ConVar g_hCVar_DefaultInfecttedSlot3;
 new g_iDefaultInfectedSlot3                     = SMOKER;
 
 

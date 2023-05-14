@@ -350,7 +350,7 @@ bool SetClientSpeedOverrides(iClient, &Float:fSpeed)
 	if(g_iClientTeam[iClient] == TEAM_INFECTED &&
 		GetEntData(iClient, g_iOffset_IsGhost, 1) == 1)
 	{
-		fSpeed = 1.75;
+		fSpeed = MOVEMENT_SPEED_INFECTED_GHOSTS;
 		return true;
 	}
 

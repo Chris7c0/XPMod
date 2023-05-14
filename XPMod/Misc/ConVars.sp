@@ -13,9 +13,17 @@ SetupXPMConVars()
 	CreateConVar("xpm_version", PLUGIN_VERSION, "XPMod Version loaded", FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY|FCVAR_DONTRECORD);
 	CreateConVar("xpmod_version", PLUGIN_VERSION, "XPMod Version loaded", FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY|FCVAR_DONTRECORD);
 
-	// Debug Mode
-	g_hCVar_DebugMode = CreateConVar("xpm_debug", "0", "Sets the level of debug logging [0 = DEBUG_MODE_OFF, 1 = DEBUG_MODE_ERRORS, 2 = DEBUG_MODE_TIMERS, 3 = DEBUG_MODE_VERBOSE, 4 = DEBUG_MODE_EVERYTHING, -1 = DEBUG_MODE_TESTING]", 0, true, -1.0, true, 4.0);
-	HookConVarChange(g_hCVar_DebugMode, CVarChange_DebugMode);
+	// Debug Mode Logging
+	g_hCVar_DebugModeLogLevel = CreateConVar("xpm_debug_logging", "0", "Sets the level of debug logging [0 = DEBUG_MODE_OFF, 1 = DEBUG_MODE_ERRORS, 2 = DEBUG_MODE_TIMERS, 3 = DEBUG_MODE_VERBOSE, 4 = DEBUG_MODE_EVERYTHING, -1 = DEBUG_MODE_TESTING]", 0, true, -1.0, true, 4.0);
+	HookConVarChange(g_hCVar_DebugModeLogLevel, CVarChange_DebugModeLogLevel);
+
+	// XPMod Debug Mode
+	g_hCVar_DebugModeEnabled = CreateConVar("xpm_debug_mode_enabled", "0", "Sets if xpmod_debug_mode is on [0 = Debug Mode DISABLED, 1 = Debug mode ENABLED]", 0, true, -1.0, true, 4.0);
+	HookConVarChange(g_hCVar_DebugModeEnabled, CVarChange_DebugModeEnabled);
+
+	// AFK Idle Kicking
+	g_hCVar_IdleKickEnabled = CreateConVar("xpm_idle_kick_enabled", "1", "Sets if the AFK Idle Kicking feature is on [0 = Idle Kicking DISABLED, 1 = Idle Kicking ENABLED]", 1, true, -1.0, true, 4.0);
+	HookConVarChange(g_hCVar_IdleKickEnabled, CVarChange_IdleKickEnabled);
 
 	// XP Saving for high XP players
 	g_hCVar_XPSaveForHighLevelsEnabled = CreateConVar("xpm_xp_save_enabled", "1", "Sets if XP will be saved for players above 2x Max Level XP amount [0 = XP Saving DISABLED, 1 = XP Saving ENABLED]", 0, true, 0.0, true, 1.0);
@@ -40,18 +48,57 @@ SetupXPMConVars()
 	// Default Infected Class Slot 3
 	g_hCVar_DefaultInfecttedSlot3 = CreateConVar("xpm_default_infected_3", "1", "Sets the default infected for slot 3 when someone first logs in [1 = SMOKER, 2 = BOOMER, 3 = HUNTER, 4 = SPITTER, 5 = JOCKEY, 6 = CHARGER]", 0, true, 0.0, true, 6.0);
 	HookConVarChange(g_hCVar_DefaultInfecttedSlot3, CVarChange_DefaultInfectedSlot3);
+
+	
+	SetUpInitialConvarValues();
+}
+
+// This is required for auto reload plugin
+SetUpInitialConvarValues()
+{
+	g_bDebugModeEnabled = g_hCVar_DebugModeEnabled.IntValue == 1 ? true : false;
+	SetDebugMode(g_bDebugModeEnabled);
+
+	g_bAFKIdleKickingEnabled =  g_hCVar_IdleKickEnabled.IntValue == 1 ? true : false;
 }
 
 //Callback function for updating the Debug Mode
-CVarChange_DebugMode(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
+CVarChange_DebugModeLogLevel(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
 {
 	//If the value was not changed, then do nothing
 	if(StrEqual(strOldValue, strNewValue) == true)
 		return;
 	
-	g_iDebugMode =  StringToInt(strNewValue);
-	PrintToServer("[XPM] ConVar changed: DebugMode is now %i", g_iDebugMode);
-	PrintToChatAll("[XPM] ConVar changed: DebugMode is now %i", g_iDebugMode);
+	g_iDebugModeLogLevel =  StringToInt(strNewValue);
+	PrintToServer("[XPM] ConVar changed: DebugMode is now %i", g_iDebugModeLogLevel);
+	PrintToChatAll("[XPM] ConVar changed: DebugMode is now %i", g_iDebugModeLogLevel);
+}
+
+//Callback function for updating the Idle Kicking
+CVarChange_DebugModeEnabled(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
+{
+	//If the value was not changed, then do nothing
+	if(StrEqual(strOldValue, strNewValue) == true)
+		return;
+	
+	g_bDebugModeEnabled =  StringToInt(strNewValue) == 1 ? true : false;
+	PrintToServer("[XPM] ConVar changed: DebugMode is now %i", g_bDebugModeEnabled);
+	PrintToChatAll("[XPM] ConVar changed: DebugMode is now %i", g_bDebugModeEnabled);
+
+	SetDebugMode(g_bDebugModeEnabled);
+}
+
+
+//Callback function for updating the Idle Kicking
+CVarChange_IdleKickEnabled(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
+{
+	//If the value was not changed, then do nothing
+	if(StrEqual(strOldValue, strNewValue) == true)
+		return;
+	
+	g_bAFKIdleKickingEnabled =  StringToInt(strNewValue) == 1 ? true : false;
+	PrintToServer("[XPM] ConVar changed: AFK Idle Kick is now %i", g_bAFKIdleKickingEnabled);
+	PrintToChatAll("[XPM] ConVar changed: AFK Idle Kick is now %i", g_bAFKIdleKickingEnabled);
 }
 
 //Callback function for updating the XP Gain and Use on the Server

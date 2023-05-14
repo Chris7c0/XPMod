@@ -16,6 +16,7 @@ bool g_bReadyForDismountButtonPress[MAXPLAYERS + 1];
 // Ghost Spawn Capturing
 new bool:g_bCanBeGhost[MAXPLAYERS + 1];
 new bool:g_bIsGhost[MAXPLAYERS + 1];
+#define MOVEMENT_SPEED_INFECTED_GHOSTS  2.0
 
 // CI hit max damage from survivor hit (meant for melee)
 #define CI_MAX_DAMAGE_PER_HIT   500.0

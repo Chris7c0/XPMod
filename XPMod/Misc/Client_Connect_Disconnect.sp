@@ -210,6 +210,9 @@ void StorePlayerInDisconnectedPlayerList(iClient)
 
 void LoopThroughAllPlayersAndHandleAFKPlayers()
 {
+	if (g_bAFKIdleKickingEnabled == false)
+		return;
+
 	for(new iClient = 1;iClient <= MaxClients; iClient++)
 	{
 		if (RunClientChecks(iClient) == false ||
@@ -235,6 +238,9 @@ void LoopThroughAllPlayersAndHandleAFKPlayers()
 
 void LoopThroughAllPlayersAndSetAFKRecordingTime(bool bStopRecording=false)
 {
+	if (g_bAFKIdleKickingEnabled == false)
+		return;
+
 	float fCurrentGameTime = GetGameTime();
 
 	for(new iClient = 1;iClient <= MaxClients; iClient++)
