@@ -387,7 +387,7 @@ void HandleBillsTeamHealing(int iClient, int iButtons)
 		return;
 
 	int iHealAmount = iMaxHealth - iCurrentHealth - iTempHealth > BILL_TEAM_HEAL_HP_AMOUNT ? BILL_TEAM_HEAL_HP_AMOUNT : iMaxHealth - iCurrentHealth - iTempHealth;
-	PrintToChat(iClient, "%i", iHealAmount);
+	// PrintToChat(iClient, "%i", iHealAmount);
 
 	// Check that the pool has enough health to heal the full amount, cap if not
 	iHealAmount = iHealAmount > g_iBillsTeamHealthPool ? g_iBillsTeamHealthPool : iHealAmount;

@@ -153,13 +153,6 @@ void HandleClientDisconnect(int iClient)
 	g_iAutoSetCountDown[iClient] = -1;
 	ResetAll(iClient);
 	//PrintToChatAll("\x03%N \x04has disconnected", iClient);
-	//Reset the arry for the player
-	if(g_bDoesClientAttackFast[iClient] == true)
-	{
-		//PrintToChatAll("PLAYER DISCONNECTED! Removing from array iClient = %N(%d)", iClient, iClient);
-		pop(iClient);
-		testtoggle[iClient] = false;
-	}
 }
 
 void StorePlayerInDisconnectedPlayerList(iClient)

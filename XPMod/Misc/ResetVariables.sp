@@ -51,7 +51,7 @@ void ResetAllVariablesForRound()
 	g_iCrawlSpeedMultiplier = 0;
 	g_iNickDesperateMeasuresStack = 0;
 	g_fMaxLaserAccuracy = 0.4;
-	g_bSomeoneAttacksFaster = false;
+	// g_bSomeoneAttacksFaster = false;
 }
 
 void ResetClientVariablesForRound(int iClient)
@@ -62,8 +62,6 @@ void ResetClientVariablesForRound(int iClient)
 	g_bSurvivorTalentsGivenThisRound[iClient] = false;
 	g_bPlayerInTeamChangeCoolDown[iClient] = false;
 	g_fTimeStamp[iClient] = -1.0;
-	g_iFastAttackingClientsArray[iClient] = -1;
-	g_bDoesClientAttackFast[iClient] = false;
 	g_bMovementLocked[iClient] = false;
 	g_bStopAllInput[iClient] = false;
 	g_iClientBindUses_1[iClient] = 0;
@@ -158,7 +156,7 @@ void ResetClientVariablesForRound(int iClient)
 	RemoveAllEntitiesFromArrayList(g_listTankRockEntities);
 	
 	
-	g_bSomeoneAttacksFaster = false;
+	// g_bSomeoneAttacksFaster = false;
 	
 	//Bill
 	gClone[iClient] = -1;
@@ -354,8 +352,7 @@ ResetAllVariables(iClient)
 	g_bBillSprinting[iClient] = false;
 	g_iBillTeamHealCounter[iClient] = 0;
 	g_bIsClientDown[iClient] = false;
-	pop(iClient);
-	g_bDoesClientAttackFast[iClient] = false;
+	
 	if (g_iSmokerSmokeCloudPlayer == iClient || g_iSmokerInSmokeCloudLimbo == iClient)
 	{
 		g_iSmokerSmokeCloudPlayer = -1;

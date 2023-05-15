@@ -659,27 +659,61 @@ ToggleDetectionHud(iClient)
 	return;
 }
 
-bool HandleFastAttackingClients_Rochelle(const int iClient, const int iActiveWeaponID, const int iActiveWeaponSlot, const float fGameTime, const float fCurrentNextAttackTime, float &fAdjustedNextAttackTime)
-{
-	if (g_iShadowLevel[iClient] <= 0)
-		return false;
+// bool HandleFastAttackingClients_Rochelle(const int iClient, const int iActiveWeaponID, const int iActiveWeaponSlot, const float fGameTime, const float fCurrentNextAttackTime, float &fAdjustedNextAttackTime)
+// {
+// 	if (g_iShadowLevel[iClient] <= 0)
+// 		return false;
 
-	// Check if its a secondary weapon
+// 	// Check if its a secondary weapon
+// 	if (iActiveWeaponSlot != 1)
+// 		return false;
+
+// 	// Check to make sure its a melee weapon
+// 	char strEntityClassName[32];
+// 	GetEntityClassname(iActiveWeaponID, strEntityClassName, 32);
+// 	// PrintToChat(iClient, "strEntityClassName: %s", strEntityClassName);
+// 	if (StrContains(strEntityClassName, "weapon_melee", true) == -1)
+// 		return false;
+
+// 	// All checks were passed, set the speed
+// 	fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * (1 / (1 + (g_iShadowLevel[iClient] * 0.3) ) )   + fGameTime;
+// 	// Show the particle effect
+// 	WriteParticle(iClient, "rochelle_silhouette", 0.0, 0.4);
+
+// 	return true;
+// }
+
+HandleFasterAttacking_Rochelle(iClient, iButtons)
+{
+	if (g_iChosenSurvivor[iClient] != ROCHELLE || 
+		g_bTalentsConfirmed[iClient] == false ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
+		g_iShadowLevel[iClient] <= 0 ||
+		g_bUsingShadowNinja[iClient] == false)
+		return;
+
+	if (!(iButtons & IN_ATTACK))
+		return;
+
+	// Make sure they have an active weapon
+	int iActiveWeaponID = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
+	if (iActiveWeaponID == -1)
+		return;
+
+	// Get the slot they are using, then return if it isnt secondary
+	int iActiveWeaponSlot = GetActiveWeaponSlot(iClient, iActiveWeaponID);
 	if (iActiveWeaponSlot != 1)
-		return false;
+		return;
 
 	// Check to make sure its a melee weapon
 	char strEntityClassName[32];
 	GetEntityClassname(iActiveWeaponID, strEntityClassName, 32);
 	// PrintToChat(iClient, "strEntityClassName: %s", strEntityClassName);
 	if (StrContains(strEntityClassName, "weapon_melee", true) == -1)
-		return false;
+		return;
 
-	// All checks were passed, set the speed
-	fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * (1 / (1 + (g_iShadowLevel[iClient] * 0.3) ) )   + fGameTime;
+	AdjustWeaponSpeed(iClient, 1.0 + (g_iShadowLevel[iClient] * 0.3), iActiveWeaponSlot);
+
 	// Show the particle effect
 	WriteParticle(iClient, "rochelle_silhouette", 0.0, 0.4);
-
-	return true;
 }
-

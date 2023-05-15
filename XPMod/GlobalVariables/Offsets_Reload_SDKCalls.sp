@@ -66,7 +66,3 @@ new g_iOffset_VecVelocity			= -1;
 new Float:g_fReloadRate;
 
 new Float:g_fTimeStamp[MAXPLAYERS + 1] = {-1.0, ...};
-
-
-new g_iCurrentFasterAttackWeapon[64] = {-1, ...};
-new Float:g_fNextFasterAttackTime[64] = {-1.0, ...};

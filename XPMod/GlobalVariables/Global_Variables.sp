@@ -308,7 +308,7 @@ bool g_bStopSISpawning;
 
 int gClone[MAXPLAYERS + 1];
 bool talentsJustGiven[MAXPLAYERS + 1] = {false, ...};
-bool testtoggle[MAXPLAYERS + 1];
+// bool bTestToggle[MAXPLAYERS + 1];
 float rspeed;
 bool canchangemovement[MAXPLAYERS + 1];
 int preledgehealth[MAXPLAYERS + 1];

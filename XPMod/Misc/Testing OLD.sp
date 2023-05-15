@@ -917,7 +917,7 @@ Action:CreateOverlay(iClient)
 // 		}
 // 	}*/
 // 	//FakeClientCommandEx(iClient, "explode");
-// 	if(testtoggle[iClient] == false)
+// 	if(bTestToggle[iClient] == false)
 // 	{
 // 		//SetConVarInt(FindConVar("z_no_cull"), 1);
 // 		//SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 0.3, true);
@@ -983,7 +983,7 @@ Action:CreateOverlay(iClient)
 		
 // 		PrintHintText(iClient, "Testing toggled on");
 		
-// 		testtoggle[iClient] = true;
+// 		bTestToggle[iClient] = true;
 // 	}
 // 	else
 // 	{	
@@ -1009,7 +1009,7 @@ Action:CreateOverlay(iClient)
 // 		sandbag3[iClient] = -1;
 // 		*/
 // 		PrintHintText(iClient, "Testing toggled off");
-// 		testtoggle[iClient] = false;
+// 		bTestToggle[iClient] = false;
 // 	}
 	
 // 	//Stuff to remember

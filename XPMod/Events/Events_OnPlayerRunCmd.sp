@@ -120,6 +120,10 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 	OnPlayerRunCmd_Hunter(iClient, iButtons);
 
 	OnPlayerRunCmd_Tank_Ice(iClient, iButtons);
+
+	// Faster Attack Handling
+	HandleFasterAttacking_Ellis(iClient, iButtons);
+	HandleFasterAttacking_Rochelle(iClient, iButtons);
 	
 	//Charger Earthquake
 	if(g_bIsHillbillyEarthquakeReady[iClient] == true && g_bCanChargerEarthquake[iClient] == true && iButtons & IN_ATTACK2 && g_iInfectedCharacter[iClient] == CHARGER)
@@ -307,3 +311,26 @@ Action:TimerUnblockBotFromAttacking(Handle:timer, any:iClient)
 // 	g_hShouldAttackTimer[client] = null;
 // 	return Plugin_Handled;
 // }
+
+
+/* Original code from Machine's weapon speed plugin */
+stock AdjustWeaponSpeed(iClient, float Amount, slot)
+{
+	if (GetPlayerWeaponSlot(iClient, slot) <= 0)
+		return;
+
+	float m_flNextPrimaryAttack = GetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flNextPrimaryAttack");
+	float m_flNextSecondaryAttack = GetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flNextSecondaryAttack");
+	// float m_flCycle = GetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flCycle");
+	// int m_bInReload = GetEntProp(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_bInReload");
+
+	//Getting the animation cycle at zero seems to be key here, however the scar and pistols weren't seem to be getting affected
+	// if (m_flCycle == 0.000000 && m_bInReload < 1)
+	// {
+	SetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flPlaybackRate", Amount);
+	SetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flNextPrimaryAttack", m_flNextPrimaryAttack - ((Amount - 1.0) / 2));
+	SetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flNextSecondaryAttack", m_flNextSecondaryAttack - ((Amount - 1.0) / 2));
+	// }
+
+	// PrintToChat(iClient, "AdjustWeaponSpeed: %f", Amount);
+}

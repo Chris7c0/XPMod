@@ -410,10 +410,7 @@ Action:ResetSurvivorTalents(iClient)
 	g_bIsJetpackOn[iClient] = false;
 	
 	//Ellis
-	//metal(mechanic affinity)
-	pop(iClient);
-	if(g_iFastAttackingClientsArray[0]==-1)
-		g_bSomeoneAttacksFaster = false;
+
 	//Nick
 	
 	g_iSkillPoints[iClient] = g_iClientLevel[iClient];

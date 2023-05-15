@@ -1,6 +1,8 @@
 
 //Testing Functions//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+float g_fFasterAttackSpeed = 1.0;
+
 public Action Timer_Testing(Handle hTimer, int iClient)
 {
 	// float xyzLocation[3];
@@ -36,7 +38,8 @@ Action:TestFunction1(iClient, args)
 		PrintToChat(iClient, "Player %i, %N", iPlayer, iPlayer);
 	}
 
-
+	g_fFasterAttackSpeed = StringToFloat(strArg[0]);
+	PrintToChat(iClient, "g_fFasterAttackSpeed now %f", g_fFasterAttackSpeed);
 	
 	// SetPlayerHealth(iClient, -1000, true);
 
@@ -501,22 +504,7 @@ Action:GiveMoreBinds(admin, args)
 
 Action:XPModDebugModeToggle(iClient, args)
 {
-	if (g_bDebugModeEnabled == false)
-	{
-		g_bDebugModeEnabled = true;
-		g_bStopCISpawning = true;
-		g_bStopSISpawning = true;
-
-		CreateTimer(1.0, Timer_ContinuallyKillAllCI, 0, TIMER_REPEAT);
-	}
-	else
-	{
-		g_bDebugModeEnabled = false;
-		g_bStopCISpawning = false;
-		g_bStopSISpawning = false;
-	}
-
-	PrintToChatAll("\x05XPMod Debug Mode %s", g_bDebugModeEnabled ? "ENABLED" : "DISABLED");
+	ToggleDebugMode();
 }
 
 Action:Timer_ContinuallyKillAllCI(Handle:timer, any:data)

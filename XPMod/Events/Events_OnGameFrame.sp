@@ -125,91 +125,10 @@ public OnGameFrame()
 		}
 	}
 	
-	//For faster shooting and melee attacks
-	if (g_bSomeoneAttacksFaster == true)
-		HandleFastAttackingClients();
+	// //For faster shooting and melee attacks
+	// if (g_bSomeoneAttacksFaster == true)
+	// 	HandleFastAttackingClients();
 
 	// Track tank rocks for special tank abilities
 	TrackAllRocks();
-}
-
-// This handles the faster weapon attacks for the survivors
-HandleFastAttackingClients()
-{
-	new iArrayLoop = 0;
-	while(g_iFastAttackingClientsArray[iArrayLoop] != -1)
-	{
-		new iClient = g_iFastAttackingClientsArray[iArrayLoop++];
-
-		// Run the basic checks before continuing
-		if (g_bDoesClientAttackFast[iClient] == false || 
-			RunClientChecks(iClient) == false ||
-			IsClientInGame(iClient) == false || 
-			IsFakeClient(iClient) == true ||
-			g_bTalentsConfirmed[iClient] == false)
-		{
-			// PrintToServer("DEBUG: Popping from g_iFastAttackingClientsArray");
-			pop(iClient);
-			continue;
-		}
-
-		// Ensure they are an applicable survivor
-		if (g_iChosenSurvivor[iClient] != ELLIS &&
-			g_iChosenSurvivor[iClient] != ROCHELLE)
-			continue;
-
-		// Make sure they have an active weapon
-		new iActiveWeaponID = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
-		if (iActiveWeaponID == -1)
-			continue;
-		
-		// Grab the current values for the next attack
-		// Note that this is used for primary and secondary, despite primary being the named used offset
-		float fCurrentNextAttackTime = GetEntDataFloat(iActiveWeaponID, g_iOffset_NextPrimaryAttack);
-		// This was used to change depending on if using primary or secondary, but looks like only primary is needed
-		//iActiveWeaponSlot == 1 ? GetEntDataFloat(iActiveWeaponID, g_iOffset_NextSecondaryAttack) : GetEntDataFloat(iActiveWeaponID, g_iOffset_NextPrimaryAttack);
-
-		// PrintToChat(iClient, "GameTime: %f", GetGameTime());
-		// PrintToChat(iClient, "		diff1: %f", GetGameTime() - fCurrentNextAttackTime);
-
-		// This is a pretty important check for not wasting cycles when player is not shooting.
-		// If the current weapon's next attack has already been set to the modified one, then
-		// no need to proceed. This should update by itself when the player fires again. Which,
-		// in theory, cannot happen until after the current attack has ended.
-		if (g_iCurrentFasterAttackWeapon[iClient] == iActiveWeaponID && g_fNextFasterAttackTime[iClient] == fCurrentNextAttackTime)
-			continue;
-
-		// Get the slot they are using, then return if it isnt primary or secondary
-		int iActiveWeaponSlot = GetActiveWeaponSlot(iClient, iActiveWeaponID);
-		if (iActiveWeaponSlot < 0 || iActiveWeaponSlot > 1)
-			continue;
-
-		// PrintToChat(iClient, "Fast Attack Checkpoint 2");
-
-		float fGameTime = GetGameTime();
-		bool bFastAttackUpdated = false;
-		float fAdjustedNextAttackTime = fCurrentNextAttackTime;
-
-		switch (g_iChosenSurvivor[iClient])
-		{
-			case ELLIS:		bFastAttackUpdated = HandleFastAttackingClients_Ellis(iClient, iActiveWeaponID, iActiveWeaponSlot, fGameTime, fCurrentNextAttackTime, fAdjustedNextAttackTime);
-			case ROCHELLE:	bFastAttackUpdated = HandleFastAttackingClients_Rochelle(iClient, iActiveWeaponID, iActiveWeaponSlot, fGameTime, fCurrentNextAttackTime, fAdjustedNextAttackTime);
-		}
-
-		// Update the next attack time to be the adjusted value if it was changed
-		if (bFastAttackUpdated)
-		{
-			// PrintToChat(iClient, "Attacking Faster: %f", fAdjustedNextAttackTime);
-			g_fNextFasterAttackTime[iClient] = fAdjustedNextAttackTime;
-			// Note: even though this could be secondary weapon, you still update using primary offset here
-			SetEntDataFloat(iActiveWeaponID, g_iOffset_NextPrimaryAttack, fAdjustedNextAttackTime, true);
-		}
-
-		// This is for if they have switched their current faster attacking weapon
-		if (g_iCurrentFasterAttackWeapon[iClient] != iActiveWeaponID)
-		{
-			g_iCurrentFasterAttackWeapon[iClient] = iActiveWeaponID;
-			// g_fNextFasterAttackTime[iClient] = fCurrentNextAttackTime;
-		}
-	}
 }

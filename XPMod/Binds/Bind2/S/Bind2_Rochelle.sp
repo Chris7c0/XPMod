@@ -6,7 +6,6 @@ void Bind2Press_Rochelle(iClient)
         {
             if(g_bUsingShadowNinja[iClient]==false && IsIncap(iClient) == false)
             {
-                push(iClient);
                 g_bUsingShadowNinja[iClient] = true;
                 g_iClientBindUses_2[iClient]++;
                 //PrintHintTextToAll("Rochelle disabled everyones glow for 12 seconds");

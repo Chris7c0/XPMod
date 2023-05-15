@@ -90,10 +90,7 @@ new g_iJockeyVictim[MAXPLAYERS + 1];    //g_iJockeyVictim[attacker] = victim;
 new g_iHunterShreddingVictim[MAXPLAYERS + 1];
 
 new bool:g_bIsClientDown[MAXPLAYERS + 1] = {false, ...};
-// Faster Shooting Variables
-new g_iFastAttackingClientsArray[MAXPLAYERS + 1];
-new bool:g_bSomeoneAttacksFaster;
-new bool:g_bDoesClientAttackFast[MAXPLAYERS + 1];
+
 // For calculating Temp Health
 ConVar cvarPainPillsDecay;
 float flPainPillsDecay = 0.27;

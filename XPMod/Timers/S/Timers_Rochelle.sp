@@ -53,7 +53,6 @@ Action:Timer_BreakFreeOfSmoker(Handle:timer, any:iClient)
 Action:TimerStopShadowNinja(Handle:timer, any:iClient)
 {
 	g_bUsingShadowNinja[iClient] = false;
-	pop(iClient);
 	
 	if(IsValidEntity(iClient) == true && IsClientInGame(iClient) == true)
 	{

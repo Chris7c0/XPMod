@@ -2,13 +2,6 @@ TalentsLoad_Ellis(iClient)
 {
 	SetPlayerTalentMaxHealth_Ellis(iClient, !g_bSurvivorTalentsGivenThisRound[iClient]);
 	SetClientSpeed(iClient);
-
-	if(g_iMetalLevel[iClient] > 0)
-	{
-		g_bDoesClientAttackFast[iClient] = true;
-		g_bSomeoneAttacksFaster = true;
-		push(iClient);
-	}
 	
 	if(g_iMetalLevel[iClient] == 5)
 	{
@@ -213,6 +206,7 @@ bool OnPlayerRunCmd_Ellis(iClient, &iButtons)
 {
 	// Ellis abilities
 	if (g_iChosenSurvivor[iClient] != ELLIS || 
+		g_bTalentsConfirmed[iClient] == false ||
 		g_iClientTeam[iClient] != TEAM_SURVIVORS || 
 		g_bGameFrozen == true)
 		return false;
@@ -234,8 +228,49 @@ bool OnPlayerRunCmd_Ellis(iClient, &iButtons)
 	return false;
 }
 
+HandleFasterAttacking_Ellis(iClient, iButtons)
+{
+	if (g_iChosenSurvivor[iClient] != ELLIS || 
+		g_bTalentsConfirmed[iClient] == false ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
+		g_iOverLevel[iClient] <= 0)
+		return;
 
-EventsHurt_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
+	if (!(iButtons & IN_ATTACK))
+		return;
+
+	// Make sure they have an active weapon
+	int iActiveWeaponID = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
+	if (iActiveWeaponID == -1)
+		return;
+
+	// Get the slot they are using, then return if it isnt primary or secondary
+	int iActiveWeaponSlot = GetActiveWeaponSlot(iClient, iActiveWeaponID);
+	if (iActiveWeaponSlot < 0 || iActiveWeaponSlot > 1)
+		return;
+
+	// Ellis's limit break ability
+	// Ensure they are using their primary slot weapon
+	// Limit break should disabled elsewhere if they do a primary weapon switch or pick up another primary
+	if (g_bIsEllisLimitBreaking[iClient] == true && iActiveWeaponSlot == 0)
+	{
+		// Also ensure that the class name matches the active weapon
+		// Do as last check for performance reasons
+		char strWeaponClassName[32];
+		GetEntityClassname(iActiveWeaponID, strWeaponClassName, 32);
+		// PrintToChatAll("lb check %i %s, lb stored: %s", iActiveWeaponID, strWeaponClassName, ITEM_CLASS_NAME[g_iLimitBreakWeaponIndex[iClient]]);
+		if (strcmp(strWeaponClassName, ITEM_CLASS_NAME[g_iLimitBreakWeaponIndex[iClient]], true) == 0)
+		{
+			// PrintToChatAll("	> Limit break applied to %N: %s", iClient, strWeaponClassName);
+			AdjustWeaponSpeed(iClient, 1.5, iActiveWeaponSlot);
+			return ;
+		}
+	}
+
+	AdjustWeaponSpeed(iClient, 1.0 + (g_iMetalLevel[iClient] * 0.04), iActiveWeaponSlot);
+}
+
+EventsHurt_AttackerEllis(Handle hEvent, int iAttacker, int iVictim)
 {
 	if(g_iChosenSurvivor[iAttacker] != ELLIS || g_bTalentsConfirmed[iAttacker] == false)
 		return;
@@ -260,55 +295,52 @@ EventsHurt_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 	
 	if(g_iOverLevel[iAttacker] > 0)
 	{
-		if(g_iClientTeam[iVictim] == TEAM_INFECTED)
+		new iCurrentHealth = GetPlayerHealth(iAttacker);
+		new iMaxHealth = GetPlayerMaxHealth(iAttacker);
+		new iTempHealth = GetSurvivorTempHealth(iAttacker);
+
+		decl String:strWeaponClass[32];
+		GetEventString(hEvent,"weapon",strWeaponClass,32);
+		//PrintToChatAll("\x03-class of gun: \x01%s",strWeaponClass);
+		if ((StrContains(strWeaponClass,"shotgun",false) != -1) || 
+			(StrContains(strWeaponClass,"rifle",false) != -1) || 
+			(StrContains(strWeaponClass,"pistol",false) != -1) || 
+			(StrContains(strWeaponClass,"smg",false) != -1) || 
+			(StrContains(strWeaponClass,"sniper",false) != -1) || 
+			(StrContains(strWeaponClass,"launcher",false) != -1))
 		{
-			new iCurrentHealth = GetPlayerHealth(iAttacker);
-			new iMaxHealth = GetPlayerMaxHealth(iAttacker);
-			new iTempHealth = GetSurvivorTempHealth(iAttacker);
-
-			decl String:strWeaponClass[32];
-			GetEventString(hEvent,"weapon",strWeaponClass,32);
-			//PrintToChatAll("\x03-class of gun: \x01%s",strWeaponClass);
-			if ((StrContains(strWeaponClass,"shotgun",false) != -1) || 
-				(StrContains(strWeaponClass,"rifle",false) != -1) || 
-				(StrContains(strWeaponClass,"pistol",false) != -1) || 
-				(StrContains(strWeaponClass,"smg",false) != -1) || 
-				(StrContains(strWeaponClass,"sniper",false) != -1) || 
-				(StrContains(strWeaponClass,"launcher",false) != -1))
+			// Give dmg buff for being in health range for over confidence
+			if(iCurrentHealth + iTempHealth >= iMaxHealth - ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT)
 			{
-				// Give dmg buff for being in health range for over confidence
-				if(iCurrentHealth + iTempHealth >= iMaxHealth - ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT)
-				{
-					new iVictimHealth = GetPlayerHealth(iVictim);
-					// PrintToChatAll("Ellis iVictim %N START HP: %i", iVictim, iVictimHealth);
+				new iVictimHealth = GetPlayerHealth(iVictim);
+				// PrintToChatAll("Ellis iVictim %N START HP: %i", iVictim, iVictimHealth);
 
-					new iDmgAmount = GetEventInt(hEvent,"dmg_health");
-					new iAddtionalDmg = RoundToNearest(iDmgAmount * (g_iOverLevel[iAttacker] * 0.06));
-					SetPlayerHealth(iVictim, iVictimHealth - CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
+				new iDmgAmount = GetEventInt(hEvent,"dmg_health");
+				new iAddtionalDmg = RoundToNearest(iDmgAmount * (g_iOverLevel[iAttacker] * 0.06));
+				SetPlayerHealth(iVictim, iVictimHealth - CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
 
-					// PrintToChatAll("Ellis is doing %i original damage", iDmgAmount);
-					// PrintToChatAll("Ellis is doing %i additional OVERCONFIDENCE damage", CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
+				// PrintToChatAll("Ellis is doing %i original damage", iDmgAmount);
+				// PrintToChatAll("Ellis is doing %i additional OVERCONFIDENCE damage", CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
 
-					// new iVictimHealth2 = GetPlayerHealth(iVictim);
-					// PrintToChatAll("Ellis iVictim %N   END HP: %i", iVictim, iVictimHealth2);
-				}
-				
-				// Give dmg buff for being on adrenaline
-				if (g_bEllisHasAdrenalineBuffs[iAttacker])
-				{
-					new iVictimHealth = GetPlayerHealth(iVictim);
-					// PrintToChatAll("Ellis iVictim %N START HP: %i", iVictim, iVictimHealth);
+				// new iVictimHealth2 = GetPlayerHealth(iVictim);
+				// PrintToChatAll("Ellis iVictim %N   END HP: %i", iVictim, iVictimHealth2);
+			}
+			
+			// Give dmg buff for being on adrenaline
+			if (g_bEllisHasAdrenalineBuffs[iAttacker])
+			{
+				new iVictimHealth = GetPlayerHealth(iVictim);
+				// PrintToChatAll("Ellis iVictim %N START HP: %i", iVictim, iVictimHealth);
 
-					new iDmgAmount = GetEventInt(hEvent,"dmg_health");
-					new iAddtionalDmg = RoundToNearest(iDmgAmount * (g_iOverLevel[iAttacker] * 0.06));
-					SetPlayerHealth(iVictim, iVictimHealth - CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
+				new iDmgAmount = GetEventInt(hEvent,"dmg_health");
+				new iAddtionalDmg = RoundToNearest(iDmgAmount * (g_iOverLevel[iAttacker] * 0.06));
+				SetPlayerHealth(iVictim, iVictimHealth - CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
 
-					// PrintToChatAll("Ellis is doing %i original damage", iDmgAmount);
-					// PrintToChatAll("Ellis is doing %i additional ADRENALINE damage", CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
+				// PrintToChatAll("Ellis is doing %i original damage", iDmgAmount);
+				// PrintToChatAll("Ellis is doing %i additional ADRENALINE damage", CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
 
-					// new iVictimHealth2 = GetPlayerHealth(iVictim);
-					// PrintToChatAll("Ellis iVictim %N   END HP: %i", iVictim, iVictimHealth2);
-				}
+				// new iVictimHealth2 = GetPlayerHealth(iVictim);
+				// PrintToChatAll("Ellis iVictim %N   END HP: %i", iVictim, iVictimHealth2);
 			}
 		}
 	}
@@ -951,60 +983,60 @@ HandleEllisLimitBreak(iClient)
 	PrintHintText(iClient, "Double fire rate for 5 seconds; Your weapon will break afterward!");
 }
 
-bool HandleFastAttackingClients_Ellis(int iClient, const int iActiveWeaponID, const int iActiveWeaponSlot, const float fGameTime, const float fCurrentNextAttackTime, float &fAdjustedNextAttackTime)
-{
-	if (g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
-		return false;
+// bool HandleFastAttackingClients_Ellis(int iClient, const int iActiveWeaponID, const int iActiveWeaponSlot, const float fGameTime, const float fCurrentNextAttackTime, float &fAdjustedNextAttackTime)
+// {
+// 	if (g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
+// 		return false;
 
-	if (g_iMetalLevel[iClient] <= 0)
-		return false;
+// 	if (g_iMetalLevel[iClient] <= 0)
+// 		return false;
 	
-	// Ellis's limit break ability
-	if (g_bIsEllisLimitBreaking[iClient] == true)
-	{
-		// Ensure they are using their primary slot weapon
-		// Limit break should disabled elsewhere if they do a primary weapon switch or pick up another primary
-		if (iActiveWeaponSlot == 0)
-		{
-			// Also ensure that the class name matches the active weapon
-			// Do as last check for performance reasons
-			char strWeaponClassName[32];
-			GetEntityClassname(iActiveWeaponID, strWeaponClassName, 32);
-			// PrintToChatAll("lb check %i %s, lb stored: %s", iActiveWeaponID, strWeaponClassName, ITEM_CLASS_NAME[g_iLimitBreakWeaponIndex[iClient]]);
-			if (strcmp(strWeaponClassName, ITEM_CLASS_NAME[g_iLimitBreakWeaponIndex[iClient]], true) == 0)
-			{
-				// PrintToChatAll("	> Limit break applied to %N: %s", iClient, strWeaponClassName);
-				fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * (1/2) + fGameTime; // This was triple at .66666, changing to .5 to double
-				return true;
-			}
-		}
-	}
+// 	// Ellis's limit break ability
+// 	if (g_bIsEllisLimitBreaking[iClient] == true)
+// 	{
+// 		// Ensure they are using their primary slot weapon
+// 		// Limit break should disabled elsewhere if they do a primary weapon switch or pick up another primary
+// 		if (iActiveWeaponSlot == 0)
+// 		{
+// 			// Also ensure that the class name matches the active weapon
+// 			// Do as last check for performance reasons
+// 			char strWeaponClassName[32];
+// 			GetEntityClassname(iActiveWeaponID, strWeaponClassName, 32);
+// 			// PrintToChatAll("lb check %i %s, lb stored: %s", iActiveWeaponID, strWeaponClassName, ITEM_CLASS_NAME[g_iLimitBreakWeaponIndex[iClient]]);
+// 			if (strcmp(strWeaponClassName, ITEM_CLASS_NAME[g_iLimitBreakWeaponIndex[iClient]], true) == 0)
+// 			{
+// 				// PrintToChatAll("	> Limit break applied to %N: %s", iClient, strWeaponClassName);
+// 				fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * (1/2) + fGameTime; // This was triple at .66666, changing to .5 to double
+// 				return true;
+// 			}
+// 		}
+// 	}
 
-	// Check that its pistol if its a secondary
-	if (iActiveWeaponSlot == 1)
-	{
-		char strEntityClassName[32];
-		GetEntityClassname(iActiveWeaponID, strEntityClassName, 32);
-		// PrintToChat(iClient, "strEntityClassName: %s", strEntityClassName);
-		if (StrContains(strEntityClassName, "weapon_pistol", true) == -1)
-			return false;
-	}
+// 	// Check that its pistol if its a secondary
+// 	if (iActiveWeaponSlot == 1)
+// 	{
+// 		char strEntityClassName[32];
+// 		GetEntityClassname(iActiveWeaponID, strEntityClassName, 32);
+// 		// PrintToChat(iClient, "strEntityClassName: %s", strEntityClassName);
+// 		if (StrContains(strEntityClassName, "weapon_pistol", true) == -1)
+// 			return false;
+// 	}
 
-	// Ellis's firerate normal primary and secondary attack speed buffs
-	// The formula is next normal fire rate wait time * (1/x) where x is the speed
-	// (1/1.00) would be 0% faster, (1/1.3) would be 30% faster, (1/3) would be 3 times faster
-	// We want 50% faster maxed out so 1.50x -> (1/1.5) = .666666 would be 50% faster
-	// this would be keeping .666666 of the existing wait time ( fCurrentNextAttackTime - fGameTime )				
-	fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * (1 / (1 + (g_iMetalLevel[iClient] * 0.04) ) ) + fGameTime;
+// 	// Ellis's firerate normal primary and secondary attack speed buffs
+// 	// The formula is next normal fire rate wait time * (1/x) where x is the speed
+// 	// (1/1.00) would be 0% faster, (1/1.3) would be 30% faster, (1/3) would be 3 times faster
+// 	// We want 50% faster maxed out so 1.50x -> (1/1.5) = .666666 would be 50% faster
+// 	// this would be keeping .666666 of the existing wait time ( fCurrentNextAttackTime - fGameTime )				
+// 	fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * (1 / (1 + (g_iMetalLevel[iClient] * 0.04) ) ) + fGameTime;
 	
-	// FOR TESTING
-	//fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * ((1 / g_fEllisTestFireRate))  + fGameTime;
+// 	// FOR TESTING
+// 	//fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * ((1 / g_fEllisTestFireRate))  + fGameTime;
 
-	// PrintToChat(iClient, "fAdjustedNextAttackTime: %f, fGameTime: %f", fAdjustedNextAttackTime, fGameTime);
+// 	// PrintToChat(iClient, "fAdjustedNextAttackTime: %f, fGameTime: %f", fAdjustedNextAttackTime, fGameTime);
 
-	// Return the slot that is used
-	return true;
-}
+// 	// Return the slot that is used
+// 	return true;
+// }
 
 void SetEllisHealthAfterUsingAdrenalineOrPills(int iClient, int iHealthBoostHealth)
 {
