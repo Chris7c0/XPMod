@@ -262,12 +262,38 @@ HandleFasterAttacking_Ellis(iClient, iButtons)
 		if (strcmp(strWeaponClassName, ITEM_CLASS_NAME[g_iLimitBreakWeaponIndex[iClient]], true) == 0)
 		{
 			// PrintToChatAll("	> Limit break applied to %N: %s", iClient, strWeaponClassName);
-			AdjustWeaponSpeed(iClient, 1.5, iActiveWeaponSlot);
-			return ;
+			AdjustWeaponSpeed(iClient, ELLIS_ROF_LIMIT_BREAK, iActiveWeaponSlot);
+			return;
 		}
 	}
 
-	AdjustWeaponSpeed(iClient, 1.0 + (g_iMetalLevel[iClient] * 0.04), iActiveWeaponSlot);
+	// Check to make sure its a melee weapon
+	char strEntityClassName[32];
+	GetEntityClassname(iActiveWeaponID, strEntityClassName, 32);
+	// PrintToChat(iClient, "strEntityClassName: %s", strEntityClassName);
+	if (StrContains(strEntityClassName, "weapon_melee", true) != -1)
+		return;
+
+	// // Set the base speed depending on what weapon
+	// float fNewWeaponSpeed = iActiveWeaponSlot == 0 ? 
+	// 	1.0 + (g_iMetalLevel[iClient] * ELLIS_ROF_OVER_PER_LEVEL) + (g_iOverLevel[iClient] * ELLIS_ROF_OVER_PER_LEVEL): 
+	// 	1.1;
+
+	// Set the base weapon speed
+	float fNewWeaponSpeed = 1.0 + (g_iMetalLevel[iClient] * ELLIS_ROF_OVER_PER_LEVEL) + (g_iOverLevel[iClient] * ELLIS_ROF_OVER_PER_LEVEL);
+
+	// // Set custom speed for certain weapons
+	// char strCurrentWeapon[32];
+	// GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
+	// // This enaables full auto all the weapons, pistols, etc, but we want to exclude snipers
+	// if (StrContains(strCurrentWeapon, "shotgun", false) != -1 || StrContains(strCurrentWeapon, "sniper", false)  != -1)
+	// 	fNewWeaponSpeed = (g_iMetalLevel[iClient] * ELLIS_ROF_OVER_PER_LEVEL) + (g_iOverLevel[iClient] * ELLIS_ROF_OVER_PER_LEVEL);
+
+	// Add Adrenaline buff
+	if (g_bEllisHasAdrenalineBuffs[iClient] == true)
+		fNewWeaponSpeed += (g_iOverLevel[iClient] * ELLIS_ROF_ADRENALINE_PER_LEVEL);
+
+	AdjustWeaponSpeed(iClient, fNewWeaponSpeed, iActiveWeaponSlot);
 }
 
 EventsHurt_AttackerEllis(Handle hEvent, int iAttacker, int iVictim)
@@ -292,58 +318,59 @@ EventsHurt_AttackerEllis(Handle hEvent, int iAttacker, int iVictim)
 			}
 		}
 	}
-	
-	if(g_iOverLevel[iAttacker] > 0)
-	{
-		new iCurrentHealth = GetPlayerHealth(iAttacker);
-		new iMaxHealth = GetPlayerMaxHealth(iAttacker);
-		new iTempHealth = GetSurvivorTempHealth(iAttacker);
 
-		decl String:strWeaponClass[32];
-		GetEventString(hEvent,"weapon",strWeaponClass,32);
-		//PrintToChatAll("\x03-class of gun: \x01%s",strWeaponClass);
-		if ((StrContains(strWeaponClass,"shotgun",false) != -1) || 
-			(StrContains(strWeaponClass,"rifle",false) != -1) || 
-			(StrContains(strWeaponClass,"pistol",false) != -1) || 
-			(StrContains(strWeaponClass,"smg",false) != -1) || 
-			(StrContains(strWeaponClass,"sniper",false) != -1) || 
-			(StrContains(strWeaponClass,"launcher",false) != -1))
-		{
-			// Give dmg buff for being in health range for over confidence
-			if(iCurrentHealth + iTempHealth >= iMaxHealth - ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT)
-			{
-				new iVictimHealth = GetPlayerHealth(iVictim);
-				// PrintToChatAll("Ellis iVictim %N START HP: %i", iVictim, iVictimHealth);
+	SuppressNeverUsedWarning(hEvent);
+	// if(g_iOverLevel[iAttacker] > 0)
+	// {
+	// 	new iCurrentHealth = GetPlayerHealth(iAttacker);
+	// 	new iMaxHealth = GetPlayerMaxHealth(iAttacker);
+	// 	new iTempHealth = GetSurvivorTempHealth(iAttacker);
 
-				new iDmgAmount = GetEventInt(hEvent,"dmg_health");
-				new iAddtionalDmg = RoundToNearest(iDmgAmount * (g_iOverLevel[iAttacker] * 0.06));
-				SetPlayerHealth(iVictim, iVictimHealth - CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
+	// 	decl String:strWeaponClass[32];
+	// 	GetEventString(hEvent,"weapon",strWeaponClass,32);
+	// 	//PrintToChatAll("\x03-class of gun: \x01%s",strWeaponClass);
+	// 	if ((StrContains(strWeaponClass,"shotgun",false) != -1) || 
+	// 		(StrContains(strWeaponClass,"rifle",false) != -1) || 
+	// 		(StrContains(strWeaponClass,"pistol",false) != -1) || 
+	// 		(StrContains(strWeaponClass,"smg",false) != -1) || 
+	// 		(StrContains(strWeaponClass,"sniper",false) != -1) || 
+	// 		(StrContains(strWeaponClass,"launcher",false) != -1))
+	// 	{
+	// 		// Give dmg buff for being in health range for over confidence
+	// 		if(iCurrentHealth + iTempHealth >= iMaxHealth - ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT)
+	// 		{
+	// 			new iVictimHealth = GetPlayerHealth(iVictim);
+	// 			// PrintToChatAll("Ellis iVictim %N START HP: %i", iVictim, iVictimHealth);
 
-				// PrintToChatAll("Ellis is doing %i original damage", iDmgAmount);
-				// PrintToChatAll("Ellis is doing %i additional OVERCONFIDENCE damage", CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
+	// 			new iDmgAmount = GetEventInt(hEvent,"dmg_health");
+	// 			new iAddtionalDmg = RoundToNearest(iDmgAmount * (g_iOverLevel[iAttacker] * 0.06));
+	// 			SetPlayerHealth(iVictim, iVictimHealth - CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
 
-				// new iVictimHealth2 = GetPlayerHealth(iVictim);
-				// PrintToChatAll("Ellis iVictim %N   END HP: %i", iVictim, iVictimHealth2);
-			}
+	// 			// PrintToChatAll("Ellis is doing %i original damage", iDmgAmount);
+	// 			// PrintToChatAll("Ellis is doing %i additional OVERCONFIDENCE damage", CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
+
+	// 			// new iVictimHealth2 = GetPlayerHealth(iVictim);
+	// 			// PrintToChatAll("Ellis iVictim %N   END HP: %i", iVictim, iVictimHealth2);
+	// 		}
 			
-			// Give dmg buff for being on adrenaline
-			if (g_bEllisHasAdrenalineBuffs[iAttacker])
-			{
-				new iVictimHealth = GetPlayerHealth(iVictim);
-				// PrintToChatAll("Ellis iVictim %N START HP: %i", iVictim, iVictimHealth);
+	// 		// Give dmg buff for being on adrenaline
+	// 		if (g_bEllisHasAdrenalineBuffs[iAttacker])
+	// 		{
+	// 			new iVictimHealth = GetPlayerHealth(iVictim);
+	// 			// PrintToChatAll("Ellis iVictim %N START HP: %i", iVictim, iVictimHealth);
 
-				new iDmgAmount = GetEventInt(hEvent,"dmg_health");
-				new iAddtionalDmg = RoundToNearest(iDmgAmount * (g_iOverLevel[iAttacker] * 0.06));
-				SetPlayerHealth(iVictim, iVictimHealth - CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
+	// 			new iDmgAmount = GetEventInt(hEvent,"dmg_health");
+	// 			new iAddtionalDmg = RoundToNearest(iDmgAmount * (g_iOverLevel[iAttacker] * 0.06));
+	// 			SetPlayerHealth(iVictim, iVictimHealth - CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
 
-				// PrintToChatAll("Ellis is doing %i original damage", iDmgAmount);
-				// PrintToChatAll("Ellis is doing %i additional ADRENALINE damage", CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
+	// 			// PrintToChatAll("Ellis is doing %i original damage", iDmgAmount);
+	// 			// PrintToChatAll("Ellis is doing %i additional ADRENALINE damage", CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
 
-				// new iVictimHealth2 = GetPlayerHealth(iVictim);
-				// PrintToChatAll("Ellis iVictim %N   END HP: %i", iVictim, iVictimHealth2);
-			}
-		}
-	}
+	// 			// new iVictimHealth2 = GetPlayerHealth(iVictim);
+	// 			// PrintToChatAll("Ellis iVictim %N   END HP: %i", iVictim, iVictimHealth2);
+	// 		}
+	// 	}
+	// }
 }
 
 EventsHurt_VictimEllis(Handle:hEvent, attacker, victim)
@@ -481,6 +508,72 @@ EventsDeath_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 			SetClientSpeed(iAttacker);
 		}
 	}
+}
+
+void EventsWeaponFire_Ellis(int iClient)
+{
+	if (g_iChosenSurvivor[iClient] != ELLIS ||
+		g_bTalentsConfirmed[iClient] != true ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
+		RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false)
+		return;
+
+	if(g_iEllisPrimarySlot0[iClient] == ITEM_EMPTY || g_iEllisPrimarySlot1[iClient] == ITEM_EMPTY)
+	{
+		StoreCurrentPrimaryWeapon(iClient);
+		new String:strCurrentWeapon[32];
+		GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
+		if((StrContains(strCurrentWeapon, "rifle", false) != -1) || (StrContains(strCurrentWeapon, "smg", false) != -1) || (StrContains(strCurrentWeapon, "shotgun", false) != -1) || (StrContains(strCurrentWeapon, "launcher", false) != -1) || (StrContains(strCurrentWeapon, "sniper", false) != -1))
+		{
+			StoreCurrentPrimaryWeaponAmmo(iClient);
+		}
+	}
+	int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+	if (IsValidEntity(iActiveWeaponID) == false)
+		return;
+	int CurrentClipAmmo = GetEntProp(iActiveWeaponID,Prop_Data,"m_iClip1");
+
+	if((CurrentClipAmmo == 0) || (CurrentClipAmmo == 1))
+	{
+		StoreCurrentPrimaryWeapon(iClient);
+
+		char strCurrentWeapon[32];
+		GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
+
+		if(g_iReserveAmmo[iClient] == 0)
+		{
+			//PrintToChatAll("Ammo is now 0");
+			if (g_iEllisCurrentPrimarySlot[iClient] == 0 &&
+				g_iEllisPrimarySlot1[iClient] == ITEM_EMPTY && 
+				(g_iEllisPrimarySavedClipSlot1[iClient] > 0 || g_iEllisPrimarySavedAmmoSlot1[iClient] > 0))
+			{
+				//StoreCurrentPrimaryWeapon(iClient);
+				if((StrContains(strCurrentWeapon, "rifle", false) != -1) || (StrContains(strCurrentWeapon, "smg", false) != -1) || (StrContains(strCurrentWeapon, "shotgun", false) != -1) || (StrContains(strCurrentWeapon, "launcher", false) != -1) || (StrContains(strCurrentWeapon, "sniper", false) != -1))
+				{
+					StoreCurrentPrimaryWeaponAmmo(iClient);
+					CyclePlayerWeapon(iClient);
+					//fnc_SetAmmo(iClient);
+				}
+			}
+			else if (g_iEllisCurrentPrimarySlot[iClient] == 1 && 
+					g_iEllisPrimarySlot0[iClient] == ITEM_EMPTY && 
+					(g_iEllisPrimarySavedClipSlot0[iClient] > 0 || g_iEllisPrimarySavedAmmoSlot0[iClient] > 0))
+			{
+				//StoreCurrentPrimaryWeapon(iClient);
+				if((StrContains(strCurrentWeapon, "rifle", false) != -1) || (StrContains(strCurrentWeapon, "smg", false) != -1) || (StrContains(strCurrentWeapon, "shotgun", false) != -1) || (StrContains(strCurrentWeapon, "launcher", false) != -1) || (StrContains(strCurrentWeapon, "sniper", false) != -1))
+				{
+					StoreCurrentPrimaryWeaponAmmo(iClient);
+					CyclePlayerWeapon(iClient);
+					//fnc_SetAmmo(iClient);
+				}
+			}
+		}
+	}
+
+	// Make all guns automatic
+	if (g_iMetalLevel[iClient] > 0)
+		SetEntProp(iActiveWeaponID, Prop_Send, "m_isHoldingFireButton", 0);
 }
 
 // EventsDeath_VictimEllis(Handle:hEvent, iAttacker, iVictim)

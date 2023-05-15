@@ -25,56 +25,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 		}
 		case 3:		//Ellis Firing
 		{
-			if(g_iEllisPrimarySlot0[iClient] == ITEM_EMPTY || g_iEllisPrimarySlot1[iClient] == ITEM_EMPTY)
-			{
-				StoreCurrentPrimaryWeapon(iClient);
-				new String:strCurrentWeapon[32];
-				GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
-				if((StrContains(strCurrentWeapon, "rifle", false) != -1) || (StrContains(strCurrentWeapon, "smg", false) != -1) || (StrContains(strCurrentWeapon, "shotgun", false) != -1) || (StrContains(strCurrentWeapon, "launcher", false) != -1) || (StrContains(strCurrentWeapon, "sniper", false) != -1))
-				{
-					StoreCurrentPrimaryWeaponAmmo(iClient);
-				}
-			}
-			new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-			if (IsValidEntity(ActiveWeaponID) == false)
-				return Plugin_Continue;
-			new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
-
-			if((CurrentClipAmmo == 0) || (CurrentClipAmmo == 1))
-			{
-				StoreCurrentPrimaryWeapon(iClient);
-				new String:strCurrentWeapon[32];
-				GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
-
-				if(g_iReserveAmmo[iClient] == 0)
-				{
-					//PrintToChatAll("Ammo is now 0");
-					if (g_iEllisCurrentPrimarySlot[iClient] == 0 &&
-						g_iEllisPrimarySlot1[iClient] == ITEM_EMPTY && 
-						(g_iEllisPrimarySavedClipSlot1[iClient] > 0 || g_iEllisPrimarySavedAmmoSlot1[iClient] > 0))
-					{
-						//StoreCurrentPrimaryWeapon(iClient);
-						if((StrContains(strCurrentWeapon, "rifle", false) != -1) || (StrContains(strCurrentWeapon, "smg", false) != -1) || (StrContains(strCurrentWeapon, "shotgun", false) != -1) || (StrContains(strCurrentWeapon, "launcher", false) != -1) || (StrContains(strCurrentWeapon, "sniper", false) != -1))
-						{
-							StoreCurrentPrimaryWeaponAmmo(iClient);
-							CyclePlayerWeapon(iClient);
-							//fnc_SetAmmo(iClient);
-						}
-					}
-					else if (g_iEllisCurrentPrimarySlot[iClient] == 1 && 
-							g_iEllisPrimarySlot0[iClient] == ITEM_EMPTY && 
-							(g_iEllisPrimarySavedClipSlot0[iClient] > 0 || g_iEllisPrimarySavedAmmoSlot0[iClient] > 0))
-					{
-						//StoreCurrentPrimaryWeapon(iClient);
-						if((StrContains(strCurrentWeapon, "rifle", false) != -1) || (StrContains(strCurrentWeapon, "smg", false) != -1) || (StrContains(strCurrentWeapon, "shotgun", false) != -1) || (StrContains(strCurrentWeapon, "launcher", false) != -1) || (StrContains(strCurrentWeapon, "sniper", false) != -1))
-						{
-							StoreCurrentPrimaryWeaponAmmo(iClient);
-							CyclePlayerWeapon(iClient);
-							//fnc_SetAmmo(iClient);
-						}
-					}
-				}
-			}
+			EventsWeaponFire_Ellis(iClient);
 		}
 		case 4:		//Nick Firing
 		{

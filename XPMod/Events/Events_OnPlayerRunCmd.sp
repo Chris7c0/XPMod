@@ -321,16 +321,35 @@ stock AdjustWeaponSpeed(iClient, float Amount, slot)
 
 	float m_flNextPrimaryAttack = GetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flNextPrimaryAttack");
 	float m_flNextSecondaryAttack = GetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flNextSecondaryAttack");
-	// float m_flCycle = GetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flCycle");
-	// int m_bInReload = GetEntProp(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_bInReload");
+	float m_flCycle = GetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flCycle");
+	int m_bInReload = GetEntProp(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_bInReload");
 
-	//Getting the animation cycle at zero seems to be key here, however the scar and pistols weren't seem to be getting affected
+	// //Getting the animation cycle at zero seems to be key here, however the scar and pistols weren't seem to be getting affected
 	// if (m_flCycle == 0.000000 && m_bInReload < 1)
 	// {
-	SetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flPlaybackRate", Amount);
-	SetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flNextPrimaryAttack", m_flNextPrimaryAttack - ((Amount - 1.0) / 2));
-	SetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flNextSecondaryAttack", m_flNextSecondaryAttack - ((Amount - 1.0) / 2));
+	//	This math from this plugin appears to be wrong, redone math below
+	// 	SetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flPlaybackRate", Amount);
+	// 	SetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flNextPrimaryAttack", m_flNextPrimaryAttack - ((Amount - 1.0) / 2));
+	// 	SetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flNextSecondaryAttack", m_flNextSecondaryAttack - ((Amount - 1.0) / 2));
 	// }
+
+	float fGameTime = GetGameTime();
+	float fAdjustedNextAttackTime = ( ( m_flNextPrimaryAttack - fGameTime ) * (1 / Amount) ) + fGameTime;
+	float fAdjustedSecondaryAttackTime = ( ( m_flNextSecondaryAttack - fGameTime ) * (1 / Amount) ) + fGameTime;
+
+	if (m_flCycle == 0.000000 && m_bInReload < 1)
+	{
+		SetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flPlaybackRate", Amount);
+		SetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flNextPrimaryAttack", fAdjustedNextAttackTime);
+		SetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flNextSecondaryAttack", fAdjustedSecondaryAttackTime);
+	}
 
 	// PrintToChat(iClient, "AdjustWeaponSpeed: %f", Amount);
 }
+
+// Ellis's firerate normal primary and secondary attack speed buffs
+// The formula is next normal fire rate wait time * (1/x) where x is the speed
+// (1/1.00) would be 0% faster, (1/1.3) would be 30% faster, (1/3) would be 3 times faster
+// We want 50% faster maxed out so 1.50x -> (1/1.5) = .666666 would be 50% faster
+// this would be keeping .666666 of the existing wait time ( fCurrentNextAttackTime - fGameTime )				
+//fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * (1 / (1 + (g_iMetalLevel[iClient] * 0.04) ) ) + fGameTime;
