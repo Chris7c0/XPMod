@@ -312,6 +312,7 @@ Action:TimerUnblockBotFromAttacking(Handle:timer, any:iClient)
 // 	return Plugin_Handled;
 // }
 
+float g_fPreviousNextPrimaryAttack[MAXPLAYERS + 1] = 0.0;
 
 /* Original code from Machine's weapon speed plugin */
 stock AdjustWeaponSpeed(iClient, float Amount, slot)
@@ -333,16 +334,34 @@ stock AdjustWeaponSpeed(iClient, float Amount, slot)
 	// 	SetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flNextSecondaryAttack", m_flNextSecondaryAttack - ((Amount - 1.0) / 2));
 	// }
 
-	float fGameTime = GetGameTime();
-	float fAdjustedNextAttackTime = ( ( m_flNextPrimaryAttack - fGameTime ) * (1 / Amount) ) + fGameTime;
-	float fAdjustedSecondaryAttackTime = ( ( m_flNextSecondaryAttack - fGameTime ) * (1 / Amount) ) + fGameTime;
+	
+	// Amount = 2.0;
+	float fBaseGunSpeed = 0.130004;	//AK
+	// float fBaseGunSpeed = 0.087500;	//M16
 
-	if (m_flCycle == 0.000000 && m_bInReload < 1)
+	if (m_flCycle == 0.000000 && m_bInReload <= 1)
 	{
+		// float fGameTime = GetGameTime();
+		// float fAdjustedNextAttackTime = m_flNextPrimaryAttack - ( ( m_flNextPrimaryAttack - fGameTime ) * (1 / Amount) );
+		// float fAdjustedSecondaryAttackTime = m_flNextSecondaryAttack - ( ( m_flNextSecondaryAttack - fGameTime ) * (1 / Amount) );
+
+		
+		float fAdjustedNextAttackTime = m_flNextPrimaryAttack - (fBaseGunSpeed - ( ( fBaseGunSpeed ) * (1 / Amount) ) );
+
+		// PrintToChat(iClient, "%0.2fx    %f   %f:%f", Amount, m_flNextPrimaryAttack - fGameTime, m_flNextPrimaryAttack - (( m_flNextPrimaryAttack - fGameTime ) * (1 / Amount)), fGameTime + (( m_flNextPrimaryAttack - fGameTime ) * (1 / Amount))  );
+
+		// Display the various time between shot values
+		PrintToChat(iClient, "%0.2fx baseT %f calcT %f actualT %f", Amount, fBaseGunSpeed, ( ( fBaseGunSpeed ) * (1 / Amount) ), m_flNextPrimaryAttack - g_fPreviousNextPrimaryAttack[iClient]);
+		g_fPreviousNextPrimaryAttack[iClient] = m_flNextPrimaryAttack;
+
+		// if (m_flNextPrimaryAttack - fGameTime <= 0.000000) return;
+
 		SetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flPlaybackRate", Amount);
 		SetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flNextPrimaryAttack", fAdjustedNextAttackTime);
-		SetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flNextSecondaryAttack", fAdjustedSecondaryAttackTime);
+		// SetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flNextSecondaryAttack", fAdjustedSecondaryAttackTime);
 	}
+
+	
 
 	// PrintToChat(iClient, "AdjustWeaponSpeed: %f", Amount);
 }

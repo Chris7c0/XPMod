@@ -73,7 +73,7 @@ Action:OverMenuDraw(iClient)
 		\n \
 		\nIf Within %i Points Of Max Health:\
 		\n	+1%%%% Movement Speed\
-		\n	+10%%%% RoF To All Guns per Level\
+		\n	+5%%%% RoF To All Guns per Level\
 		\n \
 		\nWhile On Adrenaline:\
 		\n	+5 Temp Health per Level\
@@ -272,7 +272,7 @@ Action:MetalMenuDraw(iClient)
 		%s				Mechanic Affinity (Level %d):\
 		\n \
 		\nLevel 1:\
-		\n+10%%%% Firing Rate per Level\
+		\n+5%%%% Firing Rate per Level\
 		\n All Guns Are Automatic Now\
 		\n \
 		\nLevel 5:\
