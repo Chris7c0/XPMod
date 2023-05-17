@@ -209,7 +209,7 @@ EventsHurt_AttackerBill(Handle:hEvent, attacker, victim)
 						new iDmgAmount = GetEventInt(hEvent,"dmg_health");
 						iDmgAmount = CalculateDamageTakenForVictimTalents(victim, RoundToNearest(iDmgAmount * (g_iExorcismLevel[attacker] * 0.04)), strWeaponClass);
 						//PrintToChat(attacker, "Your doing %d extra rifle damage", iDmgAmount);
-						SetPlayerHealth(victim, iCurrentHP - iDmgAmount);
+						SetPlayerHealth(victim, attacker, iCurrentHP - iDmgAmount);
 					}
 				}
 				else
@@ -218,7 +218,7 @@ EventsHurt_AttackerBill(Handle:hEvent, attacker, victim)
 					new iDmgAmount = GetEventInt(hEvent,"dmg_health");
 					iDmgAmount = CalculateDamageTakenForVictimTalents(victim, RoundToNearest(iDmgAmount * (g_iPromotionalLevel[attacker] * 0.20)), strWeaponClass);
 					//PrintToChat(attacker, "Your doing %d extra M60 damage", iDmgAmount);
-					SetPlayerHealth(victim, iCurrentHP - iDmgAmount);
+					SetPlayerHealth(victim, attacker, iCurrentHP - iDmgAmount);
 				}
 			}
 		}
@@ -392,7 +392,7 @@ void HandleBillsTeamHealing(int iClient, int iButtons)
 	// Check that the pool has enough health to heal the full amount, cap if not
 	iHealAmount = iHealAmount > g_iBillsTeamHealthPool ? g_iBillsTeamHealthPool : iHealAmount;
 
-	SetPlayerHealth(iTargetToHeal, iHealAmount, true);
+	SetPlayerHealth(iTargetToHeal, -1, iHealAmount, true);
 
 	g_iBillsTeamHealthPool -= iHealAmount;
 

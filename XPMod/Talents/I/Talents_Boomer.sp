@@ -56,7 +56,7 @@ Event_BoomerVomitOnPlayer(iAttacker, iVictim)
 								{
 									PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. He becomes a \x04FAT Ninja!\x05", iAttacker);
 									SetPlayerMaxHealth(iAttacker, 750, false, true);
-									SetPlayerHealth(iAttacker, 750)
+									SetPlayerHealth(iAttacker, -1, 750)
 									g_bIsSuperSpeedBoomer[iAttacker] = true;
 									SetClientSpeed(iAttacker);
 									
@@ -88,7 +88,7 @@ Event_BoomerVomitOnPlayer(iAttacker, iVictim)
 								{
 									PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. He becomes a \x04FAT Ninja!\x05", iAttacker);
 									SetPlayerMaxHealth(iAttacker, 750, false, true);
-									SetPlayerHealth(iAttacker, 750)
+									SetPlayerHealth(iAttacker, -1, 750);
 									g_bIsSuperSpeedBoomer[iAttacker] = true;
 									SetClientSpeed(iAttacker);
 									

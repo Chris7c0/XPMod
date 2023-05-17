@@ -115,7 +115,7 @@ Action:TimerPoisonFade(Handle:timer, any:iClient)
 	if(hp < 16)
 		ForcePlayerSuicide(iClient);
 	else
-		SetPlayerHealth(iClient, hp - 25);
+		SetPlayerHealth(iClient, -1, hp - 25);
 		
 	WriteParticle(iClient, "poison_bubbles", 0.0, 3.0);
 	

@@ -175,7 +175,7 @@ HandleNecroTankerInfectedConsumption(iClient, iInfectedEntity)
 	{
 		// Add it, Cap it, Set it
 		new iNewHealth = iCurrentHealth + iAdditionalHealth > iAbsoluteMaxHealth ? iAbsoluteMaxHealth : iCurrentHealth + iAdditionalHealth;
-		SetPlayerHealth(iClient, iNewHealth);
+		SetPlayerHealth(iClient, -1, iNewHealth);
 	}
 }
 

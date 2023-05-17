@@ -127,7 +127,7 @@ EventsHurt_VictimTank_Fire(Handle:hEvent, iAttacker, iVictimTank)
 
 	//Prevent Fire Damage
 	if(iDmgType == DAMAGETYPE_FIRE1 || iDmgType == DAMAGETYPE_FIRE2 || iDmgType == DAMAGETYPE_IGNITED_ENTITY)
-		SetPlayerHealth(iVictimTank, iCurrentHealth + iDmgHealth);
+		SetPlayerHealth(iVictimTank, -1, iCurrentHealth + iDmgHealth);
 	
 	fCurrentTankHealthPercentage = float(iCurrentHealth + iDmgHealth) / (TANK_HEALTH_FIRE * g_fTankStartingHealthMultiplier[iVictimTank]);
 	

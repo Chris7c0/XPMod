@@ -36,7 +36,7 @@ OnGameFrame_Hunter(iClient)
 	// Health Regeneration
 	// Every frame give 1 hp, 30 fps, so 30 hp per second
 	if (GetPlayerHealth(iClient) < SMOKER_STARTING_MAX_HEALTH + (g_iKillmeleonLevel[iClient] > 0 ? 250 : 0))
-		SetPlayerHealth(iClient, g_iBloodLustStage[iClient], true);
+		SetPlayerHealth(iClient, -1, g_iBloodLustStage[iClient], true);
 }
 
 

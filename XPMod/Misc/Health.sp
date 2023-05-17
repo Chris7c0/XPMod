@@ -23,7 +23,7 @@ int GetPlayerMaxHealth(int iClient)
 	return GetEntProp(iClient, Prop_Data, "m_iMaxHealth");
 }
 
-bool SetPlayerHealth(int iClient, int iHealthAmount, bool bAdditive = false, bool bClampWithTempHealth = true)
+bool SetPlayerHealth(int iClient, int iAttacker, int iHealthAmount, bool bAdditive = false, bool bClampWithTempHealth = true)
 {
 	if (RunClientChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false ||
@@ -44,10 +44,13 @@ bool SetPlayerHealth(int iClient, int iHealthAmount, bool bAdditive = false, boo
 		iMaxHealth = iMaxHealth - iTempHealth;
 
 	// Record the damage for the DPS Meter
-	if (bAdditive)
-		AddDamageToDPSMeter(iClient, iHealthAmount);
-	else
-		AddDamageToDPSMeter(iClient, iCurrentHealth - iHealthAmount);
+	if (iAttacker > 0)
+	{
+		if (bAdditive)
+			AddDamageToDPSMeter(iAttacker, iHealthAmount);
+		else
+			AddDamageToDPSMeter(iAttacker, iCurrentHealth - iHealthAmount);
+	}
 
 	// Add the health to existing health if its additive
 	if (bAdditive)
@@ -89,11 +92,11 @@ bool SetPlayerMaxHealth(int iClient, int iHealthAmount, bool bAdditive = false, 
 	SetEntProp(iClient, Prop_Data, "m_iMaxHealth", iHealthAmount);
 
 	// Clamp the players health to their new max health
-	SetPlayerHealth(iClient, 0, true);
+	SetPlayerHealth(iClient, -1, 0, true);
 
 	// Give the player more health to fill in the gap created by giving max health
 	if (bAddHealthToFillGap && iHealthAmount > iCurrentMaxHealth)
-		SetPlayerHealth(iClient, iHealthAmount - iCurrentMaxHealth, true);
+		SetPlayerHealth(iClient, -1, iHealthAmount - iCurrentMaxHealth, true);
 
 	GetPlayerMaxHealth(iClient);
 	GetPlayerHealth(iClient);
@@ -213,7 +216,7 @@ bool ConvertSomeSurvivorHealthToTemporary(int iClient, int iHealthConversionAmou
 	}
 	else
 	{
-		SetPlayerHealth(iClient, 1);
+		SetPlayerHealth(iClient, -1, 1);
 		AddTempHealthToSurvivor(iClient, float(iCurrentHealth - 1));
 	}
 

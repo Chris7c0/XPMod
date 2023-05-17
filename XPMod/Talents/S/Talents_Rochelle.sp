@@ -222,7 +222,7 @@ EventsHurt_AttackerRochelle(Handle:hEvent, attacker, victim)
 			dmg = CalculateDamageTakenForVictimTalents(victim, dmg, strWeaponClass);
 
 			// PrintToChat(attacker, "Doing %d extra hunting rifle DMG", dmg);
-			SetPlayerHealth(victim, hp - dmg);
+			SetPlayerHealth(victim, attacker, hp - dmg);
 
 			// Add to the Ruger Stacks
 			// Handle if its a tank first
@@ -248,7 +248,7 @@ EventsHurt_AttackerRochelle(Handle:hEvent, attacker, victim)
 			dmg = CalculateDamageTakenForVictimTalents(victim, dmg, strWeaponClass);
 
 			// PrintToChat(attacker, "Doing %d extra military rifle DMG", dmg);
-			SetPlayerHealth(victim, hp - dmg);
+			SetPlayerHealth(victim, attacker, hp - dmg);
 		}
 		else if (StrContains(strWeaponClass,"sniper_scout",false) != -1)	// Scout
 		{
@@ -256,7 +256,7 @@ EventsHurt_AttackerRochelle(Handle:hEvent, attacker, victim)
 			dmg = CalculateDamageTakenForVictimTalents(victim, dmg, strWeaponClass);
 
 			// PrintToChat(attacker, "Doing %d extra scout DMG", dmg);
-			SetPlayerHealth(victim, hp - dmg);
+			SetPlayerHealth(victim, attacker, hp - dmg);
 		}
 		else if (StrContains(strWeaponClass,"sniper_awp",false) != -1)		// AWP
 		{
@@ -268,7 +268,7 @@ EventsHurt_AttackerRochelle(Handle:hEvent, attacker, victim)
 			dmg = CalculateDamageTakenForVictimTalents(victim, dmg, strWeaponClass);
 
 			// PrintToChat(attacker, "Doing %d extra awp DMG", dmg);
-			SetPlayerHealth(victim, hp - dmg);
+			SetPlayerHealth(victim, attacker, hp - dmg);
 		}
 	}
 }

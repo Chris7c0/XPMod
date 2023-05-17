@@ -456,8 +456,8 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 				new iHealAmount = iCurrentVictimHealth + iDmgAmount + NICK_HEAL_MAGNUM_GIVE < iCurrentVictimMaxHealth ? 
 					iDmgAmount + NICK_HEAL_MAGNUM_GIVE : 
 					iCurrentVictimMaxHealth - iCurrentVictimHealth;
-				SetPlayerHealth(iAttacker, iCurrentAttackerHealth - NICK_HEAL_MAGNUM_TAKE);
-				SetPlayerHealth(iVictim, iCurrentVictimHealth + iHealAmount);
+				SetPlayerHealth(iAttacker, -1, iCurrentAttackerHealth - NICK_HEAL_MAGNUM_TAKE);
+				SetPlayerHealth(iVictim, -1, iCurrentVictimHealth + iHealAmount);
 
 				// Give XP
 				g_iClientXP[iAttacker] += 3;
@@ -475,7 +475,7 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 			// Otherwise, just give friendly fire damage back to the survivor he shot
 			else
 			{
-				SetPlayerHealth(iVictim, iCurrentVictimHealth + iDmgAmount);
+				SetPlayerHealth(iVictim, -1, iCurrentVictimHealth + iDmgAmount);
 			}
 		}
 		else if(iDmgType == DAMAGETYPE_PISTOL && StrEqual(strCurrentWeapon, "weapon_pistol", false) == true)
@@ -492,8 +492,8 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 				new iHealAmount = iCurrentVictimHealth + iDmgAmount + NICK_HEAL_PISTOL_GIVE < iCurrentVictimMaxHealth ? 
 					iDmgAmount + NICK_HEAL_PISTOL_GIVE : 
 					iCurrentVictimMaxHealth - iCurrentVictimHealth;
-				SetPlayerHealth(iAttacker, iCurrentAttackerHealth - NICK_HEAL_PISTOL_TAKE);
-				SetPlayerHealth(iVictim, iCurrentVictimHealth + iHealAmount);
+				SetPlayerHealth(iAttacker, -1, iCurrentAttackerHealth - NICK_HEAL_PISTOL_TAKE);
+				SetPlayerHealth(iVictim, -1, iCurrentVictimHealth + iHealAmount);
 
 				// Give XP
 				g_iClientXP[iAttacker] += 2;
@@ -511,7 +511,7 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 			// Otherwise, just give friendly fire damage back to the survivor he shot
 			else
 			{
-				SetPlayerHealth(iVictim, iCurrentVictimHealth + iDmgAmount);
+				SetPlayerHealth(iVictim, -1, iCurrentVictimHealth + iDmgAmount);
 			}
 		}
 	}
@@ -560,7 +560,7 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 			dmg = CalculateDamageTakenForVictimTalents(iVictim, dmg, weaponclass);
 
 			//PrintToChat(iAttacker, "You are doing %d extra damage", dmg);
-			SetPlayerHealth(iVictim, hp - dmg);
+			SetPlayerHealth(iVictim, iAttacker, hp - dmg);
 		}
 	}
 	
@@ -579,7 +579,7 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 				dmg = CalculateDamageTakenForVictimTalents(iVictim, dmg, weaponclass);
 
 				//PrintToChat(iAttacker, "your doing %d extra magnum damage", dmg);
-				SetPlayerHealth(iVictim, hp - dmg);
+				SetPlayerHealth(iVictim, iAttacker,hp - dmg);
 			}
 			else if (StrContains(weaponclass,"pistol",false) != -1)
 			{
@@ -590,7 +590,7 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 				dmg = CalculateDamageTakenForVictimTalents(iVictim, dmg, weaponclass);
 
 				//PrintToChat(iAttacker, "your doing %d extra damage", dmg);
-				SetPlayerHealth(iVictim, hp - dmg);
+				SetPlayerHealth(iVictim, iAttacker, hp - dmg);
 			}
 			new String:strCurrentWeapon[32];
 			GetClientWeapon(iAttacker, strCurrentWeapon, sizeof(strCurrentWeapon));
@@ -968,9 +968,9 @@ JebusHandMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 							//PrintToChatAll("max health for %N is %d", i, maxHP);
 							PrintHintText(i, "You have been partially healed by %N", iClient);
 							if((currentHP + (g_iDesperateLevel[iClient] * 4)) >= maxHP)
-								SetPlayerHealth(i, maxHP);
+								SetPlayerHealth(i, -1, maxHP);
 							else
-								SetPlayerHealth(i, currentHP + (g_iDesperateLevel[iClient] * 4));
+								SetPlayerHealth(i, -1, currentHP + (g_iDesperateLevel[iClient] * 4));
 						}
 						// Handle Ellis
 						if(g_iOverLevel[i] > 0)
@@ -1028,7 +1028,7 @@ JebusHandMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 							{
 								RunCheatCommand(i, "give", "give health");
 								PrintHintText(i, "You have been instantly revived by %N", iClient);
-								SetPlayerHealth(i, 20);
+								SetPlayerHealth(i, -1, 20);
 								g_bIsClientDown[i] = false;
 								g_iClientBindUses_2[iClient] += 2;
 								decl Float:vec[3];
@@ -1061,7 +1061,7 @@ JebusHandMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 
 								RunCheatCommand(i, "give", "give health");
 
-								SetPlayerHealth(i, 20);
+								SetPlayerHealth(i, -1, 20);
 								g_bIsClientDown[i] = false;
 								g_iClientBindUses_2[iClient] += 2;
 								decl Float:vec[3];

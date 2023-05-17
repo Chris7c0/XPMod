@@ -100,7 +100,7 @@ int ResurrectPlayer(int iTarget, int iClient)
 	WriteParticle(iTarget, "nick_ulti_resurrect_soul", 0.0, 25.0);
 	WriteParticle(iTarget, "nick_ulti_resurrect_trail", 0.0, 25.0);
 
-	SetPlayerHealth(iTarget, 50);
+	SetPlayerHealth(iTarget, -1, 50);
 	SetAppropriateMaxHealthForPlayer(iTarget, false);
 
 	// Update Nicks Desperate Measures Stacks

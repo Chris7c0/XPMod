@@ -257,7 +257,7 @@ void EventsHurt_IncreaseCommonInfectedDamage(iAttacker, iVictim)
 			SetEntDataFloat(iVictim, g_iOffset_HealthBuffer, fTempHealth ,true);
 		}
 		else
-			SetPlayerHealth(iVictim, hp - 1);
+			SetPlayerHealth(iVictim, -1, hp - 1);
 	}
 }
 

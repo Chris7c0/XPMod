@@ -41,7 +41,7 @@ Action:TestFunction1(iClient, args)
 	g_fFasterAttackSpeed = StringToFloat(strArg[0]);
 	PrintToChat(iClient, "g_fFasterAttackSpeed now %f", g_fFasterAttackSpeed);
 	
-	// SetPlayerHealth(iClient, -1000, true);
+	// SetPlayerHealth(iClient, -1, -1000, true);
 
 
 

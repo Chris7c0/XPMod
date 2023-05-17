@@ -116,7 +116,7 @@ OnGameFrame_Coach(iClient)
 
 					RunCheatCommand(iClient, "give", "give health");
 
-					SetPlayerHealth(iClient, preledgehealth[iClient]);
+					SetPlayerHealth(iClient, -1, preledgehealth[iClient]);
 					if(preledgebuffer[iClient] > 1.1)
 						SetEntDataFloat(iClient,g_iOffset_HealthBuffer, (preledgebuffer[iClient] - 1.0) ,true);
 					else
@@ -439,9 +439,9 @@ OnGameFrame_Coach(iClient)
 						new currentHP=GetPlayerHealth(iClient);
 						new maxHP = GetPlayerMaxHealth(iClient);
 						if(currentHP < (maxHP - 1))
-							SetPlayerHealth(iClient, currentHP + 1);
+							SetPlayerHealth(iClient, -1, currentHP + 1);
 						else if(currentHP >= (maxHP - 1))
-							SetPlayerHealth(iClient, maxHP);
+							SetPlayerHealth(iClient, -1, maxHP);
 					}
 				}
 				else
@@ -511,45 +511,45 @@ OnGameFrame_Coach(iClient)
 					new currentHP = GetPlayerHealth(iClient);
 					new maxHP = GetPlayerMaxHealth(iClient);
 					if(currentHP < (maxHP - 5))
-						SetPlayerHealth(iClient, currentHP + 5);
+						SetPlayerHealth(iClient, -1, currentHP + 5);
 					else if(currentHP >= (maxHP - 5))
-						SetPlayerHealth(iClient, maxHP);
+						SetPlayerHealth(iClient, -1, maxHP);
 				}
 				else if(g_iCoachRageRegenCounter[iClient] < 5)
 				{
 					new currentHP = GetPlayerHealth(iClient);
 					new maxHP = GetPlayerMaxHealth(iClient);
 					if(currentHP < (maxHP - 4))
-						SetPlayerHealth(iClient, currentHP + 4);
+						SetPlayerHealth(iClient, -1, currentHP + 4);
 					else if(currentHP >= (maxHP - 4))
-						SetPlayerHealth(iClient, maxHP);
+						SetPlayerHealth(iClient, -1, maxHP);
 				}
 				else if(g_iCoachRageRegenCounter[iClient] < 9)
 				{
 					new currentHP = GetPlayerHealth(iClient);
 					new maxHP = GetPlayerMaxHealth(iClient);
 					if(currentHP < (maxHP - 3))
-						SetPlayerHealth(iClient, currentHP + 3);
+						SetPlayerHealth(iClient, -1, currentHP + 3);
 					else if(currentHP >= (maxHP - 3))
-						SetPlayerHealth(iClient, maxHP);
+						SetPlayerHealth(iClient, -1, maxHP);
 				}
 				else if(g_iCoachRageRegenCounter[iClient] < 14)
 				{
 					new currentHP = GetPlayerHealth(iClient);
 					new maxHP = GetPlayerMaxHealth(iClient);
 					if(currentHP < (maxHP - 2))
-						SetPlayerHealth(iClient, currentHP + 2);
+						SetPlayerHealth(iClient, -1, currentHP + 2);
 					else if(currentHP >= (maxHP - 2))
-						SetPlayerHealth(iClient, maxHP);
+						SetPlayerHealth(iClient, -1, maxHP);
 				}
 				else
 				{
 					new currentHP = GetPlayerHealth(iClient);
 					new maxHP = GetPlayerMaxHealth(iClient);
 					if(currentHP < (maxHP - 1))
-						SetPlayerHealth(iClient, currentHP + 1);
+						SetPlayerHealth(iClient, -1, currentHP + 1);
 					else if(currentHP >= (maxHP - 1))
-						SetPlayerHealth(iClient, maxHP);
+						SetPlayerHealth(iClient, -1, maxHP);
 				}
 				g_iCoachRageRegenCounter[iClient]++;
 				CreateTimer(1.0, TimerCoachRageRegenTick, iClient, TIMER_FLAG_NO_MAPCHANGE);
@@ -709,7 +709,7 @@ EventsHurt_AttackerCoach(Handle:hEvent, attacker, victim)
 				EmitSoundToAll(SOUND_COACH_CHARGE_HIT, attacker, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
 				//CreateParticle("coach_melee_charge_splash", 0.0, attacker, NO_ATTACH);
 				WriteParticle(victim, "coach_melee_charge_splash", 3.0);
-				SetPlayerHealth(victim, hp - ((g_iWreckingLevel[attacker]*100) + g_iMeleeDamageCounter[attacker] + g_iCoachRageMeleeDamage[attacker]));
+				SetPlayerHealth(victim, attacker, hp - ((g_iWreckingLevel[attacker]*100) + g_iMeleeDamageCounter[attacker] + g_iCoachRageMeleeDamage[attacker]));
 			}
 			else if(g_iMeleeDamageCounter[attacker]>0)
 			{
@@ -718,14 +718,14 @@ EventsHurt_AttackerCoach(Handle:hEvent, attacker, victim)
 				//PrintToChat(attacker, "predmg = %d", dmg);
 				//dmg = g_iMeleeDamageCounter[attacker];
 				//PrintToChat(attacker, "\x03[XPMod] \x05You did %d extra melee damage", (g_iMeleeDamageCounter[attacker] + g_iCoachRageMeleeDamage[attacker]));
-				SetPlayerHealth(victim, hp - (g_iMeleeDamageCounter[attacker] + g_iCoachRageMeleeDamage[attacker]));
+				SetPlayerHealth(victim, attacker, hp - (g_iMeleeDamageCounter[attacker] + g_iCoachRageMeleeDamage[attacker]));
 			}
 			
 			if(g_bCoachRageIsActive[attacker] == true)
 			{
 				new hp = GetPlayerHealth(victim);
 				//PrintToChat(attacker, "\x03[XPMod] \x05You did %d extra melee damage", g_iCoachRageMeleeDamage[attacker]);
-				SetPlayerHealth(victim, hp - g_iCoachRageMeleeDamage[attacker]);
+				SetPlayerHealth(victim, attacker, hp - g_iCoachRageMeleeDamage[attacker]);
 			}
 		}
 		if(g_iSprayLevel[attacker] > 0 && StrContains(weaponclass,"shotgun",false) != -1)
@@ -734,7 +734,7 @@ EventsHurt_AttackerCoach(Handle:hEvent, attacker, victim)
 			//new dmg = GetEventInt(hEvent,"dmg_health");
 			//dmg = dmg + (g_iSprayLevel[attacker] * 2);
 			//PrintToChat(attacker, "your doing %d shotgun damage", (g_iSprayLevel[attacker] * 2));
-			SetPlayerHealth(victim, hp - CalculateDamageTakenForVictimTalents(victim, (g_iSprayLevel[attacker] * 2), weaponclass));
+			SetPlayerHealth(victim, attacker, hp - CalculateDamageTakenForVictimTalents(victim, (g_iSprayLevel[attacker] * 2), weaponclass));
 		}
 	}
 }

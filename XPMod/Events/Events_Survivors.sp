@@ -410,7 +410,7 @@ Action:Event_PlayerIncap(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	if(g_iWillLevel[iClient]>0)
 	{
 		new currentHP=GetPlayerHealth(iClient);
-		SetPlayerHealth(iClient, currentHP + (g_iWillLevel[iClient] * 50));
+		SetPlayerHealth(iClient, incapper, currentHP + (g_iWillLevel[iClient] * 50));
 	}
 	if(incapper > 0)
 	{
@@ -450,9 +450,9 @@ Action:Event_PlayerIncap(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					{
 						new currentHP = GetPlayerHealth(i);
 						if((currentHP + (g_iDiehardLevel[i] * 6)) < (100 + (g_iWillLevel[i]*5) + (g_iDiehardLevel[i]*15)))
-							SetPlayerHealth(i, currentHP + (g_iDiehardLevel[i] * 6));
+							SetPlayerHealth(i, -1, currentHP + (g_iDiehardLevel[i] * 6));
 						else
-							SetPlayerHealth(i, 100 + (g_iWillLevel[i]*5) + (g_iDiehardLevel[i]*15));
+							SetPlayerHealth(i, -1, 100 + (g_iWillLevel[i]*5) + (g_iDiehardLevel[i]*15));
 						PrintHintText(i, "A teammate has fallen, you gain %d health.", (g_iDiehardLevel[i] * 6));
 					}
 				}
@@ -509,9 +509,9 @@ Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	
 	//Set what their health should be after health kit use
 	if((currentHP + 100) > maxHP)
-		SetPlayerHealth(target, maxHP);
+		SetPlayerHealth(target, -1, maxHP);
 	else
-		SetPlayerHealth(target, currentHP + 100);
+		SetPlayerHealth(target, -1, currentHP + 100);
 	
 	if(g_iOverLevel[target] > 0)
 	{
@@ -745,7 +745,7 @@ Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 							// Give nick more max health for each kit used, but cap it at +100 HP.
 							int iMaxHealth = GetPlayerMaxHealth(i);
 							if (iMaxHealth >= 200)
-								SetPlayerHealth(i, (g_iSwindlerLevel[i] * 3), true, true);
+								SetPlayerHealth(i, -1, (g_iSwindlerLevel[i] * 3), true, true);
 							else if (iMaxHealth + (g_iSwindlerLevel[i] * 3) <= 200)
 								SetPlayerMaxHealth(i, (g_iSwindlerLevel[i] * 3), true, true)
 							else
@@ -858,16 +858,16 @@ Action:Event_PillsUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 			if(g_iEnhancedLevel[i] < 5)
 			{
 				if(iLoopedClientCurrentHP + g_iEnhancedLevel[i] < iLoopedClientMaxHP)
-					SetPlayerHealth(i, iLoopedClientCurrentHP + g_iEnhancedLevel[i]);
+					SetPlayerHealth(i, -1, iLoopedClientCurrentHP + g_iEnhancedLevel[i]);
 				else
-					SetPlayerHealth(i , iLoopedClientMaxHP);
+					SetPlayerHealth(i, -1, iLoopedClientMaxHP);
 			}
 			else
 			{
 				if(iLoopedClientCurrentHP + g_iEnhancedLevel[i] < iLoopedClientMaxHP)
-					SetPlayerHealth(i, iLoopedClientCurrentHP + g_iEnhancedLevel[i] + 3);
+					SetPlayerHealth(i, -1, iLoopedClientCurrentHP + g_iEnhancedLevel[i] + 3);
 				else
-					SetPlayerHealth(i , iLoopedClientMaxHP);
+					SetPlayerHealth(i, -1, iLoopedClientMaxHP);
 			}
 		}
 	}
@@ -912,16 +912,16 @@ Action:Event_AdrenalineUsed(Handle:hEvent, const String:strName[], bool:bDontBro
 			if(g_iEnhancedLevel[i] < 5)
 			{
 				if(iLoopedClientCurrentHP + g_iEnhancedLevel[i] < iLoopedClientMaxHP)
-					SetPlayerHealth(i, iLoopedClientCurrentHP + g_iEnhancedLevel[i]);
+					SetPlayerHealth(i, -1, iLoopedClientCurrentHP + g_iEnhancedLevel[i]);
 				else
-					SetPlayerHealth(i , iLoopedClientMaxHP);
+					SetPlayerHealth(i, -1, iLoopedClientMaxHP);
 			}
 			else
 			{
 				if(iLoopedClientCurrentHP + g_iEnhancedLevel[i] < iLoopedClientMaxHP)
-					SetPlayerHealth(i, iLoopedClientCurrentHP + g_iEnhancedLevel[i] + 3);
+					SetPlayerHealth(i, -1, iLoopedClientCurrentHP + g_iEnhancedLevel[i] + 3);
 				else
-					SetPlayerHealth(i , iLoopedClientMaxHP);
+					SetPlayerHealth(i, -1, iLoopedClientMaxHP);
 			}
 		}
 	}

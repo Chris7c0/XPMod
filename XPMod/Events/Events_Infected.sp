@@ -109,13 +109,13 @@ Action:Event_ChargerImpact(Handle:hEvent, const String:strName[], bool:bDontBroa
 		else iDamage = 6;
 		
 		new iCurrentHealth = GetPlayerHealth(victim);
-		SetPlayerHealth(victim, iCurrentHealth - iDamage);
+		SetPlayerHealth(victim, attacker, iCurrentHealth - iDamage);
 	}
 	if(g_iSpikedLevel[attacker] > 0)
 	{
 		
 		new heal = GetPlayerHealth(attacker);
-		SetPlayerHealth(attacker, heal + (g_iSpikedLevel[attacker] * 33));
+		SetPlayerHealth(attacker, -1, heal + (g_iSpikedLevel[attacker] * 33));
 	}
 
 	return Plugin_Continue;

@@ -155,7 +155,7 @@ void HandleGettingUpFromLedge(int iClient, int iButtons)
 	RunCheatCommand(iClient, "give", "give health");
 
 	// Restore health to preledge health
-	SetPlayerHealth(iClient, preledgehealth[iClient]);
+	SetPlayerHealth(iClient, -1, preledgehealth[iClient]);
 	if(preledgebuffer[iClient] > 1.1)
 		SetEntDataFloat(iClient,g_iOffset_HealthBuffer, (preledgebuffer[iClient] - 1.0) ,true);
 	else

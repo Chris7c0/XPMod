@@ -105,7 +105,7 @@ OnGameFrame_Tank_Ice(iClient)
 		}
 		
 		// Bleed off health as the Ice Tank is sliding
-		SetPlayerHealth(iClient, -1 * TANK_ICE_SLIDE_LIFE_DECAY, true);
+		SetPlayerHealth(iClient, -1, -1 * TANK_ICE_SLIDE_LIFE_DECAY, true);
 
 		g_iIceTankLifePool[iClient] += RoundToNearest(TANK_ICE_SLIDE_LIFE_DECAY * 0.5);
 	}
@@ -138,7 +138,7 @@ OnGameFrame_Tank_Ice(iClient)
 				int iExtraHealth = iCurrentHealth + TANK_ICE_REGEN_RATE > iCurrentMaxHealth ? iCurrentMaxHealth : iCurrentHealth + TANK_ICE_REGEN_RATE;
 				// clamp to g_iIceTankLifePool
 				iExtraHealth = g_iIceTankLifePool[iClient] < TANK_ICE_REGEN_RATE ? g_iIceTankLifePool[iClient] : TANK_ICE_REGEN_RATE;
-				SetPlayerHealth(iClient, iExtraHealth, true);
+				SetPlayerHealth(iClient, -1, iExtraHealth, true);
 				fCurrentTankHealthPercentage = float(iCurrentHealth + iExtraHealth) / float(iCurrentMaxHealth);
 				// Set new Life Pool and clamp to 0
 				g_iIceTankLifePool[iClient] = g_iIceTankLifePool[iClient] - TANK_ICE_REGEN_RATE > 0 ? g_iIceTankLifePool[iClient] - TANK_ICE_REGEN_RATE : 0;
@@ -260,7 +260,7 @@ EventsHurt_VictimTank_Ice(Handle:hEvent, iAttacker, iVictimTank)
 
 	// Add More Damage if the Tank is sliding
 	if (g_bIceTankSliding[iVictimTank] == true)
-		SetPlayerHealth(iVictimTank, RoundToNearest(-1.0 * iDmgHealth * TANK_ICE_SLIDE_DAMAGE_RECIEVED_MULTIPLIER) + iDmgHealth, true);
+		SetPlayerHealth(iVictimTank, iAttacker, RoundToNearest(-1.0 * iDmgHealth * TANK_ICE_SLIDE_DAMAGE_RECIEVED_MULTIPLIER) + iDmgHealth, true);
 	
 	fCurrentTankHealthPercentage = float(iCurrentHealth + iDmgHealth) / (TANK_HEALTH_ICE * g_fTankStartingHealthMultiplier[iVictimTank]);
 	
@@ -327,7 +327,7 @@ void HandleFireDamageVictimIceTank(int iAttacker, int iVictimTank, int iDmgHealt
 
 	if (iDmgType == DAMAGETYPE_FIRE1 || iDmgType == DAMAGETYPE_FIRE2)
 	{
-		SetPlayerHealth(iVictimTank, (-1 * TANK_FIRE_DAMAGE_IN_FIRE), true);
+		SetPlayerHealth(iVictimTank, iAttacker, (-1 * TANK_FIRE_DAMAGE_IN_FIRE), true);
 		return;
 	}
 
@@ -352,7 +352,7 @@ void HandleFireDamageVictimIceTank(int iAttacker, int iVictimTank, int iDmgHealt
 		if (StrContains(strEntityClassName, "weapon_melee", true) == -1)
 		{
 			// Handle the extra damage and return
-			SetPlayerHealth(iVictimTank, RoundToNearest(-1.0 * iDmgHealth * TANK_FIRE_DAMAGE_FIRE_BULLETS_ADD_MULTIPLIER) + iDmgHealth, true);
+			SetPlayerHealth(iVictimTank, iAttacker, RoundToNearest(-1.0 * iDmgHealth * TANK_FIRE_DAMAGE_FIRE_BULLETS_ADD_MULTIPLIER) + iDmgHealth, true);
 			return;
 		}
 	}
@@ -370,7 +370,7 @@ void HandleFireDamageVictimIceTank(int iAttacker, int iVictimTank, int iDmgHealt
 		return;
 	
 	//PrintToChatAll("FIRE AMMO DMG: %i", RoundToNearest(-1.0 * iDmgHealth * TANK_FIRE_DAMAGE_FIRE_BULLETS_ADD_MULTIPLIER) + iDmgHealth);
-	SetPlayerHealth(iVictimTank, RoundToNearest(-1.0 * iDmgHealth * TANK_FIRE_DAMAGE_FIRE_BULLETS_ADD_MULTIPLIER) + iDmgHealth, true);
+	SetPlayerHealth(iVictimTank, iAttacker, RoundToNearest(-1.0 * iDmgHealth * TANK_FIRE_DAMAGE_FIRE_BULLETS_ADD_MULTIPLIER) + iDmgHealth, true);
 }
 
 FreezePlayerByTank(iVictim, Float:fFreezeTime, Float:fStartTime = 0.2)

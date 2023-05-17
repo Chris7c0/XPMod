@@ -112,8 +112,6 @@ TurnSmokerIntoSmokeCloud(int iClient)
 		IsPlayerAlive(iClient) == true && 
 		IsFakeClient(iClient) == false)
 		PrintHintText(iClient, "You're Now A Smoke Cloud.");
-
-	// SetPlayerHealth(iClient, 30000);
 }
 
 // This is for if the smoker is able to attack or something happens while in smoke cloud or limbo, return them.
@@ -370,7 +368,7 @@ Action:TimerHandleSmokerCloudTickOnPlayer(Handle:timer, int iClient)
 	else if (g_iClientTeam[iClient] == TEAM_INFECTED)
 	{
 		// Give the infected some health for being in the smoker cloud
-		SetPlayerHealth(iClient, SMOKER_SMOKE_CLOUD_INFECTED_HEAL_RATE_PER_TICK, true);
+		SetPlayerHealth(iClient, -1, SMOKER_SMOKE_CLOUD_INFECTED_HEAL_RATE_PER_TICK, true);
 
 		// Temp Blind the player
 		ShowHudOverlayColor(iClient, 255, 5, 50, 50, 1300, FADE_OUT);

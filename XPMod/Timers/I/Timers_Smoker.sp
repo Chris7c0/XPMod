@@ -105,7 +105,7 @@ Action:TimerPoisonCloud(Handle:timer, any:iClient)
 			PrintHintText(iVictim, "You have entered a poison cloud");
 		
 		DealDamage(iVictim, iClient, 1, DAMAGETYPE_GENERIC);
-		SetPlayerHealth(iVictim, 1, true)
+		SetPlayerHealth(iVictim, iClient, 1, true)
 		ConvertSomeSurvivorHealthToTemporary(iVictim, 2);
 		
 		g_iClientXP[iClient] += 3;

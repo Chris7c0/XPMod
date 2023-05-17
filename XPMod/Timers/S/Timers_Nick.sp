@@ -165,7 +165,7 @@ Action:TimerLifeStealingFade(Handle:timer, any:pack)
 		if(hp <= stealamt)
 			ForcePlayerSuicide(victim);
 		else
-			SetPlayerHealth(victim, hp - stealamt);
+			SetPlayerHealth(victim, attacker, hp - stealamt);
 		//Give life to shooter
 		hp = GetPlayerHealth(attacker);
 		new maxhp = GetPlayerMaxHealth(attacker);
@@ -174,12 +174,12 @@ Action:TimerLifeStealingFade(Handle:timer, any:pack)
 			if(g_bIsClientDown[attacker] == false)
 			{
 				if(maxhp > (hp + RoundToCeil(stealamt*0.5)))
-					SetPlayerHealth(attacker, hp + RoundToCeil(stealamt*0.5));
+					SetPlayerHealth(attacker, -1, hp + RoundToCeil(stealamt*0.5));
 				else
-					SetPlayerHealth(attacker, maxhp);
+					SetPlayerHealth(attacker, -1, maxhp);
 			}
 			else
-				SetPlayerHealth(attacker, hp + RoundToCeil(stealamt*0.5));
+				SetPlayerHealth(attacker, -1, hp + RoundToCeil(stealamt*0.5));
 				
 			WriteParticle(attacker, "nick_lifesteal_recovery", 0.0, 3.0);
 		}

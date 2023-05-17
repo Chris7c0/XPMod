@@ -237,7 +237,7 @@ ResetTankHealth(int iClient)
 	//PrintToChatAll("2) %N ResetTankHealth g_fFrustratedTankTransferHealthPercentage: %f iMaxHealthConVarSetting = %i iNewHealth = %i", iClient, g_fFrustratedTankTransferHealthPercentage, iMaxHealthConVarSetting, iNewHealth);
 
 	if (g_bTankHealthJustSet[iClient] == false)
-		SetPlayerHealth(iClient, iNewHealth);
+		SetPlayerHealth(iClient, -1, iNewHealth);
 
 	// This is so that the tank cant be set twice for the same player during a transfer
 	// Its required because this is called a few times for each player, because multiple
@@ -271,7 +271,7 @@ SetTanksTalentHealth(int iClient, int iMaxHealthAmount)
 
 	// Set New Health Values
 	SetPlayerMaxHealth(iClient, iNewMaxHealth, false, false);
-	SetPlayerHealth(iClient, iNewHealth > 100 ? iNewHealth : 100);
+	SetPlayerHealth(iClient, -1, iNewHealth > 100 ? iNewHealth : 100);
 }
 
 float CalculateTankHealthPercentageMultiplier()

@@ -344,7 +344,7 @@ EventsHurt_AttackerEllis(Handle hEvent, int iAttacker, int iVictim)
 
 	// 			new iDmgAmount = GetEventInt(hEvent,"dmg_health");
 	// 			new iAddtionalDmg = RoundToNearest(iDmgAmount * (g_iOverLevel[iAttacker] * 0.06));
-	// 			SetPlayerHealth(iVictim, iVictimHealth - CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
+	// 			SetPlayerHealth(iVictim, iAttacker, iVictimHealth - CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
 
 	// 			// PrintToChatAll("Ellis is doing %i original damage", iDmgAmount);
 	// 			// PrintToChatAll("Ellis is doing %i additional OVERCONFIDENCE damage", CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
@@ -361,7 +361,7 @@ EventsHurt_AttackerEllis(Handle hEvent, int iAttacker, int iVictim)
 
 	// 			new iDmgAmount = GetEventInt(hEvent,"dmg_health");
 	// 			new iAddtionalDmg = RoundToNearest(iDmgAmount * (g_iOverLevel[iAttacker] * 0.06));
-	// 			SetPlayerHealth(iVictim, iVictimHealth - CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
+	// 			SetPlayerHealth(iVictim, iAttacker, iVictimHealth - CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));
 
 	// 			// PrintToChatAll("Ellis is doing %i original damage", iDmgAmount);
 	// 			// PrintToChatAll("Ellis is doing %i additional ADRENALINE damage", CalculateDamageTakenForVictimTalents(iVictim, iAddtionalDmg, strWeaponClass));

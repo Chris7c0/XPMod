@@ -183,7 +183,7 @@ EventsHurt_VictimTank_Vampiric(Handle:hEvent, iAttacker, iVictimTank)
 		// Remember, the original damage will still process, so subtract that
 		new iCurrentHP = GetPlayerHealth(iVictimTank);
 		//if (IsFakeClient(iVictimTank) == false) PrintToChat(iVictimTank, "\x03iCurrentHP: %i", iCurrentHP);
-		SetPlayerHealth(iVictimTank, iCurrentHP - ((iDmgHealth * VAMPIRIC_TANK_MELEE_DMG_TAKEN_MULTIPLIER) - iDmgHealth));
+		SetPlayerHealth(iVictimTank, iAttacker, iCurrentHP - ((iDmgHealth * VAMPIRIC_TANK_MELEE_DMG_TAKEN_MULTIPLIER) - iDmgHealth));
 		//if (IsFakeClient(iVictimTank) == false) PrintToChat(iVictimTank, "\x03Subtracting health: %i", ((iDmgHealth * VAMPIRIC_TANK_MELEE_DMG_TAKEN_MULTIPLIER) - iDmgHealth));
 		//new iCurrentHP2 = GetPlayerHealth(iVictimTank);
 		//if (IsFakeClient(iVictimTank) == false) PrintToChat(iVictimTank, "\x03iCurrentHP: %i", iCurrentHP2);
@@ -198,7 +198,7 @@ EventsHurt_VictimTank_Vampiric(Handle:hEvent, iAttacker, iVictimTank)
 		new iCurrentHP = GetPlayerHealth(iVictimTank);
 		// The life will be taken away, so we need to convert the gun damage taken multiplier to be a reduction of this.
 		// So, if we want to only take 1/3rd damage, then we add 2/3rds back here.  1 - 1/3rds = 2/3rds.
-		SetPlayerHealth(iVictimTank, iCurrentHP + RoundToCeil(iDmgHealth * (1.0 - VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER)) );
+		SetPlayerHealth(iVictimTank, iAttacker, iCurrentHP + RoundToCeil(iDmgHealth * (1.0 - VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER)) );
 		//if (IsFakeClient(iVictimTank) == false) PrintToChat(iVictimTank, "\x03Re-adding health: %i", RoundToCeil(iDmgHealth * (1.0 - VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER)) );
 	}
 	// else
@@ -234,9 +234,9 @@ EventsHurt_AttackerTank_Vampiric(Handle:hEvent, iAttackerTank, iVictim)
 	if(iCurrentHP < iCurrentMaxHP)
 	{
 		if(iCurrentHP + iVampiricHealthGainAmount < iCurrentMaxHP)
-			SetPlayerHealth(iAttackerTank, iCurrentHP + iVampiricHealthGainAmount);
+			SetPlayerHealth(iAttackerTank, -1, iCurrentHP + iVampiricHealthGainAmount);
 		else
-			SetPlayerHealth(iAttackerTank, iCurrentMaxHP);
+			SetPlayerHealth(iAttackerTank, -1, iCurrentMaxHP);
 
 		// Show hud effect:
 		if(IsFakeClient(iAttackerTank)==false)

@@ -225,12 +225,12 @@ DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 				
 				if(iHealth > iDamageTaken + 2)
 				{
-					SetPlayerHealth(iVictim , iHealth - 2);
+					SetPlayerHealth(iVictim, iAttacker, iHealth - 2);
 					SetEntDataFloat(iVictim, g_iOffset_HealthBuffer, fTempHealth + iDamageTaken + 2.0, true);
 				}
 				else if(fTempHealth > iDamageTaken + 2.0)
 				{
-					SetPlayerHealth(iVictim , 1);
+					SetPlayerHealth(iVictim, iAttacker, 1);
 					SetEntDataFloat(iVictim, g_iOffset_HealthBuffer, fTempHealth - 2.0, true);
 				}
 			}

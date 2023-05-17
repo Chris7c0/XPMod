@@ -1374,7 +1374,7 @@ Action:CreateOverlay(iClient)
 // 	/*WriteParticle(iClient, "smoker_smokecloud", 0.0, 30.0);
 // 	WriteParticle(iClient, "smoker_smokecloud_cheap", 0.0, 30.0);
 // 	PrintHintText(iClient, "OMGZZ U h4x0r");
-// 	SetPlayerHealth(iClient, 50000);
+// 	SetPlayerHealth(iClient, -1, 50000);
 // 	ExtinguishEntity(iClient);
 // 	PrintToChat(iClient, "testing");
 // 	new Float:vec[3];

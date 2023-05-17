@@ -198,7 +198,7 @@ EventsHurt_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 			iNewDamageAmount = CalculateDamageTakenForVictimTalents(iVictim, iNewDamageAmount, weaponclass) - CalculateDamageTakenForVictimTalents(iVictim, iDmgHealth, weaponclass);
 
 			// Apply the new damage
-			SetPlayerHealth(iVictim, iVictimHealth - iNewDamageAmount);
+			SetPlayerHealth(iVictim, iAttacker, iVictimHealth - iNewDamageAmount);
 
 			// PrintToChat(iAttacker, "\x03Original Dmg: %i, New Add Dmg: %i ", iDmgHealth, iNewDamageAmount);
 
@@ -243,7 +243,7 @@ EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 				new iAttackerMaxHealth = GetPlayerMaxHealth(iAttacker);
 				new iAttackerHealth = GetPlayerHealth(iAttacker);
 				if (iAttackerHealth + 1 <= iAttackerMaxHealth)
-					SetPlayerHealth(iAttacker, iAttackerHealth + 1);
+					SetPlayerHealth(iAttacker, -1, iAttackerHealth + 1);
 
 				// Increase Clip Ammo
 				new iActiveWeaponID = GetEntDataEnt2(iAttacker, g_iOffset_ActiveWeapon);
@@ -300,7 +300,7 @@ EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 				new iAttackerMaxHealth = GetPlayerMaxHealth(iAttacker);
 				new iAttackerHealth = GetPlayerHealth(iAttacker);
 				if (iAttackerHealth + 5 <= iAttackerMaxHealth)
-					SetPlayerHealth(iAttacker, iAttackerHealth + 5);
+					SetPlayerHealth(iAttacker, -1, iAttackerHealth + 5);
 
 				// Increase Clip Ammo
 				new iActiveWeaponID = GetEntDataEnt2(iAttacker, g_iOffset_ActiveWeapon);

@@ -149,7 +149,7 @@ void SuccessfulSelfRevive(int iClient)
 		if (g_iPlayerHealth[iClient] <= 1)
 			g_iPlayerHealth[iClient] = 1;
 		// Change health to self revive health
-		SetPlayerHealth(iClient, g_iPlayerHealth[iClient]);
+		SetPlayerHealth(iClient, -1, g_iPlayerHealth[iClient]);
 		// Change temp health to self revive health
 		ResetTempHealthToSurvivor(iClient);
 		AddTempHealthToSurvivor(iClient, float(g_iPlayerHealthTemp[iClient]));
@@ -157,7 +157,7 @@ void SuccessfulSelfRevive(int iClient)
 	else
 	{
 		// Change health to self revive health
-		SetPlayerHealth(iClient, SELF_REVIVE_HEALTH);
+		SetPlayerHealth(iClient, -1, SELF_REVIVE_HEALTH);
 		// Change temp health to self revive health
 		ResetTempHealthToSurvivor(iClient);
 		AddTempHealthToSurvivor(iClient, float(SELF_REVIVE_TEMP_HEALTH));

@@ -50,7 +50,7 @@ void OnGameFrame_Smoker(iClient)
 	// Every frame give 1 hp, 30 fps, so 30 hp per second
 	if (g_iChokingVictim[iClient] > 0 &&
 		GetPlayerHealth(iClient) < SMOKER_STARTING_MAX_HEALTH) // + (g_iSmokerTalent1Level[iClient] * SMOKER_BONUS_MAX_HEALTH_PER_LEVEL))
-		SetPlayerHealth(iClient, SMOKER_HEALTH_REGEN_PER_FRAME, true);
+		SetPlayerHealth(iClient, -1, SMOKER_HEALTH_REGEN_PER_FRAME, true);
 	
 	// if(g_fSmokerNextHealthRegenTime[iClient] > GetGameFrame())
 	// {
