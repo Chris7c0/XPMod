@@ -2,6 +2,7 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 {
 	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"attacker"));
 	new iVictim  = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	new iDamage = GetEventInt(hEvent, "dmg_health");
 
 	// // Reset bot action if hurt
 	// if (RunClientChecks(iVictim) && IsFakeClient(iVictim) && IsPlayerAlive(iVictim))
@@ -45,11 +46,14 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	// This is to capture any extra damage that happens post player hurt
 	CreateTimer(0.1, TimerStorePlayerHealth, iVictim, TIMER_FLAG_NO_MAPCHANGE);
 
+	// Store the values for handling the DPS Meter
+	AddDamageToDPSMeter(iAttacker, iDamage);
+
 	// Play headshot ding sound if they got one
 	EventsHurt_PlayHeadshotDingSoundForHeadshots(hEvent, iAttacker, iVictim);
 
 	// Reduce damage for low level human survivor players that are not incaped
-	ReduceDamageTakenForNewPlayers(iVictim, iAttacker, GetEventInt(hEvent, "dmg_health"));
+	ReduceDamageTakenForNewPlayers(iVictim, iAttacker, iDamage);
 
 	// PrintToChatAll("%N armor = %d = health = %i health_dmg = %i", iVictim, GetEventFloat(hEvent, "dmg_armor"), GetEventInt(hEvent, "health"), GetEventInt(hEvent, "dmg_health"));
 	

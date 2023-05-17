@@ -372,9 +372,11 @@ Action:Event_InfectedHurt(Handle:hEvent, const String:strName[], bool:bDontBroad
 	new attacker = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
 	new victim = GetEventInt(hEvent, "entityid");
 	//new hitGroup = GetEventInt(hEvent, "hitgroup");
-	//new dmgHealth = GetEventInt(hEvent, "amount");
+	new iDamage = GetEventInt(hEvent, "amount");
 	//new dmgType = GetEventInt(hEvent, "type");
-	//PrintToChatAll("Attacker = %d, Victim = %d, dmgHealth = %d, dmgType = %d, hitGroup = %d", attacker, victim, dmgHealth, dmgType, hitGroup);
+	//PrintToChatAll("Attacker = %d, Victim = %d, iDamage = %d, dmgType = %d, hitGroup = %d", attacker, victim, iDamage, dmgType, hitGroup);
+
+	AddDamageToDPSMeter(attacker, iDamage);
 	
 	if(g_iClientTeam[attacker] == TEAM_SURVIVORS)
 	{

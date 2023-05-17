@@ -15,6 +15,9 @@ Action Timer1SecondGlobalRepeating(Handle timer, any data)
 			g_bTalentsConfirmed[iClient] == false ||
 			IsPlayerAlive(iClient) == false)
 			continue;
+
+		// Handle DPS Meters
+		Handle1SecondClientTimers_DPSMeter(iClient);
 		
 		if(g_iClientTeam[iClient] == TEAM_SURVIVORS)
 		{

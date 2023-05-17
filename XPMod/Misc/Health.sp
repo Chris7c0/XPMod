@@ -36,15 +36,22 @@ bool SetPlayerHealth(int iClient, int iHealthAmount, bool bAdditive = false, boo
 	if (iHealthAmount < 0 && bAdditive == false)
 		iHealthAmount = 0;
 	
+	int iCurrentHealth = GetPlayerHealth(iClient);
 	int iMaxHealth = GetPlayerMaxHealth(iClient);
 	int iTempHealth = GetSurvivorTempHealth(iClient);
 	// Subtract temp health from MaxHealth to stop from going over
 	if (bClampWithTempHealth && iTempHealth > 0)
 		iMaxHealth = iMaxHealth - iTempHealth;
 
+	// Record the damage for the DPS Meter
+	if (bAdditive)
+		AddDamageToDPSMeter(iClient, iHealthAmount);
+	else
+		AddDamageToDPSMeter(iClient, iCurrentHealth - iHealthAmount);
+
 	// Add the health to existing health if its additive
 	if (bAdditive)
-		iHealthAmount += GetPlayerHealth(iClient);
+		iHealthAmount += iCurrentHealth;
 
 	// Set the players health
 	// Clamp the players health to their max health upper bounds and 0 for the lower bound

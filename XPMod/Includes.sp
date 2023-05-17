@@ -33,6 +33,7 @@
 #include "XPMod/Misc/Survivor_Functions.sp"
 #include "XPMod/Misc/SpawnInfected.sp"
 #include "XPMod/Misc/VictimHealthMeter.sp"
+#include "XPMod/Misc/DPS_Meter.sp"
 //Database Management
 #include "XPMod/Database/Database.sp"
 #include "XPMod/Database/Models/DB_Users.sp"
