@@ -6,7 +6,7 @@ AddDamageToDPSMeter(int iClient, int iDamage)
     g_fDPSTimeOfLastDamage[iClient] = GetGameTime();
     g_iDPSTotalDamage[iClient] += iDamage;
 
-    PrintToChatAll("AddDamageToDPSMeter %i", iDamage);
+    // PrintToChatAll("AddDamageToDPSMeter %i", iDamage);
 }
 
 Handle1SecondClientTimers_DPSMeter(int iClient)

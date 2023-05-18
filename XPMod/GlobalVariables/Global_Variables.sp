@@ -291,7 +291,7 @@ float g_fXPModEntityHealth[MAXENTITIES + 1];
 #define XPMOD_ENTITY_TYPE_SMOKER_CLONE  1
 
 // DPS Meter
-#define DPS_METER_TIME_UNTIL_RESET          2.5     // Time from last attack the next when the DPS Meter is reset
+#define DPS_METER_TIME_UNTIL_RESET          3.0     // Time from last attack the next when the DPS Meter is reset
 int g_iDPSTotalDamage[MAXPLAYERS +1];               // Total Damage recorded this DPS session
 float g_fDPSStartTime[MAXPLAYERS +1];               // Start Time of recorded this DPS session
 float g_fDPSTimeOfLastDamage[MAXPLAYERS +1];        // Time of last DPS, if this exceeds x time, everything is reset
