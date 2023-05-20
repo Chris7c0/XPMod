@@ -1070,7 +1070,7 @@ HandleEllisLimitBreak(iClient)
 	g_bCanEllisLimitBreak[iClient] = false;
 	CreateTimer(5.0, TimerEllisLimitBreakReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	CreateTimer(65.0, TimerEllisLimitBreakCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
-	PrintHintText(iClient, "Double fire rate for 5 seconds; Your weapon will break afterward!");
+	PrintHintText(iClient, "Triple fire rate for 5 seconds; Your weapon will break afterward!");
 }
 
 // bool HandleFastAttackingClients_Ellis(int iClient, const int iActiveWeaponID, const int iActiveWeaponSlot, const float fGameTime, const float fCurrentNextAttackTime, float &fAdjustedNextAttackTime)

@@ -272,7 +272,7 @@ Action:MetalMenuDraw(iClient)
 		%s				Mechanic Affinity (Level %d):\
 		\n \
 		\nLevel 1:\
-		\n+5%%%% Firing Rate per Level\
+		\n+10%%%% Firing Rate per Level\
 		\n All Guns Are Automatic Now\
 		\n \
 		\nLevel 5:\
