@@ -23,6 +23,25 @@ int FindWeaponItemIndexOfWeaponID(int iClient, int iActiveWeaponID = -1)
 	return FindWeaponItemIndex(strEntityClassName, ITEM_CLASS_NAME);
 }
 
+int GetWeaponIndexByFindingAndComparingViewModelString(int iClient, int iWeaponID = -1)
+{
+	if (iWeaponID == -1)
+		iWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+
+	if (RunEntityChecks(iWeaponID) == false)
+		return ITEM_EMPTY;
+
+	char strWeaponModelName[64];
+	GetEntPropString(iWeaponID, Prop_Data, "m_ModelName", strWeaponModelName, sizeof(strWeaponModelName));
+	// PrintToChat(iClient, "strWeaponModelName %s", strWeaponModelName);
+
+	for(int iItemIndex=0; iItemIndex <= ITEM_COUNT; iItemIndex++)
+		if (StrEqual(strWeaponModelName, ITEM_VIEW_MODEL_PATH[iItemIndex], false) == true)
+			return iItemIndex;
+	
+	return ITEM_EMPTY;
+}
+
 public bool IsWeaponIndexPrimarySlotItem(int iWeaponIndex)
 {
 	if (iWeaponIndex < ITEM_RANGE_MIN_SLOT_PRIMARY ||
@@ -75,6 +94,31 @@ public bool IsWeaponIndexMeleeWeapon(int iWeaponIndex)
 		return false
 	
 	return true;
+}
+
+int GetActiveWeaponSlot(const int iClient, int iActiveWeaponID = -1)
+{
+	if (RunClientChecks(iClient) == false || 
+		IsPlayerAlive(iClient) == false ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS)
+		return -1;
+
+	// If there was no weapon id provided, get it
+	if (RunEntityChecks(iActiveWeaponID) == false)
+	{
+		iActiveWeaponID = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
+	
+		// No valid weapon id was found
+		if (iActiveWeaponID == -1)
+			return -1;
+	} 
+
+	// return the slot they are using
+	for (int i=0; i < 5; i++)
+		if (GetPlayerWeaponSlot(iClient, i) == iActiveWeaponID)
+			return i;
+
+	return -1;
 }
 
 SetAmmoOffsetForPrimarySlotID(int iClient, int iWeaponIndex)

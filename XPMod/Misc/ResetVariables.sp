@@ -58,6 +58,8 @@ void ResetClientVariablesForRound(int iClient)
 {
 	ResetAllEntityVariablesForRound();
 	ResetTalentConfirmCountdown(iClient);
+	g_iFastAttackingCurrentWeaponID[iClient] = -1;
+	g_iFastAttackingCurrentItemIndex[iClient] = ITEM_EMPTY;
 	g_bWalkAndUseToggler[iClient] = false;
 	g_bSurvivorTalentsGivenThisRound[iClient] = false;
 	g_bPlayerInTeamChangeCoolDown[iClient] = false;

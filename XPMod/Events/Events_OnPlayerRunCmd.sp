@@ -312,63 +312,90 @@ Action:TimerUnblockBotFromAttacking(Handle:timer, any:iClient)
 // 	return Plugin_Handled;
 // }
 
-float g_fPreviousNextPrimaryAttack[MAXPLAYERS + 1] = 0.0;
-
-/* Original code from Machine's weapon speed plugin */
-stock AdjustWeaponSpeed(iClient, float Amount, slot)
+/* Highly modified version of the original code from Machine's weapon speed plugin */
+void ChangeWeaponSpeed(int iClient, float fAmount, int iSlot)
 {
-	if (GetPlayerWeaponSlot(iClient, slot) <= 0)
+	// Get the player's currently held and active weapon
+	int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+	if (RunEntityChecks(iActiveWeaponID) == false)
 		return;
 
-	float m_flNextPrimaryAttack = GetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flNextPrimaryAttack");
-	float m_flNextSecondaryAttack = GetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flNextSecondaryAttack");
-	float m_flCycle = GetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flCycle");
-	int m_bInReload = GetEntProp(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_bInReload");
+	// Make sure the player is actively using the specified weapon slot
+	if (iActiveWeaponID != GetPlayerWeaponSlot(iClient, iSlot))
+		return;
 
-	// //Getting the animation cycle at zero seems to be key here, however the scar and pistols weren't seem to be getting affected
-	// if (m_flCycle == 0.000000 && m_bInReload < 1)
-	// {
-	//	This math from this plugin appears to be wrong, redone math below
-	// 	SetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flPlaybackRate", Amount);
-	// 	SetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flNextPrimaryAttack", m_flNextPrimaryAttack - ((Amount - 1.0) / 2));
-	// 	SetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flNextSecondaryAttack", m_flNextSecondaryAttack - ((Amount - 1.0) / 2));
-	// }
-
+	// Check if the weapon id is a match for what was previously used
+	// If its not a match then get the required info
+	// Doing this gives a performance increase
+	// Also, need to check if item is a single pistol P220, because
+	// the id doesnt change during pick up of another one
+	if (g_iFastAttackingCurrentWeaponID[iClient] != iActiveWeaponID ||
+		g_iFastAttackingCurrentItemIndex[iClient] == ITEM_P220)
+		GetAndStoreFastAttackingCurrentWeapon(iClient, iActiveWeaponID);
 	
-	// Amount = 2.0;
-	float fBaseGunSpeed = 0.130004;	//AK
-	// float fBaseGunSpeed = 0.087500;	//M16
+	// Check again now that it should be set, if not, then get out of here
+	if (g_iFastAttackingCurrentWeaponID[iClient] != iActiveWeaponID)
+		return;
 
-	if (m_flCycle == 0.000000 && m_bInReload <= 1)
-	{
-		// float fGameTime = GetGameTime();
-		// float fAdjustedNextAttackTime = m_flNextPrimaryAttack - ( ( m_flNextPrimaryAttack - fGameTime ) * (1 / Amount) );
-		// float fAdjustedSecondaryAttackTime = m_flNextSecondaryAttack - ( ( m_flNextSecondaryAttack - fGameTime ) * (1 / Amount) );
+	// PrintToChat(iClient, "%s %f", ITEM_CMD_NAME[g_iFastAttackingCurrentItemIndex[iClient]], ITEM_WEAPON_BASE_ROF[g_iFastAttackingCurrentItemIndex[iClient]]);
 
-		
-		float fAdjustedNextAttackTime = m_flNextPrimaryAttack - (fBaseGunSpeed - ( ( fBaseGunSpeed ) * (1 / Amount) ) );
+	float m_flNextPrimaryAttack = GetEntPropFloat(iActiveWeaponID, Prop_Send, "m_flNextPrimaryAttack");
+	float m_flNextSecondaryAttack = GetEntPropFloat(iActiveWeaponID, Prop_Send, "m_flNextSecondaryAttack");
+	float m_flCycle = GetEntPropFloat(iActiveWeaponID, Prop_Send, "m_flCycle");
+	int m_bInReload = GetEntProp(iActiveWeaponID, Prop_Send, "m_bInReload");
 
-		// PrintToChat(iClient, "%0.2fx    %f   %f:%f", Amount, m_flNextPrimaryAttack - fGameTime, m_flNextPrimaryAttack - (( m_flNextPrimaryAttack - fGameTime ) * (1 / Amount)), fGameTime + (( m_flNextPrimaryAttack - fGameTime ) * (1 / Amount))  );
-
-		// Display the various time between shot values
-		PrintToChat(iClient, "%0.2fx baseT %f calcT %f actualT %f", Amount, fBaseGunSpeed, ( ( fBaseGunSpeed ) * (1 / Amount) ), m_flNextPrimaryAttack - g_fPreviousNextPrimaryAttack[iClient]);
-		g_fPreviousNextPrimaryAttack[iClient] = m_flNextPrimaryAttack;
-
-		// if (m_flNextPrimaryAttack - fGameTime <= 0.000000) return;
-
-		SetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flPlaybackRate", Amount);
-		SetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flNextPrimaryAttack", fAdjustedNextAttackTime);
-		// SetEntPropFloat(GetPlayerWeaponSlot(iClient, slot), Prop_Send, "m_flNextSecondaryAttack", fAdjustedSecondaryAttackTime);
-	}
-
+	// Test code for finding values
+	// Use fAmount = 1.0 to get the base speed for each weapon
+	// Also make sure that the speed is not changed for m_flNextPrimaryAttack and m_flPlaybackRate below
+	// Use consistent matching values for actualT to determine what the number is
+	// fAmount = 1.0;
+	// float fBaseGunSpeed = 0.130004; AK Speed
 	
+	float fBaseGunSpeed = ITEM_WEAPON_BASE_ROF[g_iFastAttackingCurrentItemIndex[iClient]];
+	if (fBaseGunSpeed <= 0.0)
+		return;
 
-	// PrintToChat(iClient, "AdjustWeaponSpeed: %f", Amount);
+	// Sync to only run on cycle = 0 and while not reloading
+	if (m_flCycle != 0.000000 || m_bInReload == 1)
+		return;
+	
+	// // This is the old method of calculating the time difference betweeen shots, but this was never consistent
+	// // However it may be requied for melee weapons if we are chasing precision, because these do not have one fixed speed
+	// // The speed of many melee weapons is variable based on the attack
+	// // // The formula is next normal fire rate wait time * (1/x) where x is the speed
+	// // // (1/1.00) would be 0% faster, (1/1.3) would be 30% faster, (1/3) would be 3 times faster
+	// // // We want 50% faster maxed out so 1.50x -> (1/1.5) = .666666 would be 50% faster
+	// // // this would be keeping .666666 of the existing wait time ( fCurrentNextAttackTime - fGameTime )				
+	// // // fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * (1 / (1 + (g_iMetalLevel[iClient] * 0.04) ) ) + fGameTime;
+	// float fGameTime = GetGameTime();
+	// float fAdjustedNextAttackTime = m_flNextPrimaryAttack - ( ( m_flNextPrimaryAttack - fGameTime ) * (1 / Amount) );
+	// float fAdjustedSecondaryAttackTime = m_flNextSecondaryAttack - ( ( m_flNextSecondaryAttack - fGameTime ) * (1 / Amount) );
+	// PrintToChat(iClient, "%0.2fx    %f   %f:%f", Amount, m_flNextPrimaryAttack - fGameTime, m_flNextPrimaryAttack - (( m_flNextPrimaryAttack - fGameTime ) * (1 / Amount)), fGameTime + (( m_flNextPrimaryAttack - fGameTime ) * (1 / Amount))  );
+	// if (m_flNextPrimaryAttack - fGameTime <= 0.000000) return;
+	
+	float fAdjustedNextAttackTime = m_flNextPrimaryAttack - (fBaseGunSpeed - ( ( fBaseGunSpeed ) * (1 / fAmount) ) );
+	float fAdjustedSecondaryAttackTime = m_flNextSecondaryAttack - (fBaseGunSpeed - ( ( fBaseGunSpeed ) * (1 / fAmount) ) );
+	
+	// Display the various time between shot values
+	// PrintToChat(iClient, "%0.2fx baseT %f calcT %f actualT %f", fAmount, fBaseGunSpeed, ( ( fBaseGunSpeed ) * (1 / fAmount) ), m_flNextPrimaryAttack - g_fPreviousNextPrimaryAttack[iClient]); //, m_flNextSecondaryAttack  - g_fPreviousNextSecondaryAttack[iClient]);
+	// This is for calcuating what the values should be. Its needed for testing consistency and finding the actual base speed
+	g_fPreviousNextPrimaryAttack[iClient] = m_flNextPrimaryAttack;
+	g_fPreviousNextSecondaryAttack[iClient] = m_flNextSecondaryAttack;
+
+	// Disable these for testing and finding base speed numbers for each weapon
+	SetEntPropFloat(iActiveWeaponID, Prop_Send, "m_flPlaybackRate", fAmount);
+	SetEntPropFloat(iActiveWeaponID, Prop_Send, "m_flNextPrimaryAttack", fAdjustedNextAttackTime);
+	SetEntPropFloat(iActiveWeaponID, Prop_Send, "m_flNextSecondaryAttack", fAdjustedSecondaryAttackTime);
 }
 
-// Ellis's firerate normal primary and secondary attack speed buffs
-// The formula is next normal fire rate wait time * (1/x) where x is the speed
-// (1/1.00) would be 0% faster, (1/1.3) would be 30% faster, (1/3) would be 3 times faster
-// We want 50% faster maxed out so 1.50x -> (1/1.5) = .666666 would be 50% faster
-// this would be keeping .666666 of the existing wait time ( fCurrentNextAttackTime - fGameTime )				
-//fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * (1 / (1 + (g_iMetalLevel[iClient] * 0.04) ) ) + fGameTime;
+void GetAndStoreFastAttackingCurrentWeapon(int iClient, int iActiveWeaponID)
+{
+	// Get the weapon index needed for the fast attacking code to work
+	// Find the weapon item index to later get its precalculated rate of fire
+	g_iFastAttackingCurrentItemIndex[iClient] = GetWeaponIndexByFindingAndComparingViewModelString(iClient, iActiveWeaponID);
+	// PrintToChat(iClient, "g_iFastAttackingCurrentItemIndex[iClient] = %i", g_iFastAttackingCurrentItemIndex[iClient]);
+
+	// Store the current active weapon information so that it doesnt need to be gathered
+	// again until a new weapon is detected
+	g_iFastAttackingCurrentWeaponID[iClient] = iActiveWeaponID;
+}

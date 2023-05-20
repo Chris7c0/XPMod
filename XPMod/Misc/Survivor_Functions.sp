@@ -214,28 +214,3 @@ int GetIncapOrDeadSurvivorCount()
 
 	return iDownedPlayerCount;
 }
-
-int GetActiveWeaponSlot(const int iClient, int iActiveWeaponID = -1)
-{
-	if (RunClientChecks(iClient) == false || 
-		IsPlayerAlive(iClient) == false ||
-		g_iClientTeam[iClient] != TEAM_SURVIVORS)
-		return -1;
-
-	// If there was no weapon id provided, get it
-	if (RunEntityChecks(iActiveWeaponID) == false)
-	{
-		iActiveWeaponID = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
-	
-		// No valid weapon id was found
-		if (iActiveWeaponID == -1)
-			return -1;
-	}
-
-	// return the slot they are using
-	for (int i=0; i < 5; i++)
-		if (GetPlayerWeaponSlot(iClient, i) == iActiveWeaponID)
-			return i;
-
-	return -1;
-}

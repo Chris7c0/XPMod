@@ -712,7 +712,7 @@ HandleFasterAttacking_Rochelle(iClient, iButtons)
 	if (StrContains(strEntityClassName, "weapon_melee", true) == -1)
 		return;
 
-	AdjustWeaponSpeed(iClient, 1.0 + (g_iShadowLevel[iClient] * 0.3), iActiveWeaponSlot);
+	ChangeWeaponSpeed(iClient, 1.0 + (g_iShadowLevel[iClient] * 0.3), iActiveWeaponSlot);
 
 	// Show the particle effect
 	WriteParticle(iClient, "rochelle_silhouette", 0.0, 0.4);

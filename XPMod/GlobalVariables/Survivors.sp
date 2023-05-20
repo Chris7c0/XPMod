@@ -33,6 +33,11 @@ new g_iClientHealthSlotCost[MAXPLAYERS + 1];
 new g_iClientBoostSlotCost[MAXPLAYERS + 1];
 new g_iClientLaserSlotCost[MAXPLAYERS + 1];
 
+// Fast Attacking Weapons
+int g_iFastAttackingCurrentWeaponID[MAXPLAYERS + 1];
+int g_iFastAttackingCurrentItemIndex[MAXPLAYERS + 1];
+float g_fPreviousNextPrimaryAttack[MAXPLAYERS + 1] = 0.0;
+float g_fPreviousNextSecondaryAttack[MAXPLAYERS + 1] = 0.0;
 
 ///////////////////////////////////////////////     PLAYER SPECIFIC VARIABLES     ///////////////////////////////////////////////
 
@@ -248,10 +253,10 @@ new g_iStashedInventoryAdrenaline[MAXPLAYERS + 1];
 #define ELLIS_MAX_TEMP_HEALTH                               125
 new g_iTempHealthBeforeUsingHealthBoostSlotItem[MAXPLAYERS + 1];
 #define ELLIS_ROF_OVER_PER_LEVEL         0.05
-#define ELLIS_ROF_METAL_PER_LEVEL        0.05
+#define ELLIS_ROF_METAL_PER_LEVEL        0.10
 #define ELLIS_ROF_ADRENALINE_PER_LEVEL   0.10
 #define ELLIS_ROF_LIMIT_BREAK            3.0
-
+#define ELLIS_ROF_PISTOLS                1.5
 
 //Nicks Stuff
 new bool:g_bNickIsStealingLife[MAXPLAYERS + 1][MAXPLAYERS + 1];	//g_bNickIsStealingLife[victim][attacker]

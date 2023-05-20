@@ -262,7 +262,7 @@ HandleFasterAttacking_Ellis(iClient, iButtons)
 		if (strcmp(strWeaponClassName, ITEM_CLASS_NAME[g_iLimitBreakWeaponIndex[iClient]], true) == 0)
 		{
 			// PrintToChatAll("	> Limit break applied to %N: %s", iClient, strWeaponClassName);
-			AdjustWeaponSpeed(iClient, ELLIS_ROF_LIMIT_BREAK, iActiveWeaponSlot);
+			ChangeWeaponSpeed(iClient, ELLIS_ROF_LIMIT_BREAK, iActiveWeaponSlot);
 			return;
 		}
 	}
@@ -274,13 +274,10 @@ HandleFasterAttacking_Ellis(iClient, iButtons)
 	if (StrContains(strEntityClassName, "weapon_melee", true) != -1)
 		return;
 
-	// // Set the base speed depending on what weapon
-	// float fNewWeaponSpeed = iActiveWeaponSlot == 0 ? 
-	// 	1.0 + (g_iMetalLevel[iClient] * ELLIS_ROF_OVER_PER_LEVEL) + (g_iOverLevel[iClient] * ELLIS_ROF_OVER_PER_LEVEL): 
-	// 	1.1;
-
-	// Set the base weapon speed
-	float fNewWeaponSpeed = 1.0 + (g_iMetalLevel[iClient] * ELLIS_ROF_OVER_PER_LEVEL) + (g_iOverLevel[iClient] * ELLIS_ROF_OVER_PER_LEVEL);
+	// Set the weapon speed depending on what weapon slot (faster pistols)
+	float fNewWeaponSpeed = iActiveWeaponSlot == 0 ? 
+		1.0 + (g_iMetalLevel[iClient] * ELLIS_ROF_METAL_PER_LEVEL) + (g_iOverLevel[iClient] * ELLIS_ROF_OVER_PER_LEVEL): 
+		ELLIS_ROF_PISTOLS;
 
 	// // Set custom speed for certain weapons
 	// char strCurrentWeapon[32];
@@ -293,7 +290,7 @@ HandleFasterAttacking_Ellis(iClient, iButtons)
 	if (g_bEllisHasAdrenalineBuffs[iClient] == true)
 		fNewWeaponSpeed += (g_iOverLevel[iClient] * ELLIS_ROF_ADRENALINE_PER_LEVEL);
 
-	AdjustWeaponSpeed(iClient, fNewWeaponSpeed, iActiveWeaponSlot);
+	ChangeWeaponSpeed(iClient, fNewWeaponSpeed, iActiveWeaponSlot);
 }
 
 EventsHurt_AttackerEllis(Handle hEvent, int iAttacker, int iVictim)
