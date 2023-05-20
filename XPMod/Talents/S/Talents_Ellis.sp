@@ -2,6 +2,7 @@ TalentsLoad_Ellis(iClient)
 {
 	SetPlayerTalentMaxHealth_Ellis(iClient, !g_bSurvivorTalentsGivenThisRound[iClient]);
 	SetClientSpeed(iClient);
+	EllisDropMeleeWeaponsIfNecessary(iClient);
 	
 	if(g_iMetalLevel[iClient] == 5)
 	{
@@ -626,6 +627,8 @@ void EventsItemPickUp_Ellis(int iClient, const char[] strWeaponClass)
 
 	// PrintToChat(iClient, "ELLIS ITEM PICKUP %s", strWeaponClass);
 
+	EllisDropMeleeWeaponsIfNecessary(iClient);
+
 	if (g_iJamminLevel[iClient] > 0)
 	{
 		// Save that the health boost was empty on last pick up
@@ -1199,4 +1202,16 @@ void HandleEllisSelfRevive(iClient)
 
 	if (g_iBringLevel[iClient] > 0)
 		GiveEllisAnExtraAdrenaline(iClient);
+}
+
+void EllisDropMeleeWeaponsIfNecessary(int iClient)
+{
+	if (RunClientChecks(iClient) == false ||
+		g_iMetalLevel[iClient] <= 0 ||
+		g_bTalentsConfirmed[iClient] == false ||
+		g_iChosenSurvivor[iClient] != ELLIS ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS)
+		return;
+	
+	DropMeleeItem(iClient);
 }

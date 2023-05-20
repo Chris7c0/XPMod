@@ -1,7 +1,7 @@
 
 //Testing Functions//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-float g_fFasterAttackSpeed = 1.0;
+// float g_fFasterAttackSpeed = 1.0;
 
 public Action Timer_Testing(Handle hTimer, int iClient)
 {
@@ -38,8 +38,8 @@ Action:TestFunction1(iClient, args)
 		PrintToChat(iClient, "Player %i, %N", iPlayer, iPlayer);
 	}
 
-	g_fFasterAttackSpeed = StringToFloat(strArg[0]);
-	PrintToChat(iClient, "g_fFasterAttackSpeed now %f", g_fFasterAttackSpeed);
+	// g_fFasterAttackSpeed = StringToFloat(strArg[0]);
+	// PrintToChat(iClient, "g_fFasterAttackSpeed now %f", g_fFasterAttackSpeed);
 	
 	// SetPlayerHealth(iClient, -1, -1000, true);
 

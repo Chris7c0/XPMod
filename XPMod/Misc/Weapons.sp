@@ -969,3 +969,30 @@ void PistolWeaponCleanUp()
 		KillEntitySafely(iEntity);
 	}
 }
+
+
+void DropMeleeItem(int iClient)
+{
+	int iSecondaryWeaponID = GetPlayerWeaponSlot(iClient, 1);
+
+	// Find the weapon item index
+	int iItemIndex = GetWeaponIndexByFindingAndComparingViewModelString(iClient, iSecondaryWeaponID);
+	if (RunEntityChecks(iItemIndex) == false)
+		return;
+
+	if (IsWeaponIndexMeleeWeapon(iItemIndex) == false)
+		return;
+
+	RunCheatCommand(iClient, "give", "give pistol");
+
+	// Get the player's currently held and active weapon
+	int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+	if (RunEntityChecks(iActiveWeaponID) == false)
+		return;
+
+	// Make sure the player is actively using the specified weapon slot
+	if (iActiveWeaponID != GetPlayerWeaponSlot(iClient, 1))
+		return;
+
+	KillEntitySafely(iActiveWeaponID);
+}

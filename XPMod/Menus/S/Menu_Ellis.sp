@@ -272,7 +272,8 @@ Action:MetalMenuDraw(iClient)
 		%s				Mechanic Affinity (Level %d):\
 		\n \
 		\nLevel 1:\
-		\n+10%%%% Firing Rate per Level\
+		\n Can No Longer Hold Melee Weapons\
+		\n +10%%%% Firing Rate per Level\
 		\n All Guns Are Automatic Now\
 		\n \
 		\nLevel 5:\
@@ -292,7 +293,7 @@ Action:MetalMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	
