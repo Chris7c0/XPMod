@@ -211,7 +211,7 @@ bool ConvertSomeSurvivorHealthToTemporary(int iClient, int iHealthConversionAmou
 
 	if (iCurrentHealth > iHealthConversionAmount)
 	{
-		SetPlayerHealth(iClient, -1 * iHealthConversionAmount, true);
+		SetPlayerHealth(iClient, -1, -1 * iHealthConversionAmount, true);
 		AddTempHealthToSurvivor(iClient, float(iHealthConversionAmount));
 	}
 	else

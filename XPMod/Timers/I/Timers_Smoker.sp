@@ -104,8 +104,11 @@ Action:TimerPoisonCloud(Handle:timer, any:iClient)
 		if(IsFakeClient(iVictim) == false)
 			PrintHintText(iVictim, "You have entered a poison cloud");
 		
+		// Deal 1 damage to give smoker credit
 		DealDamage(iVictim, iClient, 1, DAMAGETYPE_GENERIC);
-		SetPlayerHealth(iVictim, iClient, 1, true)
+		// Add the damage back so they dont lose life
+		SetPlayerHealth(iVictim, -1, 1, true)
+		// Do the conversion of the health into temp health
 		ConvertSomeSurvivorHealthToTemporary(iVictim, 2);
 		
 		g_iClientXP[iClient] += 3;
