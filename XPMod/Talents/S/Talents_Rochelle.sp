@@ -243,7 +243,7 @@ EventsHurt_AttackerRochelle(Handle:hEvent, attacker, victim)
 		{
 			IgniteEntity(victim, 5.0, false);
 
-			dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.08));
+			dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.20));
 			dmg = CalculateDamageTakenForVictimTalents(victim, dmg, strWeaponClass);
 
 			// PrintToChat(attacker, "Doing %d extra military rifle DMG", dmg);

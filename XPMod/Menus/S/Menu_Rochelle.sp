@@ -227,7 +227,7 @@ Action:SilentMenuDraw(iClient)
 		\n	Miss: -15 Stacks\
 		\n \
 		\n H & K (Miliatry Rifle):\
-		\n	+8% Dmg per Level\
+		\n	+20% Dmg per Level\
 		\n	+6 Clip Size per Level\
 		\n	Ignite Enemies\
 		\n \
