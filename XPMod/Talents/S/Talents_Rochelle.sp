@@ -47,7 +47,6 @@ void SetPlayerTalentMaxHealth_Rochelle(int iClient, bool bFillInHealthGap = true
 	SetPlayerMaxHealth(iClient, 
 		100 + 
 		(g_iShadowLevel[iClient] * 5) + 
-		(g_iSniperLevel[iClient] * 5) + 
 		(g_iCoachTeamHealthStack * 5), 
 		false, 
 		bFillInHealthGap);

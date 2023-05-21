@@ -163,7 +163,6 @@ Action:SnipersEnduranceMenuDraw(iClient)
 		\n \
 		\nLevel 1:\
 		\n(Charge) Jump +1x higher per level\
-		\n+5 max health per level\
 		\n+2%%%% movement speed per level\
 		\n \
 		\nLevel 5:\
@@ -182,7 +181,7 @@ Action:SnipersEnduranceMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
