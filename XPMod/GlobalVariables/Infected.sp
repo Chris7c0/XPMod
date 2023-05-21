@@ -180,6 +180,7 @@ new Float:g_fTeleportEndPositionX[MAXPLAYERS + 1];
 new Float:g_fTeleportEndPositionY[MAXPLAYERS + 1];
 new Float:g_fTeleportEndPositionZ[MAXPLAYERS + 1];
 bool g_bBlockBotFromShooting[MAXPLAYERS + 1];
+#define SMOKER_BIND_2_ELECTROCUTION_MAX_HEALTH                  500
 
 // Boomer
 new bool:g_bIsSuicideBoomer[MAXPLAYERS + 1];

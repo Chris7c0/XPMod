@@ -29,6 +29,9 @@ void Bind2Press_Smoker(iClient)
 	//CatchAndReleasePlayer(iClient);
 
 	StartElectrocutingPlayer(iClient);
+
+	// Give bonus to Max Health when after using bind 2
+	SetPlayerMaxHealth(iClient, SMOKER_BIND_2_ELECTROCUTION_MAX_HEALTH, false, true);
 }
 
 stock CatchAndReleasePlayer(iClient)

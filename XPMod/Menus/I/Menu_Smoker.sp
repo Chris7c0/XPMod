@@ -159,6 +159,7 @@ Action:DirtyMenuDraw(iClient)
 		\n \
 		\n				Bind 2: The Electric Snare\
 		\n \
+		\n Instantly Set Max HP to 500\
 		\n Shock for 1 DMG per Level Every 0.5s for 3s\
 		\n Arcs to Survivors for Half Damage\
 		\n ",
@@ -168,7 +169,7 @@ Action:DirtyMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
