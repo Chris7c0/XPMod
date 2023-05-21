@@ -184,45 +184,32 @@ OGFSurvivorReload_Bill(int iClient, const char[] currentweapon, int ActiveWeapon
 	}
 }
 
-EventsHurt_AttackerBill(Handle:hEvent, attacker, victim)
+EventsHurt_AttackerBill(Handle:hEvent, iAttacker, iVictim)
 {
-	if (IsFakeClient(attacker))
+	if (RunClientChecks(iAttacker) == false ||
+		g_bTalentsConfirmed[iAttacker] == false ||
+		g_iExorcismLevel[iAttacker] <= 0 ||
+		g_iClientTeam[iAttacker] != TEAM_SURVIVORS ||
+		g_iClientTeam[iVictim] != TEAM_INFECTED ||
+		IsFakeClient(iAttacker) == true)
 		return;
 
-	if (g_iClientTeam[victim] != TEAM_INFECTED)
+	char strWeaponClass[32];
+	GetEventString(hEvent,"weapon",strWeaponClass,32);
+	// PrintToChat(iAttacker, "strWeaponClass = %s", strWeaponClass);
+	if (StrContains(strWeaponClass,"rifle",false) == -1 || 
+		StrContains(strWeaponClass,"hunting_rifle",false) != -1)
 		return;
 
-	if(g_iExorcismLevel[attacker]!=0 || g_iPromotionalLevel[attacker]!=0)
-	{
-		if(g_iClientTeam[victim] == TEAM_INFECTED)
-		{
-			decl String:strWeaponClass[32];
-			GetEventString(hEvent,"weapon",strWeaponClass,32);
-			//PrintToChat(attacker, "strWeaponClass = %s", strWeaponClass);
-			if(StrContains(strWeaponClass,"rifle",false) != -1)
-			{
-				if(StrContains(strWeaponClass,"rifle_m60",false) == -1)
-				{
-					if(StrContains(strWeaponClass,"hunting_rifle",false) == -1)
-					{
-						new iCurrentHP = GetPlayerHealth(victim);
-						new iDmgAmount = GetEventInt(hEvent,"dmg_health");
-						iDmgAmount = CalculateDamageTakenForVictimTalents(victim, RoundToNearest(iDmgAmount * (g_iExorcismLevel[attacker] * 0.04)), strWeaponClass);
-						//PrintToChat(attacker, "Your doing %d extra rifle damage", iDmgAmount);
-						SetPlayerHealth(victim, attacker, iCurrentHP - iDmgAmount);
-					}
-				}
-				else
-				{
-					new iCurrentHP = GetPlayerHealth(victim);
-					new iDmgAmount = GetEventInt(hEvent,"dmg_health");
-					iDmgAmount = CalculateDamageTakenForVictimTalents(victim, RoundToNearest(iDmgAmount * (g_iPromotionalLevel[attacker] * 0.20)), strWeaponClass);
-					//PrintToChat(attacker, "Your doing %d extra M60 damage", iDmgAmount);
-					SetPlayerHealth(victim, attacker, iCurrentHP - iDmgAmount);
-				}
-			}
-		}
-	}
+	int iDmgAmount = CalculateDamageTakenForVictimTalents(
+		iVictim,
+		StrContains(strWeaponClass,"rifle_m60",false) == -1 ?
+			RoundToNearest(GetEventInt(hEvent, "dmg_health") * (g_iExorcismLevel[iAttacker] * 0.06)) : 
+			RoundToNearest(GetEventInt(hEvent, "dmg_health") * (g_iPromotionalLevel[iAttacker] * 0.25)),
+		strWeaponClass);
+	
+	SetPlayerHealth(iVictim, iAttacker, -1 * iDmgAmount, true);
+	PrintToChat(iAttacker, "Your doing %i extra rifle damage", iDmgAmount);
 }
 
 // EventsHurt_VictimBill(Handle:hEvent, attacker, victim)

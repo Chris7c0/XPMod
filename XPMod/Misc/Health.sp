@@ -47,7 +47,7 @@ bool SetPlayerHealth(int iClient, int iAttacker, int iHealthAmount, bool bAdditi
 	if (iAttacker > 0)
 	{
 		if (bAdditive)
-			AddDamageToDPSMeter(iAttacker, iHealthAmount);
+			AddDamageToDPSMeter(iAttacker, -1 * iHealthAmount);
 		else
 			AddDamageToDPSMeter(iAttacker, iCurrentHealth - iHealthAmount);
 	}

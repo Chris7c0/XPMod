@@ -211,7 +211,7 @@ Action:ExorcismMenuDraw(iClient)
 	FormatEx(text, sizeof(text), "\
 		%s  Exorcism in a Barrel(Level %d):\
 		\n \
-		\n+4%%%% Assault Rifle damage per level\
+		\n+6%%%% Assault Rifle damage per level\
 		\n+20%%%% Reload speed per level\
 		\n ",
 		strStartingNewLines,
@@ -301,7 +301,7 @@ Action:PromotionalMenuDraw(iClient)
 		\n \
 		\n+8%%%% reload speed & cloaking per level\
 		\n+20 rifle clip size per level\
-		\n+20%%%% M60 damage per level\
+		\n+25%%%% M60 damage per level\
 		\nAutomatic laser sight\
 		\nHide glow from SI\
 		\n \
