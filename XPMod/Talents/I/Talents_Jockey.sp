@@ -145,31 +145,6 @@ Event_JockeyRide_Jockey(iAttacker, iVictim)
 	// Store the Jockey's location for determining drag distance
 	GetClientAbsOrigin(iAttacker, g_xyzJockeyStartRideLocation[iAttacker]);
 
-	if (g_bTalentsConfirmed[iAttacker] == false && 
-		IsFakeClient(iAttacker) == false)
-	{
-		// Normal Jockey Ride Speed
-		g_fJockeyRideSpeed[iVictim] = 1.0;
-		SetClientSpeed(iVictim);
-
-		return;
-	}
-
-	// Set Ride Speed
-	if (g_iStrongLevel[iVictim] > 0)
-	{
-		g_fJockeyRideSpeed[iVictim] = 0.0;
-		SetClientSpeed(iVictim);
-	}
-	else if (g_iErraticLevel[iAttacker] > 0)
-	{
-		// SetEntDataFloat(iVictim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ((1.0 + (g_iErraticLevel[iAttacker] * 0.03)) - ((g_iStrongLevel[iVictim] * 0.2) + ((g_iErraticLevel[iAttacker] * 0.03) * (g_iStrongLevel[iVictim] * 0.2)))), true);
-		// PrintToChatAll("JOCKEY RIDESPEED SET: %f", ( 1.0 - (g_iStrongLevel[iVictim] * 0.2) + (g_iErraticLevel[iAttacker] * 0.03)) );
-		// SetEntDataFloat(iVictim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ( 1.0 - (g_iStrongLevel[iVictim] * 0.2) + (g_iErraticLevel[iAttacker] * 0.03) ), true);
-		g_fJockeyRideSpeed[iVictim] = 1.0 + (g_iErraticLevel[iAttacker] * 0.03);
-		SetClientSpeed(iVictim);
-	}
-
 	if (g_iUnfairLevel[iAttacker] > 0)
 	{
 		new iReserveAmmoDropChance = GetRandomInt(1, 10);
@@ -187,6 +162,32 @@ Event_JockeyRide_Jockey(iAttacker, iVictim)
 				// PrintToChatAll("... and is now %i", GetEntData(victim, g_iOffset_Ammo[victim] + g_iAmmoOffset[victim]));
 			}
 		}
+	}
+
+	// Set Ride Speed for Coach
+	if (g_bTalentsConfirmed[iVictim] == true &&
+		g_iStrongLevel[iVictim] > 0)
+	{
+		g_fJockeyRideSpeed[iVictim] = 0.0;
+		SetClientSpeed(iVictim);
+		return;
+	}
+
+	if (g_bTalentsConfirmed[iAttacker] == false)
+	{
+		// Normal Jockey Ride Speed
+		g_fJockeyRideSpeed[iVictim] = 1.0;
+		SetClientSpeed(iVictim);
+		return;
+	}
+
+	if (g_iErraticLevel[iAttacker] > 0)
+	{
+		// SetEntDataFloat(iVictim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ((1.0 + (g_iErraticLevel[iAttacker] * 0.03)) - ((g_iStrongLevel[iVictim] * 0.2) + ((g_iErraticLevel[iAttacker] * 0.03) * (g_iStrongLevel[iVictim] * 0.2)))), true);
+		// PrintToChatAll("JOCKEY RIDESPEED SET: %f", ( 1.0 - (g_iStrongLevel[iVictim] * 0.2) + (g_iErraticLevel[iAttacker] * 0.03)) );
+		// SetEntDataFloat(iVictim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ( 1.0 - (g_iStrongLevel[iVictim] * 0.2) + (g_iErraticLevel[iAttacker] * 0.03) ), true);
+		g_fJockeyRideSpeed[iVictim] = 1.0 + (g_iErraticLevel[iAttacker] * 0.03);
+		SetClientSpeed(iVictim);
 	}
 }
 
