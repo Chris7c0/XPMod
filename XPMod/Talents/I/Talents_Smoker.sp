@@ -1,13 +1,13 @@
 void TalentsLoad_Smoker(iClient)
 {
-	// if(g_iSmokerTalent1Level[iClient] > 0)
-	// {
-	// 	if(g_bHasInfectedHealthBeenSet[iClient] == false)
-	// 	{
-	// 		g_bHasInfectedHealthBeenSet[iClient] = true;
-	// 		SetPlayerMaxHealth(iClient, (g_iSmokerTalent1Level[iClient] * SMOKER_BONUS_MAX_HEALTH_PER_LEVEL), true);
-	// 	}
-	// }
+	if(g_iSmokerTalent1Level[iClient] > 0)
+	{
+		if(g_bHasInfectedHealthBeenSet[iClient] == false)
+		{
+			g_bHasInfectedHealthBeenSet[iClient] = true;
+			SetPlayerMaxHealth(iClient, (g_iSmokerTalent1Level[iClient] * SMOKER_BONUS_MAX_HEALTH_PER_LEVEL), true);
+		}
+	}
 
 	// Doppelganger Decoy clones
 	g_fNextSmokerDoppelgangerRegenTime[iClient] = GetGameTime() + SMOKER_DOPPELGANGER_REGEN_PERIOD;
@@ -49,7 +49,7 @@ void OnGameFrame_Smoker(iClient)
 	// Health Regeneration (Only while choking a victim)
 	// Every frame give 1 hp, 30 fps, so 30 hp per second
 	if (g_iChokingVictim[iClient] > 0 &&
-		GetPlayerHealth(iClient) < SMOKER_STARTING_MAX_HEALTH) // + (g_iSmokerTalent1Level[iClient] * SMOKER_BONUS_MAX_HEALTH_PER_LEVEL))
+		GetPlayerHealth(iClient) < SMOKER_STARTING_MAX_HEALTH + (g_iSmokerTalent1Level[iClient] * SMOKER_BONUS_MAX_HEALTH_PER_LEVEL))
 		SetPlayerHealth(iClient, -1, SMOKER_HEALTH_REGEN_PER_FRAME, true);
 	
 	// if(g_fSmokerNextHealthRegenTime[iClient] > GetGameFrame())

@@ -55,6 +55,7 @@ Action:EnvelopmentMenuDraw(iClient)
 		%s  				Rapid Cell Division (Level %d)\
 		\n \
 		\nWhile Choking a Victim:\
+		\n	- +5 Max Health per Level\
 		\n	- Regenerate 30 HP per Second\
 		\n	- Can Move Slowly\
 		\n \
@@ -73,7 +74,7 @@ Action:EnvelopmentMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
