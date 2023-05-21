@@ -142,20 +142,17 @@ Event_JockeyRide_Jockey(iAttacker, iVictim)
 	GiveClientXP(iAttacker, 50, g_iSprite_50XP_SI, iVictim, "Grappled A Survivor.");
 
 	g_iJockeyVictim[iAttacker] = iVictim;
+	// Store the Jockey's location for determining drag distance
+	GetClientAbsOrigin(iAttacker, g_xyzJockeyStartRideLocation[iAttacker]);
 
-	if (g_bTalentsConfirmed[iAttacker] == false)
+	if (g_bTalentsConfirmed[iAttacker] == false && 
+		IsFakeClient(iAttacker) == false)
 	{
 		// Normal Jockey Ride Speed
 		g_fJockeyRideSpeed[iVictim] = 1.0;
 		SetClientSpeed(iVictim);
 
 		return;
-	}
-
-	if (g_iErraticLevel[iAttacker] > 0)
-	{
-		// Store the Jockey's location for determining drag distance
-		GetClientAbsOrigin(iAttacker, g_xyzJockeyStartRideLocation[iAttacker]);
 	}
 
 	// Set Ride Speed
