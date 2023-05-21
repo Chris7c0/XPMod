@@ -210,7 +210,7 @@ EventsHurt_AttackerRochelle(Handle:hEvent, attacker, victim)
 	{
 		char strWeaponClass[32];
 		GetEventString(hEvent,"weapon",strWeaponClass,32);
-		//PrintToChatAll("\x03-class of gun: \x01%s",strWeaponClass);
+		// PrintToChatAll("\x03-class of gun: \x01%s",strWeaponClass);
 
 		new hp = GetPlayerHealth(victim);
 		new dmg = GetEventInt(hEvent,"dmg_health");
@@ -279,7 +279,7 @@ EventsHurt_AttackerRochelle(Handle:hEvent, attacker, victim)
 // 	if (IsFakeClient(victim))
 // }
 
-EventsInfectedHurt_Rochelle(iAttacker, iVictim)
+EventsInfectedHurt_Rochelle(Handle hEvent, int  iAttacker, int iVictim)
 {
 	if (g_iChosenSurvivor[iAttacker] != ROCHELLE ||
 		g_bTalentsConfirmed[iAttacker] == false ||
@@ -291,10 +291,15 @@ EventsInfectedHurt_Rochelle(iAttacker, iVictim)
 	if (g_iSilentLevel[iAttacker] < 0)
 		return;
 
-	new String:strCurrentWeapon[32];
-	GetClientWeapon(iAttacker, strCurrentWeapon, sizeof(strCurrentWeapon));
-	// PrintToChatAll("%s", strCurrentWeapon);
+	int iDamage = GetEventInt(hEvent, "amount");
+	// Check that the damage is that of the hunting rifle before continuing with giving stacks
+	if (iDamage != 90)
+		return;
 
+	char strCurrentWeapon[32];
+	GetClientWeapon(iAttacker, strCurrentWeapon, sizeof(strCurrentWeapon));
+	PrintToChat(iAttacker, "%s", strCurrentWeapon);
+	
 	// Ruger Stacks when shooting a common
 	if (StrEqual(strCurrentWeapon, "weapon_hunting_rifle", false) == true) {
 		g_iRochelleRugerLastHitStackCount[iAttacker] = ROCHELLE_RUGER_STACKS_GAINED_CI;

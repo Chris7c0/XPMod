@@ -371,10 +371,10 @@ Action:Event_InfectedHurt(Handle:hEvent, const String:strName[], bool:bDontBroad
 {
 	new attacker = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
 	new victim = GetEventInt(hEvent, "entityid");
-	//new hitGroup = GetEventInt(hEvent, "hitgroup");
+	// new hitGroup = GetEventInt(hEvent, "hitgroup");
 	new iDamage = GetEventInt(hEvent, "amount");
-	//new dmgType = GetEventInt(hEvent, "type");
-	//PrintToChatAll("Attacker = %d, Victim = %d, iDamage = %d, dmgType = %d, hitGroup = %d", attacker, victim, iDamage, dmgType, hitGroup);
+	// new dmgType = GetEventInt(hEvent, "type");
+	// PrintToChatAll("Attacker = %d, Victim = %d, iDamage = %d, dmgType = %d, hitGroup = %d", attacker, victim, iDamage, dmgType, hitGroup);
 
 	AddDamageToDPSMeter(attacker, iDamage);
 	
@@ -388,7 +388,7 @@ Action:Event_InfectedHurt(Handle:hEvent, const String:strName[], bool:bDontBroad
 			}
 			case 1:		//Rochelle
 			{
-				EventsInfectedHurt_Rochelle(attacker, victim);
+				EventsInfectedHurt_Rochelle(hEvent, attacker, victim);
 			}
 			case 2:		//Coach
 			{
