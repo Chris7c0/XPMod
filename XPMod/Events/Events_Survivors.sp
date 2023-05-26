@@ -31,11 +31,13 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 		{
 			new String:strCurrentWeapon[32];
 			GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
+
+			new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 			
 			// Handle Rambo Mode
 			if(g_bRamboModeActive[iClient] == true)
 			{
-				new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+				
 				if (RunEntityChecks(ActiveWeaponID) == false)
 					return Plugin_Continue;
 
@@ -70,6 +72,13 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 				g_iNickMagnumShotCountCap[iClient]++;
 				//PrintToChatAll("g_iNickMagnumShotCountCap %d", g_iNickMagnumShotCountCap[iClient]);
 			}
+
+			// Make all non magnum pistols automatic
+			if (StrEqual(strCurrentWeapon, "weapon_pistol", false) == true && g_iRiskyLevel[iClient] > 0)
+			{
+				SetEntProp(ActiveWeaponID, Prop_Send, "m_isHoldingFireButton", 0);
+			}
+			
 		}
 	}
 	

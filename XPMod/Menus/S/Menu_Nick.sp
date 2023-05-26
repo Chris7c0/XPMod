@@ -169,6 +169,7 @@ Action:RiskyMenuDraw(iClient)
 		\n+6 clip size per level\
 		\n \
 		\nLevel 5:\
+		\n Pistols are now automatic\
 		\n Press [WALK+ZOOM] cycle to dual pistols\
 		\nYou can cycle back to Magnums\
 		\n ",
@@ -179,7 +180,7 @@ Action:RiskyMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -261,7 +262,7 @@ Action:MagnumMenuDraw(iClient)
 		\nLevel 1:\
 		\n+3%%%% movement speed per level\
 		\n-5 clip size(Magnum Only)\
-		\n+75%%%% damage per level (Magnum Only)\
+		\n+100%%%% damage per level (Magnum Only)\
 		\n \
 		\nLevel 5:\
 		\n50%%%% faster reload on 3 consecutive hits (Magnum only)\
@@ -312,7 +313,7 @@ Action:DesperateMenuDraw(iClient)
 		\n					  Requires Level 26\
 		\n \
 		\nLevel 1:\
-		\n(Stacks) +2%%%% speed & +5%%%% gun damage per level\
+		\n(Stacks) +2%%%% speed & +15%%%% gun damage per level\
 		\n \
 		\n \
 		\n				Bind 2: Cheating Death\

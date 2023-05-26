@@ -553,13 +553,13 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 			new dmg = GetEventInt(hEvent,"dmg_health");
 			
 			if(g_iNickDesperateMeasuresStack > 3)
-				dmg = RoundToNearest(dmg * (g_iDesperateLevel[iAttacker] * 0.05) * 3);
+				dmg = RoundToNearest(dmg * (g_iDesperateLevel[iAttacker] * 0.15) * 3);
 			else
-				dmg = RoundToNearest(dmg * (g_iDesperateLevel[iAttacker] * 0.05) * g_iNickDesperateMeasuresStack);
+				dmg = RoundToNearest(dmg * (g_iDesperateLevel[iAttacker] * 0.15) * g_iNickDesperateMeasuresStack);
 
 			dmg = CalculateDamageTakenForVictimTalents(iVictim, dmg, weaponclass);
 
-			//PrintToChat(iAttacker, "You are doing %d extra damage", dmg);
+			// PrintToChat(iAttacker, "You are doing %d extra damage", dmg);
 			SetPlayerHealth(iVictim, iAttacker, hp - dmg);
 		}
 	}
@@ -575,7 +575,7 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 				new hp = GetPlayerHealth(iVictim);
 				new dmg = GetEventInt(hEvent,"dmg_health");
 
-				dmg = RoundToNearest(dmg * (g_iMagnumLevel[iAttacker] * 0.75));
+				dmg = RoundToNearest(dmg * (g_iMagnumLevel[iAttacker] * 1.00));
 				dmg = CalculateDamageTakenForVictimTalents(iVictim, dmg, weaponclass);
 
 				//PrintToChat(iAttacker, "your doing %d extra magnum damage", dmg);
