@@ -186,7 +186,7 @@ EventsHurt_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 			new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
 			new iAddtionalDamageAmount = RoundToNearest(float(iDmgHealth) * 
 				( (g_iLouisTalent2Level[iAttacker] * 0.10) + // Damage Buff
-				  (bIsHeadshot ? 0.0 : (-1.0 * (g_iLouisTalent4Level[iAttacker] * 0.20))) + //Non-Headshot Penality
+				  (bIsHeadshot ? 0.0 : (-1.0 * (g_iLouisTalent4Level[iAttacker] * 0.10))) + //Non-Headshot Penality
 				  (g_iPillsUsedStack[iAttacker] * g_iLouisTalent6Level[iAttacker] * 0.05) )); // Pills here buff dmg
 			new iNewDamageAmount = iDmgHealth + iAddtionalDamageAmount;
 
