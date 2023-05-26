@@ -514,9 +514,6 @@ Action:Event_TankSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 			if(g_iTankCounter > 0)
 				SetClientSpeed(i);
 
-			// Give temp health to ellis for tank spawn
-			AddTempHealthToSurvivor(i, float(g_iJamminLevel[i]) * 5, false);
-
 			if(g_iJamminLevel[i] == 5)
 			{
 				GiveEllisAnExtraMolotov(i);

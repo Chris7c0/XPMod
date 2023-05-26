@@ -215,7 +215,8 @@ new g_iCoachCIHeadshotCounter[MAXPLAYERS + 1];
 new g_iCoachSIHeadshotCounter[MAXPLAYERS + 1];
 
 //Ellis's Stuff
-#define ELLIS_STARTING_MAX_HEALTH           90
+#define ELLIS_STARTING_MAX_HEALTH                       90
+#define ELLIS_AMMO_GAINED_PER_SI_KILL_PER_LEVEL         8
 new bool:g_bUsingFireStorm[MAXPLAYERS + 1];
 new g_iEllisSpeedBoostCounter[MAXPLAYERS + 1];
 new bool:g_bWalkAndUseToggler[MAXPLAYERS + 1];
@@ -254,7 +255,7 @@ new g_iStashedInventoryAdrenaline[MAXPLAYERS + 1];
 #define ELLIS_MAX_TEMP_HEALTH                               125
 new g_iTempHealthBeforeUsingHealthBoostSlotItem[MAXPLAYERS + 1];
 #define ELLIS_ROF_OVER_PER_LEVEL         0.05
-#define ELLIS_ROF_METAL_PER_LEVEL        0.10
+#define ELLIS_ROF_METAL_PER_LEVEL        0.05
 #define ELLIS_ROF_ADRENALINE_PER_LEVEL   0.10
 #define ELLIS_ROF_LIMIT_BREAK            3.0
 #define ELLIS_ROF_PISTOLS                1.5

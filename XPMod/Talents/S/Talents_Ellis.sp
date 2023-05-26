@@ -489,7 +489,7 @@ EventsDeath_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 				StrContains(wclass,"sniper",false) != -1)
 			{
 				new clip = GetEntProp(iEntid,Prop_Data,"m_iClip1");
-				clip += g_iBringLevel[iAttacker] * 20;
+				clip += g_iBringLevel[iAttacker] * ELLIS_AMMO_GAINED_PER_SI_KILL_PER_LEVEL;
 				// Clamp the clip
 				if(clip > 250)
 					clip = 250;

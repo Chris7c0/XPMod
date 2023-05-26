@@ -375,6 +375,8 @@ void ChangeWeaponSpeed(int iClient, float fAmount, int iSlot)
 	
 	float fAdjustedNextAttackTime = m_flNextPrimaryAttack - (fBaseGunSpeed - ( ( fBaseGunSpeed ) * (1 / fAmount) ) );
 	float fAdjustedSecondaryAttackTime = m_flNextSecondaryAttack - (fBaseGunSpeed - ( ( fBaseGunSpeed ) * (1 / fAmount) ) );
+
+	// PrintToChat(iClient, "rof %f", fAmount);
 	
 	// Display the various time between shot values
 	// PrintToChat(iClient, "%0.2fx baseT %f calcT %f actualT %f", fAmount, fBaseGunSpeed, ( ( fBaseGunSpeed ) * (1 / fAmount) ), m_flNextPrimaryAttack - g_fPreviousNextPrimaryAttack[iClient]); //, m_flNextSecondaryAttack  - g_fPreviousNextSecondaryAttack[iClient]);

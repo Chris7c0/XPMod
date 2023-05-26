@@ -129,7 +129,7 @@ Action:BringMenuDraw(iClient)
 		\n \
 		\nOn Special Infected kill:\
 		\n	Regen +1 Temp Health per Level\
-		\n	+20 Clip Ammo per Level\
+		\n	+8 Clip Ammo per Level\
 		\n	+1%%%% Movement Speed (Stacks)\
 		\n		+2 Max Stacks per Level\
 		\n ",
@@ -178,7 +178,6 @@ Action:JamminMenuDraw(iClient)
 		\n \
 		\n	Level 1:\
 		\n	+1%%%% Movement Speed per Level\
-		\n	+5 Temp Health per Level\
 		\n \
 		\n	Level 5:\
 		\n	+1 Adrenaline Shot\
@@ -193,7 +192,7 @@ Action:JamminMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -273,7 +272,7 @@ Action:MetalMenuDraw(iClient)
 		\n \
 		\nLevel 1:\
 		\n Can No Longer Hold Melee Weapons\
-		\n +10%%%% Firing Rate per Level\
+		\n +5%%%% Firing Rate per Level\
 		\n All Guns Are Automatic Now\
 		\n \
 		\nLevel 5:\
