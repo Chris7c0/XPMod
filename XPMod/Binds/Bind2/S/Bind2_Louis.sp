@@ -466,11 +466,15 @@ bool HackTheServer(iClient)
 		return false;
 	}
 
+	
 	g_bHackTheServerInCooldown = true;
 	CreateTimer(LOUIS_HAK_TEH_SERVER_COOLDOWN_DURATION, TimerLouisResetGlobalHeadShopCooldown, LOUIS_HEADSHOP_ITEM_HAXOR_TEH_SERVER, TIMER_FLAG_NO_MAPCHANGE);
 
+	g_bHackTheServerEnabled = true;
 	// Do the actual slow down time on the server
-	TimeScale(LOUIS_HAK_TEH_SERVER_TIME_SCALE_FACTOR);
+	TimeScale(LOUIS_HAK_TEH_SERVER_TIME_SCALE_FACTOR);	
+	SetClientSpeedForAllSurvivors();
+	
 	// Reset the time scale after the the wait period
 	CreateTimer(LOUIS_HAK_TEH_SERVER_DURATION, TimerResetTimeScale, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	// 
@@ -503,7 +507,11 @@ Action:TimerPrintHakTehServerConsolePatchingMessage(Handle:timer, int blah)
 Action:TimerResetTimeScale(Handle:timer, int iClient)
 {
 	TimeScale();
+
+	g_bHackTheServerEnabled = false;
 	PrintToChatAll("Console: okay server patched!", iClient);
+
+	SetClientSpeedForAllSurvivors(); 
 	return Plugin_Stop;
 }
 
@@ -581,9 +589,9 @@ Action:TimerLouisResetGlobalHeadShopCooldown(Handle:timer, int item)
 {
 	switch(item)
 	{
-		case LOUIS_HEADSHOP_ITEM_SPEED_HAX: 		g_bSpeedHaxInCooldown = false;
-		case LOUIS_HEADSHOP_ITEM_HAXOR_TEH_SERVER: 	g_bHackTheServerInCooldown = false;
-		case LOUIS_HEADSHOP_ITEM_TIME_OUT: 			g_bTimeOutInCooldown = false;
+		case LOUIS_HEADSHOP_ITEM_SPEED_HAX: 		{ g_bSpeedHaxInCooldown = false; }
+		case LOUIS_HEADSHOP_ITEM_HAXOR_TEH_SERVER: 	{ g_bHackTheServerInCooldown = false; }
+		case LOUIS_HEADSHOP_ITEM_TIME_OUT: 			{ g_bTimeOutInCooldown = false; }
 	}
 	
 	return Plugin_Stop;

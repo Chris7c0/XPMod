@@ -41,7 +41,7 @@ SetClientSpeed(iClient)
 	}
 
 	// Give sub max level players more speed and scale down as they level
-	SetClientSpeedNewPlayer(iClient, fSpeed);
+	SetClientSpeedBotsAndNewPlayers(iClient, fSpeed);
 
 	SetEntDataFloat(iClient, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), fSpeed, true);
 	// if (IsFakeClient(iClient) == false)
@@ -174,6 +174,14 @@ SetClientSpeedLouis(iClient, &Float:fSpeed)
 		return;
 	}
 
+	// Louis Hax the server speed increase
+	if (g_bHackTheServerEnabled == true)
+	{
+		fSpeed += LOUIS_HAK_TEH_SERVER_LOUIS_SPEED_MULTIPLIER;
+		return;
+	}
+		
+
 	// Teleport penalty
 	if (g_iLouisTeleportMovementPenaltyStacks[iClient] > 0)
 		fSpeed -= (g_iLouisTeleportMovementPenaltyStacks[iClient] * LOUIS_TELEPORT_MOVEMENT_PENALTY_AMOUNT);
@@ -198,15 +206,22 @@ SetClientSpeedLouis(iClient, &Float:fSpeed)
 }
 
 
-SetClientSpeedNewPlayer(iClient, &Float:fSpeed)
+SetClientSpeedBotsAndNewPlayers(iClient, &Float:fSpeed)
 {
 	if (g_iClientTeam[iClient] != TEAM_SURVIVORS || 
 		g_iClientLevel[iClient] == 30)
 		return;
 
-	fSpeed += ( NEW_PLAYER_MAX_MOVEMENT_SPEED * ( 1.0 - (float(g_iClientLevel[iClient]) / 30.0) ) );
+	if (IsFakeClient(iClient) == true)
+	{
+		fSpeed += (MOVEMENT_SPEED_BOT);
+		return;
+	}
 	
-	// PrintToChatAll("%N: SetClientSpeedNewPlayer: %f", iClient, fSpeed);
+	// New Players
+	fSpeed += ( MOVEMENT_SPEED_NEW_PLAYER_MAX * ( 1.0 - (float(g_iClientLevel[iClient]) / 30.0) ) );
+	
+	// PrintToChatAll("%N: SetClientSpeedBotsAndNewPlayers: %f", iClient, fSpeed);
 }
 
 

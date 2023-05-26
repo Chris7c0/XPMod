@@ -297,7 +297,7 @@ EventsInfectedHurt_Rochelle(Handle hEvent, int  iAttacker, int iVictim)
 
 	char strCurrentWeapon[32];
 	GetClientWeapon(iAttacker, strCurrentWeapon, sizeof(strCurrentWeapon));
-	PrintToChat(iAttacker, "%s", strCurrentWeapon);
+	// PrintToChat(iAttacker, "%s", strCurrentWeapon);
 	
 	// Ruger Stacks when shooting a common
 	if (StrEqual(strCurrentWeapon, "weapon_hunting_rifle", false) == true) {

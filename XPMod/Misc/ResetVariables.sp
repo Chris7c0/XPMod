@@ -223,6 +223,7 @@ void ResetClientVariablesForRound(int iClient)
 	g_bSpeedHaxInCooldown = false;
 	g_bLouisMedHaxEnabled = false;
 	g_bIsPLayerHacked[iClient] = false;
+	g_bHackTheServerEnabled = false;
 	g_bHackTheServerInCooldown = false;
 	g_bTimeOutInCooldown =  false;
 	g_bInfectedBindsDisabled = false;

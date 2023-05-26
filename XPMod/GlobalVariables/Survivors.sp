@@ -9,7 +9,8 @@
 #define NEW_PLAYER_MAX_DAMAGE_REDUCTION     0.50
 // Movement speed buff
 // SpeedBuff = ( NEW_PLAYER_MAX_MOVEMENT_SPEED * ( 1.0 - (float(g_iClientLevel[iClient]) / 30.0) ) );
-#define NEW_PLAYER_MAX_MOVEMENT_SPEED       0.40
+#define MOVEMENT_SPEED_NEW_PLAYER_MAX       0.25
+#define MOVEMENT_SPEED_BOT                  0.40
 
 //Loadout Variables
 new String:g_strClientPrimarySlot[32];
@@ -363,10 +364,12 @@ bool g_bLouisMedHaxEnabled;
 #define LOUIS_MED_HAX_DURATION                          30.0
 bool g_bIsPLayerHacked[MAXPLAYERS + 1];
 #define LOUIS_HACK_TARGET_DURATION                      10.0
+bool g_bHackTheServerEnabled;
 bool g_bHackTheServerInCooldown;
 #define LOUIS_HAK_TEH_SERVER_DURATION                   5.0     // The actual duration is a function of this...
 #define LOUIS_HAK_TEH_SERVER_TIME_SCALE_FACTOR          0.25    // multiplied by 1 over this
 #define LOUIS_HAK_TEH_SERVER_COOLDOWN_DURATION          300.0
+#define LOUIS_HAK_TEH_SERVER_LOUIS_SPEED_MULTIPLIER     2.0
 bool g_bTimeOutInCooldown;
 bool g_bInfectedBindsDisabled;
 #define LOUIS_TIME_OUT_DURATION                         60.0
