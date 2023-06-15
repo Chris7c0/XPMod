@@ -199,8 +199,8 @@ SetClientSpeedLouis(iClient, &Float:fSpeed)
 		fSpeed += (g_iPillsUsedStack[iClient] * g_iLouisTalent6Level[iClient] * 0.02);
 
 	// Cap Louis's speed
-	if (fSpeed > LOUIS_SPEED_MAX)
-		fSpeed = LOUIS_SPEED_MAX;
+	if (fSpeed > (g_bLouisLaserModeActivated[iClient] ? LOUIS_SPEED_MAX_LASER : LOUIS_SPEED_MAX_NOLASER))
+		fSpeed = (g_bLouisLaserModeActivated[iClient] ? LOUIS_SPEED_MAX_LASER : LOUIS_SPEED_MAX_NOLASER);
 	
 	// PrintToChat(iClient, "SetClientSpeedLouis: %f", fSpeed);
 }

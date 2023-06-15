@@ -10,9 +10,13 @@ TalentsLoad_Louis(iClient)
 	// Give starting XMR
 	g_fLouisXMRWallet[iClient] = LOUIS_HEADSHOT_XMR_STARTING_AMOUNT;
 
-	// Remove laser sight
+	// Set Louis's default Laser mode
+	g_bLouisLaserModeActivated[iClient] = true;
+	g_bLouisLaserModeToggleCooldown[iClient] = false;
+
+	// Add laser sight
 	if (g_iLouisTalent2Level[iClient] > 0)
-		RunCheatCommand(iClient, "upgrade_remove", "upgrade_remove LASER_SIGHT");
+		RunCheatCommand(iClient, "upgrade_add", "upgrade_add LASER_SIGHT");
 	
 	if( (g_iClientLevel[iClient] - (g_iClientLevel[iClient] - g_iSkillPoints[iClient])) <= (g_iClientLevel[iClient] - 1))
 		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Disruptor Talents \x05have been loaded.");
@@ -45,10 +49,31 @@ bool OnPlayerRunCmd_Louis(iClient, &iButtons)
 {
 	// Louis abilities
 	if (g_iChosenSurvivor[iClient] != LOUIS || 
-		g_iLouisTalent3Level[iClient] <= 0 ||
 		g_iClientTeam[iClient] != TEAM_SURVIVORS || 
 		g_bGameFrozen == true)
 		return false;
+
+	if (g_iLouisTalent2Level[iClient] > 0 && 
+		g_bLouisLaserModeToggleCooldown[iClient] == false &&
+		iButtons & IN_DUCK && 
+		iButtons & IN_USE)
+	{
+		// Handle toggling between laser mode on or off
+		g_bLouisLaserModeActivated[iClient] = !g_bLouisLaserModeActivated[iClient];
+		PrintToChat(iClient, "\x03[XPMod] \x05Laser Mode is now \x04%s\x05.", g_bLouisLaserModeActivated[iClient] ? "Enabled" : "Disabled");
+
+		// Set the speed depending on the mode
+		SetClientSpeed(iClient);
+
+		// Add or remove laser sight depending on the mode
+		if (g_bLouisLaserModeActivated[iClient])
+			RunCheatCommand(iClient, "upgrade_add", "upgrade_add LASER_SIGHT");
+		else
+			RunCheatCommand(iClient, "upgrade_remove", "upgrade_remove LASER_SIGHT");
+
+		g_bLouisLaserModeToggleCooldown[iClient] = true;
+		CreateTimer(LOUIS_LASER_MODE_TOGGLE_COOLDOWN, LouisLaserModeToggleReenable, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	}
 
 	// Handle Medkit Conversion to Pills
 	if (g_iLouisTalent6Level[iClient] > 0 &&
@@ -82,7 +107,8 @@ bool OnPlayerRunCmd_Louis(iClient, &iButtons)
 	}
 
 	// Louis Teleport
-	if (g_iLouisTeleportChargeUses[iClient] <= LOUIS_TELEPORT_TOTAL_CHARGES && //g_iLouisTalent3Level[iClient] &&
+	if (g_iLouisTalent3Level[iClient] > 0 && 
+		g_iLouisTeleportChargeUses[iClient] <= LOUIS_TELEPORT_TOTAL_CHARGES && //g_iLouisTalent3Level[iClient] &&
 		g_bLouisTeleportCoolingDown[iClient] == false && 
 		iButtons & IN_SPEED && 
 		(iButtons & IN_FORWARD || iButtons & IN_BACK || iButtons & IN_MOVELEFT || iButtons & IN_MOVERIGHT) &&
@@ -180,19 +206,26 @@ EventsHurt_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 			new iVictimHealth = GetPlayerHealth(iVictim);
 			// PrintToChatAll("Louis iVictim %N START HP: %i", iVictim, iVictimHealth);
 
-			// Store if its a headshot for use below
+			// Store if its a headshot and pistol for use below
 			bool bIsHeadshot = GetEventInt(hEvent, "hitgroup") == HITGROUP_HEAD;
+			bool bIsPistol = StrEqual(weaponclass,"pistol",false) == true || StrEqual(weaponclass,"dual_pistols",false) == true;
 
 			new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
 			new iAddtionalDamageAmount = RoundToNearest(float(iDmgHealth) * 
-				( (g_iLouisTalent2Level[iAttacker] * 0.10) + // Damage Buff
-				  (bIsHeadshot ? 0.0 : (-1.0 * (g_iLouisTalent4Level[iAttacker] * 0.10))) + //Non-Headshot Penality
-				  (g_iPillsUsedStack[iAttacker] * g_iLouisTalent6Level[iAttacker] * 0.05) )); // Pills here buff dmg
+				( (g_iLouisTalent2Level[iAttacker] * LOUIS_BONUS_DAMAGE_PER_LEVEL) + 	// Damage Buff
+				  (bIsHeadshot ? 0.0 : (-1.0 * 											// Non-Headshot Penality
+				  	(bIsPistol ? LOUIS_BODY_DAMAGE_REDUCTION_PER_LEVEL_PISTOL :			// Non-Headshot Pistol Penality
+					g_iLouisTalent4Level[iAttacker] * (g_bLouisLaserModeActivated[iAttacker] ? LOUIS_BODY_DAMAGE_REDUCTION_PER_LEVEL_LASER : LOUIS_BODY_DAMAGE_REDUCTION_PER_LEVEL_NOLASER)))) + // Check if laser mode activated
+				  (g_iPillsUsedStack[iAttacker] * g_iLouisTalent6Level[iAttacker] * LOUIS_PILLS_USED_BONUS_DAMAGE_PER_LEVEL) )); // Pills here buff dmg
 			new iNewDamageAmount = iDmgHealth + iAddtionalDamageAmount;
 
 			// Add even more damage if its a headshot
 			if (bIsHeadshot)
-				iNewDamageAmount = iNewDamageAmount + (iNewDamageAmount * RoundToNearest(g_iLouisTalent4Level[iAttacker] * 0.40));
+			{
+				iNewDamageAmount = iNewDamageAmount + (iNewDamageAmount * RoundToNearest(g_iLouisTalent4Level[iAttacker] * 
+					(bIsPistol ? LOUIS_HEADSHOT_DMG_MULITPLIER_PER_LEVEL_PISTOL :	// Check if pistol
+					g_bLouisLaserModeActivated[iAttacker] ?	LOUIS_HEADSHOT_DMG_MULITPLIER_PER_LEVEL_LASER : LOUIS_HEADSHOT_DMG_MULITPLIER_PER_LEVEL_NOLASER)));  // Check if laser mode activated
+			}
 
 			// Add or remove damage based on victim talents (Also subtract damage that will be already)
 			iNewDamageAmount = CalculateDamageTakenForVictimTalents(iVictim, iNewDamageAmount, weaponclass) - CalculateDamageTakenForVictimTalents(iVictim, iDmgHealth, weaponclass);
@@ -417,7 +450,8 @@ void EventsItemPickUp_Louis(int iClient, const char[] strWeaponClass)
 		if (StrContains(strWeaponClass, "smg", false) != -1)
 		{
 			// Remove laser sights
-			RunCheatCommand(iClient, "upgrade_remove", "upgrade_remove LASER_SIGHT");
+			if (g_bLouisLaserModeActivated[iClient] == false)
+				RunCheatCommand(iClient, "upgrade_remove", "upgrade_remove LASER_SIGHT");
 
 			new iEntid = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 			if(iEntid  < 1 || IsValidEntity(iEntid) == false)
@@ -459,7 +493,7 @@ void EventsReceiveUpgrade_Louis(int iClient, const char[] strUpgrade)
 	if (g_iChosenSurvivor[iClient] != LOUIS || g_bTalentsConfirmed[iClient] == false)
 		return;
 
-	if (g_iLouisTalent2Level[iClient] > 0)
+	if (g_iLouisTalent2Level[iClient] > 0 && g_bLouisLaserModeActivated[iClient] == false)
 	{
 		if (StrEqual(strUpgrade, "LASER_SIGHT", false) == true)
 			RunCheatCommand(iClient, "upgrade_remove", "upgrade_remove LASER_SIGHT");
@@ -482,8 +516,8 @@ void EventsPlayerUse_Louis(int iClient, int iTargetID)
 	// 	strSlotItemClassName = NULL_STRING;
 	// PrintToChat(iClient, "strSlotItemClassName: %s" , strSlotItemClassName);
 
-	if (g_iLouisTalent2Level[iClient] > 0)
-		RunCheatCommand(iClient, "upgrade_remove", "upgrade_remove LASER_SIGHT");
+	if (g_iLouisTalent2Level[iClient] > 0 && g_bLouisLaserModeActivated[iClient] == false)
+	 	RunCheatCommand(iClient, "upgrade_remove", "upgrade_remove LASER_SIGHT");
 
 	// Check if the item when into their weapon slot, if not, then continue to stash it.
 	if (g_iLouisTalent6Level[iClient] > 0 && 
@@ -581,7 +615,7 @@ HandleLouisTeleportChargeUses(iClient)
 	else
 	{
 		delete g_hTimer_LouisTeleportRegenerate[iClient];
-		g_hTimer_LouisTeleportRegenerate[iClient] = CreateTimer(LOUIS_TELEPORT_CHARGE_REGENERATE_TIME, TimerLouisTeleportChargeRegenerate, iClient, TIMER_REPEAT);
+		g_hTimer_LouisTeleportRegenerate[iClient] = CreateTimer(g_bLouisLaserModeActivated[iClient] ? LOUIS_TELEPORT_CHARGE_REGENERATE_TIME_LASER : LOUIS_TELEPORT_CHARGE_REGENERATE_TIME_NOLASER, TimerLouisTeleportChargeRegenerate, iClient, TIMER_REPEAT);
 	}
 
 }

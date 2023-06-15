@@ -112,7 +112,17 @@ Action:LouisTalent2MenuDraw(iClient)
 		\n SMG and Pistol (Not Magnum) Buffs:\
 		\n 	- +10%%%% Damage per Level\
 		\n 	- +10 Clip Size per Level\
-		\n 	- Can No Longer Acquire Laser Sights         \
+		\n Hold [CROUCH] + [USE] to Toggle Laser Mode     \
+		\n \
+		\n Laser Mode On:\
+		\n	More Accurate\
+		\n	Lower Damage\
+		\n	Less Mobile\
+		\n \
+		\n Laser Mode Off:\
+		\n	Less Accurate\
+		\n	Higher Damage\
+		\n	More Mobile\
 		\n ",
 		strStartingNewLines,
 		g_iLouisTalent2Level[iClient]);
@@ -122,7 +132,7 @@ Action:LouisTalent2MenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -306,7 +316,7 @@ Action:LouisTalent6MenuDraw(iClient)
 		\n	- -2 Temp Health Per Level\
 		\n	- +2%%%% Speed per Level for 90 Seconds\
 		\n		- Louis Capped At +15%%%% Speed\
-		\n	- +5%%%% Damage per Level for 90 Seconds  \
+		\n	- +4%%%% Damage per Level for 90 Seconds  \
 		\n	- 3 Stacks Max\
 		\n \
 		\n Bind 2: H3D 5h0p\

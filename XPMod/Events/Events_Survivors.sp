@@ -80,6 +80,17 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 			}
 			
 		}
+		case LOUIS:	// Louis Firing
+		{
+			char strCurrentWeapon[32];
+			GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
+
+			int ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+
+			// Make all non magnum pistols automatic
+			if (StrEqual(strCurrentWeapon, "weapon_pistol", false) == true)
+				SetEntProp(ActiveWeaponID, Prop_Send, "m_isHoldingFireButton", 0);
+		}
 	}
 	
 	if(g_bClientIsReloading[iClient] == true)
@@ -391,6 +402,8 @@ Action:Event_InfectedDecap(Handle:hEvent, const String:strName[], bool:bDontBroa
 			//PrintToChat(iClient, "\x03[XPMod] Infected Decapitaed! You gain 5 XP");
 			if(g_iChosenSurvivor[iClient] == COACH && g_iHomerunLevel[iClient]>0)
 			{
+				GiveExtraAmmoForCurrentShotgun(iClient);
+
 				if(g_iCoachDecapitationCounter[iClient] < 50)
 				{
 					g_iCoachDecapitationCounter[iClient]++;

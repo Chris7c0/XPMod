@@ -180,6 +180,7 @@ new bool:g_bIsMovementTypeFly[MAXPLAYERS + 1];
 new g_iExtraExplosiveUses[MAXPLAYERS + 1];
 new bool:g_bExplosivesJustGiven[MAXPLAYERS + 1];
 //For Coach's other talents
+#define COACH_CLIP_GAINED_PER_SI_DECAP              10
 new g_iCoachDecapitationCounter[MAXPLAYERS + 1];
 new g_iMeleeDamageCounter[MAXPLAYERS + 1];
 new g_iWreckingBallChargeCounter[MAXPLAYERS + 1];
@@ -304,7 +305,8 @@ new bool:g_bNickStoresDroppedPistolAmmo[MAXPLAYERS + 1] = {false, ...};
 // Louis
 #define LOUIS_TELEPORT_TOTAL_CHARGES                    3
 #define LOUIS_TELEPORT_MOVEMENT_SPEED                   8.0
-#define LOUIS_TELEPORT_CHARGE_REGENERATE_TIME           5.0
+#define LOUIS_TELEPORT_CHARGE_REGENERATE_TIME_LASER     15.0
+#define LOUIS_TELEPORT_CHARGE_REGENERATE_TIME_NOLASER   5.0
 #define LOUIS_TELEPORT_CHARGE_MAXED_REGENERATE_TIME     90.0
 #define LOUIS_TELEPORT_BLINDNESS_ADDITIVE_AMOUNT        69
 #define LOUIS_TELEPORT_BLINDNESS_DURATION               4100
@@ -312,11 +314,23 @@ new bool:g_bNickStoresDroppedPistolAmmo[MAXPLAYERS + 1] = {false, ...};
 #define LOUIS_TELEPORT_BLINDNESS_STAY_FACTOR            1.5
 #define LOUIS_TELEPORT_MOVEMENT_PENALTY_TIME            10.0
 #define LOUIS_TELEPORT_MOVEMENT_PENALTY_AMOUNT          0.05
-#define LOUIS_SPEED_MAX                                 1.15
+#define LOUIS_SPEED_MAX_LASER                           1.10
+#define LOUIS_SPEED_MAX_NOLASER                         1.25
+bool g_bLouisLaserModeActivated[MAXPLAYERS + 1] = {true, ...};
+bool g_bLouisLaserModeToggleCooldown[MAXPLAYERS + 1] = {false, ...};
+#define LOUIS_BONUS_DAMAGE_PER_LEVEL                    0.20
+#define LOUIS_LASER_MODE_TOGGLE_COOLDOWN                60.0
+#define LOUIS_BODY_DAMAGE_REDUCTION_PER_LEVEL_LASER     0.20
+#define LOUIS_BODY_DAMAGE_REDUCTION_PER_LEVEL_NOLASER   0.10
+#define LOUIS_BODY_DAMAGE_REDUCTION_PER_LEVEL_PISTOL    0.15
+#define LOUIS_HEADSHOT_DMG_MULITPLIER_PER_LEVEL_LASER   0.10
+#define LOUIS_HEADSHOT_DMG_MULITPLIER_PER_LEVEL_NOLASER 0.30
+#define LOUIS_HEADSHOT_DMG_MULITPLIER_PER_LEVEL_PISTOL  0.20
 #define LOUIS_HEADSHOT_SPEED_RETENTION_TIME_CI          60.0
 #define LOUIS_HEADSHOT_SPEED_RETENTION_TIME_SI          60.0
 #define LOUIS_STASHED_INVENTORY_MAX_PILLS               4
 #define LOUIS_PILLS_USED_BONUS_DURATION                 90.0
+#define LOUIS_PILLS_USED_BONUS_DAMAGE_PER_LEVEL         0.04
 #define LOUIS_PILLS_USED_HEALTH_REDUCTION_PER_LEVEL     2
 #define LOUIS_PILLS_USED_MAX_STACKS                     3
 bool g_bLouisTeleportCoolingDown[MAXPLAYERS + 1] = {false, ...};

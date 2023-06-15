@@ -1,5 +1,9 @@
 AddDamageToDPSMeter(int iClient, int iDamage)
 {
+    // For tanks dying, it does a forced 5000 damage to kill them
+    if (iDamage >= 5000)
+        return;
+
     if (g_iDPSTotalDamage[iClient] == 0)
         g_fDPSStartTime[iClient] = GetGameTime();
 

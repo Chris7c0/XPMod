@@ -209,7 +209,7 @@ EventsHurt_AttackerBill(Handle:hEvent, iAttacker, iVictim)
 		strWeaponClass);
 	
 	SetPlayerHealth(iVictim, iAttacker, -1 * iDmgAmount, true);
-	PrintToChat(iAttacker, "Your doing %i extra rifle damage", iDmgAmount);
+	// PrintToChat(iAttacker, "Your doing %i extra rifle damage", iDmgAmount);
 }
 
 // EventsHurt_VictimBill(Handle:hEvent, attacker, victim)

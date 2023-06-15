@@ -782,7 +782,10 @@ EventsDeath_AttackerCoach(Handle:hEvent, iAttacker, iVictim)
 		// SI Headshot
 		if (iVictim > 0)
 		{
-			if(g_iHomerunLevel[iAttacker] > 1 && g_bCoachInSISpeed[iAttacker] == false)
+			if (g_iHomerunLevel[iAttacker] > 0)
+				GiveExtraAmmoForCurrentShotgun(iAttacker, COACH_CLIP_GAINED_PER_SI_DECAP);
+			
+			if (g_iHomerunLevel[iAttacker] > 0 && g_bCoachInSISpeed[iAttacker] == false)
 			{
 				g_iCoachSIHeadshotCounter[iAttacker]++;
 				g_bCoachInSISpeed[iAttacker] = true;
@@ -904,4 +907,31 @@ SetCoachesHealthStacks()
 		
 		SetAppropriateMaxHealthForPlayer(i, true);
 	}
+}
+
+GiveExtraAmmoForCurrentShotgun(int iClient, int iAmmoToGive = 1)
+{
+	int iActiveWeaponID = GetPlayerWeaponSlot(iClient, 0);
+	if (RunEntityChecks(iActiveWeaponID) == false)
+		return;
+
+	int iWeaponIndex = FindWeaponItemIndexOfWeaponID(iClient, iActiveWeaponID);
+	if (iWeaponIndex == ITEM_EMPTY)
+		return;
+
+	int iCurrentClipAmmo = GetEntProp(iActiveWeaponID,Prop_Data,"m_iClip1");
+
+	// Check if its a shotgun
+	if (iWeaponIndex < ITEM_REMINGTON_870 || iWeaponIndex > ITEM_FRANCHI_SPAS_12)
+		return;
+
+	int iBaseMaxClipAmmo = 0;
+	// int iWeaponOffset = 0;
+	if (iWeaponIndex == ITEM_REMINGTON_870 || iWeaponIndex == ITEM_REMINGTON_870_CUSTOM)
+		iBaseMaxClipAmmo = 8;
+	else if (iWeaponIndex == ITEM_BENELLI_M1014 || iWeaponIndex == ITEM_FRANCHI_SPAS_12)
+		iBaseMaxClipAmmo = 10;
+	int iNewAmmo =  iCurrentClipAmmo + iAmmoToGive < (iBaseMaxClipAmmo + (g_iSprayLevel[iClient] * 2)) ? iCurrentClipAmmo + iAmmoToGive : iBaseMaxClipAmmo + (g_iSprayLevel[iClient] * 2);
+	
+	SetEntData(iActiveWeaponID, g_iOffset_ClipShotgun, iNewAmmo, 4, true);
 }

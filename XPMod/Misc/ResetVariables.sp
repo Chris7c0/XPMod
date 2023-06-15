@@ -201,6 +201,8 @@ void ResetClientVariablesForRound(int iClient)
 	g_iNickPistolSwaps[iClient] = 0;
 
 	//Louis
+	g_bLouisLaserModeActivated[iClient] = true;
+	g_bLouisLaserModeToggleCooldown[iClient] = false;
 	g_bLouisTeleportCoolingDown[iClient] = false;
 	g_bLouisTeleportActive[iClient] = false;
 	g_iLouisTeleportChargeUses[iClient] = 0;

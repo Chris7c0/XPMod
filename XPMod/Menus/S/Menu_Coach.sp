@@ -211,19 +211,17 @@ Action:HomerunMenuDraw(iClient)
 	FormatEx(text, sizeof(text), "\
 		%s				Homerun!(Level %d):\
 		\n \
-		\nLevel 1:\
-		\nOn SI headshot with melee weapon:\
-		\n+5%% speed per level for 10 seconds\
+		\nOn CI Decapitation with Melee Weapon:\
+		\n	+1 Homerun Stack (Max 50)\
+		\n	+2 Melee Damage per Level per Homerun Stack\
+		\n	+1 Shotgun Clip Ammo (Until Clip Maxed)\
 		\n \
-		\n(Stacks) +2 melee damage per level\
+		\nOn SI Decapitation with Melee Weapon:\
+		\n	+5%% Speed per Level for 10 Seconds\
+		\n	+10 Shotgun Clip Ammo (Until Clip Maxed)\
 		\n \
 		\nLevel 5:\
-		\nNo melee fatigue\
-		\n \
-		\n \
-		\nSkill Uses:\
-		\n+1 (Stack) when decapitating infected\
-		\nMax 50 stacks\
+		\nNo Melee Fatigue\
 		\n ",
 		strStartingNewLines,
 		g_iHomerunLevel[iClient]);
@@ -232,7 +230,7 @@ Action:HomerunMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 

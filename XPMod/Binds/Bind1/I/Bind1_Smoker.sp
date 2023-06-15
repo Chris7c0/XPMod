@@ -29,7 +29,7 @@ void Bind1Press_Smoker(iClient)
 
 	if(g_bSmokerSmokeCloudInCooldown == true)
 	{
-		PrintHintText(iClient, "Global cooldown triggered. You must wait to use the Smoke Cloud.");
+		PrintHintText(iClient, "Global cooldown triggered. You must wait 3 minutes to use the Smoke Cloud.");
 		return;
 	}
 

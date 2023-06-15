@@ -4,6 +4,12 @@ Action:LouisTeleportReenable(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
+Action:LouisLaserModeToggleReenable(Handle:timer, any:iClient)
+{
+	g_bLouisLaserModeToggleCooldown[iClient] = false;
+	return Plugin_Stop;
+}
+
 Action:TimerSetLouisTeleportInactive(Handle:timer, any:iClient)
 {
 	g_bLouisTeleportActive[iClient] = false;
