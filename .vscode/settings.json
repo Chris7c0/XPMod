@@ -92,33 +92,8 @@
     ],
     "sourcepawn.MainPath": "/home/chris/Projects/XPMod/xpmod.sp",
     "sourcepawn.enableLinter": true,
-    "sourcepawn.optionalIncludeDirsPaths": [
-        "/home/chris/Projects/XPMod",
-        "/home/chris/Projects/XPMod/XPMod",
-        "/home/chris/Projects/XPMod/XPMod/Timers",
-        "/home/chris/Projects/XPMod/XPMod/Timers/I",
-        "/home/chris/Projects/XPMod/XPMod/Timers/S",
-        "/home/chris/Projects/XPMod/XPMod/Misc",
-        "/home/chris/Projects/XPMod/XPMod/Talents",
-        "/home/chris/Projects/XPMod/XPMod/Talents/I",
-        "/home/chris/Projects/XPMod/XPMod/Talents/I/Tanks",
-        "/home/chris/Projects/XPMod/XPMod/Talents/S",
-        "/home/chris/Projects/XPMod/XPMod/GlobalVariables",
-        "/home/chris/Projects/XPMod/XPMod/Database",
-        "/home/chris/Projects/XPMod/XPMod/Database/Models",
-        "/home/chris/Projects/XPMod/XPMod/Binds",
-        "/home/chris/Projects/XPMod/XPMod/Binds/Bind1",
-        "/home/chris/Projects/XPMod/XPMod/Binds/Bind1/I",
-        "/home/chris/Projects/XPMod/XPMod/Binds/Bind1/S",
-        "/home/chris/Projects/XPMod/XPMod/Binds/Bind2",
-        "/home/chris/Projects/XPMod/XPMod/Binds/Bind2/I",
-        "/home/chris/Projects/XPMod/XPMod/Binds/Bind2/S",
-        "/home/chris/Projects/XPMod/XPMod/XP",
-        "/home/chris/Projects/XPMod/XPMod/Events",
-        "/home/chris/Projects/XPMod/XPMod/Menus",
-        "/home/chris/Projects/XPMod/XPMod/Menus/I",
-        "/home/chris/Projects/XPMod/XPMod/Menus/I/Tanks",
-        "/home/chris/Projects/XPMod/XPMod/Menus/S",
-    ],
-    "sourcepawn.SourcemodHome": "/home/chris/Projects/XPMod/include"
+    "SourcePawnLanguageServer.includesDirectories": [
+        "include",
+        "XPMod"
+    ]
 }
