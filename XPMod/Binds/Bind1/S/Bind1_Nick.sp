@@ -6,6 +6,12 @@ void Bind1Press_Nick(iClient)
 		return;
 	}
 
+	if(g_bNickGambleLockedBinds[iClient] == true)
+	{
+		PrintHintText(iClient, "Your gambling problem has locked you out of your binds for 1 minute.");
+		return;
+	}
+
 	if(g_iClientBindUses_1[iClient] >= 3)
 	{
 		PrintHintText(iClient, "Your out of money as well as people to scam money off of...for now.");
@@ -137,23 +143,19 @@ NickGamblingProblemRollTheDice(int iClient)
 			delete g_hTimer_SlapPlayer[iClient];
 			g_hTimer_SlapPlayer[iClient] = CreateTimer(1.0, TimerSlap, iClient, TIMER_REPEAT);
 		}
-		case 7: //Party supplies++; Spawns 2 defibs, kits, pills, and shots
+		case 7: //Gain a self revive (only once per round)
 		{
+			if(g_bNickGambedSelfReviveThisRound[iClient] == true)
+			{
+				NickGamblingProblemRollTheDice(iClient);
+				return;
+			}
 
-			PrintHintText(iClient,"Rolled a 7\nYou raided a hospital's medicine cabinet for supplies.");
-			PrintToChatAll("\x03[XPMod] \x05%N raided a hospital's medicine cabinet for supplies.", iClient);
+			PrintHintText(iClient,"Rolled a 7\nYou found some dead guys unused self revival kit. +1 Self Revive");
+			PrintToChatAll("\x03[XPMod] \x05%N found a self revive stashed away.", iClient);
 
-			float xyzClientLocation[3];
-			GetClientEyePosition(iClient, xyzClientLocation);
-			SpawnItem(xyzClientLocation, ITEM_DEFIBRILLATOR, 1.0);
-			SpawnItem(xyzClientLocation, ITEM_FIRST_AID_KIT, 1.0);
-			SpawnItem(xyzClientLocation, ITEM_ADRENALINE_SHOT, 1.0);
-			SpawnItem(xyzClientLocation, ITEM_PAIN_PILLS, 1.0);
-			SpawnItem(xyzClientLocation, ITEM_DEFIBRILLATOR, 1.0);
-			SpawnItem(xyzClientLocation, ITEM_FIRST_AID_KIT, 1.0);
-			SpawnItem(xyzClientLocation, ITEM_ADRENALINE_SHOT, 1.0);
-			SpawnItem(xyzClientLocation, ITEM_PAIN_PILLS, 1.0);
-
+			g_iSelfRevives[iClient]++;
+			g_bNickGambedSelfReviveThisRound[iClient] = true;
 		}
 		case 8: //Get three more times to Gamble
 		{
@@ -171,16 +173,21 @@ NickGamblingProblemRollTheDice(int iClient)
 			SpawnItem(xyzClientLocation, ITEM_FIRST_AID_KIT, 1.0);
 			SpawnItem(xyzClientLocation, ITEM_ADRENALINE_SHOT, 1.0);
 			SpawnItem(xyzClientLocation, ITEM_PAIN_PILLS, 1.0);
+			SpawnItem(xyzClientLocation, ITEM_DEFIBRILLATOR, 1.0);
 
 		}
-		case 10: //Blindness
+		case 10: // Locked up and cant use any binds
 		{
-			PrintHintText(iClient,"Rolled a 10\nYou accidentally splashed questionable chemicals in your eyes.");
-			PrintToChatAll("\x03[XPMod] \x05%N has been temporarily blinded by chemicals.", iClient);
-											
-			ShowHudOverlayColor(iClient, 0, 0, 0, 255, 300, FADE_OUT);
-			
-			CreateTimer(0.8, TimerBlindFade, iClient, TIMER_FLAG_NO_MAPCHANGE);
+			if(g_bNickGambleLockedBinds[iClient] == true)
+			{
+				NickGamblingProblemRollTheDice(iClient);
+				return;
+			}
+			PrintHintText(iClient,"Rolled a 10\nYou got locked up for...questionable acts. 1 Minute No Binds.");
+			PrintToChatAll("\x03[XPMod] \x05%N got locked up for...I'd rather not say.", iClient);
+
+			g_bNickGambleLockedBinds[iClient] = true;	
+			CreateTimer(60.0, TimerReEnableBindsNick, iClient, TIMER_FLAG_NO_MAPCHANGE);
 		}
 		case 11: //Revival; Return to maximum health, even when incaped
 		{
@@ -220,6 +227,8 @@ Action:TimerApplyDivineIntervention(Handle hTimer, int iClient)
 		return Plugin_Stop;
 
 	RunCheatCommand(iClient, "give", "give health");
+	SetPlayerHealth(iClient, -1, 70);
+
 	ResetTempHealthToSurvivor(iClient);
 
 	PrintHintText(iClient,"Rolled an 11\nYou have received divine intervention from above...or below.");

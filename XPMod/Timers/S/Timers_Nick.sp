@@ -83,11 +83,17 @@ Action:TimerSlap(Handle:timer, any:iClient)
 // 	return Plugin_Stop;
 // }
 
-Action:TimerBlindFade(Handle:timer, any:iClient)
+// Action:TimerBlindFade(Handle:timer, any:iClient)
+// {
+// 	if(IsFakeClient(iClient)==false)
+// 		ShowHudOverlayColor(iClient, 0, 0, 0, 255, 4000, FADE_OUT);
+
+// 	return Plugin_Stop;
+// }
+
+Action:TimerReEnableBindsNick(Handle:timer, any:iClient)
 {
-	if(IsFakeClient(iClient)==false)
-		ShowHudOverlayColor(iClient, 0, 0, 0, 255, 4000, FADE_OUT);
-	
+	g_bNickGambleLockedBinds[iClient] = false;
 	return Plugin_Stop;
 }
 

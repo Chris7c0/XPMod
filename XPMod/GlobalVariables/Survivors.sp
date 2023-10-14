@@ -300,7 +300,8 @@ new g_iNickPrimarySavedAmmo[MAXPLAYERS + 1];
 new g_iNickUpgradeAmmo[MAXPLAYERS + 1];
 new String:g_strNickUpgradeType[32];
 new bool:g_bNickStoresDroppedPistolAmmo[MAXPLAYERS + 1] = {false, ...};
-
+bool g_bNickGambedSelfReviveThisRound[MAXPLAYERS + 1] = {false, ...}; 
+bool g_bNickGambleLockedBinds[MAXPLAYERS + 1] = {false, ...};
 
 // Louis
 #define LOUIS_TELEPORT_TOTAL_CHARGES                    3

@@ -417,7 +417,7 @@ Action:ResetSurvivorTalents(iClient)
 	g_iInfectedLevel[iClient] = RoundToFloor(g_iClientLevel[iClient] * 0.5);
 	//iskillpoints[iClient] = g_iInfectedLevel[iClient] * 3;
 	if(IsFakeClient(iClient) == false)
-		PrintToChat(iClient,"\x0r[XPMod] All of your chosen skill points have been reset.",g_iClientXP[iClient]);
+		PrintToChat(iClient,"\x03[XPMod] All of your chosen skill points have been reset.",g_iClientXP[iClient]);
 	
 	//Delete all particles on the iClient
 	DeleteAllClientParticles(iClient);
