@@ -265,6 +265,7 @@ new g_iTempHealthBeforeUsingHealthBoostSlotItem[MAXPLAYERS + 1];
 new bool:g_bNickIsStealingLife[MAXPLAYERS + 1][MAXPLAYERS + 1];	//g_bNickIsStealingLife[victim][attacker]
 new g_iNickStealingLifeRuntimes[MAXPLAYERS + 1];
 new g_iNickResurrectUses = 0;
+#define NICK_CLIP_SIZE_MAX_MAGNUM   4
 new bool:g_bCanNickSecondaryCycle[MAXPLAYERS + 1];
 new String:g_strNickSecondarySlot1[512];
 // new String:g_strNickSecondarySlot2[512];

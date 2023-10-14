@@ -386,7 +386,7 @@ OGFSurvivorReload_Nick(iClient, const char[] currentweapon, ActiveWeaponID, Curr
 {
 	if((StrEqual(currentweapon, "weapon_pistol_magnum", false) == true) && (g_iMagnumLevel[iClient] > 0) && (CurrentClipAmmo == 8))
 	{
-		SetEntData(ActiveWeaponID, g_iOffset_Clip1, 3, true);
+		SetEntData(ActiveWeaponID, g_iOffset_Clip1, NICK_CLIP_SIZE_MAX_MAGNUM, true);
 		g_bClientIsReloading[iClient] = false;
 		g_iReloadFrameCounter[iClient] = 0;
 		//PrintToChatAll("Setting Magnum Clip");
@@ -694,7 +694,7 @@ void EventsItemPickUp_Nick(int iClient, const char[] strWeaponClass)
 				return;
 			if(IsValidEntity(iEntid)==false)
 				return;
-			SetEntData(iEntid, g_iOffset_Clip1, 3, true);
+			SetEntData(iEntid, g_iOffset_Clip1, NICK_CLIP_SIZE_MAX_MAGNUM, true);
 		}
 		else if(StrContains(strWeaponClass,"pistol",false) != -1)
 		{

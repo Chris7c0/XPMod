@@ -67,7 +67,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 				if(g_iCurrentClipAmmo[iClient] > 3)
 				{
 					//PrintToChatAll("Magnums current clip ammo is greater than 3");
-					SetEntData(g_iActiveWeaponID[iClient], g_iOffset_Clip1, 3, true);
+					SetEntData(g_iActiveWeaponID[iClient], g_iOffset_Clip1, NICK_CLIP_SIZE_MAX_MAGNUM, true);
 				}
 				g_iNickMagnumShotCountCap[iClient]++;
 				//PrintToChatAll("g_iNickMagnumShotCountCap %d", g_iNickMagnumShotCountCap[iClient]);
@@ -197,7 +197,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 			{
 				if((StrEqual(currentweapon, "weapon_pistol_magnum", false) == true) && (g_iMagnumLevel[iClient] > 0))
 				{
-					SetEntData(ActiveWeaponID, g_iOffset_Clip1, 3, true);
+					SetEntData(ActiveWeaponID, g_iOffset_Clip1, NICK_CLIP_SIZE_MAX_MAGNUM, true);
 					g_bClientIsReloading[iClient] = false;
 					g_iReloadFrameCounter[iClient] = 0;
 					//PrintToChatAll("Magnum Fire Reloading");
