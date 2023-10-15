@@ -205,7 +205,7 @@ EventsHurt_AttackerBill(Handle:hEvent, iAttacker, iVictim)
 		iVictim,
 		StrContains(strWeaponClass,"rifle_m60",false) == -1 ?
 			RoundToNearest(GetEventInt(hEvent, "dmg_health") * (g_iExorcismLevel[iAttacker] * 0.06)) : 
-			RoundToNearest(GetEventInt(hEvent, "dmg_health") * (g_iPromotionalLevel[iAttacker] * 0.25)),
+			RoundToNearest(GetEventInt(hEvent, "dmg_health") * (g_iPromotionalLevel[iAttacker] * 0.20)),
 		strWeaponClass);
 	
 	SetPlayerHealth(iVictim, iAttacker, -1 * iDmgAmount, true);

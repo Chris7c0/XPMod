@@ -301,7 +301,7 @@ Action:PromotionalMenuDraw(iClient)
 		\n \
 		\n+8%%%% reload speed & cloaking per level\
 		\n+20 rifle clip size per level\
-		\n+25%%%% M60 damage per level\
+		\n+20%%%% M60 damage per level\
 		\nAutomatic laser sight\
 		\nHide glow from SI\
 		\n \
