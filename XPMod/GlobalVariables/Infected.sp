@@ -286,6 +286,7 @@ new g_iBagOfSpitsSelectedSpit[MAXPLAYERS + 1] = {BAG_OF_SPITS_NONE, ...};
 
 
 // Jockey
+#define JOCKEY_LUNGE_DISTANCE_MULTIPLIER_PER_LEVEL  0.05
 bool:g_bCanJockeyPee[MAXPLAYERS + 1] = {true, ...};
 bool:g_bJockeyPissVictim[MAXPLAYERS + 1] = {true, ...};
 bool:g_bCanJockeyCloak[MAXPLAYERS + 1] = {true, ...};

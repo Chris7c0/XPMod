@@ -8,9 +8,9 @@ Action:TimerJumpFurther(Handle:timer, any:iClient)
 {
 	decl Float:velocity[3];
 	GetEntPropVector(iClient, Prop_Data, "m_vecVelocity", velocity);
-	velocity[0] *= (1.0 + (g_iMutatedLevel[iClient] * 0.06));
-	velocity[1] *= (1.0 + (g_iMutatedLevel[iClient] * 0.06));
-	velocity[2] *= (1.0 + (g_iMutatedLevel[iClient] * 0.06));
+	velocity[0] *= (1.0 + (g_iMutatedLevel[iClient] * JOCKEY_LUNGE_DISTANCE_MULTIPLIER_PER_LEVEL));
+	velocity[1] *= (1.0 + (g_iMutatedLevel[iClient] * JOCKEY_LUNGE_DISTANCE_MULTIPLIER_PER_LEVEL));
+	velocity[2] *= (1.0 + (g_iMutatedLevel[iClient] * JOCKEY_LUNGE_DISTANCE_MULTIPLIER_PER_LEVEL));
 	TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, velocity);
 	
 	return Plugin_Stop;
