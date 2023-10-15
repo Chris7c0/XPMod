@@ -1,8 +1,7 @@
 TalentsLoad_Nick(iClient)
 {
 	g_bDivineInterventionQueued[iClient] = false;
-	g_iNickMagnumShotCountCap[iClient] = 0;
-	g_bCanNickStampedeReload[iClient] = false;
+	g_iNickMagnumHitsPerClip[iClient] = 0;
 	g_bRamboModeActive[iClient] = false;
 
 	SetPlayerTalentMaxHealth_Nick(iClient, !g_bSurvivorTalentsGivenThisRound[iClient]);
@@ -596,18 +595,8 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 			GetClientWeapon(iAttacker, strCurrentWeapon, sizeof(strCurrentWeapon));
 			if(StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == true)
 			{
-				g_iNickMagnumShotCount[iAttacker]++;
-				//PrintToChatAll("g_iNickMagnumShotCount = %d", g_iNickMagnumShotCount[iAttacker]);
-				if((g_iNickMagnumShotCountCap[iAttacker] / 2) < g_iNickMagnumShotCount[iAttacker])
-				{
-					g_iNickMagnumShotCount[iAttacker] = (g_iNickMagnumShotCountCap[iAttacker] / 2);
-					//PrintToChatAll("g_iNickMagnumShotCount After = %d", g_iNickMagnumShotCount[iAttacker]);
-				}
-				if(g_iNickMagnumShotCount[iAttacker] == 3)
-				{
-					//PrintToChatAll("Nick Magnum Count = 3, stampede reload = true");
-					g_bCanNickStampedeReload[iAttacker] = true;
-				}
+				g_iNickMagnumHitsPerClip[iAttacker]++;
+				PrintToChatAll("g_iNickMagnumHitsPerClip = %d", g_iNickMagnumHitsPerClip[iAttacker]);
 			}
 		}
 	}

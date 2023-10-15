@@ -64,13 +64,10 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 				//PrintToChatAll("Weapon is magnum && Magnum level > 0");
 				g_iActiveWeaponID[iClient] = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 				g_iCurrentClipAmmo[iClient] = GetEntProp(g_iActiveWeaponID[iClient],Prop_Data,"m_iClip1");
-				if(g_iCurrentClipAmmo[iClient] > 3)
+				if(g_iCurrentClipAmmo[iClient] > NICK_CLIP_SIZE_MAX_MAGNUM)
 				{
-					//PrintToChatAll("Magnums current clip ammo is greater than 3");
 					SetEntData(g_iActiveWeaponID[iClient], g_iOffset_Clip1, NICK_CLIP_SIZE_MAX_MAGNUM, true);
 				}
-				g_iNickMagnumShotCountCap[iClient]++;
-				//PrintToChatAll("g_iNickMagnumShotCountCap %d", g_iNickMagnumShotCountCap[iClient]);
 			}
 
 			// Make all non magnum pistols automatic

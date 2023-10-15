@@ -128,16 +128,19 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 
 		new String:strCurrentWeapon[32];
 		GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
-		if((g_bCanNickStampedeReload[iClient] == true) && (StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == true))
+		if((g_iNickMagnumHitsPerClip[iClient] > 0) && (StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == true))
 		{
-			//PrintToChatAll("Stampede reloading...");
-			//PrintToChatAll("Reload rate before %f", g_fReloadRate);
-			g_fReloadRate = 1.0 - (g_iMagnumLevel[iClient] * 0.1);
-			//PrintToChatAll("Reload rate after %f", g_fReloadRate);
-			g_bCanNickStampedeReload[iClient] = false;
+			// Shouldnt happen, but just in case limit the value to the max
+			if (g_iNickMagnumHitsPerClip[iClient] > NICK_CLIP_SIZE_MAX_MAGNUM)
+				g_iNickMagnumHitsPerClip[iClient] = NICK_CLIP_SIZE_MAX_MAGNUM;
+
+			PrintToChatAll("Reload rate before %f", g_fReloadRate);
+			g_fReloadRate = 1.0 - (g_iNickMagnumHitsPerClip[iClient] * 0.15);
+			PrintToChatAll("Reload rate after %f", g_fReloadRate);
 		}
-		g_iNickMagnumShotCount[iClient] = 0;
-		g_iNickMagnumShotCountCap[iClient] = 0;
+
+		PrintToChatAll("g_iNickMagnumHitsPerClip = %d", g_iNickMagnumHitsPerClip[iClient]);
+		g_iNickMagnumHitsPerClip[iClient] = 0;
 		
 		//PrintToChatAll("ReloadRate = %f", g_fReloadRate);
 		

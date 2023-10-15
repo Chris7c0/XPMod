@@ -261,11 +261,11 @@ Action:MagnumMenuDraw(iClient)
 		\n \
 		\nLevel 1:\
 		\n+3%%%% movement speed per level\
-		\n-5 clip size(Magnum Only)\
+		\nMax clip size is 4 (Magnum Only)\
 		\n+100%%%% damage per level (Magnum Only)\
 		\n \
 		\nLevel 5:\
-		\n50%%%% faster reload on 3 consecutive hits (Magnum only)\
+		\n+15%%%% reload speed for infected hit that clip (Magnum only)\
 		\n \
 		\n			Bind 1: Gambling Problem\
 		\n			+1 use every other level\

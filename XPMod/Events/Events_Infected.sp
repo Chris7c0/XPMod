@@ -406,18 +406,7 @@ Action:Event_InfectedHurt(Handle:hEvent, const String:strName[], bool:bDontBroad
 					GetClientWeapon(attacker, strCurrentWeapon, sizeof(strCurrentWeapon));
 					if(StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == true)
 					{
-						g_iNickMagnumShotCount[attacker]++;
-						//PrintToChatAll("g_iNickMagnumShotCount = %d", g_iNickMagnumShotCount[attacker]);
-						if((g_iNickMagnumShotCountCap[attacker] / 2) < g_iNickMagnumShotCount[attacker])
-						{
-							g_iNickMagnumShotCount[attacker] = (g_iNickMagnumShotCountCap[attacker] / 2);
-							//PrintToChatAll("g_iNickMagnumShotCount After = %d", g_iNickMagnumShotCount[attacker]);
-						}
-						if(g_iNickMagnumShotCount[attacker] == 3)
-						{
-							//PrintToChatAll("Nick Magnum Count = 3, stampede reload = true");
-							g_bCanNickStampedeReload[attacker] = true;
-						}
+						g_iNickMagnumHitsPerClip[attacker]++;
 					}
 				}
 			}
