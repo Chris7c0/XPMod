@@ -517,11 +517,18 @@ void EventsWeaponFire_Ellis(int iClient)
 		IsPlayerAlive(iClient) == false)
 		return;
 
+	char strCurrentWeapon[32];
+	GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon))
+	int iWeaponItemIndex = FindWeaponItemIndex(strCurrentWeapon, ITEM_CLASS_NAME);
+
+	// TODO: refactor this function using the weapon index instead for performace reasons
+	// Additionaly, maybe also add helper functions for IsSniper, IsSMG, etc.
+
 	if(g_iEllisPrimarySlot0[iClient] == ITEM_EMPTY || g_iEllisPrimarySlot1[iClient] == ITEM_EMPTY)
 	{
 		StoreCurrentPrimaryWeapon(iClient);
-		new String:strCurrentWeapon[32];
-		GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
+		// new String:strCurrentWeapon[32];
+		// GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 		if((StrContains(strCurrentWeapon, "rifle", false) != -1) || (StrContains(strCurrentWeapon, "smg", false) != -1) || (StrContains(strCurrentWeapon, "shotgun", false) != -1) || (StrContains(strCurrentWeapon, "launcher", false) != -1) || (StrContains(strCurrentWeapon, "sniper", false) != -1))
 		{
 			StoreCurrentPrimaryWeaponAmmo(iClient);
@@ -536,8 +543,8 @@ void EventsWeaponFire_Ellis(int iClient)
 	{
 		StoreCurrentPrimaryWeapon(iClient);
 
-		char strCurrentWeapon[32];
-		GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
+		// char strCurrentWeapon[32];
+		// GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 
 		if(g_iReserveAmmo[iClient] == 0)
 		{
@@ -569,8 +576,8 @@ void EventsWeaponFire_Ellis(int iClient)
 		}
 	}
 
-	// Make all guns automatic
-	if (g_iMetalLevel[iClient] > 0)
+	// Make all guns automatic, except for sniper rifles
+	if (g_iMetalLevel[iClient] > 0 && iWeaponItemIndex >= ITEM_RANGE_MIN_SNIPER && iWeaponItemIndex <= ITEM_RANGE_MAX_SNIPER)
 		SetEntProp(iActiveWeaponID, Prop_Send, "m_isHoldingFireButton", 0);
 }
 

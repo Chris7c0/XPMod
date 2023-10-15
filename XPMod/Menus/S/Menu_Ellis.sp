@@ -274,6 +274,7 @@ Action:MetalMenuDraw(iClient)
 		\n Can No Longer Hold Melee Weapons\
 		\n +5%%%% Firing Rate per Level\
 		\n All Guns Are Automatic Now\
+		\n	- Excludes Snipers\
 		\n \
 		\nLevel 5:\
 		\n [WALK+USE] Triple Firing Rate for 5 Seconds\
@@ -292,7 +293,7 @@ Action:MetalMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	
