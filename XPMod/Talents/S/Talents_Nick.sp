@@ -593,7 +593,6 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 		if(StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == true)
 		{
 			g_iNickMagnumHitsPerClip[iAttacker]++;
-			PrintToChatAll("g_iNickMagnumHitsPerClip = %d", g_iNickMagnumHitsPerClip[iAttacker]);
 		}
 	}
 }

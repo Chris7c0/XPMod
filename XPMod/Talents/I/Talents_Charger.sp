@@ -212,7 +212,7 @@ EventsHurt_VictimCharger(Handle:hEvent, attacker, victim)
 		{
 			if(g_bChargerCarrying[victim] == true)
 			{
-				SetPlayerHealth(victim, -1, iCurrentHP + dmgHealth + RoundToNearest(dmgHealth * g_iHillbillyLevel[victim] * 0.05));
+				SetPlayerHealth(victim, -1, dmgHealth + RoundToNearest(dmgHealth * g_iHillbillyLevel[victim] * 0.05), true);
 				
 				//Add particle effect here later since Charger glow and color cannot be changed
 				

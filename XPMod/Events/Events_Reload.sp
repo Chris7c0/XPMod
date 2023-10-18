@@ -139,7 +139,6 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 			PrintToChatAll("Reload rate after %f", g_fReloadRate);
 		}
 
-		PrintToChatAll("g_iNickMagnumHitsPerClip = %d", g_iNickMagnumHitsPerClip[iClient]);
 		g_iNickMagnumHitsPerClip[iClient] = 0;
 		
 		//PrintToChatAll("ReloadRate = %f", g_fReloadRate);

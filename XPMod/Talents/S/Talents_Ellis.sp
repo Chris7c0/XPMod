@@ -577,7 +577,7 @@ void EventsWeaponFire_Ellis(int iClient)
 	}
 
 	// Make all guns automatic, except for sniper rifles
-	if (g_iMetalLevel[iClient] > 0 && iWeaponItemIndex >= ITEM_RANGE_MIN_SNIPER && iWeaponItemIndex <= ITEM_RANGE_MAX_SNIPER)
+	if (g_iMetalLevel[iClient] > 0 && (iWeaponItemIndex >= ITEM_RANGE_MIN_SNIPER && iWeaponItemIndex <= ITEM_RANGE_MAX_SNIPER) == false)
 		SetEntProp(iActiveWeaponID, Prop_Send, "m_isHoldingFireButton", 0);
 }
 
