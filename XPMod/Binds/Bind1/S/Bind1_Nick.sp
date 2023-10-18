@@ -226,16 +226,22 @@ Action:TimerApplyDivineIntervention(Handle hTimer, int iClient)
 		IsPlayerAlive(iClient) == false)
 		return Plugin_Stop;
 
-	RunCheatCommand(iClient, "give", "give health");
-	SetPlayerHealth(iClient, -1, 70);
-
-	ResetTempHealthToSurvivor(iClient);
-
 	PrintHintText(iClient,"Rolled an 11\nYou have received divine intervention from above...or below.");
 	PrintToChatAll("\x03[XPMod] \x05%N was given a fresh life.", iClient);
 	
-	g_bIsClientDown[iClient] = false;
 	g_bDivineInterventionQueued[iClient] = false;
+
+	// If they are incap, then revive and set to base divine health
+	if (IsIncap(iClient)) {
+		RunCheatCommand(iClient, "give", "give health");
+		SetPlayerHealth(iClient, -1, 70);
+		ResetTempHealthToSurvivor(iClient);
+		g_bIsClientDown[iClient] = false;
+		return Plugin_Stop;
+	}
+
+	// If they arent incap then just give them some extra hp
+	SetPlayerHealth(iClient, -1, 70, true);
 
 	return Plugin_Stop;
 }
