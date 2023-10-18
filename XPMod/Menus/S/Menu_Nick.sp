@@ -313,7 +313,7 @@ Action:DesperateMenuDraw(iClient)
 		\n					  Requires Level 26\
 		\n \
 		\nLevel 1:\
-		\n(Stacks) +2%%%% speed & +15%%%% gun damage per level\
+		\n(Stacks) +2%%%% speed & +10%%%% gun damage per level\
 		\n \
 		\n \
 		\n				Bind 2: Cheating Death\

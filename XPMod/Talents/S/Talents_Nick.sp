@@ -521,23 +521,22 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 
 	if(g_iSwindlerLevel[iAttacker] > 0)
 	{
-		if(g_iClientTeam[iVictim] == TEAM_INFECTED)
-			if(g_bNickIsStealingLife[iVictim][iAttacker] == false)
-			{
-				g_bNickIsStealingLife[iVictim][iAttacker] = true;
-				
-				new Handle:lifestealingpackage = CreateDataPack();
-				WritePackCell(lifestealingpackage, iVictim);
-				WritePackCell(lifestealingpackage, iAttacker);
-				g_iNickStealingLifeRuntimes[iVictim] = 0;
+		if(g_bNickIsStealingLife[iVictim][iAttacker] == false)
+		{
+			g_bNickIsStealingLife[iVictim][iAttacker] = true;
+			
+			new Handle:lifestealingpackage = CreateDataPack();
+			WritePackCell(lifestealingpackage, iVictim);
+			WritePackCell(lifestealingpackage, iAttacker);
+			g_iNickStealingLifeRuntimes[iVictim] = 0;
 
-				delete g_hTimer_NickLifeSteal[iVictim];
-				g_hTimer_NickLifeSteal[iVictim] = CreateTimer(2.0, TimerLifeStealing, lifestealingpackage, TIMER_REPEAT);
-				
-				decl Float:vec[3];
-				GetClientAbsOrigin(iVictim, vec);
-				EmitSoundToAll(SOUND_NICK_LIFESTEAL_HIT, iVictim, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
-			}
+			delete g_hTimer_NickLifeSteal[iVictim];
+			g_hTimer_NickLifeSteal[iVictim] = CreateTimer(2.0, TimerLifeStealing, lifestealingpackage, TIMER_REPEAT);
+			
+			decl Float:vec[3];
+			GetClientAbsOrigin(iVictim, vec);
+			EmitSoundToAll(SOUND_NICK_LIFESTEAL_HIT, iVictim, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
+		}
 	}
 
 	if(g_iDesperateLevel[iAttacker] > 0 && g_iNickDesperateMeasuresStack > 0)
@@ -552,9 +551,9 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 			new dmg = GetEventInt(hEvent,"dmg_health");
 			
 			if(g_iNickDesperateMeasuresStack > 3)
-				dmg = RoundToNearest(dmg * (g_iDesperateLevel[iAttacker] * 0.15) * 3);
+				dmg = RoundToNearest(dmg * (g_iDesperateLevel[iAttacker] * 0.10) * 3);
 			else
-				dmg = RoundToNearest(dmg * (g_iDesperateLevel[iAttacker] * 0.15) * g_iNickDesperateMeasuresStack);
+				dmg = RoundToNearest(dmg * (g_iDesperateLevel[iAttacker] * 0.10) * g_iNickDesperateMeasuresStack);
 
 			dmg = CalculateDamageTakenForVictimTalents(iVictim, dmg, weaponclass);
 
@@ -565,39 +564,36 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 	
 	if(g_iMagnumLevel[iAttacker] > 0 || g_iRiskyLevel[iAttacker] > 0)
 	{
-		if(g_iClientTeam[iVictim] == TEAM_INFECTED)
+		decl String:weaponclass[32];
+		GetEventString(hEvent,"weapon",weaponclass,32);
+		if (StrContains(weaponclass,"magnum",false) != -1)
 		{
-			decl String:weaponclass[32];
-			GetEventString(hEvent,"weapon",weaponclass,32);
-			if (StrContains(weaponclass,"magnum",false) != -1)
-			{
-				new hp = GetPlayerHealth(iVictim);
-				new dmg = GetEventInt(hEvent,"dmg_health");
+			new hp = GetPlayerHealth(iVictim);
+			new dmg = GetEventInt(hEvent,"dmg_health");
 
-				dmg = RoundToNearest(dmg * (g_iMagnumLevel[iAttacker] * 1.00));
-				dmg = CalculateDamageTakenForVictimTalents(iVictim, dmg, weaponclass);
+			dmg = RoundToNearest(dmg * (g_iMagnumLevel[iAttacker] * 1.00));
+			dmg = CalculateDamageTakenForVictimTalents(iVictim, dmg, weaponclass);
 
-				//PrintToChat(iAttacker, "your doing %d extra magnum damage", dmg);
-				SetPlayerHealth(iVictim, iAttacker,hp - dmg);
-			}
-			else if (StrContains(weaponclass,"pistol",false) != -1)
-			{
-				new hp = GetPlayerHealth(iVictim);
-				new dmg = GetEventInt(hEvent,"dmg_health");
+			//PrintToChat(iAttacker, "your doing %d extra magnum damage", dmg);
+			SetPlayerHealth(iVictim, iAttacker,hp - dmg);
+		}
+		else if (StrContains(weaponclass,"pistol",false) != -1)
+		{
+			new hp = GetPlayerHealth(iVictim);
+			new dmg = GetEventInt(hEvent,"dmg_health");
 
-				dmg = RoundToNearest(dmg * (g_iRiskyLevel[iAttacker] * 0.2));
-				dmg = CalculateDamageTakenForVictimTalents(iVictim, dmg, weaponclass);
+			dmg = RoundToNearest(dmg * (g_iRiskyLevel[iAttacker] * 0.2));
+			dmg = CalculateDamageTakenForVictimTalents(iVictim, dmg, weaponclass);
 
-				//PrintToChat(iAttacker, "your doing %d extra damage", dmg);
-				SetPlayerHealth(iVictim, iAttacker, hp - dmg);
-			}
-			new String:strCurrentWeapon[32];
-			GetClientWeapon(iAttacker, strCurrentWeapon, sizeof(strCurrentWeapon));
-			if(StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == true)
-			{
-				g_iNickMagnumHitsPerClip[iAttacker]++;
-				PrintToChatAll("g_iNickMagnumHitsPerClip = %d", g_iNickMagnumHitsPerClip[iAttacker]);
-			}
+			//PrintToChat(iAttacker, "your doing %d extra damage", dmg);
+			SetPlayerHealth(iVictim, iAttacker, hp - dmg);
+		}
+		new String:strCurrentWeapon[32];
+		GetClientWeapon(iAttacker, strCurrentWeapon, sizeof(strCurrentWeapon));
+		if(StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == true)
+		{
+			g_iNickMagnumHitsPerClip[iAttacker]++;
+			PrintToChatAll("g_iNickMagnumHitsPerClip = %d", g_iNickMagnumHitsPerClip[iAttacker]);
 		}
 	}
 }
