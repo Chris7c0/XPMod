@@ -133,20 +133,21 @@ Action:HillbillyMenuDraw(iClient)
 	SetMenuTitle(menu, "\
 		%s						Hillbilly Madness! (Level %d)\
 		\n \
-		\n+35 max health per level\
-		\n+3%% movement speed & carry range per level\
-		\n-1 second from charger cooldown every other level\
+		\n+35 Max Health per level\
+		\n+3%% Movement Speed & Carry Range per level\
+		\n-1 Second from Charger cooldown every other level\
 		\n \
 		\nOn successful grapple (until end of charge):\
 		\n \
 		\nInvincibility\
 		\n+5%% of damage taken is converted to health per level\
 		\n \
-		\n \
 		\n						Bind 2: Earthquake\
 		\n								3 uses\
 		\n \
-		\nEarthquake stuns all survivors in a large radius\
+		\nPunch ground to:\
+		\n	Damage visible survivors in a larger radius\
+		\n	Stun visible survivors in a smaller radius\
 		\n ",
 		strStartingNewLines,
 		g_iHillbillyLevel[iClient]);
@@ -154,7 +155,7 @@ Action:HillbillyMenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 

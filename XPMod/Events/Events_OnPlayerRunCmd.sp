@@ -125,80 +125,8 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 	HandleFasterAttacking_Ellis(iClient, iButtons);
 	HandleFasterAttacking_Rochelle(iClient, iButtons);
 	
-	//Charger Earthquake
-	if(g_bIsHillbillyEarthquakeReady[iClient] == true && g_bCanChargerEarthquake[iClient] == true && iButtons & IN_ATTACK2 && g_iInfectedCharacter[iClient] == CHARGER)
-	{
-		new Float:xyzClientPosition[3], Float:xyzClientEyeAngles[3],Float:xyzRayTraceEndLocation[3];
-		GetClientEyePosition(iClient, xyzClientPosition);
-		GetClientEyeAngles(iClient,xyzClientEyeAngles); // Get the angle the player is looking
-		
-		TR_TraceRayFilter(xyzClientPosition,xyzClientEyeAngles,MASK_ALL,RayType_Infinite ,TraceRayTryToHit); // Create a ray that tells where the player is looking
-		TR_GetEndPosition(xyzRayTraceEndLocation); // Get the end xyz coordinate of where a player is looking
-		
-		new Float:fDistanceOfTrace = GetVectorDistance(xyzClientPosition, xyzRayTraceEndLocation);
-		if (fDistanceOfTrace <= 100.0)
-		{
-			//Create the earthquake effect and sound
-			EmitSoundToAll(SOUND_EXPLODE, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, xyzClientPosition, NULL_VECTOR, true, 0.0);
-			
-			TE_Start("BeamRingPoint");
-			TE_WriteVector("m_vecCenter", xyzClientPosition);
-			TE_WriteFloat("m_flStartRadius", 10.0);
-			TE_WriteFloat("m_flEndRadius", 1000.0);
-			TE_WriteNum("m_nModelIndex", g_iSprite_Laser);
-			TE_WriteNum("m_nHaloIndex", g_iSprite_Halo);
-			TE_WriteNum("m_nStartFrame", 0);
-			TE_WriteNum("m_nFrameRate", 60);
-			TE_WriteFloat("m_fLife", 0.5);
-			TE_WriteFloat("m_fWidth", 100.0);
-			TE_WriteFloat("m_fEndWidth", 5.0);
-			TE_WriteFloat("m_fAmplitude",  0.5);
-			TE_WriteNum("r", 20);
-			TE_WriteNum("g", 20);
-			TE_WriteNum("b", 20);
-			TE_WriteNum("a", 200);
-			TE_WriteNum("m_nSpeed", 10);
-			TE_WriteNum("m_nFlags", 0);
-			TE_WriteNum("m_nFadeLength", 0);
-			TE_SendToAll();
-		
-			//Checking if there are survivors close enough to the blast and shaking them
-			decl iTarget;
-			for (iTarget = 1; iTarget <= MaxClients; iTarget++)
-			{
-				if(IsClientInGame(iTarget) && IsPlayerAlive(iTarget) && g_iClientTeam[iTarget] == TEAM_SURVIVORS && IsIncap(iTarget) == false)
-				{
-					decl Float:xyzTargetLocation[3];
-					GetClientEyePosition(iTarget, xyzTargetLocation);
-					new Float:fDistance = GetVectorDistance(xyzTargetLocation, xyzClientPosition);
-					if(IsVisibleTo(xyzClientPosition, xyzTargetLocation) == true && fDistance < (200.0 + (float(g_iHillbillyLevel[iClient]) * 15.0)))
-					{
-						//Shake their screen
-						new Handle:hShakeMessage;
-						hShakeMessage = StartMessageOne("Shake", iTarget);
-						
-						BfWriteByte(hShakeMessage, 0);
-						BfWriteFloat(hShakeMessage, 40.0);	//Intensity
-						BfWriteFloat(hShakeMessage, 10.0);
-						BfWriteFloat(hShakeMessage, 3.0);	//Time?
-						EndMessage();
-						
-						//"Stagger the player by flinging them
-						SDKCall(g_hSDK_Fling, iTarget, EMPTY_VECTOR, 96, iClient, 3.0);
-						
-						//Hurt the player
-						DealDamage(iTarget, iClient, RoundToCeil(g_iHillbillyLevel[iClient] * 2.5));
-					}
-				}
-			}
-			g_bIsHillbillyEarthquakeReady[iClient] = false;
-			g_iClientBindUses_2[iClient]++;
-			
-			//Set cooldown
-			g_bCanChargerEarthquake[iClient] = false;
-			CreateTimer(30.0, TimerEarthquakeCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
-		}
-	}
+	//Charger Earthquake Bind 2
+	HandleChargerEarthquake(iClient, iButtons);
 
 	//Bill's Team Crawling
 	if(g_iCrawlSpeedMultiplier > 0 && IsFakeClient(iClient) == false)
