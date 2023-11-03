@@ -314,8 +314,13 @@ new bool:g_bCanChargerSuperCharge[MAXPLAYERS + 1];
 new bool:g_bChargerCarrying[MAXPLAYERS + 1];
 new bool:g_bIsChargerHealing[MAXPLAYERS + 1];
 new bool:g_bCanChargerEarthquake[MAXPLAYERS +1];
+#define CHARGER_EARTHQUAKE_SHOCKWAVE_MAX_DAMAGE             30
+#define CHARGER_EARTHQUAKE_SHOCKWAVE_SHAKE_MAX_DIFF         30.0
+#define CHARGER_EARTHQUAKE_SHOCKWAVE_SHAKE_MIN              10.0 
+#define CHARGER_EARTHQUAKE_SHOCKWAVE_TIME_MAX_DIFF          4.0
+#define CHARGER_EARTHQUAKE_SHOCKWAVE_TIME_MIN               1.0 
 #define CHARGER_EARTHQUAKE_DISTANCE_SHOCKWAVE_DAMAGE        350.0
-#define CHARGER_EARTHQUAKE_DISTANCE_STAGGER                 100.0
+#define CHARGER_EARTHQUAKE_DISTANCE_STAGGER                 150.0
 
 // Tank
 #define TANK_BURN_DURATION                                  15.0

@@ -82,29 +82,36 @@ void HandleChargerEarthquake(int iClient, int iButtons)
 		if (IsVisibleTo(xyzClientPosition, xyzTargetLocation) == false)
 			continue;
 
+		float fDistance = GetVectorDistance(xyzTargetLocation, xyzClientPosition);
+
 		// Next do the first distance check for players in damage range
-		if (GetVectorDistance(xyzTargetLocation, xyzClientPosition) > CHARGER_EARTHQUAKE_DISTANCE_SHOCKWAVE_DAMAGE)
+		if (fDistance > CHARGER_EARTHQUAKE_DISTANCE_SHOCKWAVE_DAMAGE)
 			continue;
-
-		// Hurt the player
-		DealDamage(iTarget, iClient, RoundToCeil(g_iHillbillyLevel[iClient] * 2.5));
-
-		// Do the last distance check for players in fling range
-		if (GetVectorDistance(xyzTargetLocation, xyzClientPosition) > CHARGER_EARTHQUAKE_DISTANCE_STAGGER)
-			continue;
+			
+		// Hurt the player with a multiplier damage based on the distance from the charger
+		DealDamage(iTarget, iClient, 
+			RoundToCeil(CHARGER_EARTHQUAKE_SHOCKWAVE_MAX_DAMAGE * (1.0 - (fDistance / CHARGER_EARTHQUAKE_DISTANCE_SHOCKWAVE_DAMAGE))));
 
 		// Shake the victims screen
 		Handle hShakeMessage;
 		hShakeMessage = StartMessageOne("Shake", iTarget);
 
 		BfWriteByte(hShakeMessage, 0);
-		BfWriteFloat(hShakeMessage, 40.0);	  // Intensity
+		//Set the intensity and duration of the shake based on fDistance
+		BfWriteFloat(hShakeMessage, CHARGER_EARTHQUAKE_SHOCKWAVE_SHAKE_MIN + 
+			(CHARGER_EARTHQUAKE_SHOCKWAVE_SHAKE_MAX_DIFF * (1.0 - (fDistance / CHARGER_EARTHQUAKE_DISTANCE_SHOCKWAVE_DAMAGE))));	// Intensity
 		BfWriteFloat(hShakeMessage, 10.0);
-		BfWriteFloat(hShakeMessage, 3.0);	 // Time?
+		BfWriteFloat(hShakeMessage, CHARGER_EARTHQUAKE_SHOCKWAVE_TIME_MIN + 
+			(CHARGER_EARTHQUAKE_SHOCKWAVE_TIME_MAX_DIFF * (1.0 - (fDistance / CHARGER_EARTHQUAKE_DISTANCE_SHOCKWAVE_DAMAGE))));		// Time
 		EndMessage();
 
-		// Stagger the player by flinging them
-		SDKCall(g_hSDK_Fling, iTarget, EMPTY_VECTOR, 96, iClient, 3.0);
+		// Do the last distance check for players in fling (knockdown) range
+		if (fDistance > CHARGER_EARTHQUAKE_DISTANCE_STAGGER)
+			continue;
+
+		// Knockdown the player by flinging them
+		SDKCall(g_hSDK_Fling, iTarget, EMPTY_VECTOR, 96, iClient, CHARGER_EARTHQUAKE_SHOCKWAVE_TIME_MIN + 
+			(CHARGER_EARTHQUAKE_SHOCKWAVE_TIME_MAX_DIFF * (1.0 - (fDistance / CHARGER_EARTHQUAKE_DISTANCE_SHOCKWAVE_DAMAGE))));
 	}
 
 	g_bIsHillbillyEarthquakeReady[iClient] = false;
