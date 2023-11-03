@@ -134,9 +134,9 @@ Event_WeaponReload(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 			if (g_iNickMagnumHitsPerClip[iClient] > NICK_CLIP_SIZE_MAX_MAGNUM)
 				g_iNickMagnumHitsPerClip[iClient] = NICK_CLIP_SIZE_MAX_MAGNUM;
 
-			PrintToChatAll("Reload rate before %f", g_fReloadRate);
+			// PrintToChatAll("Reload rate before %f", g_fReloadRate);
 			g_fReloadRate = 1.0 - (g_iNickMagnumHitsPerClip[iClient] * 0.15);
-			PrintToChatAll("Reload rate after %f", g_fReloadRate);
+			// PrintToChatAll("Reload rate after %f", g_fReloadRate);
 		}
 
 		g_iNickMagnumHitsPerClip[iClient] = 0;
