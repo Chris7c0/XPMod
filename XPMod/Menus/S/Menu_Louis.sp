@@ -66,6 +66,7 @@ Action:LouisTalent1MenuDraw(iClient)
 	FormatEx(text, sizeof(text), "\
 		%s			Manager's Prep (Level %d):\
 		\n \
+		\n Pistols, Not Magnum, Are Automatic\
 		\n +5 HP per Level\
 		\n \
 		\n SMG and Pistol (Not Magnum) Buffs:     \
@@ -78,7 +79,7 @@ Action:LouisTalent1MenuDraw(iClient)
 	decl String:strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 

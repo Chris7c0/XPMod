@@ -55,7 +55,7 @@ Action:MutatedMenuDraw(iClient)
 		%s  				Mutated Tenacity (Level %d)\
 		\n \
 		\n+1 melee damage every 3 levels\
-		\n+6%% lunge distance per level\
+		\n+5%% lunge distance per level\
 		\n-0.35 seconds from all lunge cooldowns per level\
 		\n ",
 		strStartingNewLines,
