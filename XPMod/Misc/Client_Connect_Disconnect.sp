@@ -210,16 +210,11 @@ void LoopThroughAllPlayersAndHandleAFKPlayers()
 	{
 		if (RunClientChecks(iClient) == false ||
 			IsFakeClient(iClient) == true ||
-			GetClientTeam(iClient)==TEAM_SPECTATORS ||
 			g_fLastPlayerLastButtonPressTime[iClient] == 0.0)
 			continue;
 
-		if (IsPlayerAlive(iClient) == false || g_bIsGhost[iClient] == true)
-			continue;
-
 		float fAFKTime = GetGameTime() - g_fLastPlayerLastButtonPressTime[iClient];
-
-		if (fAFKTime >= AFK_IDLE_PLAYER_KICK_WARNING_START_TIME)
+		if (RoundToCeil(fAFKTime) % 10 == 0 && fAFKTime >= AFK_IDLE_PLAYER_KICK_WARNING_START_TIME - 2.0)
 		{
 			PrintToChat(iClient, "\x04You appear AFK. Move or be kicked in %0.0f seconds!", AFK_IDLE_PLAYER_KICK_TIME - fAFKTime);
 		}
@@ -239,8 +234,7 @@ void LoopThroughAllPlayersAndSetAFKRecordingTime(bool bStopRecording=false)
 	for(new iClient = 1;iClient <= MaxClients; iClient++)
 	{
 		if (RunClientChecks(iClient) == false ||
-			IsFakeClient(iClient) == true ||
-			GetClientTeam(iClient) == TEAM_SPECTATORS)
+			IsFakeClient(iClient) == true)
 			continue;
 		
 		g_fLastPlayerLastButtonPressTime[iClient] = bStopRecording == false ? fCurrentGameTime : 0.0;

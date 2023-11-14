@@ -394,6 +394,11 @@ bool HandleCallVote_Kick(int iVoteCaller, int iTarget, char[] strVoteType)
 	if (g_iClientXP[iTarget] < VOTE_KICK_IMMUNITY_XP_THRESHOLD)
 		return false;
 
+	// They also need to not be AFK, or the vote will be allowed
+	float fAFKTime = GetGameTime() - g_fLastPlayerLastButtonPressTime[iTarget];
+	if (fAFKTime >= AFK_IDLE_PLAYER_KICK_WARNING_START_TIME)
+		return false;
+
 	PrintToChat(iVoteCaller, "\x03[XPMod] \x05Player is immune to vote kicking.\n    You can report players at xpmod.net/discord.");
 	
 	// Interrupt the vote
