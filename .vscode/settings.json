@@ -92,6 +92,7 @@
     ],
     "sourcepawn.MainPath": "/home/chris/Projects/XPMod/xpmod.sp",
     "sourcepawn.enableLinter": true,
+    "SourcePawnLanguageServer.spcompPath": "/home/chris/Projects/XPMod/spcomp",
     "SourcePawnLanguageServer.includesDirectories": [
         "include",
         "XPMod"
