@@ -15,7 +15,7 @@
 //          Created by: Chris Pringle and Ezekiel Keener                                                       //
 //                                                                                                             //
 //                                                                                                             //
-//			Many thanks to the developers at the Allied Modders forums! This mod would not be what it          //
+//          Many thanks to the developers at the Allied Modders forums! This mod would not be what it          //
 //          is today if not for the time spent attempting to understand the code written and posted by         //
 //          the kind people on this forum. A huge thanks to TPoncho for all of his hard work on Perkmod.       //
 //          Also, many thanks to AtomicStryker, McFlurry, Pan Xiaohai, sumguy14, djromero, and to the          //
