@@ -23,6 +23,47 @@ Action:Timer_AskWhatTankToUse(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
+//create a timer to check if the survivor is in the aura of the tank
+Action:Timer_CheckSurvivorsInAura(Handle timer)
+{
+	// Loop through all clients
+    for (new iClient = 1; iClient <= MaxClients; iClient++)
+    {
+		// Check if the inf tank is in game, alive and has chosen the fire tank
+        if (IsClientInGame(iClient) && IsPlayerAlive(iClient) && g_iTankChosen[iClient] == TANK_FIRE)
+        {
+			// Get the tank's position
+            decl Float:xyzTankPosition[3];
+            GetClientAbsOrigin(iClient, xyzTankPosition);
+			// Loop through all survivors
+		for (new iSurvivor = 1; iSurvivor <= MaxClients; iSurvivor++)
+			{
+				// Check if the survivor is in game, alive and has chosen the fire tank
+				if (IsClientInGame(iSurvivor) && IsPlayerAlive(iSurvivor) && g_iClientTeam[iSurvivor] == TEAM_SURVIVORS)
+				{
+					// Get the survivor's position
+					decl Float:xyzSurvivorPosition[3];
+					GetClientAbsOrigin(iSurvivor, xyzSurvivorPosition);
+
+					// Calculate the distance between the tank and the survivor
+					new Float:fDistance = GetVectorDistance(xyzTankPosition, xyzSurvivorPosition);
+
+					// Check if the survivor is within the aura radius
+					if (fDistance <= AURA_RADIUS)
+					{
+                    // Ignite the survivor
+					SetFireToPlayer(iSurvivor, iClient, 1.0);
+					//PrintToChatAll("Survivor %N is in the aura of the tank", iSurvivor);
+                	}
+            	}
+        	}
+    	}
+	}
+}
+
+
+
+
 Action:Timer_ReigniteFireTank(Handle:timer, any:iClient)
 {
 	if(iClient < 1 || g_iClientTeam[iClient] != TEAM_INFECTED || g_iTankChosen[iClient] != TANK_FIRE || IsValidEntity(iClient) == false || 

@@ -19,6 +19,22 @@ public Action Timer_Testing(Handle hTimer, int iClient)
 	return Plugin_Continue;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 int iSeenEntities[MAXENTITIES+1];
 
 Action:TestFunction1(iClient, args)
@@ -1024,3 +1040,58 @@ public TestingBeamEntsBars(int iClient)
 	// CreateSpriteBar(iClient, 3.0, 1.0, 60.0, {0, 255, 0, 150}, xyzOffset);
 	// CreateSpriteBar(iClient, 3.0, 6.0, 60.0, {255, 255, 255, 20}, xyzOffset);
 }
+
+
+
+// OnGameFrame tank with fire punch that requires charging - moved this here in case auto regen is too strong for fire tank
+// OnGameFrame_Tank_Fire(iClient)
+// {
+//     // Check to see if the charging has already taken place or depleted
+//     if(g_iTankChosen[iClient] == TANK_FIRE && g_bFireTankAttackCharged[iClient] == true)
+//         return;
+// 	/// add this back in if you want the tank to charge up his fire punch attack with ducking instead of an auto regen (balance reasons potentially)
+
+// 	int buttons;
+// 	buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
+// 	// Apply fire damage to survivors near the Fire Tank
+
+// 	//Check to see if ducking and not attacking before starting the charge
+// 	if((buttons & IN_DUCK) && !(buttons & IN_ATTACK) && !(buttons & IN_ATTACK2))
+// 	{
+// 		// CheckIfTankMovedWhileChargingAndIncrementCharge(iClient);
+// 		g_iTankCharge[iClient]++;  
+
+// 		//Display the first message to the player while he is charging up
+// 		if(g_iTankCharge[iClient] == 30)
+// 		{
+// 			if(g_bBlockTankFirePunchCharge[iClient] == false)
+// 			{
+// 				if (IsFakeClient(iClient) == false)
+// 					PrintHintText(iClient, "Charging Up Attack");
+// 			}
+// 			else
+// 			{
+// 				if (IsFakeClient(iClient) == false)
+// 					PrintHintText(iClient, "You must wait to charge your fire punch attack");
+// 				g_iTankCharge[iClient] = 0;
+// 			}
+// 		}
+		
+// 		//Charged for long enough, now handle fire tank charged punch
+// 		if(g_iTankCharge[iClient] >= 150)
+// 		{
+// 			g_bFireTankAttackCharged[iClient] = true;
+// 			g_iTankCharge[iClient] = 0;				
+// 			g_iPID_TankChargedFire[iClient] = CreateParticle("fire_small_01", 0.0, iClient, ATTACH_DEBRIS);
+			
+// 			PrintHintText(iClient, "Fire Punch Attack Charged", g_iTankCharge[iClient]);
+// 		}
+// 	}
+// 	else if(g_iTankCharge[iClient] > 0)
+// 	{
+// 		if(g_iTankCharge[iClient] > 31 && IsFakeClient(iClient) == false)
+// 			PrintHintText(iClient, "Charge Interrupted");
+		
+// 		g_iTankCharge[iClient] = 0;
+// 	}
+// }
