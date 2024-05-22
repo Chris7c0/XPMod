@@ -52,7 +52,7 @@ Action:Timer_CheckSurvivorsInAura(Handle timer)
 					if (fDistance <= AURA_RADIUS)
 					{
                     // Ignite the survivor
-					SetFireToPlayer(iSurvivor, iClient, 1.0);
+					SetFireToPlayer(iSurvivor, iClient, 0.0);
 					//PrintToChatAll("Survivor %N is in the aura of the tank", iSurvivor);
                 	}
             	}

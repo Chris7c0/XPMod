@@ -91,7 +91,7 @@ OnGameFrame_Tank_Fire(iClient)
 	{
 		if(g_fTankHealthPercentage[iClient] <= 1.0)
 		{
-		if(g_iTankCharge[iClient] >= 300) // rougly 14 second charge time
+		if(g_iTankCharge[iClient] >= 300) // roughly 14 second charge time
 			{
 			g_bFireTankAttackCharged[iClient] = true;
 			g_iTankCharge[iClient] = 0;

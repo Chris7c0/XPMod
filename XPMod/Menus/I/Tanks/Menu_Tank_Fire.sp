@@ -19,7 +19,7 @@ Action:TankMenuDrawFire(iClient)
         \n - 20%% Chance To Ignite Survivors On Punch\
         \n \
         \n Active Abilities\
-        \n - [Hold CROUCH] Charges Fire Punch\
+        \n - Wait 14 seconds for fire punch, <50% hp will reduce cooldown by half\
         \n    - \"PuNCh FAcE...MAkE BoOM!\"\
         \n - Rock Throw Spreads Fire (15 Sec Cooldown)\
         \n ",

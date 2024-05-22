@@ -324,3 +324,7 @@ bool clienthanging[MAXPLAYERS + 1];
 //int g_iAbility = 0;
 //float g_fEllisTestFireRate = 0.0;
 float g_testingSpeedOverride[MAXPLAYERS + 1];
+
+
+#define AURA_RADIUS 75
+
