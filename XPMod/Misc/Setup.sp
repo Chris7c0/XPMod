@@ -8,6 +8,7 @@ SetupConsoleCommands()
 	RegConsoleCmd("xpmbind2", Bind2Press);				//This is the bound key function for ultimate abilities, Bind 2
 	RegConsoleCmd("xpmbinduses", ShowBindsRemaining);	//Display the total number of bind1 and bind2 uses left
 	RegConsoleCmd("buy", ShowUserLoadoutMenu);			// People always use this buy command from other servers, show them that they can buy equipment in xpmod
+	RegConsoleCmd("banme", QuickBan);
 	
 	RegConsoleCmd("say", SayCmd);
 	RegConsoleCmd("say_team", SayTeamCmd);

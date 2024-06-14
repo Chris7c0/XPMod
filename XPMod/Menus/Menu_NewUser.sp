@@ -81,6 +81,13 @@ CreateNewUserMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 	}
 }
 
+Action:QuickBan(iClient, args) {
+	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
+		return Plugin_Handled;
+	BanMeMenuDraw(iClient);
+	return Plugin_Handled;		
+}
+
 Action:BanMeMenuDraw(iClient)
 {
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
