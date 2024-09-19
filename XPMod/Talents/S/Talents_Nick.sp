@@ -46,7 +46,7 @@ void SetPlayerTalentMaxHealth_Nick(int iClient, bool bFillInHealthGap = true)
 	
 	// Give nick more max health for each kit used, but cap it at +100 HP.
 	SetPlayerMaxHealth(iClient,
-		100 + 
+		115 + 
 		(g_iKitsUsed * (g_iSwindlerLevel[iClient] * 3)) < 200 ? 
 			100 + (g_iKitsUsed * (g_iSwindlerLevel[iClient] * 3)) + (g_iCoachTeamHealthStack * 5) : 
 			200 + (g_iCoachTeamHealthStack * 5),
@@ -571,7 +571,7 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 			new hp = GetPlayerHealth(iVictim);
 			new dmg = GetEventInt(hEvent,"dmg_health");
 
-			dmg = RoundToNearest(dmg * (g_iMagnumLevel[iAttacker] * 1.00));
+			dmg = RoundToNearest(dmg * (g_iMagnumLevel[iAttacker] * 0.65));
 			dmg = CalculateDamageTakenForVictimTalents(iVictim, dmg, weaponclass);
 
 			//PrintToChat(iAttacker, "your doing %d extra magnum damage", dmg);
@@ -582,7 +582,7 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 			new hp = GetPlayerHealth(iVictim);
 			new dmg = GetEventInt(hEvent,"dmg_health");
 
-			dmg = RoundToNearest(dmg * (g_iRiskyLevel[iAttacker] * 0.2));
+			dmg = RoundToNearest(dmg * (g_iRiskyLevel[iAttacker] * 0.13));
 			dmg = CalculateDamageTakenForVictimTalents(iVictim, dmg, weaponclass);
 
 			//PrintToChat(iAttacker, "your doing %d extra damage", dmg);
@@ -938,6 +938,10 @@ JebusHandMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 		{
 			case 0: //Heal Every Teammate
 			{
+				if(g_bNickHealCooldown == true) {
+					PrintHintText(iClient, "Global cooldown triggered. You must wait 5 seconds to use Heal again.");
+					return;
+				}
 				decl currentHP;
 				decl maxHP;
 
@@ -951,10 +955,12 @@ JebusHandMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 							maxHP = GetPlayerMaxHealth(i);
 							//PrintToChatAll("max health for %N is %d", i, maxHP);
 							PrintHintText(i, "You have been partially healed by %N", iClient);
-							if((currentHP + (g_iDesperateLevel[iClient] * 4)) >= maxHP)
+							g_bNickHealCooldown = true;	
+							CreateTimer(NICK_HEAL_COOLDOWN, TimerReEnableHealBind, iClient, TIMER_FLAG_NO_MAPCHANGE);
+							if((currentHP + (g_iDesperateLevel[iClient] * 5)) >= maxHP)
 								SetPlayerHealth(i, -1, maxHP);
 							else
-								SetPlayerHealth(i, -1, currentHP + (g_iDesperateLevel[iClient] * 4));
+								SetPlayerHealth(i, -1, currentHP + (g_iDesperateLevel[iClient] * 5));
 						}
 						// Handle Ellis
 						if(g_iOverLevel[i] > 0)
@@ -1002,6 +1008,10 @@ JebusHandMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 			}
 			case 1: //Revive Downed Teammate
 			{
+				if(g_bNickReviveCooldown == true) {
+					PrintHintText(iClient,"Global cooldown triggered. You must wait 10 seconds to Revive Teammate again.");
+					return;
+				}
 				if(g_iClientBindUses_2[iClient] < 2)
 				{
 					new foundvalident = 0;
@@ -1021,6 +1031,8 @@ JebusHandMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 								WriteParticle(i, "nick_ulti_revive", 0.0, 15.0);
 								
 								foundvalident++;
+								g_bNickReviveCooldown = true;
+								CreateTimer(NICK_REVIVE_COOLDOWN, TimerReEnableReviveBind, iClient, TIMER_FLAG_NO_MAPCHANGE);
 								switch(g_iClientBindUses_2[iClient])
 								{
 									case 1:
@@ -1054,6 +1066,8 @@ JebusHandMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 								WriteParticle(i, "nick_ulti_revive", 0.0, 15.0);
 								
 								foundvalident++;
+								g_bNickReviveCooldown = true;
+								CreateTimer(NICK_REVIVE_COOLDOWN, TimerReEnableReviveBind, iClient, TIMER_FLAG_NO_MAPCHANGE);
 								switch(g_iClientBindUses_2[iClient])
 								{
 									case 1:

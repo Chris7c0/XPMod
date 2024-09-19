@@ -96,6 +96,14 @@ Action:TimerReEnableBindsNick(Handle:timer, any:iClient)
 	g_bNickGambleLockedBinds[iClient] = false;
 	return Plugin_Stop;
 }
+Action:TimerReEnableReviveBind(Handle:timer, any:iClient) {
+	g_bNickReviveCooldown = false;
+	return Plugin_Stop;
+}
+Action:TimerReEnableHealBind(Handle:timer, any:iClient) {
+	g_bNickHealCooldown = false;
+	return Plugin_Stop;
+}
 
 Action:TimerLifeStealing(Handle:timer, any:pack)
 {

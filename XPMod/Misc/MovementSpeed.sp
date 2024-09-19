@@ -151,8 +151,8 @@ SetClientSpeedNick(iClient, &Float:fSpeed)
 	if (g_iNickDesperateMeasuresStack > 0)
 	{
 		fSpeed += g_iNickDesperateMeasuresStack >= 3 ? 
-			(3 * (g_iDesperateLevel[iClient] * 0.02)) : 
-			(g_iNickDesperateMeasuresStack * (g_iDesperateLevel[iClient] * 0.02));
+			(3 * (g_iDesperateLevel[iClient] * 0.01)) : 
+			(g_iNickDesperateMeasuresStack * (g_iDesperateLevel[iClient] * 0.01));
 	}
 	
 	//PrintToChat(iClient, "SetClientSpeedNick: %f", fSpeed);

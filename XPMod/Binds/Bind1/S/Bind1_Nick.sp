@@ -145,7 +145,7 @@ NickGamblingProblemRollTheDice(int iClient)
 		}
 		case 7: //Gain a self revive (only once per round)
 		{
-			if(g_bNickGambedSelfReviveThisRound[iClient] == true)
+			if(g_bNickGambedSelfReviveUses > 1)
 			{
 				NickGamblingProblemRollTheDice(iClient);
 				return;
@@ -155,7 +155,7 @@ NickGamblingProblemRollTheDice(int iClient)
 			PrintToChatAll("\x03[XPMod] \x05%N found a self revive stashed away.", iClient);
 
 			g_iSelfRevives[iClient]++;
-			g_bNickGambedSelfReviveThisRound[iClient] = true;
+			g_bNickGambedSelfReviveUses++;
 		}
 		case 8: //Get three more times to Gamble
 		{
@@ -191,21 +191,28 @@ NickGamblingProblemRollTheDice(int iClient)
 		}
 		case 11: //Revival; Return to maximum health, even when incaped
 		{
+			if(g_bNickGambedDivineInterventionUses > 1)
+			{
+				NickGamblingProblemRollTheDice(iClient);
+				return;
+			}
 			if(IsClientGrappled(iClient) == false)
 			{
+				g_bNickGambedDivineInterventionUses++;
 				CreateTimer(0.1, TimerApplyDivineIntervention, iClient, TIMER_FLAG_NO_MAPCHANGE);
 			}
 			else
 			{
+				g_bNickGambedDivineInterventionUses++;
 				g_bDivineInterventionQueued[iClient] = true;
 				PrintToChat(iClient, "\x03[XPMod] \x05Divine intervention will be applied when you break free!");
 			}
 		}
 		case 12: //Gain more bind2s
 		{
-			if (g_bNickAlreadyGivenMoreBind2s[iClient] == false)
+			if (g_bNickAlreadyGivenMoreBind2s == false)
 			{
-				g_bNickAlreadyGivenMoreBind2s[iClient] = true;
+				g_bNickAlreadyGivenMoreBind2s = true;
 				PrintHintText(iClient,"Rolled a 12\nA night of partying left you wanting more.");
 				PrintToChatAll("\x03[XPMod] \x05%N feels ready for more! +3 to Bind2!", iClient);
 				g_iClientBindUses_2[iClient] -= 3;

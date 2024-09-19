@@ -262,6 +262,8 @@ new g_iTempHealthBeforeUsingHealthBoostSlotItem[MAXPLAYERS + 1];
 #define ELLIS_ROF_PISTOLS                1.5
 
 //Nicks Stuff
+#define NICK_REVIVE_COOLDOWN         10.0
+#define NICK_HEAL_COOLDOWN           5.0
 new bool:g_bNickIsStealingLife[MAXPLAYERS + 1][MAXPLAYERS + 1];	//g_bNickIsStealingLife[victim][attacker]
 new g_iNickStealingLifeRuntimes[MAXPLAYERS + 1];
 new g_iNickResurrectUses = 0;
@@ -272,7 +274,7 @@ new String:g_strNickSecondarySlot1[512];
 new g_iNickCurrentSecondarySlot[MAXPLAYERS + 1];
 new g_iNickSecondarySavedClipSlot1[MAXPLAYERS + 1];
 new g_iNickSecondarySavedClipSlot2[MAXPLAYERS + 1];
-#define NICK_HEAL_PISTOL_GIVE       2
+#define NICK_HEAL_PISTOL_GIVE       1
 #define NICK_HEAL_PISTOL_TAKE       1
 #define NICK_HEAL_MAGNUM_GIVE       7
 #define NICK_HEAL_MAGNUM_TAKE       3
@@ -282,7 +284,7 @@ new bool:g_bRamboModeActive[MAXPLAYERS + 1];
 //new g_iNickDesperateMeasuresDeathStack;
 //new g_iNickDesperateMeasuresIncapStack;
 new bool:g_bDivineInterventionQueued[MAXPLAYERS + 1];
-new bool:g_bNickAlreadyGivenMoreBind2s[MAXPLAYERS + 1];
+new bool:g_bNickAlreadyGivenMoreBind2s = false;
 new g_iNickDesperateMeasuresStack;
 new g_iRamboWeaponID[MAXPLAYERS + 1];
 //g_bIsNickInSecondaryCycle
@@ -299,8 +301,11 @@ new g_iNickPrimarySavedAmmo[MAXPLAYERS + 1];
 new g_iNickUpgradeAmmo[MAXPLAYERS + 1];
 new String:g_strNickUpgradeType[32];
 new bool:g_bNickStoresDroppedPistolAmmo[MAXPLAYERS + 1] = {false, ...};
-bool g_bNickGambedSelfReviveThisRound[MAXPLAYERS + 1] = {false, ...}; 
+new g_bNickGambedSelfReviveUses = 0;
+new g_bNickGambedDivineInterventionUses = 0;
 bool g_bNickGambleLockedBinds[MAXPLAYERS + 1] = {false, ...};
+bool g_bNickReviveCooldown;
+bool g_bNickHealCooldown;
 
 // Louis
 #define LOUIS_TELEPORT_TOTAL_CHARGES                    3
