@@ -45,7 +45,10 @@ void ResetAllVariablesForRound()
 	SetConVarInt(FindConVar("first_aid_kit_use_duration"), 5);
 	SetConVarInt(FindConVar("defibrillator_use_duration"), 3);
 	g_bCommonInfectedDoMoreDamage = false;
+	g_bNickAlreadyGivenMoreBind2s = false;
 	g_iNickResurrectUses = 0;
+	g_bNickGambedSelfReviveUses = 0;
+	g_bNickGambedDivineInterventionUses = 0;
 	g_iHighestLeadLevel = 0;
 	g_iCoachTeamHealthStack = 0;
 	g_iCrawlSpeedMultiplier = 0;
@@ -195,12 +198,12 @@ void ResetClientVariablesForRound(int iClient)
 	//Nick
 	g_bNickIsGettingBeatenUp[iClient] = false;
 	g_bDivineInterventionQueued[iClient] = false;
-	g_bNickAlreadyGivenMoreBind2s[iClient] = false;
 	g_iNickDesperateMeasuresStack = 0;
 	g_iRamboWeaponID[iClient] = -1;
 	g_iNickPistolSwaps[iClient] = 0;
-	g_bNickGambedSelfReviveThisRound[iClient] = false;
 	g_bNickGambleLockedBinds[iClient] = false;
+	g_bNickReviveCooldown = false;
+	g_bNickHealCooldown = false;
 
 	//Louis
 	g_bLouisLaserModeActivated[iClient] = true;
