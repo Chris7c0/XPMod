@@ -12,6 +12,7 @@ SetupXPMEvents()
 {
 	//AddTempEntHook("PlayerAnimEvent", OnPlayerAnimEvent);
 
+	//native void HookUserMessage(UserMsg msg_id, MsgHook hook, bool intercept=false, MsgPostHook post=INVALID_FUNCTION);
 	//Hook user messages for silent renames for level tags
 	HookUserMessage(GetUserMessageId("SayText2"), Hook_SayText2, true);
 
@@ -200,7 +201,7 @@ Action:Event_PlayerChangeName(Handle:hEvent, const String:strName[], bool:bDontB
 
 // This is purely to block the name change message when updating a name to have the XPMod Level tags
 // Originally from https://forums.alliedmods.net/showthread.php?t=302085
-Action Hook_SayText2(UserMsg msg_id, any msg, const int[] players, int playersNum, bool reliable, bool init)
+public Action:Hook_SayText2(UserMsg:msg_id, Handle:msg, const players[], playersNum, bool:reliable, bool:init)
 {
 	// // check all players in server
 	// for (int i=0; i<playersNum; i++)

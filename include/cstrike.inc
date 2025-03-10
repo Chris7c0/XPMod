@@ -45,6 +45,8 @@
 #define CS_SLOT_KNIFE       2   /**< Knife slot. */
 #define CS_SLOT_GRENADE     3   /**< Grenade slot (will only return one grenade). */
 #define CS_SLOT_C4          4   /**< C4 slot. */
+#define CS_SLOT_BOOST       11  /**< Slot for healthshot and shield (will only return one weapon/item). */
+#define CS_SLOT_UTILITY     12  /**< Slot for tablet. */
 
 #define CS_DMG_HEADSHOT     (1 << 30)    /**< Headshot */
 
@@ -156,6 +158,7 @@ enum CSWeaponID
 	CSWeapon_BUMPMINE = 85,
 	CSWeapon_MAX_WEAPONS_NO_KNIFES, // Max without the knife item defs, useful when treating all knives as a regular knife.
 	CSWeapon_BAYONET = 500,
+	CSWeapon_KNIFE_CLASSIC = 503,
 	CSWeapon_KNIFE_FLIP = 505,
 	CSWeapon_KNIFE_GUT = 506,
 	CSWeapon_KNIFE_KARAMBIT = 507,
@@ -193,8 +196,10 @@ forward Action CS_OnBuyCommand(int client, const char[] weapon);
  *
  * @param client        Client index
  * @param weaponIndex   Weapon index
+ * @param donated       Was weapon donated (Bought from a buy menu while ctrl was pressed)
+ *                      (Note: This param is for CS:GO only, will be false on other games)
  */
-forward Action CS_OnCSWeaponDrop(int client, int weaponIndex);
+forward Action CS_OnCSWeaponDrop(int client, int weaponIndex, bool donated);
 
 /**
  * Called when game retrieves a weapon's price for a player.
@@ -435,9 +440,18 @@ native CSWeaponID CS_ItemDefIndexToID(int iDefIndex);
  * @return              Returns item definition index value for the weapon id.
  * @error               Invalid weapon id.
  *
- * @note In most cases the item deinition index will be the id. Works for CS:GO ONLY.
+ * @note In most cases the item definition index will be the id. Works for CS:GO ONLY.
  */
 native int CS_WeaponIDToItemDefIndex(CSWeaponID id);
+
+/**
+ * Returns the loadout slot based on the CSWeaponID. (CS:GO only)
+ *
+ * @param id            CSWeaponID to get the loadout slot for.
+ * @return              Returns loadout slot value for the weapon id.
+ * @error               Invalid weapon id.
+ */
+native int CS_WeaponIDToLoadoutSlot(CSWeaponID id);
 
 /**
  * Do not edit below this line!
@@ -479,5 +493,6 @@ public void __ext_cstrike_SetNTVOptional()
 	MarkNativeAsOptional("CS_UpdateClientModel");
 	MarkNativeAsOptional("CS_ItemDefIndexToID");
 	MarkNativeAsOptional("CS_WeaponIDToItemDefIndex");
+	MarkNativeAsOptional("CS_WeaponIDToLoadoutSlot");
 }
 #endif

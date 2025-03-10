@@ -14,10 +14,18 @@ SetupConsoleCommands()
 	RegConsoleCmd("say_team", SayTeamCmd);
 	
 	RegAdminCmd("freeze", FreezeGame, ADMFLAG_SLAY);
+	
+	SetupDevCommands();
+}
+
+SetupDevCommands()
+{
+	if (g_bDevModeEnabled == false)
+		return;
+
 	RegAdminCmd("givexp", GiveXP, ADMFLAG_RCON);
 	RegAdminCmd("giveidxp", GiveXPbyID, ADMFLAG_RCON);
-	
-	//Misc. Commands
+
 	RegAdminCmd("xpmod_debug_mode", XPModDebugModeToggle, ADMFLAG_SLAY);
 	RegAdminCmd("t1", TestFunction1, ADMFLAG_SLAY);
 	RegAdminCmd("t2", TestFunction2, ADMFLAG_SLAY);
