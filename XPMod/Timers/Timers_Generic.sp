@@ -45,7 +45,7 @@ Action Timer1SecondGlobalRepeating(Handle timer, any data)
 		}
 	}
 
-	
+	return Plugin_Continue;
 }
 
 Action Timer2SecondGlobalRepeating(Handle timer, any data)

@@ -221,11 +221,13 @@ public Action:Hook_SayText2(UserMsg:msg_id, Handle:msg, const players[], players
 	char[] sMessage = new char[24];
 	if(GetUserMessageType() == UM_Protobuf)
 	{
+		// Yeah, theres a warning here, fix in the future?
 		Protobuf pbmsg = msg;
 		pbmsg.ReadString("msg_name", sMessage, 24);
 	}
 	else
 	{
+		// Yeah, theres a warning here, fix in the future?
 		BfRead bfmsg = msg;
 		bfmsg.ReadByte();
 		bfmsg.ReadByte();

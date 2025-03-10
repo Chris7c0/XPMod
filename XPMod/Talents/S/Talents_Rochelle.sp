@@ -410,6 +410,8 @@ bool Event_HunterPounceStart_Rochelle(iAttacker, iVictim, distance) {
 	HandleRochelleNinjaEscapeGrasp(iAttacker, iVictim);
 
 	SuppressNeverUsedWarning(distance);
+
+	return true;
 }
 
 bool HandleRochelleNinjaEscapeGrasp(iAttacker, iVictim) {

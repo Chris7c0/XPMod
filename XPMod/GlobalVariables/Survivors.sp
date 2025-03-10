@@ -37,8 +37,8 @@ new g_iClientLaserSlotCost[MAXPLAYERS + 1];
 // Fast Attacking Weapons
 int g_iFastAttackingCurrentWeaponID[MAXPLAYERS + 1];
 int g_iFastAttackingCurrentItemIndex[MAXPLAYERS + 1];
-float g_fPreviousNextPrimaryAttack[MAXPLAYERS + 1] = 0.0;
-float g_fPreviousNextSecondaryAttack[MAXPLAYERS + 1] = 0.0;
+float g_fPreviousNextPrimaryAttack[MAXPLAYERS + 1] = { 0.0, ...};
+float g_fPreviousNextSecondaryAttack[MAXPLAYERS + 1] = { 0.0, ...};
 
 ///////////////////////////////////////////////     PLAYER SPECIFIC VARIABLES     ///////////////////////////////////////////////
 
