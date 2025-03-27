@@ -328,7 +328,7 @@ enum TFResourceType
 	TFResource_PlayerClass
 };
 
-static const char TFResourceNames[][] =
+static const char TFResourceNames[TFResourceType][] =
 {
 	"m_iPing",
 	"m_iScore",
@@ -399,7 +399,6 @@ stock TFClassType TF2_GetPlayerClass(int client)
  */
 stock void TF2_SetPlayerClass(int client, TFClassType classType, bool weapons=true, bool persistent=true)
 {
-	#pragma unused weapons
 	SetEntProp(client, Prop_Send, "m_iClass", view_as<int>(classType));
 
 	if (persistent)
@@ -432,7 +431,7 @@ stock int TF2_GetPlayerResourceData(int client, TFResourceType type)
 		return -1;
 	}
 
-	int entity = GetPlayerResourceEntity();
+	int entity = TF2_GetResourceEntity();
 
 	if (entity == -1)
 	{
@@ -469,7 +468,7 @@ stock bool TF2_SetPlayerResourceData(int client, TFResourceType type, any value)
 		return false;
 	}
 
-	int entity = GetPlayerResourceEntity();
+	int entity = TF2_GetResourceEntity();
 
 	if (entity == -1)
 	{

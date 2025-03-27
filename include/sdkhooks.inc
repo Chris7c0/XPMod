@@ -237,12 +237,11 @@ typeset SDKHookCB
 	function void (int client);
 
 	// Spawn
-	// Think
 	function Action (int entity);
 
 	// GroundEntChanged
 	// SpawnPost
-	// ThinkPost
+	// Think/Post
 	// VPhysicsUpdate/Post
 	function void (int entity);
 
@@ -351,7 +350,7 @@ forward void OnEntityCreated(int entity, const char[] classname);
 /**
  * When an entity is destroyed
  *
- * @param entity        Entity index or edict reference.
+ * @param entity        Entity index
  */
 forward void OnEntityDestroyed(int entity);
 
@@ -369,16 +368,13 @@ forward Action OnGetGameDescription(char gameDesc[64]);
  * When the level is initialized
  *
  * @param mapName       Name of the map
- * @param mapEntities   Unused, always empty
- * @return              Unused, return value is ignored
+ * @param mapEntities   Entities of the map
+ * @return              Plugin_Changed if mapEntities has been edited, else no change.
  */
-#pragma deprecated Use OnMapInit() instead
 forward Action OnLevelInit(const char[] mapName, char mapEntities[2097152]);
 
 /**
  * Hooks an entity
- *
- * Unhooked automatically upon destruction/removal of the entity
  *
  * @param entity        Entity index
  * @param type          Type of function to hook
@@ -388,8 +384,6 @@ native void SDKHook(int entity, SDKHookType type, SDKHookCB callback);
 
 /**
  * Hooks an entity
- *
- * Unhooked automatically upon destruction/removal of the entity
  *
  * @param entity        Entity index
  * @param type          Type of function to hook
@@ -420,13 +414,10 @@ native void SDKUnhook(int entity, SDKHookType type, SDKHookCB callback);
  * @param weapon         Weapon index (orangebox and later) or -1 for unspecified
  * @param damageForce    Velocity of damage force
  * @param damagePosition Origin of damage
- * @param bypassHooks    If true, bypass SDK hooks on OnTakeDamage
- * @error                Invalid entity, attacker, inflictor, or weapon entity.
  */
 native void SDKHooks_TakeDamage(int entity, int inflictor, int attacker,
 		float damage, int damageType=DMG_GENERIC, int weapon=-1,
-		const float damageForce[3]=NULL_VECTOR, const float damagePosition[3]=NULL_VECTOR,
-		bool bypassHooks = true);
+		const float damageForce[3]=NULL_VECTOR, const float damagePosition[3]=NULL_VECTOR);
 
 /**
  * Forces a client to drop the specified weapon
@@ -435,11 +426,10 @@ native void SDKHooks_TakeDamage(int entity, int inflictor, int attacker,
  * @param weapon        Weapon entity index.
  * @param vecTarget     Location to toss weapon to, or NULL_VECTOR for default.
  * @param vecVelocity   Velocity at which to toss weapon, or NULL_VECTOR for default.
- * @param bypassHooks   If true, bypass SDK hooks on Weapon Drop
  * @error               Invalid client or weapon entity, weapon not owned by client.
  */
 native void SDKHooks_DropWeapon(int client, int weapon, const float vecTarget[3]=NULL_VECTOR,
-		const float vecVelocity[3]=NULL_VECTOR, bool bypassHooks = true);
+		const float vecVelocity[3]=NULL_VECTOR);
 
 /**
  * Do not edit below this line!

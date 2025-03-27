@@ -49,7 +49,6 @@ enum ConVarBounds
  */
 enum ConVarQueryResult
 {
-	ConVarQuery_Cancelled = -1,         //< Client disconnected during query */
 	ConVarQuery_Okay = 0,               //< Retrieval of client convar value was successful. */
 	ConVarQuery_NotFound,               //< Client convar was not found. */
 	ConVarQuery_NotValid,               //< A console command with the same name was found, but there is no convar. */
@@ -122,11 +121,6 @@ methodmap ConVar < Handle
 		public native set(int flags);
 	}
 
-	// Retrieves the plugin handle of the convar's creator
-	property Handle Plugin {
-		public native get();
-	}
-
 	// Sets the boolean value of a console variable.
 	//
 	// Note: The replicate and notify params are only relevant for the
@@ -171,6 +165,7 @@ methodmap ConVar < Handle
 
 	// Retrieves the string value of a console variable.
 	//
+	// @param convar     Handle to the convar.
 	// @param value      Buffer to store the value of the convar.
 	// @param maxlength  Maximum length of string buffer.
 	public native void GetString(char[] value, int maxlength);
@@ -229,12 +224,6 @@ methodmap ConVar < Handle
 	// @param maxlength  Maximum length of string buffer.
 	public native void GetName(char[] name, int maxlength);
 
-	// Retrieves the description of a console variable.
-	//
-	// @param buffer     Buffer to store the description of the convar.
-	// @param maxlength  Maximum length of string buffer.
-	public native void GetDescription(char[] buffer, int maxlength);
-
 	// Replicates a convar value to a specific client. This does not change the actual convar value.
 	//
 	// @param client     Client index
@@ -250,6 +239,7 @@ methodmap ConVar < Handle
 
 	// Removes a hook for when a console variable's value is changed.
 	//
+	// @param convar    Handle to the convar.
 	// @param callback  An OnConVarChanged function pointer.
 	// @error           No active hook on convar.
 	public native void RemoveChangeHook(ConVarChanged callback);
