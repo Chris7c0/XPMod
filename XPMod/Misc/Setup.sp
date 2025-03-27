@@ -26,14 +26,6 @@ SetupDevCommands()
 	RegAdminCmd("givexp", GiveXP, ADMFLAG_RCON);
 	RegAdminCmd("giveidxp", GiveXPbyID, ADMFLAG_RCON);
 	
- 	SetupDevCommands();
- }
- 
- SetupDevCommands()
- {
- 	if (g_bDevModeEnabled == false)
- 		return;
-
 	RegAdminCmd("xpmod_debug_mode", XPModDebugModeToggle, ADMFLAG_SLAY);
 	RegAdminCmd("t1", TestFunction1, ADMFLAG_SLAY);
 	RegAdminCmd("t2", TestFunction2, ADMFLAG_SLAY);
