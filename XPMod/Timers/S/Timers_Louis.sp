@@ -1,3 +1,7 @@
+Action:TimerReEnableNoobWipe(Handle:timer, any:iClient) {
+	g_bNoobWipeCooldown = false;
+	return Plugin_Stop;
+}
 Action:LouisTeleportReenable(Handle:timer, any:iClient)
 {
 	g_bLouisTeleportCoolingDown[iClient] = false;

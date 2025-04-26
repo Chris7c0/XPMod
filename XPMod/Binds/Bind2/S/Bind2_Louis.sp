@@ -181,6 +181,10 @@ bool MedHax(iClient)
 		PrintToChat(iClient, "\x03[XPMod] \x05m3D h4Kz are already enabled on the server...");
 		return false;
 	}
+	if(g_bLouisMedHaxUsed == true) {
+		PrintToChat(iClient, "\x03[XPMod] \x05m3D h4Kz has already been used this round...");
+		return false;
+	}
 
 	// Enable the med hax for all survivors
 	g_bLouisMedHaxEnabled = true;
@@ -194,6 +198,7 @@ bool MedHax(iClient)
 
 	// Remove the XMR from Louis's wallet for the hax
 	g_fLouisXMRWallet[iClient] -= LOUIS_HEADSHOP_XMR_AMOUNT_MED_HAX;
+	g_bLouisMedHaxUsed = true;
 
 	return true;
 }
@@ -217,6 +222,11 @@ Action:TimerStopMedHax(Handle:timer, int blah)
 
 bool NoobWipe(iClient)
 {
+	// Check if NoobWipe cooldown is active  
+	if(g_bNoobWipeCooldown == true) {
+		PrintHintText(iClient,"Global cooldown triggered. You must wait 15 seconds to use NoobWipe again.");
+		return false;
+	}
 	// Check if the player has enough XMR
 	if (g_fLouisXMRWallet[iClient] < LOUIS_HEADSHOP_XMR_AMOUNT_NUB_WIPE)
 	{
@@ -232,6 +242,8 @@ bool NoobWipe(iClient)
 
 	KillAllCI(iClient);
 	PrintToChatAll("\x03[XPMod] \x04%N\x05 Noob Wiped all the Common Infected.", iClient);
+	g_bNoobWipeCooldown = true;
+	CreateTimer(LOUIS_NOOBWIPE_COOLDOWN, TimerReEnableNoobWipe, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 	// Remove the XMR from Louis's wallet for the hax
 	g_fLouisXMRWallet[iClient] -= LOUIS_HEADSHOP_XMR_AMOUNT_NUB_WIPE;

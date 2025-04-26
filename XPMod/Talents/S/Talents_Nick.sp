@@ -48,7 +48,7 @@ void SetPlayerTalentMaxHealth_Nick(int iClient, bool bFillInHealthGap = true)
 	SetPlayerMaxHealth(iClient,
 		115 + 
 		(g_iKitsUsed * (g_iSwindlerLevel[iClient] * 3)) < 200 ? 
-			100 + (g_iKitsUsed * (g_iSwindlerLevel[iClient] * 3)) + (g_iCoachTeamHealthStack * 5) : 
+			115 + (g_iKitsUsed * (g_iSwindlerLevel[iClient] * 3)) + (g_iCoachTeamHealthStack * 5) : 
 			200 + (g_iCoachTeamHealthStack * 5),
 			false,
 			bFillInHealthGap);
