@@ -254,7 +254,7 @@ Action:DiehardMenuDraw(iClient)
 		\n \
 		\n+15 max health per level\
 		\nRegen 9 health when ally incaps per level\
-		\n+5hp when ally incaps per level\
+		\n+5hp to healing pool when ally incaps per level\
 		\n \
 		\n		Bind 1: Improvised Explosives\
 		\n			+1 use every other level\
