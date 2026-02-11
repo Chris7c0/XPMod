@@ -468,11 +468,12 @@ Action:Event_PlayerIncap(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 					if(g_bIsClientDown[i] == false)
 					{
 						new currentHP = GetPlayerHealth(i);
-						if((currentHP + (g_iDiehardLevel[i] * 6)) < (100 + (g_iWillLevel[i]*5) + (g_iDiehardLevel[i]*15)))
-							SetPlayerHealth(i, -1, currentHP + (g_iDiehardLevel[i] * 6));
+						if((currentHP + (g_iDiehardLevel[i] * 9)) < (100 + (g_iWillLevel[i]*5) + (g_iDiehardLevel[i]*15)))
+							SetPlayerHealth(i, -1, currentHP + (g_iDiehardLevel[i] * 9));
 						else
 							SetPlayerHealth(i, -1, 100 + (g_iWillLevel[i]*5) + (g_iDiehardLevel[i]*15));
-						PrintHintText(i, "A teammate has fallen, you gain %d health.", (g_iDiehardLevel[i] * 6));
+						PrintHintText(i, "A teammate has fallen, you gain %d health and +%dhp to your healing pool", (g_iDiehardLevel[i] * 9), (g_iDiehardLevel[i] * 5));
+						g_iBillsTeamHealthPool+=(g_iDiehardLevel[i] * 5);
 					}
 				}
 			}
