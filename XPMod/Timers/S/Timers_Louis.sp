@@ -121,3 +121,7 @@ Action:TimerGivePillsFromStashedInventory(Handle:timer, int iClient)
 
 	return Plugin_Stop;
 }
+Action:TimerReEnableNoobWipe(Handle:timer, any:iClient) {
+	g_bNoobWipeCooldown = false;
+	return Plugin_Stop;
+}
