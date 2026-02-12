@@ -45,7 +45,7 @@ void SetPlayerTalentMaxHealth_Rochelle(int iClient, bool bFillInHealthGap = true
 		return;
 	
 	SetPlayerMaxHealth(iClient, 
-		100 + 
+		125 + 
 		(g_iShadowLevel[iClient] * 5) + 
 		(g_iCoachTeamHealthStack * 5), 
 		false, 
@@ -243,7 +243,7 @@ EventsHurt_AttackerRochelle(Handle:hEvent, attacker, victim)
 		{
 			IgniteEntity(victim, 5.0, false);
 
-			dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.20));
+			dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.12));
 			dmg = CalculateDamageTakenForVictimTalents(victim, dmg, strWeaponClass);
 
 			// PrintToChat(attacker, "Doing %d extra military rifle DMG", dmg);
