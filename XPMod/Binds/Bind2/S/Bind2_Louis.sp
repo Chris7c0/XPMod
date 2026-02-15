@@ -224,6 +224,11 @@ bool NoobWipe(iClient)
 		return false;
 	}
 
+	if(g_bNoobWipeCooldown == true) {
+		PrintHintText(iClient,"Global cooldown triggered. You must wait 15 seconds to use NoobWipe again.");
+		return false;
+	}
+
 	// if (g_bHackTheServerInCooldown)
 	// {
 	// 	PrintToChat(iClient, "\x03[XPMod] \x05The server has been patched from previous h4k...looking for more exploitz...");
@@ -232,6 +237,8 @@ bool NoobWipe(iClient)
 
 	KillAllCI(iClient);
 	PrintToChatAll("\x03[XPMod] \x04%N\x05 Noob Wiped all the Common Infected.", iClient);
+	g_bNoobWipeCooldown = true;
+	CreateTimer(LOUIS_NOOBWIPE_COOLDOWN_DURATION, TimerReEnableNoobWipe, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 	// Remove the XMR from Louis's wallet for the hax
 	g_fLouisXMRWallet[iClient] -= LOUIS_HEADSHOP_XMR_AMOUNT_NUB_WIPE;

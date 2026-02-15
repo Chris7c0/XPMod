@@ -310,8 +310,8 @@ bool g_bNickHealCooldown;
 // Louis
 #define LOUIS_TELEPORT_TOTAL_CHARGES                    3
 #define LOUIS_TELEPORT_MOVEMENT_SPEED                   8.0
-#define LOUIS_TELEPORT_CHARGE_REGENERATE_TIME_LASER     15.0
-#define LOUIS_TELEPORT_CHARGE_REGENERATE_TIME_NOLASER   5.0
+#define LOUIS_TELEPORT_CHARGE_REGENERATE_TIME_LASER     17.0
+#define LOUIS_TELEPORT_CHARGE_REGENERATE_TIME_NOLASER   7.0
 #define LOUIS_TELEPORT_CHARGE_MAXED_REGENERATE_TIME     90.0
 #define LOUIS_TELEPORT_BLINDNESS_ADDITIVE_AMOUNT        69
 #define LOUIS_TELEPORT_BLINDNESS_DURATION               4100
@@ -370,18 +370,18 @@ float g_fLouisXMRWallet[MAXPLAYERS + 1];
 #define LOUIS_HEADSHOP_ITEM_TIME_OUT                    6
 #define LOUIS_HEADSHOP_XMR_AMOUNT_SPEED_HAX             6.0
 #define LOUIS_HEADSHOP_XMR_AMOUNT_NUB_WIPE              6.0
-#define LOUIS_HEADSHOP_XMR_AMOUNT_MED_HAX               7.0
+#define LOUIS_HEADSHOP_XMR_AMOUNT_MED_HAX               8.0
 #define LOUIS_HEADSHOP_XMR_AMOUNT_HAXOR_TEH_SERVER      8.0
 #define LOUIS_HEADSHOP_XMR_AMOUNT_HAK_TARGET            8.0
 #define LOUIS_HEADSHOP_XMR_AMOUNT_TIME_OUT              8.0
 bool g_bLouisSpeedHaxEnabled;
 bool g_bSpeedHaxInCooldown;
 #define LOUIS_SPEED_HAX_MOVEMENT_MULTIPLIER             2.0
-#define LOUIS_SPEED_HAX_DURATION                        10.0
+#define LOUIS_SPEED_HAX_DURATION                        7.0
 #define LOUIS_SPEED_HAX_COOLDOWN_DURATION               300.0
 bool g_bLouisMedHaxEnabled;
 #define LOUIS_MED_HAX_USE_DURATION                      1
-#define LOUIS_MED_HAX_DURATION                          30.0
+#define LOUIS_MED_HAX_DURATION                          15.0
 bool g_bIsPLayerHacked[MAXPLAYERS + 1];
 #define LOUIS_HACK_TARGET_DURATION                      10.0
 bool g_bHackTheServerEnabled;
@@ -392,7 +392,9 @@ bool g_bHackTheServerInCooldown;
 #define LOUIS_HAK_TEH_SERVER_LOUIS_SPEED_MULTIPLIER     2.0
 bool g_bTimeOutInCooldown;
 bool g_bInfectedBindsDisabled;
-#define LOUIS_TIME_OUT_DURATION                         60.0
+#define LOUIS_TIME_OUT_DURATION                         30.0
 #define LOUIS_TIME_OUT_COOLDOWN_DURATION                300.0
+#define LOUIS_NOOBWIPE_COOLDOWN_DURATION                15.0
+bool g_bNoobWipeCooldown;
 
 

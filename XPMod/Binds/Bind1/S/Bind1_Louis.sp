@@ -141,7 +141,7 @@ Action:WarezStationMenuDraw(iClient)
 	AddMenuItem(menu, "option2", "+25 HP Max Health");
 	AddMenuItem(menu, "option3", "-25% Team Screen Shake");
 	AddMenuItem(menu, "option4", "+3 Bile Cleansing Kits");
-	AddMenuItem(menu, "option5", "Receive Medkit + Pills");
+	AddMenuItem(menu, "option5", "Receive Pills + Adrenaline");
 	AddMenuItem(menu, "option6", "Receive Full Ammo");
 	AddMenuItem(menu, "option7", "I'm Feeling Lucky\n ")
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
@@ -221,11 +221,14 @@ WarezStationMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04+3 Bile Cleansing Kits", iClient);
 				PrintToChat(iClient, "\x03[XPMod] \x04While biled, HOLD USE to use a Bile Cleansing Kit.");
 			}
-			case 4:	// Med supplies
+			case 4:	// Pills and Adrenaline
 			{
-				RunCheatCommand(iClient, "give", "give first_aid_kit");
 				RunCheatCommand(iClient, "give", "give pain_pills");
-				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Medical Supplies", iClient);
+				RunCheatCommand(iClient, "give", "give pain_pills");
+				RunCheatCommand(iClient, "give", "give pain_pills");
+				RunCheatCommand(iClient, "give", "give adrenaline");
+				RunCheatCommand(iClient, "give", "give adrenaline");
+				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Pills and Adrenaline", iClient);
 			}
 			case 5:	// Ammo
 			{
