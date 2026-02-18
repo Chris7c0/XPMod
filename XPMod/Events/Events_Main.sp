@@ -201,38 +201,17 @@ Action:Event_PlayerChangeName(Handle:hEvent, const String:strName[], bool:bDontB
 
 // This is purely to block the name change message when updating a name to have the XPMod Level tags
 // Originally from https://forums.alliedmods.net/showthread.php?t=302085
-Action Hook_SayText2(UserMsg msg_id, any msg, const int[] players, int playersNum, bool reliable, bool init)
+Action Hook_SayText2(UserMsg msg_id, BfRead msg, const int[] players, int playersNum, bool reliable, bool init)
 {
-	// // check all players in server
-	// for (int i=0; i<playersNum; i++)
-	// {
-	// 	char strClientName[32];
-	// 	GetClientName(players[i], strClientName, sizeof(strClientName))
-	// 	PrintToServer("id=%i name=%N storedname=%s", players[i], players[i], strClientName);
-	// }
-
-	// PrintToServer("%s", msg);
-
 	// Continue as usual if we arent hiding the name change messages currently
 	if(g_bHideNameChangeMessage == false)
 		return Plugin_Continue;
 
 	// Get the message that will be checked if its the name change string
 	char[] sMessage = new char[24];
-	if(GetUserMessageType() == UM_Protobuf)
-	{
-		// Yeah, theres a warning here, fix in the future?
-		Protobuf pbmsg = msg;
-		pbmsg.ReadString("msg_name", sMessage, 24);
-	}
-	else
-	{
-		// Yeah, theres a warning here, fix in the future?
-		BfRead bfmsg = msg;
-		bfmsg.ReadByte();
-		bfmsg.ReadByte();
-		bfmsg.ReadString(sMessage, 24, false);
-	}
+	msg.ReadByte();
+	msg.ReadByte();
+	msg.ReadString(sMessage, 24, false);
 
 	// If we have a name change, then prevent the message from being seen
 	if(StrEqual(sMessage, NAME_CHANGE_STRING))
