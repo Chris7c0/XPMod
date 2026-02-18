@@ -99,6 +99,24 @@ native void TE_WriteNum(const char[] prop, int value);
 native int TE_ReadNum(const char[] prop);
 
 /**
+ * Sets an entity value in the current temp entity.
+ *
+ * @param prop          Property to use.
+ * @param value         Entity reference or index value to set.
+ * @error               Property not found.
+ */
+native void TE_WriteEnt(const char[] prop, int value);
+
+/**
+ * Reads an entity value in the current temp entity.
+ *
+ * @param prop          Property to use.
+ * @return              Property value as backwards compatible entity reference.
+ * @error               Property not found.
+ */
+native int TE_ReadEnt(const char[] prop);
+
+/**
  * Sets a floating point number in the current temp entity.
  *
  * @param prop          Property to use.
@@ -224,7 +242,7 @@ stock void TE_SendToClient(int client, float delay=0.0)
  * @param rangeType     Range type to use for filtering clients.
  * @param delay         Delay in seconds to send the TE.
  */
-stock void TE_SendToAllInRange(float origin[3], ClientRangeType rangeType, float delay=0.0)
+stock void TE_SendToAllInRange(const float origin[3], ClientRangeType rangeType, float delay=0.0)
 {
 	int[] clients = new int[MaxClients];
 	int total = GetClientsInRange(origin, rangeType, clients, MaxClients);
