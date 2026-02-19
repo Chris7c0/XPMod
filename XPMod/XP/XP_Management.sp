@@ -1,10 +1,10 @@
-CheckLevel(iClient)
+void CheckLevel(int iClient)
 {
 	if(g_iClientLevel[iClient] != 30 && g_iClientXP[iClient] >= g_iClientNextLevelXPAmount[iClient])
 		LevelUpPlayer(iClient);
 }
 
-RenamePlayerWithLevelTags(iClient, bool bRemoveTags = false)
+void RenamePlayerWithLevelTags(int iClient, bool bRemoveTags = false)
 {
 	if (RunClientChecks(iClient) == false ||
 		IsFakeClient(iClient) ==  true ||
@@ -83,7 +83,7 @@ Action TimerSetHideChangeNameMessage(Handle timer, any data)
 	return Plugin_Stop;
 }
 
-Action GiveXPbyID(iClient, args)
+Action GiveXPbyID(int iClient, int args)
 {
 	if(args!=2)
 	{
@@ -97,8 +97,7 @@ Action GiveXPbyID(iClient, args)
 	char targetnum[128];
 	GetCmdArg(1, targetnum, sizeof(targetnum));
 
-	decl target;
-	target = StringToInt(targetnum);
+	int target = StringToInt(targetnum);
 	
 	if (target < 1)
 	{
@@ -128,8 +127,7 @@ Action GiveXPbyID(iClient, args)
 	char xpstring[15];
 	GetCmdArg(2, xpstring, sizeof(xpstring));
 	
-	new xpamount;
-	xpamount = StringToInt(xpstring);
+	int xpamount = StringToInt(xpstring);
 	if(xpamount<0)
 	{
 		if(iClient == 0)
@@ -169,7 +167,7 @@ Action GiveXPbyID(iClient, args)
 	return Plugin_Handled;
 }
 
-Action GiveXP(iClient, args)
+Action GiveXP(int iClient, int args)
 {
 	/*if(iClient == 0)
 	{
@@ -188,8 +186,7 @@ Action GiveXP(iClient, args)
 	char targetname[128];
 	GetCmdArg(1, targetname, sizeof(targetname));
 
-	decl target;
-	target = FindPlayerByName(iClient, targetname);
+	int target = FindPlayerByName(iClient, targetname);
 	if (target<1)
 	{
 		return Plugin_Handled;
@@ -198,8 +195,7 @@ Action GiveXP(iClient, args)
 	char xpstring[15];
 	GetCmdArg(2, xpstring, sizeof(xpstring));
 	
-	new xpamount;
-	xpamount = StringToInt(xpstring);
+	int xpamount = StringToInt(xpstring);
 	if(xpamount<0)
 	{
 		if(iClient == 0)
@@ -247,7 +243,7 @@ Action GiveXP(iClient, args)
 }
 
 //Resets XP, LVL, and Skillpoints, equipment and talents
-ResetAll(iClient)
+void ResetAll(int iClient)
 {
 	g_bPlayerInTeamChangeCoolDown[iClient] = false;
 	g_iClientXP[iClient] = 0;
@@ -279,7 +275,7 @@ ResetAll(iClient)
 	return;
 }
 
-ResetAllOptions(iClient)
+void ResetAllOptions(int iClient)
 {
 	g_iXPDisplayMode[iClient] = 0;
 	g_bEnabledVGUI[iClient] = false;
@@ -287,7 +283,7 @@ ResetAllOptions(iClient)
 }
 
 
-ResetAllInfectedClasses(iClient)
+void ResetAllInfectedClasses(int iClient)
 {
 	// PrintToChat(iClient, "Reset all infected classes");
 	// PrintToServer("************Reset Infected classes for %i", iClient);
@@ -326,7 +322,7 @@ ResetAllInfectedClasses(iClient)
 }
 
 //Resets the skill points and talents that come with them
-Action ResetSurvivorTalents(iClient)
+Action ResetSurvivorTalents(int iClient)
 {
 	if(IsClientInGame(iClient) == false)
 		return Plugin_Handled;
@@ -426,14 +422,14 @@ Action ResetSurvivorTalents(iClient)
 	return Plugin_Handled;
 }
 
-LevelUpPlayer(iClient)
+void LevelUpPlayer(int iClient)
 {
 	// PrintToChat(iClient, "Level up player");
 	// PrintToServer("level up player");
 	if(iClient > 0)
 		if(IsClientInGame(iClient) == true)
 		{
-			new g_iClientOldLevel = g_iClientLevel[iClient];
+			int g_iClientOldLevel = g_iClientLevel[iClient];
 			calclvlandnextxp(iClient);
 			g_iSkillPoints[iClient] += (g_iClientLevel[iClient] - g_iClientOldLevel);
 			
@@ -472,7 +468,7 @@ LevelUpPlayer(iClient)
 }
 
 
-AutoLevelUpSurivovor(iClient)
+void AutoLevelUpSurivovor(int iClient)
 {
 	//Set Survivor Class Levels
 	switch(g_iChosenSurvivor[iClient])
@@ -486,7 +482,7 @@ AutoLevelUpSurivovor(iClient)
 	}
 }
 
-AutoLevelUpSurvivorTalents(int iClient, int[] talent1, int[] talent2, int[] talent3, int[] talent4, int[] talent5, int[] talent6)
+void AutoLevelUpSurvivorTalents(int iClient, int[] talent1, int[] talent2, int[] talent3, int[] talent4, int[] talent5, int[] talent6)
 {
 	
 	ResetSurvivorTalents(iClient);
@@ -562,7 +558,7 @@ AutoLevelUpSurvivorTalents(int iClient, int[] talent1, int[] talent2, int[] tale
 	}
 }
 
-LevelUpAllBill(iClient)
+void LevelUpAllBill(int iClient)
 {
 	if(g_iChosenSurvivor[iClient] != BILL)
 		g_iChosenSurvivor[iClient] = BILL;
@@ -578,7 +574,7 @@ LevelUpAllBill(iClient)
 		);
 }
 
-LevelUpAllRochelle(iClient)
+void LevelUpAllRochelle(int iClient)
 {
 	if (g_iChosenSurvivor[iClient] != ROCHELLE)
 		g_iChosenSurvivor[iClient] = ROCHELLE;
@@ -594,7 +590,7 @@ LevelUpAllRochelle(iClient)
 		);
 }
 
-LevelUpAllCoach(iClient)
+void LevelUpAllCoach(int iClient)
 {
 	if (g_iChosenSurvivor[iClient] != COACH)
 		g_iChosenSurvivor[iClient] = COACH;
@@ -610,7 +606,7 @@ LevelUpAllCoach(iClient)
 		);
 }
 
-LevelUpAllEllis(iClient)
+void LevelUpAllEllis(int iClient)
 {
 	if (g_iChosenSurvivor[iClient] != ELLIS)
 		g_iChosenSurvivor[iClient] = ELLIS;
@@ -626,7 +622,7 @@ LevelUpAllEllis(iClient)
 		);
 }
 
-LevelUpAllNick(iClient)
+void LevelUpAllNick(int iClient)
 {
 	if (g_iChosenSurvivor[iClient] != NICK)
 		g_iChosenSurvivor[iClient] = NICK;
@@ -642,7 +638,7 @@ LevelUpAllNick(iClient)
 		);
 }
 
-LevelUpAllLouis(iClient)
+void LevelUpAllLouis(int iClient)
 {
 	if (g_iChosenSurvivor[iClient] != LOUIS)
 		g_iChosenSurvivor[iClient] = LOUIS;
@@ -659,7 +655,7 @@ LevelUpAllLouis(iClient)
 }
 
 //Level Up Infected Talents
-LevelUpInfectedTalent(iClient, class)
+void LevelUpInfectedTalent(int iClient, int class)
 {
 	// PrintToChat(iClient, "level up infected tallent %i", class);
 	// PrintToServer("level up infected talent %i", class);
@@ -774,7 +770,7 @@ LevelUpInfectedTalent(iClient, class)
 }
 
 //Level Up Infected Talents
-LevelDownInfectedTalent(iClient, class)
+void LevelDownInfectedTalent(int iClient, int class)
 {
 	// PrintToChat(iClient, "level down infected tallent %i", class);
 	// PrintToServer("level down infected talent %i", class);
@@ -816,7 +812,7 @@ LevelDownInfectedTalent(iClient, class)
 	}
 }
 
-SetInfectedClassSlot(iClient, slotnum, class)
+void SetInfectedClassSlot(int iClient, int slotnum, int class)
 {
 	// PrintToChat(iClient, "Set your infected class to %i", class);
 	// PrintToServer("Set infected class to %i", class);
@@ -941,7 +937,7 @@ SetInfectedClassSlot(iClient, slotnum, class)
 	LevelUpInfectedTalent(iClient, class);
 }
 
-calclvlandnextxp(iClient)
+void calclvlandnextxp(int iClient)
 {
 	if(g_iClientXP[iClient] >= RoundToFloor(LEVEL_30 * XP_MULTIPLIER))
 	{
@@ -1131,7 +1127,7 @@ calclvlandnextxp(iClient)
 	}
 }
 
-ShowXPSprite(iClient, iXPSprite, iEntity, float fLifeTime = 3.0)
+void ShowXPSprite(int iClient, int iXPSprite, int iEntity, float fLifeTime = 3.0)
 {
 	if(iClient < 1 || iEntity < 1 || IsClientInGame(iClient) == false || IsFakeClient(iClient) == true || IsValidEntity(iEntity) == false)
 		return;
@@ -1155,7 +1151,7 @@ ShowXPSprite(iClient, iXPSprite, iEntity, float fLifeTime = 3.0)
 	TE_SendToClient(iClient);
 }
 
-ChangeXPDisplayMode(iClient)
+void ChangeXPDisplayMode(int iClient)
 {
 	if(g_iXPDisplayMode[iClient] == 0)
 		g_iXPDisplayMode[iClient] = 1;
@@ -1165,7 +1161,7 @@ ChangeXPDisplayMode(iClient)
 		g_iXPDisplayMode[iClient] = 0;
 }
 
-GiveRewards()
+void GiveRewards()
 {
 	for(int i = 1; i <= MaxClients; i++)
 	{		

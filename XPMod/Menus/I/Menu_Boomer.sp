@@ -1,7 +1,7 @@
 //Boomer Menu
 
 //Boomer Top Menu Draw
-Action BoomerTopMenuDraw(iClient) 
+Action BoomerTopMenuDraw(int iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 
@@ -44,7 +44,7 @@ Action BoomerTopMenuDraw(iClient)
 //Talent Draws///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Rapid Regurgitation Menu Draw
-Action RapidMenuDraw(iClient)
+Action RapidMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(RapidMenuHandler);
 
@@ -75,7 +75,7 @@ Action RapidMenuDraw(iClient)
 }
 
 //Acidic Brew Menu Draw
-Action AcidicMenuDraw(iClient)
+Action AcidicMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(AcidicMenuHandler);
 
@@ -113,7 +113,7 @@ Action AcidicMenuDraw(iClient)
 }
 
 //Norovirus Menu Draw
-Action NorovirusMenuDraw(iClient)
+Action NorovirusMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(NorovirusMenuHandler);
 
@@ -156,7 +156,7 @@ Action NorovirusMenuDraw(iClient)
 }
 
 //Choose Boomer Menu Draw
-Action ChooseBoomerClassMenuDraw(iClient) 
+Action ChooseBoomerClassMenuDraw(int iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	
@@ -178,7 +178,7 @@ Action ChooseBoomerClassMenuDraw(iClient)
 //Handlers/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Boomer Top Menu Handler
-BoomerTopMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void BoomerTopMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -232,7 +232,7 @@ BoomerTopMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Rapid Regurgitation Menu Handler
-RapidMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void RapidMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -255,7 +255,7 @@ RapidMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Acidic Brew Menu Handler
-AcidicMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void AcidicMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -286,7 +286,7 @@ AcidicMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Norovirus Menu Handler
-NorovirusMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void NorovirusMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -317,7 +317,7 @@ NorovirusMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 /*
 //Acidic Brew Bind Handler
-AcidicBindMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void AcidicBindMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -340,7 +340,7 @@ AcidicBindMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Norovirus Bind Handler
-NorovirusBindMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void NorovirusBindMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -363,7 +363,7 @@ NorovirusBindMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Rapid Regurgitation Description Handler
-RapidDescMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void RapidDescMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -382,7 +382,7 @@ RapidDescMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Acidic Brew Description Handler
-AcidicDescMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void AcidicDescMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -401,7 +401,7 @@ AcidicDescMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Norovirus Description Handler
-NorovirusDescMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void NorovirusDescMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -420,7 +420,7 @@ NorovirusDescMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 */
 //Choose Boomer Top Menu Handler
-ChooseBoomerClassMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void ChooseBoomerClassMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{

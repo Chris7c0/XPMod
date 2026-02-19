@@ -1,4 +1,4 @@
-TalentsLoad_Hunter(iClient)
+void TalentsLoad_Hunter(int iClient)
 {
 	g_iHunterShreddingVictim[iClient] = -1;
 	g_iBloodLustStage[iClient] = 0;
@@ -23,7 +23,7 @@ TalentsLoad_Hunter(iClient)
 	}
 }
 
-OnGameFrame_Hunter(iClient)
+void OnGameFrame_Hunter(int iClient)
 {
 	if (g_iPredatorialLevel[iClient] <= 0 ||
 		g_bTalentsConfirmed[iClient] == false)
@@ -40,7 +40,7 @@ OnGameFrame_Hunter(iClient)
 }
 
 
-bool OnPlayerRunCmd_Hunter(iClient, &iButtons)
+bool OnPlayerRunCmd_Hunter(int iClient, int &iButtons)
 {
 	// Hunter abilities
 	if (g_iInfectedCharacter[iClient] != HUNTER ||
@@ -74,7 +74,7 @@ bool OnPlayerRunCmd_Hunter(iClient, &iButtons)
 	return false;
 }
 
-EventsHurt_AttackerHunter(Handle hEvent, attacker, victim)
+void EventsHurt_AttackerHunter(Handle hEvent, int attacker, int victim)
 {
 	if (IsFakeClient(attacker))
 		return;
@@ -119,7 +119,7 @@ EventsHurt_AttackerHunter(Handle hEvent, attacker, victim)
 
 	if(g_iBloodLustLevel[attacker] > 0)
 	{
-		new dmgtype = GetEventInt(hEvent, "type");
+		int dmgtype = GetEventInt(hEvent, "type");
 		//char weapon[20];
 		//GetEventString(hEvent,"weapon", weapon,20);
 		if(dmgtype == 128 &&  StrEqual(weapon,"hunter_claw") == true)
@@ -132,12 +132,12 @@ EventsHurt_AttackerHunter(Handle hEvent, attacker, victim)
 	}
 }
 
-EventsHurt_VictimHunter(Handle hEvent, attacker, victim)
+void EventsHurt_VictimHunter(Handle hEvent, int attacker, int victim)
 {
 	if (IsFakeClient(victim))
 		return;
 
-	new hitGroup = GetEventInt(hEvent, "hitgroup");
+	int hitGroup = GetEventInt(hEvent, "hitgroup");
 	
 	if(hitGroup == 0)	// If victim is hunter and has beeen hit with explosive ammo, reset the pounced variables
 	{
@@ -413,7 +413,7 @@ void HandleHunterCloaking(int iClient)
 	SetClientRenderAndGlowColor(iClient);
 }
 
-void HunterDismount(iClient)
+void HunterDismount(int iClient)
 {
 	// PrintToChatAll("Hunter attempting dismount...");
 	SDKCall(g_hSDK_OnPounceEnd,iClient);
@@ -462,7 +462,7 @@ void SetHunterBloodLustAbilities(int iClient)
 		CreateTimer(BLOOD_LUST_RESET_TIMER_DURATION, TimerHunterBloodLustReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
 }
 
-void PrintBloodLustMeter(iClient)
+void PrintBloodLustMeter(int iClient)
 {
 	if (RunClientChecks(iClient) == false || 
 		IsFakeClient(iClient) == true ||

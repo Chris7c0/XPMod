@@ -1,4 +1,4 @@
-TalentsLoad_Charger(iClient)
+void TalentsLoad_Charger(int iClient)
 {
 	g_bIsChargerCharging[iClient] = false;
 	g_bChargerCarrying[iClient] = false;
@@ -28,7 +28,7 @@ TalentsLoad_Charger(iClient)
 	}
 }
 
-OnGameFrame_Charger(iClient)
+void OnGameFrame_Charger(int iClient)
 {
 	if (g_iSpikedLevel[iClient] > 0)
 	{
@@ -73,7 +73,7 @@ OnGameFrame_Charger(iClient)
 /*
 	if (g_iHillbillyLevel[iClient] == 10)
 	{
-		new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
+		int buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 		//float originalVector[3];
 		//float eyeAngles[3];
 		//float vectorDirection[3];
@@ -103,7 +103,7 @@ OnGameFrame_Charger(iClient)
 	{
 		if (g_bIsChargerCharging[iClient] == true)
 		{
-			new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
+			int buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 			float originalVector[3];
 			if (buttons & IN_MOVELEFT)
 			{
@@ -123,7 +123,7 @@ OnGameFrame_Charger(iClient)
 	}*/
 	/*if (g_iHillbillyLevel[iClient] == 10)
 	{
-		new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
+		int buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 		if ((g_bIsChargerCharging[iClient] == true) && (buttons & IN_MOVELEFT))
 		{
 			RunCheatCommand(iClient, "+left", "+left");
@@ -135,7 +135,7 @@ OnGameFrame_Charger(iClient)
 	}*/
 }
 
-EventsHurt_AttackerCharger(Handle hEvent, attacker, victim)
+void EventsHurt_AttackerCharger(Handle hEvent, int attacker, int victim)
 {
 	if (IsFakeClient(attacker))
 		return;
@@ -147,11 +147,11 @@ EventsHurt_AttackerCharger(Handle hEvent, attacker, victim)
 	{
 		char weapon[20];
 		GetEventString(hEvent,"weapon", weapon,20);
-		new hp = GetPlayerHealth(victim);
+		int hp = GetPlayerHealth(victim);
 
 		if(StrEqual(weapon,"charger_claw") == true)
 		{
-			decl dmg;
+			int dmg;
 			if(g_iGroundLevel[attacker] < 4)
 				dmg = 1;
 			else if(g_iGroundLevel[attacker] < 7)
@@ -186,7 +186,7 @@ EventsHurt_AttackerCharger(Handle hEvent, attacker, victim)
 	}
 }
 
-EventsHurt_VictimCharger(Handle hEvent, attacker, victim)
+void EventsHurt_VictimCharger(Handle hEvent, int attacker, int victim)
 {
 	if (IsFakeClient(victim))
 		return;
@@ -194,7 +194,7 @@ EventsHurt_VictimCharger(Handle hEvent, attacker, victim)
 	if (g_iClientTeam[attacker] != TEAM_SURVIVORS)
 		return;
 
-	new dmgHealth  = GetEventInt(hEvent,"dmg_health");
+	int dmgHealth = GetEventInt(hEvent,"dmg_health");
 
 	if(g_iSpikedLevel[victim] > 0)
 	{
@@ -203,7 +203,7 @@ EventsHurt_VictimCharger(Handle hEvent, attacker, victim)
 		
 		if(StrEqual(weapon, "melee") == true)
 		{
-			decl iDamage;
+			int iDamage;
 			iDamage = g_iSpikedLevel[victim];
 			DealDamage(attacker, victim, iDamage);
 		}

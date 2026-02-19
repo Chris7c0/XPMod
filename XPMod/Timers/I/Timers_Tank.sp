@@ -55,8 +55,8 @@ Action Timer_UnblockFirePunchCharge(Handle timer, any iClient)
 Action Timer_DealFireDamage(Handle timer, any hDataPack)
 {
 	ResetPack(hDataPack);
-	new iVictim = ReadPackCell(hDataPack);
-	new iAttacker = ReadPackCell(hDataPack);
+	int iVictim = ReadPackCell(hDataPack);
+	int iAttacker = ReadPackCell(hDataPack);
 	
 	if (RunClientChecks(iVictim) == false ||
 		g_iClientTeam[iVictim] != TEAM_SURVIVORS ||
@@ -150,7 +150,7 @@ Action Timer_CreateSmallIceSphere(Handle timer, any iClient)
 		
 
 		//Unfreeze victim if they are frozen
-		for(new iVictim = 1; iVictim <= MaxClients; iVictim++)
+		for (int iVictim = 1; iVictim <= MaxClients; iVictim++)
 		{
 			if(g_bFrozenByTank[iVictim] == false || g_iClientTeam[iVictim] != TEAM_SURVIVORS || IsClientInGame(iVictim) != true)
 				continue;

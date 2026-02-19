@@ -1,4 +1,4 @@
-TalentsLoad_Coach(iClient)
+void TalentsLoad_Coach(int iClient)
 {
 	SetPlayerTalentMaxHealth_Coach(iClient, !g_bSurvivorTalentsGivenThisRound[iClient]);
 	SetClientSpeed(iClient);
@@ -101,7 +101,7 @@ void SetPlayerTalentMaxHealth_Coach(int iClient, bool bFillInHealthGap = true)
 	bFillInHealthGap);
 }
 
-OnGameFrame_Coach(iClient)
+void OnGameFrame_Coach(int iClient)
 {
 	if(g_iStrongLevel[iClient] > 0)
 	{
@@ -174,7 +174,7 @@ OnGameFrame_Coach(iClient)
 						g_bCanCoachGrenadeCycle[iClient] = false;
 						g_bIsCoachInGrenadeCycle[iClient] = true;
 						CreateTimer(0.5, TimerCanCoachGrenadeCycleReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
-						new ActiveGrenadeID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+						int ActiveGrenadeID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 						if(g_iCoachCurrentGrenadeSlot[iClient] == 0)
 						{
 							if(StrContains(g_strCoachGrenadeSlot2, "vomitjar", false) != -1)
@@ -243,7 +243,7 @@ OnGameFrame_Coach(iClient)
 						g_bCanCoachGrenadeCycle[iClient] = false;
 						g_bIsCoachInGrenadeCycle[iClient] = true;
 						CreateTimer(0.5, TimerCanCoachGrenadeCycleReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
-						new ActiveGrenadeID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+						int ActiveGrenadeID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 						if(g_iCoachCurrentGrenadeSlot[iClient] == 0)
 						{
 							if(StrContains(g_strCoachGrenadeSlot2, "vomitjar", false) != -1)
@@ -436,8 +436,8 @@ OnGameFrame_Coach(iClient)
 					if(g_iCoachHealthRechargeCounter[iClient] > 15)
 					{
 						g_iCoachHealthRechargeCounter[iClient] = 0;
-						new currentHP=GetPlayerHealth(iClient);
-						new maxHP = GetPlayerMaxHealth(iClient);
+						int currentHP = GetPlayerHealth(iClient);
+						int maxHP = GetPlayerMaxHealth(iClient);
 						if(currentHP < (maxHP - 1))
 							SetPlayerHealth(iClient, -1, currentHP + 1);
 						else if(currentHP >= (maxHP - 1))
@@ -468,7 +468,7 @@ OnGameFrame_Coach(iClient)
 					g_bIsWreckingBallCharged[iClient] = true;
 					float vec[3];
 					GetClientAbsOrigin(iClient, vec);
-					new rand = GetRandomInt(1, 3);
+					int rand = GetRandomInt(1, 3);
 					switch(rand)
 					{
 						case 1: EmitSoundToAll(SOUND_COACH_CHARGE1, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
@@ -508,8 +508,8 @@ OnGameFrame_Coach(iClient)
 				CreateTimer(20.0, TimerCoachRageReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
 				if(g_iCoachRageRegenCounter[iClient] < 2)
 				{
-					new currentHP = GetPlayerHealth(iClient);
-					new maxHP = GetPlayerMaxHealth(iClient);
+					int currentHP = GetPlayerHealth(iClient);
+					int maxHP = GetPlayerMaxHealth(iClient);
 					if(currentHP < (maxHP - 5))
 						SetPlayerHealth(iClient, -1, currentHP + 5);
 					else if(currentHP >= (maxHP - 5))
@@ -517,8 +517,8 @@ OnGameFrame_Coach(iClient)
 				}
 				else if(g_iCoachRageRegenCounter[iClient] < 5)
 				{
-					new currentHP = GetPlayerHealth(iClient);
-					new maxHP = GetPlayerMaxHealth(iClient);
+					int currentHP = GetPlayerHealth(iClient);
+					int maxHP = GetPlayerMaxHealth(iClient);
 					if(currentHP < (maxHP - 4))
 						SetPlayerHealth(iClient, -1, currentHP + 4);
 					else if(currentHP >= (maxHP - 4))
@@ -526,8 +526,8 @@ OnGameFrame_Coach(iClient)
 				}
 				else if(g_iCoachRageRegenCounter[iClient] < 9)
 				{
-					new currentHP = GetPlayerHealth(iClient);
-					new maxHP = GetPlayerMaxHealth(iClient);
+					int currentHP = GetPlayerHealth(iClient);
+					int maxHP = GetPlayerMaxHealth(iClient);
 					if(currentHP < (maxHP - 3))
 						SetPlayerHealth(iClient, -1, currentHP + 3);
 					else if(currentHP >= (maxHP - 3))
@@ -535,8 +535,8 @@ OnGameFrame_Coach(iClient)
 				}
 				else if(g_iCoachRageRegenCounter[iClient] < 14)
 				{
-					new currentHP = GetPlayerHealth(iClient);
-					new maxHP = GetPlayerMaxHealth(iClient);
+					int currentHP = GetPlayerHealth(iClient);
+					int maxHP = GetPlayerMaxHealth(iClient);
 					if(currentHP < (maxHP - 2))
 						SetPlayerHealth(iClient, -1, currentHP + 2);
 					else if(currentHP >= (maxHP - 2))
@@ -544,8 +544,8 @@ OnGameFrame_Coach(iClient)
 				}
 				else
 				{
-					new currentHP = GetPlayerHealth(iClient);
-					new maxHP = GetPlayerMaxHealth(iClient);
+					int currentHP = GetPlayerHealth(iClient);
+					int maxHP = GetPlayerMaxHealth(iClient);
 					if(currentHP < (maxHP - 1))
 						SetPlayerHealth(iClient, -1, currentHP + 1);
 					else if(currentHP >= (maxHP - 1))
@@ -572,15 +572,15 @@ OnGameFrame_Coach(iClient)
 		{
 			char currentweapon[32];
 			GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
-			new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+			int ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 			if (IsValidEntity(ActiveWeaponID) == false)
 				return;
-			new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
+			int CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
 			
 			if(((StrEqual(currentweapon, "weapon_pumpshotgun", false) == true) || (StrEqual(currentweapon, "weapon_shotgun_chrome", false) == true)) && (CurrentClipAmmo > 7) && (CurrentClipAmmo <= (7 + (g_iSprayLevel[iClient] * 2))))
 			{
-				new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
-				new iAmmo = GetEntData(iClient, iOffset_Ammo + 28);
+				int iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
+				int iAmmo = GetEntData(iClient, iOffset_Ammo + 28);
 				if(iAmmo > 0)
 				{
 					g_bCoachShotgunForceReload[iClient] = true;
@@ -590,8 +590,8 @@ OnGameFrame_Coach(iClient)
 			}
 			if(((StrEqual(currentweapon, "weapon_autoshotgun", false) == true) || (StrEqual(currentweapon, "weapon_shotgun_spas", false) == true)) && (CurrentClipAmmo > 9) && (CurrentClipAmmo <= (9 + (g_iSprayLevel[iClient] * 2))))
 			{
-				new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
-				new iAmmo = GetEntData(iClient, iOffset_Ammo + 32);
+				int iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
+				int iAmmo = GetEntData(iClient, iOffset_Ammo + 32);
 				if(iAmmo > 0)
 				{
 					g_bCoachShotgunForceReload[iClient] = true;
@@ -603,7 +603,7 @@ OnGameFrame_Coach(iClient)
 	}
 }
 
-OGFSurvivorReload_Coach(iClient, const char[] currentweapon, ActiveWeaponID, CurrentClipAmmo, iOffset_Ammo)
+void OGFSurvivorReload_Coach(int iClient, const char[] currentweapon, int ActiveWeaponID, int CurrentClipAmmo, int iOffset_Ammo)
 {
 	if(((StrEqual(currentweapon, "weapon_pumpshotgun", false) == true) || (StrEqual(currentweapon, "weapon_shotgun_chrome", false) == true)) && (g_iSprayLevel[iClient] > 0))
 	{
@@ -616,7 +616,7 @@ OGFSurvivorReload_Coach(iClient, const char[] currentweapon, ActiveWeaponID, Cur
 			g_bCoachShotgunForceReload[iClient] = false;
 		}
 		*/
-		new iAmmo = GetEntData(iClient, iOffset_Ammo + 28);
+		int iAmmo = GetEntData(iClient, iOffset_Ammo + 28);
 		if(g_iReloadFrameCounter[iClient] == 1)
 		{
 			if(iAmmo >= ((8 + (g_iSprayLevel[iClient] * 2)) - CurrentClipAmmo))
@@ -640,7 +640,7 @@ OGFSurvivorReload_Coach(iClient, const char[] currentweapon, ActiveWeaponID, Cur
 	}
 	else if(((StrEqual(currentweapon, "weapon_autoshotgun", false) == true) || (StrEqual(currentweapon, "weapon_shotgun_spas", false) == true)) && (g_iSprayLevel[iClient] > 0))
 	{
-		new iAmmo = GetEntData(iClient, iOffset_Ammo + 32);
+		int iAmmo = GetEntData(iClient, iOffset_Ammo + 32);
 		if(g_iReloadFrameCounter[iClient] == 1)
 		{
 			if(iAmmo >= ((10 + (g_iSprayLevel[iClient] * 2)) - CurrentClipAmmo))
@@ -670,7 +670,7 @@ OGFSurvivorReload_Coach(iClient, const char[] currentweapon, ActiveWeaponID, Cur
 	}
 }
 
-EventsHurt_AttackerCoach(Handle hEvent, attacker, victim)
+void EventsHurt_AttackerCoach(Handle hEvent, int attacker, int victim)
 {
 	if (IsFakeClient(attacker))
 		return;
@@ -697,7 +697,7 @@ EventsHurt_AttackerCoach(Handle hEvent, attacker, victim)
 				}
 
 				g_bIsWreckingBallCharged[attacker] = false;
-				new hp = GetPlayerHealth(victim);
+				int hp = GetPlayerHealth(victim);
 				//new dmg = GetEventInt(hEvent,"dmg_health");
 				//PrintToChat(attacker, "predmg = %d", dmg);
 				//dmg = (g_iWreckingLevel[attacker]*200) + (g_iMeleeDamageCounter[attacker]);
@@ -713,7 +713,7 @@ EventsHurt_AttackerCoach(Handle hEvent, attacker, victim)
 			}
 			else if(g_iMeleeDamageCounter[attacker]>0)
 			{
-				new hp = GetPlayerHealth(victim);
+				int hp = GetPlayerHealth(victim);
 				//new dmg = GetEventInt(hEvent,"dmg_health");
 				//PrintToChat(attacker, "predmg = %d", dmg);
 				//dmg = g_iMeleeDamageCounter[attacker];
@@ -723,14 +723,14 @@ EventsHurt_AttackerCoach(Handle hEvent, attacker, victim)
 			
 			if(g_bCoachRageIsActive[attacker] == true)
 			{
-				new hp = GetPlayerHealth(victim);
+				int hp = GetPlayerHealth(victim);
 				//PrintToChat(attacker, "\x03[XPMod] \x05You did %d extra melee damage", g_iCoachRageMeleeDamage[attacker]);
 				SetPlayerHealth(victim, attacker, hp - g_iCoachRageMeleeDamage[attacker]);
 			}
 		}
 		if(g_iSprayLevel[attacker] > 0 && StrContains(weaponclass,"shotgun",false) != -1)
 		{
-			new hp = GetPlayerHealth(victim);
+			int hp = GetPlayerHealth(victim);
 			//new dmg = GetEventInt(hEvent,"dmg_health");
 			//dmg = dmg + (g_iSprayLevel[attacker] * 2);
 			//PrintToChat(attacker, "your doing %d shotgun damage", (g_iSprayLevel[attacker] * 2));
@@ -745,7 +745,7 @@ EventsHurt_AttackerCoach(Handle hEvent, attacker, victim)
 // 		return;
 // }
 
-EventsDeath_AttackerCoach(Handle hEvent, iAttacker, iVictim)
+void EventsDeath_AttackerCoach(Handle hEvent, int iAttacker, int iVictim)
 {
 	if (g_iChosenSurvivor[iAttacker] != COACH ||
 		g_bTalentsConfirmed[iAttacker] == false ||
@@ -799,7 +799,7 @@ EventsDeath_AttackerCoach(Handle hEvent, iAttacker, iVictim)
 	}	
 }
 
-EventsDeath_VictimCoach(Handle hEvent, iAttacker, iVictim)
+void EventsDeath_VictimCoach(Handle hEvent, int iAttacker, int iVictim)
 {
 	if (g_iChosenSurvivor[iVictim] != COACH ||
 		g_bTalentsConfirmed[iVictim] == false ||
@@ -817,7 +817,7 @@ EventsDeath_VictimCoach(Handle hEvent, iAttacker, iVictim)
 
 
 //Coach's Jetpack stuff
-Action StartFlying(iClient)
+Action StartFlying(int iClient)
 {
 	if(g_bIsFlyingWithJetpack[iClient]==false)
 	{
@@ -854,7 +854,7 @@ Action StartFlying(iClient)
 	return Plugin_Continue;
 }
 
-Action StopFlying(iClient)
+Action StopFlying(int iClient)
 {
 	g_bIsFlyingWithJetpack[iClient]=false;
 	CreateTimer(0.5, DeleteParticle, g_iPID_CoachJetpackStream[iClient], TIMER_FLAG_NO_MAPCHANGE);
@@ -865,7 +865,7 @@ Action StopFlying(iClient)
 	return Plugin_Continue;
 }
 
-AddUpwardVelocity(iClient, float speed)
+void AddUpwardVelocity(int iClient, float speed)
 {
 	float vecVelocity[3];
 	GetEntDataVector(iClient, g_iOffset_VecVelocity, vecVelocity);
@@ -879,7 +879,7 @@ AddUpwardVelocity(iClient, float speed)
 }
 
 //Find the number of coaches and set the health stack to that
-SetCoachesHealthStacks()
+void SetCoachesHealthStacks()
 {
 	g_iCoachTeamHealthStack = 0;
 
@@ -909,7 +909,7 @@ SetCoachesHealthStacks()
 	}
 }
 
-GiveExtraAmmoForCurrentShotgun(int iClient, int iAmmoToGive = 1)
+void GiveExtraAmmoForCurrentShotgun(int iClient, int iAmmoToGive = 1)
 {
 	int iActiveWeaponID = GetPlayerWeaponSlot(iClient, 0);
 	if (RunEntityChecks(iActiveWeaponID) == false)

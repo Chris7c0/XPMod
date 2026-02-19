@@ -1,4 +1,4 @@
-PrecacheAllParticles()
+void PrecacheAllParticles()
 {
 	// Bill
 	
@@ -133,7 +133,7 @@ PrecacheAllParticles()
 	PrecacheParticle("poison_bubbles");
 }
 
-PrecacheAllSounds()
+void PrecacheAllSounds()
 {
 	PrecacheSound(SOUND_XPM_ADVERTISEMENT);
 	PrecacheSound(SOUND_LOGIN);
@@ -180,12 +180,12 @@ PrecacheAllSounds()
 	PrecacheSound(SOUND_CLOWN_SHOVE);
 	PrecacheSound(SOUND_JOCKEYPEE);
 	PrecacheSound(SOUND_BOOMER_EXPLODE);
-	for(new i=0; i < sizeof(SOUND_BOOMER_THROW); i++)
+	for (int i = 0; i < sizeof(SOUND_BOOMER_THROW); i++)
 		PrecacheSound(SOUND_BOOMER_THROW[i]);
 	PrecacheSound(SOUND_EXPLODE);
-	for(new i=0; i < sizeof(SOUND_ZOMBIE_SLASHES); i++)
+	for (int i = 0; i < sizeof(SOUND_ZOMBIE_SLASHES); i++)
 		PrecacheSound(SOUND_ZOMBIE_SLASHES[i]);
-	for(new i=0; i < sizeof(SOUND_WING_FLAP); i++)
+	for (int i = 0; i < sizeof(SOUND_WING_FLAP); i++)
 		PrecacheSound(SOUND_WING_FLAP[i]);
 		
 		
@@ -212,7 +212,7 @@ PrecacheAllSounds()
 	PrecacheSound(SOUND_HEADSHOT3);
 }
 
-PrecacheAllTextures()
+void PrecacheAllTextures()
 {
 	PrecacheModel("particle/particle_smokegrenade1.vmt");
 	
@@ -259,7 +259,7 @@ PrecacheAllTextures()
 	g_iSprite_500XP_SI 		= PrecacheModel("materials/xp_sprites/500xp_si.vmt");
 }
 
-PrecacheAllModels()
+void PrecacheAllModels()
 {
 	PrecacheLockedWeaponModels();
 	
@@ -327,7 +327,7 @@ PrecacheAllModels()
 	
 }
 
-PrecacheLockedWeaponModels()	//Precache the locked weapon models
+void PrecacheLockedWeaponModels()	//Precache the locked weapon models
 {
 	//CS Weapons
 	//World Models

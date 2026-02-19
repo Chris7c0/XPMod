@@ -1,4 +1,4 @@
-void Bind2Press_Rochelle(iClient)
+void Bind2Press_Rochelle(int iClient)
 {
     if(g_iShadowLevel[iClient]>0)	//Rochelle's actionkey 2
     {

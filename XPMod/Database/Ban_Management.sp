@@ -1,4 +1,4 @@
-SQLCheckIfUserIsInBanListCallback(Handle owner, Handle hQuery, const char[] error, any iClient)
+void SQLCheckIfUserIsInBanListCallback(Handle owner, Handle hQuery, const char[] error, any iClient)
 {
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -21,7 +21,7 @@ SQLCheckIfUserIsInBanListCallback(Handle owner, Handle hQuery, const char[] erro
 		//Get the ban duration of the user, if null returned then ban for a long time
 		if(SQL_FetchString(hQuery, 0, strData, sizeof(strData)) != 0)
 		{
-			new iBanDurationSeconds = StringToInt(strData);
+			int iBanDurationSeconds = StringToInt(strData);
 			PrintToServer("[XPMod] BANNING FOR %i SECONDS", iBanDurationSeconds);
 
 			// If the user was found in the bans table, ban them again
@@ -47,7 +47,7 @@ SQLCheckIfUserIsInBanListCallback(Handle owner, Handle hQuery, const char[] erro
 	// PrintToServer("SQLCheckIfUserIsInBanList Callback Complete.");
 }
 
-SQLCheckIfUserIsInBanList(int iClient)
+void SQLCheckIfUserIsInBanList(int iClient)
 {
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return;
@@ -79,7 +79,7 @@ SQLCheckIfUserIsInBanList(int iClient)
 }
 
 //Callback function for an SQL AddBannedUserToDatabase
-SQLAddBannedUserToDatabaseCallback(Handle owner, Handle hQuery, const char[] error, any iClient)
+void SQLAddBannedUserToDatabaseCallback(Handle owner, Handle hQuery, const char[] error, any iClient)
 {
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -98,7 +98,7 @@ SQLAddBannedUserToDatabaseCallback(Handle owner, Handle hQuery, const char[] err
 }
 
 
-SQLAddBannedUserToDatabaseUsingClientID(iClient, int iBanDurationSeconds = 0, const char[] strBanReason)
+void SQLAddBannedUserToDatabaseUsingClientID(int iClient, int iBanDurationSeconds = 0, const char[] strBanReason)
 {
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return;
@@ -145,7 +145,7 @@ SQLAddBannedUserToDatabaseUsingClientID(iClient, int iBanDurationSeconds = 0, co
 	SQL_TQuery(g_hDatabase, SQLAddBannedUserToDatabaseCallback, strQuery, iClient);
 }
 
-SQLAddBannedUserToDatabaseUsingNameAndSteamID(char[] strClientName, const int iClientNameSize, const char[] strSteamID, int iBanDurationSeconds = 0, const char[] strBanReason)
+void SQLAddBannedUserToDatabaseUsingNameAndSteamID(char[] strClientName, const int iClientNameSize, const char[] strSteamID, int iBanDurationSeconds = 0, const char[] strBanReason)
 {	
 	// PrintToChatAll("SQLAddBannedUserToDatabaseUsingNameAndSteamID  %i: %N", iClient, iClient);
 	// PrintToServer("SQLAddBannedUserToDatabaseUsingNameAndSteamID  %i: %N", iClient, iClient);
@@ -179,7 +179,7 @@ SQLAddBannedUserToDatabaseUsingNameAndSteamID(char[] strClientName, const int iC
 	SQL_TQuery(g_hDatabase, SQLAddBannedUserToDatabaseCallback, strQuery, 0);
 }
 
-GetBanExpirationTimestamp(char[] strExpirationTimeStampValue, int iExpirationTimeStampValueSize, int iBanDurationSeconds) 
+void GetBanExpirationTimestamp(char[] strExpirationTimeStampValue, int iExpirationTimeStampValueSize, int iBanDurationSeconds) 
 {
 	if (iBanDurationSeconds <= 0)
 	{

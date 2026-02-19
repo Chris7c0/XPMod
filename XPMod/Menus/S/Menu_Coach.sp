@@ -1,7 +1,7 @@
 //Coach Menu////////////////////////////////////////////////////////////////
 
 //Coach Menu Draw
-Action CoachMenuDraw(iClient)
+Action CoachMenuDraw(int iClient)
 {
 	char text[512];
 
@@ -46,7 +46,7 @@ Action CoachMenuDraw(iClient)
 }
 
 //Bull Rush
-Action BullMenuDraw(iClient)
+Action BullMenuDraw(int iClient)
 {
 	char text[512];
 
@@ -97,7 +97,7 @@ Action BullMenuDraw(iClient)
 }
 
 //Wrecking Ball
-Action WreckingMenuDraw(iClient) 
+Action WreckingMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -150,7 +150,7 @@ Action WreckingMenuDraw(iClient)
 }
 
 //Spray n' Pray
-Action SprayMenuDraw(iClient) 
+Action SprayMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -191,7 +191,7 @@ Action SprayMenuDraw(iClient)
 }
 
 //Homerun
-Action HomerunMenuDraw(iClient) 
+Action HomerunMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -241,7 +241,7 @@ Action HomerunMenuDraw(iClient)
 }
 
 //Lead by Example
-Action LeadMenuDraw(iClient) 
+Action LeadMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -295,7 +295,7 @@ Action LeadMenuDraw(iClient)
 }
 
 //Strong Arm
-Action StrongMenuDraw(iClient) 
+Action StrongMenuDraw(int iClient) 
 {
 	char text[512];
 	
@@ -355,7 +355,7 @@ Action StrongMenuDraw(iClient)
 
 //Handlers//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CoachMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void CoachMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -403,7 +403,7 @@ CoachMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Bull Training Handler
-BullMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void BullMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -422,7 +422,7 @@ BullMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Wrecking Ball Handler
-WreckingMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void WreckingMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -441,7 +441,7 @@ WreckingMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Spray n' Pray Handler
-SprayMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void SprayMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -460,7 +460,7 @@ SprayMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Homerun Handler
-HomerunMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void HomerunMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -479,7 +479,7 @@ HomerunMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Lead by Example Handler
-LeadMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void LeadMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -498,7 +498,7 @@ LeadMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Strong Arm Handler
-StrongMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void StrongMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{

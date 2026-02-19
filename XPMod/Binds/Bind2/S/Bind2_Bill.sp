@@ -1,4 +1,4 @@
-void Bind2Press_Bill(iClient)
+void Bind2Press_Bill(int iClient)
 {
     if(g_iPromotionalLevel[iClient]>0)
     {

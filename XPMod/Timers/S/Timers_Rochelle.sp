@@ -111,7 +111,7 @@ Action TimerPoisonFade(Handle timer, any iClient)
 	if(IsValidEntity(iClient) == false || IsClientInGame(iClient)==false || IsPlayerAlive(iClient)==false)
 		return Plugin_Stop;
 	
-	new hp = GetPlayerHealth(iClient);
+	int hp = GetPlayerHealth(iClient);
 	if(hp < 16)
 		ForcePlayerSuicide(iClient);
 	else
@@ -129,7 +129,7 @@ Action TimerIDD(Handle timer, any data)
 {
 	if (IsServerProcessing()==false)
 		return Plugin_Continue;
-	for(new iClient = 1;iClient<= MaxClients; iClient++)
+	for (int iClient = 1;iClient<= MaxClients; iClient++)
 	{
 		if(IsClientInGame(iClient)==true)
 		{

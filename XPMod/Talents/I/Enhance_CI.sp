@@ -78,7 +78,7 @@ void PushZombieOnEnhancedCIEntitiesList(int iEntity, int iEnchancedCIType)
 		return;
 
 	// Push a new item onto the list
-	new index = g_listEnhancedCIEntities.Push(iEntity);
+	int index = g_listEnhancedCIEntities.Push(iEntity);
 	// Store the entity ID
 	g_listEnhancedCIEntities.Set(index, iEntity, ENHANCED_CI_ENTITY_ID);
 	// Set the type for the Enhanced CI
@@ -93,7 +93,7 @@ void PopZombieOffEnhancedCIEntitiesList(int iEntity)
 		return;
 
 	// Find if the Enhanced CI entity in the list
-	new iEnhancedCIIndex = FindIndexInArrayListUsingValue(g_listEnhancedCIEntities, iEntity, ENHANCED_CI_ENTITY_ID);
+	int iEnhancedCIIndex = FindIndexInArrayListUsingValue(g_listEnhancedCIEntities, iEntity, ENHANCED_CI_ENTITY_ID);
 	
 	// Remove it from the array if it was found
 	if (iEnhancedCIIndex >= 0)
@@ -111,8 +111,8 @@ public void PrintAllInEnhancedCIEntityList()
 	PrintToServer("g_listEnhancedCIEntities:");
 	for (int i=0; i < g_listEnhancedCIEntities.Length; i++)
 	{
-		new iEntityID = g_listEnhancedCIEntities.Get(i, ENHANCED_CI_ENTITY_ID);
-		new iType = g_listEnhancedCIEntities.Get(i, ENHANCED_CI_TYPE);
+		int iEntityID = g_listEnhancedCIEntities.Get(i, ENHANCED_CI_ENTITY_ID);
+		int iType = g_listEnhancedCIEntities.Get(i, ENHANCED_CI_TYPE);
 		PrintToServer("    %i: id %i, type %i", i, iEntityID, iType);
 	}
 }
@@ -125,7 +125,7 @@ Action TimerSpawnRandomlyEnhancedCIForDirector(Handle timer, any iEntity)
 	return Plugin_Stop;
 }
 
-EnhanceCommonInfected(iZombie, iBigOrSmall = CI_SMALL_OR_BIG_NONE, iEnhancedCISpecifiedType = ENHANCED_CI_TYPE_NONE)
+void EnhanceCommonInfected(int iZombie, int iBigOrSmall = CI_SMALL_OR_BIG_NONE, int iEnhancedCISpecifiedType = ENHANCED_CI_TYPE_NONE)
 {
 	// Hook the CI so damage can be better handled, such as capping melee damage
 	SDKHook(iZombie, SDKHook_OnTakeDamage, OnTakeDamage);
@@ -169,7 +169,7 @@ EnhanceCommonInfected(iZombie, iBigOrSmall = CI_SMALL_OR_BIG_NONE, iEnhancedCISp
 	// Handle randomly available enhanced properties
 	if (iEnhancedCISpecifiedType != ENHANCED_CI_TYPE_NONE)
 	{
-		new iEnhancementType = iEnhancedCISpecifiedType == ENHANCED_CI_TYPE_RANDOM ? GetRandomInt(ENHANCED_CI_TYPE_FIRE, ENHANCED_CI_TYPE_VAMPIRIC) : iEnhancedCISpecifiedType;
+		int iEnhancementType = iEnhancedCISpecifiedType == ENHANCED_CI_TYPE_RANDOM ? GetRandomInt(ENHANCED_CI_TYPE_FIRE, ENHANCED_CI_TYPE_VAMPIRIC) : iEnhancedCISpecifiedType;
 		switch (iEnhancementType)
 		{
 			case ENHANCED_CI_TYPE_FIRE: 	EnhanceCISet_Fire(iZombie);
@@ -180,7 +180,7 @@ EnhanceCommonInfected(iZombie, iBigOrSmall = CI_SMALL_OR_BIG_NONE, iEnhancedCISp
 	}
 }
 
-EnhanceCISetScale(iZombie, float fScale = -1.0)
+void EnhanceCISetScale(int iZombie, float fScale = -1.0)
 {
 	if (fScale == -1.0)
 		fScale = GetRandomFloat(CI_SMALL_MIN_SIZE, CI_BIG_MAX_SIZE);
@@ -189,7 +189,7 @@ EnhanceCISetScale(iZombie, float fScale = -1.0)
 	SetEntPropFloat(iZombie, Prop_Send, "m_flModelScale", fScale);
 }
 
-EnhanceCISetHealth(iZombie, iHealth = -1)
+void EnhanceCISetHealth(int iZombie, int iHealth = -1)
 {
 	if (iHealth == -1.0)
 		iHealth = GetRandomInt(CI_SMALL_MIN_HEALTH, CI_BIG_MAX_HEALTH);
@@ -198,7 +198,7 @@ EnhanceCISetHealth(iZombie, iHealth = -1)
 	SetPlayerHealth(iZombie, -1, iHealth);
 }
 
-EnhanceCISet_Fire(iZombie)
+void EnhanceCISet_Fire(int iZombie)
 {
 	// Store the entity and type into the Enhanced CI Array List
 	PushZombieOnEnhancedCIEntitiesList(iZombie, ENHANCED_CI_TYPE_FIRE);
@@ -209,7 +209,7 @@ EnhanceCISet_Fire(iZombie)
 	SetClientGlow(iZombie, 250, 50, 20, GLOWTYPE_ONVISIBLE);
 }
 
-EnhanceCISet_Ice(iZombie)
+void EnhanceCISet_Ice(int iZombie)
 {
 	// Store the entity and type into the Enhanced CI Array List
 	PushZombieOnEnhancedCIEntitiesList(iZombie, ENHANCED_CI_TYPE_ICE);
@@ -220,7 +220,7 @@ EnhanceCISet_Ice(iZombie)
 	SetClientGlow(iZombie, 80, 240, 255, GLOWTYPE_ONVISIBLE);
 }
 
-EnhanceCISet_Necro(iZombie)
+void EnhanceCISet_Necro(int iZombie)
 {
 	// Store the entity and type into the Enhanced CI Array List
 	PushZombieOnEnhancedCIEntitiesList(iZombie, ENHANCED_CI_TYPE_NECRO);
@@ -231,7 +231,7 @@ EnhanceCISet_Necro(iZombie)
 	SetClientGlow(iZombie, 0, 130, 40, GLOWTYPE_ONVISIBLE);
 }
 
-EnhanceCISet_Vampiric(iZombie)
+void EnhanceCISet_Vampiric(int iZombie)
 {
 	// Store the entity and type into the Enhanced CI Array List
 	PushZombieOnEnhancedCIEntitiesList(iZombie, ENHANCED_CI_TYPE_VAMPIRIC);
@@ -242,7 +242,7 @@ EnhanceCISet_Vampiric(iZombie)
 	SetClientGlow(iZombie, 100, 0, 255, GLOWTYPE_ONVISIBLE);
 }
 
-EnhanceCIHandleDamage_Fire(iAttacker, iVictim)
+void EnhanceCIHandleDamage_Fire(int iAttacker, int iVictim)
 {
 	SuppressNeverUsedWarning(iAttacker);
 
@@ -250,7 +250,7 @@ EnhanceCIHandleDamage_Fire(iAttacker, iVictim)
 	IgniteEntity(iVictim, ENHANCED_CI_FIRE_BURN_DURATION, false);
 }
 
-EnhanceCIHandleDamage_Ice(iAttacker, iVictim)
+void EnhanceCIHandleDamage_Ice(int iAttacker, int iVictim)
 {
 	SuppressNeverUsedWarning(iAttacker);
 
@@ -258,7 +258,7 @@ EnhanceCIHandleDamage_Ice(iAttacker, iVictim)
 	CreateTimer(ENHANCED_CI_ICE_FREEZE_DURATION, Timer_UnfreezePlayerByTank, iVictim, TIMER_FLAG_NO_MAPCHANGE);
 }
 
-EnhanceCIHandleDamage_Necro(iAttacker, iVictim)
+void EnhanceCIHandleDamage_Necro(int iAttacker, int iVictim)
 {
 	SuppressNeverUsedWarning(iAttacker);
 
@@ -274,22 +274,22 @@ EnhanceCIHandleDamage_Necro(iAttacker, iVictim)
 	GetClientAbsOrigin(iVictim, xyzLocation);
 
 	// Roll the dice for a uncommon
-	new iUncommon = GetRandomFloat(0.0, 1.0) <= ENHANCED_CI_NECRO_SPAWN_UNCOMMON_CHANCE ? UNCOMMON_CI_RANDOM : UNCOMMON_CI_NONE;
+	int iUncommon = GetRandomFloat(0.0, 1.0) <= ENHANCED_CI_NECRO_SPAWN_UNCOMMON_CHANCE ? UNCOMMON_CI_RANDOM : UNCOMMON_CI_NONE;
 
 	// Roll the dice for big or small
-	new iBigOrSmall = GetRandomFloat(0.0, 1.0) <= ENHANCED_CI_NECRO_SPAWN_BIG_SMALL_CHANCE ? CI_SMALL_OR_BIG_RANDOM : CI_SMALL_OR_BIG_NONE;
+	int iBigOrSmall = GetRandomFloat(0.0, 1.0) <= ENHANCED_CI_NECRO_SPAWN_BIG_SMALL_CHANCE ? CI_SMALL_OR_BIG_RANDOM : CI_SMALL_OR_BIG_NONE;
 
 	// Roll the dice for an enahnced CI
-	new iEnhancedCISpecifiedType = GetRandomFloat(0.0, 1.0) <= ENHANCED_CI_NECRO_SPAWN_ENHANCED_CHANCE ? ENHANCED_CI_TYPE_RANDOM : ENHANCED_CI_TYPE_NONE;
+	int iEnhancedCISpecifiedType = GetRandomFloat(0.0, 1.0) <= ENHANCED_CI_NECRO_SPAWN_ENHANCED_CHANCE ? ENHANCED_CI_TYPE_RANDOM : ENHANCED_CI_TYPE_NONE;
 
 	SpawnCIAroundLocation(xyzLocation, 1, iUncommon, iBigOrSmall, iEnhancedCISpecifiedType);
 }
 
-EnhanceCIHandleDamage_Vampiric(iAttacker, iVictim)
+void EnhanceCIHandleDamage_Vampiric(int iAttacker, int iVictim)
 {
 	DealDamage(iVictim, iAttacker, 1);
 
-	new iCurrentHealth = GetPlayerHealth(iAttacker);
+	int iCurrentHealth = GetPlayerHealth(iAttacker);
 	//PrintToChatAll("ENHANCED_CI_HEALTH_START_STEAL %i", iCurrentHealth);
 
 	// Clamp health and apply

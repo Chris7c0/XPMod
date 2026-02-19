@@ -1,7 +1,7 @@
 //Spitter Menu
 
 //Spitter Menu Draw
-Action SpitterTopMenuDraw(iClient)
+Action SpitterTopMenuDraw(int iClient)
 {
 	CheckLevel(iClient);
 	DeleteAllMenuParticles(iClient);
@@ -43,7 +43,7 @@ Action SpitterTopMenuDraw(iClient)
 //Talent Draws///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Ground 'n Pound Menu Draw
-Action PuppetMenuDraw(iClient)
+Action PuppetMenuDraw(int iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(PuppetMenuHandler);
@@ -82,7 +82,7 @@ Action PuppetMenuDraw(iClient)
 }
 
 //Spiked Carapace Menu Draw
-Action MaterialMenuDraw(iClient)
+Action MaterialMenuDraw(int iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(MaterialMenuHandler);
@@ -131,7 +131,7 @@ Action MaterialMenuDraw(iClient)
 }
 
 //Hillbilly Madness! Menu Draw
-Action HallucinogenicMenuDraw(iClient)
+Action HallucinogenicMenuDraw(int iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(HallucinogenicMenuHandler);
@@ -177,7 +177,7 @@ Action HallucinogenicMenuDraw(iClient)
 }
 
 //Choose Spitter Menu Draw
-Action ChooseSpitterClassMenuDraw(iClient) 
+Action ChooseSpitterClassMenuDraw(int iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	
@@ -204,7 +204,7 @@ Action ChooseSpitterClassMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-Action GooTypeMenuDraw(iClient)
+Action GooTypeMenuDraw(int iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(GooTypeMenuHandler);
@@ -248,7 +248,7 @@ Action GooTypeMenuDraw(iClient)
 }
 
 
-Action BagOfSpitsMenuDraw(iClient)
+Action BagOfSpitsMenuDraw(int iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(BagOfSpitsMenuHandler);
@@ -279,7 +279,7 @@ Action BagOfSpitsMenuDraw(iClient)
 //Handlers/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Spitter Top Menu Handler
-SpitterTopMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void SpitterTopMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -333,7 +333,7 @@ SpitterTopMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Ground 'n Pound Menu Handler
-PuppetMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void PuppetMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -352,7 +352,7 @@ PuppetMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Spiked Carapace Menu Handler
-MaterialMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void MaterialMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -371,7 +371,7 @@ MaterialMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Hillbilly Madness! Menu Handler
-HallucinogenicMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void HallucinogenicMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -390,7 +390,7 @@ HallucinogenicMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Choose Spitter Top Menu Handler
-ChooseSpitterClassMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void ChooseSpitterClassMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -454,7 +454,7 @@ ChooseSpitterClassMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Goo Type Menu Handler
-GooTypeMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void GooTypeMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -489,7 +489,7 @@ GooTypeMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Bag of Spits Menu Handler
-BagOfSpitsMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void BagOfSpitsMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{

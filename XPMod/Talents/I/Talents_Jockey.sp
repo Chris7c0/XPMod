@@ -1,4 +1,4 @@
-TalentsLoad_Jockey(iClient)
+void TalentsLoad_Jockey(int iClient)
 {
 	if (g_bTalentsConfirmed[iClient] == false ||
 		g_iMutatedLevel[iClient] < 0)
@@ -33,7 +33,7 @@ TalentsLoad_Jockey(iClient)
 	
 }
 
-OnGameFrame_Jockey(iClient)
+void OnGameFrame_Jockey(int iClient)
 {
 	if ((g_iUnfairLevel[iClient] > 0) && (g_bJockeyIsRiding[iClient] == true))
 	{
@@ -61,7 +61,7 @@ OnGameFrame_Jockey(iClient)
 	}
 }
 
-EventsHurt_AttackerJockey(Handle hEvent, iAttacker, iVictim)
+void EventsHurt_AttackerJockey(Handle hEvent, int iAttacker, int iVictim)
 {
 	if (IsFakeClient(iAttacker))
 		return;
@@ -77,7 +77,7 @@ EventsHurt_AttackerJockey(Handle hEvent, iAttacker, iVictim)
 			GetEventString(hEvent, "weapon", weapon, 20);
 			if (StrEqual(weapon, "jockey_claw") == true)
 			{
-				decl dmg;
+				int dmg;
 				if (g_iMutatedLevel[iAttacker] < 5)
 					dmg = 1;
 				else if (g_iMutatedLevel[iAttacker] < 9)
@@ -85,7 +85,7 @@ EventsHurt_AttackerJockey(Handle hEvent, iAttacker, iVictim)
 				else
 					dmg = 3;
 
-				new hp = GetPlayerHealth(iVictim);
+				int hp = GetPlayerHealth(iVictim);
 				if (hp > dmg)
 					DealDamage(iVictim, iAttacker, dmg);
 			}
@@ -100,7 +100,7 @@ EventsHurt_AttackerJockey(Handle hEvent, iAttacker, iVictim)
 			GetEventString(hEvent, "weapon", weapon, 20);
 			if (StrEqual(weapon, "jockey_claw") == true)
 			{
-				decl dmg;
+				int dmg;
 				if (g_iMutatedLevel[iAttacker] < 5)
 					dmg = 1;
 				else if (g_iMutatedLevel[iAttacker] < 9)
@@ -109,7 +109,7 @@ EventsHurt_AttackerJockey(Handle hEvent, iAttacker, iVictim)
 					dmg = 3;
 				// hp = GetPlayerHealth(iVictim);
 				// PrintToChat(iAttacker, "pre hp = %d riding",hp);
-				new hp = GetPlayerHealth(iVictim);
+				int hp = GetPlayerHealth(iVictim);
 				if (hp > dmg)
 					DealDamage(iVictim, iAttacker, dmg);
 
@@ -131,7 +131,7 @@ EventsHurt_AttackerJockey(Handle hEvent, iAttacker, iVictim)
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }
 
-Event_JockeyRide_Jockey(iAttacker, iVictim)
+void Event_JockeyRide_Jockey(int iAttacker, int iVictim)
 {
 	g_bJockeyIsRiding[iAttacker]	 = true;
 	g_bJockeyGrappled[iVictim]		 = true;
@@ -147,7 +147,7 @@ Event_JockeyRide_Jockey(iAttacker, iVictim)
 
 	if (g_iUnfairLevel[iAttacker] > 0)
 	{
-		new iReserveAmmoDropChance = GetRandomInt(1, 10);
+		int iReserveAmmoDropChance = GetRandomInt(1, 10);
 		if (iReserveAmmoDropChance <= g_iUnfairLevel[iAttacker])
 		{
 			StoreCurrentPrimaryWeapon(iVictim);
@@ -191,7 +191,7 @@ Event_JockeyRide_Jockey(iAttacker, iVictim)
 	}
 }
 
-CheckDistanceRidenAndPrintMessage(iClient)
+void CheckDistanceRidenAndPrintMessage(int iClient)
 {
 	if (g_bTalentsConfirmed[iClient] == false || 
 		g_bJockeyIsRiding[iClient] == false || 
@@ -207,7 +207,7 @@ CheckDistanceRidenAndPrintMessage(iClient)
 	PrintHintText(iClient, "Ride Distance: %0.0f Ft.", g_fJockeyRideDistance[iClient]);
 }
 
-HandleDragRaceRewards(int iClient, int iVictim)
+void HandleDragRaceRewards(int iClient, int iVictim)
 {
 	if (g_bTalentsConfirmed[iClient] == false || RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return;
@@ -222,7 +222,7 @@ HandleDragRaceRewards(int iClient, int iVictim)
 		HandleTier1Rewards(iClient, iVictim);
 }
 
-HandleTier1Rewards(int iClient, int iVictim)
+void HandleTier1Rewards(int iClient, int iVictim)
 {
 	int iRoll = GetRandomInt(1, 2);
 
@@ -246,7 +246,7 @@ HandleTier1Rewards(int iClient, int iVictim)
 	}
 }
 
-HandleTier2Rewards(int iClient, int iVictim)
+void HandleTier2Rewards(int iClient, int iVictim)
 {
 	int iRoll = GetRandomInt(1, 3);
 
@@ -275,7 +275,7 @@ HandleTier2Rewards(int iClient, int iVictim)
 	}
 }
 
-HandleTier3Rewards(int iClient, int iVictim)
+void HandleTier3Rewards(int iClient, int iVictim)
 {
 	int iRoll = GetRandomInt(1, 3);
 

@@ -32,6 +32,8 @@
 
 #define PLUGIN_VERSION "0.8.5.0310"
 
+#pragma newdecls required
+
 #include <sourcemod>
 #include <sdktools>
 #include <sdkhooks>
@@ -53,7 +55,7 @@ public Plugin myinfo =
 	url = "http://xpmod.net"
 }
 
-public OnPluginStart()
+public void OnPluginStart()
 {
 	//Check for Left4Dead 2
 	char strGameName[64];

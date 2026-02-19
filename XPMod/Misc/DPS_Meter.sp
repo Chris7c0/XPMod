@@ -1,4 +1,4 @@
-AddDamageToDPSMeter(int iClient, int iDamage)
+void AddDamageToDPSMeter(int iClient, int iDamage)
 {
     // For tanks dying, it does a forced 5000 damage to kill them
     if (iDamage >= 5000)
@@ -13,7 +13,7 @@ AddDamageToDPSMeter(int iClient, int iDamage)
     // PrintToChatAll("AddDamageToDPSMeter %i", iDamage);
 }
 
-Handle1SecondClientTimers_DPSMeter(int iClient)
+void Handle1SecondClientTimers_DPSMeter(int iClient)
 {
     if (g_iDPSTotalDamage[iClient] == 0)
         return;
@@ -32,7 +32,7 @@ Handle1SecondClientTimers_DPSMeter(int iClient)
     g_iDPSTotalDamage[iClient] = 0;
 }
 
-PrintDPSMeter(int iClient)
+void PrintDPSMeter(int iClient)
 {
     if (RunClientChecks(iClient) == false ||
         IsFakeClient(iClient) == true)

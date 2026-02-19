@@ -1,7 +1,7 @@
 //Jockey Menu
 
 //Jockey Menu Draw
-Action JockeyTopMenuDraw(iClient) 
+Action JockeyTopMenuDraw(int iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	Menu menu = CreateMenu(JockeyTopMenuHandler);
@@ -43,7 +43,7 @@ Action JockeyTopMenuDraw(iClient)
 //Talent Draws///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Mutated Tenacity Menu Draw
-Action MutatedMenuDraw(iClient)
+Action MutatedMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(MutatedMenuHandler);
 
@@ -75,7 +75,7 @@ Action MutatedMenuDraw(iClient)
 }
 
 //Erratic Domination Menu Draw
-Action ErraticMenuDraw(iClient)
+Action ErraticMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(ErraticMenuHandler);
 
@@ -123,7 +123,7 @@ Action ErraticMenuDraw(iClient)
 }
 
 //Unfair Advantage Menu Draw
-Action UnfairMenuDraw(iClient)
+Action UnfairMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(UnfairMenuHandler);
 
@@ -163,7 +163,7 @@ Action UnfairMenuDraw(iClient)
 }
 
 //Choose Jockey Menu Draw
-Action ChooseJockeyClassMenuDraw(iClient) 
+Action ChooseJockeyClassMenuDraw(int iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	
@@ -185,7 +185,7 @@ Action ChooseJockeyClassMenuDraw(iClient)
 //Handlers/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Jockey Top Menu Handler
-JockeyTopMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void JockeyTopMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -239,7 +239,7 @@ JockeyTopMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Mutated Tenacity Menu Handler
-MutatedMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void MutatedMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -258,7 +258,7 @@ MutatedMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Erratic Domination Menu Handler
-ErraticMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void ErraticMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -277,7 +277,7 @@ ErraticMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Unfair Advantage Menu Handler
-UnfairMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void UnfairMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -296,7 +296,7 @@ UnfairMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Choose Jockey Top Menu Handler
-ChooseJockeyClassMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void ChooseJockeyClassMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{

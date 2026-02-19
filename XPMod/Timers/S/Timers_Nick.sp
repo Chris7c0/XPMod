@@ -25,7 +25,7 @@ Action TimerStopRambo(Handle timer, any iClient)
 	if(iClient > 0)
 		if(IsClientInGame(iClient) == true)
 			PrintHintText(iClient, "Rambo mode is now off");
-	new wID = g_iNicksRamboWeaponID[iClient];
+	int wID = g_iNicksRamboWeaponID[iClient];
 	char weaponclass[32];
 	GetEntityNetClass(wID, weaponclass, 32);
 	if(iClient > 1 && IsClientInGame(iClient) == true && IsPlayerAlive(iClient) == true)
@@ -53,7 +53,7 @@ Action TimerSlap(Handle timer, any iClient)
 	}
 	if(g_iSlapRunTimes[iClient]++ < 5)
 	{
-		new iCurrentHP = GetPlayerHealth(iClient);
+		int iCurrentHP = GetPlayerHealth(iClient);
 		if(iCurrentHP > 15)
 			SlapPlayer(iClient, 15);
 		else
@@ -111,8 +111,8 @@ Action TimerLifeStealing(Handle timer, any pack)
 		return Plugin_Stop;
 	
 	ResetPack(pack);
-	new victim = ReadPackCell(pack);
-	new attacker = ReadPackCell(pack);
+	int victim = ReadPackCell(pack);
+	int attacker = ReadPackCell(pack);
 	
 	if(IsValidEntity(attacker)==false || IsClientInGame(attacker)==false || IsPlayerAlive(attacker)==false ||
 		IsValidEntity(victim)==false || IsClientInGame(victim)==false || IsPlayerAlive(victim)==false)
@@ -160,8 +160,8 @@ Action TimerLifeStealingFade(Handle timer, any pack)
 	if (pack == INVALID_HANDLE)
 		return Plugin_Stop;
 	ResetPack(pack);					//Reading this might cause problems if read at the wrong time
-	new victim = ReadPackCell(pack);	//because it could be an invalid package (check this)
-	new attacker = ReadPackCell(pack);
+	int victim = ReadPackCell(pack);//because it could be an invalid package (check this)
+	int attacker = ReadPackCell(pack);
 	if((victim < 1) || (attacker < 1))
 		return Plugin_Stop;
 	if((IsClientInGame(victim) == false) || (IsClientInGame(attacker) == false))
@@ -172,17 +172,17 @@ Action TimerLifeStealingFade(Handle timer, any pack)
 		return Plugin_Stop;
 	if(attacker > 0)
 	{
-		decl stealamt;
+		int stealamt;
 		stealamt = g_iSwindlerLevel[attacker];
 		//Take life from victim
-		new hp = GetPlayerHealth(victim);
+		int hp = GetPlayerHealth(victim);
 		if(hp <= stealamt)
 			ForcePlayerSuicide(victim);
 		else
 			SetPlayerHealth(victim, attacker, hp - stealamt);
 		//Give life to shooter
 		hp = GetPlayerHealth(attacker);
-		new maxhp = GetPlayerMaxHealth(attacker);
+		int maxhp = GetPlayerMaxHealth(attacker);
 		if(hp!=maxhp)
 		{
 			if(g_bIsClientDown[attacker] == false)
@@ -224,7 +224,7 @@ Action TimerNickDualClipSize(Handle timer, any iClient)
 	
 	char currentweapon[512];
 	GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
-	new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+	int ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 	//PrintToChatAll("In Timer: About to set clip size... Clip Slot 2 = %i", g_iNickSecondarySavedClipSlot2[iClient]);
 	if(StrEqual(currentweapon, "weapon_pistol", false) == true)
 	{

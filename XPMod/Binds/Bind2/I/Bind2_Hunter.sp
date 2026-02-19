@@ -1,4 +1,4 @@
-void Bind2Press_Hunter(iClient)
+void Bind2Press_Hunter(int iClient)
 {
     if((g_iClientInfectedClass1[iClient] == HUNTER) || (g_iClientInfectedClass2[iClient] == HUNTER) || (g_iClientInfectedClass3[iClient] == HUNTER))
     {

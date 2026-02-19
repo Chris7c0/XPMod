@@ -1,4 +1,4 @@
-SetUpTheDBConnection()
+void SetUpTheDBConnection()
 {
 	//Setup the handle that will link to the MySQL Database
 	if(ConnectDB())

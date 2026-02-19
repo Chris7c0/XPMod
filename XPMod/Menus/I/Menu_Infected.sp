@@ -1,7 +1,7 @@
 //Infected Talents Menu
 
 //Top Infected Menu Draw
-Action TopInfectedMenuDraw(iClient) 
+Action TopInfectedMenuDraw(int iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 
@@ -46,7 +46,7 @@ Action TopInfectedMenuDraw(iClient)
 }
 
 //Change Your Infected Menu Draw
-Action ChangeInfectedMenuDraw(iClient) 
+Action ChangeInfectedMenuDraw(int iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 
@@ -83,7 +83,7 @@ Action ChangeInfectedMenuDraw(iClient)
 }
 
 //Change Infected Class 1
-Action ChangeClass1MenuDraw(iClient) 
+Action ChangeClass1MenuDraw(int iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	
@@ -117,7 +117,7 @@ Action ChangeClass1MenuDraw(iClient)
 	return Plugin_Handled;
 }
 //Change Infected Class 2
-Action ChangeClass2MenuDraw(iClient) 
+Action ChangeClass2MenuDraw(int iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	
@@ -151,7 +151,7 @@ Action ChangeClass2MenuDraw(iClient)
 	return Plugin_Handled;
 }
 //Change Infected Class 3
-Action ChangeClass3MenuDraw(iClient) 
+Action ChangeClass3MenuDraw(int iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	
@@ -188,7 +188,7 @@ Action ChangeClass3MenuDraw(iClient)
 //Infected Menu Handlers
 
 //Top Infected Menu Handler
-TopInfectedMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void TopInfectedMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -245,7 +245,7 @@ TopInfectedMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Choose Infected Classes Menu
-ChangeInfectedMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void ChangeInfectedMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -294,7 +294,7 @@ ChangeInfectedMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Change Infected Class 1
-ChangeClass1MenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void ChangeClass1MenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -408,7 +408,7 @@ ChangeClass1MenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 	}
 }
 //Change Infected Class 2
-ChangeClass2MenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void ChangeClass2MenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -522,7 +522,7 @@ ChangeClass2MenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 	}
 }
 //Change Infected Class 3
-ChangeClass3MenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void ChangeClass3MenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{

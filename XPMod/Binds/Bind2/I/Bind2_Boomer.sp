@@ -1,4 +1,4 @@
-void Bind2Press_Boomer(iClient)
+void Bind2Press_Boomer(int iClient)
 {
     if((g_iClientInfectedClass1[iClient] == BOOMER) || (g_iClientInfectedClass2[iClient] == BOOMER) || (g_iClientInfectedClass3[iClient] == BOOMER))
     {

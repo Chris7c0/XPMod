@@ -8,7 +8,7 @@
  *                                                 Hook All Game Events                                                   *
  **************************************************************************************************************************/
 
-SetupXPMEvents()
+void SetupXPMEvents()
 {
 	//AddTempEntHook("PlayerAnimEvent", OnPlayerAnimEvent);
 
@@ -105,7 +105,7 @@ SetupXPMEvents()
  **************************************************************************************************************************/
 
 //Chat
-Action SayCmd(iClient, args)
+Action SayCmd(int iClient, int args)
 {
 	if (iClient < 1 || IsClientInGame(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Continue;
@@ -148,7 +148,7 @@ Action SayCmd(iClient, args)
 	return Plugin_Continue;
 }
 
-Action SayTeamCmd(iClient, args)
+Action SayTeamCmd(int iClient, int args)
 {
 	if (iClient < 1 || IsClientInGame(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Continue;
@@ -168,7 +168,7 @@ Action SayTeamCmd(iClient, args)
 		return Plugin_Handled;
 	}
 	
-	decl i;
+	int i;
 	for(i = 1; i <= MaxClients; i++)
 	{
 		if(g_iGatherLevel[i] == 5 && IsClientInGame(i) && IsFakeClient(i) == false && GetClientTeam(i)==TEAM_SURVIVORS && GetClientTeam(iClient)==TEAM_INFECTED)
@@ -208,7 +208,7 @@ Action Hook_SayText2(UserMsg msg_id, BfRead msg, const int[] players, int player
 		return Plugin_Continue;
 
 	// Get the message that will be checked if its the name change string
-	char[] sMessage = new char[24];
+	char sMessage[24];
 	msg.ReadByte();
 	msg.ReadByte();
 	msg.ReadString(sMessage, 24, false);
@@ -222,7 +222,7 @@ Action Hook_SayText2(UserMsg msg_id, BfRead msg, const int[] players, int player
 }
 
 
-public OnMapStart()
+public void OnMapStart()
 {
 	//PrintToServer("OnMapStart ========================================================================================================")
 	
@@ -313,7 +313,7 @@ Action Event_RoundEnd(Handle hEvent, const char[] strName, bool bDontBroadcast)
 		GiveRewards();
 		StoreLastRoundClientsStats();
 		
-		for(new i = 1; i <= MaxClients; i++)
+		for (int i = 1; i <= MaxClients; i++)
 		{
 			//Save their game
 			if (IsClientInGame(i) == true &&
@@ -323,7 +323,7 @@ Action Event_RoundEnd(Handle hEvent, const char[] strName, bool bDontBroadcast)
 		}
 
 		// Remove the player level tags until the next confirmation
-		for(new iClient = 1; iClient <= MaxClients; iClient++)
+		for (int iClient = 1; iClient <= MaxClients; iClient++)
 			RenamePlayerWithLevelTags(iClient, true);
 	}
 	
@@ -332,25 +332,25 @@ Action Event_RoundEnd(Handle hEvent, const char[] strName, bool bDontBroadcast)
 	return Plugin_Continue;
 }
 
-public Action CommandListener_Pause(client, const char[] command, argc) {
+public Action CommandListener_Pause(int client, const char[] command, int argc) {
 	return Plugin_Handled; 
 }
 
-public Action CommandListener_Setpause(client, const char[] command, argc) {
+public Action CommandListener_Setpause(int client, const char[] command, int argc) {
 	if (g_bGamePaused)
 		return Plugin_Continue;
 	
 	return Plugin_Handled;
 }
 
-public Action CommandListener_Unpause(client, const char[] command, argc) {
+public Action CommandListener_Unpause(int client, const char[] command, int argc) {
 	if (g_bGamePaused == false)
 		return Plugin_Continue;
 	
 	return Plugin_Handled;
 }
 
-public Action CommandListener_CallVote(int iVoteCaller, const char[] strCommand, argc)
+public Action CommandListener_CallVote(int iVoteCaller, const char[] strCommand, int argc)
 {
 	char strVoteType[32], strVoteTarget[32];
 	GetCmdArg(1, strVoteType, sizeof(strVoteType));
@@ -387,9 +387,9 @@ bool HandleCallVote_Kick(int iVoteCaller, int iTarget, char[] strVoteType)
 	return true;
 }
 
-Event_PlayerJump(Handle hEvent, const char[] strName, bool bDontBroadcast)
+void Event_PlayerJump(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	int iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	if (iClient < 1)
 		return;
 	if(GetEntData(iClient, g_iOffset_IsGhost, 1) == 1)		//Check if they are ghost first
@@ -416,7 +416,7 @@ Event_PlayerJump(Handle hEvent, const char[] strName, bool bDontBroadcast)
 	return;
 }
 
-Action CommandListener_JoinTeam(iClient, const char[] command, argc)
+Action CommandListener_JoinTeam(int iClient, const char[] command, int argc)
 {
 	// This is specifically for preventing user from changing team using M button on cool down
 	if (g_bPlayerInTeamChangeCoolDown[iClient] == true)
@@ -444,7 +444,7 @@ Action CommandListener_JoinTeam(iClient, const char[] command, argc)
 
 Action Event_PlayerChangeTeam(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Continue;
@@ -471,7 +471,7 @@ Action Event_PlayerChangeTeam(Handle hEvent, const char[] strName, bool bDontBro
 
 Action Event_PlayerSpawn(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	// if (RunClientChecks(iClient) && IsFakeClient(iClient) == false)
 	// 		PrintToChat(iClient, "Event_PlayerSpawn ================================================================");
 	//PrintToServer("Event_PlayerSpawn ================================================================ %i", iClient);
@@ -540,8 +540,8 @@ Action Event_PlayerSpawn(Handle hEvent, const char[] strName, bool bDontBroadcas
 
 Action Event_PlayerReplacedByBot(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new iReplacedPlayer = GetClientOfUserId(GetEventInt(hEvent, "player"));
-	new iBot = GetClientOfUserId(GetEventInt(hEvent, "bot"));
+	int iReplacedPlayer = GetClientOfUserId(GetEventInt(hEvent, "player"));
+	int iBot = GetClientOfUserId(GetEventInt(hEvent, "bot"));
 
 	// PrintToChatAll("Event_PlayerReplacedByBot: %i %i", iReplacedPlayer, iBot);
 
@@ -556,7 +556,7 @@ Action Event_PlayerReplacedByBot(Handle hEvent, const char[] strName, bool bDont
 
 Action Event_BotReplacedByPlayer(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new iPlayer = GetClientOfUserId(GetEventInt(hEvent, "player"));
+	int iPlayer = GetClientOfUserId(GetEventInt(hEvent, "player"));
 	// new iReplacedBot = GetClientOfUserId(GetEventInt(hEvent, "bot"));
 
 	// PrintToChatAll("Event_BotReplacedByPlayer: %i %i", iPlayer, iReplacedBot);
@@ -574,7 +574,7 @@ Action Event_BotReplacedByPlayer(Handle hEvent, const char[] strName, bool bDont
 
 Action Event_SurvivorRescued(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new iClient = GetClientOfUserId(GetEventInt(hEvent, "victim"));
+	int iClient = GetClientOfUserId(GetEventInt(hEvent, "victim"));
 
 	// PrintToChatAll("Event_SurvivorRescued: %N", iClient);
 
@@ -590,7 +590,7 @@ Action Event_SurvivorRescued(Handle hEvent, const char[] strName, bool bDontBroa
 }
 
 
-SetupUnfreezeGameTimer(float unfreezeWaitTime)
+void SetupUnfreezeGameTimer(float unfreezeWaitTime)
 {	
 	if(g_iGameMode != GAMEMODE_SCAVENGE)
 	{
@@ -619,7 +619,7 @@ SetupUnfreezeGameTimer(float unfreezeWaitTime)
 
 
 
-public OnClientPutInServer(iClient)
+public void OnClientPutInServer(int iClient)
 {
 	if (g_bGamePaused && IsFakeClient(iClient) == false)
 	{
@@ -644,7 +644,7 @@ public OnClientPutInServer(iClient)
 
 Action Event_PlayerConnect(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	HandleClientConnect(iClient);
 
 	return Plugin_Continue;
@@ -653,7 +653,7 @@ Action Event_PlayerConnect(Handle hEvent, const char[] strName, bool bDontBroadc
 
 Action Event_PlayerDisconnect(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	HandleClientDisconnect(iClient);
 	
 	return Plugin_Continue;

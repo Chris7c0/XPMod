@@ -1,7 +1,7 @@
 //Ellis Menu////////////////////////////////////////////////////////////////
 
 //Ellis Menu Draw
-Action EllisMenuDraw(iClient) 
+Action EllisMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -46,7 +46,7 @@ Action EllisMenuDraw(iClient)
 }
 
 //Overconfidence
-Action OverMenuDraw(iClient) 
+Action OverMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -101,7 +101,7 @@ Action OverMenuDraw(iClient)
 }
 
 //Bring the Pain!
-Action BringMenuDraw(iClient) 
+Action BringMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -151,7 +151,7 @@ Action BringMenuDraw(iClient)
 }
 
 //Jammin' to the Music
-Action JamminMenuDraw(iClient) 
+Action JamminMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -203,7 +203,7 @@ Action JamminMenuDraw(iClient)
 }
 
 //Weapons Training
-Action WeaponsMenuDraw(iClient) 
+Action WeaponsMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -250,7 +250,7 @@ Action WeaponsMenuDraw(iClient)
 }
 
 //Metal Storm (Mechanic Affinity)
-Action MetalMenuDraw(iClient) 
+Action MetalMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -304,7 +304,7 @@ Action MetalMenuDraw(iClient)
 }
 
 //Fire Storm
-Action FireMenuDraw(iClient) 
+Action FireMenuDraw(int iClient) 
 {
 	char text[512];
 	
@@ -357,7 +357,7 @@ Action FireMenuDraw(iClient)
 //Handlers//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Ellis Menu Handler
-EllisMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void EllisMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -405,7 +405,7 @@ EllisMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Overconfidence Handler
-OverMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void OverMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -424,7 +424,7 @@ OverMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Bring the Pain Handler
-BringMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void BringMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -443,7 +443,7 @@ BringMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Jammin to the Music Handler
-JamminMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void JamminMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -462,7 +462,7 @@ JamminMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Weapons Training Handler
-WeaponsMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void WeaponsMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -481,7 +481,7 @@ WeaponsMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Metal Storm Handler and Mechanic Affinity
-MetalMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void MetalMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -500,7 +500,7 @@ MetalMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Fire Storm Handler
-FireMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void FireMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{

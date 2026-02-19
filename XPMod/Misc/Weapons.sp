@@ -121,7 +121,7 @@ int GetActiveWeaponSlot(const int iClient, int iActiveWeaponID = -1)
 	return -1;
 }
 
-SetAmmoOffsetForPrimarySlotID(int iClient, int iWeaponIndex)
+void SetAmmoOffsetForPrimarySlotID(int iClient, int iWeaponIndex)
 {
 	g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 0);
 	// PrintToChatAll("g_iPrimarySlotID = %d", g_iPrimarySlotID[iClient]);
@@ -152,7 +152,7 @@ SetAmmoOffsetForPrimarySlotID(int iClient, int iWeaponIndex)
 	//PrintToChatAll("g_iReserveAmmo = %d", g_iReserveAmmo[iClient]);
 }
 
-StoreCurrentPrimaryWeapon(iClient)
+void StoreCurrentPrimaryWeapon(int iClient)
 {
 	// Check if in rambo mode and have the M60 out
 	if (g_bRamboModeActive[iClient] && g_iRamboWeaponID[iClient] == GetPlayerWeaponSlot(iClient, 0))
@@ -165,7 +165,7 @@ StoreCurrentPrimaryWeapon(iClient)
 	GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 
 	// Get the weapon index and ensure its a primary weapon
-	new iWeaponIndex = FindWeaponItemIndex(strCurrentWeapon, ITEM_CLASS_NAME);
+	int iWeaponIndex = FindWeaponItemIndex(strCurrentWeapon, ITEM_CLASS_NAME);
 	if (iWeaponIndex <= 0 || IsWeaponIndexPrimarySlotItem(iWeaponIndex) == false)
 		return;
 
@@ -191,7 +191,7 @@ StoreCurrentPrimaryWeapon(iClient)
 	// PrintToChatAll("DETERMINE AFTER g_iEllisPrimarySlot1[iClient] = %s", ITEM_CLASS_NAME[g_iEllisPrimarySlot1[iClient]]);
 }
  
-StoreCurrentPrimaryWeaponAmmo(iClient)
+void StoreCurrentPrimaryWeaponAmmo(int iClient)
 {
 	// PrintToChat(iClient, "StoreCurrentPrimaryWeaponAmmo start");
 	switch(g_iChosenSurvivor[iClient])
@@ -324,7 +324,7 @@ StoreCurrentPrimaryWeaponAmmo(iClient)
 	}
 }
 
-CyclePlayerWeapon(iClient)
+void CyclePlayerWeapon(int iClient)
 {
 	//new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 	//new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
@@ -339,7 +339,7 @@ CyclePlayerWeapon(iClient)
 	}
 }
 
-fnc_SetAmmo(iClient)
+void fnc_SetAmmo(int iClient)
 {
 	if(RunClientChecks(iClient) ==  false || RunEntityChecks(g_iPrimarySlotID[iClient]) == false)
 		return;
@@ -511,7 +511,7 @@ fnc_SetAmmo(iClient)
 // 	}
 // }
 
-fnc_SetAmmoUpgrade(iClient)
+void fnc_SetAmmoUpgrade(int iClient)
 {
 	switch(g_iChosenSurvivor[iClient])
 	{
@@ -709,7 +709,7 @@ fnc_SetAmmoUpgrade(iClient)
 // 	}
 // }
 
-fnc_ClearAllWeaponData(iClient)
+void fnc_ClearAllWeaponData(int iClient)
 {
 	switch(g_iChosenSurvivor[iClient])
 	{
@@ -756,11 +756,11 @@ fnc_ClearAllWeaponData(iClient)
 }
 
 
-MolotovExplode(float xyzLocation[3])
+void MolotovExplode(float xyzLocation[3])
 {
 	xyzLocation[2] += 5.0;
 	
-	new iEntity = CreateEntityByName("prop_physics");
+	int iEntity = CreateEntityByName("prop_physics");
 	if(IsValidEntity(iEntity) == false)
 		return;
 	
@@ -772,11 +772,11 @@ MolotovExplode(float xyzLocation[3])
 	AcceptEntityInput(iEntity, "Break");
 }
 
-PropaneExplode(float xyzLocation[3])
+void PropaneExplode(float xyzLocation[3])
 {
 	xyzLocation[2] += 5.0;
 	
-	new iEntity = CreateEntityByName("prop_physics");
+	int iEntity = CreateEntityByName("prop_physics");
 	if(IsValidEntity(iEntity) == false)
 		return;
 	
@@ -824,7 +824,7 @@ int SpawnItem(float xyzLocation[3], int itemIndex, const float fZOffset = 0.0)
 	return iEntity;
 }
 
-GiveEveryWeaponToSurvivor(iClient)
+void GiveEveryWeaponToSurvivor(int iClient)
 {
 	int iWeaponsToSpawn[] = {
 		ITEM_MP5,

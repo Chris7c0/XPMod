@@ -1,4 +1,4 @@
-void TalentsLoad_Smoker(iClient)
+void TalentsLoad_Smoker(int iClient)
 {
 	if(g_iSmokerTalent1Level[iClient] > 0)
 	{
@@ -34,7 +34,7 @@ void TalentsLoad_Smoker(iClient)
 		SetClientSpeed(iClient);
 }
 
-void OnGameFrame_Smoker(iClient)
+void OnGameFrame_Smoker(int iClient)
 {
 	if (g_bTalentsConfirmed[iClient] == false ||
 		g_iSmokerTalent1Level[iClient] <= 0)
@@ -98,7 +98,7 @@ void OnGameFrame_Smoker(iClient)
 	}
 }
 
-bool OnPlayerRunCmd_Smoker(iClient, &iButtons)
+bool OnPlayerRunCmd_Smoker(int iClient, int &iButtons)
 {
 	// Smoker abilities
 	if (g_iInfectedCharacter[iClient] != SMOKER ||
@@ -153,7 +153,7 @@ bool OnPlayerRunCmd_Smoker(iClient, &iButtons)
 }
 
 
-void EventsHurt_AttackerSmoker(Handle hEvent, iAttacker, iVictim)
+void EventsHurt_AttackerSmoker(Handle hEvent, int iAttacker, int iVictim)
 {
 	if (IsFakeClient(iAttacker))
 		return;
@@ -182,7 +182,7 @@ void EventsHurt_AttackerSmoker(Handle hEvent, iAttacker, iVictim)
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }
 
-void EventsDeath_VictimSmoker(Handle hEvent, iAttacker, iVictim)
+void EventsDeath_VictimSmoker(Handle hEvent, int iAttacker, int iVictim)
 {
 	if (g_iInfectedCharacter[iVictim] != SMOKER ||
 		g_iClientTeam[iVictim] != TEAM_INFECTED)
@@ -232,7 +232,7 @@ bool Event_TongueGrab_Smoker(int iAttacker, int iVictim)
 	return false;
 }
 
-bool Event_TongueRelease_Smoker(int iAttacker, iVictim)
+bool Event_TongueRelease_Smoker(int iAttacker, int iVictim)
 {
 	// Before proceeding check to ensure they have smoker talent confirmed
 	if (g_bTalentsConfirmed[iAttacker] == false ||
@@ -316,7 +316,7 @@ void SetSmokerConvarBuffs(int iLevel = 0)
 		float(CONVAR_SMOKER_TONGUE_HEALTH_DEFAULT + (iLevel * CONVAR_SMOKER_TONGUE_HEALTH_BUFF_PER_LEVEL)), false, false);
 }
 
-void SmokerTeleport(iClient)
+void SmokerTeleport(int iClient)
 {
 	if(g_iChokingVictim[iClient] > 0)
 	{
@@ -399,7 +399,7 @@ void SmokerTeleport(iClient)
 	SetEntityRenderColor(iClient, 0, 0, 0, 0);		
 }
 
-SmokerDismount(iClient)
+void SmokerDismount(int iClient)
 {
 	g_bMovementLocked[iClient] = true;
 	SetClientSpeed(iClient);
@@ -415,7 +415,7 @@ void ToggleSmokerCloaking(int iClient)
 	SetClientRenderAndGlowColor(iClient);
 }
 
-void CreateSmokeScreenAroundVictim(iClient)
+void CreateSmokeScreenAroundVictim(int iClient)
 {
 	if (RunEntityChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false ||
@@ -633,7 +633,7 @@ Action TimerFadeInDoppelgangerAndThenHookOnTakeDamage(Handle hTimer, int iEntity
 }
 
 
-bool GetCrosshairPosition(int iClient, float xyzLocation[3], float xyzEyeAngles[3],  bool bClipXZRotation = true)
+bool GetCrosshairPosition(int iClient, float xyzLocation[3], float xyzEyeAngles[3], bool bClipXZRotation = true)
 {
 	float xyzEyeOrigin[3];
 	GetClientEyePosition(iClient, xyzEyeOrigin);

@@ -1,7 +1,7 @@
 //Hunter Menu
 
 //Hunter Menu Draw
-Action HunterTopMenuDraw(iClient) 
+Action HunterTopMenuDraw(int iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	Menu menu = CreateMenu(HunterTopMenuHandler);
@@ -43,7 +43,7 @@ Action HunterTopMenuDraw(iClient)
 //Talent Draws///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Predatorial Evolution Menu Draw
-Action PredatorialMenuDraw(iClient)
+Action PredatorialMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(PredatorialMenuHandler);
 
@@ -90,7 +90,7 @@ Action PredatorialMenuDraw(iClient)
 }
 
 //Blood Lust Menu Draw
-Action BloodLustMenuDraw(iClient)
+Action BloodLustMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(BloodLustMenuHandler);
 
@@ -135,7 +135,7 @@ Action BloodLustMenuDraw(iClient)
 }
 
 //Kill-meleon Menu Draw
-Action KillmeleonMenuDraw(iClient)
+Action KillmeleonMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(KillmeleonMenuHandler);
 
@@ -182,7 +182,7 @@ Action KillmeleonMenuDraw(iClient)
 }
 
 //Choose Hunter Menu Draw
-Action ChooseHunterClassMenuDraw(iClient) 
+Action ChooseHunterClassMenuDraw(int iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	
@@ -204,7 +204,7 @@ Action ChooseHunterClassMenuDraw(iClient)
 //Handlers/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Hunter Top Menu Handler
-HunterTopMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void HunterTopMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -258,7 +258,7 @@ HunterTopMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Predatorial Evolution Menu Handler
-PredatorialMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void PredatorialMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -281,7 +281,7 @@ PredatorialMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Blood Lust Menu Handler
-BloodLustMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void BloodLustMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -312,7 +312,7 @@ BloodLustMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Kill-meleon Menu Handler
-KillmeleonMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void KillmeleonMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -343,7 +343,7 @@ KillmeleonMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Choose Hunter Top Menu Handler
-ChooseHunterClassMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void ChooseHunterClassMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{

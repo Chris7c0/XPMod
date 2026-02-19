@@ -1,4 +1,4 @@
-void Bind1Press_Coach(iClient)
+void Bind1Press_Coach(int iClient)
 {
     if(g_iLeadLevel[iClient]> 0)	//Coach's Turret Gun Bind
     {
@@ -10,14 +10,14 @@ void Bind1Press_Coach(iClient)
                 GetLocationVectorInfrontOfClient(iClient, vorigin, vangles);
                 
                 g_iClientBindUses_1[iClient]++;
-                new uses = 3 - g_iClientBindUses_1[iClient];
-                decl random_turret;
+                int uses = 3 - g_iClientBindUses_1[iClient];
+                int random_turret;
                 random_turret = GetRandomInt(0,1);
                 switch (random_turret)
                 {
                     case 0: //Minigun
                     {
-                        new minigun = CreateEntityByName("prop_minigun_l4d1");	//Create the gun entity to spawn
+                        int minigun = CreateEntityByName("prop_minigun_l4d1");//Create the gun entity to spawn
                         DispatchKeyValue(minigun, "model", "Minigun_1");
                         SetEntityModel(minigun, "models/w_models/weapons/w_minigun.mdl");
                         DispatchKeyValueFloat (minigun, "MaxYaw", 180.0);		//Set the guns shooting angle limits
@@ -32,7 +32,7 @@ void Bind1Press_Coach(iClient)
                     }
                     case 1: //50cal
                     {
-                        new minigun = CreateEntityByName("prop_minigun");	//Create the gun entity to spawn
+                        int minigun = CreateEntityByName("prop_minigun");//Create the gun entity to spawn
                         DispatchKeyValue(minigun, "model", "Minigun_1");
                         SetEntityModel(minigun, "models/w_models/weapons/50cal.mdl");
                         DispatchKeyValueFloat (minigun, "MaxYaw", 180.0);		//Set the guns shooting angle limits

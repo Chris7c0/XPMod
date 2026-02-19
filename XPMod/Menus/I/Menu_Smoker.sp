@@ -1,7 +1,7 @@
 //Smoker Menu
 
 //Smoker Top Menu Draw
-Action SmokerTopMenuDraw(iClient) 
+Action SmokerTopMenuDraw(int iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	Menu menu = CreateMenu(SmokerTopMenuHandler);
@@ -43,7 +43,7 @@ Action SmokerTopMenuDraw(iClient)
 //Talent Draws///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Envelopment Menu Draw
-Action EnvelopmentMenuDraw(iClient)
+Action EnvelopmentMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(EnvelopmentMenuHandler);
 
@@ -85,7 +85,7 @@ Action EnvelopmentMenuDraw(iClient)
 }
 
 //Noxious Gasses Menu Draw
-Action NoxiousMenuDraw(iClient)
+Action NoxiousMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(NoxiousMenuHandler);
 
@@ -134,7 +134,7 @@ Action NoxiousMenuDraw(iClient)
 }
 
 //Dirty Tricks Menu Draw
-Action DirtyMenuDraw(iClient)
+Action DirtyMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(DirtyMenuHandler);
 
@@ -180,7 +180,7 @@ Action DirtyMenuDraw(iClient)
 }
 
 //Choose Smoker Menu Draw
-Action ChooseSmokerClassMenuDraw(iClient) 
+Action ChooseSmokerClassMenuDraw(int iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	
@@ -202,7 +202,7 @@ Action ChooseSmokerClassMenuDraw(iClient)
 //Handlers/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Smoker Top Menu Handler
-SmokerTopMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void SmokerTopMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -256,7 +256,7 @@ SmokerTopMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Envelopment Menu Handler
-EnvelopmentMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void EnvelopmentMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -275,7 +275,7 @@ EnvelopmentMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Noxious Gasses Menu Handler
-NoxiousMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void NoxiousMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -294,7 +294,7 @@ NoxiousMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Dirty Menu Handler
-DirtyMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void DirtyMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -313,7 +313,7 @@ DirtyMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Choose Smoker Top Menu Handler
-ChooseSmokerClassMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void ChooseSmokerClassMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{

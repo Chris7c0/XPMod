@@ -1,5 +1,5 @@
 
-ShowRoundStatsLastRoundIndividual(iClient)
+void ShowRoundStatsLastRoundIndividual(int iClient)
 {
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return;
@@ -31,7 +31,7 @@ ShowRoundStatsLastRoundIndividual(iClient)
 	RoundStatsMenuDraw(iClient, strStatsText);
 }
 
-ShowRoundStatsLastRoundTopPlayers(iClient)
+void ShowRoundStatsLastRoundTopPlayers(int iClient)
 {
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return;
@@ -63,7 +63,7 @@ ShowRoundStatsLastRoundTopPlayers(iClient)
 	RoundStatsMenuDraw(iClient, strStatsText);
 }
 
-ShowRoundStatsXPModTopPlayers(iClient)
+void ShowRoundStatsXPModTopPlayers(int iClient)
 {
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return;
@@ -86,7 +86,7 @@ ShowRoundStatsXPModTopPlayers(iClient)
 }
 
  
-RoundStatsMenuDraw(int iClient, const char[] strStatsText)
+void RoundStatsMenuDraw(int iClient, const char[] strStatsText)
 {
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return;
@@ -116,7 +116,7 @@ RoundStatsMenuDraw(int iClient, const char[] strStatsText)
 	delete panel;
 }
 
-RoundStatsMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void RoundStatsMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_Select) 
 	{
@@ -130,7 +130,7 @@ RoundStatsMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 	}
 }
 
-ShowRoundStatsPanelsToPlayer(iClient)
+void ShowRoundStatsPanelsToPlayer(int iClient)
 {
 	// Last Round Stats Panels
 	RoundStatsPanel[iClient] = ROUND_STATS_PANEL_LAST_ROUND_INDIVIDUAL;
@@ -172,7 +172,7 @@ Action TimerSetAndShowNewRoundStatsPanel(Handle timer, any iClient)
 	return Plugin_Continue;
 }
 
-HandleMenuPanelWeaponSwitching(iClient, itemNum)
+void HandleMenuPanelWeaponSwitching(int iClient, int itemNum)
 {
 	switch (itemNum)
 	{

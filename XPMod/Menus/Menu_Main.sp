@@ -2,7 +2,7 @@
 //////////////////////////////////////////////         XPMod Menus         ///////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ClosePanel(iClient)
+void ClosePanel(int iClient)
 {
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return;
@@ -14,7 +14,7 @@ ClosePanel(iClient)
 	delete panel;
 }
 
-GetNewLinesToPushMenuDown(iClient, char strStartingNewLines[32])
+void GetNewLinesToPushMenuDown(int iClient, char strStartingNewLines[32])
 {
 	// if Client is specator or ghost
 	if (g_iClientTeam[iClient] == TEAM_SPECTATORS)// || g_bIsGhost[iClient] == true)
@@ -25,7 +25,7 @@ GetNewLinesToPushMenuDown(iClient, char strStartingNewLines[32])
 		strStartingNewLines = "\n \n";
 }
 
-GetNewLinesToPushMenuUp(iClient, char strEndingNewLines[32])
+void GetNewLinesToPushMenuUp(int iClient, char strEndingNewLines[32])
 {
 	// if Client is specator or ghost
 	if (g_iClientTeam[iClient] == TEAM_SPECTATORS)// || g_bIsGhost[iClient] == true)
@@ -36,7 +36,7 @@ GetNewLinesToPushMenuUp(iClient, char strEndingNewLines[32])
 		strEndingNewLines = "\n \n \n \n \n \n ";
 }
 
-XPModMenuDraw(iClient)
+void XPModMenuDraw(int iClient)
 {
 	// For client hosted games
 	if (iClient == 0)
@@ -62,7 +62,7 @@ XPModMenuDraw(iClient)
 
 //Menu Draw Functions                                                                                     
 //Top XPMod Menu Draw
-Action TopMenuDraw(iClient) 
+Action TopMenuDraw(int iClient) 
 {
 	RoundStatsPanel[iClient] = ROUND_STATS_PANEL_DONE;
 
@@ -162,7 +162,7 @@ Action TopMenuDraw(iClient)
 
 
 // Learn about characters
-Action TopChooseCharactersMenuDraw(iClient)
+Action TopChooseCharactersMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(TopChooseCharactersMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -200,7 +200,7 @@ Action TopChooseCharactersMenuDraw(iClient)
 
 
 //Select Talents
-Action ExtrasMenuDraw(iClient)
+Action ExtrasMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(ExtrasMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -237,7 +237,7 @@ Action ExtrasMenuDraw(iClient)
 }
 
 //Choose Team Menu Draw
-Action ChooseTeamMenuDraw(iClient)
+Action ChooseTeamMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(ChooseTeamMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -275,7 +275,7 @@ Action ChooseTeamMenuDraw(iClient)
 
 
 // Learn about characters
-Action ChooseStatisticsMenuDraw(iClient)
+Action ChooseStatisticsMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(ChooseStatisticsMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -311,7 +311,7 @@ Action ChooseStatisticsMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-Action OptionMenuDraw(iClient)
+Action OptionMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(OptionMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -365,7 +365,7 @@ Action OptionMenuDraw(iClient)
 //Menu Handler Functions                                                                                   
 //Top Menu Handler
 
-TopChooseCharactersMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void TopChooseCharactersMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -392,7 +392,7 @@ TopChooseCharactersMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Top Menu For Everything
-TopMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void TopMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -451,7 +451,7 @@ TopMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 	}
 }
 
-ExtrasMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void ExtrasMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -508,7 +508,7 @@ ExtrasMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Choose Team Menu Handler
-ChooseTeamMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void ChooseTeamMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -532,7 +532,7 @@ ChooseTeamMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 			return;
 		}
 
-		new iTeam = TEAM_SPECTATORS;
+		int iTeam = TEAM_SPECTATORS;
 
 		switch (itemNum)
 		{
@@ -546,7 +546,7 @@ ChooseTeamMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 	}
 }
 
-ChooseStatisticsMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void ChooseStatisticsMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -572,7 +572,7 @@ ChooseStatisticsMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 	}
 }
 
-OptionMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void OptionMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{

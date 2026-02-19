@@ -26,41 +26,41 @@ const float g_flSoHPumpI = 0.5;
 const float g_flSoHPumpE = 0.6;
 
 //Offsets for Windows
-new g_iOffset_NextActivation        = -1;
+int g_iOffset_NextActivation = -1;
 //new g_iOffset_NextActivation = 1068;
 //new g_iOffset_NextActivation = 1084;   //Windows
 //new g_iOffset_NextActivation = 1104;   //Linux
 //new g_iAttackTimerO = 5436;
-new g_iOffset_ShovePenalty			= -1;
-new g_iOffset_ActiveWeapon			= -1;
-new g_iOffset_NextPrimaryAttack		= -1;
+int g_iOffset_ShovePenalty = -1;
+int g_iOffset_ActiveWeapon = -1;
+int g_iOffset_NextPrimaryAttack = -1;
 // new g_iOffset_NextSecondaryAttack	= -1;
-new g_iOffset_PlaybackRate			= -1;
-new g_iOffset_TimeWeaponIdle		= -1;
-new g_iOffset_NextAttack			= -1;
-new g_iOffset_ReloadStartDuration	= -1;
-new g_iOffset_ReloadInsertDuration	= -1;
-new g_iOffset_ReloadEndDuration		= -1;
-new g_iOffset_ReloadState			= -1;
+int g_iOffset_PlaybackRate = -1;
+int g_iOffset_TimeWeaponIdle = -1;
+int g_iOffset_NextAttack = -1;
+int g_iOffset_ReloadStartDuration = -1;
+int g_iOffset_ReloadInsertDuration = -1;
+int g_iOffset_ReloadEndDuration = -1;
+int g_iOffset_ReloadState = -1;
 //new g_iOffset_ReloadStartTime		= -1;
-new g_iOffset_HealthBuffer			= -1;
+int g_iOffset_HealthBuffer = -1;
 //new g_iOffset_HealthBufferTime		= -1;
-new g_iOffset_CustomAbility			= -1;
-new g_iOffset_Clip1 				= -1;
-new g_iOffset_ClipShotgun			= -1;
-new g_iOffset_IsGhost				= -1;
-new g_iOffset_ReloadNumShells		= -1;
+int g_iOffset_CustomAbility = -1;
+int g_iOffset_Clip1 = -1;
+int g_iOffset_ClipShotgun = -1;
+int g_iOffset_IsGhost = -1;
+int g_iOffset_ReloadNumShells = -1;
 //new g_iOffset_ShellsInserted		= -1;
-new g_bOffset_InReload				= -1;
+int g_bOffset_InReload = -1;
 //new g_iOffset_Ammo					= -1;
 
 //Reload Animation Reset
-new g_iOffset_LayerStartTime		= -1;
-new g_iOffset_ViewModel				= -1;
+int g_iOffset_LayerStartTime = -1;
+int g_iOffset_ViewModel = -1;
 //For Coach's Jetpack
-new g_iOffset_MoveCollide			= -1;
-new g_iOffset_MoveType				= -1;
-new g_iOffset_VecVelocity			= -1;
+int g_iOffset_MoveCollide = -1;
+int g_iOffset_MoveType = -1;
+int g_iOffset_VecVelocity = -1;
 //new g_iOffset_OwnerEntity			= -1;
 
 float g_fReloadRate;

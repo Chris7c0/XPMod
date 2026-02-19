@@ -1,6 +1,6 @@
 Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 {
-	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	
 	//Delete the players particle menu (VGUI) if its open and firing their weapon
 	if(g_bEnabledVGUI[iClient] == true && g_bShowingVGUI[iClient] == true)
@@ -32,7 +32,7 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 			char strCurrentWeapon[32];
 			GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 
-			new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+			int ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 			
 			// Handle Rambo Mode
 			if(g_bRamboModeActive[iClient] == true)
@@ -97,9 +97,9 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 		char currentweapon[32];
 		GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
 		//PrintToChatAll("Current Weapon is %s", currentweapon);
-		new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-		new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
-		new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
+		int ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+		int CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
+		int iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 		
 		switch(g_iChosenSurvivor[iClient])
 		{
@@ -109,7 +109,7 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 				//if((StrEqual(currentweapon, "weapon_rifle", false) == true) || (StrEqual(currentweapon, "weapon_rifle_sg552", false) == true) || (StrEqual(currentweapon, "weapon_rifle_ak47", false) == true) || (StrEqual(currentweapon, "weapon_rifle_desert", false) == true) && (CurrentClipAmmo != 0))
 				if((StrEqual(currentweapon, "weapon_rifle", false) == true) || (StrEqual(currentweapon, "weapon_rifle_sg552", false) == true)|| (StrEqual(currentweapon, "weapon_rifle_ak47", false) == true) || (StrEqual(currentweapon, "weapon_rifle_desert", false) == true))
 				{
-					new iAmmo = GetEntData(iClient, iOffset_Ammo + 12);	//for rifle (+12)
+					int iAmmo = GetEntData(iClient, iOffset_Ammo + 12);//for rifle (+12)
 					if(iAmmo >= (g_iPromotionalLevel[iClient]*20))
 					{
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, CurrentClipAmmo + (g_iPromotionalLevel[iClient]*20), true);
@@ -120,7 +120,7 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 					}
 					else if(iAmmo < (g_iPromotionalLevel[iClient]*20))
 					{
-						new NewAmmo = ((g_iPromotionalLevel[iClient]*20) - iAmmo);
+						int NewAmmo = ((g_iPromotionalLevel[iClient]*20) - iAmmo);
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + ((g_iPromotionalLevel[iClient]*20) - NewAmmo)), true);
 						SetEntData(iClient, iOffset_Ammo + 12, 0);
 						g_bClientIsReloading[iClient] = false;
@@ -133,7 +133,7 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 			{
 				if((StrEqual(currentweapon, "weapon_hunting_rifle", false) == true) && (g_iSilentLevel[iClient] > 0) && (CurrentClipAmmo != 0))
 				{
-					new iAmmo = GetEntData(iClient, iOffset_Ammo + 36);	//for hunting rifle (+36)
+					int iAmmo = GetEntData(iClient, iOffset_Ammo + 36);//for hunting rifle (+36)
 					if((iAmmo + CurrentClipAmmo) > (17 - (g_iSilentLevel[iClient] * 2)))
 					{
 						SetEntData(iClient, iOffset_Ammo + 36, iAmmo + (CurrentClipAmmo - (17 - (g_iSilentLevel[iClient] * 2))));
@@ -144,7 +144,7 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 				}
 				if((StrEqual(currentweapon, "weapon_sniper_awp", false) == true) && (g_iSilentLevel[iClient] > 0) && (CurrentClipAmmo != 0))
 				{
-					new iAmmo = GetEntData(iClient, iOffset_Ammo + 40);	//for AWP, Scout, and Military Sniper (+40)
+					int iAmmo = GetEntData(iClient, iOffset_Ammo + 40);//for AWP, Scout, and Military Sniper (+40)
 					if((iAmmo + CurrentClipAmmo) > 3)
 					{
 						SetEntData(iClient, iOffset_Ammo + 40, iAmmo + (CurrentClipAmmo - 3));
@@ -155,7 +155,7 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 				}
 				if((StrEqual(currentweapon, "weapon_sniper_scout", false) == true) && (g_iSilentLevel[iClient] > 0) && (CurrentClipAmmo != 0))
 				{
-					new iAmmo = GetEntData(iClient, iOffset_Ammo + 40);	//for AWP, Scout, and Military Sniper (+40)
+					int iAmmo = GetEntData(iClient, iOffset_Ammo + 40);//for AWP, Scout, and Military Sniper (+40)
 					if((iAmmo + CurrentClipAmmo) > (20 - g_iSilentLevel[iClient]))
 					{
 						SetEntData(iClient, iOffset_Ammo + 40, iAmmo + (CurrentClipAmmo - (20 - g_iSilentLevel[iClient])));
@@ -166,7 +166,7 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 				}
 				if((StrEqual(currentweapon, "weapon_sniper_military", false) == true) && (g_iSilentLevel[iClient] > 0))
 				{
-					new iAmmo = GetEntData(iClient, iOffset_Ammo + 40);	//for AWP, Scout, and Military Sniper (+40)
+					int iAmmo = GetEntData(iClient, iOffset_Ammo + 40);//for AWP, Scout, and Military Sniper (+40)
 					if(iAmmo >= (g_iSilentLevel[iClient] * 6))
 					{
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, CurrentClipAmmo + (g_iSilentLevel[iClient] * 6), true);
@@ -174,7 +174,7 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 					}
 					else if(iAmmo < (g_iSilentLevel[iClient] * 6))
 					{
-						new NewAmmo = ((g_iSilentLevel[iClient] * 6) - iAmmo);
+						int NewAmmo = ((g_iSilentLevel[iClient] * 6) - iAmmo);
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + ((g_iSilentLevel[iClient] * 6) - NewAmmo)), true);
 						SetEntData(iClient, iOffset_Ammo + 40, 0);
 					}
@@ -223,7 +223,7 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 					if (CurrentClipAmmo > 0 &&
 						(StrContains(currentweapon, "weapon_smg", false) != -1) )
 					{
-						new iAmmo = GetEntData(iClient, iOffset_Ammo + 20);
+						int iAmmo = GetEntData(iClient, iOffset_Ammo + 20);
 						SetEntData(iClient, iOffset_Ammo + 20, iAmmo - (g_iLouisTalent2Level[iClient] * 10));
 
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, CurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10), true);
@@ -374,9 +374,9 @@ Action Event_ReviveSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 	return Plugin_Continue;
 }
 
-Event_LedgeGrab(Handle hEvent, const char[] strName, bool bDontBroadcast)		//need an event for if the iClient gets up off the ledge to make clienthanging false
+void Event_LedgeGrab(Handle hEvent, const char[] strName, bool bDontBroadcast)		//need an event for if the iClient gets up off the ledge to make clienthanging false
 {
-	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	clienthanging[iClient] = true;
 
 	// Self Revive Message
@@ -388,7 +388,7 @@ Event_LedgeGrab(Handle hEvent, const char[] strName, bool bDontBroadcast)		//nee
 
 Action Event_InfectedDecap(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new iClient  = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	int iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	if(IsFakeClient(iClient) == false)
 	{
 		if(g_iClientTeam[iClient] == TEAM_SURVIVORS)
@@ -415,8 +415,8 @@ Action Event_InfectedDecap(Handle hEvent, const char[] strName, bool bDontBroadc
 
 Action Event_PlayerIncap(Handle hEvent, char[] Event_name, bool dontBroadcast)
 {
-	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
-	new incapper = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
+	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+	int incapper = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
 	
 	DisableNinjaRope(iClient, false);
 	g_bIsClientDown[iClient] = true;
@@ -428,7 +428,7 @@ Action Event_PlayerIncap(Handle hEvent, char[] Event_name, bool dontBroadcast)
 	
 	if(g_iWillLevel[iClient]>0)
 	{
-		new currentHP=GetPlayerHealth(iClient);
+		int currentHP = GetPlayerHealth(iClient);
 		SetPlayerHealth(iClient, incapper, currentHP + (g_iWillLevel[iClient] * 50));
 	}
 	if(incapper > 0)
@@ -467,7 +467,7 @@ Action Event_PlayerIncap(Handle hEvent, char[] Event_name, bool dontBroadcast)
 				{
 					if(g_bIsClientDown[i] == false)
 					{
-						new currentHP = GetPlayerHealth(i);
+						int currentHP = GetPlayerHealth(i);
 						if((currentHP + (g_iDiehardLevel[i] * 9)) < (100 + (g_iWillLevel[i]*5) + (g_iDiehardLevel[i]*15)))
 							SetPlayerHealth(i, -1, currentHP + (g_iDiehardLevel[i] * 9));
 						else
@@ -512,8 +512,8 @@ Action Event_PlayerIncap(Handle hEvent, char[] Event_name, bool dontBroadcast)
 
 Action Event_HealSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 {
-	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
-	new target = GetClientOfUserId(GetEventInt(hEvent, "subject"));
+	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+	int target = GetClientOfUserId(GetEventInt(hEvent, "subject"));
 
 	// PrintToChatAll("Event_HealSuccess: healer: %N, target: %N", iClient, target);
 	
@@ -524,8 +524,8 @@ Action Event_HealSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 		return Plugin_Continue;
 	
 	//Get their current health states
-	new currentHP = GetPlayerHealth(target);
-	new maxHP = GetPlayerMaxHealth(target);
+	int currentHP = GetPlayerHealth(target);
+	int maxHP = GetPlayerMaxHealth(target);
 	
 	//Set what their health should be after health kit use
 	if((currentHP + 100) > maxHP)
@@ -535,8 +535,8 @@ Action Event_HealSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 	
 	if(g_iOverLevel[target] > 0)
 	{
-		new iCurrentHealth = GetPlayerHealth(target);
-		new iMaxHealth = GetPlayerMaxHealth(target);
+		int iCurrentHealth = GetPlayerHealth(target);
+		int iMaxHealth = GetPlayerMaxHealth(target);
 		//float fTempHealth = GetEntDataFloat(target, g_iOffset_HealthBuffer);
 		//if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
 		if(iCurrentHealth < (iMaxHealth - 20.0))
@@ -580,7 +580,7 @@ Action Event_HealSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 	{
 		if(g_iLeftoverLevel[iClient]>0)
 		{
-			decl number;
+			int number;
 			number = GetRandomInt(1, 133);
 			
 			if(g_iLeftoverLevel[iClient]==1)
@@ -750,7 +750,7 @@ Action Event_HealSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 			}
 		}
 	}
-	for(new i=1;i<=MaxClients;i++)		//For talents that change cvars get the highest level for each before unfreezing
+	for (int i = 1;i<=MaxClients;i++)		//For talents that change cvars get the highest level for each before unfreezing
 	{
 		if(RunClientChecks(i) && IsPlayerAlive(i) == true)
 		{
@@ -796,16 +796,16 @@ Action Event_HealSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 
 Action Event_DefibUsed(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new iSubject = GetClientOfUserId(GetEventInt(hEvent,"subject"));
-	new iClient  = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	int iSubject = GetClientOfUserId(GetEventInt(hEvent,"subject"));
+	int iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 
 	SetAppropriateMaxHealthForPlayer(iSubject, false);
 	
 	GiveClientXP(iClient, 100, g_iSprite_100XP, iSubject, "Defibrillated Player.");
 	if(g_iOverLevel[iSubject] > 0)
 	{
-		new iCurrentHealth = GetPlayerHealth(iSubject);
-		new iMaxHealth = GetPlayerMaxHealth(iSubject);
+		int iCurrentHealth = GetPlayerHealth(iSubject);
+		int iMaxHealth = GetPlayerMaxHealth(iSubject);
 		//float fTempHealth = GetEntDataFloat(iSubject, g_iOffset_HealthBuffer);
 		//if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
 		if(iCurrentHealth < (iMaxHealth - 20.0))
@@ -843,7 +843,7 @@ Action Event_DefibUsed(Handle hEvent, const char[] strName, bool bDontBroadcast)
 
 Action Event_UpgradePackUsed(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new iClient  = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	int iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	
 	GiveClientXP(iClient, 25, g_iSprite_25XP, iClient, "Deployed iAmmo pack.");
 	return Plugin_Continue;
@@ -852,7 +852,7 @@ Action Event_UpgradePackUsed(Handle hEvent, const char[] strName, bool bDontBroa
 
 Action Event_PillsUsed(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	
 	if(RunClientChecks(iClient) == false)
 		return Plugin_Continue;
@@ -868,7 +868,7 @@ Action Event_PillsUsed(Handle hEvent, const char[] strName, bool bDontBroadcast)
 	}
 	EventsPillsUsed_Ellis(iClient);
 
-	decl i, iLoopedClientMaxHP, iLoopedClientCurrentHP;
+	int i, iLoopedClientMaxHP, iLoopedClientCurrentHP;
 	for(i = 1; i <= MaxClients; i++)		//For all the Nicks on the team, increase their health for Enhanced Pain Killers Talent
 	{
 		if(g_iEnhancedLevel[i] > 0 && i != iClient && g_iClientTeam[i] == TEAM_SURVIVORS && IsClientInGame(i)==true && IsFakeClient(i) == false)
@@ -899,7 +899,7 @@ Action Event_PillsUsed(Handle hEvent, const char[] strName, bool bDontBroadcast)
 
 Action Event_AdrenalineUsed(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	
 	if(RunClientChecks(iClient) == false)
 		return Plugin_Continue;
@@ -910,8 +910,8 @@ Action Event_AdrenalineUsed(Handle hEvent, const char[] strName, bool bDontBroad
 	// Nick
 	if(g_iEnhancedLevel[iClient] > 0 && IsFakeClient(iClient) == false)
 	{
-		new iMaxHealth = GetPlayerMaxHealth(iClient);
-		new iHealth = GetPlayerHealth(iClient);
+		int iMaxHealth = GetPlayerMaxHealth(iClient);
+		int iHealth = GetPlayerHealth(iClient);
 		float fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
 		
 		if(float(iHealth) + fTempHealth + (float(g_iEnhancedLevel[iClient]) * 6.0) <= float(iMaxHealth))
@@ -922,7 +922,7 @@ Action Event_AdrenalineUsed(Handle hEvent, const char[] strName, bool bDontBroad
 		SetEntDataFloat(iClient,g_iOffset_HealthBuffer, fTempHealth ,true);
 	}
 
-	decl i, iLoopedClientMaxHP, iLoopedClientCurrentHP;
+	int i, iLoopedClientMaxHP, iLoopedClientCurrentHP;
 	for(i = 1; i <= MaxClients; i++)		//For all the Nicks on the team, increase their health for Enhanced Pain Killers Talent
 	{
 		if(g_iEnhancedLevel[i] > 0 && i != iClient && g_iClientTeam[i] == TEAM_SURVIVORS && IsClientInGame(i)==true && IsFakeClient(i) == false)
@@ -956,7 +956,7 @@ Action Event_WeaponGiven(Handle hEvent, const char[] strName, bool bDontBroadcas
 {
 	//PrintToChatAll("Event_WeaponGiven");
 	
-	new iGiver  = GetClientOfUserId(GetEventInt(hEvent,"giver"));
+	int iGiver = GetClientOfUserId(GetEventInt(hEvent,"giver"));
 	// new iTaker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	// new iWeapon  = GetEventInt(hEvent,"weapon");	
 	

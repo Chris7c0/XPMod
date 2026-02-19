@@ -1,5 +1,5 @@
 
-Action CreateNewUserMenuDraw(iClient)
+Action CreateNewUserMenuDraw(int iClient)
 {
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Handled;
@@ -51,7 +51,7 @@ Action CreateNewUserMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-CreateNewUserMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void CreateNewUserMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -81,14 +81,14 @@ CreateNewUserMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 	}
 }
 
-Action QuickBan(iClient, args) {
+Action QuickBan(int iClient, int args) {
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Handled;
 	BanMeMenuDraw(iClient);
 	return Plugin_Handled;		
 }
 
-Action BanMeMenuDraw(iClient)
+Action BanMeMenuDraw(int iClient)
 {
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Handled;
@@ -124,7 +124,7 @@ Action BanMeMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-BanMeMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void BanMeMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -198,7 +198,7 @@ Action BanConfirmMenu(int iClient, int iBanDurationInMinutes)
 }
 
 
-BanConfirmMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void BanConfirmMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{

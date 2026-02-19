@@ -1,4 +1,4 @@
-void Bind1Press_Ellis(iClient)
+void Bind1Press_Ellis(int iClient)
 {
     if(g_iMetalLevel[iClient]> 0)	//Ellis's Ammo Bind
     {
@@ -9,7 +9,7 @@ void Bind1Press_Ellis(iClient)
                 float vorigin[3], vangles[3], topvec[3];
                 GetLocationVectorInfrontOfClient(iClient, vorigin, vangles);
                 
-                new ammopile = CreateEntityByName("weapon_ammo_spawn");
+                int ammopile = CreateEntityByName("weapon_ammo_spawn");
                 DispatchKeyValueVector(ammopile, "Origin", vorigin);
                 DispatchKeyValueVector(ammopile, "Angles", vangles);
                 DispatchKeyValue(ammopile, "solid", "2");
@@ -35,7 +35,7 @@ void Bind1Press_Ellis(iClient)
                 TE_SendToAll();
                 
                 g_iClientBindUses_1[iClient]++;
-                new uses = 3 - g_iClientBindUses_1[iClient];
+                int uses = 3 - g_iClientBindUses_1[iClient];
                 PrintHintText(iClient, "Your have deployed ammo for the team, %d ammo piles remain", uses);
             }
             else

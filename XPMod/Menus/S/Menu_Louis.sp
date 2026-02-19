@@ -1,7 +1,7 @@
 //Louis Menu////////////////////////////////////////////////////////////////
 
 //Louis Menu Draw
-Action LouisMenuDraw(iClient) 
+Action LouisMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -46,7 +46,7 @@ Action LouisMenuDraw(iClient)
 }
 
 //LouisTalent1MenuDraw
-Action LouisTalent1MenuDraw(iClient) 
+Action LouisTalent1MenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -90,7 +90,7 @@ Action LouisTalent1MenuDraw(iClient)
 }
 
 //LouisTalent2MenuDraw
-Action LouisTalent2MenuDraw(iClient) 
+Action LouisTalent2MenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -144,7 +144,7 @@ Action LouisTalent2MenuDraw(iClient)
 }
 
 //LouisTalent3MenuDraw
-Action LouisTalent3MenuDraw(iClient) 
+Action LouisTalent3MenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -190,7 +190,7 @@ Action LouisTalent3MenuDraw(iClient)
 }
 
 //LouisTalent4MenuDraw
-Action LouisTalent4MenuDraw(iClient) 
+Action LouisTalent4MenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -236,7 +236,7 @@ Action LouisTalent4MenuDraw(iClient)
 }
 
 //LouisTalent5MenuDraw
-Action LouisTalent5MenuDraw(iClient) 
+Action LouisTalent5MenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -288,7 +288,7 @@ Action LouisTalent5MenuDraw(iClient)
 }
 
 //LouisTalent6MenuDraw
-Action LouisTalent6MenuDraw(iClient) 
+Action LouisTalent6MenuDraw(int iClient) 
 {
 	char text[512];
 	
@@ -348,7 +348,7 @@ Action LouisTalent6MenuDraw(iClient)
 //Handlers//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Louis Menu Handler
-LouisMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void LouisMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -379,7 +379,7 @@ LouisMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //LouisTalent1 Menu Handler
-LouisTalent1MenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void LouisTalent1MenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -398,7 +398,7 @@ LouisTalent1MenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //LouisTalent2 Menu Handler
-LouisTalent2MenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void LouisTalent2MenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -417,7 +417,7 @@ LouisTalent2MenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //LouisTalent3 Menu Handler
-LouisTalent3MenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void LouisTalent3MenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -436,7 +436,7 @@ LouisTalent3MenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //LouisTalent4 Menu Handler
-LouisTalent4MenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void LouisTalent4MenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -455,7 +455,7 @@ LouisTalent4MenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //LouisTalent5 Menu Handler
-LouisTalent5MenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void LouisTalent5MenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -474,7 +474,7 @@ LouisTalent5MenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //LouisTalent6 Menu Handler
-LouisTalent6MenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void LouisTalent6MenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{

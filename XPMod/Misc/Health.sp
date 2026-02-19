@@ -111,7 +111,7 @@ void HandlePostSetPlayerHealth(int iClient)
 	HandlePostSetPlayerHealth_Ellis(iClient);
 }
 
-void ResetTempHealthToSurvivor(iClient)
+void ResetTempHealthToSurvivor(int iClient)
 {
 	if (!RunClientChecks(iClient) || 
 		!IsPlayerAlive(iClient) || 
@@ -130,15 +130,15 @@ void AddTempHealthToSurvivor(int iClient, float fAdditionalTempHealth, bool bRes
 		return;
 	
 	// Calculate the current survivors temp health
-	new iTempHealth = GetSurvivorTempHealth(iClient);
+	int iTempHealth = GetSurvivorTempHealth(iClient);
 	if (iTempHealth < 0)
 		return;
 
 	// Cap fAdditionalTempHealth to Max Health if option selected
 	if (bRespectMaxHealth)
 	{
-		new iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
-		new iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
+		int iCurrentHealth = GetEntProp(iClient,Prop_Data,"m_iHealth");
+		int iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
 
 		// This will go over max health, so cap the additional amount given if true
 		if (iCurrentHealth + iTempHealth + RoundToNearest(fAdditionalTempHealth) > iMaxHealth)
@@ -203,7 +203,7 @@ bool ConvertSomeSurvivorHealthToTemporary(int iClient, int iHealthConversionAmou
 		return false;
 	
 	// Store current health numbers
-	new iCurrentHealth = GetPlayerHealth(iClient);
+	int iCurrentHealth = GetPlayerHealth(iClient);
 	// new iTempHealth = GetSurvivorTempHealth(iClient);
 	
 	if (iCurrentHealth <= 1)
@@ -232,8 +232,8 @@ bool ConvertAllSurvivorHealthToTemporary(int iClient)
 		return false;
 	
 	// Store current health numbers
-	new iCurrentHealth = GetPlayerHealth(iClient);
-	new iTempHealth = GetSurvivorTempHealth(iClient);
+	int iCurrentHealth = GetPlayerHealth(iClient);
+	int iTempHealth = GetSurvivorTempHealth(iClient);
 	// Change health to only be 1
 	// Dont call SetPlayerHealth here, infinite loop because it calls this function
 	SetEntProp(iClient, Prop_Data, "m_iHealth", 1);
@@ -247,7 +247,7 @@ bool ConvertAllSurvivorHealthToTemporary(int iClient)
 	return true;
 }
 
-HealClientFully(iClient)
+void HealClientFully(int iClient)
 {
 	if (RunClientChecks(iClient) == false || IsPlayerAlive(iClient) == false)
 		return;
@@ -261,9 +261,9 @@ HealClientFully(iClient)
 	// SetEntProp(iClient, Prop_Data, "m_iHealth", iMaxHealth);
 }
 
-HealAllSurvivorsFully()
+void HealAllSurvivorsFully()
 {
-	for(new i=1;i <= MaxClients;i++)
+	for (int i = 1;i <= MaxClients;i++)
 	{
 		if (RunClientChecks(i) && 
 			IsPlayerAlive(i) && 

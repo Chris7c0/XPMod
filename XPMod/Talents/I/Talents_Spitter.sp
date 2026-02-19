@@ -1,4 +1,4 @@
-TalentsLoad_Spitter(iClient)
+void TalentsLoad_Spitter(int iClient)
 {
 	if(g_iPuppetLevel[iClient] > 0)
 	{
@@ -38,7 +38,7 @@ TalentsLoad_Spitter(iClient)
 	g_xyzWitchConjureLocation[iClient][2] = 0.0;
 }
 
-OnGameFrame_Spitter(iClient)
+void OnGameFrame_Spitter(int iClient)
 {
 	if(g_iPuppetLevel[iClient] > 5)
 	{
@@ -123,7 +123,7 @@ OnGameFrame_Spitter(iClient)
 	}
 }
 
-EventsHurt_AttackerSpitter(Handle hEvent, attacker, victim)
+void EventsHurt_AttackerSpitter(Handle hEvent, int attacker, int victim)
 {
 	if (IsFakeClient(attacker))
 		return;
@@ -131,7 +131,7 @@ EventsHurt_AttackerSpitter(Handle hEvent, attacker, victim)
 	if (g_iClientTeam[victim] != TEAM_SURVIVORS)
 		return;
 
-	new dmgHealth  = GetEventInt(hEvent,"dmg_health");
+	int dmgHealth = GetEventInt(hEvent,"dmg_health");
 	
 	if(g_iPuppetLevel[attacker] > 0)
 	{
@@ -181,18 +181,18 @@ EventsHurt_AttackerSpitter(Handle hEvent, attacker, victim)
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }
 
-DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
+void DealSpecialSpitterGooCollision(int iAttacker, int iVictim, int iDamageTaken)
 {
 	if(g_bAdhesiveGooActive[iVictim] == false)
 	{
-		decl RandomAdhesiveGooChance;
+		int RandomAdhesiveGooChance;
 		RandomAdhesiveGooChance = GetRandomInt(1, 4);
 		switch (RandomAdhesiveGooChance)
 		{
 			// 20% chance of causing adhession on hit
 			case 1:
 			{
-				decl RandomAdhesiveGooAffect;
+				int RandomAdhesiveGooAffect;
 				RandomAdhesiveGooAffect = GetRandomInt(1, 3);
 				
 				switch (RandomAdhesiveGooAffect)
@@ -217,7 +217,7 @@ DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 		{
 			if (IsIncap(iVictim) == false)
 			{
-				new iHealth = GetPlayerHealth(iVictim);
+				int iHealth = GetPlayerHealth(iVictim);
 				float fTempHealth = GetEntDataFloat(iVictim, g_iOffset_HealthBuffer);
 				
 				if(fTempHealth < 1.0)
@@ -257,7 +257,7 @@ DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 			{
 				g_bCanBePushedByRepulsion[iVictim] = false;
 				float xyzNewVelocity[3];
-				decl RandomRepulsionDirection;
+				int RandomRepulsionDirection;
 				RandomRepulsionDirection = GetRandomInt(1, 9);
 				switch (RandomRepulsionDirection)
 				{
@@ -337,7 +337,7 @@ DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 }
 
 
-void VirallyInfectVictim(iVictim, iAttacker)
+void VirallyInfectVictim(int iVictim, int iAttacker)
 {
 	if(g_bIsImmuneToVirus[iVictim] == false && g_iViralInfector[iVictim] == 0)
 	{
@@ -356,7 +356,7 @@ void VirallyInfectVictim(iVictim, iAttacker)
 	}
 }
 
-void ConjureFromBagOfSpits(iClient, float xyzLocation[3])
+void ConjureFromBagOfSpits(int iClient, float xyzLocation[3])
 {
 	if (g_bTalentsConfirmed[iClient] == false || 
 		g_iMaterialLevel[iClient] == 0 || 

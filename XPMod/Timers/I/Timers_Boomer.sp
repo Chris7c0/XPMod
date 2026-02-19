@@ -69,7 +69,7 @@ Action TimerConstantVomit(Handle timer, any iClient)
 	if (IsServerProcessing()==false || iClient <= 0 || IsClientInGame(iClient)==false || IsPlayerAlive(iClient)==false || g_bIsServingHotMeal[iClient] == false)
 		return Plugin_Stop;
 	
-	new iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
+	int iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
 	
 	if (!IsValidEntity(iEntid))
 		return Plugin_Stop;
@@ -102,7 +102,7 @@ Action TimerSetBoomerCooldown(Handle timer, any iClient)
 	//RETRIEVE VARIABLES
 	//------------------
 	//get the ability ent id
-	new iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
+	int iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
 	//if the retrieved gun id is -1, then move on
 	//PrintToChatAll("iEntid = %d", iEntid);
 	if (!IsValidEntity(iEntid))

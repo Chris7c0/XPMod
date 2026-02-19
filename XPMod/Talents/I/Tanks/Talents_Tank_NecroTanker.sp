@@ -1,4 +1,4 @@
-LoadNecroTankerTalents(iClient)
+void LoadNecroTankerTalents(int iClient)
 {
 	if (RunClientChecks(iClient) == false || 
 		g_iClientTeam[iClient] != TEAM_INFECTED || 
@@ -41,7 +41,7 @@ LoadNecroTankerTalents(iClient)
 		PrintHintText(iClient, "You have become the NecroTanker");
 }
 
-ResetAllTankVariables_NecroTanker(iClient)
+void ResetAllTankVariables_NecroTanker(int iClient)
 {
 	SuppressNeverUsedWarning(iClient);
 }
@@ -52,7 +52,7 @@ ResetAllTankVariables_NecroTanker(iClient)
 // }
 
 
-SetClientSpeedTankNecroTanker(iClient, float &fSpeed)
+void SetClientSpeedTankNecroTanker(int iClient, float &fSpeed)
 {
 	if (g_iTankChosen[iClient] != TANK_NECROTANKER)
 		return;
@@ -60,7 +60,7 @@ SetClientSpeedTankNecroTanker(iClient, float &fSpeed)
 	fSpeed += 0.15;
 }
 
-OnGameFrame_Tank_NecroTanker(iClient)
+void OnGameFrame_Tank_NecroTanker(int iClient)
 {
 	int buttons;
 	buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
@@ -108,12 +108,12 @@ OnGameFrame_Tank_NecroTanker(iClient)
 	}
 }
 
-EventsHurt_VictimTank_NecroTanker(Handle hEvent, iAttacker, iVictimTank)
+void EventsHurt_VictimTank_NecroTanker(Handle hEvent, int iAttacker, int iVictimTank)
 {
 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictimTank);
 }
 
-EventsHurt_AttackerTank_NecroTanker(Handle hEvent, iAttackerTank, iVictim)
+void EventsHurt_AttackerTank_NecroTanker(Handle hEvent, int iAttackerTank, int iVictim)
 {
 	char strWeapon[20];
 	GetEventString(hEvent,"weapon", strWeapon, 20);
@@ -126,7 +126,7 @@ EventsHurt_AttackerTank_NecroTanker(Handle hEvent, iAttackerTank, iVictim)
 		SummonNecroTankerPunchZombies(iAttackerTank, iVictim);
 
 		// Store Check Mana before increase if below boomer throw threshhole
-		new iPreviousMana = g_iNecroTankerManaPool[iAttackerTank];
+		int iPreviousMana = g_iNecroTankerManaPool[iAttackerTank];
 
 		g_iNecroTankerManaPool[iAttackerTank] += NECROTANKER_MANA_GAIN_PUNCH;
 		// Clamp it
@@ -142,7 +142,7 @@ EventsHurt_AttackerTank_NecroTanker(Handle hEvent, iAttackerTank, iVictim)
 	}
 }
 
-HandleNecroTankerInfectedConsumption(iClient, iInfectedEntity)
+void HandleNecroTankerInfectedConsumption(int iClient, int iInfectedEntity)
 {
 	//Check if player is NecroTanker
 	if(g_iTankChosen[iClient] != TANK_NECROTANKER ||
@@ -153,7 +153,7 @@ HandleNecroTankerInfectedConsumption(iClient, iInfectedEntity)
 		return;
 
 	// Get the model type to determine the amount of health to give
-	decl iAdditionalHealth;
+	int iAdditionalHealth;
 	if (IsEntityUncommonInfected(iInfectedEntity) == true)
 		iAdditionalHealth = NECROTANKER_CONSUME_UNCOMMON_HP;
 	else
@@ -161,25 +161,25 @@ HandleNecroTankerInfectedConsumption(iClient, iInfectedEntity)
 
 	// Give the appropriate amount of Health & Max Health
 	// Check if should increase max health
-	new iCurrentMaxHealth = GetPlayerMaxHealth(iClient);
-	new iAbsoluteMaxHealth = RoundToNearest(NECROTANKER_MAX_HEALTH * g_fTankStartingHealthMultiplier[iClient]);
+	int iCurrentMaxHealth = GetPlayerMaxHealth(iClient);
+	int iAbsoluteMaxHealth = RoundToNearest(NECROTANKER_MAX_HEALTH * g_fTankStartingHealthMultiplier[iClient]);
 	if (iCurrentMaxHealth < iAbsoluteMaxHealth)
 	{
 		// Add it, Cap it, Set it
-		new iNewHealth = iCurrentMaxHealth + iAdditionalHealth > iAbsoluteMaxHealth ? iAbsoluteMaxHealth : iCurrentMaxHealth + iAdditionalHealth;
+		int iNewHealth = iCurrentMaxHealth + iAdditionalHealth > iAbsoluteMaxHealth ? iAbsoluteMaxHealth : iCurrentMaxHealth + iAdditionalHealth;
 		SetPlayerMaxHealth(iClient,  iNewHealth, false, false);
 	}
 	// Check if should increase health
-	new iCurrentHealth = GetPlayerHealth(iClient);
+	int iCurrentHealth = GetPlayerHealth(iClient);
 	if (iCurrentHealth < iAbsoluteMaxHealth)
 	{
 		// Add it, Cap it, Set it
-		new iNewHealth = iCurrentHealth + iAdditionalHealth > iAbsoluteMaxHealth ? iAbsoluteMaxHealth : iCurrentHealth + iAdditionalHealth;
+		int iNewHealth = iCurrentHealth + iAdditionalHealth > iAbsoluteMaxHealth ? iAbsoluteMaxHealth : iCurrentHealth + iAdditionalHealth;
 		SetPlayerHealth(iClient, -1, iNewHealth);
 	}
 }
 
-CreateNecroTankerTrailEffect(int iClient)
+void CreateNecroTankerTrailEffect(int iClient)
 {
 	float xyzTankPosition[3];
 	GetClientAbsOrigin(iClient, xyzTankPosition);
@@ -298,7 +298,7 @@ CreateNecroTankerTrailEffect(int iClient)
 // 	return Plugin_Continue;
 // }
 
-CreateNecroTankerRockDestroyEffect(int iRockEntity)
+void CreateNecroTankerRockDestroyEffect(int iRockEntity)
 {
 	float xyzRockPosition[3];
 	GetEntPropVector(iRockEntity, Prop_Send, "m_vecOrigin", xyzRockPosition);
@@ -311,7 +311,7 @@ CreateNecroTankerRockDestroyEffect(int iRockEntity)
 	EmitSoundToAll(SOUND_BOOMER_EXPLODE, iRockEntity, SNDCHAN_AUTO, SNDLEVEL_GUNFIRE, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, xyzRockPosition, NULL_VECTOR, true, 0.0);
 }
 
-BileEveryoneCloseToExplodingNecroTankerTankRock(iRockEntity)
+void BileEveryoneCloseToExplodingNecroTankerTankRock(int iRockEntity)
 {
 	if (RunEntityChecks(iRockEntity) == false)
 		return;
@@ -321,11 +321,11 @@ BileEveryoneCloseToExplodingNecroTankerTankRock(iRockEntity)
 	GetEntPropVector(iRockEntity, Prop_Send, "m_vecOrigin", xyzRockPosition);
 
 	// Find the tank rock entity in the list that will be used to gain Tank's ID
-	new iTankRockIndex = FindIndexInArrayListUsingValue(g_listTankRockEntities, iRockEntity, TANK_ROCK_ENTITY_ID);
+	int iTankRockIndex = FindIndexInArrayListUsingValue(g_listTankRockEntities, iRockEntity, TANK_ROCK_ENTITY_ID);
 	// Get the Tank's ID, the Boomer rock's thrower
-	new iTank = g_listTankRockEntities.Get(iTankRockIndex, TANK_ROCK_OWNER_ID)
+	int iTank = g_listTankRockEntities.Get(iTankRockIndex, TANK_ROCK_OWNER_ID);
 
-	for(new iClient=1; iClient <= MaxClients; iClient++)
+	for (int iClient = 1; iClient <= MaxClients; iClient++)
 	{
 		if(RunClientChecks(iClient) &&
 			IsPlayerAlive(iClient) &&
@@ -343,9 +343,9 @@ BileEveryoneCloseToExplodingNecroTankerTankRock(iRockEntity)
 				SDKCall(g_hSDK_VomitOnPlayer, iClient, iTank, true);
 
 				// Roll the dice for Big or Small
-				new iBigOrSmall = GetRandomFloat(0.0, 1.0) <= NECROTANKER_ENHANCE_CI_CHANCE_THROW ? CI_SMALL_OR_BIG_RANDOM : CI_SMALL_OR_BIG_NONE;
+				int iBigOrSmall = GetRandomFloat(0.0, 1.0) <= NECROTANKER_ENHANCE_CI_CHANCE_THROW ? CI_SMALL_OR_BIG_RANDOM : CI_SMALL_OR_BIG_NONE;
 				// Roll the dice for an Enhanced CI properties
-				new iEnhancedCISpecifiedType = GetRandomFloat(0.0, 1.0) <= NECROTANKER_ENHANCE_CI_CHANCE_THROW ? ENHANCED_CI_TYPE_RANDOM : ENHANCED_CI_TYPE_NONE;
+				int iEnhancedCISpecifiedType = GetRandomFloat(0.0, 1.0) <= NECROTANKER_ENHANCE_CI_CHANCE_THROW ? ENHANCED_CI_TYPE_RANDOM : ENHANCED_CI_TYPE_NONE;
 
 				// Delayed Spawn the CI around the player
 				SpawnCIAroundPlayerDelayed(iClient, 0.1, 3, UNCOMMON_CI_NONE, iBigOrSmall, iEnhancedCISpecifiedType);
@@ -354,19 +354,19 @@ BileEveryoneCloseToExplodingNecroTankerTankRock(iRockEntity)
 	}
 }
 
-CreateNecroTankerRockTrailEffect(int iRockEntity)
+void CreateNecroTankerRockTrailEffect(int iRockEntity)
 {
 	float xyzRockPosition[3];
 	GetEntPropVector(iRockEntity, Prop_Send, "m_vecOrigin", xyzRockPosition);
 
 	// Play a random sound effect name from the the boomer throw selection
-	new iRandomSoundNumber = GetRandomInt(0 ,sizeof(SOUND_BOOMER_THROW) - 1);
+	int iRandomSoundNumber = GetRandomInt(0 ,sizeof(SOUND_BOOMER_THROW) - 1);
 	// Play it twice because its to quiet (super dirty, but what do)
 	EmitAmbientSound(SOUND_BOOMER_THROW[ iRandomSoundNumber ], xyzRockPosition, iRockEntity, SNDLEVEL_GUNFIRE);
 	EmitAmbientSound(SOUND_BOOMER_THROW[ iRandomSoundNumber ], xyzRockPosition, iRockEntity, SNDLEVEL_GUNFIRE);
 }
 
-void SummonNecroTankerCrouchAndWalkAbility(iClient, bool bEnhancedCI)
+void SummonNecroTankerCrouchAndWalkAbility(int iClient, bool bEnhancedCI)
 {
 	// Get a location in front of the player to spawn the infected to prevent collision with others
 	float xyzLocation[3], xyzAngles[3];
@@ -394,7 +394,7 @@ void SummonNecroTankerCrouchAndWalkAbility(iClient, bool bEnhancedCI)
 	}
 	else
 	{
-		new iUncommonAndEnhancedChanceRoll = GetRandomInt(1,100);
+		int iUncommonAndEnhancedChanceRoll = GetRandomInt(1,100);
 		if (iUncommonAndEnhancedChanceRoll <= 25)
 			iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_RANDOM, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_RANDOM, true, fTimeToWaitForMob);
 		else if (iUncommonAndEnhancedChanceRoll <= 75)
@@ -423,7 +423,7 @@ void SummonNecroTankerCrouchAndWalkAbility(iClient, bool bEnhancedCI)
 		SetSIAbilityCooldown(iClient, 99999.0);
 }
 
-void SummonNecroTankerPunchZombies(iAttackerTank, iVictim)
+void SummonNecroTankerPunchZombies(int iAttackerTank, int iVictim)
 {
 	if (RunClientChecks(iAttackerTank) == false || 
 		RunClientChecks(iVictim) == false ||
@@ -443,9 +443,9 @@ void SummonNecroTankerPunchZombies(iAttackerTank, iVictim)
 	if (iRoll > 35 && iRoll <= 70)
 	{
 		// Roll the dice for Big or Small
-		new iBigOrSmall = GetRandomFloat(0.0, 1.0) <= NECROTANKER_ENHANCE_CI_CHANCE_PUNCH ? CI_SMALL_OR_BIG_RANDOM : CI_SMALL_OR_BIG_NONE;
+		int iBigOrSmall = GetRandomFloat(0.0, 1.0) <= NECROTANKER_ENHANCE_CI_CHANCE_PUNCH ? CI_SMALL_OR_BIG_RANDOM : CI_SMALL_OR_BIG_NONE;
 		// Roll the dice for an Enhanced CI properties
-		new iEnhancedCISpecifiedType = GetRandomFloat(0.0, 1.0) <= NECROTANKER_ENHANCE_CI_CHANCE_PUNCH ? ENHANCED_CI_TYPE_RANDOM : ENHANCED_CI_TYPE_NONE;
+		int iEnhancedCISpecifiedType = GetRandomFloat(0.0, 1.0) <= NECROTANKER_ENHANCE_CI_CHANCE_PUNCH ? ENHANCED_CI_TYPE_RANDOM : ENHANCED_CI_TYPE_NONE;
 
 		SpawnCIAroundPlayerDelayed(iVictim, 1.0, 6, UNCOMMON_CI_NONE, iBigOrSmall, iEnhancedCISpecifiedType);
 		return;
@@ -486,7 +486,7 @@ void SummonNecroTankerPunchZombies(iAttackerTank, iVictim)
 	// }
 }
 
-void DisplayNecroTankerManaMeter(iClient)
+void DisplayNecroTankerManaMeter(int iClient)
 {
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient))
 		return;

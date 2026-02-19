@@ -1,4 +1,4 @@
-void Bind1Press_Smoker(iClient)
+void Bind1Press_Smoker(int iClient)
 {
 	if (g_iClientInfectedClass1[iClient] != SMOKER && 
 		g_iClientInfectedClass2[iClient] != SMOKER &&
@@ -68,7 +68,7 @@ void Bind1Press_Smoker(iClient)
 }
 
 
-TurnSmokerIntoSmokeCloud(int iClient)
+void TurnSmokerIntoSmokeCloud(int iClient)
 {
 	// SDKHook(iClient, SDKHook_OnTakeDamage, OnTakeDamage);
 
@@ -115,7 +115,7 @@ TurnSmokerIntoSmokeCloud(int iClient)
 }
 
 // This is for if the smoker is able to attack or something happens while in smoke cloud or limbo, return them.
-ReturnSmokerFromSmokeCloudIfCurrentlySmokeCloud(iClient)
+void ReturnSmokerFromSmokeCloudIfCurrentlySmokeCloud(int iClient)
 {
 	if (g_iSmokerSmokeCloudPlayer != iClient && 
 		g_iSmokerInSmokeCloudLimbo != iClient)
@@ -124,7 +124,7 @@ ReturnSmokerFromSmokeCloudIfCurrentlySmokeCloud(iClient)
 	TurnBackToSmokerAfterSmokeCloud(iClient);
 }
 
-TurnBackToSmokerAfterSmokeCloud(int iClient)
+void TurnBackToSmokerAfterSmokeCloud(int iClient)
 {
 	g_iSmokerSmokeCloudPlayer = -1;
 	g_iSmokerInSmokeCloudLimbo = -1;
@@ -162,7 +162,7 @@ TurnBackToSmokerAfterSmokeCloud(int iClient)
 	}
 }
 
-PutSmokerWithExpiredSmokeCloudIntoLimbo(int iClient)
+void PutSmokerWithExpiredSmokeCloudIntoLimbo(int iClient)
 {
 	g_iSmokerInSmokeCloudLimbo = iClient;
 	g_iSmokerSmokeCloudPlayer = iClient;
@@ -377,7 +377,7 @@ Action TimerHandleSmokerCloudTickOnPlayer(Handle timer, int iClient)
 	return Plugin_Continue;
 }
 
-CreateSmokerSmokeCloudParticle(iClient)
+void CreateSmokerSmokeCloudParticle(int iClient)
 {
 	float xyzPosition[3];
 	CreateSmokeParticle(

@@ -64,7 +64,7 @@ void BindPress(int iClient, int iBindNumber)
 	}
 }
 
-Action Bind1Press(iClient, args)
+Action Bind1Press(int iClient, int args)
 {
 	// Handle Pressing the bind
 	BindPress(iClient, 1);
@@ -73,7 +73,7 @@ Action Bind1Press(iClient, args)
 }
 
 
-Action Bind2Press(iClient, args)
+Action Bind2Press(int iClient, int args)
 {
 	// Handle Pressing the bind
 	BindPress(iClient, 2);

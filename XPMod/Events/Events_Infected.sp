@@ -1,7 +1,7 @@
 
-Event_AbilityUse(Handle hEvent, const char[] strName, bool bDontBroadcast)
+void Event_AbilityUse(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	if (RunClientChecks(iClient) == false)
 		return;
 	
@@ -13,8 +13,8 @@ Event_AbilityUse(Handle hEvent, const char[] strName, bool bDontBroadcast)
 
 Action Event_PlayerNowIt(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"attacker"));
-	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	int iAttacker = GetClientOfUserId(GetEventInt(hEvent,"attacker"));
+	int iVictim = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 
 	if (iAttacker == 0 || iVictim == 0)
 		return Plugin_Continue;
@@ -45,7 +45,7 @@ Action Event_PlayerNowIt(Handle hEvent, const char[] strName, bool bDontBroadcas
 
 Action Event_PlayerNoLongerIt(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	int iVictim = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 
 	g_iVomitVictimAttacker[iVictim] = 0;
 
@@ -56,7 +56,7 @@ Action Event_PlayerNoLongerIt(Handle hEvent, const char[] strName, bool bDontBro
 
 Action Event_ChargerChargeStart(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	int attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	
 	g_bIsChargerCharging[attacker] = true;
 	
@@ -73,7 +73,7 @@ Action Event_ChargerChargeStart(Handle hEvent, const char[] strName, bool bDontB
 Action Event_ChargerChargeEnd(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	
-	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	int attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	
 	g_bIsChargerCharging[attacker] = false;
 	
@@ -93,12 +93,12 @@ Action Event_ChargerChargeEnd(Handle hEvent, const char[] strName, bool bDontBro
 
 Action Event_ChargerImpact(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
+	int attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	int victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 	
 	if(g_iGroundLevel[attacker] > 0)
 	{
-		decl iDamage;
+		int iDamage;
 		
 		if(g_iGroundLevel[attacker] < 4)
 			iDamage = (g_iGroundLevel[attacker] - 1);
@@ -108,13 +108,13 @@ Action Event_ChargerImpact(Handle hEvent, const char[] strName, bool bDontBroadc
 			iDamage = (g_iGroundLevel[attacker] - 3);
 		else iDamage = 6;
 		
-		new iCurrentHealth = GetPlayerHealth(victim);
+		int iCurrentHealth = GetPlayerHealth(victim);
 		SetPlayerHealth(victim, attacker, iCurrentHealth - iDamage);
 	}
 	if(g_iSpikedLevel[attacker] > 0)
 	{
 		
-		new heal = GetPlayerHealth(attacker);
+		int heal = GetPlayerHealth(attacker);
 		SetPlayerHealth(attacker, -1, heal + (g_iSpikedLevel[attacker] * 33));
 	}
 
@@ -122,8 +122,8 @@ Action Event_ChargerImpact(Handle hEvent, const char[] strName, bool bDontBroadc
 }
 Action Event_ChargerCarryStart(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
+	int attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	int victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 	
 	canchangemovement[victim]=false;
 	
@@ -140,8 +140,8 @@ Action Event_ChargerCarryStart(Handle hEvent, const char[] strName, bool bDontBr
 
 Action Event_ChargerCarryEnd(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
+	int attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	int victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 	
 	canchangemovement[victim]=true;
 	
@@ -164,8 +164,8 @@ Action Event_ChargerCarryEnd(Handle hEvent, const char[] strName, bool bDontBroa
 
 Action Event_ChargerPummelStart(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
+	int attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	int victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 	
 	GiveClientXP(attacker, 50, g_iSprite_50XP_SI, victim, "Grappled A Survivor.");
 	
@@ -183,8 +183,8 @@ Action Event_ChargerPummelStart(Handle hEvent, const char[] strName, bool bDontB
 
 Action Event_ChargerPummelEnd(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new chargerid = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
+	int chargerid = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	int victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 	//PrintToChatAll("PummelEnd %N is no longer charged", victim);
 	g_iChargerVictim[chargerid] = 0;
 	g_bChargerGrappled[victim] = false;
@@ -199,7 +199,7 @@ Action Event_ChargerPummelEnd(Handle hEvent, const char[] strName, bool bDontBro
 Action Event_ChargerKilled(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	//new attacker = GetClientOfUserId(GetEventInt(hEvent,"attacker"));
-	new chargerid = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	int chargerid = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	//PrintToChatAll("Charger Killed %N is no longer charged", g_iChargerVictim[chargerid]);
 	//PrintToChat(g_iChargerVictim[chargerid], "Charger Killed: You are no longer charged");
 	g_bChargerGrappled[g_iChargerVictim[chargerid]] = false;
@@ -209,8 +209,8 @@ Action Event_ChargerKilled(Handle hEvent, const char[] strName, bool bDontBroadc
 
 Action Event_TongueGrab(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
+	int iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	int iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 
 	// PrintToChatAll("Event_TongueGrab: Attacker: %N Victim: %N", iAttacker, iVictim);
 
@@ -227,8 +227,8 @@ Action Event_TongueGrab(Handle hEvent, const char[] strName, bool bDontBroadcast
 
 Action Event_TongueRelease(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
+	int iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	int iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 
 	// PrintToChatAll("Event_TongueRelease: Attacker: %N Victim: %N", iAttacker, iVictim);
 
@@ -246,8 +246,8 @@ Action Event_TongueRelease(Handle hEvent, const char[] strName, bool bDontBroadc
 
 Action Event_ChokeStart(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
+	int iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	int iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 
 	// PrintToChatAll("Event_ChokeStart: Attacker: %N Victim: %N", iAttacker, iVictim);
 
@@ -281,9 +281,9 @@ Action Event_ChokeStart(Handle hEvent, const char[] strName, bool bDontBroadcast
 
 Action Event_JockeyRide(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
-	new	iClassNum = GetEntProp(iAttacker, Prop_Send, "m_zombieClass");
+	int iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	int iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
+	int iClassNum = GetEntProp(iAttacker, Prop_Send, "m_zombieClass");
 
 	if (iClassNum != JOCKEY)	//If the attacker truely is the JOCKEY(this function is called for more than just JOCKEY for some reason)
 		return Plugin_Continue;
@@ -300,8 +300,8 @@ Action Event_JockeyRide(Handle hEvent, const char[] strName, bool bDontBroadcast
 
 Action Event_JockeyRideEnd(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new rider = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
+	int rider = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	int victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 
 	HandleDragRaceRewards(rider, victim);
 
@@ -327,8 +327,8 @@ Action Event_JockeyRideEnd(Handle hEvent, const char[] strName, bool bDontBroadc
 
 Action Event_HunterPounceStart(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
+	int iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	int iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 	int iDistance = GetEventInt(hEvent, "distance");
 
 	g_bHunterGrappled[iVictim] = true;
@@ -350,8 +350,8 @@ Action Event_HunterPounceStart(Handle hEvent, const char[] strName, bool bDontBr
 
 Action Event_HunterPounceStopped(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
+	int attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	int victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 	
 	g_bHunterGrappled[victim] = false;
 	g_iHunterShreddingVictim[attacker] = -1;
@@ -369,10 +369,10 @@ Action Event_HunterPounceStopped(Handle hEvent, const char[] strName, bool bDont
 
 Action Event_InfectedHurt(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new attacker = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
-	new victim = GetEventInt(hEvent, "entityid");
+	int attacker = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
+	int victim = GetEventInt(hEvent, "entityid");
 	// new hitGroup = GetEventInt(hEvent, "hitgroup");
-	new iDamage = GetEventInt(hEvent, "amount");
+	int iDamage = GetEventInt(hEvent, "amount");
 	// new dmgType = GetEventInt(hEvent, "type");
 	// PrintToChatAll("Attacker = %d, Victim = %d, iDamage = %d, dmgType = %d, hitGroup = %d", attacker, victim, iDamage, dmgType, hitGroup);
 
@@ -433,9 +433,9 @@ Action Event_InfectedHurt(Handle hEvent, const char[] strName, bool bDontBroadca
 
 Action Event_WitchKilled(Handle hEvent, char[] Event_name, bool dontBroadcast)
 {
-	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
-	new victim = GetEventInt(hEvent, "witchid");
-	new instakill = GetEventBool(hEvent, "oneshot");
+	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+	int victim = GetEventInt(hEvent, "witchid");
+	bool instakill = GetEventBool(hEvent, "oneshot");
 	if (iClient > 0 && iClient <= MaxClients)
 	{
 		if(IsFakeClient(iClient) == true)
@@ -470,7 +470,7 @@ Action Event_WitchKilled(Handle hEvent, char[] Event_name, bool dontBroadcast)
 
 Action Event_TankSpawn(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {	
-	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 
 	if(RunClientChecks(iClient) == false || IsPlayerAlive(iClient) == false)
 		return Plugin_Continue;
@@ -487,7 +487,7 @@ Action Event_TankSpawn(Handle hEvent, const char[] strName, bool bDontBroadcast)
 	// Note2: This requires a timer, or it does not apply
 	CreateTimer(0.1, TimerResetAllTankVariables, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	
-	for(new i=1;i<=MaxClients;i++)
+	for (int i = 1;i<=MaxClients;i++)
 	{
 		if (RunClientChecks(i) == false || 
 			IsFakeClient(i) || 
@@ -519,7 +519,7 @@ Action Event_TankFrustrated(Handle hEvent, const char[] strName, bool bDontBroad
 {	
 	g_iTankCounter--;
 
-	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 
 	if(RunClientChecks(iClient) == false || IsPlayerAlive(iClient) == false)
 		return Plugin_Continue;
@@ -535,8 +535,8 @@ Action Event_TankFrustrated(Handle hEvent, const char[] strName, bool bDontBroad
 
 Action Event_ZombieIgnited(Handle hEvent, char[] Event_name, bool dontBroadcast)
 {
-	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
-	new victim = GetEventInt(hEvent, "entityid");
+	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+	int victim = GetEventInt(hEvent, "entityid");
 	
 	if (iClient > 0 && iClient <= MaxClients)
 	{
@@ -564,8 +564,8 @@ Action Event_ZombieIgnited(Handle hEvent, char[] Event_name, bool dontBroadcast)
 
 Action Event_SpitBurst(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	new iSpitEntity = GetEventInt(hEvent,"subject");
+	int iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	int iSpitEntity = GetEventInt(hEvent,"subject");
 	
 	if(g_bTalentsConfirmed[iClient] && g_iPuppetLevel[iClient] > 0)
 	{
@@ -585,14 +585,14 @@ Action Event_SpitBurst(Handle hEvent, const char[] strName, bool bDontBroadcast)
 		}
 		else
 		{
-			new smoke = CreateEntityByName("env_smokestack");
+			int smoke = CreateEntityByName("env_smokestack");
 															
 			char clientName[128], vecString[32];
 			Format(clientName, sizeof(clientName), "Smoke%i", iClient);
 			Format(vecString, sizeof(vecString), "%f %f %f", position[0], position[1], position[2]);
 		
 			char strSpitColorRGB[16];
-			new iRed, iGreen, iBlue;
+			int iRed, iGreen, iBlue;
 			
 			switch(g_iGooType[iClient])
 			{
@@ -680,10 +680,10 @@ Action Event_SpitBurst(Handle hEvent, const char[] strName, bool bDontBroadcast)
 
 Action Event_WitchSpawn(Handle hEvent, const char[] sName, bool bDontBroadcast)
 {
-	new iWitchID = GetEventInt(hEvent, "witchid");
+	int iWitchID = GetEventInt(hEvent, "witchid");
 	
 	bool bOwnerFound = false;
-	decl iClient;
+	int iClient;
 	for(iClient = 1; iClient <= MaxClients; iClient++)
 	{
 		if(g_bJustSpawnedWitch[iClient] == true && g_iClientTeam[iClient] == TEAM_INFECTED && g_iInfectedCharacter[iClient] == SPITTER
@@ -744,7 +744,7 @@ Action Timer_CheckWitchRage(Handle timer, any iWitchID)
 		float position[3];
 		GetEntPropVector(iWitchID, Prop_Send, "m_vecOrigin", position);
 
-		new smoke = CreateEntityByName("env_smokestack");
+		int smoke = CreateEntityByName("env_smokestack");
 		
 		char clientName[128], vecString[32];
 		Format(clientName, sizeof(clientName), "Smoke%i", iWitchID);

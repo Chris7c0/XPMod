@@ -1,10 +1,10 @@
-TalentsLoad_Boomer(iClient)
+void TalentsLoad_Boomer(int iClient)
 {
 	if(g_iRapidLevel[iClient] > 0)
 		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Boomer Talents \x05have been loaded.");
 }
 
-OnGameFrame_Boomer(iClient)
+void OnGameFrame_Boomer(int iClient)
 {
 	if(g_iAcidicLevel[iClient] > 0)
 	{
@@ -22,7 +22,7 @@ OnGameFrame_Boomer(iClient)
 	}
 }
 
-Event_BoomerVomitOnPlayer(iAttacker, iVictim)
+void Event_BoomerVomitOnPlayer(int iAttacker, int iVictim)
 {
 	if(g_iInfectedCharacter[iAttacker] ==  BOOMER)
 	{
@@ -41,7 +41,7 @@ Event_BoomerVomitOnPlayer(iAttacker, iVictim)
 				if(IsClientInGame(iAttacker) == true)
 					if(IsFakeClient(iAttacker) == false)
 					{
-						new random = GetRandomInt(0, 5);
+						int random = GetRandomInt(0, 5);
 						switch(random)
 						{
 							case 0:		//Give 3 extra bind 1 and bind 2 uses
@@ -108,10 +108,10 @@ Event_BoomerVomitOnPlayer(iAttacker, iVictim)
 									PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. \x04%N\x05 swallowed some pills he puked up.", iAttacker, iVictim);
 									PrintHintText(iVictim,"You swallowed some pills that %N puked up.", iAttacker);
 									
-									new red = GetRandomInt(0,255);
-									new green = GetRandomInt(0,255);
-									new blue = GetRandomInt(0,255);
-									new alpha = GetRandomInt(190,230);
+									int red = GetRandomInt(0,255);
+									int green = GetRandomInt(0,255);
+									int blue = GetRandomInt(0,255);
+									int alpha = GetRandomInt(190,230);
 									
 									ShowHudOverlayColor(iVictim, red, green, blue, alpha, 700, FADE_IN);
 									
@@ -143,12 +143,12 @@ Event_BoomerVomitOnPlayer(iAttacker, iVictim)
 									location[0] = (location[0]+(50*(Cosine(DegToRad(ang[1])))));
 									location[1] = (location[1]+(50*(Sine(DegToRad(ang[1])))));
 									
-									new ticktime = RoundToNearest(  GetGameTime() / GetTickInterval()) + 5;
+									int ticktime = RoundToNearest( GetGameTime() / GetTickInterval()) + 5;
 									
-									decl i;
+									int i;
 									for(i = 0; i < 4; i++)
 									{
-										new zombie = CreateEntityByName("infected");
+										int zombie = CreateEntityByName("infected");
 										SetEntityModel(zombie, "models/infected/common_male_jimmy.mdl");
 										
 										SetEntProp(zombie, Prop_Data, "m_nNextThinkTick", ticktime);
@@ -182,7 +182,7 @@ Event_BoomerVomitOnPlayer(iAttacker, iVictim)
 				g_bNowCountingVomitVictims[iAttacker] = true;
 				CreateTimer(9.0, TimerStopItCounting, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
 			}
-			decl rand;
+			int rand;
 			rand = GetRandomInt(1, 100);
 			if(rand <= (g_iNorovirusLevel[iAttacker] * 4))
 			{
@@ -200,7 +200,7 @@ Event_BoomerVomitOnPlayer(iAttacker, iVictim)
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }
 
-EventsDeath_VictimBoomer(Handle hEvent, iAttacker, iVictim)
+void EventsDeath_VictimBoomer(Handle hEvent, int iAttacker, int iVictim)
 {
 	if (g_iInfectedCharacter[iVictim] != BOOMER ||
 		g_iClientTeam[iVictim] != TEAM_INFECTED ||
@@ -218,7 +218,7 @@ EventsDeath_VictimBoomer(Handle hEvent, iAttacker, iVictim)
 	{
 		float vector[3];
 		GetClientEyePosition(iVictim, vector);
-		decl target;
+		int target;
 		for (target = 1; target <= MaxClients; target++)
 		{
 			if (RunClientChecks(target) &&

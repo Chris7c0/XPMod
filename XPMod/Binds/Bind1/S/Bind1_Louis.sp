@@ -1,4 +1,4 @@
-void Bind1Press_Louis(iClient)
+void Bind1Press_Louis(int iClient)
 {
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return;
@@ -22,11 +22,11 @@ void Bind1Press_Louis(iClient)
 	CreateWarezStation(iClient);
 }
 
-void CreateWarezStation(iClient)
+void CreateWarezStation(int iClient)
 {
 	// Reset values for warez station
 	g_bWareStationActive[iClient] = true;
-	for(new i=1;i <= MaxClients;i++)
+	for (int i = 1;i <= MaxClients;i++)
 		g_bWareStationClientAlreadyServiced[iClient][i] = false;
 
 	float vAngles[3];
@@ -48,7 +48,7 @@ void CreateWarezStation(iClient)
 	CreateTimer(25.0, TimerRemoveLightDynamicEntity, iLight, TIMER_FLAG_NO_MAPCHANGE);
 
 	// Warez station Sound
-	new iSoundEntityAttachement = CreateEntityByName("env_smokestack");
+	int iSoundEntityAttachement = CreateEntityByName("env_smokestack");
 	if (iSoundEntityAttachement != -1 && IsValidEntity(iSoundEntityAttachement))
 	{
 		// Spawn the dummy entity to attach the sound to and teleport it to our location
@@ -77,7 +77,7 @@ Action TimerWarezStationCheckForSurvivorToService(Handle timer, any iClient)
 	if (g_bWareStationActive[iClient] == false)
 		return Plugin_Stop;
 	
-	for(new iCandidate=1;iCandidate <= MaxClients;iCandidate++)
+	for (int iCandidate = 1;iCandidate <= MaxClients;iCandidate++)
 	{
 		if (RunClientChecks(iCandidate) && 
 			IsFakeClient(iCandidate) == false && 
@@ -118,7 +118,7 @@ Action TimerWarezStationDisable(Handle timer, any iClient)
 }
 
 // Warez Station Menu Draw
-Action WarezStationMenuDraw(iClient)
+Action WarezStationMenuDraw(int iClient)
 {
 	char text[512];
 	
@@ -158,7 +158,7 @@ Action WarezStationMenuDraw(iClient)
 }
 
 // Warez Station Menu Handler
-WarezStationMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void WarezStationMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {	
 	if (action == MenuAction_End)
 	{
@@ -244,7 +244,7 @@ WarezStationMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 		if (itemNum >= 0 && itemNum <= 7)
 		{
 			// Set that the iOwners Warez Station Serviced array to true for this iClient.
-			new iOwner = g_iWareStationOwnerIDOfCurrentlyViewedStation[iClient];
+			int iOwner = g_iWareStationOwnerIDOfCurrentlyViewedStation[iClient];
 			if (iOwner > 0)
 				g_bWareStationClientAlreadyServiced[iOwner][iClient] = true;
 			// Reset iClient's Warez Station Owner, they arent using a Warez Station any more.
@@ -253,9 +253,9 @@ WarezStationMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 	}
 }
 
-ImFeelingLuckyRoll(iClient)
+void ImFeelingLuckyRoll(int iClient)
 {
-	new iRoll = GetRandomInt(0, 9)
+	int iRoll = GetRandomInt(0, 9);
 
 	switch (iRoll)
 	{
@@ -368,7 +368,7 @@ ImFeelingLuckyRoll(iClient)
 	}
 }
 
-SetSurvivorScreenShakeAmount()
+void SetSurvivorScreenShakeAmount()
 {
 	// Clamp the minimum value of the screenshake to 0
 	if (g_iScreenShakeAmount < 0)

@@ -25,7 +25,7 @@ void HandleClientConnect(int iClient)
 	GetClientName(iClient, clientname, sizeof(clientname));
 
 	// Fill in special characters with ?...to prevent errors..I guess?
-	for(new l=0; l<22; l++)
+	for (int l = 0; l<22; l++)
 	{
 		if(clientname[l] != '\0')
 		{
@@ -39,7 +39,7 @@ void HandleClientConnect(int iClient)
 	//Check if is the same as before
 	if(clientidname[iClient][0] == clientname[0])
 	{
-		new l = 0;
+		int l = 0;
 		while((clientname[l]!='\0' || clientidname[iClient][l]!='\0') && (l < 22))
 		{
 			//PrintToChatAll("checking %c, %d = %c, %d", clientidname[iClient][l], clientidname[iClient][l], clientname[l], clientname[l]);
@@ -68,11 +68,11 @@ void HandleClientConnect(int iClient)
 		//ClientCommand(iClient, "con_enable 1");
 
 		GetClientName(iClient, clientname, sizeof(clientname));
-		for(new l=0; l<23; l++)
+		for (int l = 0; l<23; l++)
 		{
 			clientidname[iClient][l] = '\0';
 		}
-		for(new l=0; l<22; l++)
+		for (int l = 0; l<22; l++)
 		{
 			if(clientname[l] != '\0')
 			{
@@ -142,7 +142,7 @@ void HandleClientDisconnect(int iClient)
 
 	StorePlayerInDisconnectedPlayerList(iClient);
 
-	for(new l=0; l<23; l++)
+	for (int l = 0; l<23; l++)
 	{
 		clientidname[iClient][l] = '\0';	//WAS clientidname[iClient][l] = 9999;
 	}
@@ -155,7 +155,7 @@ void HandleClientDisconnect(int iClient)
 	//PrintToChatAll("\x03%N \x04has disconnected", iClient);
 }
 
-void StorePlayerInDisconnectedPlayerList(iClient)
+void StorePlayerInDisconnectedPlayerList(int iClient)
 {
 	// Get Steam Auth ID, if this returns false, then do not proceed
 	char strSteamID[32];
@@ -206,7 +206,7 @@ void LoopThroughAllPlayersAndHandleAFKPlayers()
 	if (g_bAFKIdleKickingEnabled == false)
 		return;
 
-	for(new iClient = 1;iClient <= MaxClients; iClient++)
+	for (int iClient = 1;iClient <= MaxClients; iClient++)
 	{
 		if (RunClientChecks(iClient) == false ||
 			IsFakeClient(iClient) == true ||
@@ -231,7 +231,7 @@ void LoopThroughAllPlayersAndSetAFKRecordingTime(bool bStopRecording=false)
 
 	float fCurrentGameTime = GetGameTime();
 
-	for(new iClient = 1;iClient <= MaxClients; iClient++)
+	for (int iClient = 1;iClient <= MaxClients; iClient++)
 	{
 		if (RunClientChecks(iClient) == false ||
 			IsFakeClient(iClient) == true)

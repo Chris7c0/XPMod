@@ -17,7 +17,7 @@ Action TimerSetSpitterCooldown(Handle timer, any iClient)
 	//RETRIEVE VARIABLES
 	//------------------
 	//get the ability ent id
-	new iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
+	int iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
 	//if the retrieved gun id is -1, then move on
 	if (!IsValidEntity(iEntid))
 	{
@@ -110,7 +110,7 @@ Action TimerConjureWitch(Handle timer, any iClient)
 Action TimerConjureCommonInfected(Handle timer, any hDataPackage)
 {
 	ResetPack(hDataPackage);
-	new iClient = ReadPackCell(hDataPackage);
+	int iClient = ReadPackCell(hDataPackage);
 	float xyzLocation[3];
 	xyzLocation[0] = ReadPackFloat(hDataPackage);
 	xyzLocation[1] = ReadPackFloat(hDataPackage);
@@ -125,7 +125,7 @@ Action TimerConjureCommonInfected(Handle timer, any hDataPackage)
 Action TimerConjureUncommonInfected(Handle timer, any hDataPackage)
 {
 	ResetPack(hDataPackage);
-	new iClient = ReadPackCell(hDataPackage);
+	int iClient = ReadPackCell(hDataPackage);
 	float xyzLocation[3];
 	xyzLocation[0] = ReadPackFloat(hDataPackage);
 	xyzLocation[1] = ReadPackFloat(hDataPackage);
@@ -134,7 +134,7 @@ Action TimerConjureUncommonInfected(Handle timer, any hDataPackage)
 	CloseHandle(hDataPackage);
 
 	// Figure out how many to spawn 2 at level 10 and 1 otherwise
-	new iSpawnCount = g_iMaterialLevel[iClient] == 10 ? 2 : 1
+	int iSpawnCount = g_iMaterialLevel[iClient] == 10 ? 2 : 1;
 
 	SpawnCommonInfected(xyzLocation, iSpawnCount, UNCOMMON_CI_RANDOM, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_NONE);
 	
@@ -144,7 +144,7 @@ Action TimerConjureUncommonInfected(Handle timer, any hDataPackage)
 Action TimerConjureFromBagOfSpits(Handle timer, any hDataPackage)
 {
 	ResetPack(hDataPackage);
-	new iClient = ReadPackCell(hDataPackage);
+	int iClient = ReadPackCell(hDataPackage);
 	float xyzLocation[3];
 	xyzLocation[0] = ReadPackFloat(hDataPackage);
 	xyzLocation[1] = ReadPackFloat(hDataPackage);
@@ -181,10 +181,10 @@ Action TimerHallucinogen(Handle timer, any iClient)
 	{
 		if(IsFakeClient(iClient)==false)
 		{
-			new red = GetRandomInt(20,255);
-			new green = GetRandomInt(0, 30);
-			new blue = GetRandomInt(0, 30);
-			new alpha = GetRandomInt(180,200);
+			int red = GetRandomInt(20,255);
+			int green = GetRandomInt(0, 30);
+			int blue = GetRandomInt(0, 30);
+			int alpha = GetRandomInt(180,200);
 			ShowHudOverlayColor(iClient, red, green, blue, alpha, 700, FADE_IN);
 		}
 		
@@ -196,10 +196,10 @@ Action TimerHallucinogen(Handle timer, any iClient)
 	//Do one long lasting final hud color overlay to fade it out
 	if(IsFakeClient(iClient)==false)
 	{
-		new red = GetRandomInt(100,255);
-		new green = GetRandomInt(0, 10);
-		new blue = GetRandomInt(0, 10);
-		new alpha = GetRandomInt(180,200);
+		int red = GetRandomInt(100,255);
+		int green = GetRandomInt(0, 10);
+		int blue = GetRandomInt(0, 10);
+		int alpha = GetRandomInt(180,200);
 		ShowHudOverlayColor(iClient, red, green, blue, alpha, 1600, FADE_OUT);
 		
 		PrintHintText(iClient, "The Spitter's hallucinogenic toxin effects have worn off"); 
@@ -223,7 +223,7 @@ Action TimerInfectedVictimTick(Handle timer, any iClient)
 	GetClientEyePosition(iClient, xyzVictimLocation);
 	
 	//Check the distance of all the survivors near to infect them if they are not immune
-	decl i;
+	int i;
 	for(i = 1;i <= MaxClients;i++)
 	{
 		if(i == iClient || g_bIsImmuneToVirus[i] == true || IsValidEntity(i) == false || 
@@ -243,10 +243,10 @@ Action TimerInfectedVictimTick(Handle timer, any iClient)
 	{
 		if(IsFakeClient(iClient)==false)
 		{
-			new red = GetRandomInt(0,1);
-			new green = GetRandomInt(0, 255);
-			new blue = GetRandomInt(0, 40);
-			new alpha = GetRandomInt(80,100);
+			int red = GetRandomInt(0,1);
+			int green = GetRandomInt(0, 255);
+			int blue = GetRandomInt(0, 40);
+			int alpha = GetRandomInt(80,100);
 			ShowHudOverlayColor(iClient, red, green, blue, alpha, 300, FADE_IN);
 		}
 		
@@ -263,10 +263,10 @@ Action TimerInfectedVictimTick(Handle timer, any iClient)
 	//Do one long lasting final hud color overlay to fade it out
 	if(IsFakeClient(iClient)==false)
 	{
-		new red = GetRandomInt(0,1);
-		new green = GetRandomInt(0, 255);
-		new blue = GetRandomInt(0, 40);
-		new alpha = GetRandomInt(80,100);
+		int red = GetRandomInt(0,1);
+		int green = GetRandomInt(0, 255);
+		int blue = GetRandomInt(0, 40);
+		int alpha = GetRandomInt(80,100);
 		ShowHudOverlayColor(iClient, red, green, blue, alpha, 1600, FADE_OUT);
 		
 		PrintHintText(iClient, "Your body has finished fighting off the virus.\nYou are immune until the next mutated virus infects you."); 

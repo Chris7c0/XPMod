@@ -1,7 +1,7 @@
 Action Event_PlayerDeath(Handle hEvent, char[] Event_name, bool dontBroadcast)
 {
-	new iVictim = GetClientOfUserId(GetEventInt(hEvent, "userid"));
-	new iAttacker = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
+	int iVictim = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+	int iAttacker = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
 
 	//PrintToChatAll("Event_PlayerDeath: iVictim %N, iAttacker: %N", iVictim, iAttacker);
 
@@ -14,7 +14,7 @@ Action Event_PlayerDeath(Handle hEvent, char[] Event_name, bool dontBroadcast)
 		EventsDeath_PlayHeadshotDingSoundForCIHeadshots(hEvent, iAttacker);
 
 		// Get Common Infected Victim from event int, Previously iVictim only gives player IDs
-		new iCIVictim = GetEventInt(hEvent, "entityid");
+		int iCIVictim = GetEventInt(hEvent, "entityid");
 
 		// Handle Enhanced CI deaths
 		PopZombieOffEnhancedCIEntitiesList(iCIVictim);
@@ -86,7 +86,7 @@ Action Event_PlayerDeath(Handle hEvent, char[] Event_name, bool dontBroadcast)
 	return Plugin_Continue;
 }
 
-EventsDeath_PlayHeadshotDingSoundForCIHeadshots(Handle hEvent, iAttacker)
+void EventsDeath_PlayHeadshotDingSoundForCIHeadshots(Handle hEvent, int iAttacker)
 {
 	if (g_iClientTeam[iAttacker] != TEAM_SURVIVORS || 
 		IsClientInGame(iAttacker) == false ||

@@ -1,4 +1,4 @@
-void Bind2Press_Ellis(iClient)
+void Bind2Press_Ellis(int iClient)
 {
     if(g_iFireLevel[iClient]>0)	//Ellis's actionkey 2
     {

@@ -1,7 +1,7 @@
 //Support (Bill) Menu////////////////////////////////////////////////////////////////
 
 //Bill Menu Draw
-Action SupportMenuDraw(iClient) 
+Action SupportMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -47,7 +47,7 @@ Action SupportMenuDraw(iClient)
 }
 
 //Inspirational Leadership Draw
-Action InspirationalMenuDraw(iClient) 
+Action InspirationalMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -95,7 +95,7 @@ Action InspirationalMenuDraw(iClient)
 }
 
 //Ghillie Tactics
-Action GhillieMenuDraw(iClient) 
+Action GhillieMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -142,7 +142,7 @@ Action GhillieMenuDraw(iClient)
 }
 
 //Will to Live Draw
-Action WillMenuDraw(iClient) 
+Action WillMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -191,7 +191,7 @@ Action WillMenuDraw(iClient)
 
 
 //Exorcism in a Barrel Draw
-Action ExorcismMenuDraw(iClient) 
+Action ExorcismMenuDraw(int iClient) 
 {
 	char text[512];
 	
@@ -232,7 +232,7 @@ Action ExorcismMenuDraw(iClient)
 }
 
 //Die Hard Draw
-Action DiehardMenuDraw(iClient) 
+Action DiehardMenuDraw(int iClient) 
 {
 	char text[512];
 	
@@ -279,7 +279,7 @@ Action DiehardMenuDraw(iClient)
 }
 
 //Promotional Benefits Draw
-Action PromotionalMenuDraw(iClient) 
+Action PromotionalMenuDraw(int iClient) 
 {
 	char text[512];
 	
@@ -331,7 +331,7 @@ Action PromotionalMenuDraw(iClient)
 //Handlers//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Bill Menu Handler
-SupportMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void SupportMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -380,7 +380,7 @@ SupportMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 
 
 //Inspirational Handler
-InspirationalMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void InspirationalMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -399,7 +399,7 @@ InspirationalMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Ghillie Tactics Menu Handler
-GhillieMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void GhillieMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -419,7 +419,7 @@ GhillieMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 
 
 //Will to Live Handler
-WillMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void WillMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -439,7 +439,7 @@ WillMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 
 
 //Exorcism in a Barrel Handler
-ExorcismMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void ExorcismMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -458,7 +458,7 @@ ExorcismMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Die Hard Handler
-DiehardMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void DiehardMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -477,7 +477,7 @@ DiehardMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Promotional Benefit Handler
-PromotionalMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void PromotionalMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{

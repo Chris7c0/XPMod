@@ -1,4 +1,4 @@
-TalentsLoad_Ellis(iClient)
+void TalentsLoad_Ellis(int iClient)
 {
 	SetPlayerTalentMaxHealth_Ellis(iClient, !g_bSurvivorTalentsGivenThisRound[iClient]);
 	SetClientSpeed(iClient);
@@ -39,8 +39,8 @@ TalentsLoad_Ellis(iClient)
 		
 	if(g_iOverLevel[iClient] > 0)
 	{
-		new iCurrentHealth = GetPlayerHealth(iClient);
-		new iMaxHealth = GetPlayerMaxHealth(iClient);
+		int iCurrentHealth = GetPlayerHealth(iClient);
+		int iMaxHealth = GetPlayerMaxHealth(iClient);
 		if (iCurrentHealth < (iMaxHealth - ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT))
 		{
 			if(g_bEllisOverSpeedIncreased[iClient])
@@ -103,7 +103,7 @@ void SetPlayerTalentMaxHealth_Ellis(int iClient, bool bFillInHealthGap = true)
 		bFillInHealthGap);
 }
 
-OnGameFrame_Ellis(iClient)
+void OnGameFrame_Ellis(int iClient)
 {
 	if(g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
 		return;
@@ -127,14 +127,14 @@ OnGameFrame_Ellis(iClient)
 		{
 			char currentweapon[32];
 			GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
-			new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+			int ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 			if (RunEntityChecks(ActiveWeaponID) == false)
 				return;
-			new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
+			int CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
 			if((((StrEqual(currentweapon, "weapon_rifle", false) == true) || (StrEqual(currentweapon, "weapon_rifle_sg552", false) == true)) && (CurrentClipAmmo == 50)) || ((StrEqual(currentweapon, "weapon_rifle_ak47", false) == true) && (CurrentClipAmmo == 40)) || ((StrEqual(currentweapon, "weapon_rifle_desert", false) == true) && (CurrentClipAmmo == 60)))
 			{
-				new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
-				new iAmmo = GetEntData(iClient, iOffset_Ammo + 12);
+				int iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
+				int iAmmo = GetEntData(iClient, iOffset_Ammo + 12);
 				if(iAmmo > 0)
 				{
 					g_bForceReload[iClient] = true;
@@ -145,8 +145,8 @@ OnGameFrame_Ellis(iClient)
 			}
 			if(((StrEqual(currentweapon, "weapon_smg", false) == true) || (StrEqual(currentweapon, "weapon_smg_silenced", false) == true) || (StrEqual(currentweapon, "weapon_smg_mp5", false) == true)) && (CurrentClipAmmo == 50))
 			{
-				new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
-				new iAmmo = GetEntData(iClient, iOffset_Ammo + 20);
+				int iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
+				int iAmmo = GetEntData(iClient, iOffset_Ammo + 20);
 				if(iAmmo > 0)
 				{
 					g_bForceReload[iClient] = true;
@@ -157,8 +157,8 @@ OnGameFrame_Ellis(iClient)
 			}
 			if((StrEqual(currentweapon, "weapon_hunting_rifle", false) == true) && (CurrentClipAmmo == 15))
 			{
-				new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
-				new iAmmo = GetEntData(iClient, iOffset_Ammo + 36);
+				int iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
+				int iAmmo = GetEntData(iClient, iOffset_Ammo + 36);
 				if(iAmmo > 0)
 				{
 					g_bForceReload[iClient] = true;
@@ -169,8 +169,8 @@ OnGameFrame_Ellis(iClient)
 			}
 			if(((StrEqual(currentweapon, "weapon_sniper_awp", false) == true) && (CurrentClipAmmo == 20)) || ((StrEqual(currentweapon, "weapon_sniper_military", false) == true) && (CurrentClipAmmo == 30)) || ((StrEqual(currentweapon, "weapon_sniper_scout", false) == true) && (CurrentClipAmmo == 15)))
 			{
-				new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
-				new iAmmo = GetEntData(iClient, iOffset_Ammo + 40);
+				int iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
+				int iAmmo = GetEntData(iClient, iOffset_Ammo + 40);
 				if(iAmmo > 0)
 				{
 					g_bForceReload[iClient] = true;
@@ -183,7 +183,7 @@ OnGameFrame_Ellis(iClient)
 	}
 }
 
-OGFSurvivorReload_Ellis(iClient, const char[] currentweapon, ActiveWeaponID, CurrentClipAmmo, iOffset_Ammo)
+void OGFSurvivorReload_Ellis(int iClient, const char[] currentweapon, int ActiveWeaponID, int CurrentClipAmmo, int iOffset_Ammo)
 {
 	if(g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
 		return;
@@ -203,7 +203,7 @@ OGFSurvivorReload_Ellis(iClient, const char[] currentweapon, ActiveWeaponID, Cur
 }
 
 
-bool OnPlayerRunCmd_Ellis(iClient, &iButtons)
+bool OnPlayerRunCmd_Ellis(int iClient, int &iButtons)
 {
 	// Ellis abilities
 	if (g_iChosenSurvivor[iClient] != ELLIS || 
@@ -229,7 +229,7 @@ bool OnPlayerRunCmd_Ellis(iClient, &iButtons)
 	return false;
 }
 
-HandleFasterAttacking_Ellis(iClient, iButtons)
+void HandleFasterAttacking_Ellis(int iClient, int iButtons)
 {
 	if (g_iChosenSurvivor[iClient] != ELLIS || 
 		g_bTalentsConfirmed[iClient] == false ||
@@ -294,7 +294,7 @@ HandleFasterAttacking_Ellis(iClient, iButtons)
 	ChangeWeaponSpeed(iClient, fNewWeaponSpeed, iActiveWeaponSlot);
 }
 
-EventsHurt_AttackerEllis(Handle hEvent, int iAttacker, int iVictim)
+void EventsHurt_AttackerEllis(Handle hEvent, int iAttacker, int iVictim)
 {
 	if(g_iChosenSurvivor[iAttacker] != ELLIS || g_bTalentsConfirmed[iAttacker] == false)
 		return;
@@ -371,7 +371,7 @@ EventsHurt_AttackerEllis(Handle hEvent, int iAttacker, int iVictim)
 	// }
 }
 
-EventsHurt_VictimEllis(Handle hEvent, attacker, victim)
+void EventsHurt_VictimEllis(Handle hEvent, int attacker, int victim)
 {
 	if(g_iChosenSurvivor[victim] != ELLIS || g_bTalentsConfirmed[victim] == false)
 		return;
@@ -381,8 +381,8 @@ EventsHurt_VictimEllis(Handle hEvent, attacker, victim)
 
 	SuppressNeverUsedWarning(attacker);
 
-	new dmgType = GetEventInt(hEvent, "type");
-	new dmgHealth  = GetEventInt(hEvent,"dmg_health");
+	int dmgType = GetEventInt(hEvent, "type");
+	int dmgHealth = GetEventInt(hEvent,"dmg_health");
 
 	if(g_iFireLevel[victim] > 0)
 	{
@@ -399,8 +399,8 @@ EventsHurt_VictimEllis(Handle hEvent, attacker, victim)
 
 	if(g_iOverLevel[victim] > 0)
 	{
-		new iCurrentHealth = GetPlayerHealth(victim);
-		new iMaxHealth = GetPlayerMaxHealth(victim);
+		int iCurrentHealth = GetPlayerHealth(victim);
+		int iMaxHealth = GetPlayerMaxHealth(victim);
 		//float fTempHealth = GetEntDataFloat(victim, g_iOffset_HealthBuffer);
 		//if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - float(ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT)))
 		if(iCurrentHealth < (iMaxHealth - ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT))
@@ -425,7 +425,7 @@ EventsHurt_VictimEllis(Handle hEvent, attacker, victim)
 	}
 }
 
-EventsDeath_AttackerEllis(Handle hEvent, iAttacker, iVictim)
+void EventsDeath_AttackerEllis(Handle hEvent, int iAttacker, int iVictim)
 {
 	if(g_iChosenSurvivor[iAttacker] != ELLIS || g_bTalentsConfirmed[iAttacker] == false)
 		return;
@@ -436,7 +436,7 @@ EventsDeath_AttackerEllis(Handle hEvent, iAttacker, iVictim)
 		RunClientChecks(iVictim) &&
 		GetEntProp(iVictim, Prop_Send, "m_zombieClass") == TANK)
 	{
-		for(new i=1; i <= MaxClients; i++)
+		for (int i = 1; i <= MaxClients; i++)
 		{
 			if (g_iChosenSurvivor[i] == ELLIS &&
 				g_iJamminLevel[i] > 0 &&
@@ -477,7 +477,7 @@ EventsDeath_AttackerEllis(Handle hEvent, iAttacker, iVictim)
 		}
 		
 		// Increase clip size
-		new iEntid = GetEntDataEnt2(iAttacker, g_iOffset_ActiveWeapon);
+		int iEntid = GetEntDataEnt2(iAttacker, g_iOffset_ActiveWeapon);
 		if (iEntid != -1)
 		{
 			char wclass[32];
@@ -488,7 +488,7 @@ EventsDeath_AttackerEllis(Handle hEvent, iAttacker, iVictim)
 				StrContains(wclass,"sub",false) != -1 || 
 				StrContains(wclass,"sniper",false) != -1)
 			{
-				new clip = GetEntProp(iEntid,Prop_Data,"m_iClip1");
+				int clip = GetEntProp(iEntid,Prop_Data,"m_iClip1");
 				clip += g_iBringLevel[iAttacker] * ELLIS_AMMO_GAINED_PER_SI_KILL_PER_LEVEL;
 				// Clamp the clip
 				if(clip > 250)
@@ -596,7 +596,7 @@ void EventsPillsUsed_Ellis(int iClient)
 	// PrintToChat(iClient, "Pills Used: %i", GetPlayerWeaponSlot(iClient, 4));
 
 	// Give proper temp health to Ellis
-	new iPillHealthBonus = ELLIS_HEAL_AMOUNT_PILLS;
+	int iPillHealthBonus = ELLIS_HEAL_AMOUNT_PILLS;
 	SetEllisHealthAfterUsingAdrenalineOrPills(iClient, iPillHealthBonus);
 
 	// Give stashed adrenaline if they have more
@@ -613,7 +613,7 @@ void EventsAdrenalineUsed_Ellis(int iClient)
 		return;
 
 	// Give proper temp health to Ellis
-	new iAdrenalineHealthBonus = 25 + (g_iOverLevel[iClient] * 5);
+	int iAdrenalineHealthBonus = 25 + (g_iOverLevel[iClient] * 5);
 	SetEllisHealthAfterUsingAdrenalineOrPills(iClient, iAdrenalineHealthBonus);
 
 	// Set the variable that will allow for damage buffs during adrenaline duration
@@ -648,7 +648,7 @@ void EventsItemPickUp_Ellis(int iClient, const char[] strWeaponClass)
 		g_bHealthBoostItemJustGivenByCheats[iClient] = false;
 	}
 
-	new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
+	int iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 
 	if(g_iMetalLevel[iClient]>0 || g_iFireLevel[iClient]>0)
 	{
@@ -656,13 +656,13 @@ void EventsItemPickUp_Ellis(int iClient, const char[] strWeaponClass)
 		if (StrContains(strWeaponClass,"rifle",false) != -1 || StrContains(strWeaponClass,"smg",false) != -1 || StrContains(strWeaponClass,"sub",false) != -1 || StrContains(strWeaponClass,"sniper",false) != -1)
 		{
 			//PrintToChatAll("Inside smg rifle etc.");
-			new iEntid = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
+			int iEntid = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
 			if(iEntid < 1)
 				return;
 			if(IsValidEntity(iEntid)==false)
 				return;
 			//PrintToChatAll("iEntid!=-1 and is valid entry");
-			new clip = GetEntProp(iEntid,Prop_Data,"m_iClip1");
+			int clip = GetEntProp(iEntid,Prop_Data,"m_iClip1");
 			g_iClientPrimaryClipSize[iClient] = clip;
 			SetEntData(iEntid, g_iOffset_Clip1, clip + (g_iFireLevel[iClient] * 10), true);
 			//new iOffset_Ammo=FindDataMapInfo(iClient,"m_iAmmo");
@@ -769,7 +769,7 @@ void SetEllisClipSize(int iClient, const char[] currentweapon, int ActiveWeaponI
 	if((((StrEqual(currentweapon, "weapon_rifle", false) == true) || (StrEqual(currentweapon, "weapon_rifle_sg552", false) == true)) && (CurrentClipAmmo == 50)) || 
 		((StrEqual(currentweapon, "weapon_rifle_ak47", false) == true) && (CurrentClipAmmo == 40)) || ((StrEqual(currentweapon, "weapon_rifle_desert", false) == true) && (CurrentClipAmmo == 60)))
 	{
-		new iAmmo = GetEntData(iClient, iOffset_Ammo + 12);	//for rifle (+12)
+		int iAmmo = GetEntData(iClient, iOffset_Ammo + 12);//for rifle (+12)
 		if(iAmmo >=  (g_iFireLevel[iClient] * 10))
 		{
 			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iFireLevel[iClient] * 10)), true);
@@ -777,7 +777,7 @@ void SetEllisClipSize(int iClient, const char[] currentweapon, int ActiveWeaponI
 		}
 		else if(iAmmo <  (g_iFireLevel[iClient] * 10))
 		{
-			new NewAmmo = ( (g_iFireLevel[iClient] * 10) - iAmmo);
+			int NewAmmo = ( (g_iFireLevel[iClient] * 10) - iAmmo);
 			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iFireLevel[iClient] * 10) - NewAmmo), true);
 			SetEntData(iClient, iOffset_Ammo + 12, 0);
 		}
@@ -786,7 +786,7 @@ void SetEllisClipSize(int iClient, const char[] currentweapon, int ActiveWeaponI
 	}
 	else if(((StrEqual(currentweapon, "weapon_smg", false) == true) || (StrEqual(currentweapon, "weapon_smg_silenced", false) == true) || (StrEqual(currentweapon, "weapon_smg_mp5", false) == true)) && (CurrentClipAmmo == 50))
 	{
-		new iAmmo = GetEntData(iClient, iOffset_Ammo + 20);	//for smg (+20)
+		int iAmmo = GetEntData(iClient, iOffset_Ammo + 20);//for smg (+20)
 		if(iAmmo >=  (g_iFireLevel[iClient] * 10))
 		{
 			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iFireLevel[iClient] * 10)), true);
@@ -794,7 +794,7 @@ void SetEllisClipSize(int iClient, const char[] currentweapon, int ActiveWeaponI
 		}
 		else if(iAmmo <  (g_iFireLevel[iClient] * 10))
 		{
-			new NewAmmo = ( (g_iFireLevel[iClient] * 10) - iAmmo);
+			int NewAmmo = ( (g_iFireLevel[iClient] * 10) - iAmmo);
 			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + ( (g_iFireLevel[iClient] * 10) - NewAmmo)), true);
 			SetEntData(iClient, iOffset_Ammo + 20, 0);
 		}
@@ -803,7 +803,7 @@ void SetEllisClipSize(int iClient, const char[] currentweapon, int ActiveWeaponI
 	}
 	else if((StrEqual(currentweapon, "weapon_hunting_rifle", false) == true) && (CurrentClipAmmo == 15))
 	{
-		new iAmmo = GetEntData(iClient, iOffset_Ammo + 36);	//for hunting rifle (+36)
+		int iAmmo = GetEntData(iClient, iOffset_Ammo + 36);//for hunting rifle (+36)
 		if(iAmmo >=  (g_iFireLevel[iClient] * 10))
 		{
 			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo +  (g_iFireLevel[iClient] * 10)), true);
@@ -811,7 +811,7 @@ void SetEllisClipSize(int iClient, const char[] currentweapon, int ActiveWeaponI
 		}
 		else if(iAmmo <  (g_iFireLevel[iClient] * 10))
 		{
-			new NewAmmo = ( (g_iFireLevel[iClient] * 10) - iAmmo);
+			int NewAmmo = ( (g_iFireLevel[iClient] * 10) - iAmmo);
 			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + ( (g_iFireLevel[iClient] * 10) - NewAmmo)), true);
 			SetEntData(iClient, iOffset_Ammo + 36, 0);
 		}
@@ -823,7 +823,7 @@ void SetEllisClipSize(int iClient, const char[] currentweapon, int ActiveWeaponI
 		((StrEqual(currentweapon, "weapon_sniper_military", false) == true) && (CurrentClipAmmo == 30)) || 
 		((StrEqual(currentweapon, "weapon_sniper_scout", false) == true) && (CurrentClipAmmo == 15)))
 	{
-		new iAmmo = GetEntData(iClient, iOffset_Ammo + 40);	//for AWP, Scout, and Military Sniper (+40)
+		int iAmmo = GetEntData(iClient, iOffset_Ammo + 40);//for AWP, Scout, and Military Sniper (+40)
 		if(iAmmo >=  (g_iFireLevel[iClient] * 10))
 		{
 			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo +  (g_iFireLevel[iClient] * 10)), true);
@@ -831,7 +831,7 @@ void SetEllisClipSize(int iClient, const char[] currentweapon, int ActiveWeaponI
 		}
 		else if(iAmmo <  (g_iFireLevel[iClient] * 10))
 		{
-			new NewAmmo = ( (g_iFireLevel[iClient] * 10) - iAmmo);
+			int NewAmmo = ( (g_iFireLevel[iClient] * 10) - iAmmo);
 			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + ( (g_iFireLevel[iClient] * 10) - NewAmmo)), true);
 			SetEntData(iClient, iOffset_Ammo + 40, 0);
 		}
@@ -840,7 +840,7 @@ void SetEllisClipSize(int iClient, const char[] currentweapon, int ActiveWeaponI
 	}
 }
 
-CyclePlayerWeapon_Ellis(int iClient)
+void CyclePlayerWeapon_Ellis(int iClient)
 {
 	if (g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
 		return;
@@ -888,7 +888,7 @@ CyclePlayerWeapon_Ellis(int iClient)
 
 // Note: This function is typically called when the user has already picked up their weapon, so its not possible
 // To get the old weapon that was dropped unless storing it seomewhere else first.
-HandleWeaponPickUpForWeaponCycling(iClient)
+void HandleWeaponPickUpForWeaponCycling(int iClient)
 {
 	if (g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
 		return;
@@ -902,7 +902,7 @@ HandleWeaponPickUpForWeaponCycling(iClient)
 		// PrintToChatAll("	strTargetClassName: %s", strTargetClassName);
 		// new iWeaponIndex = FindWeaponItemIndex(strTargetClassName, ITEM_CLASS_NAME);
 
-		new iWeaponIndex = FindWeaponItemIndexOfWeaponID(iClient);
+		int iWeaponIndex = FindWeaponItemIndexOfWeaponID(iClient);
 		// This check is required if its a cmd name (if its given through cheats)
 		// if (iWeaponIndex <= ITEM_EMPTY)
 		// 	iWeaponIndex = FindWeaponItemIndex(strTargetClassName, ITEM_CMD_NAME);
@@ -979,7 +979,7 @@ HandleWeaponPickUpForWeaponCycling(iClient)
 	}
 }
 
-HandleEllisSwitchToStashedPrimaryWeapon(iClient)
+void HandleEllisSwitchToStashedPrimaryWeapon(int iClient)
 {
 	if (g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
 		return;
@@ -1028,7 +1028,7 @@ HandleEllisSwitchToStashedPrimaryWeapon(iClient)
 	CyclePlayerWeapon(iClient);
 }
 
-HandleEllisLimitBreak(iClient)
+void HandleEllisLimitBreak(int iClient)
 {
 	if (g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
 		return;
@@ -1067,7 +1067,7 @@ HandleEllisLimitBreak(iClient)
 		return;
 	
 	// Get the currently active weapon index
-	new iWeaponIndex = FindWeaponItemIndexOfWeaponID(iClient);
+	int iWeaponIndex = FindWeaponItemIndexOfWeaponID(iClient);
 
 	// Check if they have a primary weapon
 	if (IsWeaponIndexPrimarySlotItem(iWeaponIndex) == false)
@@ -1144,7 +1144,7 @@ void SetEllisHealthAfterUsingAdrenalineOrPills(int iClient, int iHealthBoostHeal
 	// in OnPlayerRunCMD and is applied here if needed.
 	if (g_iTempHealthBeforeUsingHealthBoostSlotItem[iClient] > 0)
 	{
-		new iNewTempHealth = g_iTempHealthBeforeUsingHealthBoostSlotItem[iClient] + iHealthBoostHealth >= ELLIS_MAX_TEMP_HEALTH ? 
+		int iNewTempHealth = g_iTempHealthBeforeUsingHealthBoostSlotItem[iClient] + iHealthBoostHealth >= ELLIS_MAX_TEMP_HEALTH ? 
 			ELLIS_MAX_TEMP_HEALTH :
 			g_iTempHealthBeforeUsingHealthBoostSlotItem[iClient] + iHealthBoostHealth;
 
@@ -1158,7 +1158,7 @@ void SetEllisHealthAfterUsingAdrenalineOrPills(int iClient, int iHealthBoostHeal
 	}
 }
 
-void GiveEllisAnExtraMolotov(iClient)
+void GiveEllisAnExtraMolotov(int iClient)
 {
 	if (RunClientChecks(iClient) == false)
 		return;
@@ -1175,7 +1175,7 @@ void GiveEllisAnExtraMolotov(iClient)
 	}
 }
 
-void GiveEllisAnExtraAdrenaline(iClient)
+void GiveEllisAnExtraAdrenaline(int iClient)
 {
 	if (RunClientChecks(iClient) == false)
 		return;
@@ -1203,7 +1203,7 @@ Action TimerDelayedGiveEllisAnExtraAdrenaline(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-void HandleEllisSelfRevive(iClient)
+void HandleEllisSelfRevive(int iClient)
 {
 	if (g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
 		return;

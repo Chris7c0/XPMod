@@ -1,9 +1,9 @@
-TalentsLoad_Tank(iClient)
+void TalentsLoad_Tank(int iClient)
 {
 	PrintHintText(iClient, "\x03[XPMod] \x04Choose your Tank using the menu.");
 }
 
-OnGameFrame_Tank(iClient)
+void OnGameFrame_Tank(int iClient)
 {
 	switch (g_iTankChosen[iClient])
 	{
@@ -14,7 +14,7 @@ OnGameFrame_Tank(iClient)
 	}
 }
 
-EventsHurt_AttackerTank(Handle hEvent, iAttackerTank, iVictim)
+void EventsHurt_AttackerTank(Handle hEvent, int iAttackerTank, int iVictim)
 {
 	switch(g_iTankChosen[iAttackerTank])
 	{
@@ -25,7 +25,7 @@ EventsHurt_AttackerTank(Handle hEvent, iAttackerTank, iVictim)
 	}
 }
 
-EventsHurt_VictimTank(Handle hEvent, iAttacker, iVictimTank)
+void EventsHurt_VictimTank(Handle hEvent, int iAttacker, int iVictimTank)
 {
 	// If the player has not selected a tank type, and they have take enough damage, then
 	// automatically select a tank type for them.  This will be for people that never select
@@ -34,8 +34,8 @@ EventsHurt_VictimTank(Handle hEvent, iAttacker, iVictimTank)
 		IsFakeClient(iVictimTank) == false)
 	{
 		// Note: Valve multiplies the value with 1.5 so it becomes 4000 x 1.5 = 6000 hp.
-		new iMaxHealthConVarSetting = RoundToCeil(GetConVarInt(FindConVar("z_tank_health")) * 1.5);
-		new iCurrentHealth = GetPlayerHealth(iVictimTank);
+			int iMaxHealthConVarSetting = RoundToCeil(GetConVarInt(FindConVar("z_tank_health")) * 1.5);
+		int iCurrentHealth = GetPlayerHealth(iVictimTank);
 
 		// PrintToChat(iVictimTank, "iCurrentHealth: %i, iMaxHealthConVarSetting: %i,  g_fTankStartingHealthMultiplier[iClient]: %f", iCurrentHealth, iMaxHealthConVarSetting,  g_fTankStartingHealthMultiplier[iVictimTank]);
 
@@ -62,7 +62,7 @@ EventsHurt_VictimTank(Handle hEvent, iAttacker, iVictimTank)
 
 	
 	// Globally for all tanks, put them out after X seconds
-	new iDmgType = GetEventInt(hEvent, "type");
+	int iDmgType = GetEventInt(hEvent, "type");
 
 	if (g_iTankChosen[iVictimTank] != TANK_FIRE && 
 		(iDmgType == DAMAGETYPE_FIRE1 || 
@@ -103,7 +103,7 @@ EventsHurt_VictimTank(Handle hEvent, iAttacker, iVictimTank)
 // 	}
 // }
 
-EventsDeath_VictimTank(Handle hEvent, iAttacker, iVictimTank)
+void EventsDeath_VictimTank(Handle hEvent, int iAttacker, int iVictimTank)
 {
 	if (g_iClientTeam[iVictimTank] != TEAM_INFECTED ||
 		g_bEndOfRound == true ||
@@ -126,7 +126,7 @@ EventsDeath_VictimTank(Handle hEvent, iAttacker, iVictimTank)
 	}
 }
 
-SetupTankForBot(iClient)
+void SetupTankForBot(int iClient)
 {
 	// Choose a random tank for the bot to use
 	switch(GetRandomInt(TANK_FIRE, TANK_VAMPIRIC))
@@ -145,7 +145,7 @@ Action TimerResetAllTankVariables(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-void ResetAllTankVariables(iClient)
+void ResetAllTankVariables(int iClient)
 {
 	if (RunClientChecks(iClient) == false)
 		return;
@@ -204,17 +204,17 @@ void ResetAllTankVariables(iClient)
 }
 
 
-ResetTankHealth(int iClient)
+void ResetTankHealth(int iClient)
 {
 	//PrintToChatAll("%N ResetTankHealth", iClient)
 
 	// Set Player Max Health to ConVar Setting of Tank Max health
 	// Note: Valve multiplies the value with 1.5 so it becomes 4000 x 1.5 = 6000 hp.
-	new iMaxHealthConVarSetting = RoundToCeil(GetConVarInt(FindConVar("z_tank_health")) * 1.5);
+	int iMaxHealthConVarSetting = RoundToCeil(GetConVarInt(FindConVar("z_tank_health")) * 1.5);
 	SetPlayerMaxHealth(iClient, iMaxHealthConVarSetting);
 
 	// Set player health to the new max
-	new iNewHealth = iMaxHealthConVarSetting;
+	int iNewHealth = iMaxHealthConVarSetting;
 
 	//PrintToChatAll("1) %N ResetTankHealth g_fFrustratedTankTransferHealthPercentage: %f iMaxHealthConVarSetting = %i iNewHealth = %i", iClient, g_fFrustratedTankTransferHealthPercentage, iMaxHealthConVarSetting, iNewHealth);
 
@@ -258,14 +258,14 @@ Action TimerResetTankTakeOverBot(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-SetTanksTalentHealth(int iClient, int iMaxHealthAmount)
+void SetTanksTalentHealth(int iClient, int iMaxHealthAmount)
 {
 	//PrintToChatAll("SetTanksTalentHealth %N", iClient);
 	
 	// Get the normalized health percentage to apply with the new tanks max health
 	float fNormalizedHealthPercentage = float(GetPlayerHealth(iClient)) / float(GetPlayerMaxHealth(iClient));
-	new iNewMaxHealth = RoundToNearest(iMaxHealthAmount * g_fTankStartingHealthMultiplier[iClient])
-	new iNewHealth = RoundToNearest(iNewMaxHealth * fNormalizedHealthPercentage);
+	int iNewMaxHealth = RoundToNearest(iMaxHealthAmount * g_fTankStartingHealthMultiplier[iClient]);
+	int iNewHealth = RoundToNearest(iNewMaxHealth * fNormalizedHealthPercentage);
 
 	//PrintToChatAll("fNormalizedHealthPercentage iHealth = %f iNewMaxHealth = %i iNewHealth = %i", fNormalizedHealthPercentage, iNewMaxHealth, iNewHealth);
 
@@ -309,7 +309,7 @@ float CalculateTankHealthPercentageMultiplier()
 }
 
 
-StorePassedOrFrustratedTanksHealthPercentage(iClient)
+void StorePassedOrFrustratedTanksHealthPercentage(int iClient)
 {
 	// This is required to not set the value of g_fFrustratedTankTransferHealthPercentage if the player is not a tank
 	// This function can be called from several places including player change team so need to check this.
@@ -324,8 +324,8 @@ StorePassedOrFrustratedTanksHealthPercentage(iClient)
 	// Setting this this to true will make the tank reset skipped.
 	g_bIsFrustratedTank[iClient] = true;
 
-	new iMaxHealth = GetPlayerMaxHealth(iClient);
-	new iCurrentHealth = GetPlayerHealth(iClient);
+	int iMaxHealth = GetPlayerMaxHealth(iClient);
+	int iCurrentHealth = GetPlayerHealth(iClient);
 	g_fFrustratedTankTransferHealthPercentage = iCurrentHealth / float(iMaxHealth);
 	
 	//PrintToChatAll("%N StorePassedOrFrustratedTanksHealthPercentage iHealth = %i MaxHealth = %i g_fFrustratedTankTransferHealthPercentage: %f", iClient, iCurrentHealth, iMaxHealth, g_fFrustratedTankTransferHealthPercentage);
@@ -333,7 +333,7 @@ StorePassedOrFrustratedTanksHealthPercentage(iClient)
 }
 
 
-CheckIfTankMovedWhileChargingAndIncrementCharge(iClient)
+void CheckIfTankMovedWhileChargingAndIncrementCharge(int iClient)
 {
 	float xyzCurrentPosition[3];
 	GetClientAbsOrigin(iClient, xyzCurrentPosition);
@@ -360,7 +360,7 @@ CheckIfTankMovedWhileChargingAndIncrementCharge(iClient)
 	}
 }
 
-Event_BoomerVomitOnPlayerTank(iVictim)
+void Event_BoomerVomitOnPlayerTank(int iVictim)
 {
 	if (RunClientChecks(iVictim) == false || 
 		g_iClientTeam[iVictim] != TEAM_INFECTED || 

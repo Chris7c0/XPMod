@@ -1,4 +1,4 @@
-void Bind2Press_Nick(iClient)
+void Bind2Press_Nick(int iClient)
 {
 	if (g_bNickGambleLockedBinds[iClient] == true)
 	{

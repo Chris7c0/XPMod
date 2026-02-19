@@ -1,4 +1,4 @@
-Handle1SecondClientTimers_Jockey(iClient)
+void Handle1SecondClientTimers_Jockey(int iClient)
 {
 	CheckDistanceRidenAndPrintMessage(iClient);
 }
@@ -42,7 +42,7 @@ Action TimerSetJockeyCooldown(Handle timer, any iClient)
 	//PrintToChatAll("\x03 jockey cooldown");
 	
 	// Get the ability ent id
-	new iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
+	int iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
 	if (!IsValidEntity(iEntid))
 		return Plugin_Stop;
 

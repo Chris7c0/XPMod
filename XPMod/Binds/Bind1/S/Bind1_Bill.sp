@@ -1,4 +1,4 @@
-void Bind1Press_Bill(iClient)
+void Bind1Press_Bill(int iClient)
 {
     if(g_iDiehardLevel[iClient] > 0)
     {
@@ -20,7 +20,7 @@ void Bind1Press_Bill(iClient)
                 g_hTimer_BillDropBombs[iClient] = CreateTimer(1.0, TimerDropBombs, iClient, TIMER_REPEAT);
                 
                 g_iClientBindUses_1[iClient]++;
-                new uses = 3 - g_iClientBindUses_1[iClient];
+                int uses = 3 - g_iClientBindUses_1[iClient];
                 PrintHintText(iClient, "Sons of bitches gonna die! %d uses remain", uses);
             }
             else

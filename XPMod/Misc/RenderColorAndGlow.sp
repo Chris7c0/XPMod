@@ -1,4 +1,4 @@
-SetClientRenderColor(iClient, iRed = 255, iGreen = 255, iBlue = 255, iAlpha = 255, iRenderMode = RENDER_MODE_NORMAL)
+void SetClientRenderColor(int iClient, int iRed = 255, int iGreen = 255, int iBlue = 255, int iAlpha = 255, int iRenderMode = RENDER_MODE_NORMAL)
 {
 	if (IsValidEntity(iClient) == false)
 		return;
@@ -9,7 +9,7 @@ SetClientRenderColor(iClient, iRed = 255, iGreen = 255, iBlue = 255, iAlpha = 25
 
 // 0 0 0 and GLOWTYPE_NORMAL sets normal glow
 // 1 0 0 and GLOWTYPE_CONSTANT needs to be used to hide glow
-SetClientGlow(iClient, iRed = 0, iGreen = 0, iBlue = 0, iGlowType = GLOWTYPE_NORMAL)
+void SetClientGlow(int iClient, int iRed = 0, int iGreen = 0, int iBlue = 0, int iGlowType = GLOWTYPE_NORMAL)
 {
 	if (IsValidEntity(iClient) ==  false)
 		return;
@@ -19,7 +19,7 @@ SetClientGlow(iClient, iRed = 0, iGreen = 0, iBlue = 0, iGlowType = GLOWTYPE_NOR
 	SetEntProp(iClient, Prop_Send, "m_glowColorOverride", iRed + (iGreen * 256) + (iBlue * 65536));
 }
 
-SetClientRenderAndGlowColor(int iClient)
+void SetClientRenderAndGlowColor(int iClient)
 {
 	if (RunClientChecks(iClient) == false || 
 		IsPlayerAlive(iClient) ==  false ||
@@ -46,7 +46,7 @@ SetClientRenderAndGlowColor(int iClient)
 					if (IsClientGrappled(iClient) == false && g_bIsClientDown[iClient] == false)
 					{					
 						// Cloaking Suit values
-						new iAlpha = RoundToFloor(255 * (1.0 - (((float(g_iGhillieLevel[iClient]) * 0.13) + ((float(g_iPromotionalLevel[iClient]) * 0.04))))));
+						int iAlpha = RoundToFloor(255 * (1.0 - (((float(g_iGhillieLevel[iClient]) * 0.13) + ((float(g_iPromotionalLevel[iClient]) * 0.04))))));
 						SetClientRenderColor(iClient, 255, 255, 255, iAlpha, RENDER_MODE_TRANSPARENT);
 						SetClientGlow(iClient, 1, 0, 0, GLOWTYPE_CONSTANT);
 						return;
@@ -65,7 +65,7 @@ SetClientRenderAndGlowColor(int iClient)
 				if(g_bUsingShadowNinja[iClient] == true)
 				{
 					// Shadow Ninja colors
-					new iAlpha = RoundToFloor(255 * (1.0 - (float(g_iShadowLevel[iClient]) * 0.19)));
+					int iAlpha = RoundToFloor(255 * (1.0 - (float(g_iShadowLevel[iClient]) * 0.19)));
 					SetClientRenderColor(iClient, 255, 255, 255, iAlpha, RENDER_MODE_TRANSPARENT);
 					SetClientGlow(iClient, 1, 0, 0, GLOWTYPE_CONSTANT);
 					return;

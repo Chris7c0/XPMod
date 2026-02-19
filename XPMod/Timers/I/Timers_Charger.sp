@@ -17,7 +17,7 @@ Action TimerSetChargerCooldown(Handle timer, any iClient)
 	//RETRIEVE VARIABLES
 	//------------------
 	//get the ability ent id
-	new iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
+	int iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
 	//if the retrieved gun id is -1, then move on
 	if (iEntid == -1)
 	{

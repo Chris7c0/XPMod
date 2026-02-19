@@ -1,4 +1,4 @@
-Action AdminMenuDraw(iClient)
+Action AdminMenuDraw(int iClient)
 {
 	// if (iClient != -99)
 	// {
@@ -28,7 +28,7 @@ Action AdminMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-AdminMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void AdminMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -90,7 +90,7 @@ void ResetAllAdminMenuSelectionVariables(int iClient)
 	g_iAdminSelectedDuration[iClient] = -1;
 }
 
-Action SwitchPlayersTeamMenuDraw(iClient)
+Action SwitchPlayersTeamMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(SwitchPlayersTeamMenuHandler);
 
@@ -107,7 +107,7 @@ Action SwitchPlayersTeamMenuDraw(iClient)
 }
 
 
-SwitchPlayersTeamMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void SwitchPlayersTeamMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -128,7 +128,7 @@ SwitchPlayersTeamMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 	}
 }
 
-Action SwitchPlayersTeamSelectTeamMenuDraw(iClient)
+Action SwitchPlayersTeamSelectTeamMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(SwitchPlayersTeamMenuSelectTeamHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -161,7 +161,7 @@ Action SwitchPlayersTeamSelectTeamMenuDraw(iClient)
 }
 
 
-SwitchPlayersTeamMenuSelectTeamHandler(Menu menu, MenuAction action, iClient, itemNum)
+void SwitchPlayersTeamMenuSelectTeamHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -182,8 +182,8 @@ SwitchPlayersTeamMenuSelectTeamHandler(Menu menu, MenuAction action, iClient, it
 			return;
 		}
 
-		new iTarget = g_iAdminSelectedClientID[iClient];
-		new iTeam = TEAM_SPECTATORS;
+		int iTarget = g_iAdminSelectedClientID[iClient];
+		int iTeam = TEAM_SPECTATORS;
 
 		switch (itemNum)
 		{
@@ -197,7 +197,7 @@ SwitchPlayersTeamMenuSelectTeamHandler(Menu menu, MenuAction action, iClient, it
 	}
 }
 
-Action MutePlayerMenuDraw(iClient)
+Action MutePlayerMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(MutePlayerMenuHandler);
 	
@@ -212,7 +212,7 @@ Action MutePlayerMenuDraw(iClient)
 }
 
 
-MutePlayerMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void MutePlayerMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -236,7 +236,7 @@ MutePlayerMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 
-Action KickPlayerMenuDraw(iClient)
+Action KickPlayerMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(KickPlayerMenuHandler);
 	
@@ -251,7 +251,7 @@ Action KickPlayerMenuDraw(iClient)
 }
 
 
-KickPlayerMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void KickPlayerMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -273,7 +273,7 @@ KickPlayerMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 
-Action BanPlayerMenuDraw(iClient)
+Action BanPlayerMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(BanPlayerMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -296,7 +296,7 @@ Action BanPlayerMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-BanPlayerMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void BanPlayerMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -322,7 +322,7 @@ BanPlayerMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 	}
 }
 
-Action BanPlayerInServerMenuDraw(iClient)
+Action BanPlayerInServerMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(BanPlayerInServerMenuHandler);
 	
@@ -336,7 +336,7 @@ Action BanPlayerInServerMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-BanPlayerInServerMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void BanPlayerInServerMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -365,7 +365,7 @@ BanPlayerInServerMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 	}
 }
 
-Action BanPlayerDisconnectedMenuDraw(iClient)
+Action BanPlayerDisconnectedMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(BanPlayerDisconnectedMenuHandler);
 	
@@ -380,7 +380,7 @@ Action BanPlayerDisconnectedMenuDraw(iClient)
 }
 
 
-BanPlayerDisconnectedMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void BanPlayerDisconnectedMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -408,7 +408,7 @@ BanPlayerDisconnectedMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 
 void AddAllCurrentPlayersToMenu(Menu menu, int iClient)
 {
-	for(new iTarget = 1; iTarget <= MaxClients; iTarget++)
+	for (int iTarget = 1; iTarget <= MaxClients; iTarget++)
 	{
 		if(RunClientChecks(iTarget) && IsFakeClient(iTarget) == false)
 		{
@@ -529,7 +529,7 @@ bool VerifyClientSteamIDMatches(int iClient, char[] strSteamIDToCheck)
 }
 
 // Undo Griefing Tools
-Action AdminGriefingUndoToolsMenuDraw(iClient)
+Action AdminGriefingUndoToolsMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(AdminGriefingUndoToolsMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -550,7 +550,7 @@ Action AdminGriefingUndoToolsMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-AdminGriefingUndoToolsMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void AdminGriefingUndoToolsMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -591,7 +591,7 @@ AdminGriefingUndoToolsMenuHandler(Menu menu, MenuAction action, iClient, itemNum
 }
 
 // ReviveAndFullHealSurvivor
-Action AdminReviveAndFullHealSurvivorMenuDraw(iClient)
+Action AdminReviveAndFullHealSurvivorMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(AdminReviveAndFullHealSurvivorMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -627,7 +627,7 @@ Action AdminReviveAndFullHealSurvivorMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-AdminReviveAndFullHealSurvivorMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void AdminReviveAndFullHealSurvivorMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -643,7 +643,7 @@ AdminReviveAndFullHealSurvivorMenuHandler(Menu menu, MenuAction action, iClient,
 
 		char strInfo[128];
 		GetMenuItem(menu, itemNum, strInfo, sizeof(strInfo));
-		new iTarget = StringToInt(strInfo);
+		int iTarget = StringToInt(strInfo);
 		HealClientFully(iTarget);
 
 		AdminReviveAndFullHealSurvivorMenuDraw(iClient);

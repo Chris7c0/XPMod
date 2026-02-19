@@ -3,10 +3,10 @@
  *                                                   Reloading Event                                                      *
  **************************************************************************************************************************/
 
-Event_WeaponReload(Handle hEvent, const char[] strName, bool bDontBroadcast)
+void Event_WeaponReload(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	//PrintToChatAll("Entered reload event...");
-	new iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	int iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	if (g_bTalentsConfirmed[iClient] == false)
 		return;
 
@@ -54,7 +54,7 @@ Event_WeaponReload(Handle hEvent, const char[] strName, bool bDontBroadcast)
 	char currentweapon[32];
 	// PrintToChatAll("Weapon Reload");
 	GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
-	new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+	int ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 	
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient)==true || g_iClientTeam[iClient] != TEAM_SURVIVORS)
 		return;
@@ -76,8 +76,8 @@ Event_WeaponReload(Handle hEvent, const char[] strName, bool bDontBroadcast)
 	/*
 	if(((StrEqual(currentweapon, "weapon_pumpshotgun", false) == true) || (StrEqual(currentweapon, "weapon_shotgun_chrome", false) == true) || (StrEqual(currentweapon, "weapon_autoshotgun", false) == true) || (StrEqual(currentweapon, "weapon_shotgun_spas", false) == true)) && (g_iSprayLevel[iClient] > 0))
 	{
-		new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-		new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
+		int ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+		int CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
 		//g_iCoachShotgunIncreasedAmmo[iClient] = CurrentClipAmmo + 1;
 		
 		if(g_bCoachShotgunForceReload[iClient] == false)
@@ -96,7 +96,7 @@ Event_WeaponReload(Handle hEvent, const char[] strName, bool bDontBroadcast)
 		g_iSilentLevel[iClient]>0 || 
 		g_iLouisTalent1Level[iClient] > 0)
 	{
-		new iEntid = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);//5565
+		int iEntid = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);//5565
 		if (IsValidEntity(iEntid)==false)
 			return;
 		if(iEntid < 1) return;
@@ -220,7 +220,7 @@ float FindAnimationSpeed(float reloadspeed) //, char[] gunname)
 }
 
 //this resets the playback rate on non-shotguns
-Action SoH_MagEnd (Handle timer, any iEntid2)
+Action SoH_MagEnd(Handle timer, any iEntid2)
 {
 	//PrintToChatAll("\x03SoH reset playback, magazine loader");
 
@@ -232,11 +232,11 @@ Action SoH_MagEnd (Handle timer, any iEntid2)
 	return Plugin_Stop;
 }
 
-Action SoH_MagEnd2 (Handle timer, Handle hPack)
+Action SoH_MagEnd2(Handle timer, Handle hPack)
 {
 	//PrintToChatAll("\x03SoH reset playback, magazine loader");
 	ResetPack(hPack);
-	new iClient = ReadPackCell(hPack);
+	int iClient = ReadPackCell(hPack);
 	float flStartTime_calc = ReadPackFloat(hPack);
 	CloseHandle(hPack);
 
@@ -245,7 +245,7 @@ Action SoH_MagEnd2 (Handle timer, Handle hPack)
 		return Plugin_Stop;
 
 	//experimental, remove annoying double-playback
-	new iViewModel = GetEntDataEnt2(iClient, g_iOffset_ViewModel);
+	int iViewModel = GetEntDataEnt2(iClient, g_iOffset_ViewModel);
 	SetEntDataFloat(iViewModel, g_iOffset_LayerStartTime, flStartTime_calc, true);
 	
 	//PrintToChatAll("\x03- end SoH mag loader, iClient \x01%i\x03 starttime \x01%f\x03 gametime \x01%f", iClient, flStartTime_calc, GetGameTime());
@@ -255,7 +255,7 @@ Action SoH_MagEnd2 (Handle timer, Handle hPack)
 
 
 //called for autoshotguns
-Action SoH_AutoshotgunStart (Handle timer, any iEntid2)
+Action SoH_AutoshotgunStart(Handle timer, any iEntid2)
 {
 	// //----DEBUG----
 	// PrintToChatAll("\x03-autoshotgun detected, iEntid \x01%i\x03, startO \x01%i\x03, insertO \x01%i\x03, endO \x01%i",
@@ -302,7 +302,7 @@ Action SoH_AutoshotgunStart (Handle timer, any iEntid2)
 }
 
 
-Action SoH_SpasShotgunStart (Handle timer, any iEntid2)
+Action SoH_SpasShotgunStart(Handle timer, any iEntid2)
 {
 	// PrintToChatAll("\x03-autoshotgun detected, iEntid \x01%i\x03, startO \x01%i\x03, insertO \x01%i\x03, endO \x01%i",
 	// 	iEntid,
@@ -348,7 +348,7 @@ Action SoH_SpasShotgunStart (Handle timer, any iEntid2)
 }
 
 //called for pump shotguns
-Action SoH_PumpshotgunStart (Handle timer, any iEntid2)
+Action SoH_PumpshotgunStart(Handle timer, any iEntid2)
 {
 	// PrintToChatAll("\x03-pumpshotgun detected, iEntid \x01%i\x03, startO \x01%i\x03, insertO \x01%i\x03, endO \x01%i",
 	// 	iEntid,
@@ -391,7 +391,7 @@ Action SoH_PumpshotgunStart (Handle timer, any iEntid2)
 }
 
 //this resets the playback rate on shotguns
-Action SoH_ShotgunEnd (Handle timer, any iEntid2)
+Action SoH_ShotgunEnd(Handle timer, any iEntid2)
 {
 	//PrintToChatAll("\x03-autoshotgun tick");
 
@@ -408,7 +408,7 @@ Action SoH_ShotgunEnd (Handle timer, any iEntid2)
 		if (HasEntProp(iEntid2, Prop_Data, "m_hOwner") == false)
 			return Plugin_Stop;
 
-		new iClient = GetEntPropEnt(iEntid2,Prop_Data,"m_hOwner");
+		int iClient = GetEntPropEnt(iEntid2,Prop_Data,"m_hOwner");
 		if (RunClientChecks(iClient) == false || IsPlayerAlive(iClient) == false)
 			return Plugin_Stop;
 
@@ -424,7 +424,7 @@ Action SoH_ShotgunEnd (Handle timer, any iEntid2)
 
 //since cocking requires more time, this function does
 //exactly as the above, except it adds slightly more time
-Action SoH_ShotgunEndCock (Handle timer, any iEntid2)
+Action SoH_ShotgunEndCock(Handle timer, any iEntid2)
 {
 	//PrintToChatAll("\x03-autoshotgun tick");
 
@@ -437,7 +437,7 @@ Action SoH_ShotgunEndCock (Handle timer, any iEntid2)
 
 		SetEntDataFloat(iEntid2, g_iOffset_PlaybackRate, 1.0, true);
 
-		new iClient=GetEntPropEnt(iEntid2,Prop_Data,"m_hOwner");
+		int iClient = GetEntPropEnt(iEntid2,Prop_Data,"m_hOwner");
 		if (RunClientChecks(iClient) == false || IsPlayerAlive(iClient) == false)
 			return Plugin_Stop;
 

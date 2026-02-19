@@ -1,5 +1,5 @@
 // Calculate player movement speed given all values
-SetClientSpeed(iClient)
+void SetClientSpeed(int iClient)
 {
 	if (RunClientChecks(iClient) == false || 
 		IsPlayerAlive(iClient) == false ||
@@ -49,7 +49,7 @@ SetClientSpeed(iClient)
 	// PrintToChatAll("SetClientSpeed: %N: %f", iClient, fSpeed);
 }
 
-SetClientSpeedForAllSurvivors()
+void SetClientSpeedForAllSurvivors()
 {
 	for (int iClient=1; iClient <= MaxClients; iClient++)
 		if (g_iClientTeam[iClient] == TEAM_SURVIVORS)
@@ -63,7 +63,7 @@ SetClientSpeedForAllSurvivors()
 // }
 
 // Survivors =======================================================================================================================
-SetClientSpeedBill(iClient, float &fSpeed)
+void SetClientSpeedBill(int iClient, float &fSpeed)
 {
 	if (g_bTalentsConfirmed[iClient] == false ||
 		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
@@ -77,7 +77,7 @@ SetClientSpeedBill(iClient, float &fSpeed)
 	//PrintToChat(iClient, "SetClientSpeedBill: %f", fSpeed);
 }
 
-SetClientSpeedRochelle(iClient, float &fSpeed)
+void SetClientSpeedRochelle(int iClient, float &fSpeed)
 {
 	if (g_bTalentsConfirmed[iClient] == false ||
 		g_iChosenSurvivor[iClient] != ROCHELLE)
@@ -93,7 +93,7 @@ SetClientSpeedRochelle(iClient, float &fSpeed)
 	// PrintToChat(iClient, "SetClientSpeedRochelle: %f", fSpeed);
 }
 
-SetClientSpeedCoach(iClient, float &fSpeed)
+void SetClientSpeedCoach(int iClient, float &fSpeed)
 {
 	if (g_bTalentsConfirmed[iClient] == false ||
 		g_iChosenSurvivor[iClient] != COACH)
@@ -116,7 +116,7 @@ SetClientSpeedCoach(iClient, float &fSpeed)
 	//PrintToChat(iClient, "SetClientSpeedCoach: %f", fSpeed);
 }
 
-SetClientSpeedEllis(iClient, float &fSpeed)
+void SetClientSpeedEllis(int iClient, float &fSpeed)
 {
 	if (g_bTalentsConfirmed[iClient] == false ||
 		g_iChosenSurvivor[iClient] != ELLIS)
@@ -137,7 +137,7 @@ SetClientSpeedEllis(iClient, float &fSpeed)
 	//PrintToChat(iClient, "SetClientSpeedEllis: %f, g_iTankCounter: %i", fSpeed, g_iTankCounter);
 }
 
-SetClientSpeedNick(iClient, float &fSpeed)
+void SetClientSpeedNick(int iClient, float &fSpeed)
 {
 	if (g_bTalentsConfirmed[iClient] == false ||
 		g_iChosenSurvivor[iClient] != NICK)
@@ -158,7 +158,7 @@ SetClientSpeedNick(iClient, float &fSpeed)
 	//PrintToChat(iClient, "SetClientSpeedNick: %f", fSpeed);
 }
 
-SetClientSpeedLouis(iClient, float &fSpeed)
+void SetClientSpeedLouis(int iClient, float &fSpeed)
 {
 	// Warez Station boost
 	fSpeed += g_fWarezStationSpeedBoost[iClient];
@@ -206,7 +206,7 @@ SetClientSpeedLouis(iClient, float &fSpeed)
 }
 
 
-SetClientSpeedBotsAndNewPlayers(iClient, float &fSpeed)
+void SetClientSpeedBotsAndNewPlayers(int iClient, float &fSpeed)
 {
 	if (g_iClientTeam[iClient] != TEAM_SURVIVORS || 
 		g_iClientLevel[iClient] == 30)
@@ -226,7 +226,7 @@ SetClientSpeedBotsAndNewPlayers(iClient, float &fSpeed)
 
 
 // Infected =======================================================================================================================
-SetClientSpeedSmoker(iClient, float &fSpeed)
+void SetClientSpeedSmoker(int iClient, float &fSpeed)
 {
 	if (g_bTalentsConfirmed[iClient] == false ||
 		g_iInfectedCharacter[iClient] != SMOKER ||
@@ -241,7 +241,7 @@ SetClientSpeedSmoker(iClient, float &fSpeed)
 	//PrintToChat(iClient, "SetClientSpeedSmoker: %f", fSpeed);
 }
 
-SetClientSpeedBoomer(iClient, float &fSpeed)
+void SetClientSpeedBoomer(int iClient, float &fSpeed)
 {
 	if (g_bTalentsConfirmed[iClient] == false ||
 		g_iInfectedCharacter[iClient] != BOOMER ||
@@ -263,7 +263,7 @@ SetClientSpeedBoomer(iClient, float &fSpeed)
 	//PrintToChat(iClient, "SetClientSpeedBoomer: %f", fSpeed);
 }
 
-SetClientSpeedHunter(iClient, float &fSpeed)
+void SetClientSpeedHunter(int iClient, float &fSpeed)
 {
 	if (g_bTalentsConfirmed[iClient] == false ||
 		g_iInfectedCharacter[iClient] != HUNTER ||
@@ -281,7 +281,7 @@ SetClientSpeedHunter(iClient, float &fSpeed)
 	// PrintToChat(iClient, "SetClientSpeedHunter: %f", fSpeed);
 }
 
-SetClientSpeedSpitter(iClient, float &fSpeed)
+void SetClientSpeedSpitter(int iClient, float &fSpeed)
 {
 	if (g_bTalentsConfirmed[iClient] == false ||
 		g_iInfectedCharacter[iClient] != SPITTER ||
@@ -296,7 +296,7 @@ SetClientSpeedSpitter(iClient, float &fSpeed)
 	//PrintToChat(iClient, "SetClientSpeedSpitter: %f", fSpeed);
 }
 
-SetClientSpeedJockey(iClient, float &fSpeed)
+void SetClientSpeedJockey(int iClient, float &fSpeed)
 {
 	if (g_bTalentsConfirmed[iClient] == false ||
 		g_iInfectedCharacter[iClient] != JOCKEY ||
@@ -314,7 +314,7 @@ SetClientSpeedJockey(iClient, float &fSpeed)
 	// PrintToChat(iClient, "SetClientSpeedJockey: %f", fSpeed);
 }
 
-SetClientSpeedCharger(iClient, float &fSpeed)
+void SetClientSpeedCharger(int iClient, float &fSpeed)
 {
 	if (g_bTalentsConfirmed[iClient] == false ||
 		g_iInfectedCharacter[iClient] != CHARGER ||
@@ -334,7 +334,7 @@ SetClientSpeedCharger(iClient, float &fSpeed)
 	//PrintToChat(iClient, "SetClientSpeedCharger: %f", fSpeed);
 }
 
-SetClientSpeedTank(iClient, float &fSpeed)
+void SetClientSpeedTank(int iClient, float &fSpeed)
 {
 	if (g_iInfectedCharacter[iClient] != TANK)
 		return;
@@ -347,7 +347,7 @@ SetClientSpeedTank(iClient, float &fSpeed)
 	//PrintToChat(iClient, "SetClientSpeedTank: %f", fSpeed);
 }
 
-bool SetClientSpeedOverrides(iClient, float &fSpeed)
+bool SetClientSpeedOverrides(int iClient, float &fSpeed)
 {
 	if (g_testingSpeedOverride[iClient] > 0.0)
 	{

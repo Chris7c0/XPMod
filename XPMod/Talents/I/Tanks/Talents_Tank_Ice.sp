@@ -1,4 +1,4 @@
-LoadIceTankTalents(iClient)
+void LoadIceTankTalents(int iClient)
 {
 	if (RunClientChecks(iClient) == false || 
 		g_iClientTeam[iClient] != TEAM_INFECTED || 
@@ -47,7 +47,7 @@ LoadIceTankTalents(iClient)
 		PrintHintText(iClient, "You have become the Ice Tank");
 }
 
-ResetAllTankVariables_Ice(iClient)
+void ResetAllTankVariables_Ice(int iClient)
 {
 	g_iIceTankLifePool[iClient] = 0;
 	g_bShowingIceSphere[iClient] = false;
@@ -65,7 +65,7 @@ ResetAllTankVariables_Ice(iClient)
 // 	LoadIceTankTalents(iClient);
 // }
 
-SetClientSpeedTankIce(iClient, float &fSpeed)
+void SetClientSpeedTankIce(int iClient, float &fSpeed)
 {
 	if (g_iTankChosen[iClient] != TANK_ICE)
 		return;
@@ -80,7 +80,7 @@ SetClientSpeedTankIce(iClient, float &fSpeed)
 }
 
 
-OnGameFrame_Tank_Ice(iClient)
+void OnGameFrame_Tank_Ice(int iClient)
 {
 	//Check to see if the charging has already taken place or depleted
 	if(g_iTankChosen[iClient] != TANK_ICE)
@@ -129,8 +129,8 @@ OnGameFrame_Tank_Ice(iClient)
 		if (g_iTankCharge[iClient] >= TANK_ICE_REGEN_START_DURATION_REQUIREMENT)
 		{
 			float fCurrentTankHealthPercentage;
-			new iCurrentHealth = GetPlayerHealth(iClient);
-			new iCurrentMaxHealth = RoundToNearest(TANK_HEALTH_ICE * g_fTankStartingHealthMultiplier[iClient]);
+			int iCurrentHealth = GetPlayerHealth(iClient);
+			int iCurrentMaxHealth = RoundToNearest(TANK_HEALTH_ICE * g_fTankStartingHealthMultiplier[iClient]);
 			
 			if (g_iIceTankLifePool[iClient] > 0 && iCurrentHealth < iCurrentMaxHealth)
 			{
@@ -194,7 +194,7 @@ OnGameFrame_Tank_Ice(iClient)
 					GetClientAbsOrigin(iClient, xyzCurrentPosition);
 					
 					//Check to see if there is a player inside of the ice sphere and freeze him if he is
-					for(new iVictim = 1; iVictim <= MaxClients; iVictim++)
+					for (int iVictim = 1; iVictim <= MaxClients; iVictim++)
 					{
 						if(g_bFrozenByTank[iVictim] == true || g_iClientTeam[iVictim] != TEAM_SURVIVORS 
 							|| IsClientInGame(iVictim) == false || IsPlayerAlive(iVictim) == false)
@@ -212,7 +212,7 @@ OnGameFrame_Tank_Ice(iClient)
 				}
 				
 				//Set the color of the tank to match his current health percentage
-				new iGreen	= 20 + RoundToNearest(235 * fCurrentTankHealthPercentage);
+				int iGreen = 20 + RoundToNearest(235 * fCurrentTankHealthPercentage);
 				
 				SetEntityRenderMode(iClient, RenderMode:0);
 				SetEntityRenderColor(iClient, 0, iGreen, 255, 255);
@@ -235,7 +235,7 @@ OnGameFrame_Tank_Ice(iClient)
 	}
 }
 
-OnPlayerRunCmd_Tank_Ice(iClient, iButtons)
+void OnPlayerRunCmd_Tank_Ice(int iClient, int iButtons)
 {
 	if (g_iTankChosen[iClient] != TANK_ICE)
 		return;
@@ -245,14 +245,14 @@ OnPlayerRunCmd_Tank_Ice(iClient, iButtons)
 
 
 
-EventsHurt_VictimTank_Ice(Handle hEvent, iAttacker, iVictimTank)
+void EventsHurt_VictimTank_Ice(Handle hEvent, int iAttacker, int iVictimTank)
 {
 	SuppressNeverUsedWarning(hEvent, iAttacker);
 
-	new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
-	new iDmgType = GetEventInt(hEvent, "type");
+	int iDmgHealth = GetEventInt(hEvent,"dmg_health");
+	int iDmgType = GetEventInt(hEvent, "type");
 
-	new iCurrentHealth = GetPlayerHealth(iVictimTank);
+	int iCurrentHealth = GetPlayerHealth(iVictimTank);
 	float fCurrentTankHealthPercentage;
 
 	// Add More Fire Damage
@@ -271,14 +271,14 @@ EventsHurt_VictimTank_Ice(Handle hEvent, iAttacker, iVictimTank)
 		
 		//Change the actual color of the tank to reflect his health
 		//Go from Light Blue to Dark Blue by lowering the green value
-		new iGreen	= 20 + RoundToNearest(235 * fCurrentTankHealthPercentage);
+		int iGreen = 20 + RoundToNearest(235 * fCurrentTankHealthPercentage);
 		
 		SetEntityRenderMode(iVictimTank, RenderMode:0);
 		SetEntityRenderColor(iVictimTank, 0, iGreen, 255, 255);
 	}
 }
 
-EventsHurt_AttackerTank_Ice(Handle hEvent, iAttackerTank, iVictim)
+void EventsHurt_AttackerTank_Ice(Handle hEvent, int iAttackerTank, int iVictim)
 {
 	SuppressNeverUsedWarning(iAttackerTank);
 
@@ -311,7 +311,7 @@ EventsHurt_AttackerTank_Ice(Handle hEvent, iAttackerTank, iVictim)
 		UnfreezePlayerByTank(iVictim);
 }
 
-EventsDeath_VictimTank_Ice(Handle hEvent, iAttacker, iVictimTank)
+void EventsDeath_VictimTank_Ice(Handle hEvent, int iAttacker, int iVictimTank)
 {
 	// if (RunClientChecks(iVictimTank) == false)
 	// 	return;
@@ -373,7 +373,7 @@ void HandleFireDamageVictimIceTank(int iAttacker, int iVictimTank, int iDmgHealt
 	SetPlayerHealth(iVictimTank, iAttacker, RoundToNearest(-1.0 * iDmgHealth * TANK_FIRE_DAMAGE_FIRE_BULLETS_ADD_MULTIPLIER) + iDmgHealth, true);
 }
 
-FreezePlayerByTank(iVictim, float fFreezeTime, float fStartTime = 0.2)
+void FreezePlayerByTank(int iVictim, float fFreezeTime, float fStartTime = 0.2)
 {
 	if (RunClientChecks(iVictim) == false)
 		return;
@@ -382,7 +382,7 @@ FreezePlayerByTank(iVictim, float fFreezeTime, float fStartTime = 0.2)
 	CreateTimer(fFreezeTime, Timer_UnfreezePlayerByTank, iVictim, TIMER_FLAG_NO_MAPCHANGE);
 }
 
-UnfreezePlayerByTank(iClient)
+void UnfreezePlayerByTank(int iClient)
 {
 	if(iClient < 1 || g_iClientTeam[iClient] != TEAM_SURVIVORS || g_bFrozenByTank[iClient] == false || IsValidEntity(iClient) == false || 
 		IsClientInGame(iClient) == false || IsPlayerAlive(iClient) == false)
@@ -410,11 +410,11 @@ UnfreezePlayerByTank(iClient)
 	//ResetSurvivorSpeed(iClient);
 }
 
-CreateIceRockDestroyEffect(int iRockEntity)
+void CreateIceRockDestroyEffect(int iRockEntity)
 {
 	// Find the tank rock entity in the list that will be used to the trail particle entity
-	new iTankRockIndex = FindIndexInArrayListUsingValue(g_listTankRockEntities, iRockEntity, TANK_ROCK_ENTITY_ID);
-	new iTankRockTrailParticle = g_listTankRockEntities.Get(iTankRockIndex, TANK_ROCK_PARTICLE_TRAIL);
+	int iTankRockIndex = FindIndexInArrayListUsingValue(g_listTankRockEntities, iRockEntity, TANK_ROCK_ENTITY_ID);
+	int iTankRockTrailParticle = g_listTankRockEntities.Get(iTankRockIndex, TANK_ROCK_PARTICLE_TRAIL);
 	// Stop the trail particle and remove it
 	TurnOffAndDeleteSmokeStackParticle(iTankRockTrailParticle);
 
@@ -432,7 +432,7 @@ CreateIceRockDestroyEffect(int iRockEntity)
 	WriteParticle(iRockEntity, "tank_rock_throw_impact_chunks", 0.0, 5.0, xyzRockPosition);
 	
 	//Make Smoke Entity
-	new smoke = CreateEntityByName("env_smokestack");
+	int smoke = CreateEntityByName("env_smokestack");
 	
 	DispatchKeyValue(smoke,"Origin", vecString);
 	DispatchKeyValue(smoke,"BaseSpread", "0");		//Gap in the middle
@@ -453,7 +453,7 @@ CreateIceRockDestroyEffect(int iRockEntity)
 	CreateTimer(1.5, TimerStopSmokeEntity, smoke, TIMER_FLAG_NO_MAPCHANGE);
 }
 
-CreateIceRockTrailEffect(int iRockEntity)
+void CreateIceRockTrailEffect(int iRockEntity)
 {
 	float xyzRockPosition[3];
 	GetEntPropVector(iRockEntity, Prop_Send, "m_vecOrigin", xyzRockPosition);
@@ -461,9 +461,9 @@ CreateIceRockTrailEffect(int iRockEntity)
 	Format(vecString, sizeof(vecString), "%f %f %f", xyzRockPosition[0], xyzRockPosition[1], xyzRockPosition[2]);
 
 	// Make Smoke Entity
-	new iTankRockTrailParticle = CreateEntityByName("env_smokestack");
+	int iTankRockTrailParticle = CreateEntityByName("env_smokestack");
 	// Find the tank rock entity in the list that will be used store the trail particle entity
-	new iTankRockIndex = FindIndexInArrayListUsingValue(g_listTankRockEntities, iRockEntity, TANK_ROCK_ENTITY_ID);
+	int iTankRockIndex = FindIndexInArrayListUsingValue(g_listTankRockEntities, iRockEntity, TANK_ROCK_ENTITY_ID);
 	// Store it for stopping and destroying it later
 	g_listTankRockEntities.Set(iTankRockIndex, iTankRockTrailParticle, TANK_ROCK_PARTICLE_TRAIL);
 	
@@ -491,7 +491,7 @@ CreateIceRockTrailEffect(int iRockEntity)
 }
 
 
-CreateIceTankTrailEffect(int iClient)
+void CreateIceTankTrailEffect(int iClient)
 {
 	float xyzTankPosition[3];
 	GetClientAbsOrigin(iClient, xyzTankPosition);
@@ -522,13 +522,13 @@ CreateIceTankTrailEffect(int iClient)
 	AcceptEntityInput(g_iPID_TankTrail[iClient], "TurnOn");
 }
 
-FreezeEveryoneCloseToExplodingIceTankRock(iRockEntity)
+void FreezeEveryoneCloseToExplodingIceTankRock(int iRockEntity)
 {
 	// Get the rock location
 	float xyzRockPosition[3];
 	GetEntPropVector(iRockEntity, Prop_Send, "m_vecOrigin", xyzRockPosition);
 
-	for(new iClient=1; iClient <= MaxClients; iClient++)
+	for (int iClient = 1; iClient <= MaxClients; iClient++)
 	{
 		if(RunClientChecks(iClient) &&
 			IsPlayerAlive(iClient) &&
@@ -547,7 +547,7 @@ FreezeEveryoneCloseToExplodingIceTankRock(iRockEntity)
 	}
 }
 
-CheckForPlayersInIceTanksColdAuraSlowRange(iTank)
+void CheckForPlayersInIceTanksColdAuraSlowRange(int iTank)
 {
 	// Stop Cold Aura if the player is or has just been ice sliding
 	if (g_bIceTankSliding[iTank] == true ||
@@ -557,7 +557,7 @@ CheckForPlayersInIceTanksColdAuraSlowRange(iTank)
 	float xyzTankPosition[3];
 	GetClientEyePosition(iTank, xyzTankPosition);
 
-	for(new iClient=1; iClient <= MaxClients; iClient++)
+	for (int iClient = 1; iClient <= MaxClients; iClient++)
 	{
 		if(RunClientChecks(iClient) == false ||
 			IsPlayerAlive(iClient) == false ||
@@ -594,9 +594,9 @@ CheckForPlayersInIceTanksColdAuraSlowRange(iTank)
 }
 
 // On death, reset all players cold aura, it will be set again on next game frame if there is another Ice Tank
-ResetAllPlayersInIceTanksColdAuraSlowRange()
+void ResetAllPlayersInIceTanksColdAuraSlowRange()
 {
-	for(new iClient=1; iClient <= MaxClients; iClient++)
+	for (int iClient = 1; iClient <= MaxClients; iClient++)
 	{
 		// Reset for everyone
 		g_fIceTankColdAuraSlowSpeedReduction[iClient] = 0.0;
@@ -609,7 +609,7 @@ ResetAllPlayersInIceTanksColdAuraSlowRange()
 	}
 }
 
-HandleIceTankSlideRunCommand(iClient, iButtons)
+void HandleIceTankSlideRunCommand(int iClient, int iButtons)
 {
 	if (!(iButtons & IN_SPEED))
 		return;

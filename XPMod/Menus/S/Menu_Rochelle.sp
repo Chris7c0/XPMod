@@ -1,5 +1,5 @@
 //Rochelle Menu Draw
-Action RochelleMenuDraw(iClient) 
+Action RochelleMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -44,7 +44,7 @@ Action RochelleMenuDraw(iClient)
 }
 
 //Gather Intelligence
-Action GatherMenuDraw(iClient) 
+Action GatherMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -92,7 +92,7 @@ Action GatherMenuDraw(iClient)
 }
 
 //Hunter Killer
-Action HunterMenuDraw(iClient) 
+Action HunterMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -141,7 +141,7 @@ Action HunterMenuDraw(iClient)
 }
 
 //Sniper's Endurance
-Action SnipersEnduranceMenuDraw(iClient) 
+Action SnipersEnduranceMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -192,7 +192,7 @@ Action SnipersEnduranceMenuDraw(iClient)
 }
 
 //Silent Sorrow
-Action SilentMenuDraw(iClient) 
+Action SilentMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -253,7 +253,7 @@ Action SilentMenuDraw(iClient)
 }
 
 //Smoke and Mirrors
-Action SmokeMenuDraw(iClient) 
+Action SmokeMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -304,7 +304,7 @@ Action SmokeMenuDraw(iClient)
 }
 
 //Shadow Ninja
-Action ShadowMenuDraw(iClient) 
+Action ShadowMenuDraw(int iClient) 
 {
 	char text[512];
 	
@@ -356,7 +356,7 @@ Action ShadowMenuDraw(iClient)
 //Handlers//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Rochelle'sMenu Handler
-RochelleMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void RochelleMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -404,7 +404,7 @@ RochelleMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Gather Training Handler
-GatherMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void GatherMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -423,7 +423,7 @@ GatherMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Hunter Killer Handler
-HunterMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void HunterMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -442,7 +442,7 @@ HunterMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Sniper's Endurance Handler
-SnipersEnduranceMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void SnipersEnduranceMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -461,7 +461,7 @@ SnipersEnduranceMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Silent Handler
-SilentMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void SilentMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -480,7 +480,7 @@ SilentMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Smoke and Mirrors Handler
-SmokeMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void SmokeMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -499,7 +499,7 @@ SmokeMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Shadow Ninja Handler
-ShadowMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void ShadowMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -518,7 +518,7 @@ ShadowMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 
-Action DetectionHudMenuDraw(iClient) 
+Action DetectionHudMenuDraw(int iClient) 
 {
 	if(g_iClientTeam[iClient] != TEAM_SURVIVORS || g_bDrawIDD[iClient]== false || IsPlayerAlive(iClient) == false)
 		return Plugin_Handled;
@@ -576,7 +576,7 @@ Action DetectionHudMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-DetectionHudMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void DetectionHudMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{

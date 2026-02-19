@@ -453,39 +453,39 @@ float ITEM_WEAPON_BASE_ROF[] =  {0.000000,  //"empty",
 
 
 //Sprites
-new g_iSprite_Laser;
-new g_iSprite_Glow;
-new g_iSprite_Halo;
-new g_iSprite_White;
-new g_iSprite_Bar_Background;
-new g_iSprite_Bar_Foreground;
+int g_iSprite_Laser;
+int g_iSprite_Glow;
+int g_iSprite_Halo;
+int g_iSprite_White;
+int g_iSprite_Bar_Background;
+int g_iSprite_Bar_Foreground;
 // new g_iSprite_HealthBarWhite;
-new g_iSprite_SmokerTongue;
-new g_iSprite_AmmoBox;
-new g_iSprite_Arrow;
+int g_iSprite_SmokerTongue;
+int g_iSprite_AmmoBox;
+int g_iSprite_Arrow;
 //Experience Sprites
-new g_iSprite_1XP;
-new g_iSprite_5XP_HS;
-new g_iSprite_25XP;
-new g_iSprite_50XP;
-new g_iSprite_75XP_HS;
-new g_iSprite_100XP;
-new g_iSprite_150XP;
-new g_iSprite_250XP;
-new g_iSprite_250XP_Team;
-new g_iSprite_350XP;
-new g_iSprite_10XP_Bill;
-new g_iSprite_20XP_Bill;
-new g_iSprite_30XP_Bill;
-new g_iSprite_40XP_Bill;
-new g_iSprite_50XP_Bill;
-new g_iSprite_3XP_SI;
-new g_iSprite_10XP_SI;
-new g_iSprite_15XP_SI;
-new g_iSprite_25XP_SI;
-new g_iSprite_50XP_SI;
-new g_iSprite_200XP_SI;
-new g_iSprite_500XP_SI;
+int g_iSprite_1XP;
+int g_iSprite_5XP_HS;
+int g_iSprite_25XP;
+int g_iSprite_50XP;
+int g_iSprite_75XP_HS;
+int g_iSprite_100XP;
+int g_iSprite_150XP;
+int g_iSprite_250XP;
+int g_iSprite_250XP_Team;
+int g_iSprite_350XP;
+int g_iSprite_10XP_Bill;
+int g_iSprite_20XP_Bill;
+int g_iSprite_30XP_Bill;
+int g_iSprite_40XP_Bill;
+int g_iSprite_50XP_Bill;
+int g_iSprite_3XP_SI;
+int g_iSprite_10XP_SI;
+int g_iSprite_15XP_SI;
+int g_iSprite_25XP_SI;
+int g_iSprite_50XP_SI;
+int g_iSprite_200XP_SI;
+int g_iSprite_500XP_SI;
 
 
 
@@ -494,82 +494,82 @@ new g_iSprite_500XP_SI;
 //Bill Particles
 
 //Rochelle Particles
-new g_iPID_RochelleCharge1[MAXPLAYERS + 1];
-new g_iPID_RochelleCharge2[MAXPLAYERS + 1];
-new g_iPID_RochelleCharge3[MAXPLAYERS + 1];
-new g_iPID_RochelleJumpCharge[MAXPLAYERS + 1];
-new g_iPID_RochellePoisonBullet[MAXPLAYERS + 1];
+int g_iPID_RochelleCharge1[MAXPLAYERS + 1];
+int g_iPID_RochelleCharge2[MAXPLAYERS + 1];
+int g_iPID_RochelleCharge3[MAXPLAYERS + 1];
+int g_iPID_RochelleJumpCharge[MAXPLAYERS + 1];
+int g_iPID_RochellePoisonBullet[MAXPLAYERS + 1];
 
 //Coach Particles
-new g_iPID_CoachMeleeCharge1[MAXPLAYERS + 1];
-new g_iPID_CoachMeleeCharge2[MAXPLAYERS + 1];
-new g_iPID_CoachCharge1[MAXPLAYERS + 1];
-new g_iPID_CoachCharge2[MAXPLAYERS + 1];
-new g_iPID_CoachCharge3[MAXPLAYERS + 1];
-new g_iPID_CoachJetpackStream[MAXPLAYERS + 1];
-new g_iPID_CoachMeleeChargeHeal[MAXPLAYERS + 1];
+int g_iPID_CoachMeleeCharge1[MAXPLAYERS + 1];
+int g_iPID_CoachMeleeCharge2[MAXPLAYERS + 1];
+int g_iPID_CoachCharge1[MAXPLAYERS + 1];
+int g_iPID_CoachCharge2[MAXPLAYERS + 1];
+int g_iPID_CoachCharge3[MAXPLAYERS + 1];
+int g_iPID_CoachJetpackStream[MAXPLAYERS + 1];
+int g_iPID_CoachMeleeChargeHeal[MAXPLAYERS + 1];
 
 //Ellis Particles
-new g_iPID_EllisCharge1[MAXPLAYERS + 1];
-new g_iPID_EllisCharge2[MAXPLAYERS + 1];
-new g_iPID_EllisCharge3[MAXPLAYERS + 1];
-new g_iPID_EllisFireStorm[MAXPLAYERS + 1];
+int g_iPID_EllisCharge1[MAXPLAYERS + 1];
+int g_iPID_EllisCharge2[MAXPLAYERS + 1];
+int g_iPID_EllisCharge3[MAXPLAYERS + 1];
+int g_iPID_EllisFireStorm[MAXPLAYERS + 1];
 
 //Nicks Particles
-new g_iPID_NickCharge1[MAXPLAYERS + 1];
-new g_iPID_NickCharge2[MAXPLAYERS + 1];
-new g_iPID_NickCharge3[MAXPLAYERS + 1];
+int g_iPID_NickCharge1[MAXPLAYERS + 1];
+int g_iPID_NickCharge2[MAXPLAYERS + 1];
+int g_iPID_NickCharge3[MAXPLAYERS + 1];
 
 //Spitter Particles
-new g_iPID_DemiGravityEffect[MAXPLAYERS + 1];
-new g_iPID_SpitterSlimeTrail[MAXPLAYERS + 1];
+int g_iPID_DemiGravityEffect[MAXPLAYERS + 1];
+int g_iPID_SpitterSlimeTrail[MAXPLAYERS + 1];
 
 //Charger Particles
-new g_iPID_ChargerShield[MAXPLAYERS + 1];
+int g_iPID_ChargerShield[MAXPLAYERS + 1];
 
 //Tank Particles
-new g_iPID_TankChargedFire[MAXPLAYERS + 1];
-new g_iPID_IceTankChargeMistStock[MAXPLAYERS + 1];
-new g_iPID_IceTankChargeMistAddon[MAXPLAYERS + 1];
-new g_iPID_IceTankChargeSnow[MAXPLAYERS + 1];
-new g_iPID_IceTankIcicles[MAXPLAYERS + 1];
-new g_iPID_TankTrail[MAXPLAYERS + 1];
+int g_iPID_TankChargedFire[MAXPLAYERS + 1];
+int g_iPID_IceTankChargeMistStock[MAXPLAYERS + 1];
+int g_iPID_IceTankChargeMistAddon[MAXPLAYERS + 1];
+int g_iPID_IceTankChargeSnow[MAXPLAYERS + 1];
+int g_iPID_IceTankIcicles[MAXPLAYERS + 1];
+int g_iPID_TankTrail[MAXPLAYERS + 1];
 
 //Survivor Particle Menu Descriptions
 bool g_bEnabledVGUI[MAXPLAYERS + 1];					//VGUI toggle for iClient menu descriptions
 bool g_bShowingVGUI[MAXPLAYERS + 1];	
 
-new g_iPID_MD_Bill_Inspirational[MAXPLAYERS + 1];
-new g_iPID_MD_Bill_Ghillie[MAXPLAYERS + 1];
-new g_iPID_MD_Bill_Will[MAXPLAYERS + 1];
-new g_iPID_MD_Bill_Exorcism[MAXPLAYERS + 1];
-new g_iPID_MD_Bill_Diehard[MAXPLAYERS + 1];
-new g_iPID_MD_Bill_Promotional[MAXPLAYERS + 1];
+int g_iPID_MD_Bill_Inspirational[MAXPLAYERS + 1];
+int g_iPID_MD_Bill_Ghillie[MAXPLAYERS + 1];
+int g_iPID_MD_Bill_Will[MAXPLAYERS + 1];
+int g_iPID_MD_Bill_Exorcism[MAXPLAYERS + 1];
+int g_iPID_MD_Bill_Diehard[MAXPLAYERS + 1];
+int g_iPID_MD_Bill_Promotional[MAXPLAYERS + 1];
 
-new g_iPID_MD_Rochelle_Gather[MAXPLAYERS + 1];
-new g_iPID_MD_Rochelle_Hunter[MAXPLAYERS + 1];
-new g_iPID_MD_Rochelle_Sniper[MAXPLAYERS + 1];
-new g_iPID_MD_Rochelle_Silent[MAXPLAYERS + 1];
-new g_iPID_MD_Rochelle_Smoke[MAXPLAYERS + 1];
-new g_iPID_MD_Rochelle_Shadow[MAXPLAYERS + 1];
+int g_iPID_MD_Rochelle_Gather[MAXPLAYERS + 1];
+int g_iPID_MD_Rochelle_Hunter[MAXPLAYERS + 1];
+int g_iPID_MD_Rochelle_Sniper[MAXPLAYERS + 1];
+int g_iPID_MD_Rochelle_Silent[MAXPLAYERS + 1];
+int g_iPID_MD_Rochelle_Smoke[MAXPLAYERS + 1];
+int g_iPID_MD_Rochelle_Shadow[MAXPLAYERS + 1];
 
-new g_iPID_MD_Coach_Bull[MAXPLAYERS + 1];
-new g_iPID_MD_Coach_Wrecking[MAXPLAYERS + 1];
-new g_iPID_MD_Coach_Spray[MAXPLAYERS + 1];
-new g_iPID_MD_Coach_Homerun[MAXPLAYERS + 1];
-new g_iPID_MD_Coach_Lead[MAXPLAYERS + 1];
-new g_iPID_MD_Coach_Strong[MAXPLAYERS + 1];
+int g_iPID_MD_Coach_Bull[MAXPLAYERS + 1];
+int g_iPID_MD_Coach_Wrecking[MAXPLAYERS + 1];
+int g_iPID_MD_Coach_Spray[MAXPLAYERS + 1];
+int g_iPID_MD_Coach_Homerun[MAXPLAYERS + 1];
+int g_iPID_MD_Coach_Lead[MAXPLAYERS + 1];
+int g_iPID_MD_Coach_Strong[MAXPLAYERS + 1];
 
-new g_iPID_MD_Ellis_Over[MAXPLAYERS + 1];
-new g_iPID_MD_Ellis_Bring[MAXPLAYERS + 1];
-new g_iPID_MD_Ellis_Jammin[MAXPLAYERS + 1];
-new g_iPID_MD_Ellis_Weapons[MAXPLAYERS + 1];
-new g_iPID_MD_Ellis_Mechanic[MAXPLAYERS + 1];
-new g_iPID_MD_Ellis_Fire[MAXPLAYERS + 1];
+int g_iPID_MD_Ellis_Over[MAXPLAYERS + 1];
+int g_iPID_MD_Ellis_Bring[MAXPLAYERS + 1];
+int g_iPID_MD_Ellis_Jammin[MAXPLAYERS + 1];
+int g_iPID_MD_Ellis_Weapons[MAXPLAYERS + 1];
+int g_iPID_MD_Ellis_Mechanic[MAXPLAYERS + 1];
+int g_iPID_MD_Ellis_Fire[MAXPLAYERS + 1];
 
-new g_iPID_MD_Nick_Swindler[MAXPLAYERS + 1];
-new g_iPID_MD_Nick_Leftover[MAXPLAYERS + 1];
-new g_iPID_MD_Nick_Magnum[MAXPLAYERS + 1];
-new g_iPID_MD_Nick_Enhanced[MAXPLAYERS + 1];
-new g_iPID_MD_Nick_Risky[MAXPLAYERS + 1];
-new g_iPID_MD_Nick_Desperate[MAXPLAYERS + 1];
+int g_iPID_MD_Nick_Swindler[MAXPLAYERS + 1];
+int g_iPID_MD_Nick_Leftover[MAXPLAYERS + 1];
+int g_iPID_MD_Nick_Magnum[MAXPLAYERS + 1];
+int g_iPID_MD_Nick_Enhanced[MAXPLAYERS + 1];
+int g_iPID_MD_Nick_Risky[MAXPLAYERS + 1];
+int g_iPID_MD_Nick_Desperate[MAXPLAYERS + 1];

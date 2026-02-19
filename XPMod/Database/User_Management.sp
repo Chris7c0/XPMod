@@ -1,5 +1,5 @@
 //Callback function for an SQL SQLGetUserIDAndToken
-SQLGetUserIDAndTokenCallback(Handle owner, Handle hQuery, const char[] error, any iClient)
+void SQLGetUserIDAndTokenCallback(Handle owner, Handle hQuery, const char[] error, any iClient)
 {
 	// PrintToChatAll("SQLGetUserIDAndTokenCallback Started. %i: %N", iClient, iClient);
 	// PrintToServer("SQLGetUserIDAndTokenCallback Started. %i: %N", iClient, iClient);
@@ -56,7 +56,7 @@ SQLGetUserIDAndTokenCallback(Handle owner, Handle hQuery, const char[] error, an
 	// PrintToServer("GetUserIDAndToken Callback Complete.  %i: %N", iClient, iClient);
 }
 
-GetUserIDAndToken(any iClient)
+void GetUserIDAndToken(any iClient)
 {
 	// PrintToChatAll("GetUserIDAndToken. %i: %N", iClient, iClient);
 	// PrintToServer("GetUserIDAndToken. %i: %N", iClient, iClient);
@@ -90,7 +90,7 @@ GetUserIDAndToken(any iClient)
 }
 
 //Callback function for an SQL GetUserData
-SQLGetUserDataCallback(Handle owner, Handle hQuery, const char[] error, any hDataPack)
+void SQLGetUserDataCallback(Handle owner, Handle hQuery, const char[] error, any hDataPack)
 {
 	if (hDataPack == INVALID_HANDLE)
 	{
@@ -98,7 +98,7 @@ SQLGetUserDataCallback(Handle owner, Handle hQuery, const char[] error, any hDat
 		return;
 	}
 	ResetPack(hDataPack);
-	new iClient = ReadPackCell(hDataPack);
+	int iClient = ReadPackCell(hDataPack);
 	bool bOnlyWebsiteChangableData = ReadPackCell(hDataPack);
 	bool bDrawConfirmMenuAfter = ReadPackCell(hDataPack);
 	bool bDrawTopMenuAfter = ReadPackCell(hDataPack);
@@ -162,7 +162,7 @@ SQLGetUserDataCallback(Handle owner, Handle hQuery, const char[] error, any hDat
 		
 		//Get Infecteed Talent ID from the SQL database
 		iFieldIndex = DB_COL_INDEX_USERS_INFECTED_ID_1 - startFieldIndexOffset;
-		for(new i = 0; i < 3; i++)
+		for (int i = 0; i < 3; i++)
 		{
 			if(SQL_FetchString(hQuery, iFieldIndex++, strData, sizeof(strData)) != 0)
 			{
@@ -176,7 +176,7 @@ SQLGetUserDataCallback(Handle owner, Handle hQuery, const char[] error, any hDat
 		{
 			iFieldIndex = DB_COL_INDEX_USERS_EQUIPMENT_PRIMARY - startFieldIndexOffset;
 			//Get Equipment slot IDs from the SQL database
-			for(new i = 0; i < 6; i++)
+			for (int i = 0; i < 6; i++)
 			{
 				if(SQL_FetchString(hQuery, iFieldIndex++, strData, sizeof(strData)) != 0)
 					iEquipmentSlot[i] = StringToInt(strData);
@@ -186,7 +186,7 @@ SQLGetUserDataCallback(Handle owner, Handle hQuery, const char[] error, any hDat
 			
 			iFieldIndex = DB_COL_INDEX_USERS_OPTION_ANNOUNCER - startFieldIndexOffset;
 			//Get the user's Options from the SQL database
-			for(new i = 0; i < 2; i++)
+			for (int i = 0; i < 2; i++)
 			{
 				if(SQL_FetchString(hQuery, iFieldIndex++, strData, sizeof(strData)) != 0)
 					iOption[i] = StringToInt(strData);
@@ -236,7 +236,7 @@ SQLGetUserDataCallback(Handle owner, Handle hQuery, const char[] error, any hDat
 			//Get loadout weapon names and g_iClientXP costs
 			GetWeaponNames(iClient);
 		
-			new i = 0;
+			int i = 0;
 			//Set the user's XPMod Options
 			if(iOption[i++] == 1)
 			{
@@ -299,7 +299,7 @@ SQLGetUserDataCallback(Handle owner, Handle hQuery, const char[] error, any hDat
 	// PrintToServer("GetUserData Callback Complete.  %i: %N", iClient, iClient);
 }
 
-GetUserData(any iClient, bool bOnlyWebsiteChangableData = false, bool bDrawConfirmMenuAfter = false, bool bDrawTopMenuAfter = false)
+void GetUserData(any iClient, bool bOnlyWebsiteChangableData = false, bool bDrawConfirmMenuAfter = false, bool bDrawTopMenuAfter = false)
 {
 	// PrintToChatAll("GetUserData. %i: %N, bOnlyWebsiteChangableData = %i", iClient, iClient, bOnlyWebsiteChangableData);
 	// PrintToServer("GetUserData. %i: %N, bOnlyWebsiteChangableData = %i", iClient, iClient, bOnlyWebsiteChangableData);
@@ -356,7 +356,7 @@ GetUserData(any iClient, bool bOnlyWebsiteChangableData = false, bool bDrawConfi
 }
 
 //Callback function for an SQL CreateNewUser
-SQLCreateNewUserCallback(Handle owner, Handle hQuery, const char[] error, any iClient)
+void SQLCreateNewUserCallback(Handle owner, Handle hQuery, const char[] error, any iClient)
 {
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -379,7 +379,7 @@ SQLCreateNewUserCallback(Handle owner, Handle hQuery, const char[] error, any iC
 	//PrintToServer("New User Creation Callback Complete.  %i: %N", iClient, iClient);
 }
 
-CreateNewUser(iClient)
+void CreateNewUser(int iClient)
 {
 	//PrintToChatAll("New User Creation.  %i: %N", iClient, iClient);
 	//PrintToServer("New User Creation.  %i: %N", iClient, iClient);
@@ -459,7 +459,7 @@ CreateNewUser(iClient)
 	SQL_TQuery(g_hDatabase, SQLCreateNewUserCallback, strQuery, iClient);
 }
 
-SaveUserData(int iClient)
+void SaveUserData(int iClient)
 {
 	// First get if the player has updated data from the database
 	// After this, this will save the new data in the database
@@ -467,7 +467,7 @@ SaveUserData(int iClient)
 }
 
 //Callback function for an SQL SaveUserData
-SQLSaveUserDataInDatabaseCallback(Handle owner, Handle hQuery, const char[] error, any iClient)
+void SQLSaveUserDataInDatabaseCallback(Handle owner, Handle hQuery, const char[] error, any iClient)
 {
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -482,7 +482,7 @@ SQLSaveUserDataInDatabaseCallback(Handle owner, Handle hQuery, const char[] erro
 	// PrintToServer("Save User Data Callback Complete. %i: %N", iClient, iClient);
 }
 
-SaveUserDataInDatabase(iClient)
+void SaveUserDataInDatabase(int iClient)
 {
 	// PrintToChatAll("Save User Data. %i: %N", iClient, iClient);
 	// PrintToServer("Save User Data. %i: %N", iClient, iClient);
@@ -593,7 +593,7 @@ SaveUserDataInDatabase(iClient)
 	IntToString(g_iClientBoostSlotID[iClient], strEquipmentSlotID[4], 3);
 	IntToString(g_iClientLaserSlotID[iClient], strEquipmentSlotID[5], 3);
 	
-	new i = 0;
+	int i = 0;
 	IntToString(g_bAnnouncerOn[iClient], strOption[i++], 2);
 	IntToString(g_bEnabledVGUI[iClient], strOption[i++], 2);
 	IntToString(g_iXPDisplayMode[iClient], strOption[i++], 2);
@@ -676,7 +676,7 @@ SaveUserDataInDatabase(iClient)
 }
 
 //Callback function for an SQL SQLCheckForChangeThenSaveData
-SQLCheckForChangeThenSaveDataCallback(Handle owner, Handle hQuery, const char[] error, any iClient)
+void SQLCheckForChangeThenSaveDataCallback(Handle owner, Handle hQuery, const char[] error, any iClient)
 {
 	// PrintToChatAll("SQLCheckForChangeThenSaveDataCallback Started. %i: %N", iClient, iClient);
 	// PrintToServer("SQLCheckForChangeThenSaveDataCallback Started. %i: %N", iClient, iClient);
@@ -771,7 +771,7 @@ void SQLCheckForChangeThenSaveData(any iClient)
 }
 
 
-Logout(iClient)
+void Logout(int iClient)
 {
 	//PrintToChatAll("Logout. %i: %N", iClient, iClient);
 	//PrintToServer("Logout. %i: %N", iClient, iClient);
@@ -806,7 +806,7 @@ Logout(iClient)
 }
 
 
-GetAttributesStringForQuery(char[] strAttributes, int bufferSize, int startIndex, int endIndex)
+void GetAttributesStringForQuery(char[] strAttributes, int bufferSize, int startIndex, int endIndex)
 {
 	// Ensure callers never inherit stale stack data.
 	strAttributes[0] = '\0';
@@ -820,7 +820,7 @@ GetAttributesStringForQuery(char[] strAttributes, int bufferSize, int startIndex
 	}
 }
 
-GenerateNewHashToken(const char[] strSteamID, char[] strToken)
+void GenerateNewHashToken(const char[] strSteamID, char[] strToken)
 {
 	// Generate 3 random numbers to append to the end of the steam id to act as salt for the hash
 	int num1 = GetURandomInt();
@@ -834,7 +834,7 @@ GenerateNewHashToken(const char[] strSteamID, char[] strToken)
 	SHA1String(strValueToHash, strToken, true);
 }
 
-SanitizeValueStringForQuery(char[] strValue, iStringSize)
+void SanitizeValueStringForQuery(char[] strValue, int iStringSize)
 {
 	// Remove all the characters that can exploit or break a query
 	ReplaceString(strValue, iStringSize, "'", "-", true);
@@ -842,7 +842,7 @@ SanitizeValueStringForQuery(char[] strValue, iStringSize)
 	ReplaceString(strValue, iStringSize, "\\", "-", true);
 }
 
-KickClientCannotGetSteamID(iClient)
+void KickClientCannotGetSteamID(int iClient)
 {
 	KickClient(iClient, "Unable to obtain your Steam Auth ID. \
 		Please close L4D2, restart Steam, then restart L4D2 with Steam already open");

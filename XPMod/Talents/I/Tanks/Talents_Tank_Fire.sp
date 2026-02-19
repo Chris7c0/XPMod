@@ -1,4 +1,4 @@
-LoadFireTankTalents(iClient)
+void LoadFireTankTalents(int iClient)
 {
 	if (RunClientChecks(iClient) == false || 
 		g_iClientTeam[iClient] != TEAM_INFECTED ||
@@ -42,7 +42,7 @@ LoadFireTankTalents(iClient)
 		PrintHintText(iClient, "You have become the Fire Tank");
 }
 
-ResetAllTankVariables_Fire(iClient)
+void ResetAllTankVariables_Fire(int iClient)
 {
 	g_iFireDamageCounter[iClient] = 0;
 	g_bFireTankAttackCharged[iClient] = false;
@@ -57,7 +57,7 @@ ResetAllTankVariables_Fire(iClient)
 // 	LoadFireTankTalents(iClient);
 // }
 
-SetClientSpeedTankFire(iClient, float &fSpeed)
+void SetClientSpeedTankFire(int iClient, float &fSpeed)
 {
 	if (g_iTankChosen[iClient] != TANK_FIRE)
 		return;
@@ -65,7 +65,7 @@ SetClientSpeedTankFire(iClient, float &fSpeed)
 	fSpeed += (TANK_FIRE_BASE_SPEED + g_fFireTankExtraSpeed[iClient]);
 }
 
-OnGameFrame_Tank_Fire(iClient)
+void OnGameFrame_Tank_Fire(int iClient)
 {
 	//Check to see if the charging has already taken place or depleted
 	if(g_iTankChosen[iClient] == TANK_FIRE && g_bFireTankAttackCharged[iClient] == true)
@@ -115,14 +115,14 @@ OnGameFrame_Tank_Fire(iClient)
 	}
 }
 
-EventsHurt_VictimTank_Fire(Handle hEvent, iAttacker, iVictimTank)
+void EventsHurt_VictimTank_Fire(Handle hEvent, int iAttacker, int iVictimTank)
 {
 	SuppressNeverUsedWarning(hEvent, iAttacker);
 
-	new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
-	new iDmgType = GetEventInt(hEvent, "type");
+	int iDmgHealth = GetEventInt(hEvent,"dmg_health");
+	int iDmgType = GetEventInt(hEvent, "type");
 
-	new iCurrentHealth = GetPlayerHealth(iVictimTank);
+	int iCurrentHealth = GetPlayerHealth(iVictimTank);
 	float fCurrentTankHealthPercentage;
 
 	//Prevent Fire Damage
@@ -141,14 +141,14 @@ EventsHurt_VictimTank_Fire(Handle hEvent, iAttacker, iVictimTank)
 		
 		//Change the actual color of the tank to reflect his health
 		//Go from Orange to Red by lowering the green value
-		new iGreen	= 20 + RoundToNearest(180 * fCurrentTankHealthPercentage);
+		int iGreen = 20 + RoundToNearest(180 * fCurrentTankHealthPercentage);
 		
 		SetEntityRenderMode(iVictimTank, RenderMode:0);
 		SetEntityRenderColor(iVictimTank, 255, iGreen, 0, 255);
 	}
 }
 
-EventsHurt_AttackerTank_Fire(Handle hEvent, iAttackerTank, iVictim)
+void EventsHurt_AttackerTank_Fire(Handle hEvent, int iAttackerTank, int iVictim)
 {	
 	char weapon[20];
 	GetEventString(hEvent,"weapon", weapon, 20);
@@ -191,7 +191,7 @@ EventsHurt_AttackerTank_Fire(Handle hEvent, iAttackerTank, iVictim)
 // 	SuppressNeverUsedWarning(hEvent, iAttackerTank, iVictim);
 // }
 
-EventsDeath_VictimTank_Fire(Handle hEvent, iAttacker, iVictimTank)
+void EventsDeath_VictimTank_Fire(Handle hEvent, int iAttacker, int iVictimTank)
 {
 	if (RunClientChecks(iVictimTank) == false)
 		return;
@@ -205,7 +205,7 @@ EventsDeath_VictimTank_Fire(Handle hEvent, iAttacker, iVictimTank)
 	MolotovExplode(xyzLocation);
 }
 
-SetFireToPlayer(iVictim, iAttacker, float fTime)
+void SetFireToPlayer(int iVictim, int iAttacker, float fTime)
 {
 	if (iVictim < 1 || IsClientInGame(iVictim) == false)
 		return;
@@ -220,7 +220,7 @@ SetFireToPlayer(iVictim, iAttacker, float fTime)
 	CreateTimer(0.5, Timer_DealFireDamage, hEntityPack, TIMER_REPEAT);
 }
 
-CreateFireRockTrailEffect(int iRockEntity)
+void CreateFireRockTrailEffect(int iRockEntity)
 {
 	float xyzRockPosition[3];
 	GetEntPropVector(iRockEntity, Prop_Send, "m_vecOrigin", xyzRockPosition);
@@ -228,9 +228,9 @@ CreateFireRockTrailEffect(int iRockEntity)
 	Format(vecString, sizeof(vecString), "%f %f %f", xyzRockPosition[0], xyzRockPosition[1], xyzRockPosition[2]);
 
 	// Make Fire Entity
-	new iTankRockTrailParticle = AttachParticle(iRockEntity, "aircraft_destroy_fastFireTrail", 20.0, 0.0);
+	int iTankRockTrailParticle = AttachParticle(iRockEntity, "aircraft_destroy_fastFireTrail", 20.0, 0.0);
 	// Find the tank rock entity in the list that will be used store the trail particle entity
-	new iTankRockIndex = FindIndexInArrayListUsingValue(g_listTankRockEntities, iRockEntity, TANK_ROCK_ENTITY_ID);
+	int iTankRockIndex = FindIndexInArrayListUsingValue(g_listTankRockEntities, iRockEntity, TANK_ROCK_ENTITY_ID);
 	// Store it for stopping and destroying it later
 	g_listTankRockEntities.Set(iTankRockIndex, iTankRockTrailParticle, TANK_ROCK_PARTICLE_TRAIL);
 	
@@ -243,7 +243,7 @@ CreateFireRockTrailEffect(int iRockEntity)
 	// CreateTimer(10.0, TimerStopSmokeEntity, iTankRockTrailParticle, TIMER_FLAG_NO_MAPCHANGE);
 }
 
-DestroyFireTankRock(iRockEntity)
+void DestroyFireTankRock(int iRockEntity)
 {
 	float xyzRockPosition[3];
 	GetEntPropVector(iRockEntity, Prop_Send, "m_vecOrigin", xyzRockPosition);

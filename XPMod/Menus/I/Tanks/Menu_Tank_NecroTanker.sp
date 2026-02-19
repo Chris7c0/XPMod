@@ -1,4 +1,4 @@
-Action TankMenuDrawNecroTanker(iClient)
+Action TankMenuDrawNecroTanker(int iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(TankMenuHandlerNecroTanker);
@@ -48,7 +48,7 @@ Action TankMenuDrawNecroTanker(iClient)
 	return Plugin_Handled;
 }
 
-TankMenuHandlerNecroTanker(Menu menu, MenuAction action, iClient, itemNum)
+void TankMenuHandlerNecroTanker(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{

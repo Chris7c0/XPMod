@@ -1,4 +1,4 @@
-void Bind1Press_Boomer(iClient)
+void Bind1Press_Boomer(int iClient)
 {
     if((g_iClientInfectedClass1[iClient] == BOOMER) || (g_iClientInfectedClass2[iClient] == BOOMER) || (g_iClientInfectedClass3[iClient] == BOOMER))
     {
@@ -16,7 +16,7 @@ void Bind1Press_Boomer(iClient)
                     SetClientSpeed(iClient);
 
                     //Start Vomiting
-                    new iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
+                    int iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
                     if (iEntid > 0)
                     {
                         float flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+8);

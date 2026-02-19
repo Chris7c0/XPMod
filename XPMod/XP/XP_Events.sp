@@ -1,4 +1,4 @@
-EventsDeath_GiveXP(Handle hEvent, iAttacker, iVictim)
+void EventsDeath_GiveXP(Handle hEvent, int iAttacker, int iVictim)
 {
 	// Give XP to Survivors for killing the Tank
 	if (g_iClientTeam[iVictim] == TEAM_INFECTED &&
@@ -6,7 +6,7 @@ EventsDeath_GiveXP(Handle hEvent, iAttacker, iVictim)
 		RunClientChecks(iVictim) &&
 		GetEntProp(iVictim, Prop_Send, "m_zombieClass") == TANK)
 	{		
-		for(new i=1;i<=MaxClients;i++)
+		for (int i = 1;i<=MaxClients;i++)
 		{
 			if (RunClientChecks(i) && 
 				GetClientTeam(i) == TEAM_SURVIVORS && 
@@ -27,13 +27,13 @@ EventsDeath_GiveXP(Handle hEvent, iAttacker, iVictim)
 	if (RunClientChecks(iAttacker) == false || IsFakeClient(iAttacker) == true)
 		return;
 
-	new headshot = GetEventBool(hEvent, "headshot");
+	bool headshot = GetEventBool(hEvent, "headshot");
 
 	// Give Survivors XP for Common Infected kills
 	if (g_iClientTeam[iAttacker] == TEAM_SURVIVORS && 
 		iVictim < 1)
 	{
-		new iCIVictim = GetEventInt(hEvent, "entityid");
+		int iCIVictim = GetEventInt(hEvent, "entityid");
 
 		g_iStat_ClientCommonKilled[iAttacker]++;
 		//If it was a headshot, give headshot XP and play sound

@@ -1,6 +1,6 @@
 Action TimerCheckAndOpenCharacterSelectionMenuForAll(Handle timer, any data)
 {
-	decl iClient;
+	int iClient;
 	for(iClient = 1; iClient <= MaxClients; iClient++)
 	{
 		if(g_bClientAlreadyShownCharacterSelectMenu[iClient] == false &&
@@ -40,7 +40,7 @@ Action TimerCheckAndOpenCharacterSelectionMenuForAll(Handle timer, any data)
 // 	return Plugin_Stop;
 // }
 
-OpenCharacterSelectionPanel(iClient)
+void OpenCharacterSelectionPanel(int iClient)
 {
 	// Close any existing confirmation menu
 	g_bUserStoppedConfirmation[iClient] = true;
@@ -60,7 +60,7 @@ OpenCharacterSelectionPanel(iClient)
 		CreateNewUserMenuDraw(iClient);
 }
 
-ResetTalentConfirmCountdown(iClient)
+void ResetTalentConfirmCountdown(int iClient)
 {
 	g_bTalentsConfirmed[iClient] = false;
 	g_iAutoSetCountDown[iClient] = -1;
@@ -94,7 +94,7 @@ Action StartWaitingForClientInputForDrawMenu(Handle timer, any iClient)
 // 	return Plugin_Stop;
 // }
 
-OpenCharacterSelectMenu(iClient)
+void OpenCharacterSelectMenu(int iClient)
 {
 	if (g_iClientTeam[iClient] == TEAM_SURVIVORS)
 		ChangeSurvivorMenuDraw(iClient);
@@ -122,7 +122,7 @@ Action TimerShowTalentsConfirmed(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-DrawConfirmationMenuToClient(iClient, iDisplayTime = 60)
+void DrawConfirmationMenuToClient(int iClient, int iDisplayTime = 60)
 {
 	// Draw Confirmation menu
 	g_bUserStoppedConfirmation[iClient] = false;
@@ -134,7 +134,7 @@ DrawConfirmationMenuToClient(iClient, iDisplayTime = 60)
 	g_hTimer_ShowingConfirmTalents[iClient] = CreateTimer(1.0, TimerShowTalentsConfirmed, iClient, TIMER_REPEAT);
 }
 
-Action ConfirmationMessageMenuDraw(iClient)
+Action ConfirmationMessageMenuDraw(int iClient)
 {
 	if(RunClientChecks(iClient) == false || 
 		IsFakeClient(iClient) == true ||
@@ -210,7 +210,7 @@ Action ConfirmationMessageMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-ConfirmationMessageMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void ConfirmationMessageMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{

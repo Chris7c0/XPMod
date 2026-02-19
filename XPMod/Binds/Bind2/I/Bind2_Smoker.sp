@@ -1,4 +1,4 @@
-void Bind2Press_Smoker(iClient)
+void Bind2Press_Smoker(int iClient)
 {
 	if ((g_iClientInfectedClass1[iClient] != SMOKER) &&
 		(g_iClientInfectedClass2[iClient] != SMOKER) &&
@@ -34,13 +34,13 @@ void Bind2Press_Smoker(iClient)
 	SetPlayerMaxHealth(iClient, SMOKER_BIND_2_ELECTROCUTION_MAX_HEALTH, false, true);
 }
 
-stock CatchAndReleasePlayer(iClient)
+stock void CatchAndReleasePlayer(int iClient)
 {
 	SmokerDismount(iClient);
 	EntangleSurvivorInSmokerTongue(g_iChokingVictim[iClient]);
 }
 
-EntangleSurvivorInSmokerTongue(iClient)
+void EntangleSurvivorInSmokerTongue(int iClient)
 {
 	PrintToChatAll("Entangling %N", iClient);
 
@@ -72,7 +72,7 @@ EntangleSurvivorInSmokerTongue(iClient)
 		SetConVarInt(FindConVar("sb_enforce_proximity_range"), CONVAR_SB_ENFORCE_PROXIMITY_RANGE_MAX);
 }
 
-UntangleSurvivorFromSmokerTongue(iClient)
+void UntangleSurvivorFromSmokerTongue(int iClient)
 {
 	g_bIsEntangledInSmokerTongue[iClient] = false;
 	g_bStopAllInput[iClient] = false;
@@ -187,7 +187,7 @@ bool CheckIfAnyBotsAreEntangled()
 	return false;
 }
 
-CreateEntangledSurvivorClone(int iClient)
+void CreateEntangledSurvivorClone(int iClient)
 {
 	char strModel[PLATFORM_MAX_PATH];
 	GetEntPropString(iClient, Prop_Data, "m_ModelName", strModel, sizeof(strModel));
@@ -265,7 +265,7 @@ CreateEntangledSurvivorClone(int iClient)
 	// Hide weapons
 }
 
-StartElectrocutingPlayer(iClient)
+void StartElectrocutingPlayer(int iClient)
 {
 	if(g_bElectrocutionCooldown[iClient] == true)
 	{
@@ -320,7 +320,7 @@ Action TimerStopElectrocution(Handle hTimer, int iClient)
 }
 
 
-void SmokerElectrocutePlayerAndChainToOthers(iClient)
+void SmokerElectrocutePlayerAndChainToOthers(int iClient)
 {
 	float xyzClientLocation[3], xyzTargetLocation[3];
 	GetClientEyePosition(iClient,xyzClientLocation);
@@ -335,7 +335,7 @@ void SmokerElectrocutePlayerAndChainToOthers(iClient)
 		case 2: strcopy(strZapSound, sizeof(strZapSound),SOUND_ZAP2);
 		case 3: strcopy(strZapSound, sizeof(strZapSound),SOUND_ZAP3);
 	}
-	new pitch = GetRandomInt(95, 130);
+	int pitch = GetRandomInt(95, 130);
 	EmitSoundToAll(strZapSound, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, pitch, -1, xyzClientLocation, NULL_VECTOR, true, 0.0);
 	EmitSoundToAll(strZapSound, g_iChokingVictim[iClient], SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, pitch, -1, xyzTargetLocation, NULL_VECTOR, true, 0.0);
 	
@@ -344,7 +344,7 @@ void SmokerElectrocutePlayerAndChainToOthers(iClient)
 
 	CreateParticle("electrical_arc_01_system", 1.5, g_iChokingVictim[iClient], ATTACH_EYES, true);
 
-	new alpha = GetRandomInt(80,140);										
+	int alpha = GetRandomInt(80,140);
 	ShowHudOverlayColor(iClient, 255, 255, 255, alpha, 150, FADE_OUT);
 	ShowHudOverlayColor(g_iChokingVictim[iClient], 255, 255, 255, alpha, 150, FADE_OUT);
 	

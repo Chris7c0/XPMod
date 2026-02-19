@@ -12,7 +12,7 @@ void ResetAllVariablesForRound()
 		//Sets voice comns back to default setting
 		if(IsClientInGame(i) == true)
 		{
-			for(new other = 1; other <= MaxClients; other++)
+			for (int other = 1; other <= MaxClients; other++)
 			{
 				if(IsClientInGame(other) == true && IsFakeClient(other) == false)
 					SetListenOverride(i, other, Listen_Default);
@@ -218,7 +218,7 @@ void ResetClientVariablesForRound(int iClient)
 	g_bHealthBoostItemJustGivenByCheats[iClient] = false;
 	g_bHealthBoostSlotWasEmptyOnLastPickUp[iClient] = false;
 	g_bWareStationActive[iClient] = false;
-	for(new i=1;i <= MaxClients;i++)
+	for (int i = 1;i <= MaxClients;i++)
 		g_bWareStationClientAlreadyServiced[iClient][i] = false;
 	g_iWareStationOwnerIDOfCurrentlyViewedStation[iClient] = -1;
 	g_xyzWarezStationLocation[iClient][0] = EMPTY_VECTOR[0];
@@ -341,11 +341,11 @@ void ResetClientVariablesForRound(int iClient)
 	//Delete all the global timer handles at the end of the round
 	DeleteAllGlobalTimerHandles(iClient);
 	
-	for(new j=1;j <= MaxClients;j++)
+	for (int j = 1;j <= MaxClients;j++)
 		g_bNickIsStealingLife[iClient][j] = false;
 }
 
-ResetAllVariables(iClient)
+void ResetAllVariables(int iClient)
 {
 	g_iBanDurationInMinutes[iClient] = 0;
 	
@@ -400,7 +400,7 @@ void ResetAllEntityVariablesForRound()
 	}
 }
 
-Event_DeathResetAllVariables(iAttacker, iVictim)
+void Event_DeathResetAllVariables(int iAttacker, int iVictim)
 {
 	g_bIsClientDown[iVictim] = false;
 	clienthanging[iVictim] = false;
@@ -469,7 +469,7 @@ Event_DeathResetAllVariables(iAttacker, iVictim)
 	g_bHunterLethalPoisoned[iVictim] = false;
 }
 
-DeleteAllGlobalTimerHandles(iClient)
+void DeleteAllGlobalTimerHandles(int iClient)
 {
 	//delete g_hTimer_FreezeCountdown;
 	delete g_hTimer_ShowingConfirmTalents[iClient];

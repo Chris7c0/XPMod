@@ -1,4 +1,4 @@
-void Bind2Press_Louis(iClient)
+void Bind2Press_Louis(int iClient)
 {
     if(g_fLouisXMRWallet[iClient] >= 0.1)
 		ScriptKiddieExploitsMenuDraw(iClient);
@@ -7,7 +7,7 @@ void Bind2Press_Louis(iClient)
 }
 
 // Script Kiddie Exploits Menu Draw
-Action ScriptKiddieExploitsMenuDraw(iClient)
+Action ScriptKiddieExploitsMenuDraw(int iClient)
 {
 	char text[512];
 	
@@ -83,7 +83,7 @@ Action ScriptKiddieExploitsMenuDraw(iClient)
 }
 
 // Scrip tKiddie Exploits Menu Handler
-ScriptKiddieExploitsMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void ScriptKiddieExploitsMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {	
 	if (action == MenuAction_End)
 	{
@@ -121,7 +121,7 @@ ScriptKiddieExploitsMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 	}
 }
 
-bool SpeedHax(iClient)
+bool SpeedHax(int iClient)
 {
 	// Check if the player has enough XMR
 	if (g_fLouisXMRWallet[iClient] < LOUIS_HEADSHOP_XMR_AMOUNT_SPEED_HAX)
@@ -167,7 +167,7 @@ Action TimerStopSpeedHax(Handle timer, int blah)
 	return Plugin_Stop;
 }
 
-bool MedHax(iClient)
+bool MedHax(int iClient)
 {
 	// Check if the player has enough XMR
 	if (g_fLouisXMRWallet[iClient] < LOUIS_HEADSHOP_XMR_AMOUNT_MED_HAX)
@@ -215,7 +215,7 @@ Action TimerStopMedHax(Handle timer, int blah)
 }
 
 
-bool NoobWipe(iClient)
+bool NoobWipe(int iClient)
 {
 	// Check if the player has enough XMR
 	if (g_fLouisXMRWallet[iClient] < LOUIS_HEADSHOP_XMR_AMOUNT_NUB_WIPE)
@@ -247,7 +247,7 @@ bool NoobWipe(iClient)
 }
 
 
-bool HackTargetPlayer(iClient)
+bool HackTargetPlayer(int iClient)
 {
 	// Check if the player has enough XMR
 	if (g_fLouisXMRWallet[iClient] < LOUIS_HEADSHOP_XMR_AMOUNT_HAK_TARGET)
@@ -266,7 +266,7 @@ bool HackTargetPlayer(iClient)
 }
 
 // Hack Target Player Menu Draw
-Action HackTargetPlayerMenuDraw(iClient)
+Action HackTargetPlayerMenuDraw(int iClient)
 {
 	char text[512], strTargetID[10];
 	
@@ -316,7 +316,7 @@ Action HackTargetPlayerMenuDraw(iClient)
 }
 
 // Hack Target Player Menu Handler
-HackTargetPlayerMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void HackTargetPlayerMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {	
 	if (action == MenuAction_End)
 	{
@@ -339,7 +339,7 @@ HackTargetPlayerMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 
 		char strInfo[128];
 		GetMenuItem(menu, itemNum, strInfo, sizeof(strInfo));
-		new iTarget = StringToInt(strInfo);
+		int iTarget = StringToInt(strInfo);
 
 		// Check if the selected target is viable
 		if (RunClientChecks(iTarget) == false ||
@@ -458,7 +458,7 @@ Action TimerSpamRandomSoundsToHackedTargetPlayer(Handle timer, int iClient)
 }
 
 
-bool HackTheServer(iClient)
+bool HackTheServer(int iClient)
 {
 	// Check if the player has enough XMR
 	if (g_fLouisXMRWallet[iClient] < LOUIS_HEADSHOP_XMR_AMOUNT_HAXOR_TEH_SERVER)
@@ -522,7 +522,7 @@ Action TimerResetTimeScale(Handle timer, int iClient)
 	return Plugin_Stop;
 }
 
-TimeScale(float fScaleAmount = 1.0)
+void TimeScale(float fScaleAmount = 1.0)
 {
 	if(fScaleAmount <= 0.0)
 		return;
@@ -542,7 +542,7 @@ TimeScale(float fScaleAmount = 1.0)
 	AcceptEntityInput(iTimeScaleEntity, "Start");
 }
 
-void KillAllCI(iClient)
+void KillAllCI(int iClient)
 {
 	for (int i=1; i < MAXENTITIES; i++)
 	{
@@ -557,7 +557,7 @@ void KillAllCI(iClient)
 	}
 }
 
-bool TimeOut(iClient)
+bool TimeOut(int iClient)
 {
 	// Check if the player has enough XMR
 	if (g_fLouisXMRWallet[iClient] < LOUIS_HEADSHOP_XMR_AMOUNT_TIME_OUT)

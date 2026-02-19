@@ -1,4 +1,4 @@
-ToggleGamePaused(iClient)
+void ToggleGamePaused(int iClient)
 {
 	if (g_bGamePaused == false)
 		PauseGame(iClient);
@@ -6,7 +6,7 @@ ToggleGamePaused(iClient)
 		UnpauseGame(iClient);
 }
 
-PauseGame(int iClient)
+void PauseGame(int iClient)
 {
 	g_bGamePaused = true;
 	SetConVarInt(FindConVar("sv_pausable"), 1);
@@ -14,7 +14,7 @@ PauseGame(int iClient)
 	SetConVarInt(FindConVar("sv_pausable"), 0);
 }
 
-UnpauseGame(int iClient)
+void UnpauseGame(int iClient)
 {
 	g_bGamePaused = false;
 	SetConVarInt(FindConVar("sv_pausable"), 1);
@@ -45,7 +45,7 @@ void MutePlayer(int iClient, bool bMute, bool bSilent = true)
 			bMute ? "muted" : "unmuted");
 }
 
-int FindAndResurrectSurvivor(iClient)
+int FindAndResurrectSurvivor(int iClient)
 {
 	int iTarget = FindDeadSurvivor();
 
@@ -55,7 +55,7 @@ int FindAndResurrectSurvivor(iClient)
 int FindDeadSurvivor()
 {
 	// Check for valid player first (look for human player)
-	for(new i = 1; i <= MaxClients; i++)
+	for (int i = 1; i <= MaxClients; i++)
 	{
 		if (RunClientChecks(i) &&
 			g_iClientTeam[i] == TEAM_SURVIVORS &&
@@ -65,7 +65,7 @@ int FindDeadSurvivor()
 	}
 
 	// Check for valid player first (look for bot player)
-	for(new i = 1; i <= MaxClients; i++)
+	for (int i = 1; i <= MaxClients; i++)
 	{
 		if (RunClientChecks(i) &&
 			g_iClientTeam[i] == TEAM_SURVIVORS &&
@@ -110,7 +110,7 @@ int ResurrectPlayer(int iTarget, int iClient)
 	return iTarget;
 }
 
-GiveBasicLoadout(iClient)
+void GiveBasicLoadout(int iClient)
 {
 	RunCheatCommand(iClient, "give", "give rifle_ak47");
 	RunCheatCommand(iClient, "give", "give machete");

@@ -51,7 +51,7 @@ Action TimerGiveExplosive(Handle timer, any iClient)
 		return Plugin_Stop;
 	
 	g_iExtraExplosiveUses[iClient]++;
-	new randnum = GetRandomInt(0, 2);
+	int randnum = GetRandomInt(0, 2);
 
 	switch(randnum)
 	{
@@ -146,8 +146,8 @@ Action TimerCoachRageRegenTick(Handle timer, any iClient)
 	
 	if(g_iCoachRageRegenCounter[iClient] < 2)
 	{
-		new currentHP = GetPlayerHealth(iClient);
-		new maxHP = GetPlayerMaxHealth(iClient);
+		int currentHP = GetPlayerHealth(iClient);
+		int maxHP = GetPlayerMaxHealth(iClient);
 		if(currentHP < (maxHP - 5))
 			SetPlayerHealth(iClient, -1, currentHP + 5);
 		else if(currentHP >= (maxHP - 5))
@@ -155,8 +155,8 @@ Action TimerCoachRageRegenTick(Handle timer, any iClient)
 	}
 	else if(g_iCoachRageRegenCounter[iClient] < 5)
 	{
-		new currentHP = GetPlayerHealth(iClient);
-		new maxHP = GetPlayerMaxHealth(iClient);
+		int currentHP = GetPlayerHealth(iClient);
+		int maxHP = GetPlayerMaxHealth(iClient);
 		if(currentHP < (maxHP - 4))
 			SetPlayerHealth(iClient, -1, currentHP + 4);
 		else if(currentHP >= (maxHP - 4))
@@ -164,8 +164,8 @@ Action TimerCoachRageRegenTick(Handle timer, any iClient)
 	}
 	else if(g_iCoachRageRegenCounter[iClient] < 9)
 	{
-		new currentHP = GetPlayerHealth(iClient);
-		new maxHP = GetPlayerMaxHealth(iClient);
+		int currentHP = GetPlayerHealth(iClient);
+		int maxHP = GetPlayerMaxHealth(iClient);
 		if(currentHP < (maxHP - 3))
 			SetPlayerHealth(iClient, -1, currentHP + 3);
 		else if(currentHP >= (maxHP - 3))
@@ -173,8 +173,8 @@ Action TimerCoachRageRegenTick(Handle timer, any iClient)
 	}
 	else if(g_iCoachRageRegenCounter[iClient] < 14)
 	{
-		new currentHP = GetPlayerHealth(iClient);
-		new maxHP = GetPlayerMaxHealth(iClient);
+		int currentHP = GetPlayerHealth(iClient);
+		int maxHP = GetPlayerMaxHealth(iClient);
 		if(currentHP < (maxHP - 2))
 			SetPlayerHealth(iClient, -1, currentHP + 2);
 		else if(currentHP >= (maxHP - 2))
@@ -182,8 +182,8 @@ Action TimerCoachRageRegenTick(Handle timer, any iClient)
 	}
 	else
 	{
-		new currentHP = GetPlayerHealth(iClient);
-		new maxHP = GetPlayerMaxHealth(iClient);
+		int currentHP = GetPlayerHealth(iClient);
+		int maxHP = GetPlayerMaxHealth(iClient);
 		if(currentHP < (maxHP - 1))
 			SetPlayerHealth(iClient, -1, currentHP + 1);
 		else if(currentHP >= (maxHP - 1))
@@ -201,7 +201,7 @@ Action TimerWreckingChargeRetrigger(Handle timer, any iClient)
 	g_bIsWreckingBallCharged[iClient] = true;
 	float vec[3];
 	GetClientAbsOrigin(iClient, vec);
-	new rand = GetRandomInt(1, 3);
+	int rand = GetRandomInt(1, 3);
 	switch(rand)
 	{
 		case 1: EmitSoundToAll(SOUND_COACH_CHARGE1, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
@@ -217,7 +217,7 @@ Action TimerWreckingChargeRetrigger(Handle timer, any iClient)
 
 Action TimerCoachAssignGrenades(Handle timer, any iClient)
 {
-	decl AssignGrenadeSlot1, AssignGrenadeSlot2, AssignGrenadeSlot3;
+	int AssignGrenadeSlot1, AssignGrenadeSlot2, AssignGrenadeSlot3;
 	AssignGrenadeSlot1 = GetRandomInt(0,2);
 	AssignGrenadeSlot2 = GetRandomInt(0,2);
 	AssignGrenadeSlot3 = GetRandomInt(0,2);

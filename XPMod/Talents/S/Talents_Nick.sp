@@ -1,4 +1,4 @@
-TalentsLoad_Nick(iClient)
+void TalentsLoad_Nick(int iClient)
 {
 	g_bDivineInterventionQueued[iClient] = false;
 	g_iNickMagnumHitsPerClip[iClient] = 0;
@@ -54,7 +54,7 @@ void SetPlayerTalentMaxHealth_Nick(int iClient, bool bFillInHealthGap = true)
 			bFillInHealthGap);
 }
 
-OnGameFrame_Nick(iClient)
+void OnGameFrame_Nick(int iClient)
 {
 	// For Nick's Rambo weapon return, set his ammo and clip after switching back
 	if (g_bSetWeaponAmmoOnNextGameFrame[iClient] == true)
@@ -82,7 +82,7 @@ OnGameFrame_Nick(iClient)
 
 	if(g_iNicksRamboWeaponID[iClient] > 0)
 	{
-		new wID = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
+		int wID = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
 		
 		if(wID==-1 || IsValidEntity(wID)==false)
 			return;
@@ -108,7 +108,7 @@ OnGameFrame_Nick(iClient)
 				GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
 				if(StrContains(currentweapon, "first_aid_kit", false) != -1)
 				{
-					new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+					int ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 					float wepvorigin[3], grevorigin[3], boovorigin[3], vangles[3], vdir[3];
 					GetClientEyeAngles(iClient, vangles);	//Get clients Eye Angles to know get what direction to spawn gun
 					GetAngleVectors(vangles, vdir, NULL_VECTOR, NULL_VECTOR);	//Get the direction the iClient is looking
@@ -127,11 +127,11 @@ OnGameFrame_Nick(iClient)
 					boovorigin[1]+=(vdir[1] * 45.0);
 					boovorigin[2]+=(vdir[2] + 30.0);
 
-					new random_grenade = GetRandomInt(0,2);
-					new random_weapon = GetRandomInt(0,19);
-					new random_boost = GetRandomInt(0,1);
+					int random_grenade = GetRandomInt(0,2);
+					int random_weapon = GetRandomInt(0,19);
+					int random_boost = GetRandomInt(0,1);
 					
-					decl grenade, weapon, boost;
+					int grenade, weapon, boost;
 					
 					switch (random_grenade)
 					{
@@ -273,13 +273,13 @@ OnGameFrame_Nick(iClient)
 					g_bCanNickSecondaryCycle[iClient] = false;
 					g_bIsNickInSecondaryCycle[iClient] = true;
 					CreateTimer(0.5, TimerNickSecondaryCycleReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
-					new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+					int ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 					if (IsValidEntity(ActiveWeaponID) == false)
 						return;
 					//PrintToChatAll("%s g_strNickSecondarySlot2", g_strNickSecondarySlot2[iClient]);
 					//PrintToChatAll("%s g_strNickSecondarySlot1", g_strNickSecondarySlot1[iClient]);
 					//new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
-					new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
+					int CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
 					//PrintToChatAll("CurrentClipAmmo %d", CurrentClipAmmo);
 					
 					if(StrEqual(currentweapon, "weapon_pistol", false) == false)
@@ -381,7 +381,7 @@ OnGameFrame_Nick(iClient)
 	}
 }
 
-OGFSurvivorReload_Nick(iClient, const char[] currentweapon, ActiveWeaponID, CurrentClipAmmo)
+void OGFSurvivorReload_Nick(int iClient, const char[] currentweapon, int ActiveWeaponID, int CurrentClipAmmo)
 {
 	if((StrEqual(currentweapon, "weapon_pistol_magnum", false) == true) && (g_iMagnumLevel[iClient] > 0) && (CurrentClipAmmo == 8))
 	{
@@ -424,12 +424,12 @@ OGFSurvivorReload_Nick(iClient, const char[] currentweapon, ActiveWeaponID, Curr
 	// return;
 }
 
-EventsHurt_AttackerNick(Handle hEvent, iAttacker, iVictim)
+void EventsHurt_AttackerNick(Handle hEvent, int iAttacker, int iVictim)
 {
 	if (IsFakeClient(iAttacker) || g_bTalentsConfirmed[iAttacker] == false || iVictim == iAttacker)
 		return;
 
-	new iDmgType = GetEventInt(hEvent, "type");
+	int iDmgType = GetEventInt(hEvent, "type");
 
 	if (g_iEnhancedLevel[iAttacker] > 0 && g_iClientTeam[iVictim] == TEAM_SURVIVORS)
 	{
@@ -443,16 +443,16 @@ EventsHurt_AttackerNick(Handle hEvent, iAttacker, iVictim)
 		// Check that its a pistol
 		if (iDmgType == DAMAGETYPE_PISTOL_MAGNUM && StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == true)
 		{
-			new iCurrentAttackerHealth = GetPlayerHealth(iAttacker);
-			new iCurrentVictimHealth = GetPlayerHealth(iVictim);
-			new iCurrentVictimMaxHealth = GetPlayerMaxHealth(iVictim);
+			int iCurrentAttackerHealth = GetPlayerHealth(iAttacker);
+			int iCurrentVictimHealth = GetPlayerHealth(iVictim);
+			int iCurrentVictimMaxHealth = GetPlayerMaxHealth(iVictim);
 			// Need this to remove friendly fire damage
-			new iDmgAmount = GetEventInt(hEvent, "dmg_health");
+			int iDmgAmount = GetEventInt(hEvent, "dmg_health");
 
 			// If theres enough life in Nick's pool then make the transaction
 			if (iCurrentAttackerHealth > NICK_HEAL_MAGNUM_TAKE && iCurrentVictimHealth + iDmgAmount < iCurrentVictimMaxHealth)
 			{
-				new iHealAmount = iCurrentVictimHealth + iDmgAmount + NICK_HEAL_MAGNUM_GIVE < iCurrentVictimMaxHealth ? 
+				int iHealAmount = iCurrentVictimHealth + iDmgAmount + NICK_HEAL_MAGNUM_GIVE < iCurrentVictimMaxHealth ? 
 					iDmgAmount + NICK_HEAL_MAGNUM_GIVE : 
 					iCurrentVictimMaxHealth - iCurrentVictimHealth;
 				SetPlayerHealth(iAttacker, -1, iCurrentAttackerHealth - NICK_HEAL_MAGNUM_TAKE);
@@ -479,16 +479,16 @@ EventsHurt_AttackerNick(Handle hEvent, iAttacker, iVictim)
 		}
 		else if(iDmgType == DAMAGETYPE_PISTOL && StrEqual(strCurrentWeapon, "weapon_pistol", false) == true)
 		{
-			new iCurrentAttackerHealth = GetPlayerHealth(iAttacker);
-			new iCurrentVictimHealth = GetPlayerHealth(iVictim);
-			new iCurrentVictimMaxHealth = GetPlayerMaxHealth(iVictim);
+			int iCurrentAttackerHealth = GetPlayerHealth(iAttacker);
+			int iCurrentVictimHealth = GetPlayerHealth(iVictim);
+			int iCurrentVictimMaxHealth = GetPlayerMaxHealth(iVictim);
 			// Need this to remove friendly fire damage
-			new iDmgAmount = GetEventInt(hEvent, "dmg_health");
+			int iDmgAmount = GetEventInt(hEvent, "dmg_health");
 
 			// If theres enough life in Nick's pool then make the transaction
 			if (iCurrentAttackerHealth > NICK_HEAL_PISTOL_TAKE && iCurrentVictimHealth + iDmgAmount < iCurrentVictimMaxHealth)
 			{
-				new iHealAmount = iCurrentVictimHealth + iDmgAmount + NICK_HEAL_PISTOL_GIVE < iCurrentVictimMaxHealth ? 
+				int iHealAmount = iCurrentVictimHealth + iDmgAmount + NICK_HEAL_PISTOL_GIVE < iCurrentVictimMaxHealth ? 
 					iDmgAmount + NICK_HEAL_PISTOL_GIVE : 
 					iCurrentVictimMaxHealth - iCurrentVictimHealth;
 				SetPlayerHealth(iAttacker, -1, iCurrentAttackerHealth - NICK_HEAL_PISTOL_TAKE);
@@ -547,8 +547,8 @@ EventsHurt_AttackerNick(Handle hEvent, iAttacker, iVictim)
 		if(StrContains(weaponclass,"melee",false) == -1 && StrContains(weaponclass,"inferno",false) == -1 && 
 			StrContains(weaponclass,"pipe_bomb",false) == -1 && StrContains(weaponclass,"entityflame",false) == -1)
 		{
-			new hp = GetPlayerHealth(iVictim);
-			new dmg = GetEventInt(hEvent,"dmg_health");
+			int hp = GetPlayerHealth(iVictim);
+			int dmg = GetEventInt(hEvent,"dmg_health");
 			
 			if(g_iNickDesperateMeasuresStack > 3)
 				dmg = RoundToNearest(dmg * (g_iDesperateLevel[iAttacker] * 0.10) * 3);
@@ -568,8 +568,8 @@ EventsHurt_AttackerNick(Handle hEvent, iAttacker, iVictim)
 		GetEventString(hEvent,"weapon",weaponclass,32);
 		if (StrContains(weaponclass,"magnum",false) != -1)
 		{
-			new hp = GetPlayerHealth(iVictim);
-			new dmg = GetEventInt(hEvent,"dmg_health");
+			int hp = GetPlayerHealth(iVictim);
+			int dmg = GetEventInt(hEvent,"dmg_health");
 
 			dmg = RoundToNearest(dmg * (g_iMagnumLevel[iAttacker] * 0.65));
 			dmg = CalculateDamageTakenForVictimTalents(iVictim, dmg, weaponclass);
@@ -579,8 +579,8 @@ EventsHurt_AttackerNick(Handle hEvent, iAttacker, iVictim)
 		}
 		else if (StrContains(weaponclass,"pistol",false) != -1)
 		{
-			new hp = GetPlayerHealth(iVictim);
-			new dmg = GetEventInt(hEvent,"dmg_health");
+			int hp = GetPlayerHealth(iVictim);
+			int dmg = GetEventInt(hEvent,"dmg_health");
 
 			dmg = RoundToNearest(dmg * (g_iRiskyLevel[iAttacker] * 0.13));
 			dmg = CalculateDamageTakenForVictimTalents(iVictim, dmg, weaponclass);
@@ -608,7 +608,7 @@ EventsHurt_AttackerNick(Handle hEvent, iAttacker, iVictim)
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }
 
-EventsDeath_VictimNick(Handle hEvent, iAttacker, iVictim)
+void EventsDeath_VictimNick(Handle hEvent, int iAttacker, int iVictim)
 {
 	if (g_iClientTeam[iVictim] != TEAM_SURVIVORS)
 		return;
@@ -673,7 +673,7 @@ void EventsItemPickUp_Nick(int iClient, const char[] strWeaponClass)
 	{
 		if (StrContains(strWeaponClass,"magnum",false) != -1)
 		{
-			new iEntid = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
+			int iEntid = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
 			if(iEntid < 1)
 				return;
 			if(IsValidEntity(iEntid)==false)
@@ -682,12 +682,12 @@ void EventsItemPickUp_Nick(int iClient, const char[] strWeaponClass)
 		}
 		else if(StrContains(strWeaponClass,"pistol",false) != -1)
 		{
-			new iEntid = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
+			int iEntid = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
 			if(iEntid < 1)
 				return;
 			if(IsValidEntity(iEntid)==false)
 				return;
-			new clip = GetEntProp(iEntid,Prop_Data,"m_iClip1");
+			int clip = GetEntProp(iEntid,Prop_Data,"m_iClip1");
 			if(clip == 15)
 			{
 				SetEntData(iEntid, g_iOffset_Clip1, clip + (g_iRiskyLevel[iClient] * 6), true);
@@ -704,7 +704,7 @@ void EventsItemPickUp_Nick(int iClient, const char[] strWeaponClass)
 		if(StrContains(strWeaponClass,"m60",false) != -1)
 		{
 			//Set ammo to 250
-			new wID = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
+			int wID = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
 			if(wID < 1)
 				return Plugin_Continue;
 			if(IsValidEntity(wID)==false)
@@ -730,7 +730,7 @@ void EventsItemPickUp_Nick(int iClient, const char[] strWeaponClass)
 				{
 					if(StrEqual(strWeaponClass, "pistol_magnum", false) == true)
 					{
-						new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+						int ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 						if (RunEntityChecks(ActiveWeaponID) == false)
 							return;
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iNickSecondarySavedClipSlot1[iClient], true);
@@ -759,7 +759,7 @@ void EventsItemPickUp_Nick(int iClient, const char[] strWeaponClass)
 					wepvorigin[0]+=(vdir[0] * 30.0);
 					wepvorigin[1]+=(vdir[1] * 30.0);
 					wepvorigin[2]+=(vdir[2] * 50.0);
-					new weapon = CreateEntityByName("weapon_pistol_magnum");
+					int weapon = CreateEntityByName("weapon_pistol_magnum");
 					DispatchKeyValue(weapon, "ammo", "200");
 					DispatchSpawn(weapon);
 					TeleportEntity(weapon, wepvorigin, vangles, NULL_VECTOR);
@@ -834,7 +834,7 @@ bool Event_TongueRelease_Nick(int iAttacker, int iVictim)
 	return false;
 }
 
-CyclePlayerWeapon_Nick(int iClient)
+void CyclePlayerWeapon_Nick(int iClient)
 {
 	if (RunClientChecks(iClient) && IsPlayerAlive(iClient))
 	{
@@ -899,7 +899,7 @@ void SetAllNicksDesprateMeasureSpeed(const char[] strMessage = "")
 }
 
 //Jebus Hand Menu
-Action JebusHandBindMenuDraw(iClient) 
+Action JebusHandBindMenuDraw(int iClient) 
 {
 	Menu menu = CreateMenu(JebusHandMenuHandler);
 	
@@ -916,7 +916,7 @@ Action JebusHandBindMenuDraw(iClient)
 }
 
 //Nick Menu Handler
-JebusHandMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void JebusHandMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -942,10 +942,10 @@ JebusHandMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 					PrintHintText(iClient, "Global cooldown triggered. You must wait 5 seconds to use Heal again.");
 					return;
 				}
-				decl currentHP;
-				decl maxHP;
+				int currentHP;
+				int maxHP;
 
-				for(new i = 1; i <= MaxClients; i++)
+				for (int i = 1; i <= MaxClients; i++)
 				{
 					if (RunClientChecks(i) && g_iClientTeam[i]==TEAM_SURVIVORS)
 					{
@@ -965,8 +965,8 @@ JebusHandMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 						// Handle Ellis
 						if(g_iOverLevel[i] > 0)
 						{
-							new iCurrentHealth = GetPlayerHealth(i);
-							new iMaxHealth = GetPlayerMaxHealth(i);
+							int iCurrentHealth = GetPlayerHealth(i);
+							int iMaxHealth = GetPlayerMaxHealth(i);
 							//float fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
 							//if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
 							if(iCurrentHealth < (iMaxHealth - 20.0))
@@ -1014,8 +1014,8 @@ JebusHandMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 				}
 				if(g_iClientBindUses_2[iClient] < 2)
 				{
-					new foundvalident = 0;
-					for(new i = 1; i <= MaxClients; i++)
+					int foundvalident = 0;
+					for (int i = 1; i <= MaxClients; i++)
 					{
 						if(IsClientInGame(i)==true)
 							if(GetClientTeam(i)==2 && IsPlayerAlive(i)==true && g_bIsClientDown[i]==true && IsFakeClient(i)==false  && IsClientGrappled(i) == false)
@@ -1047,7 +1047,7 @@ JebusHandMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 									break;
 							}
 					}
-					for(new i = 1; i <= MaxClients; i++)
+					for (int i = 1; i <= MaxClients; i++)
 					{
 						if(IsClientInGame(i)==true)
 							if(GetClientTeam(i)==2 && IsPlayerAlive(i)==true && g_bIsClientDown[i]==true && IsFakeClient(i)==true  && IsClientGrappled(i) == false)

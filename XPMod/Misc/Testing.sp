@@ -21,7 +21,7 @@ public Action Timer_Testing(Handle hTimer, int iClient)
 
 int iSeenEntities[MAXENTITIES+1];
 
-Action TestFunction1(iClient, args)
+Action TestFunction1(int iClient, int args)
 {
 	DebugLog(DEBUG_MODE_TESTING, "T1");
 	//PrintToChat(iClient, "T1");
@@ -326,7 +326,7 @@ Action TestFunction1(iClient, args)
 	return Plugin_Stop;
 }
 
-Action TestFunction2(iClient, args)
+Action TestFunction2(int iClient, int args)
 {
 	DebugLog(DEBUG_MODE_TESTING, "T2");
 
@@ -420,7 +420,7 @@ Action TestFunction2(iClient, args)
 // } 
 
 
-Action TestFunction3(iClient, args)
+Action TestFunction3(int iClient, int args)
 {
 	DebugLog(DEBUG_MODE_TESTING, "T3");
 	char str1[99];
@@ -447,7 +447,7 @@ Action TestFunction3(iClient, args)
 
 
 
-Action TestFunction4(iClient, args)
+Action TestFunction4(int iClient, int args)
 {
 	DebugLog(DEBUG_MODE_TESTING, "T4");
 	char str1[99];
@@ -483,7 +483,7 @@ Action TestFunction4(iClient, args)
 	return Plugin_Stop;
 }
 
-Action TestFunction5(iClient, args)
+Action TestFunction5(int iClient, int args)
 {
 	DebugLog(DEBUG_MODE_TESTING, "T5");
 
@@ -496,14 +496,14 @@ Action TestFunction5(iClient, args)
 	return Plugin_Stop;
 }
 
-Action GiveMoreBinds(admin, args)
+Action GiveMoreBinds(int admin, int args)
 {
 	g_iClientBindUses_1[admin] = -99;
 	g_iClientBindUses_2[admin] = -99;
 	return Plugin_Handled;
 }
 
-Action XPModDebugModeToggle(iClient, args)
+Action XPModDebugModeToggle(int iClient, int args)
 {
 	ToggleDebugMode();
 	return Plugin_Handled;
@@ -670,7 +670,7 @@ public void TestingTempEnts(int iClient, char[] strArg1, char[] strArg2)
 }
 
 
-public AttachBeam(client)
+public void AttachBeam(int client)
 {
 	char beamindex[30], start[30], end[30], parentName[64];
 	Format(parentName, sizeof(parentName), "%i:%N", client, client);
@@ -678,7 +678,7 @@ public AttachBeam(client)
 	float vec[3];
 	GetClientAbsOrigin(client, vec);
 	
-	new startent = CreateEntityByName("prop_dynamic");
+	int startent = CreateEntityByName("prop_dynamic");
 	Format(start, sizeof(start), "start%i", startent);
 	DispatchKeyValue(startent, "targetname", start); 
 	DispatchKeyValue(startent, "model", "models/advisor.mdl"); 
@@ -693,7 +693,7 @@ public AttachBeam(client)
 	// SetVariantString("defusekit");
 	// AcceptEntityInput(startent, "SetParentAttachmentMaintainOffset");
 	
-	new endent = CreateEntityByName("prop_dynamic");
+	int endent = CreateEntityByName("prop_dynamic");
 	Format(end, sizeof(end), "end%i", endent);
 	DispatchKeyValue(endent, "targetname", end); 
 	DispatchKeyValue(endent, "model", "models/advisor.mdl"); 
@@ -708,7 +708,7 @@ public AttachBeam(client)
 	// SetVariantString("defusekit");
 	// AcceptEntityInput(endent, "SetParentAttachmentMaintainOffset");
 	
-	new beament  = CreateEntityByName("env_beam");
+	int beament = CreateEntityByName("env_beam");
 	if (IsValidEdict(beament))
 	{
 		
@@ -843,7 +843,7 @@ public Action beam_enable(Handle timer, any beam)
 
 
 
-public int CreateSpriteBar(int entity, float fHeight, float fWidth, float duration, int color[4], float offset[3], iSprite)
+public int CreateSpriteBar(int entity, float fHeight, float fWidth, float duration, int color[4], float offset[3], int iSprite)
 {
 	float pos[3], angles[3];
 	GetEntPropVector(entity, Prop_Data, "m_vecAbsOrigin", pos);
@@ -916,7 +916,7 @@ public int CreateSpriteBar(int entity, float fHeight, float fWidth, float durati
 	return ent;
 }
 
-public TE_SendBeamBar(int startEnt, int endEnt, float size, float duration, int color[4], iSprite)
+public void TE_SendBeamBar(int startEnt, int endEnt, float size, float duration, int color[4], int iSprite)
 {
 	TE_SetupBeamEnts(startEnt, endEnt, iSprite, g_iSprite_Glow, 0, 0, duration, size, size, 1, 1.0, color, 0);
 	TE_SendToAll();
@@ -943,7 +943,7 @@ stock void TE_SetupBeamEnts(int StartEntity, int EndEntity, int ModelIndex, int 
 	TE_WriteNum("m_nFadeLength", FadeLength);
 } 
 
-public TestingBeamEntsBars(int iClient)
+public void TestingBeamEntsBars(int iClient)
 {
 	// CreateSpriteBar(StringToInt(strArg[0]), 3.0, 10.0, 60.0, {0, 255, 0, 1500}, {0.0, 0.0, 80.0});
 	// CreateSpriteBar(StringToInt(strArg[0]), 3.0, 30.0, 60.0, {255, 255, 255, 20}, {0.0, 0.0, 80.0});

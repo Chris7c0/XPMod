@@ -1,22 +1,22 @@
 // Common                                                           
-new clientidname[MAXPLAYERS + 1][32];			//SHOULD BE A STRING?
-new g_iClientTeam[MAXPLAYERS + 1];
+char clientidname[MAXPLAYERS + 1][32];//SHOULD BE A STRING?
+int g_iClientTeam[MAXPLAYERS + 1];
 bool g_bClientLoggedIn[MAXPLAYERS + 1];
-new g_iDBUserID[MAXPLAYERS + 1] = {-1, ...};
+int g_iDBUserID[MAXPLAYERS + 1] = {-1, ...};
 char g_strDBUserToken[MAXPLAYERS + 1][41];
 bool g_bCanSave = true;
 bool g_bSurvivorTalentsGivenThisRound[MAXPLAYERS + 1] = {false, ...};
-new g_iClientXP[MAXPLAYERS + 1];
-new g_iClientLevel[MAXPLAYERS + 1];
-new g_iClientPrestigePoints[MAXPLAYERS + 1];
-new g_iChosenSurvivor[MAXPLAYERS + 1];
-new g_iClientNextLevelXPAmount[MAXPLAYERS + 1];
-new g_iClientPreviousLevelXPAmount[MAXPLAYERS + 1];
-new g_iSkillPoints[MAXPLAYERS + 1];
-new g_iInfectedCharacter[MAXPLAYERS + 1];
-new g_iInfectedLevel[MAXPLAYERS + 1];
-new g_iClientUsableXP = -1;
-new g_iClientTotalXPCost[MAXPLAYERS + 1];
+int g_iClientXP[MAXPLAYERS + 1];
+int g_iClientLevel[MAXPLAYERS + 1];
+int g_iClientPrestigePoints[MAXPLAYERS + 1];
+int g_iChosenSurvivor[MAXPLAYERS + 1];
+int g_iClientNextLevelXPAmount[MAXPLAYERS + 1];
+int g_iClientPreviousLevelXPAmount[MAXPLAYERS + 1];
+int g_iSkillPoints[MAXPLAYERS + 1];
+int g_iInfectedCharacter[MAXPLAYERS + 1];
+int g_iInfectedLevel[MAXPLAYERS + 1];
+int g_iClientUsableXP = -1;
+int g_iClientTotalXPCost[MAXPLAYERS + 1];
 
 ///////////////////////   XP Amounts   ////////////////////////
 // Multiplier amount for player levels (1.0 is default)
@@ -60,43 +60,43 @@ new g_iClientTotalXPCost[MAXPLAYERS + 1];
 #define VOTE_KICK_IMMUNITY_XP_THRESHOLD 200000
 
 //Stats
-new g_iStat_ClientInfectedKilled[MAXPLAYERS + 1];
-new g_iStat_ClientCommonKilled[MAXPLAYERS + 1];	
-new g_iStat_ClientCommonHeadshots[MAXPLAYERS + 1];
-new g_iStat_ClientSurvivorsKilled[MAXPLAYERS + 1];
-new g_iStat_ClientSurvivorsIncaps[MAXPLAYERS + 1];
-new g_iStat_ClientDamageToSurvivors[MAXPLAYERS + 1];
+int g_iStat_ClientInfectedKilled[MAXPLAYERS + 1];
+int g_iStat_ClientCommonKilled[MAXPLAYERS + 1];
+int g_iStat_ClientCommonHeadshots[MAXPLAYERS + 1];
+int g_iStat_ClientSurvivorsKilled[MAXPLAYERS + 1];
+int g_iStat_ClientSurvivorsIncaps[MAXPLAYERS + 1];
+int g_iStat_ClientDamageToSurvivors[MAXPLAYERS + 1];
 //Last Round Stats
-new g_iStat_LastRound_ClientInfectedKilled[MAXPLAYERS + 1];
-new g_iStat_LastRound_ClientCommonKilled[MAXPLAYERS + 1];	
-new g_iStat_LastRound_ClientCommonHeadshots[MAXPLAYERS + 1];
-new g_iStat_LastRound_ClientSurvivorsKilled[MAXPLAYERS + 1];
-new g_iStat_LastRound_ClientSurvivorsIncaps[MAXPLAYERS + 1];
-new g_iStat_LastRound_ClientDamageToSurvivors[MAXPLAYERS + 1];
+int g_iStat_LastRound_ClientInfectedKilled[MAXPLAYERS + 1];
+int g_iStat_LastRound_ClientCommonKilled[MAXPLAYERS + 1];
+int g_iStat_LastRound_ClientCommonHeadshots[MAXPLAYERS + 1];
+int g_iStat_LastRound_ClientSurvivorsKilled[MAXPLAYERS + 1];
+int g_iStat_LastRound_ClientSurvivorsIncaps[MAXPLAYERS + 1];
+int g_iStat_LastRound_ClientDamageToSurvivors[MAXPLAYERS + 1];
 //Top XPMod Players
 char g_strTopXPModPlayersStatsText[600];
 
 //Rewards
-new g_iReward_SIKills;
-new g_iReward_SIKillsID;
+int g_iReward_SIKills;
+int g_iReward_SIKillsID;
 char g_strReward_SIKills[32];
-new g_iReward_CIKills;
-new g_iReward_CIKillsID;
+int g_iReward_CIKills;
+int g_iReward_CIKillsID;
 char g_strReward_CIKills[32];
-new g_iReward_HS;
-new g_iReward_HSID;
+int g_iReward_HS;
+int g_iReward_HSID;
 char g_strReward_HS[32];
-new g_iReward_SurKills;
-new g_iReward_SurKillsID;
+int g_iReward_SurKills;
+int g_iReward_SurKillsID;
 char g_strReward_SurKills[32];
-new g_iReward_SurIncaps;
-new g_iReward_SurIncapsID;
+int g_iReward_SurIncaps;
+int g_iReward_SurIncapsID;
 char g_strReward_SurIncaps[32];
-new g_iReward_SurDmg;
-new g_iReward_SurDmgID;
+int g_iReward_SurDmg;
+int g_iReward_SurDmgID;
 char g_strReward_SurDmg[32];
 //Statistic Panel Shown After Confirmation
-new RoundStatsPanel[MAXPLAYERS + 1];
+int RoundStatsPanel[MAXPLAYERS + 1];
 #define ROUND_STATS_PANEL_LAST_ROUND_INDIVIDUAL     0
 #define ROUND_STATS_PANEL_LAST_ROUND_TOP_PLAYERS    1
 #define ROUND_STATS_PANEL_XPMOD_TOP_PLAYERS         2
@@ -111,11 +111,11 @@ bool g_bAnnouncerOn[MAXPLAYERS + 1];
 bool g_bTalentsConfirmed[MAXPLAYERS + 1];
 bool g_bUserStoppedConfirmation[MAXPLAYERS + 1];
 bool g_bClientAlreadyShownCharacterSelectMenu[MAXPLAYERS + 1];
-new g_iAutoSetCountDown[MAXPLAYERS + 1];
+int g_iAutoSetCountDown[MAXPLAYERS + 1];
 //Drawing Character Select MOTD and Talents Confirm Menu
 #define STARTING_CHAR_SELECT_PROCESS                1
 #define WAITING_ON_BUTTON_FOR_MOTD                  2
 #define WAITING_ON_RELEASE_FOR_CONFIRM_MENU         3
 #define WAITING_ON_FINAL_BUTTON_FOR_CONFIRM_MENU    4
 #define FINISHED_AND_DREW_CONFIRM_MENU              5
-new g_iOpenCharacterSelectAndDrawMenuState[MAXPLAYERS + 1];
+int g_iOpenCharacterSelectAndDrawMenuState[MAXPLAYERS + 1];

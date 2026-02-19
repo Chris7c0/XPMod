@@ -7,7 +7,7 @@
 #define DEBUG_MODE_EVERYTHING   4
 
 //XPM Options
-new g_iXPDisplayMode[MAXPLAYERS + 1];						//Default 0 = Show Sprites; 1 = Show In Chat, 2 = Disabled
+int g_iXPDisplayMode[MAXPLAYERS + 1];//Default 0 = Show Sprites; 1 = Show In Chat, 2 = Disabled
 // Talent Selection Mode
 #define CONVAR_MENU			0
 #define CONVAR_WEBSITE		1
@@ -22,24 +22,24 @@ new g_iXPDisplayMode[MAXPLAYERS + 1];						//Default 0 = Show Sprites; 1 = Show 
 
 // ConVars
 ConVar g_hCVar_DebugModeLogLevel;
-new g_iDebugModeLogLevel = DEBUG_MODE_OFF;
+int g_iDebugModeLogLevel = DEBUG_MODE_OFF;
 ConVar g_hCVar_DebugModeEnabled;
 ConVar g_hCVar_IdleKickEnabled;
 // XP Loadout Use and Gain Enabled
 ConVar g_hCVar_XPSaveForHighLevelsEnabled;
-new XPSaveForHighLevelsEnabled = true;
+bool XPSaveForHighLevelsEnabled = true;
 // Talent selection mode website or through in game menu
 // ConVar g_hCVar_TalentSelectionMode ;
 //new g_iTalentSelectionMode                    = CONVAR_WEBSITE;
 // Default Classes
 ConVar g_hCVar_DefaultSurvivor;
-new g_iDefaultSurvivor                          = BILL;
+int g_iDefaultSurvivor = BILL;
 ConVar g_hCVar_DefaultInfecttedSlot1;
-new g_iDefaultInfectedSlot1                     = BOOMER;
+int g_iDefaultInfectedSlot1 = BOOMER;
 ConVar g_hCVar_DefaultInfecttedSlot2;
-new g_iDefaultInfectedSlot2                     = JOCKEY;
+int g_iDefaultInfectedSlot2 = JOCKEY;
 ConVar g_hCVar_DefaultInfecttedSlot3;
-new g_iDefaultInfectedSlot3                     = SMOKER;
+int g_iDefaultInfectedSlot3 = SMOKER;
 
 
 

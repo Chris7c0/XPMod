@@ -1,6 +1,6 @@
 Action PrintUnsetClassesMessage(Handle timer, any data)
 {
-	for(new i = 1; i <= MaxClients; i++)
+	for (int i = 1; i <= MaxClients; i++)
 	{
 			if(IsClientInGame(i) && IsFakeClient(i) == false && g_bClientLoggedIn[i] == true && g_bTalentsConfirmed[i] == true)
 			{
@@ -10,7 +10,7 @@ Action PrintUnsetClassesMessage(Handle timer, any data)
 					PrintToChat(i, "\x03[XPMod]\x01 * \x05You have \x01%d\x05 unused Skill Points!\x01 *\x05\n                Type \x04xpm\x05 and choose \x03Survivor Talents \x05to level up.", g_iSkillPoints[i]);
 				else if((g_iClientInfectedClass1[i] == UNKNOWN_INFECTED) || (g_iClientInfectedClass2[i] == UNKNOWN_INFECTED) || (g_iClientInfectedClass3[i] == UNKNOWN_INFECTED))
 				{
-					new num = 0;
+					int num = 0;
 					if(g_iClientInfectedClass1[i] == UNKNOWN_INFECTED)
 						num++;
 					if(g_iClientInfectedClass2[i] == UNKNOWN_INFECTED)
@@ -32,7 +32,7 @@ Action PrintUnsetClassesMessage(Handle timer, any data)
 
 Action PrintXPModCreateAndConfirmMessageToAll(Handle timer, any data)
 {
-	for(new i=1; i<=MaxClients; i++)
+	for (int i = 1; i<=MaxClients; i++)
 	{
 		if(IsClientInGame(i) && !IsFakeClient(i))
 			if(g_bClientLoggedIn[i] == false)

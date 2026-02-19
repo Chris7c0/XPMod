@@ -1,4 +1,4 @@
-void Bind2Press_Coach(iClient)
+void Bind2Press_Coach(int iClient)
 {
     if(g_iStrongLevel[iClient] > 0)	//Coaches's actionkey 2
     {
@@ -30,7 +30,7 @@ void Bind2Press_Coach(iClient)
         PrintHintText(iClient, "You posses no talent for Bind 2");
 }
 
-void PrintCoachJetpackFuelGauge(iClient)
+void PrintCoachJetpackFuelGauge(int iClient)
 {
     if (RunClientChecks(iClient) == false || IsFakeClient(iClient))
 		return;

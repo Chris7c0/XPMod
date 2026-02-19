@@ -1,7 +1,7 @@
-PrecacheParticle( char[] ParticleName)
+void PrecacheParticle(char[] ParticleName)
 {
 	//Declare:
-	decl Particle;
+	int Particle;
 	
 	//Initialize:
 	Particle = CreateEntityByName("info_particle_system");
@@ -23,12 +23,12 @@ PrecacheParticle( char[] ParticleName)
 	}
 }
 
-int WriteParticle(iClient, char[] strParticleName, float fZOffset = 0.0, float fTime = 0.0, float xyzLocation[3] = {0.0, 0.0, 0.0})
+int WriteParticle(int iClient, char[] strParticleName, float fZOffset = 0.0, float fTime = 0.0, float xyzLocation[3] = {0.0, 0.0, 0.0})
 {	
 	if(IsValidEntity(iClient) == false)
 		return -1;
 	
-	decl Particle;
+	int Particle;
 	char tName[64];
 
 	//Initialize:
@@ -85,9 +85,9 @@ int WriteParticle(iClient, char[] strParticleName, float fZOffset = 0.0, float f
 	return Particle;
 }
 
-int CreateParticle( char[] type, float time, entity, attach = ATTACH_NONE, bool useangles = false, float xOffs = 0.0, float yOffs = 0.0, float zOffs = 0.0)
+int CreateParticle(char[] type, float time, int entity, int attach = ATTACH_NONE, bool useangles = false, float xOffs = 0.0, float yOffs = 0.0, float zOffs = 0.0)
 {
-	new particle = CreateEntityByName("info_particle_system");
+	int particle = CreateEntityByName("info_particle_system");
 	
 	// Check if it was created correctly
 	if (IsValidEdict(particle))
@@ -157,11 +157,11 @@ int CreateParticle( char[] type, float time, entity, attach = ATTACH_NONE, bool 
 	return particle;
 }
 
-int AttachParticle(target, char[] particlename, float fTime = -1.0, float originOffset = 0.0)
+int AttachParticle(int target, char[] particlename, float fTime = -1.0, float originOffset = 0.0)
 {
 	if (target > 0 && IsValidEntity(target))
 	{
-   		new particle = CreateEntityByName("info_particle_system");
+   		int particle = CreateEntityByName("info_particle_system");
 		
 		if (IsValidEntity(particle))
 		{
@@ -215,7 +215,7 @@ Action DeleteParticle(Handle timer, any Particle)
 	return Plugin_Stop;
 }
 
-void DeleteParticleEntity(iParticle)
+void DeleteParticleEntity(int iParticle)
 {
 	if(iParticle > 0 && IsValidEdict(iParticle) && IsValidEntity(iParticle))
 	{
@@ -232,13 +232,13 @@ void DeleteParticleEntity(iParticle)
 	}
 }
 
-CreateRochelleSmoke(iClient)
+void CreateRochelleSmoke(int iClient)
 {
 	//Make Smoke Entity
 	float vec[3];
 	GetClientAbsOrigin(iClient, vec);
 	
-	new smoke = CreateEntityByName("env_smokestack");
+	int smoke = CreateEntityByName("env_smokestack");
 	
 	char clientName[128], vecString[32];
 	Format(clientName, sizeof(clientName), "Smoke%i", iClient);
@@ -285,7 +285,7 @@ int CreateSmokeParticle(
 	)
 {
 	// Create the smoke entity
-	new iSmokeEntity = CreateEntityByName("env_smokestack");
+	int iSmokeEntity = CreateEntityByName("env_smokestack");
 													
 	if (RunClientChecks(iClient))
 	{
@@ -344,7 +344,7 @@ int CreateSmokeParticle(
 	return iSmokeEntity;
 }
 
-TurnOffAndDeleteSmokeStackParticle(iSmokeStackEntity)
+void TurnOffAndDeleteSmokeStackParticle(int iSmokeStackEntity)
 {
 	//PrintToChatAll("TurnOffAndDeleteSmokeStackParticle %i", iSmokeStackEntity);
 	if(iSmokeStackEntity > 0 && IsValidEdict(iSmokeStackEntity) && IsValidEntity(iSmokeStackEntity))
@@ -387,7 +387,7 @@ Action TimerRemoveSmokeEntity(Handle timer, any iSmokeStackEntity)
 }
 
 //Delete All Particles attached to a Client
-DeleteAllClientParticles(iClient)
+void DeleteAllClientParticles(int iClient)
 {
 	DeleteAllMenuParticles(iClient);
 	
@@ -468,7 +468,7 @@ DeleteAllClientParticles(iClient)
 	g_iPID_TankTrail[iClient] = -1;	
 }
 
-DeleteAllMenuParticles(iClient)
+void DeleteAllMenuParticles(int iClient)
 {
 	g_bShowingVGUI[iClient] =  false;
 	
@@ -634,7 +634,7 @@ DeleteAllMenuParticles(iClient)
 	
 }
 
-CreateSphere(const float xyzOrigin[3], float fSphereDiameter, iRings, float fRingWidth, const int vColor[4], float fLifeTime, float fZOffset = 50.0)
+void CreateSphere(const float xyzOrigin[3], float fSphereDiameter, int iRings, float fRingWidth, const int vColor[4], float fLifeTime, float fZOffset = 50.0)
 {
 	float fRingDiameter;
 	
@@ -648,7 +648,7 @@ CreateSphere(const float xyzOrigin[3], float fSphereDiameter, iRings, float fRin
 	xyzRingPosition[1] = xyzOrigin[1];
 
 	// Create the rings to make the spehere
-	decl i;
+	int i;
 	for(i = 1; i < iRings; i++)
 	{
 		fRingDiameter = 0.0 + fSphereDiameter * Sine( PI * (i / float(iRings)) );

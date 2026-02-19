@@ -1,8 +1,8 @@
 Action Event_PlayerHurt(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"attacker"));
-	new iVictim  = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	new iDamage = GetEventInt(hEvent, "dmg_health");
+	int iAttacker = GetClientOfUserId(GetEventInt(hEvent,"attacker"));
+	int iVictim = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	int iDamage = GetEventInt(hEvent, "dmg_health");
 
 	// // Reset bot action if hurt
 	// if (RunClientChecks(iVictim) && IsFakeClient(iVictim) && IsPlayerAlive(iVictim))
@@ -59,24 +59,24 @@ Action Event_PlayerHurt(Handle hEvent, const char[] strName, bool bDontBroadcast
 	
 	EventsHurt_IncreaseCommonInfectedDamage(iAttacker, iVictim);
 
-	new iDmgType = GetEventInt(hEvent, "type");
+	int iDmgType = GetEventInt(hEvent, "type");
 
 	// If iAttacker is a Common Infected, handle Enhanced CI abilites
 	if(iAttacker < 1 && iDmgType == DAMAGETYPE_INFECTED_MELEE)
 	{
 		// Get the actual entity id of the CI
-		new iCIEntity = GetEventInt(hEvent, "attackerentid");
+		int iCIEntity = GetEventInt(hEvent, "attackerentid");
 
 		if (g_iClientTeam[iVictim] == TEAM_SURVIVORS)
 		{
 			// Find if the Enhanced CI entity in the list
-			new iEnhancedCIIndex = FindIndexInArrayListUsingValue(g_listEnhancedCIEntities, iCIEntity, ENHANCED_CI_ENTITY_ID);
+			int iEnhancedCIIndex = FindIndexInArrayListUsingValue(g_listEnhancedCIEntities, iCIEntity, ENHANCED_CI_ENTITY_ID);
 
 			// If the Enhanced CI is in the list continue
 			if (iEnhancedCIIndex >= 0)
 			{
 				// Get the Enhanced Type
-				new iEnhancedCIType = g_listEnhancedCIEntities.Get(iEnhancedCIIndex, ENHANCED_CI_TYPE);
+				int iEnhancedCIType = g_listEnhancedCIEntities.Get(iEnhancedCIIndex, ENHANCED_CI_TYPE);
 				
 				switch (iEnhancedCIType)
 				{
@@ -153,10 +153,10 @@ Action Event_PlayerHurt(Handle hEvent, const char[] strName, bool bDontBroadcast
 	return Plugin_Continue;
 }
 
-void EventsHurt_GiveXP(Handle hEvent, iAttacker, iVictim)
+void EventsHurt_GiveXP(Handle hEvent, int iAttacker, int iVictim)
 {
-	new iDmgType = GetEventInt(hEvent, "type");
-	new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
+	int iDmgType = GetEventInt(hEvent, "type");
+	int iDmgHealth = GetEventInt(hEvent,"dmg_health");
 
 	// Prevent Infinite Tank XP from stuck death animation
 	if (GetPlayerHealth(iVictim) < 0 || IsPlayerAlive(iVictim) == false)
@@ -241,7 +241,7 @@ void EventsHurt_GiveXP(Handle hEvent, iAttacker, iVictim)
 	}
 }
 
-void EventsHurt_IncreaseCommonInfectedDamage(iAttacker, iVictim)
+void EventsHurt_IncreaseCommonInfectedDamage(int iAttacker, int iVictim)
 {
 	if (iAttacker < 1 && // If iAttacker is a Common Infected
 		g_bCommonInfectedDoMoreDamage == true &&
@@ -249,7 +249,7 @@ void EventsHurt_IncreaseCommonInfectedDamage(iAttacker, iVictim)
 		RunClientChecks(iVictim) &&
 		IsPlayerAlive(iVictim))	
 	{
-		new hp = GetPlayerHealth(iVictim);
+		int hp = GetPlayerHealth(iVictim);
 		float fTempHealth = GetEntDataFloat(iVictim, g_iOffset_HealthBuffer);
 		if(fTempHealth > 0)
 		{
@@ -261,7 +261,7 @@ void EventsHurt_IncreaseCommonInfectedDamage(iAttacker, iVictim)
 	}
 }
 
-void EventsHurt_PlayHeadshotDingSoundForHeadshots(Handle hEvent, iAttacker, iVictim)
+void EventsHurt_PlayHeadshotDingSoundForHeadshots(Handle hEvent, int iAttacker, int iVictim)
 {
 	if (g_iClientTeam[iAttacker] != TEAM_SURVIVORS || 
 		g_iClientTeam[iVictim] != TEAM_INFECTED ||

@@ -2,12 +2,12 @@
  *                                                    On Game Frame                                                       *
  **************************************************************************************************************************/
  
-public OnGameFrame()
+public void OnGameFrame()
 {
 	if (IsServerProcessing() == false)
 		return;
 	
-	for(new iClient=1;iClient <= MaxClients; iClient++)
+	for (int iClient = 1;iClient <= MaxClients; iClient++)
 	{
 		if(IsClientInGame(iClient)==false) continue;
 		if(IsFakeClient(iClient)==true) continue;
@@ -21,7 +21,7 @@ public OnGameFrame()
 			
 			if(g_bIsSurvivorVomiting[iClient] == true)
 			{
-				new victim = GetClientAimTarget(iClient, true);
+				int victim = GetClientAimTarget(iClient, true);
 
 				if (RunClientChecks(victim) && 
 					g_bIsSurvivorVomiting[victim] == false && 
@@ -34,7 +34,7 @@ public OnGameFrame()
 					if(GetVectorDistance(clientVec, victimVec) <= 310.0)
 					{
 						// Set the attacker to the boomer that vomited on them, otherwise, set to the person vomiting
-						new iAttacker = RunClientChecks(g_iVomitVictimAttacker[victim]) ? g_iVomitVictimAttacker[victim] : iClient;
+						int iAttacker = RunClientChecks(g_iVomitVictimAttacker[victim]) ? g_iVomitVictimAttacker[victim] : iClient;
 						SDKCall(g_hSDK_VomitOnPlayer, victim, iAttacker, true);
 						CreateParticle("boomer_vomit", 2.0, victim, ATTACH_MOUTH, true);
 						g_bIsSurvivorVomiting[victim] = true;
@@ -47,7 +47,7 @@ public OnGameFrame()
 			if(g_bGameFrozen == true)
 			{
 				// Stop frozen player from using health items
-				new weapon = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
+				int weapon = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
 				if(weapon > 0)
 				{
 					char wclass[32];
@@ -81,11 +81,11 @@ public OnGameFrame()
 				GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 				//PrintToChatAll("Current Weapon is %s", currentweapon);
 
-				new iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-				new iCurrentClipAmmo = 0;
+				int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+				int iCurrentClipAmmo = 0;
 				if (IsValidEntity(iActiveWeaponID))
 					iCurrentClipAmmo = GetEntProp(iActiveWeaponID,Prop_Data,"m_iClip1");
-				new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
+				int iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 				
 				switch(g_iChosenSurvivor[iClient])
 				{

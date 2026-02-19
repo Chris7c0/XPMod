@@ -61,7 +61,7 @@ public void OnEntityDestroyed(int iEntity)
 	}
 }
 
-public Action OnTakeDamage(iVictim, &iAttacker, &iInflictor, float &fDamage, &iDamageType, &iWeapon, float damageForce[3], float damagePosition[3]) 
+public Action OnTakeDamage(int iVictim, int &iAttacker, int &iInflictor, float &fDamage, int &iDamageType, int &iWeapon, float damageForce[3], float damagePosition[3]) 
 {
 	// PrintToChatAll("OnTakeDamage: %i", iVictim);
 

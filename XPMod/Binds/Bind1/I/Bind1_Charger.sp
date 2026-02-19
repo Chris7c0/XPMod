@@ -1,4 +1,4 @@
-void Bind1Press_Charger(iClient)
+void Bind1Press_Charger(int iClient)
 {
     if((g_iClientInfectedClass1[iClient] == CHARGER) || (g_iClientInfectedClass2[iClient] == CHARGER) || (g_iClientInfectedClass3[iClient] == CHARGER))
     {
@@ -12,7 +12,7 @@ void Bind1Press_Charger(iClient)
                     {
                         g_bIsSuperCharger[iClient] = true;
                         g_bCanChargerSuperCharge[iClient] = false;
-                        new iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
+                        int iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
                         if (iEntid > 0)
                         {
                             float flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+8);

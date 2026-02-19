@@ -1,11 +1,11 @@
-Action ShowTeamStatsToPlayer(iClient, args)
+Action ShowTeamStatsToPlayer(int iClient, int args)
 {
 	CreateXPMStatistics(iClient);
 
 	return Plugin_Handled;
 }
 
-CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
+void CreateXPMStatistics(int iClient, char[] strStoreBuffer = "", int iStoreBufferSize = -1)
 {
 	char strStatsTextBuffer[256];
 	char strLoggedIn[16];
@@ -36,7 +36,7 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 		PrintToBufferServerOrClient(iClient, "\x05[  =  =  =  =  = Spectators =  =  =  =  = ]\n ", strStoreBuffer, iStoreBufferSize);
 
 
-		for(new i = 1; i<= MaxClients; i++)
+		for (int i = 1; i<= MaxClients; i++)
 		{
 			if(RunClientChecks(i) && IsFakeClient(i) == false && g_iClientTeam[i] == TEAM_SPECTATORS)
 			{
@@ -60,7 +60,7 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 	{
 		PrintToBufferServerOrClient(iClient, "\x05[  =  =  =  =  = Survivors =  =  =  =  =  ]\n ", strStoreBuffer, iStoreBufferSize);
 
-		for(new i = 1; i<= MaxClients; i++)
+		for (int i = 1; i<= MaxClients; i++)
 		{
 			if(RunClientChecks(i) && IsFakeClient(i) == false && g_iClientTeam[i] == TEAM_SURVIVORS)
 			{
@@ -108,7 +108,7 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 	{
 		PrintToBufferServerOrClient(iClient, "\x05[  =  =  =  =  = Infected  =  =  =  =  =  ]\n ", strStoreBuffer, iStoreBufferSize);
 
-		for(new i = 1; i<= MaxClients; i++)
+		for (int i = 1; i<= MaxClients; i++)
 		{
 			if (RunClientChecks(i) && 
 				g_iClientTeam[i] == TEAM_INFECTED &&
@@ -166,7 +166,7 @@ CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 	PrintToBufferServerOrClient(iClient, "\x05[  =  =  =  =  =  =  =  =  =  =  =  =  =  ]", strStoreBuffer, iStoreBufferSize);
 }
 
-PrintToBufferServerOrClient(iClient, const char[] strText, char[] strStoreBuffer = "", iStoreBufferSize = -1)
+void PrintToBufferServerOrClient(int iClient, const char[] strText, char[] strStoreBuffer = "", int iStoreBufferSize = -1)
 {
 	// Print to buffer
 	if (iStoreBufferSize > 0)
@@ -186,7 +186,7 @@ PrintToBufferServerOrClient(iClient, const char[] strText, char[] strStoreBuffer
 	}
 }
 
-GetLoggedInAndConfirmedStrings(iClient, char[] strLoggedIn, int iLoggedInMaxLen, char[] strConfirmed, int iConfirmedMaxLen)
+void GetLoggedInAndConfirmedStrings(int iClient, char[] strLoggedIn, int iLoggedInMaxLen, char[] strConfirmed, int iConfirmedMaxLen)
 {
 	if (g_bClientLoggedIn[iClient])
 		Format(strLoggedIn, iLoggedInMaxLen, " LoggedIn");
@@ -216,7 +216,7 @@ Action TimerLogXPMStatsToFile(Handle timer, any data)
 	return Plugin_Continue;
 }
 
-SaveXPMStatsBufferToLogFile(const char[] strBuffer)
+void SaveXPMStatsBufferToLogFile(const char[] strBuffer)
 {
 	if (strlen(g_strXPMStatsFullFilePath) < 1)
 		return;
@@ -228,7 +228,7 @@ SaveXPMStatsBufferToLogFile(const char[] strBuffer)
 	CloseHandle(hFileHandle);
 }
 
-SetXPMStatsLogFileName()
+void SetXPMStatsLogFileName()
 {
 	// TODO: Sanitize the servername for Windows/Linux file paths
 	char strFileLogPath[100];

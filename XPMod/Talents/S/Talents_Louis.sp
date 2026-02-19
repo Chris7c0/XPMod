@@ -1,4 +1,4 @@
-TalentsLoad_Louis(iClient)
+void TalentsLoad_Louis(int iClient)
 {
 	g_bLouisTeleportCoolingDown[iClient] = false;
 	g_iLouisTeleportChargeUses[iClient] = 0;
@@ -45,7 +45,7 @@ void SetPlayerTalentMaxHealth_Louis(int iClient, bool bFillInHealthGap = true)
 	
 // }
 
-bool OnPlayerRunCmd_Louis(iClient, &iButtons)
+bool OnPlayerRunCmd_Louis(int iClient, int &iButtons)
 {
 	// Louis abilities
 	if (g_iChosenSurvivor[iClient] != LOUIS || 
@@ -143,7 +143,7 @@ bool OnPlayerRunCmd_Louis(iClient, &iButtons)
 	return false;
 }
 
-OGFSurvivorReload_Louis(iClient, const char[] currentweapon, ActiveWeaponID, CurrentClipAmmo, int iOffset_Ammo)
+void OGFSurvivorReload_Louis(int iClient, const char[] currentweapon, int ActiveWeaponID, int CurrentClipAmmo, int iOffset_Ammo)
 {
 	if (g_iChosenSurvivor[iClient] != LOUIS || 
 		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
@@ -158,7 +158,7 @@ OGFSurvivorReload_Louis(iClient, const char[] currentweapon, ActiveWeaponID, Cur
 		if (CurrentClipAmmo > 0 &&
 			(StrContains(currentweapon, "weapon_smg", false) != -1) )
 		{
-			new iAmmo = GetEntData(iClient, iOffset_Ammo + 20);
+			int iAmmo = GetEntData(iClient, iOffset_Ammo + 20);
 			SetEntData(iClient, iOffset_Ammo + 20, iAmmo - (g_iLouisTalent2Level[iClient] * 10));
 
 			SetEntData(ActiveWeaponID, g_iOffset_Clip1, CurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10), true);
@@ -182,7 +182,7 @@ OGFSurvivorReload_Louis(iClient, const char[] currentweapon, ActiveWeaponID, Cur
 	}
 }
 
-EventsHurt_AttackerLouis(Handle hEvent, iAttacker, iVictim)
+void EventsHurt_AttackerLouis(Handle hEvent, int iAttacker, int iVictim)
 {
 	if (g_iChosenSurvivor[iAttacker] != LOUIS || 
 		g_iClientTeam[iAttacker] != TEAM_SURVIVORS ||
@@ -203,21 +203,21 @@ EventsHurt_AttackerLouis(Handle hEvent, iAttacker, iVictim)
 			StrEqual(weaponclass,"pistol",false) == true ||
 			StrEqual(weaponclass,"dual_pistols",false) == true)
 		{
-			new iVictimHealth = GetPlayerHealth(iVictim);
+			int iVictimHealth = GetPlayerHealth(iVictim);
 			// PrintToChatAll("Louis iVictim %N START HP: %i", iVictim, iVictimHealth);
 
 			// Store if its a headshot and pistol for use below
 			bool bIsHeadshot = GetEventInt(hEvent, "hitgroup") == HITGROUP_HEAD;
 			bool bIsPistol = StrEqual(weaponclass,"pistol",false) == true || StrEqual(weaponclass,"dual_pistols",false) == true;
 
-			new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
-			new iAddtionalDamageAmount = RoundToNearest(float(iDmgHealth) * 
+			int iDmgHealth = GetEventInt(hEvent,"dmg_health");
+			int iAddtionalDamageAmount = RoundToNearest(float(iDmgHealth) * 
 				( (g_iLouisTalent2Level[iAttacker] * LOUIS_BONUS_DAMAGE_PER_LEVEL) + 	// Damage Buff
 				  (bIsHeadshot ? 0.0 : (-1.0 * 											// Non-Headshot Penality
 				  	(bIsPistol ? LOUIS_BODY_DAMAGE_REDUCTION_PER_LEVEL_PISTOL :			// Non-Headshot Pistol Penality
 					g_iLouisTalent4Level[iAttacker] * (g_bLouisLaserModeActivated[iAttacker] ? LOUIS_BODY_DAMAGE_REDUCTION_PER_LEVEL_LASER : LOUIS_BODY_DAMAGE_REDUCTION_PER_LEVEL_NOLASER)))) + // Check if laser mode activated
 				  (g_iPillsUsedStack[iAttacker] * g_iLouisTalent6Level[iAttacker] * LOUIS_PILLS_USED_BONUS_DAMAGE_PER_LEVEL) )); // Pills here buff dmg
-			new iNewDamageAmount = iDmgHealth + iAddtionalDamageAmount;
+			int iNewDamageAmount = iDmgHealth + iAddtionalDamageAmount;
 
 			// Add even more damage if its a headshot
 			if (bIsHeadshot)
@@ -247,7 +247,7 @@ EventsHurt_AttackerLouis(Handle hEvent, iAttacker, iVictim)
 // 		return;
 // }
 
-EventsDeath_AttackerLouis(Handle hEvent, iAttacker, iVictim)
+void EventsDeath_AttackerLouis(Handle hEvent, int iAttacker, int iVictim)
 {
 	if (g_iChosenSurvivor[iAttacker] != LOUIS ||
 		g_bTalentsConfirmed[iAttacker] == false ||
@@ -273,18 +273,18 @@ EventsDeath_AttackerLouis(Handle hEvent, iAttacker, iVictim)
 			if (iVictim < 1)
 			{
 				// Give health
-				new iAttackerMaxHealth = GetPlayerMaxHealth(iAttacker);
-				new iAttackerHealth = GetPlayerHealth(iAttacker);
+				int iAttackerMaxHealth = GetPlayerMaxHealth(iAttacker);
+				int iAttackerHealth = GetPlayerHealth(iAttacker);
 				if (iAttackerHealth + 1 <= iAttackerMaxHealth)
 					SetPlayerHealth(iAttacker, -1, iAttackerHealth + 1);
 
 				// Increase Clip Ammo
-				new iActiveWeaponID = GetEntDataEnt2(iAttacker, g_iOffset_ActiveWeapon);
-				new iCurrentClipAmmo = 0;
+				int iActiveWeaponID = GetEntDataEnt2(iAttacker, g_iOffset_ActiveWeapon);
+				int iCurrentClipAmmo = 0;
 				if (IsValidEntity(iActiveWeaponID))
 				{
 					iCurrentClipAmmo = GetEntProp(iActiveWeaponID, Prop_Data, "m_iClip1");
-					new iNewClipAmmo = iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 3) >= 250 ? 250 : iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 3);
+					int iNewClipAmmo = iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 3) >= 250 ? 250 : iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 3);
 					SetEntData(iActiveWeaponID, g_iOffset_Clip1, iNewClipAmmo, true);
 				}
 				
@@ -296,12 +296,12 @@ EventsDeath_AttackerLouis(Handle hEvent, iAttacker, iVictim)
 				if (GetRandomInt(1,100) <= LOUIS_NEUROSURGEON_CI_CHANCE)
 				{
 					// Get the actual CI entity
-					new iCIVictim = GetEventInt(hEvent, "entityid");
+					int iCIVictim = GetEventInt(hEvent, "entityid");
 					// Get the CI entity's location to spawn the item
 					float xyzVictimLocation[3];
 					GetEntPropVector(iCIVictim, Prop_Send, "m_vecOrigin", xyzVictimLocation);
 					// Get a random item and spawn in the item on the CI entity
-					new iItemIndex = ITEM_EMPTY;
+					int iItemIndex = ITEM_EMPTY;
 					switch (GetRandomInt(0, 3))
 					{
 						case 0: iItemIndex = ITEM_PAIN_PILLS;
@@ -309,7 +309,7 @@ EventsDeath_AttackerLouis(Handle hEvent, iAttacker, iVictim)
 						case 2: iItemIndex = ITEM_BILE_JAR;
 						case 3: iItemIndex = ITEM_PIPE_BOMB;
 					}
-					new iItem = SpawnItem(xyzVictimLocation, iItemIndex, 50.0);
+					int iItem = SpawnItem(xyzVictimLocation, iItemIndex, 50.0);
 					// Attach particle effects to entity for awareness
 					//AttachParticle(iItem, "item_defibrillator_body", 10.0);
 					AttachParticle(iItem, "item_defibrillator_body_b", 2.0);
@@ -330,18 +330,18 @@ EventsDeath_AttackerLouis(Handle hEvent, iAttacker, iVictim)
 			if (iVictim > 0)
 			{
 				// Give health
-				new iAttackerMaxHealth = GetPlayerMaxHealth(iAttacker);
-				new iAttackerHealth = GetPlayerHealth(iAttacker);
+				int iAttackerMaxHealth = GetPlayerMaxHealth(iAttacker);
+				int iAttackerHealth = GetPlayerHealth(iAttacker);
 				if (iAttackerHealth + 5 <= iAttackerMaxHealth)
 					SetPlayerHealth(iAttacker, -1, iAttackerHealth + 5);
 
 				// Increase Clip Ammo
-				new iActiveWeaponID = GetEntDataEnt2(iAttacker, g_iOffset_ActiveWeapon);
-				new iCurrentClipAmmo = 0;
+				int iActiveWeaponID = GetEntDataEnt2(iAttacker, g_iOffset_ActiveWeapon);
+				int iCurrentClipAmmo = 0;
 				if (IsValidEntity(iActiveWeaponID))
 				{
 					iCurrentClipAmmo = GetEntProp(iActiveWeaponID,Prop_Data,"m_iClip1");
-					new iNewClipAmmo = iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 10) >= 250 ? 250 : iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 10);
+					int iNewClipAmmo = iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 10) >= 250 ? 250 : iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 10);
 					SetEntData(iActiveWeaponID, g_iOffset_Clip1, iNewClipAmmo, true);
 				}
 
@@ -417,7 +417,7 @@ void EventsPillsUsed_Louis(int iClient)
 		(g_iLouisTalent5Level[iClient] * LOUIS_PILLS_USED_HEALTH_REDUCTION_PER_LEVEL) < 
 		GetPlayerMaxHealth(iClient)))
 	{
-		new iCurrentTempHealth = GetSurvivorTempHealth(iClient);
+		int iCurrentTempHealth = GetSurvivorTempHealth(iClient);
 		ResetTempHealthToSurvivor(iClient);
 		AddTempHealthToSurvivor(iClient, float(iCurrentTempHealth - g_iLouisTalent5Level[iClient] * LOUIS_PILLS_USED_HEALTH_REDUCTION_PER_LEVEL));
 
@@ -445,7 +445,7 @@ void EventsItemPickUp_Louis(int iClient, const char[] strWeaponClass)
 
 	if (g_iLouisTalent2Level[iClient] > 0)
 	{
-		new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
+		int iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 
 		if (StrContains(strWeaponClass, "smg", false) != -1)
 		{
@@ -453,24 +453,24 @@ void EventsItemPickUp_Louis(int iClient, const char[] strWeaponClass)
 			if (g_bLouisLaserModeActivated[iClient] == false)
 				RunCheatCommand(iClient, "upgrade_remove", "upgrade_remove LASER_SIGHT");
 
-			new iEntid = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+			int iEntid = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 			if(iEntid  < 1 || IsValidEntity(iEntid) == false)
 				return;
 			
-			new iAmmo = GetEntData(iClient, iOffset_Ammo + 20);
+			int iAmmo = GetEntData(iClient, iOffset_Ammo + 20);
 			SetEntData(iClient, iOffset_Ammo + 20, iAmmo - (g_iLouisTalent2Level[iClient] * 10));
 			
-			new iCurrentClipAmmo = GetEntProp(iEntid,Prop_Data,"m_iClip1");
+			int iCurrentClipAmmo = GetEntProp(iEntid,Prop_Data,"m_iClip1");
 			SetEntData(iEntid, g_iOffset_Clip1, iCurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10), true);
 			g_iClientPrimaryClipSize[iClient] = iCurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10);
 		}
 		else if (StrEqual(strWeaponClass, "pistol", false) == true)
 		{
-			new iEntid = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+			int iEntid = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 			if(iEntid  < 1 || IsValidEntity(iEntid) == false)
 				return;
 			
-			new iCurrentClipAmmo = GetEntProp(iEntid,Prop_Data,"m_iClip1");
+			int iCurrentClipAmmo = GetEntProp(iEntid,Prop_Data,"m_iClip1");
 			SetEntData(iEntid, g_iOffset_Clip1, iCurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10), true);
 		}
 	}
@@ -574,7 +574,7 @@ bool StashPillsForLouis(int iClient)
 }
 					
 
-LouisTeleport(iClient)
+void LouisTeleport(int iClient)
 {
 	g_bLouisTeleportCoolingDown[iClient] = true;
 	CreateTimer(1.0, LouisTeleportReenable, iClient, TIMER_FLAG_NO_MAPCHANGE);
@@ -597,7 +597,7 @@ LouisTeleport(iClient)
 	HandleLouisTeleportMovementSpeedPenalty(iClient);
 }
 
-HandleLouisTeleportChargeUses(iClient)
+void HandleLouisTeleportChargeUses(int iClient)
 {
 	// Add a charge use
 	g_iLouisTeleportChargeUses[iClient]++;
@@ -620,7 +620,7 @@ HandleLouisTeleportChargeUses(iClient)
 
 }
 
-HandleLouisTeleportBlindingEffect(iClient)
+void HandleLouisTeleportBlindingEffect(int iClient)
 {
 	float fCurrentGameTime = GetGameTime();
 	// Subtract the fade amount they lost since last use
@@ -652,7 +652,7 @@ HandleLouisTeleportBlindingEffect(iClient)
 	ShowHudOverlayColor(iClient, 40, 0, 5, g_iLouisTeleportBlindnessAmount[iClient], LOUIS_TELEPORT_BLINDNESS_DURATION, FADE_OUT);
 }
 
-HandleLouisTeleportMovementSpeedPenalty(iClient)
+void HandleLouisTeleportMovementSpeedPenalty(int iClient)
 {
 	g_iLouisTeleportMovementPenaltyStacks[iClient]++;
 
@@ -660,7 +660,7 @@ HandleLouisTeleportMovementSpeedPenalty(iClient)
 }
 
 
-PrintLouisTeleportCharges(iClient)
+void PrintLouisTeleportCharges(int iClient)
 {
 	if (RunClientChecks(iClient) == false || 
 		IsPlayerAlive(iClient) == false || 

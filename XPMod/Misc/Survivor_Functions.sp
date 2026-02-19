@@ -1,4 +1,4 @@
-void OnPlayerRunCmd_BileCleanse(int iClient, &iButtons)
+void OnPlayerRunCmd_BileCleanse(int iClient, int &iButtons)
 {
 	// If they started a bile cleanse, handle if something prevented contiuation
 	if (g_iBileCleansingFrameTimeCtr[iClient] >= 0 && 
@@ -49,7 +49,7 @@ void OnPlayerRunCmd_BileCleanse(int iClient, &iButtons)
 	}
 }
 
-void OnPlayerRunCmd_SelfRevive(int iClient, &iButtons)
+void OnPlayerRunCmd_SelfRevive(int iClient, int &iButtons)
 {
 	// The GetEntProp method for getting buttons doesnt work for IN_USE
 	// while incap, but it will still be caught in here. So, stop the
@@ -192,7 +192,7 @@ void EndSelfRevive(int iClient)
 	}
 }
 
-void HandlePostSelfRevive(iClient)
+void HandlePostSelfRevive(int iClient)
 {
 	HandleEllisSelfRevive(iClient);
 }

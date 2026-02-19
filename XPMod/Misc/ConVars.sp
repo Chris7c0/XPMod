@@ -1,4 +1,4 @@
-GetXPMConVarValues()
+void GetXPMConVarValues()
 {
 	//Execute config file
 	char strFileName[64];
@@ -8,7 +8,7 @@ GetXPMConVarValues()
 
 
 // Create the ConVars and Hook their changes
-SetupXPMConVars()
+void SetupXPMConVars()
 {
 	CreateConVar("xpm_version", PLUGIN_VERSION, "XPMod Version loaded", FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY|FCVAR_DONTRECORD);
 	CreateConVar("xpmod_version", PLUGIN_VERSION, "XPMod Version loaded", FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY|FCVAR_DONTRECORD);
@@ -54,7 +54,7 @@ SetupXPMConVars()
 }
 
 // This is required for auto reload plugin
-SetUpInitialConvarValues()
+void SetUpInitialConvarValues()
 {
 	g_bDebugModeEnabled = g_hCVar_DebugModeEnabled.IntValue == 1 ? true : false;
 	SetDebugMode(g_bDebugModeEnabled);
@@ -63,7 +63,7 @@ SetUpInitialConvarValues()
 }
 
 //Callback function for updating the Debug Mode
-CVarChange_DebugModeLogLevel(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
+void CVarChange_DebugModeLogLevel(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
 {
 	//If the value was not changed, then do nothing
 	if(StrEqual(strOldValue, strNewValue) == true)
@@ -75,7 +75,7 @@ CVarChange_DebugModeLogLevel(Handle hCVar, const char[] strOldValue, const char[
 }
 
 //Callback function for updating the Idle Kicking
-CVarChange_DebugModeEnabled(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
+void CVarChange_DebugModeEnabled(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
 {
 	//If the value was not changed, then do nothing
 	if(StrEqual(strOldValue, strNewValue) == true)
@@ -90,7 +90,7 @@ CVarChange_DebugModeEnabled(Handle hCVar, const char[] strOldValue, const char[]
 
 
 //Callback function for updating the Idle Kicking
-CVarChange_IdleKickEnabled(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
+void CVarChange_IdleKickEnabled(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
 {
 	//If the value was not changed, then do nothing
 	if(StrEqual(strOldValue, strNewValue) == true)
@@ -102,7 +102,7 @@ CVarChange_IdleKickEnabled(Handle hCVar, const char[] strOldValue, const char[] 
 }
 
 //Callback function for updating the XP Gain and Use on the Server
-CVarChange_XPSaveForHighLevelsEnabled(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
+void CVarChange_XPSaveForHighLevelsEnabled(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
 {
 	//If the value was not changed, then do nothing
 	if(StrEqual(strOldValue, strNewValue) == true)
@@ -138,7 +138,7 @@ CVarChange_XPSaveForHighLevelsEnabled(Handle hCVar, const char[] strOldValue, co
 
 
 //Callback function for updating the default survivor
-CVarChange_DefaultSurvivor(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
+void CVarChange_DefaultSurvivor(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
 {
 	//If the value was not changed, then do nothing
 	if(StrEqual(strOldValue, strNewValue) == true)
@@ -150,7 +150,7 @@ CVarChange_DefaultSurvivor(Handle hCVar, const char[] strOldValue, const char[] 
 }
 
 //Callback function for updating the default infected
-CVarChange_DefaultInfectedSlot1(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
+void CVarChange_DefaultInfectedSlot1(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
 {
 	//If the value was not changed, then do nothing
 	if(StrEqual(strOldValue, strNewValue) == true)
@@ -162,7 +162,7 @@ CVarChange_DefaultInfectedSlot1(Handle hCVar, const char[] strOldValue, const ch
 }
 
 //Callback function for updating the default infected
-CVarChange_DefaultInfectedSlot2(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
+void CVarChange_DefaultInfectedSlot2(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
 {
 	//If the value was not changed, then do nothing
 	if(StrEqual(strOldValue, strNewValue) == true)
@@ -175,7 +175,7 @@ CVarChange_DefaultInfectedSlot2(Handle hCVar, const char[] strOldValue, const ch
 
 
 //Callback function for updating the default infected
-CVarChange_DefaultInfectedSlot3(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
+void CVarChange_DefaultInfectedSlot3(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
 {
 	//If the value was not changed, then do nothing
 	if(StrEqual(strOldValue, strNewValue) == true)

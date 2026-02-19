@@ -1,4 +1,4 @@
-Action TankMenuDrawVampiric(iClient)
+Action TankMenuDrawVampiric(int iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(TankMenuHandlerVampiric);
@@ -42,7 +42,7 @@ Action TankMenuDrawVampiric(iClient)
 	return Plugin_Handled;
 }
 
-TankMenuHandlerVampiric(Menu menu, MenuAction action, iClient, itemNum)
+void TankMenuHandlerVampiric(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{

@@ -1,4 +1,4 @@
-void Bind1Press_Spitter(iClient)
+void Bind1Press_Spitter(int iClient)
 {
     if((g_iClientInfectedClass1[iClient] == SPITTER) || (g_iClientInfectedClass2[iClient] == SPITTER) || (g_iClientInfectedClass3[iClient] == SPITTER))
     {

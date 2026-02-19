@@ -200,7 +200,7 @@ Action TimerCheckTeam(Handle timer, any iClient)
 		g_bIsGhost[iClient] = false;
 
 		// Rochelle's Listening Abilities
-		for(new i = 1; i <= MaxClients; i++)
+		for (int i = 1; i <= MaxClients; i++)
 		{
 			if(g_iGatherLevel[i] == 5 && IsClientInGame(i) == true && GetClientTeam(i) == TEAM_SURVIVORS)
 				SetListenOverride(i, iClient, Listen_Yes);	//Sets the iClient to hear all the infected's voice comms
@@ -239,8 +239,7 @@ Action TimerUnfreeze(Handle timer, any data)
 	
 	SetConVarInt(FindConVar("sb_stop"), 0);	//Turn the bots back on
 	
-	decl i;
-	for(i=1;i<=MaxClients;i++)
+	for(int i = 1;i <= MaxClients;i++)
 	{
 		if(RunClientChecks(i) && IsPlayerAlive(i) == true)
 		{
@@ -297,10 +296,10 @@ Action TimerDrugged(Handle timer, any iClient)
 	{
 		if(IsFakeClient(iClient)==false)
 		{
-			new red = GetRandomInt(0,255);
-			new green = GetRandomInt(0,255);
-			new blue = GetRandomInt(0,255);
-			new alpha = GetRandomInt(190,230);
+			int red = GetRandomInt(0,255);
+			int green = GetRandomInt(0,255);
+			int blue = GetRandomInt(0,255);
+			int alpha = GetRandomInt(190,230);
 			ShowHudOverlayColor(iClient, red, green, blue, alpha, 700, FADE_IN);
 		}
 		
@@ -312,10 +311,10 @@ Action TimerDrugged(Handle timer, any iClient)
 	//Do one long lasting final hud color overlay to fade it out
 	if(IsFakeClient(iClient)==false)
 	{
-		new red = GetRandomInt(0,255);
-		new green = GetRandomInt(0,255);
-		new blue = GetRandomInt(0,255);
-		new alpha = GetRandomInt(190,230);
+		int red = GetRandomInt(0,255);
+		int green = GetRandomInt(0,255);
+		int blue = GetRandomInt(0,255);
+		int alpha = GetRandomInt(190,230);
 		ShowHudOverlayColor(iClient, red, green, blue, alpha, 1600, FADE_OUT);
 	}
 	

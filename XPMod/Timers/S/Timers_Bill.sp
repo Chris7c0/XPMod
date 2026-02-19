@@ -115,7 +115,7 @@ Action TimerBlowUpPoopBomb(Handle timer, any iEntity)
 	GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", xyzEntityOrigin);
 	if(iEntity > 0 && IsValidEntity(iEntity))
 		AcceptEntityInput(iEntity, "Kill");
-	new i_Ent = CreateEntityByName("prop_physics");
+	int i_Ent = CreateEntityByName("prop_physics");
 	//DispatchKeyValue(i_Ent, "physdamagescale", "0.0");
 	DispatchKeyValue(i_Ent, "model", "models/props_junk/propanecanister001a.mdl");
 	//DispatchKeyValue(i_Ent, "model", "models/w_models/weapons/w_eq_pipebomb.mdl");
@@ -135,7 +135,7 @@ Action TimerBlowUpPoopBomb(Handle timer, any iEntity)
 	//Deal extra damage to the special infected in near the poopbomb explosion
 	float xyzVictimOrigin[3], fDistance;
 	
-	for(new iPlayer = 1; iPlayer <= MaxClients; iPlayer++)
+	for (int iPlayer = 1; iPlayer <= MaxClients; iPlayer++)
 	{
 		if(g_iClientTeam[iPlayer] == TEAM_INFECTED && IsClientInGame(iPlayer) == true && 
 			IsPlayerAlive(iPlayer) == true)

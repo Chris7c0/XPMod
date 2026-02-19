@@ -25,7 +25,7 @@ bool g_bDevModeEnabled = false;
 #define GAMEMODE_VERSUS_SURVIVAL 	4
 
 //Gamemode
-new g_iGameMode;
+int g_iGameMode;
 
 // Server Name
 char g_strServerName[64]              = "";

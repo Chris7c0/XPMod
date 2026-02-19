@@ -1,7 +1,7 @@
 //Nick Menu////////////////////////////////////////////////////////////////
 
 //Nick Menu Draw
-Action NickMenuDraw(iClient) 
+Action NickMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -46,7 +46,7 @@ Action NickMenuDraw(iClient)
 }
 
 //Swindler
-Action SwindlerMenuDraw(iClient) 
+Action SwindlerMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -94,7 +94,7 @@ Action SwindlerMenuDraw(iClient)
 }
 
 //Leftover Supplies
-Action LeftoverMenuDraw(iClient) 
+Action LeftoverMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -141,7 +141,7 @@ Action LeftoverMenuDraw(iClient)
 }
 
 //Risky Business
-Action RiskyMenuDraw(iClient) 
+Action RiskyMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -191,7 +191,7 @@ Action RiskyMenuDraw(iClient)
 }
 
 //Enhanced Pain Killers
-Action EnhancedMenuDraw(iClient) 
+Action EnhancedMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -238,7 +238,7 @@ Action EnhancedMenuDraw(iClient)
 }
 
 //Magnum Stampede
-Action MagnumMenuDraw(iClient) 
+Action MagnumMenuDraw(int iClient) 
 {
 	char text[512];
 
@@ -291,7 +291,7 @@ Action MagnumMenuDraw(iClient)
 }
 
 //Desperate Measures
-Action DesperateMenuDraw(iClient) 
+Action DesperateMenuDraw(int iClient) 
 {
 	char text[512];
 	
@@ -352,7 +352,7 @@ Action DesperateMenuDraw(iClient)
 //Handlers//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Nick Menu Handler
-NickMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void NickMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -400,7 +400,7 @@ NickMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Swindler Handler
-SwindlerMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void SwindlerMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -419,7 +419,7 @@ SwindlerMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Leftover Supplies Handler
-LeftoverMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void LeftoverMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -438,7 +438,7 @@ LeftoverMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Risky Business Handler
-RiskyMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void RiskyMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -457,7 +457,7 @@ RiskyMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Enhanced Pain Killers Handler
-EnhancedMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void EnhancedMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -476,7 +476,7 @@ EnhancedMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Magnum Stampede Handler
-MagnumMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void MagnumMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -495,7 +495,7 @@ MagnumMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Desperate Measures Handler
-DesperateMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void DesperateMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{

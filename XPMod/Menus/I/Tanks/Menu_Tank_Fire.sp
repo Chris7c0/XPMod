@@ -1,4 +1,4 @@
-Action TankMenuDrawFire(iClient)
+Action TankMenuDrawFire(int iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(TankMenuHandlerFire);
@@ -39,7 +39,7 @@ Action TankMenuDrawFire(iClient)
 	return Plugin_Handled;
 }
 
-TankMenuHandlerFire(Menu menu, MenuAction action, iClient, itemNum)
+void TankMenuHandlerFire(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{

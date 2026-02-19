@@ -1,4 +1,4 @@
-public Action OnPlayerRunCmd(iClient, &iButtons, &iImpulse, float fVelocity[3], float fAngles[3], &iWeapon)
+public Action OnPlayerRunCmd(int iClient, int &iButtons, int &iImpulse, float fVelocity[3], float fAngles[3], int &iWeapon)
 {
 	if (RunClientChecks(iClient) == false)
 		return Plugin_Continue;
@@ -188,7 +188,7 @@ public Action OnPlayerRunCmd(iClient, &iButtons, &iImpulse, float fVelocity[3], 
 		iButtons & IN_ATTACK)
 	{
 		// Get the client the bot is aiming at
-		new iTarget = GetClientAimTarget(iClient, true);
+			int iTarget = GetClientAimTarget(iClient, true);
 
 		// if (iTarget > 0)
 		// 	PrintToChatAll("%N is targeting %N", iClient, iTarget);

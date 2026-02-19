@@ -47,7 +47,7 @@ Action Event_PlayerUse(Handle hEvent, const char[] strName, bool bDontBroadcast)
 
 Action Event_ItemPickUp(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	new iClient = GetClientOfUserId( GetEventInt(hEvent,"userid"));
+	int iClient = GetClientOfUserId( GetEventInt(hEvent,"userid"));
 	if (RunClientChecks(iClient) == false || 
 		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
 		IsPlayerAlive(iClient) == false)
@@ -59,11 +59,11 @@ Action Event_ItemPickUp(Handle hEvent, const char[] strName, bool bDontBroadcast
 	// if (IsFakeClient(iClient) == false)
 	// 	PrintToChatAll("%N %i: Event_ItemPickUp: %s", iClient, iClient, weaponclass);
 	
-	new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+	int ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 	if (RunEntityChecks(ActiveWeaponID) == false)
 		return Plugin_Continue;
-	new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
-	new ClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
+	int iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
+	int ClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
 
 	// if (IsFakeClient(iClient) == false)
 	// 	PrintToChatAll("%N %i: ActiveWeaponID: %i", iClient, iClient, ActiveWeaponID);
@@ -112,13 +112,13 @@ Action Event_ItemPickUp(Handle hEvent, const char[] strName, bool bDontBroadcast
 			{
 				if (StrContains(weaponclass,"CSniperRifle",false) == -1 && StrContains(weaponclass,"hunting_rifle",false) == -1 && StrContains(weaponclass,"m60",false) == -1)
 				{
-					new iEntid = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
+					int iEntid = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
 					if(iEntid  < 1)
 						return Plugin_Continue;
 					if(IsValidEntity(iEntid)==false)
 						return Plugin_Continue;
 					//PrintToChatAll("iEntid!=-1 and is valid entry");
-					new clip = GetEntProp(iEntid,Prop_Data,"m_iClip1");
+					int clip = GetEntProp(iEntid,Prop_Data,"m_iClip1");
 					g_iClientPrimaryClipSize[iClient] = clip;
 					SetEntData(iEntid, g_iOffset_Clip1, clip + (g_iPromotionalLevel[iClient] * 20), true);
 					//new iOffset_Ammo=FindDataMapInfo(iClient,"m_iAmmo");
@@ -132,14 +132,14 @@ Action Event_ItemPickUp(Handle hEvent, const char[] strName, bool bDontBroadcast
 	{
 		if(g_iSilentLevel[iClient]>0)
 		{
-			new iEntid = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
+			int iEntid = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
 			if(iEntid < 1)					//Changed to this was:   if(iEntid == -1)
 				return Plugin_Continue;
 			if(IsValidEntity(iEntid)==false)
 				return Plugin_Continue;
-			new clip = GetEntProp(iEntid,Prop_Data,"m_iClip1");
+			int clip = GetEntProp(iEntid,Prop_Data,"m_iClip1");
 			//new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
-			decl iAmmo;
+			int iAmmo;
 			
 			if (StrContains(weaponclass,"hunting_rifle",false) != -1)	//Rugar
 			{
@@ -185,16 +185,16 @@ Action Event_ItemPickUp(Handle hEvent, const char[] strName, bool bDontBroadcast
 		{
 			if (StrContains(weaponclass,"shotgun",false) != -1)
 			{
-				new iEntid = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
+				int iEntid = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
 				if(iEntid < 1)
 					return Plugin_Continue;
 				if(IsValidEntity(iEntid)==false)
 					return Plugin_Continue;
-				new clip = GetEntProp(iEntid,Prop_Data,"m_iClip1");
+				int clip = GetEntProp(iEntid,Prop_Data,"m_iClip1");
 				clip += (g_iSprayLevel[iClient]*2);
 				//new iOffset_Ammo=FindDataMapInfo(iClient,"m_iAmmo");
-				new ammoamountpsg = GetEntData(iClient, iOffset_Ammo + 28);	//for pump shotgun (+28)
-				new ammoamountasg = GetEntData(iClient, iOffset_Ammo + 32);	//for auto shotgun (+32)
+				int ammoamountpsg = GetEntData(iClient, iOffset_Ammo + 28);//for pump shotgun (+28)
+				int ammoamountasg = GetEntData(iClient, iOffset_Ammo + 32);//for auto shotgun (+32)
 				if(ammoamountpsg > 0)
 				{
 					if(clip > 7)
@@ -411,10 +411,10 @@ Action Event_ItemPickUp(Handle hEvent, const char[] strName, bool bDontBroadcast
 
 Action Event_WeaponDropped(Handle hEvent, const char[] strName, bool bDontBroadcast)		//When an item is removed from a survivor's inventory///////////////////////
 {
-	new iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
+	int iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	char droppeditem[32];
 	GetEventString(hEvent, "item", droppeditem, 32);
-	new iProp = GetEventInt(hEvent,"propid");
+	int iProp = GetEventInt(hEvent,"propid");
 	// PrintToChatAll("droppeditem = %s", droppeditem);
 
 	if(g_iStrongLevel[iClient] > 0)

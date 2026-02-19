@@ -1,4 +1,4 @@
-LoadVampiricTankTalents(iClient)
+void LoadVampiricTankTalents(int iClient)
 {
 	if (RunClientChecks(iClient) == false || 
 		g_iClientTeam[iClient] != TEAM_INFECTED || 
@@ -51,7 +51,7 @@ LoadVampiricTankTalents(iClient)
 		PrintHintText(iClient, "You have become the Vampiric Tank");
 }
 
-ResetAllTankVariables_Vampiric(iClient)
+void ResetAllTankVariables_Vampiric(int iClient)
 {
 	g_bCanFlapVampiricTankWings[iClient] = false;
 	g_bIsVampiricTankFlying[iClient] = false;
@@ -64,7 +64,7 @@ ResetAllTankVariables_Vampiric(iClient)
 // 	LoadVampiricTankTalents(iClient);
 // }
 
-SetClientSpeedTankVampiric(iClient, float &fSpeed)
+void SetClientSpeedTankVampiric(int iClient, float &fSpeed)
 {
 	if (g_iTankChosen[iClient] != TANK_VAMPIRIC)
 		return;
@@ -72,7 +72,7 @@ SetClientSpeedTankVampiric(iClient, float &fSpeed)
 	fSpeed += 0.30;
 }
 
-OnGameFrame_Tank_Vampiric(iClient)
+void OnGameFrame_Tank_Vampiric(int iClient)
 {
 	int buttons;
 	buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
@@ -93,7 +93,7 @@ OnGameFrame_Tank_Vampiric(iClient)
 		float xyzClientPosition[3];
 		GetClientEyePosition(iClient, xyzClientPosition);
 		// Play a random sound effect name from the the boomer throw selection
-		new iRandomSoundNumber = GetRandomInt(0 ,sizeof(SOUND_WING_FLAP) - 1);
+		int iRandomSoundNumber = GetRandomInt(0 ,sizeof(SOUND_WING_FLAP) - 1);
 		// Play it twice because its to quiet (super dirty, but what do)
 		EmitAmbientSound(SOUND_WING_FLAP[ iRandomSoundNumber ], xyzClientPosition, iClient, SNDLEVEL_SCREAMING);
 		EmitAmbientSound(SOUND_WING_FLAP[ iRandomSoundNumber ], xyzClientPosition, iClient, SNDLEVEL_SCREAMING);
@@ -129,7 +129,7 @@ OnGameFrame_Tank_Vampiric(iClient)
 			float xyzClientPosition[3];
 			GetClientEyePosition(iClient, xyzClientPosition);
 			// Play a random sound effect name from the the boomer throw selection
-			new iRandomSoundNumber = GetRandomInt(0 ,sizeof(SOUND_WING_FLAP) - 1);
+			int iRandomSoundNumber = GetRandomInt(0 ,sizeof(SOUND_WING_FLAP) - 1);
 			// Play it twice because its to quiet (super dirty, but what do)
 			EmitAmbientSound(SOUND_WING_FLAP[ iRandomSoundNumber ], xyzClientPosition, iClient, SNDLEVEL_SCREAMING);
 			EmitAmbientSound(SOUND_WING_FLAP[ iRandomSoundNumber ], xyzClientPosition, iClient, SNDLEVEL_SCREAMING);
@@ -166,11 +166,11 @@ OnGameFrame_Tank_Vampiric(iClient)
 	}
 }
 
-EventsHurt_VictimTank_Vampiric(Handle hEvent, iAttacker, iVictimTank)
+void EventsHurt_VictimTank_Vampiric(Handle hEvent, int iAttacker, int iVictimTank)
 {
 	SuppressNeverUsedWarning(hEvent, iAttacker);
 
-	new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
+	int iDmgHealth = GetEventInt(hEvent,"dmg_health");
 
 	char weaponclass[32];
 	GetEventString(hEvent,"weapon",weaponclass,32);
@@ -181,7 +181,7 @@ EventsHurt_VictimTank_Vampiric(Handle hEvent, iAttacker, iVictimTank)
 	{
 		// Increase the melee damage
 		// Remember, the original damage will still process, so subtract that
-		new iCurrentHP = GetPlayerHealth(iVictimTank);
+		int iCurrentHP = GetPlayerHealth(iVictimTank);
 		//if (IsFakeClient(iVictimTank) == false) PrintToChat(iVictimTank, "\x03iCurrentHP: %i", iCurrentHP);
 		SetPlayerHealth(iVictimTank, iAttacker, iCurrentHP - ((iDmgHealth * VAMPIRIC_TANK_MELEE_DMG_TAKEN_MULTIPLIER) - iDmgHealth));
 		//if (IsFakeClient(iVictimTank) == false) PrintToChat(iVictimTank, "\x03Subtracting health: %i", ((iDmgHealth * VAMPIRIC_TANK_MELEE_DMG_TAKEN_MULTIPLIER) - iDmgHealth));
@@ -195,7 +195,7 @@ EventsHurt_VictimTank_Vampiric(Handle hEvent, iAttacker, iVictimTank)
 		StrContains(weaponclass,"shotgun",false) != -1 ||
 		StrContains(weaponclass,"sniper",false) != -1)
 	{
-		new iCurrentHP = GetPlayerHealth(iVictimTank);
+		int iCurrentHP = GetPlayerHealth(iVictimTank);
 		// The life will be taken away, so we need to convert the gun damage taken multiplier to be a reduction of this.
 		// So, if we want to only take 1/3rd damage, then we add 2/3rds back here.  1 - 1/3rds = 2/3rds.
 		SetPlayerHealth(iVictimTank, iAttacker, iCurrentHP + RoundToCeil(iDmgHealth * (1.0 - VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER)) );
@@ -207,13 +207,13 @@ EventsHurt_VictimTank_Vampiric(Handle hEvent, iAttacker, iVictimTank)
 	// }
 }
 
-EventsHurt_AttackerTank_Vampiric(Handle hEvent, iAttackerTank, iVictim)
+void EventsHurt_AttackerTank_Vampiric(Handle hEvent, int iAttackerTank, int iVictim)
 {
 	SuppressNeverUsedWarning(hEvent);
 	
 	char strWeapon[20];
 	GetEventString(hEvent,"weapon", strWeapon, 20);
-	new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
+	int iDmgHealth = GetEventInt(hEvent,"dmg_health");
 
 	if (RunClientChecks(iAttackerTank) == false || RunClientChecks(iVictim) == false ||
 		IsPlayerAlive(iAttackerTank) == false || IsPlayerAlive(iVictim) == false || 
@@ -222,15 +222,15 @@ EventsHurt_AttackerTank_Vampiric(Handle hEvent, iAttackerTank, iVictim)
 		return;
 
 	// Calculate the health to recieve (more for incap players)
-	decl iVampiricHealthGainAmount;
+	int iVampiricHealthGainAmount;
 	if (IsIncap(iVictim) == true)
 		iVampiricHealthGainAmount = iDmgHealth * VAMPIRIC_TANK_LIFESTEAL_INCAP_MULTIPLIER;
 	else
 		iVampiricHealthGainAmount = iDmgHealth * VAMPIRIC_TANK_LIFESTEAL_MULTIPLIER;
 
 	// Get the current life level
-	new iCurrentHP = GetPlayerHealth(iAttackerTank);
-	new iCurrentMaxHP = RoundToNearest(TANK_HEALTH_VAMPIRIC * g_fTankStartingHealthMultiplier[iAttackerTank]);
+	int iCurrentHP = GetPlayerHealth(iAttackerTank);
+	int iCurrentMaxHP = RoundToNearest(TANK_HEALTH_VAMPIRIC * g_fTankStartingHealthMultiplier[iAttackerTank]);
 	if(iCurrentHP < iCurrentMaxHP)
 	{
 		if(iCurrentHP + iVampiricHealthGainAmount < iCurrentMaxHP)
@@ -276,7 +276,7 @@ int CalculateDamageForVictimTalents_Tank_Vampiric(int iVictim, int iDmgAmount, c
 	return 0;
 }
 
-AddWingFlapVelocity(iClient, float speed)
+void AddWingFlapVelocity(int iClient, float speed)
 {
 	float vecVelocity[3];
 	GetEntDataVector(iClient, g_iOffset_VecVelocity, vecVelocity);
@@ -299,7 +299,7 @@ AddWingFlapVelocity(iClient, float speed)
 	TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, vecVelocity);
 }
 
-AddWingDashVelocity(iClient, float speed)
+void AddWingDashVelocity(int iClient, float speed)
 {
 	float vecVelocity[3];
 	GetEntDataVector(iClient, g_iOffset_VecVelocity, vecVelocity);
@@ -352,7 +352,7 @@ Action TimerVampiricTankWingDashChargeRegenerate(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-PrintVampiricTankMeters(iClient)
+void PrintVampiricTankMeters(int iClient)
 {
 	if (RunClientChecks(iClient) == false || 
 		IsPlayerAlive(iClient) == false || 
@@ -397,7 +397,7 @@ void BuildVampiricTankWingDashChargesString(int iClient, char[] strBuffer, int i
 	}
 }
 
-CreateVampiricTankTrailEffect(int iClient)
+void CreateVampiricTankTrailEffect(int iClient)
 {
 	float xyzTankPosition[3];
 	GetClientAbsOrigin(iClient, xyzTankPosition);

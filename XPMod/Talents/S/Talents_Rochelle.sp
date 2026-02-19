@@ -1,4 +1,4 @@
-TalentsLoad_Rochelle(iClient)
+void TalentsLoad_Rochelle(int iClient)
 {
 	SetPlayerTalentMaxHealth_Rochelle(iClient, !g_bSurvivorTalentsGivenThisRound[iClient]);
 	SetClientSpeed(iClient);
@@ -6,7 +6,7 @@ TalentsLoad_Rochelle(iClient)
 	//Sets the iClient to hear all the infected's voice comms
 	if(g_iGatherLevel[iClient] == 5)
 	{
-		for(new i = 1; i <= MaxClients; i++)
+		for (int i = 1; i <= MaxClients; i++)
 		{
 			if(IsClientInGame(i) == true && GetClientTeam(i) == TEAM_INFECTED && IsFakeClient(i) == false)
 				SetListenOverride(iClient, i, Listen_Yes);
@@ -52,7 +52,7 @@ void SetPlayerTalentMaxHealth_Rochelle(int iClient, bool bFillInHealthGap = true
 		bFillInHealthGap);
 }
 
-OnGameFrame_Rochelle(iClient)
+void OnGameFrame_Rochelle(int iClient)
 {
 	int buttons;
 	if(g_iSniperLevel[iClient] > 0 || g_iSmokeLevel[iClient] > 0 || g_iGatherLevel[iClient] > 0)
@@ -151,14 +151,14 @@ OnGameFrame_Rochelle(iClient)
 		{
 			char currentweapon[32];
 			GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
-			new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+			int ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 			if (IsValidEntity(ActiveWeaponID) == false)
 				return;
-			new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
+			int CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
 			if((StrEqual(currentweapon, "weapon_sniper_military", false) == true) && (CurrentClipAmmo == 30))
 			{
-				new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
-				new iAmmo = GetEntData(iClient, iOffset_Ammo + 40);
+				int iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
+				int iAmmo = GetEntData(iClient, iOffset_Ammo + 40);
 				if(iAmmo > 0)
 				{
 					g_bForceReload[iClient] = true;
@@ -171,7 +171,7 @@ OnGameFrame_Rochelle(iClient)
 	}
 }
 
-EventsHurt_AttackerRochelle(Handle hEvent, attacker, victim)
+void EventsHurt_AttackerRochelle(Handle hEvent, int attacker, int victim)
 {
 	if (g_iChosenSurvivor[attacker] != ROCHELLE ||
 		g_bTalentsConfirmed[attacker] == false ||
@@ -211,8 +211,8 @@ EventsHurt_AttackerRochelle(Handle hEvent, attacker, victim)
 		GetEventString(hEvent,"weapon",strWeaponClass,32);
 		// PrintToChatAll("\x03-class of gun: \x01%s",strWeaponClass);
 
-		new hp = GetPlayerHealth(victim);
-		new dmg = GetEventInt(hEvent,"dmg_health");
+		int hp = GetPlayerHealth(victim);
+		int dmg = GetEventInt(hEvent,"dmg_health");
 		// PrintToChat(attacker, "Base DMG: %d", dmg);
 
 		if (StrContains(strWeaponClass,"hunting_rifle",false) != -1)	//Ruger
@@ -278,7 +278,7 @@ EventsHurt_AttackerRochelle(Handle hEvent, attacker, victim)
 // 	if (IsFakeClient(victim))
 // }
 
-EventsInfectedHurt_Rochelle(Handle hEvent, int  iAttacker, int iVictim)
+void EventsInfectedHurt_Rochelle(Handle hEvent, int  iAttacker, int iVictim)
 {
 	if (g_iChosenSurvivor[iAttacker] != ROCHELLE ||
 		g_bTalentsConfirmed[iAttacker] == false ||
@@ -314,7 +314,7 @@ EventsInfectedHurt_Rochelle(Handle hEvent, int  iAttacker, int iVictim)
 	SuppressNeverUsedWarning(iVictim);
 }
 
-EventsDeath_AttackerRochelle(Handle hEvent, int iAttacker, int iVictim)
+void EventsDeath_AttackerRochelle(Handle hEvent, int iAttacker, int iVictim)
 {
 	if (g_iChosenSurvivor[iAttacker] != ROCHELLE ||
 		g_bTalentsConfirmed[iAttacker] == false ||
@@ -365,7 +365,7 @@ EventsDeath_AttackerRochelle(Handle hEvent, int iAttacker, int iVictim)
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }
 
-Event_WeaponFire_Rochelle(int iClient, char[] strWeaponClass)
+void Event_WeaponFire_Rochelle(int iClient, char[] strWeaponClass)
 {
 	if (g_iChosenSurvivor[iClient] != ROCHELLE ||
 		g_bTalentsConfirmed[iClient] == false ||
@@ -406,7 +406,7 @@ bool Event_TongueGrab_Rochelle(int iAttacker, int iVictim)
 	return HandleRochelleNinjaEscapeGrasp(iAttacker, iVictim);
 }
 
-bool Event_HunterPounceStart_Rochelle(iAttacker, iVictim, distance) {
+bool Event_HunterPounceStart_Rochelle(int iAttacker, int iVictim, int distance) {
 	HandleRochelleNinjaEscapeGrasp(iAttacker, iVictim);
 
 	SuppressNeverUsedWarning(distance);
@@ -414,7 +414,7 @@ bool Event_HunterPounceStart_Rochelle(iAttacker, iVictim, distance) {
 	return true;
 }
 
-bool HandleRochelleNinjaEscapeGrasp(iAttacker, iVictim) {
+bool HandleRochelleNinjaEscapeGrasp(int iAttacker, int iVictim) {
 	if (g_iChosenSurvivor[iVictim] != ROCHELLE || 
 		RunClientChecks(iVictim) == false ||
 		RunClientChecks(iAttacker) == false ||
@@ -482,7 +482,7 @@ bool HandleRochelleNinjaEscapeGrasp(iAttacker, iVictim) {
 	return true;
 }
 
-DetectionHud(iClient)
+void DetectionHud(int iClient)
 {
 	if(IsClientInGame(iClient)==false)
 		return;
@@ -494,7 +494,7 @@ DetectionHud(iClient)
 	float detdistance;
 	float clientvec[3];
 	float infectedvec[3];
-	decl classnum;
+	int classnum;
 	g_fDetectedDistance_Smoker[iClient] = 0.0;
 	g_fDetectedDistance_Boomer[iClient] = 0.0;
 	g_fDetectedDistance_Hunter[iClient] = 0.0;
@@ -504,7 +504,7 @@ DetectionHud(iClient)
 	g_fDetectedDistance_Tank[iClient] = 0.0;
 	GetClientAbsOrigin(iClient, clientvec);
 	g_bDrawIDD[iClient] = false;
-	for(new infected = 1;infected<= MaxClients;infected++)
+	for (int infected = 1;infected<= MaxClients;infected++)
 	{
 		if(IsClientInGame(infected)==true)
 		{
@@ -575,11 +575,11 @@ DetectionHud(iClient)
 		DetectionHudMenuDraw(iClient);
 }
 
-OGFSurvivorReload_Rochelle(iClient, const char[] currentweapon, ActiveWeaponID, CurrentClipAmmo, iOffset_Ammo)
+void OGFSurvivorReload_Rochelle(int iClient, const char[] currentweapon, int ActiveWeaponID, int CurrentClipAmmo, int iOffset_Ammo)
 {
 	if((StrEqual(currentweapon, "weapon_hunting_rifle", false) == true) && (g_iSilentLevel[iClient] > 1) && (CurrentClipAmmo != 0))
 	{
-		new iAmmo = GetEntData(iClient, iOffset_Ammo + 36);	//for hunting rifle (+36)
+		int iAmmo = GetEntData(iClient, iOffset_Ammo + 36);//for hunting rifle (+36)
 		if((iAmmo + CurrentClipAmmo) > (17 - (g_iSilentLevel[iClient] * 2)))
 		{
 			SetEntData(iClient, iOffset_Ammo + 36, iAmmo + (CurrentClipAmmo - (17 - (g_iSilentLevel[iClient] * 2))));
@@ -590,8 +590,8 @@ OGFSurvivorReload_Rochelle(iClient, const char[] currentweapon, ActiveWeaponID, 
 	}
 	else if((StrEqual(currentweapon, "weapon_sniper_awp", false) == true) && (g_iSilentLevel[iClient] > 1) && (CurrentClipAmmo != 0))
 	{
-		new iAmmo = GetEntData(iClient, iOffset_Ammo + 40);	//for AWP, Scout, and Military Sniper (+40)
-		new iCurrentAWPClipSize = g_iRochelleAWPChargeLevel[iClient] >= 3 ? 1 : 3;
+		int iAmmo = GetEntData(iClient, iOffset_Ammo + 40);//for AWP, Scout, and Military Sniper (+40)
+		int iCurrentAWPClipSize = g_iRochelleAWPChargeLevel[iClient] >= 3 ? 1 : 3;
 
 		// Enable a charged AWP shot
 		if (g_iRochelleAWPChargeLevel[iClient] >= 3)
@@ -610,7 +610,7 @@ OGFSurvivorReload_Rochelle(iClient, const char[] currentweapon, ActiveWeaponID, 
 	}
 	else if((StrEqual(currentweapon, "weapon_sniper_scout", false) == true) && (g_iSilentLevel[iClient] > 1) && (CurrentClipAmmo != 0))
 	{
-		new iAmmo = GetEntData(iClient, iOffset_Ammo + 40);	//for AWP, Scout, and Military Sniper (+40)
+		int iAmmo = GetEntData(iClient, iOffset_Ammo + 40);//for AWP, Scout, and Military Sniper (+40)
 		if((iAmmo + CurrentClipAmmo) > (20 - g_iSilentLevel[iClient]))
 		{
 			SetEntData(iClient, iOffset_Ammo + 40, iAmmo + (CurrentClipAmmo - (20 - g_iSilentLevel[iClient])));
@@ -621,7 +621,7 @@ OGFSurvivorReload_Rochelle(iClient, const char[] currentweapon, ActiveWeaponID, 
 	}
 	else if((StrEqual(currentweapon, "weapon_sniper_military", false) == true) && (g_iSilentLevel[iClient] > 1) && (CurrentClipAmmo == 30))
 	{
-		new iAmmo = GetEntData(iClient, iOffset_Ammo + 40);	//for AWP, Scout, and Military Sniper (+40)
+		int iAmmo = GetEntData(iClient, iOffset_Ammo + 40);//for AWP, Scout, and Military Sniper (+40)
 		if(iAmmo >= (g_iSilentLevel[iClient] * 6))
 		{
 			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iSilentLevel[iClient] * 6)), true);
@@ -629,7 +629,7 @@ OGFSurvivorReload_Rochelle(iClient, const char[] currentweapon, ActiveWeaponID, 
 		}
 		else if(iAmmo < (g_iSilentLevel[iClient] * 6))
 		{
-			new NewAmmo = ((g_iSilentLevel[iClient] * 6) - iAmmo);
+			int NewAmmo = ((g_iSilentLevel[iClient] * 6) - iAmmo);
 			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + ((g_iSilentLevel[iClient] * 6) - NewAmmo)), true);
 			SetEntData(iClient, iOffset_Ammo + 40, 0);
 		}
@@ -638,7 +638,7 @@ OGFSurvivorReload_Rochelle(iClient, const char[] currentweapon, ActiveWeaponID, 
 	}
 }
 
-ToggleDetectionHud(iClient)
+void ToggleDetectionHud(int iClient)
 {
 	if(iClient==0)
 		iClient = 1;
@@ -689,7 +689,7 @@ ToggleDetectionHud(iClient)
 // 	return true;
 // }
 
-HandleFasterAttacking_Rochelle(iClient, iButtons)
+void HandleFasterAttacking_Rochelle(int iClient, int iButtons)
 {
 	if (g_iChosenSurvivor[iClient] != ROCHELLE || 
 		g_bTalentsConfirmed[iClient] == false ||

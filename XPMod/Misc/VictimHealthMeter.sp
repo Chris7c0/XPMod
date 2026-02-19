@@ -1,4 +1,4 @@
-MonitorVictimHealthMeterForSurvivorPlayer(iAttacker, iVictim)
+void MonitorVictimHealthMeterForSurvivorPlayer(int iAttacker, int iVictim)
 {
 	// Set the current target victim for the client
 	g_iVictimHealthMeterWatchVictim[iAttacker] = iVictim;
@@ -20,12 +20,12 @@ Action Timer_VictimHealthMeterStop(Handle timer, int iClient)
 	return Plugin_Stop;
 }
 
-PrintVictimHealthMeterToSurvivorPlayer(int iClient)
+void PrintVictimHealthMeterToSurvivorPlayer(int iClient)
 {
 	if (g_bVictimHealthMeterActive[iClient] == false)
 		return;
 
-	new iVictim = g_iVictimHealthMeterWatchVictim[iClient];
+	int iVictim = g_iVictimHealthMeterWatchVictim[iClient];
 
 	if (RunClientChecks(iClient) == false ||
 		RunClientChecks(iVictim) == false ||
@@ -43,8 +43,8 @@ PrintVictimHealthMeterToSurvivorPlayer(int iClient)
 		return;
 	}
 
-	new iCurrentMaxHealth = GetPlayerMaxHealth(iVictim);
-	new iCurrentHealth = GetPlayerHealth(iVictim);
+	int iCurrentMaxHealth = GetPlayerMaxHealth(iVictim);
+	int iCurrentHealth = GetPlayerHealth(iVictim);
 	if (iCurrentHealth < 0) iCurrentHealth = 0;
 	float fHealthPercentage = (iCurrentMaxHealth > 0) ? (float(iCurrentHealth) / float(iCurrentMaxHealth)) : 0.0;
 

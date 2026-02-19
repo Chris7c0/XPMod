@@ -1,4 +1,4 @@
-void Bind1Press_Rochelle(iClient)
+void Bind1Press_Rochelle(int iClient)
 {
 	if (RunClientChecks(iClient) == false || 
 		IsFakeClient(iClient) == true ||
@@ -166,7 +166,7 @@ void HandleGettingUpFromLedge(int iClient, int iButtons)
 	clienthanging[iClient] = false;
 }
 
-HandleRochelleNinjaRopeMovement(iClient, iButtons)
+void HandleRochelleNinjaRopeMovement(int iClient, int iButtons)
 {
 	float clientloc[3];
 	GetClientAbsOrigin(iClient,clientloc);
@@ -245,7 +245,7 @@ HandleRochelleNinjaRopeMovement(iClient, iButtons)
 		PrintRochelleRopeDurability(iClient);
 }
 
-void HandleRochelleRopeGain(iClient)
+void HandleRochelleRopeGain(int iClient)
 {
 	if (g_bUsingTongueRope[iClient] == true ||
 		g_bTalentsConfirmed[iClient] == false ||
@@ -264,7 +264,7 @@ void HandleRochelleRopeGain(iClient)
 }
 
 
-void PrintRochelleRopeDurability(iClient)
+void PrintRochelleRopeDurability(int iClient)
 {
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient))
 		return;

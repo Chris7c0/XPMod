@@ -20,7 +20,7 @@ void PushRockOntoTankRockEntitiesList(int iEntity)
 		return;
 
 	// Push a new item onto the list
-	new index = g_listTankRockEntities.Push(iEntity);
+	int index = g_listTankRockEntities.Push(iEntity);
 	// Store the entity ID
 	g_listTankRockEntities.Set(index, iEntity, TANK_ROCK_ENTITY_ID);
 	// Set the type for this item to be unknown until it can be determined later
@@ -36,7 +36,7 @@ void PopRockOffTankRockEntitiesList(int iEntity)
 		return;
 
 	//Find the tank rock entity in the list
-	new iTankRockIndex = FindIndexInArrayListUsingValue(g_listTankRockEntities, iEntity, TANK_ROCK_ENTITY_ID);
+	int iTankRockIndex = FindIndexInArrayListUsingValue(g_listTankRockEntities, iEntity, TANK_ROCK_ENTITY_ID);
 	
 	//Remove it from the array if it was found
 	if (iTankRockIndex >= 0)
@@ -55,13 +55,13 @@ void RemoveAllEntitiesFromArrayList(ArrayList list)
 		list.Erase(i);
 }
 
-void HandleTankRockDestroy(iRockEntity)
+void HandleTankRockDestroy(int iRockEntity)
 {
 	if (g_listTankRockEntities == INVALID_HANDLE)
 		return;
 
 	//Find the tank rock entity in the list that will be used to gain the rock type
-	new iTankRockIndex = FindIndexInArrayListUsingValue(g_listTankRockEntities, iRockEntity, TANK_ROCK_ENTITY_ID);
+	int iTankRockIndex = FindIndexInArrayListUsingValue(g_listTankRockEntities, iRockEntity, TANK_ROCK_ENTITY_ID);
 	
 	switch (g_listTankRockEntities.Get(iTankRockIndex, TANK_ROCK_TYPE))
 	{
@@ -107,7 +107,7 @@ void TrackAllRocks()
 {
 	for (int iTankRockIndex=0; iTankRockIndex < g_listTankRockEntities.Length; iTankRockIndex++)
 	{
-		new iTankRockEntity = g_listTankRockEntities.Get(iTankRockIndex, TANK_ROCK_ENTITY_ID);
+		int iTankRockEntity = g_listTankRockEntities.Get(iTankRockIndex, TANK_ROCK_ENTITY_ID);
 
 		//Get the tank rock type to determine the next course of action
 		switch (g_listTankRockEntities.Get(iTankRockIndex, TANK_ROCK_TYPE))
@@ -116,7 +116,7 @@ void TrackAllRocks()
 			case TANK_ROCK_TYPE_UNKNOWN:
 			{
 				// Try to determine thee type of tank rock
-				new bGotTankRockType = GetTankRockTypeAndOwner(iTankRockIndex);
+				bool bGotTankRockType = GetTankRockTypeAndOwner(iTankRockIndex);
 				// If a valid tank rock was found, then handle its initial setup
 				if (bGotTankRockType)
 				{
@@ -185,7 +185,7 @@ void TrackAllRocks()
 	}
 }
 
-bool GetTankRockTypeAndOwner(iTankRockIndex)
+bool GetTankRockTypeAndOwner(int iTankRockIndex)
 {
 	// Get the actual rock game entity
 	int iRockEntityID = g_listTankRockEntities.Get(iTankRockIndex, TANK_ROCK_ENTITY_ID);
@@ -323,7 +323,7 @@ Action WaitForNonZeroOriginVectorAndSetUpTankRock(Handle timer, any iRockEntity)
 		return Plugin_Continue;
 	
 	//Find the tank rock entity in the list that will be used to gain the rock type
-	new iTankRockIndex = FindIndexInArrayListUsingValue(g_listTankRockEntities, iRockEntity, TANK_ROCK_ENTITY_ID);
+	int iTankRockIndex = FindIndexInArrayListUsingValue(g_listTankRockEntities, iRockEntity, TANK_ROCK_ENTITY_ID);
 	// Check that a valid index was returned
 	if (iTankRockIndex < 0)
 		return Plugin_Stop;

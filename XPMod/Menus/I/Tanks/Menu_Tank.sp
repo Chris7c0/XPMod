@@ -1,4 +1,4 @@
-Action ChooseTankMenuDraw(iClient)
+Action ChooseTankMenuDraw(int iClient)
 {
 	// If they still had the confirmation menu open, close it so they can choose a tank
 	g_bUserStoppedConfirmation[iClient] = true;
@@ -52,7 +52,7 @@ Action ChooseTankMenuDraw(iClient)
 }
 
 //Tank Abilities Menu Draw
-Action TankTopMenuDraw(iClient)
+Action TankTopMenuDraw(int iClient)
 {
 	
 	CheckLevel(iClient);
@@ -103,7 +103,7 @@ Action TankTopMenuDraw(iClient)
 }
 
 
-ChooseTankMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void ChooseTankMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -121,7 +121,7 @@ ChooseTankMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 	}
 }
 
-TankTopMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void TankTopMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{

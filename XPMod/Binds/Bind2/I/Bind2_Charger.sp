@@ -1,4 +1,4 @@
-void Bind2Press_Charger(iClient)
+void Bind2Press_Charger(int iClient)
 {
 	if (g_iClientInfectedClass1[iClient] != CHARGER && g_iClientInfectedClass2[iClient] != CHARGER && g_iClientInfectedClass3[iClient] != CHARGER)
 	{

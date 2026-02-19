@@ -1,4 +1,4 @@
-Action TankMenuDrawIce(iClient)
+Action TankMenuDrawIce(int iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(TankMenuHandlerIce);
@@ -41,7 +41,7 @@ Action TankMenuDrawIce(iClient)
 	return Plugin_Handled;
 }
 
-TankMenuHandlerIce(Menu menu, MenuAction action, iClient, itemNum)
+void TankMenuHandlerIce(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{

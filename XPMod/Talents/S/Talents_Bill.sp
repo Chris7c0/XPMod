@@ -1,4 +1,4 @@
-TalentsLoad_Bill(iClient)
+void TalentsLoad_Bill(int iClient)
 {
 	SetPlayerTalentMaxHealth_Bill(iClient, !g_bSurvivorTalentsGivenThisRound[iClient]);
 	SetClientSpeed(iClient);
@@ -64,7 +64,7 @@ void SetPlayerTalentMaxHealth_Bill(int iClient, bool bFillInHealthGap = true)
 	bFillInHealthGap);
 }
 
-OnGameFrame_Bill(iClient)
+void OnGameFrame_Bill(int iClient)
 {
 	if (g_bGameFrozen)
 		return;
@@ -135,16 +135,16 @@ OnGameFrame_Bill(iClient)
 		{
 			char currentweapon[32];
 			GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
-			new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+			int ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 			if (IsValidEntity(ActiveWeaponID) ==  false)
 				return;
 
-			new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
+			int CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
 			
 			if((((StrEqual(currentweapon, "weapon_rifle", false) == true) || (StrEqual(currentweapon, "weapon_rifle_sg552", false) == true)) && (CurrentClipAmmo == 50)) || ((StrEqual(currentweapon, "weapon_rifle_ak47", false) == true) && (CurrentClipAmmo == 40)) || ((StrEqual(currentweapon, "weapon_rifle_desert", false) == true) && (CurrentClipAmmo == 60)))
 			{
-				new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
-				new iAmmo = GetEntData(iClient, iOffset_Ammo + 12);
+				int iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
+				int iAmmo = GetEntData(iClient, iOffset_Ammo + 12);
 				if(iAmmo > 0)
 				{
 					g_bForceReload[iClient] = true;
@@ -157,13 +157,13 @@ OnGameFrame_Bill(iClient)
 	}
 }
 
-OGFSurvivorReload_Bill(int iClient, const char[] currentweapon, int ActiveWeaponID, int CurrentClipAmmo, int iOffset_Ammo)
+void OGFSurvivorReload_Bill(int iClient, const char[] currentweapon, int ActiveWeaponID, int CurrentClipAmmo, int iOffset_Ammo)
 {
 	//if((((StrEqual(currentweapon, "weapon_rifle", false) == true) || (StrEqual(currentweapon, "weapon_rifle_sg552", false) == true)) && (CurrentClipAmmo == 50)) || ((StrEqual(currentweapon, "weapon_rifle_ak47", false) == true) && (CurrentClipAmmo == 40)) || ((StrEqual(currentweapon, "weapon_rifle_desert", false) == true) && (CurrentClipAmmo == 60)))
 	//if((StrEqual(currentweapon, "weapon_rifle", false) == true) || (StrEqual(currentweapon, "weapon_rifle_sg552", false) == true) || (StrEqual(currentweapon, "weapon_rifle_ak47", false) == true) || (StrEqual(currentweapon, "weapon_rifle_desert", false) == true) && (CurrentClipAmmo != 0))
 	if((((StrEqual(currentweapon, "weapon_rifle", false) == true) || (StrEqual(currentweapon, "weapon_rifle_sg552", false) == true)) && (CurrentClipAmmo == 50)) || ((StrEqual(currentweapon, "weapon_rifle_ak47", false) == true) && (CurrentClipAmmo == 40)) || ((StrEqual(currentweapon, "weapon_rifle_desert", false) == true) && (CurrentClipAmmo == 60)))
 	{
-		new iAmmo = GetEntData(iClient, iOffset_Ammo + 12);	//for rifle (+12)
+		int iAmmo = GetEntData(iClient, iOffset_Ammo + 12);//for rifle (+12)
 		if(iAmmo >= (g_iPromotionalLevel[iClient]*20))
 		{
 			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iPromotionalLevel[iClient]*20)), true);
@@ -174,7 +174,7 @@ OGFSurvivorReload_Bill(int iClient, const char[] currentweapon, int ActiveWeapon
 		}
 		else if(iAmmo < (g_iPromotionalLevel[iClient]*20))
 		{
-			new NewAmmo = ((g_iPromotionalLevel[iClient]*20) - iAmmo);
+			int NewAmmo = ((g_iPromotionalLevel[iClient]*20) - iAmmo);
 			SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + ((g_iPromotionalLevel[iClient]*20) - NewAmmo)), true);
 			SetEntData(iClient, iOffset_Ammo + 12, 0);
 			g_bClientIsReloading[iClient] = false;
@@ -184,7 +184,7 @@ OGFSurvivorReload_Bill(int iClient, const char[] currentweapon, int ActiveWeapon
 	}
 }
 
-EventsHurt_AttackerBill(Handle hEvent, iAttacker, iVictim)
+void EventsHurt_AttackerBill(Handle hEvent, int iAttacker, int iVictim)
 {
 	if (RunClientChecks(iAttacker) == false ||
 		g_bTalentsConfirmed[iAttacker] == false ||
@@ -235,12 +235,12 @@ Action tmrPlayAnim(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-void PlayAnim(iClient)
+void PlayAnim(int iClient)
 {
 	if (RunClientChecks(iClient) == false)
 		return;
 
-	decl iAnim;
+	int iAnim;
 	char s_Model[128];
 	GetEntPropString(iClient, Prop_Data, "m_ModelName", s_Model, 128);
 
@@ -264,7 +264,7 @@ void PlayAnim(iClient)
 
 	// Create survivor clone
 	gClone[iClient] = -1;
-	new iClone = CreateEntityByName("prop_dynamic");
+	int iClone = CreateEntityByName("prop_dynamic");
 	if (iClone == -1) return;
 	SetEntityModel(iClone,s_Model);
 	gClone[iClient] = iClone; // Global clone ID
@@ -307,7 +307,7 @@ void PlayAnim(iClient)
 	SetAlpha(iClient,0);
 }
 
-RestoreClient(iClient)
+void RestoreClient(int iClient)
 {
 	SetAlpha(iClient,255);		// Make visible
 	RemoveClone(iClient);		// Delete clone
@@ -315,15 +315,15 @@ RestoreClient(iClient)
 	//ResetGlow(iClient);
 }
 
-RemoveClone(iClient)
+void RemoveClone(int iClient)
 {
-	new iClone = gClone[iClient];
+	int iClone = gClone[iClient];
 	gClone[iClient] = -1;
 	if (iClone > 0 && IsValidEntity(iClone))
 		AcceptEntityInput(iClone, "Kill");
 }
 
-SetAlpha(target, alpha)
+void SetAlpha(int target, int alpha)
 {
 	SetEntityRenderMode(target, RENDER_TRANSCOLOR);
 	SetEntityRenderColor(target, 255, 255, 255, alpha);

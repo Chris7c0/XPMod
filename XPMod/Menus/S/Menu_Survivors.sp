@@ -1,5 +1,5 @@
 //Class Select Menu Draw
-Action TopSurvivorMenuDraw(iClient)
+Action TopSurvivorMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(TopSurvivorMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -45,7 +45,7 @@ Action TopSurvivorMenuDraw(iClient)
 }
 
 //Choose Character Menu Draw
-Action ChangeSurvivorMenuDraw(iClient)
+Action ChangeSurvivorMenuDraw(int iClient)
 {
 	// Check that they are not already confirmed
 	if (g_bTalentsConfirmed[iClient])
@@ -92,7 +92,7 @@ Action ChangeSurvivorMenuDraw(iClient)
 
 
 //Top level Survivor Menu Handler
-TopSurvivorMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void TopSurvivorMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -127,7 +127,7 @@ TopSurvivorMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 }
 
 //Change Character Handler
-ChangeSurvivorMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
+void ChangeSurvivorMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 {
 	if (action == MenuAction_End)
 	{

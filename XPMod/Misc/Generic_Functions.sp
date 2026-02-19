@@ -150,7 +150,7 @@ void SuppressNeverUsedWarning(any var1=0, any var2=0, any var3=0, any var4=0, an
 	if(ignore) PrintToServer("THIS IS NEVER GOING TO BE RAN",var1, var2, var3, var4, var5, var6, var7, var8, var9, var10);
 }
 
-int GetClientAdminLevel(iClient)
+int GetClientAdminLevel(int iClient)
 {
 	if (CheckCommandAccess(iClient, "", ADMFLAG_BAN, true))
 		return ADMFLAG_BAN;
@@ -246,7 +246,7 @@ bool RunCheatCommand(int iClient, const char[] strCommandName, const char[] strC
 		return false;
 
 	// Get the command flags
-	new iFlag = GetCommandFlags(strCommandName);
+	int iFlag = GetCommandFlags(strCommandName);
 	if (iFlag == INVALID_FCVAR_FLAGS)
 	{
 		PrintToServer("ERROR GETTING COMMAND FLAGS!");
@@ -279,7 +279,7 @@ Action Timer_ShowXPModInfoToServer(Handle timer, any data)
 	return Plugin_Stop;
 }
 
-AdvertiseXPModToNewUser(iClient, bool bShowInChat = false)
+void AdvertiseXPModToNewUser(int iClient, bool bShowInChat = false)
 {
 	EmitSoundToClient(iClient, SOUND_XPM_ADVERTISEMENT, SOUND_FROM_PLAYER, SNDCHAN_AUTO, SNDLEVEL_TRAIN);
 	PrintHintText(iClient, "Type xpm in chat to use XPMod");
@@ -287,7 +287,7 @@ AdvertiseXPModToNewUser(iClient, bool bShowInChat = false)
 		PrintToChat(iClient, "\x05Type \x04xpm\x05 in chat to use \x03XPMod\x05!");
 }
 
-AdvertiseConfirmXPModTalents(iClient)
+void AdvertiseConfirmXPModTalents(int iClient)
 {
 	PrintHintText(iClient, "Your abilities are NOT loaded. Type xpm in chat and confirm to gain them.");
 	//PrintToChat(iClient, "\x03[XPMod] \x05Your talents are NOT loaded. Type \x04xpm\x05 and confirm them.");
@@ -297,7 +297,7 @@ AdvertiseConfirmXPModTalents(iClient)
  *                                                                                                        *
  **************************************************************************************************************************/
 
-OpenMOTDPanel(iClient, const char[] title, const  char[] msg, type = MOTDPANEL_TYPE_INDEX)
+void OpenMOTDPanel(int iClient, const char[] title, const  char[] msg, int type = MOTDPANEL_TYPE_INDEX)
 {
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return;
@@ -313,7 +313,7 @@ OpenMOTDPanel(iClient, const char[] title, const  char[] msg, type = MOTDPANEL_T
 	CloseHandle(Kv);
 }
 
-Action MotdPanel(iClient, args)
+Action MotdPanel(int iClient, int args)
 {
 	//OpenMOTDPanel(iClient, "Choose Your Survivor", "addons/sourcemod/plugins/xpmod/XPMod Website - InGame/Home/xpmod_ig_home.html", MOTDPANEL_TYPE_FILE);
 	OpenMOTDPanel(iClient, "XPMod Website", "http://xpmod.net", MOTDPANEL_TYPE_URL);
@@ -321,9 +321,9 @@ Action MotdPanel(iClient, args)
 }
 
 //Probe Teams for Real Players.   Returns true if there is a non-bot player on inputed team
-bool ProbeTeams(team)
+bool ProbeTeams(int team)
 {
-	for(new i = 1; i <= MaxClients; i++)
+	for (int i = 1; i <= MaxClients; i++)
 		if(IsClientInGame(i)  && g_iClientTeam[i] == team && IsFakeClient(i) == false)
 			return true;
 	
@@ -331,15 +331,15 @@ bool ProbeTeams(team)
 }
 
 //Taken from djromero's switch players plugin
-bool IsTeamFull(team)
+bool IsTeamFull(int team)
 {
 	// Spectator's team is never full
 	if (team == 1)
 		return false;
 	
-	new max;
-	new count;
-	new i;
+	int max;
+	int count;
+	int i;
 	
 	// we count the players in the survivor's team
 	if (team == 2)
@@ -366,7 +366,7 @@ bool IsTeamFull(team)
 	return false;
 }
 
-SetMoveType(iClient, movetype, movecollide)
+void SetMoveType(int iClient, int movetype, int movecollide)
 {
 	SetEntData(iClient, g_iOffset_MoveType, movetype);
 	SetEntData(iClient, g_iOffset_MoveCollide, movecollide);
@@ -374,7 +374,7 @@ SetMoveType(iClient, movetype, movecollide)
 	// PrintToChatAll("SetMoveType: %N", iClient);
 }
 
-SetSurvivorModel(iClient)
+void SetSurvivorModel(int iClient)
 {
 	if (GetClientTeam(iClient) != TEAM_SURVIVORS)
 	{
@@ -431,7 +431,7 @@ SetSurvivorModel(iClient)
 }
 
 //Toggles
-Action ToggleAnnouncerVoice(iClient)	//Toggles the announcers voice
+Action ToggleAnnouncerVoice(int iClient)	//Toggles the announcers voice
 {
 	if(iClient!=0)
 	{
@@ -452,7 +452,7 @@ Action ToggleAnnouncerVoice(iClient)	//Toggles the announcers voice
 	return Plugin_Handled;
 }
 
-Action ToggleVGUIDesc(iClient)	//Toggles the vgui menu descriptions for talents
+Action ToggleVGUIDesc(int iClient)	//Toggles the vgui menu descriptions for talents
 {
 	if(iClient!=0)
 	{
@@ -471,9 +471,9 @@ Action ToggleVGUIDesc(iClient)	//Toggles the vgui menu descriptions for talents
 	return Plugin_Handled;
 }
 
-ShowHudOverlayColor(iClient, iRed, iGreen, iBlue, iAlpha, iDuration, iBehavior = FADE_SOLID)
+void ShowHudOverlayColor(int iClient, int iRed, int iGreen, int iBlue, int iAlpha, int iDuration, int iBehavior = FADE_SOLID)
 {
-	decl clients[1];
+	int clients[1];
 	clients[0] = iClient;
 	Handle message = StartMessageEx(g_umsgFade, clients, 1);
 	
@@ -487,12 +487,12 @@ ShowHudOverlayColor(iClient, iRed, iGreen, iBlue, iAlpha, iDuration, iBehavior =
 	EndMessage();
 }
 
-StopHudOverlayColor(iClient)
+void StopHudOverlayColor(int iClient)
 {
 	ShowHudOverlayColor(iClient, 0, 0, 0, 0, 100, FADE_STOP);
 }
 
-Action ShowBindsRemaining(iClient, args)
+Action ShowBindsRemaining(int iClient, int args)
 {
 	if(iClient < 1 || IsClientInGame(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Handled;
@@ -503,7 +503,7 @@ Action ShowBindsRemaining(iClient, args)
 	return Plugin_Handled;
 }
 
-GiveClientXP(iClient, iAmount, iSprite, iVictim, char strMessage[64], bool bCenterText = false, float fLifeTime = 3.0)
+void GiveClientXP(int iClient, int iAmount, int iSprite, int iVictim, char strMessage[64], bool bCenterText = false, float fLifeTime = 3.0)
 {
 	if(iClient < 1 || IsClientInGame(iClient) == false || IsFakeClient(iClient) == true)
 		return;
@@ -560,7 +560,7 @@ int SetPlayerMoveType(int iClient, int iMoveType = MOVETYPE_WALK)
 void LockPlayerFromAttacking(int iClient)
 {
 	// PrintToChat(iClient, "LockPlayerFromAttacking start");
-	new iWeaponEntity = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
+	int iWeaponEntity = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
 	if (RunEntityChecks(iWeaponEntity) == false)
 		return;
 	
@@ -580,7 +580,7 @@ void UnlockPlayerFromAttacking(int iClient)
 		return;
 
 	// PrintToChat(iClient, "UnlockPlayerFromAttacking start");
-	new iWeaponEntity = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+	int iWeaponEntity = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 	if (RunEntityChecks(iWeaponEntity) == false)
 		return;
 	
@@ -611,7 +611,7 @@ void DealDamage(int iVictim, int iAttacker, int iAmount, int iDamageType = DAMAG
 	IntToString(iDamageType, strDamageType, sizeof(strDamageType));
 	Format(strDamageTarget, sizeof(strDamageTarget), "hurtme%d", iVictim);
 	
-	new entPointHurt = CreateEntityByName("point_hurt");
+	int entPointHurt = CreateEntityByName("point_hurt");
 	if(!entPointHurt)
 		return;
 	
@@ -653,7 +653,7 @@ void ReduceDamageTakenForNewPlayers(int iVictim, int iAttacker, int iDmgAmount)
 		return
 
 	// new iCurrentHealth = GetPlayerHealth(iVictim);
-	new iReductionAmount = RoundToFloor(( iDmgAmount * ( NEW_PLAYER_MAX_DAMAGE_REDUCTION * (1.0 - (float(g_iClientLevel[iVictim]) / 30.0)) ) ) );
+	int iReductionAmount = RoundToFloor(( iDmgAmount * ( NEW_PLAYER_MAX_DAMAGE_REDUCTION * (1.0 - (float(g_iClientLevel[iVictim]) / 30.0)) ) ) );
 	//Ensure at least 1 damage is done
 	if (iReductionAmount >= iDmgAmount)
 		iReductionAmount = iDmgAmount - 1;
@@ -757,7 +757,7 @@ void GetLookAtAnglesFromPoints(const float xyzPositionStart[3], const float xyzP
 	// PrintToChatAll("vLookAtAngles: %f %f %f", vLookAtAngles[0], vLookAtAngles[1], vLookAtAngles[2]);
 }
 
-AttachInfected(i_Ent, float fOrigin[3])
+int AttachInfected(int i_Ent, float fOrigin[3])
 {
 	int i_InfoEnt;
 	char s_TargetName[32];
@@ -788,13 +788,13 @@ AttachInfected(i_Ent, float fOrigin[3])
  *                                                     Player Freezing                                                    *
  **************************************************************************************************************************/
  
-Action FreezeGame(admin, args)
+Action FreezeGame(int admin, int args)
 {
 	g_bGameFrozen = true;
 	char time[20];
 	GetCmdArg(1, time, sizeof(time));
-	new freezetime;
-	for(new i=1;i<=MaxClients;i++)
+	int freezetime;
+	for (int i = 1;i<=MaxClients;i++)
 	{
 		if(RunClientChecks(i) && GetClientTeam(i) == TEAM_SURVIVORS)
 		{
@@ -826,7 +826,7 @@ Action FreezeGame(admin, args)
 	return Plugin_Handled;
 }
 
-PlayerFreeze(iClient)
+void PlayerFreeze(int iClient)
 {
 	if(IsClientInGame(iClient)==true)
 	{
@@ -857,10 +857,10 @@ PlayerFreeze(iClient)
 // 	return ctr;
 // }
 
-FindPlayerByName(iClient, const char[] targetname)
+int FindPlayerByName(int iClient, const char[] targetname)
 {
 	char name[128];
-	new i, temp;
+	int i, temp;
 	for (i=1;i <= MaxClients;i++)
 	{
 		if(!IsClientInGame(i))
@@ -883,7 +883,7 @@ FindPlayerByName(iClient, const char[] targetname)
  *                                                Play Sounds for Events                                                  *
  **************************************************************************************************************************/
 
-PlayKillSound(iClient)
+void PlayKillSound(int iClient)
 {
 	switch(g_iStat_ClientInfectedKilled[iClient])
 	{
@@ -954,9 +954,9 @@ PlayKillSound(iClient)
 	}
 }
 
-PlayHeadshotSound(iClient)
+void PlayHeadshotSound(int iClient)
 {
-	decl random;
+	int random;
 	random = GetRandomInt(1,3);
 	switch(random)
 	{
@@ -980,7 +980,7 @@ PlayHeadshotSound(iClient)
  *                                                      Trace Filters                                                     *
  **************************************************************************************************************************/
 
-bool TraceRayTryToHit(entity,mask)
+bool TraceRayTryToHit(int entity, int mask)
 {
 	if((entity > 0) && (entity <= 64))	// Check if the beam hit a player and tell it to keep tracing if it did
 		return false;
@@ -1009,7 +1009,7 @@ bool TraceRayTryToHit(entity,mask)
 //     return true;		// It didn't hit itself
 // }
 
-public bool TraceEntityFilter_NotAPlayer(iEntity, iContentsMask, any data)
+public bool TraceEntityFilter_NotAPlayer(int iEntity, int iContentsMask, any data)
 {
 	// Check for collision with self
 	if (iEntity == data)
@@ -1027,7 +1027,7 @@ public bool TraceEntityFilter_NotAPlayer(iEntity, iContentsMask, any data)
 	return true;		// It didn't hit a client
 }
 
-bool IsClientGrappled(iClient)
+bool IsClientGrappled(int iClient)
 {
 	if (g_bChargerCarrying[iClient] == true || 
 		g_bChargerGrappled[iClient] == true || 
@@ -1053,20 +1053,20 @@ bool IsClientGrappled(iClient)
 // 	return false;
 // }
 
-Action OpenHelpMotdPanel(iClient, args)
+Action OpenHelpMotdPanel(int iClient, int args)
 {
 	OpenMOTDPanel(iClient, "", "http://xpmod.net/help/xpmod_ig_help.html", MOTDPANEL_TYPE_URL);
 	return Plugin_Handled;
 }
 
-int FindIndexInArrayListUsingValue(ArrayList list, iValueToFind, iColumn=0)
+int FindIndexInArrayListUsingValue(ArrayList list, int iValueToFind, int iColumn=0)
 {
 	if (list == INVALID_HANDLE)
 		return -1;
 
 	for (int i=0; i < list.Length; i++)
 	{
-		new currentValue = list.Get(i, iColumn);
+		int currentValue = list.Get(i, iColumn);
 		if (currentValue == iValueToFind)
 			return i;
 	}
@@ -1098,7 +1098,7 @@ void ShiftArrayOfStrings(char[][] strArray, const int iStringSize, const int iSt
 	}
 }
 
-bool IsEntityUncommonInfected(iInfectedEntity)
+bool IsEntityUncommonInfected(int iInfectedEntity)
 {
 	// Get the infected entity type (common or uncommon)
 	char strClassname[99];
@@ -1112,7 +1112,7 @@ bool IsEntityUncommonInfected(iInfectedEntity)
 	GetEntPropString(iInfectedEntity, Prop_Data, "m_ModelName", strModelName, 128);
 
 	// Check if the model name corresponds to an uncommon one
-	for (new i; i < sizeof(UNCOMMON_INFECTED_MODELS); i++)
+	for (int i = 0; i < sizeof(UNCOMMON_INFECTED_MODELS); i++)
 	{
 		//PrintToChatAll("CHECKING %s", UNCOMMON_INFECTED_MODELS[i]);
 		if (StrEqual(strModelName, UNCOMMON_INFECTED_MODELS[i], false))
@@ -1159,7 +1159,7 @@ int FindClosestSurvivor(int iClient, bool bIgnoreIncap = false)
 	GetClientEyePosition(iClient, xyzClientOrigin);	//Get clients location origin vectors
 
 	// Loop through the survivors and find the closest by checking distances
-	for (new iTarget = 1; iTarget <= MaxClients; iTarget++)
+	for (int iTarget = 1; iTarget <= MaxClients; iTarget++)
 	{
 		if (iTarget == iClient || 
 			RunClientChecks(iTarget) == false || 
@@ -1182,7 +1182,7 @@ int FindClosestSurvivor(int iClient, bool bIgnoreIncap = false)
 	return iClosestSurvivor;		
 }
 
-void GetLocationVectorInfrontOfClient(iClient, float xyzLocation[3], float xyzAngles[3], float fForwardOffset = 40.0, float fVerticalOffset = 1.0, float fLeftRightOffset = 0.0)
+void GetLocationVectorInfrontOfClient(int iClient, float xyzLocation[3], float xyzAngles[3], float fForwardOffset = 40.0, float fVerticalOffset = 1.0, float fLeftRightOffset = 0.0)
 {
 	float vDirection[3];
 
@@ -1278,14 +1278,14 @@ void GetLocationVectorInfrontOfClient(iClient, float xyzLocation[3], float xyzAn
 // Note: The game is going to do a comparison of fNextActivationGameTime and the game time to see if
 // this ability is in cooldown. So if fNextActivationGameTime was previously set to a high value, use 
 // bCalculateFromCurrentGameTime to switch the mode the activate + or - from the current game time instead.
-SetSIAbilityCooldown(iClient, float fTimeToWait = 0.0, bool bCalculateFromCurrentGameTime = true)
+void SetSIAbilityCooldown(int iClient, float fTimeToWait = 0.0, bool bCalculateFromCurrentGameTime = true)
 {
 	if (RunClientChecks(iClient)== false || 
 		IsPlayerAlive(iClient) == false || 
 		g_iClientTeam[iClient] != TEAM_INFECTED)
 		return;
 
-	new iEntID = GetEntDataEnt2(iClient, g_iOffset_CustomAbility);
+	int iEntID = GetEntDataEnt2(iClient, g_iOffset_CustomAbility);
 	if (!IsValidEntity(iEntID))
 		return;
 
@@ -1308,7 +1308,7 @@ SetSIAbilityCooldown(iClient, float fTimeToWait = 0.0, bool bCalculateFromCurren
 	//PrintToChatAll("POST fNextActivationGameTime: %f, GetGameTime()%f", fNewNextActivationGameTime, GetGameTime());
 }
 
-RandomSortIntArray(int[] iArray, int iArraySize, int iPasses)
+void RandomSortIntArray(int[] iArray, int iArraySize, int iPasses)
 {
 	int slot1, slot2;
 	for(int i=0; i<iPasses; i++)

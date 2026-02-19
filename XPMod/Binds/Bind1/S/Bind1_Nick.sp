@@ -1,4 +1,4 @@
-void Bind1Press_Nick(iClient)
+void Bind1Press_Nick(int iClient)
 {
 	if(g_iMagnumLevel[iClient] <= 0)
 	{
@@ -41,7 +41,7 @@ void Bind1Press_Nick(iClient)
 		(3 - g_iClientBindUses_1[iClient]) != 1 ? "s" : "");
 }
 
-NickGamblingProblemRollTheDice(int iClient)
+void NickGamblingProblemRollTheDice(int iClient)
 {	
 	switch (GetRandomInt(1,12))
 	{
@@ -58,7 +58,7 @@ NickGamblingProblemRollTheDice(int iClient)
 		}
 		case 2: // Slap
 		{
-			new iCurrentHP = GetPlayerHealth(iClient);
+			int iCurrentHP = GetPlayerHealth(iClient);
 			if(iCurrentHP > 15)
 				SlapPlayer(iClient, 15);
 			else
@@ -118,10 +118,10 @@ NickGamblingProblemRollTheDice(int iClient)
 			PrintHintText(iClient,"Rolled a 5\nYou popped some colorful pills from some shady ass dude on fifth street.");
 			PrintToChatAll("\x03[XPMod] \x05%N popped some shady pills...THE COLORRRRRSS...", iClient);
 			
-			new red = GetRandomInt(0,255);
-			new green = GetRandomInt(0,255);
-			new blue = GetRandomInt(0,255);
-			new alpha = GetRandomInt(190,230);
+			int red = GetRandomInt(0,255);
+			int green = GetRandomInt(0,255);
+			int blue = GetRandomInt(0,255);
+			int alpha = GetRandomInt(190,230);
 			
 			//Set Hud Overlay of The Random Color
 			ShowHudOverlayColor(iClient, red, green, blue, alpha, 700, FADE_OUT);

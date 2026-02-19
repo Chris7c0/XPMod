@@ -1,4 +1,4 @@
-stock L4D2_RunScript( const char[] sCode, any:...)
+stock void L4D2_RunScript(const char[] sCode, any ...)
 {
 	static iScriptLogic = INVALID_ENT_REFERENCE;
 	if(iScriptLogic == INVALID_ENT_REFERENCE || !IsValidEntity(iScriptLogic)) 
@@ -17,13 +17,13 @@ stock L4D2_RunScript( const char[] sCode, any:...)
 	AcceptEntityInput(iScriptLogic, "RunScriptCode");
 }
 
-stock SendAllSurvivorBotsFocusedOnXPMGoal(float xyzLocation[3], int iTarget = -1)
+stock void SendAllSurvivorBotsFocusedOnXPMGoal(float xyzLocation[3], int iTarget = -1)
 {
 	for (int iClient = 1; iClient <= MaxClients; iClient++)
 		SetBotFocusedOnXPMGoal(iClient, xyzLocation, iTarget);
 }
 
-stock SetBotFocusedOnXPMGoal(int iClient, float xyzLocation[3], int iTarget = -1)
+stock void SetBotFocusedOnXPMGoal(int iClient, float xyzLocation[3], int iTarget = -1)
 {
 	if (RunClientChecks(iClient) == false || 
 		IsPlayerAlive(iClient) == false ||
@@ -77,7 +77,7 @@ Action TimerKeepBotFocusedOnXPMGoal(Handle timer, int iClient)
 	return Plugin_Continue;
 }
 
-bool CheckForViableSITargetForSurvivor(iClient)
+bool CheckForViableSITargetForSurvivor(int iClient)
 {
 	float xyzClientLocation[3], xyzTargetLocation[3];
 	GetClientEyePosition(iClient, xyzClientLocation);
@@ -106,13 +106,13 @@ bool CheckForViableSITargetForSurvivor(iClient)
 	return false;
 }
 
-stock SendAllSurvivorBotsToLocation(float xyzLocation[3])
+stock void SendAllSurvivorBotsToLocation(float xyzLocation[3])
 {
 	for (int iClient = 1; iClient <= MaxClients; iClient++)
 		SendBotToLocation(iClient, xyzLocation);
 }
 
-stock SendBotToLocation(int iClient, float xyzLocation[3])
+stock void SendBotToLocation(int iClient, float xyzLocation[3])
 {
 	if (RunClientChecks(iClient) == false || 
 		IsPlayerAlive(iClient) == false ||
@@ -128,7 +128,7 @@ stock SendBotToLocation(int iClient, float xyzLocation[3])
 		GetClientUserId(iClient));
 }
 
-stock ResetBotCommand(int iClient)
+stock void ResetBotCommand(int iClient)
 {
 	if (g_bBotXPMGoalAccomplished[iClient] == true ||
 		RunClientChecks(iClient) == false || 

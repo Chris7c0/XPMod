@@ -1,4 +1,4 @@
-SetupConsoleCommands()
+void SetupConsoleCommands()
 {
 	RegConsoleCmd("xpmstats", ShowTeamStatsToPlayer);
 	RegConsoleCmd("website", MotdPanel);
@@ -18,7 +18,7 @@ SetupConsoleCommands()
 	SetupDevCommands();
 }
 
-SetupDevCommands()
+void SetupDevCommands()
 {
 	if (g_bDevModeEnabled == false)
 		return;
@@ -39,7 +39,7 @@ SetupDevCommands()
 	//RegConsoleCmd("sprite", Command_sprite);
 }
 
-SetupGameOffsets()
+void SetupGameOffsets()
 {
 	g_iOffset_ShovePenalty			= FindSendPropInfo("CTerrorPlayer", "m_iShovePenalty");
 	g_iOffset_PlaybackRate			= FindSendPropInfo("CBaseCombatWeapon", "m_flPlaybackRate");
@@ -73,7 +73,7 @@ SetupGameOffsets()
 	g_umsgFade = GetUserMessageId("Fade");
 }
 
-SetupSDKCalls()
+void SetupSDKCalls()
 {
 	Handle hGameConfigFile = INVALID_HANDLE;
 	hGameConfigFile = LoadGameConfigFile("xpmdata");
@@ -277,7 +277,7 @@ void SetupInitialVariableValues()
 		g_strClientInfectedClass3[i] = "None";
 		
 		//Initially set the client name to all null characters
-		for(new l=0; l<23; l++)
+		for (int l = 0; l<23; l++)
 			clientidname[i][l] = '\0';
 	}
 

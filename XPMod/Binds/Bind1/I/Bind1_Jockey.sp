@@ -1,4 +1,4 @@
-void Bind1Press_Jockey(iClient)
+void Bind1Press_Jockey(int iClient)
 {
 	if ((g_iClientInfectedClass1[iClient] != JOCKEY) && 
 		(g_iClientInfectedClass2[iClient] != JOCKEY) && 

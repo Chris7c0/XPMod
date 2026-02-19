@@ -46,7 +46,7 @@ Action TimerHunterPoison(Handle timer, any pack)
 		return Plugin_Stop;
 		
 	ResetPack(pack);
-	new iClient = ReadPackCell(pack); //iClient = victim
+	int iClient = ReadPackCell(pack);//iClient = victim
 
 	if (IsClientInGame(iClient)==false || 
 		IsPlayerAlive(iClient)==false || 
@@ -88,8 +88,8 @@ Action TimerHunterPoisonFade(Handle timer, any pack)
 		return Plugin_Stop;
 
 	ResetPack(pack);
-	new victim = ReadPackCell(pack);
-	new attacker = ReadPackCell(pack);
+	int victim = ReadPackCell(pack);
+	int attacker = ReadPackCell(pack);
 
 	if (IsValidEntity(victim) == false || 
 		IsClientInGame(victim)==false || 

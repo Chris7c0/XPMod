@@ -2,12 +2,12 @@ int SpawnCommonInfected(float xyzLocation[3], int iAmount = 1, int iUncommon = U
 {
 	xyzLocation[2] += 1;
 
-	for(new i = 0; i < iAmount; i++)
+	for (int i = 0; i < iAmount; i++)
 	{
-		new iZombie = CreateEntityByName("infected");
+		int iZombie = CreateEntityByName("infected");
 		
 		// Get the number of possible models
-		new iRandomModelNumber = iUncommon == UNCOMMON_CI_RANDOM ? GetRandomInt(0,sizeof(UNCOMMON_INFECTED_MODELS) - 1) : GetRandomInt(0,sizeof(COMMON_INFECTED_MODELS) - 1)
+		int iRandomModelNumber = iUncommon == UNCOMMON_CI_RANDOM ? GetRandomInt(0,sizeof(UNCOMMON_INFECTED_MODELS) - 1) : GetRandomInt(0,sizeof(COMMON_INFECTED_MODELS) - 1);
 		
 		// If its Jimmy, roll only keep 1/3rd of the time...because way too many Jimmys up in this biyyah
 		if (iUncommon == UNCOMMON_CI_RANDOM && iRandomModelNumber == 0 && GetRandomInt(1,3) != 1)
@@ -21,7 +21,7 @@ int SpawnCommonInfected(float xyzLocation[3], int iAmount = 1, int iUncommon = U
 		else
 			SetEntityModel(iZombie, UNCOMMON_INFECTED_MODELS[iUncommon]);
 		
-		new ticktime = RoundToNearest( GetGameTime() / GetTickInterval() ) + 5;
+		int ticktime = RoundToNearest( GetGameTime() / GetTickInterval() ) + 5;
 		SetEntProp(iZombie, Prop_Data, "m_nNextThinkTick", ticktime);
 		
 		// This is the wait time before they go mad and try to find survivors
@@ -75,7 +75,7 @@ void SpawnCIAroundLocation(float xyzLocation[3], int iAmount = 1, int iUncommon 
 	// We need it in radians so convert it by multiplying by 0.0174532925
 	float fAngleIncrement = (360.0 / iAmount) * 0.0174532925;
 
-	for (new i=0; i < iAmount; i++)
+	for (int i = 0; i < iAmount; i++)
 	{
 		// Calculate the spawn points in a circle around the player
 		// Note: angle must be in radians, 
@@ -139,9 +139,9 @@ Action TimerSpawnCIAroundPlayer(Handle timer, Handle hDataPackage)
 	return Plugin_Stop;
 }
 
-void SpawnSpecialInfected(iClient, char[] strInfectedToSpawn = "")
+void SpawnSpecialInfected(int iClient, char[] strInfectedToSpawn = "")
 {
-	new iRandomSIID = GetRandomInt(1,6);
+	int iRandomSIID = GetRandomInt(1,6);
 	char strSpawnCommand[32];
 	Format(strSpawnCommand, sizeof(strSpawnCommand), 
 		"z_spawn_old %s auto", 

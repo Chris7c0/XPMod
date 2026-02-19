@@ -56,7 +56,7 @@ Action TimerCheckTongueDistance(Handle timer, any Smoker)
 		return Plugin_Stop;
 	}
 	
-	new Victim = g_iChokingVictim[Smoker];
+	int Victim = g_iChokingVictim[Smoker];
 	if((IsClientInGame(Victim) == false) || (g_iClientTeam[Victim] !=  TEAM_SURVIVORS))
 	{
 		return Plugin_Stop;
@@ -66,7 +66,7 @@ Action TimerCheckTongueDistance(Handle timer, any Smoker)
 	float VictimPosition[3];
 	GetClientAbsOrigin(Smoker,SmokerPosition);
 	GetClientAbsOrigin(Victim,VictimPosition);
-	new distance = RoundToNearest(GetVectorDistance(SmokerPosition, VictimPosition));
+	float distance = RoundToNearest(GetVectorDistance(SmokerPosition, VictimPosition));
 	//PrintToChatAll("Distance: %i", distance);
 	if (distance > (g_iMaxTongueLength * 27))
 	{
@@ -86,7 +86,7 @@ Action TimerPoisonCloud(Handle timer, any iClient)
 		return Plugin_Stop;
 	
 	float xyzVictimPosition[3];
-	for (new iVictim = 1; iVictim <= MaxClients; iVictim++)
+	for (int iVictim = 1; iVictim <= MaxClients; iVictim++)
 	{
 		if (RunClientChecks(iVictim) == false ||
 			IsClientInGame(iVictim) == false ||

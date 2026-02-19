@@ -2,9 +2,9 @@
 ///////////////////////////////////////////////     INFECTED VARIABLES     ///////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-new g_iClientInfectedClass1[MAXPLAYERS + 1]	= {UNKNOWN_INFECTED, ...};
-new g_iClientInfectedClass2[MAXPLAYERS + 1]	= {UNKNOWN_INFECTED, ...};
-new g_iClientInfectedClass3[MAXPLAYERS + 1]	= {UNKNOWN_INFECTED, ...};
+int g_iClientInfectedClass1[MAXPLAYERS + 1] = {UNKNOWN_INFECTED, ...};
+int g_iClientInfectedClass2[MAXPLAYERS + 1] = {UNKNOWN_INFECTED, ...};
+int g_iClientInfectedClass3[MAXPLAYERS + 1] = {UNKNOWN_INFECTED, ...};
 char g_strClientInfectedClass1[MAXPLAYERS + 1][10]; 
 char g_strClientInfectedClass2[MAXPLAYERS + 1][10]; 
 char g_strClientInfectedClass3[MAXPLAYERS + 1][10];
@@ -100,7 +100,7 @@ ArrayList g_listEnhancedCIEntities;
 #define CONVAR_SMOKER_TONGUE_DRAG_SPEED_BUFF_PER_LEVEL  27      // Precalculated based on % of default value
 #define CONVAR_SMOKER_TONGUE_HEALTH_DEFAULT             100
 #define CONVAR_SMOKER_TONGUE_HEALTH_BUFF_PER_LEVEL      20      // Precalculated based on % of default value
-new g_iChokingVictim[MAXPLAYERS + 1];
+int g_iChokingVictim[MAXPLAYERS + 1];
 bool g_bSmokerSmokeScreenOnCooldown[MAXPLAYERS + 1];
 #define SMOKER_SMOKE_VICTIM_DURATION                    15.0
 #define SMOKER_SMOKE_VICTIM_COOLDOWN_DURATION           30.0
@@ -118,20 +118,20 @@ bool g_bIsElectrocuting[MAXPLAYERS + 1];
 #define SMOKER_DOPPELGANGER_FADE_IN_PERIOD              2.5
 #define SMOKER_DOPPELGANGER_CI_SPAWN_COUNT              4
 float g_fNextSmokerDoppelgangerRegenTime[MAXPLAYERS + 1];
-new g_iSmokerDoppelgangerCount[MAXPLAYERS + 1];
+int g_iSmokerDoppelgangerCount[MAXPLAYERS + 1];
 bool g_bSmokerDoppelgangerCoolingDown[MAXPLAYERS + 1];
 float g_iSmokerDoppelgangerFadeRunTime[MAXENTITIES + 1];
-new g_iSmokerInfectionCloudEntity[MAXPLAYERS + 1];
+int g_iSmokerInfectionCloudEntity[MAXPLAYERS + 1];
 bool g_bHasSmokersPoisonCloudOut[MAXPLAYERS + 1];
 float g_xyzPoisonCloudOriginArray[MAXPLAYERS + 1][3];
 bool g_bTeleportCoolingDown[MAXPLAYERS + 1];
 bool g_bElectrocutionCooldown[MAXPLAYERS + 1];
 bool g_bIsEntangledInSmokerTongue[MAXPLAYERS + 1];
-new g_iEntangledSurvivorModelIndex[MAXPLAYERS + 1];
-new g_iEntangledTongueModelIndex[MAXPLAYERS + 1];
+int g_iEntangledSurvivorModelIndex[MAXPLAYERS + 1];
+int g_iEntangledTongueModelIndex[MAXPLAYERS + 1];
 int g_iSmokerSmokeCloudPlayer = -1;
 int g_iSmokerInSmokeCloudLimbo = -1;
-new g_iSmokeCloudLimboTicks[MAXPLAYERS + 1];
+int g_iSmokeCloudLimboTicks[MAXPLAYERS + 1];
 bool g_bSmokerSmokeCloudInCooldown;
 bool g_bIsPlayerInSmokerSmokeCloud[MAXPLAYERS + 1];
 int g_iSmokerSmokeCloudVictimCount;
@@ -162,7 +162,7 @@ bool g_bSmokeCloudVictimCanCISpawnOn[MAXPLAYERS + 1];
 #define SMOKER_SMOKE_CLOUD_BLIND_AMOUNT_MAX                 205
 #define SMOKER_SMOKE_CLOUD_INFECTED_HEAL_RATE_PER_TICK      150
 #define SMOKER_UNTANGLE_PLAYER_DISTANCE                     100.0
-new g_iTarFingerVictimBlindAmount[MAXPLAYERS + 1];
+int g_iTarFingerVictimBlindAmount[MAXPLAYERS + 1];
 #define SMOKER_TAR_FINGERS_BLIND_FADE_DURATION_VALUE        4500
 #define SMOKER_TAR_FINGERS_BLIND_DURATION                   10.0
 #define SMOKER_TAR_FINGERS_BLIND_AMOUNT_START               225
@@ -172,7 +172,7 @@ new g_iTarFingerVictimBlindAmount[MAXPLAYERS + 1];
 #define SMOKER_TELEPORT_COOLDOWN_PERIOD             10.0
 #define SMOKER_TELEPORT_MAX_DISTANCE_PER_LEVEL      15.0
 // float g_fMapsMaxTeleportHeight;
-new g_iSmokerTransparency[MAXPLAYERS + 1];
+int g_iSmokerTransparency[MAXPLAYERS + 1];
 float g_fTeleportOriginalPositionX[MAXPLAYERS + 1];
 float g_fTeleportOriginalPositionY[MAXPLAYERS + 1];
 float g_fTeleportOriginalPositionZ[MAXPLAYERS + 1];
@@ -187,11 +187,11 @@ bool g_bIsSuicideBoomer[MAXPLAYERS + 1];
 bool g_bIsSuicideJumping[MAXPLAYERS + 1];
 bool g_bIsBoomerVomiting[MAXPLAYERS + 1];
 bool g_bIsServingHotMeal[MAXPLAYERS + 1];
-new g_iShowSurvivorVomitCounter[MAXPLAYERS + 1];
-new g_iVomitVictimAttacker[MAXPLAYERS + 1];
+int g_iShowSurvivorVomitCounter[MAXPLAYERS + 1];
+int g_iVomitVictimAttacker[MAXPLAYERS + 1];
 bool g_bIsSurvivorVomiting[MAXPLAYERS + 1];
 bool g_bNowCountingVomitVictims[MAXPLAYERS + 1];
-new g_iVomitVictimCounter[MAXPLAYERS + 1];
+int g_iVomitVictimCounter[MAXPLAYERS + 1];
 bool g_bIsSuperSpeedBoomer[MAXPLAYERS + 1];
 bool g_bCommonInfectedDoMoreDamage;
 
@@ -251,18 +251,18 @@ bool g_bIsImmobilityZoneOnGlobalCooldown;
 // Spitter
 bool g_bBlockGooSwitching[MAXPLAYERS + 1];
 bool g_bJustSpawnedWitch[MAXPLAYERS + 1];
-new g_iGooType[MAXPLAYERS + 1];
+int g_iGooType[MAXPLAYERS + 1];
 bool g_bCanConjureWitch[MAXPLAYERS + 1];
 bool g_bHasDemiGravity[MAXPLAYERS + 1];
-new g_iHallucinogenRuntimesCounter[MAXPLAYERS + 1];
+int g_iHallucinogenRuntimesCounter[MAXPLAYERS + 1];
 bool g_bIsHallucinating[MAXPLAYERS + 1];
-new g_iViralInfector[MAXPLAYERS + 1];
-new g_iViralRuntimesCounter[MAXPLAYERS + 1];
+int g_iViralInfector[MAXPLAYERS + 1];
+int g_iViralRuntimesCounter[MAXPLAYERS + 1];
 bool g_bIsImmuneToVirus[MAXPLAYERS + 1];
 bool g_bCanBePushedByRepulsion[MAXPLAYERS + 1];
 bool g_bIsStealthSpitter[MAXPLAYERS + 1];
-new g_iStealthSpitterChargePower[MAXPLAYERS + 1];
-new g_iStealthSpitterChargeMana[MAXPLAYERS + 1];
+int g_iStealthSpitterChargePower[MAXPLAYERS + 1];
+int g_iStealthSpitterChargeMana[MAXPLAYERS + 1];
 float g_xyzWitchConjureLocation[MAXPLAYERS + 1][3];
 //float g_fAdhesiveAffectCase[MAXPLAYERS + 1];
 float g_fAdhesiveAffectAmount[MAXPLAYERS + 1];
@@ -282,7 +282,7 @@ float g_fAdhesiveAffectAmount[MAXPLAYERS + 1];
 #define BAG_OF_SPITS_KILLER_KLOWNS  4
 
 #define BAG_OF_SPITS_SPIT_COUNT     5
-new g_iBagOfSpitsSelectedSpit[MAXPLAYERS + 1] = {BAG_OF_SPITS_NONE, ...};
+int g_iBagOfSpitsSelectedSpit[MAXPLAYERS + 1] = {BAG_OF_SPITS_NONE, ...};
 
 
 // Jockey
@@ -299,7 +299,7 @@ float g_fJockeyRideSpeed[MAXPLAYERS + 1] = {1.0, ...};
 float g_fJockeyRideSpeedVanishingActBoost[MAXPLAYERS + 1] = {0.0, ...};
 #define JOCKEY_PISS_CONVERSION_RADIUS           200.0
 //#define JOCKEY_PISS_SPAWN_JIMMY_CHANCE       10 //%
-new g_fJockeyNextSpawnUpgradeLevel[MAXPLAYERS + 1];
+int g_fJockeyNextSpawnUpgradeLevel[MAXPLAYERS + 1];
 bool g_bHasSuperJockeySpeed[MAXPLAYERS + 1];
 
 
@@ -307,7 +307,7 @@ bool g_bHasSuperJockeySpeed[MAXPLAYERS + 1];
 bool g_bIsChargerCharging[MAXPLAYERS +1];
 bool g_bIsSpikedCharged[MAXPLAYERS +1];
 bool g_bCanChargerSpikedCharge[MAXPLAYERS +1];
-new g_iSpikedChargeCounter[MAXPLAYERS + 1];
+int g_iSpikedChargeCounter[MAXPLAYERS + 1];
 bool g_bIsHillbillyEarthquakeReady[MAXPLAYERS + 1];
 bool g_bIsSuperCharger[MAXPLAYERS + 1];
 bool g_bCanChargerSuperCharge[MAXPLAYERS + 1];
@@ -324,7 +324,7 @@ bool g_bCanChargerEarthquake[MAXPLAYERS +1];
 
 // Tank
 #define TANK_BURN_DURATION                                  15.0
-new g_iTankCounter;
+int g_iTankCounter;
 bool g_bIsFrustratedTank[MAXPLAYERS +1];
 float g_fFrustratedTankTransferHealthPercentage;
 bool g_bTankTakeOverBot[MAXPLAYERS +1];
@@ -375,7 +375,7 @@ ArrayList g_listTankRockEntities;
 #define TANK_FIRE_BASE_SPEED                        0.20
 #define TANK_FIRE_EXTRA_SPEED_MAX                   0.50
 #define FIRE_TANK_FIRE_PUNCH_COOLDOWN_DURATION      5.0
-new g_iFireDamageCounter[MAXPLAYERS + 1];
+int g_iFireDamageCounter[MAXPLAYERS + 1];
 bool g_bFireTankAttackCharged[MAXPLAYERS + 1];
 bool g_bBlockTankFirePunchCharge[MAXPLAYERS + 1];
 //bool g_bFireTankBaseSpeedIncreased[MAXPLAYERS + 1];
@@ -398,14 +398,14 @@ float g_fFireTankExtraSpeed[MAXPLAYERS + 1];
 #define TANK_ICE_SLIDE_LIFE_DECAY                       33      // Precalculated Life lost per server tick (30ticks/s)
 #define TANK_ICE_SLIDE_COOLDOWN                         10.0    // Cooldown after using slide
 #define TANK_ICE_SLIDE_DAMAGE_RECIEVED_MULTIPLIER       3       // While Ice Sliding, the damage mulitplier the Ice Tank Gets
-new g_iIceTankLifePool[MAXPLAYERS + 1];
+int g_iIceTankLifePool[MAXPLAYERS + 1];
 bool g_bShowingIceSphere[MAXPLAYERS + 1];
 bool g_bFrozenByTank[MAXPLAYERS + 1];
 bool g_bBlockTankFreezing[MAXPLAYERS + 1];
 float g_fIceTankColdAuraSlowSpeedReduction[MAXPLAYERS + 1];
 bool g_bIceTankColdAuraDisabled[MAXPLAYERS + 1];
 float g_fTankHealthPercentage[MAXPLAYERS + 1];
-new g_iTankCharge[MAXPLAYERS + 1];
+int g_iTankCharge[MAXPLAYERS + 1];
 float g_xyzClientTankPosition[MAXPLAYERS + 1][3];
 bool g_bIceTankSliding[MAXPLAYERS + 1];
 bool g_bIceTankSlideInCooldown[MAXPLAYERS + 1];
@@ -423,7 +423,7 @@ bool g_bIceTankSlideInCooldown[MAXPLAYERS + 1];
 #define NECROTANKER_BOOMER_THROW_ABILITY_COOLDOWN   10.0
 #define NECROTANKER_ENHANCE_CI_CHANCE_THROW         33
 #define NECROTANKER_ENHANCE_CI_CHANCE_PUNCH         33
-new g_iNecroTankerManaPool[MAXPLAYERS + 1];
+int g_iNecroTankerManaPool[MAXPLAYERS + 1];
 // Vampiric Tank
 #define TANK_HEALTH_VAMPIRIC                            8000
 #define VAMPIRIC_TANK_LIFESTEAL_MULTIPLIER              8
@@ -441,6 +441,6 @@ new g_iNecroTankerManaPool[MAXPLAYERS + 1];
 bool g_bCanFlapVampiricTankWings[MAXPLAYERS + 1];
 bool g_bIsVampiricTankFlying[MAXPLAYERS + 1];
 bool g_bCanVampiricTankWingDash[MAXPLAYERS + 1];
-new g_iVampiricTankWingDashChargeCount[MAXPLAYERS + 1];
-new g_iVampiricTankStamina[MAXPLAYERS + 1];
+int g_iVampiricTankWingDashChargeCount[MAXPLAYERS + 1];
+int g_iVampiricTankStamina[MAXPLAYERS + 1];
 bool g_bVampiricTankCanRechargeStamina[MAXPLAYERS + 1];
