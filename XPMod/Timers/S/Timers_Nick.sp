@@ -1,6 +1,6 @@
-Action:TimerStopRambo(Handle:timer, any:iClient)
+Action TimerStopRambo(Handle timer, any iClient)
 {
-	//new Float:vec[3];
+	//float vec[3];
 	//GetClientAbsOrigin(iClient, vec);
 	//EmitSoundToAll(SOUND_JPIDLEREV, iClient, SNDCHAN_AUTO,	SNDLEVEL_NORMAL, SND_NOFLAGS, 0.3, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
 	
@@ -26,7 +26,7 @@ Action:TimerStopRambo(Handle:timer, any:iClient)
 		if(IsClientInGame(iClient) == true)
 			PrintHintText(iClient, "Rambo mode is now off");
 	new wID = g_iNicksRamboWeaponID[iClient];
-	decl String:weaponclass[32];
+	char weaponclass[32];
 	GetEntityNetClass(wID, weaponclass, 32);
 	if(iClient > 1 && IsClientInGame(iClient) == true && IsPlayerAlive(iClient) == true)
 	{
@@ -44,7 +44,7 @@ Action:TimerStopRambo(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerSlap(Handle:timer, any:iClient)
+Action TimerSlap(Handle timer, any iClient)
 {
 	if(IsClientInGame(iClient)==false || IsPlayerAlive(iClient)==false)
 	{
@@ -67,7 +67,7 @@ Action:TimerSlap(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-// Action:TimerMakeVisible(Handle:timer, any:iClient)
+// Action TimerMakeVisible(Handle timer, any iClient)
 // {
 // 	g_bNickIsInvisible[iClient] = false;
 // 	if(IsValidEntity(iClient) == true && IsClientInGame(iClient) == true)
@@ -83,7 +83,7 @@ Action:TimerSlap(Handle:timer, any:iClient)
 // 	return Plugin_Stop;
 // }
 
-// Action:TimerBlindFade(Handle:timer, any:iClient)
+// Action TimerBlindFade(Handle timer, any iClient)
 // {
 // 	if(IsFakeClient(iClient)==false)
 // 		ShowHudOverlayColor(iClient, 0, 0, 0, 255, 4000, FADE_OUT);
@@ -91,21 +91,21 @@ Action:TimerSlap(Handle:timer, any:iClient)
 // 	return Plugin_Stop;
 // }
 
-Action:TimerReEnableBindsNick(Handle:timer, any:iClient)
+Action TimerReEnableBindsNick(Handle timer, any iClient)
 {
 	g_bNickGambleLockedBinds[iClient] = false;
 	return Plugin_Stop;
 }
-Action:TimerReEnableReviveBind(Handle:timer, any:iClient) {
+Action TimerReEnableReviveBind(Handle timer, any iClient) {
 	g_bNickReviveCooldown = false;
 	return Plugin_Stop;
 }
-Action:TimerReEnableHealBind(Handle:timer, any:iClient) {
+Action TimerReEnableHealBind(Handle timer, any iClient) {
 	g_bNickHealCooldown = false;
 	return Plugin_Stop;
 }
 
-Action:TimerLifeStealing(Handle:timer, any:pack)
+Action TimerLifeStealing(Handle timer, any pack)
 {
 	if (pack == INVALID_HANDLE)
 		return Plugin_Stop;
@@ -155,7 +155,7 @@ Action:TimerLifeStealing(Handle:timer, any:pack)
 	return Plugin_Stop;
 }
 
-Action:TimerLifeStealingFade(Handle:timer, any:pack)
+Action TimerLifeStealingFade(Handle timer, any pack)
 {
 	if (pack == INVALID_HANDLE)
 		return Plugin_Stop;
@@ -209,20 +209,20 @@ Action:TimerLifeStealingFade(Handle:timer, any:pack)
 	return Plugin_Stop;
 }
 
-Action:TimerNickSecondaryCycleReset(Handle:timer, any:iClient)
+Action TimerNickSecondaryCycleReset(Handle timer, any iClient)
 {
 	g_bCanNickSecondaryCycle[iClient] = true;
 	return Plugin_Stop;
 }
 
-Action:TimerNickDualClipSize(Handle:timer, any:iClient)
+Action TimerNickDualClipSize(Handle timer, any iClient)
 {
 	if (RunClientChecks(iClient) == false || 
 		IsPlayerAlive(iClient) == false || 
 		IsFakeClient(iClient) == true)
 		return Plugin_Stop;
 	
-	decl String:currentweapon[512];
+	char currentweapon[512];
 	GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
 	new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 	//PrintToChatAll("In Timer: About to set clip size... Clip Slot 2 = %i", g_iNickSecondarySavedClipSlot2[iClient]);
@@ -234,7 +234,7 @@ Action:TimerNickDualClipSize(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerNickZoomKitReset(Handle:timer, any:iClient)
+Action TimerNickZoomKitReset(Handle timer, any iClient)
 {
 	g_bCanNickZoomKit[iClient] = true;
 	return Plugin_Stop;

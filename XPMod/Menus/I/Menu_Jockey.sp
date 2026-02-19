@@ -1,7 +1,7 @@
 //Jockey Menu
 
 //Jockey Menu Draw
-Action:JockeyTopMenuDraw(iClient) 
+Action JockeyTopMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	Menu menu = CreateMenu(JockeyTopMenuHandler);
@@ -11,7 +11,7 @@ Action:JockeyTopMenuDraw(iClient)
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
-	decl String:title[256];
+	char title[256];
 	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n==========================\nJockey Talents:\n==========================\n \nMutated Tenacity: Level %d\nErratic Domination: Level %d\nUnfair Advantage: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iMutatedLevel[iClient], g_iErraticLevel[iClient], g_iUnfairLevel[iClient]);
 	SetMenuTitle(menu, title);
 	AddMenuItem(menu, "option1", "Mutated Tenacity");
@@ -26,7 +26,7 @@ Action:JockeyTopMenuDraw(iClient)
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		\n==========================\
@@ -43,7 +43,7 @@ Action:JockeyTopMenuDraw(iClient)
 //Talent Draws///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Mutated Tenacity Menu Draw
-Action:MutatedMenuDraw(iClient)
+Action MutatedMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(MutatedMenuHandler);
 
@@ -61,7 +61,7 @@ Action:MutatedMenuDraw(iClient)
 		strStartingNewLines,
 		g_iMutatedLevel[iClient]);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -75,7 +75,7 @@ Action:MutatedMenuDraw(iClient)
 }
 
 //Erratic Domination Menu Draw
-Action:ErraticMenuDraw(iClient)
+Action ErraticMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(ErraticMenuHandler);
 
@@ -109,7 +109,7 @@ Action:ErraticMenuDraw(iClient)
 		strStartingNewLines,
 		g_iErraticLevel[iClient]);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n ",
@@ -123,7 +123,7 @@ Action:ErraticMenuDraw(iClient)
 }
 
 //Unfair Advantage Menu Draw
-Action:UnfairMenuDraw(iClient)
+Action UnfairMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(UnfairMenuHandler);
 
@@ -149,7 +149,7 @@ Action:UnfairMenuDraw(iClient)
 		strStartingNewLines,
 		g_iUnfairLevel[iClient]);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -163,14 +163,14 @@ Action:UnfairMenuDraw(iClient)
 }
 
 //Choose Jockey Menu Draw
-Action:ChooseJockeyClassMenuDraw(iClient) 
+Action ChooseJockeyClassMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	
 	Menu menu = CreateMenu(ChooseJockeyClassMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
-	decl String:title[256];
+	char title[256];
 	FormatEx(title, sizeof(title), "==========================\n		Current Classes\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n==========================\n \nPick a class to replace with the Jockey:",g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	SetMenuTitle(menu, title);
 	AddMenuItem(menu, "option1", "Replace Class 1");
@@ -185,7 +185,7 @@ Action:ChooseJockeyClassMenuDraw(iClient)
 //Handlers/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Jockey Top Menu Handler
-JockeyTopMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+JockeyTopMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -239,7 +239,7 @@ JockeyTopMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Mutated Tenacity Menu Handler
-MutatedMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+MutatedMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -258,7 +258,7 @@ MutatedMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Erratic Domination Menu Handler
-ErraticMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+ErraticMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -277,7 +277,7 @@ ErraticMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Unfair Advantage Menu Handler
-UnfairMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+UnfairMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -296,7 +296,7 @@ UnfairMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Choose Jockey Top Menu Handler
-ChooseJockeyClassMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+ChooseJockeyClassMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{

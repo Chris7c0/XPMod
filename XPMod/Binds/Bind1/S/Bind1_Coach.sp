@@ -6,7 +6,7 @@ void Bind1Press_Coach(iClient)
         {
             if((GetEntityFlags(iClient) & FL_ONGROUND))
             {
-                decl Float:vorigin[3], Float:vangles[3];
+                float vorigin[3], vangles[3];
                 GetLocationVectorInfrontOfClient(iClient, vorigin, vangles);
                 
                 g_iClientBindUses_1[iClient]++;

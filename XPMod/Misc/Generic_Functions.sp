@@ -126,14 +126,14 @@ void StorePlayerHealth(int iClient)
 	g_iPlayerHealthTemp[iClient] =  GetSurvivorTempHealth(iClient);
 }
 
-Action:TimerStorePlayerHealth(Handle timer, int iClient)
+Action TimerStorePlayerHealth(Handle timer, int iClient)
 {
 	StorePlayerHealth(iClient);
 
 	return Plugin_Continue;
 }
 
-Action:TimerRepeatStoreAllPlayersHealth(Handle timer, int iNothing)
+Action TimerRepeatStoreAllPlayersHealth(Handle timer, int iNothing)
 {
 	for (int i=1; i <= MaxClients; i++)
 		StorePlayerHealth(i);
@@ -144,7 +144,7 @@ Action:TimerRepeatStoreAllPlayersHealth(Handle timer, int iNothing)
 // This is purely a time saver, just to get rid of the warning that a variable is 
 // not being used. It can be used for simlar functions that might have a need for
 // a variable later, its just not used yet.
-void SuppressNeverUsedWarning(any:var1=0, any:var2=0, any:var3=0, any:var4=0, any:var5=0, any:var6=0, any:var7=0, any:var8=0, any:var9=0, any:var10=0)
+void SuppressNeverUsedWarning(any var1=0, any var2=0, any var3=0, any var4=0, any var5=0, any var6=0, any var7=0, any var8=0, any var9=0, any var10=0)
 {
 	bool ignore;
 	if(ignore) PrintToServer("THIS IS NEVER GOING TO BE RAN",var1, var2, var3, var4, var5, var6, var7, var8, var9, var10);
@@ -168,7 +168,7 @@ int GetClientAdminLevel(iClient)
 void FindGameMode()
 {
 	//Get the gamemode string from the game
-	decl String:strGameMode[20];
+	char strGameMode[20];
 	GetConVarString(FindConVar("mp_gamemode"), strGameMode, sizeof(strGameMode));
 	
 	//Set the global gamemode int for this plugin
@@ -240,7 +240,7 @@ void FindGameMode()
 		g_iGameMode = GAMEMODE_UNKNOWN;
 }
 
-bool RunCheatCommand(int iClient, const char [] strCommandName, const char [] strCommandWithArgs)
+bool RunCheatCommand(int iClient, const char[] strCommandName, const char[] strCommandWithArgs)
 {
 	if (RunClientChecks(iClient) == false)
 		return false;
@@ -265,21 +265,21 @@ bool RunCheatCommand(int iClient, const char [] strCommandName, const char [] st
 	return true;
 }
 
-void HandleCheatCommandTasks(int iClient, const char [] strCommandWithArgs)
+void HandleCheatCommandTasks(int iClient, const char[] strCommandWithArgs)
 {
 	HandleCheatCommandTasks_Ellis(iClient, strCommandWithArgs);
 	HandleCheatCommandTasks_Nick(iClient);
 	HandleCheatCommandTasks_Louis(iClient, strCommandWithArgs);
 }
 
-Action:Timer_ShowXPModInfoToServer(Handle:timer, any:data)
+Action Timer_ShowXPModInfoToServer(Handle timer, any data)
 {
 	ShowXPModInfoToServer();
 	
 	return Plugin_Stop;
 }
 
-AdvertiseXPModToNewUser(iClient, bool:bShowInChat = false)
+AdvertiseXPModToNewUser(iClient, bool bShowInChat = false)
 {
 	EmitSoundToClient(iClient, SOUND_XPM_ADVERTISEMENT, SOUND_FROM_PLAYER, SNDCHAN_AUTO, SNDLEVEL_TRAIN);
 	PrintHintText(iClient, "Type xpm in chat to use XPMod");
@@ -297,13 +297,13 @@ AdvertiseConfirmXPModTalents(iClient)
  *                                                                                                        *
  **************************************************************************************************************************/
 
-OpenMOTDPanel(iClient, const String:title[], const  String:msg[], type = MOTDPANEL_TYPE_INDEX)
+OpenMOTDPanel(iClient, const char[] title, const  char[] msg, type = MOTDPANEL_TYPE_INDEX)
 {
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return;
 	
-	decl String:num[3];
-	new Handle:Kv = CreateKeyValues("data");
+	char num[3];
+	Handle Kv = CreateKeyValues("data");
 	IntToString(type, num, sizeof(num));
 	
 	KvSetString(Kv, "title", title);
@@ -313,15 +313,15 @@ OpenMOTDPanel(iClient, const String:title[], const  String:msg[], type = MOTDPAN
 	CloseHandle(Kv);
 }
 
-Action:MotdPanel(iClient, args)
+Action MotdPanel(iClient, args)
 {
 	//OpenMOTDPanel(iClient, "Choose Your Survivor", "addons/sourcemod/plugins/xpmod/XPMod Website - InGame/Home/xpmod_ig_home.html", MOTDPANEL_TYPE_FILE);
 	OpenMOTDPanel(iClient, "XPMod Website", "http://xpmod.net", MOTDPANEL_TYPE_URL);
-	return;
+	return Plugin_Handled;
 }
 
 //Probe Teams for Real Players.   Returns true if there is a non-bot player on inputed team
-bool:ProbeTeams(team)
+bool ProbeTeams(team)
 {
 	for(new i = 1; i <= MaxClients; i++)
 		if(IsClientInGame(i)  && g_iClientTeam[i] == team && IsFakeClient(i) == false)
@@ -331,7 +331,7 @@ bool:ProbeTeams(team)
 }
 
 //Taken from djromero's switch players plugin
-bool:IsTeamFull(team)
+bool IsTeamFull(team)
 {
 	// Spectator's team is never full
 	if (team == 1)
@@ -431,13 +431,13 @@ SetSurvivorModel(iClient)
 }
 
 //Toggles
-Action:ToggleAnnouncerVoice(iClient)	//Toggles the announcers voice
+Action ToggleAnnouncerVoice(iClient)	//Toggles the announcers voice
 {
 	if(iClient!=0)
 	{
 		if(g_bAnnouncerOn[iClient]==false)
 		{
-			decl Float:vec[3];
+			float vec[3];
 			GetClientEyePosition(iClient, vec);
 			EmitAmbientSound(SOUND_GETITON, vec, iClient, SNDLEVEL_NORMAL);
 			g_bAnnouncerOn[iClient] = true;
@@ -452,7 +452,7 @@ Action:ToggleAnnouncerVoice(iClient)	//Toggles the announcers voice
 	return Plugin_Handled;
 }
 
-Action:ToggleVGUIDesc(iClient)	//Toggles the vgui menu descriptions for talents
+Action ToggleVGUIDesc(iClient)	//Toggles the vgui menu descriptions for talents
 {
 	if(iClient!=0)
 	{
@@ -475,7 +475,7 @@ ShowHudOverlayColor(iClient, iRed, iGreen, iBlue, iAlpha, iDuration, iBehavior =
 {
 	decl clients[1];
 	clients[0] = iClient;
-	new Handle:message = StartMessageEx(g_umsgFade, clients, 1);
+	Handle message = StartMessageEx(g_umsgFade, clients, 1);
 	
 	BfWriteShort(message, iDuration);
 	BfWriteShort(message, iDuration);
@@ -492,17 +492,18 @@ StopHudOverlayColor(iClient)
 	ShowHudOverlayColor(iClient, 0, 0, 0, 0, 100, FADE_STOP);
 }
 
-Action:ShowBindsRemaining(iClient, args)
+Action ShowBindsRemaining(iClient, args)
 {
 	if(iClient < 1 || IsClientInGame(iClient) == false || IsFakeClient(iClient) == true)
-		return;
+		return Plugin_Handled;
 	
-	decl String:strText[64];
+	char strText[64];
 	FormatEx(strText, sizeof(strText), "\x05Bind 1: %d Uses Remain\nBind 2: %d Uses Remain", (3 - g_iClientBindUses_1[iClient]), (3 - g_iClientBindUses_2[iClient]));
 	PrintToChat(iClient, strText);
+	return Plugin_Handled;
 }
 
-GiveClientXP(iClient, iAmount, iSprite, iVictim, String:strMessage[64], bool:bCenterText = false, Float:fLifeTime = 3.0)
+GiveClientXP(iClient, iAmount, iSprite, iVictim, char strMessage[64], bool bCenterText = false, float fLifeTime = 3.0)
 {
 	if(iClient < 1 || IsClientInGame(iClient) == false || IsFakeClient(iClient) == true)
 		return;
@@ -535,7 +536,7 @@ void GotoFirstPerson(int iClient)
 	SetEntProp(iClient, Prop_Send, "m_bDrawViewmodel", 1);
 }
 
-Action TimerResetPlayerMoveType(Handle:timer, int iClient)
+Action TimerResetPlayerMoveType(Handle timer, int iClient)
 {
 	g_bMovementLocked[iClient] = false;
 	SetClientSpeed(iClient);
@@ -599,7 +600,10 @@ void UnlockPlayerFromAttacking(int iClient)
 void DealDamage(int iVictim, int iAttacker, int iAmount, int iDamageType = DAMAGETYPE_INFECTED_MELEE)
 {
 	//This function was originally written by AtomikStryker
-	decl Float:iVictimPosition[3], String:strDamage[16], String:strDamageType[16], String:strDamageTarget[16];
+	float iVictimPosition[3];
+	char strDamage[16];
+	char strDamageType[16];
+	char strDamageTarget[16];
 	
 	//GetClientEyePosition(iVictim, iVictimPosition);
 	GetEntPropVector(iVictim, Prop_Send, "m_vecOrigin", iVictimPosition);
@@ -684,21 +688,21 @@ int CalculateDamageTakenForVictimTalents(int iVictim, int iDmgAmount, const char
 }
 
 //This function was originally written by AtomikStryker
-bool:IsVisibleTo(Float:position[3], Float:targetposition[3])
+bool IsVisibleTo(float position[3], float targetposition[3])
 {
-	decl Float:vAngles[3], Float:vLookAt[3];
+	float vAngles[3], vLookAt[3];
 	
 	MakeVectorFromPoints(position, targetposition, vLookAt); // compute vector from start to target
 	GetVectorAngles(vLookAt, vAngles); // get angles from vector for trace
 	
 	// execute Trace
-	new Handle:trace = TR_TraceRayFilterEx(position, vAngles, MASK_SHOT, RayType_Infinite, TraceRayTryToHit);
+	Handle trace = TR_TraceRayFilterEx(position, vAngles, MASK_SHOT, RayType_Infinite, TraceRayTryToHit);
 	
-	new bool:isVisible = false;
+	bool isVisible = false;
 	
 	if (TR_DidHit(trace))
 	{
-		decl Float:vStart[3];
+		float vStart[3];
 		TR_GetEndPosition(vStart, trace); // retrieve our trace endpoint
 		
 		if ((GetVectorDistance(position, vStart, false) + 25.0) >= GetVectorDistance(position, targetposition))
@@ -753,9 +757,10 @@ void GetLookAtAnglesFromPoints(const float xyzPositionStart[3], const float xyzP
 	// PrintToChatAll("vLookAtAngles: %f %f %f", vLookAtAngles[0], vLookAtAngles[1], vLookAtAngles[2]);
 }
 
-AttachInfected(i_Ent, Float:fOrigin[3])
+AttachInfected(i_Ent, float fOrigin[3])
 {
-	decl i_InfoEnt, String:s_TargetName[32];
+	int i_InfoEnt;
+	char s_TargetName[32];
 	
 	i_InfoEnt = CreateEntityByName("info_goal_infected_chase");
 	
@@ -783,17 +788,17 @@ AttachInfected(i_Ent, Float:fOrigin[3])
  *                                                     Player Freezing                                                    *
  **************************************************************************************************************************/
  
-Action:FreezeGame(admin, args)
+Action FreezeGame(admin, args)
 {
 	g_bGameFrozen = true;
-	new String:time[20];
+	char time[20];
 	GetCmdArg(1, time, sizeof(time));
 	new freezetime;
 	for(new i=1;i<=MaxClients;i++)
 	{
 		if(RunClientChecks(i) && GetClientTeam(i) == TEAM_SURVIVORS)
 		{
-			decl Float:vec[3];
+			float vec[3];
 			//GetClientAbsOrigin(i, vec);
 			//vec[2] += 10;
 			GetClientEyePosition(i, vec);
@@ -802,7 +807,7 @@ Action:FreezeGame(admin, args)
 			SetEntityRenderColor(i, 0, 180, 255, 160);
 			SetEntDataFloat(i , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 0.0, true);
 			SetEntProp(i, Prop_Data, "m_takedamage", 0, 1);
-			new Float:cvec[3];
+			float cvec[3];
 			cvec[0] = 10.0;
 			cvec[1] = 10.0;
 			cvec[2] = 10.0;
@@ -818,6 +823,7 @@ Action:FreezeGame(admin, args)
 	freezetime = StringToInt(time);
 	CreateTimer(float(freezetime), TimerUnfreeze, 0, TIMER_FLAG_NO_MAPCHANGE);
 	PrintHintTextToAll("Survivors are frozen for %d more seconds to choose your talents.", freezetime);
+	return Plugin_Handled;
 }
 
 PlayerFreeze(iClient)
@@ -851,9 +857,9 @@ PlayerFreeze(iClient)
 // 	return ctr;
 // }
 
-FindPlayerByName(iClient, const String:targetname[])
+FindPlayerByName(iClient, const char[] targetname)
 {
-	new String:name[128];
+	char name[128];
 	new i, temp;
 	for (i=1;i <= MaxClients;i++)
 	{
@@ -974,7 +980,7 @@ PlayHeadshotSound(iClient)
  *                                                      Trace Filters                                                     *
  **************************************************************************************************************************/
 
-bool:TraceRayTryToHit(entity,mask)
+bool TraceRayTryToHit(entity,mask)
 {
 	if((entity > 0) && (entity <= 64))	// Check if the beam hit a player and tell it to keep tracing if it did
 		return false;
@@ -982,7 +988,7 @@ bool:TraceRayTryToHit(entity,mask)
 	return true;
 }
 
-// bool:TraceRayGrabEnt(entity,mask)
+// bool TraceRayGrabEnt(entity,mask)
 // {
 // 	if(entity > 0)	// Check if the beam hit an entity other than the grabber, and stop if it does
 // 	{
@@ -995,7 +1001,7 @@ bool:TraceRayTryToHit(entity,mask)
 // 	return false;
 // }
 
-// bool:TraceEntityFilter_NotSelf(iEntity, mask, any:data)
+// bool TraceEntityFilter_NotSelf(iEntity, mask, any data)
 // {
 //     if (iEntity == data)	// Check if the TraceRay hit the itself.
 //         return false;	// Don't let the entity be hit
@@ -1003,7 +1009,7 @@ bool:TraceRayTryToHit(entity,mask)
 //     return true;		// It didn't hit itself
 // }
 
-public bool:TraceEntityFilter_NotAPlayer(iEntity, iContentsMask, any:data)
+public bool TraceEntityFilter_NotAPlayer(iEntity, iContentsMask, any data)
 {
 	// Check for collision with self
 	if (iEntity == data)
@@ -1037,7 +1043,7 @@ bool IsClientGrappled(iClient)
 	return false;
 }
 
-// bool:IsJockeyGrappled(iClient)
+// bool IsJockeyGrappled(iClient)
 // {
 // 	decl i;
 // 	for(i = 0; i <= MaxClients; i++)
@@ -1047,7 +1053,7 @@ bool IsClientGrappled(iClient)
 // 	return false;
 // }
 
-Action:OpenHelpMotdPanel(iClient, args)
+Action OpenHelpMotdPanel(iClient, args)
 {
 	OpenMOTDPanel(iClient, "", "http://xpmod.net/help/xpmod_ig_help.html", MOTDPANEL_TYPE_URL);
 	return Plugin_Handled;
@@ -1095,14 +1101,14 @@ void ShiftArrayOfStrings(char[][] strArray, const int iStringSize, const int iSt
 bool IsEntityUncommonInfected(iInfectedEntity)
 {
 	// Get the infected entity type (common or uncommon)
-	decl String:strClassname[99];
+	char strClassname[99];
 	GetEdictClassname(iInfectedEntity, strClassname, sizeof(strClassname));
 	//PrintToChatAll("edict classname: %s", strClassname);
 	if (StrEqual(strClassname, "infected", true) == false)
 		return false;
 
 	// Get the infected model name
-	new String:strModelName[128];
+	char strModelName[128];
 	GetEntPropString(iInfectedEntity, Prop_Data, "m_ModelName", strModelName, 128);
 
 	// Check if the model name corresponds to an uncommon one
@@ -1121,8 +1127,8 @@ bool IsEntityUncommonInfected(iInfectedEntity)
 // 	if (RunClientChecks(iClient) == false)
 // 		return 999999.0;
 
-// 	new Float:fdistance = 999999.0;
-// 	decl Float:xyzClientOrigin[3], Float:xyzTargetOrigin[3];
+// 	float fdistance = 999999.0;
+// 	float xyzClientOrigin[3], xyzTargetOrigin[3];
 // 	GetClientEyePosition(iClient, xyzClientOrigin);	//Get clients location origin vectors
 
 // 	// Loop through the survivors and find the closest by checking distances
@@ -1131,7 +1137,7 @@ bool IsEntityUncommonInfected(iInfectedEntity)
 // 		if (RunClientChecks(iTarget) && g_iClientTeam[iTarget] == TEAM_SURVIVORS)
 // 		{
 // 			GetClientEyePosition(iTarget, xyzTargetOrigin);
-// 			new Float:fNewDistance = GetVectorDistance(xyzTargetOrigin, xyzClientOrigin);
+// 			float fNewDistance = GetVectorDistance(xyzTargetOrigin, xyzClientOrigin);
 // 			//PrintToChatAll("Checking: %N -> %f", iTarget, fNewDistance);
 // 			if (fNewDistance < fdistance)
 // 				fdistance = fNewDistance;
@@ -1163,7 +1169,7 @@ int FindClosestSurvivor(int iClient, bool bIgnoreIncap = false)
 			continue;
 
 		GetClientEyePosition(iTarget, xyzTargetOrigin);
-		new Float:fNewDistance = GetVectorDistance(xyzTargetOrigin, xyzClientOrigin);
+		float fNewDistance = GetVectorDistance(xyzTargetOrigin, xyzClientOrigin);
 
 		//PrintToChatAll("Checking: %N -> %f", iTarget, fNewDistance);
 		if (fNewDistance < fdistance)
@@ -1244,15 +1250,15 @@ void GetLocationVectorInfrontOfClient(iClient, float xyzLocation[3], float xyzAn
 // 	if (!RunClientChecks(iClient))
 // 		return true;
 
-// 	decl Float:currentvorigin[3], Float:currentvangles[3];
+// 	float currentvorigin[3], currentvangles[3];
 // 	GetClientEyePosition(iClient, currentvorigin);	//Get clients location origin vectors
 // 	GetClientEyeAngles(iClient, currentvangles);	//Get clients Eye Angles
 // 	PrintToServer("currentvorigin %f, %f, %f", currentvorigin[0], currentvorigin[1], currentvorigin[2]);
 // 	PrintToServer("currentvangles %f, %f, %f", currentvangles[0], currentvangles[1], currentvangles[2]);
 
 // 	// Set a minimum threshold that must be passed in order to trigger a move
-// 	new Float:vOriginMovementThreshold = 30.0;
-// 	new Float:vAnglesmovementThreshold = 20.0;
+// 	float vOriginMovementThreshold = 30.0;
+// 	float vAnglesmovementThreshold = 20.0;
 
 // 	if (FloatAbs(currentvorigin[0] - g_xyzClientVOrigin[iClient][0]) > vOriginMovementThreshold ||
 // 		FloatAbs(currentvorigin[1] - g_xyzClientVOrigin[iClient][1]) > vOriginMovementThreshold ||
@@ -1272,7 +1278,7 @@ void GetLocationVectorInfrontOfClient(iClient, float xyzLocation[3], float xyzAn
 // Note: The game is going to do a comparison of fNextActivationGameTime and the game time to see if
 // this ability is in cooldown. So if fNextActivationGameTime was previously set to a high value, use 
 // bCalculateFromCurrentGameTime to switch the mode the activate + or - from the current game time instead.
-SetSIAbilityCooldown(iClient, Float:fTimeToWait = 0.0, bool bCalculateFromCurrentGameTime = true)
+SetSIAbilityCooldown(iClient, float fTimeToWait = 0.0, bool bCalculateFromCurrentGameTime = true)
 {
 	if (RunClientChecks(iClient)== false || 
 		IsPlayerAlive(iClient) == false || 
@@ -1284,12 +1290,12 @@ SetSIAbilityCooldown(iClient, Float:fTimeToWait = 0.0, bool bCalculateFromCurren
 		return;
 
 	// Get the actual cooldown wait period, this is the next activation game time at which the ability will be activated once reached
-	new Float:fNextActivationGameTime = GetEntDataFloat(iEntID, g_iOffset_NextActivation + 8);
-	new Float:fGameTime = GetGameTime();
+	float fNextActivationGameTime = GetEntDataFloat(iEntID, g_iOffset_NextActivation + 8);
+	float fGameTime = GetGameTime();
 	//PrintToChatAll("PRE fNextActivationGameTime: %f, GetGameTime() %f", fNextActivationGameTime, fGameTime);
 
 	// Calculate the new ability activation game time
-	decl Float:fNewNextActivationGameTime;
+	float fNewNextActivationGameTime;
 	// If bCalculateFromCurrentGameTime, then the coder wants to calc next activation starting with the current game time
 	if (bCalculateFromCurrentGameTime)
 		fNewNextActivationGameTime = fGameTime + fTimeToWait;

@@ -1,7 +1,7 @@
 //Rochelle Menu Draw
-Action:RochelleMenuDraw(iClient) 
+Action RochelleMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	Menu menu = CreateMenu(RochelleMenuHandler);
@@ -30,7 +30,7 @@ Action:RochelleMenuDraw(iClient)
 	AddMenuItem(menu, "option7", "Open In Website\n ");
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -44,9 +44,9 @@ Action:RochelleMenuDraw(iClient)
 }
 
 //Gather Intelligence
-Action:GatherMenuDraw(iClient) 
+Action GatherMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -78,7 +78,7 @@ Action:GatherMenuDraw(iClient)
 		g_iGatherLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -92,9 +92,9 @@ Action:GatherMenuDraw(iClient)
 }
 
 //Hunter Killer
-Action:HunterMenuDraw(iClient) 
+Action HunterMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -127,7 +127,7 @@ Action:HunterMenuDraw(iClient)
 		g_iHunterLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -141,9 +141,9 @@ Action:HunterMenuDraw(iClient)
 }
 
 //Sniper's Endurance
-Action:SnipersEnduranceMenuDraw(iClient) 
+Action SnipersEnduranceMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -178,7 +178,7 @@ Action:SnipersEnduranceMenuDraw(iClient)
 		g_iSniperLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -192,9 +192,9 @@ Action:SnipersEnduranceMenuDraw(iClient)
 }
 
 //Silent Sorrow
-Action:SilentMenuDraw(iClient) 
+Action SilentMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -239,7 +239,7 @@ Action:SilentMenuDraw(iClient)
 		g_iSilentLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n ",
@@ -253,9 +253,9 @@ Action:SilentMenuDraw(iClient)
 }
 
 //Smoke and Mirrors
-Action:SmokeMenuDraw(iClient) 
+Action SmokeMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -290,7 +290,7 @@ Action:SmokeMenuDraw(iClient)
 		g_iSmokeLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -304,9 +304,9 @@ Action:SmokeMenuDraw(iClient)
 }
 
 //Shadow Ninja
-Action:ShadowMenuDraw(iClient) 
+Action ShadowMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 	
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -340,7 +340,7 @@ Action:ShadowMenuDraw(iClient)
 		g_iShadowLevel[iClient]);
 	SetMenuTitle(menu, text);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -356,7 +356,7 @@ Action:ShadowMenuDraw(iClient)
 //Handlers//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Rochelle'sMenu Handler
-RochelleMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+RochelleMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -404,7 +404,7 @@ RochelleMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Gather Training Handler
-GatherMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+GatherMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -423,7 +423,7 @@ GatherMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Hunter Killer Handler
-HunterMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+HunterMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -442,7 +442,7 @@ HunterMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Sniper's Endurance Handler
-SnipersEnduranceMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+SnipersEnduranceMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -461,7 +461,7 @@ SnipersEnduranceMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Silent Handler
-SilentMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+SilentMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -480,7 +480,7 @@ SilentMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Smoke and Mirrors Handler
-SmokeMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+SmokeMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -499,7 +499,7 @@ SmokeMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Shadow Ninja Handler
-ShadowMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+ShadowMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -518,12 +518,12 @@ ShadowMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 
-Action:DetectionHudMenuDraw(iClient) 
+Action DetectionHudMenuDraw(iClient) 
 {
 	if(g_iClientTeam[iClient] != TEAM_SURVIVORS || g_bDrawIDD[iClient]== false || IsPlayerAlive(iClient) == false)
 		return Plugin_Handled;
 	
-	decl String:strDetectedText[128];
+	char strDetectedText[128];
 	
 	Menu menu = CreateMenu(DetectionHudMenuHandler);
 	SetMenuTitle(menu, "    D.E.A.D. I.D. Device %.1f\n=========================\n            WARNING!\n=========================", (1.0 + (g_iGatherLevel[iClient] * 0.2)));
@@ -576,7 +576,7 @@ Action:DetectionHudMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-DetectionHudMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+DetectionHudMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{

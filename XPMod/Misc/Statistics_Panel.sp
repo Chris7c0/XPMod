@@ -116,7 +116,7 @@ RoundStatsMenuDraw(int iClient, const char[] strStatsText)
 	delete panel;
 }
 
-RoundStatsMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+RoundStatsMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_Select) 
 	{
@@ -138,7 +138,7 @@ ShowRoundStatsPanelsToPlayer(iClient)
 	CreateTimer(ROUND_STATS_PANEL_LIFETIME, TimerSetAndShowNewRoundStatsPanel, iClient, TIMER_REPEAT);
 }
 
-Action:TimerShowCurrentRoundStatsPanel(Handle:timer, any:iClient)
+Action TimerShowCurrentRoundStatsPanel(Handle timer, any iClient)
 {
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Stop;
@@ -153,7 +153,7 @@ Action:TimerShowCurrentRoundStatsPanel(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerSetAndShowNewRoundStatsPanel(Handle:timer, any:iClient)
+Action TimerSetAndShowNewRoundStatsPanel(Handle timer, any iClient)
 {
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Stop;

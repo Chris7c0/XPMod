@@ -1,5 +1,5 @@
 
-Action:CreateNewUserMenuDraw(iClient)
+Action CreateNewUserMenuDraw(iClient)
 {
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Handled;
@@ -13,7 +13,7 @@ Action:CreateNewUserMenuDraw(iClient)
 		GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 		GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 		
-		decl String:text[500];
+		char text[500];
 		FormatEx(text, sizeof(text), 
 			"%s \
 			\n							Welcome to XPMod!\n \
@@ -38,7 +38,7 @@ Action:CreateNewUserMenuDraw(iClient)
 		AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
 		AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 		AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
-		decl String:strFinalOptionText[250];
+		char strFinalOptionText[250];
 		Format(strFinalOptionText, sizeof(strFinalOptionText), " No, Ban Me.\n \n\
 			%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 			strEndingNewLines);
@@ -51,7 +51,7 @@ Action:CreateNewUserMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-CreateNewUserMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+CreateNewUserMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -81,14 +81,14 @@ CreateNewUserMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 	}
 }
 
-Action:QuickBan(iClient, args) {
+Action QuickBan(iClient, args) {
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Handled;
 	BanMeMenuDraw(iClient);
 	return Plugin_Handled;		
 }
 
-Action:BanMeMenuDraw(iClient)
+Action BanMeMenuDraw(iClient)
 {
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Handled;
@@ -100,7 +100,7 @@ Action:BanMeMenuDraw(iClient)
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
-	decl String:text[500];
+	char text[500];
 	FormatEx(text, sizeof(text), "%s\
 		=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n\
 		How long would you like to be banned from this server?   \n ",
@@ -111,7 +111,7 @@ Action:BanMeMenuDraw(iClient)
 	AddMenuItem(menu, "option2", " Kick Only");
 	AddMenuItem(menu, "option3", " 1 Day Ban");
 	AddMenuItem(menu, "option4", " 1 Week Ban");
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), " 1 Month Ban\n \n\
 		=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -124,7 +124,7 @@ Action:BanMeMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-BanMeMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+BanMeMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -159,7 +159,7 @@ BanMeMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 	}
 }
 
-Action:BanConfirmMenu(int iClient, int iBanDurationInMinutes)
+Action BanConfirmMenu(int iClient, int iBanDurationInMinutes)
 {
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Handled;
@@ -174,7 +174,7 @@ Action:BanConfirmMenu(int iClient, int iBanDurationInMinutes)
 	// Store the value for use in the handler
 	g_iBanDurationInMinutes[iClient] = iBanDurationInMinutes;
 	
-	decl String:text[500];
+	char text[500];
 	FormatEx(text, sizeof(text), "%s\
 		=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n\
 		You will be banned from all XPMod servers for %i days.    \n \n\
@@ -184,7 +184,7 @@ Action:BanConfirmMenu(int iClient, int iBanDurationInMinutes)
 	SetMenuTitle(menu, text);
 	
 	AddMenuItem(menu, "option1", " Yes");
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), " No\n \n\
 		=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -198,7 +198,7 @@ Action:BanConfirmMenu(int iClient, int iBanDurationInMinutes)
 }
 
 
-BanConfirmMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+BanConfirmMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{

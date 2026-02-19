@@ -74,7 +74,7 @@ bool OnPlayerRunCmd_Hunter(iClient, &iButtons)
 	return false;
 }
 
-EventsHurt_AttackerHunter(Handle:hEvent, attacker, victim)
+EventsHurt_AttackerHunter(Handle hEvent, attacker, victim)
 {
 	if (IsFakeClient(attacker))
 		return;
@@ -82,7 +82,7 @@ EventsHurt_AttackerHunter(Handle:hEvent, attacker, victim)
 	if (g_iClientTeam[victim] != TEAM_SURVIVORS)
 		return;
 
-	decl String:weapon[20];
+	char weapon[20];
 	GetEventString(hEvent,"weapon", weapon,20);
 
 	if(StrEqual(weapon,"hunter_claw") == true)
@@ -96,7 +96,7 @@ EventsHurt_AttackerHunter(Handle:hEvent, attacker, victim)
 
 				SetClientSpeed(victim);
 
-				new Handle:hunterpoisonpackage = CreateDataPack();
+				Handle hunterpoisonpackage = CreateDataPack();
 				WritePackCell(hunterpoisonpackage, victim);
 				WritePackCell(hunterpoisonpackage, attacker);
 				g_iHunterPoisonRunTimesCounter[victim] = g_iKillmeleonLevel[attacker];
@@ -120,7 +120,7 @@ EventsHurt_AttackerHunter(Handle:hEvent, attacker, victim)
 	if(g_iBloodLustLevel[attacker] > 0)
 	{
 		new dmgtype = GetEventInt(hEvent, "type");
-		//decl String:weapon[20];
+		//char weapon[20];
 		//GetEventString(hEvent,"weapon", weapon,20);
 		if(dmgtype == 128 &&  StrEqual(weapon,"hunter_claw") == true)
 		{			
@@ -132,7 +132,7 @@ EventsHurt_AttackerHunter(Handle:hEvent, attacker, victim)
 	}
 }
 
-EventsHurt_VictimHunter(Handle:hEvent, attacker, victim)
+EventsHurt_VictimHunter(Handle hEvent, attacker, victim)
 {
 	if (IsFakeClient(victim))
 		return;
@@ -154,12 +154,12 @@ EventsHurt_VictimHunter(Handle:hEvent, attacker, victim)
 	}
 }
 
-// EventsDeath_AttackerHunter(Handle:hEvent, iAttacker, iVictim)
+// EventsDeath_AttackerHunter(Handle hEvent, iAttacker, iVictim)
 // {
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }
 
-// EventsDeath_VictimHunter(Handle:hEvent, iAttacker, iVictim)
+// EventsDeath_VictimHunter(Handle hEvent, iAttacker, iVictim)
 // {
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }
@@ -252,7 +252,7 @@ Action TimerHandleHunterPostLunge(Handle hTimer, int iClient)
 		return Plugin_Stop;
 
 	// Set the initial velocity boost
-	decl Float:velocity[3];
+	float velocity[3];
 	GetEntPropVector(iClient, Prop_Data, "m_vecVelocity", velocity);
 	velocity[0] *= (1.0 + HUNTER_LUNGE_VELOCITY_MULTIPLIER_START);
 	velocity[1] *= (1.0 + HUNTER_LUNGE_VELOCITY_MULTIPLIER_START);
@@ -475,7 +475,7 @@ void PrintBloodLustMeter(iClient)
 		return;
 	}
 	
-	decl String:strEntireHintTextString[556], String:strBloodLustMeter[256];
+	char strEntireHintTextString[556], strBloodLustMeter[256];
 	strEntireHintTextString = NULL_STRING;
 	strBloodLustMeter = NULL_STRING;
 

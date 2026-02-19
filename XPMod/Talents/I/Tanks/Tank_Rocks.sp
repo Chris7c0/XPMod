@@ -6,7 +6,7 @@ bool IsTankRock(int entity, const char[] classname)
 	}
 	else if (IsValidEntity(entity))
 	{
-		new String:strClassname[100];
+		char strClassname[100];
 		GetEntityClassname(entity,strClassname,100);
 		return StrEqual(strClassname, "tank_rock");
 	}
@@ -261,7 +261,7 @@ bool GetTankRockTypeAndOwner(iTankRockIndex)
 // 			return false;
 
 // 		// Get the rock entity position
-// 		decl Float:xyzRockPosition[3];
+// 		float xyzRockPosition[3];
 // 		GetEntPropVector(iRockEntity, Prop_Send, "m_vecOrigin", xyzRockPosition);
 		
 // 		// If the rock entities vectors are still 0, 0, 0 then we cant determine its proximity to the tank yet
@@ -276,7 +276,7 @@ bool GetTankRockTypeAndOwner(iTankRockIndex)
 // 				IsPlayerAlive(iClient) == true &&
 // 				GetEntProp(iClient, Prop_Send, "m_zombieClass") == TANK)
 // 			{
-// 				decl Float:xyzTankOrigin[3];
+// 				float xyzTankOrigin[3];
 // 				GetClientAbsOrigin(iClient, xyzTankOrigin);
 
 // 				//PrintToChatAll("tank origin:  %f,%f,%f", xyzTankOrigin[0],xyzTankOrigin[1],xyzTankOrigin[2]);
@@ -308,7 +308,7 @@ bool GetTankRockTypeAndOwner(iTankRockIndex)
 // 	return false;
 // }
 
-Action WaitForNonZeroOriginVectorAndSetUpTankRock(Handle:timer, any:iRockEntity)
+Action WaitForNonZeroOriginVectorAndSetUpTankRock(Handle timer, any iRockEntity)
 {
 	//Ensure there is a valid entitty here, remove it from the array otherwise
 	if (IsValidEntity(iRockEntity) == false)
@@ -317,7 +317,7 @@ Action WaitForNonZeroOriginVectorAndSetUpTankRock(Handle:timer, any:iRockEntity)
 		return Plugin_Stop;
 	}
 
-	new Float:xyzRockPosition[3];
+	float xyzRockPosition[3];
 	GetEntPropVector(iRockEntity, Prop_Send, "m_vecOrigin", xyzRockPosition);
 	if (xyzRockPosition[0] == 0 && xyzRockPosition[1] == 0 && xyzRockPosition[2] == 0)
 		return Plugin_Continue;

@@ -1,7 +1,7 @@
 //Spitter Menu
 
 //Spitter Menu Draw
-Action:SpitterTopMenuDraw(iClient)
+Action SpitterTopMenuDraw(iClient)
 {
 	CheckLevel(iClient);
 	DeleteAllMenuParticles(iClient);
@@ -12,7 +12,7 @@ Action:SpitterTopMenuDraw(iClient)
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
-	decl String:title[256];
+	char title[256];
 	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n==============================\nSpitter Talents:\n==============================\n \nPuppet Master: Level %d\nMaterial Girl: Level %d\nHallucinogenic Nightmare: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iPuppetLevel[iClient], g_iMaterialLevel[iClient], g_iHallucinogenicLevel[iClient]);
 	SetMenuTitle(menu, title);
 	
@@ -26,7 +26,7 @@ Action:SpitterTopMenuDraw(iClient)
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		\n==============================\
@@ -43,7 +43,7 @@ Action:SpitterTopMenuDraw(iClient)
 //Talent Draws///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Ground 'n Pound Menu Draw
-Action:PuppetMenuDraw(iClient)
+Action PuppetMenuDraw(iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(PuppetMenuHandler);
@@ -68,7 +68,7 @@ Action:PuppetMenuDraw(iClient)
 		strStartingNewLines,
 		g_iPuppetLevel[iClient]);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -82,7 +82,7 @@ Action:PuppetMenuDraw(iClient)
 }
 
 //Spiked Carapace Menu Draw
-Action:MaterialMenuDraw(iClient)
+Action MaterialMenuDraw(iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(MaterialMenuHandler);
@@ -117,7 +117,7 @@ Action:MaterialMenuDraw(iClient)
 		strStartingNewLines,
 		g_iMaterialLevel[iClient]);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n ",
@@ -131,7 +131,7 @@ Action:MaterialMenuDraw(iClient)
 }
 
 //Hillbilly Madness! Menu Draw
-Action:HallucinogenicMenuDraw(iClient)
+Action HallucinogenicMenuDraw(iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(HallucinogenicMenuHandler);
@@ -163,7 +163,7 @@ Action:HallucinogenicMenuDraw(iClient)
 		strStartingNewLines,
 		g_iHallucinogenicLevel[iClient]);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -177,7 +177,7 @@ Action:HallucinogenicMenuDraw(iClient)
 }
 
 //Choose Spitter Menu Draw
-Action:ChooseSpitterClassMenuDraw(iClient) 
+Action ChooseSpitterClassMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	
@@ -189,7 +189,7 @@ Action:ChooseSpitterClassMenuDraw(iClient)
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
-	decl String:title[256];
+	char title[256];
 	FormatEx(title, sizeof(title), "==========================\n		Current Classes\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n==========================\n \nPick a class to replace with the Spitter:",g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	
 	SetMenuTitle(menu, title);
@@ -204,7 +204,7 @@ Action:ChooseSpitterClassMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-Action:GooTypeMenuDraw(iClient)
+Action GooTypeMenuDraw(iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(GooTypeMenuHandler);
@@ -248,7 +248,7 @@ Action:GooTypeMenuDraw(iClient)
 }
 
 
-Action:BagOfSpitsMenuDraw(iClient)
+Action BagOfSpitsMenuDraw(iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(BagOfSpitsMenuHandler);
@@ -279,7 +279,7 @@ Action:BagOfSpitsMenuDraw(iClient)
 //Handlers/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Spitter Top Menu Handler
-SpitterTopMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+SpitterTopMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -333,7 +333,7 @@ SpitterTopMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Ground 'n Pound Menu Handler
-PuppetMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+PuppetMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -352,7 +352,7 @@ PuppetMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Spiked Carapace Menu Handler
-MaterialMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+MaterialMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -371,7 +371,7 @@ MaterialMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Hillbilly Madness! Menu Handler
-HallucinogenicMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+HallucinogenicMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -390,7 +390,7 @@ HallucinogenicMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Choose Spitter Top Menu Handler
-ChooseSpitterClassMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+ChooseSpitterClassMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -454,7 +454,7 @@ ChooseSpitterClassMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Goo Type Menu Handler
-GooTypeMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+GooTypeMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -489,7 +489,7 @@ GooTypeMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Bag of Spits Menu Handler
-BagOfSpitsMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+BagOfSpitsMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{

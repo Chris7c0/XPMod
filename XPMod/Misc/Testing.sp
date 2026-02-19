@@ -21,7 +21,7 @@ public Action Timer_Testing(Handle hTimer, int iClient)
 
 int iSeenEntities[MAXENTITIES+1];
 
-Action:TestFunction1(iClient, args)
+Action TestFunction1(iClient, args)
 {
 	DebugLog(DEBUG_MODE_TESTING, "T1");
 	//PrintToChat(iClient, "T1");
@@ -46,7 +46,7 @@ Action:TestFunction1(iClient, args)
 
 
 
-	// new Float:xyzClientPosition[3], Float:xyzClientEyeAngles[3];
+	// float xyzClientPosition[3], xyzClientEyeAngles[3];
 	// GetClientAbsOrigin(iClient, xyzClientPosition);
 	// GetClientAbsAngles(iClient,xyzClientEyeAngles); // Get the angle the player is looking
 	// PrintToChat(iClient, "position: %%f %f %f", xyzClientPosition[0], xyzClientPosition[1], xyzClientPosition[2]);
@@ -326,7 +326,7 @@ Action:TestFunction1(iClient, args)
 	return Plugin_Stop;
 }
 
-Action:TestFunction2(iClient, args)
+Action TestFunction2(iClient, args)
 {
 	DebugLog(DEBUG_MODE_TESTING, "T2");
 
@@ -362,7 +362,7 @@ Action:TestFunction2(iClient, args)
 
 	// g_iTesting =  StringToInt(str1);
 
-	// decl Float:xyzClientLocation[3];
+	// float xyzClientLocation[3];
 	// GetClientAbsOrigin(iClient, xyzClientLocation);
 	// xyzClientLocation[2] += 30.0;
 	// WriteParticle(iClient, "mini_fireworks", 0.0, 10.0, xyzClientLocation);
@@ -383,17 +383,17 @@ Action:TestFunction2(iClient, args)
 // public CreateLaser(player1,player2){
 
 // 	new laser = CreateEntityByName("env_laser");
-// 	new String:sz_lasername[32];
+// 	char sz_lasername[32];
 // 	Format(sz_lasername, sizeof(sz_lasername), "laser_%i", laser);
 // 	DispatchKeyValue(laser, "targetname", sz_lasername);
-// 	new String:steamid[20];
-// 	new String:steamid1[20];
+// 	char steamid[20];
+// 	char steamid1[20];
 // 	GetClientAuthString(player1, steamid, sizeof(steamid));
 // 	GetClientAuthString(player2, steamid1, sizeof(steamid1));
 // 	DispatchKeyValue(laser, "targetname", steamid);
 // 	DispatchKeyValue(laser, "parentname", steamid);
 
-// 	// new String:clientName[128];
+// 	// char clientName[128];
 // 	// Format(clientName, sizeof(clientName), "Smoke%i", iClient);
 // 	DispatchKeyValue(laser, "targetname", steamid);
 // 	DispatchKeyValue(laser, "parentname", steamid);
@@ -408,7 +408,7 @@ Action:TestFunction2(iClient, args)
 	
 // 	AcceptEntityInput(laser, "TurnOn");  
 	
-// 	new Float:loc[3];
+// 	float loc[3];
 // 	GetClientAbsOrigin(player1,loc);
 
 // 	loc[2] += 70.0;
@@ -420,7 +420,7 @@ Action:TestFunction2(iClient, args)
 // } 
 
 
-Action:TestFunction3(iClient, args)
+Action TestFunction3(iClient, args)
 {
 	DebugLog(DEBUG_MODE_TESTING, "T3");
 	char str1[99];
@@ -447,7 +447,7 @@ Action:TestFunction3(iClient, args)
 
 
 
-Action:TestFunction4(iClient, args)
+Action TestFunction4(iClient, args)
 {
 	DebugLog(DEBUG_MODE_TESTING, "T4");
 	char str1[99];
@@ -462,11 +462,11 @@ Action:TestFunction4(iClient, args)
 	else
 		TurnBackToSmokerAfterSmokeCloud(iTarget);
 
-	// decl Float:xyzLocation[3];
+	// float xyzLocation[3];
 	// GetClientAbsOrigin(iClient, xyzLocation);
 	// SendAllSurvivorBotsToLocation(xyzLocation);
 
-	// decl String:strTimeScaleCmd[32];
+	// char strTimeScaleCmd[32];
 	// Format(strTimeScaleCmd, sizeof(strTimeScaleCmd), "host_timescale %3f", StringToFloat(str1));
 	// PrintToChat(iClient, "%s", strTimeScaleCmd);
 
@@ -483,7 +483,7 @@ Action:TestFunction4(iClient, args)
 	return Plugin_Stop;
 }
 
-Action:TestFunction5(iClient, args)
+Action TestFunction5(iClient, args)
 {
 	DebugLog(DEBUG_MODE_TESTING, "T5");
 
@@ -496,18 +496,20 @@ Action:TestFunction5(iClient, args)
 	return Plugin_Stop;
 }
 
-Action:GiveMoreBinds(admin, args)
+Action GiveMoreBinds(admin, args)
 {
 	g_iClientBindUses_1[admin] = -99;
 	g_iClientBindUses_2[admin] = -99;
+	return Plugin_Handled;
 }
 
-Action:XPModDebugModeToggle(iClient, args)
+Action XPModDebugModeToggle(iClient, args)
 {
 	ToggleDebugMode();
+	return Plugin_Handled;
 }
 
-Action:Timer_ContinuallyKillAllCI(Handle:timer, any:data)
+Action Timer_ContinuallyKillAllCI(Handle timer, any data)
 {
 	// Debug Mode Kill all CI
 	if (g_bStopCISpawning == false)
@@ -529,7 +531,7 @@ public void TestingTempEnts(int iClient, char[] strArg1, char[] strArg2)
 	//PrintToChatAll("SMOKERMOUTHPARTICLE: %i", smokerMouth);
 	// effect_beaments(smokerMouth, StringToInt(strArg[0]));
 	//effect_beaments(iClient, StringToInt(strArg[0]));
-	// decl Float:vorigin[3], Float:vangles[3];
+	// float vorigin[3], vangles[3];
 	// GetLocationVectorInfrontOfClient(StringToInt(strArg[0]), vorigin, vangles);
 	// int iEntity = CreateEntityByName("prop_dynamic");
 	// if (RunEntityChecks(iEntity))
@@ -564,7 +566,7 @@ public void TestingTempEnts(int iClient, char[] strArg1, char[] strArg2)
 	GetClientEyePosition(g_iClient2, xyzLocation2);
 
 	
-	// decl String:parentName[64];
+	// char parentName[64];
 	// Format(parentName, sizeof(parentName), "%i:%N", client, client);
 	// DispatchKeyValue(client, "targetname", parentName);
 
@@ -607,8 +609,8 @@ public void TestingTempEnts(int iClient, char[] strArg1, char[] strArg2)
 	// GetEntPropVector(g_iClient2, Prop_Send, "m_vecOrigin", xyzClientLocation);
 	// GetClientEyeAngles(g_iClient2, xyzClientAngles);
 
-	// decl String:strEntity[30];
-	// // decl String:strParentName[64];
+	// char strEntity[30];
+	// // char strParentName[64];
 	// // Format(strParentName, sizeof(strParentName), "%i:%N", g_iClient2, g_iClient2);
 	
 	// g_iEntity1 = CreateEntityByName("prop_dynamic");
@@ -628,7 +630,7 @@ public void TestingTempEnts(int iClient, char[] strArg1, char[] strArg2)
 	// ActivateEntity(g_iEntity1);
 
 
-	// decl Float:vorigin[3], Float:vangles[3];
+	// float vorigin[3], vangles[3];
 	// GetLocationVectorInfrontOfClient(iClient, vorigin, vangles);
 	// g_iEntity2 = CreateEntityByName("prop_dynamic");
 	// Format(strEntity, sizeof(strEntity), "end%i", g_iEntity2);
@@ -649,7 +651,7 @@ public void TestingTempEnts(int iClient, char[] strArg1, char[] strArg2)
 	float xyzLocation[3];
 	int iDummyEntityAttachmentHand = CreateDummyEntity(xyzLocation, -1.0, g_iClient1, "muzzle_flash");
 
-	decl Float:vorigin[3], Float:vangles[3];
+	float vorigin[3], vangles[3];
 	GetLocationVectorInfrontOfClient(iClient, vorigin, vangles);
 	int iDummyEntityAttachmentWall = CreateDummyEntity(vorigin);
 
@@ -670,10 +672,10 @@ public void TestingTempEnts(int iClient, char[] strArg1, char[] strArg2)
 
 public AttachBeam(client)
 {
-	decl String:beamindex[30],String:start[30],String:end[30],String:parentName[64];
+	char beamindex[30], start[30], end[30], parentName[64];
 	Format(parentName, sizeof(parentName), "%i:%N", client, client);
 	DispatchKeyValue(client, "targetname", parentName);
-	new Float:vec[3];
+	float vec[3];
 	GetClientAbsOrigin(client, vec);
 	
 	new startent = CreateEntityByName("prop_dynamic");
@@ -741,11 +743,12 @@ public AttachBeam(client)
 	}
 }
 
-public Action:beam_enable(Handle:timer, any:beam)
+public Action beam_enable(Handle timer, any beam)
 {
 	AcceptEntityInput(beam, "TurnOn");
+	return Plugin_Stop;
 }
-// Action:TimerAttaachRope(Handle:timer, any:iClient)
+// Action TimerAttaachRope(Handle timer, any iClient)
 // {
 // 	PrintToChatAll("clients: %i, %i", g_iClient1, g_iClient2)
 // 	PrintToChatAll("ents: %i, %i", g_iEntity1, g_iEntity2)

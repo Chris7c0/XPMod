@@ -9,7 +9,7 @@ void Handle2SecondClientTimers_Rochelle(int iClient)
 	HandleRochelleRopeGain(iClient);
 }
 
-Action:Timer_RochelleRugerHitCheck(Handle:timer, any:iClient)
+Action Timer_RochelleRugerHitCheck(Handle timer, any iClient)
 {
 	// Check for an Infected bullet Miss. It being greater than 0 means the stack was not removed
 	// This will take back any pre given stacks that were given during the event hit processes
@@ -30,7 +30,7 @@ Action:Timer_RochelleRugerHitCheck(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:Timer_RochelleAWPResetChargeLevel(Handle:timer, any:iClient)
+Action Timer_RochelleAWPResetChargeLevel(Handle timer, any iClient)
 {
 	if (g_bRochelleAWPCharged[iClient] == true)
 		PrintToChat(iClient, "\x03[XPMod] \x04AWP Charge: \x01EMPTY");
@@ -42,7 +42,7 @@ Action:Timer_RochelleAWPResetChargeLevel(Handle:timer, any:iClient)
 }
 
 
-Action:Timer_BreakFreeOfSmoker(Handle:timer, any:iClient)
+Action Timer_BreakFreeOfSmoker(Handle timer, any iClient)
 {
 	TeleportEntity(iClient, g_xyzOriginalPositionRochelle[iClient], NULL_VECTOR, NULL_VECTOR);
 	CreateRochelleSmoke(iClient);
@@ -50,7 +50,7 @@ Action:Timer_BreakFreeOfSmoker(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerStopShadowNinja(Handle:timer, any:iClient)
+Action TimerStopShadowNinja(Handle timer, any iClient)
 {
 	g_bUsingShadowNinja[iClient] = false;
 	
@@ -81,7 +81,7 @@ Action:TimerStopShadowNinja(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerPoison(Handle:timer, any:iClient)
+Action TimerPoison(Handle timer, any iClient)
 {
 	if(IsValidEntity(iClient) == false || IsClientInGame(iClient) == false || IsPlayerAlive(iClient) == false || g_bIsRochellePoisoned[iClient] == false)
 	{
@@ -106,7 +106,7 @@ Action:TimerPoison(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerPoisonFade(Handle:timer, any:iClient)
+Action TimerPoisonFade(Handle timer, any iClient)
 {
 	if(IsValidEntity(iClient) == false || IsClientInGame(iClient)==false || IsPlayerAlive(iClient)==false)
 		return Plugin_Stop;
@@ -125,7 +125,7 @@ Action:TimerPoisonFade(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerIDD(Handle:timer, any:data)
+Action TimerIDD(Handle timer, any data)
 {
 	if (IsServerProcessing()==false)
 		return Plugin_Continue;

@@ -82,7 +82,7 @@ Action TimerHunterPoison(Handle timer, any pack)
 	return Plugin_Stop;
 }
 
-Action:TimerHunterPoisonFade(Handle:timer, any:pack)
+Action TimerHunterPoisonFade(Handle timer, any pack)
 {
 	if (pack == INVALID_HANDLE)
 		return Plugin_Stop;

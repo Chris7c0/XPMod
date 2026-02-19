@@ -1,4 +1,4 @@
-stock L4D2_RunScript(const String:sCode[], any:...)
+stock L4D2_RunScript( const char[] sCode, any:...)
 {
 	static iScriptLogic = INVALID_ENT_REFERENCE;
 	if(iScriptLogic == INVALID_ENT_REFERENCE || !IsValidEntity(iScriptLogic)) 
@@ -10,7 +10,7 @@ stock L4D2_RunScript(const String:sCode[], any:...)
 		DispatchSpawn(iScriptLogic);
 	}
 	
-	static String:sBuffer[512];
+	static char sBuffer[512];
 	VFormat(sBuffer, sizeof(sBuffer), sCode, 2);
 	
 	SetVariantString(sBuffer);
@@ -42,7 +42,7 @@ stock SetBotFocusedOnXPMGoal(int iClient, float xyzLocation[3], int iTarget = -1
 	PrintToServer("SetBotFocusedOnXPMGoal %i", iClient);
 }
 
-Action:TimerKeepBotFocusedOnXPMGoal(Handle:timer, int iClient)
+Action TimerKeepBotFocusedOnXPMGoal(Handle timer, int iClient)
 {
 	if (g_bBotXPMGoalAccomplished[iClient] == true ||
 		RunClientChecks(iClient) == false || 
@@ -79,7 +79,7 @@ Action:TimerKeepBotFocusedOnXPMGoal(Handle:timer, int iClient)
 
 bool CheckForViableSITargetForSurvivor(iClient)
 {
-	decl Float:xyzClientLocation[3],Float:xyzTargetLocation[3];
+	float xyzClientLocation[3], xyzTargetLocation[3];
 	GetClientEyePosition(iClient, xyzClientLocation);
 
 	// Check for visible targets that are within range

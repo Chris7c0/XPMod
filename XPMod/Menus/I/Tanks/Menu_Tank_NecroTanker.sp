@@ -1,4 +1,4 @@
-Action:TankMenuDrawNecroTanker(iClient)
+Action TankMenuDrawNecroTanker(iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(TankMenuHandlerNecroTanker);
@@ -35,7 +35,7 @@ Action:TankMenuDrawNecroTanker(iClient)
         NECROTANKER_CONSUME_COMMON_HP,
         NECROTANKER_CONSUME_UNCOMMON_HP);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
                 "Back\
                 %s\n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -48,7 +48,7 @@ Action:TankMenuDrawNecroTanker(iClient)
 	return Plugin_Handled;
 }
 
-TankMenuHandlerNecroTanker(Menu menu, MenuAction:action, iClient, itemNum)
+TankMenuHandlerNecroTanker(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{

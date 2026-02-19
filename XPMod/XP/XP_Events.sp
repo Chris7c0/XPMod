@@ -1,4 +1,4 @@
-EventsDeath_GiveXP(Handle:hEvent, iAttacker, iVictim)
+EventsDeath_GiveXP(Handle hEvent, iAttacker, iVictim)
 {
 	// Give XP to Survivors for killing the Tank
 	if (g_iClientTeam[iVictim] == TEAM_INFECTED &&

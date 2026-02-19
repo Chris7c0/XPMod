@@ -6,7 +6,7 @@ void Bind1Press_Ellis(iClient)
         {
             if((GetEntityFlags(iClient) & FL_ONGROUND))
             {
-                decl Float:vorigin[3], Float:vangles[3], Float:topvec[3];
+                float vorigin[3], vangles[3], topvec[3];
                 GetLocationVectorInfrontOfClient(iClient, vorigin, vangles);
                 
                 new ammopile = CreateEntityByName("weapon_ammo_spawn");

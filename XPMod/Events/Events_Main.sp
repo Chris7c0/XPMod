@@ -105,13 +105,13 @@ SetupXPMEvents()
  **************************************************************************************************************************/
 
 //Chat
-Action:SayCmd(iClient, args)
+Action SayCmd(iClient, args)
 {
 	if (iClient < 1 || IsClientInGame(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Continue;
 	
 	//Check to see if they typed in xpm or xpmod, indifferent to the case used
-	decl String:strArgument1[16];
+	char strArgument1[16];
 	GetCmdArg(1, strArgument1, sizeof(strArgument1));
 	if(StrEqual(strArgument1, "xpm", false) == true || StrEqual(strArgument1, "!xpm", false) == true ||
 		StrEqual(strArgument1, "xpmod", false) == true || StrEqual(strArgument1, "!xpmod", false) == true)
@@ -129,7 +129,7 @@ Action:SayCmd(iClient, args)
 	//Change the color of the admin text in the chat to green
 	if(GetUserAdmin(iClient) != INVALID_ADMIN_ID)
 	{
-		decl String:input[256];
+		char input[256];
 		
 		GetCmdArgString(input, sizeof(input));
 		if(input[0] ==  '/' || input[1] ==  '/')
@@ -148,15 +148,15 @@ Action:SayCmd(iClient, args)
 	return Plugin_Continue;
 }
 
-Action:SayTeamCmd(iClient, args)
+Action SayTeamCmd(iClient, args)
 {
 	if (iClient < 1 || IsClientInGame(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Continue;
 	
-	decl String:input[256];
+	char input[256];
 	GetCmdArgString(input,sizeof(input));
 
-	decl String:strArgument1[6];
+	char strArgument1[6];
 	GetCmdArg(1, strArgument1, 6);
 	if(StrEqual(strArgument1, "xpm", false) == true || StrEqual(strArgument1, "!xpm", false) == true ||
 		StrEqual(strArgument1, "xpmod", false) == true || StrEqual(strArgument1, "!xpmod", false) == true)
@@ -173,7 +173,7 @@ Action:SayTeamCmd(iClient, args)
 	{
 		if(g_iGatherLevel[i] == 5 && IsClientInGame(i) && IsFakeClient(i) == false && GetClientTeam(i)==TEAM_SURVIVORS && GetClientTeam(iClient)==TEAM_INFECTED)
 		{
-			decl String:clientname[25];
+			char clientname[25];
 			GetClientName(iClient, clientname, sizeof(clientname));
 			PrintToChat(i, "\x04[\x05IDD Survalence\x04] \x05%s\x04: \x01%s", clientname, input);
 		}
@@ -182,7 +182,7 @@ Action:SayTeamCmd(iClient, args)
 	return Plugin_Continue;
 }
 
-Action:Event_PlayerChangeName(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_PlayerChangeName(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 
 	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
@@ -270,7 +270,7 @@ public OnMapStart()
 	//SetMapsMaxTeleportHeight();
 }
 
-Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_RoundStart(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	//PrintToServer("EVENT ROUND START=====================================================================================");
 	//PrintToServer("**************************** FREEZING GAME");
@@ -288,7 +288,7 @@ Action:Event_RoundStart(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	return Plugin_Continue;
 }
 
-Action:Event_RoundEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_RoundEnd(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	//PrintToServer("Event_RoundEnd =========================================================");
 
@@ -332,25 +332,25 @@ Action:Event_RoundEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast
 	return Plugin_Continue;
 }
 
-public Action:CommandListener_Pause(client, const String:command[], argc) {
+public Action CommandListener_Pause(client, const char[] command, argc) {
 	return Plugin_Handled; 
 }
 
-public Action:CommandListener_Setpause(client, const String:command[], argc) {
+public Action CommandListener_Setpause(client, const char[] command, argc) {
 	if (g_bGamePaused)
 		return Plugin_Continue;
 	
 	return Plugin_Handled;
 }
 
-public Action:CommandListener_Unpause(client, const String:command[], argc) {
+public Action CommandListener_Unpause(client, const char[] command, argc) {
 	if (g_bGamePaused == false)
 		return Plugin_Continue;
 	
 	return Plugin_Handled;
 }
 
-public Action:CommandListener_CallVote(int iVoteCaller, const String:strCommand[], argc)
+public Action CommandListener_CallVote(int iVoteCaller, const char[] strCommand, argc)
 {
 	char strVoteType[32], strVoteTarget[32];
 	GetCmdArg(1, strVoteType, sizeof(strVoteType));
@@ -387,7 +387,7 @@ bool HandleCallVote_Kick(int iVoteCaller, int iTarget, char[] strVoteType)
 	return true;
 }
 
-Event_PlayerJump(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Event_PlayerJump(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	if (iClient < 1)
@@ -416,7 +416,7 @@ Event_PlayerJump(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 	return;
 }
 
-Action:CommandListener_JoinTeam(iClient, const String:command[], argc)
+Action CommandListener_JoinTeam(iClient, const char[] command, argc)
 {
 	// This is specifically for preventing user from changing team using M button on cool down
 	if (g_bPlayerInTeamChangeCoolDown[iClient] == true)
@@ -442,7 +442,7 @@ Action:CommandListener_JoinTeam(iClient, const String:command[], argc)
 	return Plugin_Continue;
 }
 
-Action:Event_PlayerChangeTeam(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_PlayerChangeTeam(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 
@@ -469,7 +469,7 @@ Action:Event_PlayerChangeTeam(Handle:hEvent, const String:strName[], bool:bDontB
 	return Plugin_Continue;
 }
 
-Action:Event_PlayerSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_PlayerSpawn(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	// if (RunClientChecks(iClient) && IsFakeClient(iClient) == false)
@@ -538,7 +538,7 @@ Action:Event_PlayerSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadc
 
 
 
-Action:Event_PlayerReplacedByBot(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_PlayerReplacedByBot(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new iReplacedPlayer = GetClientOfUserId(GetEventInt(hEvent, "player"));
 	new iBot = GetClientOfUserId(GetEventInt(hEvent, "bot"));
@@ -554,7 +554,7 @@ Action:Event_PlayerReplacedByBot(Handle:hEvent, const String:strName[], bool:bDo
 	return Plugin_Continue;
 }
 
-Action:Event_BotReplacedByPlayer(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_BotReplacedByPlayer(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new iPlayer = GetClientOfUserId(GetEventInt(hEvent, "player"));
 	// new iReplacedBot = GetClientOfUserId(GetEventInt(hEvent, "bot"));
@@ -572,7 +572,7 @@ Action:Event_BotReplacedByPlayer(Handle:hEvent, const String:strName[], bool:bDo
 	return Plugin_Continue;
 }
 
-Action:Event_SurvivorRescued(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_SurvivorRescued(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "victim"));
 
@@ -590,7 +590,7 @@ Action:Event_SurvivorRescued(Handle:hEvent, const String:strName[], bool:bDontBr
 }
 
 
-SetupUnfreezeGameTimer(Float:unfreezeWaitTime)
+SetupUnfreezeGameTimer(float unfreezeWaitTime)
 {	
 	if(g_iGameMode != GAMEMODE_SCAVENGE)
 	{
@@ -642,7 +642,7 @@ public OnClientPutInServer(iClient)
 
 // }
 
-Action:Event_PlayerConnect(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_PlayerConnect(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	HandleClientConnect(iClient);
@@ -651,7 +651,7 @@ Action:Event_PlayerConnect(Handle:hEvent, const String:strName[], bool:bDontBroa
 }
 
 
-Action:Event_PlayerDisconnect(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_PlayerDisconnect(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	HandleClientDisconnect(iClient);
@@ -659,7 +659,7 @@ Action:Event_PlayerDisconnect(Handle:hEvent, const String:strName[], bool:bDontB
 	return Plugin_Continue;
 }
 
-Action:Event_FriendlyFire(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_FriendlyFire(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	
 	// new attacker = GetClientOfUserId(GetEventInt(hEvent,"attacker"));
@@ -667,10 +667,10 @@ Action:Event_FriendlyFire(Handle:hEvent, const String:strName[], bool:bDontBroad
 	// new guilty = GetClientOfUserId(GetEventInt(hEvent,"guilty"));
 	// new type = GetEventInt(hEvent,"type");
 	// PrintToChatAll("Attacker = %d, Victim = %d, Guilty = %d, Type = %d", attacker, victim, guilty, type);
-	
+	return Plugin_Continue;
 }
 
-Action:Event_PlayerShoved(Event event, const char[] name, bool dontBroadcast)
+Action Event_PlayerShoved(Event event, const char[] name, bool dontBroadcast)
 {
 	// int iClient = GetClientOfUserId(event.GetInt("userid"));
 	// if (RunClientChecks(iClient) == false)
@@ -684,7 +684,7 @@ Action:Event_PlayerShoved(Event event, const char[] name, bool dontBroadcast)
 	// 	return Plugin_Stop;
 	// }
 
-	// return Plugin_Continue;
+	return Plugin_Continue;
 }
 
 // Triggered when player opens safe room door and walks out

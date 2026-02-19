@@ -4,7 +4,7 @@ void Bind2Press_Coach(iClient)
     {
         if(g_bIsJetpackOn[iClient] == false && g_iClientJetpackFuel[iClient] > 0)
         {
-            new Float:vec[3];
+            float vec[3];
             GetClientAbsOrigin(iClient, vec);
             StopSound(iClient, SNDCHAN_AUTO, SOUND_JPIDLEREV);
             EmitSoundToAll(SOUND_JPSTART, iClient, SNDCHAN_AUTO,	SNDLEVEL_NORMAL, SND_NOFLAGS, 0.3, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
@@ -14,7 +14,7 @@ void Bind2Press_Coach(iClient)
         else
         {
             StopSound(iClient, SNDCHAN_AUTO, SOUND_JPIDLEREV);
-            new Float:vec[3];
+            float vec[3];
             GetClientAbsOrigin(iClient, vec);
             EmitSoundToAll(SOUND_JPDIE, iClient, SNDCHAN_AUTO,	SNDLEVEL_NORMAL, SND_NOFLAGS, 0.3, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
             g_bIsJetpackOn[iClient] = false;
@@ -39,7 +39,7 @@ void PrintCoachJetpackFuelGauge(iClient)
     if(g_iWreckingBallChargeCounter[iClient] != 0)
         return;
     
-    decl String:strEntireHintTextString[556], String:strFuelMeter[256];
+    char strEntireHintTextString[556], strFuelMeter[256];
     strEntireHintTextString = NULL_STRING;
     strFuelMeter = NULL_STRING;
 
@@ -71,7 +71,7 @@ void HandleCoachJetPack2SecondTick(int iClient)
             CreateTimer(0.5, DeleteParticle, g_iPID_CoachJetpackStream[iClient], TIMER_FLAG_NO_MAPCHANGE);
             StopSound(iClient, SNDCHAN_AUTO, SOUND_JPHIGHREV);
             StopSound(iClient, SNDCHAN_AUTO, SOUND_JPIDLEREV);
-            new Float:vec[3];
+            float vec[3];
             GetClientAbsOrigin(iClient, vec);
             EmitSoundToAll(SOUND_JPDIE, iClient, SNDCHAN_AUTO,	SNDLEVEL_NORMAL, SND_NOFLAGS, 0.3, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
             

@@ -15,8 +15,8 @@ void Bind1Press_Charger(iClient)
                         new iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
                         if (iEntid > 0)
                         {
-                            new Float:flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+8);
-                            new Float:flTimeStamp_calc = flTimeStamp_ret - 12.0;
+                            float flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+8);
+                            float flTimeStamp_calc = flTimeStamp_ret - 12.0;
                             SetEntDataFloat(iEntid, g_iOffset_NextActivation+8, flTimeStamp_calc, true);
                         }
                         PrintHintText(iClient, "Your next charge will be a super charge");

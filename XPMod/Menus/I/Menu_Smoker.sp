@@ -1,7 +1,7 @@
 //Smoker Menu
 
 //Smoker Top Menu Draw
-Action:SmokerTopMenuDraw(iClient) 
+Action SmokerTopMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	Menu menu = CreateMenu(SmokerTopMenuHandler);
@@ -11,7 +11,7 @@ Action:SmokerTopMenuDraw(iClient)
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
-	decl String:title[256];
+	char title[256];
 	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n==========================\nSmoker Talents:\n==========================\n \nRapid Cell Division: Level %d\nIllusive Trickster: Level %d\nAcute Toxicity: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iSmokerTalent1Level[iClient], g_iSmokerTalent2Level[iClient], g_iSmokerTalent3Level[iClient]);
 	SetMenuTitle(menu, title);
 	AddMenuItem(menu, "option1", "Rapid Cell Division");
@@ -26,7 +26,7 @@ Action:SmokerTopMenuDraw(iClient)
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		\n==========================\
@@ -43,7 +43,7 @@ Action:SmokerTopMenuDraw(iClient)
 //Talent Draws///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Envelopment Menu Draw
-Action:EnvelopmentMenuDraw(iClient)
+Action EnvelopmentMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(EnvelopmentMenuHandler);
 
@@ -71,7 +71,7 @@ Action:EnvelopmentMenuDraw(iClient)
 		strStartingNewLines,
 		g_iSmokerTalent1Level[iClient]);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -85,7 +85,7 @@ Action:EnvelopmentMenuDraw(iClient)
 }
 
 //Noxious Gasses Menu Draw
-Action:NoxiousMenuDraw(iClient)
+Action NoxiousMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(NoxiousMenuHandler);
 
@@ -120,7 +120,7 @@ Action:NoxiousMenuDraw(iClient)
 		strStartingNewLines,
 		g_iSmokerTalent2Level[iClient]);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n ",
@@ -134,7 +134,7 @@ Action:NoxiousMenuDraw(iClient)
 }
 
 //Dirty Tricks Menu Draw
-Action:DirtyMenuDraw(iClient)
+Action DirtyMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(DirtyMenuHandler);
 
@@ -166,7 +166,7 @@ Action:DirtyMenuDraw(iClient)
 		strStartingNewLines,
 		g_iSmokerTalent3Level[iClient]);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -180,14 +180,14 @@ Action:DirtyMenuDraw(iClient)
 }
 
 //Choose Smoker Menu Draw
-Action:ChooseSmokerClassMenuDraw(iClient) 
+Action ChooseSmokerClassMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	
 	Menu menu = CreateMenu(ChooseSmokerClassMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
-	decl String:title[256];
+	char title[256];
 	FormatEx(title, sizeof(title), "==========================\n		Current Classes\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n==========================\n \nPick a class to replace with the Smoker:",g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	SetMenuTitle(menu, title);
 	AddMenuItem(menu, "option1", "Replace Class 1");
@@ -202,7 +202,7 @@ Action:ChooseSmokerClassMenuDraw(iClient)
 //Handlers/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Smoker Top Menu Handler
-SmokerTopMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+SmokerTopMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -256,7 +256,7 @@ SmokerTopMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Envelopment Menu Handler
-EnvelopmentMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+EnvelopmentMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -275,7 +275,7 @@ EnvelopmentMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Noxious Gasses Menu Handler
-NoxiousMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+NoxiousMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -294,7 +294,7 @@ NoxiousMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Dirty Menu Handler
-DirtyMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+DirtyMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -313,7 +313,7 @@ DirtyMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Choose Smoker Top Menu Handler
-ChooseSmokerClassMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+ChooseSmokerClassMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{

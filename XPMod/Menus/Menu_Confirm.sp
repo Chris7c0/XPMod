@@ -1,4 +1,4 @@
-Action:TimerCheckAndOpenCharacterSelectionMenuForAll(Handle:timer, any:data)
+Action TimerCheckAndOpenCharacterSelectionMenuForAll(Handle timer, any data)
 {
 	decl iClient;
 	for(iClient = 1; iClient <= MaxClients; iClient++)
@@ -22,7 +22,7 @@ Action:TimerCheckAndOpenCharacterSelectionMenuForAll(Handle:timer, any:data)
 	return Plugin_Continue;
 }
 
-// Action:TimerOpenCharacterSelectionMenuForUser(Handle:timer, any:iClient)
+// Action TimerOpenCharacterSelectionMenuForUser(Handle timer, any iClient)
 // {
 // 	if (g_iAutoSetCountDown[iClient] == -1 && 
 // 		g_bClientLoggedIn[iClient] == true && 
@@ -69,7 +69,7 @@ ResetTalentConfirmCountdown(iClient)
 	g_bClientAlreadyShownCharacterSelectMenu[iClient] = false;
 }
 
-Action:StartWaitingForClientInputForDrawMenu(Handle:timer, any:iClient)
+Action StartWaitingForClientInputForDrawMenu(Handle timer, any iClient)
 {
 	// This will wait then 2nd button input for drawing the confirm menu
 	g_iOpenCharacterSelectAndDrawMenuState[iClient] = WAITING_ON_FINAL_BUTTON_FOR_CONFIRM_MENU;
@@ -77,10 +77,10 @@ Action:StartWaitingForClientInputForDrawMenu(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-// Action:DelayedCharacterSelectDrawMOTDPanel(Handle:timer, any:iClient)
+// Action DelayedCharacterSelectDrawMOTDPanel(Handle timer, any iClient)
 // {
 // 	// PrintToServer("Drawing MOTD");
-// 	decl String:url[256];
+// 	char url[256];
 
 // 	if (g_iClientTeam[iClient] == TEAM_SURVIVORS)
 // 		Format(url, sizeof(url), "http://xpmod.net/select/s/survivor_select.php?id=%i&t=%s", g_iDBUserID[iClient], g_strDBUserToken[iClient]);
@@ -104,7 +104,7 @@ OpenCharacterSelectMenu(iClient)
 		TopChooseCharactersMenuDraw(iClient);
 }
 
-Action:TimerShowTalentsConfirmed(Handle:timer, any:iClient)
+Action TimerShowTalentsConfirmed(Handle timer, any iClient)
 {
 	if(RunClientChecks(iClient) &&
 		IsFakeClient(iClient) == false &&
@@ -134,7 +134,7 @@ DrawConfirmationMenuToClient(iClient, iDisplayTime = 60)
 	g_hTimer_ShowingConfirmTalents[iClient] = CreateTimer(1.0, TimerShowTalentsConfirmed, iClient, TIMER_REPEAT);
 }
 
-Action:ConfirmationMessageMenuDraw(iClient)
+Action ConfirmationMessageMenuDraw(iClient)
 {
 	if(RunClientChecks(iClient) == false || 
 		IsFakeClient(iClient) == true ||
@@ -151,7 +151,7 @@ Action:ConfirmationMessageMenuDraw(iClient)
 			GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 			GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 			
-			decl String:surClass[32];
+			char surClass[32];
 			switch(g_iChosenSurvivor[iClient])
 			{
 				case BILL: surClass =  "Bill - Support";
@@ -163,7 +163,7 @@ Action:ConfirmationMessageMenuDraw(iClient)
 				default: surClass = "NONE";
 			}
 			
-			decl String:text[300];
+			char text[300];
 			FormatEx(text, sizeof(text), "%s===	===	===	===	===	===	===	===	===	===\n \n	Survivor:			   %s\n	Equipment Cost:	 %d XP\n	Infected:				%s	%s	%s\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \nConfirm your Characters and Equipment for this round?     \n ", strStartingNewLines, surClass, g_iClientTotalXPCost[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 			SetMenuTitle(menu, text);
 			
@@ -210,7 +210,7 @@ Action:ConfirmationMessageMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-ConfirmationMessageMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+ConfirmationMessageMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{

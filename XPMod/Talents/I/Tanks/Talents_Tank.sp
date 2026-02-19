@@ -14,7 +14,7 @@ OnGameFrame_Tank(iClient)
 	}
 }
 
-EventsHurt_AttackerTank(Handle:hEvent, iAttackerTank, iVictim)
+EventsHurt_AttackerTank(Handle hEvent, iAttackerTank, iVictim)
 {
 	switch(g_iTankChosen[iAttackerTank])
 	{
@@ -25,7 +25,7 @@ EventsHurt_AttackerTank(Handle:hEvent, iAttackerTank, iVictim)
 	}
 }
 
-EventsHurt_VictimTank(Handle:hEvent, iAttacker, iVictimTank)
+EventsHurt_VictimTank(Handle hEvent, iAttacker, iVictimTank)
 {
 	// If the player has not selected a tank type, and they have take enough damage, then
 	// automatically select a tank type for them.  This will be for people that never select
@@ -92,7 +92,7 @@ EventsHurt_VictimTank(Handle:hEvent, iAttacker, iVictimTank)
 }
 
 
-// EventsDeath_AttackerTank(Handle:hEvent, iAttackerTank, iVictim)
+// EventsDeath_AttackerTank(Handle hEvent, iAttackerTank, iVictim)
 // {
 // 	switch(g_iTankChosen[iAttackerTank])
 // 	{
@@ -103,7 +103,7 @@ EventsHurt_VictimTank(Handle:hEvent, iAttacker, iVictimTank)
 // 	}
 // }
 
-EventsDeath_VictimTank(Handle:hEvent, iAttacker, iVictimTank)
+EventsDeath_VictimTank(Handle hEvent, iAttacker, iVictimTank)
 {
 	if (g_iClientTeam[iVictimTank] != TEAM_INFECTED ||
 		g_bEndOfRound == true ||
@@ -139,7 +139,7 @@ SetupTankForBot(iClient)
 }
 
 // This is a timed function written for the Tank Spawn event, which doesn't work unless its timed
-Action:TimerResetAllTankVariables(Handle:timer, any:iClient)
+Action TimerResetAllTankVariables(Handle timer, any iClient)
 {
 	ResetAllTankVariables(iClient);
 	return Plugin_Stop;
@@ -246,13 +246,13 @@ ResetTankHealth(int iClient)
 	CreateTimer(6.0, TimerResetTankHealthJustSet, iClient, TIMER_FLAG_NO_MAPCHANGE);
 }
 
-Action:TimerResetTankHealthJustSet(Handle:timer, any:iClient)
+Action TimerResetTankHealthJustSet(Handle timer, any iClient)
 {
 	g_bTankHealthJustSet[iClient] = false;
 	return Plugin_Stop;
 }
 
-Action:TimerResetTankTakeOverBot(Handle:timer, any:iClient)
+Action TimerResetTankTakeOverBot(Handle timer, any iClient)
 {
 	g_bTankTakeOverBot[iClient] = false;
 	return Plugin_Stop;
@@ -335,11 +335,11 @@ StorePassedOrFrustratedTanksHealthPercentage(iClient)
 
 CheckIfTankMovedWhileChargingAndIncrementCharge(iClient)
 {
-	decl Float:xyzCurrentPosition[3];
+	float xyzCurrentPosition[3];
 	GetClientAbsOrigin(iClient, xyzCurrentPosition);
 
 	// Make sure the tank hasn't moved while charging(tanks position has changed)
-	new Float:distance = GetVectorDistance(g_xyzClientTankPosition[iClient], xyzCurrentPosition, false);
+	float distance = GetVectorDistance(g_xyzClientTankPosition[iClient], xyzCurrentPosition, false);
 	if(distance < 5.0)
 	{
 		g_iTankCharge[iClient]++;

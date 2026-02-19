@@ -121,12 +121,12 @@ EventsHurt_AttackerJockey(Handle hEvent, iAttacker, iVictim)
 	}
 }
 
-// EventsDeath_AttackerJockey(Handle:hEvent, iAttacker, iVictim)
+// EventsDeath_AttackerJockey(Handle hEvent, iAttacker, iVictim)
 // {
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }
 
-// EventsDeath_VictimJockey(Handle:hEvent, iAttacker, iVictim)
+// EventsDeath_VictimJockey(Handle hEvent, iAttacker, iVictim)
 // {
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }

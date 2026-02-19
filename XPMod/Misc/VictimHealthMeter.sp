@@ -9,7 +9,7 @@ MonitorVictimHealthMeterForSurvivorPlayer(iAttacker, iVictim)
 	g_hTimer_VictimHealthMeterStop[iAttacker] = CreateTimer(VICTIM_HEALTH_METER_DISPLAY_TIME, Timer_VictimHealthMeterStop, iAttacker);
 }
 
-Action Timer_VictimHealthMeterStop(Handle:timer, int iClient)
+Action Timer_VictimHealthMeterStop(Handle timer, int iClient)
 {
 	// Disable showing the client the victim health meter
 	g_bVictimHealthMeterActive[iClient] = false;
@@ -46,9 +46,9 @@ PrintVictimHealthMeterToSurvivorPlayer(int iClient)
 	new iCurrentMaxHealth = GetPlayerMaxHealth(iVictim);
 	new iCurrentHealth = GetPlayerHealth(iVictim);
 	if (iCurrentHealth < 0) iCurrentHealth = 0;
-	new Float:fHealthPercentage = (iCurrentMaxHealth > 0) ? (float(iCurrentHealth) / float(iCurrentMaxHealth)) : 0.0;
+	float fHealthPercentage = (iCurrentMaxHealth > 0) ? (float(iCurrentHealth) / float(iCurrentMaxHealth)) : 0.0;
 
-	decl String:strHealthBar[256];
+	char strHealthBar[256];
 	strHealthBar = NULL_STRING;
 
 	// Create the actual mana amount in the "progress meter"

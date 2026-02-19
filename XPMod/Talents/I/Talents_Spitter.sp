@@ -4,14 +4,14 @@ TalentsLoad_Spitter(iClient)
 	{
 		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Spitter Talents \x05have been loaded.");
 		
-		new Float:xyzLocation[3];
+		float xyzLocation[3];
 		GetEntPropVector(iClient, Prop_Send, "m_vecOrigin", xyzLocation);
 		
 		xyzLocation[2] += 10.0;
 		
 		WriteParticle(iClient, "spitter_conjure", 180.0, 7.0, xyzLocation);
 	
-		new Handle:hDataPackage = CreateDataPack();
+		Handle hDataPackage = CreateDataPack();
 		WritePackCell(hDataPackage, iClient);
 		WritePackFloat(hDataPackage, xyzLocation[0]);
 		WritePackFloat(hDataPackage, xyzLocation[1]);
@@ -123,7 +123,7 @@ OnGameFrame_Spitter(iClient)
 	}
 }
 
-EventsHurt_AttackerSpitter(Handle:hEvent, attacker, victim)
+EventsHurt_AttackerSpitter(Handle hEvent, attacker, victim)
 {
 	if (IsFakeClient(attacker))
 		return;
@@ -135,7 +135,7 @@ EventsHurt_AttackerSpitter(Handle:hEvent, attacker, victim)
 	
 	if(g_iPuppetLevel[attacker] > 0)
 	{
-		decl String:weapon[20];
+		char weapon[20];
 		GetEventString(hEvent,"weapon", weapon, 20);
 		if(StrEqual(weapon,"insect_swarm") == true)
 		{
@@ -171,12 +171,12 @@ EventsHurt_AttackerSpitter(Handle:hEvent, attacker, victim)
 	}
 }
 
-// EventsDeath_AttackerSpitter(Handle:hEvent, iAttacker, iVictim)
+// EventsDeath_AttackerSpitter(Handle hEvent, iAttacker, iVictim)
 // {
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }
 
-// EventsDeath_VictimSpitter(Handle:hEvent, iAttacker, iVictim)
+// EventsDeath_VictimSpitter(Handle hEvent, iAttacker, iVictim)
 // {
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }
@@ -218,7 +218,7 @@ DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 			if (IsIncap(iVictim) == false)
 			{
 				new iHealth = GetPlayerHealth(iVictim);
-				new Float:fTempHealth = GetEntDataFloat(iVictim, g_iOffset_HealthBuffer);
+				float fTempHealth = GetEntDataFloat(iVictim, g_iOffset_HealthBuffer);
 				
 				if(fTempHealth < 1.0)
 					fTempHealth = 1.0;
@@ -256,7 +256,7 @@ DealSpecialSpitterGooCollision(iAttacker, iVictim, iDamageTaken)
 			if(g_bCanBePushedByRepulsion[iVictim] == true)
 			{
 				g_bCanBePushedByRepulsion[iVictim] = false;
-				new Float:xyzNewVelocity[3];
+				float xyzNewVelocity[3];
 				decl RandomRepulsionDirection;
 				RandomRepulsionDirection = GetRandomInt(1, 9);
 				switch (RandomRepulsionDirection)
@@ -356,7 +356,7 @@ void VirallyInfectVictim(iVictim, iAttacker)
 	}
 }
 
-void ConjureFromBagOfSpits(iClient, Float:xyzLocation[3])
+void ConjureFromBagOfSpits(iClient, float xyzLocation[3])
 {
 	if (g_bTalentsConfirmed[iClient] == false || 
 		g_iMaterialLevel[iClient] == 0 || 

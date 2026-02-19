@@ -22,7 +22,7 @@ UnpauseGame(int iClient)
 	SetConVarInt(FindConVar("sv_pausable"), 0);
 }
 
-Action TimerPauseGame(Handle:timer, any:iClient)
+Action TimerPauseGame(Handle timer, any iClient)
 {
     PauseGame(iClient);
     return Plugin_Stop;
@@ -81,7 +81,7 @@ int ResurrectPlayer(int iTarget, int iClient)
 	if (RunClientChecks(iTarget) == false || RunClientChecks(iClient) == false)
 		return -1;
 
-	decl Float:xyzLocation[3];
+	float xyzLocation[3];
 	GetClientAbsOrigin(iClient, xyzLocation);
 
 	SDKCall(g_hSDK_RoundRespawn, iTarget);

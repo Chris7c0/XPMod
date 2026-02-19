@@ -6,13 +6,13 @@ void Bind2Press_Ellis(iClient)
         {
             if(g_bUsingFireStorm[iClient] == false)
             {
-                new Float:vec[3];
+                float vec[3];
                 GetClientAbsOrigin(iClient, vec);
                 vec[2] += 10;
                 EmitAmbientSound(SOUND_IGNITE, vec, iClient, SNDLEVEL_NORMAL);
                 EmitSoundToAll(SOUND_ONFIRE, iClient, SNDCHAN_AUTO,	SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
                 g_bUsingFireStorm[iClient] = true;
-                new Float:time = (float(g_iFireLevel[iClient]) * 3.0);
+                float time = (float(g_iFireLevel[iClient]) * 3.0);
                 switch(g_iClientBindUses_2[iClient])
                 {
                     case 0:

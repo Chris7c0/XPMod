@@ -1,4 +1,4 @@
-Action:TankMenuDrawIce(iClient)
+Action TankMenuDrawIce(iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(TankMenuHandlerIce);
@@ -28,7 +28,7 @@ Action:TankMenuDrawIce(iClient)
 		strStartingNewLines,
         TANK_HEALTH_ICE);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -41,7 +41,7 @@ Action:TankMenuDrawIce(iClient)
 	return Plugin_Handled;
 }
 
-TankMenuHandlerIce(Menu menu, MenuAction:action, iClient, itemNum)
+TankMenuHandlerIce(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{

@@ -189,7 +189,7 @@ int GetSurvivorTempHealth(int iClient)
 	return tempHealth < 0 ? 0 : tempHealth;
 }
 
-// Action:TimerConvertAllSurvivorHealthToTemporary(Handle:timer, int iClient)
+// Action TimerConvertAllSurvivorHealthToTemporary(Handle timer, int iClient)
 // {
 // 	ConvertAllSurvivorHealthToTemporary(iClient);
 // }

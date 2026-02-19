@@ -1,7 +1,7 @@
 //Infected Talents Menu
 
 //Top Infected Menu Draw
-Action:TopInfectedMenuDraw(iClient) 
+Action TopInfectedMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 
@@ -12,7 +12,7 @@ Action:TopInfectedMenuDraw(iClient)
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
-	decl String:title[256];
+	char title[256];
 	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		 Your Infected\n \n Class 1)	%s\n Class 2)	%s\n Class 3)	%s\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	SetMenuTitle(menu, title);
 	AddMenuItem(menu, "option1", "Smoker");
@@ -30,7 +30,7 @@ Action:TopInfectedMenuDraw(iClient)
 	
 	AddMenuItem(menu, "option9", "Back");
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Exit the Menu\
 		\n▬▬▬▬▬▬▬▬▬▬▬▬▬\
 		%s\
@@ -46,7 +46,7 @@ Action:TopInfectedMenuDraw(iClient)
 }
 
 //Change Your Infected Menu Draw
-Action:ChangeInfectedMenuDraw(iClient) 
+Action ChangeInfectedMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 
@@ -61,7 +61,7 @@ Action:ChangeInfectedMenuDraw(iClient)
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
-	decl String:title[256];
+	char title[256];
 	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n	Change Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient],g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	SetMenuTitle(menu, title);
 	AddMenuItem(menu, "option1", "Change Class 1");
@@ -69,7 +69,7 @@ Action:ChangeInfectedMenuDraw(iClient)
 	AddMenuItem(menu, "option3", "Change Class 3\n ");
 	AddMenuItem(menu, "option4", "", ITEMDRAW_NOTEXT);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Confirm Your Infected\
 		\n▬▬▬▬▬▬▬▬▬▬▬▬▬\
 		%s\
@@ -83,7 +83,7 @@ Action:ChangeInfectedMenuDraw(iClient)
 }
 
 //Change Infected Class 1
-Action:ChangeClass1MenuDraw(iClient) 
+Action ChangeClass1MenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	
@@ -104,7 +104,7 @@ Action:ChangeClass1MenuDraw(iClient)
 	AddMenuItem(menu, "option7", "None\n ");
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Back\
 		\n▬▬▬▬▬▬▬▬▬▬▬▬▬\
 		%s\
@@ -117,7 +117,7 @@ Action:ChangeClass1MenuDraw(iClient)
 	return Plugin_Handled;
 }
 //Change Infected Class 2
-Action:ChangeClass2MenuDraw(iClient) 
+Action ChangeClass2MenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	
@@ -138,7 +138,7 @@ Action:ChangeClass2MenuDraw(iClient)
 	AddMenuItem(menu, "option7", "None\n ");
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Back\
 		\n▬▬▬▬▬▬▬▬▬▬▬▬▬\
 		%s\
@@ -151,7 +151,7 @@ Action:ChangeClass2MenuDraw(iClient)
 	return Plugin_Handled;
 }
 //Change Infected Class 3
-Action:ChangeClass3MenuDraw(iClient) 
+Action ChangeClass3MenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	
@@ -172,7 +172,7 @@ Action:ChangeClass3MenuDraw(iClient)
 	AddMenuItem(menu, "option7", "None\n ");
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Back\
 		\n▬▬▬▬▬▬▬▬▬▬▬▬▬\
 		%s\
@@ -188,7 +188,7 @@ Action:ChangeClass3MenuDraw(iClient)
 //Infected Menu Handlers
 
 //Top Infected Menu Handler
-TopInfectedMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+TopInfectedMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -245,7 +245,7 @@ TopInfectedMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Choose Infected Classes Menu
-ChangeInfectedMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+ChangeInfectedMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -294,7 +294,7 @@ ChangeInfectedMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Change Infected Class 1
-ChangeClass1MenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+ChangeClass1MenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -408,7 +408,7 @@ ChangeClass1MenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 	}
 }
 //Change Infected Class 2
-ChangeClass2MenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+ChangeClass2MenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -522,7 +522,7 @@ ChangeClass2MenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 	}
 }
 //Change Infected Class 3
-ChangeClass3MenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+ChangeClass3MenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{

@@ -20,8 +20,8 @@ void HandleClientConnect(int iClient)
 		return;
 	}
 	
-	decl String:clientname[128];
-	new bool:match = true;
+	char clientname[128];
+	bool match = true;
 	GetClientName(iClient, clientname, sizeof(clientname));
 
 	// Fill in special characters with ?...to prevent errors..I guess?

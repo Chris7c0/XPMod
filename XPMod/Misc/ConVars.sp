@@ -1,7 +1,7 @@
 GetXPMConVarValues()
 {
 	//Execute config file
-	decl String:strFileName[64];
+	char strFileName[64];
 	Format(strFileName, sizeof(strFileName), "xpmod");
 	AutoExecConfig(true, strFileName);
 }
@@ -63,7 +63,7 @@ SetUpInitialConvarValues()
 }
 
 //Callback function for updating the Debug Mode
-CVarChange_DebugModeLogLevel(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
+CVarChange_DebugModeLogLevel(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
 {
 	//If the value was not changed, then do nothing
 	if(StrEqual(strOldValue, strNewValue) == true)
@@ -75,7 +75,7 @@ CVarChange_DebugModeLogLevel(Handle:hCVar, const String:strOldValue[], const Str
 }
 
 //Callback function for updating the Idle Kicking
-CVarChange_DebugModeEnabled(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
+CVarChange_DebugModeEnabled(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
 {
 	//If the value was not changed, then do nothing
 	if(StrEqual(strOldValue, strNewValue) == true)
@@ -90,7 +90,7 @@ CVarChange_DebugModeEnabled(Handle:hCVar, const String:strOldValue[], const Stri
 
 
 //Callback function for updating the Idle Kicking
-CVarChange_IdleKickEnabled(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
+CVarChange_IdleKickEnabled(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
 {
 	//If the value was not changed, then do nothing
 	if(StrEqual(strOldValue, strNewValue) == true)
@@ -102,7 +102,7 @@ CVarChange_IdleKickEnabled(Handle:hCVar, const String:strOldValue[], const Strin
 }
 
 //Callback function for updating the XP Gain and Use on the Server
-CVarChange_XPSaveForHighLevelsEnabled(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
+CVarChange_XPSaveForHighLevelsEnabled(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
 {
 	//If the value was not changed, then do nothing
 	if(StrEqual(strOldValue, strNewValue) == true)
@@ -115,7 +115,7 @@ CVarChange_XPSaveForHighLevelsEnabled(Handle:hCVar, const String:strOldValue[], 
 
 
 //Callback function for enabling or disabling the new vote winner sound
-// CVarChange_TalentSelectionMode(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
+// CVarChange_TalentSelectionMode(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
 // {
 // 	//If the value was not changed, then do nothing
 // 	if(StrEqual(strOldValue, strNewValue) == true)
@@ -138,7 +138,7 @@ CVarChange_XPSaveForHighLevelsEnabled(Handle:hCVar, const String:strOldValue[], 
 
 
 //Callback function for updating the default survivor
-CVarChange_DefaultSurvivor(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
+CVarChange_DefaultSurvivor(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
 {
 	//If the value was not changed, then do nothing
 	if(StrEqual(strOldValue, strNewValue) == true)
@@ -150,7 +150,7 @@ CVarChange_DefaultSurvivor(Handle:hCVar, const String:strOldValue[], const Strin
 }
 
 //Callback function for updating the default infected
-CVarChange_DefaultInfectedSlot1(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
+CVarChange_DefaultInfectedSlot1(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
 {
 	//If the value was not changed, then do nothing
 	if(StrEqual(strOldValue, strNewValue) == true)
@@ -162,7 +162,7 @@ CVarChange_DefaultInfectedSlot1(Handle:hCVar, const String:strOldValue[], const 
 }
 
 //Callback function for updating the default infected
-CVarChange_DefaultInfectedSlot2(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
+CVarChange_DefaultInfectedSlot2(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
 {
 	//If the value was not changed, then do nothing
 	if(StrEqual(strOldValue, strNewValue) == true)
@@ -175,7 +175,7 @@ CVarChange_DefaultInfectedSlot2(Handle:hCVar, const String:strOldValue[], const 
 
 
 //Callback function for updating the default infected
-CVarChange_DefaultInfectedSlot3(Handle:hCVar, const String:strOldValue[], const String:strNewValue[])
+CVarChange_DefaultInfectedSlot3(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
 {
 	//If the value was not changed, then do nothing
 	if(StrEqual(strOldValue, strNewValue) == true)

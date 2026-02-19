@@ -1,4 +1,4 @@
-Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_PlayerHurt(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"attacker"));
 	new iVictim  = GetClientOfUserId(GetEventInt(hEvent,"userid"));
@@ -24,7 +24,7 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	// PrintToChatAll("Attacker = %d, Victim = %d, dmgHealth = %d, dmgType = %d, hitGroup = %d", iAttacker, iVictim, dmgHealth, dmgType, hitGroup);
 	// PrintToChatAll("%N dType = %d, Group = %d, dHealth = %d", iVictim, dmgType, hitGroup, dmgHealth);
 	// PrintToChatAll("g_iInfectedCharacter[iAttacker] = %s", g_iInfectedCharacter[iAttacker]);
-	// decl String:testweapon[32];
+	// char testweapon[32];
 	// GetEventString(hEvent,"weapon", testweapon, 32);
 	// PrintToChatAll("\x03-weapon: \x01%s, dmgHealth: %i",testweapon, dmgHealth);
 
@@ -153,7 +153,7 @@ Action:Event_PlayerHurt(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	return Plugin_Continue;
 }
 
-void EventsHurt_GiveXP(Handle:hEvent, iAttacker, iVictim)
+void EventsHurt_GiveXP(Handle hEvent, iAttacker, iVictim)
 {
 	new iDmgType = GetEventInt(hEvent, "type");
 	new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
@@ -167,7 +167,7 @@ void EventsHurt_GiveXP(Handle:hEvent, iAttacker, iVictim)
 		IsClientInGame(iAttacker) == true && 
 		IsFakeClient(iAttacker) == false)		//Damage XP Give
 	{
-		decl String:iWeaponClass[32];
+		char iWeaponClass[32];
 		GetEventString(hEvent,"weapon",iWeaponClass,32);
 		//PrintToChat(iAttacker, "weaponclass = %s", iWeaponClass);
 		
@@ -222,7 +222,7 @@ void EventsHurt_GiveXP(Handle:hEvent, iAttacker, iVictim)
 					g_iStat_ClientDamageToSurvivors[g_iVomitVictimAttacker[iVictim]] += 250;
 			}
 			
-			decl String:iMessage[64];
+			char iMessage[64];
 			Format(iMessage, sizeof(iMessage), "Assited against %N.", iVictim);
 			GiveClientXP(g_iVomitVictimAttacker[iVictim], 3, g_iSprite_3XP_SI, iVictim, iMessage, true, 1.0);
 		}
@@ -250,7 +250,7 @@ void EventsHurt_IncreaseCommonInfectedDamage(iAttacker, iVictim)
 		IsPlayerAlive(iVictim))	
 	{
 		new hp = GetPlayerHealth(iVictim);
-		new Float:fTempHealth = GetEntDataFloat(iVictim, g_iOffset_HealthBuffer);
+		float fTempHealth = GetEntDataFloat(iVictim, g_iOffset_HealthBuffer);
 		if(fTempHealth > 0)
 		{
 			fTempHealth -= 1.0;
@@ -261,7 +261,7 @@ void EventsHurt_IncreaseCommonInfectedDamage(iAttacker, iVictim)
 	}
 }
 
-void EventsHurt_PlayHeadshotDingSoundForHeadshots(Handle:hEvent, iAttacker, iVictim)
+void EventsHurt_PlayHeadshotDingSoundForHeadshots(Handle hEvent, iAttacker, iVictim)
 {
 	if (g_iClientTeam[iAttacker] != TEAM_SURVIVORS || 
 		g_iClientTeam[iVictim] != TEAM_INFECTED ||

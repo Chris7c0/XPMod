@@ -7,9 +7,9 @@ void Bind2Press_Louis(iClient)
 }
 
 // Script Kiddie Exploits Menu Draw
-Action:ScriptKiddieExploitsMenuDraw(iClient)
+Action ScriptKiddieExploitsMenuDraw(iClient)
 {
-	decl String:text[512];
+	char text[512];
 	
 	Menu menu = CreateMenu(ScriptKiddieExploitsMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -83,7 +83,7 @@ Action:ScriptKiddieExploitsMenuDraw(iClient)
 }
 
 // Scrip tKiddie Exploits Menu Handler
-ScriptKiddieExploitsMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+ScriptKiddieExploitsMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {	
 	if (action == MenuAction_End)
 	{
@@ -154,7 +154,7 @@ bool SpeedHax(iClient)
 	return true;
 }
 
-Action:TimerStopSpeedHax(Handle:timer, int blah)
+Action TimerStopSpeedHax(Handle timer, int blah)
 {
 	if (g_bLouisSpeedHaxEnabled == false)
 		return Plugin_Stop;
@@ -198,7 +198,7 @@ bool MedHax(iClient)
 	return true;
 }
 
-Action:TimerStopMedHax(Handle:timer, int blah)
+Action TimerStopMedHax(Handle timer, int blah)
 {
 	if (g_bLouisMedHaxEnabled == false)
 		return Plugin_Stop;
@@ -266,9 +266,9 @@ bool HackTargetPlayer(iClient)
 }
 
 // Hack Target Player Menu Draw
-Action:HackTargetPlayerMenuDraw(iClient)
+Action HackTargetPlayerMenuDraw(iClient)
 {
-	decl String:text[512], String:strTargetID[10];
+	char text[512], strTargetID[10];
 	
 	Menu menu = CreateMenu(HackTargetPlayerMenuHandler);
 	
@@ -286,7 +286,7 @@ Action:HackTargetPlayerMenuDraw(iClient)
 	AddMenuItem(menu, "Option0", " ***  Rescan  ***\n ");
 
 	// Store the client's position to use for checking if they can see the targets
-	decl Float:xyzClientLocation[3],Float:xyzTargetLocation[3];
+	float xyzClientLocation[3], xyzTargetLocation[3];
 	GetClientEyePosition(iClient, xyzClientLocation);
 
 	for (int iTarget=1; iTarget <= MaxClients; iTarget++)
@@ -316,7 +316,7 @@ Action:HackTargetPlayerMenuDraw(iClient)
 }
 
 // Hack Target Player Menu Handler
-HackTargetPlayerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+HackTargetPlayerMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {	
 	if (action == MenuAction_End)
 	{
@@ -385,13 +385,13 @@ bool HackTargetPlayersControls(int iClient, float fDuration, bool bSpamChat = tr
 	return true;
 }
 
-Action TimerUnhackTargetPlayersControls(Handle:timer, int iClient)
+Action TimerUnhackTargetPlayersControls(Handle timer, int iClient)
 {
 	g_bIsPLayerHacked[iClient] = false;
 	return Plugin_Stop;
 }
 
-Action:TimerSpamChatForHackedTargetPlayer(Handle:timer, int iClient)
+Action TimerSpamChatForHackedTargetPlayer(Handle timer, int iClient)
 {
 	if (RunClientChecks(iClient) == false ||
 		IsFakeClient(iClient) == true ||
@@ -420,7 +420,7 @@ Action:TimerSpamChatForHackedTargetPlayer(Handle:timer, int iClient)
 	return Plugin_Continue;
 }
 
-Action:TimerSpamRandomSoundsToHackedTargetPlayer(Handle:timer, int iClient)
+Action TimerSpamRandomSoundsToHackedTargetPlayer(Handle timer, int iClient)
 {
 	if (RunClientChecks(iClient) == false ||
 		IsFakeClient(iClient) == true ||
@@ -495,7 +495,7 @@ bool HackTheServer(iClient)
 	return true;
 }
 
-Action:TimerPrintHakTehServerConsolePatchingMessage(Handle:timer, int blah)
+Action TimerPrintHakTehServerConsolePatchingMessage(Handle timer, int blah)
 {
 	switch(GetRandomInt(0, 6))
 	{
@@ -511,7 +511,7 @@ Action:TimerPrintHakTehServerConsolePatchingMessage(Handle:timer, int blah)
 	return Plugin_Stop;
 }
 
-Action:TimerResetTimeScale(Handle:timer, int iClient)
+Action TimerResetTimeScale(Handle timer, int iClient)
 {
 	TimeScale();
 
@@ -585,14 +585,14 @@ bool TimeOut(iClient)
 	return true;
 }
 
-Action:TimerReenableInfectedBinds(Handle:timer, int iClient)
+Action TimerReenableInfectedBinds(Handle timer, int iClient)
 {
 	g_bInfectedBindsDisabled = false;
 	PrintToChatAll("\x03[XPMod] \x05Infected Binds have been fixed. Time Out is over.", iClient);
 	return Plugin_Stop;
 }
 
-Action:TimerLouisResetGlobalHeadShopCooldown(Handle:timer, int item)
+Action TimerLouisResetGlobalHeadShopCooldown(Handle timer, int item)
 {
 	switch(item)
 	{

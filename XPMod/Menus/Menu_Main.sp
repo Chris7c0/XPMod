@@ -62,7 +62,7 @@ XPModMenuDraw(iClient)
 
 //Menu Draw Functions                                                                                     
 //Top XPMod Menu Draw
-Action:TopMenuDraw(iClient) 
+Action TopMenuDraw(iClient) 
 {
 	RoundStatsPanel[iClient] = ROUND_STATS_PANEL_DONE;
 
@@ -141,7 +141,7 @@ Action:TopMenuDraw(iClient)
 	// Option 10 (This is the tricky bit, to get the menu at the right height)
 	// This must consider all the new lines for all the conditions above
 	// Start with a baseline of newlines, then add the others for each condition
-	decl String:strFinalOptionText[150];
+	char strFinalOptionText[150];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), 
 		"Exit the Menu\
 		\n▬▬▬▬▬▬▬▬▬▬▬▬▬\
@@ -162,7 +162,7 @@ Action:TopMenuDraw(iClient)
 
 
 // Learn about characters
-Action:TopChooseCharactersMenuDraw(iClient)
+Action TopChooseCharactersMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(TopChooseCharactersMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -184,7 +184,7 @@ Action:TopChooseCharactersMenuDraw(iClient)
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Main Menu\n \nNote: Once you are\nconfirmed, you must\nwait until the next\nround to change any\nof your characters.\
 	\n▬▬▬▬▬▬▬▬▬▬▬\
 	%s\
@@ -200,7 +200,7 @@ Action:TopChooseCharactersMenuDraw(iClient)
 
 
 //Select Talents
-Action:ExtrasMenuDraw(iClient)
+Action ExtrasMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(ExtrasMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -222,7 +222,7 @@ Action:ExtrasMenuDraw(iClient)
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
-	decl String:strFinalOptionText[150];
+	char strFinalOptionText[150];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Main Menu\
 	\n▬▬▬▬▬▬▬▬▬▬▬\
 	%s\
@@ -237,7 +237,7 @@ Action:ExtrasMenuDraw(iClient)
 }
 
 //Choose Team Menu Draw
-Action:ChooseTeamMenuDraw(iClient)
+Action ChooseTeamMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(ChooseTeamMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -259,7 +259,7 @@ Action:ChooseTeamMenuDraw(iClient)
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
-	decl String:strFinalOptionText[150];
+	char strFinalOptionText[150];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Back\
 	\n▬▬▬▬▬▬▬▬▬▬▬\
 	%s\
@@ -275,7 +275,7 @@ Action:ChooseTeamMenuDraw(iClient)
 
 
 // Learn about characters
-Action:ChooseStatisticsMenuDraw(iClient)
+Action ChooseStatisticsMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(ChooseStatisticsMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -297,7 +297,7 @@ Action:ChooseStatisticsMenuDraw(iClient)
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
-	decl String:strFinalOptionText[150];
+	char strFinalOptionText[150];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Back\
 	\n▬▬▬▬▬▬▬▬▬▬▬\
 	%s\
@@ -311,7 +311,7 @@ Action:ChooseStatisticsMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-Action:OptionMenuDraw(iClient)
+Action OptionMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(OptionMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -348,7 +348,7 @@ Action:OptionMenuDraw(iClient)
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
-	decl String:strFinalOptionText[150];
+	char strFinalOptionText[150];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Back\
 	\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n\
 	%s\
@@ -365,7 +365,7 @@ Action:OptionMenuDraw(iClient)
 //Menu Handler Functions                                                                                   
 //Top Menu Handler
 
-TopChooseCharactersMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+TopChooseCharactersMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -392,7 +392,7 @@ TopChooseCharactersMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Top Menu For Everything
-TopMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+TopMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -451,7 +451,7 @@ TopMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 	}
 }
 
-ExtrasMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+ExtrasMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -508,7 +508,7 @@ ExtrasMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Choose Team Menu Handler
-ChooseTeamMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+ChooseTeamMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -546,7 +546,7 @@ ChooseTeamMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 	}
 }
 
-ChooseStatisticsMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+ChooseStatisticsMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -572,7 +572,7 @@ ChooseStatisticsMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 	}
 }
 
-OptionMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+OptionMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{

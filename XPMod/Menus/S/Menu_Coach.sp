@@ -1,9 +1,9 @@
 //Coach Menu////////////////////////////////////////////////////////////////
 
 //Coach Menu Draw
-Action:CoachMenuDraw(iClient)
+Action CoachMenuDraw(iClient)
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	Menu menu = CreateMenu(CoachMenuHandler);
@@ -32,7 +32,7 @@ Action:CoachMenuDraw(iClient)
 	AddMenuItem(menu, "option7", "Open In Website\n ");
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\n \n=	=	=	=	=	=	=	=	=	=	=	=	=\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -46,9 +46,9 @@ Action:CoachMenuDraw(iClient)
 }
 
 //Bull Rush
-Action:BullMenuDraw(iClient)
+Action BullMenuDraw(iClient)
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -83,7 +83,7 @@ Action:BullMenuDraw(iClient)
 		g_iBullLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -97,9 +97,9 @@ Action:BullMenuDraw(iClient)
 }
 
 //Wrecking Ball
-Action:WreckingMenuDraw(iClient) 
+Action WreckingMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -136,7 +136,7 @@ Action:WreckingMenuDraw(iClient)
 		g_iWreckingLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -150,9 +150,9 @@ Action:WreckingMenuDraw(iClient)
 }
 
 //Spray n' Pray
-Action:SprayMenuDraw(iClient) 
+Action SprayMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -177,7 +177,7 @@ Action:SprayMenuDraw(iClient)
 		g_iSprayLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -191,9 +191,9 @@ Action:SprayMenuDraw(iClient)
 }
 
 //Homerun
-Action:HomerunMenuDraw(iClient) 
+Action HomerunMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -227,7 +227,7 @@ Action:HomerunMenuDraw(iClient)
 		g_iHomerunLevel[iClient]);
 	SetMenuTitle(menu, text);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -241,9 +241,9 @@ Action:HomerunMenuDraw(iClient)
 }
 
 //Lead by Example
-Action:LeadMenuDraw(iClient) 
+Action LeadMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -281,7 +281,7 @@ Action:LeadMenuDraw(iClient)
 		g_iLeadLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -295,9 +295,9 @@ Action:LeadMenuDraw(iClient)
 }
 
 //Strong Arm
-Action:StrongMenuDraw(iClient) 
+Action StrongMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 	
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -340,7 +340,7 @@ Action:StrongMenuDraw(iClient)
 		COACH_JETPACK_FUEL_PER_LEVEL);
 	SetMenuTitle(menu, text);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n ",
@@ -355,7 +355,7 @@ Action:StrongMenuDraw(iClient)
 
 //Handlers//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CoachMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+CoachMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -403,7 +403,7 @@ CoachMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Bull Training Handler
-BullMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+BullMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -422,7 +422,7 @@ BullMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Wrecking Ball Handler
-WreckingMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+WreckingMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -441,7 +441,7 @@ WreckingMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Spray n' Pray Handler
-SprayMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+SprayMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -460,7 +460,7 @@ SprayMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Homerun Handler
-HomerunMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+HomerunMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -479,7 +479,7 @@ HomerunMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Lead by Example Handler
-LeadMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+LeadMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -498,7 +498,7 @@ LeadMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Strong Arm Handler
-StrongMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+StrongMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{

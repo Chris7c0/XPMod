@@ -1,5 +1,5 @@
 //This is for overlay colors
-new UserMsg:g_umsgFade;
+UserMsg g_umsgFade;
 
 //Particle attatchment points
 #define ATTACH_NONE				-1
@@ -39,7 +39,7 @@ new UserMsg:g_umsgFade;
 
 
 //Common Infected Model Names
-new String:COMMON_INFECTED_MODELS[][] = {"models/infected/common_female_tanktop_jeans.mdl", 
+char COMMON_INFECTED_MODELS[][] = {"models/infected/common_female_tanktop_jeans.mdl", 
                                         "models/infected/common_female_tshirt_skirt.mdl",
                                         "models/infected/common_male_dressshirt_jeans.mdl",
                                         "models/infected/common_male_polo_jeans.mdl",
@@ -48,7 +48,7 @@ new String:COMMON_INFECTED_MODELS[][] = {"models/infected/common_female_tanktop_
                                         "models/infected/common_male_tshirt_cargos.mdl"}
 
 //Uncommon Infected Model Names
-new String:UNCOMMON_INFECTED_MODELS[][] =   {"models/infected/common_male_jimmy.mdl",
+char UNCOMMON_INFECTED_MODELS[][] =   {"models/infected/common_male_jimmy.mdl",
                                             "models/infected/common_male_clown.mdl",
                                             "models/infected/common_male_ceda.mdl", 
                                             "models/infected/common_male_mud.mdl",
@@ -184,7 +184,7 @@ new String:UNCOMMON_INFECTED_MODELS[][] =   {"models/infected/common_male_jimmy.
 #define ITEM_COST_LASER_SIGHT            100
 
 
-// new String:ITEM_NAME[][] =              {"Empty",
+// char ITEM_NAME[][] =              {"Empty",
 //                                         "Israeli UZI",
 //                                         "Silenced MAC-10",
 //                                         "MP5",
@@ -228,7 +228,7 @@ new String:UNCOMMON_INFECTED_MODELS[][] =   {"models/infected/common_male_jimmy.
 //                                         "Pain Pills",
 //                                         "Adrenaline Shot"}
 
-new String:ITEM_CLASS_NAME[][] =        {"empty",
+char ITEM_CLASS_NAME[][] =        {"empty",
                                         "weapon_smg",
                                         "weapon_smg_silenced",
                                         "weapon_smg_mp5",
@@ -272,7 +272,7 @@ new String:ITEM_CLASS_NAME[][] =        {"empty",
                                         "weapon_pain_pills",
                                         "weapon_adrenaline"}
 
-new String:ITEM_CMD_NAME[][] =         {"empty",
+char ITEM_CMD_NAME[][] =         {"empty",
                                         "smg",
                                         "smg_silenced",
                                         "smg_mp5",
@@ -316,7 +316,7 @@ new String:ITEM_CMD_NAME[][] =         {"empty",
                                         "pain_pills",
                                         "adrenaline"}
 
-new String:ITEM_MODEL_PATH[][] =        {"empty",
+char ITEM_MODEL_PATH[][] =        {"empty",
                                         "models/w_models/weapons/w_smg_uzi.mdl",
                                         "models/w_models/weapons/w_smg_a.mdl",
                                         "models/w_models/weapons/w_smg_mp5.mdl",
@@ -360,7 +360,7 @@ new String:ITEM_MODEL_PATH[][] =        {"empty",
                                         "models/w_models/weapons/w_eq_painpills.mdl",
                                         "models/w_models/weapons/w_eq_adrenaline.mdl"}
 
-new String:ITEM_VIEW_MODEL_PATH[][] =   {"empty",
+char ITEM_VIEW_MODEL_PATH[][] =   {"empty",
                                         "models/v_models/v_smg.mdl",
                                         "models/v_models/v_silenced_smg.mdl",
                                         "models/v_models/v_smg_mp5.mdl",
@@ -536,8 +536,8 @@ new g_iPID_IceTankIcicles[MAXPLAYERS + 1];
 new g_iPID_TankTrail[MAXPLAYERS + 1];
 
 //Survivor Particle Menu Descriptions
-new bool:g_bEnabledVGUI[MAXPLAYERS + 1];					//VGUI toggle for iClient menu descriptions
-new bool:g_bShowingVGUI[MAXPLAYERS + 1];	
+bool g_bEnabledVGUI[MAXPLAYERS + 1];					//VGUI toggle for iClient menu descriptions
+bool g_bShowingVGUI[MAXPLAYERS + 1];	
 
 new g_iPID_MD_Bill_Inspirational[MAXPLAYERS + 1];
 new g_iPID_MD_Bill_Ghillie[MAXPLAYERS + 1];

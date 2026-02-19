@@ -1,7 +1,7 @@
 //Hunter Menu
 
 //Hunter Menu Draw
-Action:HunterTopMenuDraw(iClient) 
+Action HunterTopMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	Menu menu = CreateMenu(HunterTopMenuHandler);
@@ -11,7 +11,7 @@ Action:HunterTopMenuDraw(iClient)
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
-	decl String:title[256];
+	char title[256];
 	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n==========================\nHunter Talents:\n==========================\n \nPredatorial Evolution: Level %d\nBlood Lust: Level %d\nKill-meleon: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iPredatorialLevel[iClient], g_iBloodLustLevel[iClient], g_iKillmeleonLevel[iClient]);
 	SetMenuTitle(menu, title);
 	AddMenuItem(menu, "option1", "Predatorial Evolution");
@@ -26,7 +26,7 @@ Action:HunterTopMenuDraw(iClient)
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		\n==========================\
@@ -43,7 +43,7 @@ Action:HunterTopMenuDraw(iClient)
 //Talent Draws///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Predatorial Evolution Menu Draw
-Action:PredatorialMenuDraw(iClient)
+Action PredatorialMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(PredatorialMenuHandler);
 
@@ -76,7 +76,7 @@ Action:PredatorialMenuDraw(iClient)
 		strStartingNewLines,
 		g_iPredatorialLevel[iClient]);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -90,7 +90,7 @@ Action:PredatorialMenuDraw(iClient)
 }
 
 //Blood Lust Menu Draw
-Action:BloodLustMenuDraw(iClient)
+Action BloodLustMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(BloodLustMenuHandler);
 
@@ -121,7 +121,7 @@ Action:BloodLustMenuDraw(iClient)
 		strStartingNewLines,
 		g_iBloodLustLevel[iClient]);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -135,7 +135,7 @@ Action:BloodLustMenuDraw(iClient)
 }
 
 //Kill-meleon Menu Draw
-Action:KillmeleonMenuDraw(iClient)
+Action KillmeleonMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(KillmeleonMenuHandler);
 
@@ -168,7 +168,7 @@ Action:KillmeleonMenuDraw(iClient)
 		strStartingNewLines,
 		g_iKillmeleonLevel[iClient]);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -182,14 +182,14 @@ Action:KillmeleonMenuDraw(iClient)
 }
 
 //Choose Hunter Menu Draw
-Action:ChooseHunterClassMenuDraw(iClient) 
+Action ChooseHunterClassMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	
 	Menu menu = CreateMenu(ChooseHunterClassMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
-	decl String:title[256];
+	char title[256];
 	FormatEx(title, sizeof(title), "==========================\n		Current Classes\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n==========================\n \nPick a class to replace with the Hunter:",g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	SetMenuTitle(menu, title);
 	AddMenuItem(menu, "option1", "Replace Class 1");
@@ -204,7 +204,7 @@ Action:ChooseHunterClassMenuDraw(iClient)
 //Handlers/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Hunter Top Menu Handler
-HunterTopMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+HunterTopMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -258,7 +258,7 @@ HunterTopMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Predatorial Evolution Menu Handler
-PredatorialMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+PredatorialMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -281,7 +281,7 @@ PredatorialMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Blood Lust Menu Handler
-BloodLustMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+BloodLustMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -312,7 +312,7 @@ BloodLustMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Kill-meleon Menu Handler
-KillmeleonMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+KillmeleonMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -343,7 +343,7 @@ KillmeleonMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Choose Hunter Top Menu Handler
-ChooseHunterClassMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+ChooseHunterClassMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{

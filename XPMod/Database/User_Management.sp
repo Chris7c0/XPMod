@@ -1,5 +1,5 @@
 //Callback function for an SQL SQLGetUserIDAndToken
-SQLGetUserIDAndTokenCallback(Handle:owner, Handle:hQuery, const char[] error, any:iClient)
+SQLGetUserIDAndTokenCallback(Handle owner, Handle hQuery, const char[] error, any iClient)
 {
 	// PrintToChatAll("SQLGetUserIDAndTokenCallback Started. %i: %N", iClient, iClient);
 	// PrintToServer("SQLGetUserIDAndTokenCallback Started. %i: %N", iClient, iClient);
@@ -56,7 +56,7 @@ SQLGetUserIDAndTokenCallback(Handle:owner, Handle:hQuery, const char[] error, an
 	// PrintToServer("GetUserIDAndToken Callback Complete.  %i: %N", iClient, iClient);
 }
 
-GetUserIDAndToken(any:iClient)
+GetUserIDAndToken(any iClient)
 {
 	// PrintToChatAll("GetUserIDAndToken. %i: %N", iClient, iClient);
 	// PrintToServer("GetUserIDAndToken. %i: %N", iClient, iClient);
@@ -90,7 +90,7 @@ GetUserIDAndToken(any:iClient)
 }
 
 //Callback function for an SQL GetUserData
-SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const char[] error, any:hDataPack)
+SQLGetUserDataCallback(Handle owner, Handle hQuery, const char[] error, any hDataPack)
 {
 	if (hDataPack == INVALID_HANDLE)
 	{
@@ -244,7 +244,7 @@ SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const char[] error, any:hDat
 				g_bAnnouncerOn[iClient] = true;
 			
 				//Play the Announcer Sound
-				decl Float:vec[3];
+				float vec[3];
 				GetClientEyePosition(iClient, vec);
 				EmitAmbientSound(SOUND_GETITON, vec, iClient, SNDLEVEL_NORMAL);
 				
@@ -274,7 +274,7 @@ SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const char[] error, any:hDat
 			// Show user the confirm menu
 			g_iOpenCharacterSelectAndDrawMenuState[iClient] = WAITING_ON_FINAL_BUTTON_FOR_CONFIRM_MENU;
 			
-			new Float:vec[3];
+			float vec[3];
 			GetClientAbsOrigin(iClient, vec);
 			vec[2] += 10;
 			EmitAmbientSound(SOUND_LOGIN, vec, iClient, SNDLEVEL_RAIDSIREN);
@@ -299,7 +299,7 @@ SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const char[] error, any:hDat
 	// PrintToServer("GetUserData Callback Complete.  %i: %N", iClient, iClient);
 }
 
-GetUserData(any:iClient, bool:bOnlyWebsiteChangableData = false, bool:bDrawConfirmMenuAfter = false, bool:bDrawTopMenuAfter = false)
+GetUserData(any iClient, bool bOnlyWebsiteChangableData = false, bool bDrawConfirmMenuAfter = false, bool bDrawTopMenuAfter = false)
 {
 	// PrintToChatAll("GetUserData. %i: %N, bOnlyWebsiteChangableData = %i", iClient, iClient, bOnlyWebsiteChangableData);
 	// PrintToServer("GetUserData. %i: %N, bOnlyWebsiteChangableData = %i", iClient, iClient, bOnlyWebsiteChangableData);
@@ -346,7 +346,7 @@ GetUserData(any:iClient, bool:bOnlyWebsiteChangableData = false, bool:bDrawConfi
 	Format(strQuery, sizeof(strQuery), "SELECT %s FROM %s WHERE user_id = %i", strAttributes, DB_TABLENAME_USERS, g_iDBUserID[iClient]);
 	
 	// Create a data pack to pass multiple parameters to the callback
-	new Handle:hDataPackage = CreateDataPack();
+	Handle hDataPackage = CreateDataPack();
 	WritePackCell(hDataPackage, iClient);
 	WritePackCell(hDataPackage, bOnlyWebsiteChangableData);
 	WritePackCell(hDataPackage, bDrawConfirmMenuAfter);
@@ -356,7 +356,7 @@ GetUserData(any:iClient, bool:bOnlyWebsiteChangableData = false, bool:bDrawConfi
 }
 
 //Callback function for an SQL CreateNewUser
-SQLCreateNewUserCallback(Handle:owner, Handle:hQuery, const char[] error, any:iClient)
+SQLCreateNewUserCallback(Handle owner, Handle hQuery, const char[] error, any iClient)
 {
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -467,7 +467,7 @@ SaveUserData(int iClient)
 }
 
 //Callback function for an SQL SaveUserData
-SQLSaveUserDataInDatabaseCallback(Handle:owner, Handle:hQuery, const char[] error, any:iClient)
+SQLSaveUserDataInDatabaseCallback(Handle owner, Handle hQuery, const char[] error, any iClient)
 {
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -676,7 +676,7 @@ SaveUserDataInDatabase(iClient)
 }
 
 //Callback function for an SQL SQLCheckForChangeThenSaveData
-SQLCheckForChangeThenSaveDataCallback(Handle:owner, Handle:hQuery, const char[] error, any:iClient)
+SQLCheckForChangeThenSaveDataCallback(Handle owner, Handle hQuery, const char[] error, any iClient)
 {
 	// PrintToChatAll("SQLCheckForChangeThenSaveDataCallback Started. %i: %N", iClient, iClient);
 	// PrintToServer("SQLCheckForChangeThenSaveDataCallback Started. %i: %N", iClient, iClient);
@@ -735,7 +735,7 @@ SQLCheckForChangeThenSaveDataCallback(Handle:owner, Handle:hQuery, const char[] 
 }
 
 // This is for when an update happens in the database and the user connected needs to have his XP force updated on the server they are playing
-void SQLCheckForChangeThenSaveData(any:iClient)
+void SQLCheckForChangeThenSaveData(any iClient)
 {
 	// PrintToChatAll("SQLCheckForChangeThenSaveData. %i: %N", iClient, iClient);
 	// PrintToServer("SQLCheckForChangeThenSaveData. %i: %N", iClient, iClient);

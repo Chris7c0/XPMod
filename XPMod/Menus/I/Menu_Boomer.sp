@@ -1,7 +1,7 @@
 //Boomer Menu
 
 //Boomer Top Menu Draw
-Action:BoomerTopMenuDraw(iClient) 
+Action BoomerTopMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 
@@ -12,7 +12,7 @@ Action:BoomerTopMenuDraw(iClient)
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 
-	decl String:title[256];
+	char title[256];
 	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n==========================\nBoomer Talents:\n==========================\n \nRapid Regurgitation: Level %d\nAcidic Brew: Level %d\nNorovirus: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iRapidLevel[iClient], g_iAcidicLevel[iClient], g_iNorovirusLevel[iClient]);
 	SetMenuTitle(menu, title);
 	AddMenuItem(menu, "option1", "Rapid Regurgitation");
@@ -27,7 +27,7 @@ Action:BoomerTopMenuDraw(iClient)
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		\n==========================\
@@ -44,7 +44,7 @@ Action:BoomerTopMenuDraw(iClient)
 //Talent Draws///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Rapid Regurgitation Menu Draw
-Action:RapidMenuDraw(iClient)
+Action RapidMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(RapidMenuHandler);
 
@@ -61,7 +61,7 @@ Action:RapidMenuDraw(iClient)
 		strStartingNewLines,
 		g_iRapidLevel[iClient]);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -75,7 +75,7 @@ Action:RapidMenuDraw(iClient)
 }
 
 //Acidic Brew Menu Draw
-Action:AcidicMenuDraw(iClient)
+Action AcidicMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(AcidicMenuHandler);
 
@@ -99,7 +99,7 @@ Action:AcidicMenuDraw(iClient)
 		strStartingNewLines,
 		g_iAcidicLevel[iClient]);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -113,7 +113,7 @@ Action:AcidicMenuDraw(iClient)
 }
 
 //Norovirus Menu Draw
-Action:NorovirusMenuDraw(iClient)
+Action NorovirusMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(NorovirusMenuHandler);
 
@@ -142,7 +142,7 @@ Action:NorovirusMenuDraw(iClient)
 		strStartingNewLines,
 		g_iNorovirusLevel[iClient]);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -156,14 +156,14 @@ Action:NorovirusMenuDraw(iClient)
 }
 
 //Choose Boomer Menu Draw
-Action:ChooseBoomerClassMenuDraw(iClient) 
+Action ChooseBoomerClassMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	
 	Menu menu = CreateMenu(ChooseBoomerClassMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
-	decl String:title[256];
+	char title[256];
 	FormatEx(title, sizeof(title), "==========================\n		Current Classes\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n==========================\n \nPick a class to replace with the Boomer:",g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	SetMenuTitle(menu, title);
 	AddMenuItem(menu, "option1", "Replace Class 1");
@@ -178,7 +178,7 @@ Action:ChooseBoomerClassMenuDraw(iClient)
 //Handlers/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Boomer Top Menu Handler
-BoomerTopMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+BoomerTopMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -232,7 +232,7 @@ BoomerTopMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Rapid Regurgitation Menu Handler
-RapidMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+RapidMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -255,7 +255,7 @@ RapidMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Acidic Brew Menu Handler
-AcidicMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+AcidicMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -286,7 +286,7 @@ AcidicMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Norovirus Menu Handler
-NorovirusMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+NorovirusMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -317,7 +317,7 @@ NorovirusMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 /*
 //Acidic Brew Bind Handler
-AcidicBindMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+AcidicBindMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -340,7 +340,7 @@ AcidicBindMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Norovirus Bind Handler
-NorovirusBindMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+NorovirusBindMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -363,7 +363,7 @@ NorovirusBindMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Rapid Regurgitation Description Handler
-RapidDescMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+RapidDescMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -382,7 +382,7 @@ RapidDescMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Acidic Brew Description Handler
-AcidicDescMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+AcidicDescMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -401,7 +401,7 @@ AcidicDescMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Norovirus Description Handler
-NorovirusDescMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+NorovirusDescMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -420,7 +420,7 @@ NorovirusDescMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 */
 //Choose Boomer Top Menu Handler
-ChooseBoomerClassMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+ChooseBoomerClassMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{

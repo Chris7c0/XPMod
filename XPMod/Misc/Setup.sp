@@ -75,7 +75,7 @@ SetupGameOffsets()
 
 SetupSDKCalls()
 {
-	new Handle:hGameConfigFile = INVALID_HANDLE;
+	Handle hGameConfigFile = INVALID_HANDLE;
 	hGameConfigFile = LoadGameConfigFile("xpmdata");
 	if (hGameConfigFile != INVALID_HANDLE)
 	{

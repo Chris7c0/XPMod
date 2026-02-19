@@ -1,4 +1,4 @@
-public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], Float:fAngles[3], &iWeapon)
+public Action OnPlayerRunCmd(iClient, &iButtons, &iImpulse, float fVelocity[3], float fAngles[3], &iWeapon)
 {
 	if (RunClientChecks(iClient) == false)
 		return Plugin_Continue;
@@ -218,9 +218,10 @@ public Action:OnPlayerRunCmd(iClient, &iButtons, &iImpulse, Float:fVelocity[3], 
 	return Plugin_Continue;
 }
 
-Action:TimerUnblockBotFromAttacking(Handle:timer, any:iClient)
+Action TimerUnblockBotFromAttacking(Handle timer, any iClient)
 {
 	g_bBlockBotFromShooting[iClient] = false;
+	return Plugin_Stop;
 }
 
 // // Testing bot button presses

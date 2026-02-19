@@ -227,7 +227,7 @@ NickGamblingProblemRollTheDice(int iClient)
 }
 
 
-Action:TimerApplyDivineIntervention(Handle hTimer, int iClient)
+Action TimerApplyDivineIntervention(Handle hTimer, int iClient)
 {
 	if (RunClientChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false)

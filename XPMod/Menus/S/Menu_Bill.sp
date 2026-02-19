@@ -1,9 +1,9 @@
 //Support (Bill) Menu////////////////////////////////////////////////////////////////
 
 //Bill Menu Draw
-Action:SupportMenuDraw(iClient) 
+Action SupportMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	
@@ -33,7 +33,7 @@ Action:SupportMenuDraw(iClient)
 	AddMenuItem(menu, "option7", "Open In Website	\n ");
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -47,9 +47,9 @@ Action:SupportMenuDraw(iClient)
 }
 
 //Inspirational Leadership Draw
-Action:InspirationalMenuDraw(iClient) 
+Action InspirationalMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -81,7 +81,7 @@ Action:InspirationalMenuDraw(iClient)
 		BILL_TEAM_HEAL_HP_POOL);
 	SetMenuTitle(menu, text);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -95,9 +95,9 @@ Action:InspirationalMenuDraw(iClient)
 }
 
 //Ghillie Tactics
-Action:GhillieMenuDraw(iClient) 
+Action GhillieMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -128,7 +128,7 @@ Action:GhillieMenuDraw(iClient)
 		g_iGhillieLevel[iClient]);
 	SetMenuTitle(menu, text);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -142,9 +142,9 @@ Action:GhillieMenuDraw(iClient)
 }
 
 //Will to Live Draw
-Action:WillMenuDraw(iClient) 
+Action WillMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -176,7 +176,7 @@ Action:WillMenuDraw(iClient)
 		g_iWillLevel[iClient]);
 	SetMenuTitle(menu, text);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -191,9 +191,9 @@ Action:WillMenuDraw(iClient)
 
 
 //Exorcism in a Barrel Draw
-Action:ExorcismMenuDraw(iClient) 
+Action ExorcismMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 	
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -218,7 +218,7 @@ Action:ExorcismMenuDraw(iClient)
 		g_iExorcismLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -232,9 +232,9 @@ Action:ExorcismMenuDraw(iClient)
 }
 
 //Die Hard Draw
-Action:DiehardMenuDraw(iClient) 
+Action DiehardMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 	
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -265,7 +265,7 @@ Action:DiehardMenuDraw(iClient)
 		g_iDiehardLevel[iClient]);
 	SetMenuTitle(menu, text);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -279,9 +279,9 @@ Action:DiehardMenuDraw(iClient)
 }
 
 //Promotional Benefits Draw
-Action:PromotionalMenuDraw(iClient) 
+Action PromotionalMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 	
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -315,7 +315,7 @@ Action:PromotionalMenuDraw(iClient)
 		g_iPromotionalLevel[iClient]);
 	SetMenuTitle(menu, text);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -331,7 +331,7 @@ Action:PromotionalMenuDraw(iClient)
 //Handlers//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Bill Menu Handler
-SupportMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+SupportMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -380,7 +380,7 @@ SupportMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 
 
 //Inspirational Handler
-InspirationalMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+InspirationalMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -399,7 +399,7 @@ InspirationalMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Ghillie Tactics Menu Handler
-GhillieMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+GhillieMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -419,7 +419,7 @@ GhillieMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 
 
 //Will to Live Handler
-WillMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+WillMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -439,7 +439,7 @@ WillMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 
 
 //Exorcism in a Barrel Handler
-ExorcismMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+ExorcismMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -458,7 +458,7 @@ ExorcismMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Die Hard Handler
-DiehardMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+DiehardMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -477,7 +477,7 @@ DiehardMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Promotional Benefit Handler
-PromotionalMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+PromotionalMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{

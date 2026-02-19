@@ -4,15 +4,15 @@ CheckLevel(iClient)
 		LevelUpPlayer(iClient);
 }
 
-RenamePlayerWithLevelTags(iClient, bool:bRemoveTags = false)
+RenamePlayerWithLevelTags(iClient, bool bRemoveTags = false)
 {
 	if (RunClientChecks(iClient) == false ||
 		IsFakeClient(iClient) ==  true ||
 		g_bClientLoggedIn[iClient] == false)
 		return;
 
-	decl String:strClientName[32];
-	decl String:strClientBaseName[32];
+	char strClientName[32];
+	char strClientBaseName[32];
 	GetClientName(iClient, strClientName, sizeof(strClientName));
 	// PrintToChatAll("%s: %i",strClientName, strlen(strClientName));
 
@@ -20,7 +20,7 @@ RenamePlayerWithLevelTags(iClient, bool:bRemoveTags = false)
 	// Needs to match tagged names below (one with prestige and one without)
 	// [30] ChrisP
 	// [☆111] Test
-	new Handle:hTagRegex = CompileRegex("\\[.{0,3}[0-9]{0,3}\\] ..*");
+	Handle hTagRegex = CompileRegex("\\[.{0,3}[0-9]{0,3}\\] ..*");
 
 	// Check if XPMod Level tag is already added before continuing
 	// If its already there, then remove it to obtain base name
@@ -75,7 +75,7 @@ RenamePlayerWithLevelTags(iClient, bool:bRemoveTags = false)
 	// PrintToChatAll("%s: %i",strClientName, strlen(strClientName));
 }
 
-Action:TimerSetHideChangeNameMessage(Handle:timer, any:data)
+Action TimerSetHideChangeNameMessage(Handle timer, any data)
 {
 	g_bHideNameChangeMessage = false;
 
@@ -83,7 +83,7 @@ Action:TimerSetHideChangeNameMessage(Handle:timer, any:data)
 	return Plugin_Stop;
 }
 
-Action:GiveXPbyID(iClient, args)
+Action GiveXPbyID(iClient, args)
 {
 	if(args!=2)
 	{
@@ -94,7 +94,7 @@ Action:GiveXPbyID(iClient, args)
 		return Plugin_Handled;
 	}
 	
-	decl String:targetnum[128];
+	char targetnum[128];
 	GetCmdArg(1, targetnum, sizeof(targetnum));
 
 	decl target;
@@ -125,7 +125,7 @@ Action:GiveXPbyID(iClient, args)
 		return Plugin_Handled;
 	}
 	
-	decl String:xpstring[15];
+	char xpstring[15];
 	GetCmdArg(2, xpstring, sizeof(xpstring));
 	
 	new xpamount;
@@ -169,7 +169,7 @@ Action:GiveXPbyID(iClient, args)
 	return Plugin_Handled;
 }
 
-Action:GiveXP(iClient, args)
+Action GiveXP(iClient, args)
 {
 	/*if(iClient == 0)
 	{
@@ -185,7 +185,7 @@ Action:GiveXP(iClient, args)
 		return Plugin_Handled;
 	}
 	
-	decl String:targetname[128];
+	char targetname[128];
 	GetCmdArg(1, targetname, sizeof(targetname));
 
 	decl target;
@@ -195,7 +195,7 @@ Action:GiveXP(iClient, args)
 		return Plugin_Handled;
 	}
 	
-	decl String:xpstring[15];
+	char xpstring[15];
 	GetCmdArg(2, xpstring, sizeof(xpstring));
 	
 	new xpamount;
@@ -223,7 +223,7 @@ Action:GiveXP(iClient, args)
 	if(g_iClientXP[target]>99999999)
 		g_iClientXP[target]=99999999;
 	
-	decl String:clientname[128];
+	char clientname[128];
 	if(iClient!=0)
 		clientname = "Server Host";
 	else
@@ -326,7 +326,7 @@ ResetAllInfectedClasses(iClient)
 }
 
 //Resets the skill points and talents that come with them
-Action:ResetSurvivorTalents(iClient)
+Action ResetSurvivorTalents(iClient)
 {
 	if(IsClientInGame(iClient) == false)
 		return Plugin_Handled;
@@ -458,7 +458,7 @@ LevelUpPlayer(iClient)
 				PrintHintText(iClient, "<-=-=-=-:[You have reached level %d]:-=-=-=->", g_iClientLevel[iClient]);
 				PrintToChatAll("\x03[XPMod] %N is now level %d", iClient, g_iClientLevel[iClient]);
 				// Play the level up sound
-				decl Float:xyzClientLocation[3];
+				float xyzClientLocation[3];
 				GetClientAbsOrigin(iClient, xyzClientLocation);
 				EmitAmbientSound(SOUND_LEVELUP, xyzClientLocation, iClient, SNDLEVEL_NORMAL);
 				xyzClientLocation[2] += 22.0;
@@ -1131,12 +1131,12 @@ calclvlandnextxp(iClient)
 	}
 }
 
-ShowXPSprite(iClient, iXPSprite, iEntity, Float:fLifeTime = 3.0)
+ShowXPSprite(iClient, iXPSprite, iEntity, float fLifeTime = 3.0)
 {
 	if(iClient < 1 || iEntity < 1 || IsClientInGame(iClient) == false || IsFakeClient(iClient) == true || IsValidEntity(iEntity) == false)
 		return;
 	
-	decl Float:xyzEntityVector[3], Float:xyzTopOffsetVector[3];
+	float xyzEntityVector[3], xyzTopOffsetVector[3];
 	GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", xyzEntityVector);
 	
 	xyzEntityVector[2] += 75.0;

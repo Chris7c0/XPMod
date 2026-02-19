@@ -5,17 +5,17 @@
 new g_iClientInfectedClass1[MAXPLAYERS + 1]	= {UNKNOWN_INFECTED, ...};
 new g_iClientInfectedClass2[MAXPLAYERS + 1]	= {UNKNOWN_INFECTED, ...};
 new g_iClientInfectedClass3[MAXPLAYERS + 1]	= {UNKNOWN_INFECTED, ...};
-new String:g_strClientInfectedClass1[MAXPLAYERS + 1][10]; 
-new String:g_strClientInfectedClass2[MAXPLAYERS + 1][10]; 
-new String:g_strClientInfectedClass3[MAXPLAYERS + 1][10];
-new bool:g_iInfectedConvarsSet[MAXPLAYERS + 1];
+char g_strClientInfectedClass1[MAXPLAYERS + 1][10]; 
+char g_strClientInfectedClass2[MAXPLAYERS + 1][10]; 
+char g_strClientInfectedClass3[MAXPLAYERS + 1][10];
+bool g_iInfectedConvarsSet[MAXPLAYERS + 1];
 
 // Dismounting
 bool g_bReadyForDismountButtonPress[MAXPLAYERS + 1];
 
 // Ghost Spawn Capturing
-new bool:g_bCanBeGhost[MAXPLAYERS + 1];
-new bool:g_bIsGhost[MAXPLAYERS + 1];
+bool g_bCanBeGhost[MAXPLAYERS + 1];
+bool g_bIsGhost[MAXPLAYERS + 1];
 #define MOVEMENT_SPEED_INFECTED_GHOSTS  2.0
 
 // CI hit max damage from survivor hit (meant for melee)
@@ -69,7 +69,7 @@ new bool:g_bIsGhost[MAXPLAYERS + 1];
 #define ENHANCED_CI_ENTITY_ID		0
 #define ENHANCED_CI_TYPE			1
 // List that contains enhanced CI entities and their abilities properties
-new ArrayList:g_listEnhancedCIEntities;
+ArrayList g_listEnhancedCIEntities;
 // The size of the above array list
 #define ENHANCED_CI_ENTITIES_ARRAY_LIST_SIZE       2
 // Enhanced CI Type Specific Variables
@@ -108,9 +108,9 @@ bool g_bSmokerCloakingJustToggled[MAXPLAYERS + 1];
 bool g_bSmokerIsCloaked[MAXPLAYERS + 1];
 bool g_bSmokerVictimGlowDisabled[MAXPLAYERS + 1];
 bool SetMoveTypeBackToNormalOnNextGameFrame[MAXPLAYERS + 1];
-new bool:g_bIsElectrocuting[MAXPLAYERS + 1];
+bool g_bIsElectrocuting[MAXPLAYERS + 1];
 #define SMOKER_ELECTORUCTION_MAX_DISTANCE               1200.0  // 150ft, Units here divided by 8 is close to number of feet in game
-// new bool:g_bIsTarFingerVictim[MAXPLAYERS + 1];
+// bool g_bIsTarFingerVictim[MAXPLAYERS + 1];
 #define SMOKER_DOPPELGANGER_MAX_CLONES                  2
 #define SMOKER_DOPPELGANGER_DURATION                    15.0
 #define SMOKER_DOPPELGANGER_REGEN_PERIOD                30.0
@@ -122,11 +122,11 @@ new g_iSmokerDoppelgangerCount[MAXPLAYERS + 1];
 bool g_bSmokerDoppelgangerCoolingDown[MAXPLAYERS + 1];
 float g_iSmokerDoppelgangerFadeRunTime[MAXENTITIES + 1];
 new g_iSmokerInfectionCloudEntity[MAXPLAYERS + 1];
-new bool:g_bHasSmokersPoisonCloudOut[MAXPLAYERS + 1];
-new Float:g_xyzPoisonCloudOriginArray[MAXPLAYERS + 1][3];
-bool:g_bTeleportCoolingDown[MAXPLAYERS + 1];
-bool:g_bElectrocutionCooldown[MAXPLAYERS + 1];
-bool:g_bIsEntangledInSmokerTongue[MAXPLAYERS + 1];
+bool g_bHasSmokersPoisonCloudOut[MAXPLAYERS + 1];
+float g_xyzPoisonCloudOriginArray[MAXPLAYERS + 1][3];
+bool g_bTeleportCoolingDown[MAXPLAYERS + 1];
+bool g_bElectrocutionCooldown[MAXPLAYERS + 1];
+bool g_bIsEntangledInSmokerTongue[MAXPLAYERS + 1];
 new g_iEntangledSurvivorModelIndex[MAXPLAYERS + 1];
 new g_iEntangledTongueModelIndex[MAXPLAYERS + 1];
 int g_iSmokerSmokeCloudPlayer = -1;
@@ -171,29 +171,29 @@ new g_iTarFingerVictimBlindAmount[MAXPLAYERS + 1];
 //For Teleport
 #define SMOKER_TELEPORT_COOLDOWN_PERIOD             10.0
 #define SMOKER_TELEPORT_MAX_DISTANCE_PER_LEVEL      15.0
-// new Float:g_fMapsMaxTeleportHeight;
+// float g_fMapsMaxTeleportHeight;
 new g_iSmokerTransparency[MAXPLAYERS + 1];
-new Float:g_fTeleportOriginalPositionX[MAXPLAYERS + 1];
-new Float:g_fTeleportOriginalPositionY[MAXPLAYERS + 1];
-new Float:g_fTeleportOriginalPositionZ[MAXPLAYERS + 1];
-new Float:g_fTeleportEndPositionX[MAXPLAYERS + 1];
-new Float:g_fTeleportEndPositionY[MAXPLAYERS + 1];
-new Float:g_fTeleportEndPositionZ[MAXPLAYERS + 1];
+float g_fTeleportOriginalPositionX[MAXPLAYERS + 1];
+float g_fTeleportOriginalPositionY[MAXPLAYERS + 1];
+float g_fTeleportOriginalPositionZ[MAXPLAYERS + 1];
+float g_fTeleportEndPositionX[MAXPLAYERS + 1];
+float g_fTeleportEndPositionY[MAXPLAYERS + 1];
+float g_fTeleportEndPositionZ[MAXPLAYERS + 1];
 bool g_bBlockBotFromShooting[MAXPLAYERS + 1];
 #define SMOKER_BIND_2_ELECTROCUTION_MAX_HEALTH                  500
 
 // Boomer
-new bool:g_bIsSuicideBoomer[MAXPLAYERS + 1];
-new bool:g_bIsSuicideJumping[MAXPLAYERS + 1];
-new bool:g_bIsBoomerVomiting[MAXPLAYERS + 1];
-new bool:g_bIsServingHotMeal[MAXPLAYERS + 1];
+bool g_bIsSuicideBoomer[MAXPLAYERS + 1];
+bool g_bIsSuicideJumping[MAXPLAYERS + 1];
+bool g_bIsBoomerVomiting[MAXPLAYERS + 1];
+bool g_bIsServingHotMeal[MAXPLAYERS + 1];
 new g_iShowSurvivorVomitCounter[MAXPLAYERS + 1];
 new g_iVomitVictimAttacker[MAXPLAYERS + 1];
-new bool:g_bIsSurvivorVomiting[MAXPLAYERS + 1];
-new bool:g_bNowCountingVomitVictims[MAXPLAYERS + 1];
+bool g_bIsSurvivorVomiting[MAXPLAYERS + 1];
+bool g_bNowCountingVomitVictims[MAXPLAYERS + 1];
 new g_iVomitVictimCounter[MAXPLAYERS + 1];
-new bool:g_bIsSuperSpeedBoomer[MAXPLAYERS + 1];
-new bool:g_bCommonInfectedDoMoreDamage;
+bool g_bIsSuperSpeedBoomer[MAXPLAYERS + 1];
+bool g_bCommonInfectedDoMoreDamage;
 
 // Hunter
 #define HUNTER_STARTING_MAX_HEALTH                  250
@@ -249,23 +249,23 @@ bool g_bIsImmobilityZoneOnGlobalCooldown;
 #define HUNTER_IMMOBILITY_ZONE_SPEED                0.15
 
 // Spitter
-new bool:g_bBlockGooSwitching[MAXPLAYERS + 1];
-new bool:g_bJustSpawnedWitch[MAXPLAYERS + 1];
+bool g_bBlockGooSwitching[MAXPLAYERS + 1];
+bool g_bJustSpawnedWitch[MAXPLAYERS + 1];
 new g_iGooType[MAXPLAYERS + 1];
-new bool:g_bCanConjureWitch[MAXPLAYERS + 1];
-new bool:g_bHasDemiGravity[MAXPLAYERS + 1];
+bool g_bCanConjureWitch[MAXPLAYERS + 1];
+bool g_bHasDemiGravity[MAXPLAYERS + 1];
 new g_iHallucinogenRuntimesCounter[MAXPLAYERS + 1];
-new bool:g_bIsHallucinating[MAXPLAYERS + 1];
+bool g_bIsHallucinating[MAXPLAYERS + 1];
 new g_iViralInfector[MAXPLAYERS + 1];
 new g_iViralRuntimesCounter[MAXPLAYERS + 1];
-new bool:g_bIsImmuneToVirus[MAXPLAYERS + 1];
-new bool:g_bCanBePushedByRepulsion[MAXPLAYERS + 1];
-new bool:g_bIsStealthSpitter[MAXPLAYERS + 1];
+bool g_bIsImmuneToVirus[MAXPLAYERS + 1];
+bool g_bCanBePushedByRepulsion[MAXPLAYERS + 1];
+bool g_bIsStealthSpitter[MAXPLAYERS + 1];
 new g_iStealthSpitterChargePower[MAXPLAYERS + 1];
 new g_iStealthSpitterChargeMana[MAXPLAYERS + 1];
-new Float:g_xyzWitchConjureLocation[MAXPLAYERS + 1][3];
-//new Float:g_fAdhesiveAffectCase[MAXPLAYERS + 1];
-new Float:g_fAdhesiveAffectAmount[MAXPLAYERS + 1];
+float g_xyzWitchConjureLocation[MAXPLAYERS + 1][3];
+//float g_fAdhesiveAffectCase[MAXPLAYERS + 1];
+float g_fAdhesiveAffectAmount[MAXPLAYERS + 1];
 //Spitter Goo Types
 #define GOO_ADHESIVE		0
 #define GOO_FLAMING			1
@@ -287,16 +287,16 @@ new g_iBagOfSpitsSelectedSpit[MAXPLAYERS + 1] = {BAG_OF_SPITS_NONE, ...};
 
 // Jockey
 #define JOCKEY_LUNGE_DISTANCE_MULTIPLIER_PER_LEVEL  0.05
-bool:g_bCanJockeyPee[MAXPLAYERS + 1] = {true, ...};
-bool:g_bJockeyPissVictim[MAXPLAYERS + 1] = {true, ...};
-bool:g_bCanJockeyCloak[MAXPLAYERS + 1] = {true, ...};
-bool:g_bJockeyIsRiding[MAXPLAYERS + 1] = {false, ...};
+bool g_bCanJockeyPee[MAXPLAYERS + 1] = {true, ...};
+bool g_bJockeyPissVictim[MAXPLAYERS + 1] = {true, ...};
+bool g_bCanJockeyCloak[MAXPLAYERS + 1] = {true, ...};
+bool g_bJockeyIsRiding[MAXPLAYERS + 1] = {false, ...};
 g_iJockeysVictim[MAXPLAYERS + 1];
-bool:g_bCanJockeyJump[MAXPLAYERS + 1] = {false, ...};
+bool g_bCanJockeyJump[MAXPLAYERS + 1] = {false, ...};
 float g_xyzJockeyStartRideLocation[MAXPLAYERS + 1][3];
 float g_fJockeyRideDistance[MAXPLAYERS + 1];
-Float:g_fJockeyRideSpeed[MAXPLAYERS + 1] = {1.0, ...};
-Float:g_fJockeyRideSpeedVanishingActBoost[MAXPLAYERS + 1] = {0.0, ...};
+float g_fJockeyRideSpeed[MAXPLAYERS + 1] = {1.0, ...};
+float g_fJockeyRideSpeedVanishingActBoost[MAXPLAYERS + 1] = {0.0, ...};
 #define JOCKEY_PISS_CONVERSION_RADIUS           200.0
 //#define JOCKEY_PISS_SPAWN_JIMMY_CHANCE       10 //%
 new g_fJockeyNextSpawnUpgradeLevel[MAXPLAYERS + 1];
@@ -304,16 +304,16 @@ bool g_bHasSuperJockeySpeed[MAXPLAYERS + 1];
 
 
 // Charger
-new bool:g_bIsChargerCharging[MAXPLAYERS +1];
-new bool:g_bIsSpikedCharged[MAXPLAYERS +1];
-new bool:g_bCanChargerSpikedCharge[MAXPLAYERS +1];
+bool g_bIsChargerCharging[MAXPLAYERS +1];
+bool g_bIsSpikedCharged[MAXPLAYERS +1];
+bool g_bCanChargerSpikedCharge[MAXPLAYERS +1];
 new g_iSpikedChargeCounter[MAXPLAYERS + 1];
-new bool:g_bIsHillbillyEarthquakeReady[MAXPLAYERS + 1];
-new bool:g_bIsSuperCharger[MAXPLAYERS + 1];
-new bool:g_bCanChargerSuperCharge[MAXPLAYERS + 1];
-new bool:g_bChargerCarrying[MAXPLAYERS + 1];
-new bool:g_bIsChargerHealing[MAXPLAYERS + 1];
-new bool:g_bCanChargerEarthquake[MAXPLAYERS +1];
+bool g_bIsHillbillyEarthquakeReady[MAXPLAYERS + 1];
+bool g_bIsSuperCharger[MAXPLAYERS + 1];
+bool g_bCanChargerSuperCharge[MAXPLAYERS + 1];
+bool g_bChargerCarrying[MAXPLAYERS + 1];
+bool g_bIsChargerHealing[MAXPLAYERS + 1];
+bool g_bCanChargerEarthquake[MAXPLAYERS +1];
 #define CHARGER_EARTHQUAKE_SHOCKWAVE_MAX_DAMAGE             30
 #define CHARGER_EARTHQUAKE_SHOCKWAVE_SHAKE_MAX_DIFF         30.0
 #define CHARGER_EARTHQUAKE_SHOCKWAVE_SHAKE_MIN              10.0 
@@ -331,19 +331,19 @@ bool g_bTankTakeOverBot[MAXPLAYERS +1];
 bool g_bTankHealthJustSet[MAXPLAYERS +1];
 #define TANK_FRUSTRATION_TIME_IN_SECONDS                    90
 // The calculated amount of starting HP multiplier for scaling to skill level of survivors
-new Float:g_fTankStartingHealthMultiplier[MAXPLAYERS + 1];
+float g_fTankStartingHealthMultiplier[MAXPLAYERS + 1];
 #define TANK_STARTING_HEALTH_MULTIPLIER_MIN                 0.5
 #define TANK_STARTING_HEALTH_MULTIPLIER_MAX                 1.0
 // Required level to get tank health max
 // 120 would require a team of 4 (4x30) before getting max tank health.
 // 90 would require a team of 3 (3x30) before getting max tank health.
 #define TANK_STARTING_HEALTH_REQUIRED_TEAM_LEVEL_FOR_MAX    60
-new bool:g_bTankStartingHealthXPModSpawn;
+bool g_bTankStartingHealthXPModSpawn;
 #define TANK_STARTING_HEALTH_MULTIPLIER_XPMOD_SPAWN         0.33
 // The amount of HP loss before a XPMod tank type is automatically selected for the player
 #define TANK_AUTOMATIC_SELECT_HP_LOSS   1000
 #define TANK_AUTOMATIC_SELECT_TYPE      TANK_FIRE
-new bool:g_bTankOnFire[MAXPLAYERS + 1];     // Prevents constant XP rewarding
+bool g_bTankOnFire[MAXPLAYERS + 1];     // Prevents constant XP rewarding
 
 //Chosen Tank Talents
 #define TANK_NOT_CHOSEN		0
@@ -365,7 +365,7 @@ new bool:g_bTankOnFire[MAXPLAYERS + 1];     // Prevents constant XP rewarding
 #define TANK_ROCK_TYPE				2
 #define TANK_ROCK_PARTICLE_TRAIL	3
 // Tank Rock Entities that stores rock types
-new ArrayList:g_listTankRockEntities;
+ArrayList g_listTankRockEntities;
 // The size of the above array list
 #define TANK_ROCK_ENTITIES_ARRAY_LIST_SIZE 4
 
@@ -376,10 +376,10 @@ new ArrayList:g_listTankRockEntities;
 #define TANK_FIRE_EXTRA_SPEED_MAX                   0.50
 #define FIRE_TANK_FIRE_PUNCH_COOLDOWN_DURATION      5.0
 new g_iFireDamageCounter[MAXPLAYERS + 1];
-new bool:g_bFireTankAttackCharged[MAXPLAYERS + 1];
-new bool:g_bBlockTankFirePunchCharge[MAXPLAYERS + 1];
-//new bool:g_bFireTankBaseSpeedIncreased[MAXPLAYERS + 1];
-new Float:g_fFireTankExtraSpeed[MAXPLAYERS + 1];
+bool g_bFireTankAttackCharged[MAXPLAYERS + 1];
+bool g_bBlockTankFirePunchCharge[MAXPLAYERS + 1];
+//bool g_bFireTankBaseSpeedIncreased[MAXPLAYERS + 1];
+float g_fFireTankExtraSpeed[MAXPLAYERS + 1];
 // Ice Tank
 #define TANK_HEALTH_ICE                                 14000
 #define TANK_ICE_REGEN_RATE                             40

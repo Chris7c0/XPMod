@@ -28,7 +28,7 @@ public OnGameFrame()
 					IsPlayerAlive(victim) && 
 					g_iClientTeam[victim] == TEAM_SURVIVORS)
 				{
-					decl Float:clientVec[3],Float:victimVec[3];
+					float clientVec[3], victimVec[3];
 					GetClientEyePosition(iClient, clientVec);
 					GetClientEyePosition(victim, victimVec);
 					if(GetVectorDistance(clientVec, victimVec) <= 310.0)
@@ -50,7 +50,7 @@ public OnGameFrame()
 				new weapon = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
 				if(weapon > 0)
 				{
-					decl String:wclass[32];
+					char wclass[32];
 					GetEntityNetClass(weapon,wclass,32);
 					if((StrEqual(wclass,"CPainPills",false)==true) || (StrEqual(wclass,"CFirstAidKit",false)==true) || (StrEqual(wclass,"CItemDefibrillator",false)==true) || (StrEqual(wclass,"CItem_Adrenaline",false)==true))
 					{
@@ -77,7 +77,7 @@ public OnGameFrame()
 				g_iReloadFrameCounter[iClient]++;
 				//PrintToChatAll("Frame counter %d", g_iReloadFrameCounter[iClient]);
 
-				decl String:strCurrentWeapon[32];
+				char strCurrentWeapon[32];
 				GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 				//PrintToChatAll("Current Weapon is %s", currentweapon);
 

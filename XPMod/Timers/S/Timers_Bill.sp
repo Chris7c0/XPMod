@@ -1,4 +1,4 @@
-Action:TimerDropBombs(Handle:timer, any:iClient)
+Action TimerDropBombs(Handle timer, any iClient)
 {
 	if(IsClientInGame(iClient)==false || IsPlayerAlive(iClient)==false)
 	{
@@ -10,8 +10,9 @@ Action:TimerDropBombs(Handle:timer, any:iClient)
 	{
 		if(IsFakeClient(iClient)==false)
 		{
-			decl i_Ent, Float:f_Position[3], Float:fAngles[3], Float:f_Speed[3];
-			decl String:s_TargetName[32];
+			int i_Ent;
+			float f_Position[3], fAngles[3], f_Speed[3];
+			char s_TargetName[32];
 			i_Ent = CreateEntityByName("pipe_bomb_projectile");
 			
 			if (IsValidEntity(i_Ent))
@@ -49,13 +50,13 @@ Action:TimerDropBombs(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerPoopBombBeep1(Handle:timer, any:iEntity)
+Action TimerPoopBombBeep1(Handle timer, any iEntity)
 {
 	if(IsValidEntity(iEntity))
 	{
-		static Float:poopbombbeeptime1 = 1.0;
+		static float poopbombbeeptime1 = 1.0;
 		poopbombbeeptime1 -= 0.1;
-		decl Float:fOrigin[3];
+		float fOrigin[3];
 		GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", fOrigin);
 		EmitAmbientSound(SOUND_BEEP, fOrigin, iEntity, SNDLEVEL_NORMAL);
 		AttachInfected(iEntity, fOrigin);
@@ -67,13 +68,13 @@ Action:TimerPoopBombBeep1(Handle:timer, any:iEntity)
 	}
 	return Plugin_Stop;
 }
-Action:TimerPoopBombBeep2(Handle:timer, any:iEntity)
+Action TimerPoopBombBeep2(Handle timer, any iEntity)
 {
 	if(IsValidEntity(iEntity))
 	{
-		static Float:poopbombbeeptime2 = 1.0;
+		static float poopbombbeeptime2 = 1.0;
 		poopbombbeeptime2 -= 0.1;
-		decl Float:fOrigin[3];
+		float fOrigin[3];
 		GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", fOrigin);
 		EmitAmbientSound(SOUND_BEEP, fOrigin, iEntity, SNDLEVEL_NORMAL);
 		AttachInfected(iEntity, fOrigin);
@@ -85,13 +86,13 @@ Action:TimerPoopBombBeep2(Handle:timer, any:iEntity)
 	}
 	return Plugin_Stop;
 }
-Action:TimerPoopBombBeep3(Handle:timer, any:iEntity)
+Action TimerPoopBombBeep3(Handle timer, any iEntity)
 {
 	if(IsValidEntity(iEntity))
 	{
-		static Float:poopbombbeeptime3 = 1.0;
+		static float poopbombbeeptime3 = 1.0;
 		poopbombbeeptime3 -= 0.1;
-		decl Float:fOrigin[3];
+		float fOrigin[3];
 		GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", fOrigin);
 		EmitAmbientSound(SOUND_BEEP, fOrigin, iEntity, SNDLEVEL_NORMAL);
 		AttachInfected(iEntity, fOrigin);
@@ -104,13 +105,13 @@ Action:TimerPoopBombBeep3(Handle:timer, any:iEntity)
 	return Plugin_Stop;
 }
 
-Action:TimerBlowUpPoopBomb(Handle:timer, any:iEntity)
+Action TimerBlowUpPoopBomb(Handle timer, any iEntity)
 {
 	if (RunEntityChecks(iEntity) == false ||
 		HasEntProp(iEntity, Prop_Send, "m_vecOrigin") == false)
 		return Plugin_Stop;
 
-	decl Float:xyzEntityOrigin[3];
+	float xyzEntityOrigin[3];
 	GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", xyzEntityOrigin);
 	if(iEntity > 0 && IsValidEntity(iEntity))
 		AcceptEntityInput(iEntity, "Kill");
@@ -121,7 +122,7 @@ Action:TimerBlowUpPoopBomb(Handle:timer, any:iEntity)
 	//DispatchKeyValue(i_Ent, "DamageType", "0");		//134217792
 	//DispatchKeyValue(i_Ent, "BreakableType", "0");
 	
-	//decl String:clientname[64];
+	//char clientname[64];
 	//GetClientName(1, clientname, sizeof(clientname));
 	//PrintToChatAll("%s", clientname);
 	//DispatchKeyValue(i_Ent, "parentname", clientname);
@@ -132,7 +133,7 @@ Action:TimerBlowUpPoopBomb(Handle:timer, any:iEntity)
 	AcceptEntityInput(i_Ent, "Break");
 	
 	//Deal extra damage to the special infected in near the poopbomb explosion
-	decl Float:xyzVictimOrigin[3], Float:fDistance;
+	float xyzVictimOrigin[3], fDistance;
 	
 	for(new iPlayer = 1; iPlayer <= MaxClients; iPlayer++)
 	{
@@ -158,7 +159,7 @@ Action:TimerBlowUpPoopBomb(Handle:timer, any:iEntity)
 	return Plugin_Stop;
 }
 
-Action:TimerChangeCanDropBombs(Handle:timer, any:iClient)
+Action TimerChangeCanDropBombs(Handle timer, any iClient)
 {
 	g_bCanDropPoopBomb[iClient] = true;
 	return Plugin_Stop;

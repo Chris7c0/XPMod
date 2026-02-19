@@ -4,9 +4,9 @@ Handle1SecondClientTimers_Jockey(iClient)
 }
 
 
-Action:TimerJumpFurther(Handle:timer, any:iClient)
+Action TimerJumpFurther(Handle timer, any iClient)
 {
-	decl Float:velocity[3];
+	float velocity[3];
 	GetEntPropVector(iClient, Prop_Data, "m_vecVelocity", velocity);
 	velocity[0] *= (1.0 + (g_iMutatedLevel[iClient] * JOCKEY_LUNGE_DISTANCE_MULTIPLIER_PER_LEVEL));
 	velocity[1] *= (1.0 + (g_iMutatedLevel[iClient] * JOCKEY_LUNGE_DISTANCE_MULTIPLIER_PER_LEVEL));
@@ -16,7 +16,7 @@ Action:TimerJumpFurther(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerRemoveJockeyCloak(Handle:timer, any:iClient)
+Action TimerRemoveJockeyCloak(Handle timer, any iClient)
 {
 	g_bCanJockeyCloak[iClient] = true;
 	SetClientRenderAndGlowColor(iClient);
@@ -24,7 +24,7 @@ Action:TimerRemoveJockeyCloak(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerRemoveVanishingActSpeed(Handle:timer, any:iClient)
+Action TimerRemoveVanishingActSpeed(Handle timer, any iClient)
 {
 	g_fJockeyRideSpeedVanishingActBoost[iClient] = 0.0;
 	SetClientSpeed(iClient);
@@ -32,7 +32,7 @@ Action:TimerRemoveVanishingActSpeed(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerSetJockeyCooldown(Handle:timer, any:iClient)
+Action TimerSetJockeyCooldown(Handle timer, any iClient)
 {
 	if (RunClientChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false ||
@@ -47,14 +47,14 @@ Action:TimerSetJockeyCooldown(Handle:timer, any:iClient)
 		return Plugin_Stop;
 
 	//retrieve the next act time
-	//new Float:flDuration_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+4);
+	//float flDuration_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+4);
 
 	//----DEBUG----
 	//if (g_iShow==1)
 	//	PrintToChatAll("\x03- actsuppress dur \x01 %f\x03 timestamp \x01%f", GetEntDataFloat(iEntid, g_iSuppressO+4), GetEntDataFloat(iEntid, g_iSuppressO+8) );
 
 	//retrieve current timestamp
-	new Float:flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+8);
+	float flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+8);
 
 	if (g_fTimeStamp[iClient] < flTimeStamp_ret)
 	{
@@ -73,8 +73,8 @@ Action:TimerSetJockeyCooldown(Handle:timer, any:iClient)
 		//normally, game predicts it to be ready at T + 30s
 		//so if we modify T to 1:06, it will be ready at 1:36
 		//which is 6s after the player used the ability
-		//new Float:flTimeStamp_calc = flTimeStamp_ret - (GetConVarFloat(FindConVar("z_vomit_interval")) * (1.0 - 0.5) );	what it was in perkmod
-		new Float:flTimeStamp_calc = flTimeStamp_ret - (g_iMutatedLevel[iClient] * 0.35);
+		//float flTimeStamp_calc = flTimeStamp_ret - (GetConVarFloat(FindConVar("z_vomit_interval")) * (1.0 - 0.5) );	what it was in perkmod
+		float flTimeStamp_calc = flTimeStamp_ret - (g_iMutatedLevel[iClient] * 0.35);
 		SetEntDataFloat(iEntid, g_iOffset_NextActivation+8, flTimeStamp_calc, true);
 		
 		//----DEBUG----
@@ -84,7 +84,7 @@ Action:TimerSetJockeyCooldown(Handle:timer, any:iClient)
 	return Plugin_Continue;
 }
 
-Action:TimerJockeyJumpReset(Handle:timer, any:iClient)
+Action TimerJockeyJumpReset(Handle timer, any iClient)
 {
 	if (RunClientChecks(iClient) && 
 		IsPlayerAlive(iClient) && 

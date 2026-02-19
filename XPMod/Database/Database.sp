@@ -13,12 +13,12 @@ SetUpTheDBConnection()
 	}
 }
 
-bool:ConnectDB()
+bool ConnectDB()
 {	
 
 	if (SQL_CheckConfig(DB_CONF_NAME))
 	{
-		new String:Error[256];
+		char Error[256];
 		g_hDatabase = SQL_Connect(DB_CONF_NAME, true, Error, sizeof(Error));
 
 		if (g_hDatabase == INVALID_HANDLE)
@@ -42,14 +42,14 @@ bool:ConnectDB()
 	}
 	
 	// This is used when connecting via the sourcecode
-	// new Handle:hKeyValues = CreateKeyValues("sql");
+	// Handle hKeyValues = CreateKeyValues("sql");
 	// KvSetString(hKeyValues, "driver", "mysql");
 	// KvSetString(hKeyValues, "host", DB_HOST);
 	// KvSetString(hKeyValues, "database", DB_DATABASE);
 	// KvSetString(hKeyValues, "user", DB_USER);
 	// KvSetString(hKeyValues, "pass", DB_PASSWORD);
 
-	// decl String:error[255];
+	// char error[255];
 	// g_hDatabase = SQL_ConnectCustom(hKeyValues, error, sizeof(error), true);
 	// CloseHandle(hKeyValues);
 

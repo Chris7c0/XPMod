@@ -43,7 +43,7 @@
 #define SOUND_JOCKEYLAUGH1			        "player/jockey/voice/idle/jockey_lurk03.wav"
 #define SOUND_JOCKEYLAUGH2			        "player/jockey/voice/idle/jockey_lurk09.wav"
 #define SOUND_BOOMER_EXPLODE                "player/boomer/explode/explo_medium_10.wav"
-new String:SOUND_BOOMER_THROW[][] =         {"player/boomer/hit/boomer_shoved_02.wav",
+char SOUND_BOOMER_THROW[][] =         {"player/boomer/hit/boomer_shoved_02.wav",
                                             "player/boomer/hit/boomer_shoved_04.wav",
                                             "player/boomer/hit/boomer_shoved_05.wav",
                                             "player/boomer/hit/boomer_shoved_06.wav",
@@ -51,13 +51,13 @@ new String:SOUND_BOOMER_THROW[][] =         {"player/boomer/hit/boomer_shoved_02
                                             "player/boomer/hit/boomer_shoved_08.wav",
                                             "player/boomer/fall/boomer_dive_01.wav"}
 #define SOUND_EXPLODE				        "ambient/explosions/explode_1.wav"
-new String:SOUND_ZOMBIE_SLASHES[][] =       {"player/pz/hit/zombie_slice_1.wav",
+char SOUND_ZOMBIE_SLASHES[][] =       {"player/pz/hit/zombie_slice_1.wav",
                                             "player/pz/hit/zombie_slice_2.wav",
                                             "player/pz/hit/zombie_slice_3.wav",
                                             "player/pz/hit/zombie_slice_4.wav",
                                             "player/pz/hit/zombie_slice_5.wav",
                                             "player/pz/hit/zombie_slice_6.wav"}
-new String:SOUND_WING_FLAP[][] =            {"player/survivor/swing/swing_miss1.wav",
+char SOUND_WING_FLAP[][] =            {"player/survivor/swing/swing_miss1.wav",
                                             "player/survivor/swing/swing_miss2.wav"}
 
 //Custom Sounds//

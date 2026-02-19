@@ -99,7 +99,7 @@ OnGameFrame_Bill(iClient)
 			if(g_iBillSprintChargeCounter[iClient] == ((g_iGhillieLevel[iClient] * 600) - 1))
 			{
 				PrintHintText(iClient, "Your suit's sprinting device is fully charged");
-				decl Float:vec[3];
+				float vec[3];
 				GetClientAbsOrigin(iClient, vec);
 				EmitSoundToAll(SOUND_SUITCHARGED, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
 			}
@@ -133,7 +133,7 @@ OnGameFrame_Bill(iClient)
 			g_bClientIsReloading[iClient] == false && 
 			g_bForceReload[iClient] == false)
 		{
-			decl String:currentweapon[32];
+			char currentweapon[32];
 			GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
 			new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 			if (IsValidEntity(ActiveWeaponID) ==  false)
@@ -184,7 +184,7 @@ OGFSurvivorReload_Bill(int iClient, const char[] currentweapon, int ActiveWeapon
 	}
 }
 
-EventsHurt_AttackerBill(Handle:hEvent, iAttacker, iVictim)
+EventsHurt_AttackerBill(Handle hEvent, iAttacker, iVictim)
 {
 	if (RunClientChecks(iAttacker) == false ||
 		g_bTalentsConfirmed[iAttacker] == false ||
@@ -212,35 +212,36 @@ EventsHurt_AttackerBill(Handle:hEvent, iAttacker, iVictim)
 	// PrintToChat(iAttacker, "Your doing %i extra rifle damage", iDmgAmount);
 }
 
-// EventsHurt_VictimBill(Handle:hEvent, attacker, victim)
+// EventsHurt_VictimBill(Handle hEvent, attacker, victim)
 // {
 // 	if (IsFakeClient(victim))
 // 		return;
 // }
 
-// EventsDeath_AttackerBill(Handle:hEvent, iAttacker, iVictim)
+// EventsDeath_AttackerBill(Handle hEvent, iAttacker, iVictim)
 // {
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }
 
-// EventsDeath_VictimBill(Handle:hEvent, iAttacker, iVictim)
+// EventsDeath_VictimBill(Handle hEvent, iAttacker, iVictim)
 // {
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }
 
 
-Action:tmrPlayAnim(Handle:timer,any:iClient)
+Action tmrPlayAnim(Handle timer, any iClient)
 {
 	PlayAnim(iClient);
+	return Plugin_Stop;
 }
 
-Action:PlayAnim(iClient)
+void PlayAnim(iClient)
 {
 	if (RunClientChecks(iClient) == false)
 		return;
 
 	decl iAnim;
-	new String:s_Model[128];
+	char s_Model[128];
 	GetEntPropString(iClient, Prop_Data, "m_ModelName", s_Model, 128);
 
 	if( StrEqual(s_Model, "models/survivors/survivor_gambler.mdl") )
@@ -269,7 +270,7 @@ Action:PlayAnim(iClient)
 	gClone[iClient] = iClone; // Global clone ID
 
 	// Attach to survivor
-	decl String:sValue[128];
+	char sValue[128];
 	Format(sValue, sizeof(sValue), "target%i", iClient);
 	DispatchKeyValue(iClient, "targetname", sValue);
 
@@ -281,8 +282,8 @@ Action:PlayAnim(iClient)
 	AcceptEntityInput(iClone,"SetParentAttachment");
 
 	// Get origin
-	decl Float:fAngles[3];
-	decl Float:fOrigin[3];
+	float fAngles[3];
+	float fOrigin[3];
 	GetClientAbsAngles(iClient, fAngles);
 	GetClientAbsOrigin(iClient, fOrigin);
 
@@ -390,7 +391,7 @@ void HandleBillsTeamHealing(int iClient, int iButtons)
 	xyzClientLocation[2] -= 10.0;
 	xyzTargetLocation[2] -= 10.0;
 	int iRandomSound = GetRandomInt(1, 3);
-	decl String:strZapSound[23];
+	char strZapSound[23];
 	switch(iRandomSound)
 	{
 		case 1: strcopy(strZapSound, sizeof(strZapSound),SOUND_ZAP1);

@@ -182,7 +182,7 @@ OGFSurvivorReload_Louis(iClient, const char[] currentweapon, ActiveWeaponID, Cur
 	}
 }
 
-EventsHurt_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
+EventsHurt_AttackerLouis(Handle hEvent, iAttacker, iVictim)
 {
 	if (g_iChosenSurvivor[iAttacker] != LOUIS || 
 		g_iClientTeam[iAttacker] != TEAM_SURVIVORS ||
@@ -194,7 +194,7 @@ EventsHurt_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 
 	if (g_iLouisTalent2Level[iAttacker] > 0 || g_iLouisTalent4Level[iAttacker] > 0)
 	{
-		decl String:weaponclass[32];
+		char weaponclass[32];
 		GetEventString(hEvent,"weapon",weaponclass,32);
 		//PrintToChatAll("HURT \x03-class of gun: \x01%s, hitgroup: %i, dmg = %i",weaponclass, GetEventInt(hEvent, "hitgroup"), GetEventInt(hEvent,"dmg_health"));
 		// Check for SMGs or Pistols then give more damage
@@ -241,13 +241,13 @@ EventsHurt_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 	}
 }
 
-// EventsHurt_VictimLouis(Handle:hEvent, iAttacker, iVictim)
+// EventsHurt_VictimLouis(Handle hEvent, iAttacker, iVictim)
 // {
 // 	if (IsFakeClient(iVictim))
 // 		return;
 // }
 
-EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
+EventsDeath_AttackerLouis(Handle hEvent, iAttacker, iVictim)
 {
 	if (g_iChosenSurvivor[iAttacker] != LOUIS ||
 		g_bTalentsConfirmed[iAttacker] == false ||
@@ -258,7 +258,7 @@ EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 
 	if (g_iLouisTalent4Level[iAttacker] > 0)
 	{
-		decl String:weaponclass[32];
+		char weaponclass[32];
 		GetEventString(hEvent,"weapon",weaponclass,32);
 		// PrintToChatAll("DEATH \x03-class of gun: \x01%s",weaponclass);
 
@@ -381,7 +381,7 @@ EventsDeath_AttackerLouis(Handle:hEvent, iAttacker, iVictim)
 	}
 }
 
-// EventsDeath_VictimLouis(Handle:hEvent, iAttacker, iVictim)
+// EventsDeath_VictimLouis(Handle hEvent, iAttacker, iVictim)
 // {
 // 	if (g_iClientTeam[iVictim] != TEAM_SURVIVORS)
 // 		return;
@@ -549,7 +549,7 @@ void EventsWeaponGiven_Louis(int iClient)
 }
 
 
-void HandleCheatCommandTasks_Louis(int iClient, const char [] strCommandWithArgs)
+void HandleCheatCommandTasks_Louis(int iClient, const char[] strCommandWithArgs)
 {
 	if (g_iChosenSurvivor[iClient] != LOUIS || g_bTalentsConfirmed[iClient] == false)
 		return;
@@ -622,11 +622,11 @@ HandleLouisTeleportChargeUses(iClient)
 
 HandleLouisTeleportBlindingEffect(iClient)
 {
-	new Float:fCurrentGameTime = GetGameTime();
+	float fCurrentGameTime = GetGameTime();
 	// Subtract the fade amount they lost since last use
 	if (g_iLouisTeleportBlindnessAmount[iClient] > 0 )
 	{
-		new Float:fGameTimeSinceLastUse = fCurrentGameTime - g_fLouisTeleportLastUseGameTime[iClient];
+		float fGameTimeSinceLastUse = fCurrentGameTime - g_fLouisTeleportLastUseGameTime[iClient];
 
 		// if enough time has passed then just reset to 0
 		if (fGameTimeSinceLastUse < 0.0 || fGameTimeSinceLastUse > LOUIS_TELEPORT_BLINDNESS_FADE_TIME)

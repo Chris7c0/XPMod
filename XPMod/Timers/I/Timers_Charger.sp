@@ -1,4 +1,4 @@
-Action:TimerSetChargerCooldown(Handle:timer, any:iClient)
+Action TimerSetChargerCooldown(Handle timer, any iClient)
 {
 	//INITIAL CHECKS
 	//--------------
@@ -24,14 +24,14 @@ Action:TimerSetChargerCooldown(Handle:timer, any:iClient)
 		return Plugin_Stop;
 	}
 	//retrieve the next act time
-	//new Float:flDuration_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+4);
+	//float flDuration_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+4);
 
 	//----DEBUG----
 	//if (g_iShow==1)
 	//	PrintToChatAll("\x03- actsuppress dur \x01 %f\x03 timestamp \x01%f", GetEntDataFloat(iEntid, g_iSuppressO+4), GetEntDataFloat(iEntid, g_iSuppressO+8) );
 
 	//retrieve current timestamp
-	new Float:flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+8);
+	float flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+8);
 
 	if (g_fTimeStamp[iClient] < flTimeStamp_ret)
 	{
@@ -50,8 +50,8 @@ Action:TimerSetChargerCooldown(Handle:timer, any:iClient)
 		//normally, game predicts it to be ready at T + 30s
 		//so if we modify T to 1:06, it will be ready at 1:36
 		//which is 6s after the player used the ability
-		//new Float:flTimeStamp_calc = flTimeStamp_ret - (GetConVarFloat(FindConVar("z_vomit_interval")) * (1.0 - 0.5) );	what it was in perkmod
-		decl Float:flTimeStamp_calc;
+		//float flTimeStamp_calc = flTimeStamp_ret - (GetConVarFloat(FindConVar("z_vomit_interval")) * (1.0 - 0.5) );	what it was in perkmod
+		float flTimeStamp_calc;
 		if(g_iHillbillyLevel[iClient] < 3)
 			flTimeStamp_calc = flTimeStamp_ret -  (12 - (12 - (1)) );
 		else if(g_iHillbillyLevel[iClient] < 5)
@@ -71,19 +71,19 @@ Action:TimerSetChargerCooldown(Handle:timer, any:iClient)
 	return Plugin_Continue;
 }
 
-Action:TimerResetSuperCharge(Handle:timer, any:iClient)
+Action TimerResetSuperCharge(Handle timer, any iClient)
 {
 	g_bCanChargerSuperCharge[iClient] = true;
 	return Plugin_Stop;
 }
 
-Action:TimerResetSpikedCharge(Handle:timer, any:iClient)
+Action TimerResetSpikedCharge(Handle timer, any iClient)
 {
 	g_bCanChargerSpikedCharge[iClient] = true;
 	return Plugin_Stop;
 }
 
-Action:TimerResetChargerHealingColor(Handle:timer, any:iClient)
+Action TimerResetChargerHealingColor(Handle timer, any iClient)
 {
 	g_bIsChargerHealing[iClient] = false;
 	SetEntProp(iClient, Prop_Send, "m_iGlowType", 2);
@@ -93,7 +93,7 @@ Action:TimerResetChargerHealingColor(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerEarthquakeCooldown(Handle:timer, any:iClient)
+Action TimerEarthquakeCooldown(Handle timer, any iClient)
 {
 	g_bCanChargerEarthquake[iClient] = true;
 	return Plugin_Stop;

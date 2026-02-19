@@ -1,4 +1,4 @@
-Action:TankMenuDrawFire(iClient)
+Action TankMenuDrawFire(iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(TankMenuHandlerFire);
@@ -26,7 +26,7 @@ Action:TankMenuDrawFire(iClient)
 		strStartingNewLines,
         TANK_HEALTH_FIRE);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -39,7 +39,7 @@ Action:TankMenuDrawFire(iClient)
 	return Plugin_Handled;
 }
 
-TankMenuHandlerFire(Menu menu, MenuAction:action, iClient, itemNum)
+TankMenuHandlerFire(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{

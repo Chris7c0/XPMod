@@ -1,5 +1,5 @@
 
-Event_AbilityUse(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Event_AbilityUse(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	if (RunClientChecks(iClient) == false)
@@ -11,7 +11,7 @@ Event_AbilityUse(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
 	return;
 }
 
-Action:Event_PlayerNowIt(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_PlayerNowIt(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"attacker"));
 	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"userid"));
@@ -43,7 +43,7 @@ Action:Event_PlayerNowIt(Handle:hEvent, const String:strName[], bool:bDontBroadc
 	return Plugin_Continue;
 }
 
-Action:Event_PlayerNoLongerIt(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_PlayerNoLongerIt(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 
@@ -54,7 +54,7 @@ Action:Event_PlayerNoLongerIt(Handle:hEvent, const String:strName[], bool:bDontB
 	return Plugin_Continue;
 }
 
-Action:Event_ChargerChargeStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_ChargerChargeStart(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	
@@ -70,7 +70,7 @@ Action:Event_ChargerChargeStart(Handle:hEvent, const String:strName[], bool:bDon
 }
 
 
-Action:Event_ChargerChargeEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_ChargerChargeEnd(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	
 	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
@@ -91,7 +91,7 @@ Action:Event_ChargerChargeEnd(Handle:hEvent, const String:strName[], bool:bDontB
 	return Plugin_Continue;
 }
 
-Action:Event_ChargerImpact(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_ChargerImpact(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
@@ -120,7 +120,7 @@ Action:Event_ChargerImpact(Handle:hEvent, const String:strName[], bool:bDontBroa
 
 	return Plugin_Continue;
 }
-Action:Event_ChargerCarryStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_ChargerCarryStart(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
@@ -138,7 +138,7 @@ Action:Event_ChargerCarryStart(Handle:hEvent, const String:strName[], bool:bDont
 	return Plugin_Continue;
 }
 
-Action:Event_ChargerCarryEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_ChargerCarryEnd(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
@@ -162,7 +162,7 @@ Action:Event_ChargerCarryEnd(Handle:hEvent, const String:strName[], bool:bDontBr
 	return Plugin_Continue;
 }
 
-Action:Event_ChargerPummelStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_ChargerPummelStart(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
@@ -181,7 +181,7 @@ Action:Event_ChargerPummelStart(Handle:hEvent, const String:strName[], bool:bDon
 	return Plugin_Continue;
 }
 
-Action:Event_ChargerPummelEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_ChargerPummelEnd(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new chargerid = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
@@ -196,7 +196,7 @@ Action:Event_ChargerPummelEnd(Handle:hEvent, const String:strName[], bool:bDontB
 	return Plugin_Continue;
 }
 
-Action:Event_ChargerKilled(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_ChargerKilled(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	//new attacker = GetClientOfUserId(GetEventInt(hEvent,"attacker"));
 	new chargerid = GetClientOfUserId(GetEventInt(hEvent,"userid"));
@@ -207,7 +207,7 @@ Action:Event_ChargerKilled(Handle:hEvent, const String:strName[], bool:bDontBroa
 	return Plugin_Continue;
 }
 
-Action:Event_TongueGrab(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_TongueGrab(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
@@ -225,7 +225,7 @@ Action:Event_TongueGrab(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	return Plugin_Continue;
 }
 
-Action:Event_TongueRelease(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_TongueRelease(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
@@ -244,7 +244,7 @@ Action:Event_TongueRelease(Handle:hEvent, const String:strName[], bool:bDontBroa
 	return Plugin_Continue;
 }
 
-Action:Event_ChokeStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_ChokeStart(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
@@ -262,7 +262,7 @@ Action:Event_ChokeStart(Handle:hEvent, const String:strName[], bool:bDontBroadca
 
 // Removed because this is triggered multiple times when the smoker moves, and 
 // looks to Event_TongueRelease happen reliably anyway.
-// Action:Event_ChokeEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+// Action Event_ChokeEnd(Handle hEvent, const char[] strName, bool bDontBroadcast)
 // {
 // 	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 // 	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
@@ -279,7 +279,7 @@ Action:Event_ChokeStart(Handle:hEvent, const String:strName[], bool:bDontBroadca
 // 	return Plugin_Continue;
 // }
 
-Action:Event_JockeyRide(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_JockeyRide(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
@@ -298,7 +298,7 @@ Action:Event_JockeyRide(Handle:hEvent, const String:strName[], bool:bDontBroadca
 }
 
 
-Action:Event_JockeyRideEnd(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_JockeyRideEnd(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new rider = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
@@ -325,7 +325,7 @@ Action:Event_JockeyRideEnd(Handle:hEvent, const String:strName[], bool:bDontBroa
 }
 
 
-Action:Event_HunterPounceStart(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_HunterPounceStart(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
@@ -348,7 +348,7 @@ Action:Event_HunterPounceStart(Handle:hEvent, const String:strName[], bool:bDont
 	return Plugin_Continue;
 }
 
-Action:Event_HunterPounceStopped(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_HunterPounceStopped(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
@@ -367,7 +367,7 @@ Action:Event_HunterPounceStopped(Handle:hEvent, const String:strName[], bool:bDo
 	return Plugin_Continue;
 }
 
-Action:Event_InfectedHurt(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_InfectedHurt(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new attacker = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
 	new victim = GetEventInt(hEvent, "entityid");
@@ -402,7 +402,7 @@ Action:Event_InfectedHurt(Handle:hEvent, const String:strName[], bool:bDontBroad
 			{
 				if(g_iMagnumLevel[attacker] > 0)
 				{
-					new String:strCurrentWeapon[32];
+					char strCurrentWeapon[32];
 					GetClientWeapon(attacker, strCurrentWeapon, sizeof(strCurrentWeapon));
 					if(StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == true)
 					{
@@ -415,12 +415,12 @@ Action:Event_InfectedHurt(Handle:hEvent, const String:strName[], bool:bDontBroad
 	
 	if(g_bUsingFireStorm[attacker]==true)
 	{
-		new Float:time = (float(g_iFireLevel[attacker]) * 6.0);
+		float time = (float(g_iFireLevel[attacker]) * 6.0);
 		IgniteEntity(victim, time, false);
 	}
 	/*if(g_iSilentLevel[iClient]>0)
 	{
-		decl String:weaponclass[32];
+		char weaponclass[32];
 		GetEventString(hEvent,"weapon",weaponclass,32);		//weapon and item does not work for this
 		//PrintToChatAll("\x03-class of gun: \x01%s",weaponclass);
 		if(StrContains(weaponclass,"sniper_military",false) != -1)
@@ -431,7 +431,7 @@ Action:Event_InfectedHurt(Handle:hEvent, const String:strName[], bool:bDontBroad
 	return Plugin_Continue;
 }
 
-Action:Event_WitchKilled(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
+Action Event_WitchKilled(Handle hEvent, char[] Event_name, bool dontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	new victim = GetEventInt(hEvent, "witchid");
@@ -468,7 +468,7 @@ Action:Event_WitchKilled(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 }
 
 
-Action:Event_TankSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_TankSpawn(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {	
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 
@@ -515,7 +515,7 @@ Action:Event_TankSpawn(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 	return Plugin_Continue;
 }
 
-Action:Event_TankFrustrated(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_TankFrustrated(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {	
 	g_iTankCounter--;
 
@@ -533,7 +533,7 @@ Action:Event_TankFrustrated(Handle:hEvent, const String:strName[], bool:bDontBro
 	return Plugin_Continue;
 }
 
-Action:Event_ZombieIgnited(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
+Action Event_ZombieIgnited(Handle hEvent, char[] Event_name, bool dontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	new victim = GetEventInt(hEvent, "entityid");
@@ -542,7 +542,7 @@ Action:Event_ZombieIgnited(Handle:hEvent, String:Event_name[], bool:dontBroadcas
 	{
 		if(IsFakeClient(iClient) == true)
 			return Plugin_Continue;
-		decl String:victimname[12];
+		char victimname[12];
 		GetEventString(hEvent, "victimname", victimname, sizeof(victimname));
 		if(StrEqual(victimname,"Tank",false))
 		{
@@ -562,7 +562,7 @@ Action:Event_ZombieIgnited(Handle:hEvent, String:Event_name[], bool:dontBroadcas
 	return Plugin_Continue;
 }
 
-Action:Event_SpitBurst(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_SpitBurst(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	new iSpitEntity = GetEventInt(hEvent,"subject");
@@ -576,7 +576,7 @@ Action:Event_SpitBurst(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 		g_hTimer_BlockGooSwitching[iClient] = CreateTimer(8.2, TimerAllowGooSwitching, iClient);
 		
 		//Deploying goo type effects
-		new Float:position[3];
+		float position[3];
 		GetEntPropVector(iSpitEntity, Prop_Send, "m_vecOrigin", position);
 		
 		if(g_iGooType[iClient] == GOO_FLAMING)
@@ -587,11 +587,11 @@ Action:Event_SpitBurst(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 		{
 			new smoke = CreateEntityByName("env_smokestack");
 															
-			new String:clientName[128], String:vecString[32];
+			char clientName[128], vecString[32];
 			Format(clientName, sizeof(clientName), "Smoke%i", iClient);
 			Format(vecString, sizeof(vecString), "%f %f %f", position[0], position[1], position[2]);
 		
-			new String:strSpitColorRGB[16];
+			char strSpitColorRGB[16];
 			new iRed, iGreen, iBlue;
 			
 			switch(g_iGooType[iClient])
@@ -645,14 +645,14 @@ Action:Event_SpitBurst(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 			CreateTimer(8.0, TimerStopSmokeEntity, smoke, TIMER_FLAG_NO_MAPCHANGE);
 		}
 		
-		if(g_iMaterialLevel[iClient] > 0)
-		{			
-			position[1] += 1.0;
-			position[2] += 1.0;
+			if(g_iMaterialLevel[iClient] > 0)
+			{			
+				position[1] += 1.0;
+				position[2] += 1.0;
 			
 			WriteParticle(iClient, "spitter_conjure", 180.0, 7.0, position);
 			
-			new Handle:hDataPackage = CreateDataPack();
+			Handle hDataPackage = CreateDataPack();
 			WritePackCell(hDataPackage, iClient);
 			WritePackFloat(hDataPackage, position[0]);
 			WritePackFloat(hDataPackage, position[1]);
@@ -663,7 +663,7 @@ Action:Event_SpitBurst(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 			// Handle Bag of Spits, if they have a Bind 1 and have selected something
 			if (g_iClientBindUses_1[iClient] < 3 && g_iBagOfSpitsSelectedSpit[iClient] != BAG_OF_SPITS_NONE)
 			{
-				new Handle:hBagOfSpitsDataPackage = CreateDataPack();
+				Handle hBagOfSpitsDataPackage = CreateDataPack();
 				WritePackCell(hBagOfSpitsDataPackage, iClient);
 				WritePackFloat(hBagOfSpitsDataPackage, position[0]);
 				WritePackFloat(hBagOfSpitsDataPackage, position[1]);
@@ -671,17 +671,18 @@ Action:Event_SpitBurst(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 				CreateTimer(0.5, TimerConjureFromBagOfSpits, hBagOfSpitsDataPackage);
 			}
 			
-			if(g_iHallucinogenicLevel[iClient] > 0)
-				CreateTimer(1.0, TimerSetSpitterCooldown, iClient,  TIMER_FLAG_NO_MAPCHANGE);
+				if(g_iHallucinogenicLevel[iClient] > 0)
+					CreateTimer(1.0, TimerSetSpitterCooldown, iClient,  TIMER_FLAG_NO_MAPCHANGE);
+			}
 		}
-	}
+		return Plugin_Continue;
 }
 
-Action:Event_WitchSpawn(Handle:hEvent, const String:sName[], bool:bDontBroadcast)
+Action Event_WitchSpawn(Handle hEvent, const char[] sName, bool bDontBroadcast)
 {
 	new iWitchID = GetEventInt(hEvent, "witchid");
 	
-	new bool:bOwnerFound = false;
+	bool bOwnerFound = false;
 	decl iClient;
 	for(iClient = 1; iClient <= MaxClients; iClient++)
 	{
@@ -708,7 +709,7 @@ Action:Event_WitchSpawn(Handle:hEvent, const String:sName[], bool:bDontBroadcast
 	return Plugin_Continue;
 }
 
-Action:Timer_CheckWitchRage(Handle:timer, any:iWitchID)
+Action Timer_CheckWitchRage(Handle timer, any iWitchID)
 {
 	if(IsValidEntity(iWitchID) == false)
 		return Plugin_Stop;
@@ -723,7 +724,7 @@ Action:Timer_CheckWitchRage(Handle:timer, any:iWitchID)
 	// Got this after:
 	// Timer_CheckWitchRage: id = 796, className = witch
 	// Timer_CheckWitchRage: id = 796, className = witch
-	decl String:className[32];
+	char className[32];
 	GetEntityClassname(iWitchID, className, 32)
 	//PrintToServer("Timer_CheckWitchRage: id = %d, className = %s", iWitchID, className)
 	if (strcmp(className, "witch", true) != 0)
@@ -732,7 +733,7 @@ Action:Timer_CheckWitchRage(Handle:timer, any:iWitchID)
 		return Plugin_Stop;
 	}
 	
-	new Float:fRage = GetEntPropFloat(iWitchID, Prop_Send, "m_rage");
+	float fRage = GetEntPropFloat(iWitchID, Prop_Send, "m_rage");
 	
 	//PrintToChatAll("Witch Rage Check: id = %d, Rage = %f", iWitchID, fRage);
 	
@@ -740,12 +741,12 @@ Action:Timer_CheckWitchRage(Handle:timer, any:iWitchID)
 	{
 		SetEntityModel(iWitchID, "models/infected/witch.mdl");
 		
-		new Float:position[3];
+		float position[3];
 		GetEntPropVector(iWitchID, Prop_Send, "m_vecOrigin", position);
 
 		new smoke = CreateEntityByName("env_smokestack");
 		
-		new String:clientName[128], String:vecString[32];
+		char clientName[128], vecString[32];
 		Format(clientName, sizeof(clientName), "Smoke%i", iWitchID);
 		Format(vecString, sizeof(vecString), "%f %f %f", position[0], position[1], position[2]);
 
@@ -774,15 +775,15 @@ Action:Timer_CheckWitchRage(Handle:timer, any:iWitchID)
 	return Plugin_Continue;
 }
 
-// Action:Event_GhostSpawnTime(Handle:hEvent, const String:sName[], bool:bDontBroadcast)
+// Action Event_GhostSpawnTime(Handle hEvent, const char[] sName, bool bDontBroadcast)
 // {
 // 	new iSpawner = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-// 	new Float:fSpawnTime = GetEventFloat(hEvent, "spawntime");
+// 	float fSpawnTime = GetEventFloat(hEvent, "spawntime");
 // 	PrintToChatAll("Spawn Time = %f", fSpawnTime);
 // 	CreateTimer(fSpawnTime + 1.5, TimerSpawnGhostClass, iSpawner, TIMER_FLAG_NO_MAPCHANGE);
 // }
 
-// Action:Event_EnteredSpit(Handle:hEvent, const String:sName[], bool:bDontBroadcast)
+// Action Event_EnteredSpit(Handle hEvent, const char[] sName, bool bDontBroadcast)
 // {
 // 	//new userid = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 // 	//new subject = GetEventInt(hEvent,"subject");

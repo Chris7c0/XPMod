@@ -165,7 +165,7 @@ OnGameFrame_Coach(iClient)
 		{
 			if((buttons & IN_SPEED) && (buttons & IN_ZOOM))
 			{
-				decl String:currentweapon[32];
+				char currentweapon[32];
 				GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
 				if((StrContains(currentweapon, "vomitjar", false) != -1) || (StrContains(currentweapon, "molotov", false) != -1) || (StrContains(currentweapon, "pipe_bomb", false) != -1))
 				{
@@ -466,7 +466,7 @@ OnGameFrame_Coach(iClient)
 				{
 					g_iWreckingBallChargeCounter[iClient] = 0;
 					g_bIsWreckingBallCharged[iClient] = true;
-					new Float:vec[3];
+					float vec[3];
 					GetClientAbsOrigin(iClient, vec);
 					new rand = GetRandomInt(1, 3);
 					switch(rand)
@@ -570,7 +570,7 @@ OnGameFrame_Coach(iClient)
 		buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 		if((buttons & IN_RELOAD) && g_bCoachShotgunForceReload[iClient] == false && g_bClientIsReloading[iClient] == false)
 		{
-			decl String:currentweapon[32];
+			char currentweapon[32];
 			GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
 			new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 			if (IsValidEntity(ActiveWeaponID) == false)
@@ -670,7 +670,7 @@ OGFSurvivorReload_Coach(iClient, const char[] currentweapon, ActiveWeaponID, Cur
 	}
 }
 
-EventsHurt_AttackerCoach(Handle:hEvent, attacker, victim)
+EventsHurt_AttackerCoach(Handle hEvent, attacker, victim)
 {
 	if (IsFakeClient(attacker))
 		return;
@@ -683,7 +683,7 @@ EventsHurt_AttackerCoach(Handle:hEvent, attacker, victim)
 		g_bIsWreckingBallCharged[attacker]==true || 
 		g_bCoachRageIsActive[attacker] == true)
 	{
-		decl String:weaponclass[32];
+		char weaponclass[32];
 		GetEventString(hEvent,"weapon",weaponclass,32);
 		//PrintToChatAll("\x03-class of gun: \x01%s",weaponclass);
 		if(StrContains(weaponclass,"melee",false) != -1)
@@ -704,7 +704,7 @@ EventsHurt_AttackerCoach(Handle:hEvent, attacker, victim)
 				CreateTimer(0.1, DeleteParticle, g_iPID_CoachMeleeCharge1[attacker], TIMER_FLAG_NO_MAPCHANGE);
 				CreateTimer(0.1, DeleteParticle, g_iPID_CoachMeleeCharge2[attacker], TIMER_FLAG_NO_MAPCHANGE);
 				//PrintToChat(attacker, "\x03[XPMod] \x05You did %d extra CHARGED melee damage", ((g_iWreckingLevel[attacker]*100) + (g_iMeleeDamageCounter[attacker])));
-				new Float:vec[3];
+				float vec[3];
 				GetClientAbsOrigin(attacker, vec);
 				EmitSoundToAll(SOUND_COACH_CHARGE_HIT, attacker, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
 				//CreateParticle("coach_melee_charge_splash", 0.0, attacker, NO_ATTACH);
@@ -739,13 +739,13 @@ EventsHurt_AttackerCoach(Handle:hEvent, attacker, victim)
 	}
 }
 
-// EventsHurt_VictimCoach(Handle:hEvent, attacker, victim)
+// EventsHurt_VictimCoach(Handle hEvent, attacker, victim)
 // {
 // 	if (IsFakeClient(victim))
 // 		return;
 // }
 
-EventsDeath_AttackerCoach(Handle:hEvent, iAttacker, iVictim)
+EventsDeath_AttackerCoach(Handle hEvent, iAttacker, iVictim)
 {
 	if (g_iChosenSurvivor[iAttacker] != COACH ||
 		g_bTalentsConfirmed[iAttacker] == false ||
@@ -754,7 +754,7 @@ EventsDeath_AttackerCoach(Handle:hEvent, iAttacker, iVictim)
 		IsFakeClient(iAttacker) == true)
 		return;
 
-	decl String:weaponclass[32];
+	char weaponclass[32];
 	GetEventString(hEvent,"weapon",weaponclass,32);
 	//PrintToChatAll("\x03-class of gun: \x01%s",weaponclass);
 
@@ -799,7 +799,7 @@ EventsDeath_AttackerCoach(Handle:hEvent, iAttacker, iVictim)
 	}	
 }
 
-EventsDeath_VictimCoach(Handle:hEvent, iAttacker, iVictim)
+EventsDeath_VictimCoach(Handle hEvent, iAttacker, iVictim)
 {
 	if (g_iChosenSurvivor[iVictim] != COACH ||
 		g_bTalentsConfirmed[iVictim] == false ||
@@ -817,14 +817,14 @@ EventsDeath_VictimCoach(Handle:hEvent, iAttacker, iVictim)
 
 
 //Coach's Jetpack stuff
-Action:StartFlying(iClient)
+Action StartFlying(iClient)
 {
 	if(g_bIsFlyingWithJetpack[iClient]==false)
 	{
 		SetMoveType(iClient, MOVETYPE_FLYGRAVITY, MOVECOLLIDE_FLY_BOUNCE);
 		g_bIsMovementTypeFly[iClient] = true;
 		StopSound(iClient, SNDCHAN_AUTO, SOUND_JPIDLEREV);
-		new Float:vec[3];
+		float vec[3];
 		GetClientAbsOrigin(iClient, vec);
 		EmitSoundToAll(SOUND_JPHIGHREV, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, 0.3, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
 		g_iPID_CoachJetpackStream[iClient] = WriteParticle(iClient, "jetpack_stream", 0.0);
@@ -841,7 +841,7 @@ Action:StartFlying(iClient)
 		CreateTimer(0.5, DeleteParticle, g_iPID_CoachJetpackStream[iClient], TIMER_FLAG_NO_MAPCHANGE);
 		StopSound(iClient, SNDCHAN_AUTO, SOUND_JPHIGHREV);
 		StopSound(iClient, SNDCHAN_AUTO, SOUND_JPIDLEREV);
-		new Float:vec[3];
+		float vec[3];
 		GetClientAbsOrigin(iClient, vec);
 		EmitSoundToAll(SOUND_JPDIE, iClient, SNDCHAN_AUTO,	SNDLEVEL_NORMAL, SND_NOFLAGS, 0.3, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
 		g_bIsJetpackOn[iClient] = false;
@@ -854,20 +854,20 @@ Action:StartFlying(iClient)
 	return Plugin_Continue;
 }
 
-Action:StopFlying(iClient)
+Action StopFlying(iClient)
 {
 	g_bIsFlyingWithJetpack[iClient]=false;
 	CreateTimer(0.5, DeleteParticle, g_iPID_CoachJetpackStream[iClient], TIMER_FLAG_NO_MAPCHANGE);
 	StopSound(iClient, SNDCHAN_AUTO, SOUND_JPHIGHREV);
-	new Float:vec[3];
+	float vec[3];
 	GetClientAbsOrigin(iClient, vec);
 	EmitSoundToAll(SOUND_JPIDLEREV, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, 0.3, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
 	return Plugin_Continue;
 }
 
-AddUpwardVelocity(iClient, Float:speed)
+AddUpwardVelocity(iClient, float speed)
 {
-	new Float:vecVelocity[3];
+	float vecVelocity[3];
 	GetEntDataVector(iClient, g_iOffset_VecVelocity, vecVelocity);
 
 	if ((vecVelocity[2]+speed) > 250.0)

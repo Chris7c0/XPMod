@@ -43,7 +43,7 @@ public void OnEntityDestroyed(int iEntity)
 	}
 
 	// Get classname for the entity to check what it is later
-	new String:strClassname[100];
+	char strClassname[100];
 	GetEntityClassname(iEntity,strClassname,100);
 
 	// Handle Enhanced CI deaths
@@ -61,7 +61,7 @@ public void OnEntityDestroyed(int iEntity)
 	}
 }
 
-public Action OnTakeDamage(iVictim, &iAttacker, &iInflictor, &Float:fDamage, &iDamageType, &iWeapon, Float:damageForce[3], Float:damagePosition[3]) 
+public Action OnTakeDamage(iVictim, &iAttacker, &iInflictor, float &fDamage, &iDamageType, &iWeapon, float damageForce[3], float damagePosition[3]) 
 {
 	// PrintToChatAll("OnTakeDamage: %i", iVictim);
 
@@ -101,7 +101,7 @@ public Action OnTakeDamage(iVictim, &iAttacker, &iInflictor, &Float:fDamage, &iD
 // damage actually happened or not.  Also, cannot pass the hitgroup to OnTakeDamage reliably without there being
 // issues.  So, instead, if needed, to get headshots, use the damagetype variable, as this appears to change if
 // there is an actual headshot. This will likely need to be done for each gun though.
-// public Action:TraceAttack(victim, &attacker, &inflictor, &Float:damage, &damageType, &ammotype, hitbox, hitgroup)
+// public Action TraceAttack(victim, &attacker, &inflictor, float &damage, &damageType, &ammotype, hitbox, hitgroup)
 // {
 // 	PrintToServer("TraceAttack %i: damage: %f, damageType: %i, hitgroup: %i", victim, damage, damageType, hitgroup);
 // 	// damage = 0.0;

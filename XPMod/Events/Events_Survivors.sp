@@ -1,4 +1,4 @@
-Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
+Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	
@@ -29,7 +29,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 		}
 		case 4:		//Nick Firing
 		{
-			new String:strCurrentWeapon[32];
+			char strCurrentWeapon[32];
 			GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 
 			new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
@@ -94,7 +94,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	{
 		g_iReloadFrameCounter[iClient]++;
 		// PrintToChatAll("Frame counter %d", g_iReloadFrameCounter[iClient]);
-		decl String:currentweapon[32];
+		char currentweapon[32];
 		GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
 		//PrintToChatAll("Current Weapon is %s", currentweapon);
 		new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
@@ -333,7 +333,7 @@ Action:Event_WeaponFire(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	return Plugin_Continue;
 }
 
-Action:Event_ReviveSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
+Action Event_ReviveSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 {
 	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	int iTarget = GetClientOfUserId(GetEventInt(hEvent, "subject"));
@@ -374,7 +374,7 @@ Action:Event_ReviveSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcas
 	return Plugin_Continue;
 }
 
-Event_LedgeGrab(Handle:hEvent, const String:strName[], bool:bDontBroadcast)		//need an event for if the iClient gets up off the ledge to make clienthanging false
+Event_LedgeGrab(Handle hEvent, const char[] strName, bool bDontBroadcast)		//need an event for if the iClient gets up off the ledge to make clienthanging false
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	clienthanging[iClient] = true;
@@ -386,7 +386,7 @@ Event_LedgeGrab(Handle:hEvent, const String:strName[], bool:bDontBroadcast)		//n
 	}
 }
 
-Action:Event_InfectedDecap(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_InfectedDecap(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new iClient  = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	if(IsFakeClient(iClient) == false)
@@ -413,7 +413,7 @@ Action:Event_InfectedDecap(Handle:hEvent, const String:strName[], bool:bDontBroa
 	return Plugin_Continue;
 }
 
-Action:Event_PlayerIncap(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
+Action Event_PlayerIncap(Handle hEvent, char[] Event_name, bool dontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	new incapper = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
@@ -484,14 +484,14 @@ Action:Event_PlayerIncap(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 			//Spitter conjure CI
 			if(g_iPuppetLevel[incapper] > 0 && g_iInfectedCharacter[incapper] == SPITTER)
 			{
-				new Float:xyzLocation[3];
+				float xyzLocation[3];
 				GetEntPropVector(iClient, Prop_Send, "m_vecOrigin", xyzLocation);
 				
 				xyzLocation[2] += 10.0;
 				
 				WriteParticle(iClient, "spitter_conjure", 180.0, 7.0, xyzLocation);
 			
-				new Handle:hDataPackage = CreateDataPack();
+				Handle hDataPackage = CreateDataPack();
 				WritePackCell(hDataPackage, incapper);
 				WritePackFloat(hDataPackage, xyzLocation[0]);
 				WritePackFloat(hDataPackage, xyzLocation[1]);
@@ -510,7 +510,7 @@ Action:Event_PlayerIncap(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	return Plugin_Continue;
 }
 
-Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
+Action Event_HealSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	new target = GetClientOfUserId(GetEventInt(hEvent, "subject"));
@@ -537,7 +537,7 @@ Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	{
 		new iCurrentHealth = GetPlayerHealth(target);
 		new iMaxHealth = GetPlayerMaxHealth(target);
-		//new Float:fTempHealth = GetEntDataFloat(target, g_iOffset_HealthBuffer);
+		//float fTempHealth = GetEntDataFloat(target, g_iOffset_HealthBuffer);
 		//if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
 		if(iCurrentHealth < (iMaxHealth - 20.0))
 		{
@@ -794,7 +794,7 @@ Action:Event_HealSuccess(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	return Plugin_Continue;
 }
 
-Action:Event_DefibUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_DefibUsed(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new iSubject = GetClientOfUserId(GetEventInt(hEvent,"subject"));
 	new iClient  = GetClientOfUserId(GetEventInt(hEvent,"userid"));
@@ -806,7 +806,7 @@ Action:Event_DefibUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 	{
 		new iCurrentHealth = GetPlayerHealth(iSubject);
 		new iMaxHealth = GetPlayerMaxHealth(iSubject);
-		//new Float:fTempHealth = GetEntDataFloat(iSubject, g_iOffset_HealthBuffer);
+		//float fTempHealth = GetEntDataFloat(iSubject, g_iOffset_HealthBuffer);
 		//if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
 		if(iCurrentHealth < (iMaxHealth - 20.0))
 		{
@@ -841,7 +841,7 @@ Action:Event_DefibUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 	return Plugin_Continue;
 }
 
-Action:Event_UpgradePackUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_UpgradePackUsed(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new iClient  = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	
@@ -850,7 +850,7 @@ Action:Event_UpgradePackUsed(Handle:hEvent, const String:strName[], bool:bDontBr
 }
 
 
-Action:Event_PillsUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_PillsUsed(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	
@@ -897,7 +897,7 @@ Action:Event_PillsUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 	return Plugin_Continue;
 }
 
-Action:Event_AdrenalineUsed(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_AdrenalineUsed(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	
@@ -912,7 +912,7 @@ Action:Event_AdrenalineUsed(Handle:hEvent, const String:strName[], bool:bDontBro
 	{
 		new iMaxHealth = GetPlayerMaxHealth(iClient);
 		new iHealth = GetPlayerHealth(iClient);
-		new Float:fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
+		float fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
 		
 		if(float(iHealth) + fTempHealth + (float(g_iEnhancedLevel[iClient]) * 6.0) <= float(iMaxHealth))
 			fTempHealth = fTempHealth + (float(g_iEnhancedLevel[iClient]) * 6.0);
@@ -952,7 +952,7 @@ Action:Event_AdrenalineUsed(Handle:hEvent, const String:strName[], bool:bDontBro
 }
 
 //For Pills and Shots
-Action:Event_WeaponGiven(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_WeaponGiven(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	//PrintToChatAll("Event_WeaponGiven");
 	
@@ -969,7 +969,7 @@ Action:Event_WeaponGiven(Handle:hEvent, const String:strName[], bool:bDontBroadc
 	return Plugin_Continue;
 }
 
-Action:Event_ReceiveUpgrade(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
+Action Event_ReceiveUpgrade(Handle hEvent, char[] Event_name, bool dontBroadcast)
 {
 	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	char strUpgrade[32];
@@ -984,4 +984,5 @@ Action:Event_ReceiveUpgrade(Handle:hEvent, String:Event_name[], bool:dontBroadca
 	// // Also, before, it sets everyone to be 0 ammo, that didnt meet the criteria
 	// fnc_DetermineMaxClipSize(iClient);
 	// fnc_SetAmmoUpgradeToMaxClipSize(iClient);
+	return Plugin_Continue;
 }

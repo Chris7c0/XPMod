@@ -1,4 +1,4 @@
-Action:AdminMenuDraw(iClient)
+Action AdminMenuDraw(iClient)
 {
 	// if (iClient != -99)
 	// {
@@ -28,7 +28,7 @@ Action:AdminMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-AdminMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+AdminMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -90,7 +90,7 @@ void ResetAllAdminMenuSelectionVariables(int iClient)
 	g_iAdminSelectedDuration[iClient] = -1;
 }
 
-Action:SwitchPlayersTeamMenuDraw(iClient)
+Action SwitchPlayersTeamMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(SwitchPlayersTeamMenuHandler);
 
@@ -107,7 +107,7 @@ Action:SwitchPlayersTeamMenuDraw(iClient)
 }
 
 
-SwitchPlayersTeamMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+SwitchPlayersTeamMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -128,7 +128,7 @@ SwitchPlayersTeamMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 	}
 }
 
-Action:SwitchPlayersTeamSelectTeamMenuDraw(iClient)
+Action SwitchPlayersTeamSelectTeamMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(SwitchPlayersTeamMenuSelectTeamHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -161,7 +161,7 @@ Action:SwitchPlayersTeamSelectTeamMenuDraw(iClient)
 }
 
 
-SwitchPlayersTeamMenuSelectTeamHandler(Menu menu, MenuAction:action, iClient, itemNum)
+SwitchPlayersTeamMenuSelectTeamHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -197,7 +197,7 @@ SwitchPlayersTeamMenuSelectTeamHandler(Menu menu, MenuAction:action, iClient, it
 	}
 }
 
-Action:MutePlayerMenuDraw(iClient)
+Action MutePlayerMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(MutePlayerMenuHandler);
 	
@@ -212,7 +212,7 @@ Action:MutePlayerMenuDraw(iClient)
 }
 
 
-MutePlayerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+MutePlayerMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -236,7 +236,7 @@ MutePlayerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 
-Action:KickPlayerMenuDraw(iClient)
+Action KickPlayerMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(KickPlayerMenuHandler);
 	
@@ -251,7 +251,7 @@ Action:KickPlayerMenuDraw(iClient)
 }
 
 
-KickPlayerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+KickPlayerMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -273,7 +273,7 @@ KickPlayerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 
-Action:BanPlayerMenuDraw(iClient)
+Action BanPlayerMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(BanPlayerMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -296,7 +296,7 @@ Action:BanPlayerMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-BanPlayerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+BanPlayerMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -322,7 +322,7 @@ BanPlayerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 	}
 }
 
-Action:BanPlayerInServerMenuDraw(iClient)
+Action BanPlayerInServerMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(BanPlayerInServerMenuHandler);
 	
@@ -336,7 +336,7 @@ Action:BanPlayerInServerMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-BanPlayerInServerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+BanPlayerInServerMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -355,7 +355,7 @@ BanPlayerInServerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 		PrintToChat(iClient, "\x03[XPMod] \x04Banning %N...", iTarget);
 		
 		// Construct the ban string reason
-		decl String:strBanString[1024] = "";
+		char strBanString[1024] = "";
 		Format(strBanString, sizeof(strBanString), "Permanently banned by %N", iClient);
 		// Add user to the bans table in the xpmod database
 		SQLAddBannedUserToDatabaseUsingClientID(iTarget, 0, strBanString);
@@ -365,7 +365,7 @@ BanPlayerInServerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 	}
 }
 
-Action:BanPlayerDisconnectedMenuDraw(iClient)
+Action BanPlayerDisconnectedMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(BanPlayerDisconnectedMenuHandler);
 	
@@ -380,7 +380,7 @@ Action:BanPlayerDisconnectedMenuDraw(iClient)
 }
 
 
-BanPlayerDisconnectedMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+BanPlayerDisconnectedMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -399,7 +399,7 @@ BanPlayerDisconnectedMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 		PrintToChat(iClient, "\x03[XPMod] \x04Banning %s...", strClientName);
 		
 		// Construct the ban string reason
-		decl String:strBanString[1024] = "";
+		char strBanString[1024] = "";
 		Format(strBanString, sizeof(strBanString), "Permanently banned by %N", iClient);
 		// Add user to the bans table in the xpmod database
 		SQLAddBannedUserToDatabaseUsingNameAndSteamID(strClientName, sizeof(strClientName), strSteamID, 0, strBanString);
@@ -413,7 +413,7 @@ void AddAllCurrentPlayersToMenu(Menu menu, int iClient)
 		if(RunClientChecks(iTarget) && IsFakeClient(iTarget) == false)
 		{
 			//Get Steam Auth ID, if this returns false, then do not proceed
-			decl String:strSteamID[32];
+			char strSteamID[32];
 			if (GetClientAuthId(iTarget, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
 			{
 				PrintToChat(iClient, "AddAllCurrentPlayersToMenu: GetClientAuthId failed for %N", iTarget);
@@ -422,12 +422,12 @@ void AddAllCurrentPlayersToMenu(Menu menu, int iClient)
 			}
 
 			// Get the in game client id
-			decl String:strParameters[32];
+			char strParameters[32];
 			Format(strParameters, sizeof(strParameters),"%i;%s;%N", 
 				iTarget, strSteamID, iTarget)
 			
 			// Combine the info into a string that the admin will see
-			decl String:strTargetInfo[50];
+			char strTargetInfo[50];
 			Format(strTargetInfo, sizeof(strTargetInfo), " (%i: %s) %N",
 			iTarget,
 			strSteamID,
@@ -447,14 +447,14 @@ void AddAllDisconnectedPlayersToMenu(Menu menu)
 		// 	g_strDisconnectedConnectedPlayerSteamID[i]);
 
 		// Get the in game client id
-		decl String:strParameters[32];
+		char strParameters[32];
 		Format(strParameters, sizeof(strParameters),"%i;%s;%s",
 			i, 
 			g_strDisconnectedConnectedPlayerSteamID[i],
 			g_strDisconnectedConnectedPlayerNames[i])
 		
 		// Combine the info into a string that the admin will see
-		decl String:strTargetInfo[50];
+		char strTargetInfo[50];
 		Format(strTargetInfo, sizeof(strTargetInfo), " (%i: %s) %s",
 		i,
 		g_strDisconnectedConnectedPlayerSteamID[i],
@@ -514,7 +514,7 @@ bool VerifyClientSteamIDMatches(int iClient, char[] strSteamIDToCheck)
 		return false;
 
 	//Get Steam Auth ID, if this returns false, then do not proceed
-	decl String:strSteamID[32];
+	char strSteamID[32];
 	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
 	{
 		PrintToChat(iClient, "GetClientAuthId failed for %N", iClient);
@@ -529,7 +529,7 @@ bool VerifyClientSteamIDMatches(int iClient, char[] strSteamIDToCheck)
 }
 
 // Undo Griefing Tools
-Action:AdminGriefingUndoToolsMenuDraw(iClient)
+Action AdminGriefingUndoToolsMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(AdminGriefingUndoToolsMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -550,7 +550,7 @@ Action:AdminGriefingUndoToolsMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-AdminGriefingUndoToolsMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+AdminGriefingUndoToolsMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -591,7 +591,7 @@ AdminGriefingUndoToolsMenuHandler(Menu menu, MenuAction:action, iClient, itemNum
 }
 
 // ReviveAndFullHealSurvivor
-Action:AdminReviveAndFullHealSurvivorMenuDraw(iClient)
+Action AdminReviveAndFullHealSurvivorMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(AdminReviveAndFullHealSurvivorMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -605,13 +605,13 @@ Action:AdminReviveAndFullHealSurvivorMenuDraw(iClient)
 			IsPlayerAlive(i))
 		{
 			// Get the in game client name
-			decl String:strSurvivorInfo[32];
+			char strSurvivorInfo[32];
 			Format(strSurvivorInfo, sizeof(strSurvivorInfo),"(%i) %N - (%i HP)",
 				i,
 				i,
 				GetPlayerHealth(i));
 
-			decl String:strID[8];
+			char strID[8];
 			Format(strID, sizeof(strID), "%i", i);
 			AddMenuItem(menu, strID, strSurvivorInfo);
 		}
@@ -627,7 +627,7 @@ Action:AdminReviveAndFullHealSurvivorMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-AdminReviveAndFullHealSurvivorMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+AdminReviveAndFullHealSurvivorMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{

@@ -6,12 +6,12 @@ void Handle2SecondClientTimers_Coach(int iClient)
 	HandleCoachJetPack2SecondTick(iClient);
 }
 
-Action:TimerStartJetPack(Handle:timer, any:iClient)
+Action TimerStartJetPack(Handle timer, any iClient)
 {
 	if(RunClientChecks(iClient)==false || IsPlayerAlive(iClient)==false)
 		return Plugin_Stop;
 
-	new Float:vec[3];
+	float vec[3];
 	GetClientAbsOrigin(iClient, vec);
 	EmitSoundToAll(SOUND_JPIDLEREV, iClient, SNDCHAN_AUTO,	SNDLEVEL_NORMAL, SND_NOFLAGS, 0.3, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
 	g_bIsJetpackOn[iClient] = true;
@@ -19,7 +19,7 @@ Action:TimerStartJetPack(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerGiveFirstExplosive(Handle:timer, any:iClient)
+Action TimerGiveFirstExplosive(Handle timer, any iClient)
 {
 	if(RunClientChecks(iClient)==false || IsPlayerAlive(iClient)==false)
 		return Plugin_Stop;
@@ -45,7 +45,7 @@ Action:TimerGiveFirstExplosive(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerGiveExplosive(Handle:timer, any:iClient)
+Action TimerGiveExplosive(Handle timer, any iClient)
 {
 	if(RunClientChecks(iClient) == false || IsPlayerAlive(iClient) == false)
 		return Plugin_Stop;
@@ -67,13 +67,13 @@ Action:TimerGiveExplosive(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-// Action:Timer_ResetExplosiveJustGiven(Handle:timer, any:iClient)
+// Action Timer_ResetExplosiveJustGiven(Handle timer, any iClient)
 // {
 // 	g_bExplosivesJustGiven[iClient] = true;
 // 	return Plugin_Stop;
 // }
 
-Action:TimerCoachCIHeadshotSpeedReset(Handle:timer, any:iClient)
+Action TimerCoachCIHeadshotSpeedReset(Handle timer, any iClient)
 {
 	g_iCoachCIHeadshotCounter[iClient]--;
 	if(g_iCoachCIHeadshotCounter[iClient] > 0)
@@ -88,7 +88,7 @@ Action:TimerCoachCIHeadshotSpeedReset(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerCoachSIHeadshotSpeedReset(Handle:timer, any:iClient)
+Action TimerCoachSIHeadshotSpeedReset(Handle timer, any iClient)
 {
 	//g_fCoachSIHeadshotSpeed[iClient] = 0.0;
 	
@@ -105,7 +105,7 @@ Action:TimerCoachSIHeadshotSpeedReset(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerCoachRageReset(Handle:timer, any:iClient)
+Action TimerCoachRageReset(Handle timer, any iClient)
 {
 	g_bCoachRageIsActive[iClient] = false;
 	g_iCoachRageMeleeDamage[iClient] = 0;
@@ -120,7 +120,7 @@ Action:TimerCoachRageReset(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerCoachRageCooldown(Handle:timer, any:iClient)
+Action TimerCoachRageCooldown(Handle timer, any iClient)
 {
 	g_bCoachRageIsAvailable[iClient] = true;
 	g_bCoachRageIsInCooldown[iClient] = false;
@@ -130,7 +130,7 @@ Action:TimerCoachRageCooldown(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerCoachRageRegenTick(Handle:timer, any:iClient)
+Action TimerCoachRageRegenTick(Handle timer, any iClient)
 {
 	if (RunClientChecks(iClient) == false || 
 		IsFakeClient(iClient) ||
@@ -195,11 +195,11 @@ Action:TimerCoachRageRegenTick(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerWreckingChargeRetrigger(Handle:timer, any:iClient)
+Action TimerWreckingChargeRetrigger(Handle timer, any iClient)
 {
 	g_iWreckingBallChargeCounter[iClient] = 0;
 	g_bIsWreckingBallCharged[iClient] = true;
-	new Float:vec[3];
+	float vec[3];
 	GetClientAbsOrigin(iClient, vec);
 	new rand = GetRandomInt(1, 3);
 	switch(rand)
@@ -215,7 +215,7 @@ Action:TimerWreckingChargeRetrigger(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerCoachAssignGrenades(Handle:timer, any:iClient)
+Action TimerCoachAssignGrenades(Handle timer, any iClient)
 {
 	decl AssignGrenadeSlot1, AssignGrenadeSlot2, AssignGrenadeSlot3;
 	AssignGrenadeSlot1 = GetRandomInt(0,2);
@@ -315,13 +315,13 @@ Action:TimerCoachAssignGrenades(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerCanCoachGrenadeCycleReset(Handle:timer, any:iClient)
+Action TimerCanCoachGrenadeCycleReset(Handle timer, any iClient)
 {
 	g_bCanCoachGrenadeCycle[iClient] = true;
 	return Plugin_Stop;
 }
 
-Action:TimerCoachGrenadeFireCycle(Handle:timer, any:iClient)
+Action TimerCoachGrenadeFireCycle(Handle timer, any iClient)
 {
 	if(g_iStrongLevel[iClient] == 2 || g_iStrongLevel[iClient] == 3)
 	{

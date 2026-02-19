@@ -17,7 +17,7 @@ SetupLoadouts()
 	}
 }
 
-// Action:LoadoutMenuDrawSetup(iClient)
+// Action LoadoutMenuDrawSetup(iClient)
 // {
 // 	if(IsClientInGame(iClient))
 // 		LoadoutMenuDraw(iClient);
@@ -25,7 +25,7 @@ SetupLoadouts()
 // 	return Plugin_Handled;
 // }
 
-Action:ShowUserLoadoutMenu(iClient, args)
+Action ShowUserLoadoutMenu(iClient, args)
 {
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient))
 		return Plugin_Handled;
@@ -42,7 +42,7 @@ Action:ShowUserLoadoutMenu(iClient, args)
 }
 
 //Draw Menus
-Action:LoadoutMenuDraw(iClient)
+Action LoadoutMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(LoadoutMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -93,7 +93,7 @@ Action:LoadoutMenuDraw(iClient)
 	AddMenuItem(menu, "option8", "Change Your Survivor\n ");
 	AddMenuItem(menu, "option9", "Main Menu");
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Exit\
 		%s\n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
@@ -105,7 +105,7 @@ Action:LoadoutMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-Action:PrimaryMenuDraw(iClient) 
+Action PrimaryMenuDraw(iClient) 
 {
 	Menu menu = CreateMenu(PrimaryMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -134,7 +134,7 @@ Action:PrimaryMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-Action:SecondaryMenuDraw(iClient) 
+Action SecondaryMenuDraw(iClient) 
 {
 	Menu menu = CreateMenu(SecondaryMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -163,7 +163,7 @@ Action:SecondaryMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-Action:ExplosivesMenuDraw(iClient) 
+Action ExplosivesMenuDraw(iClient) 
 {
 	Menu menu = CreateMenu(ExplosivesMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -192,7 +192,7 @@ Action:ExplosivesMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-Action:HealthMenuDraw(iClient) 
+Action HealthMenuDraw(iClient) 
 {
 	Menu menu = CreateMenu(HealthMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -222,7 +222,7 @@ Action:HealthMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-Action:BoostMenuDraw(iClient) 
+Action BoostMenuDraw(iClient) 
 {
 	Menu menu = CreateMenu(BoostMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -251,7 +251,7 @@ Action:BoostMenuDraw(iClient)
 	return Plugin_Handled;
 }
 
-Action:CleanMenuDraw(iClient) 
+Action CleanMenuDraw(iClient) 
 {
 	Menu menu = CreateMenu(CleanMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -274,7 +274,7 @@ Action:CleanMenuDraw(iClient)
 }
 
 //SubMachine Gun Draw
-Action:SMGMenuDraw(iClient) 
+Action SMGMenuDraw(iClient) 
 {
 	Menu menu = CreateMenu(SMGMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -304,7 +304,7 @@ Action:SMGMenuDraw(iClient)
 }
 
 //Machine Gun Draw
-Action:MGMenuDraw(iClient) 
+Action MGMenuDraw(iClient) 
 {
 	Menu menu = CreateMenu(MGMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -334,7 +334,7 @@ Action:MGMenuDraw(iClient)
 }
 
 //Shotgun Gun Draw
-Action:ShotgunMenuDraw(iClient) 
+Action ShotgunMenuDraw(iClient) 
 {
 	Menu menu = CreateMenu(ShotgunMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -364,7 +364,7 @@ Action:ShotgunMenuDraw(iClient)
 }
 
 //Sniper Gun Draw
-Action:SniperMenuDraw(iClient) 
+Action SniperMenuDraw(iClient) 
 {
 	Menu menu = CreateMenu(SniperMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -394,7 +394,7 @@ Action:SniperMenuDraw(iClient)
 }
 
 //Special Weapons Gun Draw
-Action:SpecialMenuDraw(iClient) 
+Action SpecialMenuDraw(iClient) 
 {
 	Menu menu = CreateMenu(SpecialMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -424,7 +424,7 @@ Action:SpecialMenuDraw(iClient)
 }
 
 //Chainsaw Gun Draw
-Action:CrushingMeleeMenuDraw(iClient) 
+Action CrushingMeleeMenuDraw(iClient) 
 {
 	Menu menu = CreateMenu(CrushingMeleeMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -456,7 +456,7 @@ Action:CrushingMeleeMenuDraw(iClient)
 }
 
 //Sidearms Gun Draw
-Action:SidearmMenuDraw(iClient) 
+Action SidearmMenuDraw(iClient) 
 {
 	Menu menu = CreateMenu(SidearmMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -486,7 +486,7 @@ Action:SidearmMenuDraw(iClient)
 }
 
 //Melee Gun Draw
-Action:SlashingMeleeMenuDraw(iClient) 
+Action SlashingMeleeMenuDraw(iClient) 
 {
 	Menu menu = CreateMenu(SlashingMeleeMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -518,7 +518,7 @@ Action:SlashingMeleeMenuDraw(iClient)
 //Menu Handlers
 
 //Loadout Menu Handler(MAIN)
-LoadoutMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+LoadoutMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -586,7 +586,7 @@ LoadoutMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Primary Slots Menu Handler
-PrimaryMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+PrimaryMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -630,7 +630,7 @@ PrimaryMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Secondary Slots Menu Handler
-SecondaryMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+SecondaryMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -666,7 +666,7 @@ SecondaryMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Explosive Slots Menu Handler
-ExplosivesMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+ExplosivesMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -705,7 +705,7 @@ ExplosivesMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Health Slots Menu Handler
-HealthMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+HealthMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -749,7 +749,7 @@ HealthMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Boost Slots Menu Handler
-BoostMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+BoostMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -783,7 +783,7 @@ BoostMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Clean Loadout Menu Handler
-CleanMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+CleanMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -818,7 +818,7 @@ CleanMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //SMG Menu Handler
-SMGMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+SMGMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -852,7 +852,7 @@ SMGMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //MG Menu Handler
-MGMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+MGMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -891,7 +891,7 @@ MGMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Shotgun Menu Handler
-ShotgunMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+ShotgunMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -930,7 +930,7 @@ ShotgunMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Sniper Menu Handler
-SniperMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+SniperMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -969,7 +969,7 @@ SniperMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Special Weapons Menu Handler
-SpecialMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+SpecialMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -998,7 +998,7 @@ SpecialMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Sidearms Menu Handler
-SidearmMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+SidearmMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -1032,7 +1032,7 @@ SidearmMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Crushing Melee Menu Handler
-CrushingMeleeMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+CrushingMeleeMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -1086,7 +1086,7 @@ CrushingMeleeMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Slashing Melee Menu Handler
-SlashingMeleeMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+SlashingMeleeMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{

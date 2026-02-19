@@ -176,7 +176,7 @@ HandleRochelleNinjaRopeMovement(iClient, iButtons)
 	float velocity[3], velocity2[3];
 	velocity2[0] = (g_xyzRopeEndLocation[iClient][0] - clientloc[0]) * 3.0;
 	velocity2[1] = (g_xyzRopeEndLocation[iClient][1] - clientloc[1]) * 3.0;
-	new Float:y_coord,Float:x_coord;
+	float y_coord, x_coord;
 	y_coord = velocity2[0]*velocity2[0] + velocity2[1]*velocity2[1];
 	//x_coord=(GetConVarFloat(cvarRopeSpeed)*20.0)/SquareRoot(y_coord);
 	x_coord = (10.0) / (SquareRoot(y_coord));
@@ -273,7 +273,7 @@ void PrintRochelleRopeDurability(iClient)
 	if (g_iSmokeLevel[iClient] == 0)
 		return;
     
-	decl String:strEntireHintTextString[556], String:strDurabilityMeter[256];
+	char strEntireHintTextString[556], strDurabilityMeter[256];
 	strEntireHintTextString = NULL_STRING;
 	strDurabilityMeter = NULL_STRING;
 

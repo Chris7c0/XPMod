@@ -1,9 +1,9 @@
 //Nick Menu////////////////////////////////////////////////////////////////
 
 //Nick Menu Draw
-Action:NickMenuDraw(iClient) 
+Action NickMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	Menu menu = CreateMenu(NickMenuHandler);
@@ -32,7 +32,7 @@ Action:NickMenuDraw(iClient)
 	AddMenuItem(menu, "option7", "Open In Website \n ");
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -46,9 +46,9 @@ Action:NickMenuDraw(iClient)
 }
 
 //Swindler
-Action:SwindlerMenuDraw(iClient) 
+Action SwindlerMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -80,7 +80,7 @@ Action:SwindlerMenuDraw(iClient)
 		g_iSwindlerLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -94,9 +94,9 @@ Action:SwindlerMenuDraw(iClient)
 }
 
 //Leftover Supplies
-Action:LeftoverMenuDraw(iClient) 
+Action LeftoverMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -127,7 +127,7 @@ Action:LeftoverMenuDraw(iClient)
 		g_iLeftoverLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -141,9 +141,9 @@ Action:LeftoverMenuDraw(iClient)
 }
 
 //Risky Business
-Action:RiskyMenuDraw(iClient) 
+Action RiskyMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -177,7 +177,7 @@ Action:RiskyMenuDraw(iClient)
 		g_iRiskyLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -191,9 +191,9 @@ Action:RiskyMenuDraw(iClient)
 }
 
 //Enhanced Pain Killers
-Action:EnhancedMenuDraw(iClient) 
+Action EnhancedMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -224,7 +224,7 @@ Action:EnhancedMenuDraw(iClient)
 		g_iEnhancedLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -238,9 +238,9 @@ Action:EnhancedMenuDraw(iClient)
 }
 
 //Magnum Stampede
-Action:MagnumMenuDraw(iClient) 
+Action MagnumMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -277,7 +277,7 @@ Action:MagnumMenuDraw(iClient)
 		g_iMagnumLevel[iClient]);
 	SetMenuTitle(menu, text);
 		
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -291,9 +291,9 @@ Action:MagnumMenuDraw(iClient)
 }
 
 //Desperate Measures
-Action:DesperateMenuDraw(iClient) 
+Action DesperateMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 	
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -336,7 +336,7 @@ Action:DesperateMenuDraw(iClient)
 		g_iDesperateLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n ",
@@ -352,7 +352,7 @@ Action:DesperateMenuDraw(iClient)
 //Handlers//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Nick Menu Handler
-NickMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+NickMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -400,7 +400,7 @@ NickMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Swindler Handler
-SwindlerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+SwindlerMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -419,7 +419,7 @@ SwindlerMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Leftover Supplies Handler
-LeftoverMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+LeftoverMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -438,7 +438,7 @@ LeftoverMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Risky Business Handler
-RiskyMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+RiskyMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -457,7 +457,7 @@ RiskyMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Enhanced Pain Killers Handler
-EnhancedMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+EnhancedMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -476,7 +476,7 @@ EnhancedMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Magnum Stampede Handler
-MagnumMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+MagnumMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -495,7 +495,7 @@ MagnumMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Desperate Measures Handler
-DesperateMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+DesperateMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{

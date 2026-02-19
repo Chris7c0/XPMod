@@ -29,7 +29,7 @@ void CreateWarezStation(iClient)
 	for(new i=1;i <= MaxClients;i++)
 		g_bWareStationClientAlreadyServiced[iClient][i] = false;
 
-	decl Float:vAngles[3];
+	float vAngles[3];
 	GetLocationVectorInfrontOfClient(iClient, g_xyzWarezStationLocation[iClient], vAngles, 60.0);
 
 	// Create the in game visuals
@@ -72,7 +72,7 @@ void CreateWarezStation(iClient)
 	g_iClientBindUses_1[iClient]++;
 }
 
-Action:TimerWarezStationCheckForSurvivorToService(Handle:timer, any:iClient)
+Action TimerWarezStationCheckForSurvivorToService(Handle timer, any iClient)
 {
 	if (g_bWareStationActive[iClient] == false)
 		return Plugin_Stop;
@@ -84,7 +84,7 @@ Action:TimerWarezStationCheckForSurvivorToService(Handle:timer, any:iClient)
 			g_iClientTeam[iCandidate] == TEAM_SURVIVORS)
 		{
 			// Valid candidate, now check the distance to the warez station
-			decl Float:xyzCandidateLocation[3];
+			float xyzCandidateLocation[3];
 			GetClientAbsOrigin(iCandidate, xyzCandidateLocation);
 			//PrintToChatAll("%f distance", GetVectorDistance(g_xyzWarezStationLocation[iClient], xyzCandidateLocation, false));
 			if (GetVectorDistance(g_xyzWarezStationLocation[iClient], xyzCandidateLocation, false) > 45.0)
@@ -107,7 +107,7 @@ Action:TimerWarezStationCheckForSurvivorToService(Handle:timer, any:iClient)
 	return Plugin_Continue;
 }
 
-Action:TimerWarezStationDisable(Handle:timer, any:iClient)
+Action TimerWarezStationDisable(Handle timer, any iClient)
 {
 	g_bWareStationActive[iClient] = false;
 	g_xyzWarezStationLocation[iClient][0] = EMPTY_VECTOR[0];
@@ -118,9 +118,9 @@ Action:TimerWarezStationDisable(Handle:timer, any:iClient)
 }
 
 // Warez Station Menu Draw
-Action:WarezStationMenuDraw(iClient)
+Action WarezStationMenuDraw(iClient)
 {
-	decl String:text[512];
+	char text[512];
 	
 	Menu menu = CreateMenu(WarezStationMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -158,7 +158,7 @@ Action:WarezStationMenuDraw(iClient)
 }
 
 // Warez Station Menu Handler
-WarezStationMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+WarezStationMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {	
 	if (action == MenuAction_End)
 	{
@@ -384,7 +384,7 @@ SetSurvivorScreenShakeAmount()
 		PrintToChatAll("\x03[XPMod] \x04Survivor Screen Shake on hit is at %i\%.", RoundToNearest((g_iScreenShakeAmount / 20.0) * 100.0) );
 }
 
-Action:TimerCreateInnerSphere(Handle:timer, any:iClient)
+Action TimerCreateInnerSphere(Handle timer, any iClient)
 {
 	CreateSphere(g_xyzWarezStationLocation[iClient], 35.0, 30, 0.1, {0, 255, 50, 150}, 25.0);
 	return Plugin_Stop;
@@ -419,7 +419,7 @@ int MakeLightDynamic(int target) //, const float vPos[3])
 	DispatchSpawn(entity);
 	AcceptEntityInput(entity, "TurnOff");
 	
-	new Float:vPos[3];
+	float vPos[3];
 	GetClientEyePosition(target, vPos);
 
 	TeleportEntity(entity, vPos, NULL_VECTOR, NULL_VECTOR);
@@ -435,12 +435,12 @@ int MakeLightDynamic(int target) //, const float vPos[3])
 	return entity;
 }
 
-Action:TimerRemoveLightDynamicEntity(Handle:timer, any:iEntity)
+Action TimerRemoveLightDynamicEntity(Handle timer, any iEntity)
 {
 	if (iEntity < 1 || IsValidEntity(iEntity) == false)
 		return Plugin_Stop;
 
-	decl String:strEntityClass[32];
+	char strEntityClass[32];
 	GetEntityNetClass(iEntity, strEntityClass, 32);
 	// PrintToChatAll("strEntityClass: %s", strEntityClass);
 	if (StrEqual(strEntityClass, "CDynamicLight", true) == false)
@@ -452,7 +452,7 @@ Action:TimerRemoveLightDynamicEntity(Handle:timer, any:iEntity)
 	return Plugin_Stop;
 }
 
-Action:TimerWarezStationStopAndRemoveSound(Handle:timer, any:iEntity)
+Action TimerWarezStationStopAndRemoveSound(Handle timer, any iEntity)
 {
 	if (iEntity != -1 && IsValidEntity(iEntity))
 	{

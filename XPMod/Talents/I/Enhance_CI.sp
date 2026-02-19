@@ -117,7 +117,7 @@ public void PrintAllInEnhancedCIEntityList()
 	}
 }
 
-Action:TimerSpawnRandomlyEnhancedCIForDirector(Handle:timer, any:iEntity)
+Action TimerSpawnRandomlyEnhancedCIForDirector(Handle timer, any iEntity)
 {
 	if (IsValidEntity(iEntity) && IsCommonInfected(iEntity, ""))
 		EnhanceCommonInfected(iEntity, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_RANDOM);
@@ -132,7 +132,7 @@ EnhanceCommonInfected(iZombie, iBigOrSmall = CI_SMALL_OR_BIG_NONE, iEnhancedCISp
 
 	if (iBigOrSmall == CI_SMALL_OR_BIG_RANDOM || iBigOrSmall == CI_BIG || iBigOrSmall == CI_SMALL)
 	{
-		new Float:fHealthAndSizeMultiplier = GetRandomFloat(0.0, 1.0);
+		float fHealthAndSizeMultiplier = GetRandomFloat(0.0, 1.0);
 		// If CI_BIG is specified, then spawn a big zombie, otherwise, roll the dice for 50/50 BIG OR SMALL
 		if(iBigOrSmall == CI_BIG || GetRandomInt(0, 1))
 		{
@@ -180,7 +180,7 @@ EnhanceCommonInfected(iZombie, iBigOrSmall = CI_SMALL_OR_BIG_NONE, iEnhancedCISp
 	}
 }
 
-EnhanceCISetScale(iZombie, Float:fScale = -1.0)
+EnhanceCISetScale(iZombie, float fScale = -1.0)
 {
 	if (fScale == -1.0)
 		fScale = GetRandomFloat(CI_SMALL_MIN_SIZE, CI_BIG_MAX_SIZE);
@@ -270,7 +270,7 @@ EnhanceCIHandleDamage_Necro(iAttacker, iVictim)
 		return;
 	
 	// Get player location to spawn infected around
-	decl Float:xyzLocation[3];
+	float xyzLocation[3];
 	GetClientAbsOrigin(iVictim, xyzLocation);
 
 	// Roll the dice for a uncommon
@@ -308,9 +308,9 @@ EnhanceCIHandleDamage_Vampiric(iAttacker, iVictim)
 
 
 
-// ResizeHitbox(entity, Float:fScale = 1.0)
+// ResizeHitbox(entity, float fScale = 1.0)
 // {
-// 	decl Float:vecBossMin[3], Float:vecBossMax[3];
+// 	float vecBossMin[3], vecBossMax[3];
 // 	//   if (StrEqual(sEntityClass, "headless_hatman"))
 // 	//   {
 // 	//     vecBossMin[0] = -25.5, vecBossMin[1] = -38.5, vecBossMin[2] = -11.0;
@@ -330,7 +330,7 @@ EnhanceCIHandleDamage_Vampiric(iAttacker, iVictim)
 // 	vecBossMin[0] = -25.5, vecBossMin[1] = -38.5, vecBossMin[2] = -11.0;
 // 	vecBossMax[0] = 18.0, vecBossMax[1] = 38.0, vecBossMax[2] = 138.5;
 
-// 	decl Float:vecScaledBossMin[3], Float:vecScaledBossMax[3];
+// 	float vecScaledBossMin[3], vecScaledBossMax[3];
 
 // 	vecScaledBossMin = vecBossMin;
 // 	vecScaledBossMax = vecBossMax;
@@ -342,12 +342,12 @@ EnhanceCIHandleDamage_Vampiric(iAttacker, iVictim)
 // }
 
 
-// UpdatePlayerHitbox(const client, Float:fScale = 1.0)
+// UpdatePlayerHitbox(const client, float fScale = 1.0)
 // {
-// 	//static const Float:vecTF2PlayerMin[3] = { -24.5, -24.5, 0.0 }, Float:vecTF2PlayerMax[3] = { 24.5,  24.5, 83.0 };
-// 	//static const Float:vecGenericPlayerMin[3] = { -16.5, -16.5, 0.0 }, Float:vecGenericPlayerMax[3] = { 216.5,  216.5, 173.0 };
-// 	static const Float:vecGenericPlayerMin[3] = { -1.0, -1.0, -1.0 }, Float:vecGenericPlayerMax[3] = { 1.0,  1.0, 1.0 };
-// 	decl Float:vecScaledPlayerMin[3], Float:vecScaledPlayerMax[3];
+// 	//static const float vecTF2PlayerMin[3] = { -24.5, -24.5, 0.0 }, vecTF2PlayerMax[3] = { 24.5,  24.5, 83.0 };
+// 	//static const float vecGenericPlayerMin[3] = { -16.5, -16.5, 0.0 }, vecGenericPlayerMax[3] = { 216.5,  216.5, 173.0 };
+// 	static const float vecGenericPlayerMin[3] = { -1.0, -1.0, -1.0 }, vecGenericPlayerMax[3] = { 1.0,  1.0, 1.0 };
+// 	float vecScaledPlayerMin[3], vecScaledPlayerMax[3];
 
 // 	vecScaledPlayerMin = vecGenericPlayerMin;
 // 	vecScaledPlayerMax = vecGenericPlayerMax;

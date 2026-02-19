@@ -28,9 +28,9 @@ bool g_bDevModeEnabled = false;
 new g_iGameMode;
 
 // Server Name
-new String:g_strServerName[64]              = "";
+char g_strServerName[64]              = "";
 // Log File Paths
-new String:g_strXPMStatsFullFilePath[256]   = "";
+char g_strXPMStatsFullFilePath[256]   = "";
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -38,7 +38,7 @@ new String:g_strXPMStatsFullFilePath[256]   = "";
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //MySQL Database handle
-new Handle:g_hDatabase = INVALID_HANDLE;
+Handle g_hDatabase = INVALID_HANDLE;
 
 //Now defined in /addons/sourcemod/config/databases.cfg under "xpmod", DB_CONF_NAME
 //#define DB_HOST 		"DB_HOST"
@@ -56,8 +56,8 @@ new Handle:g_hDatabase = INVALID_HANDLE;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Math
-new Float:PI = 3.1415926;
-new Float:EMPTY_VECTOR[3] = {0.0, ...};
+float PI = 3.1415926;
+float EMPTY_VECTOR[3] = {0.0, ...};
 
 //Survivor Character ID Definitions
 #define UNKNOWN_SURVIVOR    -1
@@ -79,21 +79,21 @@ new Float:EMPTY_VECTOR[3] = {0.0, ...};
 // #define     FRANCIS      6
 // #define     LOUIS     	7
 
-public String:SURVIVOR_NAME[][] =          {"BILL", 
+public char SURVIVOR_NAME[][] =          {"BILL", 
                                             "ROCHELLE",
                                             "COACH",
                                             "ELLIS",
                                             "NICK",
                                             "LOUIS"}
 
-public String:SURVIVOR_CLASS_NAME[][] =    {"SUPPORT", 
+public char SURVIVOR_CLASS_NAME[][] =    {"SUPPORT", 
                                             "NINJA",
                                             "BERSERKER",
                                             "WEAPONS EXPERT",
                                             "GAMBLER",
                                             "DISRUPTOR"}
 
-// new String:SURVIVOR_NAME[][] =          {"BILL", 
+// char SURVIVOR_NAME[][] =          {"BILL", 
 //                                         "ROCHELLE",
 //                                         "COACH",
 //                                         "ELLIS",
@@ -102,7 +102,7 @@ public String:SURVIVOR_CLASS_NAME[][] =    {"SUPPORT",
 //                                         "FRANCIS",
 //                                         "LOUIS"}
 
-// new String:SURVIVOR_CLASS_NAME[][] =    {"SUPPORT", 
+// char SURVIVOR_CLASS_NAME[][] =    {"SUPPORT", 
 //                                         "NINJA",
 //                                         "BERSERKER",
 //                                         "WEAPONS EXPERT",
@@ -122,7 +122,7 @@ public String:SURVIVOR_CLASS_NAME[][] =    {"SUPPORT",
 #define WITCH				7
 #define TANK				8
 
-new String:INFECTED_NAME[][] =          {"",
+char INFECTED_NAME[][] =          {"",
                                         "SMOKER",
                                         "BOOMER",
                                         "HUNTER",
@@ -241,7 +241,7 @@ new String:INFECTED_NAME[][] =          {"",
 
 //Round/Map Variables
 char g_strCurrentMap[32] = "";
-//new bool:g_bRoundStarted = false;
+//bool g_bRoundStarted = false;
 int g_iRoundCount;
 bool g_bEndOfRound = false;
 bool g_bPlayerLeftStartArea = false;

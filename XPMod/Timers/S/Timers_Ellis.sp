@@ -1,4 +1,4 @@
-Action:TimerStopFireStorm(Handle:timer, any:iClient)
+Action TimerStopFireStorm(Handle timer, any iClient)
 {
 	g_bUsingFireStorm[iClient] = false;
 
@@ -19,14 +19,14 @@ Action:TimerStopFireStorm(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerEllisPrimaryCycleReset(Handle:timer, any:iClient)
+Action TimerEllisPrimaryCycleReset(Handle timer, any iClient)
 {
 	g_bCanEllisPrimaryCycle[iClient] = true;
 
 	return Plugin_Stop;
 }
 
-Action:TimerEllisJamminGiveMolotov(Handle:timer, any:iClient)
+Action TimerEllisJamminGiveMolotov(Handle timer, any iClient)
 {
 	// g_iEventWeaponFireCounter[iClient] = 0;
 
@@ -39,7 +39,7 @@ Action:TimerEllisJamminGiveMolotov(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerGiveAdrenalineFromStashedInventory(Handle:timer, int iClient)
+Action TimerGiveAdrenalineFromStashedInventory(Handle timer, int iClient)
 {
 	if (g_iStashedInventoryAdrenaline[iClient] > 0)
 	{
@@ -54,14 +54,14 @@ Action:TimerGiveAdrenalineFromStashedInventory(Handle:timer, int iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerRemoveEllisAdrenalineBuffs(Handle:timer, any:iClient)
+Action TimerRemoveEllisAdrenalineBuffs(Handle timer, any iClient)
 {
 	g_bEllisHasAdrenalineBuffs[iClient] = false;
 
 	return Plugin_Stop;
 }
 
-Action:TimerEllisLimitBreakReset(Handle:timer, any:iClient)
+Action TimerEllisLimitBreakReset(Handle timer, any iClient)
 {
 	g_bIsEllisLimitBreaking[iClient] = false;
 	g_bEllisLimitBreakInCooldown[iClient] = true;
@@ -145,7 +145,7 @@ Action:TimerEllisLimitBreakReset(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerEllisLimitBreakCooldown(Handle:timer, any:iClient)
+Action TimerEllisLimitBreakCooldown(Handle timer, any iClient)
 {
 	g_bCanEllisLimitBreak[iClient] = true;
 	g_bEllisLimitBreakInCooldown[iClient] = false;

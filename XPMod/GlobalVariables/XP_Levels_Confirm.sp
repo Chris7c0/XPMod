@@ -1,11 +1,11 @@
 // Common                                                           
 new clientidname[MAXPLAYERS + 1][32];			//SHOULD BE A STRING?
 new g_iClientTeam[MAXPLAYERS + 1];
-new bool:g_bClientLoggedIn[MAXPLAYERS + 1];
+bool g_bClientLoggedIn[MAXPLAYERS + 1];
 new g_iDBUserID[MAXPLAYERS + 1] = {-1, ...};
-new String:g_strDBUserToken[MAXPLAYERS + 1][41];
-new bool:g_bCanSave = true;
-new bool:g_bSurvivorTalentsGivenThisRound[MAXPLAYERS + 1] = {false, ...};
+char g_strDBUserToken[MAXPLAYERS + 1][41];
+bool g_bCanSave = true;
+bool g_bSurvivorTalentsGivenThisRound[MAXPLAYERS + 1] = {false, ...};
 new g_iClientXP[MAXPLAYERS + 1];
 new g_iClientLevel[MAXPLAYERS + 1];
 new g_iClientPrestigePoints[MAXPLAYERS + 1];
@@ -79,22 +79,22 @@ char g_strTopXPModPlayersStatsText[600];
 //Rewards
 new g_iReward_SIKills;
 new g_iReward_SIKillsID;
-new String:g_strReward_SIKills[32];
+char g_strReward_SIKills[32];
 new g_iReward_CIKills;
 new g_iReward_CIKillsID;
-new String:g_strReward_CIKills[32];
+char g_strReward_CIKills[32];
 new g_iReward_HS;
 new g_iReward_HSID;
-new String:g_strReward_HS[32];
+char g_strReward_HS[32];
 new g_iReward_SurKills;
 new g_iReward_SurKillsID;
-new String:g_strReward_SurKills[32];
+char g_strReward_SurKills[32];
 new g_iReward_SurIncaps;
 new g_iReward_SurIncapsID;
-new String:g_strReward_SurIncaps[32];
+char g_strReward_SurIncaps[32];
 new g_iReward_SurDmg;
 new g_iReward_SurDmgID;
-new String:g_strReward_SurDmg[32];
+char g_strReward_SurDmg[32];
 //Statistic Panel Shown After Confirmation
 new RoundStatsPanel[MAXPLAYERS + 1];
 #define ROUND_STATS_PANEL_LAST_ROUND_INDIVIDUAL     0
@@ -104,13 +104,13 @@ new RoundStatsPanel[MAXPLAYERS + 1];
 #define ROUND_STATS_PANEL_LIFETIME                  7.0
 
 //Announcer Sound Variables
-new bool:g_bCanPlayHeadshotSound[MAXPLAYERS + 1];
-new bool:g_bAnnouncerOn[MAXPLAYERS + 1];
+bool g_bCanPlayHeadshotSound[MAXPLAYERS + 1];
+bool g_bAnnouncerOn[MAXPLAYERS + 1];
 
 // Confirmation Variables
-new bool:g_bTalentsConfirmed[MAXPLAYERS + 1];
-new bool:g_bUserStoppedConfirmation[MAXPLAYERS + 1];
-new bool:g_bClientAlreadyShownCharacterSelectMenu[MAXPLAYERS + 1];
+bool g_bTalentsConfirmed[MAXPLAYERS + 1];
+bool g_bUserStoppedConfirmation[MAXPLAYERS + 1];
+bool g_bClientAlreadyShownCharacterSelectMenu[MAXPLAYERS + 1];
 new g_iAutoSetCountDown[MAXPLAYERS + 1];
 //Drawing Character Select MOTD and Talents Confirm Menu
 #define STARTING_CHAR_SELECT_PROCESS                1

@@ -57,7 +57,7 @@ ResetAllTankVariables_Fire(iClient)
 // 	LoadFireTankTalents(iClient);
 // }
 
-SetClientSpeedTankFire(iClient, &Float:fSpeed)
+SetClientSpeedTankFire(iClient, float &fSpeed)
 {
 	if (g_iTankChosen[iClient] != TANK_FIRE)
 		return;
@@ -115,7 +115,7 @@ OnGameFrame_Tank_Fire(iClient)
 	}
 }
 
-EventsHurt_VictimTank_Fire(Handle:hEvent, iAttacker, iVictimTank)
+EventsHurt_VictimTank_Fire(Handle hEvent, iAttacker, iVictimTank)
 {
 	SuppressNeverUsedWarning(hEvent, iAttacker);
 
@@ -123,7 +123,7 @@ EventsHurt_VictimTank_Fire(Handle:hEvent, iAttacker, iVictimTank)
 	new iDmgType = GetEventInt(hEvent, "type");
 
 	new iCurrentHealth = GetPlayerHealth(iVictimTank);
-	decl Float:fCurrentTankHealthPercentage;
+	float fCurrentTankHealthPercentage;
 
 	//Prevent Fire Damage
 	if(iDmgType == DAMAGETYPE_FIRE1 || iDmgType == DAMAGETYPE_FIRE2 || iDmgType == DAMAGETYPE_IGNITED_ENTITY)
@@ -148,15 +148,15 @@ EventsHurt_VictimTank_Fire(Handle:hEvent, iAttacker, iVictimTank)
 	}
 }
 
-EventsHurt_AttackerTank_Fire(Handle:hEvent, iAttackerTank, iVictim)
+EventsHurt_AttackerTank_Fire(Handle hEvent, iAttackerTank, iVictim)
 {	
-	decl String:weapon[20];
+	char weapon[20];
 	GetEventString(hEvent,"weapon", weapon, 20);
 
 	//Lay down a molotov explosion if player is hit by fire tank's rock
 	if(StrEqual(weapon,"tank_rock") == true)
 	{
-		decl Float:xyzLocation[3];
+		float xyzLocation[3];
 		GetClientAbsOrigin(iVictim, xyzLocation);
 		MolotovExplode(xyzLocation);
 	}
@@ -166,7 +166,7 @@ EventsHurt_AttackerTank_Fire(Handle:hEvent, iAttackerTank, iVictim)
 		//Set fire to iVictim if charged or percent chance happens(5 seconds)
 		if(g_bFireTankAttackCharged[iAttackerTank] == true)
 		{
-			decl Float:xyzLocation[3];
+			float xyzLocation[3];
 			GetClientAbsOrigin(iVictim, xyzLocation);
 			xyzLocation[2] += 30.0;
 			PropaneExplode(xyzLocation);
@@ -186,12 +186,12 @@ EventsHurt_AttackerTank_Fire(Handle:hEvent, iAttackerTank, iVictim)
 	}
 }
 
-// EventsDeath_AttackerTank_Fire(Handle:hEvent, iAttackerTank, iVictim)
+// EventsDeath_AttackerTank_Fire(Handle hEvent, iAttackerTank, iVictim)
 // {
 // 	SuppressNeverUsedWarning(hEvent, iAttackerTank, iVictim);
 // }
 
-EventsDeath_VictimTank_Fire(Handle:hEvent, iAttacker, iVictimTank)
+EventsDeath_VictimTank_Fire(Handle hEvent, iAttacker, iVictimTank)
 {
 	if (RunClientChecks(iVictimTank) == false)
 		return;
@@ -199,13 +199,13 @@ EventsDeath_VictimTank_Fire(Handle:hEvent, iAttacker, iVictimTank)
 	SuppressNeverUsedWarning(hEvent, iAttacker);
 
 	// Explode the tank and set a fire
-	decl Float:xyzLocation[3];
+	float xyzLocation[3];
 	GetClientAbsOrigin(iVictimTank, xyzLocation);
 	PropaneExplode(xyzLocation);
 	MolotovExplode(xyzLocation);
 }
 
-SetFireToPlayer(iVictim, iAttacker, Float:fTime)
+SetFireToPlayer(iVictim, iAttacker, float fTime)
 {
 	if (iVictim < 1 || IsClientInGame(iVictim) == false)
 		return;
@@ -214,7 +214,7 @@ SetFireToPlayer(iVictim, iAttacker, Float:fTime)
 	IgniteEntity(iVictim, fTime, false);
 	WriteParticle(iVictim, "fire_small_01", 40.0, fTime);
 	
-	new Handle:hEntityPack = CreateDataPack();
+	Handle hEntityPack = CreateDataPack();
 	WritePackCell(hEntityPack, iVictim);
 	WritePackCell(hEntityPack, iAttacker);
 	CreateTimer(0.5, Timer_DealFireDamage, hEntityPack, TIMER_REPEAT);
@@ -222,9 +222,9 @@ SetFireToPlayer(iVictim, iAttacker, Float:fTime)
 
 CreateFireRockTrailEffect(int iRockEntity)
 {
-	new Float:xyzRockPosition[3];
+	float xyzRockPosition[3];
 	GetEntPropVector(iRockEntity, Prop_Send, "m_vecOrigin", xyzRockPosition);
-	new String:vecString[32];
+	char vecString[32];
 	Format(vecString, sizeof(vecString), "%f %f %f", xyzRockPosition[0], xyzRockPosition[1], xyzRockPosition[2]);
 
 	// Make Fire Entity
@@ -245,7 +245,7 @@ CreateFireRockTrailEffect(int iRockEntity)
 
 DestroyFireTankRock(iRockEntity)
 {
-	new Float:xyzRockPosition[3];
+	float xyzRockPosition[3];
 	GetEntPropVector(iRockEntity, Prop_Send, "m_vecOrigin", xyzRockPosition);
 
 	MolotovExplode(xyzRockPosition);

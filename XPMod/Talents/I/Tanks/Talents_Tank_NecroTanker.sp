@@ -52,7 +52,7 @@ ResetAllTankVariables_NecroTanker(iClient)
 // }
 
 
-SetClientSpeedTankNecroTanker(iClient, &Float:fSpeed)
+SetClientSpeedTankNecroTanker(iClient, float &fSpeed)
 {
 	if (g_iTankChosen[iClient] != TANK_NECROTANKER)
 		return;
@@ -108,14 +108,14 @@ OnGameFrame_Tank_NecroTanker(iClient)
 	}
 }
 
-EventsHurt_VictimTank_NecroTanker(Handle:hEvent, iAttacker, iVictimTank)
+EventsHurt_VictimTank_NecroTanker(Handle hEvent, iAttacker, iVictimTank)
 {
 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictimTank);
 }
 
-EventsHurt_AttackerTank_NecroTanker(Handle:hEvent, iAttackerTank, iVictim)
+EventsHurt_AttackerTank_NecroTanker(Handle hEvent, iAttackerTank, iVictim)
 {
-	decl String:strWeapon[20];
+	char strWeapon[20];
 	GetEventString(hEvent,"weapon", strWeapon, 20);
 
 	if (g_iClientTeam[iVictim] == TEAM_SURVIVORS &&
@@ -181,10 +181,10 @@ HandleNecroTankerInfectedConsumption(iClient, iInfectedEntity)
 
 CreateNecroTankerTrailEffect(int iClient)
 {
-	new Float:xyzTankPosition[3];
+	float xyzTankPosition[3];
 	GetClientAbsOrigin(iClient, xyzTankPosition);
 	xyzTankPosition[2] += 30.0;
-	new String:vecString[32];
+	char vecString[32];
 	Format(vecString, sizeof(vecString), "%f %f %f", xyzTankPosition[0], xyzTankPosition[1], xyzTankPosition[2]);
 
 	g_iPID_TankTrail[iClient] = CreateEntityByName("env_smokestack");
@@ -229,7 +229,7 @@ CreateNecroTankerTrailEffect(int iClient)
 // 	// AcceptEntityInput(EntRefToEntIndex(iTankRockEntity), "EnableMotion");
 	
 
-// 	new Float:velocity[3];
+// 	float velocity[3];
 // 	new g_iVelocity = FindSendPropInfo("CBasePlayer", "m_vecVelocity[0]");	
 // 	GetEntDataVector(iTankRockEntity, g_iVelocity, velocity);
 
@@ -237,12 +237,12 @@ CreateNecroTankerTrailEffect(int iClient)
 // 	if (bot > 0)
 // 	{
 // 		SpawnSpecialInfected(bot, BOOMER, true);
-// 		new Float:Pos[3];
+// 		float Pos[3];
 // 		GetEntPropVector(iTankRockEntity, Prop_Send, "m_vecOrigin", Pos);
 //		If (iTankRockEntity > 0 && IsValidEntity(iTankRockEntity))
 // 			AcceptEntityInput(iTankRockEntity, "Kill");
 // 		NormalizeVector(velocity, velocity);
-// 		new Float:speed = GetConVarFloat(FindConVar("z_tank_throw_force"));
+// 		float speed = GetConVarFloat(FindConVar("z_tank_throw_force"));
 // 		ScaleVector(velocity, speed*1.4);
 // 		//PrintToChatAll("%f, %f, %f", Pos[0],Pos[1],Pos[2])
 // 		TeleportEntity(bot, Pos, NULL_VECTOR, velocity);
@@ -254,7 +254,7 @@ CreateNecroTankerTrailEffect(int iClient)
 // 	}
 // }
 
-// Action:WaitToExplodeNecroTankerBoomerRockThrow(Handle:timer, any:iClient)
+// Action WaitToExplodeNecroTankerBoomerRockThrow(Handle timer, any iClient)
 // {
 // 	// NecroTanker boomer throw
 // 	if(IsPlayerAlive(iClient) == false || GetEntProp(iClient, Prop_Send, "m_zombieClass") != BOOMER)
@@ -266,7 +266,7 @@ CreateNecroTankerTrailEffect(int iClient)
 // 	//PrintToChatAll("FL_ONGROUND: %i", (GetEntityFlags(iClient) & FL_ONGROUND));
 // 	if ((GetEntityFlags(iClient) & FL_ONGROUND))
 // 	{
-// 		decl Float:xyzBoomerExplosionVector[3];
+// 		float xyzBoomerExplosionVector[3];
 // 		GetClientEyePosition(iClient, xyzBoomerExplosionVector);
 // 		//PrintToChatAll("xyzBoomerExplosionVector %f, %f, %f", xyzBoomerExplosionVector[0],xyzBoomerExplosionVector[1],xyzBoomerExplosionVector[2]);
 // 		//PrintToChatAll("Exploding iClient %i", iClient);
@@ -278,10 +278,10 @@ CreateNecroTankerTrailEffect(int iClient)
 // 			if(IsClientInGame(target) && IsPlayerAlive(target) && g_iClientTeam[target] == TEAM_SURVIVORS)
 // 			{
 // 				//PrintToChatAll("trying for %N", target);
-// 				decl Float:targetVector[3];
+// 				float targetVector[3];
 // 				GetClientEyePosition(target, targetVector);
 // 				//PrintToChatAll("targetVector %f, %f, %f", targetVector[0],targetVector[1],targetVector[2]);
-// 				new Float:distance = GetVectorDistance(targetVector, xyzBoomerExplosionVector);
+// 				float distance = GetVectorDistance(targetVector, xyzBoomerExplosionVector);
 // 				//PrintToChatAll("distance: %f", distance);
 // 				if(IsVisibleTo(xyzBoomerExplosionVector, targetVector) == true && distance < 175.0)
 // 				{
@@ -300,7 +300,7 @@ CreateNecroTankerTrailEffect(int iClient)
 
 CreateNecroTankerRockDestroyEffect(int iRockEntity)
 {
-	new Float:xyzRockPosition[3];
+	float xyzRockPosition[3];
 	GetEntPropVector(iRockEntity, Prop_Send, "m_vecOrigin", xyzRockPosition);
 	xyzRockPosition[2] -= 20.0;
 	
@@ -317,7 +317,7 @@ BileEveryoneCloseToExplodingNecroTankerTankRock(iRockEntity)
 		return;
 
 	// Get the rock location
-	new Float:xyzRockPosition[3];
+	float xyzRockPosition[3];
 	GetEntPropVector(iRockEntity, Prop_Send, "m_vecOrigin", xyzRockPosition);
 
 	// Find the tank rock entity in the list that will be used to gain Tank's ID
@@ -332,11 +332,11 @@ BileEveryoneCloseToExplodingNecroTankerTankRock(iRockEntity)
 			g_iClientTeam[iClient] == TEAM_SURVIVORS)
 		{
 			// Get the survivor player location
-			new Float:xyzSurvivorPosition[3];
+			float xyzSurvivorPosition[3];
 			GetClientAbsOrigin(iClient, xyzSurvivorPosition);
 			//Check if player is within the radius
 			// Get the distance
-			new Float:fDistance = GetVectorDistance(xyzSurvivorPosition, xyzRockPosition, false);
+			float fDistance = GetVectorDistance(xyzSurvivorPosition, xyzRockPosition, false);
 			//Bile if they are close enough
 			if(fDistance <= 200.0)
 			{
@@ -491,7 +491,7 @@ void DisplayNecroTankerManaMeter(iClient)
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient))
 		return;
 
-	decl String:strEntireManaMeter[556], String:strManaMeter[256];
+	char strEntireManaMeter[556], strManaMeter[256];
 	strEntireManaMeter = NULL_STRING;
 	strManaMeter = NULL_STRING;
 

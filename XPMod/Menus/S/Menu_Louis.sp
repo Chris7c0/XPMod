@@ -1,9 +1,9 @@
 //Louis Menu////////////////////////////////////////////////////////////////
 
 //Louis Menu Draw
-Action:LouisMenuDraw(iClient) 
+Action LouisMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	Menu menu = CreateMenu(LouisMenuHandler);
@@ -32,7 +32,7 @@ Action:LouisMenuDraw(iClient)
 	AddMenuItem(menu, "option7", "Open In Website\n ");
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\n \n=	=	=	=	=	=	=	=	=	=	=	=\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -46,9 +46,9 @@ Action:LouisMenuDraw(iClient)
 }
 
 //LouisTalent1MenuDraw
-Action:LouisTalent1MenuDraw(iClient) 
+Action LouisTalent1MenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	// DeleteAllMenuParticles(iClient);
 	// if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -76,7 +76,7 @@ Action:LouisTalent1MenuDraw(iClient)
 		g_iLouisTalent1Level[iClient]);
 	SetMenuTitle(menu, text);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -90,9 +90,9 @@ Action:LouisTalent1MenuDraw(iClient)
 }
 
 //LouisTalent2MenuDraw
-Action:LouisTalent2MenuDraw(iClient) 
+Action LouisTalent2MenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	// DeleteAllMenuParticles(iClient);
 	// if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -130,7 +130,7 @@ Action:LouisTalent2MenuDraw(iClient)
 	
 	SetMenuTitle(menu, text);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -144,9 +144,9 @@ Action:LouisTalent2MenuDraw(iClient)
 }
 
 //LouisTalent3MenuDraw
-Action:LouisTalent3MenuDraw(iClient) 
+Action LouisTalent3MenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	// DeleteAllMenuParticles(iClient);
 	// if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -176,7 +176,7 @@ Action:LouisTalent3MenuDraw(iClient)
 		g_iLouisTalent3Level[iClient]);
 	SetMenuTitle(menu, text);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -190,9 +190,9 @@ Action:LouisTalent3MenuDraw(iClient)
 }
 
 //LouisTalent4MenuDraw
-Action:LouisTalent4MenuDraw(iClient) 
+Action LouisTalent4MenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	// DeleteAllMenuParticles(iClient);
 	// if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -222,7 +222,7 @@ Action:LouisTalent4MenuDraw(iClient)
 		g_iLouisTalent4Level[iClient]);
 	SetMenuTitle(menu, text);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -236,9 +236,9 @@ Action:LouisTalent4MenuDraw(iClient)
 }
 
 //LouisTalent5MenuDraw
-Action:LouisTalent5MenuDraw(iClient) 
+Action LouisTalent5MenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	// DeleteAllMenuParticles(iClient);
 	// if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -274,7 +274,7 @@ Action:LouisTalent5MenuDraw(iClient)
 		LOUIS_NEUROSURGEON_SI_XMR_REWARD_AMOUNT);
 	SetMenuTitle(menu, text);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -288,9 +288,9 @@ Action:LouisTalent5MenuDraw(iClient)
 }
 
 //LouisTalent6MenuDraw
-Action:LouisTalent6MenuDraw(iClient) 
+Action LouisTalent6MenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 	
 	// DeleteAllMenuParticles(iClient);
 	// if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -332,7 +332,7 @@ Action:LouisTalent6MenuDraw(iClient)
 		LOUIS_HEADSHOT_XMR_AMOUNT_SI);
 	SetMenuTitle(menu, text);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -348,7 +348,7 @@ Action:LouisTalent6MenuDraw(iClient)
 //Handlers//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Louis Menu Handler
-LouisMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+LouisMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -379,7 +379,7 @@ LouisMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //LouisTalent1 Menu Handler
-LouisTalent1MenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+LouisTalent1MenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -398,7 +398,7 @@ LouisTalent1MenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //LouisTalent2 Menu Handler
-LouisTalent2MenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+LouisTalent2MenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -417,7 +417,7 @@ LouisTalent2MenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //LouisTalent3 Menu Handler
-LouisTalent3MenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+LouisTalent3MenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -436,7 +436,7 @@ LouisTalent3MenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //LouisTalent4 Menu Handler
-LouisTalent4MenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+LouisTalent4MenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -455,7 +455,7 @@ LouisTalent4MenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //LouisTalent5 Menu Handler
-LouisTalent5MenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+LouisTalent5MenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -474,7 +474,7 @@ LouisTalent5MenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //LouisTalent6 Menu Handler
-LouisTalent6MenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+LouisTalent6MenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{

@@ -1,29 +1,29 @@
 //SDK Calls
-new Handle:g_hSDK_SetHumanSpec 		= INVALID_HANDLE;
-new Handle:g_hSDK_TakeOverBot 		= INVALID_HANDLE;
-new Handle:g_hSDK_RoundRespawn 		= INVALID_HANDLE;
-//new Handle:g_hSDK_BecomeGhost 		= INVALID_HANDLE;
-//new Handle:g_hSDK_StateTransition 	= INVALID_HANDLE;
-new Handle:g_hSDK_OnPounceEnd		= INVALID_HANDLE;
-new Handle:g_hSDK_VomitOnPlayer 	= INVALID_HANDLE;
-new Handle:g_hSDK_UnVomitOnPlayer 	= INVALID_HANDLE;
-new Handle:g_hSDK_Fling 			= INVALID_HANDLE;
+Handle g_hSDK_SetHumanSpec 		= INVALID_HANDLE;
+Handle g_hSDK_TakeOverBot 		= INVALID_HANDLE;
+Handle g_hSDK_RoundRespawn 		= INVALID_HANDLE;
+//Handle g_hSDK_BecomeGhost 		= INVALID_HANDLE;
+//Handle g_hSDK_StateTransition 	= INVALID_HANDLE;
+Handle g_hSDK_OnPounceEnd		= INVALID_HANDLE;
+Handle g_hSDK_VomitOnPlayer 	= INVALID_HANDLE;
+Handle g_hSDK_UnVomitOnPlayer 	= INVALID_HANDLE;
+Handle g_hSDK_Fling 			= INVALID_HANDLE;
 //Testing SDK Calls
-//new Handle:g_hSetClass 			= INVALID_HANDLE;
-new Handle:g_hCreateAbility 			= INVALID_HANDLE;
+//Handle g_hSetClass 			= INVALID_HANDLE;
+Handle g_hCreateAbility 			= INVALID_HANDLE;
 
 
 
 //Note: pump and chrome have identical values
-const Float:g_flSoHAutoS = 0.666666;
-const Float:g_flSoHAutoI = 0.4;
-const Float:g_flSoHAutoE = 0.675;
-const Float:g_flSoHSpasS = 0.5;
-const Float:g_flSoHSpasI = 0.375;
-const Float:g_flSoHSpasE = 0.699999;
-const Float:g_flSoHPumpS = 0.5;
-const Float:g_flSoHPumpI = 0.5;
-const Float:g_flSoHPumpE = 0.6;
+const float g_flSoHAutoS = 0.666666;
+const float g_flSoHAutoI = 0.4;
+const float g_flSoHAutoE = 0.675;
+const float g_flSoHSpasS = 0.5;
+const float g_flSoHSpasI = 0.375;
+const float g_flSoHSpasE = 0.699999;
+const float g_flSoHPumpS = 0.5;
+const float g_flSoHPumpI = 0.5;
+const float g_flSoHPumpE = 0.6;
 
 //Offsets for Windows
 new g_iOffset_NextActivation        = -1;
@@ -63,6 +63,6 @@ new g_iOffset_MoveType				= -1;
 new g_iOffset_VecVelocity			= -1;
 //new g_iOffset_OwnerEntity			= -1;
 
-new Float:g_fReloadRate;
+float g_fReloadRate;
 
-new Float:g_fTimeStamp[MAXPLAYERS + 1] = {-1.0, ...};
+float g_fTimeStamp[MAXPLAYERS + 1] = {-1.0, ...};

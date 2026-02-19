@@ -1,4 +1,4 @@
-Action:ShowTeamStatsToPlayer(iClient, args)
+Action ShowTeamStatsToPlayer(iClient, args)
 {
 	CreateXPMStatistics(iClient);
 
@@ -7,15 +7,15 @@ Action:ShowTeamStatsToPlayer(iClient, args)
 
 CreateXPMStatistics(iClient, char[] strStoreBuffer = "", iStoreBufferSize = -1)
 {
-	decl String:strStatsTextBuffer[256];
-	decl String:strLoggedIn[16];
-	decl String:strConfirmed[16];
-	decl String:strState[64];
+	char strStatsTextBuffer[256];
+	char strLoggedIn[16];
+	char strConfirmed[16];
+	char strState[64];
 
 	PrintToBufferServerOrClient(iClient, "\x05[  =  =  =  =  =  =  =  =  =  =  =  =  =  ]", strStoreBuffer, iStoreBufferSize);
 
 	// Store timestamp into a string
-	decl String:strTime[16];
+	char strTime[16];
 	FormatTime(strTime, sizeof(strTime), "%H:%M:%S", GetTime());
 
 	// Add Server info
@@ -199,9 +199,9 @@ GetLoggedInAndConfirmedStrings(iClient, char[] strLoggedIn, int iLoggedInMaxLen,
 		Format(strConfirmed, iConfirmedMaxLen, "");
 }
 
-Action:TimerLogXPMStatsToFile(Handle:timer, any:data)
+Action TimerLogXPMStatsToFile(Handle timer, any data)
 {
-	decl String:strStoreBuffer[2000];
+	char strStoreBuffer[2000];
 	strStoreBuffer = NULL_STRING;
 
 	CreateXPMStatistics(-1, strStoreBuffer, sizeof(strStoreBuffer));
@@ -221,7 +221,7 @@ SaveXPMStatsBufferToLogFile(const char[] strBuffer)
 	if (strlen(g_strXPMStatsFullFilePath) < 1)
 		return;
 	
-	new Handle:hFileHandle;
+	Handle hFileHandle;
 	hFileHandle = OpenFile(g_strXPMStatsFullFilePath, "w");
 	if (hFileHandle != null)
 		WriteFileLine(hFileHandle, strBuffer);
@@ -231,7 +231,7 @@ SaveXPMStatsBufferToLogFile(const char[] strBuffer)
 SetXPMStatsLogFileName()
 {
 	// TODO: Sanitize the servername for Windows/Linux file paths
-	new String:strFileLogPath[100];
+	char strFileLogPath[100];
 	Format(strFileLogPath, sizeof(strFileLogPath), "/logs/xpmstats_%s.log", g_strServerName);
 	
 	BuildPath(Path_SM, g_strXPMStatsFullFilePath, PLATFORM_MAX_PATH, strFileLogPath);

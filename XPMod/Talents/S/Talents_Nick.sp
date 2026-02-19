@@ -88,7 +88,7 @@ OnGameFrame_Nick(iClient)
 			return;
 			
 		//Set ammo to 250
-		decl String:weaponclass[32];
+		char weaponclass[32];
 		GetEntityNetClass(wID,weaponclass,32);
 		
 		if(StrEqual(weaponclass,"CRifle_M60",false) == true)
@@ -104,12 +104,12 @@ OnGameFrame_Nick(iClient)
 			{
 				g_bCanNickZoomKit[iClient] = false;
 				CreateTimer(0.5, TimerNickZoomKitReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
-				decl String:currentweapon[32];
+				char currentweapon[32];
 				GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
 				if(StrContains(currentweapon, "first_aid_kit", false) != -1)
 				{
 					new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-					decl Float:wepvorigin[3], Float:grevorigin[3], Float:boovorigin[3], Float:vangles[3], Float:vdir[3];
+					float wepvorigin[3], grevorigin[3], boovorigin[3], vangles[3], vdir[3];
 					GetClientEyeAngles(iClient, vangles);	//Get clients Eye Angles to know get what direction to spawn gun
 					GetAngleVectors(vangles, vdir, NULL_VECTOR, NULL_VECTOR);	//Get the direction the iClient is looking
 					vangles[0] = 0.0;		//Lock x and z axis
@@ -264,7 +264,7 @@ OnGameFrame_Nick(iClient)
 			
 			if((buttons & IN_SPEED) && (buttons & IN_ZOOM))
 			{
-				decl String:currentweapon[512];
+				char currentweapon[512];
 				GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
 				//PrintToChatAll("Current Weapon is %s", currentweapon);
 				if((StrContains(currentweapon,"pistol",false) != -1) || (StrContains(currentweapon,"melee",false) != -1) || (StrContains(currentweapon,"chainsaw",false) != -1))
@@ -409,7 +409,7 @@ OGFSurvivorReload_Nick(iClient, const char[] currentweapon, ActiveWeaponID, Curr
 	// 	new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 	// 	if((buttons & IN_RELOAD) && g_bClientIsReloading[iClient] == false && g_bForceReload[iClient] == false)
 	// 	{
-	// 		decl String:currentweapon[32];
+	// 		char currentweapon[32];
 	// 		GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
 	// 		new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 	// 		new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
@@ -424,7 +424,7 @@ OGFSurvivorReload_Nick(iClient, const char[] currentweapon, ActiveWeaponID, Curr
 	// return;
 }
 
-EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
+EventsHurt_AttackerNick(Handle hEvent, iAttacker, iVictim)
 {
 	if (IsFakeClient(iAttacker) || g_bTalentsConfirmed[iAttacker] == false || iVictim == iAttacker)
 		return;
@@ -437,7 +437,7 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 		if (g_bTalentsConfirmed[iVictim] == true && g_iChosenSurvivor[iVictim] == NICK)
 			return;
 
-		decl String:strCurrentWeapon[32];
+		char strCurrentWeapon[32];
 		GetClientWeapon(iAttacker, strCurrentWeapon, sizeof(strCurrentWeapon));
 
 		// Check that its a pistol
@@ -525,7 +525,7 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 		{
 			g_bNickIsStealingLife[iVictim][iAttacker] = true;
 			
-			new Handle:lifestealingpackage = CreateDataPack();
+			Handle lifestealingpackage = CreateDataPack();
 			WritePackCell(lifestealingpackage, iVictim);
 			WritePackCell(lifestealingpackage, iAttacker);
 			g_iNickStealingLifeRuntimes[iVictim] = 0;
@@ -533,7 +533,7 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 			delete g_hTimer_NickLifeSteal[iVictim];
 			g_hTimer_NickLifeSteal[iVictim] = CreateTimer(2.0, TimerLifeStealing, lifestealingpackage, TIMER_REPEAT);
 			
-			decl Float:vec[3];
+			float vec[3];
 			GetClientAbsOrigin(iVictim, vec);
 			EmitSoundToAll(SOUND_NICK_LIFESTEAL_HIT, iVictim, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
 		}
@@ -541,7 +541,7 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 
 	if(g_iDesperateLevel[iAttacker] > 0 && g_iNickDesperateMeasuresStack > 0)
 	{
-		decl String:weaponclass[32];
+		char weaponclass[32];
 		GetEventString(hEvent,"weapon",weaponclass,32);
 		
 		if(StrContains(weaponclass,"melee",false) == -1 && StrContains(weaponclass,"inferno",false) == -1 && 
@@ -564,7 +564,7 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 	
 	if(g_iMagnumLevel[iAttacker] > 0 || g_iRiskyLevel[iAttacker] > 0)
 	{
-		decl String:weaponclass[32];
+		char weaponclass[32];
 		GetEventString(hEvent,"weapon",weaponclass,32);
 		if (StrContains(weaponclass,"magnum",false) != -1)
 		{
@@ -588,7 +588,7 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 			//PrintToChat(iAttacker, "your doing %d extra damage", dmg);
 			SetPlayerHealth(iVictim, iAttacker, hp - dmg);
 		}
-		new String:strCurrentWeapon[32];
+		char strCurrentWeapon[32];
 		GetClientWeapon(iAttacker, strCurrentWeapon, sizeof(strCurrentWeapon));
 		if(StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == true)
 		{
@@ -597,18 +597,18 @@ EventsHurt_AttackerNick(Handle:hEvent, iAttacker, iVictim)
 	}
 }
 
-// EventsHurt_VictimNick(Handle:hEvent, iAttacker, iVictim)
+// EventsHurt_VictimNick(Handle hEvent, iAttacker, iVictim)
 // {
 // 	if (IsFakeClient(iVictim))
 // 		return;
 // }
 
-// EventsDeath_AttackerNick(Handle:hEvent, iAttacker, iVictim)
+// EventsDeath_AttackerNick(Handle hEvent, iAttacker, iVictim)
 // {
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }
 
-EventsDeath_VictimNick(Handle:hEvent, iAttacker, iVictim)
+EventsDeath_VictimNick(Handle hEvent, iAttacker, iVictim)
 {
 	if (g_iClientTeam[iVictim] != TEAM_SURVIVORS)
 		return;
@@ -655,7 +655,7 @@ void EventsItemPickUp_Nick(int iClient, const char[] strWeaponClass)
 	// {
 	// 	//PrintToChatAll("Picked up weapon with rambo mode active, running StoreCurrentPrimaryWeapon");
 	// 	StoreCurrentPrimaryWeapon(iClient);
-	// 	new String:strCurrentWeapon[32];
+	// 	char strCurrentWeapon[32];
 	// 	GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 	// 	if(StrEqual(strCurrentWeapon, "weapon_rifle_m60", false) == false)
 	// 	{
@@ -750,7 +750,7 @@ void EventsItemPickUp_Nick(int iClient, const char[] strWeaponClass)
 				if(((StrContains(strWeaponClass,"melee",false) != -1) || (StrContains(strWeaponClass,"chainsaw",false) != -1)) && (StrEqual(g_strNickSecondarySlot1, "weapon_pistol_magnum", false) == true) && (g_iNickCurrentSecondarySlot[iClient] == 1))
 				{
 					//PrintToChatAll("Picked up melee with magnum saved in slot 1");
-					decl Float:wepvorigin[3], Float:vangles[3], Float:vdir[3];
+					float wepvorigin[3], vangles[3], vdir[3];
 					GetClientEyeAngles(iClient, vangles);
 					GetAngleVectors(vangles, vdir, NULL_VECTOR, NULL_VECTOR);
 					vangles[0] = 0.0;
@@ -839,7 +839,7 @@ CyclePlayerWeapon_Nick(int iClient)
 	if (RunClientChecks(iClient) && IsPlayerAlive(iClient))
 	{
 		//PrintToChatAll("Removed current weapon via CyclePlayerWeapon");
-		decl String:strCommandWithArgs[64];
+		char strCommandWithArgs[64];
 		Format(strCommandWithArgs, sizeof(strCommandWithArgs), "give %s", ITEM_CMD_NAME[g_iStashedPrimarySlotWeaponIndex[iClient]]);
 		RunCheatCommand(iClient, "give", strCommandWithArgs);
 		StoreCurrentPrimaryWeapon(iClient);
@@ -880,7 +880,7 @@ bool SetAllNicksDesprateMeasuresStacks()
 	return true;
 }
 
-void SetAllNicksDesprateMeasureSpeed(const char [] strMessage = "")
+void SetAllNicksDesprateMeasureSpeed(const char[] strMessage = "")
 {
 	for (int iPlayer=1; iPlayer <= MaxClients; iPlayer++)
 	{
@@ -899,7 +899,7 @@ void SetAllNicksDesprateMeasureSpeed(const char [] strMessage = "")
 }
 
 //Jebus Hand Menu
-Action:JebusHandBindMenuDraw(iClient) 
+Action JebusHandBindMenuDraw(iClient) 
 {
 	Menu menu = CreateMenu(JebusHandMenuHandler);
 	
@@ -916,7 +916,7 @@ Action:JebusHandBindMenuDraw(iClient)
 }
 
 //Nick Menu Handler
-JebusHandMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+JebusHandMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -967,7 +967,7 @@ JebusHandMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 						{
 							new iCurrentHealth = GetPlayerHealth(i);
 							new iMaxHealth = GetPlayerMaxHealth(i);
-							//new Float:fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
+							//float fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
 							//if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
 							if(iCurrentHealth < (iMaxHealth - 20.0))
 							{
@@ -990,7 +990,7 @@ JebusHandMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 					}
 				}
 
-				new Float:vec[3];
+				float vec[3];
 				GetClientAbsOrigin(iClient, vec);
 				EmitSoundToAll(SOUND_NICK_HEAL, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
 				WriteParticle(iClient, "nick_ulti_heal", 3.0, 15.0);
@@ -1025,7 +1025,7 @@ JebusHandMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 								SetPlayerHealth(i, -1, 20);
 								g_bIsClientDown[i] = false;
 								g_iClientBindUses_2[iClient] += 2;
-								decl Float:vec[3];
+								float vec[3];
 								GetClientAbsOrigin(i, vec);
 								EmitSoundToAll(SOUND_NICK_REVIVE, i, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
 								WriteParticle(i, "nick_ulti_revive", 0.0, 15.0);
@@ -1060,7 +1060,7 @@ JebusHandMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 								SetPlayerHealth(i, -1, 20);
 								g_bIsClientDown[i] = false;
 								g_iClientBindUses_2[iClient] += 2;
-								decl Float:vec[3];
+								float vec[3];
 								GetClientAbsOrigin(i, vec);
 								EmitSoundToAll(SOUND_NICK_REVIVE, i, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
 								WriteParticle(i, "nick_ulti_revive", 0.0, 15.0);
@@ -1081,7 +1081,7 @@ JebusHandMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 					}
 					/*if(foundvalident!=0)
 					{
-						new Float:vec[3];
+						float vec[3];
 						GetClientAbsOrigin(iClient, vec);
 						EmitSoundToAll(SOUND_NICK_REVIVE, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
 						WriteParticle(iClient, "nick_ulti_revive", 0.0, 15.0);

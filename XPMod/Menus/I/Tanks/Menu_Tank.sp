@@ -1,4 +1,4 @@
-Action:ChooseTankMenuDraw(iClient)
+Action ChooseTankMenuDraw(iClient)
 {
 	// If they still had the confirmation menu open, close it so they can choose a tank
 	g_bUserStoppedConfirmation[iClient] = true;
@@ -14,7 +14,7 @@ Action:ChooseTankMenuDraw(iClient)
 		\n=	=	=	=	=	=	=	=	=	=	=\n ",
 		strStartingNewLines);
 	
-	decl String:strText[512];
+	char strText[512];
 	FormatEx(strText, sizeof(strText), "Fire Tank\
 		\n %i HP, High Damage\
 		\n [Hold CROUCH] Fire Punch\
@@ -52,7 +52,7 @@ Action:ChooseTankMenuDraw(iClient)
 }
 
 //Tank Abilities Menu Draw
-Action:TankTopMenuDraw(iClient)
+Action TankTopMenuDraw(iClient)
 {
 	
 	CheckLevel(iClient);
@@ -65,7 +65,7 @@ Action:TankTopMenuDraw(iClient)
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
-	decl String:title[256];
+	char title[256];
 	FormatEx(title, sizeof(title), "\
 		%sLevel %d	XP: %d/%d\
 		\n==========================\
@@ -88,7 +88,7 @@ Action:TankTopMenuDraw(iClient)
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		\n==========================\
@@ -103,7 +103,7 @@ Action:TankTopMenuDraw(iClient)
 }
 
 
-ChooseTankMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+ChooseTankMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -121,7 +121,7 @@ ChooseTankMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 	}
 }
 
-TankTopMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+TankTopMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{

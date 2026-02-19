@@ -92,7 +92,7 @@ Action Timer2SecondGlobalRepeating(Handle timer, any data)
 
 
 
-Action:Timer_ResetGlow(Handle:timer, any:iClient)
+Action Timer_ResetGlow(Handle timer, any iClient)
 {
 	SetClientRenderAndGlowColor(iClient);
 	
@@ -101,7 +101,7 @@ Action:Timer_ResetGlow(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerGiveHudBack(Handle:timer, any:iClient)
+Action TimerGiveHudBack(Handle timer, any iClient)
 {
 	if(IsClientInGame(iClient) == true && IsFakeClient(iClient) == false)
 		SetEntProp(iClient, Prop_Send, "m_iHideHUD", 0);
@@ -122,14 +122,14 @@ Action ResetBind1AttemptCooldown(Handle timer, int iClient)
 // }
 
 
-/*Action:TimerResetCommonLimit(Handle:timer, any:iClient)
+/*Action TimerResetCommonLimit(Handle timer, any iClient)
 {
 	SetConVarInt(FindConVar("z_common_limit"), 30);
 	
 	return Plugin_Stop;
 }*/
 
-Action:TimerResetZombieDamage(Handle:timer, any:iClient)
+Action TimerResetZombieDamage(Handle timer, any iClient)
 {
 	SetConVarInt(FindConVar("z_common_limit"), 30);
 	g_bCommonInfectedDoMoreDamage = false;
@@ -137,7 +137,7 @@ Action:TimerResetZombieDamage(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerUnfreezeNotification(Handle:timer, any:data)
+Action TimerUnfreezeNotification(Handle timer, any data)
 {
 	if(g_iUnfreezeNotifyRunTimes-- > 1)
 	{
@@ -153,7 +153,7 @@ Action:TimerUnfreezeNotification(Handle:timer, any:data)
 	return Plugin_Stop;
 }
 
-Action:TimerChangeSpectator(Handle:timer, any:iClient)
+Action TimerChangeSpectator(Handle timer, any iClient)
 {
 	if(iClient > 0 && g_bClientSpectating[iClient] == true && IsClientInGame(iClient) && IsFakeClient(iClient) == false)
 	{
@@ -166,14 +166,14 @@ Action:TimerChangeSpectator(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerResetPlayerChangeTeamCoolDown(Handle:timer, any:iClient)
+Action TimerResetPlayerChangeTeamCoolDown(Handle timer, any iClient)
 {
 	g_bPlayerInTeamChangeCoolDown[iClient] = false;
 
 	return Plugin_Stop;
 }
 
-Action:TimerCheckTeam(Handle:timer, any:iClient)
+Action TimerCheckTeam(Handle timer, any iClient)
 {
 	if (RunClientChecks(iClient) == false)
 		return Plugin_Stop;
@@ -217,12 +217,12 @@ Action:TimerCheckTeam(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:FreezeColor(Handle:timer, any:iClient)
+Action FreezeColor(Handle timer, any iClient)
 {
 	if(IsClientInGame(iClient) == false)
 		return Plugin_Stop;
 		
-	decl Float:xyzVector[3];
+	float xyzVector[3];
 	GetClientEyePosition(iClient, xyzVector);
 	EmitAmbientSound(SOUND_FREEZE, xyzVector, iClient, SNDLEVEL_NORMAL);
 	
@@ -232,7 +232,7 @@ Action:FreezeColor(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerUnfreeze(Handle:timer, any:data)
+Action TimerUnfreeze(Handle timer, any data)
 {
 	// PrintToServer("**************************** UNFREEZING GAME");
 	g_bGameFrozen = false;
@@ -247,7 +247,7 @@ Action:TimerUnfreeze(Handle:timer, any:data)
 			if(g_iClientTeam[i] == TEAM_SURVIVORS)
 			{
 				//Play Ice Breaking Sound
-				decl Float:vec[3];
+				float vec[3];
 				GetClientAbsOrigin(i, vec);
 				EmitAmbientSound(SOUND_FREEZE, vec, i, SNDLEVEL_NORMAL);
 			}
@@ -285,7 +285,7 @@ Action:TimerUnfreeze(Handle:timer, any:data)
 }
 
 
-Action:TimerDrugged(Handle:timer, any:iClient)
+Action TimerDrugged(Handle timer, any iClient)
 {
 	if(IsClientInGame(iClient) == false || IsPlayerAlive(iClient) == false)
 	{

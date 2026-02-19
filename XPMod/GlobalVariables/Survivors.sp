@@ -13,12 +13,12 @@
 #define MOVEMENT_SPEED_BOT                  0.40
 
 //Loadout Variables
-new String:g_strClientPrimarySlot[32];
-new String:g_strClientSecondarySlot[32];
-new String:g_strClientExplosiveSlot[32];
-new String:g_strClientHealthSlot[32];
-new String:g_strClientBoostSlot[32];
-new String:g_strClientLaserSlot[14];
+char g_strClientPrimarySlot[32];
+char g_strClientSecondarySlot[32];
+char g_strClientExplosiveSlot[32];
+char g_strClientHealthSlot[32];
+char g_strClientBoostSlot[32];
+char g_strClientLaserSlot[14];
 //Slot IDs
 new g_iClientPrimarySlotID[MAXPLAYERS + 1];
 new g_iClientSecondarySlotID[MAXPLAYERS + 1];
@@ -45,11 +45,11 @@ float g_fPreviousNextSecondaryAttack[MAXPLAYERS + 1] = { 0.0, ...};
 // Misc Survivor Variables
 #define SCREEN_SHAKE_AMOUNT_DEFAULT     20
 new g_iScreenShakeAmount = SCREEN_SHAKE_AMOUNT_DEFAULT;
-new bool:g_bClientIsReloading[MAXPLAYERS + 1];
+bool g_bClientIsReloading[MAXPLAYERS + 1];
 new g_iReloadFrameCounter[MAXPLAYERS + 1];
 new g_iLaserUpgradeCounter[MAXPLAYERS + 1];
 new g_iSavedClip[MAXPLAYERS + 1];
-new bool:g_bForceReload[MAXPLAYERS + 1];
+bool g_bForceReload[MAXPLAYERS + 1];
 new g_iEventWeaponFireCounter[MAXPLAYERS + 1];
 new g_iReserveAmmo[MAXPLAYERS + 1];
 new g_iAmmoOffset[MAXPLAYERS + 1];
@@ -58,25 +58,25 @@ new g_iStashedPrimarySlotWeaponIndex[MAXPLAYERS + 1];
 new g_iCurrentClipAmmo[MAXPLAYERS + 1];
 new g_iOffset_Ammo[MAXPLAYERS + 1];
 // new g_iCurrentMaxClipSize[MAXPLAYERS + 1];
-new String:g_strCurrentAmmoUpgrade[32];
-//new String:g_strCheckAmmoUpgrade[32];
+char g_strCurrentAmmoUpgrade[32];
+//char g_strCheckAmmoUpgrade[32];
 new g_iKitsUsed = 0;
 new g_iSlapRunTimes[MAXPLAYERS + 1];			//for the slap timer for each iClient	//Remember to initialize this each time before use!
-new Float:g_fMaxLaserAccuracy = 0.4;	        //max accuracy increase for survivors
+float g_fMaxLaserAccuracy = 0.4;	        //max accuracy increase for survivors
 new g_iPrimarySlotID[MAXPLAYERS + 1];
 new g_iClientPrimaryClipSize[MAXPLAYERS + 1];   //g_iOffset_Clip1 for the clients primary weapon before addition of talents
-new bool:g_bAdhesiveGooActive[MAXPLAYERS + 1];
+bool g_bAdhesiveGooActive[MAXPLAYERS + 1];
 // Victim Health Meter
 #define VICTIM_HEALTH_METER_DISPLAY_TIME        3.0
-new bool:g_bVictimHealthMeterActive[MAXPLAYERS + 1];
+bool g_bVictimHealthMeterActive[MAXPLAYERS + 1];
 new g_iVictimHealthMeterWatchVictim[MAXPLAYERS + 1];
 // Self Revives
 #define SELF_REVIVE_TIME	    4.0
 #define SELF_REVIVE_HEALTH	    1
 #define SELF_REVIVE_TEMP_HEALTH 30
 new g_iSelfRevives[MAXPLAYERS + 1];
-new bool:g_bSelfReviving[MAXPLAYERS + 1];
-new Float:g_fSelfRevivingFinishTime[MAXPLAYERS + 1];
+bool g_bSelfReviving[MAXPLAYERS + 1];
+float g_fSelfRevivingFinishTime[MAXPLAYERS + 1];
 // Bile Removal Kits
 #define BILE_CLEANSING_COMPLETION_FRAME             60
 new g_iBileCleansingKits[MAXPLAYERS + 1];
@@ -87,15 +87,15 @@ bool g_bGiveAlotOfWeaponsOnCooldown;
 #define GIVE_ALOT_OF_WEAPONS_COOLDOWN_DURATION      300.0
 
 // Grappled Checks
-new bool:g_bChargerGrappled[MAXPLAYERS + 1];
-new bool:g_bSmokerGrappled[MAXPLAYERS + 1];
-new bool:g_bJockeyGrappled[MAXPLAYERS + 1];
-new bool:g_bHunterGrappled[MAXPLAYERS + 1];
+bool g_bChargerGrappled[MAXPLAYERS + 1];
+bool g_bSmokerGrappled[MAXPLAYERS + 1];
+bool g_bJockeyGrappled[MAXPLAYERS + 1];
+bool g_bHunterGrappled[MAXPLAYERS + 1];
 new g_iChargerVictim[MAXPLAYERS + 1];
 new g_iJockeyVictim[MAXPLAYERS + 1];    //g_iJockeyVictim[attacker] = victim;
 new g_iHunterShreddingVictim[MAXPLAYERS + 1];
 
-new bool:g_bIsClientDown[MAXPLAYERS + 1] = {false, ...};
+bool g_bIsClientDown[MAXPLAYERS + 1] = {false, ...};
 
 // For calculating Temp Health
 ConVar cvarPainPillsDecay;
@@ -105,8 +105,8 @@ float flPainPillsDecay = 0.27;
 new g_iCrawlSpeedMultiplier;
 new g_iBillSprintChargeCounter[MAXPLAYERS + 1];
 new g_iBillSprintChargePower[MAXPLAYERS + 1];
-new bool:g_bBillSprinting[MAXPLAYERS + 1];
-new bool:g_bCanDropPoopBomb[MAXPLAYERS + 1];
+bool g_bBillSprinting[MAXPLAYERS + 1];
+bool g_bCanDropPoopBomb[MAXPLAYERS + 1];
 new g_iPoopBombOwnerID[MAXENTITIES + 1];
 new g_iDropBombsTimes[MAXPLAYERS + 1];
 #define BILL_TEAM_HEAL_FRAME_COUNTER_REQUIREMENT    2       // Seconds
@@ -119,30 +119,30 @@ new g_iBillsTeamHealthPool;
 //Rochelle's Stuff
 #define ROCHELLE_ESCAPE_CHANCE_PER_LEVEL            3
 //For the Infected Detection Device(IDD) hud menu
-new bool:g_bDrawIDD[MAXPLAYERS + 1];
-new bool:g_bClientIDDToggle[MAXPLAYERS + 1];
-new Float:g_fDetectedDistance_Smoker[MAXPLAYERS + 1];
-new Float:g_fDetectedDistance_Boomer[MAXPLAYERS + 1];
-new Float:g_fDetectedDistance_Hunter[MAXPLAYERS + 1];
-new Float:g_fDetectedDistance_Spitter[MAXPLAYERS + 1];
-new Float:g_fDetectedDistance_Jockey[MAXPLAYERS + 1];
-new Float:g_fDetectedDistance_Charger[MAXPLAYERS + 1];
-new Float:g_fDetectedDistance_Tank[MAXPLAYERS + 1];
+bool g_bDrawIDD[MAXPLAYERS + 1];
+bool g_bClientIDDToggle[MAXPLAYERS + 1];
+float g_fDetectedDistance_Smoker[MAXPLAYERS + 1];
+float g_fDetectedDistance_Boomer[MAXPLAYERS + 1];
+float g_fDetectedDistance_Hunter[MAXPLAYERS + 1];
+float g_fDetectedDistance_Spitter[MAXPLAYERS + 1];
+float g_fDetectedDistance_Jockey[MAXPLAYERS + 1];
+float g_fDetectedDistance_Charger[MAXPLAYERS + 1];
+float g_fDetectedDistance_Tank[MAXPLAYERS + 1];
 //For Shadow Ninja
-new bool:g_bUsingShadowNinja[MAXPLAYERS + 1];
+bool g_bUsingShadowNinja[MAXPLAYERS + 1];
 //For High Jump
 new g_iHighJumpChargeCounter[MAXPLAYERS + 1];
-new bool:g_bIsHighJumpCharged[MAXPLAYERS + 1];
-new bool:g_bIsHighJumping[MAXPLAYERS + 1];
+bool g_bIsHighJumpCharged[MAXPLAYERS + 1];
+bool g_bIsHighJumping[MAXPLAYERS + 1];
 //For Poisoned clients she has hurt
-new bool:g_bIsRochellePoisoned[MAXPLAYERS + 1];
+bool g_bIsRochellePoisoned[MAXPLAYERS + 1];
 new g_iSilentSorrowHeadshotCounter[MAXPLAYERS + 1];
 //To Remember Rochelles Location When Breaking Free From Smoker
-new Float:g_xyzOriginalPositionRochelle[MAXPLAYERS + 1][3];
-new Float:g_xyzBreakFromSmokerVector[3];
+float g_xyzOriginalPositionRochelle[MAXPLAYERS + 1][3];
+float g_xyzBreakFromSmokerVector[3];
 // Smoker Tongue Rope
-new bool:g_bUsingTongueRope[MAXPLAYERS + 1];
-new bool:g_bUsedTongueRope[MAXPLAYERS + 1];
+bool g_bUsingTongueRope[MAXPLAYERS + 1];
+bool g_bUsedTongueRope[MAXPLAYERS + 1];
 new g_iRochelleRopeDurability[MAXPLAYERS + 1];
 new g_iRochelleRopeDummyEntityAttachmentHand[MAXPLAYERS + 1];
 new g_iRochelleRopeDummyEntityAttachmentWall[MAXPLAYERS + 1];
@@ -173,58 +173,58 @@ bool g_bRochelleAWPCharged[MAXPLAYERS + 1];
 //For Coach's Jetpack
 #define COACH_JETPACK_FUEL_PER_LEVEL                60
 #define COACH_JETPACK_FUEL_REGEN_PER_2_SEC_TICK     5
-new bool:g_bIsFlyingWithJetpack[MAXPLAYERS + 1];
+bool g_bIsFlyingWithJetpack[MAXPLAYERS + 1];
 new g_iClientJetpackFuel[MAXPLAYERS + 1];
-new bool:g_bIsJetpackOn[MAXPLAYERS + 1];
-new bool:g_bIsMovementTypeFly[MAXPLAYERS + 1];
+bool g_bIsJetpackOn[MAXPLAYERS + 1];
+bool g_bIsMovementTypeFly[MAXPLAYERS + 1];
 new g_iExtraExplosiveUses[MAXPLAYERS + 1];
-new bool:g_bExplosivesJustGiven[MAXPLAYERS + 1];
+bool g_bExplosivesJustGiven[MAXPLAYERS + 1];
 //For Coach's other talents
 #define COACH_CLIP_GAINED_PER_SI_DECAP              10
 new g_iCoachDecapitationCounter[MAXPLAYERS + 1];
 new g_iMeleeDamageCounter[MAXPLAYERS + 1];
 new g_iWreckingBallChargeCounter[MAXPLAYERS + 1];
 new g_iCoachHealthRechargeCounter[MAXPLAYERS + 1];
-new bool:g_bIsWreckingBallCharged[MAXPLAYERS + 1];
-new bool:g_bShowingChargeHealParticle[MAXPLAYERS + 1];
+bool g_bIsWreckingBallCharged[MAXPLAYERS + 1];
+bool g_bShowingChargeHealParticle[MAXPLAYERS + 1];
 new g_iHighestLeadLevel;
 new g_iCoachTeamHealthStack;
-//new Float:g_fCoachCIHeadshotSpeed[MAXPLAYERS + 1];
-//new Float:g_fCoachSIHeadshotSpeed[MAXPLAYERS + 1];
-//new Float:g_fCoachRageSpeed[MAXPLAYERS + 1];
+//float g_fCoachCIHeadshotSpeed[MAXPLAYERS + 1];
+//float g_fCoachSIHeadshotSpeed[MAXPLAYERS + 1];
+//float g_fCoachRageSpeed[MAXPLAYERS + 1];
 new g_iCoachRageRegenCounter[MAXPLAYERS + 1];
-new bool:g_bCoachRageIsAvailable[MAXPLAYERS + 1];
-new bool:g_bCoachRageIsActive[MAXPLAYERS + 1];
+bool g_bCoachRageIsAvailable[MAXPLAYERS + 1];
+bool g_bCoachRageIsActive[MAXPLAYERS + 1];
 new g_iCoachRageMeleeDamage[MAXPLAYERS + 1];
-new bool:g_bCoachRageIsInCooldown[MAXPLAYERS + 1];
-new bool:g_bWreckingChargeRetrigger[MAXPLAYERS + 1];
+bool g_bCoachRageIsInCooldown[MAXPLAYERS + 1];
+bool g_bWreckingChargeRetrigger[MAXPLAYERS + 1];
 new g_iCoachCurrentGrenadeSlot[MAXPLAYERS + 1];
-new String:g_strCoachGrenadeSlot1[32];
-new String:g_strCoachGrenadeSlot2[32];
-new String:g_strCoachGrenadeSlot3[32];
-new bool:g_bCanCoachGrenadeCycle[MAXPLAYERS + 1];
-new bool:g_bIsCoachGrenadeFireCycling[MAXPLAYERS + 1];
+char g_strCoachGrenadeSlot1[32];
+char g_strCoachGrenadeSlot2[32];
+char g_strCoachGrenadeSlot3[32];
+bool g_bCanCoachGrenadeCycle[MAXPLAYERS + 1];
+bool g_bIsCoachGrenadeFireCycling[MAXPLAYERS + 1];
 new g_iCoachShotgunAmmoCounter[MAXPLAYERS + 1];
 //new g_iCoachShotgunIncreasedAmmo[MAXPLAYERS + 1];
 new g_iCoachShotgunSavedAmmo[MAXPLAYERS + 1];
-new bool:g_bCoachShotgunForceReload[MAXPLAYERS + 1];
-new bool:g_bIsCoachInGrenadeCycle[MAXPLAYERS + 1];
+bool g_bCoachShotgunForceReload[MAXPLAYERS + 1];
+bool g_bIsCoachInGrenadeCycle[MAXPLAYERS + 1];
 //g_bIsCoachInGrenadeCycle[iClient] = false;
-new bool:g_bCoachInCISpeed[MAXPLAYERS + 1];
-new bool:g_bCoachInSISpeed[MAXPLAYERS + 1];
+bool g_bCoachInCISpeed[MAXPLAYERS + 1];
+bool g_bCoachInSISpeed[MAXPLAYERS + 1];
 new g_iCoachCIHeadshotCounter[MAXPLAYERS + 1];
 new g_iCoachSIHeadshotCounter[MAXPLAYERS + 1];
 
 //Ellis's Stuff
 #define ELLIS_STARTING_MAX_HEALTH                       90
 #define ELLIS_AMMO_GAINED_PER_SI_KILL_PER_LEVEL         8
-new bool:g_bUsingFireStorm[MAXPLAYERS + 1];
+bool g_bUsingFireStorm[MAXPLAYERS + 1];
 new g_iEllisSpeedBoostCounter[MAXPLAYERS + 1];
-new bool:g_bWalkAndUseToggler[MAXPLAYERS + 1];
-new Float:g_fEllisOverSpeed[MAXPLAYERS + 1];
-new Float:g_fEllisBringSpeed[MAXPLAYERS + 1];
-new Float:g_fEllisJamminSpeed[MAXPLAYERS + 1];
-new bool:g_bCanEllisPrimaryCycle[MAXPLAYERS + 1];
+bool g_bWalkAndUseToggler[MAXPLAYERS + 1];
+float g_fEllisOverSpeed[MAXPLAYERS + 1];
+float g_fEllisBringSpeed[MAXPLAYERS + 1];
+float g_fEllisJamminSpeed[MAXPLAYERS + 1];
+bool g_bCanEllisPrimaryCycle[MAXPLAYERS + 1];
 new g_iEllisPrimarySlot0[MAXPLAYERS + 1];
 new g_iEllisPrimarySlot1[MAXPLAYERS + 1];
 new g_iEllisCurrentPrimarySlot[MAXPLAYERS + 1];
@@ -234,21 +234,21 @@ new g_iEllisPrimarySavedAmmoSlot0[MAXPLAYERS + 1];
 new g_iEllisPrimarySavedAmmoSlot1[MAXPLAYERS + 1];
 new g_iEllisJamminGrenadeCounter[MAXPLAYERS + 1];
 new g_iEllisJamminAdrenalineCounter[MAXPLAYERS + 1];
-new bool:g_bIsEllisWeaponCycling[MAXPLAYERS + 1];
-new bool:g_bSetWeaponAmmoOnNextGameFrame[MAXPLAYERS + 1];
+bool g_bIsEllisWeaponCycling[MAXPLAYERS + 1];
+bool g_bSetWeaponAmmoOnNextGameFrame[MAXPLAYERS + 1];
 new g_iEllisUpgradeAmmoSlot1[MAXPLAYERS + 1];
 new g_iEllisUpgradeAmmoSlot2[MAXPLAYERS + 1];
-new String:g_strEllisUpgradeTypeSlot1[32];
-new String:g_strEllisUpgradeTypeSlot2[32];
-//new bool:g_bEllisHasCycled[MAXPLAYERS + 1];
-new bool:g_bIsEllisLimitBreaking[MAXPLAYERS + 1];
-new bool:g_bCanEllisLimitBreak[MAXPLAYERS + 1];
+char g_strEllisUpgradeTypeSlot1[32];
+char g_strEllisUpgradeTypeSlot2[32];
+//bool g_bEllisHasCycled[MAXPLAYERS + 1];
+bool g_bIsEllisLimitBreaking[MAXPLAYERS + 1];
+bool g_bCanEllisLimitBreak[MAXPLAYERS + 1];
 new g_iLimitBreakWeaponIndex[MAXPLAYERS + 1];
-new bool:g_bEllisLimitBreakInCooldown[MAXPLAYERS + 1];
+bool g_bEllisLimitBreakInCooldown[MAXPLAYERS + 1];
 #define ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT            40
-new bool:g_bEllisOverSpeedIncreased[MAXPLAYERS + 1];
+bool g_bEllisOverSpeedIncreased[MAXPLAYERS + 1];
 new g_iEllisAdrenalineStackDuration;
-new bool:g_bEllisHasAdrenalineBuffs[MAXPLAYERS + 1];
+bool g_bEllisHasAdrenalineBuffs[MAXPLAYERS + 1];
 #define ELLIS_STASHED_INVENTORY_MAX_ADRENALINE              3
 #define ELLIS_STASHED_INVENTORY_MAX_TANK_SPAWN_ADRENALINE   5
 new g_iStashedInventoryAdrenaline[MAXPLAYERS + 1];
@@ -264,13 +264,13 @@ new g_iTempHealthBeforeUsingHealthBoostSlotItem[MAXPLAYERS + 1];
 //Nicks Stuff
 #define NICK_REVIVE_COOLDOWN         10.0
 #define NICK_HEAL_COOLDOWN           5.0
-new bool:g_bNickIsStealingLife[MAXPLAYERS + 1][MAXPLAYERS + 1];	//g_bNickIsStealingLife[victim][attacker]
+bool g_bNickIsStealingLife[MAXPLAYERS + 1][MAXPLAYERS + 1];	//g_bNickIsStealingLife[victim][attacker]
 new g_iNickStealingLifeRuntimes[MAXPLAYERS + 1];
 new g_iNickResurrectUses = 0;
 #define NICK_CLIP_SIZE_MAX_MAGNUM   4
-new bool:g_bCanNickSecondaryCycle[MAXPLAYERS + 1];
-new String:g_strNickSecondarySlot1[512];
-// new String:g_strNickSecondarySlot2[512];
+bool g_bCanNickSecondaryCycle[MAXPLAYERS + 1];
+char g_strNickSecondarySlot1[512];
+// char g_strNickSecondarySlot2[512];
 new g_iNickCurrentSecondarySlot[MAXPLAYERS + 1];
 new g_iNickSecondarySavedClipSlot1[MAXPLAYERS + 1];
 new g_iNickSecondarySavedClipSlot2[MAXPLAYERS + 1];
@@ -278,13 +278,13 @@ new g_iNickSecondarySavedClipSlot2[MAXPLAYERS + 1];
 #define NICK_HEAL_PISTOL_TAKE       1
 #define NICK_HEAL_MAGNUM_GIVE       7
 #define NICK_HEAL_MAGNUM_TAKE       3
-new bool:g_bCanNickZoomKit[MAXPLAYERS + 1];
-new bool:g_bIsNickInSecondaryCycle[MAXPLAYERS + 1];
-new bool:g_bRamboModeActive[MAXPLAYERS + 1];
+bool g_bCanNickZoomKit[MAXPLAYERS + 1];
+bool g_bIsNickInSecondaryCycle[MAXPLAYERS + 1];
+bool g_bRamboModeActive[MAXPLAYERS + 1];
 //new g_iNickDesperateMeasuresDeathStack;
 //new g_iNickDesperateMeasuresIncapStack;
-new bool:g_bDivineInterventionQueued[MAXPLAYERS + 1];
-new bool:g_bNickAlreadyGivenMoreBind2s = false;
+bool g_bDivineInterventionQueued[MAXPLAYERS + 1];
+bool g_bNickAlreadyGivenMoreBind2s = false;
 new g_iNickDesperateMeasuresStack;
 new g_iRamboWeaponID[MAXPLAYERS + 1];
 //g_bIsNickInSecondaryCycle
@@ -292,15 +292,15 @@ new g_iRamboWeaponID[MAXPLAYERS + 1];
 //Drug Effects
 new g_iDruggedRuntimesCounter[MAXPLAYERS + 1];
 //Gambling
-new bool:g_bNickIsInvisible[MAXPLAYERS + 1] = {false, ...};
-new bool:g_bNickIsGettingBeatenUp[MAXPLAYERS + 1] = {false, ...};
+bool g_bNickIsInvisible[MAXPLAYERS + 1] = {false, ...};
+bool g_bNickIsGettingBeatenUp[MAXPLAYERS + 1] = {false, ...};
 new g_iNicksRamboWeaponID[MAXPLAYERS + 1];
 new g_iNickMagnumHitsPerClip[MAXPLAYERS + 1];
 new g_iNickPrimarySavedClip[MAXPLAYERS + 1];
 new g_iNickPrimarySavedAmmo[MAXPLAYERS + 1];
 new g_iNickUpgradeAmmo[MAXPLAYERS + 1];
-new String:g_strNickUpgradeType[32];
-new bool:g_bNickStoresDroppedPistolAmmo[MAXPLAYERS + 1] = {false, ...};
+char g_strNickUpgradeType[32];
+bool g_bNickStoresDroppedPistolAmmo[MAXPLAYERS + 1] = {false, ...};
 new g_bNickGambedSelfReviveUses = 0;
 new g_bNickGambedDivineInterventionUses = 0;
 bool g_bNickGambleLockedBinds[MAXPLAYERS + 1] = {false, ...};
@@ -341,7 +341,7 @@ bool g_bLouisLaserModeToggleCooldown[MAXPLAYERS + 1] = {false, ...};
 bool g_bLouisTeleportCoolingDown[MAXPLAYERS + 1] = {false, ...};
 bool g_bLouisTeleportActive[MAXPLAYERS + 1] = {false, ...};
 new g_iLouisTeleportChargeUses[MAXPLAYERS + 1] = {0, ...};
-new Float:g_fLouisTeleportLastUseGameTime[MAXPLAYERS + 1] = {0.0, ...};
+float g_fLouisTeleportLastUseGameTime[MAXPLAYERS + 1] = {0.0, ...};
 new g_iLouisTeleportBlindnessAmount[MAXPLAYERS + 1] = {0, ...};
 new g_iLouisTeleportMovementPenaltyStacks[MAXPLAYERS + 1] = {0, ...};
 new g_iLouisCIHeadshotCounter[MAXPLAYERS + 1] = {0, ...};

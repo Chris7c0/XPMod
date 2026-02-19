@@ -64,7 +64,7 @@ ResetAllTankVariables_Vampiric(iClient)
 // 	LoadVampiricTankTalents(iClient);
 // }
 
-SetClientSpeedTankVampiric(iClient, &Float:fSpeed)
+SetClientSpeedTankVampiric(iClient, float &fSpeed)
 {
 	if (g_iTankChosen[iClient] != TANK_VAMPIRIC)
 		return;
@@ -90,7 +90,7 @@ OnGameFrame_Tank_Vampiric(iClient)
 		//SetMoveType(iClient, MOVETYPE_FLYGRAVITY, MOVECOLLIDE_FLY_BOUNCE);
 		AddWingFlapVelocity(iClient, VAMPIRIC_TANK_WING_FLAP_UP_VELOCITY);
 
-		decl Float:xyzClientPosition[3];
+		float xyzClientPosition[3];
 		GetClientEyePosition(iClient, xyzClientPosition);
 		// Play a random sound effect name from the the boomer throw selection
 		new iRandomSoundNumber = GetRandomInt(0 ,sizeof(SOUND_WING_FLAP) - 1);
@@ -126,7 +126,7 @@ OnGameFrame_Tank_Vampiric(iClient)
 			//SetMoveType(iClient, MOVETYPE_FLYGRAVITY, MOVECOLLIDE_FLY_BOUNCE);
 			AddWingDashVelocity(iClient, VAMPIRIC_TANK_WING_DASH_VELOCITY);
 
-			decl Float:xyzClientPosition[3];
+			float xyzClientPosition[3];
 			GetClientEyePosition(iClient, xyzClientPosition);
 			// Play a random sound effect name from the the boomer throw selection
 			new iRandomSoundNumber = GetRandomInt(0 ,sizeof(SOUND_WING_FLAP) - 1);
@@ -166,13 +166,13 @@ OnGameFrame_Tank_Vampiric(iClient)
 	}
 }
 
-EventsHurt_VictimTank_Vampiric(Handle:hEvent, iAttacker, iVictimTank)
+EventsHurt_VictimTank_Vampiric(Handle hEvent, iAttacker, iVictimTank)
 {
 	SuppressNeverUsedWarning(hEvent, iAttacker);
 
 	new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
 
-	decl String:weaponclass[32];
+	char weaponclass[32];
 	GetEventString(hEvent,"weapon",weaponclass,32);
 	
 
@@ -207,11 +207,11 @@ EventsHurt_VictimTank_Vampiric(Handle:hEvent, iAttacker, iVictimTank)
 	// }
 }
 
-EventsHurt_AttackerTank_Vampiric(Handle:hEvent, iAttackerTank, iVictim)
+EventsHurt_AttackerTank_Vampiric(Handle hEvent, iAttackerTank, iVictim)
 {
 	SuppressNeverUsedWarning(hEvent);
 	
-	decl String:strWeapon[20];
+	char strWeapon[20];
 	GetEventString(hEvent,"weapon", strWeapon, 20);
 	new iDmgHealth  = GetEventInt(hEvent,"dmg_health");
 
@@ -276,12 +276,12 @@ int CalculateDamageForVictimTalents_Tank_Vampiric(int iVictim, int iDmgAmount, c
 	return 0;
 }
 
-AddWingFlapVelocity(iClient, Float:speed)
+AddWingFlapVelocity(iClient, float speed)
 {
-	new Float:vecVelocity[3];
+	float vecVelocity[3];
 	GetEntDataVector(iClient, g_iOffset_VecVelocity, vecVelocity);
 
-	decl Float:xyzAngles[3], Float:vDirection[3];
+	float xyzAngles[3], vDirection[3];
 	GetClientEyeAngles(iClient, xyzAngles);								// Get clients Eye Angles to know get what direction face
 	GetAngleVectors(xyzAngles, vDirection, NULL_VECTOR, NULL_VECTOR);	// Get the direction the iClient is looking
 
@@ -299,12 +299,12 @@ AddWingFlapVelocity(iClient, Float:speed)
 	TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, vecVelocity);
 }
 
-AddWingDashVelocity(iClient, Float:speed)
+AddWingDashVelocity(iClient, float speed)
 {
-	new Float:vecVelocity[3];
+	float vecVelocity[3];
 	GetEntDataVector(iClient, g_iOffset_VecVelocity, vecVelocity);
 
-	decl Float:xyzAngles[3], Float:vDirection[3];
+	float xyzAngles[3], vDirection[3];
 	GetClientEyeAngles(iClient, xyzAngles);								// Get clients Eye Angles to know get what direction face
 	GetAngleVectors(xyzAngles, vDirection, NULL_VECTOR, NULL_VECTOR);	// Get the direction the iClient is looking
 
@@ -319,13 +319,13 @@ AddWingDashVelocity(iClient, Float:speed)
 	TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, vecVelocity);
 }
 
-Action:TimerCanFlapVampiricTankWingsReset(Handle:timer, any:iClient)
+Action TimerCanFlapVampiricTankWingsReset(Handle timer, any iClient)
 {
 	g_bCanFlapVampiricTankWings[iClient] = true;
 	return Plugin_Stop;
 }
 
-Action:TimerVampiricTankCanRechargeStaminaReset(Handle:timer, any:iClient)
+Action TimerVampiricTankCanRechargeStaminaReset(Handle timer, any iClient)
 {
 	g_bVampiricTankCanRechargeStamina[iClient] = true;
 	
@@ -333,13 +333,13 @@ Action:TimerVampiricTankCanRechargeStaminaReset(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerVampiricTankWingDashReset(Handle:timer, any:iClient)
+Action TimerVampiricTankWingDashReset(Handle timer, any iClient)
 {
 	g_bCanVampiricTankWingDash[iClient] = true;
 	return Plugin_Stop;
 }
 
-Action:TimerVampiricTankWingDashChargeRegenerate(Handle:timer, any:iClient)
+Action TimerVampiricTankWingDashChargeRegenerate(Handle timer, any iClient)
 {
 	if (RunClientChecks(iClient) && 
 		IsPlayerAlive(iClient))
@@ -359,7 +359,7 @@ PrintVampiricTankMeters(iClient)
 		IsFakeClient(iClient) == true)
 		return;
 	
-	decl String:strWingDashChargeMeter[80], String:strStaminaMeter[150];
+	char strWingDashChargeMeter[80], strStaminaMeter[150];
 
 	// Grab the parts of the string to print to the player
 	BuildVampiricTankWingDashChargesString(iClient, strWingDashChargeMeter, sizeof(strWingDashChargeMeter));
@@ -371,7 +371,7 @@ PrintVampiricTankMeters(iClient)
 
 void BuildVampiricTankStatusString(int iClient, char[] strBuffer, int iBufferSize)
 {
-	decl String:strStaminaBar[128];
+	char strStaminaBar[128];
 	strStaminaBar = NULL_STRING;
 
 	float fNormalizedStamina = g_iVampiricTankStamina[iClient] / float(VAMPIRIC_TANK_STAMINA_MAX);
@@ -399,10 +399,10 @@ void BuildVampiricTankWingDashChargesString(int iClient, char[] strBuffer, int i
 
 CreateVampiricTankTrailEffect(int iClient)
 {
-	new Float:xyzTankPosition[3];
+	float xyzTankPosition[3];
 	GetClientAbsOrigin(iClient, xyzTankPosition);
 	xyzTankPosition[2] += 30.0;
-	new String:vecString[32];
+	char vecString[32];
 	Format(vecString, sizeof(vecString), "%f %f %f", xyzTankPosition[0], xyzTankPosition[1], xyzTankPosition[2]);
 
 	g_iPID_TankTrail[iClient] = CreateEntityByName("env_smokestack");

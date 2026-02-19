@@ -1,4 +1,4 @@
-Action:TankMenuDrawVampiric(iClient)
+Action TankMenuDrawVampiric(iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(TankMenuHandlerVampiric);
@@ -29,7 +29,7 @@ Action:TankMenuDrawVampiric(iClient)
 		strStartingNewLines,
         TANK_HEALTH_VAMPIRIC);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -42,7 +42,7 @@ Action:TankMenuDrawVampiric(iClient)
 	return Plugin_Handled;
 }
 
-TankMenuHandlerVampiric(Menu menu, MenuAction:action, iClient, itemNum)
+TankMenuHandlerVampiric(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{

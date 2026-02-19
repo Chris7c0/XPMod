@@ -30,7 +30,7 @@
 //                                                                                                             //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define PLUGIN_VERSION "0.8.5.0309"
+#define PLUGIN_VERSION "0.8.5.0310"
 
 #include <sourcemod>
 #include <sdktools>
@@ -56,7 +56,7 @@ public Plugin myinfo =
 public OnPluginStart()
 {
 	//Check for Left4Dead 2
-	decl String:strGameName[64];
+	char strGameName[64];
 	GetGameFolderName(strGameName, sizeof(strGameName));
 	
 	if (StrEqual(strGameName, "left4dead2", false) == false)

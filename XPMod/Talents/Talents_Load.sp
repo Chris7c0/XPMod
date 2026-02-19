@@ -59,7 +59,8 @@ LoadTalents(iClient)
 			
 			if( (g_iClientLevel[iClient] - (g_iClientLevel[iClient] - g_iSkillPoints[iClient])) <= (g_iClientLevel[iClient] - 1))	//Show Ring Effect if they have leveled up a talent
 			{
-				decl Float:pos[3], color[4];
+				float pos[3];
+				int color[4];
 				switch(g_iChosenSurvivor[iClient])
 				{
 					case BILL: 		{ color[0] = 0;		color[1] = 0; 	color[2] = 255;	color[3] = 255; }
@@ -72,7 +73,7 @@ LoadTalents(iClient)
 				
 				GetEntPropVector(iClient, Prop_Send, "m_vecOrigin", pos);
 				
-				decl i;
+				int i;
 				for(i = 0; i < 30; i++)		//15
 				{
 					pos[2] += 3.0;	//5.0

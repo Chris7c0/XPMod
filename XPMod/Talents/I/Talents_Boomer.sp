@@ -71,7 +71,7 @@ Event_BoomerVomitOnPlayer(iAttacker, iVictim)
 							}
 							case 2:		//Constant vomit for 8 seconds on last survivor hit
 							{
-								new bool:ok = false;
+								bool ok = false;
 								if(IsClientInGame(iVictim) == true)
 								{
 									if(IsPlayerAlive(iVictim) == true)
@@ -136,7 +136,7 @@ Event_BoomerVomitOnPlayer(iAttacker, iVictim)
 									//SetConVarInt(FindConVar("z_common_limit"), 36);
 									
 									PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. Jimmy Gibbs has come to play!", iAttacker);
-									decl Float:location[3], Float:ang[3];
+									float location[3], ang[3];
 									GetClientAbsOrigin(iAttacker, location);
 									GetClientEyeAngles(iAttacker, ang);
 									
@@ -195,12 +195,12 @@ Event_BoomerVomitOnPlayer(iAttacker, iVictim)
 	}
 }
 
-// EventsDeath_AttackerBoomer(Handle:hEvent, iAttacker, iVictim)
+// EventsDeath_AttackerBoomer(Handle hEvent, iAttacker, iVictim)
 // {
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }
 
-EventsDeath_VictimBoomer(Handle:hEvent, iAttacker, iVictim)
+EventsDeath_VictimBoomer(Handle hEvent, iAttacker, iVictim)
 {
 	if (g_iInfectedCharacter[iVictim] != BOOMER ||
 		g_iClientTeam[iVictim] != TEAM_INFECTED ||
@@ -216,7 +216,7 @@ EventsDeath_VictimBoomer(Handle:hEvent, iAttacker, iVictim)
 
 	if(g_iAcidicLevel[iVictim] > 0)
 	{
-		decl Float:vector[3];
+		float vector[3];
 		GetClientEyePosition(iVictim, vector);
 		decl target;
 		for (target = 1; target <= MaxClients; target++)
@@ -228,9 +228,9 @@ EventsDeath_VictimBoomer(Handle:hEvent, iAttacker, iVictim)
 				if (g_bIsSuicideJumping[iVictim] == true)
 				{
 					//PrintToChatAll("trying for %N", target);
-					decl Float:targetVector[3];
+					float targetVector[3];
 					GetClientEyePosition(target, targetVector);
-					new Float:distance = GetVectorDistance(targetVector, vector);
+					float distance = GetVectorDistance(targetVector, vector);
 					if(IsVisibleTo(vector, targetVector) == true)
 					{
 						//PrintToChatAll("%N is visible to you", target);
@@ -243,17 +243,17 @@ EventsDeath_VictimBoomer(Handle:hEvent, iAttacker, iVictim)
 							//Fling Target Survivor (taken from "Tankroar 2.2" by Karma)
 							if (IsIncap(target) == false)
 							{
-								decl Float:svPos[3];
+								float svPos[3];
 								GetClientEyePosition(target, svPos);
 								
-								decl Float:distanceVec[3];
+								float distanceVec[3];
 								
 								distanceVec[0] = (vector[0] - svPos[0]);
 								distanceVec[1] = (vector[1] - svPos[1]);
 								distanceVec[2] = (vector[2] - svPos[2]);
 								
-								decl Float: addAmount[3], Float: svVector[3], Float: ratio[2];
-								new Float:power =  100.0 + (float(g_iNorovirusLevel[iVictim]) * 30.0);
+								float addAmount[3], svVector[3], ratio[2];
+								float power =  100.0 + (float(g_iNorovirusLevel[iVictim]) * 30.0);
 								
 								ratio[0] =  distanceVec[0] / SquareRoot(distanceVec[1]*distanceVec[1] + distanceVec[0]*distanceVec[0]);//Ratio x/hypo
 								ratio[1] =  distanceVec[1] / SquareRoot(distanceVec[1]*distanceVec[1] + distanceVec[0]*distanceVec[0]);//Ratio y/hypo
@@ -273,9 +273,9 @@ EventsDeath_VictimBoomer(Handle:hEvent, iAttacker, iVictim)
 				}
 				else
 				{
-					decl Float:targetVector[3];
+					float targetVector[3];
 					GetClientAbsOrigin(target, targetVector);
-					new Float:distance = GetVectorDistance(targetVector, vector);
+					float distance = GetVectorDistance(targetVector, vector);
 					if(IsVisibleTo(vector, targetVector) == true && distance < 200.0)
 					{
 						DealDamage(target, iVictim, g_iAcidicLevel[iVictim]);

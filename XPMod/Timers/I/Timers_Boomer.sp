@@ -1,6 +1,6 @@
 
 //Boomer
-Action:TimerConstantVomitDisplay(Handle:timer, any:iClient)
+Action TimerConstantVomitDisplay(Handle timer, any iClient)
 {
 	if(IsClientInGame(iClient))
 		if(IsPlayerAlive(iClient))
@@ -18,7 +18,7 @@ Action:TimerConstantVomitDisplay(Handle:timer, any:iClient)
 }
 
 
-Action:TimerResetBoomerSpeed(Handle:timer, any:iClient)
+Action TimerResetBoomerSpeed(Handle timer, any iClient)
 {
 	g_bIsBoomerVomiting[iClient] = false;
 
@@ -30,7 +30,7 @@ Action:TimerResetBoomerSpeed(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerResetFastBoomerSpeed(Handle:timer, any:iClient)
+Action TimerResetFastBoomerSpeed(Handle timer, any iClient)
 {
 	g_bIsSuperSpeedBoomer[iClient] = false;
 	
@@ -40,7 +40,7 @@ Action:TimerResetFastBoomerSpeed(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerStopHotMeal(Handle:timer, any:iClient)
+Action TimerStopHotMeal(Handle timer, any iClient)
 {
 	g_bIsServingHotMeal[iClient] = false;
 	g_bIsBoomerVomiting[iClient] = false;
@@ -56,7 +56,7 @@ Action:TimerStopHotMeal(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerStopItCounting(Handle:timer, any:iClient)
+Action TimerStopItCounting(Handle timer, any iClient)
 {
 	g_bNowCountingVomitVictims[iClient] = false;
 	g_iVomitVictimCounter[iClient] = 0;
@@ -64,7 +64,7 @@ Action:TimerStopItCounting(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerConstantVomit(Handle:timer, any:iClient)
+Action TimerConstantVomit(Handle timer, any iClient)
 {
 	if (IsServerProcessing()==false || iClient <= 0 || IsClientInGame(iClient)==false || IsPlayerAlive(iClient)==false || g_bIsServingHotMeal[iClient] == false)
 		return Plugin_Stop;
@@ -74,17 +74,17 @@ Action:TimerConstantVomit(Handle:timer, any:iClient)
 	if (!IsValidEntity(iEntid))
 		return Plugin_Stop;
 
-	new Float:flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+8);
+	float flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+8);
 
 
 	g_fTimeStamp[iClient] = flTimeStamp_ret;
-	new Float:flTimeStamp_calc = flTimeStamp_ret - 29.5;
+	float flTimeStamp_calc = flTimeStamp_ret - 29.5;
 	SetEntDataFloat(iEntid, g_iOffset_NextActivation+8, flTimeStamp_calc, true);
 	
 	return Plugin_Continue;
 }
 
-Action:TimerSetBoomerCooldown(Handle:timer, any:iClient)
+Action TimerSetBoomerCooldown(Handle timer, any iClient)
 {
 	//INITIAL CHECKS
 	//--------------
@@ -109,14 +109,14 @@ Action:TimerSetBoomerCooldown(Handle:timer, any:iClient)
 		return Plugin_Stop;
 	
 	//retrieve the next act time
-	//new Float:flDuration_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+4);
+	//float flDuration_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+4);
 
 	//----DEBUG----
 	//if (g_iShow==1)
 	//	PrintToChatAll("\x03- actsuppress dur \x01 %f\x03 timestamp \x01%f", GetEntDataFloat(iEntid, g_iSuppressO+4), GetEntDataFloat(iEntid, g_iSuppressO+8) );
 
 	//retrieve current timestamp
-	new Float:flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+8);
+	float flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+8);
 	//PrintToChatAll("flTimeStamp_ret = %f", flTimeStamp_ret);
 	//PrintToChatAll("\x03 after adjusted shot\n-pre, iClient \x01%i\x03; entid \x01%i\x03; enginetime\x01 %f\x03; nextactivation: dur \x01 %f\x03 timestamp \x01%f",iClient,iEntid,GetGameTime(),GetEntDataFloat(iEntid, g_iOffset_NextActivation+4), GetEntDataFloat(iEntid, g_iOffset_NextActivation+8) );
 	if (g_fTimeStamp[iClient] < flTimeStamp_ret)
@@ -136,8 +136,8 @@ Action:TimerSetBoomerCooldown(Handle:timer, any:iClient)
 		//normally, game predicts it to be ready at T + 30s
 		//so if we modify T to 1:06, it will be ready at 1:36
 		//which is 6s after the player used the ability
-		//new Float:flTimeStamp_calc = flTimeStamp_ret - (GetConVarFloat(FindConVar("z_vomit_interval")) * (1.0 - 0.5) );	what it was in perkmod
-		new Float:flTimeStamp_calc = flTimeStamp_ret -  (30 - (30 - (g_iRapidLevel[iClient] * 2)) );
+		//float flTimeStamp_calc = flTimeStamp_ret - (GetConVarFloat(FindConVar("z_vomit_interval")) * (1.0 - 0.5) );	what it was in perkmod
+		float flTimeStamp_calc = flTimeStamp_ret -  (30 - (30 - (g_iRapidLevel[iClient] * 2)) );
 		//PrintToChatAll("flTimeStamp_calc = %f", flTimeStamp_calc);
 		SetEntDataFloat(iEntid, g_iOffset_NextActivation+8, flTimeStamp_calc, true);
 
@@ -149,11 +149,11 @@ Action:TimerSetBoomerCooldown(Handle:timer, any:iClient)
 }
 
 
-Action:TimerSuicideBoomerLaunch(Handle:timer, any:iClient)
+Action TimerSuicideBoomerLaunch(Handle timer, any iClient)
 {
 	g_bIsSuicideBoomer[iClient] = false;
 	SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"),2.0, true);
-	decl Float:velocity[3];
+	float velocity[3];
 	GetEntPropVector(iClient, Prop_Data, "m_vecVelocity", velocity);
 	velocity[0] *= (1.0 + (g_iNorovirusLevel[iClient] * 0.04));
 	velocity[1] *= (1.0 + (g_iNorovirusLevel[iClient] * 0.04));

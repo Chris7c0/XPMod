@@ -1,5 +1,5 @@
 //Class Select Menu Draw
-Action:TopSurvivorMenuDraw(iClient)
+Action TopSurvivorMenuDraw(iClient)
 {
 	Menu menu = CreateMenu(TopSurvivorMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -30,7 +30,7 @@ Action:TopSurvivorMenuDraw(iClient)
 		AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Back\
 		\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\
 		%s\
@@ -45,7 +45,7 @@ Action:TopSurvivorMenuDraw(iClient)
 }
 
 //Choose Character Menu Draw
-Action:ChangeSurvivorMenuDraw(iClient)
+Action ChangeSurvivorMenuDraw(iClient)
 {
 	// Check that they are not already confirmed
 	if (g_bTalentsConfirmed[iClient])
@@ -76,7 +76,7 @@ Action:ChangeSurvivorMenuDraw(iClient)
 
 	AddMenuItem(menu, "option7", "Change Your Equipment");
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Confirm Your Survivor\
 		\n=================================\
 		%s\
@@ -92,7 +92,7 @@ Action:ChangeSurvivorMenuDraw(iClient)
 
 
 //Top level Survivor Menu Handler
-TopSurvivorMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+TopSurvivorMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -127,7 +127,7 @@ TopSurvivorMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Change Character Handler
-ChangeSurvivorMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+ChangeSurvivorMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{

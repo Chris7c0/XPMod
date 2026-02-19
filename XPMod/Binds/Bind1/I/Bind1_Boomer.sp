@@ -19,8 +19,8 @@ void Bind1Press_Boomer(iClient)
                     new iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);
                     if (iEntid > 0)
                     {
-                        new Float:flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+8);
-                        new Float:flTimeStamp_calc = flTimeStamp_ret - 29.5;
+                        float flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+8);
+                        float flTimeStamp_calc = flTimeStamp_ret - 29.5;
                         SetEntDataFloat(iEntid, g_iOffset_NextActivation+8, flTimeStamp_calc, true);
                     }
                     CreateTimer(1.0, TimerConstantVomit, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);

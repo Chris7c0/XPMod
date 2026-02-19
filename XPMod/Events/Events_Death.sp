@@ -1,4 +1,4 @@
-Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
+Action Event_PlayerDeath(Handle hEvent, char[] Event_name, bool dontBroadcast)
 {
 	new iVictim = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	new iAttacker = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
@@ -86,7 +86,7 @@ Action:Event_PlayerDeath(Handle:hEvent, String:Event_name[], bool:dontBroadcast)
 	return Plugin_Continue;
 }
 
-EventsDeath_PlayHeadshotDingSoundForCIHeadshots(Handle:hEvent, iAttacker)
+EventsDeath_PlayHeadshotDingSoundForCIHeadshots(Handle hEvent, iAttacker)
 {
 	if (g_iClientTeam[iAttacker] != TEAM_SURVIVORS || 
 		IsClientInGame(iAttacker) == false ||

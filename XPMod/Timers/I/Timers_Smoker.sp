@@ -1,6 +1,6 @@
 //Smoker
 
-// Action:TimerStopTarFingersInfection(Handle:timer, any:iClient)
+// Action TimerStopTarFingersInfection(Handle timer, any iClient)
 // {
 // 	g_bIsTarFingerVictim[iClient] = false;
 
@@ -8,7 +8,7 @@
 // }
 
 
-// Action TimerResetTarFingerVictimBlindAmount(Handle:timer, int iClient)
+// Action TimerResetTarFingerVictimBlindAmount(Handle timer, int iClient)
 // {
 // 	g_iTarFingerVictimBlindAmount[iClient] = 0;
 // 	// PrintToChat(iClient, "ResetTarFingerVictimBlindAmount");
@@ -18,38 +18,38 @@
 // }
 
 
-Action:TimerRemoveSmokerDoppelganger(Handle:timer, any:iEntity)
+Action TimerRemoveSmokerDoppelganger(Handle timer, any iEntity)
 {
 	KillEntitySafely(iEntity);
 	return Plugin_Stop;
 }
 
-Action:TimerResetSmokerDoppelgangerCooldown(Handle:timer, any:iClient)
+Action TimerResetSmokerDoppelgangerCooldown(Handle timer, any iClient)
 {
 	g_bSmokerDoppelgangerCoolingDown[iClient] = false;
 	return Plugin_Stop;
 }
 
-Action:TimerResetSmokerSmokeScreenCooldown(Handle:timer, any:iClient)
+Action TimerResetSmokerSmokeScreenCooldown(Handle timer, any iClient)
 {
 	g_bSmokerSmokeScreenOnCooldown[iClient] = false;
 	return Plugin_Stop;
 }
 
-Action:Timer_SmokerSmokeCloudCooldown(Handle:timer, any:iClient)
+Action Timer_SmokerSmokeCloudCooldown(Handle timer, any iClient)
 {
 	g_bSmokerSmokeCloudInCooldown = false;
 	return Plugin_Stop;
 }
 
-Action:Timer_ResetElectrocuteCooldown(Handle:timer, any:iClient)
+Action Timer_ResetElectrocuteCooldown(Handle timer, any iClient)
 {
 	g_bElectrocutionCooldown[iClient] = false;
 	return Plugin_Stop;
 }
 
 /*
-Action:TimerCheckTongueDistance(Handle:timer, any:Smoker)
+Action TimerCheckTongueDistance(Handle timer, any Smoker)
 {
 	if((IsClientInGame(Smoker) == false) || (g_iClientTeam[Smoker] != TEAM_INFECTED) || (IsFakeClient(Smoker) == true) || (g_iChokingVictim[Smoker] < 1))
 	{
@@ -62,8 +62,8 @@ Action:TimerCheckTongueDistance(Handle:timer, any:Smoker)
 		return Plugin_Stop;
 	}
 			
-	new Float:SmokerPosition[3];
-	new Float:VictimPosition[3];
+	float SmokerPosition[3];
+	float VictimPosition[3];
 	GetClientAbsOrigin(Smoker,SmokerPosition);
 	GetClientAbsOrigin(Victim,VictimPosition);
 	new distance = RoundToNearest(GetVectorDistance(SmokerPosition, VictimPosition));
@@ -78,14 +78,14 @@ Action:TimerCheckTongueDistance(Handle:timer, any:Smoker)
 	return Plugin_Stop;
 }*/
 
-Action:TimerPoisonCloud(Handle:timer, any:iClient)
+Action TimerPoisonCloud(Handle timer, any iClient)
 {
 	if (RunClientChecks(iClient) == false || 
 		IsClientInGame(iClient) == false ||
 		g_bHasSmokersPoisonCloudOut[iClient] == false)
 		return Plugin_Stop;
 	
-	decl Float:xyzVictimPosition[3];
+	float xyzVictimPosition[3];
 	for (new iVictim = 1; iVictim <= MaxClients; iVictim++)
 	{
 		if (RunClientChecks(iVictim) == false ||
@@ -123,20 +123,20 @@ Action:TimerPoisonCloud(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerStopPoisonCloud(Handle:timer, any:iClient)
+Action TimerStopPoisonCloud(Handle timer, any iClient)
 {
 	g_bHasSmokersPoisonCloudOut[iClient] = false;
 	
 	return Plugin_Stop;
 }
 
-Action:CheckIfStuck(Handle:timer, any:iClient)
+Action CheckIfStuck(Handle timer, any iClient)
 {
 	if (RunClientChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false)
 		return Plugin_Stop;
 
-	decl Float:vorigin[3];
+	float vorigin[3];
 	GetClientAbsOrigin(iClient, vorigin);
 
 	//PrintToChat(iClient, "vorigin = %f, %f, %f		endpos = %f, %f, %f", vorigin[0], vorigin[1], vorigin[2], g_fTeleportEndPositionX[iClient], g_fTeleportEndPositionY[iClient], g_fTeleportEndPositionZ[iClient]);
@@ -145,7 +145,7 @@ Action:CheckIfStuck(Handle:timer, any:iClient)
 		vorigin[2] == g_fTeleportEndPositionZ[iClient])
 	{
 		PrintHintText(iClient, "\x03[XPMod] \x05You appear to be stuck. Sending you back.");
-		decl Float:origpos[3];
+		float origpos[3];
 		origpos[0] = g_fTeleportOriginalPositionX[iClient];
 		origpos[1] = g_fTeleportOriginalPositionY[iClient];
 		origpos[2] = g_fTeleportOriginalPositionZ[iClient];
@@ -157,7 +157,7 @@ Action:CheckIfStuck(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:ReAllowTeleport(Handle:timer, any:iClient)
+Action ReAllowTeleport(Handle timer, any iClient)
 {
 	g_bTeleportCoolingDown[iClient] = false;
 	return Plugin_Stop;

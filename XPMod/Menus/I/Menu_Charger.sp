@@ -1,7 +1,7 @@
 //Charger Menu
 
 //Charger Menu Draw
-Action:ChargerTopMenuDraw(iClient)
+Action ChargerTopMenuDraw(iClient)
 {
 	CheckLevel(iClient);
 	DeleteAllMenuParticles(iClient);
@@ -12,7 +12,7 @@ Action:ChargerTopMenuDraw(iClient)
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
-	decl String:title[256];
+	char title[256];
 	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n==========================\nCharger Talents:\n==========================\n \nGround 'n Pound: Level %d\nSpiked Carapace: Level %d\nHillbilly Madness!: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iGroundLevel[iClient], g_iSpikedLevel[iClient], g_iHillbillyLevel[iClient]);
 	SetMenuTitle(menu, title);
 	
@@ -26,7 +26,7 @@ Action:ChargerTopMenuDraw(iClient)
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		\n==========================\
@@ -43,7 +43,7 @@ Action:ChargerTopMenuDraw(iClient)
 //Talent Draws///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Ground 'n Pound Menu Draw
-Action:GroundMenuDraw(iClient)
+Action GroundMenuDraw(iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(GroundMenuHandler);
@@ -62,7 +62,7 @@ Action:GroundMenuDraw(iClient)
 		strStartingNewLines,
 		g_iGroundLevel[iClient]);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -76,7 +76,7 @@ Action:GroundMenuDraw(iClient)
 }
 
 //Spiked Carapace Menu Draw
-Action:SpikedMenuDraw(iClient)
+Action SpikedMenuDraw(iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(SpikedMenuHandler);
@@ -107,7 +107,7 @@ Action:SpikedMenuDraw(iClient)
 		strStartingNewLines,
 		g_iSpikedLevel[iClient]);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -121,7 +121,7 @@ Action:SpikedMenuDraw(iClient)
 }
 
 //Hillbilly Madness! Menu Draw
-Action:HillbillyMenuDraw(iClient)
+Action HillbillyMenuDraw(iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(HillbillyMenuHandler);
@@ -152,7 +152,7 @@ Action:HillbillyMenuDraw(iClient)
 		strStartingNewLines,
 		g_iHillbillyLevel[iClient]);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -166,7 +166,7 @@ Action:HillbillyMenuDraw(iClient)
 }
 
 //Choose Charger Menu Draw
-Action:ChooseChargerClassMenuDraw(iClient) 
+Action ChooseChargerClassMenuDraw(iClient) 
 {
 	DeleteAllMenuParticles(iClient);
 	
@@ -174,7 +174,7 @@ Action:ChooseChargerClassMenuDraw(iClient)
 	Menu menu = CreateMenu(ChooseChargerClassMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
-	decl String:title[256];
+	char title[256];
 	FormatEx(title, sizeof(title), "==========================\n		Current Classes\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n==========================\n \nPick a class to replace with the Charger:",g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	
 	SetMenuTitle(menu, title);
@@ -192,7 +192,7 @@ Action:ChooseChargerClassMenuDraw(iClient)
 //Handlers/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Charger Top Menu Handler
-ChargerTopMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+ChargerTopMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -246,7 +246,7 @@ ChargerTopMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Ground 'n Pound Menu Handler
-GroundMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+GroundMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -265,7 +265,7 @@ GroundMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Spiked Carapace Menu Handler
-SpikedMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+SpikedMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -284,7 +284,7 @@ SpikedMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Hillbilly Madness! Menu Handler
-HillbillyMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+HillbillyMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -303,7 +303,7 @@ HillbillyMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Choose Charger Top Menu Handler
-ChooseChargerClassMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+ChooseChargerClassMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{

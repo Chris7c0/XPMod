@@ -63,7 +63,7 @@ EntangleSurvivorInSmokerTongue(iClient)
 	delete g_hTimer_UntangleSurvivorCheck[iClient];
 	g_hTimer_UntangleSurvivorCheck[iClient] = CreateTimer(0.5, TimerCheckIfPlayerIsInRangeToUntangle, iClient, TIMER_REPEAT);
 
-	decl Float:xyzLocation[3];
+	float xyzLocation[3];
 	GetClientAbsOrigin(iClient, xyzLocation);
 	SendAllSurvivorBotsFocusedOnXPMGoal(xyzLocation, iClient);
 
@@ -118,7 +118,7 @@ UntangleSurvivorFromSmokerTongue(iClient)
 			{
 				if (g_bIsEntangledInSmokerTongue[iTarget] == true)
 				{
-					decl Float:xyzLocation[3];
+					float xyzLocation[3];
 					GetClientAbsOrigin(iTarget, xyzLocation);
 					SetBotFocusedOnXPMGoal(iPlayer, xyzLocation, iTarget);
 				}
@@ -132,7 +132,7 @@ UntangleSurvivorFromSmokerTongue(iClient)
 		SetConVarInt(FindConVar("sb_enforce_proximity_range"), CONVAR_SB_ENFORCE_PROXIMITY_RANGE_DEFAULT);
 }
 
-Action TimerCheckIfPlayerIsInRangeToUntangle(Handle:timer, int iClient)
+Action TimerCheckIfPlayerIsInRangeToUntangle(Handle timer, int iClient)
 {
 	if (g_bIsEntangledInSmokerTongue[iClient] == false ||
 		RunClientChecks(iClient) == false ||
@@ -144,7 +144,7 @@ Action TimerCheckIfPlayerIsInRangeToUntangle(Handle:timer, int iClient)
 		return Plugin_Stop;
 	}
 
-	decl Float:xyzClientLocation[3];
+	float xyzClientLocation[3];
 	GetClientAbsOrigin(iClient, xyzClientLocation);
 
 	for (int iPlayer = 1; iPlayer <= MaxClients; iPlayer++)
@@ -156,7 +156,7 @@ Action TimerCheckIfPlayerIsInRangeToUntangle(Handle:timer, int iClient)
 			IsClientGrappled(iPlayer) == true)
 			continue;
 
-		decl Float:xyzPlayerLocation[3];
+		float xyzPlayerLocation[3];
 		GetClientAbsOrigin(iPlayer, xyzPlayerLocation);
 
 		//PrintToChatAll("distance: %f ", GetVectorDistance(xyzClientLocation, xyzPlayerLocation, false));

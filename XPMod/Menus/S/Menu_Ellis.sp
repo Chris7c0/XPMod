@@ -1,9 +1,9 @@
 //Ellis Menu////////////////////////////////////////////////////////////////
 
 //Ellis Menu Draw
-Action:EllisMenuDraw(iClient) 
+Action EllisMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	Menu menu = CreateMenu(EllisMenuHandler);
@@ -32,7 +32,7 @@ Action:EllisMenuDraw(iClient)
 	AddMenuItem(menu, "option7", "Open In Website\n ");
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -46,9 +46,9 @@ Action:EllisMenuDraw(iClient)
 }
 
 //Overconfidence
-Action:OverMenuDraw(iClient) 
+Action OverMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -87,7 +87,7 @@ Action:OverMenuDraw(iClient)
 		ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT);
 	SetMenuTitle(menu, text);
 
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -101,9 +101,9 @@ Action:OverMenuDraw(iClient)
 }
 
 //Bring the Pain!
-Action:BringMenuDraw(iClient) 
+Action BringMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -137,7 +137,7 @@ Action:BringMenuDraw(iClient)
 		g_iBringLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -151,9 +151,9 @@ Action:BringMenuDraw(iClient)
 }
 
 //Jammin' to the Music
-Action:JamminMenuDraw(iClient) 
+Action JamminMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -189,7 +189,7 @@ Action:JamminMenuDraw(iClient)
 		ELLIS_STASHED_INVENTORY_MAX_TANK_SPAWN_ADRENALINE);
 	SetMenuTitle(menu, text);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -203,9 +203,9 @@ Action:JamminMenuDraw(iClient)
 }
 
 //Weapons Training
-Action:WeaponsMenuDraw(iClient) 
+Action WeaponsMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -236,7 +236,7 @@ Action:WeaponsMenuDraw(iClient)
 		g_iWeaponsLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -250,9 +250,9 @@ Action:WeaponsMenuDraw(iClient)
 }
 
 //Metal Storm (Mechanic Affinity)
-Action:MetalMenuDraw(iClient) 
+Action MetalMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -290,7 +290,7 @@ Action:MetalMenuDraw(iClient)
 		g_iMetalLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -304,9 +304,9 @@ Action:MetalMenuDraw(iClient)
 }
 
 //Fire Storm
-Action:FireMenuDraw(iClient) 
+Action FireMenuDraw(iClient) 
 {
-	decl String:text[512];
+	char text[512];
 	
 	DeleteAllMenuParticles(iClient);
 	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
@@ -341,7 +341,7 @@ Action:FireMenuDraw(iClient)
 		g_iFireLevel[iClient]);
 	SetMenuTitle(menu, text);
 	
-	decl String:strFinalOptionText[250];
+	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
@@ -357,7 +357,7 @@ Action:FireMenuDraw(iClient)
 //Handlers//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Ellis Menu Handler
-EllisMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+EllisMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -405,7 +405,7 @@ EllisMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Overconfidence Handler
-OverMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+OverMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -424,7 +424,7 @@ OverMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Bring the Pain Handler
-BringMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+BringMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -443,7 +443,7 @@ BringMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Jammin to the Music Handler
-JamminMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+JamminMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -462,7 +462,7 @@ JamminMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Weapons Training Handler
-WeaponsMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+WeaponsMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -481,7 +481,7 @@ WeaponsMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Metal Storm Handler and Mechanic Affinity
-MetalMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+MetalMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{
@@ -500,7 +500,7 @@ MetalMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
 }
 
 //Fire Storm Handler
-FireMenuHandler(Menu menu, MenuAction:action, iClient, itemNum)
+FireMenuHandler(Menu menu, MenuAction action, iClient, itemNum)
 {
 	if (action == MenuAction_End)
 	{

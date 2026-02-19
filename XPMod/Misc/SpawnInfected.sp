@@ -55,12 +55,12 @@ int SpawnCommonInfected(float xyzLocation[3], int iAmount = 1, int iUncommon = U
 	return -1;
 }
 
-Action:TimerSetMobRush(Handle:timer, any:iZombieEntity)
+Action TimerSetMobRush(Handle timer, any iZombieEntity)
 {
 	if (iZombieEntity > 0 && IsValidEntity(iZombieEntity))
 	{
 		// Check that this entity is still an infected
-		decl String:strClassname[99];
+		char strClassname[99];
 		GetEdictClassname(iZombieEntity, strClassname, sizeof(strClassname));
 		if (StrEqual(strClassname, "infected", true))
 			SetEntProp(iZombieEntity, Prop_Send, "m_mobRush", 1);
@@ -73,7 +73,7 @@ void SpawnCIAroundLocation(float xyzLocation[3], int iAmount = 1, int iUncommon 
 {
 	// Get the angle increments then convert to radians
 	// We need it in radians so convert it by multiplying by 0.0174532925
-	new Float:fAngleIncrement = (360.0 / iAmount) * 0.0174532925;
+	float fAngleIncrement = (360.0 / iAmount) * 0.0174532925;
 
 	for (new i=0; i < iAmount; i++)
 	{
@@ -81,9 +81,9 @@ void SpawnCIAroundLocation(float xyzLocation[3], int iAmount = 1, int iUncommon 
 		// Note: angle must be in radians, 
 		// x = radius * cos(angle)
 		// y = radius * sin(angle)
-		new Float:fRadius = 50.0;
-		new Float:fXOffset = (fRadius * Cosine(fAngleIncrement * i)) - (fRadius / 2);
-		new Float:fYOffset = (fRadius * Sine(fAngleIncrement * i)) - (fRadius / 2);
+		float fRadius = 50.0;
+		float fXOffset = (fRadius * Cosine(fAngleIncrement * i)) - (fRadius / 2);
+		float fYOffset = (fRadius * Sine(fAngleIncrement * i)) - (fRadius / 2);
 		//PrintToServer("%f %f", fXOffset, fYOffset);
 
 		xyzLocation[0] += fXOffset;
@@ -99,7 +99,7 @@ void SpawnCIAroundPlayer(int iClient, int iAmount = 1, int iUncommon = UNCOMMON_
 		return;
 
 	// Get player location to spawn infected around
-	decl Float:xyzLocation[3];
+	float xyzLocation[3];
 	GetClientAbsOrigin(iClient, xyzLocation);
 
 	SpawnCIAroundLocation(xyzLocation, iAmount, iUncommon, iBigOrSmall, iEnhancedCISpecifiedType, bShowParticles);
@@ -123,7 +123,7 @@ void SpawnCIAroundPlayerDelayed(int iClient, float fDelay, int iAmount = 1, int 
 }
 
 
-Action:TimerSpawnCIAroundPlayer(Handle:timer, Handle hDataPackage)
+Action TimerSpawnCIAroundPlayer(Handle timer, Handle hDataPackage)
 {
 	ResetPack(hDataPackage);
 	int iClient = ReadPackCell(hDataPackage);
@@ -142,7 +142,7 @@ Action:TimerSpawnCIAroundPlayer(Handle:timer, Handle hDataPackage)
 void SpawnSpecialInfected(iClient, char[] strInfectedToSpawn = "")
 {
 	new iRandomSIID = GetRandomInt(1,6);
-	decl String:strSpawnCommand[32];
+	char strSpawnCommand[32];
 	Format(strSpawnCommand, sizeof(strSpawnCommand), 
 		"z_spawn_old %s auto", 
 		strlen(strInfectedToSpawn) == 0 ?
@@ -161,14 +161,14 @@ void SpawnSpecialInfected(iClient, char[] strInfectedToSpawn = "")
 
 
 
-// SpawnSpecialInfected(client, Class, bool:bAuto=true)
+// SpawnSpecialInfected(client, Class, bool bAuto=true)
 // {
-// 	new bool:resetGhostState[MaxClients+1];
-// 	new bool:resetIsAlive[MaxClients+1];
-// 	new bool:resetLifeState[MaxClients+1];
+// 	bool resetGhostState[MaxClients+1];
+// 	bool resetIsAlive[MaxClients+1];
+// 	bool resetLifeState[MaxClients+1];
 // 	ChangeClientTeam(client, 3);
-// 	new String:g_sBossNames[9+1][10]={"","smoker","boomer","hunter","spitter","jockey","charger","witch","tank","survivor"};
-// 	decl String:options[30];
+// 	char g_sBossNames[9+1][10]={"","smoker","boomer","hunter","spitter","jockey","charger","witch","tank","survivor"};
+// 	char options[30];
 // 	if (Class < 1 || Class > 8) return false;
 // 	if (GetClientTeam(client) != 3) return false;
 // 	if (!IsClientInGame(client)) return false;
@@ -209,13 +209,13 @@ void SpawnSpecialInfected(iClient, char[] strInfectedToSpawn = "")
 // 	return true;
 // }
 
-// stock bool:IsPlayerGhost(client)
+// stock bool IsPlayerGhost(client)
 // {
 // 	if (GetEntProp(client, Prop_Send, "m_isGhost", 1)) return true;
 // 	return false;
 // }
 
-// stock SetPlayerGhostStatus(client, bool:ghost)
+// stock SetPlayerGhostStatus(client, bool ghost)
 // {
 // 	if(ghost){	
 // 		SetEntProp(client, Prop_Send, "m_isGhost", 1, 1);
@@ -224,14 +224,14 @@ void SpawnSpecialInfected(iClient, char[] strInfectedToSpawn = "")
 // 	}
 // }
 
-// stock SetPlayerIsAlive(client, bool:alive)
+// stock SetPlayerIsAlive(client, bool alive)
 // {
 // 	new offset = FindSendPropInfo("CTransitioningPlayer", "m_isAlive");
 // 	if (alive) SetEntData(client, offset, 1, 1, true);
 // 	else SetEntData(client, offset, 0, 1, true);
 // }
 
-// stock SetPlayerLifeState(client, bool:ready)
+// stock SetPlayerLifeState(client, bool ready)
 // {
 // 	if (ready) SetEntProp(client, Prop_Data, "m_lifeState", 1, 1);
 // 	else SetEntProp(client, Prop_Data, "m_lifeState", 0, 1);

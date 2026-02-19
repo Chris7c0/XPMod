@@ -1,16 +1,16 @@
-Action:LouisTeleportReenable(Handle:timer, any:iClient)
+Action LouisTeleportReenable(Handle timer, any iClient)
 {
 	g_bLouisTeleportCoolingDown[iClient] = false;
 	return Plugin_Stop;
 }
 
-Action:LouisLaserModeToggleReenable(Handle:timer, any:iClient)
+Action LouisLaserModeToggleReenable(Handle timer, any iClient)
 {
 	g_bLouisLaserModeToggleCooldown[iClient] = false;
 	return Plugin_Stop;
 }
 
-Action:TimerSetLouisTeleportInactive(Handle:timer, any:iClient)
+Action TimerSetLouisTeleportInactive(Handle timer, any iClient)
 {
 	g_bLouisTeleportActive[iClient] = false;
 	SetClientSpeed(iClient);
@@ -18,7 +18,7 @@ Action:TimerSetLouisTeleportInactive(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerLouisTeleportChargeRegenerate(Handle:timer, any:iClient)
+Action TimerLouisTeleportChargeRegenerate(Handle timer, any iClient)
 {
 	g_iLouisTeleportChargeUses[iClient]--;
 
@@ -37,7 +37,7 @@ Action:TimerLouisTeleportChargeRegenerate(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerLouisTeleportChargeResetAll(Handle:timer, any:iClient)
+Action TimerLouisTeleportChargeResetAll(Handle timer, any iClient)
 {
 	g_iLouisTeleportChargeUses[iClient] = 0;
 
@@ -52,7 +52,7 @@ Action:TimerLouisTeleportChargeResetAll(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerLouisTeleportRemoveMovementSpeedPenalty(Handle:timer, any:iClient)
+Action TimerLouisTeleportRemoveMovementSpeedPenalty(Handle timer, any iClient)
 {
 	g_iLouisTeleportMovementPenaltyStacks[iClient]--;
 
@@ -65,7 +65,7 @@ Action:TimerLouisTeleportRemoveMovementSpeedPenalty(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerLouisCIHeadshotReduce(Handle:timer, any:iClient)
+Action TimerLouisCIHeadshotReduce(Handle timer, any iClient)
 {
 	g_iLouisCIHeadshotCounter[iClient]--;
 
@@ -78,7 +78,7 @@ Action:TimerLouisCIHeadshotReduce(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerLouisSIHeadshotReduce(Handle:timer, any:iClient)
+Action TimerLouisSIHeadshotReduce(Handle timer, any iClient)
 {
 	g_iLouisSIHeadshotCounter[iClient]--;
 
@@ -91,7 +91,7 @@ Action:TimerLouisSIHeadshotReduce(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerLouisPillsUsedStackReduce(Handle:timer, any:iClient)
+Action TimerLouisPillsUsedStackReduce(Handle timer, any iClient)
 {
 	g_iPillsUsedStack[iClient]--;
 
@@ -107,7 +107,7 @@ Action:TimerLouisPillsUsedStackReduce(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerGivePillsFromStashedInventory(Handle:timer, int iClient)
+Action TimerGivePillsFromStashedInventory(Handle timer, int iClient)
 {
 	if (g_iStashedInventoryPills[iClient] > 0)
 	{
@@ -121,7 +121,7 @@ Action:TimerGivePillsFromStashedInventory(Handle:timer, int iClient)
 
 	return Plugin_Stop;
 }
-Action:TimerReEnableNoobWipe(Handle:timer, any:iClient) {
+Action TimerReEnableNoobWipe(Handle timer, any iClient) {
 	g_bNoobWipeCooldown = false;
 	return Plugin_Stop;
 }

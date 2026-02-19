@@ -1,4 +1,4 @@
-SQLCheckIfUserIsInBanListCallback(Handle:owner, Handle:hQuery, const char[] error, any:iClient)
+SQLCheckIfUserIsInBanListCallback(Handle owner, Handle hQuery, const char[] error, any iClient)
 {
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -79,7 +79,7 @@ SQLCheckIfUserIsInBanList(int iClient)
 }
 
 //Callback function for an SQL AddBannedUserToDatabase
-SQLAddBannedUserToDatabaseCallback(Handle:owner, Handle:hQuery, const char[] error, any:iClient)
+SQLAddBannedUserToDatabaseCallback(Handle owner, Handle hQuery, const char[] error, any iClient)
 {
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -98,7 +98,7 @@ SQLAddBannedUserToDatabaseCallback(Handle:owner, Handle:hQuery, const char[] err
 }
 
 
-SQLAddBannedUserToDatabaseUsingClientID(iClient, int iBanDurationSeconds = 0, const char [] strBanReason)
+SQLAddBannedUserToDatabaseUsingClientID(iClient, int iBanDurationSeconds = 0, const char[] strBanReason)
 {
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return;
@@ -145,7 +145,7 @@ SQLAddBannedUserToDatabaseUsingClientID(iClient, int iBanDurationSeconds = 0, co
 	SQL_TQuery(g_hDatabase, SQLAddBannedUserToDatabaseCallback, strQuery, iClient);
 }
 
-SQLAddBannedUserToDatabaseUsingNameAndSteamID(char [] strClientName, const int iClientNameSize, const char [] strSteamID, int iBanDurationSeconds = 0, const char [] strBanReason)
+SQLAddBannedUserToDatabaseUsingNameAndSteamID(char[] strClientName, const int iClientNameSize, const char[] strSteamID, int iBanDurationSeconds = 0, const char[] strBanReason)
 {	
 	// PrintToChatAll("SQLAddBannedUserToDatabaseUsingNameAndSteamID  %i: %N", iClient, iClient);
 	// PrintToServer("SQLAddBannedUserToDatabaseUsingNameAndSteamID  %i: %N", iClient, iClient);
@@ -179,7 +179,7 @@ SQLAddBannedUserToDatabaseUsingNameAndSteamID(char [] strClientName, const int i
 	SQL_TQuery(g_hDatabase, SQLAddBannedUserToDatabaseCallback, strQuery, 0);
 }
 
-GetBanExpirationTimestamp(char [] strExpirationTimeStampValue, int iExpirationTimeStampValueSize, int iBanDurationSeconds) 
+GetBanExpirationTimestamp(char[] strExpirationTimeStampValue, int iExpirationTimeStampValueSize, int iBanDurationSeconds) 
 {
 	if (iBanDurationSeconds <= 0)
 	{

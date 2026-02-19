@@ -1,5 +1,5 @@
 
-Action:Event_WeaponPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_WeaponPickUp(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	
 	// PrintToChatAll("Event_WeaponPickUp");
@@ -12,20 +12,20 @@ Action:Event_WeaponPickUp(Handle:hEvent, const String:strName[], bool:bDontBroad
 	return Plugin_Continue;
 }
 
-Action:Event_SpawnerGiveItem(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_SpawnerGiveItem(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	// PrintToChatAll("Event_SpawnerGiveItem");
 
 	return Plugin_Continue;
 }
 
-Action:Event_UseTarget(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_UseTarget(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	// PrintToChatAll("Event_UseTarget");
 	return Plugin_Continue;
 }
 
-Action:Event_PlayerUse(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_PlayerUse(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	//PrintToChatAll("Event_PlayerUse");
 
@@ -45,7 +45,7 @@ Action:Event_PlayerUse(Handle:hEvent, const String:strName[], bool:bDontBroadcas
 	return Plugin_Continue;
 }
 
-Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadcast)
+Action Event_ItemPickUp(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	new iClient = GetClientOfUserId( GetEventInt(hEvent,"userid"));
 	if (RunClientChecks(iClient) == false || 
@@ -53,7 +53,7 @@ Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadca
 		IsPlayerAlive(iClient) == false)
 		return Plugin_Continue;
 	
-	decl String:weaponclass[24];
+	char weaponclass[24];
 	GetEventString(hEvent,"item",weaponclass,24);
 
 	// if (IsFakeClient(iClient) == false)
@@ -409,10 +409,10 @@ Action:Event_ItemPickUp(Handle:hEvent, const String:strName[], bool:bDontBroadca
 	return Plugin_Continue;
 }
 
-Action:Event_WeaponDropped(Handle:hEvent, const String:strName[], bool:bDontBroadcast)		//When an item is removed from a survivor's inventory///////////////////////
+Action Event_WeaponDropped(Handle hEvent, const char[] strName, bool bDontBroadcast)		//When an item is removed from a survivor's inventory///////////////////////
 {
 	new iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	decl String:droppeditem[32];
+	char droppeditem[32];
 	GetEventString(hEvent, "item", droppeditem, 32);
 	new iProp = GetEventInt(hEvent,"propid");
 	// PrintToChatAll("droppeditem = %s", droppeditem);
@@ -475,5 +475,5 @@ Action:Event_WeaponDropped(Handle:hEvent, const String:strName[], bool:bDontBroa
 		KillEntitySafely(iProp);
 	}
 	//g_bIsNickInSecondaryCycle[iClient] == true
-	
+	return Plugin_Continue;
 }

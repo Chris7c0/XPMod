@@ -126,7 +126,7 @@ Action TimerRemovePeeRenderAndGlow(Handle timer, int iClient)
 	return Plugin_Stop;
 }
 
-Action TimerStopJockeyPeeEffects(Handle timer, any:iClient)
+Action TimerStopJockeyPeeEffects(Handle timer, any iClient)
 {
 	if(RunClientChecks(iClient) == false)
 		return Plugin_Stop;

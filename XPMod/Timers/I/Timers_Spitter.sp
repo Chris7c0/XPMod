@@ -1,4 +1,4 @@
-Action:TimerSetSpitterCooldown(Handle:timer, any:iClient)
+Action TimerSetSpitterCooldown(Handle timer, any iClient)
 {
 	//INITIAL CHECKS
 	//--------------
@@ -24,14 +24,14 @@ Action:TimerSetSpitterCooldown(Handle:timer, any:iClient)
 		return Plugin_Stop;
 	}
 	//retrieve the next act time
-	//new Float:flDuration_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+4);
+	//float flDuration_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+4);
 
 	//----DEBUG----
 	//if (g_iShow==1)
 	//	PrintToChatAll("\x03- actsuppress dur \x01 %f\x03 timestamp \x01%f", GetEntDataFloat(iEntid, g_iSuppressO+4), GetEntDataFloat(iEntid, g_iSuppressO+8) );
 
 	//retrieve current timestamp
-	new Float:flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+8);
+	float flTimeStamp_ret = GetEntDataFloat(iEntid,g_iOffset_NextActivation+8);
 
 	if (g_fTimeStamp[iClient] < flTimeStamp_ret)
 	{
@@ -50,8 +50,8 @@ Action:TimerSetSpitterCooldown(Handle:timer, any:iClient)
 		//normally, game predicts it to be ready at T + 30s
 		//so if we modify T to 1:06, it will be ready at 1:36
 		//which is 6s after the player used the ability
-		//new Float:flTimeStamp_calc = flTimeStamp_ret - (GetConVarFloat(FindConVar("z_vomit_interval")) * (1.0 - 0.5) );	what it was in perkmod
-		decl Float:flTimeStamp_calc;
+		//float flTimeStamp_calc = flTimeStamp_ret - (GetConVarFloat(FindConVar("z_vomit_interval")) * (1.0 - 0.5) );	what it was in perkmod
+		float flTimeStamp_calc;
 		
 		flTimeStamp_calc = flTimeStamp_ret -  (20.0 - (20.0 - (g_iHallucinogenicLevel[iClient] * 0.5)) );
 		
@@ -64,16 +64,17 @@ Action:TimerSetSpitterCooldown(Handle:timer, any:iClient)
 	return Plugin_Continue;
 }
 
-Action:TimerResetSpeedFromGoo(Handle:timer, any:iClient)
+Action TimerResetSpeedFromGoo(Handle timer, any iClient)
 {
 	g_fAdhesiveAffectAmount[iClient] = 0.0;
 	g_bAdhesiveGooActive[iClient] = false;
 
 	SetClientSpeed(iClient);
 	g_hTimer_AdhesiveGooReset[iClient] = null;
+	return Plugin_Stop;
 }
 
-Action:TimerResetGravityFromGoo(Handle:timer, any:iClient)
+Action TimerResetGravityFromGoo(Handle timer, any iClient)
 {
 	if (RunClientChecks(iClient))
 	{
@@ -91,7 +92,7 @@ Action:TimerResetGravityFromGoo(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerConjureWitch(Handle:timer, any:iClient)
+Action TimerConjureWitch(Handle timer, any iClient)
 {
 	g_bCanConjureWitch[iClient] = false;
 	g_bJustSpawnedWitch[iClient] = true;
@@ -106,11 +107,11 @@ Action:TimerConjureWitch(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerConjureCommonInfected(Handle:timer, any:hDataPackage)
+Action TimerConjureCommonInfected(Handle timer, any hDataPackage)
 {
 	ResetPack(hDataPackage);
 	new iClient = ReadPackCell(hDataPackage);
-	decl Float:xyzLocation[3];
+	float xyzLocation[3];
 	xyzLocation[0] = ReadPackFloat(hDataPackage);
 	xyzLocation[1] = ReadPackFloat(hDataPackage);
 	xyzLocation[2] = ReadPackFloat(hDataPackage);
@@ -121,11 +122,11 @@ Action:TimerConjureCommonInfected(Handle:timer, any:hDataPackage)
 	return Plugin_Stop;
 }
 
-Action:TimerConjureUncommonInfected(Handle:timer, any:hDataPackage)
+Action TimerConjureUncommonInfected(Handle timer, any hDataPackage)
 {
 	ResetPack(hDataPackage);
 	new iClient = ReadPackCell(hDataPackage);
-	decl Float:xyzLocation[3];
+	float xyzLocation[3];
 	xyzLocation[0] = ReadPackFloat(hDataPackage);
 	xyzLocation[1] = ReadPackFloat(hDataPackage);
 	xyzLocation[2] = ReadPackFloat(hDataPackage);
@@ -140,11 +141,11 @@ Action:TimerConjureUncommonInfected(Handle:timer, any:hDataPackage)
 	return Plugin_Stop;
 }
 
-Action:TimerConjureFromBagOfSpits(Handle:timer, any:hDataPackage)
+Action TimerConjureFromBagOfSpits(Handle timer, any hDataPackage)
 {
 	ResetPack(hDataPackage);
 	new iClient = ReadPackCell(hDataPackage);
-	decl Float:xyzLocation[3];
+	float xyzLocation[3];
 	xyzLocation[0] = ReadPackFloat(hDataPackage);
 	xyzLocation[1] = ReadPackFloat(hDataPackage);
 	xyzLocation[2] = ReadPackFloat(hDataPackage);
@@ -157,7 +158,7 @@ Action:TimerConjureFromBagOfSpits(Handle:timer, any:hDataPackage)
 }
 
 
-Action:TimerResetCanConjureWitch(Handle:timer, any:iClient)
+Action TimerResetCanConjureWitch(Handle timer, any iClient)
 {
 	g_bCanConjureWitch[iClient] = true;
 	
@@ -165,7 +166,7 @@ Action:TimerResetCanConjureWitch(Handle:timer, any:iClient)
 }
 
 
-Action:TimerHallucinogen(Handle:timer, any:iClient)
+Action TimerHallucinogen(Handle timer, any iClient)
 {
 	if(IsClientInGame(iClient) == false || IsPlayerAlive(iClient) == false)
 	{
@@ -210,7 +211,7 @@ Action:TimerHallucinogen(Handle:timer, any:iClient)
 	return Plugin_Stop;
 }
 
-Action:TimerInfectedVictimTick(Handle:timer, any:iClient)
+Action TimerInfectedVictimTick(Handle timer, any iClient)
 {
 	if(IsClientInGame(iClient) == false || IsPlayerAlive(iClient) == false)
 	{
@@ -218,7 +219,7 @@ Action:TimerInfectedVictimTick(Handle:timer, any:iClient)
 		return Plugin_Stop;
 	}
 	
-	new Float:xyzVictimLocation[3], Float:xyzPotentialVictimLocation[3], Float:fDistance;
+	float xyzVictimLocation[3], xyzPotentialVictimLocation[3], fDistance;
 	GetClientEyePosition(iClient, xyzVictimLocation);
 	
 	//Check the distance of all the survivors near to infect them if they are not immune
@@ -287,19 +288,21 @@ Action:TimerInfectedVictimTick(Handle:timer, any:iClient)
 }
 
 
-Action:TimerResetVirusImmunity(Handle:timer, any:iClient)
+Action TimerResetVirusImmunity(Handle timer, any iClient)
 {
 	g_bIsImmuneToVirus[iClient] = false;
+	return Plugin_Stop;
 }
 
-Action:TimerAllowGooSwitching(Handle:timer, any:iClient)
+Action TimerAllowGooSwitching(Handle timer, any iClient)
 {
 	g_bBlockGooSwitching[iClient] = false;
 	g_hTimer_BlockGooSwitching[iClient] = null;
+	return Plugin_Stop;
 }
 
-Action:TimerResetRepulsion(Handle:timer, any:iClient)
+Action TimerResetRepulsion(Handle timer, any iClient)
 {
 	g_bCanBePushedByRepulsion[iClient] = true;
+	return Plugin_Stop;
 }
-

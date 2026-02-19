@@ -128,7 +128,7 @@ OnGameFrame_Rochelle(iClient)
 						{
 							g_bIsHighJumping[iClient] = true;
 							g_bIsHighJumpCharged[iClient] = false;
-							decl Float:jumpvec[3];
+							float jumpvec[3];
 							jumpvec[0] = 0.0;
 							jumpvec[1] = 0.0;
 							jumpvec[2] = (60.0 * float(g_iSniperLevel[iClient])) + 400.0;
@@ -149,7 +149,7 @@ OnGameFrame_Rochelle(iClient)
 		buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 		if((buttons & IN_RELOAD) && g_bClientIsReloading[iClient] == false && g_bForceReload[iClient] == false)
 		{
-			decl String:currentweapon[32];
+			char currentweapon[32];
 			GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
 			new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 			if (IsValidEntity(ActiveWeaponID) == false)
@@ -171,7 +171,7 @@ OnGameFrame_Rochelle(iClient)
 	}
 }
 
-EventsHurt_AttackerRochelle(Handle:hEvent, attacker, victim)
+EventsHurt_AttackerRochelle(Handle hEvent, attacker, victim)
 {
 	if (g_iChosenSurvivor[attacker] != ROCHELLE ||
 		g_bTalentsConfirmed[attacker] == false ||
@@ -272,7 +272,7 @@ EventsHurt_AttackerRochelle(Handle:hEvent, attacker, victim)
 	}
 }
 
-// EventsHurt_VictimRochelle(Handle:hEvent, attacker, victim)
+// EventsHurt_VictimRochelle(Handle hEvent, attacker, victim)
 // {
 // 		return;
 // 	if (IsFakeClient(victim))
@@ -314,7 +314,7 @@ EventsInfectedHurt_Rochelle(Handle hEvent, int  iAttacker, int iVictim)
 	SuppressNeverUsedWarning(iVictim);
 }
 
-EventsDeath_AttackerRochelle(Handle:hEvent, int iAttacker, int iVictim)
+EventsDeath_AttackerRochelle(Handle hEvent, int iAttacker, int iVictim)
 {
 	if (g_iChosenSurvivor[iAttacker] != ROCHELLE ||
 		g_bTalentsConfirmed[iAttacker] == false ||
@@ -360,7 +360,7 @@ EventsDeath_AttackerRochelle(Handle:hEvent, int iAttacker, int iVictim)
 	
 }
 
-// EventsDeath_VictimRochelle(Handle:hEvent, iAttacker, iVictim)
+// EventsDeath_VictimRochelle(Handle hEvent, iAttacker, iVictim)
 // {
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }
@@ -491,9 +491,9 @@ DetectionHud(iClient)
 	if(g_bGameFrozen == true)
 		return;
 	
-	decl Float:detdistance;
-	decl Float:clientvec[3];
-	new Float:infectedvec[3];
+	float detdistance;
+	float clientvec[3];
+	float infectedvec[3];
 	decl classnum;
 	g_fDetectedDistance_Smoker[iClient] = 0.0;
 	g_fDetectedDistance_Boomer[iClient] = 0.0;
@@ -644,7 +644,7 @@ ToggleDetectionHud(iClient)
 		iClient = 1;
 	if(g_iGatherLevel[iClient]>0)
 	{
-		decl Float:xyzVector[3];
+		float xyzVector[3];
 		GetClientAbsOrigin(iClient, xyzVector);
 		
 		g_bClientIDDToggle[iClient] = !g_bClientIDDToggle[iClient];

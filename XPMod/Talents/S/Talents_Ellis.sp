@@ -125,7 +125,7 @@ OnGameFrame_Ellis(iClient)
 		buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 		if((buttons & IN_RELOAD) && g_bClientIsReloading[iClient] == false && g_bForceReload[iClient] == false)
 		{
-			decl String:currentweapon[32];
+			char currentweapon[32];
 			GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
 			new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 			if (RunEntityChecks(ActiveWeaponID) == false)
@@ -191,7 +191,7 @@ OGFSurvivorReload_Ellis(iClient, const char[] currentweapon, ActiveWeaponID, Cur
 	if(g_iEllisPrimarySlot0[iClient] == ITEM_EMPTY || g_iEllisPrimarySlot1[iClient] == ITEM_EMPTY)
 	{
 		StoreCurrentPrimaryWeapon(iClient);
-		new String:strCurrentWeapon[32];
+		char strCurrentWeapon[32];
 		GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 		if((StrContains(strCurrentWeapon, "rifle", false) != -1) || (StrContains(strCurrentWeapon, "smg", false) != -1) || (StrContains(strCurrentWeapon, "shotgun", false) != -1) || (StrContains(strCurrentWeapon, "launcher", false) != -1) || (StrContains(strCurrentWeapon, "sniper", false) != -1))
 		{
@@ -311,7 +311,7 @@ EventsHurt_AttackerEllis(Handle hEvent, int iAttacker, int iVictim)
 		{
 			if(g_bUsingFireStorm[iAttacker]==true)
 			{
-				new Float:time = (float(g_iFireLevel[iAttacker]) * 6.0);
+				float time = (float(g_iFireLevel[iAttacker]) * 6.0);
 				IgniteEntity(iVictim, time, false);
 			}
 		}
@@ -324,7 +324,7 @@ EventsHurt_AttackerEllis(Handle hEvent, int iAttacker, int iVictim)
 	// 	new iMaxHealth = GetPlayerMaxHealth(iAttacker);
 	// 	new iTempHealth = GetSurvivorTempHealth(iAttacker);
 
-	// 	decl String:strWeaponClass[32];
+	// 	char strWeaponClass[32];
 	// 	GetEventString(hEvent,"weapon",strWeaponClass,32);
 	// 	//PrintToChatAll("\x03-class of gun: \x01%s",strWeaponClass);
 	// 	if ((StrContains(strWeaponClass,"shotgun",false) != -1) || 
@@ -371,7 +371,7 @@ EventsHurt_AttackerEllis(Handle hEvent, int iAttacker, int iVictim)
 	// }
 }
 
-EventsHurt_VictimEllis(Handle:hEvent, attacker, victim)
+EventsHurt_VictimEllis(Handle hEvent, attacker, victim)
 {
 	if(g_iChosenSurvivor[victim] != ELLIS || g_bTalentsConfirmed[victim] == false)
 		return;
@@ -401,7 +401,7 @@ EventsHurt_VictimEllis(Handle:hEvent, attacker, victim)
 	{
 		new iCurrentHealth = GetPlayerHealth(victim);
 		new iMaxHealth = GetPlayerMaxHealth(victim);
-		//new Float:fTempHealth = GetEntDataFloat(victim, g_iOffset_HealthBuffer);
+		//float fTempHealth = GetEntDataFloat(victim, g_iOffset_HealthBuffer);
 		//if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - float(ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT)))
 		if(iCurrentHealth < (iMaxHealth - ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT))
 		{
@@ -425,7 +425,7 @@ EventsHurt_VictimEllis(Handle:hEvent, attacker, victim)
 	}
 }
 
-EventsDeath_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
+EventsDeath_AttackerEllis(Handle hEvent, iAttacker, iVictim)
 {
 	if(g_iChosenSurvivor[iAttacker] != ELLIS || g_bTalentsConfirmed[iAttacker] == false)
 		return;
@@ -480,7 +480,7 @@ EventsDeath_AttackerEllis(Handle:hEvent, iAttacker, iVictim)
 		new iEntid = GetEntDataEnt2(iAttacker, g_iOffset_ActiveWeapon);
 		if (iEntid != -1)
 		{
-			decl String:wclass[32];
+			char wclass[32];
 			GetEntityNetClass(iEntid, wclass, 32);
 			//PrintToChatAll("\x03-class of gun: \x01%s",wclass);
 			if (StrContains(wclass,"rifle",false) != -1 || 
@@ -527,7 +527,7 @@ void EventsWeaponFire_Ellis(int iClient)
 	if(g_iEllisPrimarySlot0[iClient] == ITEM_EMPTY || g_iEllisPrimarySlot1[iClient] == ITEM_EMPTY)
 	{
 		StoreCurrentPrimaryWeapon(iClient);
-		// new String:strCurrentWeapon[32];
+		// char strCurrentWeapon[32];
 		// GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 		if((StrContains(strCurrentWeapon, "rifle", false) != -1) || (StrContains(strCurrentWeapon, "smg", false) != -1) || (StrContains(strCurrentWeapon, "shotgun", false) != -1) || (StrContains(strCurrentWeapon, "launcher", false) != -1) || (StrContains(strCurrentWeapon, "sniper", false) != -1))
 		{
@@ -581,7 +581,7 @@ void EventsWeaponFire_Ellis(int iClient)
 		SetEntProp(iActiveWeaponID, Prop_Send, "m_isHoldingFireButton", 0);
 }
 
-// EventsDeath_VictimEllis(Handle:hEvent, iAttacker, iVictim)
+// EventsDeath_VictimEllis(Handle hEvent, iAttacker, iVictim)
 // {
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }
@@ -751,7 +751,7 @@ void EventsWeaponGiven_Ellis(int iClient)
 		CreateTimer(0.1, TimerGiveAdrenalineFromStashedInventory, iClient, TIMER_FLAG_NO_MAPCHANGE);
 }
 
-void HandleCheatCommandTasks_Ellis(int iClient, const char [] strCommandWithArgs)
+void HandleCheatCommandTasks_Ellis(int iClient, const char[] strCommandWithArgs)
 {
 	if (g_iChosenSurvivor[iClient] != ELLIS || g_bTalentsConfirmed[iClient] == false)
 		return;
@@ -859,7 +859,7 @@ CyclePlayerWeapon_Ellis(int iClient)
 		{
 			g_bIsEllisWeaponCycling[iClient] = true;
 			g_iEllisCurrentPrimarySlot[iClient] = 1;
-			decl String:strCommandWithArgs[64];
+			char strCommandWithArgs[64];
 			Format(strCommandWithArgs, sizeof(strCommandWithArgs), "give %s", ITEM_CMD_NAME[g_iEllisPrimarySlot1[iClient]]);
 			RunCheatCommand(iClient, "give", strCommandWithArgs);
 		}
@@ -878,7 +878,7 @@ CyclePlayerWeapon_Ellis(int iClient)
 		{
 			g_bIsEllisWeaponCycling[iClient] = true;
 			g_iEllisCurrentPrimarySlot[iClient] = 0;
-			decl String:strCommandWithArgs[64];
+			char strCommandWithArgs[64];
 			Format(strCommandWithArgs, sizeof(strCommandWithArgs), "give %s", ITEM_CMD_NAME[g_iEllisPrimarySlot0[iClient]]);
 			RunCheatCommand(iClient, "give", strCommandWithArgs);
 		}
@@ -996,7 +996,7 @@ HandleEllisSwitchToStashedPrimaryWeapon(iClient)
 		return;
 
 	// Only continue if the current weapon is a valid primary
-	decl String:currentweapon[512];
+	char currentweapon[512];
 	GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
 	//PrintToChatAll("Current Weapon is %s", currentweapon);
 
@@ -1197,9 +1197,10 @@ void GiveEllisAnExtraAdrenaline(iClient)
 	}
 }
 
-Action:TimerDelayedGiveEllisAnExtraAdrenaline(Handle:timer, any:iClient)
+Action TimerDelayedGiveEllisAnExtraAdrenaline(Handle timer, any iClient)
 {
 	GiveEllisAnExtraAdrenaline(iClient);
+	return Plugin_Stop;
 }
 
 void HandleEllisSelfRevive(iClient)

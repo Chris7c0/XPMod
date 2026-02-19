@@ -65,7 +65,7 @@ ResetAllTankVariables_Ice(iClient)
 // 	LoadIceTankTalents(iClient);
 // }
 
-SetClientSpeedTankIce(iClient, &Float:fSpeed)
+SetClientSpeedTankIce(iClient, float &fSpeed)
 {
 	if (g_iTankChosen[iClient] != TANK_ICE)
 		return;
@@ -128,7 +128,7 @@ OnGameFrame_Tank_Ice(iClient)
 		//Charged for long enough, now handle ice tank regen
 		if (g_iTankCharge[iClient] >= TANK_ICE_REGEN_START_DURATION_REQUIREMENT)
 		{
-			decl Float:fCurrentTankHealthPercentage;
+			float fCurrentTankHealthPercentage;
 			new iCurrentHealth = GetPlayerHealth(iClient);
 			new iCurrentMaxHealth = RoundToNearest(TANK_HEALTH_ICE * g_fTankStartingHealthMultiplier[iClient]);
 			
@@ -167,7 +167,7 @@ OnGameFrame_Tank_Ice(iClient)
 
 						//Make Ice Fog Entity
 						g_iPID_IceTankChargeMistStock[iClient] = CreateEntityByName("env_smokestack");
-						new String:vecString[32];
+						char vecString[32];
 						Format(vecString, sizeof(vecString), "%f %f %f", g_xyzClientTankPosition[iClient][0], g_xyzClientTankPosition[iClient][1], g_xyzClientTankPosition[iClient][2]);
 
 						DispatchKeyValue(g_iPID_IceTankChargeMistStock[iClient],"Origin", vecString);
@@ -190,7 +190,7 @@ OnGameFrame_Tank_Ice(iClient)
 					if(g_hTimer_IceSphere[iClient] == null)
 						g_hTimer_IceSphere[iClient] = CreateTimer(0.1, Timer_CreateSmallIceSphere, iClient, TIMER_REPEAT);
 
-					decl Float:xyzCurrentPosition[3];
+					float xyzCurrentPosition[3];
 					GetClientAbsOrigin(iClient, xyzCurrentPosition);
 					
 					//Check to see if there is a player inside of the ice sphere and freeze him if he is
@@ -200,10 +200,10 @@ OnGameFrame_Tank_Ice(iClient)
 							|| IsClientInGame(iVictim) == false || IsPlayerAlive(iVictim) == false)
 							continue;
 						
-						decl Float:xyzVictimPosition[3];
+						float xyzVictimPosition[3];
 						GetClientAbsOrigin(iVictim, xyzVictimPosition);
 						
-						new Float:fDistance = GetVectorDistance(xyzVictimPosition, xyzCurrentPosition, false);
+						float fDistance = GetVectorDistance(xyzVictimPosition, xyzCurrentPosition, false);
 						
 						//The sphere radius is about 125.0 but check for 130.0 to be safe
 						if(fDistance <= 130.0)
@@ -245,7 +245,7 @@ OnPlayerRunCmd_Tank_Ice(iClient, iButtons)
 
 
 
-EventsHurt_VictimTank_Ice(Handle:hEvent, iAttacker, iVictimTank)
+EventsHurt_VictimTank_Ice(Handle hEvent, iAttacker, iVictimTank)
 {
 	SuppressNeverUsedWarning(hEvent, iAttacker);
 
@@ -253,7 +253,7 @@ EventsHurt_VictimTank_Ice(Handle:hEvent, iAttacker, iVictimTank)
 	new iDmgType = GetEventInt(hEvent, "type");
 
 	new iCurrentHealth = GetPlayerHealth(iVictimTank);
-	decl Float:fCurrentTankHealthPercentage;
+	float fCurrentTankHealthPercentage;
 
 	// Add More Fire Damage
 	HandleFireDamageVictimIceTank(iAttacker, iVictimTank, iDmgHealth, iDmgType);
@@ -278,11 +278,11 @@ EventsHurt_VictimTank_Ice(Handle:hEvent, iAttacker, iVictimTank)
 	}
 }
 
-EventsHurt_AttackerTank_Ice(Handle:hEvent, iAttackerTank, iVictim)
+EventsHurt_AttackerTank_Ice(Handle hEvent, iAttackerTank, iVictim)
 {
 	SuppressNeverUsedWarning(iAttackerTank);
 
-	decl String:weapon[20];
+	char weapon[20];
 	GetEventString(hEvent,"weapon", weapon, 20);
 
 	// Temporarily disable Tank Slow Aura after the tank hits a victim only if they are already in the aura
@@ -311,7 +311,7 @@ EventsHurt_AttackerTank_Ice(Handle:hEvent, iAttackerTank, iVictim)
 		UnfreezePlayerByTank(iVictim);
 }
 
-EventsDeath_VictimTank_Ice(Handle:hEvent, iAttacker, iVictimTank)
+EventsDeath_VictimTank_Ice(Handle hEvent, iAttacker, iVictimTank)
 {
 	// if (RunClientChecks(iVictimTank) == false)
 	// 	return;
@@ -373,7 +373,7 @@ void HandleFireDamageVictimIceTank(int iAttacker, int iVictimTank, int iDmgHealt
 	SetPlayerHealth(iVictimTank, iAttacker, RoundToNearest(-1.0 * iDmgHealth * TANK_FIRE_DAMAGE_FIRE_BULLETS_ADD_MULTIPLIER) + iDmgHealth, true);
 }
 
-FreezePlayerByTank(iVictim, Float:fFreezeTime, Float:fStartTime = 0.2)
+FreezePlayerByTank(iVictim, float fFreezeTime, float fStartTime = 0.2)
 {
 	if (RunClientChecks(iVictim) == false)
 		return;
@@ -395,7 +395,7 @@ UnfreezePlayerByTank(iClient)
 	CreateTimer(TANK_ICE_FREEZE_COOLDOWN_AFTER_UNFREEZE, Timer_UnblockTankFreezing, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	
 	//Play Ice Break Sound
-	new Float:vec[3];
+	float vec[3];
 	GetClientAbsOrigin(iClient, vec);
 	EmitAmbientSound(SOUND_FREEZE, vec, iClient, SNDLEVEL_NORMAL);
 	
@@ -418,11 +418,11 @@ CreateIceRockDestroyEffect(int iRockEntity)
 	// Stop the trail particle and remove it
 	TurnOffAndDeleteSmokeStackParticle(iTankRockTrailParticle);
 
-	new Float:xyzRockPosition[3];
+	float xyzRockPosition[3];
 	GetEntPropVector(iRockEntity, Prop_Send, "m_vecOrigin", xyzRockPosition);
 	xyzRockPosition[2] -= 20.0;
 
-	new String:vecString[32];
+	char vecString[32];
 	Format(vecString, sizeof(vecString), "%f %f %f", xyzRockPosition[0], xyzRockPosition[1], xyzRockPosition[2]);
 
 	//Create particles
@@ -455,9 +455,9 @@ CreateIceRockDestroyEffect(int iRockEntity)
 
 CreateIceRockTrailEffect(int iRockEntity)
 {
-	new Float:xyzRockPosition[3];
+	float xyzRockPosition[3];
 	GetEntPropVector(iRockEntity, Prop_Send, "m_vecOrigin", xyzRockPosition);
-	new String:vecString[32];
+	char vecString[32];
 	Format(vecString, sizeof(vecString), "%f %f %f", xyzRockPosition[0], xyzRockPosition[1], xyzRockPosition[2]);
 
 	// Make Smoke Entity
@@ -493,10 +493,10 @@ CreateIceRockTrailEffect(int iRockEntity)
 
 CreateIceTankTrailEffect(int iClient)
 {
-	new Float:xyzTankPosition[3];
+	float xyzTankPosition[3];
 	GetClientAbsOrigin(iClient, xyzTankPosition);
 	xyzTankPosition[2] += 30.0;
-	new String:vecString[32];
+	char vecString[32];
 	Format(vecString, sizeof(vecString), "%f %f %f", xyzTankPosition[0], xyzTankPosition[1], xyzTankPosition[2]);
 
 	g_iPID_TankTrail[iClient] = CreateEntityByName("env_smokestack");
@@ -525,7 +525,7 @@ CreateIceTankTrailEffect(int iClient)
 FreezeEveryoneCloseToExplodingIceTankRock(iRockEntity)
 {
 	// Get the rock location
-	new Float:xyzRockPosition[3];
+	float xyzRockPosition[3];
 	GetEntPropVector(iRockEntity, Prop_Send, "m_vecOrigin", xyzRockPosition);
 
 	for(new iClient=1; iClient <= MaxClients; iClient++)
@@ -535,11 +535,11 @@ FreezeEveryoneCloseToExplodingIceTankRock(iRockEntity)
 			g_iClientTeam[iClient] == TEAM_SURVIVORS)
 		{
 			// Get the survivor player location
-			new Float:xyzSurvivorPosition[3];
+			float xyzSurvivorPosition[3];
 			GetClientAbsOrigin(iClient, xyzSurvivorPosition);
 			//Check if player is within the radius to freeze
 			// Get the distance
-			new Float:fDistance = GetVectorDistance(xyzSurvivorPosition, xyzRockPosition, false);		
+			float fDistance = GetVectorDistance(xyzSurvivorPosition, xyzRockPosition, false);		
 			//Freeze if they are close enough
 			if (fDistance <= TANK_ICE_ROCK_FREEZE_INDIRECT_HIT_RADIUS)
 				FreezePlayerByTank(iClient, TANK_ICE_FREEZE_DURATION_ROCK_INDIRECT);
@@ -554,7 +554,7 @@ CheckForPlayersInIceTanksColdAuraSlowRange(iTank)
 		g_bIceTankSlideInCooldown[iTank] == true)
 		return;
 
-	new Float:xyzTankPosition[3];
+	float xyzTankPosition[3];
 	GetClientEyePosition(iTank, xyzTankPosition);
 
 	for(new iClient=1; iClient <= MaxClients; iClient++)
@@ -565,11 +565,11 @@ CheckForPlayersInIceTanksColdAuraSlowRange(iTank)
 			continue;
 
 		// Get the survivor player location
-		new Float:xyzSurvivorPosition[3];
+		float xyzSurvivorPosition[3];
 		GetClientEyePosition(iClient, xyzSurvivorPosition);
 		// Check if player is within the radius to slow
 		// Get the distance
-		new Float:fDistance = GetVectorDistance(xyzSurvivorPosition, xyzTankPosition, false);		
+		float fDistance = GetVectorDistance(xyzSurvivorPosition, xyzTankPosition, false);		
 		//Freeze if they are close enough
 		if (fDistance < TANK_ICE_COLD_SLOW_AURA_RADIUS)
 		{

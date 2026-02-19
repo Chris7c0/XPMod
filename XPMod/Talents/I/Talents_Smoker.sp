@@ -153,7 +153,7 @@ bool OnPlayerRunCmd_Smoker(iClient, &iButtons)
 }
 
 
-void EventsHurt_AttackerSmoker(Handle:hEvent, iAttacker, iVictim)
+void EventsHurt_AttackerSmoker(Handle hEvent, iAttacker, iVictim)
 {
 	if (IsFakeClient(iAttacker))
 		return;
@@ -161,7 +161,7 @@ void EventsHurt_AttackerSmoker(Handle:hEvent, iAttacker, iVictim)
 	if (g_iClientTeam[iVictim] != TEAM_SURVIVORS)
 		return;
 	
-	decl String:strWeapon[20];
+	char strWeapon[20];
 	GetEventString(hEvent,"weapon", strWeapon, 20);
 
 	// // Only call if hit by claw and not being choked by the attacking Smoker
@@ -177,12 +177,12 @@ void EventsHurt_AttackerSmoker(Handle:hEvent, iAttacker, iVictim)
 	ReturnSmokerFromSmokeCloudIfCurrentlySmokeCloud(iVictim);
 }
 
-// EventsDeath_AttackerSmoker(Handle:hEvent, iAttacker, iVictim)
+// EventsDeath_AttackerSmoker(Handle hEvent, iAttacker, iVictim)
 // {
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }
 
-void EventsDeath_VictimSmoker(Handle:hEvent, iAttacker, iVictim)
+void EventsDeath_VictimSmoker(Handle hEvent, iAttacker, iVictim)
 {
 	if (g_iInfectedCharacter[iVictim] != SMOKER ||
 		g_iClientTeam[iVictim] != TEAM_INFECTED)
@@ -330,11 +330,11 @@ void SmokerTeleport(iClient)
 		return;
 	}
 
-	// decl Float:eyeorigin[3], Float:eyeangles[3], Float:endpos[3], Float:vdir[3], Float:distance;
+	// float eyeorigin[3], eyeangles[3], endpos[3], vdir[3], distance;
 	// GetClientEyePosition(iClient, eyeorigin);
 	// GetClientEyeAngles(iClient, eyeangles);
 	// GetAngleVectors(eyeangles, vdir, NULL_VECTOR, NULL_VECTOR);	//Get direction in which iClient is facing
-	// new Handle:trace = TR_TraceRayFilterEx(eyeorigin, eyeangles, MASK_SHOT, RayType_Infinite, TraceEntityFilter_NotSelf, iClient);
+	// Handle trace = TR_TraceRayFilterEx(eyeorigin, eyeangles, MASK_SHOT, RayType_Infinite, TraceEntityFilter_NotSelf, iClient);
 	// if(TR_DidHit(trace) == false)
 	// {
 	// 	PrintHintText(iClient, "You cannot teleport to this location.");
@@ -523,7 +523,7 @@ bool CreateSmokerDoppelganger(int iClient)
 }
 
 
-int CreatePlayerClone(int iClient, float xyzLocation[3], float xyzAngles[3], int iAnimationSequence = -1, char [] strAnimationName = "")
+int CreatePlayerClone(int iClient, float xyzLocation[3], float xyzAngles[3], int iAnimationSequence = -1, char[] strAnimationName = "")
 {
 	char strModel[PLATFORM_MAX_PATH];
 	GetEntPropString(iClient, Prop_Data, "m_ModelName", strModel, sizeof(strModel));
@@ -635,7 +635,7 @@ Action TimerFadeInDoppelgangerAndThenHookOnTakeDamage(Handle hTimer, int iEntity
 
 bool GetCrosshairPosition(int iClient, float xyzLocation[3], float xyzEyeAngles[3],  bool bClipXZRotation = true)
 {
-	decl Float:xyzEyeOrigin[3];
+	float xyzEyeOrigin[3];
 	GetClientEyePosition(iClient, xyzEyeOrigin);
 	GetClientEyeAngles(iClient, xyzEyeAngles);
 	//Get direction in which iClient is facing, to push out from this vector later

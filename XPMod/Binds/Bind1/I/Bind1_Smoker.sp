@@ -181,7 +181,7 @@ PutSmokerWithExpiredSmokeCloudIntoLimbo(int iClient)
 	CreateTimer(5.0, TimerHandleSmokerInSmokeCloudLimbo, iClient, TIMER_REPEAT);
 }
 
-Action TimerHandleSmokerInSmokeCloudLimbo(Handle:timer, int iClient)
+Action TimerHandleSmokerInSmokeCloudLimbo(Handle timer, int iClient)
 {
 	if (g_iSmokeCloudLimboTicks[iClient] == 3 ||
 		g_iInfectedCharacter[iClient] != SMOKER ||
@@ -208,7 +208,7 @@ Action TimerHandleSmokerInSmokeCloudLimbo(Handle:timer, int iClient)
 	return Plugin_Continue;
 }
 
-Action TimerHandleSmokerSmokeCloudTick(Handle:timer, int iClient)
+Action TimerHandleSmokerSmokeCloudTick(Handle timer, int iClient)
 {
 	if (g_iInfectedCharacter[iClient] != SMOKER ||
 		g_iSmokerSmokeCloudPlayer != iClient ||
@@ -350,7 +350,7 @@ void SetAllPlayersNotInSmokerCloud()
 		SetPlayerNotInSmokerCloud(iPlayer);
 }
 
-Action:TimerHandleSmokerCloudTickOnPlayer(Handle:timer, int iClient)
+Action TimerHandleSmokerCloudTickOnPlayer(Handle timer, int iClient)
 {
 	if (RunClientChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false ||

@@ -74,10 +74,10 @@ OnGameFrame_Charger(iClient)
 	if (g_iHillbillyLevel[iClient] == 10)
 	{
 		new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
-		//decl Float:originalVector[3];
-		//decl Float:eyeAngles[3];
-		//decl Float:vectorDirection[3];
-		decl Float:vectorVelocity[3];
+		//float originalVector[3];
+		//float eyeAngles[3];
+		//float vectorDirection[3];
+		float vectorVelocity[3];
 		if (buttons & IN_MOVELEFT)
 		{
 			//RunCheatCommand(iClient, "+left", "+left");
@@ -104,7 +104,7 @@ OnGameFrame_Charger(iClient)
 		if (g_bIsChargerCharging[iClient] == true)
 		{
 			new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
-			decl Float:originalVector[3];
+			float originalVector[3];
 			if (buttons & IN_MOVELEFT)
 			{
 				//RunCheatCommand(iClient, "+left", "+left");
@@ -135,7 +135,7 @@ OnGameFrame_Charger(iClient)
 	}*/
 }
 
-EventsHurt_AttackerCharger(Handle:hEvent, attacker, victim)
+EventsHurt_AttackerCharger(Handle hEvent, attacker, victim)
 {
 	if (IsFakeClient(attacker))
 		return;
@@ -145,7 +145,7 @@ EventsHurt_AttackerCharger(Handle:hEvent, attacker, victim)
 
 	if(g_iGroundLevel[attacker] > 0)
 	{
-		decl String:weapon[20];
+		char weapon[20];
 		GetEventString(hEvent,"weapon", weapon,20);
 		new hp = GetPlayerHealth(victim);
 
@@ -170,8 +170,8 @@ EventsHurt_AttackerCharger(Handle:hEvent, attacker, victim)
 			StrEqual(weapon,"charger_claw") == true && 
 			IsIncap(victim) == false)
 		{
-			decl Float: addAmount[3];
-			new Float:power = 577.0;
+			float addAmount[3];
+			float power = 577.0;
 
 			addAmount[0] = 0.0;
 			addAmount[1] = 0.0;
@@ -186,7 +186,7 @@ EventsHurt_AttackerCharger(Handle:hEvent, attacker, victim)
 	}
 }
 
-EventsHurt_VictimCharger(Handle:hEvent, attacker, victim)
+EventsHurt_VictimCharger(Handle hEvent, attacker, victim)
 {
 	if (IsFakeClient(victim))
 		return;
@@ -198,7 +198,7 @@ EventsHurt_VictimCharger(Handle:hEvent, attacker, victim)
 
 	if(g_iSpikedLevel[victim] > 0)
 	{
-		decl String:weapon[20];
+		char weapon[20];
 		GetEventString(hEvent, "weapon", weapon, 20);
 		
 		if(StrEqual(weapon, "melee") == true)
@@ -231,12 +231,12 @@ EventsHurt_VictimCharger(Handle:hEvent, attacker, victim)
 	}
 }
 
-// EventsDeath_AttackerCharger(Handle:hEvent, iAttacker, iVictim)
+// EventsDeath_AttackerCharger(Handle hEvent, iAttacker, iVictim)
 // {
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }
 
-// EventsDeath_VictimCharger(Handle:hEvent, iAttacker, iVictim)
+// EventsDeath_VictimCharger(Handle hEvent, iAttacker, iVictim)
 // {
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
 // }

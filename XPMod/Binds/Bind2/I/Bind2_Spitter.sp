@@ -12,7 +12,7 @@ void Bind2Press_Spitter(iClient)
                     {
                         g_bCanConjureWitch[iClient] = false;
                         
-                        decl Float:xyzAngles[3];
+                        float xyzAngles[3];
                         GetLocationVectorInfrontOfClient(iClient, g_xyzWitchConjureLocation[iClient], xyzAngles, 40.0, 30.0);
                         
                         WriteParticle(iClient, "spitter_conjure", 180.0, 7.0, g_xyzWitchConjureLocation[iClient]);

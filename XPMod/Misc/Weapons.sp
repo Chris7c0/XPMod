@@ -1,5 +1,5 @@
 // Find Weapon Item Index
-int FindWeaponItemIndex(const char [] strWeaponClass, const String:strCompareIndex[][])
+int FindWeaponItemIndex(const char[] strWeaponClass, const char[][] strCompareIndex)
 {
 	for(int iItemIndex=0; iItemIndex <= ITEM_COUNT; iItemIndex++)
 		if (StrEqual(strWeaponClass, strCompareIndex[iItemIndex], false) == true)
@@ -161,7 +161,7 @@ StoreCurrentPrimaryWeapon(iClient)
 	g_iPrimarySlotID[iClient] = GetPlayerWeaponSlot(iClient, 0);
 	// PrintToChatAll("g_iPrimarySlotID = %d", g_iPrimarySlotID[iClient]);
 
-	new String:strCurrentWeapon[32];
+	char strCurrentWeapon[32];
 	GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 
 	// Get the weapon index and ensure its a primary weapon
@@ -210,7 +210,7 @@ StoreCurrentPrimaryWeaponAmmo(iClient)
 		}
 		case ELLIS:		//Ellis
 		{
-			new String:strCurrentWeapon[32];
+			char strCurrentWeapon[32];
 			GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 			if((StrEqual(strCurrentWeapon, "weapon_melee", false) == false) && (StrEqual(strCurrentWeapon, "weapon_pistol", false) == false) && (StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == false))
 			{
@@ -223,7 +223,7 @@ StoreCurrentPrimaryWeaponAmmo(iClient)
 
 					if (IsValidEntity(g_iPrimarySlotID[iClient]) && IsValidEdict(g_iPrimarySlotID[iClient]))
 					{
-						//decl String:strClassname[99];
+						//char strClassname[99];
 						//GetEdictClassname(g_iPrimarySlotID[iClient], strClassname, sizeof(strClassname));
 						//PrintToChatAll("g_iPrimarySlotID[%N]: %s", iClient, strClassname);
 						if (HasEntProp(g_iPrimarySlotID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded"))
@@ -383,7 +383,7 @@ fnc_SetAmmo(iClient)
 
 // fnc_DetermineMaxClipSize(iClient)
 // {
-// 	new String:strCurrentWeapon[32];
+// 	char strCurrentWeapon[32];
 // 	GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 // 	switch(g_iChosenSurvivor[iClient])
 // 	{
@@ -542,7 +542,7 @@ fnc_SetAmmoUpgrade(iClient)
 			{
 				if (RunClientChecks(iClient) && IsPlayerAlive(iClient))
 				{
-					decl String:strCommandWithArgs[64];
+					char strCommandWithArgs[64];
 					Format(strCommandWithArgs, sizeof(strCommandWithArgs), "upgrade_add %s", g_strEllisUpgradeTypeSlot1);
 					RunCheatCommand(iClient, "upgrade_add", strCommandWithArgs);
 					//PrintToChatAll("Setting upgrade clip size based on saved ammo slot");
@@ -563,7 +563,7 @@ fnc_SetAmmoUpgrade(iClient)
 				{
 					//PrintToChatAll("Setting Cheat Flags");
 
-					decl String:strCommandWithArgs[64];
+					char strCommandWithArgs[64];
 					Format(strCommandWithArgs, sizeof(strCommandWithArgs), "upgrade_add %s", g_strEllisUpgradeTypeSlot2);
 					RunCheatCommand(iClient, "upgrade_add", strCommandWithArgs);
 					//PrintToChatAll("Setting upgrade clip size based on saved ammo slot");
@@ -581,7 +581,7 @@ fnc_SetAmmoUpgrade(iClient)
 			{
 				if(g_iNickUpgradeAmmo[iClient] > 0)
 				{
-					decl String:strCommandWithArgs[64];
+					char strCommandWithArgs[64];
 					Format(strCommandWithArgs, sizeof(strCommandWithArgs), "upgrade_add %s", g_strNickUpgradeType);
 					RunCheatCommand(iClient, "upgrade_add", strCommandWithArgs);
 
@@ -756,7 +756,7 @@ fnc_ClearAllWeaponData(iClient)
 }
 
 
-MolotovExplode(Float:xyzLocation[3])
+MolotovExplode(float xyzLocation[3])
 {
 	xyzLocation[2] += 5.0;
 	
@@ -772,7 +772,7 @@ MolotovExplode(Float:xyzLocation[3])
 	AcceptEntityInput(iEntity, "Break");
 }
 
-PropaneExplode(Float:xyzLocation[3])
+PropaneExplode(float xyzLocation[3])
 {
 	xyzLocation[2] += 5.0;
 	
@@ -864,7 +864,7 @@ GiveEveryWeaponToSurvivor(iClient)
 	CreateTimer(GIVE_ALOT_OF_WEAPONS_COOLDOWN_DURATION, Timer_ResetGiveAlotOfWeaponsOnCooldown, _, TIMER_FLAG_NO_MAPCHANGE);
 }
 
-Action:Timer_ResetGiveAlotOfWeaponsOnCooldown(Handle:timer, any:data)
+Action Timer_ResetGiveAlotOfWeaponsOnCooldown(Handle timer, any data)
 {
 	g_bGiveAlotOfWeaponsOnCooldown = false;
 	return Plugin_Stop;

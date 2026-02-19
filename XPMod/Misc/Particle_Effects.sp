@@ -1,4 +1,4 @@
-PrecacheParticle(String:ParticleName[])
+PrecacheParticle( char[] ParticleName)
 {
 	//Declare:
 	decl Particle;
@@ -23,13 +23,13 @@ PrecacheParticle(String:ParticleName[])
 	}
 }
 
-int WriteParticle(iClient, String:strParticleName[], Float:fZOffset = 0.0, Float:fTime = 0.0, Float:xyzLocation[3] = {0.0, 0.0, 0.0})
+int WriteParticle(iClient, char[] strParticleName, float fZOffset = 0.0, float fTime = 0.0, float xyzLocation[3] = {0.0, 0.0, 0.0})
 {	
 	if(IsValidEntity(iClient) == false)
 		return -1;
 	
 	decl Particle;
-	decl String:tName[64];
+	char tName[64];
 
 	//Initialize:
 	Particle = CreateEntityByName("info_particle_system");
@@ -39,8 +39,8 @@ int WriteParticle(iClient, String:strParticleName[], Float:fZOffset = 0.0, Float
 	{
 		//PrintToChatAll("Particle Entity ID: %d", Particle);
 		//Declare:
-		decl Float:position[3];
-		// decl Float:position2[3];
+		float position[3];
+		// float position2[3];
 		//Origin:
 		GetEntPropVector(iClient, Prop_Send, "m_vecOrigin", position);
 		// GetEntPropVector(iClient, Prop_Send, "m_angRotation", position2);
@@ -85,15 +85,15 @@ int WriteParticle(iClient, String:strParticleName[], Float:fZOffset = 0.0, Float
 	return Particle;
 }
 
-int CreateParticle(String:type[], Float:time, entity, attach = ATTACH_NONE, bool:useangles = false, Float:xOffs = 0.0, Float:yOffs = 0.0, Float:zOffs = 0.0)
+int CreateParticle( char[] type, float time, entity, attach = ATTACH_NONE, bool useangles = false, float xOffs = 0.0, float yOffs = 0.0, float zOffs = 0.0)
 {
 	new particle = CreateEntityByName("info_particle_system");
 	
 	// Check if it was created correctly
 	if (IsValidEdict(particle))
 	{
-		decl Float:pos[3];
-		decl Float:angles[3];
+		float pos[3];
+		float angles[3];
 		// Get position of entity
 		GetEntPropVector(entity, Prop_Send, "m_vecOrigin", pos);
 		
@@ -157,7 +157,7 @@ int CreateParticle(String:type[], Float:time, entity, attach = ATTACH_NONE, bool
 	return particle;
 }
 
-int AttachParticle(target, String:particlename[], Float:fTime = -1.0, Float:originOffset = 0.0)
+int AttachParticle(target, char[] particlename, float fTime = -1.0, float originOffset = 0.0)
 {
 	if (target > 0 && IsValidEntity(target))
 	{
@@ -165,11 +165,11 @@ int AttachParticle(target, String:particlename[], Float:fTime = -1.0, Float:orig
 		
 		if (IsValidEntity(particle))
 		{
-			new Float:pos[3];
+			float pos[3];
 			GetEntPropVector(target, Prop_Send, "m_vecOrigin", pos);
 			pos[2] += originOffset;
 			TeleportEntity(particle, pos, NULL_VECTOR, NULL_VECTOR);
-			decl String:tName[64];
+			char tName[64];
 			Format(tName, sizeof(tName), "Attach%d", target);
 			DispatchKeyValue(target, "targetname", tName);
 			GetEntPropString(target, Prop_Data, "m_iName", tName, sizeof(tName));
@@ -192,13 +192,13 @@ int AttachParticle(target, String:particlename[], Float:fTime = -1.0, Float:orig
 }
 
 //Delete:
-Action:DeleteParticle(Handle:timer, any:Particle)
+Action DeleteParticle(Handle timer, any Particle)
 {
 	//Validate:
 	if(Particle > 0 && IsValidEdict(Particle) &&IsValidEntity(Particle))
 	{
 		//Declare:
-		decl String:Classname[64];
+		char Classname[64];
 		
 		//Initialize:
 		GetEdictClassname(Particle, Classname, sizeof(Classname));
@@ -215,11 +215,11 @@ Action:DeleteParticle(Handle:timer, any:Particle)
 	return Plugin_Stop;
 }
 
-Action:DeleteParticleEntity(iParticle)
+void DeleteParticleEntity(iParticle)
 {
 	if(iParticle > 0 && IsValidEdict(iParticle) && IsValidEntity(iParticle))
 	{
-		decl String:Classname[64];
+		char Classname[64];
 		GetEdictClassname(iParticle, Classname, sizeof(Classname));
 		
 		// Is it a Particle?
@@ -235,12 +235,12 @@ Action:DeleteParticleEntity(iParticle)
 CreateRochelleSmoke(iClient)
 {
 	//Make Smoke Entity
-	decl Float:vec[3];
+	float vec[3];
 	GetClientAbsOrigin(iClient, vec);
 	
 	new smoke = CreateEntityByName("env_smokestack");
 	
-	new String:clientName[128], String:vecString[32];
+	char clientName[128], vecString[32];
 	Format(clientName, sizeof(clientName), "Smoke%i", iClient);
 	Format(vecString, sizeof(vecString), "%f %f %f", vec[0], vec[1], vec[2]);
 	
@@ -349,7 +349,7 @@ TurnOffAndDeleteSmokeStackParticle(iSmokeStackEntity)
 	//PrintToChatAll("TurnOffAndDeleteSmokeStackParticle %i", iSmokeStackEntity);
 	if(iSmokeStackEntity > 0 && IsValidEdict(iSmokeStackEntity) && IsValidEntity(iSmokeStackEntity))
 	{
-		decl String:Classname[99];
+		char Classname[99];
 		GetEdictClassname(iSmokeStackEntity, Classname, sizeof(Classname));
 		//PrintToChatAll("edict classname: %s", Classname);
 		
@@ -364,17 +364,17 @@ TurnOffAndDeleteSmokeStackParticle(iSmokeStackEntity)
 	}
 }
 
-Action:TimerStopSmokeEntity(Handle:timer, any:iSmokeStackEntity)
+Action TimerStopSmokeEntity(Handle timer, any iSmokeStackEntity)
 {
 	TurnOffAndDeleteSmokeStackParticle(iSmokeStackEntity);
 	return Plugin_Stop;
 }
 
-Action:TimerRemoveSmokeEntity(Handle:timer, any:iSmokeStackEntity)
+Action TimerRemoveSmokeEntity(Handle timer, any iSmokeStackEntity)
 {
 	if(iSmokeStackEntity > 0 && IsValidEdict(iSmokeStackEntity) && IsValidEntity(iSmokeStackEntity))
 	{
-		decl String:Classname[99];
+		char Classname[99];
 		GetEdictClassname(iSmokeStackEntity, Classname, sizeof(Classname));
 		//PrintToChatAll("edict classname: %s", Classname);
 		
@@ -634,11 +634,11 @@ DeleteAllMenuParticles(iClient)
 	
 }
 
-CreateSphere(const Float:xyzOrigin[3], Float:fSphereDiameter, iRings, Float:fRingWidth, const int vColor[4], Float:fLifeTime, Float:fZOffset = 50.0)
+CreateSphere(const float xyzOrigin[3], float fSphereDiameter, iRings, float fRingWidth, const int vColor[4], float fLifeTime, float fZOffset = 50.0)
 {
-	decl Float:fRingDiameter;
+	float fRingDiameter;
 	
-	decl Float:xyzSpherePosition[3], Float:xyzRingPosition[3];
+	float xyzSpherePosition[3], xyzRingPosition[3];
 	xyzSpherePosition[0] = xyzOrigin[0];
 	xyzSpherePosition[1] = xyzOrigin[1];
 	// Apply the zoffset to raise it or lower it.

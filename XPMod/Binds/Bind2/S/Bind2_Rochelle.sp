@@ -17,7 +17,7 @@ void Bind2Press_Rochelle(iClient)
                 DeleteParticleEntity(g_iPID_RochelleCharge1[iClient]);
                 DeleteParticleEntity(g_iPID_RochelleCharge2[iClient]);
                 DeleteParticleEntity(g_iPID_RochelleCharge3[iClient]);
-                new Float:vec[3];
+                float vec[3];
                 GetClientAbsOrigin(iClient, vec);
                 EmitSoundToAll(SOUND_NINJA_ACTIVATE, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
 

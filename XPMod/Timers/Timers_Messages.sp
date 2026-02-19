@@ -1,4 +1,4 @@
-Action:PrintUnsetClassesMessage(Handle:timer, any:data)
+Action PrintUnsetClassesMessage(Handle timer, any data)
 {
 	for(new i = 1; i <= MaxClients; i++)
 	{
@@ -30,7 +30,7 @@ Action:PrintUnsetClassesMessage(Handle:timer, any:data)
 	return Plugin_Continue;
 }
 
-Action:PrintXPModCreateAndConfirmMessageToAll(Handle:timer, any:data)
+Action PrintXPModCreateAndConfirmMessageToAll(Handle timer, any data)
 {
 	for(new i=1; i<=MaxClients; i++)
 	{
@@ -43,13 +43,13 @@ Action:PrintXPModCreateAndConfirmMessageToAll(Handle:timer, any:data)
 	return Plugin_Continue;
 }
 
-Action:PrintXPModAdvertisementMessageToAll(Handle:timer, any:data)
+Action PrintXPModAdvertisementMessageToAll(Handle timer, any data)
 {
 	static iAdvertisementIndex;
 	if (++iAdvertisementIndex > 5)
 		iAdvertisementIndex = 0;
 	
-	decl String:strAdvertisementText[256];
+	char strAdvertisementText[256];
 	switch (iAdvertisementIndex)
 	{
 		case 0: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05You can go to \x03xpmod.net\x05 to learn about XPMod abilities.");
@@ -64,7 +64,7 @@ Action:PrintXPModAdvertisementMessageToAll(Handle:timer, any:data)
 	return Plugin_Continue;
 }
 
-Action:TimerLoadTalentsDelay(Handle:timer, any:iClient)
+Action TimerLoadTalentsDelay(Handle timer, any iClient)
 {
 	if(g_bClientLoggedIn[iClient] == true && 
 		talentsJustGiven[iClient] == false && 
