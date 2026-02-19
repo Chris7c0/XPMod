@@ -66,16 +66,6 @@ void TalentsLoad_Coach(int iClient)
 			g_iScreenShakeAmount -= 10;
 			SetSurvivorScreenShakeAmount();
 		}
-		
-		// //Set Convars for all coaches
-		// if(g_iHighestLeadLevel>0)
-		// {
-		// 	/*
-		// 	SetConVarInt(FindConVar("chainsaw_attack_force"), 400 + (g_iHighestLeadLevel * 40));
-		// 	SetConVarInt(FindConVar("chainsaw_damage"), 100 + (g_iHighestLeadLevel * 10));
-		// 	SetConVarFloat(FindConVar("chainsaw_hit_interval"), 0.1 - (float(g_iHighestLeadLevel) * 0.01),false,false);
-		// 	*/
-		// }
 	}
 	
 	if( (g_iClientLevel[iClient] - (g_iClientLevel[iClient] - g_iSkillPoints[iClient])) <= (g_iClientLevel[iClient] - 1))
@@ -131,7 +121,6 @@ void OnGameFrame_Coach(int iClient)
 		{
 			preledgehealth[iClient] = GetClientHealth(iClient);
 			preledgebuffer[iClient] = GetEntDataFloat(iClient,g_iOffset_HealthBuffer);
-			//PrintToChat(iClient, "%d", preledgehealth[iClient]);
 		}
 
 		// Jetpack
@@ -201,10 +190,6 @@ void OnGameFrame_Coach(int iClient)
 
 								RunCheatCommand(iClient, "give", "give pipe_bomb");
 							}
-							else if(StrContains(g_strCoachGrenadeSlot2, "empty", false) != -1)
-							{
-								//PrintToChatAll("The next grenade slot is empty");
-							}
 						}
 						else if(g_iCoachCurrentGrenadeSlot[iClient] == 1)
 						{
@@ -231,10 +216,6 @@ void OnGameFrame_Coach(int iClient)
 								g_iCoachCurrentGrenadeSlot[iClient] = 0;
 
 								RunCheatCommand(iClient, "give", "give pipe_bomb");
-							}
-							else if(StrContains(g_strCoachGrenadeSlot1, "empty", false) != -1)
-							{
-								//PrintToChatAll("The next grenade slot is empty");
 							}
 						}
 					}
@@ -272,7 +253,6 @@ void OnGameFrame_Coach(int iClient)
 							}
 							else if(StrContains(g_strCoachGrenadeSlot2, "empty", false) != -1)
 							{
-								//PrintToChatAll("Grenade Slot 2 is empty");
 								if(StrContains(g_strCoachGrenadeSlot3, "vomitjar", false) != -1)
 								{
 									if (ActiveGrenadeID > 0 && IsValidEntity(ActiveGrenadeID))
@@ -327,7 +307,6 @@ void OnGameFrame_Coach(int iClient)
 							}
 							else if(StrContains(g_strCoachGrenadeSlot3, "empty", false) != -1)
 							{
-								//PrintToChatAll("Grenade Slot 3 is empty");
 								if(StrContains(g_strCoachGrenadeSlot1, "vomitjar", false) != -1)
 								{
 									if (ActiveGrenadeID > 0 && IsValidEntity(ActiveGrenadeID))
@@ -382,7 +361,6 @@ void OnGameFrame_Coach(int iClient)
 							}
 							else if(StrContains(g_strCoachGrenadeSlot1, "empty", false) != -1)
 							{
-								//PrintToChatAll("Grenade Slot 1 is empty");
 								if(StrContains(g_strCoachGrenadeSlot2, "vomitjar", false) != -1)
 								{
 									if (ActiveGrenadeID > 0 && IsValidEntity(ActiveGrenadeID))
@@ -478,7 +456,6 @@ void OnGameFrame_Coach(int iClient)
 					
 					g_iPID_CoachMeleeCharge1[iClient] = CreateParticle("coach_melee_charge_wepbone", 0.0, iClient, ATTACH_WEAPON_BONE);
 					g_iPID_CoachMeleeCharge2[iClient] = CreateParticle("coach_melee_charge_muzbone", 0.0, iClient, ATTACH_MUZZLE_FLASH);
-					//WriteParticle(iClient, "coach_melee_charge_arms", 0.0, 3.0);
 					PrintHintText(iClient, "Melee Attack Charged!");
 					//play sound and particle for charged here
 				}
@@ -611,8 +588,6 @@ void OGFSurvivorReload_Coach(int iClient, const char[] currentweapon, int Active
 		if(g_bCoachShotgunForceReload[iClient] == true)
 		{
 			SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iCoachShotgunSavedAmmo[iClient], true);
-			//PrintToChatAll("g_iOffset_Clip1 %d", g_iOffset_Clip1);
-			//PrintToChatAll("g_iCoachShotgunSavedAmmo %d", g_iCoachShotgunSavedAmmo[iClient]);
 			g_bCoachShotgunForceReload[iClient] = false;
 		}
 		*/
@@ -622,7 +597,6 @@ void OGFSurvivorReload_Coach(int iClient, const char[] currentweapon, int Active
 			if(iAmmo >= ((8 + (g_iSprayLevel[iClient] * 2)) - CurrentClipAmmo))
 			{
 				SetEntData(ActiveWeaponID, g_iOffset_ReloadNumShells, ((g_iSprayLevel[iClient] * 2) + 8) - CurrentClipAmmo, true);
-				//PrintToChatAll("g_iOffset_ReloadNumShells");
 			}
 			else if(iAmmo < ((8 + (g_iSprayLevel[iClient] * 2)) - CurrentClipAmmo))
 			{
@@ -646,7 +620,6 @@ void OGFSurvivorReload_Coach(int iClient, const char[] currentweapon, int Active
 			if(iAmmo >= ((10 + (g_iSprayLevel[iClient] * 2)) - CurrentClipAmmo))
 			{
 				SetEntData(ActiveWeaponID, g_iOffset_ReloadNumShells, ((g_iSprayLevel[iClient] * 2) + 10) - CurrentClipAmmo, true);
-				//PrintToChatAll("g_iOffset_ReloadNumShells");
 			}
 			else if(iAmmo < ((10 + (g_iSprayLevel[iClient] * 2)) - CurrentClipAmmo))
 			{
@@ -655,12 +628,7 @@ void OGFSurvivorReload_Coach(int iClient, const char[] currentweapon, int Active
 		}
 		if((CurrentClipAmmo == (10 + (g_iSprayLevel[iClient] * 2))) || (CurrentClipAmmo == (CurrentClipAmmo + iAmmo)))
 		{
-			
-			// new InReload = GetEntData(iClient, g_bOffset_InReload + 32);
-			// new InReloadWep = GetEntData(ActiveWeaponID, g_bOffset_InReload + 32);
-			// PrintToChatAll("InReload %d", InReload);
-			// PrintToChatAll("InReloadWep %d", InReloadWep);
-			
+						
 			g_bCoachShotgunForceReload[iClient] = false;
 			g_bClientIsReloading[iClient] = false;
 			g_iReloadFrameCounter[iClient] = 0;
@@ -685,7 +653,6 @@ void EventsHurt_AttackerCoach(Handle hEvent, int attacker, int victim)
 	{
 		char weaponclass[32];
 		GetEventString(hEvent,"weapon",weaponclass,32);
-		//PrintToChatAll("\x03-class of gun: \x01%s",weaponclass);
 		if(StrContains(weaponclass,"melee",false) != -1)
 		{
 			if(g_bIsWreckingBallCharged[attacker]==true)
@@ -693,17 +660,13 @@ void EventsHurt_AttackerCoach(Handle hEvent, int attacker, int victim)
 				if(g_iWreckingLevel[attacker] == 5)
 				{
 					g_bWreckingChargeRetrigger[attacker] = true;
-					//PrintToChatAll("Wrecking Ball Retrigger = true");
 				}
 
 				g_bIsWreckingBallCharged[attacker] = false;
 				int hp = GetPlayerHealth(victim);
-				//new dmg = GetEventInt(hEvent,"dmg_health");
-				//PrintToChat(attacker, "predmg = %d", dmg);
 				//dmg = (g_iWreckingLevel[attacker]*200) + (g_iMeleeDamageCounter[attacker]);
 				CreateTimer(0.1, DeleteParticle, g_iPID_CoachMeleeCharge1[attacker], TIMER_FLAG_NO_MAPCHANGE);
 				CreateTimer(0.1, DeleteParticle, g_iPID_CoachMeleeCharge2[attacker], TIMER_FLAG_NO_MAPCHANGE);
-				//PrintToChat(attacker, "\x03[XPMod] \x05You did %d extra CHARGED melee damage", ((g_iWreckingLevel[attacker]*100) + (g_iMeleeDamageCounter[attacker])));
 				float vec[3];
 				GetClientAbsOrigin(attacker, vec);
 				EmitSoundToAll(SOUND_COACH_CHARGE_HIT, attacker, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
@@ -714,36 +677,22 @@ void EventsHurt_AttackerCoach(Handle hEvent, int attacker, int victim)
 			else if(g_iMeleeDamageCounter[attacker]>0)
 			{
 				int hp = GetPlayerHealth(victim);
-				//new dmg = GetEventInt(hEvent,"dmg_health");
-				//PrintToChat(attacker, "predmg = %d", dmg);
-				//dmg = g_iMeleeDamageCounter[attacker];
-				//PrintToChat(attacker, "\x03[XPMod] \x05You did %d extra melee damage", (g_iMeleeDamageCounter[attacker] + g_iCoachRageMeleeDamage[attacker]));
 				SetPlayerHealth(victim, attacker, hp - (g_iMeleeDamageCounter[attacker] + g_iCoachRageMeleeDamage[attacker]));
 			}
 			
 			if(g_bCoachRageIsActive[attacker] == true)
 			{
 				int hp = GetPlayerHealth(victim);
-				//PrintToChat(attacker, "\x03[XPMod] \x05You did %d extra melee damage", g_iCoachRageMeleeDamage[attacker]);
 				SetPlayerHealth(victim, attacker, hp - g_iCoachRageMeleeDamage[attacker]);
 			}
 		}
 		if(g_iSprayLevel[attacker] > 0 && StrContains(weaponclass,"shotgun",false) != -1)
 		{
 			int hp = GetPlayerHealth(victim);
-			//new dmg = GetEventInt(hEvent,"dmg_health");
-			//dmg = dmg + (g_iSprayLevel[attacker] * 2);
-			//PrintToChat(attacker, "your doing %d shotgun damage", (g_iSprayLevel[attacker] * 2));
 			SetPlayerHealth(victim, attacker, hp - CalculateDamageTakenForVictimTalents(victim, (g_iSprayLevel[attacker] * 2), weaponclass));
 		}
 	}
 }
-
-// EventsHurt_VictimCoach(Handle hEvent, attacker, victim)
-// {
-// 	if (IsFakeClient(victim))
-// 		return;
-// }
 
 void EventsDeath_AttackerCoach(Handle hEvent, int iAttacker, int iVictim)
 {
@@ -756,7 +705,6 @@ void EventsDeath_AttackerCoach(Handle hEvent, int iAttacker, int iVictim)
 
 	char weaponclass[32];
 	GetEventString(hEvent,"weapon",weaponclass,32);
-	//PrintToChatAll("\x03-class of gun: \x01%s",weaponclass);
 
 	// Ensure that its a infected for his headshot speed boosts
 	if (GetEventBool(hEvent, "headshot") &&
@@ -926,7 +874,6 @@ void GiveExtraAmmoForCurrentShotgun(int iClient, int iAmmoToGive = 1)
 		return;
 
 	int iBaseMaxClipAmmo = 0;
-	// int iWeaponOffset = 0;
 	if (iWeaponIndex == ITEM_REMINGTON_870 || iWeaponIndex == ITEM_REMINGTON_870_CUSTOM)
 		iBaseMaxClipAmmo = 8;
 	else if (iWeaponIndex == ITEM_BENELLI_M1014 || iWeaponIndex == ITEM_FRANCHI_SPAS_12)

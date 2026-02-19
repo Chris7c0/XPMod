@@ -1,8 +1,6 @@
 //Callback function for SQLGetTopXPModPlayerStatistics
 void SQLGetTopXPModPlayerStatisticsCallback(Handle owner, Handle hQuery, const char[] error, int empty)
 {
-	// PrintToChatAll("SQLGetTopXPModPlayerStatisticsCallback Started.");
-	// PrintToServer("SQLGetTopXPModPlayerStatisticsCallback Started.");
 
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -54,8 +52,6 @@ void SQLGetTopXPModPlayerStatisticsCallback(Handle owner, Handle hQuery, const c
 		}
 	}
 
-	// PrintToChatAll("SQLGetTopXPModPlayerStatisticsCallback Callback Complete.");
-	// PrintToServer("SQLGetTopXPModPlayerStatisticsCallback Callback Complete.");
 }
 
 void SQLGetTopXPModPlayerStatistics()

@@ -57,9 +57,7 @@ int g_iActiveWeaponID[MAXPLAYERS + 1];
 int g_iStashedPrimarySlotWeaponIndex[MAXPLAYERS + 1];
 int g_iCurrentClipAmmo[MAXPLAYERS + 1];
 int g_iOffset_Ammo[MAXPLAYERS + 1];
-// new g_iCurrentMaxClipSize[MAXPLAYERS + 1];
 char g_strCurrentAmmoUpgrade[32];
-//char g_strCheckAmmoUpgrade[32];
 int g_iKitsUsed = 0;
 int g_iSlapRunTimes[MAXPLAYERS + 1];//for the slap timer for each iClient	//Remember to initialize this each time before use!
 float g_fMaxLaserAccuracy = 0.4;	        //max accuracy increase for survivors
@@ -189,9 +187,6 @@ bool g_bIsWreckingBallCharged[MAXPLAYERS + 1];
 bool g_bShowingChargeHealParticle[MAXPLAYERS + 1];
 int g_iHighestLeadLevel;
 int g_iCoachTeamHealthStack;
-//float g_fCoachCIHeadshotSpeed[MAXPLAYERS + 1];
-//float g_fCoachSIHeadshotSpeed[MAXPLAYERS + 1];
-//float g_fCoachRageSpeed[MAXPLAYERS + 1];
 int g_iCoachRageRegenCounter[MAXPLAYERS + 1];
 bool g_bCoachRageIsAvailable[MAXPLAYERS + 1];
 bool g_bCoachRageIsActive[MAXPLAYERS + 1];
@@ -205,7 +200,6 @@ char g_strCoachGrenadeSlot3[32];
 bool g_bCanCoachGrenadeCycle[MAXPLAYERS + 1];
 bool g_bIsCoachGrenadeFireCycling[MAXPLAYERS + 1];
 int g_iCoachShotgunAmmoCounter[MAXPLAYERS + 1];
-//new g_iCoachShotgunIncreasedAmmo[MAXPLAYERS + 1];
 int g_iCoachShotgunSavedAmmo[MAXPLAYERS + 1];
 bool g_bCoachShotgunForceReload[MAXPLAYERS + 1];
 bool g_bIsCoachInGrenadeCycle[MAXPLAYERS + 1];
@@ -240,7 +234,6 @@ int g_iEllisUpgradeAmmoSlot1[MAXPLAYERS + 1];
 int g_iEllisUpgradeAmmoSlot2[MAXPLAYERS + 1];
 char g_strEllisUpgradeTypeSlot1[32];
 char g_strEllisUpgradeTypeSlot2[32];
-//bool g_bEllisHasCycled[MAXPLAYERS + 1];
 bool g_bIsEllisLimitBreaking[MAXPLAYERS + 1];
 bool g_bCanEllisLimitBreak[MAXPLAYERS + 1];
 int g_iLimitBreakWeaponIndex[MAXPLAYERS + 1];
@@ -270,7 +263,6 @@ int g_iNickResurrectUses = 0;
 #define NICK_CLIP_SIZE_MAX_MAGNUM   4
 bool g_bCanNickSecondaryCycle[MAXPLAYERS + 1];
 char g_strNickSecondarySlot1[512];
-// char g_strNickSecondarySlot2[512];
 int g_iNickCurrentSecondarySlot[MAXPLAYERS + 1];
 int g_iNickSecondarySavedClipSlot1[MAXPLAYERS + 1];
 int g_iNickSecondarySavedClipSlot2[MAXPLAYERS + 1];
@@ -281,14 +273,10 @@ int g_iNickSecondarySavedClipSlot2[MAXPLAYERS + 1];
 bool g_bCanNickZoomKit[MAXPLAYERS + 1];
 bool g_bIsNickInSecondaryCycle[MAXPLAYERS + 1];
 bool g_bRamboModeActive[MAXPLAYERS + 1];
-//new g_iNickDesperateMeasuresDeathStack;
-//new g_iNickDesperateMeasuresIncapStack;
 bool g_bDivineInterventionQueued[MAXPLAYERS + 1];
 bool g_bNickAlreadyGivenMoreBind2s = false;
 int g_iNickDesperateMeasuresStack;
 int g_iRamboWeaponID[MAXPLAYERS + 1];
-//g_bIsNickInSecondaryCycle
-//g_bCanNickZoomKit
 //Drug Effects
 int g_iDruggedRuntimesCounter[MAXPLAYERS + 1];
 //Gambling

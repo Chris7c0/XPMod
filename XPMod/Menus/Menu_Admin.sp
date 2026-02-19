@@ -1,11 +1,5 @@
 Action AdminMenuDraw(int iClient)
 {
-	// if (iClient != -99)
-	// {
-	// 	PrintToChat(iClient, "Admin menu is not ready yet. Use sm_admin for now.")
-	// 	return Plugin_Handled
-	// }
-
 	// Reset all selected options so nothing is falsely selected
 	ResetAllAdminMenuSelectionVariables(iClient);
 
@@ -442,9 +436,6 @@ void AddAllDisconnectedPlayersToMenu(Menu menu)
 {
 	for (int i = 0; i < g_iDisconnectedPlayerCnt; i++)
 	{
-		// PrintToServer("%i: %s, %s", i, 
-		// 	g_strDisconnectedConnectedPlayerNames[i], 
-		// 	g_strDisconnectedConnectedPlayerSteamID[i]);
 
 		// Get the in game client id
 		char strParameters[32];
@@ -471,9 +462,6 @@ bool GetTargetIDandSteamIDFromMenuParameters(int iClient, Menu menu, int itemNum
 	GetMenuItem(menu, itemNum, strInfo, sizeof(strInfo));
 	ExplodeString(strInfo, ";", strParameters, sizeof(strParameters), sizeof(strParameters[]));
 
-	// PrintToChat(iClient, "param1: %s", strParameters[0]);
-	// PrintToChat(iClient, "param2: %s", strParameters[1]);
-	// PrintToChat(iClient, "param3: %s", strParameters[2]);
 
 	// This is for if the target is not in the server anymore
 	if (bVerifyTargetEqualsSteamID == false)

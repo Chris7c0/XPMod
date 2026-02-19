@@ -3,7 +3,6 @@ Action Event_PlayerDeath(Handle hEvent, char[] Event_name, bool dontBroadcast)
 	int iVictim = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	int iAttacker = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
 
-	//PrintToChatAll("Event_PlayerDeath: iVictim %N, iAttacker: %N", iVictim, iAttacker);
 
 	// Handle giving out XP for kill rewards
 	EventsDeath_GiveXP(hEvent, iAttacker, iVictim);
@@ -23,7 +22,6 @@ Action Event_PlayerDeath(Handle hEvent, char[] Event_name, bool dontBroadcast)
 		HandleNecroTankerInfectedConsumption(iAttacker, iCIVictim);
 	}
 
-	//PrintToChatAll("iVictim = %N, team = %d, g_iInfectedCharacter = %d", iVictim, g_iClientTeam[iVictim], g_iInfectedCharacter[iVictim]);
 	
 	// If a Survivor, pop up the create XPMod account menu for new user if they die
 	if(RunClientChecks(iVictim) && 
@@ -32,13 +30,6 @@ Action Event_PlayerDeath(Handle hEvent, char[] Event_name, bool dontBroadcast)
 		IsFakeClient(iVictim) == false)
 		XPModMenuDraw(iVictim);
 	
-	// This could be the cause of some issues, but also might be required in some places, put it in the appropriate places.
-	// if (iAttacker < 1)
-	// 	return Plugin_Continue;
-
-
-
-
 	// Infected Attackers ///////////////////////////////////////////////////////////////////////////
 	// EventsDeath_AttackerSmoker(hEvent, iAttacker, iVictim);
 	// EventsDeath_AttackerBoomer(hEvent, iAttacker, iVictim);

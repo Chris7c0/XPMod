@@ -86,7 +86,6 @@ Action TimerWarezStationCheckForSurvivorToService(Handle timer, int iClient)
 			// Valid candidate, now check the distance to the warez station
 			float xyzCandidateLocation[3];
 			GetClientAbsOrigin(iCandidate, xyzCandidateLocation);
-			//PrintToChatAll("%f distance", GetVectorDistance(g_xyzWarezStationLocation[iClient], xyzCandidateLocation, false));
 			if (GetVectorDistance(g_xyzWarezStationLocation[iClient], xyzCandidateLocation, false) > 45.0)
 				continue;
 
@@ -427,11 +426,7 @@ int MakeLightDynamic(int target) //, const float vPos[3])
 	// // Attaching has many issues, lighting glitches, laggy, fps, just dont do it.
 	// // Attach
 	// if( target )
-	// {
 	// 	SetVariantString("!activator");
-	// 	AcceptEntityInput(entity, "SetParent", target);
-	// }
-
 	return entity;
 }
 
@@ -442,7 +437,6 @@ Action TimerRemoveLightDynamicEntity(Handle timer, int iEntity)
 
 	char strEntityClass[32];
 	GetEntityNetClass(iEntity, strEntityClass, 32);
-	// PrintToChatAll("strEntityClass: %s", strEntityClass);
 	if (StrEqual(strEntityClass, "CDynamicLight", true) == false)
 		return Plugin_Stop;
 	

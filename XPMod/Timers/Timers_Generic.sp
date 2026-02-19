@@ -61,18 +61,18 @@ Action Timer2SecondGlobalRepeating(Handle timer, int data)
 			IsPlayerAlive(iClient) == false)
 			continue;
 		
-		if(g_iClientTeam[iClient] == TEAM_SURVIVORS)
-		{
-			switch(g_iChosenSurvivor[iClient])
+			if(g_iClientTeam[iClient] == TEAM_SURVIVORS)
 			{
+				switch(g_iChosenSurvivor[iClient])
+				{
 				// case BILL:		Handle2SecondClientTimers_Bill(iClient);
-				case ROCHELLE:	Handle2SecondClientTimers_Rochelle(iClient);
-				case COACH:		Handle2SecondClientTimers_Coach(iClient);
+					case ROCHELLE:	Handle2SecondClientTimers_Rochelle(iClient);
+					case COACH:		Handle2SecondClientTimers_Coach(iClient);
 				// case ELLIS:		Handle2SecondClientTimers_Ellis(iClient);
 				// case NICK:		Handle2SecondClientTimers_Nick(iClient);
 				// case LOUIS:		Handle2SecondClientTimers_Louis(iClient);
+				}
 			}
-		}
 		// else if(g_iClientTeam[iClient] == TEAM_INFECTED)
 		// {
 		// 	switch(g_iInfectedCharacter[iClient])
@@ -85,7 +85,7 @@ Action Timer2SecondGlobalRepeating(Handle timer, int data)
 		// 		case CHARGER:	Handle2SecondClientTimers_Charger(iClient);
 		// 	}
 		// }
-	}
+		}
 
 	return Plugin_Continue;
 }
@@ -115,20 +115,6 @@ Action ResetBind1AttemptCooldown(Handle timer, int iClient)
 	return Plugin_Handled;
 }
 
-// Action ResetBind2AttemptCooldown(Handle timer, int iClient)
-// {
-// 	g_bBind2InCooldown[iClient] = false;
-// 	return Plugin_Handled;
-// }
-
-
-/*Action TimerResetCommonLimit(Handle timer, int iClient)
-{
-	SetConVarInt(FindConVar("z_common_limit"), 30);
-	
-	return Plugin_Stop;
-}*/
-
 Action TimerResetZombieDamage(Handle timer, int iClient)
 {
 	SetConVarInt(FindConVar("z_common_limit"), 30);
@@ -142,14 +128,11 @@ Action TimerUnfreezeNotification(Handle timer, int data)
 	if(g_iUnfreezeNotifyRunTimes-- > 1)
 	{
 		PrintHintTextToAll("Survivors will be unfrozen in %i seconds", g_iUnfreezeNotifyRunTimes);
-		//LogError("TimerUnfreezeNotification Continue, Handle %i", g_hTimer_FreezeCountdown);
 		return Plugin_Continue;
 	}
 
-	//LogError("TimerUnfreezeNotification Setting g_hTimer_FreezeCountdown to null, Handle %i", g_hTimer_FreezeCountdown);
 	g_hTimer_FreezeCountdown = null;
-	//LogError("TimerUnfreezeNotification Plugin_Stop, Handle %i", g_hTimer_FreezeCountdown);
-	
+
 	return Plugin_Stop;
 }
 
@@ -234,7 +217,6 @@ Action FreezeColor(Handle timer, int iClient)
 
 Action TimerUnfreeze(Handle timer, int data)
 {
-	// PrintToServer("**************************** UNFREEZING GAME");
 	g_bGameFrozen = false;
 	
 	SetConVarInt(FindConVar("sb_stop"), 0);	//Turn the bots back on

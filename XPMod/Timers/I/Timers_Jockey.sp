@@ -39,7 +39,6 @@ Action TimerSetJockeyCooldown(Handle timer, int iClient)
 		g_bIsServingHotMeal[iClient] == true)
 		return Plugin_Stop;
 		
-	//PrintToChatAll("\x03 jockey cooldown");
 	
 	// Get the ability ent id
 	int iEntid = GetEntDataEnt2(iClient,g_iOffset_CustomAbility);

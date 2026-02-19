@@ -62,17 +62,6 @@ void HandleJockeyPiss(int iClient)
 
 	HandleSurvivorInJockeyPiss(g_iJockeyVictim[iClient]);
 
-	// new iRandomTankSpawn = GetRandomInt(1, 100);
-	// if (iRandomTankSpawn <= JOCKEY_PISS_SPAWN_TANK_CHANCE && 
-	//     g_iErraticLevel[iClient] >= iRandomTankSpawn)
-	// {
-	//     g_bTankStartingHealthXPModSpawn = true;
-	//     RunCheatCommand(iClient, "z_spawn_old", "z_spawn_old tank auto");
-
-	//     PrintToChatAll("\x03[XPMod] \x04Beware, a tank smells %N's jockey piss", iClient);
-	//     PrintHintText(iClient, "You attracted a tank with your piss!");
-	// }
-
 	CreateTimer(30.0, TimerReEnableJockeyPee, iClient, TIMER_FLAG_NO_MAPCHANGE);
 }
 
@@ -178,7 +167,6 @@ void ConvertCINearJockeyPissVictim(int iClient)
 	char strClasses[1][32] = {"infected"};
 	for (int iIndex=0; iIndex < GetAllEntitiesInRadiusOfEntity(iClient, JOCKEY_PISS_CONVERSION_RADIUS, iAllVaiableEntities, strClasses, sizeof(strClasses)); iIndex++)
 	{
-		//PrintToChatAll("ConvertCINearJockeyPissVictim: CI entity i: %i", iAllVaiableEntities[iIndex]);
 
 		if (IsCommonInfectedAlive(iAllVaiableEntities[iIndex]) == false)
 			continue
@@ -195,10 +183,5 @@ void ConvertCINearJockeyPissVictim(int iClient)
 
 		// Spawn an Enhanced CI in the location of the killed CI's place
 		SpawnCIAroundLocation(xyzEntityLocation, 1, UNCOMMON_CI_CEDA, CI_REALLY_BIG, ENHANCED_CI_TYPE_RANDOM, false);
-		// switch (GetRandomInt(1,2))
-		// {
-		// 	case 1: SpawnCIAroundLocation(xyzEntityLocation, 1, UNCOMMON_CI_RANDOM, CI_REALLY_SMALL, ENHANCED_CI_TYPE_RANDOM, false);
-		// 	case 2: SpawnCIAroundLocation(xyzEntityLocation, 1, UNCOMMON_CI_RANDOM, CI_REALLY_BIG, ENHANCED_CI_TYPE_RANDOM, false);
-		// }
 	}
 }

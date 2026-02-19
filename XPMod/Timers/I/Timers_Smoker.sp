@@ -1,23 +1,5 @@
 //Smoker
 
-// Action TimerStopTarFingersInfection(Handle timer, int iClient)
-// {
-// 	g_bIsTarFingerVictim[iClient] = false;
-
-// 	return Plugin_Stop;
-// }
-
-
-// Action TimerResetTarFingerVictimBlindAmount(Handle timer, int iClient)
-// {
-// 	g_iTarFingerVictimBlindAmount[iClient] = 0;
-// 	// PrintToChat(iClient, "ResetTarFingerVictimBlindAmount");
-
-// 	g_hTimer_ResetTarFingerVictimBlindAmount[iClient] = null;
-// 	return Plugin_Stop;
-// }
-
-
 Action TimerRemoveSmokerDoppelganger(Handle timer, int iEntity)
 {
 	KillEntitySafely(iEntity);
@@ -67,7 +49,6 @@ Action TimerCheckTongueDistance(Handle timer, int Smoker)
 	GetClientAbsOrigin(Smoker,SmokerPosition);
 	GetClientAbsOrigin(Victim,VictimPosition);
 	float distance = RoundToNearest(GetVectorDistance(SmokerPosition, VictimPosition));
-	//PrintToChatAll("Distance: %i", distance);
 	if (distance > (g_iMaxTongueLength * 27))
 	{
 		SlapPlayer(Smoker, 0, false);
@@ -139,7 +120,6 @@ Action CheckIfStuck(Handle timer, int iClient)
 	float vorigin[3];
 	GetClientAbsOrigin(iClient, vorigin);
 
-	//PrintToChat(iClient, "vorigin = %f, %f, %f		endpos = %f, %f, %f", vorigin[0], vorigin[1], vorigin[2], g_fTeleportEndPositionX[iClient], g_fTeleportEndPositionY[iClient], g_fTeleportEndPositionZ[iClient]);
 	if (vorigin[0] == g_fTeleportEndPositionX[iClient] && 
 		vorigin[1] == g_fTeleportEndPositionY[iClient] &&
 		vorigin[2] == g_fTeleportEndPositionZ[iClient])

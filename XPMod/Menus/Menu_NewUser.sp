@@ -222,31 +222,6 @@ void BanConfirmMenuHandler(Menu menu, MenuAction action, int iClient, int itemNu
 			{
 				ClosePanel(iClient);
 			}
-
-			// case 2: // Ban for 1 Day
-			// {
-			// 	ClosePanel(iClient);
-			// 	// Add user to the bans table in the xpmod database
-			// 	SQLAddBannedUserToDatabaseUsingClientID(iClient, 86400, "XPMod Banned for 1 Day");
-			// 	// Ban the user, regardless of being able to add to the database or not
-			// 	BanClient(iClient, 1440, BANFLAG_AUTHID, "XPMod Banned for 1 Day", "You are banned for 1 day. Thanks, have a nice day");
-			// }
-			// case 3: // Ban for 1 Week
-			// {
-			// 	ClosePanel(iClient);
-			// 	// Add user to the bans table in the xpmod database
-			// 	SQLAddBannedUserToDatabaseUsingClientID(iClient, 604800, "XPMod Banned for 1 Week");
-			// 	// Ban the user, regardless of being able to add to the database or not
-			// 	BanClient(iClient, 10080, BANFLAG_AUTHID, "XPMod Banned for 1 Week", "You are banned for 1 week. Thanks, have a nice day");
-			// }
-			// case 4: // Ban for 1 Month
-			// {
-			// 	ClosePanel(iClient);
-			// 	// Add user to the bans table in the xpmod database
-			// 	SQLAddBannedUserToDatabaseUsingClientID(iClient, 2592000, "XPMod Banned for 1 Month");
-			// 	// Ban the user, regardless of being able to add to the database or not
-			// 	BanClient(iClient, 43200, BANFLAG_AUTHID, "XPMod Banned for 1 Month", "You are banned for 1 month. Thanks, have a nice day");
-			// }
 		}
 	}
 }

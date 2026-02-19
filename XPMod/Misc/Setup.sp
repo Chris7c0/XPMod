@@ -133,7 +133,7 @@ void SetupSDKCalls()
 		PrepSDKCall_AddParameter(SDKType_CBasePlayer, SDKPass_Pointer);
 		PrepSDKCall_AddParameter(SDKType_Float, SDKPass_Plain);
 		g_hSDK_Fling = EndPrepSDKCall();
-
+		
 		//
 		// StartPrepSDKCall(SDKCall_Player);
 		// PrepSDKCall_SetFromConf(hGameConfigFile, SDKConf_Signature, "SetClass");
@@ -159,107 +159,6 @@ void SetupSDKCalls()
 	else
 		SetFailState("[XPMod] Install the required gamedata file to addons/sourcemod/gamedata/xpmdata.txt");
 }
-
-// Replaced this function with checking m_WorldMaxs as well as TR_PointOutsideWorld + small offset 
-// SetMapsMaxTeleportHeight()
-// {
-// 	//Get current map name
-// 	GetCurrentMap(g_strCurrentMap,32);
-	
-// 	//Set max teleport height so they dont teleport into the sky
-// 	if(StrEqual(g_strCurrentMap, "c1m1_hotel") == true)
-// 		g_fMapsMaxTeleportHeight = 3100.0;
-// 	else if(StrEqual(g_strCurrentMap, "c1m2_streets") == true)
-// 		g_fMapsMaxTeleportHeight = 2000.0;
-// 	else if(StrEqual(g_strCurrentMap, "c1m3_mall") == true)
-// 		g_fMapsMaxTeleportHeight = 40000.0;
-// 	else if(StrEqual(g_strCurrentMap, "c1m4_atrium") == true)
-// 		g_fMapsMaxTeleportHeight = 1100.0;
-// 	else if(StrEqual(g_strCurrentMap, "c2m1_highway") == true)
-// 		g_fMapsMaxTeleportHeight = 40000.0;
-// 	else if(StrEqual(g_strCurrentMap, "c2m2_fairgrounds") == true)
-// 		g_fMapsMaxTeleportHeight = 750.0;
-// 	else if(StrEqual(g_strCurrentMap, "c2m3_coaster") == true)
-// 		g_fMapsMaxTeleportHeight = 40000.0;
-// 	else if(StrEqual(g_strCurrentMap, "c2m4_barns") == true)
-// 		g_fMapsMaxTeleportHeight = 40000.0;
-// 	else if(StrEqual(g_strCurrentMap, "c2m5_concert") == true)
-// 		g_fMapsMaxTeleportHeight = 40000.0;
-// 	else if(StrEqual(g_strCurrentMap, "c3m1_plankcountry") == true)
-// 		g_fMapsMaxTeleportHeight = 40000.0;
-// 	else if(StrEqual(g_strCurrentMap, "c3m2_swamp") == true)
-// 		g_fMapsMaxTeleportHeight = 40000.0;
-// 	else if(StrEqual(g_strCurrentMap, "c3m3_shantytown") == true)
-// 		g_fMapsMaxTeleportHeight = 1020.0;
-// 	else if(StrEqual(g_strCurrentMap, "c3m4_plantation") == true)
-// 		g_fMapsMaxTeleportHeight = 1145.0;
-// 	else if(StrEqual(g_strCurrentMap, "c4m1_milltown_a") == true)
-// 		g_fMapsMaxTeleportHeight = 40000.0;
-// 	else if(StrEqual(g_strCurrentMap, "c4m2_sugarmill_a") == true)
-// 		g_fMapsMaxTeleportHeight = 40000.0;
-// 	else if(StrEqual(g_strCurrentMap, "c4m3_sugartown_b") == true)
-// 		g_fMapsMaxTeleportHeight = 40000.0;
-// 	else if(StrEqual(g_strCurrentMap, "c4m4_milltown_b") == true)
-// 		g_fMapsMaxTeleportHeight = 40000.0;
-// 	else if(StrEqual(g_strCurrentMap, "c4m5_milltown_escape") == true)
-// 		g_fMapsMaxTeleportHeight = 40000.0;
-// 	else if(StrEqual(g_strCurrentMap, "c5m1_waterfront") == true)
-// 		g_fMapsMaxTeleportHeight = 40000.0;
-// 	else if(StrEqual(g_strCurrentMap, "c5m2_park") == true)
-// 		g_fMapsMaxTeleportHeight = 40000.0;
-// 	else if(StrEqual(g_strCurrentMap, "c5m3_cemetery") == true)
-// 		g_fMapsMaxTeleportHeight = 40000.0;
-// 	else if(StrEqual(g_strCurrentMap, "c5m4_quarter") == true)
-// 		g_fMapsMaxTeleportHeight = 40000.0;
-// 	else if(StrEqual(g_strCurrentMap, "c5m5_bridge") == true)
-// 		g_fMapsMaxTeleportHeight = 3065.0;
-// 	else if(StrEqual(g_strCurrentMap, "c6m1_riverbank") == true)
-// 		g_fMapsMaxTeleportHeight = 3075.0;
-// 	else if(StrEqual(g_strCurrentMap, "c6m2_bedlam") == true)
-// 		g_fMapsMaxTeleportHeight = 745.0;
-// 	else if(StrEqual(g_strCurrentMap, "c6m3_port") == true)
-// 		g_fMapsMaxTeleportHeight = 40000.0;
-// 	else if(StrEqual(g_strCurrentMap, "c7m1_docks") == true)
-// 		g_fMapsMaxTeleportHeight = 1018.0;
-// 	else if(StrEqual(g_strCurrentMap, "c7m2_barge") == true)
-// 		g_fMapsMaxTeleportHeight = 1270.0;
-// 	else if(StrEqual(g_strCurrentMap, "c7m3_port") == true)
-// 		g_fMapsMaxTeleportHeight = 40000.0;
-// 	else if(StrEqual(g_strCurrentMap, "c8m1_apartment") == true)
-// 		g_fMapsMaxTeleportHeight = 40000.0;
-// 	else if(StrEqual(g_strCurrentMap, "c8m2_subway") == true)
-// 		g_fMapsMaxTeleportHeight = 40000.0;
-// 	else if(StrEqual(g_strCurrentMap, "c8m3_sewers") == true)
-// 		g_fMapsMaxTeleportHeight = 40000.0;
-// 	else if(StrEqual(g_strCurrentMap, "c8m4_interior") == true)
-// 		g_fMapsMaxTeleportHeight = 7555.0;
-// 	else if(StrEqual(g_strCurrentMap, "c8m5_rooftop") == true)
-// 		g_fMapsMaxTeleportHeight = 8080.0;
-// 	else if(StrEqual(g_strCurrentMap, "c13m1_alpinecreek") == true)
-// 		g_fMapsMaxTeleportHeight = 40000.0;
-// 	else if(StrEqual(g_strCurrentMap, "c13m2_southpinestream") == true)
-// 		g_fMapsMaxTeleportHeight = 2660.0;
-// 	else if(StrEqual(g_strCurrentMap, "c13m3_memorialbridge") == true)
-// 		g_fMapsMaxTeleportHeight = 2350.0;
-// 	else if(StrEqual(g_strCurrentMap, "c13m4_cutthroatcreek") == true)
-// 		g_fMapsMaxTeleportHeight = 1390.0;
-// 	else
-// 		g_fMapsMaxTeleportHeight = 9999999.0;
-	
-// 	//Set Rochelle's break from Smoker's tongue vector
-// 	if(StrEqual(g_strCurrentMap, "c7m2_barge") == true)
-// 	{
-// 		g_xyzBreakFromSmokerVector[0] = 2140.0;
-// 		g_xyzBreakFromSmokerVector[1] = 1412.0;
-// 		g_xyzBreakFromSmokerVector[2] = 80.0;
-// 	}
-// 	else
-// 	{
-// 		g_xyzBreakFromSmokerVector[0] = 0.0;
-// 		g_xyzBreakFromSmokerVector[1] = 0.0;
-// 		g_xyzBreakFromSmokerVector[2] = 0.0;
-// 	}
-// }
 
 void SetupInitialVariableValues()
 {

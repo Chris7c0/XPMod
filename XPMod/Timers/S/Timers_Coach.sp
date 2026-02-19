@@ -62,16 +62,10 @@ Action TimerGiveExplosive(Handle timer, int iClient)
 
 	
 	g_bExplosivesJustGiven[iClient] = false;
-	//CreateTimer(0.1, TimerGiveExplosive, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	
 	return Plugin_Stop;
 }
 
-// Action Timer_ResetExplosiveJustGiven(Handle timer, int iClient)
-// {
-// 	g_bExplosivesJustGiven[iClient] = true;
-// 	return Plugin_Stop;
-// }
 
 Action TimerCoachCIHeadshotSpeedReset(Handle timer, int iClient)
 {
@@ -190,7 +184,6 @@ Action TimerCoachRageRegenTick(Handle timer, int iClient)
 			SetPlayerHealth(iClient, -1, maxHP);
 	}
 	g_iCoachRageRegenCounter[iClient]++;
-	//PrintToChatAll("Rage Regen Counter = %d", g_iCoachRageRegenCounter[iClient]);
 	CreateTimer(1.0, TimerCoachRageRegenTick, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	return Plugin_Stop;
 }
@@ -223,7 +216,6 @@ Action TimerCoachAssignGrenades(Handle timer, int iClient)
 	AssignGrenadeSlot3 = GetRandomInt(0,2);
 	if(!StrContains(g_strCoachGrenadeSlot1, "vomitjar", false) && !StrContains(g_strCoachGrenadeSlot1, "molotov", false) && !StrContains(g_strCoachGrenadeSlot1, "pipe_bomb", false))
 	{
-		//PrintToChatAll("Slot 1 did not contain a grenade");
 		switch (AssignGrenadeSlot1)
 		{
 			case 0:
@@ -231,84 +223,69 @@ Action TimerCoachAssignGrenades(Handle timer, int iClient)
 
 				RunCheatCommand(iClient, "give", "give vomitjar");
 				g_strCoachGrenadeSlot1 = "weapon_vomitjar";
-				//PrintToChatAll("Slot 1 Assigned = %s", g_strCoachGrenadeSlot1);
 			}
 			case 1:
 			{
 
 				RunCheatCommand(iClient, "give", "give molotov");
 				g_strCoachGrenadeSlot1 = "weapon_molotov";
-				//PrintToChatAll("Slot 1 Assigned = %s", g_strCoachGrenadeSlot1);
 			}
 			case 2:
 			{
 
 				RunCheatCommand(iClient, "give", "give pipe_bomb");
 				g_strCoachGrenadeSlot1 = "weapon_pipe_bomb";
-				//PrintToChatAll("Slot 1 Assigned = %s", g_strCoachGrenadeSlot1);
 			}
 		}
 	}
 	if(g_iStrongLevel[iClient] == 2 || g_iStrongLevel[iClient] == 3)
 	{
-		//PrintToChatAll("Slot 2 was assigned a grenade");
 		switch (AssignGrenadeSlot2)
 		{
 			case 0:
 			{
 				g_strCoachGrenadeSlot2 = "weapon_vomitjar";
-				//PrintToChatAll("Slot 2 Assigned = %s", g_strCoachGrenadeSlot2);
 			}
 			case 1:
 			{
 				g_strCoachGrenadeSlot2 = "weapon_molotov";
-				//PrintToChatAll("Slot 2 Assigned = %s", g_strCoachGrenadeSlot2);
 			}
 			case 2:
 			{
 				g_strCoachGrenadeSlot2 = "weapon_pipe_bomb";
-				//PrintToChatAll("Slot 2 Assigned = %s", g_strCoachGrenadeSlot2);
 			}
 		}
 	}
 	else if(g_iStrongLevel[iClient] == 4 || g_iStrongLevel[iClient] == 5)
 	{
-		//PrintToChatAll("Slot 2 was assigned a grenade");
 		switch (AssignGrenadeSlot2)
 		{
 			case 0:
 			{
 				g_strCoachGrenadeSlot2 = "weapon_vomitjar";
-				//PrintToChatAll("Slot 2 Assigned = %s", g_strCoachGrenadeSlot2);
 			}
 			case 1:
 			{
 				g_strCoachGrenadeSlot2 = "weapon_molotov";
-				//PrintToChatAll("Slot 2 Assigned = %s", g_strCoachGrenadeSlot2);
 			}
 			case 2:
 			{
 				g_strCoachGrenadeSlot2 = "weapon_pipe_bomb";
-				//PrintToChatAll("Slot 2 Assigned = %s", g_strCoachGrenadeSlot2);
 			}
 		}
-		//PrintToChatAll("Slot 3 was assigned a grenade");
 		switch (AssignGrenadeSlot3)
 		{
 			case 0:
 			{
 				g_strCoachGrenadeSlot3 = "weapon_vomitjar";
-				//PrintToChatAll("Slot 3 Assigned = %s", g_strCoachGrenadeSlot3);
 			}
 			case 1:
 			{
 				g_strCoachGrenadeSlot3 = "weapon_molotov";
-				//PrintToChatAll("Slot 3 Assigned = %s", g_strCoachGrenadeSlot3);
 			}
 			case 2:
 			{
 				g_strCoachGrenadeSlot3 = "weapon_pipe_bomb";
-				//PrintToChatAll("Slot 3 Assigned = %s", g_strCoachGrenadeSlot3);
 			}
 		}
 	}

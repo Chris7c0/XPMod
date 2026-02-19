@@ -120,8 +120,6 @@ void EventsHurt_AttackerHunter(Handle hEvent, int attacker, int victim)
 	if(g_iBloodLustLevel[attacker] > 0)
 	{
 		int dmgtype = GetEventInt(hEvent, "type");
-		//char weapon[20];
-		//GetEventString(hEvent,"weapon", weapon,20);
 		if(dmgtype == 128 &&  StrEqual(weapon,"hunter_claw") == true)
 		{			
 			if (g_iBloodLustStage[attacker] > 0)
@@ -153,17 +151,6 @@ void EventsHurt_VictimHunter(Handle hEvent, int attacker, int victim)
 		SetClientRenderAndGlowColor(victim);
 	}
 }
-
-// EventsDeath_AttackerHunter(Handle hEvent, iAttacker, iVictim)
-// {
-// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
-// }
-
-// EventsDeath_VictimHunter(Handle hEvent, iAttacker, iVictim)
-// {
-// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
-// }
-
 
 void Event_HunterPounceStart_Hunter(int iAttacker, int iVictim, int iDistance)
 {
@@ -214,11 +201,6 @@ void Event_HunterPounceStart_Hunter(int iAttacker, int iVictim, int iDistance)
 	int iAmount = RoundToCeil(fNormalizedDistance * 100.0 * BLOOD_LUST_METER_GAINED_VISIBILITY_SCALE_FACTOR)
 	BuildBloodLustMeter(iAttacker, iAmount > 100 ? 100 : iAmount);
 }
-
-// void Event_HunterPounceStopped_Hunter(int iAttacker, int iVictim, int iDistance)
-// {
-
-// }
 
 void Event_AbilityUse_Hunter(int iClient, Handle hEvent)
 {
@@ -274,7 +256,6 @@ void HandleHunterLunging(int iClient)
 		g_iHunterLungeState[iClient] = HUNTER_LUNGE_STATE_NONE;
 		SetClientSpeed(iClient);
 
-		// PrintToChatAll("%N: g_bHunterIsLunging = false", iClient);
 	}
 
 	if(g_bHunterIsLunging[iClient] == false)
@@ -315,7 +296,6 @@ void HandleHunterLunging(int iClient)
 		if (velocity[1] < -1.0 * HUNTER_LUNGE_VELOCITY_SPEED_CAP_DASH) velocity[1] = -1.0 * HUNTER_LUNGE_VELOCITY_SPEED_CAP_DASH;
 		TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, velocity);
 
-		// PrintToChat(iClient, "DASH vel %0.1f, %0.1f, %0.1f", velocity[0], velocity[1], velocity[2]);
 	}
 	// Float Lunge (flying squirrel)
 	else if(iButtons & IN_JUMP)
@@ -335,7 +315,6 @@ void HandleHunterLunging(int iClient)
 			velocity[2] += HUNTER_LUNGE_VELOCITY_ADDITION_FLOAT_SPEED;
 		TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, velocity);
 
-		// PrintToChat(iClient, "FLOAT vel %0.1f, %0.1f, %0.1f", velocity[0], velocity[1], velocity[2]);
 	}
 	// Base Lunge
 	else
@@ -415,7 +394,6 @@ void HandleHunterCloaking(int iClient)
 
 void HunterDismount(int iClient)
 {
-	// PrintToChatAll("Hunter attempting dismount...");
 	SDKCall(g_hSDK_OnPounceEnd,iClient);
 	SetClientSpeed(g_iHunterShreddingVictim[iClient]);
 	//ResetSurvivorSpeed(g_iHunterShreddingVictim[iClient]);
@@ -496,16 +474,6 @@ void PrintBloodLustMeter(int iClient)
 
 void HandleHunterVisibleBloodLustMeterGain(int iClient)
 {
-	// PrintToChatAll("TEST1 %i: %i", RoundToFloor(GetGameTime()), RoundToFloor(GetGameTime()) % 3);
-
-	// // Only run this every X seconds
-	// // 5 will update every 5 second
-	// // Needs to be ran only one time though
-	// if ((RoundToFloor(GetGameTime()) % 3) != 0)
-	// 	return;
-
-	// PrintToChatAll("TEST2");
-
 
 	if (g_bIsCloakedHunter[iClient] == false ||  // Ensure the hunter is cloaked
 		g_iInfectedCharacter[iClient] != HUNTER || 
@@ -549,11 +517,9 @@ void HandleHunterVisibleBloodLustMeterGain(int iClient)
 				fDistanceNormalized = 1.0 - (fDistance / 1500.0);
 
 				int iAmount = RoundToNearest(fDistanceNormalized * BLOOD_LUST_METER_GAINED_VISIBILITY_SCALE_FACTOR);
-				//PrintToChat(iClient, "Distance: %f, Normalized: %f, iAmount: %i", fDistance, fDistanceNormalized, iAmount);
 				BuildBloodLustMeter(iClient, iAmount);
 
 			}
-			// PrintToChatAll("VISIBLE %N %f", iTarget, fDistance);
 		}
 			
 	}

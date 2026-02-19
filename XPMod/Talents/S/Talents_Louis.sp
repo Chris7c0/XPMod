@@ -40,11 +40,6 @@ void SetPlayerTalentMaxHealth_Louis(int iClient, bool bFillInHealthGap = true)
 }
 
 
-// OnGameFrame_Louis(iClient)
-// {
-	
-// }
-
 bool OnPlayerRunCmd_Louis(int iClient, int &iButtons)
 {
 	// Louis abilities
@@ -128,7 +123,6 @@ bool OnPlayerRunCmd_Louis(int iClient, int &iButtons)
 		int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 		if (RunEntityChecks(iActiveWeaponID) && iActiveWeaponID == GetPlayerWeaponSlot(iClient, 4))
 		{
-			// PrintToChatAll("OnPlayerRunCmd_Ellis: adrenaline temp: %i, health: %i", GetSurvivorTempHealth(iClient), GetPlayerHealth(iClient));
 			g_iTempHealthBeforeUsingHealthBoostSlotItem[iClient] = GetSurvivorTempHealth(iClient);
 		}
 	}
@@ -154,7 +148,6 @@ void OGFSurvivorReload_Louis(int iClient, const char[] currentweapon, int Active
 
 	if (g_iLouisTalent2Level[iClient] > 0)
 	{
-		//PrintToChat(iClient, "LOUIS currentweapon: %s, CurrentClipAmmo: %i", currentweapon, CurrentClipAmmo);
 		if (CurrentClipAmmo > 0 &&
 			(StrContains(currentweapon, "weapon_smg", false) != -1) )
 		{
@@ -196,7 +189,6 @@ void EventsHurt_AttackerLouis(Handle hEvent, int iAttacker, int iVictim)
 	{
 		char weaponclass[32];
 		GetEventString(hEvent,"weapon",weaponclass,32);
-		//PrintToChatAll("HURT \x03-class of gun: \x01%s, hitgroup: %i, dmg = %i",weaponclass, GetEventInt(hEvent, "hitgroup"), GetEventInt(hEvent,"dmg_health"));
 		// Check for SMGs or Pistols then give more damage
 		if (StrContains(weaponclass,"SMG",false) != -1 || 
 			StrContains(weaponclass,"SubMachine",false) != -1 || 
@@ -204,7 +196,6 @@ void EventsHurt_AttackerLouis(Handle hEvent, int iAttacker, int iVictim)
 			StrEqual(weaponclass,"dual_pistols",false) == true)
 		{
 			int iVictimHealth = GetPlayerHealth(iVictim);
-			// PrintToChatAll("Louis iVictim %N START HP: %i", iVictim, iVictimHealth);
 
 			// Store if its a headshot and pistol for use below
 			bool bIsHeadshot = GetEventInt(hEvent, "hitgroup") == HITGROUP_HEAD;
@@ -233,19 +224,11 @@ void EventsHurt_AttackerLouis(Handle hEvent, int iAttacker, int iVictim)
 			// Apply the new damage
 			SetPlayerHealth(iVictim, iAttacker, iVictimHealth - iNewDamageAmount);
 
-			// PrintToChat(iAttacker, "\x03Original Dmg: %i, New Add Dmg: %i ", iDmgHealth, iNewDamageAmount);
 
-			// new iVictimHealth2 = GetPlayerHealth(iVictim);
-			// PrintToChatAll("Louis iVictim %N END HP: %i", iVictim, iVictimHealth2);
 		}
 	}
 }
 
-// EventsHurt_VictimLouis(Handle hEvent, iAttacker, iVictim)
-// {
-// 	if (IsFakeClient(iVictim))
-// 		return;
-// }
 
 void EventsDeath_AttackerLouis(Handle hEvent, int iAttacker, int iVictim)
 {
@@ -260,7 +243,6 @@ void EventsDeath_AttackerLouis(Handle hEvent, int iAttacker, int iVictim)
 	{
 		char weaponclass[32];
 		GetEventString(hEvent,"weapon",weaponclass,32);
-		// PrintToChatAll("DEATH \x03-class of gun: \x01%s",weaponclass);
 
 		// Check for headshot and the SMGs or Pistols then give appropriate boosts
 		if (GetEventBool(hEvent, "headshot") &&
@@ -381,13 +363,6 @@ void EventsDeath_AttackerLouis(Handle hEvent, int iAttacker, int iVictim)
 	}
 }
 
-// EventsDeath_VictimLouis(Handle hEvent, iAttacker, iVictim)
-// {
-// 	if (g_iClientTeam[iVictim] != TEAM_SURVIVORS)
-// 		return;
-// 	SuppressNeverUsedWarning(hEvent, iAttacker);
-// }
-
 void EventsPillsUsed_Louis(int iClient)
 {
 	if (g_iChosenSurvivor[iClient] != LOUIS || 
@@ -395,7 +370,6 @@ void EventsPillsUsed_Louis(int iClient)
 		g_bTalentsConfirmed[iClient] == false)
 		return;
 
-	// PrintToChat(iClient, "Pills Used: %i", GetPlayerWeaponSlot(iClient, 4));
 	
 	// Add to their pills used stack then reduce by 1 in 60 seconds
 	// This controls the damage and speed of Louis
@@ -441,7 +415,6 @@ void EventsItemPickUp_Louis(int iClient, const char[] strWeaponClass)
 	if (g_iChosenSurvivor[iClient] != LOUIS || g_bTalentsConfirmed[iClient] == false)
 		return;
 
-	//PrintToChat(iClient, "LOUIS ITEM PICKUP %s", strWeaponClass);
 
 	if (g_iLouisTalent2Level[iClient] > 0)
 	{
@@ -505,16 +478,8 @@ void EventsPlayerUse_Louis(int iClient, int iTargetID)
 	if (g_iChosenSurvivor[iClient] != LOUIS || g_bTalentsConfirmed[iClient] == false)
 		return;
 
-	// PrintToChat(iClient, "iTargetID: %i", iTargetID);
-	// PrintToChat(iClient, "Pills Slot: %i", GetPlayerWeaponSlot(iClient, 4));
 
 	int iSlotItemID = GetPlayerWeaponSlot(iClient, 4);
-	// char strSlotItemClassName[35];
-	// if (IsValidEntity(iSlotItemID))
-	// 	GetEdictClassname(iSlotItemID, strSlotItemClassName, sizeof(strSlotItemClassName));
-	// else
-	// 	strSlotItemClassName = NULL_STRING;
-	// PrintToChat(iClient, "strSlotItemClassName: %s" , strSlotItemClassName);
 
 	if (g_iLouisTalent2Level[iClient] > 0 && g_bLouisLaserModeActivated[iClient] == false)
 	 	RunCheatCommand(iClient, "upgrade_remove", "upgrade_remove LASER_SIGHT");
@@ -526,7 +491,6 @@ void EventsPlayerUse_Louis(int iClient, int iTargetID)
 	{
 		char strTargetClassName[35];
 		GetEdictClassname(iTargetID, strTargetClassName, sizeof(strTargetClassName));
-		// PrintToChat(iClient, "strTargetClassName: %s" , strTargetClassName);
 
 		// Stash Louis's pills, and kill the target if successful
 		if (StrContains(strTargetClassName,"weapon_pain_pills",false) != -1)
@@ -610,7 +574,6 @@ void HandleLouisTeleportChargeUses(int iClient)
 		CreateTimer(LOUIS_TELEPORT_CHARGE_MAXED_REGENERATE_TIME, TimerLouisTeleportChargeResetAll, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 		EmitSoundToClient(iClient, SOUND_LOUIS_TELEPORT_OVERLOAD);
-		//EmitSoundToAll(SOUND_LOUIS_TELEPORT_OVERLOAD, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, pos, NULL_VECTOR, true, 0.0);
 	}
 	else
 	{
@@ -633,7 +596,6 @@ void HandleLouisTeleportBlindingEffect(int iClient)
 			g_iLouisTeleportBlindnessAmount[iClient] = 0;
 		else
 		{
-			//PrintToChat(iClient, "normalized time since use: %f", fGameTimeSinceLastUse / LOUIS_TELEPORT_BLINDNESS_FADE_TIME);
 			g_iLouisTeleportBlindnessAmount[iClient] -= RoundToNearest( 
 				(fGameTimeSinceLastUse / LOUIS_TELEPORT_BLINDNESS_FADE_TIME) * ( (g_iLouisTeleportBlindnessAmount[iClient] / LOUIS_TELEPORT_BLINDNESS_STAY_FACTOR) ) );
 		}
@@ -646,7 +608,6 @@ void HandleLouisTeleportBlindingEffect(int iClient)
 	if (g_iLouisTeleportBlindnessAmount[iClient] > 255)
 		g_iLouisTeleportBlindnessAmount[iClient] = 255;
 
-	//PrintToChat(iClient, "Blindness amount: %i", g_iLouisTeleportBlindnessAmount[iClient]);
 
 	g_fLouisTeleportLastUseGameTime[iClient] = fCurrentGameTime;
 	ShowHudOverlayColor(iClient, 40, 0, 5, g_iLouisTeleportBlindnessAmount[iClient], LOUIS_TELEPORT_BLINDNESS_DURATION, FADE_OUT);

@@ -185,7 +185,6 @@ void EnhanceCISetScale(int iZombie, float fScale = -1.0)
 	if (fScale == -1.0)
 		fScale = GetRandomFloat(CI_SMALL_MIN_SIZE, CI_BIG_MAX_SIZE);
 	
-	// PrintToChatAll("CI_SCALE: %f", fScale);
 	SetEntPropFloat(iZombie, Prop_Send, "m_flModelScale", fScale);
 }
 
@@ -194,7 +193,6 @@ void EnhanceCISetHealth(int iZombie, int iHealth = -1)
 	if (iHealth == -1.0)
 		iHealth = GetRandomInt(CI_SMALL_MIN_HEALTH, CI_BIG_MAX_HEALTH);
 
-	// PrintToChatAll("CI_HEALTH: %i", iHealth);
 	SetPlayerHealth(iZombie, -1, iHealth);
 }
 
@@ -290,76 +288,10 @@ void EnhanceCIHandleDamage_Vampiric(int iAttacker, int iVictim)
 	DealDamage(iVictim, iAttacker, 1);
 
 	int iCurrentHealth = GetPlayerHealth(iAttacker);
-	//PrintToChatAll("ENHANCED_CI_HEALTH_START_STEAL %i", iCurrentHealth);
 
 	// Clamp health and apply
 	if (iCurrentHealth + ENHANCED_CI_VAMPIRIC_LIFE_STEAL_AMOUNT <= CI_BIG_MAX_HEALTH)
 		SetPlayerHealth(iAttacker, -1, iCurrentHealth + ENHANCED_CI_VAMPIRIC_LIFE_STEAL_AMOUNT);
 	else
 		SetPlayerHealth(iAttacker, -1, CI_BIG_MAX_HEALTH);
-	
-	//iCurrentHealth = GetPlayerHealth(iAttacker);
-	//PrintToChatAll("ENHANCED_CI_HEALTH_POST_STEAL %i", iCurrentHealth);
 }
-
-
-// Spitter Specific Enhanced CI ////////////////////////////////////////////////////////////
-
-
-
-
-// ResizeHitbox(entity, float fScale = 1.0)
-// {
-// 	float vecBossMin[3], vecBossMax[3];
-// 	//   if (StrEqual(sEntityClass, "headless_hatman"))
-// 	//   {
-// 	//     vecBossMin[0] = -25.5, vecBossMin[1] = -38.5, vecBossMin[2] = -11.0;
-// 	//     vecBossMax[0] = 18.0, vecBossMax[1] = 38.0, vecBossMax[2] = 138.5;
-// 	//   }
-// 	//   else if (StrEqual(sEntityClass, "eyeball_boss"))
-// 	//   {
-// 	//     vecBossMin[0] = -50.0, vecBossMin[1] = -50.0, vecBossMin[2] = -50.0;
-// 	//     vecBossMax[0] = 50.0, vecBossMax[1] = 50.0, vecBossMax[2] = 50.0;
-// 	//   }
-// 	//   else if (StrEqual(sEntityClass, "merasmus"))
-// 	//   {
-// 	//     vecBossMin[0] = -58.5, vecBossMin[1] = -49.5, vecBossMin[2] = -30.5;
-// 	//     vecBossMax[0] = 92.5, vecBossMax[1] = 49.5, vecBossMax[2] = 190.5;
-// 	//   }
-
-// 	vecBossMin[0] = -25.5, vecBossMin[1] = -38.5, vecBossMin[2] = -11.0;
-// 	vecBossMax[0] = 18.0, vecBossMax[1] = 38.0, vecBossMax[2] = 138.5;
-
-// 	float vecScaledBossMin[3], vecScaledBossMax[3];
-
-// 	vecScaledBossMin = vecBossMin;
-// 	vecScaledBossMax = vecBossMax;
-
-// 	ScaleVector(vecScaledBossMin, fScale);
-// 	ScaleVector(vecScaledBossMax, fScale);
-// 	SetEntPropVector(entity, Prop_Send, "m_vecMins", vecScaledBossMin);
-// 	SetEntPropVector(entity, Prop_Send, "m_vecMaxs", vecScaledBossMax);
-// }
-
-
-// UpdatePlayerHitbox(const client, float fScale = 1.0)
-// {
-// 	//static const float vecTF2PlayerMin[3] = { -24.5, -24.5, 0.0 }, vecTF2PlayerMax[3] = { 24.5,  24.5, 83.0 };
-// 	//static const float vecGenericPlayerMin[3] = { -16.5, -16.5, 0.0 }, vecGenericPlayerMax[3] = { 216.5,  216.5, 173.0 };
-// 	static const float vecGenericPlayerMin[3] = { -1.0, -1.0, -1.0 }, vecGenericPlayerMax[3] = { 1.0,  1.0, 1.0 };
-// 	float vecScaledPlayerMin[3], vecScaledPlayerMax[3];
-
-// 	vecScaledPlayerMin = vecGenericPlayerMin;
-// 	vecScaledPlayerMax = vecGenericPlayerMax;
-
-// 	// ScaleVector(vecScaledPlayerMin, fScale);
-// 	// ScaleVector(vecScaledPlayerMax, fScale);
-// 	SetEntPropVector(client, Prop_Send, "m_vecSpecifiedSurroundingMins", vecScaledPlayerMin);
-// 	SetEntPropVector(client, Prop_Send, "m_vecSpecifiedSurroundingMaxs", vecScaledPlayerMax);
-// 	SetEntPropVector(client, Prop_Send, "m_vecMins", vecScaledPlayerMin);
-// 	SetEntPropVector(client, Prop_Send, "m_vecMaxs", vecScaledPlayerMax);
-// 	SetEntPropVector(client, Prop_Send, "m_vecSpecifiedSurroundingMins", vecScaledPlayerMin);
-// 	SetEntPropVector(client, Prop_Send, "m_vecSpecifiedSurroundingMaxs", vecScaledPlayerMax);
-// 	SetEntPropVector(client, Prop_Send, "m_vecMins", vecScaledPlayerMin);
-// 	SetEntPropVector(client, Prop_Send, "m_vecMaxs", vecScaledPlayerMax);
-// }

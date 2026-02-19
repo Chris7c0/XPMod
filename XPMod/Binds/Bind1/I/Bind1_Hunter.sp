@@ -109,7 +109,6 @@ Action ResetGlobalHunterImmobilityZoneCooldown(Handle timer, int data)
 
 Action TimerHandleAllSurvivorsInHunterMobilityZone(Handle timer, int iClient)
 {	
-	// PrintToChatAll("g_fHunterImmobilityZone %f %f %f", g_fHunterImmobilityZone[iClient][0], g_fHunterImmobilityZone[iClient][1], g_fHunterImmobilityZone[iClient][2]);
 
 	// Check if the vector is Null
 	if (g_fHunterImmobilityZone[iClient][0] == EMPTY_VECTOR[0] &&

@@ -184,8 +184,6 @@ void ChangeSurvivorMenuHandler(Menu menu, MenuAction action, int iClient, int it
 			}
 			case LOUIS: //Change to Louis
 			{
-				// PrintToChat(iClient, "\x03[XPMod] \x05Louis abilities are coming soon!");
-				// ChangeSurvivorMenuDraw(iClient);
 				ResetSurvivorTalents(iClient);
 				g_iChosenSurvivor[iClient] = LOUIS;
 				AutoLevelUpSurivovor(iClient);

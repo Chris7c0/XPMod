@@ -40,23 +40,6 @@ void OnGameFrame_Smoker(int iClient)
 		g_iSmokerTalent1Level[iClient] <= 0)
 		return;
 
-	// if (SetMoveTypeBackToNormalOnNextGameFrame[iClient] == true)
-	// {
-	// 	SetMoveTypeBackToNormalOnNextGameFrame[iClient] = false;
-	// 	SetPlayerMoveType(iClient, MOVETYPE_WALK);
-	// }
-
-	// Health Regeneration (Only while choking a victim)
-	// Every frame give 1 hp, 30 fps, so 30 hp per second
-	if (g_iChokingVictim[iClient] > 0 &&
-		GetPlayerHealth(iClient) < GetPlayerMaxHealth(iClient))
-		SetPlayerHealth(iClient, -1, SMOKER_HEALTH_REGEN_PER_FRAME, true);
-	
-	// if(g_fSmokerNextHealthRegenTime[iClient] > GetGameFrame())
-	// {
-
-	// }
-	
 	// Regeneration of Smoker Doppelganger Decoy Clones
 	if(g_iSmokerDoppelgangerCount[iClient] < SMOKER_DOPPELGANGER_MAX_CLONES && 
 		g_fNextSmokerDoppelgangerRegenTime[iClient] <= GetGameTime())
@@ -90,11 +73,8 @@ void OnGameFrame_Smoker(int iClient)
 	if ((g_iSmokerSmokeCloudPlayer == iClient || g_iSmokerInSmokeCloudLimbo == iClient) &&
 		GetEntProp(iClient, Prop_Send, "movetype") != MOVETYPE_NOCLIP)
 	{
-		// PrintToChatAll("OGF iMoveType %i", GetEntProp(iClient, Prop_Send, "movetype"));
 		LockPlayerFromAttacking(iClient);
 		SetPlayerMoveType(iClient, MOVETYPE_NOCLIP);
-		// SetEntProp(iClient, Prop_Send, "m_bDrawViewmodel", 0);
-		// SetEntProp(iClient, Prop_Send, "m_nSolidType", 0);
 	}
 }
 
@@ -164,23 +144,9 @@ void EventsHurt_AttackerSmoker(Handle hEvent, int iAttacker, int iVictim)
 	char strWeapon[20];
 	GetEventString(hEvent,"weapon", strWeapon, 20);
 
-	// // Only call if hit by claw and not being choked by the attacking Smoker
-	// // only actual melee counts
-	// if (g_iSmokerTalent3Level[iAttacker] > 0 && 
-	// 	StrEqual(strWeapon, "smoker_claw") == true &&
-	// 	g_bSmokerGrappled[iVictim] == false)
-	// {
-	// 	SmokerHitTarFingerVictim(iVictim);
-	// }
-
 	// If the smoker is somehow in limbo or a smoke cloud, then kick them out.
 	ReturnSmokerFromSmokeCloudIfCurrentlySmokeCloud(iVictim);
 }
-
-// EventsDeath_AttackerSmoker(Handle hEvent, iAttacker, iVictim)
-// {
-// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
-// }
 
 void EventsDeath_VictimSmoker(Handle hEvent, int iAttacker, int iVictim)
 {
@@ -330,33 +296,11 @@ void SmokerTeleport(int iClient)
 		return;
 	}
 
-	// float eyeorigin[3], eyeangles[3], endpos[3], vdir[3], distance;
-	// GetClientEyePosition(iClient, eyeorigin);
-	// GetClientEyeAngles(iClient, eyeangles);
-	// GetAngleVectors(eyeangles, vdir, NULL_VECTOR, NULL_VECTOR);	//Get direction in which iClient is facing
-	// Handle trace = TR_TraceRayFilterEx(eyeorigin, eyeangles, MASK_SHOT, RayType_Infinite, TraceEntityFilter_NotSelf, iClient);
-	// if(TR_DidHit(trace) == false)
-	// {
-	// 	PrintHintText(iClient, "You cannot teleport to this location.");
-	// 	CloseHandle(trace);
-	// 	return;
-	// }
-	
-	// TR_GetEndPosition(endpos, trace);
-	// CloseHandle(trace);
 
 	float xyzOriginalLocation[3], xyzEndLocation[3], xyzEyeAngles[3];
 	GetClientAbsOrigin(iClient, xyzOriginalLocation);
 	if (GetCrosshairPosition(iClient, xyzEndLocation, xyzEyeAngles) == false)
 		return;
-	
-	// Replaced this with checking m_WorldMaxs as well as TR_PointOutsideWorld + small offset 
-	// This limits the height of teleportation for each map, to prevent from walking in the sky
-	// if(xyzEndLocation[2] > g_fMapsMaxTeleportHeight)	
-	// {
-	// 	PrintHintText(iClient, "You cannot teleport to this location.");
-	// 	return;
-	// }
 	
 	//Get direction in which iClient is facing, to push out from this vector
 	float vDir[3];
@@ -366,7 +310,6 @@ void SmokerTeleport(int iClient)
 	xyzEndLocation[0]-=(vDir[0] * 50.0);		//Spawn iClient right ahead of where they were looking
 	xyzEndLocation[1]-=(vDir[1] * 50.0);
 	//xyzEndLocation[2]-=(vDir[2] * 50.0);
-	//PrintToChat(iClient, "vDir = %.4f, %.4f, %.4f", vDir[0], vDir[1], vDir[2]);
 	float fDistance;
 	fDistance = GetVectorDistance(xyzOriginalLocation, xyzEndLocation, false);
 	fDistance = fDistance * 0.08;
@@ -381,8 +324,6 @@ void SmokerTeleport(int iClient)
 	EmitSoundToAll(SOUND_WARP_LIFE, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1,  xyzEndLocation, NULL_VECTOR, true, 0.0);
 	EmitSoundToAll(SOUND_WARP, SOUND_FROM_PLAYER, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1,  xyzEndLocation, NULL_VECTOR, true, 0.0);
 	WriteParticle(iClient, "teleport_warp", 0.0, 7.0);
-	//PrintHintText(iClient, "You teleported %.1f ft.", fDistance);
-	//PrintToChat(iClient, "<%f, %f, %f>", xyzEndLocation[0], xyzEndLocation[1], xyzEndLocation[2]);
 	g_fTeleportOriginalPositionX[iClient] = xyzOriginalLocation[0];
 	g_fTeleportOriginalPositionY[iClient] = xyzOriginalLocation[1];
 	g_fTeleportOriginalPositionZ[iClient] = xyzOriginalLocation[2];
@@ -497,23 +438,6 @@ bool CreateSmokerDoppelganger(int iClient)
 
 
 
-	// // TESTING for SMOKER TONGUE ATTACHEMNT
-	// if (g_iChokingVictim[iClient] > 0)
-	// {
-	// 	// TE_SetupBeamPoints(xyzLocation,xyzPositionEnd,g_iSprite_SmokerTongue,0,0,66,0.1,3.0,3.0,10,0.0,{70,40,15,255},1);
-	// 	// TE_SendToAll();
-	// 	int smokerMouth = CreateParticle("boomer_vomit", 2.0, iCloneEntity, 99, false);
-
-	// 	//PrintToChatAll("SMOKERMOUTHPARTICLE: %i", smokerMouth);
-	// 	effect_beaments(smokerMouth, g_iChokingVictim[iClient]);
-	// 	effect_beaments(iCloneEntity, g_iChokingVictim[iClient]);
-	// }
-	
-	// Attach smoker particles
-	//smoker_spore_trail
-	//smoker_spore_trail_cheap (for the cloud)
-	// int iParticle = AttachParticle(iCloneEntity, "smoker_spore_trail", -1.0, 10.0);
-	// int iParticle2 = AttachParticle(iCloneEntity, "smoker_spore_trail_cheap", -1.0, 10.0);
 
 	g_iSmokerDoppelgangerCount[iClient]--;
 	PrintHintText(iClient, "Doppelganger Decoys: %i", g_iSmokerDoppelgangerCount[iClient]);
@@ -527,18 +451,14 @@ int CreatePlayerClone(int iClient, float xyzLocation[3], float xyzAngles[3], int
 {
 	char strModel[PLATFORM_MAX_PATH];
 	GetEntPropString(iClient, Prop_Data, "m_ModelName", strModel, sizeof(strModel));
-	//PrintToServer("MODEL STRING: %s", strModel);
 
 	//"models/infected/smoker.mdl"
 
 	// Create survivor model that will be entangled
 	int iClone = CreateEntityByName("prop_dynamic");		// Required for iAnimationSequence
-	//int iClone = CreateEntityByName("commentary_dummy");	// Might be required if not using iAnimationSequence
 	if (RunEntityChecks(iClone) == false)
 		return -1;
 
-	// Set the global reference that can be removed later
-	//g_iEntangledSurvivorModelIndex[iClient] = iClone;
 
 	SetEntityModel(iClone, strModel);
 
@@ -551,32 +471,15 @@ int CreatePlayerClone(int iClient, float xyzLocation[3], float xyzAngles[3], int
 
 
 
-	// // Get location the model should be placed
-	// float xyzLocation[3];
-	// float xyzAngles[3];
-	// GetClientAbsOrigin(iClient, xyzLocation);
-	// GetClientAbsAngles(iClient, xyzAngles);
-	// PrintToChatAll("xyzLocation: %f %f %f", xyzLocation[0], xyzLocation[1], xyzLocation[2]);
 
 	// Set angles and origin
 	TeleportEntity(iClone, xyzLocation, xyzAngles, NULL_VECTOR);
 	
-	// SetEntProp(iClone, Prop_Data, "m_iBreakableSkin", 1);
-	// SetEntProp(iClone, Prop_Data, "m_iMinHealthDmg", 1);
-	// SetEntProp(iClone, Prop_Data, "m_iMaxHealth", 1000);
-	// SetEntProp(iClone, Prop_Data, "m_iHealth", 1000);
-	// SetEntProp(iClone, Prop_Data, "m_takedamage", 2 );
 	
 	
-	//SetEntProp(iClone, Prop_Send, "m_nSolidType", SOLID_VPHYSICS);
-	// SetEntProp(iClone, Prop_Send, "m_nSolidType", 2);
 	
 	// // https://forums.alliedmods.net/showthread.php?t=325668
-	// int iFlags = GetEntProp(iClone, Prop_Data, "m_usSolidFlags", 2);
-	// iFlags = iFlags |= 0x0004;
-	// SetEntProp(iClone, Prop_Data, "m_usSolidFlags", iFlags, 2);
 
-	// SetEntProp(iClone, Prop_Send, "m_usSolidFlags", 12);
 	SetEntProp(iClone, Prop_Data, "m_nSolidType", 2);
 	SetEntProp(iClone, Prop_Send, "m_CollisionGroup", 1);
 
@@ -585,7 +488,6 @@ int CreatePlayerClone(int iClient, float xyzLocation[3], float xyzAngles[3], int
 	g_iXPModEntityType[iClone] = XPMOD_ENTITY_TYPE_SMOKER_CLONE;
 	g_fXPModEntityHealth[iClone] = 1.0;
 	
-	// AcceptEntityInput(iClone, "TurnOn");
 
 		// Set playback rate for animation
 	SetEntPropFloat(iClone, Prop_Send, "m_flPlaybackRate", 1.0);
@@ -597,7 +499,6 @@ int CreatePlayerClone(int iClient, float xyzLocation[3], float xyzAngles[3], int
 	}
 	else
 	{
-		//PrintToServer("iAnimationSequence: %i", iAnimationSequence);
 		SetEntProp(iClone, Prop_Send, "m_nSequence", iAnimationSequence);
 	}
 
@@ -623,7 +524,6 @@ Action TimerFadeInDoppelgangerAndThenHookOnTakeDamage(Handle hTimer, int iEntity
 		return Plugin_Stop;
 	}
 
-	// PrintToChatAll("%i", RoundToNearest((g_iSmokerDoppelgangerFadeRunTime[iEntity] / SMOKER_DOPPELGANGER_FADE_IN_PERIOD) * 255));
 
 	SetEntityRenderMode(iEntity, RenderMode:3);
 	SetEntityRenderColor(iEntity, 255, 255, 255, 
@@ -650,11 +550,6 @@ bool GetCrosshairPosition(int iClient, float xyzLocation[3], float xyzEyeAngles[
 		return false;
 	}
 
-	// // Crashes server without proper trace
-	// char surface[64];
-	// surface = "";
-	// TR_GetSurfaceName(null, surface, sizeof(surface));
-	// PrintToChatAll("Surface: %s", surface);
 
 	if (bClipXZRotation == true)
 	{
@@ -669,9 +564,6 @@ bool GetCrosshairPosition(int iClient, float xyzLocation[3], float xyzEyeAngles[
 	// Get the world mesh bounds adn check that the player isnt aiming at the skybox
 	float xyzWorldMaxs[3];
 	GetEntPropVector(0, Prop_Data, "m_WorldMaxs", xyzWorldMaxs);
-	// PrintToChatAll("xyzWorldMaxs: %0.1f, %0.1f, %0.1f", xyzWorldMaxs[0], xyzWorldMaxs[1], xyzWorldMaxs[2]);
-	// PrintToChatAll("xyzEndLocation: %0.1f, %0.1f, %0.1f", xyzLocation[0], xyzLocation[1], xyzLocation[2]);
-	// PrintToChatAll("delta: %0.1f", FloatAbs(xyzWorldMaxs[2] - xyzLocation[2]));
 	if (FloatAbs(xyzWorldMaxs[2] - xyzLocation[2])  < 100.0)
 		return false;
 
@@ -702,9 +594,6 @@ void OnTakeDamage_SmokerClone(int iEntity, int iAttacker, float fDamage, int iDa
 	g_fXPModEntityHealth[iEntity] = g_fXPModEntityHealth[iEntity] - fDamage > 0.0 ? 
 		g_fXPModEntityHealth[iEntity] - fDamage : 0.0;
 
-	// Pipebomb damage 134217792
-	// PrintToChatAll("OnTakeDamage_SmokerClone:\n	Entity: %i Health: %0.2f, fDamage: %0.2f, iDamageType: %i", 
-	// 	iEntity, g_fXPModEntityHealth[iEntity], fDamage, iDamageType);
 
 	if (g_fXPModEntityHealth[iEntity] > 0.0)
 		return;
@@ -722,9 +611,6 @@ void OnTakeDamage_SmokerClone(int iEntity, int iAttacker, float fDamage, int iDa
 	EmitAmbientSound(SOUND_CLOWN_SHOVE, xyzLocation, iEntity, SNDLEVEL_NORMAL);
 	EmitSoundToClient(iAttacker, SOUND_CLOWN_SHOVE);
 
-	// Show the Particle Effects
-	//WriteParticle(iEntity, "smoker_smokecloud", 0.0, 10.0);
-	//WriteParticle(iEntity, "fireworks_explosion_03", 0.0, 10.0);
 
 	// Kill the entity
 	KillEntitySafely(iEntity);
@@ -732,80 +618,3 @@ void OnTakeDamage_SmokerClone(int iEntity, int iAttacker, float fDamage, int iDa
 	SuppressNeverUsedWarning(iDamageType);
 }
 
-
-// Removed because there are just too many blinding effects for SI
-// SmokerHitTarFingerVictim(int iVictim)
-// {
-// 	// PrintToChatAll("SmokerHitTarFingerVictim: %i", iVictim);
-
-// 	if (RunClientChecks(iVictim) == false ||
-// 		g_iClientTeam[iVictim] != TEAM_SURVIVORS ||
-// 		g_bSmokerGrappled[iVictim] == true ||
-// 		IsPlayerAlive(iVictim) == false)
-// 		return;
-
-// 	TarFingersBlindPlayerIncrementally(iVictim);
-
-// 	// Create the effects if scratched for the first time, otherwise done here
-// 	if (g_bIsTarFingerVictim[iVictim] == true)
-// 		return;
-
-// 	g_bIsTarFingerVictim[iVictim] = true;
-	
-// 	// Create particles for first hit
-// 	CreateParticle("bug_zapper_fly_cloud", 20.0, iVictim, ATTACH_MOUTH, true);
-// 	CreateParticle("bug_zapper_fly_cloud", 20.0, iVictim, ATTACH_MOUTH, true);
-// 	CreateParticle("bug_zapper_fly_cloud", 20.0, iVictim, ATTACH_MOUTH, true);
-// 	//CreateParticle("smoke_gib_01", 10.0, iClient, ATTACH_MOUTH, true, 0.0, 0.0, -5.0);
-// 	//CreateParticle("smoker_spore_attack", 20.0, victim, ATTACH_NORMAL, true);
-	
-// 	//Play fly sounds
-// 	//EmitSoundToAll(SOUND_FLIES, victim, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
-
-// 	// Put the smoke slightly in front of the player to help it stay closer to in front of them.
-// 	float xyzPosition[3], vAngles[3];
-// 	GetLocationVectorInfrontOfClient(iVictim, xyzPosition, vAngles, 80.0);
-	
-// 	g_iSmokerInfectionCloudEntity[iVictim] = CreateSmokeParticle(
-// 		iVictim,		// Target to attach to
-// 		xyzPosition,	// Position to create it 0,0,0 will force getting client location
-// 		true,
-// 		"eyes",
-// 		40, 51, 1, 		// Color of smoke
-// 		255,			// How Opaque
-// 		1,				// Gap in the middle
-// 		50,				// Speed the smoke moves outwards
-// 		10,				// Speed the smoke moves up
-// 		100,			// Original Size
-// 		150,			// End Size
-// 		25,				// Amount of smoke created
-// 		50,				// Smoke jets outside of the original
-// 		10,				// Amount of global twisting
-// 		20.0			// Duration (-1.0 is never destroy)
-// 	);
-
-// 	CreateTimer(20.0, TimerStopTarFingersInfection, iVictim, TIMER_FLAG_NO_MAPCHANGE);
-// }
-
-// TarFingersBlindPlayerIncrementally(iVictim)
-// {
-// 	if (RunClientChecks(iVictim) == false ||
-// 		IsFakeClient(iVictim) == true ||
-// 		g_iClientTeam[iVictim] != TEAM_SURVIVORS ||
-// 		IsPlayerAlive(iVictim) == false)
-// 		return;
-
-// 	// Calculate the blind amount
-// 	g_iTarFingerVictimBlindAmount[iVictim] = g_iTarFingerVictimBlindAmount[iVictim] == 0 ?
-// 		SMOKER_TAR_FINGERS_BLIND_AMOUNT_START :
-// 		g_iTarFingerVictimBlindAmount[iVictim] + SMOKER_TAR_FINGERS_BLIND_AMOUNT_INCREMENT > SMOKER_TAR_FINGERS_BLIND_AMOUNT_MAX ? 
-// 			SMOKER_TAR_FINGERS_BLIND_AMOUNT_MAX : 
-// 			g_iTarFingerVictimBlindAmount[iVictim] + SMOKER_TAR_FINGERS_BLIND_AMOUNT_INCREMENT;
-	
-// 	// Create Timer To Reset the blind amount
-// 	delete g_hTimer_ResetTarFingerVictimBlindAmount[iVictim];
-// 	g_hTimer_ResetTarFingerVictimBlindAmount[iVictim] = CreateTimer(SMOKER_TAR_FINGERS_BLIND_DURATION, TimerResetTarFingerVictimBlindAmount, iVictim);
-	
-// 	// Temp Blind the player
-// 	ShowHudOverlayColor(iVictim, 40, 51, 1, g_iTarFingerVictimBlindAmount[iVictim], SMOKER_TAR_FINGERS_BLIND_FADE_DURATION_VALUE, FADE_OUT);
-// }

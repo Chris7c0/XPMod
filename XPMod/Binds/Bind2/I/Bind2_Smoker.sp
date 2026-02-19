@@ -54,8 +54,6 @@ void EntangleSurvivorInSmokerTongue(int iClient)
 	LockPlayerFromAttacking(iClient);
 	CreateEntangledSurvivorClone(iClient);
 
-	// AcceptEntityInput(iClient, "TurnOff");
-
 	GotoThirdPerson(iClient);
 
 
@@ -94,8 +92,6 @@ void UntangleSurvivorFromSmokerTongue(int iClient)
 
 	// Set player back to first person mode
 	GotoFirstPerson(iClient);
-
-	// AcceptEntityInput(iClient, "TurnOn");
 
 	// Make player visible again
 	SetEntityRenderMode(iClient, RenderMode:RENDER_MODE_NORMAL);
@@ -159,7 +155,6 @@ Action TimerCheckIfPlayerIsInRangeToUntangle(Handle timer, int iClient)
 		float xyzPlayerLocation[3];
 		GetClientAbsOrigin(iPlayer, xyzPlayerLocation);
 
-		//PrintToChatAll("distance: %f ", GetVectorDistance(xyzClientLocation, xyzPlayerLocation, false));
 
 		//Check if the player is in range of the client that is tangled
 		if (GetVectorDistance(xyzClientLocation, xyzPlayerLocation, false) > SMOKER_UNTANGLE_PLAYER_DISTANCE)
@@ -200,12 +195,6 @@ void CreateEntangledSurvivorClone(int iClient)
 		g_iEntangledSurvivorModelIndex[iClient] = iClone;
 
 		SetEntityModel(iClone, strModel);
-		
-		// Attach to survivor
-		// SetVariantString("!activator");
-		// AcceptEntityInput(iClone, "SetParent", iClient);
-		// SetVariantString("bleedout");
-		// AcceptEntityInput(iClone, "SetParentAttachment");
 
 		// Get location the model should be placed
 		float xyzLocation[3], xyzAngles[3];
@@ -222,10 +211,6 @@ void CreateEntangledSurvivorClone(int iClient)
 		AcceptEntityInput(iClone, "SetAnimation");
 
 		SetEntProp(iClone, Prop_Send, "m_nSolidType", 1);
-
-		// Hook the model so hits will register
-		//SDKHook(iClone, SDKHook_OnTakeDamage, OnTakeDamage);
-		//PrintToServer("HOOKING %i, %i", iClone, EntIndexToEntRef(iClone));
 	}
 
 	// Create the smoker tongue that wraps around the survivor

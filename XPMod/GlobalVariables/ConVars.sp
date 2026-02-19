@@ -28,9 +28,6 @@ ConVar g_hCVar_IdleKickEnabled;
 // XP Loadout Use and Gain Enabled
 ConVar g_hCVar_XPSaveForHighLevelsEnabled;
 bool XPSaveForHighLevelsEnabled = true;
-// Talent selection mode website or through in game menu
-// ConVar g_hCVar_TalentSelectionMode ;
-//new g_iTalentSelectionMode                    = CONVAR_WEBSITE;
 // Default Classes
 ConVar g_hCVar_DefaultSurvivor;
 int g_iDefaultSurvivor = BILL;

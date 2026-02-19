@@ -49,14 +49,6 @@ Action LouisMenuDraw(int iClient)
 Action LouisTalent1MenuDraw(int iClient) 
 {
 	char text[512];
-
-	// DeleteAllMenuParticles(iClient);
-	// if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	// {
-	// 	g_iPID_MD_Ellis_Over[iClient] = WriteParticle(iClient, "md_ellis_over", 0.0);
-	// 	g_bShowingVGUI[iClient] =  true;
-	// }
-	
 	Menu menu = CreateMenu(LouisTalent1MenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
@@ -94,13 +86,7 @@ Action LouisTalent2MenuDraw(int iClient)
 {
 	char text[512];
 
-	// DeleteAllMenuParticles(iClient);
-	// if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	// {
-	// 	g_iPID_MD_Ellis_Over[iClient] = WriteParticle(iClient, "md_ellis_over", 0.0);
-	// 	g_bShowingVGUI[iClient] =  true;
-	// }
-	
+
 	Menu menu = CreateMenu(LouisTalent2MenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
@@ -148,13 +134,6 @@ Action LouisTalent3MenuDraw(int iClient)
 {
 	char text[512];
 
-	// DeleteAllMenuParticles(iClient);
-	// if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	// {
-	// 	g_iPID_MD_Ellis_Over[iClient] = WriteParticle(iClient, "md_ellis_over", 0.0);
-	// 	g_bShowingVGUI[iClient] =  true;
-	// }
-	
 	Menu menu = CreateMenu(LouisTalent3MenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
@@ -194,13 +173,7 @@ Action LouisTalent4MenuDraw(int iClient)
 {
 	char text[512];
 
-	// DeleteAllMenuParticles(iClient);
-	// if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	// {
-	// 	g_iPID_MD_Ellis_Over[iClient] = WriteParticle(iClient, "md_ellis_over", 0.0);
-	// 	g_bShowingVGUI[iClient] =  true;
-	// }
-	
+
 	Menu menu = CreateMenu(LouisTalent4MenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
@@ -240,13 +213,6 @@ Action LouisTalent5MenuDraw(int iClient)
 {
 	char text[512];
 
-	// DeleteAllMenuParticles(iClient);
-	// if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	// {
-	// 	g_iPID_MD_Ellis_Over[iClient] = WriteParticle(iClient, "md_ellis_over", 0.0);
-	// 	g_bShowingVGUI[iClient] =  true;
-	// }
-	
 	Menu menu = CreateMenu(LouisTalent5MenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
@@ -291,13 +257,6 @@ Action LouisTalent5MenuDraw(int iClient)
 Action LouisTalent6MenuDraw(int iClient) 
 {
 	char text[512];
-	
-	// DeleteAllMenuParticles(iClient);
-	// if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	// {
-	// 	g_iPID_MD_Ellis_Over[iClient] = WriteParticle(iClient, "md_ellis_over", 0.0);
-	// 	g_bShowingVGUI[iClient] =  true;
-	// }
 	
 	Menu menu = CreateMenu(LouisTalent6MenuHandler);
 

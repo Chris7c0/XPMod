@@ -13,7 +13,6 @@ void LoadVampiricTankTalents(int iClient)
 		return;
 	}
 
-	// PrintToChatAll("%N Loading VAMPIRIC TANK abilities.", iClient);
 	
 	g_iTankChosen[iClient] = TANK_VAMPIRIC;
 	
@@ -42,7 +41,6 @@ void LoadVampiricTankTalents(int iClient)
 	SetClientGlow(iClient, 100, 0, 255, GLOWTYPE_ONVISIBLE);
 
 	//Grow the tank, doesnt seem to work
-	//SetEntPropFloat(iClient , Prop_Send,"m_flModelScale", 1.3); 
 	
 	// Particle effects
 	CreateVampiricTankTrailEffect(iClient);
@@ -58,11 +56,6 @@ void ResetAllTankVariables_Vampiric(int iClient)
 	g_bCanVampiricTankWingDash[iClient] = false;
 	g_iVampiricTankWingDashChargeCount[iClient] = 0;
 }
-
-// SetupTankForBot_Vampiric(iClient)
-// {
-// 	LoadVampiricTankTalents(iClient);
-// }
 
 void SetClientSpeedTankVampiric(int iClient, float &fSpeed)
 {
@@ -182,11 +175,7 @@ void EventsHurt_VictimTank_Vampiric(Handle hEvent, int iAttacker, int iVictimTan
 		// Increase the melee damage
 		// Remember, the original damage will still process, so subtract that
 		int iCurrentHP = GetPlayerHealth(iVictimTank);
-		//if (IsFakeClient(iVictimTank) == false) PrintToChat(iVictimTank, "\x03iCurrentHP: %i", iCurrentHP);
 		SetPlayerHealth(iVictimTank, iAttacker, iCurrentHP - ((iDmgHealth * VAMPIRIC_TANK_MELEE_DMG_TAKEN_MULTIPLIER) - iDmgHealth));
-		//if (IsFakeClient(iVictimTank) == false) PrintToChat(iVictimTank, "\x03Subtracting health: %i", ((iDmgHealth * VAMPIRIC_TANK_MELEE_DMG_TAKEN_MULTIPLIER) - iDmgHealth));
-		//new iCurrentHP2 = GetPlayerHealth(iVictimTank);
-		//if (IsFakeClient(iVictimTank) == false) PrintToChat(iVictimTank, "\x03iCurrentHP: %i", iCurrentHP2);
 	}
 	else if(StrContains(weaponclass,"pistol",false) != -1 ||
 		StrContains(weaponclass,"rifle",false) != -1 ||
@@ -199,12 +188,7 @@ void EventsHurt_VictimTank_Vampiric(Handle hEvent, int iAttacker, int iVictimTan
 		// The life will be taken away, so we need to convert the gun damage taken multiplier to be a reduction of this.
 		// So, if we want to only take 1/3rd damage, then we add 2/3rds back here.  1 - 1/3rds = 2/3rds.
 		SetPlayerHealth(iVictimTank, iAttacker, iCurrentHP + RoundToCeil(iDmgHealth * (1.0 - VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER)) );
-		//if (IsFakeClient(iVictimTank) == false) PrintToChat(iVictimTank, "\x03Re-adding health: %i", RoundToCeil(iDmgHealth * (1.0 - VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER)) );
 	}
-	// else
-	// {
-	// 	if (IsFakeClient(iVictimTank) == false) PrintToChat(iVictimTank, "\x03NRMLDMG weapon: \x01%s \x03dmg: \x01%i",weaponclass, iDmgHealth);
-	// }
 }
 
 void EventsHurt_AttackerTank_Vampiric(Handle hEvent, int iAttackerTank, int iVictim)

@@ -89,7 +89,6 @@ int GetAllEntitiesInRadiusOfVector(float xyzLocation[3], float fRadius, int iRet
 
 		strEntityClassName = "";
 		GetEntityClassname(iEntity, strEntityClassName, 32);
-		//PrintToServer("GetAllEntitiesInRadiusOfVector: i: %i, GetEntityClassname = %s", iEntity, strEntityClassName)
 		
 		// Check each, add to the list of return entities only if its an exact classname match
 		for (int iIndex=0; iIndex < iClassNameCount; iIndex++)
@@ -290,7 +289,6 @@ void AdvertiseXPModToNewUser(int iClient, bool bShowInChat = false)
 void AdvertiseConfirmXPModTalents(int iClient)
 {
 	PrintHintText(iClient, "Your abilities are NOT loaded. Type xpm in chat and confirm to gain them.");
-	//PrintToChat(iClient, "\x03[XPMod] \x05Your talents are NOT loaded. Type \x04xpm\x05 and confirm them.");
 }
 
 /**************************************************************************************************************************
@@ -371,7 +369,6 @@ void SetMoveType(int iClient, int movetype, int movecollide)
 	SetEntData(iClient, g_iOffset_MoveType, movetype);
 	SetEntData(iClient, g_iOffset_MoveCollide, movecollide);
 
-	// PrintToChatAll("SetMoveType: %N", iClient);
 }
 
 void SetSurvivorModel(int iClient)
@@ -390,32 +387,26 @@ void SetSurvivorModel(int iClient)
 		// its better to just not set this and leave the character hands/voice/icon.
 		case BILL:
 		{
-			//SetEntProp(iClient, Prop_Send, "m_survivorCharacter", 4);
 			SetEntityModel(iClient, "models/survivors/survivor_namvet.mdl");
 		}
 		case ROCHELLE:
 		{
-			//SetEntProp(iClient, Prop_Send, "m_survivorCharacter", 1);
 			SetEntityModel(iClient, "models/survivors/survivor_producer.mdl");
 		}
 		case COACH:
 		{
-			//SetEntProp(iClient, Prop_Send, "m_survivorCharacter", 2);
 			SetEntityModel(iClient, "models/survivors/survivor_coach.mdl");
 		} 	
 		case ELLIS:
 		{
-			//SetEntProp(iClient, Prop_Send, "m_survivorCharacter", 3);
 			SetEntityModel(iClient, "models/survivors/survivor_mechanic.mdl");
 		} 	
 		case NICK:
 		{
-			//SetEntProp(iClient, Prop_Send, "m_survivorCharacter", 0);
 			SetEntityModel(iClient, "models/survivors/survivor_gambler.mdl");
 		}
 		case LOUIS:
 		{
-			//SetEntProp(iClient, Prop_Send, "m_survivorCharacter", 0);
 			SetEntityModel(iClient, "models/survivors/survivor_manager.mdl");
 		}
 
@@ -552,25 +543,21 @@ int SetPlayerMoveType(int iClient, int iMoveType = MOVETYPE_WALK)
 
 	SetEntProp(iClient, Prop_Send, "movetype", iMoveType, 1);
 
-	//PrintToChat(iClient, "movetype now %i", GetEntProp(iClient, Prop_Send, "movetype", 1));
 
 	return  GetEntProp(iClient, Prop_Send, "movetype", 1);
 }
 
 void LockPlayerFromAttacking(int iClient)
 {
-	// PrintToChat(iClient, "LockPlayerFromAttacking start");
 	int iWeaponEntity = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
 	if (RunEntityChecks(iWeaponEntity) == false)
 		return;
 	
-	//float flNextTime_ret = GetEntDataFloat(iWeaponEntity,g_iOffset_NextPrimaryAttack);
 
 	SetEntDataFloat(iWeaponEntity, g_iOffset_TimeWeaponIdle, 999999.9, true);
 	SetEntDataFloat(iWeaponEntity, g_iOffset_NextPrimaryAttack, 999999.0, true);
 	SetEntDataFloat(iClient, g_iOffset_NextAttack, 999999.0, true);
 
-	// PrintToChat(iClient, "LockPlayerFromAttacking end");
 }
 
 void UnlockPlayerFromAttacking(int iClient)
@@ -579,12 +566,10 @@ void UnlockPlayerFromAttacking(int iClient)
 		IsPlayerAlive(iClient) == false)
 		return;
 
-	// PrintToChat(iClient, "UnlockPlayerFromAttacking start");
 	int iWeaponEntity = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 	if (RunEntityChecks(iWeaponEntity) == false)
 		return;
 	
-	//float flNextTime_ret = GetEntDataFloat(iWeaponEntity,g_iOffset_NextPrimaryAttack);
 
 	float fGameTime = GetGameTime();
 
@@ -592,7 +577,6 @@ void UnlockPlayerFromAttacking(int iClient)
 	SetEntDataFloat(iWeaponEntity, g_iOffset_NextPrimaryAttack, fGameTime, true);
 	SetEntDataFloat(iClient, g_iOffset_NextAttack, fGameTime, true);
 
-	// PrintToChat(iClient, "UnlockPlayerFromAttacking end");
 }
 
 
@@ -738,7 +722,6 @@ void GetAllVisiblePlayersForClient(int iClient, float[] fVisibleClientDistance, 
 		if (IsVisibleTo(xyzClientLocation, xyzTargetLocation) || 
 			(fMinDistanceOverride > 0.0 && fDistance <= fMinDistanceOverride))
 		{
-			// PrintToChat(iClient, "Viable Target %N Spotted by %N", iTarget, iClient);
 			fVisibleClientDistance[iTarget] = fDistance;
 		}
 	}
@@ -751,10 +734,6 @@ void GetLookAtAnglesFromPoints(const float xyzPositionStart[3], const float xyzP
 	MakeVectorFromPoints(xyzPositionStart, xyzPositionEnd, vLookVectorLine);
 	GetVectorAngles(vLookVectorLine, vLookAtAngles);
 
-	// PrintToChatAll("xyzPositionStart: %f %f %f", xyzPositionStart[0], xyzPositionStart[1], xyzPositionStart[2]);
-	// PrintToChatAll("xyzPositionEnd: %f %f %f", xyzPositionEnd[0], xyzPositionEnd[1], xyzPositionEnd[2]);
-	// PrintToChatAll("vLookVectorLine: %f %f %f", vLookVectorLine[0], vLookVectorLine[1], vLookVectorLine[2]);
-	// PrintToChatAll("vLookAtAngles: %f %f %f", vLookAtAngles[0], vLookAtAngles[1], vLookAtAngles[2]);
 }
 
 int AttachInfected(int i_Ent, float fOrigin[3])
@@ -799,8 +778,6 @@ Action FreezeGame(int admin, int args)
 		if(RunClientChecks(i) && GetClientTeam(i) == TEAM_SURVIVORS)
 		{
 			float vec[3];
-			//GetClientAbsOrigin(i, vec);
-			//vec[2] += 10;
 			GetClientEyePosition(i, vec);
 			EmitAmbientSound(SOUND_FREEZE, vec, i, SNDLEVEL_NORMAL);
 			SetEntityRenderMode(i, RenderMode:3);
@@ -813,11 +790,6 @@ Action FreezeGame(int admin, int args)
 			cvec[2] = 10.0;
 			g_iClientBindUses_1[i] = 0;
 			g_iClientBindUses_2[i] = 0;
-			//new gc = FindDataMapInfo(i,"m_glowColor");
-			//SetEntDataVector(i, gc, cvec, true);
-			//SetEntPropVector(i, Prop_Data, "glowcolor", cvec);
-			//DispatchKeyValue(i, "m_glowColor", "0 0 0");
-			//m_glowColor (Save|Key)(4 Bytes) - glowcolor
 		}
 	}
 	freezetime = StringToInt(time);
@@ -840,22 +812,6 @@ void PlayerFreeze(int iClient)
 /**************************************************************************************************************************
  *                                                     Find Playerrs                                                      *
  **************************************************************************************************************************/
-
-
-// FindAllPlayers(clients[])
-// {
-// 	new ctr = 0;
-// 	decl i;
-// 	for(i = 1;i <= MaxClients;i++)
-// 	{
-// 		if(IsClientInGame(i))
-// 		{
-// 			clients[ctr] = i;
-// 			ctr++;
-// 		}
-// 	}
-// 	return ctr;
-// }
 
 int FindPlayerByName(int iClient, const char[] targetname)
 {
@@ -988,27 +944,6 @@ bool TraceRayTryToHit(int entity, int mask)
 	return true;
 }
 
-// bool TraceRayGrabEnt(entity,mask)
-// {
-// 	if(entity > 0)	// Check if the beam hit an entity other than the grabber, and stop if it does
-// 	{
-// 		if((entity <= 64) && (!g_bUsingTongueRope[entity]))
-// 			return true;
-// 		if(entity > 64)
-// 			return true;
-// 	}
-	
-// 	return false;
-// }
-
-// bool TraceEntityFilter_NotSelf(iEntity, mask, int data)
-// {
-//     if (iEntity == data)	// Check if the TraceRay hit the itself.
-//         return false;	// Don't let the entity be hit
-		
-//     return true;		// It didn't hit itself
-// }
-
 public bool TraceEntityFilter_NotAPlayer(int iEntity, int iContentsMask, int data)
 {
 	// Check for collision with self
@@ -1043,16 +978,6 @@ bool IsClientGrappled(int iClient)
 	return false;
 }
 
-// bool IsJockeyGrappled(iClient)
-// {
-// 	decl i;
-// 	for(i = 0; i <= MaxClients; i++)
-// 		if(g_iJockeyVictim[i] == iClient)
-// 			return true;
-	
-// 	return false;
-// }
-
 Action OpenHelpMotdPanel(int iClient, int args)
 {
 	OpenMOTDPanel(iClient, "", "http://xpmod.net/help/xpmod_ig_help.html", MOTDPANEL_TYPE_URL);
@@ -1078,7 +1003,6 @@ int FindIndexInStringArrayUsingValue(const char[][] strArray, const iSizeOfArray
 {
 	for (int i=0; i < iSizeOfArray; i++)
 	{
-		// PrintToServer("%i sizeofarray %i, value=%s", i, iSizeOfArray, strValue);
 		if (strcmp(strArray[i], strValue, true) == 0)
 			return i;
 	}
@@ -1103,7 +1027,6 @@ bool IsEntityUncommonInfected(int iInfectedEntity)
 	// Get the infected entity type (common or uncommon)
 	char strClassname[99];
 	GetEdictClassname(iInfectedEntity, strClassname, sizeof(strClassname));
-	//PrintToChatAll("edict classname: %s", strClassname);
 	if (StrEqual(strClassname, "infected", true) == false)
 		return false;
 
@@ -1114,39 +1037,12 @@ bool IsEntityUncommonInfected(int iInfectedEntity)
 	// Check if the model name corresponds to an uncommon one
 	for (int i = 0; i < sizeof(UNCOMMON_INFECTED_MODELS); i++)
 	{
-		//PrintToChatAll("CHECKING %s", UNCOMMON_INFECTED_MODELS[i]);
 		if (StrEqual(strModelName, UNCOMMON_INFECTED_MODELS[i], false))
 			return true;
 	}
 
 	return false;		
 }
-
-// float FindClosestSurvivorDistance(iClient)
-// {
-// 	if (RunClientChecks(iClient) == false)
-// 		return 999999.0;
-
-// 	float fdistance = 999999.0;
-// 	float xyzClientOrigin[3], xyzTargetOrigin[3];
-// 	GetClientEyePosition(iClient, xyzClientOrigin);	//Get clients location origin vectors
-
-// 	// Loop through the survivors and find the closest by checking distances
-// 	for (new iTarget; iTarget <= MaxClients; iTarget++)
-// 	{
-// 		if (RunClientChecks(iTarget) && g_iClientTeam[iTarget] == TEAM_SURVIVORS)
-// 		{
-// 			GetClientEyePosition(iTarget, xyzTargetOrigin);
-// 			float fNewDistance = GetVectorDistance(xyzTargetOrigin, xyzClientOrigin);
-// 			//PrintToChatAll("Checking: %N -> %f", iTarget, fNewDistance);
-// 			if (fNewDistance < fdistance)
-// 				fdistance = fNewDistance;
-// 		}
-// 	}
-
-// 	//PrintToChatAll("FindClosestSurvivorDistance %f", fdistance);
-// 	return fdistance;		
-// }
 
 int FindClosestSurvivor(int iClient, bool bIgnoreIncap = false)
 {
@@ -1171,7 +1067,6 @@ int FindClosestSurvivor(int iClient, bool bIgnoreIncap = false)
 		GetClientEyePosition(iTarget, xyzTargetOrigin);
 		float fNewDistance = GetVectorDistance(xyzTargetOrigin, xyzClientOrigin);
 
-		//PrintToChatAll("Checking: %N -> %f", iTarget, fNewDistance);
 		if (fNewDistance < fdistance)
 		{
 			fdistance = fNewDistance;
@@ -1210,67 +1105,9 @@ void GetLocationVectorInfrontOfClient(int iClient, float xyzLocation[3], float x
 	// Just chose a 32.1 at random.
 	GetVectorCrossProduct(vDirection, vRandomVector, vPerpendicularDirection);
 
-	// PrintToChatAll("vPerpendicularDirection: %f, %f, %f", vPerpendicularDirection[0], vPerpendicularDirection[1], vPerpendicularDirection[1]);
 	xyzLocation[0] += (vPerpendicularDirection[0] * fLeftRightOffset);		// Offset x and y a bit left or right of the current 3d point
 	xyzLocation[1] += (vPerpendicularDirection[1] * fLeftRightOffset);
 }
-
-
-// void GetLocationVectorInfrontOfClientEyes(iClient, float xyzLocation[3], float xyzAngles[3], float fForwardOffset = 40.0, float fVerticalOffset = 1.0, float perpOffset = 0.0)
-// {
-// 	float vDirection[3];
-
-// 	GetClientEyeAngles(iClient, xyzAngles);	// Get clients Eye Angles to know get what direction face
-// 	GetAngleVectors(xyzAngles, vDirection, NULL_VECTOR, NULL_VECTOR);	// Get the direction the iClient is looking
-// 	xyzAngles[0] = 0.0;	//Lock x and z axis, in other words, only do rotation as if a person is standing up and turning
-// 	xyzAngles[2] = 0.0;
-
-// 	GetClientEyePosition(iClient, xyzLocation);				// Get Clients location origin vectors
-// 	xyzLocation[0] += (vDirection[0] * fForwardOffset);		// Offset x and y a bit forward of the players view
-// 	xyzLocation[1] += (vDirection[1] * fForwardOffset);
-// 	xyzLocation[2] += (vDirection[2] + fVerticalOffset);	// Raise it up slightly to prevent glitches
-
-// 	float vPerpendicularDirection[3], vRandomVector[3];
-// 	vRandomVector[0] = 32.3;
-// 	vRandomVector[1] = 32.3;
-// 	vRandomVector[2] = 32.3;
-// 	GetVectorCrossProduct(vDirection, vRandomVector, vPerpendicularDirection);
-
-// 	PrintToChatAll("EYES vPerpendicularDirection: %f, %f, %f", vPerpendicularDirection[0], vPerpendicularDirection[1], vPerpendicularDirection[1]);
-
-// 	if (perpOffset != 0.0) xyzLocation[0] += (vPerpendicularDirection[0] * perpOffset);		// Offset x and y a bit forward of the players view
-// 	if (perpOffset != 0.0) xyzLocation[1] += (vPerpendicularDirection[1] * perpOffset);
-// }
-
- 
-/**************************************************************************************************************************/
-
-// bool DidClientMoveEyesOrPosition(iClient)
-// {
-// 	if (!RunClientChecks(iClient))
-// 		return true;
-
-// 	float currentvorigin[3], currentvangles[3];
-// 	GetClientEyePosition(iClient, currentvorigin);	//Get clients location origin vectors
-// 	GetClientEyeAngles(iClient, currentvangles);	//Get clients Eye Angles
-// 	PrintToServer("currentvorigin %f, %f, %f", currentvorigin[0], currentvorigin[1], currentvorigin[2]);
-// 	PrintToServer("currentvangles %f, %f, %f", currentvangles[0], currentvangles[1], currentvangles[2]);
-
-// 	// Set a minimum threshold that must be passed in order to trigger a move
-// 	float vOriginMovementThreshold = 30.0;
-// 	float vAnglesmovementThreshold = 20.0;
-
-// 	if (FloatAbs(currentvorigin[0] - g_xyzClientVOrigin[iClient][0]) > vOriginMovementThreshold ||
-// 		FloatAbs(currentvorigin[1] - g_xyzClientVOrigin[iClient][1]) > vOriginMovementThreshold ||
-// 		FloatAbs(currentvorigin[2] - g_xyzClientVOrigin[iClient][2]) > vOriginMovementThreshold) //||
-// 		//FloatAbs(currentvangles[0] - g_xyzClientVAngles[iClient][0]) > vAnglesmovementThreshold ||
-// 		//FloatAbs(currentvangles[1] - g_xyzClientVAngles[iClient][1]) > vAnglesmovementThreshold)
-// 		return true;
-
-// 	return false;
-// }
-
-
 
 // Setting a really high positive value will cause the ability to never cooldown. Abilties can be used to deactivate with this.
 // Setting a negative value will subtract time (seconds) away from the cooldown.  Setting a value to the existing game time 

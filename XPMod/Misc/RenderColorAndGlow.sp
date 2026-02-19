@@ -133,7 +133,6 @@ void SetClientRenderAndGlowColor(int iClient)
 				// Cap at the fully cloaked value
 				if (iAlpha < iFullyCloakedAlpha)
 					iAlpha = iFullyCloakedAlpha;
-				// PrintToChat(iClient, "g_iHunterCloakCounter: %i, Hunter Glow: %i", g_iHunterCloakCounter[iClient], iAlpha);
 
 				SetClientRenderColor(iClient, 255, 255, 255, iAlpha, RENDER_MODE_TRANSPARENT);
 				return;

@@ -24,7 +24,6 @@ void TalentsLoad_Nick(int iClient)
 		g_bCanNickSecondaryCycle[iClient] = true;
 		g_bIsNickInSecondaryCycle[iClient] = false;
 		g_iNickSecondarySavedClipSlot2[iClient] = 90;
-		// PrintToChatAll("Talents Confirmed: Clip Slot 2 = %i", g_iNickSecondarySavedClipSlot2[iClient]);
 	}
 	if(g_iLeftoverLevel[iClient] == 5)
 	{
@@ -266,31 +265,23 @@ void OnGameFrame_Nick(int iClient)
 			{
 				char currentweapon[512];
 				GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
-				//PrintToChatAll("Current Weapon is %s", currentweapon);
 				if((StrContains(currentweapon,"pistol",false) != -1) || (StrContains(currentweapon,"melee",false) != -1) || (StrContains(currentweapon,"chainsaw",false) != -1))
 				{
-					//PrintToChatAll("String contains a gun");
 					g_bCanNickSecondaryCycle[iClient] = false;
 					g_bIsNickInSecondaryCycle[iClient] = true;
 					CreateTimer(0.5, TimerNickSecondaryCycleReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
 					int ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 					if (IsValidEntity(ActiveWeaponID) == false)
 						return;
-					//PrintToChatAll("%s g_strNickSecondarySlot2", g_strNickSecondarySlot2[iClient]);
-					//PrintToChatAll("%s g_strNickSecondarySlot1", g_strNickSecondarySlot1[iClient]);
-					//new iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 					int CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
-					//PrintToChatAll("CurrentClipAmmo %d", CurrentClipAmmo);
 					
 					if(StrEqual(currentweapon, "weapon_pistol", false) == false)
 					{
 						g_iNickCurrentSecondarySlot[iClient] = 0;
-						//PrintToChatAll("Is not pistol, slot = %d", g_iNickCurrentSecondarySlot[iClient]);
 					}
 					else if(StrEqual(currentweapon, "weapon_pistol", false) == true)
 					{
 						g_iNickCurrentSecondarySlot[iClient] = 1;
-						//PrintToChatAll("Is pistol, slot = %d", g_iNickCurrentSecondarySlot[iClient]);
 					}
 					
 					if(StrEqual(g_strNickSecondarySlot1, "empty", false) == true)
@@ -306,14 +297,12 @@ void OnGameFrame_Nick(int iClient)
 						if((StrEqual(currentweapon, "weapon_pistol", false) == true) || (StrEqual(currentweapon, "weapon_pistol_magnum", false) == true) || (StrEqual(currentweapon, "weapon_chainsaw", false) == true))
 						{
 							g_iNickSecondarySavedClipSlot1[iClient] = CurrentClipAmmo;
-							//PrintToChatAll("ClipSlot1 on cycle w slot 0 = %d", g_iNickSecondarySavedClipSlot1[iClient]);
 						}
 						else if(StrEqual(currentweapon, "weapon_melee", false) == true)
 						{
 							g_iNickSecondarySavedClipSlot1[iClient] = 0;
 						}
 						
-						//PrintToChatAll("g_iNickSecondarySavedClipSlot1 %d", g_iNickSecondarySavedClipSlot1[iClient]);
 						
 						if((StrEqual(currentweapon, "weapon_melee", false) == true) || (StrEqual(currentweapon, "weapon_chainsaw", false) == true))
 						{
@@ -332,20 +321,16 @@ void OnGameFrame_Nick(int iClient)
 					else if(g_iNickCurrentSecondarySlot[iClient] == 1)
 					{
 						// g_strNickSecondarySlot2 = currentweapon;
-						//PrintToChatAll("Current Weapon is %s", currentweapon);
-						//PrintToChatAll("Second Check %s", g_strNickSecondarySlot2[iClient]);
 						
 						if((StrEqual(currentweapon, "weapon_pistol", false) == true) || (StrEqual(currentweapon, "weapon_pistol_magnum", false) == true))
 						{
 							g_iNickSecondarySavedClipSlot2[iClient] = CurrentClipAmmo;
-							//PrintToChatAll("ClipSlot2 on cycle w slot 2 = %d", g_iNickSecondarySavedClipSlot2[iClient]);
 						}
 						else if(StrEqual(currentweapon, "weapon_melee", false) == true)
 						{
 							g_iNickSecondarySavedClipSlot2[iClient] = 0;
 						}
 						
-						//PrintToChatAll("g_iNickSecondarySavedClipSlot2 %d", g_iNickSecondarySavedClipSlot2[iClient]);
 						
 						if(StrEqual(g_strNickSecondarySlot1, "weapon_pistol_magnum", false) == true)
 						{
@@ -364,17 +349,7 @@ void OnGameFrame_Nick(int iClient)
 							}
 						}
 						
-						// if(StrEqual(g_strNickSecondarySlot1, "weapon_melee", false) == true)
-						// {
-						// 	new weaponcheck = GetEntPropString(GetPlayerWeaponSlot(client, 1), Prop_Data, "m_strMapSetScriptName", currentweapon, sizeof(currentweapon));
-						// 	PrintToChatAll("Test %d", weaponcheck);
-						// 	if (StrEqual(weaponname, "weapon_melee"))
-						// 	{
-						// 		GetEntPropString(GetPlayerWeaponSlot(client, 1), Prop_Data, "m_strMapSetScriptName", currentweapon, sizeof(currentweapon));
-						// 	}  
-						// }
-						
-					}
+						}
 				}
 			}
 		}
@@ -388,7 +363,6 @@ void OGFSurvivorReload_Nick(int iClient, const char[] currentweapon, int ActiveW
 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, NICK_CLIP_SIZE_MAX_MAGNUM, true);
 		g_bClientIsReloading[iClient] = false;
 		g_iReloadFrameCounter[iClient] = 0;
-		//PrintToChatAll("Setting Magnum Clip");
 	}
 	else if((StrEqual(currentweapon, "weapon_pistol", false) == true) && (g_iRiskyLevel[iClient] > 0) && ((CurrentClipAmmo == 15) || (CurrentClipAmmo == 30)))
 	{
@@ -403,25 +377,6 @@ void OGFSurvivorReload_Nick(int iClient, const char[] currentweapon, int ActiveW
 		g_bClientIsReloading[iClient] = false;
 		g_iReloadFrameCounter[iClient] = 0;
 	}
-	// This was in the JebusMenuHnadler...moved it up...pretty sure its not required anymore.
-	// if(g_iRiskyLevel[iClient] > 0)
-	// {
-	// 	new buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
-	// 	if((buttons & IN_RELOAD) && g_bClientIsReloading[iClient] == false && g_bForceReload[iClient] == false)
-	// 	{
-	// 		char currentweapon[32];
-	// 		GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
-	// 		new ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-	// 		new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
-	// 		if((StrEqual(currentweapon, "weapon_pistol", false) == true) && ((CurrentClipAmmo == 15) || (CurrentClipAmmo == 30)))
-	// 		{
-	// 			g_bForceReload[iClient] = true;
-	// 			g_iSavedClip[iClient] = CurrentClipAmmo;
-	// 			SetEntData(ActiveWeaponID, g_iOffset_Clip1, 0, true);
-	// 		}
-	// 	}
-	// }
-	// return;
 }
 
 void EventsHurt_AttackerNick(Handle hEvent, int iAttacker, int iVictim)
@@ -557,7 +512,6 @@ void EventsHurt_AttackerNick(Handle hEvent, int iAttacker, int iVictim)
 
 			dmg = CalculateDamageTakenForVictimTalents(iVictim, dmg, weaponclass);
 
-			// PrintToChat(iAttacker, "You are doing %d extra damage", dmg);
 			SetPlayerHealth(iVictim, iAttacker, hp - dmg);
 		}
 	}
@@ -574,7 +528,6 @@ void EventsHurt_AttackerNick(Handle hEvent, int iAttacker, int iVictim)
 			dmg = RoundToNearest(dmg * (g_iMagnumLevel[iAttacker] * 0.65));
 			dmg = CalculateDamageTakenForVictimTalents(iVictim, dmg, weaponclass);
 
-			//PrintToChat(iAttacker, "your doing %d extra magnum damage", dmg);
 			SetPlayerHealth(iVictim, iAttacker,hp - dmg);
 		}
 		else if (StrContains(weaponclass,"pistol",false) != -1)
@@ -585,7 +538,6 @@ void EventsHurt_AttackerNick(Handle hEvent, int iAttacker, int iVictim)
 			dmg = RoundToNearest(dmg * (g_iRiskyLevel[iAttacker] * 0.13));
 			dmg = CalculateDamageTakenForVictimTalents(iVictim, dmg, weaponclass);
 
-			//PrintToChat(iAttacker, "your doing %d extra damage", dmg);
 			SetPlayerHealth(iVictim, iAttacker, hp - dmg);
 		}
 		char strCurrentWeapon[32];
@@ -596,17 +548,6 @@ void EventsHurt_AttackerNick(Handle hEvent, int iAttacker, int iVictim)
 		}
 	}
 }
-
-// EventsHurt_VictimNick(Handle hEvent, iAttacker, iVictim)
-// {
-// 	if (IsFakeClient(iVictim))
-// 		return;
-// }
-
-// EventsDeath_AttackerNick(Handle hEvent, iAttacker, iVictim)
-// {
-// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
-// }
 
 void EventsDeath_VictimNick(Handle hEvent, int iAttacker, int iVictim)
 {
@@ -649,26 +590,6 @@ void EventsItemPickUp_Nick(int iClient, const char[] strWeaponClass)
 	if (g_iChosenSurvivor[iClient] != NICK || g_bTalentsConfirmed[iClient] == false)
 		return;
 
-	// PrintToChat(iClient, "NICK ITEM PICKUP %s", strWeaponClass);
-
-	// if(g_bRamboModeActive[iClient] == true)
-	// {
-	// 	//PrintToChatAll("Picked up weapon with rambo mode active, running StoreCurrentPrimaryWeapon");
-	// 	StoreCurrentPrimaryWeapon(iClient);
-	// 	char strCurrentWeapon[32];
-	// 	GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
-	// 	if(StrEqual(strCurrentWeapon, "weapon_rifle_m60", false) == false)
-	// 	{
-	// 		//PrintToChatAll("StoreCurrentPrimaryWeapon showed the primary weapon is not the m60");
-	// 		fnc_SetAmmo(iClient);
-	// 		fnc_SetAmmoUpgrade(iClient);
-	// 		//PrintToChatAll("Ammo was set via weapon pickup");
-	// 		// fnc_ClearSavedWeaponData(iClient);
-	// 		g_bRamboModeActive[iClient] = false;
-	// 	}
-	// }
-
-	//PrintToChat(iClient, "%s", strWeaponClass);
 	if(g_iMagnumLevel[iClient]>0 || g_iRiskyLevel[iClient]>0)	//gives 68 with magnum pickup on loadout spawn
 	{
 		if (StrContains(strWeaponClass,"magnum",false) != -1)
@@ -717,10 +638,6 @@ void EventsItemPickUp_Nick(int iClient, const char[] strWeaponClass)
 	if(g_iRiskyLevel[iClient] == 5 && g_bTalentsConfirmed[iClient] == true)
 	{
 		
-		// PrintToChatAll("ClipSlot1 on pickup w slot undetermined = %d", g_iNickSecondarySavedClipSlot1[iClient]);
-		// new CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
-		// PrintToChatAll("Current Clip Ammo on Pickup = %d", CurrentClipAmmo);
-		// PrintToChatAll("Current strWeaponClass on Pickup = %s", strWeaponClass);
 		
 		if((StrContains(strWeaponClass,"pistol",false) != -1) || (StrContains(strWeaponClass,"melee",false) != -1) || (StrContains(strWeaponClass,"chainsaw",false) != -1))
 		{
@@ -734,14 +651,11 @@ void EventsItemPickUp_Nick(int iClient, const char[] strWeaponClass)
 						if (RunEntityChecks(ActiveWeaponID) == false)
 							return;
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iNickSecondarySavedClipSlot1[iClient], true);
-						//PrintToChatAll("Setting slot 1 clip ammo to %d", g_iNickSecondarySavedClipSlot1[iClient]);
 					}
 				}
 				else if((g_iNickCurrentSecondarySlot[iClient] == 1) && (StrEqual(strWeaponClass, "pistol", false) == true))
 				{
 					CreateTimer(0.1, TimerNickDualClipSize, iClient, TIMER_FLAG_NO_MAPCHANGE);
-					//PrintToChatAll("Setting slot 2 clip ammo to %d", g_iNickSecondarySavedClipSlot2[iClient]);
-					//PrintToChatAll("ClipSlot1 on pickup w slot 1 = %d", g_iNickSecondarySavedClipSlot1[iClient]);
 				}
 				g_bIsNickInSecondaryCycle[iClient] = false;
 			}
@@ -749,7 +663,6 @@ void EventsItemPickUp_Nick(int iClient, const char[] strWeaponClass)
 			{
 				if(((StrContains(strWeaponClass,"melee",false) != -1) || (StrContains(strWeaponClass,"chainsaw",false) != -1)) && (StrEqual(g_strNickSecondarySlot1, "weapon_pistol_magnum", false) == true) && (g_iNickCurrentSecondarySlot[iClient] == 1))
 				{
-					//PrintToChatAll("Picked up melee with magnum saved in slot 1");
 					float wepvorigin[3], vangles[3], vdir[3];
 					GetClientEyeAngles(iClient, vangles);
 					GetAngleVectors(vangles, vdir, NULL_VECTOR, NULL_VECTOR);
@@ -764,31 +677,18 @@ void EventsItemPickUp_Nick(int iClient, const char[] strWeaponClass)
 					DispatchSpawn(weapon);
 					TeleportEntity(weapon, wepvorigin, vangles, NULL_VECTOR);
 				}
-				//PrintToChatAll("Cycle is false");
 				g_iNickCurrentSecondarySlot[iClient] = 0;
-				//PrintToChatAll("Cycle false, strWeaponClass = %s", strWeaponClass);
-				//PrintToChatAll("Cycle false, g_strNickSecondarySlot1 = %s", g_strNickSecondarySlot1);
-				
-				// if(StrContains(strWeaponClass, "chainsaw", false) != -1)
-				// {
-				// 	SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iNickSecondarySavedClipSlot1[iClient], true);
-				// 	PrintToChatAll("Setting chainsaw clip ammo to %d", g_iNickSecondarySavedClipSlot1[iClient]);
-				// }
-				
 				if((StrEqual(strWeaponClass, "pistol_magnum", false) == true) && (StrEqual(g_strNickSecondarySlot1, "weapon_pistol_magnum", false) == true))
 				{
-					//PrintToChatAll("strWeaponClass and slot 1 are both magnum");
 
 					RunCheatCommand(iClient, "give", "give pistol_magnum");
 				}
 				if(StrContains(g_strNickSecondarySlot1, "empty", false) != -1)
 				{
-					//PrintToChatAll("Slot 1 is empty");
 					//g_iNickCurrentSecondarySlot[iClient] = 0;
 					if(StrEqual(strWeaponClass, "pistol_magnum", false) == true)
 					{
 						g_strNickSecondarySlot1 = "weapon_pistol_magnum";
-						//PrintToChatAll("Slot 1 = %s", g_strNickSecondarySlot1);
 					}
 					else if(StrEqual(strWeaponClass, "pistol", false) == true)
 					{
@@ -838,21 +738,10 @@ void CyclePlayerWeapon_Nick(int iClient)
 {
 	if (RunClientChecks(iClient) && IsPlayerAlive(iClient))
 	{
-		//PrintToChatAll("Removed current weapon via CyclePlayerWeapon");
 		char strCommandWithArgs[64];
 		Format(strCommandWithArgs, sizeof(strCommandWithArgs), "give %s", ITEM_CMD_NAME[g_iStashedPrimarySlotWeaponIndex[iClient]]);
 		RunCheatCommand(iClient, "give", strCommandWithArgs);
 		StoreCurrentPrimaryWeapon(iClient);
-		// PrintToChatAll("Gave %s via CyclePlayerWeapon", ITEM_CMD_NAME[g_iStashedPrimarySlotWeaponIndex[iClient]]);
-		//SetEntData(g_iPrimarySlotID[iClient], g_iOffset_Clip1, g_iNickPrimarySavedClip[iClient], true);
-		//SetEntData(iClient, g_iOffset_Ammo[iClient] + g_iAmmoOffset[iClient], g_iNickPrimarySavedAmmo[iClient]);
-		
-		// PrintToChatAll("Gave Weapon, now setting ammo/clip");
-		// SetEntData(g_iPrimarySlotID[iClient], g_iOffset_Clip1, g_iEllisPrimarySavedClipSlot1[iClient], true);
-		// PrintToChatAll("Clip has been set");
-		// SetEntData(iClient, g_iOffset_Ammo[iClient] + g_iAmmoOffset[iClient], g_iEllisPrimarySavedAmmoSlot1[iClient]);
-		// PrintToChatAll("Ammo has been set");
-		// PrintToChatAll("Cycling to next weapon using function...");
 	}
 
 	// Destroy their rambo weapon
@@ -953,7 +842,6 @@ void JebusHandMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum
 						{
 							currentHP = GetPlayerHealth(i);
 							maxHP = GetPlayerMaxHealth(i);
-							//PrintToChatAll("max health for %N is %d", i, maxHP);
 							PrintHintText(i, "You have been partially healed by %N", iClient);
 							g_bNickHealCooldown = true;	
 							CreateTimer(NICK_HEAL_COOLDOWN, TimerReEnableHealBind, iClient, TIMER_FLAG_NO_MAPCHANGE);
@@ -967,7 +855,6 @@ void JebusHandMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum
 						{
 							int iCurrentHealth = GetPlayerHealth(i);
 							int iMaxHealth = GetPlayerMaxHealth(i);
-							//float fTempHealth = GetEntDataFloat(iClient, g_iOffset_HealthBuffer);
 							//if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
 							if(iCurrentHealth < (iMaxHealth - 20.0))
 							{

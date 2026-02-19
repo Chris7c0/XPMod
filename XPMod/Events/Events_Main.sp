@@ -48,7 +48,7 @@ void SetupXPMEvents()
 	HookEvent("player_use", Event_PlayerUse);
 	HookEvent("friendly_fire", Event_FriendlyFire);
 	HookEvent("player_shoved", Event_PlayerShoved);
-	
+
 	//Survivor Events
 	HookEvent("weapon_fire", Event_WeaponFire);
 	HookEvent("weapon_reload", Event_WeaponReload);
@@ -186,7 +186,6 @@ Action Event_PlayerChangeName(Handle hEvent, const char[] strName, bool bDontBro
 {
 
 	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
-	//PrintToServer("Event_PlayerChangeName: %i %N", iClient, iClient);
 
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Continue;
@@ -224,7 +223,6 @@ Action Hook_SayText2(UserMsg msg_id, BfRead msg, const int[] players, int player
 
 public void OnMapStart()
 {
-	//PrintToServer("OnMapStart ========================================================================================================")
 	
 	//Get current map name
 	GetCurrentMap(g_strCurrentMap,32);
@@ -272,8 +270,6 @@ public void OnMapStart()
 
 Action Event_RoundStart(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	//PrintToServer("EVENT ROUND START=====================================================================================");
-	//PrintToServer("**************************** FREEZING GAME");
 	g_bGameFrozen = true;
 	g_bPlayerPressedButtonThisRound = false;
 	g_bPlayerLeftStartArea = false;
@@ -290,7 +286,6 @@ Action Event_RoundStart(Handle hEvent, const char[] strName, bool bDontBroadcast
 
 Action Event_RoundEnd(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	//PrintToServer("Event_RoundEnd =========================================================");
 
 	g_bGameFrozen = true;
 	//g_bRoundStarted = false;
@@ -356,8 +351,6 @@ public Action CommandListener_CallVote(int iVoteCaller, const char[] strCommand,
 	GetCmdArg(1, strVoteType, sizeof(strVoteType));
 	GetCmdArg(2, strVoteTarget, sizeof(strVoteTarget));
 	int iTarget = GetClientOfUserId(StringToInt(strVoteTarget));
-
-	//PrintToChat(iVoteCaller, "Vote Called: %s", strVoteType);
 
 	// Check each of the vote types and return plugin handled if it should be prevented
 	if (HandleCallVote_Kick(iVoteCaller, iTarget, strVoteType)) return Plugin_Handled;
@@ -472,9 +465,6 @@ Action Event_PlayerChangeTeam(Handle hEvent, const char[] strName, bool bDontBro
 Action Event_PlayerSpawn(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
-	// if (RunClientChecks(iClient) && IsFakeClient(iClient) == false)
-	// 		PrintToChat(iClient, "Event_PlayerSpawn ================================================================");
-	//PrintToServer("Event_PlayerSpawn ================================================================ %i", iClient);
 	
 	if(IsClientInGame(iClient) == false)
 		return Plugin_Continue;
@@ -543,7 +533,6 @@ Action Event_PlayerReplacedByBot(Handle hEvent, const char[] strName, bool bDont
 	int iReplacedPlayer = GetClientOfUserId(GetEventInt(hEvent, "player"));
 	int iBot = GetClientOfUserId(GetEventInt(hEvent, "bot"));
 
-	// PrintToChatAll("Event_PlayerReplacedByBot: %i %i", iReplacedPlayer, iBot);
 
 	if(RunClientChecks(iBot) == false)
 		return Plugin_Continue;
@@ -557,9 +546,7 @@ Action Event_PlayerReplacedByBot(Handle hEvent, const char[] strName, bool bDont
 Action Event_BotReplacedByPlayer(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	int iPlayer = GetClientOfUserId(GetEventInt(hEvent, "player"));
-	// new iReplacedBot = GetClientOfUserId(GetEventInt(hEvent, "bot"));
 
-	// PrintToChatAll("Event_BotReplacedByPlayer: %i %i", iPlayer, iReplacedBot);
 
 	if(RunClientChecks(iPlayer) == false)
 		return Plugin_Continue;
@@ -576,7 +563,6 @@ Action Event_SurvivorRescued(Handle hEvent, const char[] strName, bool bDontBroa
 {
 	int iClient = GetClientOfUserId(GetEventInt(hEvent, "victim"));
 
-	// PrintToChatAll("Event_SurvivorRescued: %N", iClient);
 
 	if(RunClientChecks(iClient) == false)
 		return Plugin_Continue;
@@ -598,16 +584,8 @@ void SetupUnfreezeGameTimer(float unfreezeWaitTime)
 
 		g_iUnfreezeNotifyRunTimes = RoundFloat(unfreezeWaitTime);
 		
-		// *For some reason, delete errors out when ran even though it doesnt appear to be 
-		// equal to INVALID_HANDLE. The conclusion from the testing is to just not run the 
-		// delete on this one. It looks like it should be handled fine anyway*
-		// **delete g_hTimer_FreezeCountdown;
-		//LogError("Setting g_hTimer_FreezeCountdown, Handle %i", g_hTimer_FreezeCountdown);
+		delete g_hTimer_FreezeCountdown;
 		g_hTimer_FreezeCountdown = CreateTimer(1.0, TimerUnfreezeNotification, _, TIMER_REPEAT);
-		//LogError("Set g_hTimer_FreezeCountdown, Handle %i", g_hTimer_FreezeCountdown);
-
-		// This line is literally only to remove the compiler warning.  It does nothing.
-		if (g_hTimer_FreezeCountdown == null) {}
 	}
 	else
 	{
@@ -628,20 +606,6 @@ public void OnClientPutInServer(int iClient)
 	}
 }
 
-// public OnClientConnected(iClient)
-// {
-// 	if (g_bGamePaused && IsFakeClient(iClient) == false)
-// 	{
-// 		UnpauseGame(iClient);
-// 		CreateTimer(1.0, TimerPauseGame, iClient, TIMER_FLAG_NO_MAPCHANGE);
-// 	}
-// }
-
-// public OnClientDisconnect(iClient)
-// {
-
-// }
-
 Action Event_PlayerConnect(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
@@ -661,37 +625,18 @@ Action Event_PlayerDisconnect(Handle hEvent, const char[] strName, bool bDontBro
 
 Action Event_FriendlyFire(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	
-	// new attacker = GetClientOfUserId(GetEventInt(hEvent,"attacker"));
-	// new victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
-	// new guilty = GetClientOfUserId(GetEventInt(hEvent,"guilty"));
-	// new type = GetEventInt(hEvent,"type");
-	// PrintToChatAll("Attacker = %d, Victim = %d, Guilty = %d, Type = %d", attacker, victim, guilty, type);
 	return Plugin_Continue;
 }
 
 Action Event_PlayerShoved(Event event, const char[] name, bool dontBroadcast)
 {
-	// int iClient = GetClientOfUserId(event.GetInt("userid"));
-	// if (RunClientChecks(iClient) == false)
-	// 	return Plugin_Continue;
-
-	// if (g_iSmokerSmokeCloudPlayer == iClient &&
-	// 	g_iClientTeam[iClient] == TEAM_INFECTED)
-	// {
-	// 	GetEntPropVector(iClient, Prop_Data, "m_vecVelocity", g_xyzPreShoveVelocity[iClient]);
-	// 	SDKHook(iClient, SDKHook_PreThink, PreThink);
-	// 	return Plugin_Stop;
-	// }
-
+	
 	return Plugin_Continue;
 }
 
 // Triggered when player opens safe room door and walks out
 Action Event_PlayerLeftStartArea(Handle hEvent, const char[] name, bool dontBroadcast)
 {
-	// PrintToServer("Event_PlayerLeftStartArea TRIGGERED");
-
 	if (g_bPlayerLeftStartArea == true || 
 		g_bGameFrozen == true || 
 		g_bEndOfRound == true ||
@@ -702,9 +647,6 @@ Action Event_PlayerLeftStartArea(Handle hEvent, const char[] name, bool dontBroa
 
 	// Smoker global wait on Smoke Cloud until thats triggered after safe room door has been opened
 	CreateTimer(SMOKER_SMOKE_CLOUD_GLOBAL_SAFE_ROOM_WAIT_DURATION, TimerAllowSmokersToUseBind1AfterSafeRoomDoorOpened, _, TIMER_FLAG_NO_MAPCHANGE);
-
-	// PrintToServer("Event_PlayerLeftStartArea");
-	// PrintToChatAll("Event_PlayerLeftStartArea");
 
 	return Plugin_Continue;
 }

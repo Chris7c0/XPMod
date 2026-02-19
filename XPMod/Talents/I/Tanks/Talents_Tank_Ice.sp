@@ -13,7 +13,6 @@ void LoadIceTankTalents(int iClient)
 		return;
 	}
 
-	// PrintToChatAll("%N Loading Ice Tank abilities.", iClient);
 	
 	g_iTankChosen[iClient] = TANK_ICE;
 	g_fTankHealthPercentage[iClient] =  1.0;
@@ -36,8 +35,6 @@ void LoadIceTankTalents(int iClient)
 	// Make the tank have a colored outline glow
 	SetClientGlow(iClient, 80, 240, 255, GLOWTYPE_ONVISIBLE);
 
-	//Grow the tank, doesnt seem to work
-	//SetEntPropFloat(iClient , Prop_Send,"m_flModelScale", 1.3); 
 	
 	//Particle effects
 	CreateIceTankTrailEffect(iClient);
@@ -59,11 +56,6 @@ void ResetAllTankVariables_Ice(int iClient)
 	
 	DeleteParticleEntity(g_iPID_IceTankIcicles[iClient]);
 }
-
-// SetupTankForBot_Ice(iClient)
-// {
-// 	LoadIceTankTalents(iClient);
-// }
 
 void SetClientSpeedTankIce(int iClient, float &fSpeed)
 {
@@ -221,7 +213,6 @@ void OnGameFrame_Tank_Ice(int iClient)
 	}
 	else if(g_iTankCharge[iClient] > 0 && g_bIceTankSliding[iClient] == false && !(buttons & IN_WALK))
 	{
-		// PrintToChatAll("g_iIceTankLifePool[iClient]: %i", g_iIceTankLifePool[iClient]);
 
 		if (g_iIceTankLifePool[iClient] > 0 && 
 			g_iTankCharge[iClient] > 31 && 
@@ -290,7 +281,6 @@ void EventsHurt_AttackerTank_Ice(Handle hEvent, int iAttackerTank, int iVictim)
 		(StrEqual(weapon,"tank_rock") == true || 
 		StrEqual(weapon,"tank_claw") == true))
 	{
-		// PrintToChatAll("___ Disabling COLD AURA for %N", iVictim);
 		g_bIceTankColdAuraDisabled[iVictim] = true;
 		SetClientSpeed(iVictim);
 
@@ -313,8 +303,6 @@ void EventsHurt_AttackerTank_Ice(Handle hEvent, int iAttackerTank, int iVictim)
 
 void EventsDeath_VictimTank_Ice(Handle hEvent, int iAttacker, int iVictimTank)
 {
-	// if (RunClientChecks(iVictimTank) == false)
-	// 	return;
 
 	SuppressNeverUsedWarning(hEvent, iVictimTank, iAttacker);
 
@@ -323,7 +311,6 @@ void EventsDeath_VictimTank_Ice(Handle hEvent, int iAttacker, int iVictimTank)
 
 void HandleFireDamageVictimIceTank(int iAttacker, int iVictimTank, int iDmgHealth, int iDmgType)
 {
-	//PrintToChatAll("DMG TYPE: %i, DMG_HEALTH: %i, ", iDmgType, iDmgHealth);
 
 	if (iDmgType == DAMAGETYPE_FIRE1 || iDmgType == DAMAGETYPE_FIRE2)
 	{
@@ -369,7 +356,6 @@ void HandleFireDamageVictimIceTank(int iAttacker, int iVictimTank, int iDmgHealt
 	if (!(iUpgradedType & UPGRADETYPE_INCENDIARY))
 		return;
 	
-	//PrintToChatAll("FIRE AMMO DMG: %i", RoundToNearest(-1.0 * iDmgHealth * TANK_FIRE_DAMAGE_FIRE_BULLETS_ADD_MULTIPLIER) + iDmgHealth);
 	SetPlayerHealth(iVictimTank, iAttacker, RoundToNearest(-1.0 * iDmgHealth * TANK_FIRE_DAMAGE_FIRE_BULLETS_ADD_MULTIPLIER) + iDmgHealth, true);
 }
 
@@ -586,7 +572,6 @@ void CheckForPlayersInIceTanksColdAuraSlowRange(int iTank)
 		// Reset the value of g_fIceTankColdAuraSlowSpeedReduction if its set and its beyond the distance
 		else if (g_fIceTankColdAuraSlowSpeedReduction[iClient] > 0.0)
 		{
-			// PrintToChatAll("*** RESETTING COLD AURA SPEED %N", iClient);
 			g_fIceTankColdAuraSlowSpeedReduction[iClient] = 0.0;
 			SetClientSpeed(iClient);
 		}

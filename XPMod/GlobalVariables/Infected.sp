@@ -110,7 +110,6 @@ bool g_bSmokerVictimGlowDisabled[MAXPLAYERS + 1];
 bool SetMoveTypeBackToNormalOnNextGameFrame[MAXPLAYERS + 1];
 bool g_bIsElectrocuting[MAXPLAYERS + 1];
 #define SMOKER_ELECTORUCTION_MAX_DISTANCE               1200.0  // 150ft, Units here divided by 8 is close to number of feet in game
-// bool g_bIsTarFingerVictim[MAXPLAYERS + 1];
 #define SMOKER_DOPPELGANGER_MAX_CLONES                  2
 #define SMOKER_DOPPELGANGER_DURATION                    15.0
 #define SMOKER_DOPPELGANGER_REGEN_PERIOD                30.0
@@ -171,7 +170,6 @@ int g_iTarFingerVictimBlindAmount[MAXPLAYERS + 1];
 //For Teleport
 #define SMOKER_TELEPORT_COOLDOWN_PERIOD             10.0
 #define SMOKER_TELEPORT_MAX_DISTANCE_PER_LEVEL      15.0
-// float g_fMapsMaxTeleportHeight;
 int g_iSmokerTransparency[MAXPLAYERS + 1];
 float g_fTeleportOriginalPositionX[MAXPLAYERS + 1];
 float g_fTeleportOriginalPositionY[MAXPLAYERS + 1];
@@ -264,7 +262,6 @@ bool g_bIsStealthSpitter[MAXPLAYERS + 1];
 int g_iStealthSpitterChargePower[MAXPLAYERS + 1];
 int g_iStealthSpitterChargeMana[MAXPLAYERS + 1];
 float g_xyzWitchConjureLocation[MAXPLAYERS + 1][3];
-//float g_fAdhesiveAffectCase[MAXPLAYERS + 1];
 float g_fAdhesiveAffectAmount[MAXPLAYERS + 1];
 //Spitter Goo Types
 #define GOO_ADHESIVE		0
@@ -378,7 +375,6 @@ ArrayList g_listTankRockEntities;
 int g_iFireDamageCounter[MAXPLAYERS + 1];
 bool g_bFireTankAttackCharged[MAXPLAYERS + 1];
 bool g_bBlockTankFirePunchCharge[MAXPLAYERS + 1];
-//bool g_bFireTankBaseSpeedIncreased[MAXPLAYERS + 1];
 float g_fFireTankExtraSpeed[MAXPLAYERS + 1];
 // Ice Tank
 #define TANK_HEALTH_ICE                                 14000

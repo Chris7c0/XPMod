@@ -75,7 +75,6 @@ Action TimerEllisLimitBreakReset(Handle timer, int iClient)
 	if (iLimitBreakWeaponSlot == -1)
 		return Plugin_Stop;
 
-	// PrintToChat(iClient, "iLimitBreakWeaponSlot: %i", iLimitBreakWeaponSlot);	
 
 	// Get their current primary weapon id
 	int iCurrentPrimaryID = GetPlayerWeaponSlot(iClient, 0);
@@ -87,7 +86,6 @@ Action TimerEllisLimitBreakReset(Handle timer, int iClient)
 	if (iCurrentPrimaryWeaponIndex == ITEM_EMPTY)
 		return Plugin_Stop;
 
-	// PrintToChatAll("LIMIT BREAK RESET: %s, %s", ITEM_NAME[g_iEllisPrimarySlot0[iClient]], ITEM_NAME[g_iEllisPrimarySlot1[iClient]]);
 	
 	// Check if the user has slot the limit break weapon in slot 0
 	if (iLimitBreakWeaponSlot == 0)
@@ -95,7 +93,6 @@ Action TimerEllisLimitBreakReset(Handle timer, int iClient)
 		// If they currently have the limit break slot selected...
 		if (g_iEllisCurrentPrimarySlot[iClient] == 0)
 		{
-			// PrintToChat(iClient, "g_iEllisPrimarySlot1[iClient]: %i", g_iEllisPrimarySlot1[iClient]);
 			// Check if they have another weapon, if so weapon cycle to it then empty the other slot
 			if (g_iEllisPrimarySlot1[iClient] != ITEM_EMPTY)
 			{
@@ -120,7 +117,6 @@ Action TimerEllisLimitBreakReset(Handle timer, int iClient)
 		// If they currently have the limit break slot selected...
 		if (g_iEllisCurrentPrimarySlot[iClient] == 1)
 		{
-			// PrintToChat(iClient, "g_iEllisPrimarySlot0[iClient]: %i", g_iEllisPrimarySlot0[iClient]);	
 			// Check if they have another weapon, if so weapon cycle to it then empty the other slot
 			if (g_iEllisPrimarySlot0[iClient] != ITEM_EMPTY)
 			{
@@ -140,7 +136,6 @@ Action TimerEllisLimitBreakReset(Handle timer, int iClient)
 		g_iEllisPrimarySavedAmmoSlot1[iClient] = 0;
 	}
 
-	// PrintToChatAll("LIMIT BREAK AFTER: %s, %s", ITEM_NAME[g_iEllisPrimarySlot0[iClient]], ITEM_NAME[g_iEllisPrimarySlot1[iClient]]);	
 
 	return Plugin_Stop;
 }

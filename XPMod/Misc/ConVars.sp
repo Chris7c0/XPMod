@@ -114,29 +114,6 @@ void CVarChange_XPSaveForHighLevelsEnabled(Handle hCVar, const char[] strOldValu
 }
 
 
-//Callback function for enabling or disabling the new vote winner sound
-// CVarChange_TalentSelectionMode(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
-// {
-// 	//If the value was not changed, then do nothing
-// 	if(StrEqual(strOldValue, strNewValue) == true)
-// 		return;
-	
-// 	//If the value was changed, then set it and display a message to the server and players
-// 	if (StringToInt(strNewValue) == 1)
-// 	{
-// 		g_iTalentSelectionMode = CONVAR_WEBSITE;
-// 		PrintToServer("[XPM] ConVar changed: Talent Selection Mode is now WEBSITE");
-// 		PrintToChatAll("[XPM] ConVar changed: Talent Selection Mode is now WEBSITE");
-// 	}
-// 	else
-// 	{
-// 		g_iTalentSelectionMode = CONVAR_MENU;
-// 		PrintToServer("[XPM] ConVar changed: Talent Selection Mode is now MENU");
-// 		PrintToChatAll("[XPM] ConVar changed: Talent Selection Mode is now MENU");
-// 	}
-// }
-
-
 //Callback function for updating the default survivor
 void CVarChange_DefaultSurvivor(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
 {

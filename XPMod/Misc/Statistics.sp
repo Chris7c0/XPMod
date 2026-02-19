@@ -113,10 +113,7 @@ void CreateXPMStatistics(int iClient, char[] strStoreBuffer = "", int iStoreBuff
 			if (RunClientChecks(i) && 
 				g_iClientTeam[i] == TEAM_INFECTED &&
 				IsFakeClient(i) == false)
-				// This portion can replace the last check, IsFakeClient, to show bots
-				//(IsFakeClient(i) == false || (g_bIsGhost[i] == false && g_bCanBeGhost[i] == false)) )
 			{
-				//PrintToChat(i, "g_bIsGhost %i,g_bCanBeGhost %i, %s", g_bIsGhost[i], g_bCanBeGhost[i], INFECTED_NAME[g_iInfectedCharacter[i]])
 
 				// Determine the player state
 				if (g_bIsGhost[i])

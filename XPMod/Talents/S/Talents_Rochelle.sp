@@ -123,7 +123,6 @@ void OnGameFrame_Rochelle(int iClient)
 				{
 					if(buttons & IN_JUMP)
 					{
-						//PrintToChatAll("Jumping just happend");
 						if(g_iClientTeam[iClient] == TEAM_SURVIVORS)
 						{
 							g_bIsHighJumping[iClient] = true;
@@ -209,18 +208,15 @@ void EventsHurt_AttackerRochelle(Handle hEvent, int attacker, int victim)
 	{
 		char strWeaponClass[32];
 		GetEventString(hEvent,"weapon",strWeaponClass,32);
-		// PrintToChatAll("\x03-class of gun: \x01%s",strWeaponClass);
 
 		int hp = GetPlayerHealth(victim);
 		int dmg = GetEventInt(hEvent,"dmg_health");
-		// PrintToChat(attacker, "Base DMG: %d", dmg);
 
 		if (StrContains(strWeaponClass,"hunting_rifle",false) != -1)	//Ruger
 		{
 			dmg = RoundToNearest(dmg * (g_iRochelleRugerStacks[attacker] * ROCHELLE_RUGER_DMG_PER_STACK));
 			dmg = CalculateDamageTakenForVictimTalents(victim, dmg, strWeaponClass);
 
-			// PrintToChat(attacker, "Doing %d extra hunting rifle DMG", dmg);
 			SetPlayerHealth(victim, attacker, hp - dmg);
 
 			// Add to the Ruger Stacks
@@ -237,7 +233,6 @@ void EventsHurt_AttackerRochelle(Handle hEvent, int attacker, int victim)
 				g_iRochelleRugerStacks[attacker] = ROCHELLE_RUGER_MAX_STACKS;
 
 			g_iRochelleRugerHitCounter[attacker] = 0;
-			// PrintToChat(attacker, "Ruger Hit Counter: %d", g_iRochelleRugerHitCounter[attacker]);
 		}
 		else if (StrContains(strWeaponClass,"sniper_military",false) != -1)	//H&K MSG 90
 		{
@@ -246,7 +241,6 @@ void EventsHurt_AttackerRochelle(Handle hEvent, int attacker, int victim)
 			dmg = RoundToNearest(dmg * (g_iSilentLevel[attacker] * 0.12));
 			dmg = CalculateDamageTakenForVictimTalents(victim, dmg, strWeaponClass);
 
-			// PrintToChat(attacker, "Doing %d extra military rifle DMG", dmg);
 			SetPlayerHealth(victim, attacker, hp - dmg);
 		}
 		else if (StrContains(strWeaponClass,"sniper_scout",false) != -1)	// Scout
@@ -254,7 +248,6 @@ void EventsHurt_AttackerRochelle(Handle hEvent, int attacker, int victim)
 			dmg = RoundToNearest(dmg * ROCHELLE_SILENT_SORROW_SCOUT_EXTRA_DMG_PER_STACK * g_iSilentSorrowHeadshotCounter[attacker]);
 			dmg = CalculateDamageTakenForVictimTalents(victim, dmg, strWeaponClass);
 
-			// PrintToChat(attacker, "Doing %d extra scout DMG", dmg);
 			SetPlayerHealth(victim, attacker, hp - dmg);
 		}
 		else if (StrContains(strWeaponClass,"sniper_awp",false) != -1)		// AWP
@@ -266,18 +259,14 @@ void EventsHurt_AttackerRochelle(Handle hEvent, int attacker, int victim)
 
 			dmg = CalculateDamageTakenForVictimTalents(victim, dmg, strWeaponClass);
 
-			// PrintToChat(attacker, "Doing %d extra awp DMG", dmg);
 			SetPlayerHealth(victim, attacker, hp - dmg);
 		}
 	}
 }
 
 // EventsHurt_VictimRochelle(Handle hEvent, attacker, victim)
-// {
 // 		return;
 // 	if (IsFakeClient(victim))
-// }
-
 void EventsInfectedHurt_Rochelle(Handle hEvent, int  iAttacker, int iVictim)
 {
 	if (g_iChosenSurvivor[iAttacker] != ROCHELLE ||
@@ -297,7 +286,6 @@ void EventsInfectedHurt_Rochelle(Handle hEvent, int  iAttacker, int iVictim)
 
 	char strCurrentWeapon[32];
 	GetClientWeapon(iAttacker, strCurrentWeapon, sizeof(strCurrentWeapon));
-	// PrintToChat(iAttacker, "%s", strCurrentWeapon);
 	
 	// Ruger Stacks when shooting a common
 	if (StrEqual(strCurrentWeapon, "weapon_hunting_rifle", false) == true) {
@@ -308,7 +296,6 @@ void EventsInfectedHurt_Rochelle(Handle hEvent, int  iAttacker, int iVictim)
 		
 		// This is a hacky solution for telling if they missed a CI or not
 		g_iRochelleRugerHitCounter[iAttacker] = 0;
-		// PrintToChat(attacker,"Ruger Hit Counter: %d", g_iRochelleRugerHitCounter[attacker]);
 	}
 
 	SuppressNeverUsedWarning(iVictim);
@@ -330,7 +317,6 @@ void EventsDeath_AttackerRochelle(Handle hEvent, int iAttacker, int iVictim)
 	
 	char strWeaponClass[32];
 	GetEventString(hEvent,"weapon",strWeaponClass,32);
-	// PrintToChatAll("%s", strWeaponClass);
 
 	// Handle Rochelle's different sniper weapons
 	if (StrContains(strWeaponClass,"sniper_scout",false) != -1)			// Scout
@@ -361,10 +347,7 @@ void EventsDeath_AttackerRochelle(Handle hEvent, int iAttacker, int iVictim)
 }
 
 // EventsDeath_VictimRochelle(Handle hEvent, iAttacker, iVictim)
-// {
 // 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
-// }
-
 void Event_WeaponFire_Rochelle(int iClient, char[] strWeaponClass)
 {
 	if (g_iChosenSurvivor[iClient] != ROCHELLE ||
@@ -379,7 +362,6 @@ void Event_WeaponFire_Rochelle(int iClient, char[] strWeaponClass)
 
 	if (StrContains(strWeaponClass,"hunting_rifle", false) != -1)	//Ruger
 	{
-		// PrintToChat(iClient, "Ruger Hit Counter: %d", g_iRochelleRugerHitCounter[iClient]);
 		// This is a hacky solution for telling if they missed an infected or not
 		if (++g_iRochelleRugerHitCounter[iClient] > 1)
 			CreateTimer(0.1, Timer_RochelleRugerHitCheck, iClient, TIMER_FLAG_NO_MAPCHANGE)
@@ -665,30 +647,6 @@ void ToggleDetectionHud(int iClient)
 	return;
 }
 
-// bool HandleFastAttackingClients_Rochelle(const int iClient, const int iActiveWeaponID, const int iActiveWeaponSlot, const float fGameTime, const float fCurrentNextAttackTime, float &fAdjustedNextAttackTime)
-// {
-// 	if (g_iShadowLevel[iClient] <= 0)
-// 		return false;
-
-// 	// Check if its a secondary weapon
-// 	if (iActiveWeaponSlot != 1)
-// 		return false;
-
-// 	// Check to make sure its a melee weapon
-// 	char strEntityClassName[32];
-// 	GetEntityClassname(iActiveWeaponID, strEntityClassName, 32);
-// 	// PrintToChat(iClient, "strEntityClassName: %s", strEntityClassName);
-// 	if (StrContains(strEntityClassName, "weapon_melee", true) == -1)
-// 		return false;
-
-// 	// All checks were passed, set the speed
-// 	fAdjustedNextAttackTime = ( fCurrentNextAttackTime - fGameTime ) * (1 / (1 + (g_iShadowLevel[iClient] * 0.3) ) )   + fGameTime;
-// 	// Show the particle effect
-// 	WriteParticle(iClient, "rochelle_silhouette", 0.0, 0.4);
-
-// 	return true;
-// }
-
 void HandleFasterAttacking_Rochelle(int iClient, int iButtons)
 {
 	if (g_iChosenSurvivor[iClient] != ROCHELLE || 
@@ -714,7 +672,6 @@ void HandleFasterAttacking_Rochelle(int iClient, int iButtons)
 	// Check to make sure its a melee weapon
 	char strEntityClassName[32];
 	GetEntityClassname(iActiveWeaponID, strEntityClassName, 32);
-	// PrintToChat(iClient, "strEntityClassName: %s", strEntityClassName);
 	if (StrContains(strEntityClassName, "weapon_melee", true) == -1)
 		return;
 

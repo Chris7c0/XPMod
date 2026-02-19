@@ -119,7 +119,6 @@ Action Timer_UnfreezePlayerByTank(Handle timer, int iClient)
 
 Action Timer_EnableIceTankColdSlowAura(Handle timer, int iClient)
 {
-	// PrintToChatAll("___+++ REenabling COLD AURA for %N", iClient);
 	g_bIceTankColdAuraDisabled[iClient] = false;
 	SetClientSpeed(iClient);
 

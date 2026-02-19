@@ -471,7 +471,6 @@ void Event_DeathResetAllVariables(int iAttacker, int iVictim)
 
 void DeleteAllGlobalTimerHandles(int iClient)
 {
-	//delete g_hTimer_FreezeCountdown;
 	delete g_hTimer_ShowingConfirmTalents[iClient];
 	delete g_hTimer_VictimHealthMeterStop[iClient];
 	delete g_hTimer_SelfReviveCheck[iClient];

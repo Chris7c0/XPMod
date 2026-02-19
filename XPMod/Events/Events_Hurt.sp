@@ -4,30 +4,6 @@ Action Event_PlayerHurt(Handle hEvent, const char[] strName, bool bDontBroadcast
 	int iVictim = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	int iDamage = GetEventInt(hEvent, "dmg_health");
 
-	// // Reset bot action if hurt
-	// if (RunClientChecks(iVictim) && IsFakeClient(iVictim) && IsPlayerAlive(iVictim))
-	// {
-	// 	ResetBotCommand(iVictim);
-	// }
-
-	// PrintToChatAll("Hitbox: %d | m_flModelScale %f | Collision: %d\nSolidType: %d | SolidFlags: %d\n",
-	// 		GetEntProp(iVictim, Prop_Send, "m_nHitboxSet"),
-	// 		GetEntPropFloat(iVictim, Prop_Send, "m_flModelScale"),
-	// 		GetEntProp(iVictim, Prop_Send, "m_CollisionGroup"),
-	// 		GetEntProp(iVictim, Prop_Send, "m_nSolidType"),
-	// 		GetEntProp(iVictim, Prop_Send, "m_usSolidFlags"));
-
-	// // Testing Damage Here
-	// new dmgHealth  = GetEventInt(hEvent,"dmg_health");
-	// new dmgType = GetEventInt(hEvent, "type");
-	// new hitGroup = GetEventInt(hEvent, "hitgroup");
-	// PrintToChatAll("Attacker = %d, Victim = %d, dmgHealth = %d, dmgType = %d, hitGroup = %d", iAttacker, iVictim, dmgHealth, dmgType, hitGroup);
-	// PrintToChatAll("%N dType = %d, Group = %d, dHealth = %d", iVictim, dmgType, hitGroup, dmgHealth);
-	// PrintToChatAll("g_iInfectedCharacter[iAttacker] = %s", g_iInfectedCharacter[iAttacker]);
-	// char testweapon[32];
-	// GetEventString(hEvent,"weapon", testweapon, 32);
-	// PrintToChatAll("\x03-weapon: \x01%s, dmgHealth: %i",testweapon, dmgHealth);
-
 	// Unfreeze player if they take any damage from SI
 	if(g_bFrozenByTank[iVictim] == true && 
 		g_iClientTeam[iVictim] == TEAM_SURVIVORS && 
@@ -55,7 +31,6 @@ Action Event_PlayerHurt(Handle hEvent, const char[] strName, bool bDontBroadcast
 	// Reduce damage for low level human survivor players that are not incaped
 	ReduceDamageTakenForNewPlayers(iVictim, iAttacker, iDamage);
 
-	// PrintToChatAll("%N armor = %d = health = %i health_dmg = %i", iVictim, GetEventFloat(hEvent, "dmg_armor"), GetEventInt(hEvent, "health"), GetEventInt(hEvent, "dmg_health"));
 	
 	EventsHurt_IncreaseCommonInfectedDamage(iAttacker, iVictim);
 
@@ -169,7 +144,6 @@ void EventsHurt_GiveXP(Handle hEvent, int iAttacker, int iVictim)
 	{
 		char iWeaponClass[32];
 		GetEventString(hEvent,"weapon",iWeaponClass,32);
-		//PrintToChat(iAttacker, "weaponclass = %s", iWeaponClass);
 		
 		if(iDmgType == 263168 || iDmgType == 265216)
 		{

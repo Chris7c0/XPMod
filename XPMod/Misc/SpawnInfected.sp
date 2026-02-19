@@ -84,7 +84,6 @@ void SpawnCIAroundLocation(float xyzLocation[3], int iAmount = 1, int iUncommon 
 		float fRadius = 50.0;
 		float fXOffset = (fRadius * Cosine(fAngleIncrement * i)) - (fRadius / 2);
 		float fYOffset = (fRadius * Sine(fAngleIncrement * i)) - (fRadius / 2);
-		//PrintToServer("%f %f", fXOffset, fYOffset);
 
 		xyzLocation[0] += fXOffset;
 		xyzLocation[1] += fYOffset;
@@ -157,82 +156,3 @@ void SpawnSpecialInfected(int iClient, char[] strInfectedToSpawn = "")
 	
 	RunCheatCommand(iClient, "z_spawn_old",strSpawnCommand);
 }
-
-
-
-
-// SpawnSpecialInfected(client, Class, bool bAuto=true)
-// {
-// 	bool resetGhostState[MaxClients+1];
-// 	bool resetIsAlive[MaxClients+1];
-// 	bool resetLifeState[MaxClients+1];
-// 	ChangeClientTeam(client, 3);
-// 	char g_sBossNames[9+1][10]={"","smoker","boomer","hunter","spitter","jockey","charger","witch","tank","survivor"};
-// 	char options[30];
-// 	if (Class < 1 || Class > 8) return false;
-// 	if (GetClientTeam(client) != 3) return false;
-// 	if (!IsClientInGame(client)) return false;
-// 	if (IsPlayerAlive(client)) return false;
-	
-// 	for (new i=1; i<=MaxClients; i++){ 
-// 		if (i == client) continue; //dont disable the chosen one
-// 		if (!IsClientInGame(i)) continue; //not ingame? skip
-// 		if (GetClientTeam(i) != 3) continue; //not infected? skip
-// 		if (IsFakeClient(i)) continue; //a bot? skip
-		
-// 		if (IsPlayerGhost(i)){
-// 			resetGhostState[i] = true;
-// 			SetPlayerGhostStatus(i, false);
-// 			resetIsAlive[i] = true; 
-// 			SetPlayerIsAlive(i, true);
-// 		}
-// 		else if (!IsPlayerAlive(i)){
-// 			resetLifeState[i] = true;
-// 			SetPlayerLifeState(i, false);
-// 		}
-// 	}
-// 	Format(options,sizeof(options),"%s%s",g_sBossNames[Class],(bAuto?" auto":""));
-
-// 	//CheatCommand(client, "z_spawn_old", options);
-
-// 	RunCheatCommand(client, "z_spawn_old", "%s %s", "z_spawn_old", options);
-
-
-// 	//if (IsFakeClient(client)) KickClient(client);
-// 	//We restore the player's status
-// 	for (new i=1; i<=MaxClients; i++){
-// 		if (resetGhostState[i]) SetPlayerGhostStatus(i, true);
-// 		if (resetIsAlive[i]) SetPlayerIsAlive(i, false);
-// 		if (resetLifeState[i]) SetPlayerLifeState(i, true);
-// 	}
-
-// 	return true;
-// }
-
-// stock bool IsPlayerGhost(client)
-// {
-// 	if (GetEntProp(client, Prop_Send, "m_isGhost", 1)) return true;
-// 	return false;
-// }
-
-// stock SetPlayerGhostStatus(client, bool ghost)
-// {
-// 	if(ghost){	
-// 		SetEntProp(client, Prop_Send, "m_isGhost", 1, 1);
-// 	}else{
-// 		SetEntProp(client, Prop_Send, "m_isGhost", 0, 1);
-// 	}
-// }
-
-// stock SetPlayerIsAlive(client, bool alive)
-// {
-// 	new offset = FindSendPropInfo("CTransitioningPlayer", "m_isAlive");
-// 	if (alive) SetEntData(client, offset, 1, 1, true);
-// 	else SetEntData(client, offset, 0, 1, true);
-// }
-
-// stock SetPlayerLifeState(client, bool ready)
-// {
-// 	if (ready) SetEntProp(client, Prop_Data, "m_lifeState", 1, 1);
-// 	else SetEntProp(client, Prop_Data, "m_lifeState", 0, 1);
-// }

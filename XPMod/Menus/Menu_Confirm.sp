@@ -22,24 +22,6 @@ Action TimerCheckAndOpenCharacterSelectionMenuForAll(Handle timer, int data)
 	return Plugin_Continue;
 }
 
-// Action TimerOpenCharacterSelectionMenuForUser(Handle timer, int iClient)
-// {
-// 	if (g_iAutoSetCountDown[iClient] == -1 && 
-// 		g_bClientLoggedIn[iClient] == true && 
-// 		g_bTalentsConfirmed[iClient] == false && 
-// 		IsClientInGame(iClient) == true && 
-// 		GetClientMenu(iClient) == MenuSource_None && 
-// 		IsFakeClient(iClient) == false)
-// 	{
-// 		//g_iAutoSetCountDown[iClient] = 30;
-// 		//CreateTimer((0.1 * iClient), TimerShowTalentsConfirmed, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
-// 		//CreateTimer((10.0), CheckIfUserMovedThenOpenCharacterSelectionPanel, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
-// 		OpenCharacterSelectionPanel(iClient);
-// 	}
-	
-// 	return Plugin_Stop;
-// }
-
 void OpenCharacterSelectionPanel(int iClient)
 {
 	// Close any existing confirmation menu
@@ -47,11 +29,6 @@ void OpenCharacterSelectionPanel(int iClient)
 	ClosePanel(iClient);
 	// Prevent the user from seeing the menu twice for the round
 	g_bClientAlreadyShownCharacterSelectMenu[iClient] = true;
-	
-	// Temporarily disabled until valve fixes MOTDs when people join after joining a different server
-	// Draw multiple times to prevent from not showing
-	//CreateTimer(0.1, DelayedCharacterSelectDrawMOTDPanel, iClient);
-	//CreateTimer(0.5, DelayedCharacterSelectDrawMOTDPanel, iClient);
 
 	// Instead of drawing the MOTD, draw the menu
 	if (g_bClientLoggedIn[iClient] == true)
@@ -73,26 +50,8 @@ Action StartWaitingForClientInputForDrawMenu(Handle timer, int iClient)
 {
 	// This will wait then 2nd button input for drawing the confirm menu
 	g_iOpenCharacterSelectAndDrawMenuState[iClient] = WAITING_ON_FINAL_BUTTON_FOR_CONFIRM_MENU;
-	//PrintToChat(iClient, "g_iOpenCharacterSelectAndDrawMenuState = WAITING_ON_FINAL_BUTTON_FOR_CONFIRM_MENU");
 	return Plugin_Stop;
 }
-
-// Action DelayedCharacterSelectDrawMOTDPanel(Handle timer, int iClient)
-// {
-// 	// PrintToServer("Drawing MOTD");
-// 	char url[256];
-
-// 	if (g_iClientTeam[iClient] == TEAM_SURVIVORS)
-// 		Format(url, sizeof(url), "http://xpmod.net/select/s/survivor_select.php?id=%i&t=%s", g_iDBUserID[iClient], g_strDBUserToken[iClient]);
-// 	else if (g_iClientTeam[iClient] == TEAM_INFECTED)
-// 		Format(url, sizeof(url), "http://xpmod.net/select/i/infected_select.php?id=%i&t=%s", g_iDBUserID[iClient], g_strDBUserToken[iClient]);
-// 	else
-// 		Format(url, sizeof(url), "http://xpmod.net/select/character_select.php?id=%i&t=%s", g_iDBUserID[iClient], g_strDBUserToken[iClient]);
-	
-// 	OpenMOTDPanel(iClient, " ", url, MOTDPANEL_TYPE_URL);
-
-// 	return Plugin_Stop;
-// }
 
 void OpenCharacterSelectMenu(int iClient)
 {

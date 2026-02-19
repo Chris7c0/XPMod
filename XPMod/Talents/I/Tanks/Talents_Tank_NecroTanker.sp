@@ -13,7 +13,6 @@ void LoadNecroTankerTalents(int iClient)
 		return;
 	}
 
-	// PrintToChatAll("%N Loading NECROTANKER abilities.", iClient);
 	
 	g_iTankChosen[iClient] = TANK_NECROTANKER;
 
@@ -45,12 +44,6 @@ void ResetAllTankVariables_NecroTanker(int iClient)
 {
 	SuppressNeverUsedWarning(iClient);
 }
-
-// SetupTankForBot_NecroTanker(iClient)
-// {
-// 	LoadNecroTankerTalents(iClient);
-// }
-
 
 void SetClientSpeedTankNecroTanker(int iClient, float &fSpeed)
 {
@@ -209,94 +202,6 @@ void CreateNecroTankerTrailEffect(int iClient)
 	DispatchSpawn(g_iPID_TankTrail[iClient]);
 	AcceptEntityInput(g_iPID_TankTrail[iClient], "TurnOn");
 }
-
-// ReplaceTankRockWithSpecialInfected(iTankRockEntity)
-// {	
-// 	//Find the tank rock entity in the list that will be used to gain the rock type
-// 	//new iTankRockIndex = FindIndexInArrayListUsingValue(g_listTankRockEntities, iTankRockEntity, TANK_ROCK_ENTITY_ID);
-
-
-// 	//SetEntityModel(iTankRockEntity, "models/infected/boomer.mdl");
-// 	// SetEntProp(iTankRockEntity, Prop_Data, "m_nNextThinkTick", 0.1);
-// 	// //CreateTimer(0.1, TimerSetMobRush, iTankRockEntity);
-// 	// //DispatchSpawn(iTankRockEntity);
-// 	// ActivateEntity(EntRefToEntIndex(iTankRockEntity));
-// 	// // ActivateEntity(iTankRockEntity);
-// 	// SetVariantString("Vomit_Attack");
-// 	//AcceptEntityInput(iTankRockEntity, "SetAnimation", -1, -1, 0); 
-// 	// AcceptEntityInput(EntRefToEntIndex(iTankRockEntity), "SetAnimation");
-// 	// AcceptEntityInput(EntRefToEntIndex(iTankRockEntity), "Enable");
-// 	// AcceptEntityInput(EntRefToEntIndex(iTankRockEntity), "EnableMotion");
-	
-
-// 	float velocity[3];
-// 	new g_iVelocity = FindSendPropInfo("CBasePlayer", "m_vecVelocity[0]");	
-// 	GetEntDataVector(iTankRockEntity, g_iVelocity, velocity);
-
-// 	new bot = CreateFakeClient("Boomer");
-// 	if (bot > 0)
-// 	{
-// 		SpawnSpecialInfected(bot, BOOMER, true);
-// 		float Pos[3];
-// 		GetEntPropVector(iTankRockEntity, Prop_Send, "m_vecOrigin", Pos);
-//		If (iTankRockEntity > 0 && IsValidEntity(iTankRockEntity))
-// 			AcceptEntityInput(iTankRockEntity, "Kill");
-// 		NormalizeVector(velocity, velocity);
-// 		float speed = GetConVarFloat(FindConVar("z_tank_throw_force"));
-// 		ScaleVector(velocity, speed*1.4);
-// 		//PrintToChatAll("%f, %f, %f", Pos[0],Pos[1],Pos[2])
-// 		TeleportEntity(bot, Pos, NULL_VECTOR, velocity);
-// 		// Set it so thatt it knows the boomer is not on the ground
-// 		new flags = GetEntityFlags(bot);
-// 		SetEntityFlags(bot, flags&~FL_ONGROUND)
-// 		// Wait for thte boomer to be on the ground, then explode it
-// 		CreateTimer(0.1, WaitToExplodeNecroTankerBoomerRockThrow, bot, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
-// 	}
-// }
-
-// Action WaitToExplodeNecroTankerBoomerRockThrow(Handle timer, int iClient)
-// {
-// 	// NecroTanker boomer throw
-// 	if(IsPlayerAlive(iClient) == false || GetEntProp(iClient, Prop_Send, "m_zombieClass") != BOOMER)
-// 	{
-// 		if (IsFakeClient(iClient)) KickClient(iClient);
-// 		return Plugin_Stop;
-// 	}
-	
-// 	//PrintToChatAll("FL_ONGROUND: %i", (GetEntityFlags(iClient) & FL_ONGROUND));
-// 	if ((GetEntityFlags(iClient) & FL_ONGROUND))
-// 	{
-// 		float xyzBoomerExplosionVector[3];
-// 		GetClientEyePosition(iClient, xyzBoomerExplosionVector);
-// 		//PrintToChatAll("xyzBoomerExplosionVector %f, %f, %f", xyzBoomerExplosionVector[0],xyzBoomerExplosionVector[1],xyzBoomerExplosionVector[2]);
-// 		//PrintToChatAll("Exploding iClient %i", iClient);
-// 		ForcePlayerSuicide(iClient);
-// 		if (IsFakeClient(iClient)) KickClient(iClient);
-
-// 		for (new target = 1; target <= MaxClients; target++)
-// 		{
-// 			if(IsClientInGame(target) && IsPlayerAlive(target) && g_iClientTeam[target] == TEAM_SURVIVORS)
-// 			{
-// 				//PrintToChatAll("trying for %N", target);
-// 				float targetVector[3];
-// 				GetClientEyePosition(target, targetVector);
-// 				//PrintToChatAll("targetVector %f, %f, %f", targetVector[0],targetVector[1],targetVector[2]);
-// 				float distance = GetVectorDistance(targetVector, xyzBoomerExplosionVector);
-// 				//PrintToChatAll("distance: %f", distance);
-// 				if(IsVisibleTo(xyzBoomerExplosionVector, targetVector) == true && distance < 175.0)
-// 				{
-// 					//PrintToChatAll("%N is in range", target);
-// 					DealDamage(target, iClient, 3);
-// 					SDKCall(g_hSDK_VomitOnPlayer, target, iClient, true);
-// 				}
-// 			}
-// 		}
-
-// 		return Plugin_Stop;
-// 	}
-
-// 	return Plugin_Continue;
-// }
 
 void CreateNecroTankerRockDestroyEffect(int iRockEntity)
 {
@@ -476,14 +381,6 @@ void SummonNecroTankerPunchZombies(int iAttackerTank, int iVictim)
 		SpawnSpecialInfected(iAttackerTank, INFECTED_NAME[WITCH]);
 		return;
 	}
-
-	// // Spawn another tank if they roll a 1
-	// if (iRoll == 1)
-	// {
-	// 	g_bTankStartingHealthXPModSpawn = true;
-	// 	SpawnSpecialInfected(iAttackerTank, INFECTED_NAME[TANK]);
-	// 	return;
-	// }
 }
 
 void DisplayNecroTankerManaMeter(int iClient)
@@ -495,8 +392,6 @@ void DisplayNecroTankerManaMeter(int iClient)
 	strEntireManaMeter = NULL_STRING;
 	strManaMeter = NULL_STRING;
 
-	// PrintToChatAll("g_iNecroTankerManaPool %i", RoundToCeil(g_iNecroTankerManaPool[iClient] / 3.0));
-	// PrintToChatAll("NECROTANKER_MANA_POOL_SIZE %i", RoundToCeil((NECROTANKER_MANA_POOL_SIZE - 1) / 3.0));
 
 	// Create the actual mana amount in the "progress meter"
 	for(int i = 0; i < RoundToCeil(g_iNecroTankerManaPool[iClient] / 2.5); i++)

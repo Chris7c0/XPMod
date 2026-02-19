@@ -1,46 +1,12 @@
 Action TimerStopRambo(Handle timer, int iClient)
 {
-	//float vec[3];
-	//GetClientAbsOrigin(iClient, vec);
-	//EmitSoundToAll(SOUND_JPIDLEREV, iClient, SNDCHAN_AUTO,	SNDLEVEL_NORMAL, SND_NOFLAGS, 0.3, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
 	
 	
 	//fnc_DetermineMaxClipSize(iClient);
 	CyclePlayerWeapon(iClient);
 	g_bRamboModeActive[iClient] = false;
 	g_bSetWeaponAmmoOnNextGameFrame[iClient] = true;
-	// StoreCurrentPrimaryWeapon(iClient);
 
-	//StoreCurrentPrimaryWeapon(iClient);
-	//fnc_SetAmmo(iClient);
-	//fnc_SetAmmoUpgrade(iClient);
-	
-	//PrintToChatAll("Cycled weapon via rambo stop timer");
-	//fnc_SetAmmo(iClient);
-	//fnc_SetAmmoUpgrade(iClient);
-	//fnc_ClearSavedWeaponData(iClient);
-	
-	//AcceptEntityInput(g_iRamboWeaponID[iClient]);
-	/*
-	if(iClient > 0)
-		if(IsClientInGame(iClient) == true)
-			PrintHintText(iClient, "Rambo mode is now off");
-	int wID = g_iNicksRamboWeaponID[iClient];
-	char weaponclass[32];
-	GetEntityNetClass(wID, weaponclass, 32);
-	if(iClient > 1 && IsClientInGame(iClient) == true && IsPlayerAlive(iClient) == true)
-	{
-
-		RunCheatCommand(iClient, "upgrade_remove", "upgrade_remove EXPLOSIVE_AMMO");
-
-	}
-	if(wID > 0 && IsValidEntity(wID))
-	{
-		SetEntData(wID, g_iOffset_Clip1, 0, true);	//remove entity if this is working good
-		AcceptEntityInput(wID);
-	}
-	g_iNicksRamboWeaponID[iClient] = 0;
-	*/
 	return Plugin_Stop;
 }
 
@@ -67,29 +33,6 @@ Action TimerSlap(Handle timer, int iClient)
 	return Plugin_Stop;
 }
 
-// Action TimerMakeVisible(Handle timer, int iClient)
-// {
-// 	g_bNickIsInvisible[iClient] = false;
-// 	if(IsValidEntity(iClient) == true && IsClientInGame(iClient) == true)
-// 	{
-// 		SetEntProp(iClient, Prop_Send, "m_iGlowType", 0);
-// 		SetEntProp(iClient, Prop_Send, "m_nGlowRange", 0);
-// 		SetEntProp(iClient, Prop_Send, "m_glowColorOverride", 0);
-// 		SetEntityRenderMode(iClient, RenderMode:0);
-// 		SetEntityRenderColor(iClient, 255, 255, 255, 255);
-// 		if(IsFakeClient(iClient) == false)
-// 			PrintHintText(iClient, "The phenomenon has passed and you are now visible agian.");
-// 	}
-// 	return Plugin_Stop;
-// }
-
-// Action TimerBlindFade(Handle timer, int iClient)
-// {
-// 	if(IsFakeClient(iClient)==false)
-// 		ShowHudOverlayColor(iClient, 0, 0, 0, 255, 4000, FADE_OUT);
-
-// 	return Plugin_Stop;
-// }
 
 Action TimerReEnableBindsNick(Handle timer, int iClient)
 {
@@ -145,10 +88,6 @@ Action TimerLifeStealing(Handle timer, Handle pack)
 	}
 	g_bNickIsStealingLife[victim][attacker] = false;
 	
-	//if(IsFakeClient(victim)==false)
-	//	PrintHintText(victim, "The life stealing effects have worn off");
-	
-	//PrintToChatAll( "victim %d, attacker %d", victim, attacker);
 
 	CloseHandle(pack);
 	g_hTimer_NickLifeSteal[victim] = null;
@@ -225,10 +164,8 @@ Action TimerNickDualClipSize(Handle timer, int iClient)
 	char currentweapon[512];
 	GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
 	int ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-	//PrintToChatAll("In Timer: About to set clip size... Clip Slot 2 = %i", g_iNickSecondarySavedClipSlot2[iClient]);
 	if(StrEqual(currentweapon, "weapon_pistol", false) == true)
 	{
-		//PrintToChatAll("In Timer: Weapon is pistol, setting clip size now... Clip Slot 2 = %i", g_iNickSecondarySavedClipSlot2[iClient]);
 		SetEntData(ActiveWeaponID, g_iOffset_Clip1, g_iNickSecondarySavedClipSlot2[iClient], true);
 	}
 	return Plugin_Stop;

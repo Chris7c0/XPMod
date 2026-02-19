@@ -195,10 +195,6 @@ void Event_BoomerVomitOnPlayer(int iAttacker, int iVictim)
 	}
 }
 
-// EventsDeath_AttackerBoomer(Handle hEvent, iAttacker, iVictim)
-// {
-// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
-// }
 
 void EventsDeath_VictimBoomer(Handle hEvent, int iAttacker, int iVictim)
 {
@@ -227,16 +223,13 @@ void EventsDeath_VictimBoomer(Handle hEvent, int iAttacker, int iVictim)
 			{
 				if (g_bIsSuicideJumping[iVictim] == true)
 				{
-					//PrintToChatAll("trying for %N", target);
 					float targetVector[3];
 					GetClientEyePosition(target, targetVector);
 					float distance = GetVectorDistance(targetVector, vector);
 					if(IsVisibleTo(vector, targetVector) == true)
 					{
-						//PrintToChatAll("%N is visible to you", target);
 						if(distance < (200.0 + (float(g_iNorovirusLevel[iVictim]) * 15.0)))
 						{
-							//PrintToChatAll("%N is in range", target);
 							DealDamage(target, iVictim, 10 + RoundToNearest(g_iNorovirusLevel[iVictim] * 1.5));
 							SDKCall(g_hSDK_VomitOnPlayer, target, iVictim, true);
 							

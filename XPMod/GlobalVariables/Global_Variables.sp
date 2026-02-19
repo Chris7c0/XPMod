@@ -241,7 +241,6 @@ char INFECTED_NAME[][] =          {"",
 
 //Round/Map Variables
 char g_strCurrentMap[32] = "";
-//bool g_bRoundStarted = false;
 int g_iRoundCount;
 bool g_bEndOfRound = false;
 bool g_bPlayerLeftStartArea = false;
@@ -318,12 +317,9 @@ bool g_bStopSISpawning;
 
 int gClone[MAXPLAYERS + 1];
 bool talentsJustGiven[MAXPLAYERS + 1] = {false, ...};
-// bool bTestToggle[MAXPLAYERS + 1];
 float rspeed;
 bool canchangemovement[MAXPLAYERS + 1];
 int preledgehealth[MAXPLAYERS + 1];
 float preledgebuffer[MAXPLAYERS + 1];
 bool clienthanging[MAXPLAYERS + 1];
-//int g_iAbility = 0;
-//float g_fEllisTestFireRate = 0.0;
 float g_testingSpeedOverride[MAXPLAYERS + 1];

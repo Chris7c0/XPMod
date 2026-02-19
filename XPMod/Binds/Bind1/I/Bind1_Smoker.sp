@@ -70,8 +70,6 @@ void Bind1Press_Smoker(int iClient)
 
 void TurnSmokerIntoSmokeCloud(int iClient)
 {
-	// SDKHook(iClient, SDKHook_OnTakeDamage, OnTakeDamage);
-
 	g_iSmokerSmokeCloudPlayer = iClient;
 	g_iSmokerInSmokeCloudLimbo = -1;
 	g_iSmokerSmokeCloudStage = 1
@@ -86,12 +84,6 @@ void TurnSmokerIntoSmokeCloud(int iClient)
 
 	SetEntProp(iClient, Prop_Send, "m_bDrawViewmodel", 0);
 
-	// PrintToChatAll("m_CollisionGroup %i", GetEntProp(iClient, Prop_Data, "m_CollisionGroup"));
-	// PrintToChatAll("m_usSolidFlags %i", GetEntProp(iClient, Prop_Data, "m_usSolidFlags"));
-	// PrintToChatAll("m_nSolidType %i", GetEntProp(iClient, Prop_Data, "m_nSolidType"));
-
-	// SetEntProp(iClient, Prop_Data, "m_CollisionGroup", 1);
-	// SetEntProp(iClient, Prop_Data, "m_usSolidFlags", 4);
 	SetEntProp(iClient, Prop_Send, "m_nSolidType", 0);
 
 	SetClientSpeed(iClient);
@@ -144,8 +136,6 @@ void TurnBackToSmokerAfterSmokeCloud(int iClient)
 
 	SetEntProp(iClient, Prop_Send, "m_bDrawViewmodel", 1);
 
-	// SetEntProp(iClient, Prop_Data, "m_CollisionGroup", 5);
-	// SetEntProp(iClient, Prop_Data, "m_usSolidFlags", 16);
 	SetEntProp(iClient, Prop_Send, "m_nSolidType", 2);
 
 	SetClientSpeed(iClient);
@@ -300,8 +290,6 @@ void HandlePlayersInSmokeCloud(int iClient)
 		float xyzPlayerLocation[3];
 		GetClientAbsOrigin(iPlayer, xyzPlayerLocation);
 
-		//PrintToChatAll("distance: %f ", GetVectorDistance(xyzClientLocation, xyzPlayerLocation, false));
-
 		//Check if the player is in range of the client that is tangled
 		if (GetVectorDistance(xyzClientLocation, xyzPlayerLocation, false) <= SMOKER_SMOKE_CLOUD_RADIUS)
 		{
@@ -399,20 +387,6 @@ void CreateSmokerSmokeCloudParticle(int iClient)
 	);
 }
 
-// UpdateSmokerSmokeCloudParticleLocation(iClient)
-// {
-// 	if (RunClientChecks(iClient) == false ||
-// 		RunEntityChecks(g_iSmokerSmokeCloudParticleEntity[iClient]) == false)
-// 		return;
-
-// 	float xyzPosition[3];
-// 	GetClientEyePosition(iClient, xyzPosition);
-// 	TeleportEntity(g_iSmokerSmokeCloudParticleEntity[iClient], EMPTY_VECTOR, EMPTY_VECTOR, EMPTY_VECTOR);
-
-// 	SetVariantString("!activator");
-// 	AcceptEntityInput(g_iSmokerSmokeCloudParticleEntity[iClient], "SetParent", iClient, g_iSmokerSmokeCloudParticleEntity[iClient], 0);
-// }
-
 void HandleEntitiesInSmokerCloudRadius(int iClient, float fRadius)
 {
 	// Set this value incase g_iSmokerSmokeCloudStage is required later in this function
@@ -425,20 +399,10 @@ void HandleEntitiesInSmokerCloudRadius(int iClient, float fRadius)
 	char strClasses[4][32] = {"infected", "inferno", "pipe_bomb_projectile", "info_goal_infected_chase"};
 	for (int iIndex=0; iIndex < GetAllEntitiesInRadiusOfEntity(iClient, fRadius, iAllVaiableEntities, strClasses, sizeof(strClasses)); iIndex++)
 	{
-		// Not needed because will only run for valid indexes
-		// // When 0, there are no more viable values
-		// if (iAllVaiableEntities[iIndex] == 0)
-		// 	break;
-
 		iEntity = iAllVaiableEntities[iIndex];
-
-		// // Skip if its the Smoker
-		// if (iEntity == iClient)
-		// 	continue;
 
 		strEntityClassName = "";
 		GetEntityClassname(iEntity, strEntityClassName, 32);
-		PrintToServer("HandleEntitiesInSmokerCloudRadius: i: %i, className = %s", iEntity, strEntityClassName)
 
 		// Handle putting out molotov or other sources of fires and projectiles
 		if (StrEqual(strEntityClassName, "inferno", true) ||					// Molotov and gascan
@@ -457,11 +421,6 @@ void HandleEntitiesInSmokerCloudRadius(int iClient, float fRadius)
 			// If already Enhanced CI, move on and continue the search
 			if (IsEnhancedCI(iEntity) == true)
 				continue;
-
-			//PrintToChatAll("%i) iHealth = %i", iEntity, GetEntProp(iEntity, Prop_Data, "m_iHealth"));
-			// PrintToChatAll("%i) m_bClientSideRagdoll = %i", iEntity, GetEntProp(iEntity, Prop_Data, "m_bClientSideRagdoll"));
-			// PrintToChatAll("fDistance = %f", GetVectorDistance(xyzClientLocation, xyzEntityLocation));
-			// PrintToChatAll("%f, %f, %f", xyzEntityLocation[0], xyzEntityLocation[1], xyzEntityLocation[2]);
 
 			// Get the location of where to spawn new enhanced CI
 			GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", xyzEntityLocation);

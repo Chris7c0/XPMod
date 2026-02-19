@@ -257,8 +257,6 @@ void HealClientFully(int iClient)
 
 	g_bIsClientDown[iClient] = false;
 	
-	// new iMaxHealth = GetEntProp(iClient,Prop_Data,"m_iMaxHealth");
-	// SetEntProp(iClient, Prop_Data, "m_iHealth", iMaxHealth);
 }
 
 void HealAllSurvivorsFully()
@@ -300,18 +298,6 @@ void SetPlayerTalentMaxHealth(int iClient, bool bFillInHealthGap = true)
 			case LOUIS:		SetPlayerTalentMaxHealth_Louis(iClient, bFillInHealthGap);
 		}
 	}
-	// else if (g_iClientTeam[iClient] == TEAM_INFECTED)
-	// {
-	// 	switch(g_iChosenSurvivor[iClient])
-	// 	{
-	// 		case BILL:		SetPlayerTalentMaxHealth_Bill(iClient);
-	// 		case ROCHELLE:	SetPlayerTalentMaxHealth_Rochelle(iClient);
-	// 		case COACH:		SetPlayerTalentMaxHealth_Coach(iClient);
-	// 		case ELLIS:		SetPlayerTalentMaxHealth_Ellis(iClient);
-	// 		case NICK:		SetPlayerTalentMaxHealth_Nick(iClient);
-	// 		case LOUIS:		SetPlayerTalentMaxHealth_Louis(iClient);
-	// 	}
-	// }
 }
 
 // Set max health for people not confirmed or bots
@@ -322,16 +308,4 @@ void SetPlayerNonTalentedMaxHealth(int iClient)
 	{
 		SetPlayerMaxHealth(iClient,	100 + (g_iCoachTeamHealthStack * 5), false, true);
 	}
-	// else if (g_iClientTeam[iClient] == TEAM_INFECTED)
-	// {
-	// 	switch(g_iChosenSurvivor[iClient])
-	// 	{
-	// 		case BILL:		SetPlayerTalentMaxHealth_Bill(iClient);
-	// 		case ROCHELLE:	SetPlayerTalentMaxHealth_Rochelle(iClient);
-	// 		case COACH:		SetPlayerTalentMaxHealth_Coach(iClient);
-	// 		case ELLIS:		SetPlayerTalentMaxHealth_Ellis(iClient);
-	// 		case NICK:		SetPlayerTalentMaxHealth_Nick(iClient);
-	// 		case LOUIS:		SetPlayerTalentMaxHealth_Louis(iClient);
-	// 	}
-	// }
 }

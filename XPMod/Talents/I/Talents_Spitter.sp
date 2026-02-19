@@ -171,16 +171,6 @@ void EventsHurt_AttackerSpitter(Handle hEvent, int attacker, int victim)
 	}
 }
 
-// EventsDeath_AttackerSpitter(Handle hEvent, iAttacker, iVictim)
-// {
-// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
-// }
-
-// EventsDeath_VictimSpitter(Handle hEvent, iAttacker, iVictim)
-// {
-// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
-// }
-
 void DealSpecialSpitterGooCollision(int iAttacker, int iVictim, int iDamageTaken)
 {
 	if(g_bAdhesiveGooActive[iVictim] == false)
@@ -324,7 +314,6 @@ void DealSpecialSpitterGooCollision(int iAttacker, int iVictim, int iDamageTaken
 						xyzNewVelocity[2] = 550.0;
 					}
 				}
-				//PrintToChatAll("X = %f, Y = %f, Z = %f", xyzNewVelocity[0], xyzNewVelocity[1], xyzNewVelocity[2]);
 				TeleportEntity(iVictim, NULL_VECTOR, NULL_VECTOR, xyzNewVelocity);
 				CreateTimer(8.0, TimerResetRepulsion, iVictim, TIMER_FLAG_NO_MAPCHANGE);
 			}

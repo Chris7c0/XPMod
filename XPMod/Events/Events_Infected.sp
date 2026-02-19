@@ -21,7 +21,6 @@ Action Event_PlayerNowIt(Handle hEvent, const char[] strName, bool bDontBroadcas
 	
 	if(RunClientChecks(iAttacker) == true)
 	{
-		//PrintToChatAll("%N is vomited on by %N", iVictim, iAttacker);
 		g_iVomitVictimAttacker[iVictim] = iAttacker;
 	}
 
@@ -49,7 +48,6 @@ Action Event_PlayerNoLongerIt(Handle hEvent, const char[] strName, bool bDontBro
 
 	g_iVomitVictimAttacker[iVictim] = 0;
 
-	//PrintToChatAll("%N is no longer vomited on", iVictim);
 
 	return Plugin_Continue;
 }
@@ -185,7 +183,6 @@ Action Event_ChargerPummelEnd(Handle hEvent, const char[] strName, bool bDontBro
 {
 	int chargerid = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	int victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
-	//PrintToChatAll("PummelEnd %N is no longer charged", victim);
 	g_iChargerVictim[chargerid] = 0;
 	g_bChargerGrappled[victim] = false;
 	
@@ -198,10 +195,7 @@ Action Event_ChargerPummelEnd(Handle hEvent, const char[] strName, bool bDontBro
 
 Action Event_ChargerKilled(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	//new attacker = GetClientOfUserId(GetEventInt(hEvent,"attacker"));
 	int chargerid = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	//PrintToChatAll("Charger Killed %N is no longer charged", g_iChargerVictim[chargerid]);
-	//PrintToChat(g_iChargerVictim[chargerid], "Charger Killed: You are no longer charged");
 	g_bChargerGrappled[g_iChargerVictim[chargerid]] = false;
 	
 	return Plugin_Continue;
@@ -212,7 +206,6 @@ Action Event_TongueGrab(Handle hEvent, const char[] strName, bool bDontBroadcast
 	int iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	int iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 
-	// PrintToChatAll("Event_TongueGrab: Attacker: %N Victim: %N", iAttacker, iVictim);
 
 	g_bSmokerGrappled[iVictim] = true;
 	
@@ -230,7 +223,6 @@ Action Event_TongueRelease(Handle hEvent, const char[] strName, bool bDontBroadc
 	int iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	int iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 
-	// PrintToChatAll("Event_TongueRelease: Attacker: %N Victim: %N", iAttacker, iVictim);
 
 	g_bSmokerGrappled[iVictim] = false;
 	g_iChokingVictim[iAttacker] = -1;
@@ -249,7 +241,6 @@ Action Event_ChokeStart(Handle hEvent, const char[] strName, bool bDontBroadcast
 	int iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	int iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 
-	// PrintToChatAll("Event_ChokeStart: Attacker: %N Victim: %N", iAttacker, iVictim);
 
 	g_bSmokerGrappled[iVictim] = true;
 	g_iChokingVictim[iAttacker] = iVictim;
@@ -259,25 +250,6 @@ Action Event_ChokeStart(Handle hEvent, const char[] strName, bool bDontBroadcast
 	SetClientRenderAndGlowColor(iVictim);
 	return Plugin_Continue;
 }
-
-// Removed because this is triggered multiple times when the smoker moves, and 
-// looks to Event_TongueRelease happen reliably anyway.
-// Action Event_ChokeEnd(Handle hEvent, const char[] strName, bool bDontBroadcast)
-// {
-// 	new iAttacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-// 	new iVictim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
-
-// 	PrintToChatAll("Event_ChokeEnd: Attacker: %N Victim: %N", iAttacker, iVictim);
-
-// 	// g_bSmokerGrappled[iVictim] = false;
-// 	// g_iChokingVictim[iAttacker] = -1;
-
-// 	// Event_ChokeEnd_Smoker(iAttacker, iVictim);
-	
-
-// 	// SetClientRenderAndGlowColor(iVictim);
-// 	return Plugin_Continue;
-// }
 
 Action Event_JockeyRide(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
@@ -371,10 +343,7 @@ Action Event_InfectedHurt(Handle hEvent, const char[] strName, bool bDontBroadca
 {
 	int attacker = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
 	int victim = GetEventInt(hEvent, "entityid");
-	// new hitGroup = GetEventInt(hEvent, "hitgroup");
 	int iDamage = GetEventInt(hEvent, "amount");
-	// new dmgType = GetEventInt(hEvent, "type");
-	// PrintToChatAll("Attacker = %d, Victim = %d, iDamage = %d, dmgType = %d, hitGroup = %d", attacker, victim, iDamage, dmgType, hitGroup);
 
 	AddDamageToDPSMeter(attacker, iDamage);
 	
@@ -418,16 +387,7 @@ Action Event_InfectedHurt(Handle hEvent, const char[] strName, bool bDontBroadca
 		float time = (float(g_iFireLevel[attacker]) * 6.0);
 		IgniteEntity(victim, time, false);
 	}
-	/*if(g_iSilentLevel[iClient]>0)
-	{
-		char weaponclass[32];
-		GetEventString(hEvent,"weapon",weaponclass,32);		//weapon and item does not work for this
-		//PrintToChatAll("\x03-class of gun: \x01%s",weaponclass);
-		if(StrContains(weaponclass,"sniper_military",false) != -1)
-		{
-			IgniteEntity(target, 5.0, false);
-		}
-	}*/
+	
 	return Plugin_Continue;
 }
 
@@ -475,7 +435,6 @@ Action Event_TankSpawn(Handle hEvent, const char[] strName, bool bDontBroadcast)
 	if(RunClientChecks(iClient) == false || IsPlayerAlive(iClient) == false)
 		return Plugin_Continue;
 	
-	//PrintToChatAll("Event_TankSpawn %N, userid = %i tankindex = %i", iClient, iClient, GetEventInt(hEvent, "tankid"));
 	
 	g_iTankCounter++;
 	g_iClientTeam[iClient] = TEAM_INFECTED;
@@ -698,7 +657,6 @@ Action Event_WitchSpawn(Handle hEvent, const char[] sName, bool bDontBroadcast)
 	if(bOwnerFound == false)
 		return Plugin_Continue;
 	
-	//PrintToChatAll("Owner = %N", iClient);
 	
 	SetEntityModel(iWitchID, "models/infected/common_female_tshirt_skirt.mdl");
 		
@@ -714,29 +672,15 @@ Action Timer_CheckWitchRage(Handle timer, int iWitchID)
 	if(IsValidEntity(iWitchID) == false)
 		return Plugin_Stop;
 
-	//TESTING class name to stop this error:
-	// L 11/19/2020 - 16:58:10: [SM] Exception reported: Property "m_rage" not found (entity 140/func_nav_blocker)
-	// L 11/19/2020 - 16:58:10: [SM] Blaming: xpmod.smx
-	// L 11/19/2020 - 16:58:10: [SM] Call stack trace:
-	// L 11/19/2020 - 16:58:10: [SM]   [0] GetEntPropFloat
-	// L 11/19/2020 - 16:58:10: [SM]   [1] Line 1151, XPMod/Events/Events_Infected.sp::Timer_CheckWitchRage
-
-	// Got this after:
-	// Timer_CheckWitchRage: id = 796, className = witch
 	// Timer_CheckWitchRage: id = 796, className = witch
 	char className[32];
 	GetEntityClassname(iWitchID, className, 32)
-	//PrintToServer("Timer_CheckWitchRage: id = %d, className = %s", iWitchID, className)
 	if (strcmp(className, "witch", true) != 0)
 	{
-		//LogError("[XPMod] Stoping Timer_CheckWitchRage className != witch.  className: %s", className);
 		return Plugin_Stop;
 	}
 	
 	float fRage = GetEntPropFloat(iWitchID, Prop_Send, "m_rage");
-	
-	//PrintToChatAll("Witch Rage Check: id = %d, Rage = %f", iWitchID, fRage);
-	
 	if(fRage >= 1.0)
 	{
 		SetEntityModel(iWitchID, "models/infected/witch.mdl");
@@ -774,19 +718,3 @@ Action Timer_CheckWitchRage(Handle timer, int iWitchID)
 	
 	return Plugin_Continue;
 }
-
-// Action Event_GhostSpawnTime(Handle hEvent, const char[] sName, bool bDontBroadcast)
-// {
-// 	new iSpawner = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-// 	float fSpawnTime = GetEventFloat(hEvent, "spawntime");
-// 	PrintToChatAll("Spawn Time = %f", fSpawnTime);
-// 	CreateTimer(fSpawnTime + 1.5, TimerSpawnGhostClass, iSpawner, TIMER_FLAG_NO_MAPCHANGE);
-// }
-
-// Action Event_EnteredSpit(Handle hEvent, const char[] sName, bool bDontBroadcast)
-// {
-// 	//new userid = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-// 	//new subject = GetEventInt(hEvent,"subject");
-// 	// PrintToChatAll("Entered Spit, userid = %i", userid);
-// 	// PrintToChatAll("Entered Spit, subject = %i", subject);
-// }

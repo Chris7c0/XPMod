@@ -229,12 +229,6 @@ bool NoobWipe(int iClient)
 		return false;
 	}
 
-	// if (g_bHackTheServerInCooldown)
-	// {
-	// 	PrintToChat(iClient, "\x03[XPMod] \x05The server has been patched from previous h4k...looking for more exploitz...");
-	// 	return false;
-	// }
-
 	KillAllCI(iClient);
 	PrintToChatAll("\x03[XPMod] \x04%N\x05 Noob Wiped all the Common Infected.", iClient);
 	g_bNoobWipeCooldown = true;

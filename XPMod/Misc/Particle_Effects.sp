@@ -16,7 +16,6 @@ void PrecacheParticle(char[] ParticleName)
 		DispatchSpawn(Particle);
 		ActivateEntity(Particle);
 		AcceptEntityInput(Particle, "start");
-		//AcceptEntityInput(Particle, "m_iParticleSystemIndex", stridx);
 		
 		//Delete:
 		CreateTimer(0.1, DeleteParticle, Particle, TIMER_FLAG_NO_MAPCHANGE);
@@ -37,13 +36,10 @@ int WriteParticle(int iClient, char[] strParticleName, float fZOffset = 0.0, flo
 	//Validate:
 	if(IsValidEdict(Particle))
 	{
-		//PrintToChatAll("Particle Entity ID: %d", Particle);
 		//Declare:
 		float position[3];
-		// float position2[3];
 		//Origin:
 		GetEntPropVector(iClient, Prop_Send, "m_vecOrigin", position);
-		// GetEntPropVector(iClient, Prop_Send, "m_angRotation", position2);
 		if(fZOffset != 0.0)
 			position[2] += fZOffset;
 		//Send:
@@ -76,7 +72,6 @@ int WriteParticle(int iClient, char[] strParticleName, float fZOffset = 0.0, flo
 		}
 		ActivateEntity(Particle);
 		AcceptEntityInput(Particle, "start");
-		//AcceptEntityInput(Particle, "m_iParticleSystemIndex", stridx);
 	}
 	
 	if(fTime != 0.0)
@@ -141,7 +136,6 @@ int CreateParticle(char[] type, float time, int entity, int attach = ATTACH_NONE
 			AcceptEntityInput(particle, "SetParentAttachmentMaintainOffset", particle, particle, 0);
 		}
 		// All entities in presents are given a targetname to make clean up easier
-		//DispatchKeyValue(particle, "targetname", "present");
 		DispatchKeyValue(particle, "targetname", "L4DParticle");
 		
 		// Spawn and start
@@ -208,7 +202,6 @@ Action DeleteParticle(Handle timer, int Particle)
 		{
 			//Delete:
 			AcceptEntityInput(Particle, "Kill");
-			//PrintToChatAll("Deleted particle system with id: %d", Particle);
 		}
 	}
 	
@@ -227,7 +220,6 @@ void DeleteParticleEntity(int iParticle)
 		{
 			// Delete it
 			AcceptEntityInput(iParticle, "Kill");
-			//PrintToChatAll("Deleted particle system with id: %d", Particle);
 		}
 	}
 }
@@ -290,7 +282,6 @@ int CreateSmokeParticle(
 	if (RunClientChecks(iClient))
 	{
 		char strClientName[128];
-		//PrintToChatAll("SMOKE CLIENT: [%N]", iClient);
 		Format(strClientName, sizeof(strClientName), "Smoke%i", iClient);
 		DispatchKeyValue(iSmokeEntity,"targetname", strClientName);
 
@@ -300,7 +291,6 @@ int CreateSmokeParticle(
 
 	char strPosition[32];
 	Format(strPosition, sizeof(strPosition), "%f %f %f", xyzPosition[0], xyzPosition[1], xyzPosition[2]);
-	//PrintToChatAll("SMOKE POSTION: [%s]", strPosition);
 
 	char strTemp[16];
 	DispatchKeyValue(iSmokeEntity,"Origin", strPosition);
@@ -346,17 +336,14 @@ int CreateSmokeParticle(
 
 void TurnOffAndDeleteSmokeStackParticle(int iSmokeStackEntity)
 {
-	//PrintToChatAll("TurnOffAndDeleteSmokeStackParticle %i", iSmokeStackEntity);
 	if(iSmokeStackEntity > 0 && IsValidEdict(iSmokeStackEntity) && IsValidEntity(iSmokeStackEntity))
 	{
 		char Classname[99];
 		GetEdictClassname(iSmokeStackEntity, Classname, sizeof(Classname));
-		//PrintToChatAll("edict classname: %s", Classname);
 		
 		// Is it a smoke stack particle entity?
 		if(StrEqual(Classname, "env_smokestack", false))
 		{
-			//PrintToChatAll("Turning off particle %i", iSmokeStackEntity);
 			AcceptEntityInput(iSmokeStackEntity, "ClearParent");
 			AcceptEntityInput(iSmokeStackEntity, "TurnOff");
 			CreateTimer(10.0, TimerRemoveSmokeEntity, iSmokeStackEntity, TIMER_FLAG_NO_MAPCHANGE);
@@ -376,7 +363,6 @@ Action TimerRemoveSmokeEntity(Handle timer, int iSmokeStackEntity)
 	{
 		char Classname[99];
 		GetEdictClassname(iSmokeStackEntity, Classname, sizeof(Classname));
-		//PrintToChatAll("edict classname: %s", Classname);
 		
 		// Is it a smoke stack particle entity?
 		if(StrEqual(Classname, "env_smokestack", false))

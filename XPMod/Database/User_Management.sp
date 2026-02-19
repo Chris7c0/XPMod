@@ -1,8 +1,6 @@
 //Callback function for an SQL SQLGetUserIDAndToken
 void SQLGetUserIDAndTokenCallback(Handle owner, Handle hQuery, const char[] error, int iClient)
 {
-	// PrintToChatAll("SQLGetUserIDAndTokenCallback Started. %i: %N", iClient, iClient);
-	// PrintToServer("SQLGetUserIDAndTokenCallback Started. %i: %N", iClient, iClient);
 
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -12,7 +10,6 @@ void SQLGetUserIDAndTokenCallback(Handle owner, Handle hQuery, const char[] erro
 
 	if (IsValidEntity(iClient) == false || IsFakeClient(iClient))
 	{
-		//LogError("SQLGetUserIDAndTokenCallback: INVALID ENTITY OR IS FAKE CLIENT");
 		return;
 	}
 	
@@ -52,14 +49,10 @@ void SQLGetUserIDAndTokenCallback(Handle owner, Handle hQuery, const char[] erro
 		GetUserData(iClient);
 	}
 
-	// PrintToChatAll("GetUserIDAndToken Callback Complete.  %i: %N", iClient, iClient);
-	// PrintToServer("GetUserIDAndToken Callback Complete.  %i: %N", iClient, iClient);
 }
 
 void GetUserIDAndToken(int iClient)
 {
-	// PrintToChatAll("GetUserIDAndToken. %i: %N", iClient, iClient);
-	// PrintToServer("GetUserIDAndToken. %i: %N", iClient, iClient);
 	if(iClient == 0)
 		iClient = 1;
 	
@@ -104,8 +97,6 @@ void SQLGetUserDataCallback(Handle owner, Handle hQuery, const char[] error, Han
 	bool bDrawTopMenuAfter = ReadPackCell(hDataPack);
 	CloseHandle(hDataPack);
 
-	// PrintToChatAll("GetUserData Callback Started. %i: %N, bOnlyWebsiteChangableData = %i", iClient, iClient, bOnlyWebsiteChangableData);
-	// PrintToServer("GetUserData Callback Started. %i: %N, bOnlyWebsiteChangableData = %i", iClient, iClient, bOnlyWebsiteChangableData);
 
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -115,7 +106,6 @@ void SQLGetUserDataCallback(Handle owner, Handle hQuery, const char[] error, Han
 
 	if (IsValidEntity(iClient) == false || IsFakeClient(iClient))
 	{
-		//LogError("SQLGetUserDataCallback: INVALID ENTITY OR IS FAKE CLIENT");
 		return;
 	}
 	
@@ -279,7 +269,6 @@ void SQLGetUserDataCallback(Handle owner, Handle hQuery, const char[] error, Han
 			vec[2] += 10;
 			EmitAmbientSound(SOUND_LOGIN, vec, iClient, SNDLEVEL_RAIDSIREN);
 			
-			// PrintToChatAll("\x05<-=- \x03[%i] %N logged in\x05 -=->", g_iClientLevel[iClient], iClient);
 			PrintToServer(":-=-=-=-=-<[%N (%d) logged in]>-=-=-=-=-:", iClient, g_iClientLevel[iClient]);
 		}
 	}
@@ -295,14 +284,10 @@ void SQLGetUserDataCallback(Handle owner, Handle hQuery, const char[] error, Han
 	else if (bDrawTopMenuAfter == true)
 		TopMenuDraw(iClient);
 	
-	// PrintToChatAll("GetUserData Callback Complete.  %i: %N", iClient, iClient);
-	// PrintToServer("GetUserData Callback Complete.  %i: %N", iClient, iClient);
 }
 
 void GetUserData(int iClient, bool bOnlyWebsiteChangableData = false, bool bDrawConfirmMenuAfter = false, bool bDrawTopMenuAfter = false)
 {
-	// PrintToChatAll("GetUserData. %i: %N, bOnlyWebsiteChangableData = %i", iClient, iClient, bOnlyWebsiteChangableData);
-	// PrintToServer("GetUserData. %i: %N, bOnlyWebsiteChangableData = %i", iClient, iClient, bOnlyWebsiteChangableData);
 	if(iClient == 0)
 		iClient = 1;
 	
@@ -334,7 +319,6 @@ void GetUserData(int iClient, bool bOnlyWebsiteChangableData = false, bool bDraw
 		return;
 	}
 
-	//PrintToServer("GetUserData %N: %i",iClient, g_iDBUserID[iClient]);
 
 	// Save the new user data into the SQL database with the matching Steam ID
 	char strQuery[1024], strAttributes[1024];
@@ -375,14 +359,10 @@ void SQLCreateNewUserCallback(Handle owner, Handle hQuery, const char[] error, i
 	
 	GetUserIDAndToken(iClient);
 	
-	//PrintToChatAll("New User Creation Callback Complete.  %i: %N", iClient, iClient);
-	//PrintToServer("New User Creation Callback Complete.  %i: %N", iClient, iClient);
 }
 
 void CreateNewUser(int iClient)
 {
-	//PrintToChatAll("New User Creation.  %i: %N", iClient, iClient);
-	//PrintToServer("New User Creation.  %i: %N", iClient, iClient);
 	if(iClient == 0)
 		iClient = 1;
 	
@@ -478,14 +458,10 @@ void SQLSaveUserDataInDatabaseCallback(Handle owner, Handle hQuery, const char[]
 	if(!StrEqual("", error))
 		LogError("SQL Error: %s", error);
 
-	// PrintToChatAll("Save User Data Callback Complete. %i: %N", iClient, iClient);
-	// PrintToServer("Save User Data Callback Complete. %i: %N", iClient, iClient);
 }
 
 void SaveUserDataInDatabase(int iClient)
 {
-	// PrintToChatAll("Save User Data. %i: %N", iClient, iClient);
-	// PrintToServer("Save User Data. %i: %N", iClient, iClient);
 	if(iClient == 0)
 		iClient = 1;
 	
@@ -529,57 +505,7 @@ void SaveUserDataInDatabase(int iClient)
 		
 	//Get SurvivorID
 	IntToString(g_iChosenSurvivor[iClient], strSurvivorID, sizeof(strSurvivorID))
-	
-	// //Get Survivor Talent IDs
-	// switch(g_iChosenSurvivor[iClient])
-	// {
-	// 	case BILL:
-	// 	{
-	// 		IntToString(g_iInspirationalLevel[iClient], strSurvivorTalent[0], 2);
-	// 		IntToString(g_iGhillieLevel[iClient], strSurvivorTalent[1], 2);
-	// 		IntToString(g_iWillLevel[iClient], strSurvivorTalent[2], 2);
-	// 		IntToString(g_iExorcismLevel[iClient], strSurvivorTalent[3], 2);
-	// 		IntToString(g_iDiehardLevel[iClient], strSurvivorTalent[4], 2);
-	// 		IntToString(g_iPromotionalLevel[iClient], strSurvivorTalent[5], 2);
-	// 	}
-	// 	case ROCHELLE:
-	// 	{
-	// 		IntToString(g_iGatherLevel[iClient], strSurvivorTalent[0], 2);
-	// 		IntToString(g_iHunterLevel[iClient], strSurvivorTalent[1], 2);
-	// 		IntToString(g_iSniperLevel[iClient], strSurvivorTalent[2], 2);
-	// 		IntToString(g_iSilentLevel[iClient], strSurvivorTalent[3], 2);
-	// 		IntToString(g_iSmokeLevel[iClient], strSurvivorTalent[4], 2);
-	// 		IntToString(g_iShadowLevel[iClient], strSurvivorTalent[5], 2);
-	// 	}
-	// 	case COACH:
-	// 	{
-	// 		IntToString(g_iBullLevel[iClient], strSurvivorTalent[0], 2);
-	// 		IntToString(g_iWreckingLevel[iClient], strSurvivorTalent[1], 2);
-	// 		IntToString(g_iSprayLevel[iClient], strSurvivorTalent[2], 2);
-	// 		IntToString(g_iHomerunLevel[iClient], strSurvivorTalent[3], 2);
-	// 		IntToString(g_iLeadLevel[iClient], strSurvivorTalent[4], 2);
-	// 		IntToString(g_iStrongLevel[iClient], strSurvivorTalent[5], 2);
-	// 	}
-	// 	case ELLIS:
-	// 	{
-	// 		IntToString(g_iOverLevel[iClient], strSurvivorTalent[0], 2);
-	// 		IntToString(g_iBringLevel[iClient], strSurvivorTalent[1], 2);
-	// 		IntToString(g_iJamminLevel[iClient], strSurvivorTalent[2], 2);
-	// 		IntToString(g_iWeaponsLevel[iClient], strSurvivorTalent[3], 2);
-	// 		IntToString(g_iMetalLevel[iClient], strSurvivorTalent[4], 2);
-	// 		IntToString(g_iFireLevel[iClient], strSurvivorTalent[5], 2);
-	// 	}
-	// 	case NICK:
-	// 	{
-	// 		IntToString(g_iSwindlerLevel[iClient], strSurvivorTalent[0], 2);
-	// 		IntToString(g_iLeftoverLevel[iClient], strSurvivorTalent[1], 2);
-	// 		IntToString(g_iRiskyLevel[iClient], strSurvivorTalent[2], 2);
-	// 		IntToString(g_iEnhancedLevel[iClient], strSurvivorTalent[3], 2);
-	// 		IntToString(g_iMagnumLevel[iClient], strSurvivorTalent[4], 2);
-	// 		IntToString(g_iDesperateLevel[iClient], strSurvivorTalent[5], 2);
-	// 	}
-	// }
-	
+
 	//Get Infected Class IDs
 	IntToString(g_iClientInfectedClass1[iClient], strInfectedID[0], 2);
 	IntToString(g_iClientInfectedClass2[iClient], strInfectedID[1], 2);
@@ -670,7 +596,6 @@ void SaveUserDataInDatabase(int iClient)
 		g_iDBUserID[iClient]);
 	StrCat(strQuery, sizeof(strQuery), strQueryPart);
 
-	// PrintToServer("                   %s", strQuery);
 	
 	SQL_TQuery(g_hDatabase, SQLSaveUserDataInDatabaseCallback, strQuery, iClient);
 }
@@ -678,8 +603,6 @@ void SaveUserDataInDatabase(int iClient)
 //Callback function for an SQL SQLCheckForChangeThenSaveData
 void SQLCheckForChangeThenSaveDataCallback(Handle owner, Handle hQuery, const char[] error, int iClient)
 {
-	// PrintToChatAll("SQLCheckForChangeThenSaveDataCallback Started. %i: %N", iClient, iClient);
-	// PrintToServer("SQLCheckForChangeThenSaveDataCallback Started. %i: %N", iClient, iClient);
 
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -689,7 +612,6 @@ void SQLCheckForChangeThenSaveDataCallback(Handle owner, Handle hQuery, const ch
 
 	if (IsValidEntity(iClient) == false || IsFakeClient(iClient))
 	{
-		//LogError("SQLGetUserIDAndTokenCallback: INVALID ENTITY OR IS FAKE CLIENT");
 		return;
 	}
 	
@@ -730,15 +652,11 @@ void SQLCheckForChangeThenSaveDataCallback(Handle owner, Handle hQuery, const ch
 	// Now we can safely save the XP
 	SaveUserDataInDatabase(iClient);
 
-	// PrintToChatAll("SQLCheckForChangeThenSaveData Callback Complete.  %i: %N", iClient, iClient);
-	// PrintToServer("SQLCheckForChangeThenSaveData Callback Complete.  %i: %N", iClient, iClient);
 }
 
 // This is for when an update happens in the database and the user connected needs to have his XP force updated on the server they are playing
 void SQLCheckForChangeThenSaveData(int iClient)
 {
-	// PrintToChatAll("SQLCheckForChangeThenSaveData. %i: %N", iClient, iClient);
-	// PrintToServer("SQLCheckForChangeThenSaveData. %i: %N", iClient, iClient);
 	if(iClient == 0)
 		iClient = 1;
 	
@@ -765,22 +683,15 @@ void SQLCheckForChangeThenSaveData(int iClient)
 	// Combine it all into the query
 	Format(strQuery, sizeof(strQuery), "SELECT %s,%s FROM %s WHERE steam_id = '%s'", strUsersTableColumnNames[DB_COL_INDEX_PUSH_UPDATE_FROM_DB], strUsersTableColumnNames[DB_COL_INDEX_USERS_XP], DB_TABLENAME_USERS, strSteamID);
 
-	// PrintToServer("                   %s", strQuery);
-
 	SQL_TQuery(g_hDatabase, SQLCheckForChangeThenSaveDataCallback, strQuery, iClient);
 }
 
 
 void Logout(int iClient)
 {
-	//PrintToChatAll("Logout. %i: %N", iClient, iClient);
-	//PrintToServer("Logout. %i: %N", iClient, iClient);
-	if(iClient==0)
-	{
+	if(iClient == 0)
 		iClient = 1;
-		//PrintToServer("Server host cannot login through the console, go into chat and type /login to login in.");
-		//return Plugin_Handled;
-	}
+	
 	if(!RunClientChecks(iClient))
 	 	return;
 
@@ -799,8 +710,6 @@ void Logout(int iClient)
 		return;
 	}
 
-	//PrintToChatAll("Logout Complete. %i: %N", iClient, iClient);
-	//PrintToServer("Logout Complete. %i: %N", iClient, iClient);
 	
 	return;
 }

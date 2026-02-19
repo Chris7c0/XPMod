@@ -31,8 +31,6 @@ void Bind2Press_Rochelle(int iClient)
                 //CreateParticle("rochelle_weapon_trail", 12.0, iClient, ATTACH_BLUR);
                 CreateTimer(12.0, TimerStopShadowNinja, iClient, TIMER_FLAG_NO_MAPCHANGE);
                 
-                //WriteParticle(iClient, "rochelle_smoke", 0.0, 10.0);
-                
                 CreateRochelleSmoke(iClient);
             }
         }

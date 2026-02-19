@@ -43,8 +43,6 @@ void SQLCheckIfUserIsInBanListCallback(Handle owner, Handle hQuery, const char[]
 		}
 	}
 	
-	// PrintToChatAll("SQLCheckIfUserIsInBanList Callback Complete.");
-	// PrintToServer("SQLCheckIfUserIsInBanList Callback Complete.");
 }
 
 void SQLCheckIfUserIsInBanList(int iClient)
@@ -52,8 +50,6 @@ void SQLCheckIfUserIsInBanList(int iClient)
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return;
 
-	// PrintToChatAll("SQLCheckIfUserIsInBanList  %i: %N", iClient, iClient);
-	// PrintToServer("SQLCheckIfUserIsInBanList  %i: %N", iClient, iClient);
 	
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -93,8 +89,6 @@ void SQLAddBannedUserToDatabaseCallback(Handle owner, Handle hQuery, const char[
 		return;
 	}
 	
-	// PrintToChatAll("SQLAddBannedUserToDatabaseUsingClientID Callback Complete.");
-	// PrintToServer("SQLAddBannedUserToDatabaseUsingClientID Callback Complete.");
 }
 
 
@@ -103,8 +97,6 @@ void SQLAddBannedUserToDatabaseUsingClientID(int iClient, int iBanDurationSecond
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return;
 	
-	// PrintToChatAll("SQLAddBannedUserToDatabaseUsingClientID  %i: %N", iClient, iClient);
-	// PrintToServer("SQLAddBannedUserToDatabaseUsingClientID  %i: %N", iClient, iClient);
 	
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -147,8 +139,6 @@ void SQLAddBannedUserToDatabaseUsingClientID(int iClient, int iBanDurationSecond
 
 void SQLAddBannedUserToDatabaseUsingNameAndSteamID(char[] strClientName, const int iClientNameSize, const char[] strSteamID, int iBanDurationSeconds = 0, const char[] strBanReason)
 {	
-	// PrintToChatAll("SQLAddBannedUserToDatabaseUsingNameAndSteamID  %i: %N", iClient, iClient);
-	// PrintToServer("SQLAddBannedUserToDatabaseUsingNameAndSteamID  %i: %N", iClient, iClient);
 	
 	if (g_hDatabase == INVALID_HANDLE)
 	{

@@ -170,7 +170,6 @@ void OGFSurvivorReload_Bill(int iClient, const char[] currentweapon, int ActiveW
 			SetEntData(iClient, iOffset_Ammo + 12, iAmmo - (g_iPromotionalLevel[iClient]*20));
 			g_bClientIsReloading[iClient] = false;
 			g_iReloadFrameCounter[iClient] = 0;
-			//PrintToChatAll("Clip Set");
 		}
 		else if(iAmmo < (g_iPromotionalLevel[iClient]*20))
 		{
@@ -179,7 +178,6 @@ void OGFSurvivorReload_Bill(int iClient, const char[] currentweapon, int ActiveW
 			SetEntData(iClient, iOffset_Ammo + 12, 0);
 			g_bClientIsReloading[iClient] = false;
 			g_iReloadFrameCounter[iClient] = 0;
-			//PrintToChatAll("Clip Set");
 		}
 	}
 }
@@ -196,7 +194,6 @@ void EventsHurt_AttackerBill(Handle hEvent, int iAttacker, int iVictim)
 
 	char strWeaponClass[32];
 	GetEventString(hEvent,"weapon",strWeaponClass,32);
-	// PrintToChat(iAttacker, "strWeaponClass = %s", strWeaponClass);
 	if (StrContains(strWeaponClass,"rifle",false) == -1 || 
 		StrContains(strWeaponClass,"hunting_rifle",false) != -1)
 		return;
@@ -209,25 +206,7 @@ void EventsHurt_AttackerBill(Handle hEvent, int iAttacker, int iVictim)
 		strWeaponClass);
 	
 	SetPlayerHealth(iVictim, iAttacker, -1 * iDmgAmount, true);
-	// PrintToChat(iAttacker, "Your doing %i extra rifle damage", iDmgAmount);
 }
-
-// EventsHurt_VictimBill(Handle hEvent, attacker, victim)
-// {
-// 	if (IsFakeClient(victim))
-// 		return;
-// }
-
-// EventsDeath_AttackerBill(Handle hEvent, iAttacker, iVictim)
-// {
-// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
-// }
-
-// EventsDeath_VictimBill(Handle hEvent, iAttacker, iVictim)
-// {
-// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
-// }
-
 
 Action tmrPlayAnim(Handle timer, int iClient)
 {
@@ -375,7 +354,6 @@ void HandleBillsTeamHealing(int iClient, int iButtons)
 		return;
 
 	int iHealAmount = iMaxHealth - iCurrentHealth - iTempHealth > BILL_TEAM_HEAL_HP_AMOUNT ? BILL_TEAM_HEAL_HP_AMOUNT : iMaxHealth - iCurrentHealth - iTempHealth;
-	// PrintToChat(iClient, "%i", iHealAmount);
 
 	// Check that the pool has enough health to heal the full amount, cap if not
 	iHealAmount = iHealAmount > g_iBillsTeamHealthPool ? g_iBillsTeamHealthPool : iHealAmount;

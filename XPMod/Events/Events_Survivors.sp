@@ -44,7 +44,6 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 				// Check if the currently active weapon is the rambo weapon
 				if (ActiveWeaponID == g_iRamboWeaponID[iClient])
 				{
-					//PrintToChatAll("Nick is firing with m60 and rambo mode");
 					if (IsValidEntity(g_iRamboWeaponID[iClient]) && HasEntProp(g_iRamboWeaponID[iClient], Prop_Send, "m_nUpgradedPrimaryAmmoLoaded"))
 					{
 						SetEntData(g_iRamboWeaponID[iClient], g_iOffset_Clip1, 250, true);
@@ -61,7 +60,6 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 			
 			if((StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == true) && (g_iMagnumLevel[iClient] > 0))
 			{
-				//PrintToChatAll("Weapon is magnum && Magnum level > 0");
 				g_iActiveWeaponID[iClient] = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 				g_iCurrentClipAmmo[iClient] = GetEntProp(g_iActiveWeaponID[iClient],Prop_Data,"m_iClip1");
 				if(g_iCurrentClipAmmo[iClient] > NICK_CLIP_SIZE_MAX_MAGNUM)
@@ -93,10 +91,8 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 	if(g_bClientIsReloading[iClient] == true)
 	{
 		g_iReloadFrameCounter[iClient]++;
-		// PrintToChatAll("Frame counter %d", g_iReloadFrameCounter[iClient]);
 		char currentweapon[32];
 		GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
-		//PrintToChatAll("Current Weapon is %s", currentweapon);
 		int ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 		int CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
 		int iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
@@ -116,7 +112,6 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 						SetEntData(iClient, iOffset_Ammo + 12, iAmmo - (g_iPromotionalLevel[iClient]*20));
 						g_bClientIsReloading[iClient] = false;
 						g_iReloadFrameCounter[iClient] = 0;
-						//PrintToChatAll("Clip Set");
 					}
 					else if(iAmmo < (g_iPromotionalLevel[iClient]*20))
 					{
@@ -125,7 +120,6 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 						SetEntData(iClient, iOffset_Ammo + 12, 0);
 						g_bClientIsReloading[iClient] = false;
 						g_iReloadFrameCounter[iClient] = 0;
-						//PrintToChatAll("Clip Set");
 					}
 				}
 			}
@@ -197,18 +191,15 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 					SetEntData(ActiveWeaponID, g_iOffset_Clip1, NICK_CLIP_SIZE_MAX_MAGNUM, true);
 					g_bClientIsReloading[iClient] = false;
 					g_iReloadFrameCounter[iClient] = 0;
-					//PrintToChatAll("Magnum Fire Reloading");
 				}
 				if((StrEqual(currentweapon, "weapon_pistol", false) == true) && (g_iRiskyLevel[iClient] > 0))
 				{
 					if(CurrentClipAmmo == 15)
 					{
-						//PrintToChatAll("currentclipammo nick pistol 15 = %d", CurrentClipAmmo);
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, CurrentClipAmmo + (g_iRiskyLevel[iClient] * 6), true);
 					}
 					else if(CurrentClipAmmo == 30)
 					{
-						//PrintToChatAll("currentclipammo nick pistol 30 = %d", CurrentClipAmmo);
 						SetEntData(ActiveWeaponID, g_iOffset_Clip1, CurrentClipAmmo + (g_iRiskyLevel[iClient] * 12), true);
 					}
 					g_bClientIsReloading[iClient] = false;
@@ -219,7 +210,6 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 			{
 				if (g_iLouisTalent2Level[iClient] > 0)
 				{
-					//PrintToChat(iClient, "LOUIS currentweapon: %s, CurrentClipAmmo: %i", currentweapon, CurrentClipAmmo);
 					if (CurrentClipAmmo > 0 &&
 						(StrContains(currentweapon, "weapon_smg", false) != -1) )
 					{
@@ -251,39 +241,7 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 		g_iReloadFrameCounter[iClient] = 0;
 		g_bCoachShotgunForceReload[iClient] = false;
 	}
-	
-	//Give Nicks m60 explosive ammo if he is in rambo mode from gambling
-	
-	// if(g_iNicksRamboWeaponID[iClient] > 0 && StrEqual(wclass,"rifle_m60",false) == true)
-	// {
-	// 	new wID = GetEntDataEnt2(iClient,g_iOffset_ActiveWeapon);
-	// 	if(wID == -1 || IsValidEntity(wID) == false)
-	// 		return Plugin_Continue;
-	// 	PrintToChatAll("Removing upgrades from Rambo Mode M60");
 
-	// 	RunCheatCommand(iClient, "upgrade_remove", "upgrade_remove EXPLOSIVE_AMMO");
-
-	// 	PrintToChatAll("Setting upgrades for Rambo Mode M60");
-	// 	SetEntData(wID, g_iOffset_Clip1, 251, true);
-
-	// 	RunCheatCommand(iClient, "upgrade_add", "upgrade_add EXPLOSIVE_AMMO");
-
-	// 	PrintToChatAll("Everything is set for Rambo Mode M60");
-	// }
-	
-	
-	//Give Coach extra explosives if he still has more
-/*
-	if(g_bExplosivesJustGiven[iClient] == false && g_iStrongLevel[iClient] > 0 && g_iExtraExplosiveUses[iClient] < 3 &&
-		(StrEqual(wclass,"pipe_bomb",false) == true || StrEqual(wclass,"molotov",false) == true || StrEqual(wclass,"vomitjar",false) == true))
-	{
-		g_bExplosivesJustGiven[iClient] = true;
-		CreateTimer(3.0, TimerGiveExplosive, iClient, TIMER_FLAG_NO_MAPCHANGE);
-	}
-*/
-
-	// PrintToChat(iClient, "g_iEllisJamminGrenadeCounter %i", g_iEllisJamminGrenadeCounter[iClient]);
-	// PrintToChat(iClient, "g_iEventWeaponFireCounter %i", g_iEventWeaponFireCounter[iClient]);
 
 	if((g_iJamminLevel[iClient] == 5) && 
 		g_iEllisJamminGrenadeCounter[iClient] > 0 &&
@@ -396,7 +354,6 @@ Action Event_InfectedDecap(Handle hEvent, const char[] strName, bool bDontBroadc
 			g_iClientXP[iClient] += 5;
 			CheckLevel(iClient);
 			
-			//PrintToChat(iClient, "\x03[XPMod] Infected Decapitaed! You gain 5 XP");
 			if(g_iChosenSurvivor[iClient] == COACH && g_iHomerunLevel[iClient]>0)
 			{
 				GiveExtraAmmoForCurrentShotgun(iClient);
@@ -405,7 +362,6 @@ Action Event_InfectedDecap(Handle hEvent, const char[] strName, bool bDontBroadc
 				{
 					g_iCoachDecapitationCounter[iClient]++;
 					g_iMeleeDamageCounter[iClient]+=(g_iHomerunLevel[iClient]*2);
-					//PrintToChat(iClient, "g_iMeleeDamageCounter = %d", g_iMeleeDamageCounter[iClient]);
 				}
 			}
 		}
@@ -515,10 +471,8 @@ Action Event_HealSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	int target = GetClientOfUserId(GetEventInt(hEvent, "subject"));
 
-	// PrintToChatAll("Event_HealSuccess: healer: %N, target: %N", iClient, target);
 	
 	g_iKitsUsed++;
-	//PrintToChatAll("g_iKitsUsed = %d", g_iKitsUsed);
 	
 	if(RunClientChecks(iClient) == false || RunClientChecks(target) == false)
 		return Plugin_Continue;
@@ -537,8 +491,6 @@ Action Event_HealSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 	{
 		int iCurrentHealth = GetPlayerHealth(target);
 		int iMaxHealth = GetPlayerMaxHealth(target);
-		//float fTempHealth = GetEntDataFloat(target, g_iOffset_HealthBuffer);
-		//if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
 		if(iCurrentHealth < (iMaxHealth - 20.0))
 		{
 			if(g_bEllisOverSpeedIncreased[target])
@@ -547,13 +499,6 @@ Action Event_HealSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 
 				SetClientSpeed(target);
 			}
-			//g_fEllisOverSpeed[target] = 0.0;
-			//SetEntDataFloat(target , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[target] + g_fEllisBringSpeed[target] + g_fEllisOverSpeed[target]), true);
-			//DeleteCode
-			//PrintToChatAll("Heal success, now setting g_fEllisOverSpeed");
-			//PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[target]);
-			//PrintToChatAll("g_fEllisBringSpeed = %f", g_fEllisBringSpeed[target]);
-			//PrintToChatAll("g_fEllisOverSpeed = %f", g_fEllisOverSpeed[target]);
 		}
 		//else if(float(iCurrentHealth) + fTempHealth > (float(iMaxHealth) - 20.0))
 		if(iCurrentHealth >= (iMaxHealth - 20.0))
@@ -564,13 +509,6 @@ Action Event_HealSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 
 				SetClientSpeed(target);
 			}
-			//g_fEllisOverSpeed[target] = (g_iOverLevel[target] * 0.02);
-			//SetEntDataFloat(target , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[target] + g_fEllisBringSpeed[target] + g_fEllisOverSpeed[target]), true);
-			//DeleteCode
-			//PrintToChatAll("Heal success, now setting g_fEllisOverSpeed");
-			//PrintToChatAll("g_fEllisJamminSpeed = %f", g_fEllisJamminSpeed[target]);
-			//PrintToChatAll("g_fEllisBringSpeed = %f", g_fEllisBringSpeed[target]);
-			//PrintToChatAll("g_fEllisOverSpeed = %f", g_fEllisOverSpeed[target]);
 		}
 
 		// Get all health converted to temp health for Ellis
@@ -806,8 +744,6 @@ Action Event_DefibUsed(Handle hEvent, const char[] strName, bool bDontBroadcast)
 	{
 		int iCurrentHealth = GetPlayerHealth(iSubject);
 		int iMaxHealth = GetPlayerMaxHealth(iSubject);
-		//float fTempHealth = GetEntDataFloat(iSubject, g_iOffset_HealthBuffer);
-		//if(float(iCurrentHealth) + fTempHealth < (float(iMaxHealth) - 20.0))
 		if(iCurrentHealth < (iMaxHealth - 20.0))
 		{
 			if(g_bEllisOverSpeedIncreased[iSubject])
@@ -816,10 +752,7 @@ Action Event_DefibUsed(Handle hEvent, const char[] strName, bool bDontBroadcast)
 
 				SetClientSpeed(iSubject);
 			}
-			//g_fEllisOverSpeed[iSubject] = 0.0;
-			//SetEntDataFloat(iSubject , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iSubject] + g_fEllisBringSpeed[iSubject] + g_fEllisOverSpeed[iSubject]), true);
 		}
-		//else if(float(iCurrentHealth) + fTempHealth > (float(iMaxHealth) - 20.0))
 		if(iCurrentHealth >= (iMaxHealth - 20.0))
 		{
 			if(g_bEllisOverSpeedIncreased[iSubject] == false)
@@ -828,8 +761,6 @@ Action Event_DefibUsed(Handle hEvent, const char[] strName, bool bDontBroadcast)
 
 				SetClientSpeed(iSubject);
 			}
-			//g_fEllisOverSpeed[iSubject] = (g_iOverLevel[iSubject] * 0.02);
-			//SetEntDataFloat(iSubject , FindSendPropInfo("CTerrorPlayer", "m_flLaggedMovementValue"), (1.0 + g_fEllisJamminSpeed[iSubject] + g_fEllisBringSpeed[iSubject] + g_fEllisOverSpeed[iSubject]), true);
 		}
 	}
 	
@@ -954,14 +885,8 @@ Action Event_AdrenalineUsed(Handle hEvent, const char[] strName, bool bDontBroad
 //For Pills and Shots
 Action Event_WeaponGiven(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
-	//PrintToChatAll("Event_WeaponGiven");
 	
 	int iGiver = GetClientOfUserId(GetEventInt(hEvent,"giver"));
-	// new iTaker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	// new iWeapon  = GetEventInt(hEvent,"weapon");	
-	
-	// Removed because of hand back and forth between two players
-	// GiveClientXP(iGiver, 25, g_iSprite_25XP, iTaker, "Health Boost given to player.");
 
 	EventsWeaponGiven_Ellis(iGiver);
 	EventsWeaponGiven_Louis(iGiver);
@@ -974,15 +899,8 @@ Action Event_ReceiveUpgrade(Handle hEvent, char[] Event_name, bool dontBroadcast
 	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	char strUpgrade[32];
 	GetEventString(hEvent, "upgrade", strUpgrade, sizeof(strUpgrade));
-	// PrintToChat(iClient, "Picked up UPGRADE %s", strUpgrade);
-
+	
 	EventsReceiveUpgrade_Louis(iClient, strUpgrade);
 
-	// // This was removed to prevent glitches
-	// // TODO: Re-add this later?
-	// // This SetAmmo is the issue.  After someone has gotten rambo, it gives 250 exposive ammo for grenadeluancher
-	// // Also, before, it sets everyone to be 0 ammo, that didnt meet the criteria
-	// fnc_DetermineMaxClipSize(iClient);
-	// fnc_SetAmmoUpgradeToMaxClipSize(iClient);
 	return Plugin_Continue;
 }

@@ -12,7 +12,6 @@ Action TimerSetSpitterCooldown(Handle timer, int iClient)
 	}
 
 	//----DEBUG----
-	//PrintToChatAll("\x03 tick");
 
 	//RETRIEVE VARIABLES
 	//------------------
@@ -254,9 +253,7 @@ Action TimerInfectedVictimTick(Handle timer, int iClient)
 		SetEntityRenderColor(iClient, 100, 255, 100, 255);
 		
 		DealDamage(iClient, g_iViralInfector[iClient], 1);		//************************************************Remeber to give credit to the attacker here and in hallucinogen
-		
-		//WriteParticle(iClient, "viral_infection", 0.0, 3.0);
-		
+				
 		return Plugin_Continue;
 	}
 	

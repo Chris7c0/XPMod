@@ -459,7 +459,6 @@ int g_iSprite_Halo;
 int g_iSprite_White;
 int g_iSprite_Bar_Background;
 int g_iSprite_Bar_Foreground;
-// new g_iSprite_HealthBarWhite;
 int g_iSprite_SmokerTongue;
 int g_iSprite_AmmoBox;
 int g_iSprite_Arrow;

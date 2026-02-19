@@ -60,7 +60,6 @@ Action TimerPoopBombBeep1(Handle timer, int iEntity)
 		GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", fOrigin);
 		EmitAmbientSound(SOUND_BEEP, fOrigin, iEntity, SNDLEVEL_NORMAL);
 		AttachInfected(iEntity, fOrigin);
-		//PrintToChatAll("time1 = %f", poopbombbeeptime1);
 		if(poopbombbeeptime1 > 0.0)
 			CreateTimer(poopbombbeeptime1, TimerPoopBombBeep1, iEntity, TIMER_FLAG_NO_MAPCHANGE);
 		else
@@ -78,7 +77,6 @@ Action TimerPoopBombBeep2(Handle timer, int iEntity)
 		GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", fOrigin);
 		EmitAmbientSound(SOUND_BEEP, fOrigin, iEntity, SNDLEVEL_NORMAL);
 		AttachInfected(iEntity, fOrigin);
-		//PrintToChatAll("time2 = %f", poopbombbeeptime2);
 		if(poopbombbeeptime2 > 0.0)
 			CreateTimer(poopbombbeeptime2, TimerPoopBombBeep2, iEntity, TIMER_FLAG_NO_MAPCHANGE);
 		else
@@ -96,7 +94,6 @@ Action TimerPoopBombBeep3(Handle timer, int iEntity)
 		GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", fOrigin);
 		EmitAmbientSound(SOUND_BEEP, fOrigin, iEntity, SNDLEVEL_NORMAL);
 		AttachInfected(iEntity, fOrigin);
-		//PrintToChatAll("time3 = %f", poopbombbeeptime3);
 		if(poopbombbeeptime3 > 0.0)
 			CreateTimer(poopbombbeeptime3, TimerPoopBombBeep3, iEntity, TIMER_FLAG_NO_MAPCHANGE);
 		else
@@ -116,16 +113,7 @@ Action TimerBlowUpPoopBomb(Handle timer, int iEntity)
 	if(iEntity > 0 && IsValidEntity(iEntity))
 		AcceptEntityInput(iEntity, "Kill");
 	int i_Ent = CreateEntityByName("prop_physics");
-	//DispatchKeyValue(i_Ent, "physdamagescale", "0.0");
 	DispatchKeyValue(i_Ent, "model", "models/props_junk/propanecanister001a.mdl");
-	//DispatchKeyValue(i_Ent, "model", "models/w_models/weapons/w_eq_pipebomb.mdl");
-	//DispatchKeyValue(i_Ent, "DamageType", "0");		//134217792
-	//DispatchKeyValue(i_Ent, "BreakableType", "0");
-	
-	//char clientname[64];
-	//GetClientName(1, clientname, sizeof(clientname));
-	//PrintToChatAll("%s", clientname);
-	//DispatchKeyValue(i_Ent, "parentname", clientname);
 	
 	DispatchSpawn(i_Ent);
 	TeleportEntity(i_Ent, xyzEntityOrigin, NULL_VECTOR, NULL_VECTOR);

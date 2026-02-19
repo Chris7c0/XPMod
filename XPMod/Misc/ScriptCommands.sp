@@ -55,7 +55,6 @@ Action TimerKeepBotFocusedOnXPMGoal(Handle timer, int iClient)
 		return Plugin_Stop;
 	}
 
-	// PrintToServer("g1: %i", iClient);
 
 	float fGameTime = GetGameTime();
 	if (fGameTime - g_fGameTimeOfLastGoalSet[iClient] <= 5.0 ||
@@ -63,12 +62,10 @@ Action TimerKeepBotFocusedOnXPMGoal(Handle timer, int iClient)
 		fGameTime - g_fGameTimeOfLastViableTargetSeen[iClient] <= 5.0)
 		return Plugin_Continue;
 
-	// PrintToServer("goal2: %i", iClient);
 
 	if (CheckForViableSITargetForSurvivor(iClient))
 		return Plugin_Continue;
 
-	// PrintToServer("goal3: %i", iClient);
 
 	// Set their focus on the goal
 	g_fGameTimeOfLastGoalSet[iClient] = fGameTime;

@@ -37,21 +37,18 @@ void OnGameFrame_Jockey(int iClient)
 {
 	if ((g_iUnfairLevel[iClient] > 0) && (g_bJockeyIsRiding[iClient] == true))
 	{
-		// PrintToChatAll("g_iUnfairLevel is higher than 0 and the jockey is riding");
 		int buttons;
 		buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 		if (buttons & IN_JUMP)
 		{
 			if (RunClientChecks(iClient) == true && RunClientChecks(g_iJockeysVictim[iClient]) == true)
 			{
-				// PrintToChatAll("g_bCanJockeyJump = %i, g_bCanJockeyCloak = %i", g_bCanJockeyJump[iClient], g_bCanJockeyCloak[iClient]);
 				if (g_bCanJockeyJump[iClient] == true && g_bCanJockeyCloak[iClient] == false)
 				{
 					float xyzJumpVelocity[3];
 					xyzJumpVelocity[0] = 0.0;
 					xyzJumpVelocity[1] = 0.0;
 					xyzJumpVelocity[2] = (g_iUnfairLevel[iClient] * 50.0);
-					// PrintToChatAll("X = %f, Y = %f, Z = %f", xyzJumpVelocity[0], xyzJumpVelocity[1], xyzJumpVelocity[2]);
 					TeleportEntity(g_iJockeysVictim[iClient], NULL_VECTOR, NULL_VECTOR, xyzJumpVelocity);
 					g_bCanJockeyJump[iClient] = false;
 					CreateTimer(2.5, TimerJockeyJumpReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
@@ -107,29 +104,14 @@ void EventsHurt_AttackerJockey(Handle hEvent, int iAttacker, int iVictim)
 					dmg = 2;
 				else
 					dmg = 3;
-				// hp = GetPlayerHealth(iVictim);
-				// PrintToChat(iAttacker, "pre hp = %d riding",hp);
 				int hp = GetPlayerHealth(iVictim);
 				if (hp > dmg)
 					DealDamage(iVictim, iAttacker, dmg);
 
-				// PrintToChat(iAttacker, "dmg");
-				// hp = GetPlayerHealth(iVictim);
-				// PrintToChat(iAttacker, "    post hp = %d riding",hp);
 			}
 		}
 	}
 }
-
-// EventsDeath_AttackerJockey(Handle hEvent, iAttacker, iVictim)
-// {
-// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
-// }
-
-// EventsDeath_VictimJockey(Handle hEvent, iAttacker, iVictim)
-// {
-// 	SuppressNeverUsedWarning(hEvent, iAttacker, iVictim);
-// }
 
 void Event_JockeyRide_Jockey(int iAttacker, int iVictim)
 {
@@ -155,11 +137,7 @@ void Event_JockeyRide_Jockey(int iAttacker, int iVictim)
 			GetClientWeapon(iVictim, strCurrentWeapon, sizeof(strCurrentWeapon));
 			if (StrEqual(strCurrentWeapon, "weapon_melee", false) == false && StrEqual(strCurrentWeapon, "weapon_pistol", false) == false && StrEqual(strCurrentWeapon, "weapon_pistol_magnum", false) == false && g_iOffset_Ammo[iVictim] > 0 && g_iAmmoOffset[iVictim] > 0 && g_iReserveAmmo[iVictim] > 0)
 			{
-				// PrintToChatAll("Reserve ammo was %i ...", g_iReserveAmmo[iVictim]);
-				// g_iReserveAmmo[iVictim] = (g_iReserveAmmo[victim] / 2)
-				// PrintToChatAll("Is this a float = %i", g_iReserveAmmo[victim]);
 				SetEntData(iVictim, g_iOffset_Ammo[iVictim] + g_iAmmoOffset[iVictim], (g_iReserveAmmo[iVictim] / 2));
-				// PrintToChatAll("... and is now %i", GetEntData(victim, g_iOffset_Ammo[victim] + g_iAmmoOffset[victim]));
 			}
 		}
 	}
@@ -183,9 +161,6 @@ void Event_JockeyRide_Jockey(int iAttacker, int iVictim)
 
 	if (g_iErraticLevel[iAttacker] > 0)
 	{
-		// SetEntDataFloat(iVictim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ((1.0 + (g_iErraticLevel[iAttacker] * 0.03)) - ((g_iStrongLevel[iVictim] * 0.2) + ((g_iErraticLevel[iAttacker] * 0.03) * (g_iStrongLevel[iVictim] * 0.2)))), true);
-		// PrintToChatAll("JOCKEY RIDESPEED SET: %f", ( 1.0 - (g_iStrongLevel[iVictim] * 0.2) + (g_iErraticLevel[iAttacker] * 0.03)) );
-		// SetEntDataFloat(iVictim , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), ( 1.0 - (g_iStrongLevel[iVictim] * 0.2) + (g_iErraticLevel[iAttacker] * 0.03) ), true);
 		g_fJockeyRideSpeed[iVictim] = 1.0 + (g_iErraticLevel[iAttacker] * 0.03);
 		SetClientSpeed(iVictim);
 	}

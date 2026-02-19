@@ -13,8 +13,6 @@ void HandleClientConnect(int iClient)
 	
 	if (IsFakeClient(iClient) == true)
 	{
-		// PrintToChatAll("FAKE CLIENT: %i: %N", iClient, iClient);
-		// PrintToServer("FAKE CLIENT: %i: %N", iClient, iClient);
 		if(g_bClientLoggedIn[iClient] == true)
 			Logout(iClient);
 		return;
@@ -42,11 +40,9 @@ void HandleClientConnect(int iClient)
 		int l = 0;
 		while((clientname[l]!='\0' || clientidname[iClient][l]!='\0') && (l < 22))
 		{
-			//PrintToChatAll("checking %c, %d = %c, %d", clientidname[iClient][l], clientidname[iClient][l], clientname[l], clientname[l]);
 			if(clientidname[iClient][l] != clientname[l])
 			{
 				match = false;
-				//PrintToConsole(iClient, "==========================Does not match");
 			}
 			l++;
 		}
@@ -57,8 +53,6 @@ void HandleClientConnect(int iClient)
 	//if not the same as before logout/reset loudout and set the new clientname
 	if(match==false)
 	{
-		// PrintToChatAll("Masmatch Name: %i: %N", iClient, iClient);
-		// PrintToServer("Masmatch Name: %i: %N", iClient, iClient);
 		Logout(iClient);
 		g_bClientSpectating[iClient] = false;
 		g_iAutoSetCountDown[iClient] = -1;
@@ -79,23 +73,12 @@ void HandleClientConnect(int iClient)
 				clientidname[iClient][l] = clientname[l];
 				if((clientidname[iClient][l] < 1) || (clientidname[iClient][l] > 127))
 					clientidname[iClient][l] = '?';
-				//PrintToChatAll("l = %d   adding %c (%d)", l, clientname[l], clientname[l]);
-				//PrintToChatAll("l = %d          %c (%d)", l, clientidname[iClient][l], clientidname[iClient][l]);
 			}
 			else
 			{
-				//clientidname[iClient][l] = '\0';
-				//for(new i=0; i<22; i++)
-				//{
-				//	if(clientname[i] != '\0')
-				//		PrintToChatAll("Client id name = %s", clientidname[iClient][i]);
-				//	else break;
-				//}
 				break;
 			}
 		}
-		//PrintToChatAll("PCONNECT FULL: %d: Clientname %s stored in database", iClient, clientname);
-		//PrintToChatAll("\x03%N \x04has connected", iClient);
 
 		SQLCheckIfUserIsInBanList(iClient);
 		GetUserIDAndToken(iClient);
@@ -107,7 +90,6 @@ void HandleClientConnect(int iClient)
 	{
 		if(g_bClientSpectating[iClient] == true)
 			CreateTimer(0.1, TimerChangeSpectator, iClient, TIMER_FLAG_NO_MAPCHANGE);
-		//PrintToChatAll("PCONNECT FULL: %d: %s already in database", iClient, clientname);
 	}
 
 	
@@ -129,8 +111,6 @@ void HandleClientDisconnect(int iClient)
 
 	if(IsFakeClient(iClient)==true)
 	{
-		// PrintToChatAll("Player Disconnect: %i: %N", iClient, iClient);
-		// PrintToServer("Player Disconnect: %i: %N", iClient, iClient);
 		
 		if(g_bClientLoggedIn[iClient] == true)
 			Logout(iClient);
@@ -152,7 +132,6 @@ void HandleClientDisconnect(int iClient)
 	g_strDBUserToken[iClient] = "";
 	g_iAutoSetCountDown[iClient] = -1;
 	ResetAll(iClient);
-	//PrintToChatAll("\x03%N \x04has disconnected", iClient);
 }
 
 void StorePlayerInDisconnectedPlayerList(int iClient)
@@ -188,17 +167,6 @@ void StorePlayerInDisconnectedPlayerList(int iClient)
 	// Increment the size of the array (note that array is fixed to size of DISCONNECTED_PLAYER_STORAGE_COUNT)
 	if (existingIndex == -1)
 		g_iDisconnectedPlayerCnt = g_iDisconnectedPlayerCnt >= DISCONNECTED_PLAYER_STORAGE_COUNT ? DISCONNECTED_PLAYER_STORAGE_COUNT : g_iDisconnectedPlayerCnt + 1;
-	
-	// // Print for debugging
-	// PrintToServer("\n----------------------------------------");
-	// PrintToServer("Existing index: %i", existingIndex);
-	// for (int i = 0; i < DISCONNECTED_PLAYER_STORAGE_COUNT; i++)
-	// {
-	// 	PrintToServer("%i: %s, %s", i, 
-	// 		g_strDisconnectedConnectedPlayerNames[i], 
-	// 		g_strDisconnectedConnectedPlayerSteamID[i]);
-	// }
-	// PrintToServer("----------------------------------------\n ");
 }
 
 void LoopThroughAllPlayersAndHandleAFKPlayers()

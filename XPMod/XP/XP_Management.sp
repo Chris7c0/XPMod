@@ -14,7 +14,6 @@ void RenamePlayerWithLevelTags(int iClient, bool bRemoveTags = false)
 	char strClientName[32];
 	char strClientBaseName[32];
 	GetClientName(iClient, strClientName, sizeof(strClientName));
-	// PrintToChatAll("%s: %i",strClientName, strlen(strClientName));
 
 	// Create the Level Tag regex to check against
 	// Needs to match tagged names below (one with prestige and one without)
@@ -38,7 +37,6 @@ void RenamePlayerWithLevelTags(int iClient, bool bRemoveTags = false)
 	if (strlen(strClientBaseName) > 22)
 		return;
 
-	// PrintToServer("%s: %i",strClientBaseName, strlen(strClientBaseName));
 
 	// Add the tag to the players name if needed
 	if (bRemoveTags == false)
@@ -58,7 +56,6 @@ void RenamePlayerWithLevelTags(int iClient, bool bRemoveTags = false)
 	}
 	
 
-	// PrintToServer("%s: %i",strClientName, strlen(strClientName));
 
 	g_bHideNameChangeMessage = true;
 	
@@ -71,8 +68,6 @@ void RenamePlayerWithLevelTags(int iClient, bool bRemoveTags = false)
 	delete g_hTimer_ResetHideNameChangeMessage;
 	g_hTimer_ResetHideNameChangeMessage = CreateTimer(0.5, TimerSetHideChangeNameMessage, _);
 
-	// GetClientName(iClient, strClientName, sizeof(strClientName));
-	// PrintToChatAll("%s: %i",strClientName, strlen(strClientName));
 }
 
 Action TimerSetHideChangeNameMessage(Handle timer, int data)
@@ -285,8 +280,6 @@ void ResetAllOptions(int iClient)
 
 void ResetAllInfectedClasses(int iClient)
 {
-	// PrintToChat(iClient, "Reset all infected classes");
-	// PrintToServer("************Reset Infected classes for %i", iClient);
 
 	//Infected Classes
 	g_iClientInfectedClass1[iClient] = UNKNOWN_INFECTED;
@@ -413,8 +406,6 @@ Action ResetSurvivorTalents(int iClient)
 	g_iInfectedLevel[iClient] = RoundToFloor(g_iClientLevel[iClient] * 0.5);
 	//iskillpoints[iClient] = g_iInfectedLevel[iClient] * 3;
 
-	// if(IsFakeClient(iClient) == false)
-	// 	PrintToChat(iClient,"\x03[XPMod] All of your chosen skill points have been reset.",g_iClientXP[iClient]);
 	
 	//Delete all particles on the iClient
 	DeleteAllClientParticles(iClient);
@@ -424,8 +415,6 @@ Action ResetSurvivorTalents(int iClient)
 
 void LevelUpPlayer(int iClient)
 {
-	// PrintToChat(iClient, "Level up player");
-	// PrintToServer("level up player");
 	if(iClient > 0)
 		if(IsClientInGame(iClient) == true)
 		{
@@ -450,7 +439,6 @@ void LevelUpPlayer(int iClient)
 			if (g_bClientLoggedIn[iClient])
 			{
 				// Print the level up message
-				g_iClientLevel[iClient] = g_iClientLevel[iClient];
 				PrintHintText(iClient, "<-=-=-=-:[You have reached level %d]:-=-=-=->", g_iClientLevel[iClient]);
 				PrintToChatAll("\x03[XPMod] %N is now level %d", iClient, g_iClientLevel[iClient]);
 				// Play the level up sound
@@ -554,7 +542,6 @@ void AutoLevelUpSurvivorTalents(int iClient, int[] talent1, int[] talent2, int[]
 			talent6[iClient] += g_iSkillPoints[iClient];
 			g_iSkillPoints[iClient] = 0;
 		}
-		//PrintToChat(iClient, "\x03[XPMod] \x01All your skillpoints have been assigned to \x04CLASSHERE\x01.");
 	}
 }
 
@@ -657,8 +644,6 @@ void LevelUpAllLouis(int iClient)
 //Level Up Infected Talents
 void LevelUpInfectedTalent(int iClient, int class)
 {
-	// PrintToChat(iClient, "level up infected tallent %i", class);
-	// PrintToServer("level up infected talent %i", class);
 	if(class == SMOKER)
 	{
 		if(g_iClientLevel[iClient] > 0 && g_iClientLevel[iClient] <= 10)
@@ -772,8 +757,6 @@ void LevelUpInfectedTalent(int iClient, int class)
 //Level Up Infected Talents
 void LevelDownInfectedTalent(int iClient, int class)
 {
-	// PrintToChat(iClient, "level down infected tallent %i", class);
-	// PrintToServer("level down infected talent %i", class);
 	if(class == SMOKER)
 	{
 		g_iSmokerTalent1Level[iClient] = 0;
@@ -814,8 +797,6 @@ void LevelDownInfectedTalent(int iClient, int class)
 
 void SetInfectedClassSlot(int iClient, int slotnum, int class)
 {
-	// PrintToChat(iClient, "Set your infected class to %i", class);
-	// PrintToServer("Set infected class to %i", class);
 	switch(slotnum)
 	{
 		case 1:	//Class 1

@@ -17,14 +17,6 @@ void SetupLoadouts()
 	}
 }
 
-// Action LoadoutMenuDrawSetup(iClient)
-// {
-// 	if(IsClientInGame(iClient))
-// 		LoadoutMenuDraw(iClient);
-	
-// 	return Plugin_Handled;
-// }
-
 Action ShowUserLoadoutMenu(int iClient, int args)
 {
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient))
@@ -52,7 +44,6 @@ Action LoadoutMenuDraw(int iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 
 	GetWeaponNames(iClient);
-	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
 		g_iClientUsableXP = g_iClientXP[iClient] - g_iClientPreviousLevelXPAmount[iClient];
@@ -109,7 +100,6 @@ Action PrimaryMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(PrimaryMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
-	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
 		g_iClientUsableXP = g_iClientXP[iClient] - g_iClientPreviousLevelXPAmount[iClient];
@@ -138,7 +128,6 @@ Action SecondaryMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(SecondaryMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
-	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
 		g_iClientUsableXP = g_iClientXP[iClient] - g_iClientPreviousLevelXPAmount[iClient];
@@ -167,7 +156,6 @@ Action ExplosivesMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(ExplosivesMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
-	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
 		g_iClientUsableXP = g_iClientXP[iClient] - g_iClientPreviousLevelXPAmount[iClient];
@@ -196,7 +184,6 @@ Action HealthMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(HealthMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
-	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
 		g_iClientUsableXP = g_iClientXP[iClient] - g_iClientPreviousLevelXPAmount[iClient];
@@ -208,7 +195,6 @@ Action HealthMenuDraw(int iClient)
 	AddMenuItem(menu, "option1", "First Aid Kit (250 XP)");
 	AddMenuItem(menu, "option2", "Defibrillator (500 XP)");
 	AddMenuItem(menu, "option3", "Incendiary Ammo (500 XP)");
-	// AddMenuItem(menu, "option4", "Explosive Ammo (1000 XP)");
 	AddMenuItem(menu, "option4", "None\n ");
 	AddMenuItem(menu, "option5", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
@@ -226,7 +212,6 @@ Action BoostMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(BoostMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
-	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
 		g_iClientUsableXP = g_iClientXP[iClient] - g_iClientPreviousLevelXPAmount[iClient];
@@ -255,7 +240,6 @@ Action CleanMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(CleanMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
-	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
 		g_iClientUsableXP = g_iClientXP[iClient] - g_iClientPreviousLevelXPAmount[iClient];
@@ -278,7 +262,6 @@ Action SMGMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(SMGMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
-	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
 		g_iClientUsableXP = g_iClientXP[iClient] - g_iClientPreviousLevelXPAmount[iClient];
@@ -308,7 +291,6 @@ Action MGMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(MGMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
-	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
 		g_iClientUsableXP = g_iClientXP[iClient] - g_iClientPreviousLevelXPAmount[iClient];
@@ -338,7 +320,6 @@ Action ShotgunMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(ShotgunMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
-	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
 		g_iClientUsableXP = g_iClientXP[iClient] - g_iClientPreviousLevelXPAmount[iClient];
@@ -368,7 +349,6 @@ Action SniperMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(SniperMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
-	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
 		g_iClientUsableXP = g_iClientXP[iClient] - g_iClientPreviousLevelXPAmount[iClient];
@@ -398,7 +378,6 @@ Action SpecialMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(SpecialMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
-	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
 		g_iClientUsableXP = g_iClientXP[iClient] - g_iClientPreviousLevelXPAmount[iClient];
@@ -429,8 +408,6 @@ Action CrushingMeleeMenuDraw(int iClient)
 	Menu menu = CreateMenu(CrushingMeleeMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
-	g_iClientLevel[iClient] = g_iClientLevel[iClient];
-	
 	if(g_iClientLevel[iClient]>0)
 		g_iClientUsableXP = g_iClientXP[iClient] - g_iClientPreviousLevelXPAmount[iClient];
 	else
@@ -443,7 +420,6 @@ Action CrushingMeleeMenuDraw(int iClient)
 	AddMenuItem(menu, "option3", "Frying Pan (30 XP)");
 	AddMenuItem(menu, "option4", "Nightstick (30 XP)");
 	AddMenuItem(menu, "option5", "Golf Club (30 XP)");
-	//AddMenuItem(menu, "option6", "Riot Shield (30 XP)");
 	AddMenuItem(menu, "option6", "Baseball Bat (50 XP)\n ");
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
@@ -460,7 +436,6 @@ Action SidearmMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(SidearmMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
-	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
 		g_iClientUsableXP = g_iClientXP[iClient] - g_iClientPreviousLevelXPAmount[iClient];
@@ -490,7 +465,6 @@ Action SlashingMeleeMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(SlashingMeleeMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
-	g_iClientLevel[iClient] = g_iClientLevel[iClient];
 	
 	if(g_iClientLevel[iClient]>0)
 		g_iClientUsableXP = g_iClientXP[iClient] - g_iClientPreviousLevelXPAmount[iClient];
@@ -730,11 +704,6 @@ void HealthMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 				g_iClientHealthSlotID[iClient] = 3;
 				LoadoutMenuDraw(iClient);
 			}
-			// case 3: //Explosive Ammo
-			// {
-			// 	g_iClientHealthSlotID[iClient] = 4;
-			// 	LoadoutMenuDraw(iClient);
-			// }
 			case 3: //None
 			{
 				g_iClientHealthSlotID[iClient] = 0;
@@ -1067,11 +1036,6 @@ void CrushingMeleeMenuHandler(Menu menu, MenuAction action, int iClient, int ite
 				g_iClientSecondarySlotID[iClient] = 15;
 				LoadoutMenuDraw(iClient);
 			}
-			// case 5: //Riot Shield
-			// {
-			// 	g_iClientSecondarySlotID[iClient] = 14;
-			// 	LoadoutMenuDraw(iClient);
-			// }
 			case 5: //Baseball Bat
 			{
 				g_iClientSecondarySlotID[iClient] = 7;
@@ -1306,11 +1270,6 @@ void GetWeaponNames(int iClient)
 			g_strClientSecondarySlot = "Chainsaw (250 XP)";
 			g_iClientSecondarySlotCost[iClient] = 250;
 		}
-		// case 14: //Riot Shield
-		// {
-		// 	g_strClientSecondarySlot = "Riot Shield (30 XP)";
-		// 	g_iClientSecondarySlotCost[iClient] = 30;
-		// }
 		case 14: //Combat Knife
 		{
 			g_strClientSecondarySlot = "Combat Knife (50 XP)";
@@ -1372,11 +1331,6 @@ void GetWeaponNames(int iClient)
 			g_strClientHealthSlot = "Incendiary Ammo (500 XP)";
 			g_iClientHealthSlotCost[iClient] = 500;
 		}
-		// case 4: //Explosive Ammo
-		// {
-		// 	g_strClientHealthSlot = "Explosive Ammo (1000 XP)";
-		// 	g_iClientHealthSlotCost[iClient] = 1000;
-		// }
 	}
 	switch(g_iClientBoostSlotID[iClient])
 	{
@@ -1486,13 +1440,6 @@ void SpawnWeapons(int iClient)
 		case 7: //Scar-L DEFAULT
 		{
 			RunCheatCommand(iClient, "give", "give rifle_desert");
-			// if((g_iClientXP[iClient]-60) >= g_iClientPreviousLevelXPAmount[iClient])
-			// {
-			// 	g_iClientXP[iClient]-=60;
-			// 	RunCheatCommand(iClient, "give", "give rifle_desert");
-			// }
-			// else
-			// 	PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Scar-L");
 		}
 		case 8: //Remington 870
 		{
@@ -1695,13 +1642,6 @@ void SpawnWeapons(int iClient)
 		case 10: //Machete DEFAULT
 		{
 			RunCheatCommand(iClient, "give", "give machete");
-			// if((g_iClientXP[iClient]-30) >= g_iClientPreviousLevelXPAmount[iClient])
-			// {
-			// 	g_iClientXP[iClient]-=30;
-			// 	RunCheatCommand(iClient, "give", "give machete");
-			// }
-			// else
-			// 	PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Machete");
 		}
 		case 11: //Frying Pan
 		{
@@ -1733,16 +1673,6 @@ void SpawnWeapons(int iClient)
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Chainsaw");
 		}
-		// case 14: //Riot Shield
-		// {
-		// 	if((g_iClientXP[iClient]-30) >= g_iClientPreviousLevelXPAmount[iClient])
-		// 	{
-		// 		g_iClientXP[iClient]-=30;
-		// 		RunCheatCommand(iClient, "give", "give riotshield");
-		// 	}
-		// 	else
-		// 		PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Riot Shield");
-		// }
 		case 14: //Combat Knife
 		{
 			if((g_iClientXP[iClient]-50) >= g_iClientPreviousLevelXPAmount[iClient])
@@ -1799,17 +1729,6 @@ void SpawnWeapons(int iClient)
 			RunCheatCommand(iClient, "give", "give molotov");
 			if(g_iStrongLevel[iClient] > 0)
 				g_strCoachGrenadeSlot1 = "weapon_molotov";
-			// if((g_iClientXP[iClient]-30) >= g_iClientPreviousLevelXPAmount[iClient])
-			// {
-			// 	g_iClientXP[iClient]-=30;
-			// 	RunCheatCommand(iClient, "give", "give molotov");
-			// 	if(g_iStrongLevel[iClient] > 0)
-			// 	{
-			// 		g_strCoachGrenadeSlot1 = "weapon_molotov";
-			// 	}
-			// }
-			// else
-			// 	PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04Molotov");
 		}
 		case 3: //Bile Jar
 		{
@@ -1835,13 +1754,6 @@ void SpawnWeapons(int iClient)
 		case 1: //Med Kit DEFAULT
 		{
 			RunCheatCommand(iClient, "give", "give first_aid_kit");
-			// if((g_iClientXP[iClient] - 250) >= g_iClientPreviousLevelXPAmount[iClient])
-			// {
-			// 	g_iClientXP[iClient] -= 250;
-			// 	RunCheatCommand(iClient, "give", "give first_aid_kit");
-			// }
-			// else
-			// 	PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for a \x04First Aid Kit");
 		}
 		case 2: //Defib
 		{
@@ -1863,16 +1775,6 @@ void SpawnWeapons(int iClient)
 			else
 				PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for \x04Incendiary Ammo");
 		}
-		// case 4: //Explosive Ammo
-		// {
-		// 	if((g_iClientXP[iClient] - 1000) >= g_iClientPreviousLevelXPAmount[iClient])
-		// 	{
-		// 		g_iClientXP[iClient] -= 1000;
-		// 		RunCheatCommand(iClient, "give", "give upgradepack_explosive");
-		// 	}
-		// 	else
-		// 		PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for \x04Explosive Ammo");
-		// }
 	}
 	switch(g_iClientBoostSlotID[iClient])
 	{
@@ -1883,13 +1785,6 @@ void SpawnWeapons(int iClient)
 		case 1: //Pain Pills DEFAULT
 		{
 			RunCheatCommand(iClient, "give", "give pain_pills");
-			// if((g_iClientXP[iClient]-50) >= g_iClientPreviousLevelXPAmount[iClient])
-			// {
-			// 	g_iClientXP[iClient]-=50;
-			// 	RunCheatCommand(iClient, "give", "give pain_pills");
-			// }
-			// else
-			// 	PrintToChat(iClient, "\x03[XPMod] \x05You dont have enough usable XP for \x04Pain Pills");
 		}
 		case 2: //Adrenaline Shot
 		{

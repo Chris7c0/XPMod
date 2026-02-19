@@ -13,7 +13,6 @@ void LoadFireTankTalents(int iClient)
 		return;
 	}
 
-	// PrintToChatAll("%N Loading Fire Tank abilities.", iClient);
 	
 	g_iTankChosen[iClient] = TANK_FIRE;
 	g_fTankHealthPercentage[iClient] =  1.0;
@@ -51,11 +50,6 @@ void ResetAllTankVariables_Fire(int iClient)
 
 	DeleteParticleEntity(g_iPID_TankChargedFire[iClient]);
 }
-
-// SetupTankForBot_Fire(iClient)
-// {
-// 	LoadFireTankTalents(iClient);
-// }
 
 void SetClientSpeedTankFire(int iClient, float &fSpeed)
 {
@@ -186,10 +180,6 @@ void EventsHurt_AttackerTank_Fire(Handle hEvent, int iAttackerTank, int iVictim)
 	}
 }
 
-// EventsDeath_AttackerTank_Fire(Handle hEvent, iAttackerTank, iVictim)
-// {
-// 	SuppressNeverUsedWarning(hEvent, iAttackerTank, iVictim);
-// }
 
 void EventsDeath_VictimTank_Fire(Handle hEvent, int iAttacker, int iVictimTank)
 {
@@ -234,13 +224,6 @@ void CreateFireRockTrailEffect(int iRockEntity)
 	// Store it for stopping and destroying it later
 	g_listTankRockEntities.Set(iTankRockIndex, iTankRockTrailParticle, TANK_ROCK_PARTICLE_TRAIL);
 	
-	// SetVariantString("!activator");
-	// AcceptEntityInput(iTankRockTrailParticle, "SetParent", iRockEntity, iTankRockTrailParticle, 0);
-
-	// DispatchSpawn(iTankRockTrailParticle);
-	// AcceptEntityInput(iTankRockTrailParticle, "TurnOn");
-	
-	// CreateTimer(10.0, TimerStopSmokeEntity, iTankRockTrailParticle, TIMER_FLAG_NO_MAPCHANGE);
 }
 
 void DestroyFireTankRock(int iRockEntity)

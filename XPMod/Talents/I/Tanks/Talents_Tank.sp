@@ -37,7 +37,6 @@ void EventsHurt_VictimTank(Handle hEvent, int iAttacker, int iVictimTank)
 			int iMaxHealthConVarSetting = RoundToCeil(GetConVarInt(FindConVar("z_tank_health")) * 1.5);
 		int iCurrentHealth = GetPlayerHealth(iVictimTank);
 
-		// PrintToChat(iVictimTank, "iCurrentHealth: %i, iMaxHealthConVarSetting: %i,  g_fTankStartingHealthMultiplier[iClient]: %f", iCurrentHealth, iMaxHealthConVarSetting,  g_fTankStartingHealthMultiplier[iVictimTank]);
 
 		// Check if they lost enough HP yet
 		if (iCurrentHealth < RoundToNearest(iMaxHealthConVarSetting * g_fTankStartingHealthMultiplier[iVictimTank]) - TANK_AUTOMATIC_SELECT_HP_LOSS)
@@ -91,18 +90,6 @@ void EventsHurt_VictimTank(Handle hEvent, int iAttacker, int iVictimTank)
 	}
 }
 
-
-// EventsDeath_AttackerTank(Handle hEvent, iAttackerTank, iVictim)
-// {
-// 	switch(g_iTankChosen[iAttackerTank])
-// 	{
-// 		// case TANK_FIRE:			EventsDeath_AttackerTank_Fire(hEvent, iAttackerTank, iVictim);
-// 		// case TANK_ICE:			EventsDeath_AttackerTank_Ice(hEvent, iAttackerTank, iVictim);
-// 		// case TANK_NECROTANKER:	EventsDeath_AttackerTank_NecroTanker(hEvent, iAttackerTank, iVictim);
-// 		// case TANK_VAMPIRIC:		EventsDeath_AttackerTank_Vampiric(hEvent, iAttackerTank, iVictim);
-// 	}
-// }
-
 void EventsDeath_VictimTank(Handle hEvent, int iAttacker, int iVictimTank)
 {
 	if (g_iClientTeam[iVictimTank] != TEAM_INFECTED ||
@@ -150,7 +137,6 @@ void ResetAllTankVariables(int iClient)
 	if (RunClientChecks(iClient) == false)
 		return;
 
-	//PrintToChatAll("%N ResetAllTankVariables", iClient);
 
 	// Generic Tank Variables
 	g_iTankChosen[iClient] = TANK_NOT_CHOSEN;
@@ -167,15 +153,6 @@ void ResetAllTankVariables(int iClient)
 	ResetAllTankVariables_Ice(iClient);
 	ResetAllTankVariables_NecroTanker(iClient);
 	ResetAllTankVariables_Vampiric(iClient);
-
-	// // if (RunClientChecks(iClient) && IsFakeClient(iClient) == false)
-	// PrintToChatAll("%N g_iInfectedCharacter = %i  g_iClientTeam = %i  RunClientChecks = %i, IsPlayerAlive = %i  m_zombieClass = %i",
-	// 	iClient,
-	// 	g_iInfectedCharacter[iClient], 
-	// 	g_iClientTeam[iClient], 
-	// 	RunClientChecks(iClient), 
-	// 	IsPlayerAlive(iClient), 
-	// 	GetEntProp(iClient, Prop_Send, "m_zombieClass") );
 
 	// Everything beyond here is for if the player is alive as a tank
 	// This is for when a player becomes a tank after another tank
@@ -200,13 +177,11 @@ void ResetAllTankVariables(int iClient)
 	if(g_bEndOfRound == false)
 		StopHudOverlayColor(iClient);
 
-	// PrintToChatAll("%N ResetAllTankVariables Ended", iClient);
 }
 
 
 void ResetTankHealth(int iClient)
 {
-	//PrintToChatAll("%N ResetTankHealth", iClient)
 
 	// Set Player Max Health to ConVar Setting of Tank Max health
 	// Note: Valve multiplies the value with 1.5 so it becomes 4000 x 1.5 = 6000 hp.
@@ -216,7 +191,6 @@ void ResetTankHealth(int iClient)
 	// Set player health to the new max
 	int iNewHealth = iMaxHealthConVarSetting;
 
-	//PrintToChatAll("1) %N ResetTankHealth g_fFrustratedTankTransferHealthPercentage: %f iMaxHealthConVarSetting = %i iNewHealth = %i", iClient, g_fFrustratedTankTransferHealthPercentage, iMaxHealthConVarSetting, iNewHealth);
 
 	// If this was a transferred (passed or frustrated) tank, then set the health to this percentage
 	if (g_bTankHealthJustSet[iClient] == false && g_fFrustratedTankTransferHealthPercentage > 0.0)
@@ -234,7 +208,6 @@ void ResetTankHealth(int iClient)
 			CreateTimer(1.0, TimerResetTankTakeOverBot, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	}
 
-	//PrintToChatAll("2) %N ResetTankHealth g_fFrustratedTankTransferHealthPercentage: %f iMaxHealthConVarSetting = %i iNewHealth = %i", iClient, g_fFrustratedTankTransferHealthPercentage, iMaxHealthConVarSetting, iNewHealth);
 
 	if (g_bTankHealthJustSet[iClient] == false)
 		SetPlayerHealth(iClient, -1, iNewHealth);
@@ -260,14 +233,12 @@ Action TimerResetTankTakeOverBot(Handle timer, int iClient)
 
 void SetTanksTalentHealth(int iClient, int iMaxHealthAmount)
 {
-	//PrintToChatAll("SetTanksTalentHealth %N", iClient);
 	
 	// Get the normalized health percentage to apply with the new tanks max health
 	float fNormalizedHealthPercentage = float(GetPlayerHealth(iClient)) / float(GetPlayerMaxHealth(iClient));
 	int iNewMaxHealth = RoundToNearest(iMaxHealthAmount * g_fTankStartingHealthMultiplier[iClient]);
 	int iNewHealth = RoundToNearest(iNewMaxHealth * fNormalizedHealthPercentage);
 
-	//PrintToChatAll("fNormalizedHealthPercentage iHealth = %f iNewMaxHealth = %i iNewHealth = %i", fNormalizedHealthPercentage, iNewMaxHealth, iNewHealth);
 
 	// Set New Health Values
 	SetPlayerMaxHealth(iClient, iNewMaxHealth, false, false);
@@ -315,7 +286,6 @@ void StorePassedOrFrustratedTanksHealthPercentage(int iClient)
 	// This function can be called from several places including player change team so need to check this.
 	if (RunClientChecks(iClient) == false || g_iInfectedCharacter[iClient] != TANK)
 	{
-		//PrintToChatAll("StorePassedOrFrustratedTanksHealthPercentage not TANK");
 		return;
 	}
 
@@ -328,8 +298,6 @@ void StorePassedOrFrustratedTanksHealthPercentage(int iClient)
 	int iCurrentHealth = GetPlayerHealth(iClient);
 	g_fFrustratedTankTransferHealthPercentage = iCurrentHealth / float(iMaxHealth);
 	
-	//PrintToChatAll("%N StorePassedOrFrustratedTanksHealthPercentage iHealth = %i MaxHealth = %i g_fFrustratedTankTransferHealthPercentage: %f", iClient, iCurrentHealth, iMaxHealth, g_fFrustratedTankTransferHealthPercentage);
-	//PrintToChatAll("\x03[XPMod] \x04%N's tank has been frustrated or passed. Transferring tank with %3f health.", iClient, g_fFrustratedTankTransferHealthPercentage);
 }
 
 

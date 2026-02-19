@@ -19,7 +19,6 @@ void LoadTalents(int iClient)
 		GetEntData(iClient, g_iOffset_IsGhost, 1) == 1)
 		return;
 	
-	// PrintToChatAll("LoadTalents %N, TEAM: %i", iClient, g_iClientTeam[iClient]);
 
 	if (g_iClientTeam[iClient] == TEAM_INFECTED)
 	{
