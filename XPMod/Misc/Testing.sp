@@ -509,7 +509,7 @@ Action XPModDebugModeToggle(int iClient, int args)
 	return Plugin_Handled;
 }
 
-Action Timer_ContinuallyKillAllCI(Handle timer, any data)
+Action Timer_ContinuallyKillAllCI(Handle timer, int data)
 {
 	// Debug Mode Kill all CI
 	if (g_bStopCISpawning == false)
@@ -743,12 +743,12 @@ public void AttachBeam(int client)
 	}
 }
 
-public Action beam_enable(Handle timer, any beam)
+public Action beam_enable(Handle timer, int beam)
 {
 	AcceptEntityInput(beam, "TurnOn");
 	return Plugin_Stop;
 }
-// Action TimerAttaachRope(Handle timer, any iClient)
+// Action TimerAttaachRope(Handle timer, int iClient)
 // {
 // 	PrintToChatAll("clients: %i, %i", g_iClient1, g_iClient2)
 // 	PrintToChatAll("ents: %i, %i", g_iEntity1, g_iEntity2)

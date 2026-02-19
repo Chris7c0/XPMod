@@ -1197,7 +1197,7 @@ void GiveEllisAnExtraAdrenaline(int iClient)
 	}
 }
 
-Action TimerDelayedGiveEllisAnExtraAdrenaline(Handle timer, any iClient)
+Action TimerDelayedGiveEllisAnExtraAdrenaline(Handle timer, int iClient)
 {
 	GiveEllisAnExtraAdrenaline(iClient);
 	return Plugin_Stop;

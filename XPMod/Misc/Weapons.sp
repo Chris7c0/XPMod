@@ -864,7 +864,7 @@ void GiveEveryWeaponToSurvivor(int iClient)
 	CreateTimer(GIVE_ALOT_OF_WEAPONS_COOLDOWN_DURATION, Timer_ResetGiveAlotOfWeaponsOnCooldown, _, TIMER_FLAG_NO_MAPCHANGE);
 }
 
-Action Timer_ResetGiveAlotOfWeaponsOnCooldown(Handle timer, any data)
+Action Timer_ResetGiveAlotOfWeaponsOnCooldown(Handle timer, int data)
 {
 	g_bGiveAlotOfWeaponsOnCooldown = false;
 	return Plugin_Stop;

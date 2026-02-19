@@ -319,13 +319,13 @@ void AddWingDashVelocity(int iClient, float speed)
 	TeleportEntity(iClient, NULL_VECTOR, NULL_VECTOR, vecVelocity);
 }
 
-Action TimerCanFlapVampiricTankWingsReset(Handle timer, any iClient)
+Action TimerCanFlapVampiricTankWingsReset(Handle timer, int iClient)
 {
 	g_bCanFlapVampiricTankWings[iClient] = true;
 	return Plugin_Stop;
 }
 
-Action TimerVampiricTankCanRechargeStaminaReset(Handle timer, any iClient)
+Action TimerVampiricTankCanRechargeStaminaReset(Handle timer, int iClient)
 {
 	g_bVampiricTankCanRechargeStamina[iClient] = true;
 	
@@ -333,13 +333,13 @@ Action TimerVampiricTankCanRechargeStaminaReset(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-Action TimerVampiricTankWingDashReset(Handle timer, any iClient)
+Action TimerVampiricTankWingDashReset(Handle timer, int iClient)
 {
 	g_bCanVampiricTankWingDash[iClient] = true;
 	return Plugin_Stop;
 }
 
-Action TimerVampiricTankWingDashChargeRegenerate(Handle timer, any iClient)
+Action TimerVampiricTankWingDashChargeRegenerate(Handle timer, int iClient)
 {
 	if (RunClientChecks(iClient) && 
 		IsPlayerAlive(iClient))

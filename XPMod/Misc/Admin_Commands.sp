@@ -22,7 +22,7 @@ void UnpauseGame(int iClient)
 	SetConVarInt(FindConVar("sv_pausable"), 0);
 }
 
-Action TimerPauseGame(Handle timer, any iClient)
+Action TimerPauseGame(Handle timer, int iClient)
 {
     PauseGame(iClient);
     return Plugin_Stop;

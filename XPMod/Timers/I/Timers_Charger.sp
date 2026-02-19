@@ -1,4 +1,4 @@
-Action TimerSetChargerCooldown(Handle timer, any iClient)
+Action TimerSetChargerCooldown(Handle timer, int iClient)
 {
 	//INITIAL CHECKS
 	//--------------
@@ -71,19 +71,19 @@ Action TimerSetChargerCooldown(Handle timer, any iClient)
 	return Plugin_Continue;
 }
 
-Action TimerResetSuperCharge(Handle timer, any iClient)
+Action TimerResetSuperCharge(Handle timer, int iClient)
 {
 	g_bCanChargerSuperCharge[iClient] = true;
 	return Plugin_Stop;
 }
 
-Action TimerResetSpikedCharge(Handle timer, any iClient)
+Action TimerResetSpikedCharge(Handle timer, int iClient)
 {
 	g_bCanChargerSpikedCharge[iClient] = true;
 	return Plugin_Stop;
 }
 
-Action TimerResetChargerHealingColor(Handle timer, any iClient)
+Action TimerResetChargerHealingColor(Handle timer, int iClient)
 {
 	g_bIsChargerHealing[iClient] = false;
 	SetEntProp(iClient, Prop_Send, "m_iGlowType", 2);
@@ -93,7 +93,7 @@ Action TimerResetChargerHealingColor(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-Action TimerEarthquakeCooldown(Handle timer, any iClient)
+Action TimerEarthquakeCooldown(Handle timer, int iClient)
 {
 	g_bCanChargerEarthquake[iClient] = true;
 	return Plugin_Stop;

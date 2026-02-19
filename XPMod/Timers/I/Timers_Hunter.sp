@@ -4,7 +4,7 @@ void Handle1SecondClientTimers_Hunter(int iClient)
 	HandleHunterVisibleBloodLustMeterGain(iClient);
 }
 
-Action TimerHunterBloodLustReset(Handle timer, any iClient)
+Action TimerHunterBloodLustReset(Handle timer, int iClient)
 {
 	g_iBloodLustStage[iClient] = 0;
 	g_iBloodLustMeter[iClient] = 0;
@@ -15,32 +15,32 @@ Action TimerHunterBloodLustReset(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-Action TimerHunterPounceDamageMessageDone(Handle timer, any iClient)
+Action TimerHunterPounceDamageMessageDone(Handle timer, int iClient)
 {
 	g_bHunterPounceMessageVisible[iClient] = false;
 	return Plugin_Stop;
 }
 
 
-Action TimerResetHunterDismount(Handle timer, any iClient)
+Action TimerResetHunterDismount(Handle timer, int iClient)
 {
 	g_bCanHunterDismount[iClient] = true;
 	return Plugin_Stop;
 }
 
-Action TimerResetHunterPounceLandCooldown(Handle timer, any iClient)
+Action TimerResetHunterPounceLandCooldown(Handle timer, int iClient)
 {
 	g_bHunterInPounceLandCooldown[iClient] = false;
 	return Plugin_Stop;
 }
 
-Action TimerResetCanHunterPoison(Handle timer, any iClient)
+Action TimerResetCanHunterPoison(Handle timer, int iClient)
 {
 	g_bCanHunterPoisonVictim[iClient] = true;
 	return Plugin_Stop;
 }
 
-Action TimerHunterPoison(Handle timer, any pack)
+Action TimerHunterPoison(Handle timer, Handle pack)
 {
 	if (pack == INVALID_HANDLE)
 		return Plugin_Stop;
@@ -82,7 +82,7 @@ Action TimerHunterPoison(Handle timer, any pack)
 	return Plugin_Stop;
 }
 
-Action TimerHunterPoisonFade(Handle timer, any pack)
+Action TimerHunterPoisonFade(Handle timer, Handle pack)
 {
 	if (pack == INVALID_HANDLE)
 		return Plugin_Stop;

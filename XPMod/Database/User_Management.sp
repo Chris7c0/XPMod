@@ -1,5 +1,5 @@
 //Callback function for an SQL SQLGetUserIDAndToken
-void SQLGetUserIDAndTokenCallback(Handle owner, Handle hQuery, const char[] error, any iClient)
+void SQLGetUserIDAndTokenCallback(Handle owner, Handle hQuery, const char[] error, int iClient)
 {
 	// PrintToChatAll("SQLGetUserIDAndTokenCallback Started. %i: %N", iClient, iClient);
 	// PrintToServer("SQLGetUserIDAndTokenCallback Started. %i: %N", iClient, iClient);
@@ -56,7 +56,7 @@ void SQLGetUserIDAndTokenCallback(Handle owner, Handle hQuery, const char[] erro
 	// PrintToServer("GetUserIDAndToken Callback Complete.  %i: %N", iClient, iClient);
 }
 
-void GetUserIDAndToken(any iClient)
+void GetUserIDAndToken(int iClient)
 {
 	// PrintToChatAll("GetUserIDAndToken. %i: %N", iClient, iClient);
 	// PrintToServer("GetUserIDAndToken. %i: %N", iClient, iClient);
@@ -90,7 +90,7 @@ void GetUserIDAndToken(any iClient)
 }
 
 //Callback function for an SQL GetUserData
-void SQLGetUserDataCallback(Handle owner, Handle hQuery, const char[] error, any hDataPack)
+void SQLGetUserDataCallback(Handle owner, Handle hQuery, const char[] error, Handle hDataPack)
 {
 	if (hDataPack == INVALID_HANDLE)
 	{
@@ -299,7 +299,7 @@ void SQLGetUserDataCallback(Handle owner, Handle hQuery, const char[] error, any
 	// PrintToServer("GetUserData Callback Complete.  %i: %N", iClient, iClient);
 }
 
-void GetUserData(any iClient, bool bOnlyWebsiteChangableData = false, bool bDrawConfirmMenuAfter = false, bool bDrawTopMenuAfter = false)
+void GetUserData(int iClient, bool bOnlyWebsiteChangableData = false, bool bDrawConfirmMenuAfter = false, bool bDrawTopMenuAfter = false)
 {
 	// PrintToChatAll("GetUserData. %i: %N, bOnlyWebsiteChangableData = %i", iClient, iClient, bOnlyWebsiteChangableData);
 	// PrintToServer("GetUserData. %i: %N, bOnlyWebsiteChangableData = %i", iClient, iClient, bOnlyWebsiteChangableData);
@@ -356,7 +356,7 @@ void GetUserData(any iClient, bool bOnlyWebsiteChangableData = false, bool bDraw
 }
 
 //Callback function for an SQL CreateNewUser
-void SQLCreateNewUserCallback(Handle owner, Handle hQuery, const char[] error, any iClient)
+void SQLCreateNewUserCallback(Handle owner, Handle hQuery, const char[] error, int iClient)
 {
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -467,7 +467,7 @@ void SaveUserData(int iClient)
 }
 
 //Callback function for an SQL SaveUserData
-void SQLSaveUserDataInDatabaseCallback(Handle owner, Handle hQuery, const char[] error, any iClient)
+void SQLSaveUserDataInDatabaseCallback(Handle owner, Handle hQuery, const char[] error, int iClient)
 {
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -676,7 +676,7 @@ void SaveUserDataInDatabase(int iClient)
 }
 
 //Callback function for an SQL SQLCheckForChangeThenSaveData
-void SQLCheckForChangeThenSaveDataCallback(Handle owner, Handle hQuery, const char[] error, any iClient)
+void SQLCheckForChangeThenSaveDataCallback(Handle owner, Handle hQuery, const char[] error, int iClient)
 {
 	// PrintToChatAll("SQLCheckForChangeThenSaveDataCallback Started. %i: %N", iClient, iClient);
 	// PrintToServer("SQLCheckForChangeThenSaveDataCallback Started. %i: %N", iClient, iClient);
@@ -735,7 +735,7 @@ void SQLCheckForChangeThenSaveDataCallback(Handle owner, Handle hQuery, const ch
 }
 
 // This is for when an update happens in the database and the user connected needs to have his XP force updated on the server they are playing
-void SQLCheckForChangeThenSaveData(any iClient)
+void SQLCheckForChangeThenSaveData(int iClient)
 {
 	// PrintToChatAll("SQLCheckForChangeThenSaveData. %i: %N", iClient, iClient);
 	// PrintToServer("SQLCheckForChangeThenSaveData. %i: %N", iClient, iClient);

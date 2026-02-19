@@ -100,7 +100,7 @@ Action RemoveHunterImmobilityZone(Handle timer, int iClient)
 	return Plugin_Handled;
 }
 
-Action ResetGlobalHunterImmobilityZoneCooldown(Handle timer, any data)
+Action ResetGlobalHunterImmobilityZoneCooldown(Handle timer, int data)
 {
 	g_bIsImmobilityZoneOnGlobalCooldown = false;
 

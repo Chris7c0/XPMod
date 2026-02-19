@@ -1,4 +1,4 @@
-Action PrintUnsetClassesMessage(Handle timer, any data)
+Action PrintUnsetClassesMessage(Handle timer, int data)
 {
 	for (int i = 1; i <= MaxClients; i++)
 	{
@@ -30,7 +30,7 @@ Action PrintUnsetClassesMessage(Handle timer, any data)
 	return Plugin_Continue;
 }
 
-Action PrintXPModCreateAndConfirmMessageToAll(Handle timer, any data)
+Action PrintXPModCreateAndConfirmMessageToAll(Handle timer, int data)
 {
 	for (int i = 1; i<=MaxClients; i++)
 	{
@@ -43,7 +43,7 @@ Action PrintXPModCreateAndConfirmMessageToAll(Handle timer, any data)
 	return Plugin_Continue;
 }
 
-Action PrintXPModAdvertisementMessageToAll(Handle timer, any data)
+Action PrintXPModAdvertisementMessageToAll(Handle timer, int data)
 {
 	static iAdvertisementIndex;
 	if (++iAdvertisementIndex > 5)
@@ -64,7 +64,7 @@ Action PrintXPModAdvertisementMessageToAll(Handle timer, any data)
 	return Plugin_Continue;
 }
 
-Action TimerLoadTalentsDelay(Handle timer, any iClient)
+Action TimerLoadTalentsDelay(Handle timer, int iClient)
 {
 	if(g_bClientLoggedIn[iClient] == true && 
 		talentsJustGiven[iClient] == false && 

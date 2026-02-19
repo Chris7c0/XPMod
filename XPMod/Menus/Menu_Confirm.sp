@@ -1,4 +1,4 @@
-Action TimerCheckAndOpenCharacterSelectionMenuForAll(Handle timer, any data)
+Action TimerCheckAndOpenCharacterSelectionMenuForAll(Handle timer, int data)
 {
 	int iClient;
 	for(iClient = 1; iClient <= MaxClients; iClient++)
@@ -22,7 +22,7 @@ Action TimerCheckAndOpenCharacterSelectionMenuForAll(Handle timer, any data)
 	return Plugin_Continue;
 }
 
-// Action TimerOpenCharacterSelectionMenuForUser(Handle timer, any iClient)
+// Action TimerOpenCharacterSelectionMenuForUser(Handle timer, int iClient)
 // {
 // 	if (g_iAutoSetCountDown[iClient] == -1 && 
 // 		g_bClientLoggedIn[iClient] == true && 
@@ -69,7 +69,7 @@ void ResetTalentConfirmCountdown(int iClient)
 	g_bClientAlreadyShownCharacterSelectMenu[iClient] = false;
 }
 
-Action StartWaitingForClientInputForDrawMenu(Handle timer, any iClient)
+Action StartWaitingForClientInputForDrawMenu(Handle timer, int iClient)
 {
 	// This will wait then 2nd button input for drawing the confirm menu
 	g_iOpenCharacterSelectAndDrawMenuState[iClient] = WAITING_ON_FINAL_BUTTON_FOR_CONFIRM_MENU;
@@ -77,7 +77,7 @@ Action StartWaitingForClientInputForDrawMenu(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-// Action DelayedCharacterSelectDrawMOTDPanel(Handle timer, any iClient)
+// Action DelayedCharacterSelectDrawMOTDPanel(Handle timer, int iClient)
 // {
 // 	// PrintToServer("Drawing MOTD");
 // 	char url[256];
@@ -104,7 +104,7 @@ void OpenCharacterSelectMenu(int iClient)
 		TopChooseCharactersMenuDraw(iClient);
 }
 
-Action TimerShowTalentsConfirmed(Handle timer, any iClient)
+Action TimerShowTalentsConfirmed(Handle timer, int iClient)
 {
 	if(RunClientChecks(iClient) &&
 		IsFakeClient(iClient) == false &&

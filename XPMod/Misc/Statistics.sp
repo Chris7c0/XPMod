@@ -199,7 +199,7 @@ void GetLoggedInAndConfirmedStrings(int iClient, char[] strLoggedIn, int iLogged
 		Format(strConfirmed, iConfirmedMaxLen, "");
 }
 
-Action TimerLogXPMStatsToFile(Handle timer, any data)
+Action TimerLogXPMStatsToFile(Handle timer, int data)
 {
 	char strStoreBuffer[2000];
 	strStoreBuffer = NULL_STRING;

@@ -1,4 +1,4 @@
-void SQLCheckIfUserIsInBanListCallback(Handle owner, Handle hQuery, const char[] error, any iClient)
+void SQLCheckIfUserIsInBanListCallback(Handle owner, Handle hQuery, const char[] error, int iClient)
 {
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -79,7 +79,7 @@ void SQLCheckIfUserIsInBanList(int iClient)
 }
 
 //Callback function for an SQL AddBannedUserToDatabase
-void SQLAddBannedUserToDatabaseCallback(Handle owner, Handle hQuery, const char[] error, any iClient)
+void SQLAddBannedUserToDatabaseCallback(Handle owner, Handle hQuery, const char[] error, int iClient)
 {
 	if (g_hDatabase == INVALID_HANDLE)
 	{

@@ -55,7 +55,7 @@ int SpawnCommonInfected(float xyzLocation[3], int iAmount = 1, int iUncommon = U
 	return -1;
 }
 
-Action TimerSetMobRush(Handle timer, any iZombieEntity)
+Action TimerSetMobRush(Handle timer, int iZombieEntity)
 {
 	if (iZombieEntity > 0 && IsValidEntity(iZombieEntity))
 	{

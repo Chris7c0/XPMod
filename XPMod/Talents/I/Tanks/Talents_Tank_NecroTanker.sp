@@ -254,7 +254,7 @@ void CreateNecroTankerTrailEffect(int iClient)
 // 	}
 // }
 
-// Action WaitToExplodeNecroTankerBoomerRockThrow(Handle timer, any iClient)
+// Action WaitToExplodeNecroTankerBoomerRockThrow(Handle timer, int iClient)
 // {
 // 	// NecroTanker boomer throw
 // 	if(IsPlayerAlive(iClient) == false || GetEntProp(iClient, Prop_Send, "m_zombieClass") != BOOMER)

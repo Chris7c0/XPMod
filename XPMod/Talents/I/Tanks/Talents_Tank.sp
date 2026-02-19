@@ -139,7 +139,7 @@ void SetupTankForBot(int iClient)
 }
 
 // This is a timed function written for the Tank Spawn event, which doesn't work unless its timed
-Action TimerResetAllTankVariables(Handle timer, any iClient)
+Action TimerResetAllTankVariables(Handle timer, int iClient)
 {
 	ResetAllTankVariables(iClient);
 	return Plugin_Stop;
@@ -246,13 +246,13 @@ void ResetTankHealth(int iClient)
 	CreateTimer(6.0, TimerResetTankHealthJustSet, iClient, TIMER_FLAG_NO_MAPCHANGE);
 }
 
-Action TimerResetTankHealthJustSet(Handle timer, any iClient)
+Action TimerResetTankHealthJustSet(Handle timer, int iClient)
 {
 	g_bTankHealthJustSet[iClient] = false;
 	return Plugin_Stop;
 }
 
-Action TimerResetTankTakeOverBot(Handle timer, any iClient)
+Action TimerResetTankTakeOverBot(Handle timer, int iClient)
 {
 	g_bTankTakeOverBot[iClient] = false;
 	return Plugin_Stop;

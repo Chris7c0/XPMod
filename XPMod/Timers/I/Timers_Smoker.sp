@@ -1,6 +1,6 @@
 //Smoker
 
-// Action TimerStopTarFingersInfection(Handle timer, any iClient)
+// Action TimerStopTarFingersInfection(Handle timer, int iClient)
 // {
 // 	g_bIsTarFingerVictim[iClient] = false;
 
@@ -18,38 +18,38 @@
 // }
 
 
-Action TimerRemoveSmokerDoppelganger(Handle timer, any iEntity)
+Action TimerRemoveSmokerDoppelganger(Handle timer, int iEntity)
 {
 	KillEntitySafely(iEntity);
 	return Plugin_Stop;
 }
 
-Action TimerResetSmokerDoppelgangerCooldown(Handle timer, any iClient)
+Action TimerResetSmokerDoppelgangerCooldown(Handle timer, int iClient)
 {
 	g_bSmokerDoppelgangerCoolingDown[iClient] = false;
 	return Plugin_Stop;
 }
 
-Action TimerResetSmokerSmokeScreenCooldown(Handle timer, any iClient)
+Action TimerResetSmokerSmokeScreenCooldown(Handle timer, int iClient)
 {
 	g_bSmokerSmokeScreenOnCooldown[iClient] = false;
 	return Plugin_Stop;
 }
 
-Action Timer_SmokerSmokeCloudCooldown(Handle timer, any iClient)
+Action Timer_SmokerSmokeCloudCooldown(Handle timer, int iClient)
 {
 	g_bSmokerSmokeCloudInCooldown = false;
 	return Plugin_Stop;
 }
 
-Action Timer_ResetElectrocuteCooldown(Handle timer, any iClient)
+Action Timer_ResetElectrocuteCooldown(Handle timer, int iClient)
 {
 	g_bElectrocutionCooldown[iClient] = false;
 	return Plugin_Stop;
 }
 
 /*
-Action TimerCheckTongueDistance(Handle timer, any Smoker)
+Action TimerCheckTongueDistance(Handle timer, int Smoker)
 {
 	if((IsClientInGame(Smoker) == false) || (g_iClientTeam[Smoker] != TEAM_INFECTED) || (IsFakeClient(Smoker) == true) || (g_iChokingVictim[Smoker] < 1))
 	{
@@ -78,7 +78,7 @@ Action TimerCheckTongueDistance(Handle timer, any Smoker)
 	return Plugin_Stop;
 }*/
 
-Action TimerPoisonCloud(Handle timer, any iClient)
+Action TimerPoisonCloud(Handle timer, int iClient)
 {
 	if (RunClientChecks(iClient) == false || 
 		IsClientInGame(iClient) == false ||
@@ -123,14 +123,14 @@ Action TimerPoisonCloud(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-Action TimerStopPoisonCloud(Handle timer, any iClient)
+Action TimerStopPoisonCloud(Handle timer, int iClient)
 {
 	g_bHasSmokersPoisonCloudOut[iClient] = false;
 	
 	return Plugin_Stop;
 }
 
-Action CheckIfStuck(Handle timer, any iClient)
+Action CheckIfStuck(Handle timer, int iClient)
 {
 	if (RunClientChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false)
@@ -157,7 +157,7 @@ Action CheckIfStuck(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-Action ReAllowTeleport(Handle timer, any iClient)
+Action ReAllowTeleport(Handle timer, int iClient)
 {
 	g_bTeleportCoolingDown[iClient] = false;
 	return Plugin_Stop;

@@ -220,7 +220,7 @@ float FindAnimationSpeed(float reloadspeed) //, char[] gunname)
 }
 
 //this resets the playback rate on non-shotguns
-Action SoH_MagEnd(Handle timer, any iEntid2)
+Action SoH_MagEnd(Handle timer, int iEntid2)
 {
 	//PrintToChatAll("\x03SoH reset playback, magazine loader");
 
@@ -255,7 +255,7 @@ Action SoH_MagEnd2(Handle timer, Handle hPack)
 
 
 //called for autoshotguns
-Action SoH_AutoshotgunStart(Handle timer, any iEntid2)
+Action SoH_AutoshotgunStart(Handle timer, int iEntid2)
 {
 	// //----DEBUG----
 	// PrintToChatAll("\x03-autoshotgun detected, iEntid \x01%i\x03, startO \x01%i\x03, insertO \x01%i\x03, endO \x01%i",
@@ -302,7 +302,7 @@ Action SoH_AutoshotgunStart(Handle timer, any iEntid2)
 }
 
 
-Action SoH_SpasShotgunStart(Handle timer, any iEntid2)
+Action SoH_SpasShotgunStart(Handle timer, int iEntid2)
 {
 	// PrintToChatAll("\x03-autoshotgun detected, iEntid \x01%i\x03, startO \x01%i\x03, insertO \x01%i\x03, endO \x01%i",
 	// 	iEntid,
@@ -348,7 +348,7 @@ Action SoH_SpasShotgunStart(Handle timer, any iEntid2)
 }
 
 //called for pump shotguns
-Action SoH_PumpshotgunStart(Handle timer, any iEntid2)
+Action SoH_PumpshotgunStart(Handle timer, int iEntid2)
 {
 	// PrintToChatAll("\x03-pumpshotgun detected, iEntid \x01%i\x03, startO \x01%i\x03, insertO \x01%i\x03, endO \x01%i",
 	// 	iEntid,
@@ -391,7 +391,7 @@ Action SoH_PumpshotgunStart(Handle timer, any iEntid2)
 }
 
 //this resets the playback rate on shotguns
-Action SoH_ShotgunEnd(Handle timer, any iEntid2)
+Action SoH_ShotgunEnd(Handle timer, int iEntid2)
 {
 	//PrintToChatAll("\x03-autoshotgun tick");
 
@@ -424,7 +424,7 @@ Action SoH_ShotgunEnd(Handle timer, any iEntid2)
 
 //since cocking requires more time, this function does
 //exactly as the above, except it adds slightly more time
-Action SoH_ShotgunEndCock(Handle timer, any iEntid2)
+Action SoH_ShotgunEndCock(Handle timer, int iEntid2)
 {
 	//PrintToChatAll("\x03-autoshotgun tick");
 

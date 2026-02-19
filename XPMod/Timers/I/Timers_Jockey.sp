@@ -4,7 +4,7 @@ void Handle1SecondClientTimers_Jockey(int iClient)
 }
 
 
-Action TimerJumpFurther(Handle timer, any iClient)
+Action TimerJumpFurther(Handle timer, int iClient)
 {
 	float velocity[3];
 	GetEntPropVector(iClient, Prop_Data, "m_vecVelocity", velocity);
@@ -16,7 +16,7 @@ Action TimerJumpFurther(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-Action TimerRemoveJockeyCloak(Handle timer, any iClient)
+Action TimerRemoveJockeyCloak(Handle timer, int iClient)
 {
 	g_bCanJockeyCloak[iClient] = true;
 	SetClientRenderAndGlowColor(iClient);
@@ -24,7 +24,7 @@ Action TimerRemoveJockeyCloak(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-Action TimerRemoveVanishingActSpeed(Handle timer, any iClient)
+Action TimerRemoveVanishingActSpeed(Handle timer, int iClient)
 {
 	g_fJockeyRideSpeedVanishingActBoost[iClient] = 0.0;
 	SetClientSpeed(iClient);
@@ -32,7 +32,7 @@ Action TimerRemoveVanishingActSpeed(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-Action TimerSetJockeyCooldown(Handle timer, any iClient)
+Action TimerSetJockeyCooldown(Handle timer, int iClient)
 {
 	if (RunClientChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false ||
@@ -84,7 +84,7 @@ Action TimerSetJockeyCooldown(Handle timer, any iClient)
 	return Plugin_Continue;
 }
 
-Action TimerJockeyJumpReset(Handle timer, any iClient)
+Action TimerJockeyJumpReset(Handle timer, int iClient)
 {
 	if (RunClientChecks(iClient) && 
 		IsPlayerAlive(iClient) && 

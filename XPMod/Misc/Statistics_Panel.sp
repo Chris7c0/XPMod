@@ -138,7 +138,7 @@ void ShowRoundStatsPanelsToPlayer(int iClient)
 	CreateTimer(ROUND_STATS_PANEL_LIFETIME, TimerSetAndShowNewRoundStatsPanel, iClient, TIMER_REPEAT);
 }
 
-Action TimerShowCurrentRoundStatsPanel(Handle timer, any iClient)
+Action TimerShowCurrentRoundStatsPanel(Handle timer, int iClient)
 {
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Stop;
@@ -153,7 +153,7 @@ Action TimerShowCurrentRoundStatsPanel(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-Action TimerSetAndShowNewRoundStatsPanel(Handle timer, any iClient)
+Action TimerSetAndShowNewRoundStatsPanel(Handle timer, int iClient)
 {
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Stop;

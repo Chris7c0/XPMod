@@ -117,7 +117,7 @@ public void PrintAllInEnhancedCIEntityList()
 	}
 }
 
-Action TimerSpawnRandomlyEnhancedCIForDirector(Handle timer, any iEntity)
+Action TimerSpawnRandomlyEnhancedCIForDirector(Handle timer, int iEntity)
 {
 	if (IsValidEntity(iEntity) && IsCommonInfected(iEntity, ""))
 		EnhanceCommonInfected(iEntity, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_RANDOM);

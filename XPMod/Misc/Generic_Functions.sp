@@ -272,7 +272,7 @@ void HandleCheatCommandTasks(int iClient, const char[] strCommandWithArgs)
 	HandleCheatCommandTasks_Louis(iClient, strCommandWithArgs);
 }
 
-Action Timer_ShowXPModInfoToServer(Handle timer, any data)
+Action Timer_ShowXPModInfoToServer(Handle timer, int data)
 {
 	ShowXPModInfoToServer();
 	
@@ -1001,7 +1001,7 @@ bool TraceRayTryToHit(int entity, int mask)
 // 	return false;
 // }
 
-// bool TraceEntityFilter_NotSelf(iEntity, mask, any data)
+// bool TraceEntityFilter_NotSelf(iEntity, mask, int data)
 // {
 //     if (iEntity == data)	// Check if the TraceRay hit the itself.
 //         return false;	// Don't let the entity be hit
@@ -1009,7 +1009,7 @@ bool TraceRayTryToHit(int entity, int mask)
 //     return true;		// It didn't hit itself
 // }
 
-public bool TraceEntityFilter_NotAPlayer(int iEntity, int iContentsMask, any data)
+public bool TraceEntityFilter_NotAPlayer(int iEntity, int iContentsMask, int data)
 {
 	// Check for collision with self
 	if (iEntity == data)

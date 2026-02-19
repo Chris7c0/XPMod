@@ -709,7 +709,7 @@ Action Event_WitchSpawn(Handle hEvent, const char[] sName, bool bDontBroadcast)
 	return Plugin_Continue;
 }
 
-Action Timer_CheckWitchRage(Handle timer, any iWitchID)
+Action Timer_CheckWitchRage(Handle timer, int iWitchID)
 {
 	if(IsValidEntity(iWitchID) == false)
 		return Plugin_Stop;

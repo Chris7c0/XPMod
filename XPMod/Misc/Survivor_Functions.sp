@@ -101,7 +101,7 @@ void StartSelfRevive(int iClient)
 	g_hTimer_SelfReviveCheck[iClient] = CreateTimer(0.1, TimerSelfReviveCheck, iClient, TIMER_REPEAT);
 }
 
-Action TimerSelfReviveCheck(Handle timer, any iClient)
+Action TimerSelfReviveCheck(Handle timer, int iClient)
 {
 	DebugLog(DEBUG_MODE_VERBOSE, "TimerSelfReviveCheck");
 	if (g_iClientTeam[iClient] != TEAM_SURVIVORS || 

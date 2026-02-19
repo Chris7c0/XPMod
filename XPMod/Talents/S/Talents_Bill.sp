@@ -229,7 +229,7 @@ void EventsHurt_AttackerBill(Handle hEvent, int iAttacker, int iVictim)
 // }
 
 
-Action tmrPlayAnim(Handle timer, any iClient)
+Action tmrPlayAnim(Handle timer, int iClient)
 {
 	PlayAnim(iClient);
 	return Plugin_Stop;

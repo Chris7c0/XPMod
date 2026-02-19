@@ -1,4 +1,4 @@
-Action TimerSetSpitterCooldown(Handle timer, any iClient)
+Action TimerSetSpitterCooldown(Handle timer, int iClient)
 {
 	//INITIAL CHECKS
 	//--------------
@@ -64,7 +64,7 @@ Action TimerSetSpitterCooldown(Handle timer, any iClient)
 	return Plugin_Continue;
 }
 
-Action TimerResetSpeedFromGoo(Handle timer, any iClient)
+Action TimerResetSpeedFromGoo(Handle timer, int iClient)
 {
 	g_fAdhesiveAffectAmount[iClient] = 0.0;
 	g_bAdhesiveGooActive[iClient] = false;
@@ -74,7 +74,7 @@ Action TimerResetSpeedFromGoo(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-Action TimerResetGravityFromGoo(Handle timer, any iClient)
+Action TimerResetGravityFromGoo(Handle timer, int iClient)
 {
 	if (RunClientChecks(iClient))
 	{
@@ -92,7 +92,7 @@ Action TimerResetGravityFromGoo(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-Action TimerConjureWitch(Handle timer, any iClient)
+Action TimerConjureWitch(Handle timer, int iClient)
 {
 	g_bCanConjureWitch[iClient] = false;
 	g_bJustSpawnedWitch[iClient] = true;
@@ -107,7 +107,7 @@ Action TimerConjureWitch(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-Action TimerConjureCommonInfected(Handle timer, any hDataPackage)
+Action TimerConjureCommonInfected(Handle timer, Handle hDataPackage)
 {
 	ResetPack(hDataPackage);
 	int iClient = ReadPackCell(hDataPackage);
@@ -122,7 +122,7 @@ Action TimerConjureCommonInfected(Handle timer, any hDataPackage)
 	return Plugin_Stop;
 }
 
-Action TimerConjureUncommonInfected(Handle timer, any hDataPackage)
+Action TimerConjureUncommonInfected(Handle timer, Handle hDataPackage)
 {
 	ResetPack(hDataPackage);
 	int iClient = ReadPackCell(hDataPackage);
@@ -141,7 +141,7 @@ Action TimerConjureUncommonInfected(Handle timer, any hDataPackage)
 	return Plugin_Stop;
 }
 
-Action TimerConjureFromBagOfSpits(Handle timer, any hDataPackage)
+Action TimerConjureFromBagOfSpits(Handle timer, Handle hDataPackage)
 {
 	ResetPack(hDataPackage);
 	int iClient = ReadPackCell(hDataPackage);
@@ -158,7 +158,7 @@ Action TimerConjureFromBagOfSpits(Handle timer, any hDataPackage)
 }
 
 
-Action TimerResetCanConjureWitch(Handle timer, any iClient)
+Action TimerResetCanConjureWitch(Handle timer, int iClient)
 {
 	g_bCanConjureWitch[iClient] = true;
 	
@@ -166,7 +166,7 @@ Action TimerResetCanConjureWitch(Handle timer, any iClient)
 }
 
 
-Action TimerHallucinogen(Handle timer, any iClient)
+Action TimerHallucinogen(Handle timer, int iClient)
 {
 	if(IsClientInGame(iClient) == false || IsPlayerAlive(iClient) == false)
 	{
@@ -211,7 +211,7 @@ Action TimerHallucinogen(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-Action TimerInfectedVictimTick(Handle timer, any iClient)
+Action TimerInfectedVictimTick(Handle timer, int iClient)
 {
 	if(IsClientInGame(iClient) == false || IsPlayerAlive(iClient) == false)
 	{
@@ -288,20 +288,20 @@ Action TimerInfectedVictimTick(Handle timer, any iClient)
 }
 
 
-Action TimerResetVirusImmunity(Handle timer, any iClient)
+Action TimerResetVirusImmunity(Handle timer, int iClient)
 {
 	g_bIsImmuneToVirus[iClient] = false;
 	return Plugin_Stop;
 }
 
-Action TimerAllowGooSwitching(Handle timer, any iClient)
+Action TimerAllowGooSwitching(Handle timer, int iClient)
 {
 	g_bBlockGooSwitching[iClient] = false;
 	g_hTimer_BlockGooSwitching[iClient] = null;
 	return Plugin_Stop;
 }
 
-Action TimerResetRepulsion(Handle timer, any iClient)
+Action TimerResetRepulsion(Handle timer, int iClient)
 {
 	g_bCanBePushedByRepulsion[iClient] = true;
 	return Plugin_Stop;

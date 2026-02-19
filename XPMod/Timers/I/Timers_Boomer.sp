@@ -1,6 +1,6 @@
 
 //Boomer
-Action TimerConstantVomitDisplay(Handle timer, any iClient)
+Action TimerConstantVomitDisplay(Handle timer, int iClient)
 {
 	if(IsClientInGame(iClient))
 		if(IsPlayerAlive(iClient))
@@ -18,7 +18,7 @@ Action TimerConstantVomitDisplay(Handle timer, any iClient)
 }
 
 
-Action TimerResetBoomerSpeed(Handle timer, any iClient)
+Action TimerResetBoomerSpeed(Handle timer, int iClient)
 {
 	g_bIsBoomerVomiting[iClient] = false;
 
@@ -30,7 +30,7 @@ Action TimerResetBoomerSpeed(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-Action TimerResetFastBoomerSpeed(Handle timer, any iClient)
+Action TimerResetFastBoomerSpeed(Handle timer, int iClient)
 {
 	g_bIsSuperSpeedBoomer[iClient] = false;
 	
@@ -40,7 +40,7 @@ Action TimerResetFastBoomerSpeed(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-Action TimerStopHotMeal(Handle timer, any iClient)
+Action TimerStopHotMeal(Handle timer, int iClient)
 {
 	g_bIsServingHotMeal[iClient] = false;
 	g_bIsBoomerVomiting[iClient] = false;
@@ -56,7 +56,7 @@ Action TimerStopHotMeal(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-Action TimerStopItCounting(Handle timer, any iClient)
+Action TimerStopItCounting(Handle timer, int iClient)
 {
 	g_bNowCountingVomitVictims[iClient] = false;
 	g_iVomitVictimCounter[iClient] = 0;
@@ -64,7 +64,7 @@ Action TimerStopItCounting(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-Action TimerConstantVomit(Handle timer, any iClient)
+Action TimerConstantVomit(Handle timer, int iClient)
 {
 	if (IsServerProcessing()==false || iClient <= 0 || IsClientInGame(iClient)==false || IsPlayerAlive(iClient)==false || g_bIsServingHotMeal[iClient] == false)
 		return Plugin_Stop;
@@ -84,7 +84,7 @@ Action TimerConstantVomit(Handle timer, any iClient)
 	return Plugin_Continue;
 }
 
-Action TimerSetBoomerCooldown(Handle timer, any iClient)
+Action TimerSetBoomerCooldown(Handle timer, int iClient)
 {
 	//INITIAL CHECKS
 	//--------------
@@ -149,7 +149,7 @@ Action TimerSetBoomerCooldown(Handle timer, any iClient)
 }
 
 
-Action TimerSuicideBoomerLaunch(Handle timer, any iClient)
+Action TimerSuicideBoomerLaunch(Handle timer, int iClient)
 {
 	g_bIsSuicideBoomer[iClient] = false;
 	SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"),2.0, true);

@@ -218,7 +218,7 @@ public Action OnPlayerRunCmd(int iClient, int &iButtons, int &iImpulse, float fV
 	return Plugin_Continue;
 }
 
-Action TimerUnblockBotFromAttacking(Handle timer, any iClient)
+Action TimerUnblockBotFromAttacking(Handle timer, int iClient)
 {
 	g_bBlockBotFromShooting[iClient] = false;
 	return Plugin_Stop;

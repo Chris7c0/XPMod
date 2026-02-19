@@ -72,7 +72,7 @@ void CreateWarezStation(int iClient)
 	g_iClientBindUses_1[iClient]++;
 }
 
-Action TimerWarezStationCheckForSurvivorToService(Handle timer, any iClient)
+Action TimerWarezStationCheckForSurvivorToService(Handle timer, int iClient)
 {
 	if (g_bWareStationActive[iClient] == false)
 		return Plugin_Stop;
@@ -107,7 +107,7 @@ Action TimerWarezStationCheckForSurvivorToService(Handle timer, any iClient)
 	return Plugin_Continue;
 }
 
-Action TimerWarezStationDisable(Handle timer, any iClient)
+Action TimerWarezStationDisable(Handle timer, int iClient)
 {
 	g_bWareStationActive[iClient] = false;
 	g_xyzWarezStationLocation[iClient][0] = EMPTY_VECTOR[0];
@@ -384,7 +384,7 @@ void SetSurvivorScreenShakeAmount()
 		PrintToChatAll("\x03[XPMod] \x04Survivor Screen Shake on hit is at %i\%.", RoundToNearest((g_iScreenShakeAmount / 20.0) * 100.0) );
 }
 
-Action TimerCreateInnerSphere(Handle timer, any iClient)
+Action TimerCreateInnerSphere(Handle timer, int iClient)
 {
 	CreateSphere(g_xyzWarezStationLocation[iClient], 35.0, 30, 0.1, {0, 255, 50, 150}, 25.0);
 	return Plugin_Stop;
@@ -435,7 +435,7 @@ int MakeLightDynamic(int target) //, const float vPos[3])
 	return entity;
 }
 
-Action TimerRemoveLightDynamicEntity(Handle timer, any iEntity)
+Action TimerRemoveLightDynamicEntity(Handle timer, int iEntity)
 {
 	if (iEntity < 1 || IsValidEntity(iEntity) == false)
 		return Plugin_Stop;
@@ -452,7 +452,7 @@ Action TimerRemoveLightDynamicEntity(Handle timer, any iEntity)
 	return Plugin_Stop;
 }
 
-Action TimerWarezStationStopAndRemoveSound(Handle timer, any iEntity)
+Action TimerWarezStationStopAndRemoveSound(Handle timer, int iEntity)
 {
 	if (iEntity != -1 && IsValidEntity(iEntity))
 	{

@@ -308,7 +308,7 @@ bool GetTankRockTypeAndOwner(int iTankRockIndex)
 // 	return false;
 // }
 
-Action WaitForNonZeroOriginVectorAndSetUpTankRock(Handle timer, any iRockEntity)
+Action WaitForNonZeroOriginVectorAndSetUpTankRock(Handle timer, int iRockEntity)
 {
 	//Ensure there is a valid entitty here, remove it from the array otherwise
 	if (IsValidEntity(iRockEntity) == false)

@@ -192,7 +192,7 @@ int AttachParticle(int target, char[] particlename, float fTime = -1.0, float or
 }
 
 //Delete:
-Action DeleteParticle(Handle timer, any Particle)
+Action DeleteParticle(Handle timer, int Particle)
 {
 	//Validate:
 	if(Particle > 0 && IsValidEdict(Particle) &&IsValidEntity(Particle))
@@ -364,13 +364,13 @@ void TurnOffAndDeleteSmokeStackParticle(int iSmokeStackEntity)
 	}
 }
 
-Action TimerStopSmokeEntity(Handle timer, any iSmokeStackEntity)
+Action TimerStopSmokeEntity(Handle timer, int iSmokeStackEntity)
 {
 	TurnOffAndDeleteSmokeStackParticle(iSmokeStackEntity);
 	return Plugin_Stop;
 }
 
-Action TimerRemoveSmokeEntity(Handle timer, any iSmokeStackEntity)
+Action TimerRemoveSmokeEntity(Handle timer, int iSmokeStackEntity)
 {
 	if(iSmokeStackEntity > 0 && IsValidEdict(iSmokeStackEntity) && IsValidEntity(iSmokeStackEntity))
 	{

@@ -1,5 +1,5 @@
 //Callback function for SQLGetTopXPModPlayerStatistics
-void SQLGetTopXPModPlayerStatisticsCallback(Handle owner, Handle hQuery, const char[] error, any empty)
+void SQLGetTopXPModPlayerStatisticsCallback(Handle owner, Handle hQuery, const char[] error, int empty)
 {
 	// PrintToChatAll("SQLGetTopXPModPlayerStatisticsCallback Started.");
 	// PrintToServer("SQLGetTopXPModPlayerStatisticsCallback Started.");

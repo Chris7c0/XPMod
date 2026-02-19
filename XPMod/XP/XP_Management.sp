@@ -75,7 +75,7 @@ void RenamePlayerWithLevelTags(int iClient, bool bRemoveTags = false)
 	// PrintToChatAll("%s: %i",strClientName, strlen(strClientName));
 }
 
-Action TimerSetHideChangeNameMessage(Handle timer, any data)
+Action TimerSetHideChangeNameMessage(Handle timer, int data)
 {
 	g_bHideNameChangeMessage = false;
 

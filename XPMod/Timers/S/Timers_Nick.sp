@@ -1,4 +1,4 @@
-Action TimerStopRambo(Handle timer, any iClient)
+Action TimerStopRambo(Handle timer, int iClient)
 {
 	//float vec[3];
 	//GetClientAbsOrigin(iClient, vec);
@@ -44,7 +44,7 @@ Action TimerStopRambo(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-Action TimerSlap(Handle timer, any iClient)
+Action TimerSlap(Handle timer, int iClient)
 {
 	if(IsClientInGame(iClient)==false || IsPlayerAlive(iClient)==false)
 	{
@@ -67,7 +67,7 @@ Action TimerSlap(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-// Action TimerMakeVisible(Handle timer, any iClient)
+// Action TimerMakeVisible(Handle timer, int iClient)
 // {
 // 	g_bNickIsInvisible[iClient] = false;
 // 	if(IsValidEntity(iClient) == true && IsClientInGame(iClient) == true)
@@ -83,7 +83,7 @@ Action TimerSlap(Handle timer, any iClient)
 // 	return Plugin_Stop;
 // }
 
-// Action TimerBlindFade(Handle timer, any iClient)
+// Action TimerBlindFade(Handle timer, int iClient)
 // {
 // 	if(IsFakeClient(iClient)==false)
 // 		ShowHudOverlayColor(iClient, 0, 0, 0, 255, 4000, FADE_OUT);
@@ -91,21 +91,21 @@ Action TimerSlap(Handle timer, any iClient)
 // 	return Plugin_Stop;
 // }
 
-Action TimerReEnableBindsNick(Handle timer, any iClient)
+Action TimerReEnableBindsNick(Handle timer, int iClient)
 {
 	g_bNickGambleLockedBinds[iClient] = false;
 	return Plugin_Stop;
 }
-Action TimerReEnableReviveBind(Handle timer, any iClient) {
+Action TimerReEnableReviveBind(Handle timer, int iClient) {
 	g_bNickReviveCooldown = false;
 	return Plugin_Stop;
 }
-Action TimerReEnableHealBind(Handle timer, any iClient) {
+Action TimerReEnableHealBind(Handle timer, int iClient) {
 	g_bNickHealCooldown = false;
 	return Plugin_Stop;
 }
 
-Action TimerLifeStealing(Handle timer, any pack)
+Action TimerLifeStealing(Handle timer, Handle pack)
 {
 	if (pack == INVALID_HANDLE)
 		return Plugin_Stop;
@@ -155,7 +155,7 @@ Action TimerLifeStealing(Handle timer, any pack)
 	return Plugin_Stop;
 }
 
-Action TimerLifeStealingFade(Handle timer, any pack)
+Action TimerLifeStealingFade(Handle timer, Handle pack)
 {
 	if (pack == INVALID_HANDLE)
 		return Plugin_Stop;
@@ -209,13 +209,13 @@ Action TimerLifeStealingFade(Handle timer, any pack)
 	return Plugin_Stop;
 }
 
-Action TimerNickSecondaryCycleReset(Handle timer, any iClient)
+Action TimerNickSecondaryCycleReset(Handle timer, int iClient)
 {
 	g_bCanNickSecondaryCycle[iClient] = true;
 	return Plugin_Stop;
 }
 
-Action TimerNickDualClipSize(Handle timer, any iClient)
+Action TimerNickDualClipSize(Handle timer, int iClient)
 {
 	if (RunClientChecks(iClient) == false || 
 		IsPlayerAlive(iClient) == false || 
@@ -234,7 +234,7 @@ Action TimerNickDualClipSize(Handle timer, any iClient)
 	return Plugin_Stop;
 }
 
-Action TimerNickZoomKitReset(Handle timer, any iClient)
+Action TimerNickZoomKitReset(Handle timer, int iClient)
 {
 	g_bCanNickZoomKit[iClient] = true;
 	return Plugin_Stop;

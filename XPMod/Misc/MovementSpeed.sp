@@ -56,7 +56,7 @@ void SetClientSpeedForAllSurvivors()
 			SetClientSpeed(iClient);
 }
 
-// Action TimerResetClientSpeed(Handle timer, any iClient)
+// Action TimerResetClientSpeed(Handle timer, int iClient)
 // {
 // 	SetClientSpeed(iClient);
 // 	return Plugin_Stop;
