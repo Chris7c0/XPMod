@@ -18,7 +18,7 @@
 #define DB_COL_INDEX_PRESTIGE_POINTS             17
 #define DB_COL_INDEX_PUSH_UPDATE_FROM_DB         18
 
-new String:strUsersTableColumnNames[][] = {
+char strUsersTableColumnNames[19][50] = {
     "user_id",
     "user_name",
     "steam_id",

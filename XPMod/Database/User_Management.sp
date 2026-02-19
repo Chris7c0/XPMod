@@ -1,5 +1,5 @@
 //Callback function for an SQL SQLGetUserIDAndToken
-SQLGetUserIDAndTokenCallback(Handle:owner, Handle:hQuery, const String:error[], any:iClient)
+SQLGetUserIDAndTokenCallback(Handle:owner, Handle:hQuery, const char[] error, any:iClient)
 {
 	// PrintToChatAll("SQLGetUserIDAndTokenCallback Started. %i: %N", iClient, iClient);
 	// PrintToServer("SQLGetUserIDAndTokenCallback Started. %i: %N", iClient, iClient);
@@ -22,7 +22,7 @@ SQLGetUserIDAndTokenCallback(Handle:owner, Handle:hQuery, const String:error[], 
 		return;
 	}
 	
-	decl String:strData[50];
+	char strData[50];
 	
 	if(SQL_FetchRow(hQuery))
 	{
@@ -73,7 +73,7 @@ GetUserIDAndToken(any:iClient)
 		return;
 	
 	//Get Steam Auth ID, if this returns false, then do not proceed
-	decl String:strSteamID[32];
+	char strSteamID[32];
 	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
 	{
 		KickClientCannotGetSteamID(iClient);
@@ -81,15 +81,16 @@ GetUserIDAndToken(any:iClient)
 	}
 	
 	// Save the new user data into the SQL database with the matching Steam ID
-	decl String:strQuery[1024] = "";
+	char strQuery[1024];
+	strQuery[0] = '\0';
 	// Combine it all into the query
-	Format(strQuery, sizeof(strQuery), "SELECT %s,%s FROM %s WHERE steam_id = %s", strUsersTableColumnNames[DB_COL_INDEX_USERS_USER_ID], strUsersTableColumnNames[DB_COL_INDEX_USERS_TOKEN], DB_TABLENAME_USERS, strSteamID);
+	Format(strQuery, sizeof(strQuery), "SELECT %s,%s FROM %s WHERE steam_id = '%s'", strUsersTableColumnNames[DB_COL_INDEX_USERS_USER_ID], strUsersTableColumnNames[DB_COL_INDEX_USERS_TOKEN], DB_TABLENAME_USERS, strSteamID);
 
 	SQL_TQuery(g_hDatabase, SQLGetUserIDAndTokenCallback, strQuery, iClient);
 }
 
 //Callback function for an SQL GetUserData
-SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[], any:hDataPack)
+SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const char[] error, any:hDataPack)
 {
 	if (hDataPack == INVALID_HANDLE)
 	{
@@ -124,7 +125,7 @@ SQLGetUserDataCallback(Handle:owner, Handle:hQuery, const String:error[], any:hD
 		return;
 	}
 	
-	decl String:strData[20];
+	char strData[20];
 	int iInfectedID[3], iEquipmentSlot[6], iOption[2];
 	int iFieldIndex = 0, iSkillPointsUsed = 0;
 
@@ -336,8 +337,9 @@ GetUserData(any:iClient, bool:bOnlyWebsiteChangableData = false, bool:bDrawConfi
 	//PrintToServer("GetUserData %N: %i",iClient, g_iDBUserID[iClient]);
 
 	// Save the new user data into the SQL database with the matching Steam ID
-	decl String:strQuery[1024] = "";
-	decl String:strAttributes[1024] = "";
+	char strQuery[1024], strAttributes[1024];
+	strQuery[0] = '\0';
+	strAttributes[0] = '\0';
 	// Build the attribute strings for the query
 	GetAttributesStringForQuery(strAttributes, sizeof(strAttributes), DB_COL_INDEX_USERS_XP, DB_COL_INDEX_PUSH_UPDATE_FROM_DB);
 	// Combine it all into the query
@@ -354,7 +356,7 @@ GetUserData(any:iClient, bool:bOnlyWebsiteChangableData = false, bool:bDrawConfi
 }
 
 //Callback function for an SQL CreateNewUser
-SQLCreateNewUserCallback(Handle:owner, Handle:hQuery, const String:error[], any:iClient)
+SQLCreateNewUserCallback(Handle:owner, Handle:hQuery, const char[] error, any:iClient)
 {
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -394,7 +396,7 @@ CreateNewUser(iClient)
 		return;
 	
 	//Get Steam Auth ID, if this returns false, then do not proceed
-	decl String:strSteamID[32];
+	char strSteamID[32];
 	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
 	{
 		KickClientCannotGetSteamID(iClient);
@@ -402,26 +404,27 @@ CreateNewUser(iClient)
 	}
 	
 	//Get Client Name
-	decl String:strClientName[32];
+	char strClientName[32];
 	GetClientName(iClient, strClientName, sizeof(strClientName));
 	SanitizeValueStringForQuery(strClientName, sizeof(strClientName));
 
 	//Get a new user token
-	decl String:strUserToken[41];
+	char strUserToken[41];
 	GenerateNewHashToken(strSteamID, strUserToken);
 	
 	//Give bonus XP (called twice apparently)
 	//g_iClientXP[iClient] += 10000;
 	
 	//Get Client XP
-	decl String:strClientXP[10];
+	char strClientXP[10];
 	if(g_iClientXP[iClient]>99999999)
 		IntToString(99999999, strClientXP, sizeof(strClientXP));
 	else
 		IntToString(g_iClientXP[iClient], strClientXP, sizeof(strClientXP));
 	
 	//Create new entry into the SQL database with the users information
-	decl String:strQuery[512] = "";
+	char strQuery[512];
+	strQuery[0] = '\0';
 	Format(strQuery, sizeof(strQuery), "INSERT INTO %s (\
 		steam_id,\
 		user_name,\
@@ -464,7 +467,7 @@ SaveUserData(int iClient)
 }
 
 //Callback function for an SQL SaveUserData
-SQLSaveUserDataInDatabaseCallback(Handle:owner, Handle:hQuery, const String:error[], any:iClient)
+SQLSaveUserDataInDatabaseCallback(Handle:owner, Handle:hQuery, const char[] error, any:iClient)
 {
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -502,11 +505,11 @@ SaveUserDataInDatabase(iClient)
 	if (g_iDBUserID[iClient] == -1)
 		return;
 		
-	decl String:strClientName[32], String:strClientXP[10], String:strSurvivorID[3], 
-		String:strInfectedID[3][2], String:strEquipmentSlotID[6][3], String:strOption[3][2];
+	char strClientName[32], strClientXP[10], strSurvivorID[3], 
+		strInfectedID[3][2], strEquipmentSlotID[6][3], strOption[3][2];
 	
 	//Get Steam Auth ID, if this returns false, then do not proceed
-	decl String:strSteamID[32];
+	char strSteamID[32];
 	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
 	{
 		KickClientCannotGetSteamID(iClient);
@@ -673,7 +676,7 @@ SaveUserDataInDatabase(iClient)
 }
 
 //Callback function for an SQL SQLCheckForChangeThenSaveData
-SQLCheckForChangeThenSaveDataCallback(Handle:owner, Handle:hQuery, const String:error[], any:iClient)
+SQLCheckForChangeThenSaveDataCallback(Handle:owner, Handle:hQuery, const char[] error, any:iClient)
 {
 	// PrintToChatAll("SQLCheckForChangeThenSaveDataCallback Started. %i: %N", iClient, iClient);
 	// PrintToServer("SQLCheckForChangeThenSaveDataCallback Started. %i: %N", iClient, iClient);
@@ -696,7 +699,7 @@ SQLCheckForChangeThenSaveDataCallback(Handle:owner, Handle:hQuery, const String:
 		return;
 	}
 	
-	decl String:strData[50];
+	char strData[50];
 	
 	if(SQL_FetchRow(hQuery) == false)
 	{
@@ -749,7 +752,7 @@ void SQLCheckForChangeThenSaveData(any:iClient)
 		return;
 	
 	//Get Steam Auth ID, if this returns false, then do not proceed
-	decl String:strSteamID[32];
+	char strSteamID[32];
 	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
 	{
 		KickClientCannotGetSteamID(iClient);
@@ -757,9 +760,10 @@ void SQLCheckForChangeThenSaveData(any:iClient)
 	}
 	
 	// Get if there was an update we need to force push to the player in the server SQL database with the matching Steam ID
-	decl String:strQuery[1024] = "";
+	char strQuery[1024];
+	strQuery[0] = '\0';
 	// Combine it all into the query
-	Format(strQuery, sizeof(strQuery), "SELECT %s,%s FROM %s WHERE steam_id = %s", strUsersTableColumnNames[DB_COL_INDEX_PUSH_UPDATE_FROM_DB], strUsersTableColumnNames[DB_COL_INDEX_USERS_XP], DB_TABLENAME_USERS, strSteamID);
+	Format(strQuery, sizeof(strQuery), "SELECT %s,%s FROM %s WHERE steam_id = '%s'", strUsersTableColumnNames[DB_COL_INDEX_PUSH_UPDATE_FROM_DB], strUsersTableColumnNames[DB_COL_INDEX_USERS_XP], DB_TABLENAME_USERS, strSteamID);
 
 	// PrintToServer("                   %s", strQuery);
 
@@ -804,15 +808,16 @@ Logout(iClient)
 
 GetAttributesStringForQuery(char[] strAttributes, int bufferSize, int startIndex, int endIndex)
 {
+	// Ensure callers never inherit stale stack data.
+	strAttributes[0] = '\0';
+
 	for (int i=startIndex; i<=endIndex; i++)
 	{
+		if (strAttributes[0] != '\0')
+			StrCat(strAttributes, bufferSize, ",");
+
 		StrCat(strAttributes, bufferSize, strUsersTableColumnNames[i]);
-		int len = strlen(strAttributes);
-		strAttributes[len] = ',';
-		strAttributes[len+1] = '\0';
 	}
-	// Remove the last comma
-	strAttributes[strlen(strAttributes)-1] = '\0';
 }
 
 GenerateNewHashToken(const char[] strSteamID, char[] strToken)
@@ -822,7 +827,8 @@ GenerateNewHashToken(const char[] strSteamID, char[] strToken)
 	int num2 = GetURandomInt();
 	int num3 = GetURandomInt();
 
-	decl String:strValueToHash[64] = "";
+	char strValueToHash[64];
+	strValueToHash[0] = '\0';
 	Format(strValueToHash, sizeof(strValueToHash), "%s%i%i%i", strSteamID, num1, num2, num3);
 
 	SHA1String(strValueToHash, strToken, true);
@@ -842,4 +848,3 @@ KickClientCannotGetSteamID(iClient)
 		Please close L4D2, restart Steam, then restart L4D2 with Steam already open");
 	LogError("GetClientAuthId failed for %N", iClient);
 }
-

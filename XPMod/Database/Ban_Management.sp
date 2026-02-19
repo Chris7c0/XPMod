@@ -1,4 +1,4 @@
-SQLCheckIfUserIsInBanListCallback(Handle:owner, Handle:hQuery, const String:error[], any:iClient)
+SQLCheckIfUserIsInBanListCallback(Handle:owner, Handle:hQuery, const char[] error, any:iClient)
 {
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -15,7 +15,7 @@ SQLCheckIfUserIsInBanListCallback(Handle:owner, Handle:hQuery, const String:erro
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return;
 
-	decl String:strData[50];
+	char strData[50];
 	if(SQL_FetchRow(hQuery))
 	{		
 		//Get the ban duration of the user, if null returned then ban for a long time
@@ -62,7 +62,7 @@ SQLCheckIfUserIsInBanList(int iClient)
 	}
 	
 	//Get Steam Auth ID, if this returns false, then do not proceed
-	decl String:strSteamID[32];
+	char strSteamID[32];
 	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
 	{
 		LogError("SQLCheckIfUserIsInBanList: GetClientAuthId failed for %N", iClient);
@@ -71,14 +71,15 @@ SQLCheckIfUserIsInBanList(int iClient)
 	
 	// Run a query to see if they are in the bans table
 	// This gets the time in seconds of how long they are still banned, if they are indeed in the bans table.
-	decl String:strQuery[1024] = "";
-	Format(strQuery, sizeof(strQuery), "SELECT TIMESTAMPDIFF(SECOND,NOW(),expiration_time) FROM %s WHERE steam_id = %s", DB_TABLENAME_BANS, strSteamID);
+	char strQuery[1024];
+	strQuery[0] = '\0';
+	Format(strQuery, sizeof(strQuery), "SELECT TIMESTAMPDIFF(SECOND,NOW(),expiration_time) FROM %s WHERE steam_id = '%s'", DB_TABLENAME_BANS, strSteamID);
 
 	SQL_TQuery(g_hDatabase, SQLCheckIfUserIsInBanListCallback, strQuery, iClient);
 }
 
 //Callback function for an SQL AddBannedUserToDatabase
-SQLAddBannedUserToDatabaseCallback(Handle:owner, Handle:hQuery, const String:error[], any:iClient)
+SQLAddBannedUserToDatabaseCallback(Handle:owner, Handle:hQuery, const char[] error, any:iClient)
 {
 	if (g_hDatabase == INVALID_HANDLE)
 	{
@@ -112,7 +113,7 @@ SQLAddBannedUserToDatabaseUsingClientID(iClient, int iBanDurationSeconds = 0, co
 	}
 	
 	//Get Steam Auth ID, if this returns false, then do not proceed
-	decl String:strSteamID[32];
+	char strSteamID[32];
 	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
 	{
 		LogError("AddBannedUserToDatabase: GetClientAuthId failed for %N", iClient);
@@ -120,7 +121,7 @@ SQLAddBannedUserToDatabaseUsingClientID(iClient, int iBanDurationSeconds = 0, co
 	}
 	
 	//Get Client Name
-	decl String:strClientName[32];
+	char strClientName[32];
 	GetClientName(iClient, strClientName, sizeof(strClientName));
 	SanitizeValueStringForQuery(strClientName, sizeof(strClientName));
 
@@ -128,7 +129,8 @@ SQLAddBannedUserToDatabaseUsingClientID(iClient, int iBanDurationSeconds = 0, co
 	GetBanExpirationTimestamp(strExpiriationTime, sizeof(strExpiriationTime), iBanDurationSeconds);
 	
 	//Create new entry into the SQL database with the users information
-	decl String:strQuery[512] = "";
+	char strQuery[512];
+	strQuery[0] = '\0';
 	Format(strQuery, sizeof(strQuery), "INSERT INTO %s (\
 		steam_id,\
 		user_name,\
@@ -161,7 +163,8 @@ SQLAddBannedUserToDatabaseUsingNameAndSteamID(char [] strClientName, const int i
 	GetBanExpirationTimestamp(strExpiriationTime, sizeof(strExpiriationTime), iBanDurationSeconds);
 	
 	//Create new entry into the SQL database with the users information
-	decl String:strQuery[512] = "";
+	char strQuery[512];
+	strQuery[0] = '\0';
 	Format(strQuery, sizeof(strQuery), "INSERT INTO %s (\
 		steam_id,\
 		user_name,\
@@ -184,7 +187,7 @@ GetBanExpirationTimestamp(char [] strExpirationTimeStampValue, int iExpirationTi
 		return;
 	}
 	
-	decl String:strDateTime[30];
+	char strDateTime[30];
 	FormatTime(strDateTime, sizeof(strDateTime), "%Y-%m-%d %H:%M:%S", GetTime() + iBanDurationSeconds);
 	Format(strExpirationTimeStampValue, iExpirationTimeStampValueSize, "'%s'", strDateTime);
 }

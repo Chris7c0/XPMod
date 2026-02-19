@@ -1,5 +1,5 @@
 //Callback function for SQLGetTopXPModPlayerStatistics
-SQLGetTopXPModPlayerStatisticsCallback(Handle:owner, Handle:hQuery, const String:error[], any:empty)
+SQLGetTopXPModPlayerStatisticsCallback(Handle:owner, Handle:hQuery, const char[] error, any:empty)
 {
 	// PrintToChatAll("SQLGetTopXPModPlayerStatisticsCallback Started.");
 	// PrintToServer("SQLGetTopXPModPlayerStatisticsCallback Started.");
@@ -67,7 +67,8 @@ SQLGetTopXPModPlayerStatistics()
 	}
 	
 	// Save the new user data into the SQL database with the matching Steam ID
-	decl String:strQuery[1024] = "";
+	char strQuery[1024];
+	strQuery[0] = '\0';
 	// Combine it all into the query
 	Format(strQuery, sizeof(strQuery), "SELECT %s,%s FROM %s", strUsersTableColumnNames[DB_COL_INDEX_USERS_USER_NAME], strUsersTableColumnNames[DB_COL_INDEX_USERS_XP], DB_VIEWNAME_TOP_10);
 
