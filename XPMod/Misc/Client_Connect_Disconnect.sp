@@ -1,3 +1,10 @@
+const float AUTH_READY_RETRY_INTERVAL = 1.0;
+const int AUTH_READY_MAX_RETRIES = 10;
+
+bool g_bClientAuthInitPending[MAXPLAYERS + 1];
+bool g_bClientAuthInitCompleted[MAXPLAYERS + 1];
+int g_iClientAuthInitRetryCount[MAXPLAYERS + 1];
+
 void HandleAnyConnectedUsers()
 {
 	for (int iClient=1; iClient <= MaxClients; iClient++)
@@ -53,6 +60,10 @@ void HandleClientConnect(int iClient)
 	//if not the same as before logout/reset loudout and set the new clientname
 	if(match==false)
 	{
+		g_bClientAuthInitPending[iClient] = false;
+		g_bClientAuthInitCompleted[iClient] = false;
+		g_iClientAuthInitRetryCount[iClient] = 0;
+
 		Logout(iClient);
 		g_bClientSpectating[iClient] = false;
 		g_iAutoSetCountDown[iClient] = -1;
@@ -80,8 +91,7 @@ void HandleClientConnect(int iClient)
 			}
 		}
 
-		SQLCheckIfUserIsInBanList(iClient);
-		GetUserIDAndToken(iClient);
+		StartClientAuthReadyInitialization(iClient);
 
 		// Set the AFK last button press time
 		g_fLastPlayerLastButtonPressTime[iClient] =  GetGameTime();
@@ -131,7 +141,71 @@ void HandleClientDisconnect(int iClient)
 	g_iDBUserID[iClient] = -1;
 	g_strDBUserToken[iClient] = "";
 	g_iAutoSetCountDown[iClient] = -1;
+	g_bClientAuthInitPending[iClient] = false;
+	g_bClientAuthInitCompleted[iClient] = false;
+	g_iClientAuthInitRetryCount[iClient] = 0;
 	ResetAll(iClient);
+}
+
+void StartClientAuthReadyInitialization(int iClient)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsFakeClient(iClient) == true ||
+		g_bClientAuthInitCompleted[iClient] == true)
+		return;
+
+	// Attempt immediately first, then retry for a short period while auth validates.
+	if (TryRunClientAuthReadyInitialization(iClient))
+		return;
+
+	if (g_bClientAuthInitPending[iClient] == true)
+		return;
+
+	g_bClientAuthInitPending[iClient] = true;
+	g_iClientAuthInitRetryCount[iClient] = 0;
+	CreateTimer(AUTH_READY_RETRY_INTERVAL, TimerRetryClientAuthReadyInitialization, GetClientUserId(iClient), TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+}
+
+bool TryRunClientAuthReadyInitialization(int iClient)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsFakeClient(iClient) == true ||
+		g_bClientAuthInitCompleted[iClient] == true)
+		return false;
+
+	char strSteamID[32];
+	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
+		return false;
+
+	g_bClientAuthInitPending[iClient] = false;
+	g_iClientAuthInitRetryCount[iClient] = 0;
+	g_bClientAuthInitCompleted[iClient] = true;
+
+	SQLCheckIfUserIsInBanList(iClient);
+	GetUserIDAndToken(iClient);
+	return true;
+}
+
+Action TimerRetryClientAuthReadyInitialization(Handle hTimer, int iUserID)
+{
+	int iClient = GetClientOfUserId(iUserID);
+	if (iClient == 0)
+		return Plugin_Stop;
+
+	if (g_bClientAuthInitPending[iClient] == false)
+		return Plugin_Stop;
+
+	if (TryRunClientAuthReadyInitialization(iClient))
+		return Plugin_Stop;
+
+	g_iClientAuthInitRetryCount[iClient]++;
+	if (g_iClientAuthInitRetryCount[iClient] < AUTH_READY_MAX_RETRIES)
+		return Plugin_Continue;
+
+	g_bClientAuthInitPending[iClient] = false;
+	g_iClientAuthInitRetryCount[iClient] = 0;
+	KickClientCannotGetSteamID(iClient);
+	return Plugin_Stop;
 }
 
 void StorePlayerInDisconnectedPlayerList(int iClient)

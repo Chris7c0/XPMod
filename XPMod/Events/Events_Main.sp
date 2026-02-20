@@ -606,6 +606,14 @@ public void OnClientPutInServer(int iClient)
 	}
 }
 
+public void OnClientAuthorized(int iClient, const char[] strAuth)
+{
+	if (g_bClientAuthInitPending[iClient] == false)
+		return;
+
+	StartClientAuthReadyInitialization(iClient);
+}
+
 Action Event_PlayerConnect(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
