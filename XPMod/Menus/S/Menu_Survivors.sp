@@ -17,24 +17,21 @@ Action TopSurvivorMenuDraw(int iClient)
 		case NICK:		SetMenuTitle(menu, "%sLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\nYour Survivor: Nick (Gambler)\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 		case LOUIS:		SetMenuTitle(menu, "%sLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\nYour Survivor: Louis (Disruptor)\n  ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 	}
-	
+		
 	AddMenuItem(menu, "option1", "Bill			  (Support)");
 	AddMenuItem(menu, "option2", "Rochelle	(Ninja)");
 	AddMenuItem(menu, "option3", "Coach		(Berserker)");
 	AddMenuItem(menu, "option4", "Ellis			(Weapons Expert)");
 	AddMenuItem(menu, "option5", "Nick			(Gambler)");
-	AddMenuItem(menu, "option6", "Louis		 (Disruptor)\n ");
-	if (g_bTalentsConfirmed[iClient] == false)
-		AddMenuItem(menu, "option7", " * Change Your Survivor *\n ");
-	else
-		AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
-	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option6", "Louis		  (Disruptor)");
+	AddMenuItem(menu, "option7", "Zoey		   (Medic)");
+	AddMenuItem(menu, "option8", "Francis	   (Grenadier)\n ");
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Back\
 		\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\
 		%s\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option9", strFinalOptionText);
 
@@ -60,29 +57,31 @@ Action ChangeSurvivorMenuDraw(int iClient)
 	
 	switch(g_iChosenSurvivor[iClient])
 	{
-		case BILL:		SetMenuTitle(menu, "%sLevel %d	XP: %d/%d\n=================================\nYour Survivor: Bill (Support)\n \n Change your Survivor to...", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-		case ROCHELLE:	SetMenuTitle(menu, "%sLevel %d	XP: %d/%d\n=================================\nYour Survivor: Rochelle (Ninja)\n \n Change your Survivor to...", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-		case COACH:		SetMenuTitle(menu, "%sLevel %d	XP: %d/%d\n=================================\nYour Survivor: Coach (Berserker)\n \n Change your Survivor to...", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-		case ELLIS:		SetMenuTitle(menu, "%sLevel %d	XP: %d/%d\n=================================\nYour Survivor: Ellis (Weapon Expert)\n \n Change your Survivor to...", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-		case NICK:		SetMenuTitle(menu, "%sLevel %d	XP: %d/%d\n=================================\nYour Survivor: Nick (Gambler)\n \n Change your Survivor to...", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-		case LOUIS:		SetMenuTitle(menu, "%sLevel %d	XP: %d/%d\n=================================\nYour Survivor: Louis (Disruptor)\n \n Change your Survivor to...", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+		case BILL:		SetMenuTitle(menu, "%s=	=	=	=	=	=	=	=	=	=	=\nYour Survivor: Bill (Support)\n \n Change your Survivor to...", strStartingNewLines);
+		case ROCHELLE:	SetMenuTitle(menu, "%s=	=	=	=	=	=	=	=	=	=	=\nYour Survivor: Rochelle (Ninja)\n \n Change your Survivor to...", strStartingNewLines);
+		case COACH:		SetMenuTitle(menu, "%s=	=	=	=	=	=	=	=	=	=	=\nYour Survivor: Coach (Berserker)\n \n Change your Survivor to...", strStartingNewLines);
+		case ELLIS:		SetMenuTitle(menu, "%s=	=	=	=	=	=	=	=	=	=	=\nYour Survivor: Ellis (Weapon Expert)\n \n Change your Survivor to...", strStartingNewLines);
+		case NICK:		SetMenuTitle(menu, "%s=	=	=	=	=	=	=	=	=	=	=\nYour Survivor: Nick (Gambler)\n \n Change your Survivor to...", strStartingNewLines);
+		case LOUIS:		SetMenuTitle(menu, "%s=	=	=	=	=	=	=	=	=	=	=\nYour Survivor: Louis (Disruptor)\n \n Change your Survivor to...", strStartingNewLines);
 	}
 	AddMenuItem(menu, "option1", "Bill		   (Support)			   [EASY]");
 	AddMenuItem(menu, "option2", "Rochelle (Ninja)					  [PRO]");
-	AddMenuItem(menu, "option3", "Coach	 (Berserker)	 [NORMAL]");
-	AddMenuItem(menu, "option4", "Ellis		 (Weapons Expert)   [PRO]");
+	AddMenuItem(menu, "option3", "Coach	 (Berserker)	  [NORMAL]");
+	AddMenuItem(menu, "option4", "Ellis        (Weapons Expert)   [PRO] ");
 	AddMenuItem(menu, "option5", "Nick		 (Gambler)				[PRO]");
-	AddMenuItem(menu, "option6", "Louis	  (Disruptor)			   [1337]      \n ");
+	AddMenuItem(menu, "option6", "Louis	  (Disruptor)			   [1337]");
+	AddMenuItem(menu, "option7", "Zoey		(Medic)						 [?]");
+	AddMenuItem(menu, "option8", "Francis	(Grenadier)  				[?]\n ");
 
-	AddMenuItem(menu, "option7", "Change Your Equipment");
+	AddMenuItem(menu, "option9", "Change Equipment");
 
 	char strFinalOptionText[250];
-	Format(strFinalOptionText, sizeof(strFinalOptionText), "Confirm Your Survivor\
-		\n=================================\
+	Format(strFinalOptionText, sizeof(strFinalOptionText), "Exit\
+		\n=	=	=	=	=	=	=	=	=	=	=\
 		%s\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
-	AddMenuItem(menu, "option8", strFinalOptionText);
+	AddMenuItem(menu, "option10", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -108,17 +107,17 @@ void TopSurvivorMenuHandler(Menu menu, MenuAction action, int iClient, int itemN
 			case ELLIS:		EllisMenuDraw(iClient);
 			case NICK:		NickMenuDraw(iClient);
 			case LOUIS:		LouisMenuDraw(iClient);
-			case 6: //Choose Your Character
+			case ZOEY:
 			{
-				if(g_bTalentsConfirmed[iClient] == false)
-					ChangeSurvivorMenuDraw(iClient);
-				else
-				{
-					PrintToChat(iClient, "\x03[XPMod] \x05You cannot change your characters if your talents are confirmed for this round.");
-					TopSurvivorMenuDraw(iClient);
-				}
+				PrintToChat(iClient, "\x03[XPMod] \x05Zoeys Coming!");
+				TopSurvivorMenuDraw(iClient);
 			}
-			case 8: //Back
+			case FRANCIS:
+			{
+				PrintToChat(iClient, "\x03[XPMod] \x05Not Available Yet.");
+				TopSurvivorMenuDraw(iClient);
+			}
+			case 8: // Back 
 			{
 				TopChooseCharactersMenuDraw(iClient);
 			}
@@ -191,13 +190,19 @@ void ChangeSurvivorMenuHandler(Menu menu, MenuAction action, int iClient, int it
 
 				DrawConfirmationMenuToClient(iClient);
 			}
-			case 6: //Change Equipment
+			case ZOEY: //Change to Zoey
+			{
+				PrintToChat(iClient, "\x03[XPMod] \x05Zoeys Coming!");
+				ChangeSurvivorMenuDraw(iClient);
+			}
+			case FRANCIS: //Change to Francis
+			{
+				PrintToChat(iClient, "\x03[XPMod] \x05Not Available Yet.");
+				ChangeSurvivorMenuDraw(iClient);
+			}
+			case 8: //Change Equipment
 			{
 				LoadoutMenuDraw(iClient);
-			}
-			case 7: //Confirm
-			{
-				DrawConfirmationMenuToClient(iClient);
 			}
 		}
 	}

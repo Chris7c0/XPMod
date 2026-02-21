@@ -67,6 +67,8 @@ float EMPTY_VECTOR[3] = {0.0, ...};
 #define ELLIS			    3
 #define NICK			    4
 #define LOUIS     	        5
+#define ZOEY     	        6
+#define FRANCIS    	        7
 
 // These are the actual game values (change to later)
 // #define UNKNOWN_SURVIVOR    -1
@@ -84,14 +86,18 @@ public char SURVIVOR_NAME[][] =          {"BILL",
                                             "COACH",
                                             "ELLIS",
                                             "NICK",
-                                            "LOUIS"}
+                                            "LOUIS",
+                                            "ZOEY",
+                                            "FRANCIS"}
 
 public char SURVIVOR_CLASS_NAME[][] =    {"SUPPORT", 
                                             "NINJA",
                                             "BERSERKER",
                                             "WEAPONS EXPERT",
                                             "GAMBLER",
-                                            "DISRUPTOR"}
+                                            "DISRUPTOR",
+                                            "MEDIC",
+                                            "GRENADIER"}
 
 // char SURVIVOR_NAME[][] =          {"BILL", 
 //                                         "ROCHELLE",
@@ -107,7 +113,7 @@ public char SURVIVOR_CLASS_NAME[][] =    {"SUPPORT",
 //                                         "BERSERKER",
 //                                         "WEAPONS EXPERT",
 //                                         "GAMBLER",
-//                                         "HEALER",
+//                                         "MEDIC",
 //                                         "GRENADIER",
 //                                         "DISRUPTOR"}
 
