@@ -288,5 +288,5 @@ void PrintRochelleRopeDurability(int iClient)
 		g_iRochelleRopeDurability[iClient] < ROCHELLE_ROPE_DEPLOYMENT_COST ? "Durability Depleted!": "Smoker Tongue Rope",
 		RoundToNearest(g_iRochelleRopeDurability[iClient] / 30.0),
 		strDurabilityMeter);
-	PrintHintText(iClient, strEntireHintTextString);
+	PrintHintText(iClient, "%s", strEntireHintTextString);
 }

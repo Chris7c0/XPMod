@@ -60,7 +60,7 @@ Action PrintXPModAdvertisementMessageToAll(Handle timer, int data)
 		case 5: Format(strAdvertisementText, sizeof(strAdvertisementText), "\x05Join us in Discord: \x03xpmod.net/discord\x05\n  You can get updates, give suggestions, or ask for help.");
 	}
 
-	PrintToChatAll(strAdvertisementText);
+	PrintToChatAll("%s", strAdvertisementText);
 	return Plugin_Continue;
 }
 

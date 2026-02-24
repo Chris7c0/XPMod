@@ -124,7 +124,7 @@ Action ConfirmationMessageMenuDraw(int iClient)
 			
 			char text[300];
 			FormatEx(text, sizeof(text), "%s===	===	===	===	===	===	===	===	===	===\n \n	Survivor:			   %s\n	Equipment Cost:	 %d XP\n	Infected:				%s	%s	%s\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \nConfirm your Characters and Equipment for this round?     \n ", strStartingNewLines, surClass, g_iClientTotalXPCost[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
-			SetMenuTitle(menu, text);
+			SetMenuTitle(menu, "%s", text);
 			
 			AddMenuItem(menu, "option1", " Yes, confirm.");
 

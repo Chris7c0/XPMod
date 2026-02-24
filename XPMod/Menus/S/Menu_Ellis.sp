@@ -14,7 +14,7 @@ Action EllisMenuDraw(int iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n			Ellis's Weapons Expert Talents\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	FormatEx(text, sizeof(text), "	[Level %d]	Overconfidence", g_iOverLevel[iClient]);
 	AddMenuItem(menu, "option1", text);
@@ -85,7 +85,7 @@ Action OverMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iOverLevel[iClient],
 		ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -135,7 +135,7 @@ Action BringMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iBringLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -187,7 +187,7 @@ Action JamminMenuDraw(int iClient)
 		g_iJamminLevel[iClient],
 		ELLIS_STASHED_INVENTORY_MAX_ADRENALINE,
 		ELLIS_STASHED_INVENTORY_MAX_TANK_SPAWN_ADRENALINE);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -234,7 +234,7 @@ Action WeaponsMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iWeaponsLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -288,7 +288,7 @@ Action MetalMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iMetalLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -339,7 +339,7 @@ Action FireMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iFireLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),

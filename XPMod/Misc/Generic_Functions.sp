@@ -490,7 +490,7 @@ Action ShowBindsRemaining(int iClient, int args)
 	
 	char strText[64];
 	FormatEx(strText, sizeof(strText), "\x05Bind 1: %d Uses Remain\nBind 2: %d Uses Remain", (3 - g_iClientBindUses_1[iClient]), (3 - g_iClientBindUses_2[iClient]));
-	PrintToChat(iClient, strText);
+	PrintToChat(iClient, "%s", strText);
 	return Plugin_Handled;
 }
 

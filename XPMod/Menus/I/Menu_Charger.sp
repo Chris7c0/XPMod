@@ -14,7 +14,7 @@ Action ChargerTopMenuDraw(int iClient)
 	
 	char title[256];
 	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n==========================\nCharger Talents:\n==========================\n \nGround 'n Pound: Level %d\nSpiked Carapace: Level %d\nHillbilly Madness!: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iGroundLevel[iClient], g_iSpikedLevel[iClient], g_iHillbillyLevel[iClient]);
-	SetMenuTitle(menu, title);
+	SetMenuTitle(menu, "%s", title);
 	
 	AddMenuItem(menu, "option1", "Ground 'n Pound");
 	AddMenuItem(menu, "option2", "Spiked Carapace");
@@ -177,7 +177,7 @@ Action ChooseChargerClassMenuDraw(int iClient)
 	char title[256];
 	FormatEx(title, sizeof(title), "==========================\n		Current Classes\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n==========================\n \nPick a class to replace with the Charger:",g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	
-	SetMenuTitle(menu, title);
+	SetMenuTitle(menu, "%s", title);
 	
 	AddMenuItem(menu, "option1", "Replace Class 1");
 	AddMenuItem(menu, "option2", "Replace Class 2");

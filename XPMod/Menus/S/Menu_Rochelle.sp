@@ -12,7 +12,7 @@ Action RochelleMenuDraw(int iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Rochelle's Ninja Talents\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	FormatEx(text, sizeof(text), "	[Level %d]	Gather Intelligence", g_iGatherLevel[iClient]);
 	AddMenuItem(menu, "option1", text);
@@ -76,7 +76,7 @@ Action GatherMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iGatherLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -125,7 +125,7 @@ Action HunterMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iHunterLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -176,7 +176,7 @@ Action SnipersEnduranceMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iSniperLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -237,7 +237,7 @@ Action SilentMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iSilentLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -288,7 +288,7 @@ Action SmokeMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iSmokeLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -338,7 +338,7 @@ Action ShadowMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iShadowLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),

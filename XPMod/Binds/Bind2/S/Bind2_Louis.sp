@@ -23,7 +23,7 @@ Action ScriptKiddieExploitsMenuDraw(int iClient)
 		\n=========================\
 		\n ",
 		g_fLouisXMRWallet[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 
 	FormatEx(text, sizeof(text), "\
 		5p3eD h4x\
@@ -275,7 +275,7 @@ Action HackTargetPlayerMenuDraw(int iClient)
 		\n		 Target Must Be Visible\
 		\n===============================\
 		\n ");
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 
 	AddMenuItem(menu, "Option0", " ***  Rescan  ***\n ");
 

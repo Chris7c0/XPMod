@@ -13,7 +13,7 @@ Action HunterTopMenuDraw(int iClient)
 	
 	char title[256];
 	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n==========================\nHunter Talents:\n==========================\n \nPredatorial Evolution: Level %d\nBlood Lust: Level %d\nKill-meleon: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iPredatorialLevel[iClient], g_iBloodLustLevel[iClient], g_iKillmeleonLevel[iClient]);
-	SetMenuTitle(menu, title);
+	SetMenuTitle(menu, "%s", title);
 	AddMenuItem(menu, "option1", "Predatorial Evolution");
 	AddMenuItem(menu, "option2", "Blood Lust");
 	AddMenuItem(menu, "option3", "Kill-meleon\n ");
@@ -191,7 +191,7 @@ Action ChooseHunterClassMenuDraw(int iClient)
 	
 	char title[256];
 	FormatEx(title, sizeof(title), "==========================\n		Current Classes\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n==========================\n \nPick a class to replace with the Hunter:",g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
-	SetMenuTitle(menu, title);
+	SetMenuTitle(menu, "%s", title);
 	AddMenuItem(menu, "option1", "Replace Class 1");
 	AddMenuItem(menu, "option2", "Replace Class 2");
 	AddMenuItem(menu, "option3", "Replace Class 3");

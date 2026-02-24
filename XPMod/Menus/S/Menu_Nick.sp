@@ -14,7 +14,7 @@ Action NickMenuDraw(int iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n					Nick's Gambler Talents\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	FormatEx(text, sizeof(text), "	[Level %d]	Swindler", g_iSwindlerLevel[iClient]);
 	AddMenuItem(menu, "option1", text);
@@ -78,7 +78,7 @@ Action SwindlerMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iSwindlerLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -125,7 +125,7 @@ Action LeftoverMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iSkillPoints[iClient],
 		g_iLeftoverLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -175,7 +175,7 @@ Action RiskyMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iRiskyLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -222,7 +222,7 @@ Action EnhancedMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iEnhancedLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -275,7 +275,7 @@ Action MagnumMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iMagnumLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 		
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -334,7 +334,7 @@ Action DesperateMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iDesperateLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),

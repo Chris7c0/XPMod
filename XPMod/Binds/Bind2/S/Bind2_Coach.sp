@@ -51,7 +51,7 @@ void PrintCoachJetpackFuelGauge(int iClient)
         StrCat(strFuelMeter, sizeof(strFuelMeter), "░")
 
     Format(strEntireHintTextString, sizeof(strEntireHintTextString), "CEDA JPack Mk. 6%s\n|%s|", g_bIsJetpackOn[iClient] ? " [Active Flight Mode]": " [Regenerative Mode]", strFuelMeter);
-    PrintHintText(iClient, strEntireHintTextString);
+    PrintHintText(iClient, "%s", strEntireHintTextString);
 }
 
 void HandleCoachJetPack2SecondTick(int iClient)

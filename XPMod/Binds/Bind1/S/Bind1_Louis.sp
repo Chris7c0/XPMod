@@ -134,7 +134,7 @@ Action WarezStationMenuDraw(int iClient)
 		\n ",
 		RunClientChecks(g_iWareStationOwnerIDOfCurrentlyViewedStation[iClient]) ? 
 			g_iWareStationOwnerIDOfCurrentlyViewedStation[iClient] : iClient);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 
 	AddMenuItem(menu, "option1", "+5% Speed Increase");
 	AddMenuItem(menu, "option2", "+25 HP Max Health");

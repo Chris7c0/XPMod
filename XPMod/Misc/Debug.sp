@@ -6,7 +6,7 @@ void DebugLog(int iDebugLevel, const char[] strMessage, any ...)
     {
         char strFormattedMessage[512];
         VFormat(strFormattedMessage, sizeof(strFormattedMessage), strMessage, 3);
-        LogMessage(strFormattedMessage);
+        LogMessage("%s", strFormattedMessage);
     }
 }
 

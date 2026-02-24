@@ -13,7 +13,7 @@ Action JockeyTopMenuDraw(int iClient)
 	
 	char title[256];
 	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n==========================\nJockey Talents:\n==========================\n \nMutated Tenacity: Level %d\nErratic Domination: Level %d\nUnfair Advantage: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iMutatedLevel[iClient], g_iErraticLevel[iClient], g_iUnfairLevel[iClient]);
-	SetMenuTitle(menu, title);
+	SetMenuTitle(menu, "%s", title);
 	AddMenuItem(menu, "option1", "Mutated Tenacity");
 	AddMenuItem(menu, "option2", "Erratic Domination");
 	AddMenuItem(menu, "option3", "Unfair Advantage\n ");
@@ -172,7 +172,7 @@ Action ChooseJockeyClassMenuDraw(int iClient)
 	
 	char title[256];
 	FormatEx(title, sizeof(title), "==========================\n		Current Classes\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n==========================\n \nPick a class to replace with the Jockey:",g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
-	SetMenuTitle(menu, title);
+	SetMenuTitle(menu, "%s", title);
 	AddMenuItem(menu, "option1", "Replace Class 1");
 	AddMenuItem(menu, "option2", "Replace Class 2");
 	AddMenuItem(menu, "option3", "Replace Class 3");

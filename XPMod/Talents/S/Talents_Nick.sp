@@ -783,7 +783,7 @@ void SetAllNicksDesprateMeasureSpeed(const char[] strMessage = "")
 		SetClientSpeed(iPlayer);
 
 		if (IsFakeClient(iPlayer) == false)
-			PrintHintText(iPlayer, strMessage);
+			PrintHintText(iPlayer, "%s", strMessage);
 	}
 }
 

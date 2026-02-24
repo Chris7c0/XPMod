@@ -28,7 +28,7 @@ Action CreateNewUserMenuDraw(int iClient)
 			\n\
 			Start playing XPMod?",
 			strStartingNewLines);
-		SetMenuTitle(menu, text);
+		SetMenuTitle(menu, "%s", text);
 		
 		AddMenuItem(menu, "option1", " Yes, Lets Go!");
 		AddMenuItem(menu, "option2", " Not Now.");
@@ -105,7 +105,7 @@ Action BanMeMenuDraw(int iClient)
 		=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n\
 		How long would you like to be banned from this server?   \n ",
 		strStartingNewLines);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	AddMenuItem(menu, "option1", " Nevermind!");
 	AddMenuItem(menu, "option2", " Kick Only");
@@ -181,7 +181,7 @@ Action BanConfirmMenu(int iClient, int iBanDurationInMinutes)
 		Are you sure?\n ",
 		strStartingNewLines,
 		(g_iBanDurationInMinutes[iClient] / 60 / 24) );
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	AddMenuItem(menu, "option1", " Yes");
 	char strFinalOptionText[250];

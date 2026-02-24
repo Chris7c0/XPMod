@@ -14,7 +14,7 @@ Action LouisMenuDraw(int iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=\n \n			Louis's Disruptor Talents\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	FormatEx(text, sizeof(text), "	[Level %d]	Manager's Prep", g_iLouisTalent1Level[iClient]);
 	AddMenuItem(menu, "option1", text);
@@ -66,7 +66,7 @@ Action LouisTalent1MenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iLouisTalent1Level[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -114,7 +114,7 @@ Action LouisTalent2MenuDraw(int iClient)
 		strStartingNewLines,
 		g_iLouisTalent2Level[iClient]);
 	
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -153,7 +153,7 @@ Action LouisTalent3MenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iLouisTalent3Level[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -193,7 +193,7 @@ Action LouisTalent4MenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iLouisTalent4Level[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -238,7 +238,7 @@ Action LouisTalent5MenuDraw(int iClient)
 		strStartingNewLines,
 		g_iLouisTalent5Level[iClient],
 		LOUIS_NEUROSURGEON_SI_XMR_REWARD_AMOUNT);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -289,7 +289,7 @@ Action LouisTalent6MenuDraw(int iClient)
 		LOUIS_STASHED_INVENTORY_MAX_PILLS,
 		LOUIS_HEADSHOT_XMR_AMOUNT_CI,
 		LOUIS_HEADSHOT_XMR_AMOUNT_SI);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),

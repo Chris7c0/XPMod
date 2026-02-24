@@ -469,7 +469,7 @@ void PrintBloodLustMeter(int iClient)
 	else
 		Format(strEntireHintTextString, sizeof(strEntireHintTextString), "Blood Lust Stage %i\n<<%s>>", g_iBloodLustStage[iClient], strBloodLustMeter);
 
-	PrintHintText(iClient, strEntireHintTextString);
+	PrintHintText(iClient, "%s", strEntireHintTextString);
 }
 
 void HandleHunterVisibleBloodLustMeterGain(int iClient)

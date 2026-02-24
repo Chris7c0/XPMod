@@ -14,7 +14,7 @@ Action CoachMenuDraw(int iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Coach's Berserker Talents\n ", strStartingNewLines,g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	FormatEx(text, sizeof(text), "	[Level %d]	Bull Rush", g_iBullLevel[iClient]);
 	AddMenuItem(menu, "option1", text);
@@ -81,7 +81,7 @@ Action BullMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iBullLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -134,7 +134,7 @@ Action WreckingMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iWreckingLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -175,7 +175,7 @@ Action SprayMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iSprayLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -225,7 +225,7 @@ Action HomerunMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iHomerunLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -279,7 +279,7 @@ Action LeadMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iLeadLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -338,7 +338,7 @@ Action StrongMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iStrongLevel[iClient],
 		COACH_JETPACK_FUEL_PER_LEVEL);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),

@@ -14,7 +14,7 @@ Action BoomerTopMenuDraw(int iClient)
 
 	char title[256];
 	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n==========================\nBoomer Talents:\n==========================\n \nRapid Regurgitation: Level %d\nAcidic Brew: Level %d\nNorovirus: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iRapidLevel[iClient], g_iAcidicLevel[iClient], g_iNorovirusLevel[iClient]);
-	SetMenuTitle(menu, title);
+	SetMenuTitle(menu, "%s", title);
 	AddMenuItem(menu, "option1", "Rapid Regurgitation");
 	AddMenuItem(menu, "option2", "Acidic Brew");
 	AddMenuItem(menu, "option3", "Norovirus\n ");
@@ -165,7 +165,7 @@ Action ChooseBoomerClassMenuDraw(int iClient)
 	
 	char title[256];
 	FormatEx(title, sizeof(title), "==========================\n		Current Classes\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n==========================\n \nPick a class to replace with the Boomer:",g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
-	SetMenuTitle(menu, title);
+	SetMenuTitle(menu, "%s", title);
 	AddMenuItem(menu, "option1", "Replace Class 1");
 	AddMenuItem(menu, "option2", "Replace Class 2");
 	AddMenuItem(menu, "option3", "Replace Class 3");

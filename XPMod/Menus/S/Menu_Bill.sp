@@ -15,7 +15,7 @@ Action SupportMenuDraw(int iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n					Bill's Support Talents\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	FormatEx(text, sizeof(text), "	[Level %d]	Inspirational Leadership", g_iInspirationalLevel[iClient]);
 	AddMenuItem(menu, "option1", text);
@@ -79,7 +79,7 @@ Action InspirationalMenuDraw(int iClient)
 		BILL_TEAM_HEAL_HP_AMOUNT,
 		BILL_TEAM_HEAL_FRAME_COUNTER_REQUIREMENT,
 		BILL_TEAM_HEAL_HP_POOL);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -126,7 +126,7 @@ Action GhillieMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iGhillieLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -174,7 +174,7 @@ Action WillMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iWillLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -216,7 +216,7 @@ Action ExorcismMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iExorcismLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -263,7 +263,7 @@ Action DiehardMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iDiehardLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
@@ -313,7 +313,7 @@ Action PromotionalMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iPromotionalLevel[iClient]);
-	SetMenuTitle(menu, text);
+	SetMenuTitle(menu, "%s", text);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),

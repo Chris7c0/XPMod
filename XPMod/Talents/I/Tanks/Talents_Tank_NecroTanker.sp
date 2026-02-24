@@ -401,5 +401,5 @@ void DisplayNecroTankerManaMeter(int iClient)
 		StrCat(strManaMeter, sizeof(strManaMeter), "░")
 
 	Format(strEntireManaMeter, sizeof(strEntireManaMeter), "%s\n(%i/%i Mana)", strManaMeter, g_iNecroTankerManaPool[iClient], NECROTANKER_MANA_POOL_SIZE);
-	PrintHintText(iClient, strEntireManaMeter);
+	PrintHintText(iClient, "%s", strEntireManaMeter);
 }

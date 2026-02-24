@@ -14,7 +14,7 @@ Action SpitterTopMenuDraw(int iClient)
 	
 	char title[256];
 	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n==============================\nSpitter Talents:\n==============================\n \nPuppet Master: Level %d\nMaterial Girl: Level %d\nHallucinogenic Nightmare: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iPuppetLevel[iClient], g_iMaterialLevel[iClient], g_iHallucinogenicLevel[iClient]);
-	SetMenuTitle(menu, title);
+	SetMenuTitle(menu, "%s", title);
 	
 	AddMenuItem(menu, "option1", "Puppet Master");
 	AddMenuItem(menu, "option2", "Material Girl");
@@ -192,7 +192,7 @@ Action ChooseSpitterClassMenuDraw(int iClient)
 	char title[256];
 	FormatEx(title, sizeof(title), "==========================\n		Current Classes\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n==========================\n \nPick a class to replace with the Spitter:",g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	
-	SetMenuTitle(menu, title);
+	SetMenuTitle(menu, "%s", title);
 	
 	AddMenuItem(menu, "option1", "Replace Class 1");
 	AddMenuItem(menu, "option2", "Replace Class 2");

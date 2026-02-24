@@ -14,7 +14,7 @@ Action TopInfectedMenuDraw(int iClient)
 	
 	char title[256];
 	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		 Your Infected\n \n Class 1)	%s\n Class 2)	%s\n Class 3)	%s\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
-	SetMenuTitle(menu, title);
+	SetMenuTitle(menu, "%s", title);
 	AddMenuItem(menu, "option1", "Smoker");
 	AddMenuItem(menu, "option2", "Boomer");
 	AddMenuItem(menu, "option3", "Hunter");
@@ -63,7 +63,7 @@ Action ChangeInfectedMenuDraw(int iClient)
 	
 	char title[256];
 	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n	Change Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient],g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
-	SetMenuTitle(menu, title);
+	SetMenuTitle(menu, "%s", title);
 	AddMenuItem(menu, "option1", "Change Class 1");
 	AddMenuItem(menu, "option2", "Change Class 2");
 	AddMenuItem(menu, "option3", "Change Class 3\n ");
