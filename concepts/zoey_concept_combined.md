@@ -2,102 +2,103 @@
 
 ### Talent 1: Resilient Resuscitation
 ```
-Level 1:
-+8% revive speed per level
-+3% movement speed per level while holding a healing item
++40% Revive Speed
++20% Movement Speed While Holding A Healing Item
 
 Revive Bonuses:
-- Revived ally gains +4% damage reduction per level for 7 seconds
-- Level 5: Revives are not interrupted by common infected hits
-- Revived allies return with permanent health instead of temporary health
+- Revived Ally Gains +20% Damage Reduction For 7 Seconds
+- Revives Are Not Interrupted By Common Infected Hits
+- Revived Allies Return With Permanent Health Instead Of Temporary Health
+
+Zoey Gains No Buff From Max HP Increases
 ```
 
 ### Talent 2: Trigger Happy
 ```
-Dual pistols become automatic machine pistols
-- Fast Firing Rate (10 Rounds per Second?)
-- +60% Clip Size per Level (120 Max)
-- Removes the Ability to Hold a Primary Weapon
+Removes The Ability To Hold A Primary Weapon
 
-Press [WALK] + [RELOAD] to Activate Explosive Pistols Ammo
+Dual Pistols Become Automatic Machine Pistols
+- Fast Firing Rate (10 Rounds Per Second?)
+- 120 Clip Size
+
+Press [WALK] + [RELOAD] To Activate Explosive Pistols Ammo
 - Machine Pistol Bullets Explode 
-- Kills All CI with One Shot
-- Increased Damage to SI
+- Kills All CI With One Shot
+- Increased Damage To SI
 - Reloads Current Clip 
-    - All Ammo Converted Until the Clip Runs Out
+    - All Ammo Converted Until The Clip Runs Out
 - 30 Second Cooldown Once Clip Expires
 
-Level 5: Mop 'Til They Drop
+Mop 'Til They Drop
 Press [WALK] + [USE] To Arm
-Then Shoot Target to Activate Mop The Floor
-- Next shot marks a target; nearby CI are instantly killed
-- Number of CI killed equals stored charge
-- Gain 1 charge per 5 machine-pistol hits on CI/SI
+Then Shoot Target To Activate Mop The Floor
+- Next Shot Marks A Target; Nearby CI Are Instantly Killed
+- Number Of CI Killed Equals Stored Charge
+- Gain 1 Charge Per 5 Machine-Pistol Hits On CI/SI
 ```
 
 ### Talent 3: Survivor's Will
 ```
-Zoey trades durability for team-saving momentum.
-
--2 max health per level (max -10)
-+20 incap health per level (shared globally, does not stack with other Zoeys)
-+3% movement speed per level (max +15%)
-+3% damage reduction per level while incapacitated (max +15%)
++5% Movement Speed
++100 Incap Health (Shared Globally, Does Not Stack With Other Zoeys)
++15% Damage Reduction While Incapacitated
 
 While Holding A Medkit Press [WALK] + [USE] To Start:
-- Hold Medkit for X (Max 20) Seconds Without Switching
+- Hold Medkit For X (Max 20) Seconds Without Switching
 - After Switching Off Medkit, For X Seconds You Gain:
-    - Reveal All SI Ghost locations with a smoke like mist
+    - Reveal All SI Ghost Locations With A Smoke Like Mist
         - Not Visible Through Walls
 - 3 Minute Global Cooldown
 ```
 
-### Talent 4: Sharing is Caring
+### Talent 4: Sharing Is Caring
 ```
-Healing by Zoey splashes to nearby teammates (does not heal Zoey).
+Healing By Zoey Splashes To Nearby Teammates (Does Not Heal Zoey).
 
-Aura Radius: 7/9/11/13/15 feet per talent level
-Medkit shared healing: 5% per level (max 25%)
-Pills shared healing: 10% per level (max 50%)
-Adrenaline shared healing: 16% per level (max 80%)
+15 Foot Aura Radius 
+25% Medkit Shared Healing 
+50% Pills Shared Healing 
+80% Adrenaline Shared Healing 
 
-Level 5:
-Shared pills/adrenaline healing is converted to permanent health.
+Shared Pills/Adrenaline Healing Is Converted To Permanent Health.
 ```
 
 ### Talent 5: Medical Expertise
 ```
-+5% healing item use speed per level
-+10% medkit healing per level
-+8% pills healing per level
-+12% adrenaline healing per level
++25% Healing Item Use Speed
++50% Medkit Healing
++40% Pills Healing
++60% Adrenaline Healing
 
 Scrap Recycle:
-- After helping up teammates [8/7/6/5/4] times, gain +1 medkit
-- After helping up teammates [7/6/5/4/3] times, gain +1 pills
-- (Team) 33% reduced bile duration
+- After Helping Up Teammates 4 Times, Gain +1 Medkit
+- After Helping Up Teammates 2 Times, Gain +1 Pills
+- (Team) 33% Reduced Bile Duration
 
 Bind 1: Sacrificial Aid
-- +1 use every other level
-- Target a visible teammate and consume one item from Zoey:
-  - Medkit: Heal 50/75/100 permanent HP (or instantly pick up a downed target)
-  - Pills: Give 50/60/70 temp HP (or +150 incap health if target is downed)
-  - Adrenaline: Heal 30/35/40 permanent HP (or stop bleedout for 6 seconds)
+- Unlimited Use
+- Global 10 Second Cooldown
+- Target A Visible Teammate And Lose Max HP To Choose:
+  - -15 HP: Heal 100 HP (Or Instantly Pick Up A Downed Target)
+  - -10 HP : Give 70 Temp HP  (Or Stop Bleedout For 20 Seconds)
+  - -5 HP: Heal 30 HP (Or Stop Bleedout For 10 Seconds)
 ```
 
 ### Talent 6: Instant Intervention
 ```
-+8% first aid use speed per level
-+5% movement speed for each downed survivor (max +15%)
++40% Medkit Use Speed
++5% Movement Speed For Each Downed Survivor (Max +15%)
 
 Bind 2: Instant Intervention
-- +1 use every other level (global max 3)
-- Hold [WALK] to teleport to a chosen ally
-- Cannot be used while grappled or downed
+- +1 Use Every Other Level (Global Max 3)
+- Hold [WALK] To Teleport To A Chosen Ally
+- Cannot Be Used While Grappled Or Downed
 
 On Arrival:
-- Zoey gains 33% damage reduction for 7 seconds
-- Drop a healing circle for 7 seconds (4 HP/sec to survivors in radius)
-- Instantly pick up one downed survivor in the circle
-- Zoey gains +25% revive speed for 7 seconds after teleport
+- Zoey Gains 33% Damage Reduction For 7 Seconds
+- Drop A Healing Circle For 10 Seconds (4 HP/Sec To Survivors In Radius)
+- Instantly Pick Up One Downed Survivor In The Circle
+- Upon Arrival Kill All CI Within A 4 Meter Radius.
+- Zoey Gains +25% Revive Speed For 7 Seconds After Teleport
+- Global 2 Minute Cooldown
 ```
