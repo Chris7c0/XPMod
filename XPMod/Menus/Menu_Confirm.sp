@@ -185,6 +185,7 @@ void ConfirmationMessageMenuHandler(Menu menu, MenuAction action, int iClient, i
 				{
 					g_bTalentsConfirmed[iClient] = true;
 					g_iAutoSetCountDown[iClient] = -1;
+					SaveUserData(iClient);
 
 					PrintHintText(iClient, "Characters Confirmed");
 					LoadTalents(iClient);
