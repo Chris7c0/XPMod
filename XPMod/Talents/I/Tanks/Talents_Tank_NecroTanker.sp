@@ -145,6 +145,11 @@ void HandleNecroTankerInfectedConsumption(int iClient, int iInfectedEntity)
 		GetEntProp(iClient, Prop_Send, "m_zombieClass") != TANK)
 		return;
 
+	int iCurrentHealth = GetPlayerHealth(iClient);
+	// Prevent post-death health gain while the Tank is in a lethal state.
+	if (iCurrentHealth <= 0)
+		return;
+
 	// Get the model type to determine the amount of health to give
 	int iAdditionalHealth;
 	if (IsEntityUncommonInfected(iInfectedEntity) == true)
@@ -163,7 +168,6 @@ void HandleNecroTankerInfectedConsumption(int iClient, int iInfectedEntity)
 		SetPlayerMaxHealth(iClient,  iNewHealth, false, false);
 	}
 	// Check if should increase health
-	int iCurrentHealth = GetPlayerHealth(iClient);
 	if (iCurrentHealth < iAbsoluteMaxHealth)
 	{
 		// Add it, Cap it, Set it

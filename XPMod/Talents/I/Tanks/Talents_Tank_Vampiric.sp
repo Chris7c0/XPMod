@@ -164,6 +164,10 @@ void EventsHurt_VictimTank_Vampiric(Handle hEvent, int iAttacker, int iVictimTan
 	SuppressNeverUsedWarning(hEvent, iAttacker);
 
 	int iDmgHealth = GetEventInt(hEvent,"dmg_health");
+	int iCurrentHP = GetPlayerHealth(iVictimTank);
+	// Prevent healing/adjustments if death has already started processing.
+	if (iCurrentHP <= 0)
+		return;
 
 	char weaponclass[32];
 	GetEventString(hEvent,"weapon",weaponclass,32);
@@ -174,7 +178,6 @@ void EventsHurt_VictimTank_Vampiric(Handle hEvent, int iAttacker, int iVictimTan
 	{
 		// Increase the melee damage
 		// Remember, the original damage will still process, so subtract that
-		int iCurrentHP = GetPlayerHealth(iVictimTank);
 		SetPlayerHealth(iVictimTank, iAttacker, iCurrentHP - ((iDmgHealth * VAMPIRIC_TANK_MELEE_DMG_TAKEN_MULTIPLIER) - iDmgHealth));
 	}
 	else if(StrContains(weaponclass,"pistol",false) != -1 ||
@@ -184,7 +187,6 @@ void EventsHurt_VictimTank_Vampiric(Handle hEvent, int iAttacker, int iVictimTan
 		StrContains(weaponclass,"shotgun",false) != -1 ||
 		StrContains(weaponclass,"sniper",false) != -1)
 	{
-		int iCurrentHP = GetPlayerHealth(iVictimTank);
 		// The life will be taken away, so we need to convert the gun damage taken multiplier to be a reduction of this.
 		// So, if we want to only take 1/3rd damage, then we add 2/3rds back here.  1 - 1/3rds = 2/3rds.
 		SetPlayerHealth(iVictimTank, iAttacker, iCurrentHP + RoundToCeil(iDmgHealth * (1.0 - VAMPIRIC_TANK_GUN_DMG_TAKEN_MULTIPLIER)) );
@@ -205,6 +207,11 @@ void EventsHurt_AttackerTank_Vampiric(Handle hEvent, int iAttackerTank, int iVic
 		StrEqual(strWeapon,"tank_claw") == false)
 		return;
 
+	int iCurrentHP = GetPlayerHealth(iAttackerTank);
+	// Avoid lifesteal after lethal damage has already been applied.
+	if (iCurrentHP <= 0)
+		return;
+
 	// Calculate the health to recieve (more for incap players)
 	int iVampiricHealthGainAmount;
 	if (IsIncap(iVictim) == true)
@@ -212,8 +219,6 @@ void EventsHurt_AttackerTank_Vampiric(Handle hEvent, int iAttackerTank, int iVic
 	else
 		iVampiricHealthGainAmount = iDmgHealth * VAMPIRIC_TANK_LIFESTEAL_MULTIPLIER;
 
-	// Get the current life level
-	int iCurrentHP = GetPlayerHealth(iAttackerTank);
 	int iCurrentMaxHP = RoundToNearest(TANK_HEALTH_VAMPIRIC * g_fTankStartingHealthMultiplier[iAttackerTank]);
 	if(iCurrentHP < iCurrentMaxHP)
 	{
