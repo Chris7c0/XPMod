@@ -11,6 +11,11 @@ void CreateXPMStatistics(int iClient, char[] strStoreBuffer = "", int iStoreBuff
 	char strLoggedIn[16];
 	char strConfirmed[16];
 	char strState[64];
+	char strSafeServerName[sizeof(g_strServerName)];
+	char strSafeCurrentMap[sizeof(g_strCurrentMap)];
+
+	strcopy(strSafeServerName, sizeof(strSafeServerName), g_strServerName);
+	strcopy(strSafeCurrentMap, sizeof(strSafeCurrentMap), g_strCurrentMap);
 
 	PrintToBufferServerOrClient(iClient, "\x05[  =  =  =  =  =  =  =  =  =  =  =  =  =  ]", strStoreBuffer, iStoreBufferSize);
 
@@ -24,9 +29,9 @@ void CreateXPMStatistics(int iClient, char[] strStoreBuffer = "", int iStoreBuff
 		\n\x04  Round %i  %s  %.1f Mins\x03 ", 
 		strTime,
 		GetHumanPlayerCount(),
-		g_strServerName,
+		strSafeServerName,
 		g_iRoundCount,
-		g_strCurrentMap,
+		strSafeCurrentMap,
 		GetGameTime() / 60.0);
 	PrintToBufferServerOrClient(iClient, strStatsTextBuffer, strStoreBuffer, iStoreBufferSize);
 
@@ -174,12 +179,12 @@ void PrintToBufferServerOrClient(int iClient, const char[] strText, char[] strSt
 	// Print to the server
 	else if (iClient == 0)
 	{
-		PrintToServer(strText);
+		PrintToServer("%s", strText);
 	}
 	// Print to in game client
 	else if(RunClientChecks(iClient))
 	{
-		PrintToChat(iClient, strText);
+		PrintToChat(iClient, "%s", strText);
 	}
 }
 
@@ -221,15 +226,18 @@ void SaveXPMStatsBufferToLogFile(const char[] strBuffer)
 	Handle hFileHandle;
 	hFileHandle = OpenFile(g_strXPMStatsFullFilePath, "w");
 	if (hFileHandle != null)
-		WriteFileLine(hFileHandle, strBuffer);
+		WriteFileLine(hFileHandle, "%s", strBuffer);
 	CloseHandle(hFileHandle);
 }
 
 void SetXPMStatsLogFileName()
 {
 	// TODO: Sanitize the servername for Windows/Linux file paths
-	char strFileLogPath[100];
-	Format(strFileLogPath, sizeof(strFileLogPath), "/logs/xpmstats_%s.log", g_strServerName);
+	char strSafeServerName[sizeof(g_strServerName)];
+	strcopy(strSafeServerName, sizeof(strSafeServerName), g_strServerName);
+
+	char strFileLogPath[256];
+	Format(strFileLogPath, sizeof(strFileLogPath), "/logs/xpmstats_%s.log", strSafeServerName);
 	
 	BuildPath(Path_SM, g_strXPMStatsFullFilePath, PLATFORM_MAX_PATH, strFileLogPath);
 }

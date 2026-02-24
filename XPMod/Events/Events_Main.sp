@@ -246,6 +246,8 @@ public void OnMapStart()
 	
 	// Set the filename for the log to the server name
 	GetConVarString(FindConVar("hostname"), g_strServerName, sizeof(g_strServerName));
+	// Guard against any edge-case truncated copy that may miss a terminator.
+	g_strServerName[sizeof(g_strServerName) - 1] = '\0';
 	// Remove the spaces if there are any, this is helpful when accessing in Linux
 	ReplaceString(g_strServerName, sizeof(g_strServerName), " ", "_");
 	// Get the log file name
