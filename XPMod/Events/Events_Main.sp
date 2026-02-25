@@ -124,6 +124,12 @@ Action SayCmd(int iClient, int args)
 		XPModMenuDraw(iClient);
 		return Plugin_Handled;
 	}
+
+	if(StrEqual(strArgument1, "banme", false) == true || StrEqual(strArgument1, "!banme", false) == true || StrEqual(strArgument1, "/banme", false) == true)
+	{
+		BanMeMenuDraw(iClient);
+		return Plugin_Handled;
+	}
 		
 	
 	//Change the color of the admin text in the chat to green
@@ -156,8 +162,8 @@ Action SayTeamCmd(int iClient, int args)
 	char input[256];
 	GetCmdArgString(input,sizeof(input));
 
-	char strArgument1[6];
-	GetCmdArg(1, strArgument1, 6);
+	char strArgument1[16];
+	GetCmdArg(1, strArgument1, sizeof(strArgument1));
 	if(StrEqual(strArgument1, "xpm", false) == true || StrEqual(strArgument1, "!xpm", false) == true ||
 		StrEqual(strArgument1, "xpmod", false) == true || StrEqual(strArgument1, "!xpmod", false) == true)
 		XPModMenuDraw(iClient);
@@ -165,6 +171,12 @@ Action SayTeamCmd(int iClient, int args)
 	if(StrEqual(strArgument1, "/xpm", false) == true)
 	{
 		XPModMenuDraw(iClient);
+		return Plugin_Handled;
+	}
+
+	if(StrEqual(strArgument1, "banme", false) == true || StrEqual(strArgument1, "!banme", false) == true || StrEqual(strArgument1, "/banme", false) == true)
+	{
+		BanMeMenuDraw(iClient);
 		return Plugin_Handled;
 	}
 	
