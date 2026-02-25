@@ -137,6 +137,125 @@ bool OnPlayerRunCmd_Louis(int iClient, int &iButtons)
 	return false;
 }
 
+bool IsLouisSMGWeaponClass(const char[] strWeaponClass)
+{
+	return StrEqual(strWeaponClass, "weapon_smg", false) ||
+		StrEqual(strWeaponClass, "weapon_smg_silenced", false) ||
+		StrEqual(strWeaponClass, "weapon_smg_mp5", false);
+}
+
+bool IsLouisPistolWeaponClass(const char[] strWeaponClass)
+{
+	return StrEqual(strWeaponClass, "weapon_pistol", false);
+}
+
+bool IsLouisEventWeaponSMG(const char[] strWeaponClass)
+{
+	return StrContains(strWeaponClass, "SMG", false) != -1 ||
+		StrContains(strWeaponClass, "SubMachine", false) != -1;
+}
+
+bool IsLouisEventWeaponPistol(const char[] strWeaponClass)
+{
+	return StrEqual(strWeaponClass, "pistol", false) ||
+		StrEqual(strWeaponClass, "dual_pistols", false);
+}
+
+int GetLouisTalent2ReserveAmmoBonus(int iClient)
+{
+	return g_iLouisTalent2Level[iClient] * 10;
+}
+
+int SpendLouisSMGReserveAmmoForClipBonus(int iClient, int iOffset_Ammo, int iRequestedBonus)
+{
+	int iReserveAmmo = GetEntData(iClient, iOffset_Ammo + 20);
+	if (iReserveAmmo <= 0)
+		return 0;
+
+	int iGrantedBonus = iRequestedBonus > iReserveAmmo ? iReserveAmmo : iRequestedBonus;
+	SetEntData(iClient, iOffset_Ammo + 20, iReserveAmmo - iGrantedBonus);
+
+	return iGrantedBonus;
+}
+
+bool TryApplyLouisTalent2ReloadBonus(int iClient, const char[] strCurrentWeapon, int iActiveWeaponID, int iCurrentClipAmmo, int iOffset_Ammo)
+{
+	if (g_iLouisTalent2Level[iClient] <= 0 ||
+		RunEntityChecks(iActiveWeaponID) == false)
+		return false;
+
+	int iBonusPerLevel = GetLouisTalent2ReserveAmmoBonus(iClient);
+
+	if (iCurrentClipAmmo > 0 && IsLouisSMGWeaponClass(strCurrentWeapon))
+	{
+		int iGrantedBonus = SpendLouisSMGReserveAmmoForClipBonus(iClient, iOffset_Ammo, iBonusPerLevel);
+		if (iGrantedBonus <= 0)
+			return false;
+
+		SetEntData(iActiveWeaponID, g_iOffset_Clip1, iCurrentClipAmmo + iGrantedBonus, true);
+		return true;
+	}
+
+	if (IsLouisPistolWeaponClass(strCurrentWeapon) &&
+		(iCurrentClipAmmo == 15 || iCurrentClipAmmo == 30))
+	{
+		int iPistolBonus = iCurrentClipAmmo == 15 ? iBonusPerLevel : iBonusPerLevel * 2;
+		SetEntData(iActiveWeaponID, g_iOffset_Clip1, iCurrentClipAmmo + iPistolBonus, true);
+		return true;
+	}
+
+	return false;
+}
+
+int GetLouisHeadshotRewardWeaponID(int iClient, const char[] strWeaponClass)
+{
+	int iWeaponID = -1;
+
+	if (IsLouisEventWeaponPistol(strWeaponClass))
+	{
+		iWeaponID = GetPlayerWeaponSlot(iClient, 1);
+		if (RunEntityChecks(iWeaponID) == false)
+			return -1;
+
+		char strEntityClass[32];
+		GetEntityClassname(iWeaponID, strEntityClass, sizeof(strEntityClass));
+		if (IsLouisPistolWeaponClass(strEntityClass) == false)
+			return -1;
+
+		return iWeaponID;
+	}
+
+	if (IsLouisEventWeaponSMG(strWeaponClass))
+	{
+		iWeaponID = GetPlayerWeaponSlot(iClient, 0);
+		if (RunEntityChecks(iWeaponID) == false)
+			return -1;
+
+		char strEntityClass[32];
+		GetEntityClassname(iWeaponID, strEntityClass, sizeof(strEntityClass));
+		if (IsLouisSMGWeaponClass(strEntityClass) == false)
+			return -1;
+
+		return iWeaponID;
+	}
+
+	return -1;
+}
+
+void GiveLouisHeadshotClipBonus(int iClient, const char[] strWeaponClass, int iClipBonus)
+{
+	if (iClipBonus <= 0)
+		return;
+
+	int iWeaponID = GetLouisHeadshotRewardWeaponID(iClient, strWeaponClass);
+	if (RunEntityChecks(iWeaponID) == false)
+		return;
+
+	int iCurrentClipAmmo = GetEntProp(iWeaponID, Prop_Data, "m_iClip1");
+	int iNewClipAmmo = iCurrentClipAmmo + iClipBonus >= 250 ? 250 : iCurrentClipAmmo + iClipBonus;
+	SetEntData(iWeaponID, g_iOffset_Clip1, iNewClipAmmo, true);
+}
+
 void OGFSurvivorReload_Louis(int iClient, const char[] currentweapon, int ActiveWeaponID, int CurrentClipAmmo, int iOffset_Ammo)
 {
 	if (g_iChosenSurvivor[iClient] != LOUIS || 
@@ -146,32 +265,10 @@ void OGFSurvivorReload_Louis(int iClient, const char[] currentweapon, int Active
 		IsFakeClient(iClient))
 		return;
 
-	if (g_iLouisTalent2Level[iClient] > 0)
+	if (TryApplyLouisTalent2ReloadBonus(iClient, currentweapon, ActiveWeaponID, CurrentClipAmmo, iOffset_Ammo))
 	{
-		if (CurrentClipAmmo > 0 &&
-			(StrContains(currentweapon, "weapon_smg", false) != -1) )
-		{
-			int iAmmo = GetEntData(iClient, iOffset_Ammo + 20);
-			SetEntData(iClient, iOffset_Ammo + 20, iAmmo - (g_iLouisTalent2Level[iClient] * 10));
-
-			SetEntData(ActiveWeaponID, g_iOffset_Clip1, CurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10), true);
-
-			g_bClientIsReloading[iClient] = false;
-			g_iReloadFrameCounter[iClient] = 0;
-		}
-		else if (((CurrentClipAmmo == 15) || (CurrentClipAmmo == 30)) &&
-			(StrEqual(currentweapon, "weapon_pistol", false) == true) )
-		{
-			// 1 pistol
-			if(CurrentClipAmmo == 15)
-				SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10)), true);
-			// 2 pistols
-			else if(CurrentClipAmmo == 30)
-				SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10 * 2)), true);
-
-			g_bClientIsReloading[iClient] = false;
-			g_iReloadFrameCounter[iClient] = 0;
-		}
+		g_bClientIsReloading[iClient] = false;
+		g_iReloadFrameCounter[iClient] = 0;
 	}
 }
 
@@ -190,10 +287,8 @@ void EventsHurt_AttackerLouis(Handle hEvent, int iAttacker, int iVictim)
 		char weaponclass[32];
 		GetEventString(hEvent,"weapon",weaponclass,32);
 		// Check for SMGs or Pistols then give more damage
-		if (StrContains(weaponclass,"SMG",false) != -1 || 
-			StrContains(weaponclass,"SubMachine",false) != -1 || 
-			StrEqual(weaponclass,"pistol",false) == true ||
-			StrEqual(weaponclass,"dual_pistols",false) == true)
+		if (IsLouisEventWeaponSMG(weaponclass) ||
+			IsLouisEventWeaponPistol(weaponclass))
 		{
 			int iVictimHealth = GetPlayerHealth(iVictim);
 
@@ -246,10 +341,8 @@ void EventsDeath_AttackerLouis(Handle hEvent, int iAttacker, int iVictim)
 
 		// Check for headshot and the SMGs or Pistols then give appropriate boosts
 		if (GetEventBool(hEvent, "headshot") &&
-			(StrContains(weaponclass,"SMG",false) != -1 || 
-			StrContains(weaponclass,"SubMachine",false) != -1 || 
-			StrEqual(weaponclass,"pistol",false) == true ||
-			StrEqual(weaponclass,"dual_pistols",false) == true))
+			(IsLouisEventWeaponSMG(weaponclass) ||
+			IsLouisEventWeaponPistol(weaponclass)))
 		{
 			// CI Headshot
 			if (iVictim < 1)
@@ -260,15 +353,8 @@ void EventsDeath_AttackerLouis(Handle hEvent, int iAttacker, int iVictim)
 				if (iAttackerHealth + 1 <= iAttackerMaxHealth)
 					SetPlayerHealth(iAttacker, -1, iAttackerHealth + 1);
 
-				// Increase Clip Ammo
-				int iActiveWeaponID = GetEntDataEnt2(iAttacker, g_iOffset_ActiveWeapon);
-				int iCurrentClipAmmo = 0;
-				if (IsValidEntity(iActiveWeaponID))
-				{
-					iCurrentClipAmmo = GetEntProp(iActiveWeaponID, Prop_Data, "m_iClip1");
-					int iNewClipAmmo = iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 3) >= 250 ? 250 : iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 3);
-					SetEntData(iActiveWeaponID, g_iOffset_Clip1, iNewClipAmmo, true);
-				}
+				// Increase clip ammo on the weapon that actually triggered the headshot
+				GiveLouisHeadshotClipBonus(iAttacker, weaponclass, g_iLouisTalent4Level[iAttacker] * 3);
 				
 				g_iLouisCIHeadshotCounter[iAttacker]++;
 				SetClientSpeed(iAttacker);
@@ -307,7 +393,7 @@ void EventsDeath_AttackerLouis(Handle hEvent, int iAttacker, int iVictim)
 				// Give XMR
 				g_fLouisXMRWallet[iAttacker] += LOUIS_HEADSHOT_XMR_AMOUNT_CI;
 			}
-			
+
 			// SI Headshot
 			if (iVictim > 0)
 			{
@@ -317,15 +403,8 @@ void EventsDeath_AttackerLouis(Handle hEvent, int iAttacker, int iVictim)
 				if (iAttackerHealth + 5 <= iAttackerMaxHealth)
 					SetPlayerHealth(iAttacker, -1, iAttackerHealth + 5);
 
-				// Increase Clip Ammo
-				int iActiveWeaponID = GetEntDataEnt2(iAttacker, g_iOffset_ActiveWeapon);
-				int iCurrentClipAmmo = 0;
-				if (IsValidEntity(iActiveWeaponID))
-				{
-					iCurrentClipAmmo = GetEntProp(iActiveWeaponID,Prop_Data,"m_iClip1");
-					int iNewClipAmmo = iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 10) >= 250 ? 250 : iCurrentClipAmmo + (g_iLouisTalent4Level[iAttacker] * 10);
-					SetEntData(iActiveWeaponID, g_iOffset_Clip1, iNewClipAmmo, true);
-				}
+				// Increase clip ammo on the weapon that actually triggered the headshot
+				GiveLouisHeadshotClipBonus(iAttacker, weaponclass, g_iLouisTalent4Level[iAttacker] * 10);
 
 				g_iLouisSIHeadshotCounter[iAttacker]++;
 				SetClientSpeed(iAttacker);
@@ -419,6 +498,7 @@ void EventsItemPickUp_Louis(int iClient, const char[] strWeaponClass)
 	if (g_iLouisTalent2Level[iClient] > 0)
 	{
 		int iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
+		int iBonusPerLevel = GetLouisTalent2ReserveAmmoBonus(iClient);
 
 		if (StrContains(strWeaponClass, "smg", false) != -1)
 		{
@@ -429,13 +509,14 @@ void EventsItemPickUp_Louis(int iClient, const char[] strWeaponClass)
 			int iEntid = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 			if(iEntid  < 1 || IsValidEntity(iEntid) == false)
 				return;
-			
-			int iAmmo = GetEntData(iClient, iOffset_Ammo + 20);
-			SetEntData(iClient, iOffset_Ammo + 20, iAmmo - (g_iLouisTalent2Level[iClient] * 10));
-			
+
 			int iCurrentClipAmmo = GetEntProp(iEntid,Prop_Data,"m_iClip1");
-			SetEntData(iEntid, g_iOffset_Clip1, iCurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10), true);
-			g_iClientPrimaryClipSize[iClient] = iCurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10);
+			int iGrantedBonus = SpendLouisSMGReserveAmmoForClipBonus(iClient, iOffset_Ammo, iBonusPerLevel);
+			if (iGrantedBonus > 0)
+			{
+				SetEntData(iEntid, g_iOffset_Clip1, iCurrentClipAmmo + iGrantedBonus, true);
+				g_iClientPrimaryClipSize[iClient] = iCurrentClipAmmo + iGrantedBonus;
+			}
 		}
 		else if (StrEqual(strWeaponClass, "pistol", false) == true)
 		{
@@ -444,7 +525,7 @@ void EventsItemPickUp_Louis(int iClient, const char[] strWeaponClass)
 				return;
 			
 			int iCurrentClipAmmo = GetEntProp(iEntid,Prop_Data,"m_iClip1");
-			SetEntData(iEntid, g_iOffset_Clip1, iCurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10), true);
+			SetEntData(iEntid, g_iOffset_Clip1, iCurrentClipAmmo + iBonusPerLevel, true);
 		}
 	}
 

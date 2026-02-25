@@ -208,35 +208,9 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 			}
 			case LOUIS:
 			{
-				if (g_iLouisTalent2Level[iClient] > 0)
-				{
-					if (CurrentClipAmmo > 0 &&
-						(StrContains(currentweapon, "weapon_smg", false) != -1) )
-					{
-						int iAmmo = GetEntData(iClient, iOffset_Ammo + 20);
-						SetEntData(iClient, iOffset_Ammo + 20, iAmmo - (g_iLouisTalent2Level[iClient] * 10));
-
-						SetEntData(ActiveWeaponID, g_iOffset_Clip1, CurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10), true);
-
-						g_bClientIsReloading[iClient] = false;
-						g_iReloadFrameCounter[iClient] = 0;
-					}
-					else if (((CurrentClipAmmo == 15) || (CurrentClipAmmo == 30)) &&
-						(StrEqual(currentweapon, "weapon_pistol", false) == true) )
-					{
-						// 1 pistol
-						if(CurrentClipAmmo == 15)
-							SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10)), true);
-						// 2 pistols
-						else if(CurrentClipAmmo == 30)
-							SetEntData(ActiveWeaponID, g_iOffset_Clip1, (CurrentClipAmmo + (g_iLouisTalent2Level[iClient] * 10 * 2)), true);
-
-						g_bClientIsReloading[iClient] = false;
-						g_iReloadFrameCounter[iClient] = 0;
-					}
-				}
+				OGFSurvivorReload_Louis(iClient, currentweapon, ActiveWeaponID, CurrentClipAmmo, iOffset_Ammo);
 			}
-		}
+			}
 		g_bClientIsReloading[iClient] = false;
 		g_iReloadFrameCounter[iClient] = 0;
 		g_bCoachShotgunForceReload[iClient] = false;
