@@ -40,6 +40,12 @@ void TalentsLoad_Bill(int iClient)
 		else
 			g_iClientBindUses_2[iClient] = 0;
 	}
+
+	if(g_bSurvivorTalentsGivenThisRound[iClient] == false && g_iInspirationalLevel[iClient] > 0)
+	{
+		g_iScreenShakeAmount -= 5;
+		SetSurvivorScreenShakeAmount();
+	}
 	
 	if((g_iClientLevel[iClient] - (g_iClientLevel[iClient] - g_iSkillPoints[iClient])) <= (g_iClientLevel[iClient] - 1))
 		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Support Talents \x05have been loaded.");

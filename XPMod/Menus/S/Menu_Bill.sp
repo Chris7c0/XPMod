@@ -68,6 +68,7 @@ Action InspirationalMenuDraw(int iClient)
 		%s				Inspirational Leadership (Level %d)\
 		\n \
 		\n(Team) +10 bonus XP per level for teammates on SI kill\
+		\n(Team) Reduce screen shaking when taking damage by 25%%\
 		\n \
 		\nHold [CROUCH] to heal closest ally\
 		\n	- Heals %i HP every %i second\
@@ -84,7 +85,7 @@ Action InspirationalMenuDraw(int iClient)
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	

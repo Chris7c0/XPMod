@@ -3,6 +3,7 @@
 ### Talent 1: Inspirational Leadership
 ```
 (Team) +10 bonus XP per level for teammates on SI kill
+(Team) Reduce screen shaking when taking damage by 25%
 
 Hold [CROUCH] to heal closest ally
 - Heals 10 HP every 2 second
