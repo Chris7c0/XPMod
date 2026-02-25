@@ -23,6 +23,9 @@ int iSeenEntities[MAXENTITIES+1];
 
 Action TestFunction1(int iClient, int args)
 {
+	if (IsDevModeAllowedForCommand(iClient) == false)
+		return Plugin_Handled;
+
 	DebugLog(DEBUG_MODE_TESTING, "T1");
 	//PrintToChat(iClient, "T1");
 
@@ -328,6 +331,9 @@ Action TestFunction1(int iClient, int args)
 
 Action TestFunction2(int iClient, int args)
 {
+	if (IsDevModeAllowedForCommand(iClient) == false)
+		return Plugin_Handled;
+
 	DebugLog(DEBUG_MODE_TESTING, "T2");
 
 	char str1[99];
@@ -422,6 +428,9 @@ Action TestFunction2(int iClient, int args)
 
 Action TestFunction3(int iClient, int args)
 {
+	if (IsDevModeAllowedForCommand(iClient) == false)
+		return Plugin_Handled;
+
 	DebugLog(DEBUG_MODE_TESTING, "T3");
 	char str1[99];
 	GetCmdArg(1, str1, sizeof(str1));
@@ -449,6 +458,9 @@ Action TestFunction3(int iClient, int args)
 
 Action TestFunction4(int iClient, int args)
 {
+	if (IsDevModeAllowedForCommand(iClient) == false)
+		return Plugin_Handled;
+
 	DebugLog(DEBUG_MODE_TESTING, "T4");
 	char str1[99];
 	GetCmdArg(1, str1, sizeof(str1));
@@ -485,6 +497,9 @@ Action TestFunction4(int iClient, int args)
 
 Action TestFunction5(int iClient, int args)
 {
+	if (IsDevModeAllowedForCommand(iClient) == false)
+		return Plugin_Handled;
+
 	DebugLog(DEBUG_MODE_TESTING, "T5");
 
 	RunCheatCommand(iClient, "z_spawn_old", "z_spawn_old tank auto");
@@ -498,6 +513,9 @@ Action TestFunction5(int iClient, int args)
 
 Action GiveMoreBinds(int admin, int args)
 {
+	if (IsDevModeAllowedForCommand(admin) == false)
+		return Plugin_Handled;
+
 	g_iClientBindUses_1[admin] = -99;
 	g_iClientBindUses_2[admin] = -99;
 	return Plugin_Handled;
@@ -505,6 +523,9 @@ Action GiveMoreBinds(int admin, int args)
 
 Action XPModDebugModeToggle(int iClient, int args)
 {
+	if (IsDevModeAllowedForCommand(iClient) == false)
+		return Plugin_Handled;
+
 	ToggleDebugMode();
 	return Plugin_Handled;
 }

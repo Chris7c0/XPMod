@@ -80,6 +80,9 @@ Action TimerSetHideChangeNameMessage(Handle timer, int data)
 
 Action GiveXPbyID(int iClient, int args)
 {
+	if (IsDevModeAllowedForCommand(iClient) == false)
+		return Plugin_Handled;
+
 	if(args!=2)
 	{
 		if(iClient == 0)
@@ -164,6 +167,9 @@ Action GiveXPbyID(int iClient, int args)
 
 Action GiveXP(int iClient, int args)
 {
+	if (IsDevModeAllowedForCommand(iClient) == false)
+		return Plugin_Handled;
+
 	/*if(iClient == 0)
 	{
 		PrintToServer("[XPMod] This cannot be done with through the server console");

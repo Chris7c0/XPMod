@@ -20,8 +20,11 @@ void SetupConsoleCommands()
 
 void SetupDevCommands()
 {
-	if (g_bDevModeEnabled == false)
+	if (g_bDevModeEnabled == false ||
+		g_bDevCommandsRegistered == true)
 		return;
+
+	g_bDevCommandsRegistered = true;
 
 	RegAdminCmd("givexp", GiveXP, ADMFLAG_RCON);
 	RegAdminCmd("giveidxp", GiveXPbyID, ADMFLAG_RCON);
@@ -37,6 +40,19 @@ void SetupDevCommands()
 	//RegConsoleCmd("pop", pop);
 	//RegAdminCmd("s", ChangeSpeed, ADMFLAG_SLAY);
 	//RegConsoleCmd("sprite", Command_sprite);
+}
+
+bool IsDevModeAllowedForCommand(int iClient)
+{
+	if (g_bDevModeEnabled == true)
+		return true;
+
+	if (iClient == 0)
+		PrintToServer("[XPM] Developer mode is disabled. Set xpm_dev_mode to 1 to enable this command.");
+	else
+		PrintToChat(iClient, "\x03[XPM] \x01Developer mode is disabled.");
+
+	return false;
 }
 
 void SetupGameOffsets()
@@ -186,4 +202,3 @@ void SetupInitialVariableValues()
 	g_listEnhancedCIEntities = CreateArray(ENHANCED_CI_ENTITIES_ARRAY_LIST_SIZE);
 	g_listTankRockEntities = CreateArray(TANK_ROCK_ENTITIES_ARRAY_LIST_SIZE);
 }
-

@@ -24,6 +24,9 @@ int g_iXPDisplayMode[MAXPLAYERS + 1];//Default 0 = Show Sprites; 1 = Show In Cha
 ConVar g_hCVar_DebugModeLogLevel;
 int g_iDebugModeLogLevel = DEBUG_MODE_OFF;
 ConVar g_hCVar_DebugModeEnabled;
+ConVar g_hCVar_DevModeEnabled;
+bool g_bDevModeEnabled = false;
+bool g_bDevCommandsRegistered = false;
 ConVar g_hCVar_IdleKickEnabled;
 // XP Loadout Use and Gain Enabled
 ConVar g_hCVar_XPSaveForHighLevelsEnabled;

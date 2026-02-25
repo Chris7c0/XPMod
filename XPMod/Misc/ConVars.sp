@@ -21,6 +21,10 @@ void SetupXPMConVars()
 	g_hCVar_DebugModeEnabled = CreateConVar("xpm_debug_mode_enabled", "0", "Sets if xpmod_debug_mode is on [0 = Debug Mode DISABLED, 1 = Debug mode ENABLED]", 0, true, -1.0, true, 4.0);
 	HookConVarChange(g_hCVar_DebugModeEnabled, CVarChange_DebugModeEnabled);
 
+	// Developer Command Mode
+	g_hCVar_DevModeEnabled = CreateConVar("xpm_dev_mode", "0", "Enables developer-only admin commands such as t1/t2/t3 and XP testing commands [0 = OFF, 1 = ON]", 0, true, 0.0, true, 1.0);
+	HookConVarChange(g_hCVar_DevModeEnabled, CVarChange_DevModeEnabled);
+
 	// AFK Idle Kicking
 	g_hCVar_IdleKickEnabled = CreateConVar("xpm_idle_kick_enabled", "1", "Sets if the AFK Idle Kicking feature is on [0 = Idle Kicking DISABLED, 1 = Idle Kicking ENABLED]", 1, true, -1.0, true, 4.0);
 	HookConVarChange(g_hCVar_IdleKickEnabled, CVarChange_IdleKickEnabled);
@@ -49,7 +53,7 @@ void SetupXPMConVars()
 	g_hCVar_DefaultInfecttedSlot3 = CreateConVar("xpm_default_infected_3", "1", "Sets the default infected for slot 3 when someone first logs in [1 = SMOKER, 2 = BOOMER, 3 = HUNTER, 4 = SPITTER, 5 = JOCKEY, 6 = CHARGER]", 0, true, 0.0, true, 6.0);
 	HookConVarChange(g_hCVar_DefaultInfecttedSlot3, CVarChange_DefaultInfectedSlot3);
 
-	
+	GetXPMConVarValues();
 	SetUpInitialConvarValues();
 }
 
@@ -58,6 +62,8 @@ void SetUpInitialConvarValues()
 {
 	g_bDebugModeEnabled = g_hCVar_DebugModeEnabled.IntValue == 1 ? true : false;
 	SetDebugMode(g_bDebugModeEnabled);
+
+	g_bDevModeEnabled = g_hCVar_DevModeEnabled.IntValue == 1 ? true : false;
 
 	g_bAFKIdleKickingEnabled =  g_hCVar_IdleKickEnabled.IntValue == 1 ? true : false;
 }
@@ -86,6 +92,21 @@ void CVarChange_DebugModeEnabled(Handle hCVar, const char[] strOldValue, const c
 	PrintToChatAll("[XPM] ConVar changed: DebugMode is now %i", g_bDebugModeEnabled);
 
 	SetDebugMode(g_bDebugModeEnabled);
+}
+
+//Callback function for updating the Dev Mode
+void CVarChange_DevModeEnabled(Handle hCVar, const char[] strOldValue, const char[] strNewValue)
+{
+	//If the value was not changed, then do nothing
+	if(StrEqual(strOldValue, strNewValue) == true)
+		return;
+
+	g_bDevModeEnabled = StringToInt(strNewValue) == 1 ? true : false;
+	PrintToServer("[XPM] ConVar changed: Dev Mode is now %i", g_bDevModeEnabled);
+	PrintToChatAll("[XPM] ConVar changed: Dev Mode is now %i", g_bDevModeEnabled);
+
+	if (g_bDevModeEnabled == true)
+		SetupDevCommands();
 }
 
 
