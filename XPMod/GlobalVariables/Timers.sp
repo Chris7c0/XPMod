@@ -20,6 +20,7 @@ Handle g_hTimer_ResetTarFingerVictimBlindAmount[MAXPLAYERS + 1] = {null, ...};
 Handle g_hTimer_TimerKeepBotFocusedOnXPModGoal[MAXPLAYERS + 1]  = {null, ...};
 Handle g_hTimer_IceSphere[MAXPLAYERS + 1]				        = {null, ...};
 Handle g_hTimer_IceTankColdSlowAuraEnableAgain[MAXPLAYERS + 1]  = {null, ...};
+Handle g_hTimer_IceTankColdSlowAuraEffectUpdate[MAXPLAYERS + 1] = {null, ...};
 Handle g_hTimer_WingDashChargeRegenerate[MAXPLAYERS + 1]        = {null, ...};
 Handle g_hTimer_VampiricTankCanRechargeStamina[MAXPLAYERS + 1]  = {null, ...};
 Handle g_hTimer_AdhesiveGooReset[MAXPLAYERS + 1] 		        = {null, ...};

@@ -444,6 +444,7 @@ void DeleteAllClientParticles(int iClient)
 	DeleteParticleEntity(g_iPID_IceTankChargeMistStock[iClient]);
 	DeleteParticleEntity(g_iPID_IceTankChargeSnow[iClient]);
 	DeleteParticleEntity(g_iPID_IceTankIcicles[iClient]);
+	TurnOffAndDeleteSmokeStackParticle(g_iPID_IceTankColdAuraVictim[iClient]);
 	TurnOffAndDeleteSmokeStackParticle(g_iPID_TankTrail[iClient]);
 	
 	g_iPID_TankChargedFire[iClient] = -1;
@@ -451,6 +452,7 @@ void DeleteAllClientParticles(int iClient)
 	g_iPID_IceTankChargeMistStock[iClient] = -1;
 	g_iPID_IceTankChargeSnow[iClient] = -1;
 	g_iPID_IceTankIcicles[iClient] = -1;
+	g_iPID_IceTankColdAuraVictim[iClient] = -1;
 	g_iPID_TankTrail[iClient] = -1;	
 }
 

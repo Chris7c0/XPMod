@@ -390,6 +390,7 @@ float g_fFireTankExtraSpeed[MAXPLAYERS + 1];
 #define TANK_ICE_COLD_SLOW_AURA_RADIUS                  400.0
 #define TANK_ICE_COLD_SLOW_AURA_SPEED_REDUCE_AMOUNT     0.75    // This will set their speed to 1.0 - this speed reduce amount
 #define TANK_ICE_COLD_SLOW_AURA_HIT_DISABLE_DURATION    5.0     // The amount of time to disable the cold aura
+#define TANK_ICE_COLD_SLOW_AURA_EFFECT_UPDATE_INTERVAL  0.10
 #define TANK_ICE_SLIDE_SPEED                            5.0
 #define TANK_ICE_SLIDE_LIFE_DECAY                       33      // Precalculated Life lost per server tick (30ticks/s)
 #define TANK_ICE_SLIDE_COOLDOWN                         10.0    // Cooldown after using slide

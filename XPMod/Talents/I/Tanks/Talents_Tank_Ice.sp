@@ -71,6 +71,68 @@ void SetClientSpeedTankIce(int iClient, float &fSpeed)
 	fSpeed += 0.05;
 }
 
+void StartIceTankColdSlowAuraVictimEffect(int iClient)
+{
+	if (RunClientChecks(iClient) == false ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
+		IsPlayerAlive(iClient) == false)
+		return;
+
+	if (g_iPID_IceTankColdAuraVictim[iClient] > 0 &&
+		IsValidEntity(g_iPID_IceTankColdAuraVictim[iClient]) == true)
+	{
+		char strClassname[64];
+		GetEdictClassname(g_iPID_IceTankColdAuraVictim[iClient], strClassname, sizeof(strClassname));
+		if (StrEqual(strClassname, "env_smokestack", false) == true)
+			return;
+
+		AcceptEntityInput(g_iPID_IceTankColdAuraVictim[iClient], "Kill");
+		g_iPID_IceTankColdAuraVictim[iClient] = -1;
+	}
+
+	float xyzSurvivorPosition[3];
+	GetClientAbsOrigin(iClient, xyzSurvivorPosition);
+	xyzSurvivorPosition[2] += 5.0;
+	char vecString[32];
+	Format(vecString, sizeof(vecString), "%f %f %f", xyzSurvivorPosition[0], xyzSurvivorPosition[1], xyzSurvivorPosition[2]);
+
+	g_iPID_IceTankColdAuraVictim[iClient] = CreateEntityByName("env_smokestack");
+	if (g_iPID_IceTankColdAuraVictim[iClient] < 1 ||
+		IsValidEntity(g_iPID_IceTankColdAuraVictim[iClient]) == false)
+	{
+		g_iPID_IceTankColdAuraVictim[iClient] = -1;
+		return;
+	}
+
+	DispatchKeyValue(g_iPID_IceTankColdAuraVictim[iClient], "Origin", vecString);
+	DispatchKeyValue(g_iPID_IceTankColdAuraVictim[iClient], "BaseSpread", "0");
+	DispatchKeyValue(g_iPID_IceTankColdAuraVictim[iClient], "SpreadSpeed", "24");
+	DispatchKeyValue(g_iPID_IceTankColdAuraVictim[iClient], "Speed", "10");
+	DispatchKeyValue(g_iPID_IceTankColdAuraVictim[iClient], "StartSize", "20");
+	DispatchKeyValue(g_iPID_IceTankColdAuraVictim[iClient], "EndSize", "42");
+	DispatchKeyValue(g_iPID_IceTankColdAuraVictim[iClient], "Rate", "95");
+	DispatchKeyValue(g_iPID_IceTankColdAuraVictim[iClient], "JetLength", "28");
+	DispatchKeyValue(g_iPID_IceTankColdAuraVictim[iClient], "Twist", "8");
+	DispatchKeyValue(g_iPID_IceTankColdAuraVictim[iClient], "RenderColor", "80 170 255");
+	DispatchKeyValue(g_iPID_IceTankColdAuraVictim[iClient], "RenderAmt", "210");
+	DispatchKeyValue(g_iPID_IceTankColdAuraVictim[iClient], "SmokeMaterial", "particle/particle_smokegrenade1.vmt");
+
+	SetVariantString("!activator");
+	AcceptEntityInput(g_iPID_IceTankColdAuraVictim[iClient], "SetParent", iClient, g_iPID_IceTankColdAuraVictim[iClient], 0);
+
+	DispatchSpawn(g_iPID_IceTankColdAuraVictim[iClient]);
+	AcceptEntityInput(g_iPID_IceTankColdAuraVictim[iClient], "TurnOn");
+}
+
+void StopIceTankColdSlowAuraVictimEffect(int iClient)
+{
+	if (iClient < 1 || iClient > MaxClients)
+		return;
+
+	TurnOffAndDeleteSmokeStackParticle(g_iPID_IceTankColdAuraVictim[iClient]);
+	g_iPID_IceTankColdAuraVictim[iClient] = -1;
+}
+
 
 void OnGameFrame_Tank_Ice(int iClient)
 {
@@ -283,6 +345,8 @@ void EventsHurt_AttackerTank_Ice(Handle hEvent, int iAttackerTank, int iVictim)
 	{
 		g_bIceTankColdAuraDisabled[iVictim] = true;
 		SetClientSpeed(iVictim);
+		delete g_hTimer_IceTankColdSlowAuraEffectUpdate[iVictim];
+		StopIceTankColdSlowAuraVictimEffect(iVictim);
 
 		// Reset the timer to enable cold aura again, if punched again it will wait an additional X seconds.
 		delete g_hTimer_IceTankColdSlowAuraEnableAgain[iVictim];
@@ -568,12 +632,38 @@ void CheckForPlayersInIceTanksColdAuraSlowRange(int iTank)
 				g_fIceTankColdAuraSlowSpeedReduction[iClient] = fSpeedReductionCalc;
 				SetClientSpeed(iClient);
 			}
-		}
+
+				if (g_bIceTankColdAuraDisabled[iClient] == false &&
+					g_hTimer_IceTankColdSlowAuraEffectUpdate[iClient] == null)
+				{
+					g_hTimer_IceTankColdSlowAuraEffectUpdate[iClient] = CreateTimer(
+						TANK_ICE_COLD_SLOW_AURA_EFFECT_UPDATE_INTERVAL,
+						Timer_UpdateIceTankColdSlowAuraVictimEffect,
+						iClient,
+						TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+				}
+
+				if (g_bIceTankColdAuraDisabled[iClient] == false)
+					StartIceTankColdSlowAuraVictimEffect(iClient);
+				else if (g_bIceTankColdAuraDisabled[iClient] == true &&
+					g_hTimer_IceTankColdSlowAuraEffectUpdate[iClient] != null)
+				{
+					delete g_hTimer_IceTankColdSlowAuraEffectUpdate[iClient];
+					StopIceTankColdSlowAuraVictimEffect(iClient);
+				}
+			}
 		// Reset the value of g_fIceTankColdAuraSlowSpeedReduction if its set and its beyond the distance
 		else if (g_fIceTankColdAuraSlowSpeedReduction[iClient] > 0.0)
 		{
 			g_fIceTankColdAuraSlowSpeedReduction[iClient] = 0.0;
 			SetClientSpeed(iClient);
+			delete g_hTimer_IceTankColdSlowAuraEffectUpdate[iClient];
+			StopIceTankColdSlowAuraVictimEffect(iClient);
+		}
+		else if (g_hTimer_IceTankColdSlowAuraEffectUpdate[iClient] != null)
+		{
+			delete g_hTimer_IceTankColdSlowAuraEffectUpdate[iClient];
+			StopIceTankColdSlowAuraVictimEffect(iClient);
 		}
 	}
 }
@@ -585,6 +675,8 @@ void ResetAllPlayersInIceTanksColdAuraSlowRange()
 	{
 		// Reset for everyone
 		g_fIceTankColdAuraSlowSpeedReduction[iClient] = 0.0;
+		delete g_hTimer_IceTankColdSlowAuraEffectUpdate[iClient];
+		StopIceTankColdSlowAuraVictimEffect(iClient);
 		
 		// Reset the speed for any potential survivors
 		if(RunClientChecks(iClient) &&

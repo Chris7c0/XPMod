@@ -126,6 +126,91 @@ Action Timer_EnableIceTankColdSlowAura(Handle timer, int iClient)
 	return Plugin_Stop;
 }
 
+bool GetCurrentIceTankColdAuraSlowSpeedReduction(int iSurvivor, float &fSpeedReduction)
+{
+	fSpeedReduction = 0.0;
+
+	if (RunClientChecks(iSurvivor) == false ||
+		g_iClientTeam[iSurvivor] != TEAM_SURVIVORS ||
+		IsPlayerAlive(iSurvivor) == false)
+		return false;
+
+	float xyzSurvivorPosition[3];
+	GetClientEyePosition(iSurvivor, xyzSurvivorPosition);
+
+	float fBestSpeedReduction = 0.0;
+	for (int iTank = 1; iTank <= MaxClients; iTank++)
+	{
+		if (RunClientChecks(iTank) == false ||
+			g_iClientTeam[iTank] != TEAM_INFECTED ||
+			IsPlayerAlive(iTank) == false ||
+			GetEntProp(iTank, Prop_Send, "m_zombieClass") != TANK ||
+			g_iTankChosen[iTank] != TANK_ICE ||
+			g_bIceTankSliding[iTank] == true ||
+			g_bIceTankSlideInCooldown[iTank] == true)
+			continue;
+
+		float xyzTankPosition[3];
+		GetClientEyePosition(iTank, xyzTankPosition);
+		float fDistance = GetVectorDistance(xyzSurvivorPosition, xyzTankPosition, false);
+		if (fDistance >= TANK_ICE_COLD_SLOW_AURA_RADIUS)
+			continue;
+
+		float fSpeedReductionCalc = (1.0 - (fDistance / TANK_ICE_COLD_SLOW_AURA_RADIUS)) * TANK_ICE_COLD_SLOW_AURA_SPEED_REDUCE_AMOUNT;
+		if (fSpeedReductionCalc > fBestSpeedReduction)
+			fBestSpeedReduction = fSpeedReductionCalc;
+	}
+
+	if (fBestSpeedReduction <= 0.0)
+		return false;
+
+	fSpeedReduction = fBestSpeedReduction;
+	return true;
+}
+
+Action Timer_UpdateIceTankColdSlowAuraVictimEffect(Handle timer, int iClient)
+{
+	if (RunClientChecks(iClient) == false ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
+		IsPlayerAlive(iClient) == false ||
+		g_bIceTankColdAuraDisabled[iClient] == true)
+	{
+		if (g_fIceTankColdAuraSlowSpeedReduction[iClient] > 0.0)
+		{
+			g_fIceTankColdAuraSlowSpeedReduction[iClient] = 0.0;
+			SetClientSpeed(iClient);
+		}
+
+		StopIceTankColdSlowAuraVictimEffect(iClient);
+		g_hTimer_IceTankColdSlowAuraEffectUpdate[iClient] = null;
+		return Plugin_Stop;
+	}
+
+	float fCurrentSpeedReduction;
+	if (GetCurrentIceTankColdAuraSlowSpeedReduction(iClient, fCurrentSpeedReduction) == false)
+	{
+		if (g_fIceTankColdAuraSlowSpeedReduction[iClient] > 0.0)
+		{
+			g_fIceTankColdAuraSlowSpeedReduction[iClient] = 0.0;
+			SetClientSpeed(iClient);
+		}
+
+		StopIceTankColdSlowAuraVictimEffect(iClient);
+		g_hTimer_IceTankColdSlowAuraEffectUpdate[iClient] = null;
+		return Plugin_Stop;
+	}
+
+	if (FloatAbs(fCurrentSpeedReduction - g_fIceTankColdAuraSlowSpeedReduction[iClient]) > 0.01)
+	{
+		g_fIceTankColdAuraSlowSpeedReduction[iClient] = fCurrentSpeedReduction;
+		SetClientSpeed(iClient);
+	}
+
+	StartIceTankColdSlowAuraVictimEffect(iClient);
+
+	return Plugin_Continue;
+}
+
 
 Action Timer_UnblockTankFreezing(Handle timer, int iClient)
 {

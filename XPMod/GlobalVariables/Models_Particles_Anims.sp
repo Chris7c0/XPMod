@@ -532,6 +532,7 @@ int g_iPID_IceTankChargeMistStock[MAXPLAYERS + 1];
 int g_iPID_IceTankChargeMistAddon[MAXPLAYERS + 1];
 int g_iPID_IceTankChargeSnow[MAXPLAYERS + 1];
 int g_iPID_IceTankIcicles[MAXPLAYERS + 1];
+int g_iPID_IceTankColdAuraVictim[MAXPLAYERS + 1];
 int g_iPID_TankTrail[MAXPLAYERS + 1];
 
 //Survivor Particle Menu Descriptions
