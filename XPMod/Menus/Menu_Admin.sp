@@ -421,11 +421,11 @@ int GetAdminBanDurationSecondsFromMenuItem(int itemNum)
 	switch (itemNum)
 	{
 		case 0: return 0;                  // Permanent
-		case 1: return 60;                 // 1 minute
-		case 2: return 60 * 60;            // 1 hour
-		case 3: return 60 * 60 * 12;       // 12 hours
-		case 4: return 60 * 60 * 24;       // 1 day
-		case 5: return 60 * 60 * 24 * 7;   // 1 week
+		case 1: return 60 * 60;            // 1 hour
+		case 2: return 60 * 60 * 12;       // 12 hours
+		case 3: return 60 * 60 * 24;       // 1 day
+		case 4: return 60 * 60 * 24 * 7;   // 1 week
+		case 5: return 60 * 60 * 24 * 30;  // 1 month
 	}
 
 	return -1;
@@ -436,11 +436,11 @@ void GetAdminBanDurationLabel(int iDurationSeconds, char[] strDurationLabel, int
 	switch (iDurationSeconds)
 	{
 		case 0: Format(strDurationLabel, iDurationLabelSize, "Permanent");
-		case 60: Format(strDurationLabel, iDurationLabelSize, "1 Minute");
 		case 60 * 60: Format(strDurationLabel, iDurationLabelSize, "1 Hour");
 		case 60 * 60 * 12: Format(strDurationLabel, iDurationLabelSize, "12 Hours");
 		case 60 * 60 * 24: Format(strDurationLabel, iDurationLabelSize, "1 Day");
 		case 60 * 60 * 24 * 7: Format(strDurationLabel, iDurationLabelSize, "1 Week");
+		case 60 * 60 * 24 * 30: Format(strDurationLabel, iDurationLabelSize, "1 Month");
 		default:
 		{
 			int iMinutes = iDurationSeconds / 60;
@@ -466,11 +466,11 @@ Action BanPlayerDurationMenuDraw(int iClient)
 
 	// Permanent is intentionally first/default.
 	AddMenuItem(menu, "option1", "Permanent");
-	AddMenuItem(menu, "option2", "1 Minute");
-	AddMenuItem(menu, "option3", "1 Hour");
-	AddMenuItem(menu, "option4", "12 Hours");
-	AddMenuItem(menu, "option5", "1 Day");
-	AddMenuItem(menu, "option6", "1 Week\n ");
+	AddMenuItem(menu, "option2", "1 Hour");
+	AddMenuItem(menu, "option3", "12 Hours");
+	AddMenuItem(menu, "option4", "1 Day");
+	AddMenuItem(menu, "option5", "1 Week");
+	AddMenuItem(menu, "option6", "1 Month\n ");
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option9", "Back");
