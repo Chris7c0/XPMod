@@ -245,7 +245,8 @@ void StorePlayerInDisconnectedPlayerList(int iClient)
 
 void LoopThroughAllPlayersAndHandleAFKPlayers()
 {
-	if (g_bAFKIdleKickingEnabled == false)
+	if (g_bAFKIdleKickingEnabled == false ||
+		g_bDevModeEnabled == true)
 		return;
 
 	for (int iClient = 1;iClient <= MaxClients; iClient++)

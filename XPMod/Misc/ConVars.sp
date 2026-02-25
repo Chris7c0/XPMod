@@ -107,6 +107,8 @@ void CVarChange_DevModeEnabled(Handle hCVar, const char[] strOldValue, const cha
 
 	if (g_bDevModeEnabled == true)
 		SetupDevCommands();
+	else
+		LoopThroughAllPlayersAndSetAFKRecordingTime();
 }
 
 
