@@ -46,6 +46,14 @@ Skill Uses:
 Regen 9 health when ally incaps per level
 +5hp to healing pool when ally incaps per level
 
+Press [WALK] + [ZOOM] to activate Taunt:
+- Draw all Common Infected aggro to yourself
+- Bills cloaking suit is deactivated
+- Everyone on team gains temporary cloaking
+- Gain 30% damage reduction while active
+- 10 second duration
+- 3 minute global cooldown
+
 Bind 1: Improvised Explosives
 - +1 use every other level
 

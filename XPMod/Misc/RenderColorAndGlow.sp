@@ -34,13 +34,41 @@ void SetClientRenderAndGlowColor(int iClient)
 		return;
 	}
 
+	// Team cloaking from Bill's Taunt
+	int iTauntingBill = -1;
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		if (IsClientInGame(i) && g_iClientTeam[i] == TEAM_SURVIVORS && g_bBillTaunting[i])
+		{
+			iTauntingBill = i;
+			break;
+		}
+	}
+
+	if (iTauntingBill != -1 && iTauntingBill != iClient)
+	{
+		// Give temporary cloaking based on the taunting Bill
+		int iAlpha = RoundToFloor(255 * (1.0 - (((float(g_iGhillieLevel[iTauntingBill]) * 0.13) + ((float(g_iPromotionalLevel[iTauntingBill]) * 0.04))))));
+		if (iAlpha > 120) iAlpha = 120; // Give a minimum decent cloaking if levels are low
+		SetClientRenderColor(iClient, 255, 255, 255, iAlpha, RENDER_MODE_TRANSPARENT);
+		SetClientGlow(iClient, 1, 0, 0, GLOWTYPE_CONSTANT);
+		return;
+	}
+
 	if(g_iClientTeam[iClient] == TEAM_SURVIVORS && g_bTalentsConfirmed[iClient])
 	{
 		switch(g_iChosenSurvivor[iClient])
 		{
 			case BILL:
 			{
-				if (g_iGhillieLevel[iClient] > 0)
+				if (g_bBillTaunting[iClient])
+				{
+					// Reset to normal rendering
+					SetClientRenderColor(iClient);
+					SetClientGlow(iClient);
+					return;
+				}
+				else if (g_iGhillieLevel[iClient] > 0 || g_iPromotionalLevel[iClient] > 0)
 				{
 					// Check and update if bill is grappled or down
 					if (IsClientGrappled(iClient) == false && g_bIsClientDown[iClient] == false)
@@ -55,7 +83,7 @@ void SetClientRenderAndGlowColor(int iClient)
 					{
 						// Reset to normal rendering
 						SetClientRenderColor(iClient);
-						SetClientGlow(iClient)
+						SetClientGlow(iClient);
 						return;
 					}
 				}

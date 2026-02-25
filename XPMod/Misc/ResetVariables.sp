@@ -84,6 +84,9 @@ void ResetClientVariablesForRound(int iClient)
 	g_iExtraExplosiveUses[iClient] = 0;
 	g_iBillSprintChargeCounter[iClient] = 0;
 	g_bBillSprinting[iClient] = false;
+	g_bBillTaunting[iClient] = false;
+	g_iBillTauntDuration[iClient] = 0;
+	g_iBillTauntCooldown[iClient] = 0;
 	g_iSilentSorrowHeadshotCounter[iClient] = 0;
 	g_iRochelleAWPChargeLevel[iClient] = 0;
 	g_bRochelleAWPCharged[iClient] = false;
@@ -360,6 +363,9 @@ void ResetAllVariables(int iClient)
 	g_iNicksRamboWeaponID[iClient] = 0;
 	g_bUsingShadowNinja[iClient] = false;
 	g_bBillSprinting[iClient] = false;
+	g_bBillTaunting[iClient] = false;
+	g_iBillTauntDuration[iClient] = 0;
+	g_iBillTauntCooldown[iClient] = 0;
 	g_iBillTeamHealCounter[iClient] = 0;
 	g_bIsClientDown[iClient] = false;
 	

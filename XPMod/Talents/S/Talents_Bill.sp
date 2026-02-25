@@ -80,6 +80,53 @@ void OnGameFrame_Bill(int iClient)
 	
 	HandleBillsTeamHealing(iClient, iButtons);
 
+	if(g_iDiehardLevel[iClient] > 0 && IsPlayerAlive(iClient) && !g_bIsClientDown[iClient])
+	{
+		if(g_bBillTaunting[iClient])
+		{
+			if(g_iBillTauntDuration[iClient] > 0)
+			{
+				g_iBillTauntDuration[iClient]--;
+			}
+			else
+			{
+				g_bBillTaunting[iClient] = false;
+				SDKCall(g_hSDK_UnVomitOnPlayer, iClient);
+				PrintHintText(iClient, "Taunt ended.");
+				
+				for (int i = 1; i <= MaxClients; i++)
+				{
+					if (IsClientInGame(i) && g_iClientTeam[i] == TEAM_SURVIVORS)
+					{
+						SetClientRenderAndGlowColor(i);
+					}
+				}
+			}
+		}
+		
+		if(!g_bBillTaunting[iClient] && g_iBillTauntCooldown[iClient] > 0)
+		{
+			g_iBillTauntCooldown[iClient]--;
+		}
+		
+		if((iButtons & IN_WALK) && (iButtons & IN_ZOOM) && g_iBillTauntCooldown[iClient] <= 0 && !g_bBillTaunting[iClient])
+		{
+			g_bBillTaunting[iClient] = true;
+			g_iBillTauntDuration[iClient] = 300; // 10 second duration
+			g_iBillTauntCooldown[iClient] = 5400; // 3 minute cooldown
+			SDKCall(g_hSDK_VomitOnPlayer, iClient, iClient, false);
+			PrintHintText(iClient, "Taunt Activated! 10s duration");
+			
+			for (int i = 1; i <= MaxClients; i++)
+			{
+				if (IsClientInGame(i) && g_iClientTeam[i] == TEAM_SURVIVORS)
+				{
+					SetClientRenderAndGlowColor(i);
+				}
+			}
+		}
+	}
+
 	if(g_bBillSprinting[iClient] == false)
 	{
 		if(iButtons & IN_SPEED)
@@ -387,4 +434,26 @@ void HandleBillsTeamHealing(int iClient, int iButtons)
 	EmitSoundToAll(strZapSound, iTargetToHeal, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, 0.1, pitch, -1, xyzTargetLocation, NULL_VECTOR, true, 0.0);
 	TE_SetupBeamPoints(xyzClientLocation, xyzTargetLocation, g_iSprite_Laser, 0, 0, 66, 0.3, 0.2, 0.2, 0, 4.0, {0,40,255,200}, 0);
 	TE_SendToAll();
+}
+
+void EventsHurt_VictimBill(Handle hEvent, int iAttacker, int iVictim)
+{
+	if (RunClientChecks(iVictim) == false ||
+		g_bTalentsConfirmed[iVictim] == false ||
+		g_iDiehardLevel[iVictim] <= 0 ||
+		g_bBillTaunting[iVictim] == false ||
+		IsFakeClient(iVictim) == true)
+		return;
+
+	int iDamage = GetEventInt(hEvent, "dmg_health");
+	
+	// Apply 30% damage reduction
+	int iReductionAmount = RoundToFloor(iDamage * 0.3);
+	
+	if (iReductionAmount > 0)
+	{
+		SetPlayerHealth(iVictim, -1, iReductionAmount, true);
+	}
+
+	SuppressNeverUsedWarning(iAttacker);
 }

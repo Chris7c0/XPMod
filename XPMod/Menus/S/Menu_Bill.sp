@@ -257,6 +257,14 @@ Action DiehardMenuDraw(int iClient)
 		\nRegen 9 health when ally incaps per level\
 		\n+5hp to healing pool when ally incaps per level\
 		\n \
+		\nPress [WALK] + [ZOOM] to activate Taunt:\
+		\n- Draw all Common Infected aggro to yourself\
+		\n- Bills cloaking suit is deactivated\
+		\n- Everyone on team gains temporary cloaking\
+		\n- Gain 30%% damage reduction while active\
+		\n- 10 second duration\
+		\n- 3 minute global cooldown\
+		\n \
 		\n		Bind 1: Improvised Explosives\
 		\n			+1 use every other level\
 		\n \
@@ -269,7 +277,7 @@ Action DiehardMenuDraw(int iClient)
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	

@@ -88,7 +88,7 @@ Action Event_PlayerHurt(Handle hEvent, const char[] strName, bool bDontBroadcast
 	{
 		switch(g_iChosenSurvivor[iVictim])
 		{
-			// case BILL:		EventsHurt_VictimBill(hEvent, iAttacker, iVictim);
+			case BILL:		EventsHurt_VictimBill(hEvent, iAttacker, iVictim);
 			// case ROCHELLE:	EventsHurt_VictimRochelle(hEvent, iAttacker, iVictim);
 			// case COACH:		EventsHurt_VictimCoach(hEvent, iAttacker, iVictim);
 			case ELLIS:		EventsHurt_VictimEllis(hEvent, iAttacker, iVictim);
