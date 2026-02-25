@@ -80,8 +80,10 @@ void AdminMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 void ResetAllAdminMenuSelectionVariables(int iClient)
 {
 	g_iAdminSelectedClientID[iClient] = -1;
-	g_iAdminSelectedSteamID[iClient] = -1;
 	g_iAdminSelectedDuration[iClient] = -1;
+	g_bAdminSelectedTargetIsConnected[iClient] = false;
+	g_strAdminSelectedTargetSteamID[iClient][0] = '\0';
+	g_strAdminSelectedTargetName[iClient][0] = '\0';
 }
 
 Action SwitchPlayersTeamMenuDraw(int iClient)
@@ -274,7 +276,7 @@ Action BanPlayerMenuDraw(int iClient)
 
 	SetMenuTitle(menu, "Are they still in the server?\n ");
 	
-	AddMenuItem(menu, "option1", "They are in still in the server");
+	AddMenuItem(menu, "option1", "They are still in the server");
 	AddMenuItem(menu, "option2", "They disconnected\n \n \n \n \n ");
 	AddMenuItem(menu, "option3", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option4", "", ITEMDRAW_NOTEXT);
@@ -320,7 +322,7 @@ Action BanPlayerInServerMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(BanPlayerInServerMenuHandler);
 	
-	SetMenuTitle(menu, "Permanently Ban Whom?\n ");
+	SetMenuTitle(menu, "Ban Whom?\n ");
 	
 	AddAllCurrentPlayersToMenu(menu, iClient);
 
@@ -346,16 +348,8 @@ void BanPlayerInServerMenuHandler(Menu menu, MenuAction action, int iClient, int
 			return;
 		}
 
-		PrintToChat(iClient, "\x03[XPMod] \x04Banning %N...", iTarget);
-		
-		// Construct the ban string reason
-		char strBanString[1024] = "";
-		Format(strBanString, sizeof(strBanString), "Permanently banned by %N", iClient);
-		// Add user to the bans table in the xpmod database
-		SQLAddBannedUserToDatabaseUsingClientID(iTarget, 0, strBanString);
-		// Ban the user, regardless of being able to add to the database or not
-		// Banning was changed to only kick, to fix issue with lingering bans after unban
-		KickClient(iTarget, "You are permanently banned from XPMod servers")
+		SetAdminBanSelectionTarget(iClient, true, iTarget, strSteamID, strClientName);
+		BanPlayerDurationMenuDraw(iClient);
 	}
 }
 
@@ -363,7 +357,7 @@ Action BanPlayerDisconnectedMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(BanPlayerDisconnectedMenuHandler);
 	
-	SetMenuTitle(menu, "Permanently Ban Whom?\n ");
+	SetMenuTitle(menu, "Ban Whom?\n ");
 	
 	AddAllDisconnectedPlayersToMenu(menu);
 
@@ -390,13 +384,247 @@ void BanPlayerDisconnectedMenuHandler(Menu menu, MenuAction action, int iClient,
 			return;
 		}
 
-		PrintToChat(iClient, "\x03[XPMod] \x04Banning %s...", strClientName);
-		
-		// Construct the ban string reason
-		char strBanString[1024] = "";
-		Format(strBanString, sizeof(strBanString), "Permanently banned by %N", iClient);
-		// Add user to the bans table in the xpmod database
-		SQLAddBannedUserToDatabaseUsingNameAndSteamID(strClientName, sizeof(strClientName), strSteamID, 0, strBanString);
+		SetAdminBanSelectionTarget(iClient, false, -1, strSteamID, strClientName);
+		BanPlayerDurationMenuDraw(iClient);
+	}
+}
+
+void SetAdminBanSelectionTarget(int iClient, bool bTargetConnected, int iTarget, const char[] strSteamID, const char[] strClientName)
+{
+	g_bAdminSelectedTargetIsConnected[iClient] = bTargetConnected;
+	g_iAdminSelectedClientID[iClient] = iTarget;
+	g_iAdminSelectedDuration[iClient] = -1;
+
+	strcopy(g_strAdminSelectedTargetSteamID[iClient], sizeof(g_strAdminSelectedTargetSteamID[]), strSteamID);
+	strcopy(g_strAdminSelectedTargetName[iClient], sizeof(g_strAdminSelectedTargetName[]), strClientName);
+}
+
+void GetAdminBanSelectedTargetName(int iClient, char[] strTargetName, int iTargetNameSize)
+{
+	if (g_bAdminSelectedTargetIsConnected[iClient] && RunClientChecks(g_iAdminSelectedClientID[iClient]))
+	{
+		Format(strTargetName, iTargetNameSize, "%N", g_iAdminSelectedClientID[iClient]);
+		return;
+	}
+
+	if (g_strAdminSelectedTargetName[iClient][0] == '\0')
+	{
+		Format(strTargetName, iTargetNameSize, "Unknown Player");
+		return;
+	}
+
+	Format(strTargetName, iTargetNameSize, "%s", g_strAdminSelectedTargetName[iClient]);
+}
+
+int GetAdminBanDurationSecondsFromMenuItem(int itemNum)
+{
+	switch (itemNum)
+	{
+		case 0: return 0;                  // Permanent
+		case 1: return 60;                 // 1 minute
+		case 2: return 60 * 60;            // 1 hour
+		case 3: return 60 * 60 * 12;       // 12 hours
+		case 4: return 60 * 60 * 24;       // 1 day
+		case 5: return 60 * 60 * 24 * 7;   // 1 week
+	}
+
+	return -1;
+}
+
+void GetAdminBanDurationLabel(int iDurationSeconds, char[] strDurationLabel, int iDurationLabelSize)
+{
+	switch (iDurationSeconds)
+	{
+		case 0: Format(strDurationLabel, iDurationLabelSize, "Permanent");
+		case 60: Format(strDurationLabel, iDurationLabelSize, "1 Minute");
+		case 60 * 60: Format(strDurationLabel, iDurationLabelSize, "1 Hour");
+		case 60 * 60 * 12: Format(strDurationLabel, iDurationLabelSize, "12 Hours");
+		case 60 * 60 * 24: Format(strDurationLabel, iDurationLabelSize, "1 Day");
+		case 60 * 60 * 24 * 7: Format(strDurationLabel, iDurationLabelSize, "1 Week");
+		default:
+		{
+			int iMinutes = iDurationSeconds / 60;
+			Format(strDurationLabel, iDurationLabelSize, "%i Minutes", iMinutes);
+		}
+	}
+}
+
+Action BanPlayerDurationMenuDraw(int iClient)
+{
+	if (g_strAdminSelectedTargetSteamID[iClient][0] == '\0')
+	{
+		BanPlayerMenuDraw(iClient);
+		return Plugin_Handled;
+	}
+
+	Menu menu = CreateMenu(BanPlayerDurationMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
+
+	char strTargetName[32];
+	GetAdminBanSelectedTargetName(iClient, strTargetName, sizeof(strTargetName));
+	SetMenuTitle(menu, "Banning %s\nSelect ban duration:\n ", strTargetName);
+
+	// Permanent is intentionally first/default.
+	AddMenuItem(menu, "option1", "Permanent");
+	AddMenuItem(menu, "option2", "1 Minute");
+	AddMenuItem(menu, "option3", "1 Hour");
+	AddMenuItem(menu, "option4", "12 Hours");
+	AddMenuItem(menu, "option5", "1 Day");
+	AddMenuItem(menu, "option6", "1 Week\n ");
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
+	AddMenuItem(menu, "option9", "Back");
+
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
+
+	return Plugin_Handled;
+}
+
+void BanPlayerDurationMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
+{
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
+	{
+		if (itemNum == 8)
+		{
+			if (g_bAdminSelectedTargetIsConnected[iClient])
+				BanPlayerInServerMenuDraw(iClient);
+			else
+				BanPlayerDisconnectedMenuDraw(iClient);
+			return;
+		}
+
+		g_iAdminSelectedDuration[iClient] = GetAdminBanDurationSecondsFromMenuItem(itemNum);
+		if (g_iAdminSelectedDuration[iClient] < 0)
+		{
+			BanPlayerDurationMenuDraw(iClient);
+			return;
+		}
+
+		BanPlayerReasonMenuDraw(iClient);
+	}
+}
+
+Action BanPlayerReasonMenuDraw(int iClient)
+{
+	if (g_iAdminSelectedDuration[iClient] < 0)
+	{
+		BanPlayerDurationMenuDraw(iClient);
+		return Plugin_Handled;
+	}
+
+	Menu menu = CreateMenu(BanPlayerReasonMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
+
+	char strTargetName[32], strDurationLabel[32];
+	GetAdminBanSelectedTargetName(iClient, strTargetName, sizeof(strTargetName));
+	GetAdminBanDurationLabel(g_iAdminSelectedDuration[iClient], strDurationLabel, sizeof(strDurationLabel));
+
+	SetMenuTitle(menu, "Banning %s (%s)\nSelect ban reason:\n ", strTargetName, strDurationLabel);
+
+	AddMenuItem(menu, "option1", "Cheating or Exploits");
+	AddMenuItem(menu, "option2", "Griefing or Team Killing");
+	AddMenuItem(menu, "option3", "Harassment or Toxic Behavior");
+	AddMenuItem(menu, "option4", "Hate Speech or Slurs");
+	AddMenuItem(menu, "option5", "Mic Spam or Disruptive Noise");
+	AddMenuItem(menu, "option6", "AFK or Not Participating");
+	AddMenuItem(menu, "option7", "Ban Evasion");
+	AddMenuItem(menu, "option8", "Other Rule Violation\n ");
+	AddMenuItem(menu, "option9", "Back");
+
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
+
+	return Plugin_Handled;
+}
+
+void ApplySelectedAdminBan(int iClient, const char[] strReason)
+{
+	if (g_iAdminSelectedDuration[iClient] < 0 || g_strAdminSelectedTargetSteamID[iClient][0] == '\0')
+	{
+		BanPlayerMenuDraw(iClient);
+		return;
+	}
+
+	char strDurationLabel[32];
+	GetAdminBanDurationLabel(g_iAdminSelectedDuration[iClient], strDurationLabel, sizeof(strDurationLabel));
+
+	if (g_bAdminSelectedTargetIsConnected[iClient])
+	{
+		int iTarget = g_iAdminSelectedClientID[iClient];
+		if (RunClientChecks(iTarget) == false ||
+			IsFakeClient(iTarget) == true ||
+			VerifyClientSteamIDMatches(iTarget, g_strAdminSelectedTargetSteamID[iClient]) == false)
+		{
+			PrintToChat(iClient, "\x03[XPMod] \x04Selected player is no longer valid, please try again.");
+			BanPlayerInServerMenuDraw(iClient);
+			return;
+		}
+
+		PrintToChat(iClient, "\x03[XPMod] \x04Banning %N for %s (%s)...", iTarget, strDurationLabel, strReason);
+		SQLAddBannedUserToDatabaseUsingClientID(iTarget, g_iAdminSelectedDuration[iClient], strReason);
+
+		if (g_iAdminSelectedDuration[iClient] <= 0)
+		{
+			KickClient(iTarget, "You are permanently banned from XPMod servers");
+		}
+		else
+		{
+			char strKickMessage[192];
+			Format(strKickMessage, sizeof(strKickMessage), "You are banned from XPMod servers for %s (%s)", strDurationLabel, strReason);
+			KickClient(iTarget, strKickMessage);
+		}
+	}
+	else
+	{
+		char strClientName[32];
+		strcopy(strClientName, sizeof(strClientName), g_strAdminSelectedTargetName[iClient]);
+
+		PrintToChat(iClient, "\x03[XPMod] \x04Banning %s for %s (%s)...", strClientName, strDurationLabel, strReason);
+		SQLAddBannedUserToDatabaseUsingNameAndSteamID(strClientName, sizeof(strClientName), g_strAdminSelectedTargetSteamID[iClient], g_iAdminSelectedDuration[iClient], strReason);
+	}
+
+	ResetAllAdminMenuSelectionVariables(iClient);
+	BanPlayerMenuDraw(iClient);
+}
+
+void BanPlayerReasonMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
+{
+	if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	else if (action == MenuAction_Select)
+	{
+		if (itemNum == 8)
+		{
+			BanPlayerDurationMenuDraw(iClient);
+			return;
+		}
+
+		char strSelectedReason[64];
+		switch (itemNum)
+		{
+			case 0: strcopy(strSelectedReason, sizeof(strSelectedReason), "Cheating or Exploits");
+			case 1: strcopy(strSelectedReason, sizeof(strSelectedReason), "Griefing or Team Killing");
+			case 2: strcopy(strSelectedReason, sizeof(strSelectedReason), "Harassment or Toxic Behavior");
+			case 3: strcopy(strSelectedReason, sizeof(strSelectedReason), "Hate Speech or Slurs");
+			case 4: strcopy(strSelectedReason, sizeof(strSelectedReason), "Mic Spam or Disruptive Noise");
+			case 5: strcopy(strSelectedReason, sizeof(strSelectedReason), "AFK or Not Participating");
+			case 6: strcopy(strSelectedReason, sizeof(strSelectedReason), "Ban Evasion");
+			case 7: strcopy(strSelectedReason, sizeof(strSelectedReason), "Other Rule Violation");
+			default:
+			{
+				BanPlayerReasonMenuDraw(iClient);
+				return;
+			}
+		}
+
+		ApplySelectedAdminBan(iClient, strSelectedReason);
 	}
 }
 
@@ -461,11 +689,13 @@ bool GetTargetIDandSteamIDFromMenuParameters(int iClient, Menu menu, int itemNum
 	char strInfo[128], strParameters[3][32];
 	GetMenuItem(menu, itemNum, strInfo, sizeof(strInfo));
 	ExplodeString(strInfo, ";", strParameters, sizeof(strParameters), sizeof(strParameters[]));
+	iTarget = -1;
 
 
 	// This is for if the target is not in the server anymore
 	if (bVerifyTargetEqualsSteamID == false)
 	{
+		iTarget = StringToInt(strParameters[0]);
 		// Store the steamid parameter
 		Format(strSteamID, iSteamIDSize, "%s", strParameters[1]);
 		Format(strClientName, iClientNameSize, "%s", strParameters[2]);
