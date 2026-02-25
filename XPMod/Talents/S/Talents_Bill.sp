@@ -104,16 +104,11 @@ void OnGameFrame_Bill(int iClient)
 			}
 		}
 		
-		if(!g_bBillTaunting[iClient] && g_iBillTauntCooldown[iClient] > 0)
-		{
-			g_iBillTauntCooldown[iClient]--;
-		}
-		
-		if((iButtons & IN_WALK) && (iButtons & IN_ZOOM) && g_iBillTauntCooldown[iClient] <= 0 && !g_bBillTaunting[iClient])
+		if((iButtons & IN_WALK) && (iButtons & IN_ZOOM) && g_iBillGlobalTauntCooldown <= 0 && !g_bBillTaunting[iClient])
 		{
 			g_bBillTaunting[iClient] = true;
 			g_iBillTauntDuration[iClient] = 300; // 10 second duration
-			g_iBillTauntCooldown[iClient] = 5400; // 3 minute cooldown
+			g_iBillGlobalTauntCooldown = 5400; // 3 minute cooldown
 			SDKCall(g_hSDK_VomitOnPlayer, iClient, iClient, false);
 			PrintHintText(iClient, "Taunt Activated! 10s duration");
 			

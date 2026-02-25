@@ -131,4 +131,9 @@ public void OnGameFrame()
 
 	// Track tank rocks for special tank abilities
 	TrackAllRocks();
+
+	if (g_iBillGlobalTauntCooldown > 0)
+	{
+		g_iBillGlobalTauntCooldown--;
+	}
 }

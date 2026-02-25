@@ -106,7 +106,7 @@ int g_iBillSprintChargePower[MAXPLAYERS + 1];
 bool g_bBillSprinting[MAXPLAYERS + 1];
 bool g_bBillTaunting[MAXPLAYERS + 1];
 int g_iBillTauntDuration[MAXPLAYERS + 1];
-int g_iBillTauntCooldown[MAXPLAYERS + 1];
+int g_iBillGlobalTauntCooldown;
 bool g_bCanDropPoopBomb[MAXPLAYERS + 1];
 int g_iPoopBombOwnerID[MAXENTITIES + 1];
 int g_iDropBombsTimes[MAXPLAYERS + 1];

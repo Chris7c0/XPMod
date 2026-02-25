@@ -86,7 +86,6 @@ void ResetClientVariablesForRound(int iClient)
 	g_bBillSprinting[iClient] = false;
 	g_bBillTaunting[iClient] = false;
 	g_iBillTauntDuration[iClient] = 0;
-	g_iBillTauntCooldown[iClient] = 0;
 	g_iSilentSorrowHeadshotCounter[iClient] = 0;
 	g_iRochelleAWPChargeLevel[iClient] = 0;
 	g_bRochelleAWPCharged[iClient] = false;
@@ -114,6 +113,7 @@ void ResetClientVariablesForRound(int iClient)
 	g_iKitsUsed = 0;
 	g_iBillTeamHealCounter[iClient] = 0;
 	g_iBillsTeamHealthPool = BILL_TEAM_HEAL_HP_POOL;
+	g_iBillGlobalTauntCooldown = 0;
 	g_iNicksRamboWeaponID[iClient] = 0;
 	g_bNickIsInvisible[iClient] = false;
 	g_bCanDropPoopBomb[iClient] = true;
@@ -365,7 +365,6 @@ void ResetAllVariables(int iClient)
 	g_bBillSprinting[iClient] = false;
 	g_bBillTaunting[iClient] = false;
 	g_iBillTauntDuration[iClient] = 0;
-	g_iBillTauntCooldown[iClient] = 0;
 	g_iBillTeamHealCounter[iClient] = 0;
 	g_bIsClientDown[iClient] = false;
 	
