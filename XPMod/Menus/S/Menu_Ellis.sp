@@ -332,6 +332,7 @@ Action FireMenuDraw(int iClient)
 		\n \
 		\n			Bind 2: Summon Kagu-Tsuchi's Wrath\
 		\n						+1 Use Every Other Level\
+		\n +1 Molotov on Use\
 		\n \
 		\nTemporarily Grants Ellis Incendiary\
 		\nAttacks With All Weapons\
@@ -346,7 +347,7 @@ Action FireMenuDraw(int iClient)
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	

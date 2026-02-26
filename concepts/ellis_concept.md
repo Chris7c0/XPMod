@@ -87,6 +87,7 @@ Fire Immunity
 
 Bind 2: Summon Kagu-Tsuchi's Wrath
 - +1 Use Every Other Level
+- +1 Molotov on Use
 
 Temporarily Grants Ellis Incendiary Attacks With All Weapons
 - +3 Sec Duration Added per Level
