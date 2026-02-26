@@ -23,13 +23,15 @@ void LoadFireTankTalents(int iClient)
 	CreateTimer(10000.0, Timer_ReigniteFireTank, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 	SetTanksTalentHealth(iClient, TANK_HEALTH_FIRE);
-	
+
 	// Stop Kiting (Bullet hits slowing tank down)
 	SetConVarInt(FindConVar("z_tank_damage_slow_min_range"), 0);
 	SetConVarInt(FindConVar("z_tank_damage_slow_max_range"), 0);
-	
-	// Set Movement Speed	
+
+	// Set Movement Speed
 	SetClientSpeed(iClient);
+
+	CreateTimer(1.0, Timer_FireTankHPDrain, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 
 	// Change Tank's Skin Color
 	SetClientRenderColor(iClient, 255, 200, 30, 255, RENDER_MODE_NORMAL);
@@ -47,6 +49,8 @@ void ResetAllTankVariables_Fire(int iClient)
 	g_bFireTankAttackCharged[iClient] = false;
 	g_bBlockTankFirePunchCharge[iClient] = false;
 	g_fFireTankExtraSpeed[iClient] = 0.0;
+	g_bFireTankDashActive[iClient] = false;
+	g_bFireTankDashCoolingDown[iClient] = false;
 
 	DeleteParticleEntity(g_iPID_TankChargedFire[iClient]);
 }
@@ -55,7 +59,13 @@ void SetClientSpeedTankFire(int iClient, float &fSpeed)
 {
 	if (g_iTankChosen[iClient] != TANK_FIRE)
 		return;
-	
+
+	if (g_bFireTankDashActive[iClient] == true)
+	{
+		fSpeed = FIRE_TANK_DASH_MOVEMENT_SPEED;
+		return;
+	}
+
 	fSpeed += (TANK_FIRE_BASE_SPEED + g_fFireTankExtraSpeed[iClient]);
 }
 
@@ -232,4 +242,43 @@ void DestroyFireTankRock(int iRockEntity)
 	GetEntPropVector(iRockEntity, Prop_Send, "m_vecOrigin", xyzRockPosition);
 
 	MolotovExplode(xyzRockPosition);
+}
+
+void OnPlayerRunCmd_Tank_Fire(int iClient, int iButtons)
+{
+	if (g_iTankChosen[iClient] != TANK_FIRE)
+		return;
+
+	// Fire Tank Dash: IN_SPEED + movement direction
+	if (g_bFireTankDashCoolingDown[iClient] == false &&
+		g_bFireTankDashActive[iClient] == false &&
+		iButtons & IN_SPEED &&
+		(iButtons & IN_FORWARD || iButtons & IN_BACK || iButtons & IN_MOVELEFT || iButtons & IN_MOVERIGHT))
+	{
+		FireTankDash(iClient);
+	}
+}
+
+void FireTankDash(int iClient)
+{
+	// Pay HP cost if above threshold
+	int iCurrentHealth = GetPlayerHealth(iClient);
+	if (iCurrentHealth > FIRE_TANK_DASH_HP_COST)
+		SetPlayerHealth(iClient, -1, iCurrentHealth - FIRE_TANK_DASH_HP_COST);
+
+	// Activate dash
+	g_bFireTankDashActive[iClient] = true;
+	SetClientSpeed(iClient);
+	CreateTimer(FIRE_TANK_DASH_DURATION, Timer_FireTankDashEnd, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
+	// Start cooldown
+	g_bFireTankDashCoolingDown[iClient] = true;
+	CreateTimer(FIRE_TANK_DASH_COOLDOWN, Timer_FireTankDashCooldownEnd, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
+	// Effects
+	AttachParticle(iClient, "charger_motion_blur", 5.4, 0.0);
+	EmitSoundToClient(iClient, SOUND_LOUIS_TELEPORT_USE);
+
+	if (IsFakeClient(iClient) == false)
+		PrintHintText(iClient, "Fire Dash!");
 }

@@ -48,7 +48,42 @@ Action TimerExtinguishTank(Handle timer, int iClient)
 Action Timer_UnblockFirePunchCharge(Handle timer, int iClient)
 {
 	g_bBlockTankFirePunchCharge[iClient] = false;
-	
+
+	return Plugin_Stop;
+}
+
+Action Timer_FireTankHPDrain(Handle timer, int iClient)
+{
+	if (RunClientChecks(iClient) == false ||
+		g_iClientTeam[iClient] != TEAM_INFECTED ||
+		IsPlayerAlive(iClient) == false ||
+		g_iTankChosen[iClient] != TANK_FIRE)
+		return Plugin_Stop;
+
+	int iCurrentHealth = GetPlayerHealth(iClient);
+	if (iCurrentHealth <= FIRE_TANK_HP_DRAIN_PER_SECOND)
+		return Plugin_Continue;
+
+	SetPlayerHealth(iClient, -1, iCurrentHealth - FIRE_TANK_HP_DRAIN_PER_SECOND);
+	return Plugin_Continue;
+}
+
+Action Timer_FireTankDashEnd(Handle timer, int iClient)
+{
+	g_bFireTankDashActive[iClient] = false;
+	if (RunClientChecks(iClient) && IsPlayerAlive(iClient))
+		SetClientSpeed(iClient);
+
+	return Plugin_Stop;
+}
+
+Action Timer_FireTankDashCooldownEnd(Handle timer, int iClient)
+{
+	g_bFireTankDashCoolingDown[iClient] = false;
+
+	if (RunClientChecks(iClient) && IsPlayerAlive(iClient) && IsFakeClient(iClient) == false)
+		PrintHintText(iClient, "Fire Dash Ready");
+
 	return Plugin_Stop;
 }
 

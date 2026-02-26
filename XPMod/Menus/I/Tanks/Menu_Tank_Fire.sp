@@ -17,19 +17,26 @@ Action TankMenuDrawFire(int iClient)
         \n - High Damage Output, Immune To Fire\
         \n - 20-70%% Faster (More Pain = More Speed)\
         \n - 20%% Chance To Ignite Survivors On Punch\
+        \n - Loses %i HP Per Second\
         \n \
         \n Active Abilities\
         \n - [Hold CROUCH] Charges Fire Punch\
         \n    - \"PuNCh FAcE...MAkE BoOM!\"\
         \n - Rock Throw Spreads Fire (15 Sec Cooldown)\
+        \n - [SPRINT + Move] Fire Dash (%i Sec CD)\
+        \n    - Costs %i HP (Free Below %i HP)\
         \n ",
 		strStartingNewLines,
-        TANK_HEALTH_FIRE);
+        TANK_HEALTH_FIRE,
+        FIRE_TANK_HP_DRAIN_PER_SECOND,
+        RoundToNearest(FIRE_TANK_DASH_COOLDOWN),
+        FIRE_TANK_DASH_HP_COST,
+        FIRE_TANK_DASH_HP_COST);
 	
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
