@@ -34,6 +34,14 @@ void Bind1Press_Ellis(int iClient)
                 TE_SetupBeamPoints(topvec,vorigin,g_iSprite_AmmoBox,0,0,0,20.0,55.0,55.0, 1,0.0,{255, 255, 255, 255},0);
                 TE_SendToAll();
                 
+                for (int i = 1; i <= MaxClients; i++)
+                {
+                    if (RunClientChecks(i) && g_iClientTeam[i] == TEAM_SURVIVORS && IsPlayerAlive(i))
+                    {
+                        RunCheatCommand(i, "give", "give ammo");
+                    }
+                }
+                
                 g_iClientBindUses_1[iClient]++;
                 int uses = 3 - g_iClientBindUses_1[iClient];
                 PrintHintText(iClient, "Your have deployed ammo for the team, %d ammo piles remain", uses);

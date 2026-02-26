@@ -285,6 +285,7 @@ Action MetalMenuDraw(int iClient)
 		\n				+1 Use Every Other Level\
 		\n \
 		\nDeploy An Ammo Stash\
+		\nInstantly Refill All Survivors Ammo\
 		\n ",
 		strStartingNewLines,
 		g_iMetalLevel[iClient]);
@@ -293,7 +294,7 @@ Action MetalMenuDraw(int iClient)
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	

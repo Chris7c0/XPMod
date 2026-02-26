@@ -76,6 +76,7 @@ Bind 1: Ammo Refill
 - +1 Use Every Other Level
 
 Deploy An Ammo Stash
+Instantly Refill All Survivors Ammo
 ```
 
 ### Talent 6: Fire Storm
