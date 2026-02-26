@@ -3,37 +3,24 @@ Action TankMenuDrawIce(int iClient)
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(TankMenuHandlerIce);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
-	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
-	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	SetMenuTitle(menu,"\
-		%s \
-        ICE TANK\
+	SetMenuTitle(menu,"ICE TANK\
         \n\"You merely adopted the cold; I was born in it, moulded by it.\"\
         \n \
-        \n Passive Abilities\
+        \n Passives\
         \n - %i HP | Good At Close Range\
-        \n - Freeze Survivors\
-		\n - Cold Aura: Slow Survivors When Near Them\
+		\n - Cold Aura: Slow Survivors When Close\
         \n - Weak To Fire, But Fire Goes Out Quickly\
         \n - 33%% Chance To Freeze Survivors On Punch\
         \n \
-        \n Active Abilities\
+        \n Actives\
         \n - [Hold CROUCH & Don't Move] Regens HP\
         \n    - Freezes Survivors In Blizzard Storm\
 		\n - Hold [WALK] to Ice Slide\
-        \n - Rock Throw Freezes Survivors(No CD)\
+        \n - Rocks Freeze Survivors(No CD)\
         \n ",
-		strStartingNewLines,
         TANK_HEALTH_ICE);
 	
-	char strFinalOptionText[250];
-	Format(strFinalOptionText, sizeof(strFinalOptionText),
-		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
-		strEndingNewLines);
-	AddMenuItem(menu, "option1", strFinalOptionText);
+	AddMenuItem(menu, "option1", "Back");
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);

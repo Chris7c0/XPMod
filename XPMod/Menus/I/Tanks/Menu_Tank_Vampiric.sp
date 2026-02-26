@@ -3,37 +3,30 @@ Action TankMenuDrawVampiric(int iClient)
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(TankMenuHandlerVampiric);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
-	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
-	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	SetMenuTitle(menu,"\
-		%s \
-        VAMPIRIC TANK\
+	SetMenuTitle(menu,"VAMPIRIC TANK\
         \n\"I never drink...wine.\"\
         \n \
-        \n Passive Abilities\
+        \n Passives\
         \n - %i HP | Good At Close Range, Safe At Long Range\
         \n - Life Steal On Punch\
         \n    - Life Steal More From Incapacitated Victims\
         \n - 30%% Faster\
-        \n - Dodges Bullets (1/3rd Gun Damage Taken)\
-        \n - Weak To Melee (3X Melee Damage Taken)\
+        \n - Dodges Bullets (1/3rd Gun Dmg Taken)\
+        \n - Weak To Melee (3X Melee Dmg Taken)\
         \n \
-        \n Active Abilities\
+        \n Actives\
         \n - [Press JUMP] Fly\
         \n - [Press MELEE] Wing Dash\
-        \n    - 3 Uses (13 Sec Cooldown) \
+        \n    - 3 Uses (13 Sec CD) \
         \n - No Rock Throwing\
         \n ",
-		strStartingNewLines,
         TANK_HEALTH_VAMPIRIC);
 	
+	AddMenuItem(menu, "option1", "Back");
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
-		strEndingNewLines);
+		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);

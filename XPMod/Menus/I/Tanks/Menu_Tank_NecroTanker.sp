@@ -2,45 +2,31 @@ Action TankMenuDrawNecroTanker(int iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(TankMenuHandlerNecroTanker);
-
-        char strStartingNewLines[32], strEndingNewLines[32];
-	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
-	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
-	SetMenuTitle(menu,"\
-	%s \
-        NECROTANKER\
+	SetMenuTitle(menu,"NECROTANKER\
         \n\"Life is finite, whereas Death...ah, yes. Death is infinite.\"\
         \n \
-        \n Passive Abilities\
-        \n - %i Start HP, %i Max HP | Good At Close Range\
-        \n - Consume Infected For Health\
-        \n	+%i HP Per CI Kill\
-        \n	+%i HP Per UI Kill\
+        \n Passives\
+        \n - %i Start HP, %i Max HP\
+        \n - +%i HP Per CI Kill\
+        \n - +%i HP Per UI Kill\
         \n - 15%% Faster\
         \n - Immune to Bile\
-        \n - Punching Survivors Summons Infected\
+        \n - Hit Survivors To Summon Infected\
         \n	+60%% CI/UI Mob\
         \n	+5%% SI\
         \n	+5%% Witch\
         \n \
-        \n Active Abilities\
-        \n - Mana Pool (Punches Regen Mana)\
-        \n - [Hold WALK or CROUCH] Summon CI\
-        \n - [Press MELEE] Throw Boomers\
-        \n ",
-	strStartingNewLines,
+        \n Actives\
+        \n - Mana Pool (Hits Regen Mana)\
+        \n - [Hold WALK/CROUCH] Summon CI\
+        \n - Throw Boomers!",
         TANK_HEALTH_NECROTANKER,
         NECROTANKER_MAX_HEALTH,
         NECROTANKER_CONSUME_COMMON_HP,
         NECROTANKER_CONSUME_UNCOMMON_HP);
 	
-	char strFinalOptionText[250];
-	Format(strFinalOptionText, sizeof(strFinalOptionText),
-                "Back\
-                %s\n \n \n \n \n \n \n \n \n \n \n \n ",
-                strEndingNewLines);
-	AddMenuItem(menu, "option1", strFinalOptionText);
+	AddMenuItem(menu, "option1", "Back");
         
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
