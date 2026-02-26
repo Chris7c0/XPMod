@@ -213,7 +213,7 @@ int g_iCoachCIHeadshotCounter[MAXPLAYERS + 1];
 int g_iCoachSIHeadshotCounter[MAXPLAYERS + 1];
 
 //Ellis's Stuff
-#define ELLIS_STARTING_MAX_HEALTH                       90
+#define ELLIS_STARTING_MAX_HEALTH                       100
 #define ELLIS_AMMO_GAINED_PER_SI_KILL_PER_LEVEL         8
 bool g_bUsingFireStorm[MAXPLAYERS + 1];
 int g_iEllisSpeedBoostCounter[MAXPLAYERS + 1];
@@ -252,7 +252,8 @@ int g_iStashedInventoryAdrenaline[MAXPLAYERS + 1];
 int g_iStashedInventoryMolotov[MAXPLAYERS + 1];
 bool g_bGrenadeSlotWasEmptyOnLastPickUp[MAXPLAYERS + 1] = {false, ...};
 #define ELLIS_HEAL_AMOUNT_PILLS                             15
-#define ELLIS_MAX_TEMP_HEALTH                               125
+#define ELLIS_HEAL_AMOUNT_ADRENALINE                        60
+#define ELLIS_MAX_TEMP_HEALTH                               140
 int g_iTempHealthBeforeUsingHealthBoostSlotItem[MAXPLAYERS + 1];
 #define ELLIS_ROF_OVER_PER_LEVEL         0.05
 #define ELLIS_ROF_METAL_PER_LEVEL        0.05
@@ -391,5 +392,4 @@ bool g_bInfectedBindsDisabled;
 #define LOUIS_TIME_OUT_COOLDOWN_DURATION                300.0
 #define LOUIS_NOOBWIPE_COOLDOWN_DURATION                15.0
 bool g_bNoobWipeCooldown;
-
 

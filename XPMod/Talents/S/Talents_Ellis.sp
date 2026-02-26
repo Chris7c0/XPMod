@@ -549,7 +549,7 @@ void EventsAdrenalineUsed_Ellis(int iClient)
 		return;
 
 	// Give proper temp health to Ellis
-	int iAdrenalineHealthBonus = 25 + (g_iOverLevel[iClient] * 5);
+	int iAdrenalineHealthBonus = ELLIS_HEAL_AMOUNT_ADRENALINE;
 	SetEllisHealthAfterUsingAdrenalineOrPills(iClient, iAdrenalineHealthBonus);
 
 	// Set the variable that will allow for damage buffs during adrenaline duration

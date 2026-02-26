@@ -2,9 +2,9 @@
 
 ### Talent 1: Overconfidence
 ```
-Max Health Reduced by 10 HP
-Max Temp Health is 125 HP
+Max Temp Health Is 140 HP
 Pills Only Heal 15 HP
+Adrenaline Shots Heal 60 HP
 Start With An Extra Shot
 
 If Within 40 Points Of Max Health:
@@ -12,7 +12,6 @@ If Within 40 Points Of Max Health:
 - +5% RoF To All Guns per Level
 
 While On Adrenaline:
-- +5 Temp Health per Level
 - +10% RoF To All Guns per Level
 - (Team) +2 Seconds Duration per Level
   - Stacks with every Ellis

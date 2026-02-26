@@ -66,9 +66,9 @@ Action OverMenuDraw(int iClient)
 	FormatEx(text, sizeof(text), "\
 		%s 		  Overconfidence (Level %d):\
 		\n \
-		\nMax Health Reduced by 10 HP\
-		\nMax Temp Health is 125 HP\
-		\nPills Only Heal 15 HP\
+		\nMax Temp Health Is %i HP\
+		\nPills Only Heal %i HP\
+		\nAdrenaline Shots Heal %i HP\
 		\nStart With An Extra Shot\
 		\n \
 		\nIf Within %i Points Of Max Health:\
@@ -76,7 +76,6 @@ Action OverMenuDraw(int iClient)
 		\n	+5%%%% RoF To All Guns per Level\
 		\n \
 		\nWhile On Adrenaline:\
-		\n	+5 Temp Health per Level\
 		\n	+10%%%% RoF To All Guns per Level\
 		\n	(Team) +2 Seconds Duration per Level   \
 		\n		- Stacks with every Ellis\
@@ -84,13 +83,16 @@ Action OverMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iOverLevel[iClient],
+		ELLIS_MAX_TEMP_HEALTH,
+		ELLIS_HEAL_AMOUNT_PILLS,
+		ELLIS_HEAL_AMOUNT_ADRENALINE,
 		ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT);
 	SetMenuTitle(menu, "%s", text);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
