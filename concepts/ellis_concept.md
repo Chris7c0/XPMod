@@ -81,6 +81,7 @@ Instantly Refill All Survivors Ammo
 
 ### Talent 6: Fire Storm
 ```
+Ellis Can Carry and Starts With +1 Molotov
 +10 Clip Size per Level (SMG/Rifle/Sniper Only)
 Fire Immunity
 

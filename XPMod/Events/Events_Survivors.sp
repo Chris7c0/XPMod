@@ -226,6 +226,16 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 		CreateTimer(1.5, TimerEllisJamminGiveMolotov, iClient, TIMER_FLAG_NO_MAPCHANGE);
 		g_iEllisJamminGrenadeCounter[iClient]--;
 	}
+	if(g_iFireLevel[iClient] > 0 &&
+		g_iStashedInventoryMolotov[iClient] > 0 &&
+		(StrEqual(wclass,"pipe_bomb",false) == true ||
+		 StrEqual(wclass,"molotov",false) == true ||
+		 StrEqual(wclass,"vomitjar",false) == true))
+	{
+		CreateTimer(1.5, TimerGiveMolotovFromStashedInventory, iClient, TIMER_FLAG_NO_MAPCHANGE);
+		// Note: The timer itself reduces the stashed inventory.
+	}
+
 	if(g_iStrongLevel[iClient] > 0)
 	{
 		if(StrEqual(wclass, "vomitjar", false) == true || StrEqual(wclass, "molotov", false) == true || StrEqual(wclass, "pipe_bomb", false) == true)

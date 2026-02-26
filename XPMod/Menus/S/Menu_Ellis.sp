@@ -325,6 +325,7 @@ Action FireMenuDraw(int iClient)
 	FormatEx(text, sizeof(text), "\
 		%s						Fire Storm(Level %d):\
 		\n \
+		\nEllis Can Carry and Starts With +1 Molotov\
 		\n+10 Clip Size per Level (SMG/Rifle/Sniper Only)\
 		\nFire Immunity\
 		\n \
@@ -345,7 +346,7 @@ Action FireMenuDraw(int iClient)
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	

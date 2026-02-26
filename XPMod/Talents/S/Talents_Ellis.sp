@@ -73,6 +73,12 @@ void TalentsLoad_Ellis(int iClient)
 		SetConVarFloat(FindConVar("adrenaline_duration"), float(g_iEllisAdrenalineStackDuration));
 	}
 
+	// Give Ellis a molotov for Fire Storm
+	if (g_iFireLevel[iClient] > 0)
+	{
+		CreateTimer(0.1, TimerDelayedGiveEllisAnExtraMolotovForFireStorm, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	}
+
 	if(g_iJamminLevel[iClient] == 5)
 	{
 		g_iEllisJamminGrenadeCounter[iClient] = 0;
@@ -576,6 +582,15 @@ void EventsItemPickUp_Ellis(int iClient, const char[] strWeaponClass)
 		g_bHealthBoostItemJustGivenByCheats[iClient] = false;
 	}
 
+	if (g_iFireLevel[iClient] > 0)
+	{
+		if (g_bGrenadeItemJustGivenByCheats[iClient] == false &&
+			StrEqual(strWeaponClass, "molotov", false) == true)
+			g_bGrenadeSlotWasEmptyOnLastPickUp[iClient] = true;
+
+		g_bGrenadeItemJustGivenByCheats[iClient] = false;
+	}
+
 	int iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 
 	if(g_iMetalLevel[iClient]>0 || g_iFireLevel[iClient]>0)
@@ -649,7 +664,32 @@ void EventsPlayerUse_Ellis(int iClient, int iTargetID)
 		}
 	}
 
+	int iGrenadeSlotItemID = GetPlayerWeaponSlot(iClient, 2);
+
+	if (g_iFireLevel[iClient] > 0 &&
+		iGrenadeSlotItemID != iTargetID &&
+		g_bGrenadeSlotWasEmptyOnLastPickUp[iClient] == false)
+	{
+		char strTargetClassName[35];
+		GetEdictClassname(iTargetID, strTargetClassName, sizeof(strTargetClassName));
+
+		if (StrContains(strTargetClassName,"weapon_molotov",false) != -1)
+		{
+			if (g_iStashedInventoryMolotov[iClient] < ELLIS_STASHED_INVENTORY_MAX_MOLOTOV)
+			{
+				if (iTargetID > 0 && IsValidEntity(iTargetID))
+					AcceptEntityInput(iTargetID, "Kill");
+
+				g_iStashedInventoryMolotov[iClient]++;
+				PrintToChat(iClient, "\x03[XPMod] \x05+1 Molotov. \x04You have %i more Molotov%s.",
+					g_iStashedInventoryMolotov[iClient],
+					g_iStashedInventoryMolotov[iClient] != 1 ? "s" : "");
+			}
+		}
+	}
+
 	g_bHealthBoostSlotWasEmptyOnLastPickUp[iClient] = false;
+	g_bGrenadeSlotWasEmptyOnLastPickUp[iClient] = false;
 	
 	// Weapon Cycling
 	HandleWeaponPickUpForWeaponCycling(iClient);
@@ -674,6 +714,9 @@ void HandleCheatCommandTasks_Ellis(int iClient, const char[] strCommandWithArgs)
 	if (StrEqual(strCommandWithArgs,"give pain_pills",false) == true ||
 		StrEqual(strCommandWithArgs,"give adrenaline",false) == true)
 		g_bHealthBoostItemJustGivenByCheats[iClient] = true;
+
+	if (StrEqual(strCommandWithArgs,"give molotov",false) == true)
+		g_bGrenadeItemJustGivenByCheats[iClient] = true;
 
 	HandleWeaponPickUpForWeaponCycling(iClient);
 }
@@ -1028,6 +1071,33 @@ void GiveEllisAnExtraAdrenaline(int iClient)
 Action TimerDelayedGiveEllisAnExtraAdrenaline(Handle timer, int iClient)
 {
 	GiveEllisAnExtraAdrenaline(iClient);
+	return Plugin_Stop;
+}
+
+void GiveEllisAnExtraMolotovForFireStorm(int iClient)
+{
+	if (RunClientChecks(iClient) == false)
+		return;
+
+	if (GetPlayerWeaponSlot(iClient, 2) > 0)
+	{
+		if (g_iStashedInventoryMolotov[iClient] < ELLIS_STASHED_INVENTORY_MAX_MOLOTOV)
+		{
+			g_iStashedInventoryMolotov[iClient]++;
+			PrintToChat(iClient, "\x03[XPMod] \x05+1 Molotov. \x04You have %i more Molotov%s.",
+				g_iStashedInventoryMolotov[iClient],
+				g_iStashedInventoryMolotov[iClient] != 1 ? "s" : "");
+		}
+	}
+	else
+	{
+		RunCheatCommand(iClient, "give", "give molotov");
+	}
+}
+
+Action TimerDelayedGiveEllisAnExtraMolotovForFireStorm(Handle timer, int iClient)
+{
+	GiveEllisAnExtraMolotovForFireStorm(iClient);
 	return Plugin_Stop;
 }
 

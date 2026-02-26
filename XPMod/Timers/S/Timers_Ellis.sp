@@ -39,6 +39,28 @@ Action TimerEllisJamminGiveMolotov(Handle timer, int iClient)
 	return Plugin_Stop;
 }
 
+Action TimerGiveMolotovFromStashedInventory(Handle timer, int iClient)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false ||
+		g_iStashedInventoryMolotov[iClient] <= 0)
+		return Plugin_Stop;
+
+	// Only consume reserve when the grenade slot is still empty.
+	if (GetPlayerWeaponSlot(iClient, 2) > 0)
+		return Plugin_Stop;
+
+	if (RunCheatCommand(iClient, "give", "give molotov"))
+	{
+		g_iStashedInventoryMolotov[iClient]--;
+		PrintToChat(iClient, "\x03[XPMod] \x04You have %i more Molotov%s.",
+					g_iStashedInventoryMolotov[iClient],
+					g_iStashedInventoryMolotov[iClient] != 1 ? "s" : "");
+	}
+
+	return Plugin_Stop;
+}
+
 Action TimerGiveAdrenalineFromStashedInventory(Handle timer, int iClient)
 {
 	if (g_iStashedInventoryAdrenaline[iClient] > 0)

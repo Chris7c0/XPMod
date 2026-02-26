@@ -193,6 +193,8 @@ void ResetClientVariablesForRound(int iClient)
 	g_iEllisAdrenalineStackDuration = 15;
 	g_bEllisHasAdrenalineBuffs[iClient] = false;
 	g_iStashedInventoryAdrenaline[iClient] = 0;
+	g_iStashedInventoryMolotov[iClient] = 0;
+	g_bGrenadeSlotWasEmptyOnLastPickUp[iClient] = false;
 	g_iTempHealthBeforeUsingHealthBoostSlotItem[iClient] = 0;
 	g_bIsEllisLimitBreaking[iClient] = false;
 	g_bCanEllisLimitBreak[iClient] = false;
@@ -220,6 +222,7 @@ void ResetClientVariablesForRound(int iClient)
 	g_iPillsUsedStack[iClient] = 0;
 	g_bHealthBoostItemJustGivenByCheats[iClient] = false;
 	g_bHealthBoostSlotWasEmptyOnLastPickUp[iClient] = false;
+	g_bGrenadeItemJustGivenByCheats[iClient] = false;
 	g_bWareStationActive[iClient] = false;
 	for (int i = 1;i <= MaxClients;i++)
 		g_bWareStationClientAlreadyServiced[iClient][i] = false;

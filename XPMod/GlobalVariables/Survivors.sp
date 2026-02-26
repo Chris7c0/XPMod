@@ -248,6 +248,9 @@ bool g_bEllisHasAdrenalineBuffs[MAXPLAYERS + 1];
 #define ELLIS_STASHED_INVENTORY_MAX_ADRENALINE              3
 #define ELLIS_STASHED_INVENTORY_MAX_TANK_SPAWN_ADRENALINE   5
 int g_iStashedInventoryAdrenaline[MAXPLAYERS + 1];
+#define ELLIS_STASHED_INVENTORY_MAX_MOLOTOV                 1
+int g_iStashedInventoryMolotov[MAXPLAYERS + 1];
+bool g_bGrenadeSlotWasEmptyOnLastPickUp[MAXPLAYERS + 1] = {false, ...};
 #define ELLIS_HEAL_AMOUNT_PILLS                             15
 #define ELLIS_MAX_TEMP_HEALTH                               125
 int g_iTempHealthBeforeUsingHealthBoostSlotItem[MAXPLAYERS + 1];
@@ -344,6 +347,7 @@ int g_iStashedInventoryPills[MAXPLAYERS + 1] = {0, ...};
 int g_iPillsUsedStack[MAXPLAYERS + 1] = {0, ...};
 bool g_bHealthBoostItemJustGivenByCheats[MAXPLAYERS + 1] = {false, ...};
 bool g_bHealthBoostSlotWasEmptyOnLastPickUp[MAXPLAYERS + 1] = {false, ...};
+bool g_bGrenadeItemJustGivenByCheats[MAXPLAYERS + 1] = {false, ...};
 bool g_bWareStationActive[MAXPLAYERS + 1];
 bool g_bWareStationClientAlreadyServiced[MAXPLAYERS + 1][MAXPLAYERS + 1];
 int g_iWareStationOwnerIDOfCurrentlyViewedStation[MAXPLAYERS + 1];
