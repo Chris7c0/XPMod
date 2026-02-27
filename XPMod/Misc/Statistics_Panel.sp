@@ -6,7 +6,7 @@ void ShowRoundStatsLastRoundIndividual(int iClient)
 
 	char strStatsText[700];
 	Format(strStatsText, sizeof(strStatsText),
-		"\n \
+		"\n \n \n \n \n \n \n \n \
 		\nYour Stats Last Round\
 		\n \
 		\nSURVIVOR\
@@ -20,7 +20,7 @@ void ShowRoundStatsLastRoundIndividual(int iClient)
 		\n Damage To Survivors: %i DMG\
 		\n \
 		\nPRESS 0 to Hide\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n ",
 		g_iStat_LastRound_ClientInfectedKilled[iClient],
 		g_iStat_LastRound_ClientCommonKilled[iClient],
 		g_iStat_LastRound_ClientCommonHeadshots[iClient],
@@ -38,7 +38,7 @@ void ShowRoundStatsLastRoundTopPlayers(int iClient)
 
 	char strStatsText[700];
 	Format(strStatsText, sizeof(strStatsText),
-		"\n \
+		"\n \n \n \n \n \n \n \n \
 		\nTop Players Last Round\
 		\n \
 		\nSURVIVORS\
@@ -52,7 +52,7 @@ void ShowRoundStatsLastRoundTopPlayers(int iClient)
 		\n Most Damage To Survivors: %s (%i DMG)\
 		\n \
 		\nPRESS 0 to Hide\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n ",
 		g_strReward_SIKills, g_iReward_SIKills,
 		g_strReward_CIKills, g_iReward_CIKills,
 		g_strReward_HS, g_iReward_HS,
@@ -74,12 +74,11 @@ void ShowRoundStatsXPModTopPlayers(int iClient)
 
 	char strStatsText[700];
 	Format(strStatsText, sizeof(strStatsText),
-		"\n \
+		"\n \n \n \n \n \n \n \
 		\nTop XPMod Players\
 		\n \
 		%s\
-		\n \
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n \n \n \n \n \n \n \n \n ",
 		g_strTopXPModPlayersStatsText);
 	
 	RoundStatsMenuDraw(iClient, strStatsText);
@@ -91,12 +90,14 @@ void RoundStatsMenuDraw(int iClient, const char[] strStatsText)
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return;
 
+	// Pad the stats text with newlines to push the numbered menu items
+	// off the bottom of the panel, keeping it looking like an info display.
+	// Uses single-byte \n characters instead of multi-byte zero-width spaces
+	// for cross-platform compatibility (Linux + Windows).
 	char strPanelText[1024];
 	Format(strPanelText, sizeof(strPanelText),
-		"%s\
-		​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​\
-		.",
-		strStatsText)
+		"%s \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		strStatsText);
 
 	Panel panel = new Panel();
 	panel.SetTitle(strPanelText);
