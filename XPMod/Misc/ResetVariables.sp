@@ -239,6 +239,7 @@ void ResetClientVariablesForRound(int iClient)
 	g_bHackTheServerEnabled = false;
 	g_bHackTheServerInCooldown = false;
 	g_bTimeOutInCooldown =  false;
+	g_bNoobWipeCooldown = false;
 	g_bInfectedBindsDisabled = false;
 	
 	//Infected Talents

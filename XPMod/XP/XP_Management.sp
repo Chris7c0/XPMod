@@ -4,6 +4,33 @@ void CheckLevel(int iClient)
 		LevelUpPlayer(iClient);
 }
 
+int GetClientTop10Position(int iClient)
+{
+	char strSteamID[32];
+	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
+		return 0;
+
+	for (int i = 0; i < g_iTop10Count; i++)
+	{
+		if (StrEqual(strSteamID, g_strTop10SteamIDs[i]))
+			return i + 1;
+	}
+	return 0;
+}
+
+void GetTop10Symbol(int iPosition, char[] strSymbol, int maxlen)
+{
+	switch (iPosition)
+	{
+		case 1: strcopy(strSymbol, maxlen, "♚");
+		case 2: strcopy(strSymbol, maxlen, "♛");
+		case 3: strcopy(strSymbol, maxlen, "♜");
+		case 4: strcopy(strSymbol, maxlen, "♝");
+		case 5: strcopy(strSymbol, maxlen, "♞");
+		default: strcopy(strSymbol, maxlen, "✪");
+	}
+}
+
 void RenamePlayerWithLevelTags(int iClient, bool bRemoveTags = false)
 {
 	if (RunClientChecks(iClient) == false ||
@@ -51,7 +78,13 @@ void RenamePlayerWithLevelTags(int iClient, bool bRemoveTags = false)
 		else
 		{
 			IntToString(g_iClientPrestigePoints[iClient], strClientLevel, sizeof(strClientLevel));
-			Format(strClientName, sizeof(strClientName), "[☆%s] %s", strClientLevel, strClientBaseName);
+			char strPrestigeSymbol[8];
+			int iTop10Pos = GetClientTop10Position(iClient);
+			if (iTop10Pos > 0)
+				GetTop10Symbol(iTop10Pos, strPrestigeSymbol, sizeof(strPrestigeSymbol));
+			else
+				strcopy(strPrestigeSymbol, sizeof(strPrestigeSymbol), "☆");
+			Format(strClientName, sizeof(strClientName), "[%s%s] %s", strPrestigeSymbol, strClientLevel, strClientBaseName);
 		}
 	}
 	
