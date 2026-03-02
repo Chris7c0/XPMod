@@ -633,25 +633,21 @@ void CheckForPlayersInIceTanksColdAuraSlowRange(int iTank)
 				SetClientSpeed(iClient);
 			}
 
-				if (g_bIceTankColdAuraDisabled[iClient] == false &&
-					g_hTimer_IceTankColdSlowAuraEffectUpdate[iClient] == null)
-				{
-					g_hTimer_IceTankColdSlowAuraEffectUpdate[iClient] = CreateTimer(
-						TANK_ICE_COLD_SLOW_AURA_EFFECT_UPDATE_INTERVAL,
-						Timer_UpdateIceTankColdSlowAuraVictimEffect,
-						iClient,
-						TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
-				}
+			if (g_bIceTankColdAuraDisabled[iClient] == false && g_hTimer_IceTankColdSlowAuraEffectUpdate[iClient] == null)
+				delete g_hTimer_IceTankColdSlowAuraEffectUpdate[iClient];
+				g_hTimer_IceTankColdSlowAuraEffectUpdate[iClient] = CreateTimer(TANK_ICE_COLD_SLOW_AURA_EFFECT_UPDATE_INTERVAL, Timer_UpdateIceTankColdSlowAuraVictimEffect, iClient, TIMER_REPEAT);
 
-				if (g_bIceTankColdAuraDisabled[iClient] == false)
-					StartIceTankColdSlowAuraVictimEffect(iClient);
-				else if (g_bIceTankColdAuraDisabled[iClient] == true &&
-					g_hTimer_IceTankColdSlowAuraEffectUpdate[iClient] != null)
-				{
-					delete g_hTimer_IceTankColdSlowAuraEffectUpdate[iClient];
-					StopIceTankColdSlowAuraVictimEffect(iClient);
-				}
+			if (g_bIceTankColdAuraDisabled[iClient] == false)
+			{
+				StartIceTankColdSlowAuraVictimEffect(iClient);
 			}
+			else if (g_bIceTankColdAuraDisabled[iClient] == true &&
+				g_hTimer_IceTankColdSlowAuraEffectUpdate[iClient] != null)
+			{
+				delete g_hTimer_IceTankColdSlowAuraEffectUpdate[iClient];
+				StopIceTankColdSlowAuraVictimEffect(iClient);
+			}
+		}
 		// Reset the value of g_fIceTankColdAuraSlowSpeedReduction if its set and its beyond the distance
 		else if (g_fIceTankColdAuraSlowSpeedReduction[iClient] > 0.0)
 		{
