@@ -503,6 +503,7 @@ void DeleteAllGlobalTimerHandles(int iClient)
 	delete g_hTimer_BlockGooSwitching[iClient];	
 	delete g_hTimer_ExtinguishTank[iClient];
 	delete g_hTimer_IceSphere[iClient];
+	delete g_hTimer_IceTankColdSlowAuraEnableAgain[iClient];
 	delete g_hTimer_IceTankColdSlowAuraEffectUpdate[iClient];
 	delete g_hTimer_WingDashChargeRegenerate[iClient];
 	delete g_hTimer_VampiricTankCanRechargeStamina[iClient];
