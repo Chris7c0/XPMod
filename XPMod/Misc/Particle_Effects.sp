@@ -384,12 +384,13 @@ void DeleteAllClientParticles(int iClient)
 	DeleteParticleEntity(g_iPID_RochelleCharge2[iClient]);
 	DeleteParticleEntity(g_iPID_RochelleCharge3[iClient]);
 	DeleteParticleEntity(g_iPID_RochelleJumpCharge[iClient]);
-	//DeleteParticleEntity(g_iPID_RochellePoisonBullet[iClient]);
-	
+	DeleteParticleEntity(g_iPID_RochellePoisonBullet[iClient]);
+
 	g_iPID_RochelleCharge1[iClient] = -1;
 	g_iPID_RochelleCharge2[iClient] = -1;
 	g_iPID_RochelleCharge3[iClient] = -1;
 	g_iPID_RochelleJumpCharge[iClient] = -1;
+	g_iPID_RochellePoisonBullet[iClient] = -1;
 	
 	//Coach
 	DeleteParticleEntity(g_iPID_CoachMeleeCharge1[iClient]);

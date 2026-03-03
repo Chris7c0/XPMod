@@ -100,7 +100,8 @@ Action TimerPoison(Handle timer, int iClient)
 		return Plugin_Continue;
 	}
 
-	g_bIsRochellePoisoned[iClient] = false;	
+	DeleteParticleEntity(g_iPID_RochellePoisonBullet[iClient]);
+	g_bIsRochellePoisoned[iClient] = false;
 	g_hTimer_RochellePoison[iClient] = null;
 
 	return Plugin_Stop;
