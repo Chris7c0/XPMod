@@ -26,6 +26,13 @@ Action TimerEllisPrimaryCycleReset(Handle timer, int iClient)
 	return Plugin_Stop;
 }
 
+Action TimerEllisWeaponPickupCooldownReset(Handle timer, int iClient)
+{
+	g_hTimer_EllisPickupWeaponCycleCooldown[iClient] = null;
+
+	return Plugin_Stop;
+}
+
 Action TimerEllisJamminGiveMolotov(Handle timer, int iClient)
 {
 	// g_iEventWeaponFireCounter[iClient] = 0;

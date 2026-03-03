@@ -400,6 +400,7 @@ void ResetAllVariables(int iClient)
 	//Reset the stashed weapons
 	g_bIsEllisWeaponCycling[iClient] = false;
 	g_bSetWeaponAmmoOnNextGameFrame[iClient] = false;
+	delete g_hTimer_EllisPickupWeaponCycleCooldown[iClient];
 	fnc_ClearAllWeaponData(iClient);
 
 	//Reset Tank (Needed here for changing teams)

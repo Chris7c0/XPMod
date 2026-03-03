@@ -28,3 +28,4 @@ Handle g_hTimer_DemiGooReset[MAXPLAYERS + 1] 			        = {null, ...};
 Handle g_hTimer_ResetGlow[MAXPLAYERS + 1] 	                    = {null, ...};
 Handle g_hTimer_ViralInfectionTick[MAXPLAYERS + 1] 		        = {null, ...};
 Handle g_hTimer_BlockGooSwitching[MAXPLAYERS + 1] 		        = {null, ...};
+Handle g_hTimer_EllisPickupWeaponCycleCooldown[MAXPLAYERS + 1]  = {null, ...};

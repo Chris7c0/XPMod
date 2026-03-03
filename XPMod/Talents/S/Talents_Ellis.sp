@@ -91,6 +91,7 @@ void TalentsLoad_Ellis(int iClient)
 		g_bCanEllisPrimaryCycle[iClient] = true;
 		g_iEllisPrimarySlot0[iClient] = ITEM_EMPTY;
 		g_iEllisPrimarySlot1[iClient] = ITEM_EMPTY;
+		delete g_hTimer_EllisPickupWeaponCycleCooldown[iClient];
 	}
 }
 
@@ -858,7 +859,11 @@ void HandleWeaponPickUpForWeaponCycling(int iClient)
 		if (iWeaponIndex <= ITEM_EMPTY || IsWeaponIndexPrimarySlotItem(iWeaponIndex) == false)
 			return;
 
-
+		// Kill existing pickup cooldown timer and start a new one
+		// This prevents weapon cycling for 1 second after picking up a weapon
+		// to avoid a glitch where ammo from one weapon transfers to another
+		delete g_hTimer_EllisPickupWeaponCycleCooldown[iClient];
+		g_hTimer_EllisPickupWeaponCycleCooldown[iClient] = CreateTimer(1.0, TimerEllisWeaponPickupCooldownReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 		if(g_bIsEllisWeaponCycling[iClient] == true)
 		{
@@ -918,8 +923,9 @@ void HandleEllisSwitchToStashedPrimaryWeapon(int iClient)
 		return;
 
 	// Check if Ellis can switch his weapon
-	if (g_iWeaponsLevel[iClient] < 5 || 
-		g_bCanEllisPrimaryCycle[iClient] == false)
+	if (g_iWeaponsLevel[iClient] < 5 ||
+		g_bCanEllisPrimaryCycle[iClient] == false ||
+		g_hTimer_EllisPickupWeaponCycleCooldown[iClient] != null)
 		return;
 
 	// Only continue if the appropriate buttons have been pressed
