@@ -649,6 +649,8 @@ Action Event_WitchSpawn(Handle hEvent, const char[] sName, bool bDontBroadcast)
 			&& IsClientInGame(iClient) == true && IsFakeClient(iClient) == false)
 		{
 			g_bJustSpawnedWitch[iClient] = false;
+			g_iClientBindUses_2[iClient]++;
+			CreateTimer(180.0, TimerResetCanConjureWitch, iClient, TIMER_FLAG_NO_MAPCHANGE);
 			bOwnerFound = true;
 			break;
 		}

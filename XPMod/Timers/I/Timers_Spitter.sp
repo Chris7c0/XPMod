@@ -93,16 +93,43 @@ Action TimerResetGravityFromGoo(Handle timer, int iClient)
 
 Action TimerConjureWitch(Handle timer, int iClient)
 {
-	g_bCanConjureWitch[iClient] = false;
+	// If conjure windup completed but the spitter is no longer valid, refund the attempt.
+	if (RunClientChecks(iClient) == false
+		|| IsPlayerAlive(iClient) == false
+		|| g_iClientTeam[iClient] != TEAM_INFECTED
+		|| g_iInfectedCharacter[iClient] != SPITTER)
+	{
+		g_bCanConjureWitch[iClient] = true;
+		g_bJustSpawnedWitch[iClient] = false;
+		return Plugin_Stop;
+	}
+
 	g_bJustSpawnedWitch[iClient] = true;
-	
-	CreateTimer(180.0, TimerResetCanConjureWitch, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 	//Spawn witch
 	RunCheatCommand(iClient, "z_spawn_old", "z_spawn_old witch");
 
-	g_iClientBindUses_2[iClient]++;
+	// If no witch_spawn event arrives shortly, spawn failed
+	CreateTimer(1.5, TimerConfirmConjuredWitchSpawn, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	
+	return Plugin_Stop;
+}
+
+Action TimerConfirmConjuredWitchSpawn(Handle timer, int iClient)
+{
+	if(RunClientChecks(iClient) == false)
+		return Plugin_Stop;
+
+	// Event_WitchSpawn already handled success.
+	if (g_bJustSpawnedWitch[iClient] == false)
+		return Plugin_Stop;
+
+	g_bJustSpawnedWitch[iClient] = false;
+	g_bCanConjureWitch[iClient] = true;
+
+	if (RunClientChecks(iClient) && IsPlayerAlive(iClient) && IsFakeClient(iClient) == false)
+		PrintHintText(iClient, "Witch conjure failed. Try again in a different spot.");
+
 	return Plugin_Stop;
 }
 
