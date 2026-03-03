@@ -109,6 +109,17 @@ Action Event_PlayerHurt(Handle hEvent, const char[] strName, bool bDontBroadcast
 			case CHARGER:	EventsHurt_AttackerCharger(hEvent, iAttacker, iVictim);
 			case TANK: 		EventsHurt_AttackerTank(hEvent, iAttacker, iVictim);
 		}
+
+		// Spitter acid pools persist after death, but g_iInfectedCharacter is
+		// reset to UNKNOWN_INFECTED on death, so talent goo effects stop applying.
+		// Catch lingering acid damage and route it to the Spitter handler.
+		if (g_iInfectedCharacter[iAttacker] == UNKNOWN_INFECTED)
+		{
+			char szWeapon[32];
+			GetEventString(hEvent, "weapon", szWeapon, sizeof(szWeapon));
+			if (StrEqual(szWeapon, "insect_swarm"))
+				EventsHurt_AttackerSpitter(hEvent, iAttacker, iVictim);
+		}
 	}
 	if (g_iClientTeam[iVictim] == TEAM_INFECTED)
 	{
