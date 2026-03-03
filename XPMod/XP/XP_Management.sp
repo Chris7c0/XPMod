@@ -358,7 +358,8 @@ Action ResetSurvivorTalents(int iClient)
 {
 	if(IsClientInGame(iClient) == false)
 		return Plugin_Handled;
-	//reset all levels///////////////////////////////////////////////////////////////////////////////
+
+	//Reset all levels///////////////////////////////////////////////////////////////////////////////
 	
 	//Bill
 	g_iInspirationalLevel[iClient] = 0;
@@ -408,90 +409,49 @@ Action ResetSurvivorTalents(int iClient)
 	g_iLouisTalent5Level[iClient] = 0;
 	g_iLouisTalent6Level[iClient] = 0;
 	
-	//reset all abilities///////////////////////////////////////////////////////////////////////////
-	//Turn off everything
-	g_bUsingFireStorm[iClient] = false;
-	g_bUsingShadowNinja[iClient] = false;
-	g_bIsJetpackOn[iClient] = false;
-	DisableNinjaRope(iClient, false);
-	
-	
-	//For all talents
-	if(g_bGameFrozen == false)
-	{
-		//Reset run speed
-		SetEntDataFloat(iClient, FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"), 1.0, true);	//Reset run speed
-		//ghillie
-		SetEntityRenderMode(iClient, RenderMode:0);		//Reset iClient tranparency
-		SetEntityRenderColor(iClient, 255, 255, 255, 255);
-	}
-	SetEntProp(iClient, Prop_Send, "m_iGlowType", 0);
-	SetEntProp(iClient, Prop_Send, "m_nGlowRange", 0);
-	SetEntProp(iClient, Prop_Send, "m_glowColorOverride", 0);
-	ChangeEdictState(iClient, 12);
-	
-	//Bill talents
-	
-	//Rochelle
-	
-	//Coach
-	g_bIsJetpackOn[iClient] = false;
-	
-	//Ellis
 
-	//Nick
-	
 	g_iSkillPoints[iClient] = g_iClientLevel[iClient];
 	g_iInfectedLevel[iClient] = RoundToFloor(g_iClientLevel[iClient] * 0.5);
-	//iskillpoints[iClient] = g_iInfectedLevel[iClient] * 3;
-
-	
-	//Delete all particles on the iClient
-	DeleteAllClientParticles(iClient);
 	
 	return Plugin_Handled;
 }
 
 void LevelUpPlayer(int iClient)
 {
-	if(iClient > 0)
-		if(IsClientInGame(iClient) == true)
-		{
-			int g_iClientOldLevel = g_iClientLevel[iClient];
-			calclvlandnextxp(iClient);
-			g_iSkillPoints[iClient] += (g_iClientLevel[iClient] - g_iClientOldLevel);
-			
-			if(g_iInfectedLevel[iClient] < RoundToFloor(g_iClientLevel[iClient] * 0.5))
-			{
-				//[iClient] += ((RoundToFloor(g_iClientLevel[iClient] * 0.5) - g_iInfectedLevel[iClient]) * 3);
-				g_iInfectedLevel[iClient] += (RoundToFloor(g_iClientLevel[iClient] * 0.5) - g_iInfectedLevel[iClient]);
-			}
-			
-			// Level up Surivivor Talents
-			AutoLevelUpSurivovor(iClient);
+	if(RunClientChecks(iClient) == false)
+		return;
 
-			// Level Up Infected Talents
-			SetInfectedClassSlot(iClient, 1, g_iClientInfectedClass1[iClient]);
-			SetInfectedClassSlot(iClient, 2, g_iClientInfectedClass2[iClient]);
-			SetInfectedClassSlot(iClient, 3, g_iClientInfectedClass3[iClient]);
+	int g_iClientOldLevel = g_iClientLevel[iClient];
+	calclvlandnextxp(iClient);
+	g_iSkillPoints[iClient] += (g_iClientLevel[iClient] - g_iClientOldLevel);
+	
+	if(g_iInfectedLevel[iClient] < RoundToFloor(g_iClientLevel[iClient] * 0.5))
+		g_iInfectedLevel[iClient] += (RoundToFloor(g_iClientLevel[iClient] * 0.5) - g_iInfectedLevel[iClient]);
+	
+	// Level up Surivivor Talents
+	AutoLevelUpSurivovor(iClient);
 
-			if (g_bClientLoggedIn[iClient])
-			{
-				// Print the level up message
-				PrintHintText(iClient, "<-=-=-=-:[You have reached level %d]:-=-=-=->", g_iClientLevel[iClient]);
-				PrintToChatAll("\x03[XPMod] %N is now level %d", iClient, g_iClientLevel[iClient]);
-				// Play the level up sound
-				float xyzClientLocation[3];
-				GetClientAbsOrigin(iClient, xyzClientLocation);
-				EmitAmbientSound(SOUND_LEVELUP, xyzClientLocation, iClient, SNDLEVEL_NORMAL);
-				xyzClientLocation[2] += 22.0;
-				WriteParticle(iClient, "mini_fireworks", 0.0, 10.0, xyzClientLocation);
+	// Level Up Infected Talents
+	SetInfectedClassSlot(iClient, 1, g_iClientInfectedClass1[iClient]);
+	SetInfectedClassSlot(iClient, 2, g_iClientInfectedClass2[iClient]);
+	SetInfectedClassSlot(iClient, 3, g_iClientInfectedClass3[iClient]);
 
-				// Change their name if they are confirmed
-				if (g_bTalentsConfirmed[iClient])
-					RenamePlayerWithLevelTags(iClient);
-			}
-		}
+	if (g_bClientLoggedIn[iClient])
+	{
+		// Print the level up message
+		PrintHintText(iClient, "<-=-=-=-:[You have reached level %d]:-=-=-=->", g_iClientLevel[iClient]);
+		PrintToChatAll("\x03[XPMod] %N is now level %d", iClient, g_iClientLevel[iClient]);
+		// Play the level up sound
+		float xyzClientLocation[3];
+		GetClientAbsOrigin(iClient, xyzClientLocation);
+		EmitAmbientSound(SOUND_LEVELUP, xyzClientLocation, iClient, SNDLEVEL_NORMAL);
+		xyzClientLocation[2] += 22.0;
+		WriteParticle(iClient, "mini_fireworks", 0.0, 10.0, xyzClientLocation);
+
+		// Change their name if they are confirmed
+		if (g_bTalentsConfirmed[iClient])
+			RenamePlayerWithLevelTags(iClient);
+	}
 }
 
 
