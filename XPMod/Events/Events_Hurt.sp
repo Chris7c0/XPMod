@@ -3,6 +3,7 @@ Action Event_PlayerHurt(Handle hEvent, const char[] strName, bool bDontBroadcast
 	int iAttacker = GetClientOfUserId(GetEventInt(hEvent,"attacker"));
 	int iVictim = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	int iDamage = GetEventInt(hEvent, "dmg_health");
+	int iDmgType = GetEventInt(hEvent, "type");
 
 	// Unfreeze player if they take any damage from SI
 	if(g_bFrozenByTank[iVictim] == true && 
@@ -29,12 +30,10 @@ Action Event_PlayerHurt(Handle hEvent, const char[] strName, bool bDontBroadcast
 	EventsHurt_PlayHeadshotDingSoundForHeadshots(hEvent, iAttacker, iVictim);
 
 	// Reduce damage for low level human survivor players that are not incaped
-	ReduceDamageTakenForNewPlayers(iVictim, iAttacker, iDamage);
+	ReduceDamageTakenForNewPlayers(iVictim, iAttacker, iDamage, iDmgType);
 
 	
 	EventsHurt_IncreaseCommonInfectedDamage(iAttacker, iVictim);
-
-	int iDmgType = GetEventInt(hEvent, "type");
 
 	// If iAttacker is a Common Infected, handle Enhanced CI abilites
 	if(iAttacker < 1 && iDmgType == DAMAGETYPE_INFECTED_MELEE)

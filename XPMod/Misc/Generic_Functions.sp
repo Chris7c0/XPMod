@@ -619,7 +619,7 @@ void DealDamage(int iVictim, int iAttacker, int iAmount, int iDamageType = DAMAG
 		AcceptEntityInput(entPointHurt, "Kill");
 }
 
-void ReduceDamageTakenForNewPlayers(int iVictim, int iAttacker, int iDmgAmount)
+void ReduceDamageTakenForNewPlayers(int iVictim, int iAttacker, int iDmgAmount, int iDmgType)
 {
 	// Reduce damage for low level human survivor players that are not incaped
 	if (g_iClientTeam[iVictim] != TEAM_SURVIVORS || 
@@ -627,6 +627,13 @@ void ReduceDamageTakenForNewPlayers(int iVictim, int iAttacker, int iDmgAmount)
 		RunClientChecks(iVictim) == false ||
 		// IsFakeClient(iVictim) || 
 		IsIncap(iVictim) == true)
+		return;
+
+	// Never scale map kill mechanics or charger death-charge contexts.
+	if ((iDmgType & (DMG_DROWN | DMG_DISSOLVE | DMG_REMOVENORAGDOLL | DMG_FALL | DMG_CRUSH)) ||
+		canchangemovement[iVictim] == false ||
+		g_bChargerGrappled[iVictim] == true ||
+		(iAttacker <= 0 && iDmgType != DAMAGETYPE_INFECTED_MELEE))
 		return;
 
 	// Skip if the attacker is a Nick (could be using pistol healing)
