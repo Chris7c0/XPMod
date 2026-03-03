@@ -275,6 +275,13 @@ bool g_bBind2InCooldown[MAXPLAYERS + 1];
 #define BIND1_ATTEMPT_COOLDOWN_DURATION         1.0
 #define BIND2_ATTEMPT_COOLDOWN_DURATION         1.0
 
+// Bind Uses Tracking (persist across reconnects within a round)
+#define BIND_TRACK_STORAGE_COUNT 200
+int g_iBindTrackCount;
+char g_strBindTrackSteamID[BIND_TRACK_STORAGE_COUNT][32];
+int g_iBindTrackUses1[BIND_TRACK_STORAGE_COUNT];
+int g_iBindTrackUses2[BIND_TRACK_STORAGE_COUNT];
+
 // Storage of player health for when needed and not provided
 int g_iPlayerHealth[MAXPLAYERS + 1];
 int g_iPlayerHealthTemp[MAXPLAYERS + 1];

@@ -93,6 +93,8 @@ void HandleClientConnect(int iClient)
 
 		StartClientAuthReadyInitialization(iClient);
 
+		RestorePlayerBindUses(iClient);
+
 		// Set the AFK last button press time
 		g_fLastPlayerLastButtonPressTime[iClient] =  GetGameTime();
 	}
@@ -130,6 +132,7 @@ void HandleClientDisconnect(int iClient)
 
 	SaveUserData(iClient);
 
+	StorePlayerBindUses(iClient);
 	StorePlayerInDisconnectedPlayerList(iClient);
 
 	for (int l = 0; l<23; l++)
@@ -241,6 +244,66 @@ void StorePlayerInDisconnectedPlayerList(int iClient)
 	// Increment the size of the array (note that array is fixed to size of DISCONNECTED_PLAYER_STORAGE_COUNT)
 	if (existingIndex == -1)
 		g_iDisconnectedPlayerCnt = g_iDisconnectedPlayerCnt >= DISCONNECTED_PLAYER_STORAGE_COUNT ? DISCONNECTED_PLAYER_STORAGE_COUNT : g_iDisconnectedPlayerCnt + 1;
+}
+
+void StorePlayerBindUses(int iClient)
+{
+	char strSteamID[32];
+	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
+		return;
+
+	// Check if this SteamID already has a slot
+	int iSlot = -1;
+	for (int i = 0; i < g_iBindTrackCount; i++)
+	{
+		if (StrEqual(g_strBindTrackSteamID[i], strSteamID))
+		{
+			iSlot = i;
+			break;
+		}
+	}
+
+	// If not found, allocate a new slot
+	if (iSlot == -1)
+	{
+		if (g_iBindTrackCount >= BIND_TRACK_STORAGE_COUNT)
+			return;
+		iSlot = g_iBindTrackCount;
+		g_iBindTrackCount++;
+	}
+
+	strcopy(g_strBindTrackSteamID[iSlot], sizeof(g_strBindTrackSteamID[]), strSteamID);
+	g_iBindTrackUses1[iSlot] = g_iClientBindUses_1[iClient];
+	g_iBindTrackUses2[iSlot] = g_iClientBindUses_2[iClient];
+}
+
+void RestorePlayerBindUses(int iClient)
+{
+	char strSteamID[32];
+	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
+		return;
+
+	for (int i = 0; i < g_iBindTrackCount; i++)
+	{
+		if (StrEqual(g_strBindTrackSteamID[i], strSteamID))
+		{
+			g_iClientBindUses_1[iClient] = g_iBindTrackUses1[i];
+			g_iClientBindUses_2[iClient] = g_iBindTrackUses2[i];
+
+			// Remove the entry by shifting the last element into this slot
+			g_iBindTrackCount--;
+			if (i < g_iBindTrackCount)
+			{
+				strcopy(g_strBindTrackSteamID[i], sizeof(g_strBindTrackSteamID[]), g_strBindTrackSteamID[g_iBindTrackCount]);
+				g_iBindTrackUses1[i] = g_iBindTrackUses1[g_iBindTrackCount];
+				g_iBindTrackUses2[i] = g_iBindTrackUses2[g_iBindTrackCount];
+			}
+			g_strBindTrackSteamID[g_iBindTrackCount][0] = '\0';
+			g_iBindTrackUses1[g_iBindTrackCount] = 0;
+			g_iBindTrackUses2[g_iBindTrackCount] = 0;
+			return;
+		}
+	}
 }
 
 void LoopThroughAllPlayersAndHandleAFKPlayers()

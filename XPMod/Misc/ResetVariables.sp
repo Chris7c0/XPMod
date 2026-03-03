@@ -55,6 +55,15 @@ void ResetAllVariablesForRound()
 	g_iNickDesperateMeasuresStack = 0;
 	g_fMaxLaserAccuracy = 0.4;
 	// g_bSomeoneAttacksFaster = false;
+
+	// Clear bind uses tracking (reconnect persistence is per-round only)
+	g_iBindTrackCount = 0;
+	for (int i = 0; i < BIND_TRACK_STORAGE_COUNT; i++)
+	{
+		g_strBindTrackSteamID[i][0] = '\0';
+		g_iBindTrackUses1[i] = 0;
+		g_iBindTrackUses2[i] = 0;
+	}
 }
 
 void ResetClientVariablesForRound(int iClient)
