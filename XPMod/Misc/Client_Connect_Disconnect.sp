@@ -1,5 +1,5 @@
 const float AUTH_READY_RETRY_INTERVAL = 1.0;
-const int AUTH_READY_MAX_RETRIES = 10;
+const int AUTH_READY_MAX_RETRIES = 30;
 
 bool g_bClientAuthInitPending[MAXPLAYERS + 1];
 bool g_bClientAuthInitCompleted[MAXPLAYERS + 1];
