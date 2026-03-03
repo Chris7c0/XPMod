@@ -337,7 +337,11 @@ Action Event_RoundEnd(Handle hEvent, const char[] strName, bool bDontBroadcast)
 	}
 	
 	g_bCanSave = false;
-	
+
+	// Close any open menus so they don't carry over to the next round
+	for (int iClient = 1; iClient <= MaxClients; iClient++)
+		ClosePanel(iClient);
+
 	return Plugin_Continue;
 }
 
@@ -456,9 +460,12 @@ Action Event_PlayerChangeTeam(Handle hEvent, const char[] strName, bool bDontBro
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return Plugin_Continue;
 	
+	// Close any open menus so they don't carry over to the new team
+	ClosePanel(iClient);
+
 	g_bPlayerInTeamChangeCoolDown[iClient] = true;
 	CreateTimer(3.0, TimerResetPlayerChangeTeamCoolDown, iClient, TIMER_FLAG_NO_MAPCHANGE);
-	
+
 	CreateTimer(0.1, TimerCheckTeam, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 	//This needs to be at 0.2 because ResetAllVariables is called at 0.1 twice on change team
