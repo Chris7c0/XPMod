@@ -108,11 +108,11 @@ int CreateParticle(char[] type, float time, int entity, int attach = ATTACH_NONE
 			
 		DispatchKeyValue(particle, "effect_name", type);
 		
-		if (attach != ATTACH_NONE) 
+		if (attach != ATTACH_NONE)
 		{
 			SetVariantString("!activator");
 			AcceptEntityInput(particle, "SetParent", entity, particle, 0);
-			
+
 			switch(attach)
 			{
 				case ATTACH_MOUTH:				SetVariantString("mouth");
@@ -122,7 +122,7 @@ int CreateParticle(char[] type, float time, int entity, int attach = ATTACH_NONE
 				case ATTACH_DEBRIS:				SetVariantString("debris");
 				case ATTACH_RSHOULDER:			SetVariantString("rshoulder");
 				case 99:						SetVariantString("smoker_mouth");
-				
+
 				/*
 				case ATTACH_FORWARD:			SetVariantString("forward");
 				case ATTACH_SPINE:				SetVariantString("spine");
@@ -132,8 +132,12 @@ int CreateParticle(char[] type, float time, int entity, int attach = ATTACH_NONE
 				case ATTACH_MEDKIT:				SetVariantString("medkit");
 				*/
 			}
-			
-			AcceptEntityInput(particle, "SetParentAttachmentMaintainOffset", particle, particle, 0);
+
+			// ATTACH_NORMAL only needs SetParent (already done above).
+			// SetParentAttachmentMaintainOffset requires a named bone
+			// attachment point, which ATTACH_NORMAL does not provide.
+			if (attach != ATTACH_NORMAL)
+				AcceptEntityInput(particle, "SetParentAttachmentMaintainOffset", particle, particle, 0);
 		}
 		// All entities in presents are given a targetname to make clean up easier
 		DispatchKeyValue(particle, "targetname", "L4DParticle");

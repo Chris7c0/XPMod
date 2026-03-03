@@ -110,6 +110,23 @@ Action TimerBlowUpPoopBomb(Handle timer, int iEntity)
 
 	float xyzEntityOrigin[3];
 	GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", xyzEntityOrigin);
+
+	// Kill all info_goal_infected_chase entities parented to this pipe bomb.
+	// AttachInfected() creates new chase entities on every beep tick, and
+	// killing the parent pipe bomb does not always clean up these children,
+	// which can leave an infinite bile-attract effect.
+	char strGoalName[32], strEntName[32];
+	FormatEx(strGoalName, sizeof(strGoalName), "goal_infected%d", iEntity);
+	int iChaseEnt = -1;
+	while ((iChaseEnt = FindEntityByClassname(iChaseEnt, "info_goal_infected_chase")) != -1)
+	{
+		if (IsValidEntity(iChaseEnt) && GetEntPropString(iChaseEnt, Prop_Data, "m_iName", strEntName, sizeof(strEntName)) > 0)
+		{
+			if (StrEqual(strEntName, strGoalName))
+				AcceptEntityInput(iChaseEnt, "Kill");
+		}
+	}
+
 	if(iEntity > 0 && IsValidEntity(iEntity))
 		AcceptEntityInput(iEntity, "Kill");
 	int i_Ent = CreateEntityByName("prop_physics");
