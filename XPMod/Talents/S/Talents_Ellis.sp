@@ -860,10 +860,9 @@ void HandleWeaponPickUpForWeaponCycling(int iClient)
 			return;
 
 		// Kill existing pickup cooldown timer and start a new one
-		// This prevents weapon cycling for 1 second after picking up a weapon
-		// to avoid a glitch where ammo from one weapon transfers to another
+		// This prevents weapon cycling for 0.7 seconds after picking up a weapon
 		delete g_hTimer_EllisPickupWeaponCycleCooldown[iClient];
-		g_hTimer_EllisPickupWeaponCycleCooldown[iClient] = CreateTimer(1.0, TimerEllisWeaponPickupCooldownReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
+		g_hTimer_EllisPickupWeaponCycleCooldown[iClient] = CreateTimer(0.7, TimerEllisWeaponPickupCooldownReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 		if(g_bIsEllisWeaponCycling[iClient] == true)
 		{
@@ -891,20 +890,28 @@ void HandleWeaponPickUpForWeaponCycling(int iClient)
 		// Handle when Ellis picks up the same weapon thats in the other slot
 		else if(g_iEllisCurrentPrimarySlot[iClient] == 0 && iWeaponIndex == g_iEllisPrimarySlot1[iClient])
 		{
-			g_iEllisPrimarySlot1[iClient] = g_iEllisPrimarySlot0[iClient];
-			g_iEllisPrimarySlot0[iClient] = iWeaponIndex;
+			// Treat this as a replace action to avoid stashing a dropped active weapon.
+			g_iEllisCurrentPrimarySlot[iClient] = 1;
+			StoreCurrentPrimaryWeapon(iClient);
+			StoreCurrentPrimaryWeaponAmmo(iClient);
 
-			g_iEllisPrimarySavedClipSlot1[iClient] = g_iEllisPrimarySavedClipSlot0[iClient];
-			g_iEllisPrimarySavedAmmoSlot1[iClient] = g_iEllisPrimarySavedAmmoSlot0[iClient];
+			g_iEllisPrimarySlot0[iClient] = ITEM_EMPTY;
+			g_iEllisPrimarySavedClipSlot0[iClient] = 0;
+			g_iEllisPrimarySavedAmmoSlot0[iClient] = 0;
+			g_iEllisUpgradeAmmoSlot1[iClient] = 0;
 		}
 		// Handle when Ellis picks up the same weapon thats in the other slot
 		else if(g_iEllisCurrentPrimarySlot[iClient] == 1 && iWeaponIndex == g_iEllisPrimarySlot0[iClient])
 		{
-			g_iEllisPrimarySlot0[iClient] = g_iEllisPrimarySlot1[iClient];
-			g_iEllisPrimarySlot1[iClient] = iWeaponIndex;
+			// Treat this as a replace action to avoid stashing a dropped active weapon.
+			g_iEllisCurrentPrimarySlot[iClient] = 0;
+			StoreCurrentPrimaryWeapon(iClient);
+			StoreCurrentPrimaryWeaponAmmo(iClient);
 
-			g_iEllisPrimarySavedClipSlot0[iClient] = g_iEllisPrimarySavedClipSlot1[iClient];
-			g_iEllisPrimarySavedAmmoSlot0[iClient] = g_iEllisPrimarySavedAmmoSlot1[iClient];
+			g_iEllisPrimarySlot1[iClient] = ITEM_EMPTY;
+			g_iEllisPrimarySavedClipSlot1[iClient] = 0;
+			g_iEllisPrimarySavedAmmoSlot1[iClient] = 0;
+			g_iEllisUpgradeAmmoSlot2[iClient] = 0;
 		}
 		else
 		{
