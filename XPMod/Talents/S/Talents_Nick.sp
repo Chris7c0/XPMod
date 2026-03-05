@@ -677,6 +677,10 @@ void EventsItemPickUp_Nick(int iClient, const char[] strWeaponClass)
 					DispatchSpawn(weapon);
 					TeleportEntity(weapon, wepvorigin, vangles, NULL_VECTOR);
 				}
+				if((StrContains(strWeaponClass,"melee",false) != -1) || (StrContains(strWeaponClass,"chainsaw",false) != -1))
+				{
+					PistolWeaponCleanUp();
+				}
 				g_iNickCurrentSecondarySlot[iClient] = 0;
 				if((StrEqual(strWeaponClass, "pistol_magnum", false) == true) && (StrEqual(g_strNickSecondarySlot1, "weapon_pistol_magnum", false) == true))
 				{
