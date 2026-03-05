@@ -124,11 +124,7 @@ void EventsHurt_AttackerTank_Fire(Handle hEvent, int iAttackerTank, int iVictim)
 		//Fire punch occurs on every Nth successful survivor hit, starting with the first
 		if(g_bFireTankAttackCharged[iAttackerTank] == true)
 		{
-			float xyzLocation[3];
-			GetClientAbsOrigin(iVictim, xyzLocation);
-			xyzLocation[2] += 30.0;
-			PropaneExplode(xyzLocation);
-			MolotovExplode(xyzLocation);
+			CreateFireTankExplosion(iVictim);
 
 			g_bFireTankAttackCharged[iAttackerTank] = false;
 			DeleteParticleEntity(g_iPID_TankChargedFire[iAttackerTank]);
@@ -160,10 +156,7 @@ void EventsDeath_VictimTank_Fire(Handle hEvent, int iAttacker, int iVictimTank)
 	SuppressNeverUsedWarning(hEvent, iAttacker);
 
 	// Explode the tank and set a fire
-	float xyzLocation[3];
-	GetClientAbsOrigin(iVictimTank, xyzLocation);
-	PropaneExplode(xyzLocation);
-	MolotovExplode(xyzLocation);
+	CreateFireTankExplosion(iVictimTank);
 }
 
 void SetFireToPlayer(int iVictim, int iAttacker, float fTime)
@@ -220,8 +213,19 @@ void OnPlayerRunCmd_Tank_Fire(int iClient, int iButtons)
 	}
 }
 
+void CreateFireTankExplosion(int iClient)
+{
+	float xyzLocation[3];
+	GetClientAbsOrigin(iClient, xyzLocation);
+	xyzLocation[2] += 30.0;
+	PropaneExplode(xyzLocation);
+	MolotovExplode(xyzLocation);
+}
+
 void FireTankDash(int iClient)
 {
+	CreateFireTankExplosion(iClient);
+
 	// Pay HP cost if above threshold
 	int iCurrentHealth = GetPlayerHealth(iClient);
 	if (iCurrentHealth > FIRE_TANK_DASH_HP_COST)
