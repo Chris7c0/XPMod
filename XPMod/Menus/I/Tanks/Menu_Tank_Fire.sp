@@ -12,17 +12,17 @@ Action TankMenuDrawFire(int iClient)
         \n - 20-70%% Faster (Pain = Speed)\
         \n - 20%% Chance To Ignite Victim On Punch\
         \n - Lose %i HP/Sec\
+        \n - Fire Punch every %i hits\
+        \n    - \"PuNCh FAcE...MAkE BoOM!\"\
         \n \
         \n Actives\
-        \n - [Hold CROUCH] Charge Fire Punch\
-        \n    - \"PuNCh FAcE...MAkE BoOM!\"\
         \n - Throw Fire Rocks\
         \n - [WALK + Move] Fire Dash\
         \n    - Lose %i HP\
         \n ",
         TANK_HEALTH_FIRE,
         FIRE_TANK_HP_DRAIN_PER_SECOND,
-        FIRE_TANK_DASH_HP_COST,
+        FIRE_TANK_FIRE_PUNCH_EVERY_N_HITS,
         FIRE_TANK_DASH_HP_COST);
 	
 	AddMenuItem(menu, "option1", "Back");

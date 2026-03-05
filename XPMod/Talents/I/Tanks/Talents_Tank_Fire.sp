@@ -16,7 +16,9 @@ void LoadFireTankTalents(int iClient)
 	
 	g_iTankChosen[iClient] = TANK_FIRE;
 	g_fTankHealthPercentage[iClient] =  1.0;
-	g_bBlockTankFirePunchCharge[iClient] = false;
+	g_iFireTankPunchHitCounter[iClient] = 0;
+	g_bFireTankAttackCharged[iClient] = true;
+	g_iPID_TankChargedFire[iClient] = CreateParticle("fire_small_01", 0.0, iClient, ATTACH_DEBRIS);
 	
 	// Set On Fire
 	IgniteEntity(iClient, 10000.0, false);
@@ -47,7 +49,7 @@ void ResetAllTankVariables_Fire(int iClient)
 {
 	g_iFireDamageCounter[iClient] = 0;
 	g_bFireTankAttackCharged[iClient] = false;
-	g_bBlockTankFirePunchCharge[iClient] = false;
+	g_iFireTankPunchHitCounter[iClient] = 0;
 	g_fFireTankExtraSpeed[iClient] = 0.0;
 	g_bFireTankDashActive[iClient] = false;
 	g_bFireTankDashCoolingDown[iClient] = false;
@@ -67,56 +69,6 @@ void SetClientSpeedTankFire(int iClient, float &fSpeed)
 	}
 
 	fSpeed += (TANK_FIRE_BASE_SPEED + g_fFireTankExtraSpeed[iClient]);
-}
-
-void OnGameFrame_Tank_Fire(int iClient)
-{
-	//Check to see if the charging has already taken place or depleted
-	if(g_iTankChosen[iClient] == TANK_FIRE && g_bFireTankAttackCharged[iClient] == true)
-		return;
-	
-	int buttons;
-	buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
-	
-	//Check to see if ducking and not attacking before starting the charge
-	if((buttons & IN_DUCK) && !(buttons & IN_ATTACK) && !(buttons & IN_ATTACK2))
-	{
-		// CheckIfTankMovedWhileChargingAndIncrementCharge(iClient);
-		g_iTankCharge[iClient]++;  
-
-		//Display the first message to the player while he is charging up
-		if(g_iTankCharge[iClient] == 30)
-		{
-			if(g_bBlockTankFirePunchCharge[iClient] == false)
-			{
-				if (IsFakeClient(iClient) == false)
-					PrintHintText(iClient, "Charging Up Attack");
-			}
-			else
-			{
-				if (IsFakeClient(iClient) == false)
-					PrintHintText(iClient, "You must wait to charge your fire punch attack");
-				g_iTankCharge[iClient] = 0;
-			}
-		}
-		
-		//Charged for long enough, now handle fire tank charged punch
-		if(g_iTankCharge[iClient] >= 150)
-		{
-			g_bFireTankAttackCharged[iClient] = true;
-			g_iTankCharge[iClient] = 0;				
-			g_iPID_TankChargedFire[iClient] = CreateParticle("fire_small_01", 0.0, iClient, ATTACH_DEBRIS);
-			
-			PrintHintText(iClient, "Fire Punch Attack Charged", g_iTankCharge[iClient]);
-		}
-	}
-	else if(g_iTankCharge[iClient] > 0)
-	{
-		if(g_iTankCharge[iClient] > 31 && IsFakeClient(iClient) == false)
-			PrintHintText(iClient, "Charge Interrupted");
-		
-		g_iTankCharge[iClient] = 0;
-	}
 }
 
 void EventsHurt_VictimTank_Fire(Handle hEvent, int iAttacker, int iVictimTank)
@@ -167,7 +119,9 @@ void EventsHurt_AttackerTank_Fire(Handle hEvent, int iAttackerTank, int iVictim)
 	
 	if(StrEqual(weapon,"tank_claw") == true)
 	{
-		//Set fire to iVictim if charged or percent chance happens(5 seconds)
+		g_iFireTankPunchHitCounter[iAttackerTank]++;
+
+		//Fire punch occurs on every Nth successful survivor hit, starting with the first
 		if(g_bFireTankAttackCharged[iAttackerTank] == true)
 		{
 			float xyzLocation[3];
@@ -175,13 +129,20 @@ void EventsHurt_AttackerTank_Fire(Handle hEvent, int iAttackerTank, int iVictim)
 			xyzLocation[2] += 30.0;
 			PropaneExplode(xyzLocation);
 			MolotovExplode(xyzLocation);
-			
+
 			g_bFireTankAttackCharged[iAttackerTank] = false;
 			DeleteParticleEntity(g_iPID_TankChargedFire[iAttackerTank]);
 			SetFireToPlayer(iVictim, iAttackerTank, 5.0);
-			
-			g_bBlockTankFirePunchCharge[iAttackerTank] = true;
-			CreateTimer(FIRE_TANK_FIRE_PUNCH_COOLDOWN_DURATION, Timer_UnblockFirePunchCharge, iAttackerTank, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+		}
+		else if(g_iFireTankPunchHitCounter[iAttackerTank] >= FIRE_TANK_FIRE_PUNCH_EVERY_N_HITS)
+		{
+			// Recharge fire punch after N hits
+			g_iFireTankPunchHitCounter[iAttackerTank] = 0;
+			g_bFireTankAttackCharged[iAttackerTank] = true;
+			g_iPID_TankChargedFire[iAttackerTank] = CreateParticle("fire_small_01", 0.0, iAttackerTank, ATTACH_DEBRIS);
+
+			if (IsFakeClient(iAttackerTank) == false)
+				PrintHintText(iAttackerTank, "Fire Punch Recharged!");
 		}
 		else if(GetRandomInt(1, 5) == 1)
 		{

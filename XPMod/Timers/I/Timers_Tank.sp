@@ -45,13 +45,6 @@ Action TimerExtinguishTank(Handle timer, int iClient)
 }
 
 
-Action Timer_UnblockFirePunchCharge(Handle timer, int iClient)
-{
-	g_bBlockTankFirePunchCharge[iClient] = false;
-
-	return Plugin_Stop;
-}
-
 Action Timer_FireTankHPDrain(Handle timer, int iClient)
 {
 	if (RunClientChecks(iClient) == false ||

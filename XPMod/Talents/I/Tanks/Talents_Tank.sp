@@ -7,7 +7,6 @@ void OnGameFrame_Tank(int iClient)
 {
 	switch (g_iTankChosen[iClient])
 	{
-		case TANK_FIRE:			OnGameFrame_Tank_Fire(iClient);
 		case TANK_ICE:			OnGameFrame_Tank_Ice(iClient);
 		case TANK_NECROTANKER:	OnGameFrame_Tank_NecroTanker(iClient);
 		case TANK_VAMPIRIC:		OnGameFrame_Tank_Vampiric(iClient);
