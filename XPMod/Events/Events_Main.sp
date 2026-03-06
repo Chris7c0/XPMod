@@ -261,6 +261,8 @@ public void OnMapStart()
 	//SetConVarInt(FindConVar("z_discard_range"), 3000); 	//Required or common will disappear when spawned out of range of NecroTanker
 	
 	// Set the filename for the log to the server name
+	for (int i = 0; i < sizeof(g_strServerName); i++)
+		g_strServerName[i] = '\0';
 	GetConVarString(FindConVar("hostname"), g_strServerName, sizeof(g_strServerName));
 	// Guard against any edge-case truncated copy that may miss a terminator.
 	g_strServerName[sizeof(g_strServerName) - 1] = '\0';
