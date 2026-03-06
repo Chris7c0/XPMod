@@ -33,6 +33,7 @@ void SetupXPMEvents()
 
 	//Misc Events
 	HookEvent("player_left_start_area", Event_PlayerLeftStartArea);
+	HookEvent("survival_round_start", Event_SurvivalRoundStart);
 	
 	//Player Events
 	HookEvent("player_changename", Event_PlayerChangeName);
@@ -693,6 +694,30 @@ Action Event_PlayerShoved(Event event, const char[] name, bool dontBroadcast)
 	return Plugin_Continue;
 }
 
+void StartSmokerSmokeCloudRoundStartWait()
+{
+	if (g_bPlayerLeftStartArea == true || 
+		g_bEndOfRound == true ||
+		g_bPlayerPressedButtonThisRound == false)
+		return;
+
+	g_bPlayerLeftStartArea = true;
+
+	// Smoker global wait on Smoke Cloud until the round is properly underway.
+	CreateTimer(SMOKER_SMOKE_CLOUD_GLOBAL_SAFE_ROOM_WAIT_DURATION, TimerAllowSmokersToUseBind1AfterSafeRoomDoorOpened, _, TIMER_FLAG_NO_MAPCHANGE);
+}
+
+Action Event_SurvivalRoundStart(Handle hEvent, const char[] name, bool dontBroadcast)
+{
+	if (g_iGameMode != GAMEMODE_VERSUS_SURVIVAL ||
+		g_bGameFrozen == true)
+		return Plugin_Continue;
+
+	StartSmokerSmokeCloudRoundStartWait();
+
+	return Plugin_Continue;
+}
+
 // Triggered when player opens safe room door and walks out
 Action Event_PlayerLeftStartArea(Handle hEvent, const char[] name, bool dontBroadcast)
 {
@@ -702,10 +727,7 @@ Action Event_PlayerLeftStartArea(Handle hEvent, const char[] name, bool dontBroa
 		g_bPlayerPressedButtonThisRound == false)
 		return Plugin_Continue;
 
-	g_bPlayerLeftStartArea = true;
-
-	// Smoker global wait on Smoke Cloud until thats triggered after safe room door has been opened
-	CreateTimer(SMOKER_SMOKE_CLOUD_GLOBAL_SAFE_ROOM_WAIT_DURATION, TimerAllowSmokersToUseBind1AfterSafeRoomDoorOpened, _, TIMER_FLAG_NO_MAPCHANGE);
+	StartSmokerSmokeCloudRoundStartWait();
 
 	return Plugin_Continue;
 }
