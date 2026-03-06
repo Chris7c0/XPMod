@@ -83,6 +83,24 @@ Action TimerShowTalentsConfirmed(Handle timer, int iClient)
 
 void DrawConfirmationMenuToClient(int iClient, int iDisplayTime = 60)
 {
+	// Auto confirm if the option is enabled
+	if(g_bAutoConfirm[iClient] == true && g_bClientLoggedIn[iClient] == true)
+	{
+		g_bTalentsConfirmed[iClient] = true;
+		g_iAutoSetCountDown[iClient] = -1;
+		g_bUserStoppedConfirmation[iClient] = true;
+		SaveUserData(iClient);
+
+		PrintHintText(iClient, "Characters Auto-Confirmed");
+		LoadTalents(iClient);
+		ClosePanel(iClient);
+
+		RenamePlayerWithLevelTags(iClient);
+
+		ShowRoundStatsPanelsToPlayer(iClient);
+		return;
+	}
+
 	// Draw Confirmation menu
 	g_bUserStoppedConfirmation[iClient] = false;
 	g_iAutoSetCountDown[iClient] = iDisplayTime;

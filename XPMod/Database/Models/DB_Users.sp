@@ -15,10 +15,11 @@
 #define DB_COL_INDEX_USERS_EQUIPMENT_LASER       14
 #define DB_COL_INDEX_USERS_OPTION_ANNOUNCER      15
 #define DB_COL_INDEX_USERS_OPTION_DISPLAY_XP     16
-#define DB_COL_INDEX_PRESTIGE_POINTS             17
-#define DB_COL_INDEX_PUSH_UPDATE_FROM_DB         18
+#define DB_COL_INDEX_USERS_OPTION_AUTO_CONFIRM   17
+#define DB_COL_INDEX_PRESTIGE_POINTS             18
+#define DB_COL_INDEX_PUSH_UPDATE_FROM_DB         19
 
-char strUsersTableColumnNames[19][50] = {
+char strUsersTableColumnNames[20][50] = {
     "user_id",
     "user_name",
     "steam_id",
@@ -36,6 +37,7 @@ char strUsersTableColumnNames[19][50] = {
     "equipment_laser",
     "option_announcer",
     "option_display_xp",
+    "option_auto_confirm",
     "prestige_points",
     "push_update_from_db"
 };

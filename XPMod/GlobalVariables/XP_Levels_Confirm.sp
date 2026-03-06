@@ -108,6 +108,7 @@ bool g_bCanPlayHeadshotSound[MAXPLAYERS + 1];
 bool g_bAnnouncerOn[MAXPLAYERS + 1];
 
 // Confirmation Variables
+bool g_bAutoConfirm[MAXPLAYERS + 1];
 bool g_bTalentsConfirmed[MAXPLAYERS + 1];
 bool g_bUserStoppedConfirmation[MAXPLAYERS + 1];
 bool g_bClientAlreadyShownCharacterSelectMenu[MAXPLAYERS + 1];

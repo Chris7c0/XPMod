@@ -443,6 +443,23 @@ Action ToggleAnnouncerVoice(int iClient)	//Toggles the announcers voice
 	return Plugin_Handled;
 }
 
+Action ToggleAutoConfirm(int iClient)
+{
+	if(iClient!=0)
+	{
+		if(g_bAutoConfirm[iClient]==false)
+		{
+			g_bAutoConfirm[iClient] = true;
+			PrintHintText(iClient, "Auto Confirm is now ON.");
+		}
+		else
+		{
+			g_bAutoConfirm[iClient] = false;
+			PrintHintText(iClient, "Auto Confirm is now OFF.");
+		}
+	}
+	return Plugin_Handled;
+}
 
 
 void ShowHudOverlayColor(int iClient, int iRed, int iGreen, int iBlue, int iAlpha, int iDuration, int iBehavior = FADE_SOLID)

@@ -335,8 +335,12 @@ Action OptionMenuDraw(int iClient)
 		AddMenuItem(menu, "option2", "Turn Announcer On\n ");
 	else
 		AddMenuItem(menu, "option2", "Turn Announcer Off\n ");
-	
-	AddMenuItem(menu, "option3", "", ITEMDRAW_NOTEXT);
+
+	if(g_bAutoConfirm[iClient]==true)
+		AddMenuItem(menu, "option3", "Turn Auto Confirm Off\n ");
+	else
+		AddMenuItem(menu, "option3", "Turn Auto Confirm On\n ");
+
 	AddMenuItem(menu, "option4", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option5", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
@@ -585,6 +589,11 @@ void OptionMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 			case 1: //Toggle announcer
 			{
 				ToggleAnnouncerVoice(iClient);
+				OptionMenuDraw(iClient);
+			}
+			case 2: //Toggle Auto Confirm
+			{
+				ToggleAutoConfirm(iClient);
 				OptionMenuDraw(iClient);
 			}
 			case 8: //Back

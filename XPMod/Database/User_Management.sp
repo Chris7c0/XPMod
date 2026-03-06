@@ -116,7 +116,7 @@ void SQLGetUserDataCallback(Handle owner, Handle hQuery, const char[] error, Han
 	}
 	
 	char strData[20];
-	int iInfectedID[3], iEquipmentSlot[6], iOption[2];
+	int iInfectedID[3], iEquipmentSlot[6], iOption[3];
 	int iFieldIndex = 0, iSkillPointsUsed = 0;
 
 	// Set the start index offset to caluclate the correct field index value, adding DB_COL_INDEX_USERS_USER_ID and DB_COL_INDEX_USERS_TOKEN
@@ -176,7 +176,7 @@ void SQLGetUserDataCallback(Handle owner, Handle hQuery, const char[] error, Han
 			
 			iFieldIndex = DB_COL_INDEX_USERS_OPTION_ANNOUNCER - startFieldIndexOffset;
 			//Get the user's Options from the SQL database
-			for (int i = 0; i < 2; i++)
+			for (int i = 0; i < 3; i++)
 			{
 				if(SQL_FetchString(hQuery, iFieldIndex++, strData, sizeof(strData)) != 0)
 					iOption[i] = StringToInt(strData);
@@ -243,15 +243,18 @@ void SQLGetUserDataCallback(Handle owner, Handle hQuery, const char[] error, Han
 			}
 			else
 				g_bAnnouncerOn[iClient] = false;
-			
-				//XP Display Option
+
+			//XP Display Option
 			switch(iOption[i++])
 			{
 				case 0:		g_iXPDisplayMode[iClient] = 0;
 				case 1:		g_iXPDisplayMode[iClient] = 1;
 				case 2:		g_iXPDisplayMode[iClient] = 2;
 			}
-			
+
+			//Auto Confirm Option
+			g_bAutoConfirm[iClient] = (iOption[i++] == 1);
+
 			//Set the user to be logged in
 			g_bClientLoggedIn[iClient] = true;
 
@@ -516,6 +519,7 @@ void SaveUserDataInDatabase(int iClient)
 	int i = 0;
 	IntToString(g_bAnnouncerOn[iClient], strOption[i++], 2);
 	IntToString(g_iXPDisplayMode[iClient], strOption[i++], 2);
+	IntToString(g_bAutoConfirm[iClient], strOption[i++], 2);
 
 	// Build the user's query data to save
 	char strQuery[1024], strQueryPart[1024];
@@ -571,8 +575,10 @@ void SaveUserDataInDatabase(int iClient)
 	// Options
 	Format(strQueryPart, sizeof(strQueryPart), "\
 		option_announcer  = %s, \
-		option_display_xp = %s, ", 
+		option_display_xp = %s, \
+		option_auto_confirm = %s, ",
 		strOption[0],
+		strOption[1],
 		strOption[2]);
 	StrCat(strQuery, sizeof(strQuery), strQueryPart);
 

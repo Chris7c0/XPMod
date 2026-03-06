@@ -313,6 +313,7 @@ void ResetAllOptions(int iClient)
 {
 	g_iXPDisplayMode[iClient] = 0;
 	g_bAnnouncerOn[iClient] = true;
+	g_bAutoConfirm[iClient] = false;
 }
 
 
