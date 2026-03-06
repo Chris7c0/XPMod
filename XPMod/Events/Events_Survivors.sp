@@ -2,10 +2,6 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 {
 	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	
-	//Delete the players particle menu (VGUI) if its open and firing their weapon
-	if(g_bEnabledVGUI[iClient] == true && g_bShowingVGUI[iClient] == true)
-		DeleteAllMenuParticles(iClient);
-
 	char wclass[32];
 	GetEventString(hEvent,"weapon",wclass,32);
 	

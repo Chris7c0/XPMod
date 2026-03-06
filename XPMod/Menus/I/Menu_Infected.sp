@@ -3,7 +3,7 @@
 //Top Infected Menu Draw
 Action TopInfectedMenuDraw(int iClient) 
 {
-	DeleteAllMenuParticles(iClient);
+
 
 	Menu menu = CreateMenu(TopInfectedMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -48,7 +48,7 @@ Action TopInfectedMenuDraw(int iClient)
 //Change Your Infected Menu Draw
 Action ChangeInfectedMenuDraw(int iClient) 
 {
-	DeleteAllMenuParticles(iClient);
+
 
 	// Check that they are not already confirmed
 	if (g_bTalentsConfirmed[iClient])
@@ -85,7 +85,7 @@ Action ChangeInfectedMenuDraw(int iClient)
 //Change Infected Class 1
 Action ChangeClass1MenuDraw(int iClient) 
 {
-	DeleteAllMenuParticles(iClient);
+
 	
 	Menu menu = CreateMenu(ChangeClass1MenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -119,7 +119,7 @@ Action ChangeClass1MenuDraw(int iClient)
 //Change Infected Class 2
 Action ChangeClass2MenuDraw(int iClient) 
 {
-	DeleteAllMenuParticles(iClient);
+
 	
 	Menu menu = CreateMenu(ChangeClass2MenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -153,7 +153,7 @@ Action ChangeClass2MenuDraw(int iClient)
 //Change Infected Class 3
 Action ChangeClass3MenuDraw(int iClient) 
 {
-	DeleteAllMenuParticles(iClient);
+
 	
 	Menu menu = CreateMenu(ChangeClass3MenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);

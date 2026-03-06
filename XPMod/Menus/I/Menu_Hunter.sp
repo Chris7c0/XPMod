@@ -3,7 +3,7 @@
 //Hunter Menu Draw
 Action HunterTopMenuDraw(int iClient) 
 {
-	DeleteAllMenuParticles(iClient);
+
 	Menu menu = CreateMenu(HunterTopMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
@@ -184,7 +184,7 @@ Action KillmeleonMenuDraw(int iClient)
 //Choose Hunter Menu Draw
 Action ChooseHunterClassMenuDraw(int iClient) 
 {
-	DeleteAllMenuParticles(iClient);
+
 	
 	Menu menu = CreateMenu(ChooseHunterClassMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);

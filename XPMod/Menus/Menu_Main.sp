@@ -67,7 +67,6 @@ Action TopMenuDraw(int iClient)
 	RoundStatsPanel[iClient] = ROUND_STATS_PANEL_DONE;
 
 	g_bUserStoppedConfirmation[iClient] = true;
-	DeleteAllMenuParticles(iClient);
 
 	CheckLevel(iClient);
 	
@@ -337,11 +336,7 @@ Action OptionMenuDraw(int iClient)
 	else
 		AddMenuItem(menu, "option2", "Turn Announcer Off\n ");
 	
-	if(g_bEnabledVGUI[iClient]==true)
-		AddMenuItem(menu, "option3", "Turn VGUI Descriptions Off\n       - Requires XPMod Addon\n ");
-	else
-		AddMenuItem(menu, "option3", "Turn VGUI Descriptions On\n       - Requires XPMod Addon\n ");
-	
+	AddMenuItem(menu, "option3", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option4", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option5", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
@@ -590,11 +585,6 @@ void OptionMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 			case 1: //Toggle announcer
 			{
 				ToggleAnnouncerVoice(iClient);
-				OptionMenuDraw(iClient);
-			}
-			case 2: //Toggle VGUI Particle Descriptions
-			{
-				ToggleVGUIDesc(iClient);
 				OptionMenuDraw(iClient);
 			}
 			case 8: //Back

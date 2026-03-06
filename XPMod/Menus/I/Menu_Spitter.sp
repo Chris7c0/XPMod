@@ -4,7 +4,7 @@
 Action SpitterTopMenuDraw(int iClient)
 {
 	CheckLevel(iClient);
-	DeleteAllMenuParticles(iClient);
+
 	Menu menu = CreateMenu(SpitterTopMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
@@ -179,7 +179,7 @@ Action HallucinogenicMenuDraw(int iClient)
 //Choose Spitter Menu Draw
 Action ChooseSpitterClassMenuDraw(int iClient) 
 {
-	DeleteAllMenuParticles(iClient);
+
 	
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(ChooseSpitterClassMenuHandler);

@@ -3,7 +3,7 @@
 //Boomer Top Menu Draw
 Action BoomerTopMenuDraw(int iClient) 
 {
-	DeleteAllMenuParticles(iClient);
+
 
 	Menu menu = CreateMenu(BoomerTopMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -158,7 +158,7 @@ Action NorovirusMenuDraw(int iClient)
 //Choose Boomer Menu Draw
 Action ChooseBoomerClassMenuDraw(int iClient) 
 {
-	DeleteAllMenuParticles(iClient);
+
 	
 	Menu menu = CreateMenu(ChooseBoomerClassMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);

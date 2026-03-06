@@ -4,7 +4,7 @@
 Action ChargerTopMenuDraw(int iClient)
 {
 	CheckLevel(iClient);
-	DeleteAllMenuParticles(iClient);
+
 	Menu menu = CreateMenu(ChargerTopMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
@@ -168,7 +168,7 @@ Action HillbillyMenuDraw(int iClient)
 //Choose Charger Menu Draw
 Action ChooseChargerClassMenuDraw(int iClient) 
 {
-	DeleteAllMenuParticles(iClient);
+
 	
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(ChooseChargerClassMenuHandler);

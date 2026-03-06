@@ -56,7 +56,7 @@ Action TankTopMenuDraw(int iClient)
 {
 	
 	CheckLevel(iClient);
-	DeleteAllMenuParticles(iClient);
+
 
 	Menu menu = CreateMenu(TankTopMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);

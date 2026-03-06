@@ -3,7 +3,7 @@
 //Smoker Top Menu Draw
 Action SmokerTopMenuDraw(int iClient) 
 {
-	DeleteAllMenuParticles(iClient);
+
 	Menu menu = CreateMenu(SmokerTopMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
@@ -182,7 +182,7 @@ Action DirtyMenuDraw(int iClient)
 //Choose Smoker Menu Draw
 Action ChooseSmokerClassMenuDraw(int iClient) 
 {
-	DeleteAllMenuParticles(iClient);
+
 	
 	Menu menu = CreateMenu(ChooseSmokerClassMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);

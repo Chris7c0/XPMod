@@ -3,7 +3,6 @@ Action RochelleMenuDraw(int iClient)
 {
 	char text[512];
 
-	DeleteAllMenuParticles(iClient);
 	Menu menu = CreateMenu(RochelleMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
@@ -48,13 +47,6 @@ Action GatherMenuDraw(int iClient)
 {
 	char text[512];
 
-	DeleteAllMenuParticles(iClient);
-	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	{
-		g_iPID_MD_Rochelle_Gather[iClient] = WriteParticle(iClient, "md_rochelle_gather", 0.0);
-		g_bShowingVGUI[iClient] =  true;
-	}
-	
 	Menu menu = CreateMenu(GatherMenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
@@ -96,13 +88,8 @@ Action HunterMenuDraw(int iClient)
 {
 	char text[512];
 
-	DeleteAllMenuParticles(iClient);
-	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	{
-		g_iPID_MD_Rochelle_Hunter[iClient] = WriteParticle(iClient, "md_rochelle_hunter", 0.0);
-		g_bShowingVGUI[iClient] =  true;
-	}
-				
+
+
 	Menu menu = CreateMenu(HunterMenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
@@ -145,13 +132,8 @@ Action SnipersEnduranceMenuDraw(int iClient)
 {
 	char text[512];
 
-	DeleteAllMenuParticles(iClient);
-	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	{
-		g_iPID_MD_Rochelle_Sniper[iClient] = WriteParticle(iClient, "md_rochelle_sniper", 0.0);
-		g_bShowingVGUI[iClient] =  true;
-	}
-				
+
+
 	Menu menu = CreateMenu(SnipersEnduranceMenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
@@ -196,13 +178,8 @@ Action SilentMenuDraw(int iClient)
 {
 	char text[512];
 
-	DeleteAllMenuParticles(iClient);
-	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	{
-		g_iPID_MD_Rochelle_Silent[iClient] = WriteParticle(iClient, "md_rochelle_silent", 0.0);
-		g_bShowingVGUI[iClient] =  true;
-	}
-	
+
+
 	Menu menu = CreateMenu(SilentMenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
@@ -257,13 +234,8 @@ Action SmokeMenuDraw(int iClient)
 {
 	char text[512];
 
-	DeleteAllMenuParticles(iClient);
-	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	{
-		g_iPID_MD_Rochelle_Smoke[iClient] = WriteParticle(iClient, "md_rochelle_smoke", 0.0);
-		g_bShowingVGUI[iClient] =  true;
-	}
-				
+
+
 	Menu menu = CreateMenu(SmokeMenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
@@ -308,13 +280,8 @@ Action ShadowMenuDraw(int iClient)
 {
 	char text[512];
 	
-	DeleteAllMenuParticles(iClient);
-	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	{
-		g_iPID_MD_Rochelle_Shadow[iClient] = WriteParticle(iClient, "md_rochelle_shadow", 0.0);
-		g_bShowingVGUI[iClient] =  true;
-	}
-				
+
+
 	Menu menu = CreateMenu(ShadowMenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];

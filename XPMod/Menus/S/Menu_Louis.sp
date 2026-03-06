@@ -5,7 +5,7 @@ Action LouisMenuDraw(int iClient)
 {
 	char text[512];
 
-	DeleteAllMenuParticles(iClient);
+
 	Menu menu = CreateMenu(LouisMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 

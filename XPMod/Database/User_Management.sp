@@ -244,13 +244,7 @@ void SQLGetUserDataCallback(Handle owner, Handle hQuery, const char[] error, Han
 			else
 				g_bAnnouncerOn[iClient] = false;
 			
-			// //VGUI Particle Descriptions Option
-			// if(iOption[i++] == 1)
-			// 	g_bEnabledVGUI[iClient] = false;
-			// else
-			// 	g_bEnabledVGUI[iClient] = false;
-			
-			//XP Display Option
+				//XP Display Option
 			switch(iOption[i++])
 			{
 				case 0:		g_iXPDisplayMode[iClient] = 0;
@@ -521,7 +515,6 @@ void SaveUserDataInDatabase(int iClient)
 	
 	int i = 0;
 	IntToString(g_bAnnouncerOn[iClient], strOption[i++], 2);
-	IntToString(g_bEnabledVGUI[iClient], strOption[i++], 2);
 	IntToString(g_iXPDisplayMode[iClient], strOption[i++], 2);
 
 	// Build the user's query data to save

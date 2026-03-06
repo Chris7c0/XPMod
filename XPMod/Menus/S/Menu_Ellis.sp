@@ -5,7 +5,7 @@ Action EllisMenuDraw(int iClient)
 {
 	char text[512];
 
-	DeleteAllMenuParticles(iClient);
+
 	Menu menu = CreateMenu(EllisMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
@@ -50,13 +50,8 @@ Action OverMenuDraw(int iClient)
 {
 	char text[512];
 
-	DeleteAllMenuParticles(iClient);
-	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	{
-		g_iPID_MD_Ellis_Over[iClient] = WriteParticle(iClient, "md_ellis_over", 0.0);
-		g_bShowingVGUI[iClient] =  true;
-	}
-	
+
+
 	Menu menu = CreateMenu(OverMenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
@@ -107,13 +102,8 @@ Action BringMenuDraw(int iClient)
 {
 	char text[512];
 
-	DeleteAllMenuParticles(iClient);
-	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	{
-		g_iPID_MD_Ellis_Bring[iClient] = WriteParticle(iClient, "md_ellis_bring", 0.0);
-		g_bShowingVGUI[iClient] =  true;
-	}
-	
+
+
 	Menu menu = CreateMenu(BringMenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
@@ -157,13 +147,8 @@ Action JamminMenuDraw(int iClient)
 {
 	char text[512];
 
-	DeleteAllMenuParticles(iClient);
-	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	{
-		g_iPID_MD_Ellis_Jammin[iClient] = WriteParticle(iClient, "md_ellis_jammin", 0.0);
-		g_bShowingVGUI[iClient] =  true;
-	}
-	
+
+
 	Menu menu = CreateMenu(JamminMenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
@@ -209,13 +194,8 @@ Action WeaponsMenuDraw(int iClient)
 {
 	char text[512];
 
-	DeleteAllMenuParticles(iClient);
-	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	{
-		g_iPID_MD_Ellis_Weapons[iClient] = WriteParticle(iClient, "md_ellis_weapons", 0.0);
-		g_bShowingVGUI[iClient] =  true;
-	}
-	
+
+
 	Menu menu = CreateMenu(WeaponsMenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
@@ -256,13 +236,8 @@ Action MetalMenuDraw(int iClient)
 {
 	char text[512];
 
-	DeleteAllMenuParticles(iClient);
-	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	{
-		g_iPID_MD_Ellis_Bring[iClient] = WriteParticle(iClient, "md_ellis_mechanic", 0.0);
-		g_bShowingVGUI[iClient] =  true;
-	}
-	
+
+
 	Menu menu = CreateMenu(MetalMenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
@@ -311,13 +286,8 @@ Action FireMenuDraw(int iClient)
 {
 	char text[512];
 	
-	DeleteAllMenuParticles(iClient);
-	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	{
-		g_iPID_MD_Ellis_Fire[iClient] = WriteParticle(iClient, "md_ellis_fire", 0.0);
-		g_bShowingVGUI[iClient] =  true;
-	}
-	
+
+
 	Menu menu = CreateMenu(FireMenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];

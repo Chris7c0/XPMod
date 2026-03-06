@@ -7,7 +7,7 @@ void ResetAllVariablesForRound()
 		
 		//Reset all the client variables to their initial state
 		ResetClientVariablesForRound(i);
-		DeleteAllMenuParticles(i);
+
 		
 		//Sets voice comns back to default setting
 		if(IsClientInGame(i) == true)
@@ -131,7 +131,6 @@ void ResetClientVariablesForRound(int iClient)
 	g_bTankHealthJustSet[iClient] = false;
 	g_fFrustratedTankTransferHealthPercentage = 0.0;
 	g_bTankOnFire[iClient] = false;
-	g_bShowingVGUI[iClient] = false;
 	g_bExplosivesJustGiven[iClient] = false;
 	g_iLaserUpgradeCounter[iClient] = 0;
 	// Victim Health Meter
@@ -423,9 +422,6 @@ void Event_DeathResetAllVariables(int iAttacker, int iVictim)
 {
 	g_bIsClientDown[iVictim] = false;
 	clienthanging[iVictim] = false;
-
-	if(g_bEnabledVGUI[iVictim] == true && g_bShowingVGUI[iVictim] == true)
-		DeleteAllMenuParticles(iVictim);
 
 	// Infected //////////////////////////////////////////////////////////////////////////
 

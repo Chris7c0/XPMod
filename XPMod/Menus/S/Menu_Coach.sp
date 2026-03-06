@@ -5,7 +5,7 @@ Action CoachMenuDraw(int iClient)
 {
 	char text[512];
 
-	DeleteAllMenuParticles(iClient);
+
 	Menu menu = CreateMenu(CoachMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
@@ -50,13 +50,8 @@ Action BullMenuDraw(int iClient)
 {
 	char text[512];
 
-	DeleteAllMenuParticles(iClient);
-	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	{
-		g_iPID_MD_Coach_Bull[iClient] = WriteParticle(iClient, "md_coach_bull", 0.0);
-		g_bShowingVGUI[iClient] =  true;
-	}
-	
+
+
 	Menu menu = CreateMenu(BullMenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
@@ -101,13 +96,8 @@ Action WreckingMenuDraw(int iClient)
 {
 	char text[512];
 
-	DeleteAllMenuParticles(iClient);
-	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	{
-		g_iPID_MD_Coach_Wrecking[iClient] = WriteParticle(iClient, "md_coach_wrecking", 0.0);
-		g_bShowingVGUI[iClient] =  true;
-	}
-	
+
+
 	Menu menu = CreateMenu(WreckingMenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
@@ -154,13 +144,8 @@ Action SprayMenuDraw(int iClient)
 {
 	char text[512];
 
-	DeleteAllMenuParticles(iClient);
-	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	{
-		g_iPID_MD_Coach_Spray[iClient] = WriteParticle(iClient, "md_coach_spray", 0.0);
-		g_bShowingVGUI[iClient] =  true;
-	}
-	
+
+
 	Menu menu = CreateMenu(SprayMenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
@@ -195,13 +180,8 @@ Action HomerunMenuDraw(int iClient)
 {
 	char text[512];
 
-	DeleteAllMenuParticles(iClient);
-	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	{
-		g_iPID_MD_Coach_Homerun[iClient] = WriteParticle(iClient, "md_coach_homerun", 0.0);
-		g_bShowingVGUI[iClient] =  true;
-	}
-	
+
+
 	Menu menu = CreateMenu(HomerunMenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
@@ -245,13 +225,8 @@ Action LeadMenuDraw(int iClient)
 {
 	char text[512];
 
-	DeleteAllMenuParticles(iClient);
-	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	{
-		g_iPID_MD_Coach_Lead[iClient] = WriteParticle(iClient, "md_coach_lead", 0.0);
-		g_bShowingVGUI[iClient] =  true;
-	}
-	
+
+
 	Menu menu = CreateMenu(LeadMenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
@@ -299,13 +274,8 @@ Action StrongMenuDraw(int iClient)
 {
 	char text[512];
 	
-	DeleteAllMenuParticles(iClient);
-	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	{
-		g_iPID_MD_Coach_Strong[iClient] = WriteParticle(iClient, "md_coach_strong", 0.0);
-		g_bShowingVGUI[iClient] =  true;
-	}
-	
+
+
 	Menu menu = CreateMenu(StrongMenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];

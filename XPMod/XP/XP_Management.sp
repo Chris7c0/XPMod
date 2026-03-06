@@ -312,7 +312,6 @@ void ResetAll(int iClient)
 void ResetAllOptions(int iClient)
 {
 	g_iXPDisplayMode[iClient] = 0;
-	g_bEnabledVGUI[iClient] = false;
 	g_bAnnouncerOn[iClient] = true;
 }
 

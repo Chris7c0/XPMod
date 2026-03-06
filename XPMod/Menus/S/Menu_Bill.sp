@@ -5,7 +5,7 @@ Action SupportMenuDraw(int iClient)
 {
 	char text[512];
 
-	DeleteAllMenuParticles(iClient);
+
 	
 	Menu menu = CreateMenu(SupportMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
@@ -51,13 +51,8 @@ Action InspirationalMenuDraw(int iClient)
 {
 	char text[512];
 
-	DeleteAllMenuParticles(iClient);
-	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	{
-		g_iPID_MD_Bill_Inspirational[iClient] = WriteParticle(iClient, "md_bill_inspirational", 0.0);
-		g_bShowingVGUI[iClient] =  true;
-	}
-	
+
+
 	Menu menu = CreateMenu(InspirationalMenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
@@ -100,13 +95,8 @@ Action GhillieMenuDraw(int iClient)
 {
 	char text[512];
 
-	DeleteAllMenuParticles(iClient);
-	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	{
-		g_iPID_MD_Bill_Ghillie[iClient] = WriteParticle(iClient, "md_bill_ghillie", 0.0);
-		g_bShowingVGUI[iClient] =  true;
-	}
-				
+
+
 	Menu menu = CreateMenu(GhillieMenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
@@ -147,13 +137,8 @@ Action WillMenuDraw(int iClient)
 {
 	char text[512];
 
-	DeleteAllMenuParticles(iClient);
-	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	{
-		g_iPID_MD_Bill_Will[iClient] = WriteParticle(iClient, "md_bill_will", 0.0);
-		g_bShowingVGUI[iClient] =  true;
-	}
-	
+
+
 	Menu menu = CreateMenu(WillMenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
@@ -196,13 +181,8 @@ Action ExorcismMenuDraw(int iClient)
 {
 	char text[512];
 	
-	DeleteAllMenuParticles(iClient);
-	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	{
-		g_iPID_MD_Bill_Exorcism[iClient] = WriteParticle(iClient, "md_bill_exorcism", 0.0);
-		g_bShowingVGUI[iClient] =  true;
-	}
-	
+
+
 	Menu menu = CreateMenu(ExorcismMenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
@@ -237,13 +217,8 @@ Action DiehardMenuDraw(int iClient)
 {
 	char text[512];
 	
-	DeleteAllMenuParticles(iClient);
-	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	{
-		g_iPID_MD_Bill_Diehard[iClient] = WriteParticle(iClient, "md_bill_diehard", 0.0);
-		g_bShowingVGUI[iClient] =  true;
-	}
-	
+
+
 	Menu menu = CreateMenu(DiehardMenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];
@@ -291,13 +266,8 @@ Action PromotionalMenuDraw(int iClient)
 {
 	char text[512];
 	
-	DeleteAllMenuParticles(iClient);
-	if(g_bEnabledVGUI[iClient] == true && g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == true)
-	{
-		g_iPID_MD_Bill_Promotional[iClient] = WriteParticle(iClient, "md_bill_promotional", 0.0);
-		g_bShowingVGUI[iClient] =  true;
-	}
-	
+
+
 	Menu menu = CreateMenu(PromotionalMenuHandler);
 
 	char strStartingNewLines[32], strEndingNewLines[32];

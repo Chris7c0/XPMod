@@ -3,7 +3,7 @@
 //Jockey Menu Draw
 Action JockeyTopMenuDraw(int iClient) 
 {
-	DeleteAllMenuParticles(iClient);
+
 	Menu menu = CreateMenu(JockeyTopMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
@@ -165,7 +165,7 @@ Action UnfairMenuDraw(int iClient)
 //Choose Jockey Menu Draw
 Action ChooseJockeyClassMenuDraw(int iClient) 
 {
-	DeleteAllMenuParticles(iClient);
+
 	
 	Menu menu = CreateMenu(ChooseJockeyClassMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);

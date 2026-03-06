@@ -59,47 +59,6 @@ void PrecacheAllParticles()
 	// PrecacheParticle("smoker_spore_attack");
 	PrecacheParticle("teleport_warp");
 	
-	//Menu Descriptions "VGUIs"
-	// Bill
-	PrecacheParticle("md_bill_inspirational");
-	PrecacheParticle("md_bill_ghillie");
-	PrecacheParticle("md_bill_will");
-	PrecacheParticle("md_bill_exorcism");
-	PrecacheParticle("md_bill_diehard");
-	PrecacheParticle("md_bill_promotional");
-	
-	// Rochelle
-	PrecacheParticle("md_rochelle_gather");
-	PrecacheParticle("md_rochelle_hunter");
-	PrecacheParticle("md_rochelle_sniper");
-	PrecacheParticle("md_rochelle_silent");
-	PrecacheParticle("md_rochelle_smoke");
-	PrecacheParticle("md_rochelle_shadow");
-	
-	// Coach
-	PrecacheParticle("md_coach_bull");
-	PrecacheParticle("md_coach_wrecking");
-	PrecacheParticle("md_coach_spray");
-	PrecacheParticle("md_coach_homerun");
-	PrecacheParticle("md_coach_lead");
-	PrecacheParticle("md_coach_strong");
-	
-	// Ellis
-	PrecacheParticle("md_ellis_over");
-	PrecacheParticle("md_ellis_bring");
-	PrecacheParticle("md_ellis_jammin");
-	PrecacheParticle("md_ellis_weapons");
-	PrecacheParticle("md_ellis_mechanic");
-	PrecacheParticle("md_ellis_fire");
-	
-	// Nick
-	PrecacheParticle("md_nick_swindler");
-	PrecacheParticle("md_nick_leftover");
-	PrecacheParticle("md_nick_magnum");
-	PrecacheParticle("md_nick_enhanced");
-	PrecacheParticle("md_nick_risky");
-	PrecacheParticle("md_nick_desperate");
-	
 	// Spitter
 	PrecacheParticle("spitter_goo_adhesive");
 	PrecacheParticle("spitter_goo_melting");

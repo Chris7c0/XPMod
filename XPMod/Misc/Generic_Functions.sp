@@ -443,24 +443,7 @@ Action ToggleAnnouncerVoice(int iClient)	//Toggles the announcers voice
 	return Plugin_Handled;
 }
 
-Action ToggleVGUIDesc(int iClient)	//Toggles the vgui menu descriptions for talents
-{
-	if(iClient!=0)
-	{
-		if(g_bEnabledVGUI[iClient]==false)
-		{
-			g_bEnabledVGUI[iClient] = true;
-			PrintHintText(iClient, "VGUI Menu Descriptions are now ON.");
-		}
-		else
-		{
-			PrintHintText(iClient, "VGUI Menu Descriptions are now OFF.");
-			g_bEnabledVGUI[iClient] = false;
-		}
-	}
-	
-	return Plugin_Handled;
-}
+
 
 void ShowHudOverlayColor(int iClient, int iRed, int iGreen, int iBlue, int iAlpha, int iDuration, int iBehavior = FADE_SOLID)
 {
