@@ -18,7 +18,7 @@ void SetupXPMConVars()
 	HookConVarChange(g_hCVar_DebugModeLogLevel, CVarChange_DebugModeLogLevel);
 
 	// XPMod Debug Mode
-	g_hCVar_DebugModeEnabled = CreateConVar("xpm_debug_mode_enabled", "0", "Sets if xpmod_debug_mode is on [0 = Debug Mode DISABLED, 1 = Debug mode ENABLED]", 0, true, -1.0, true, 4.0);
+	g_hCVar_DebugModeEnabled = CreateConVar("xpm_debug_mode", "0", "Sets if xpm_debug_mode is on [0 = Debug Mode DISABLED, 1 = Debug mode ENABLED]", 0, true, -1.0, true, 4.0);
 	HookConVarChange(g_hCVar_DebugModeEnabled, CVarChange_DebugModeEnabled);
 
 	// Developer Command Mode
