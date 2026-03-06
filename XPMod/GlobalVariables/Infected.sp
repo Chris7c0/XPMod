@@ -377,6 +377,8 @@ ArrayList g_listTankRockEntities;
 #define FIRE_TANK_DASH_COOLDOWN                      15.0
 #define FIRE_TANK_DASH_HP_COST                       750
 #define FIRE_TANK_DASH_MOVEMENT_SPEED                12.0
+#define FIRE_TANK_CI_CONVERSION_RADIUS               400.0
+#define FIRE_TANK_CI_CONVERSION_INTERVAL              2.0
 int g_iFireDamageCounter[MAXPLAYERS + 1];
 bool g_bFireTankAttackCharged[MAXPLAYERS + 1];
 int g_iFireTankPunchHitCounter[MAXPLAYERS + 1];

@@ -34,6 +34,7 @@ void LoadFireTankTalents(int iClient)
 	SetClientSpeed(iClient);
 
 	CreateTimer(1.0, Timer_FireTankHPDrain, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+	CreateTimer(FIRE_TANK_CI_CONVERSION_INTERVAL, Timer_FireTankCIConversion, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 
 	// Change Tank's Skin Color
 	SetClientRenderColor(iClient, 255, 200, 30, 255, RENDER_MODE_NORMAL);
@@ -220,6 +221,31 @@ void CreateFireTankExplosion(int iClient)
 	xyzLocation[2] += 30.0;
 	PropaneExplode(xyzLocation);
 	MolotovExplode(xyzLocation);
+}
+
+void ConvertCINearFireTank(int iClient)
+{
+	float xyzEntityLocation[3];
+	int iAllVaiableEntities[MAXENTITIES];
+	char strClasses[1][32] = {"infected"};
+	for (int iIndex = 0; iIndex < GetAllEntitiesInRadiusOfEntity(iClient, FIRE_TANK_CI_CONVERSION_RADIUS, iAllVaiableEntities, strClasses, sizeof(strClasses)); iIndex++)
+	{
+		if (IsCommonInfectedAlive(iAllVaiableEntities[iIndex]) == false)
+			continue;
+
+		// Skip if already an uncommon infected (already CEDA or other type)
+		if (IsEntityUncommonInfected(iAllVaiableEntities[iIndex]) == true)
+			continue;
+
+		// Get the location of the CI
+		GetEntPropVector(iAllVaiableEntities[iIndex], Prop_Send, "m_vecOrigin", xyzEntityLocation);
+
+		// Kill the current CI entity
+		SetEntProp(iAllVaiableEntities[iIndex], Prop_Data, "m_iHealth", 0);
+
+		// Spawn a CEDA uncommon infected in its place (fire immune)
+		SpawnCIAroundLocation(xyzEntityLocation, 1, UNCOMMON_CI_CEDA, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_NONE, false);
+	}
 }
 
 void FireTankDash(int iClient)

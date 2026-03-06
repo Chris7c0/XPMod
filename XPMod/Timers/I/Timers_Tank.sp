@@ -61,6 +61,19 @@ Action Timer_FireTankHPDrain(Handle timer, int iClient)
 	return Plugin_Continue;
 }
 
+Action Timer_FireTankCIConversion(Handle timer, int iClient)
+{
+	if (RunClientChecks(iClient) == false ||
+		g_iClientTeam[iClient] != TEAM_INFECTED ||
+		IsPlayerAlive(iClient) == false ||
+		g_iTankChosen[iClient] != TANK_FIRE)
+		return Plugin_Stop;
+
+	ConvertCINearFireTank(iClient);
+
+	return Plugin_Continue;
+}
+
 Action Timer_FireTankDashEnd(Handle timer, int iClient)
 {
 	g_bFireTankDashActive[iClient] = false;
