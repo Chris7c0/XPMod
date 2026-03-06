@@ -17,7 +17,8 @@ Action ChooseTankMenuDraw(int iClient)
 	char strText[512];
 	FormatEx(strText, sizeof(strText), "Fire Tank\
 		\n %i HP, High Damage\
-		\n [Hold CROUCH] Fire Punch\
+		\n Fire Punch, Fire Rocks\
+		\n [WALK + Move] Fire Dash\
 		\n ",
 		RoundToNearest(TANK_HEALTH_FIRE * g_fTankStartingHealthMultiplier[iClient]) );
 	AddMenuItem(menu, "option1", strText);
@@ -40,7 +41,7 @@ Action ChooseTankMenuDraw(int iClient)
 		\n [Press MELEE] Wing Dash\
 		\n \
 		\n=	=	=	=	=	=	=	=	=	=	=\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n ",
 		RoundToNearest(TANK_HEALTH_VAMPIRIC * g_fTankStartingHealthMultiplier[iClient]),
 		strEndingNewLines);
 	AddMenuItem(menu, "option4", strText);

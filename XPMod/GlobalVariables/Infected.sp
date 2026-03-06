@@ -368,14 +368,14 @@ ArrayList g_listTankRockEntities;
 
 
 // Fire Tank
-#define TANK_HEALTH_FIRE                            11000
-#define TANK_FIRE_BASE_SPEED                        0.20
-#define TANK_FIRE_EXTRA_SPEED_MAX                   0.50
+#define TANK_HEALTH_FIRE                            14000
+#define TANK_FIRE_BASE_SPEED                        0.30
+#define TANK_FIRE_EXTRA_SPEED_MAX                   0.40
 #define FIRE_TANK_FIRE_PUNCH_EVERY_N_HITS           2
 #define FIRE_TANK_HP_DRAIN_PER_SECOND               50
 #define FIRE_TANK_DASH_DURATION                      0.4
 #define FIRE_TANK_DASH_COOLDOWN                      15.0
-#define FIRE_TANK_DASH_HP_COST                       1000
+#define FIRE_TANK_DASH_HP_COST                       750
 #define FIRE_TANK_DASH_MOVEMENT_SPEED                12.0
 int g_iFireDamageCounter[MAXPLAYERS + 1];
 bool g_bFireTankAttackCharged[MAXPLAYERS + 1];

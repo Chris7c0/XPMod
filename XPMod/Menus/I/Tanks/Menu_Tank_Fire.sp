@@ -2,6 +2,8 @@ Action TankMenuDrawFire(int iClient)
 {
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(TankMenuHandlerFire);
+	int iStartSpeedPct = RoundToNearest(TANK_FIRE_BASE_SPEED * 100.0);
+	int iMaxSpeedPct = RoundToNearest((TANK_FIRE_BASE_SPEED + TANK_FIRE_EXTRA_SPEED_MAX) * 100.0);
 	
 	SetMenuTitle(menu,"FIRE TANK\
         \n\"MoRE PAiN?! MOrE FUUuN!!\"\
@@ -9,7 +11,7 @@ Action TankMenuDrawFire(int iClient)
         \n Passives\
         \n - %i HP | Good At All Ranges\
         \n - High Damage Output, Immune To Fire\
-        \n - 20-70%% Faster (Pain = Speed)\
+        \n - %i-%i%% Faster (Pain = Speed)\
         \n - 20%% Chance To Ignite Victim On Punch\
         \n - Lose %i HP/Sec\
         \n - Fire Punch every %i hits\
@@ -21,6 +23,8 @@ Action TankMenuDrawFire(int iClient)
         \n    - Lose %i HP\
         \n ",
         TANK_HEALTH_FIRE,
+        iStartSpeedPct,
+        iMaxSpeedPct,
         FIRE_TANK_HP_DRAIN_PER_SECOND,
         FIRE_TANK_FIRE_PUNCH_EVERY_N_HITS,
         FIRE_TANK_DASH_HP_COST);
