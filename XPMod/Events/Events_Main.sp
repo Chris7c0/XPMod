@@ -19,6 +19,9 @@ void SetupXPMEvents()
 	//Map Events
 	HookEvent("round_start", Event_RoundStart, EventHookMode_Post);
 	HookEvent("round_end", Event_RoundEnd, EventHookMode_Pre);
+	HookEvent("map_transition", Event_MapTransition, EventHookMode_Pre);
+	HookEvent("finale_vehicle_leaving", Event_FinaleVehicleLeaving, EventHookMode_Pre);
+	HookEvent("finale_win", Event_FinaleWin, EventHookMode_Pre);
 
 	//Command Listeners
 	//Pause Game
@@ -300,7 +303,36 @@ Action Event_RoundStart(Handle hEvent, const char[] strName, bool bDontBroadcast
 
 Action Event_RoundEnd(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
+	FinalizeRoundAndSave();
+	return Plugin_Continue;
+}
 
+Action Event_MapTransition(Handle hEvent, const char[] strName, bool bDontBroadcast)
+{
+	if (g_iGameMode == GAMEMODE_COOP)
+		FinalizeRoundAndSave();
+
+	return Plugin_Continue;
+}
+
+Action Event_FinaleVehicleLeaving(Handle hEvent, const char[] strName, bool bDontBroadcast)
+{
+	if (g_iGameMode == GAMEMODE_COOP)
+		FinalizeRoundAndSave();
+
+	return Plugin_Continue;
+}
+
+Action Event_FinaleWin(Handle hEvent, const char[] strName, bool bDontBroadcast)
+{
+	if (g_iGameMode == GAMEMODE_COOP)
+		FinalizeRoundAndSave();
+
+	return Plugin_Continue;
+}
+
+void FinalizeRoundAndSave()
+{
 	g_bGameFrozen = true;
 	//g_bRoundStarted = false;
 	g_bEndOfRound = true;
@@ -341,8 +373,6 @@ Action Event_RoundEnd(Handle hEvent, const char[] strName, bool bDontBroadcast)
 	// Close any open menus so they don't carry over to the next round
 	for (int iClient = 1; iClient <= MaxClients; iClient++)
 		ClosePanel(iClient);
-
-	return Plugin_Continue;
 }
 
 public Action CommandListener_Pause(int client, const char[] command, int argc) {
