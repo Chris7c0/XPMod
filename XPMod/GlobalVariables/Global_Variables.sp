@@ -313,6 +313,10 @@ int g_iDPSTotalDamage[MAXPLAYERS +1];               // Total Damage recorded thi
 float g_fDPSStartTime[MAXPLAYERS +1];               // Start Time of recorded this DPS session
 float g_fDPSTimeOfLastDamage[MAXPLAYERS +1];        // Time of last DPS, if this exceeds x time, everything is reset
 
+// XP Farm Prevention
+float g_fLastReviveXPTime[MAXPLAYERS + 1];
+#define REVIVE_XP_COOLDOWN  5.0
+
 // Scripting variables
 float g_fGameTimeOfLastGoalSet[MAXPLAYERS + 1];
 float g_fGameTimeOfLastDamageTaken[MAXPLAYERS + 1];

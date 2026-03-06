@@ -300,13 +300,20 @@ Action Event_ReviveSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 	{
 		if (iClient != iTarget)
 		{
-			g_iClientXP[iClient] += 50;
-			CheckLevel(iClient);
-			
-			if(g_iXPDisplayMode[iClient] == 0)
-				ShowXPSprite(iClient, g_iSprite_50XP, iTarget);
-			else if(g_iXPDisplayMode[iClient] == 1)
-				PrintToChat(iClient, "\x03[XPMod] Revived a teammate. You gain 50 XP.");
+			// Prevent XP farming by checking cooldown on the revive target
+			float fCurrentTime = GetGameTime();
+			if (fCurrentTime - g_fLastReviveXPTime[iTarget] >= REVIVE_XP_COOLDOWN)
+			{
+				g_fLastReviveXPTime[iTarget] = fCurrentTime;
+
+				g_iClientXP[iClient] += 50;
+				CheckLevel(iClient);
+
+				if(g_iXPDisplayMode[iClient] == 0)
+					ShowXPSprite(iClient, g_iSprite_50XP, iTarget);
+				else if(g_iXPDisplayMode[iClient] == 1)
+					PrintToChat(iClient, "\x03[XPMod] Revived a teammate. You gain 50 XP.");
+			}
 		}
 	}
 	return Plugin_Continue;

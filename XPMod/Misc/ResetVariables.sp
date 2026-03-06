@@ -119,6 +119,7 @@ void ResetClientVariablesForRound(int iClient)
 	preledgehealth[iClient] = 1;
 	g_bIsClientDown[iClient] = false;
 	clienthanging[iClient] = false;
+	g_fLastReviveXPTime[iClient] = 0.0;
 	g_iKitsUsed = 0;
 	g_iBillTeamHealCounter[iClient] = 0;
 	g_iBillsTeamHealthPool = BILL_TEAM_HEAL_HP_POOL;
