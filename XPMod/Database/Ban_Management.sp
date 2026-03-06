@@ -91,8 +91,25 @@ void SQLAddBannedUserToDatabaseCallback(Handle owner, Handle hQuery, const char[
 	
 }
 
+void GetBanAdminDataForQuery(int iAdminClient, char[] strAdminName, int iAdminNameSize, char[] strAdminSteamID, int iAdminSteamIDSize)
+{
+	strAdminName[0] = '\0';
+	strcopy(strAdminSteamID, iAdminSteamIDSize, "0");
 
-void SQLAddBannedUserToDatabaseUsingClientID(int iClient, int iBanDurationSeconds = 0, const char[] strBanReason)
+	if (RunClientChecks(iAdminClient) == false || IsFakeClient(iAdminClient) == true)
+		return;
+
+	GetClientName(iAdminClient, strAdminName, iAdminNameSize);
+	SanitizeValueStringForQuery(strAdminName, iAdminNameSize);
+
+	if (GetClientAuthId(iAdminClient, AuthId_SteamID64, strAdminSteamID, iAdminSteamIDSize) == false)
+	{
+		LogError("GetBanAdminDataForQuery: GetClientAuthId failed for %N", iAdminClient);
+		strcopy(strAdminSteamID, iAdminSteamIDSize, "0");
+	}
+}
+
+void SQLAddBannedUserToDatabaseUsingClientID(int iClient, int iBanDurationSeconds = 0, const char[] strBanReason, int iAdminClient = 0)
 {
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return;
@@ -117,27 +134,51 @@ void SQLAddBannedUserToDatabaseUsingClientID(int iClient, int iBanDurationSecond
 	GetClientName(iClient, strClientName, sizeof(strClientName));
 	SanitizeValueStringForQuery(strClientName, sizeof(strClientName));
 
+	char strSanitizedBanReason[100];
+	strcopy(strSanitizedBanReason, sizeof(strSanitizedBanReason), strBanReason);
+	SanitizeValueStringForQuery(strSanitizedBanReason, sizeof(strSanitizedBanReason));
+
+	char strAdminName[32], strAdminSteamID[32];
+	GetBanAdminDataForQuery(iAdminClient, strAdminName, sizeof(strAdminName), strAdminSteamID, sizeof(strAdminSteamID));
+
 	char strExpiriationTime[32];
 	GetBanExpirationTimestamp(strExpiriationTime, sizeof(strExpiriationTime), iBanDurationSeconds);
 	
-	//Create new entry into the SQL database with the users information
-	char strQuery[512];
+	// Insert or refresh the existing ban row for this Steam ID.
+	char strQuery[1024];
 	strQuery[0] = '\0';
 	Format(strQuery, sizeof(strQuery), "INSERT INTO %s (\
 		steam_id,\
 		user_name,\
+		ban_timestamp,\
 		expiration_time,\
-		reason)\
-		VALUES ('%s','%s',%s,'%s')", 
+		reason,\
+		admin_user_name,\
+		admin_steam_id)\
+		VALUES ('%s','%s',CURRENT_TIMESTAMP,%s,'%s','%s','%s') \
+		ON DUPLICATE KEY UPDATE \
+		user_name = '%s', \
+		ban_timestamp = CURRENT_TIMESTAMP, \
+		expiration_time = %s, \
+		reason = '%s', \
+		admin_user_name = '%s', \
+		admin_steam_id = '%s'", 
 		DB_TABLENAME_BANS,
 		strSteamID,
 		strClientName,
 		strExpiriationTime,
-		strBanReason);
+		strSanitizedBanReason,
+		strAdminName,
+		strAdminSteamID,
+		strClientName,
+		strExpiriationTime,
+		strSanitizedBanReason,
+		strAdminName,
+		strAdminSteamID);
 	SQL_TQuery(g_hDatabase, SQLAddBannedUserToDatabaseCallback, strQuery, iClient);
 }
 
-void SQLAddBannedUserToDatabaseUsingNameAndSteamID(char[] strClientName, const int iClientNameSize, const char[] strSteamID, int iBanDurationSeconds = 0, const char[] strBanReason)
+void SQLAddBannedUserToDatabaseUsingNameAndSteamID(char[] strClientName, const int iClientNameSize, const char[] strSteamID, int iBanDurationSeconds = 0, const char[] strBanReason, int iAdminClient = 0)
 {	
 	
 	if (g_hDatabase == INVALID_HANDLE)
@@ -149,23 +190,47 @@ void SQLAddBannedUserToDatabaseUsingNameAndSteamID(char[] strClientName, const i
 	// Sanitize Inputs for Query
 	SanitizeValueStringForQuery(strClientName, iClientNameSize);
 
+	char strSanitizedBanReason[100];
+	strcopy(strSanitizedBanReason, sizeof(strSanitizedBanReason), strBanReason);
+	SanitizeValueStringForQuery(strSanitizedBanReason, sizeof(strSanitizedBanReason));
+
+	char strAdminName[32], strAdminSteamID[32];
+	GetBanAdminDataForQuery(iAdminClient, strAdminName, sizeof(strAdminName), strAdminSteamID, sizeof(strAdminSteamID));
+
 	char strExpiriationTime[32];
 	GetBanExpirationTimestamp(strExpiriationTime, sizeof(strExpiriationTime), iBanDurationSeconds);
 	
-	//Create new entry into the SQL database with the users information
-	char strQuery[512];
+	// Insert or refresh the existing ban row for this Steam ID.
+	char strQuery[1024];
 	strQuery[0] = '\0';
 	Format(strQuery, sizeof(strQuery), "INSERT INTO %s (\
 		steam_id,\
 		user_name,\
+		ban_timestamp,\
 		expiration_time,\
-		reason)\
-		VALUES ('%s','%s',%s,'%s')", 
+		reason,\
+		admin_user_name,\
+		admin_steam_id)\
+		VALUES ('%s','%s',CURRENT_TIMESTAMP,%s,'%s','%s','%s') \
+		ON DUPLICATE KEY UPDATE \
+		user_name = '%s', \
+		ban_timestamp = CURRENT_TIMESTAMP, \
+		expiration_time = %s, \
+		reason = '%s', \
+		admin_user_name = '%s', \
+		admin_steam_id = '%s'", 
 		DB_TABLENAME_BANS,
 		strSteamID,
 		strClientName,
 		strExpiriationTime,
-		strBanReason);
+		strSanitizedBanReason,
+		strAdminName,
+		strAdminSteamID,
+		strClientName,
+		strExpiriationTime,
+		strSanitizedBanReason,
+		strAdminName,
+		strAdminSteamID);
 	SQL_TQuery(g_hDatabase, SQLAddBannedUserToDatabaseCallback, strQuery, 0);
 }
 

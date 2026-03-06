@@ -566,7 +566,7 @@ void ApplySelectedAdminBan(int iClient, const char[] strReason)
 		}
 
 		PrintToChat(iClient, "\x03[XPMod] \x04Banning %N for %s (%s)...", iTarget, strDurationLabel, strReason);
-		SQLAddBannedUserToDatabaseUsingClientID(iTarget, g_iAdminSelectedDuration[iClient], strReason);
+			SQLAddBannedUserToDatabaseUsingClientID(iTarget, g_iAdminSelectedDuration[iClient], strReason, iClient);
 
 		if (g_iAdminSelectedDuration[iClient] <= 0)
 		{
@@ -585,7 +585,7 @@ void ApplySelectedAdminBan(int iClient, const char[] strReason)
 		strcopy(strClientName, sizeof(strClientName), g_strAdminSelectedTargetName[iClient]);
 
 		PrintToChat(iClient, "\x03[XPMod] \x04Banning %s for %s (%s)...", strClientName, strDurationLabel, strReason);
-		SQLAddBannedUserToDatabaseUsingNameAndSteamID(strClientName, sizeof(strClientName), g_strAdminSelectedTargetSteamID[iClient], g_iAdminSelectedDuration[iClient], strReason);
+			SQLAddBannedUserToDatabaseUsingNameAndSteamID(strClientName, sizeof(strClientName), g_strAdminSelectedTargetSteamID[iClient], g_iAdminSelectedDuration[iClient], strReason, iClient);
 	}
 
 	ResetAllAdminMenuSelectionVariables(iClient);

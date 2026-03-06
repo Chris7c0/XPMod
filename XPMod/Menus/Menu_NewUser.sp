@@ -212,7 +212,7 @@ void BanConfirmMenuHandler(Menu menu, MenuAction action, int iClient, int itemNu
 			{
 				ClosePanel(iClient);
 				// Add user to the bans table in the xpmod database
-				SQLAddBannedUserToDatabaseUsingClientID(iClient, g_iBanDurationInMinutes[iClient] * 60, "Self Ban");
+				SQLAddBannedUserToDatabaseUsingClientID(iClient, g_iBanDurationInMinutes[iClient] * 60, "Self Ban", iClient);
 				// Ban the user, regardless of being able to add to the database or not
 				// Banning was changed to only kick, to fix issue with lingering bans after unban
 				// BanClient(iClient, g_iBanDurationInMinutes[iClient], BANFLAG_AUTHID, "XPMod Banned", "Banned from XPMod. Have a nice day");
