@@ -257,13 +257,12 @@ Action DiehardMenuDraw(int iClient)
 		\nRegen 9 health when ally incaps per level\
 		\n+5hp to healing pool when ally incaps per level\
 		\n \
-		\nPress [WALK] + [ZOOM] to activate Taunt:\
-		\n- Draw all Common Infected aggro to yourself\
+		\nPress [WALK] + [USE] to activate Taunt:\
+		\n- Vomit Jar yourself for aggro\
 		\n- Bills cloaking suit is deactivated\
 		\n- Everyone on team gains temporary cloaking\
 		\n- Gain 30%% damage reduction while active\
-		\n- 10 second duration\
-		\n- 3 minute global cooldown\
+		\n- 4 minute global cooldown\
 		\n \
 		\n		Bind 1: Improvised Explosives\
 		\n			+1 use every other level\

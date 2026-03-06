@@ -76,7 +76,7 @@ void OnGameFrame_Bill(int iClient)
 		return;
 
 	int iButtons;
-	iButtons = GetEntProp(iClient, Prop_Data, "m_nButtons", iButtons);
+	iButtons = GetEntProp(iClient, Prop_Data, "m_nButtons");
 	
 	HandleBillsTeamHealing(iClient, iButtons);
 
@@ -91,8 +91,6 @@ void OnGameFrame_Bill(int iClient)
 			else
 			{
 				g_bBillTaunting[iClient] = false;
-				SDKCall(g_hSDK_UnVomitOnPlayer, iClient);
-				PrintHintText(iClient, "Taunt ended.");
 				
 				for (int i = 1; i <= MaxClients; i++)
 				{
@@ -103,14 +101,17 @@ void OnGameFrame_Bill(int iClient)
 				}
 			}
 		}
+
+		if((iButtons & IN_SPEED) && (iButtons & IN_USE) && g_iBillGlobalTauntCooldown > 0 && !g_bBillTaunting[iClient])
+			PrintHintText(iClient, "Still looking for a Vomit Jar to use...");
 		
-		if((iButtons & IN_WALK) && (iButtons & IN_ZOOM) && g_iBillGlobalTauntCooldown <= 0 && !g_bBillTaunting[iClient])
+		if((iButtons & IN_SPEED) && (iButtons & IN_USE) && g_iBillGlobalTauntCooldown <= 0 && !g_bBillTaunting[iClient])
 		{
 			g_bBillTaunting[iClient] = true;
-			g_iBillTauntDuration[iClient] = 300; // 10 second duration
-			g_iBillGlobalTauntCooldown = 5400; // 3 minute cooldown
+			g_iBillTauntDuration[iClient] = 450; // 15 second duration
+			g_iBillGlobalTauntCooldown = 7200; // 4 minute cooldown
 			SDKCall(g_hSDK_VomitOnPlayer, iClient, iClient, false);
-			PrintHintText(iClient, "Taunt Activated! 10s duration");
+			PrintHintText(iClient, "Have at me, you bastards!");
 			
 			for (int i = 1; i <= MaxClients; i++)
 			{
@@ -126,9 +127,9 @@ void OnGameFrame_Bill(int iClient)
 	{
 		if(iButtons & IN_SPEED)
 		{
-			if(g_iBillSprintChargePower[iClient] == 1)
+			if(g_iBillSprintChargePower[iClient] == 20)
 				PrintHintText(iClient, "Powering on sprinting device...");
-			else if(g_iBillSprintChargePower[iClient] > 49)
+			else if(g_iBillSprintChargePower[iClient] > 59)
 				PrintHintText(iClient, "Powering on sprinting device...%d%%", g_iBillSprintChargePower[iClient]);
 			
 			g_iBillSprintChargePower[iClient]++;
@@ -143,6 +144,9 @@ void OnGameFrame_Bill(int iClient)
 		else
 		{
 			if(g_iBillSprintChargePower[iClient] > 0)
+				// Clear the text if the player stops holding
+				if(g_iBillSprintChargePower[iClient] > 20)
+					PrintHintText(iClient, " ");
 				g_iBillSprintChargePower[iClient] =  0;
 			if(g_iBillSprintChargeCounter[iClient] == ((g_iGhillieLevel[iClient] * 600) - 1))
 			{
