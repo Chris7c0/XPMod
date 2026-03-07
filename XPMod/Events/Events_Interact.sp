@@ -59,9 +59,23 @@ Action Event_ItemPickUp(Handle hEvent, const char[] strName, bool bDontBroadcast
 	}
 	if(g_bClientIsReloading[iClient] == true)
 	{
-		g_bCoachShotgunForceReload[iClient] = false;
-		g_bClientIsReloading[iClient] = false;
-		g_iReloadFrameCounter[iClient] = 0;
+		// Don't cancel reload monitoring for Rochelle with AWP - let the game frame
+		// loop continue so OGFSurvivorReload_Rochelle can enforce the clip limit
+		bool bSkipReloadCancel = false;
+		if(g_iChosenSurvivor[iClient] == ROCHELLE && g_iSilentLevel[iClient] > 1)
+		{
+			char strCurrentWeapon[32];
+			GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
+			if(StrEqual(strCurrentWeapon, "weapon_sniper_awp", false) == true)
+				bSkipReloadCancel = true;
+		}
+
+		if(bSkipReloadCancel == false)
+		{
+			g_bCoachShotgunForceReload[iClient] = false;
+			g_bClientIsReloading[iClient] = false;
+			g_iReloadFrameCounter[iClient] = 0;
+		}
 	}
 
 	// Automatic laser site upgrades
