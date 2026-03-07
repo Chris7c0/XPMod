@@ -42,6 +42,9 @@ float g_fPreviousNextSecondaryAttack[MAXPLAYERS + 1] = { 0.0, ...};
 
 ///////////////////////////////////////////////     PLAYER SPECIFIC VARIABLES     ///////////////////////////////////////////////
 
+// Generic active weapon tracking (updated in OnGameFrame)
+int g_iLastActiveWeaponRef[MAXPLAYERS + 1];
+char g_strActiveWeaponClass[MAXPLAYERS + 1][32];
 // Misc Survivor Variables
 #define SCREEN_SHAKE_AMOUNT_DEFAULT     20
 int g_iScreenShakeAmount = SCREEN_SHAKE_AMOUNT_DEFAULT;

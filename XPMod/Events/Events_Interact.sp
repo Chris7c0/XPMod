@@ -154,12 +154,7 @@ Action Event_ItemPickUp(Handle hEvent, const char[] strName, bool bDontBroadcast
 			}
 			else if (StrContains(weaponclass,"sniper_awp",false) != -1)
 			{
-				iAmmo = GetEntData(iClient, iOffset_Ammo + 40);	//for other snipers (+40)
-				if(clip > 1)
-				{
-					SetEntData(iEntid, g_iOffset_Clip1, 3, true);
-					SetEntData(iClient, iOffset_Ammo + 40, iAmmo + 17);
-				}
+				// AWP clip correction is handled by OnGameFrame_Rochelle
 			}
 		}
 	}

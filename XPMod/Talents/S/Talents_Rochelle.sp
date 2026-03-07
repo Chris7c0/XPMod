@@ -152,16 +152,38 @@ void OnGameFrame_Rochelle(int iClient)
 
 	if(g_iSilentLevel[iClient] > 0)
 	{
+		int ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+		if (IsValidEntity(ActiveWeaponID) == false)
+			return;
+
+		// Update cached weapon class on weapon change (cheap int compare)
+		if(ActiveWeaponID != g_iLastActiveWeaponRef[iClient])
+		{
+			g_iLastActiveWeaponRef[iClient] = ActiveWeaponID;
+			GetEntityClassname(ActiveWeaponID, g_strActiveWeaponClass[iClient], 32);
+		}
+
+		// Enforce AWP clip limit - catches pickup, reload interrupt, etc.
+		if(g_iSilentLevel[iClient] > 1 &&
+			g_bClientIsReloading[iClient] == false &&
+			StrEqual(g_strActiveWeaponClass[iClient], "weapon_sniper_awp", false) == true)
+		{
+			int iAWPCurrentClip = GetEntProp(ActiveWeaponID, Prop_Data, "m_iClip1");
+			int iAWPMaxClip = g_iRochelleAWPChargeLevel[iClient] >= 3 ? 1 : 3;
+			if(iAWPCurrentClip > iAWPMaxClip)
+			{
+				int iAWPOffset = FindDataMapInfo(iClient, "m_iAmmo");
+				int iAWPReserve = GetEntData(iClient, iAWPOffset + 40);
+				SetEntData(iClient, iAWPOffset + 40, iAWPReserve + (iAWPCurrentClip - iAWPMaxClip));
+				SetEntData(ActiveWeaponID, g_iOffset_Clip1, iAWPMaxClip, true);
+			}
+		}
+
 		buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 		if((buttons & IN_RELOAD) && g_bClientIsReloading[iClient] == false && g_bForceReload[iClient] == false)
 		{
-			char currentweapon[32];
-			GetClientWeapon(iClient, currentweapon, sizeof(currentweapon));
-			int ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-			if (IsValidEntity(ActiveWeaponID) == false)
-				return;
 			int CurrentClipAmmo = GetEntProp(ActiveWeaponID,Prop_Data,"m_iClip1");
-			if((StrEqual(currentweapon, "weapon_sniper_military", false) == true) && (CurrentClipAmmo == 30))
+			if((StrEqual(g_strActiveWeaponClass[iClient], "weapon_sniper_military", false) == true) && (CurrentClipAmmo == 30))
 			{
 				int iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
 				int iAmmo = GetEntData(iClient, iOffset_Ammo + 40);

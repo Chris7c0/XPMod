@@ -99,6 +99,8 @@ void ResetClientVariablesForRound(int iClient)
 	g_iSilentSorrowHeadshotCounter[iClient] = 0;
 	g_iRochelleAWPChargeLevel[iClient] = 0;
 	g_bRochelleAWPCharged[iClient] = false;
+	g_iLastActiveWeaponRef[iClient] = -1;
+	g_strActiveWeaponClass[iClient] = "";
 	g_bUsingFireStorm[iClient] = false;
 	g_bUsingShadowNinja[iClient] = false;
 	g_iStat_ClientInfectedKilled[iClient] = 0;
