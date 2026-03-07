@@ -91,9 +91,7 @@ bool OnPlayerRunCmd_Smoker(int iClient, int &iButtons)
 		return false;
 
 	// Smoker Teleport
-	if (g_bTeleportCoolingDown[iClient] == false &&
-		g_iChokingVictim[iClient] <= 0 &&
-		iButtons & IN_SPEED)
+	if (iButtons & IN_SPEED)
 		SmokerTeleport(iClient);
 
 	// Smoker Dismount
@@ -284,6 +282,30 @@ void SetSmokerConvarBuffs(int iLevel = 0)
 
 void SmokerTeleport(int iClient)
 {
+	if (g_bIsGhost[iClient] == true)
+	{
+		PrintHintText(iClient, "You cannot teleport while ghosted.");
+		return;
+	}
+
+	if (g_bTalentsConfirmed[iClient] == false)
+	{
+		PrintHintText(iClient, "Your abilities are not loaded yet.");
+		return;
+	}
+
+	if (g_bGameFrozen == true)
+	{
+		PrintHintText(iClient, "You cannot teleport while the round is frozen.");
+		return;
+	}
+
+	if (g_iClientTeam[iClient] != TEAM_INFECTED || RunClientChecks(iClient) == false)
+	{
+		PrintHintText(iClient, "You cannot teleport right now.");
+		return;
+	}
+
 	if(g_iChokingVictim[iClient] > 0)
 	{
 		PrintHintText(iClient, "You cannot teleport while choking a victim.");
@@ -300,7 +322,10 @@ void SmokerTeleport(int iClient)
 	float xyzOriginalLocation[3], xyzEndLocation[3], xyzEyeAngles[3];
 	GetClientAbsOrigin(iClient, xyzOriginalLocation);
 	if (GetCrosshairPosition(iClient, xyzEndLocation, xyzEyeAngles) == false)
+	{
+		PrintHintText(iClient, "Teleport failed. Aim at valid world geometry, not sky or outside the map.");
 		return;
+	}
 	
 	//Get direction in which iClient is facing, to push out from this vector
 	float vDir[3];
@@ -617,4 +642,3 @@ void OnTakeDamage_SmokerClone(int iEntity, int iAttacker, float fDamage, int iDa
 
 	SuppressNeverUsedWarning(iDamageType);
 }
-
