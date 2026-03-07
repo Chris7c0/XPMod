@@ -49,6 +49,7 @@ char g_strActiveWeaponClass[MAXPLAYERS + 1][32];
 #define SCREEN_SHAKE_AMOUNT_DEFAULT     20
 int g_iScreenShakeAmount = SCREEN_SHAKE_AMOUNT_DEFAULT;
 bool g_bClientIsReloading[MAXPLAYERS + 1];
+int g_iReloadingWeaponRef[MAXPLAYERS + 1];
 int g_iReloadFrameCounter[MAXPLAYERS + 1];
 int g_iLaserUpgradeCounter[MAXPLAYERS + 1];
 int g_iSavedClip[MAXPLAYERS + 1];

@@ -74,34 +74,45 @@ public void OnGameFrame()
 			// OnGameFrame Reloads
 			if(g_bClientIsReloading[iClient] == true)
 			{
-				g_iReloadFrameCounter[iClient]++;
-				//PrintToChatAll("Frame counter %d", g_iReloadFrameCounter[iClient]);
-
-				char strCurrentWeapon[32];
-				GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
-				//PrintToChatAll("Current Weapon is %s", currentweapon);
-
+				// Cancel reload monitoring if the player switched weapons
 				int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-				int iCurrentClipAmmo = 0;
-				if (IsValidEntity(iActiveWeaponID))
-					iCurrentClipAmmo = GetEntProp(iActiveWeaponID,Prop_Data,"m_iClip1");
-				int iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
-				
-				switch(g_iChosenSurvivor[iClient])
-				{
-					case BILL:		OGFSurvivorReload_Bill(iClient, strCurrentWeapon, iActiveWeaponID, iCurrentClipAmmo, iOffset_Ammo);
-					case ROCHELLE:	OGFSurvivorReload_Rochelle(iClient, strCurrentWeapon, iActiveWeaponID, iCurrentClipAmmo, iOffset_Ammo);
-					case COACH:		OGFSurvivorReload_Coach(iClient, strCurrentWeapon, iActiveWeaponID, iCurrentClipAmmo, iOffset_Ammo);
-					case ELLIS:		OGFSurvivorReload_Ellis(iClient, strCurrentWeapon, iActiveWeaponID, iCurrentClipAmmo, iOffset_Ammo);
-					case NICK:		OGFSurvivorReload_Nick(iClient, strCurrentWeapon, iActiveWeaponID, iCurrentClipAmmo);
-					case LOUIS:		OGFSurvivorReload_Louis(iClient, strCurrentWeapon, iActiveWeaponID, iCurrentClipAmmo,iOffset_Ammo);
-				}
-
-				if(g_iReloadFrameCounter[iClient] == 300)
+				if(iActiveWeaponID != g_iReloadingWeaponRef[iClient])
 				{
 					g_bClientIsReloading[iClient] = false;
 					g_iReloadFrameCounter[iClient] = 0;
 					g_bCoachShotgunForceReload[iClient] = false;
+					g_bForceReload[iClient] = false;
+				}
+				else
+				{
+					g_iReloadFrameCounter[iClient]++;
+					//PrintToChatAll("Frame counter %d", g_iReloadFrameCounter[iClient]);
+
+					char strCurrentWeapon[32];
+					GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
+					//PrintToChatAll("Current Weapon is %s", currentweapon);
+
+					int iCurrentClipAmmo = 0;
+					if (IsValidEntity(iActiveWeaponID))
+						iCurrentClipAmmo = GetEntProp(iActiveWeaponID,Prop_Data,"m_iClip1");
+					int iOffset_Ammo = FindDataMapInfo(iClient,"m_iAmmo");
+
+					switch(g_iChosenSurvivor[iClient])
+					{
+						case BILL:		OGFSurvivorReload_Bill(iClient, strCurrentWeapon, iActiveWeaponID, iCurrentClipAmmo, iOffset_Ammo);
+						case ROCHELLE:	OGFSurvivorReload_Rochelle(iClient, strCurrentWeapon, iActiveWeaponID, iCurrentClipAmmo, iOffset_Ammo);
+						case COACH:		OGFSurvivorReload_Coach(iClient, strCurrentWeapon, iActiveWeaponID, iCurrentClipAmmo, iOffset_Ammo);
+						case ELLIS:		OGFSurvivorReload_Ellis(iClient, strCurrentWeapon, iActiveWeaponID, iCurrentClipAmmo, iOffset_Ammo);
+						case NICK:		OGFSurvivorReload_Nick(iClient, strCurrentWeapon, iActiveWeaponID, iCurrentClipAmmo);
+						case LOUIS:		OGFSurvivorReload_Louis(iClient, strCurrentWeapon, iActiveWeaponID, iCurrentClipAmmo,iOffset_Ammo);
+					}
+
+					if(g_iReloadFrameCounter[iClient] == 300)
+					{
+						g_bClientIsReloading[iClient] = false;
+						g_iReloadFrameCounter[iClient] = 0;
+						g_bCoachShotgunForceReload[iClient] = false;
+					}
 				}
 			}
 		}

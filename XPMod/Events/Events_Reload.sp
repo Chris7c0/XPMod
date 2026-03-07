@@ -72,6 +72,7 @@ void Event_WeaponReload(Handle hEvent, const char[] strName, bool bDontBroadcast
 	}
 	g_iReloadFrameCounter[iClient] = 0;
 	g_bClientIsReloading[iClient] = true;
+	g_iReloadingWeaponRef[iClient] = ActiveWeaponID;
 	g_bForceReload[iClient] = false;
 	/*
 	if(((StrEqual(currentweapon, "weapon_pumpshotgun", false) == true) || (StrEqual(currentweapon, "weapon_shotgun_chrome", false) == true) || (StrEqual(currentweapon, "weapon_autoshotgun", false) == true) || (StrEqual(currentweapon, "weapon_shotgun_spas", false) == true)) && (g_iSprayLevel[iClient] > 0))
