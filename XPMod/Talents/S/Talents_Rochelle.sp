@@ -62,6 +62,11 @@ void OnGameFrame_Rochelle(int iClient)
 
 	OnGameFrame_HandleNinjaRope(iClient, buttons);
 
+	if (g_bUsingTongueRope[iClient] == true ||
+		g_bUsedTongueRope[iClient] == true ||
+		g_bIsHighJumping[iClient] == true)
+		RefreshAbilityImpactDamageImmunity(iClient);
+
 	if(g_iGatherLevel[iClient] > 0)
 	{					
 		if(!(buttons & IN_SPEED) || !(buttons & IN_USE))
@@ -85,6 +90,7 @@ void OnGameFrame_Rochelle(int iClient)
 					if(g_bIsHighJumping[iClient] == true)
 						if(GetEntityFlags(iClient) & FL_ONGROUND)
 						{
+							GiveAbilityImpactDamageGracePeriod(iClient);
 							g_bIsHighJumping[iClient] = false;
 							SetMoveType(iClient, MOVETYPE_WALK, MOVECOLLIDE_DEFAULT);
 						}
@@ -127,6 +133,7 @@ void OnGameFrame_Rochelle(int iClient)
 						{
 							g_bIsHighJumping[iClient] = true;
 							g_bIsHighJumpCharged[iClient] = false;
+							GiveAbilityImpactDamageGracePeriod(iClient);
 							float jumpvec[3];
 							jumpvec[0] = 0.0;
 							jumpvec[1] = 0.0;

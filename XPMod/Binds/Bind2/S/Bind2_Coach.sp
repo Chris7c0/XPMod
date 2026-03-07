@@ -17,11 +17,15 @@ void Bind2Press_Coach(int iClient)
             float vec[3];
             GetClientAbsOrigin(iClient, vec);
             EmitSoundToAll(SOUND_JPDIE, iClient, SNDCHAN_AUTO,	SNDLEVEL_NORMAL, SND_NOFLAGS, 0.3, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
+            GiveAbilityImpactDamageGracePeriod(iClient);
             g_bIsJetpackOn[iClient] = false;
             PrintCoachJetpackFuelGauge(iClient)
             
             if(clienthanging[iClient]==false)
+            {
                 SetMoveType(iClient, MOVETYPE_WALK, MOVECOLLIDE_DEFAULT);
+                g_bIsMovementTypeFly[iClient] = false;
+            }
             if(g_iClientJetpackFuel[iClient] <= 0)
                 PrintHintText(iClient, "Out Of Fuel");
         }
@@ -75,8 +79,10 @@ void HandleCoachJetPack2SecondTick(int iClient)
             GetClientAbsOrigin(iClient, vec);
             EmitSoundToAll(SOUND_JPDIE, iClient, SNDCHAN_AUTO,	SNDLEVEL_NORMAL, SND_NOFLAGS, 0.3, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
             
+            GiveAbilityImpactDamageGracePeriod(iClient);
             g_bIsJetpackOn[iClient] = false;
             g_bIsFlyingWithJetpack[iClient] = false;
+            g_bIsMovementTypeFly[iClient] = false;
             SetMoveType(iClient, MOVETYPE_WALK, MOVECOLLIDE_DEFAULT);
             g_iClientJetpackFuel[iClient] = 0;
             PrintCoachJetpackFuelGauge(iClient);

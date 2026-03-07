@@ -23,6 +23,30 @@ public void OnEntityCreated(int iEntity, const char[] classname)
 	}
 }
 
+void RefreshAbilityImpactDamageImmunity(int iClient, float fDuration = ABILITY_IMPACT_DAMAGE_IMMUNITY_ACTIVE_REFRESH)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false)
+		return;
+
+	float fNewEndTime = GetGameTime() + fDuration;
+	if (fNewEndTime > g_fAbilityImpactDamageImmunityEndTime[iClient])
+		g_fAbilityImpactDamageImmunityEndTime[iClient] = fNewEndTime;
+}
+
+void GiveAbilityImpactDamageGracePeriod(int iClient)
+{
+	RefreshAbilityImpactDamageImmunity(iClient, ABILITY_IMPACT_DAMAGE_IMMUNITY_GRACE_DURATION);
+}
+
+bool HasAbilityImpactDamageImmunity(int iClient)
+{
+	return RunClientChecks(iClient) &&
+		IsPlayerAlive(iClient) &&
+		g_iClientTeam[iClient] == TEAM_SURVIVORS &&
+		g_fAbilityImpactDamageImmunityEndTime[iClient] > GetGameTime();
+}
+
 public void OnEntityDestroyed(int iEntity)
 {
 	// Check if player presseed a button this round to ensure unwanted preloaded entities are 
@@ -63,7 +87,16 @@ public void OnEntityDestroyed(int iEntity)
 
 public Action OnTakeDamage(int iVictim, int &iAttacker, int &iInflictor, float &fDamage, int &iDamageType, int &iWeapon, float damageForce[3], float damagePosition[3]) 
 {
-	// PrintToChatAll("OnTakeDamage: %i", iVictim);
+	// PrintToChatAll("OnTakeDamage: %i, damage: %f, damageType: %i", iVictim, fDamage, iDamageType);
+
+	if (iVictim > 0 &&
+		iVictim <= MaxClients &&
+		(iDamageType & (DMG_FALL | DMG_CRUSH)) &&
+		HasAbilityImpactDamageImmunity(iVictim))
+	{
+		fDamage = 0.0;
+		return Plugin_Changed;
+	}
 
 	// Check that this is an uncommon infected and not world or bot/human player
 	if (iVictim > 0 &&

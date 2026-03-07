@@ -119,6 +119,9 @@ int g_iBillsTeamHealthPool;
 
 //Rochelle's Stuff
 #define ROCHELLE_ESCAPE_CHANCE_PER_LEVEL            3
+#define ABILITY_IMPACT_DAMAGE_IMMUNITY_ACTIVE_REFRESH   0.25
+#define ABILITY_IMPACT_DAMAGE_IMMUNITY_GRACE_DURATION   3.0
+float g_fAbilityImpactDamageImmunityEndTime[MAXPLAYERS + 1] = {-1.0, ...};
 //For the Infected Detection Device(IDD) hud menu
 bool g_bDrawIDD[MAXPLAYERS + 1];
 bool g_bClientIDDToggle[MAXPLAYERS + 1];
@@ -392,4 +395,3 @@ bool g_bInfectedBindsDisabled;
 #define LOUIS_TIME_OUT_COOLDOWN_DURATION                300.0
 #define LOUIS_NOOBWIPE_COOLDOWN_DURATION                15.0
 bool g_bNoobWipeCooldown;
-

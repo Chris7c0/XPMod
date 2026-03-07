@@ -73,6 +73,7 @@ void ResetClientVariablesForRound(int iClient)
 	g_iFastAttackingCurrentWeaponID[iClient] = -1;
 	g_iFastAttackingCurrentItemIndex[iClient] = ITEM_EMPTY;
 	g_bWalkAndUseToggler[iClient] = false;
+	g_fAbilityImpactDamageImmunityEndTime[iClient] = -1.0;
 	g_bSurvivorTalentsGivenThisRound[iClient] = false;
 	g_bPlayerInTeamChangeCoolDown[iClient] = false;
 	g_fTimeStamp[iClient] = -1.0;

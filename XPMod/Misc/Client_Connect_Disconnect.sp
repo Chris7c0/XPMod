@@ -16,6 +16,10 @@ void HandleClientConnect(int iClient)
 	if (RunClientChecks(iClient) == false)
 		return;
 
+	SDKUnhook(iClient, SDKHook_OnTakeDamage, OnTakeDamage);
+	SDKHook(iClient, SDKHook_OnTakeDamage, OnTakeDamage);
+	g_fAbilityImpactDamageImmunityEndTime[iClient] = -1.0;
+
 	g_iClientTeam[iClient] = GetClientTeam(iClient);
 	
 	if (IsFakeClient(iClient) == true)
@@ -114,6 +118,9 @@ void HandleClientDisconnect(int iClient)
 {
 	if(iClient	< 1)
 		return;
+
+	SDKUnhook(iClient, SDKHook_OnTakeDamage, OnTakeDamage);
+	g_fAbilityImpactDamageImmunityEndTime[iClient] = -1.0;
 	
 	// Reset the AFK last button press
 	g_fLastPlayerLastButtonPressTime[iClient] =  0.0;

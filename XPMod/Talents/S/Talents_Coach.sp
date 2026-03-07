@@ -123,6 +123,10 @@ void OnGameFrame_Coach(int iClient)
 			preledgebuffer[iClient] = GetEntDataFloat(iClient,g_iOffset_HealthBuffer);
 		}
 
+		if (g_bIsFlyingWithJetpack[iClient] == true ||
+			g_bIsMovementTypeFly[iClient] == true)
+			RefreshAbilityImpactDamageImmunity(iClient);
+
 		// Jetpack
 		if(g_bIsJetpackOn[iClient] == true)
 		{
@@ -142,6 +146,7 @@ void OnGameFrame_Coach(int iClient)
 					{
 						if(GetEntityFlags(iClient) & FL_ONGROUND)
 						{
+							GiveAbilityImpactDamageGracePeriod(iClient);
 							SetMoveType(iClient, MOVETYPE_WALK, MOVECOLLIDE_DEFAULT);
 							g_bIsMovementTypeFly[iClient] = false;
 						}
@@ -782,6 +787,7 @@ Action StartFlying(int iClient)
 	g_iClientJetpackFuel[iClient]--;
 	PrintCoachJetpackFuelGauge(iClient);
 
+	RefreshAbilityImpactDamageImmunity(iClient);
 	AddUpwardVelocity(iClient, 50.0);
 	g_bIsFlyingWithJetpack[iClient]=true;
 	if(g_iClientJetpackFuel[iClient] <= 0)
@@ -792,8 +798,10 @@ Action StartFlying(int iClient)
 		float vec[3];
 		GetClientAbsOrigin(iClient, vec);
 		EmitSoundToAll(SOUND_JPDIE, iClient, SNDCHAN_AUTO,	SNDLEVEL_NORMAL, SND_NOFLAGS, 0.3, SNDPITCH_NORMAL, -1, vec, NULL_VECTOR, true, 0.0);
+		GiveAbilityImpactDamageGracePeriod(iClient);
 		g_bIsJetpackOn[iClient] = false;
 		g_bIsFlyingWithJetpack[iClient] = false;
+		g_bIsMovementTypeFly[iClient] = false;
 		SetMoveType(iClient, MOVETYPE_WALK, MOVECOLLIDE_DEFAULT);
 		g_iClientJetpackFuel[iClient] = 0;
 		PrintCoachJetpackFuelGauge(iClient);
@@ -805,6 +813,7 @@ Action StartFlying(int iClient)
 Action StopFlying(int iClient)
 {
 	g_bIsFlyingWithJetpack[iClient]=false;
+	GiveAbilityImpactDamageGracePeriod(iClient);
 	CreateTimer(0.5, DeleteParticle, g_iPID_CoachJetpackStream[iClient], TIMER_FLAG_NO_MAPCHANGE);
 	StopSound(iClient, SNDCHAN_AUTO, SOUND_JPHIGHREV);
 	float vec[3];

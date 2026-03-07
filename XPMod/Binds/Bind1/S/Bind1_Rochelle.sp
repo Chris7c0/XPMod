@@ -50,6 +50,7 @@ void DeployNinjaRope(int iClient)
 	// Enable the rope
 	g_bUsingTongueRope[iClient]=true;
 	g_bUsedTongueRope[iClient] = true;
+	GiveAbilityImpactDamageGracePeriod(iClient);
 	EmitSoundToAll(SOUND_HOOKGRAB, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, NULL_VECTOR, NULL_VECTOR, true, 0.0);	// Emit sound from the end of the rope
 	SetMoveType(iClient, MOVETYPE_FLYGRAVITY, MOVECOLLIDE_FLY_BOUNCE);
 
@@ -118,6 +119,7 @@ void OnGameFrame_HandleNinjaRope(int iClient, int buttons)
 		g_bIsHighJumping[iClient] == false &&
 		GetEntityFlags(iClient) & FL_ONGROUND)
 	{
+		GiveAbilityImpactDamageGracePeriod(iClient);
 		SetMoveType(iClient, MOVETYPE_WALK, MOVECOLLIDE_DEFAULT);
 		g_bUsedTongueRope[iClient] = false;
 	}
