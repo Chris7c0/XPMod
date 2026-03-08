@@ -340,17 +340,6 @@ Action Event_InfectedDecap(Handle hEvent, const char[] strName, bool bDontBroadc
 		{
 			g_iClientXP[iClient] += 5;
 			CheckLevel(iClient);
-			
-			if(g_iChosenSurvivor[iClient] == COACH && g_iHomerunLevel[iClient]>0)
-			{
-				GiveExtraAmmoForCurrentShotgun(iClient);
-
-				if(g_iCoachDecapitationCounter[iClient] < 50)
-				{
-					g_iCoachDecapitationCounter[iClient]++;
-					g_iMeleeDamageCounter[iClient]+=(g_iHomerunLevel[iClient]*2);
-				}
-			}
 		}
 	}
 	return Plugin_Continue;

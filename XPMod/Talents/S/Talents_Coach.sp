@@ -711,14 +711,28 @@ void EventsDeath_AttackerCoach(Handle hEvent, int iAttacker, int iVictim)
 	char weaponclass[32];
 	GetEventString(hEvent,"weapon",weaponclass,32);
 
-	// Ensure that its a infected for his headshot speed boosts
+	if (StrContains(weaponclass,"melee",false) == -1)
+		return;
+
+	// Headshot-dependent bonuses
 	if (GetEventBool(hEvent, "headshot") &&
-		g_bCoachRageIsInCooldown[iAttacker] == false &&
-		StrContains(weaponclass,"melee",false) != -1)
+		g_bCoachRageIsInCooldown[iAttacker] == false)
 	{
 		// CI Headshot
 		if (iVictim < 1)
 		{
+			// Homerun - CI melee headshot gives stacks and ammo (all melee weapons, not just ones that can do decapitations)
+			if (g_iHomerunLevel[iAttacker] > 0)
+			{
+				GiveExtraAmmoForCurrentShotgun(iAttacker);
+
+				if (g_iCoachDecapitationCounter[iAttacker] < 50)
+				{
+					g_iCoachDecapitationCounter[iAttacker]++;
+					g_iMeleeDamageCounter[iAttacker] += (g_iHomerunLevel[iAttacker] * 2);
+				}
+			}
+
 			// Bull Rush CI headshot boost
 			if (g_iBullLevel[iAttacker] > 0)
 			{
@@ -731,13 +745,13 @@ void EventsDeath_AttackerCoach(Handle hEvent, int iAttacker, int iVictim)
 				}
 			}
 		}
-		
+
 		// SI Headshot
 		if (iVictim > 0)
 		{
 			if (g_iHomerunLevel[iAttacker] > 0)
 				GiveExtraAmmoForCurrentShotgun(iAttacker, COACH_CLIP_GAINED_PER_SI_DECAP);
-			
+
 			if (g_iHomerunLevel[iAttacker] > 0 && g_bCoachInSISpeed[iAttacker] == false)
 			{
 				g_iCoachSIHeadshotCounter[iAttacker]++;
@@ -749,7 +763,7 @@ void EventsDeath_AttackerCoach(Handle hEvent, int iAttacker, int iVictim)
 			if(g_bWreckingChargeRetrigger[iAttacker] == true)
 				CreateTimer(0.5, TimerWreckingChargeRetrigger, iAttacker, TIMER_FLAG_NO_MAPCHANGE);
 		}
-	}	
+	}
 }
 
 void EventsDeath_VictimCoach(Handle hEvent, int iAttacker, int iVictim)
