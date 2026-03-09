@@ -548,6 +548,23 @@ void OnGameFrame_Coach(int iClient)
 	}
 	if(g_iSprayLevel[iClient] > 0)
 	{
+		// If force reload is active but player switched away from the shotgun, restore saved ammo
+		if(g_bCoachShotgunForceReload[iClient] == true)
+		{
+			char currentweaponcheck[32];
+			GetClientWeapon(iClient, currentweaponcheck, sizeof(currentweaponcheck));
+			if(StrContains(currentweaponcheck, "shotgun", false) == -1)
+			{
+				int iShotgunID = GetPlayerWeaponSlot(iClient, 0);
+				if(IsValidEntity(iShotgunID) && g_iCoachShotgunSavedAmmo[iClient] > 0)
+				{
+					SetEntData(iShotgunID, g_iOffset_ClipShotgun, g_iCoachShotgunSavedAmmo[iClient], true);
+				}
+				g_bCoachShotgunForceReload[iClient] = false;
+				g_iCoachShotgunSavedAmmo[iClient] = 0;
+			}
+		}
+
 		int buttons;
 		buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 		if((buttons & IN_RELOAD) && g_bCoachShotgunForceReload[iClient] == false && g_bClientIsReloading[iClient] == false)
@@ -608,6 +625,10 @@ void OGFSurvivorReload_Coach(int iClient, const char[] currentweapon, int Active
 				SetEntData(ActiveWeaponID, g_iOffset_ReloadNumShells, iAmmo, true);
 			}
 		}
+		if(CurrentClipAmmo > g_iCoachShotgunSavedAmmo[iClient])
+		{
+			g_iCoachShotgunSavedAmmo[iClient] = CurrentClipAmmo;
+		}
 		if((CurrentClipAmmo == (8 + (g_iSprayLevel[iClient] * 2))) || (CurrentClipAmmo == (CurrentClipAmmo + iAmmo)))
 		{
 			g_bCoachShotgunForceReload[iClient] = false;
@@ -630,6 +651,10 @@ void OGFSurvivorReload_Coach(int iClient, const char[] currentweapon, int Active
 			{
 				SetEntData(ActiveWeaponID, g_iOffset_ReloadNumShells, iAmmo, true);
 			}
+		}
+		if(CurrentClipAmmo > g_iCoachShotgunSavedAmmo[iClient])
+		{
+			g_iCoachShotgunSavedAmmo[iClient] = CurrentClipAmmo;
 		}
 		if((CurrentClipAmmo == (10 + (g_iSprayLevel[iClient] * 2))) || (CurrentClipAmmo == (CurrentClipAmmo + iAmmo)))
 		{

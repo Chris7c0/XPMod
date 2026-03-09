@@ -78,6 +78,11 @@ public void OnGameFrame()
 				int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 				if(iActiveWeaponID != g_iReloadingWeaponRef[iClient])
 				{
+					if(g_bCoachShotgunForceReload[iClient] && g_iCoachShotgunSavedAmmo[iClient] > 0 && IsValidEntity(g_iReloadingWeaponRef[iClient]))
+					{
+						SetEntData(g_iReloadingWeaponRef[iClient], g_iOffset_ClipShotgun, g_iCoachShotgunSavedAmmo[iClient], true);
+						g_iCoachShotgunSavedAmmo[iClient] = 0;
+					}
 					g_bClientIsReloading[iClient] = false;
 					g_iReloadFrameCounter[iClient] = 0;
 					g_bCoachShotgunForceReload[iClient] = false;
@@ -109,6 +114,11 @@ public void OnGameFrame()
 
 					if(g_iReloadFrameCounter[iClient] == 300)
 					{
+						if(g_bCoachShotgunForceReload[iClient] && g_iCoachShotgunSavedAmmo[iClient] > 0 && IsValidEntity(g_iReloadingWeaponRef[iClient]))
+						{
+							SetEntData(g_iReloadingWeaponRef[iClient], g_iOffset_ClipShotgun, g_iCoachShotgunSavedAmmo[iClient], true);
+							g_iCoachShotgunSavedAmmo[iClient] = 0;
+						}
 						g_bClientIsReloading[iClient] = false;
 						g_iReloadFrameCounter[iClient] = 0;
 						g_bCoachShotgunForceReload[iClient] = false;

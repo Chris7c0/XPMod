@@ -74,6 +74,14 @@ void Event_WeaponReload(Handle hEvent, const char[] strName, bool bDontBroadcast
 	g_bClientIsReloading[iClient] = true;
 	g_iReloadingWeaponRef[iClient] = ActiveWeaponID;
 	g_bForceReload[iClient] = false;
+	if(g_iChosenSurvivor[iClient] == COACH && g_iSprayLevel[iClient] > 0 && g_bCoachShotgunForceReload[iClient] == false)
+	{
+		if(StrContains(currentweapon, "shotgun", false) != -1)
+		{
+			int CurrentClipAmmo = GetEntProp(ActiveWeaponID, Prop_Data, "m_iClip1");
+			g_iCoachShotgunSavedAmmo[iClient] = CurrentClipAmmo;
+		}
+	}
 	/*
 	if(((StrEqual(currentweapon, "weapon_pumpshotgun", false) == true) || (StrEqual(currentweapon, "weapon_shotgun_chrome", false) == true) || (StrEqual(currentweapon, "weapon_autoshotgun", false) == true) || (StrEqual(currentweapon, "weapon_shotgun_spas", false) == true)) && (g_iSprayLevel[iClient] > 0))
 	{

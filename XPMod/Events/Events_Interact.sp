@@ -32,6 +32,11 @@ Action Event_PlayerUse(Handle hEvent, const char[] strName, bool bDontBroadcast)
 	EventsPlayerUse_Nick(iClient, iTargetID);
 	EventsPlayerUse_Louis(iClient, iTargetID);
 
+	if(g_iChosenSurvivor[iClient] == COACH && g_iSprayLevel[iClient] > 0)
+	{
+		g_iCoachShotgunSavedAmmo[iClient] = 0;
+	}
+
 	return Plugin_Continue;
 }
 
@@ -76,6 +81,10 @@ Action Event_ItemPickUp(Handle hEvent, const char[] strName, bool bDontBroadcast
 			g_bClientIsReloading[iClient] = false;
 			g_iReloadFrameCounter[iClient] = 0;
 		}
+	}
+	if(g_iChosenSurvivor[iClient] == COACH && g_iSprayLevel[iClient] > 0)
+	{
+		g_iCoachShotgunSavedAmmo[iClient] = 0;
 	}
 
 	// Automatic laser site upgrades
