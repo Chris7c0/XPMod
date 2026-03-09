@@ -1,0 +1,5 @@
+spritecard
+{
+$basetexture "particle\addons\xpm\particle\infected\spitter\spitter_summon"
+$no_fullbright 1
+}

@@ -1,0 +1,8 @@
+UnlitGeneric
+{
+$basetexture "particle\addons\xpm\particle\infected\tank\snowflakes"
+
+$phong 1
+$phongboost 11
+$phongexponent 30
+}

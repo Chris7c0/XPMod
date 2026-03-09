@@ -1,0 +1,5 @@
+spritecard
+{
+$basetexture "particle\addons\xpm\particle\infected\spitter\hallucinogenic_effect"
+$no_fullbright 1
+}

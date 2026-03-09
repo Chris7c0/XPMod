@@ -1,0 +1,10 @@
+spritecard
+{
+$basetexture "particle\addons\xpm\particle\infected\tank\snowflake_gleam"
+
+$blendframes 1
+$overbrightfactor 1.0
+$depthblend 1
+$translucent 1
+$selfillum 1
+}

@@ -1,0 +1,7 @@
+spritecard
+{
+$basetexture "particle\addons\xpm\particle\infected\tank\ice_tank_icicle"
+$nocull 1
+$orientation 3
+$additive 1
+}

@@ -1,0 +1,95 @@
+particles_manifest
+{
+	"file"		"!particles/xpm_charger_fx.pcf"
+	"file"		"!particles/xpm_spitter_fx.pcf"
+	"file"		"!particles/testing.pcf"
+	"file"		"!particles/error.pcf"
+	"file"		"!particles/sheet_powerup.pcf"
+	"file"		"!particles/xpm_tank_fx.pcf"
+	"file"		"!particles/xpm_coach_fx.pcf"
+	"file"		"!particles/xpm_ellis_fx.pcf"
+	"file"		"!particles/xpm_nick_fx.pcf"
+	"file"		"!particles/xpm_rochelle_fx.pcf"
+	"file"		"!particles/md_vgui_bill.pcf"
+	"file"		"!particles/md_vgui_coach.pcf"
+	"file"		"!particles/md_vgui_ellis.pcf"
+	"file"		"!particles/md_vgui_nick.pcf"
+	"file"		"!particles/md_vgui_rochelle.pcf"
+	"file"		"particles/xpm_charger_fx.pcf"
+	"file"		"particles/xpm_spitter_fx.pcf"
+	"file"		"particles/testing.pcf"
+	"file"		"particles/sheet_powerup.pcf"
+	"file"		"particles/xpm_tank_fx.pcf"
+	"file"		"particles/xpm_coach_fx.pcf"
+	"file"		"particles/xpm_ellis_fx.pcf"
+	"file"		"particles/xpm_nick_fx.pcf"
+	"file"		"particles/xpm_rochelle_fx.pcf"
+	"file"		"particles/md_vgui_bill.pcf"
+	"file"		"particles/md_vgui_coach.pcf"
+	"file"		"particles/md_vgui_ellis.pcf"
+	"file"		"particles/md_vgui_nick.pcf"
+	"file"		"particles/md_vgui_rochelle.pcf"
+	"file"		"particles/steamworks.pcf"
+	"file"		"particles/environmental_fx.pcf"
+	"file"		"particles/rain_fx.pcf"
+	"file"		"particles/burning_fx.pcf"
+	"file"		"particles/fire_01.pcf"
+	"file"		"particles/fire_01L4D.pcf"
+	"file"		"particles/electrical_fx.pcf"
+	"file"		"particles/steam_fx.pcf"
+	"file"		"particles/locator_fx.pcf"
+	"file"		"particles/witch_fx.pcf"
+	"file"		"particles/speechbubbles.pcf"
+	"file"		"particles/rain_storm_fx.pcf"
+	"file"		"particles/military_artillery_impacts.pcf"
+	"file"		"particles/rope_fx.pcf"
+	"file"		"particles/spitter_fx.pcf"
+	"file"		"particles/fireworks_fx.pcf"
+	"file"		"particles/vehicle_fx.pcf"
+	"file"		"particles/insect_fx.pcf"
+	"file"		"particles/charger_fx.pcf"
+	"file"		"particles/item_fx.pcf"
+	"file"		"particles/gen_dest_fx.pcf"
+	"file"		"particles/tanker_explosion.pcf"
+	"file"		"particles/firework_crate_fx.pcf"
+	"file"		"particles/coldstream.pcf"
+	
+	// Added by XPMod
+	"file"		"!particles/fire_infected_fx.pcf"
+	"file"		"particles/fire_infected_fx.pcf"
+	"file"		"!particles/test_collision.pcf"
+	"file"		"particles/test_collision.pcf"
+	"file"		"!particles/test_distancealpha.pcf"
+	"file"		"particles/test_distancealpha.pcf"
+
+	// clean
+	"file"		"!particles/footstep_fx.pcf"
+	"file"		"!particles/screen_fx.pcf"
+	"file"		"!particles/smoker_fx.pcf"
+	"file"		"!particles/boomer_fx.pcf"
+	"file"		"!particles/hunter_fx.pcf"
+	"file"		"!particles/water_fx.pcf"
+	"file"		"!particles/tank_fx.pcf"
+	"file"		"!particles/blood_fx.pcf"
+
+
+	// Were ! appear to be precached
+	"file"		"particles/infected_fx.pcf"
+
+	//require cleaning
+	"file"		"!particles/survivor_fx.pcf"
+	"file"		"!particles/weapon_fx.pcf"
+	"file"		"!particles/impact_fx.pcf"
+
+
+
+	//deprecated
+	//"file"	"particles/ui_fx.pcf"
+
+	//River Campaign
+	"file"		"particles/environment_fx_river.pcf"
+	"file"		"particles/environmental_fx_river.pcf"
+	"file"		"particles/fire_01_river.pcf"
+	"file"		"particles/fire_01L4D_river.pcf"
+	"file"		"particles/weapon_fx_river.pcf"
+}

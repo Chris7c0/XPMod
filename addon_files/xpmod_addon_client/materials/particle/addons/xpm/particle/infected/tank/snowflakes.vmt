@@ -1,0 +1,6 @@
+spritecard
+{
+$basetexture "particle\addons\xpm\particle\infected\tank\snowflakes"
+
+$nocull 1
+}

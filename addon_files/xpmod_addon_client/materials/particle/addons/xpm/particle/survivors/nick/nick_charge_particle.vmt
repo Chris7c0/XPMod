@@ -1,0 +1,8 @@
+spritecard
+{
+$basetexture "particle\addons\xpm\particle\survivors\nick\nick_charge_particle"
+$translucent 1
+$additive 1
+$nocull 1
+$depthblend 0
+}

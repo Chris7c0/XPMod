@@ -1,0 +1,6 @@
+spritecard
+{
+$basetexture "particle\addons\xpm\particle\survivors\rochelle\rochelle_jump_charge_trail"
+$additive 1
+$nocull 1
+}

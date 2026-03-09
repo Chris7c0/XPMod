@@ -1,0 +1,13 @@
+"AddonInfo"
+{
+	addonSteamAppID		550
+	addontitle		"XPMod Server Addons v0.8.4a"
+	addonversion		""
+	addonauthor 		"Chris Pringle and Ezekiel Keener"
+	addonauthorSteamID	"Dragonzk/ChrisP"
+	addontagline		"Experience L4D2 with an RPG feel."
+	addonDescription	"Experience L4D2 with an RPG feel."
+	addonSteamGroupName	"XPMod"
+	addonURL0		"http://l4d2xpmod.com/ig/home/xpmod_ig_home.html"
+	addonDescription 	"XPMod Server Addons v0.8.4a"
+}

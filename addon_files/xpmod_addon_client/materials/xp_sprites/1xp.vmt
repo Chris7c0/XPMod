@@ -1,0 +1,6 @@
+UnlitGeneric
+{
+$basetexture "xp_sprites/1xp"
+
+$translucent 1
+}
