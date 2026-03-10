@@ -53,6 +53,24 @@ void TalentsLoad_Bill(int iClient)
 		PrintToChat(iClient, "\x03[XPMod] \x05Your abilties will be automatically set as you level.");
 }
 
+void StopBillTaunt(int iClient, bool bRefreshRender = true)
+{
+	if (g_bBillTaunting[iClient] == false && g_iBillTauntDuration[iClient] <= 0)
+		return;
+
+	g_bBillTaunting[iClient] = false;
+	g_iBillTauntDuration[iClient] = 0;
+
+	if (bRefreshRender == false)
+		return;
+
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		if (IsClientInGame(i))
+			SetClientRenderAndGlowColor(i);
+	}
+}
+
 
 void SetPlayerTalentMaxHealth_Bill(int iClient, bool bFillInHealthGap = true)
 {
@@ -90,15 +108,7 @@ void OnGameFrame_Bill(int iClient)
 			}
 			else
 			{
-				g_bBillTaunting[iClient] = false;
-				
-				for (int i = 1; i <= MaxClients; i++)
-				{
-					if (IsClientInGame(i) && g_iClientTeam[i] == TEAM_SURVIVORS)
-					{
-						SetClientRenderAndGlowColor(i);
-					}
-				}
+				StopBillTaunt(iClient);
 			}
 		}
 
@@ -107,6 +117,12 @@ void OnGameFrame_Bill(int iClient)
 		
 		if((iButtons & IN_SPEED) && (iButtons & IN_USE) && g_iBillGlobalTauntCooldown <= 0 && !g_bBillTaunting[iClient])
 		{
+			if (g_bTalentsConfirmed[iClient] == false)
+			{
+				PrintHintText(iClient, "Confirm your talents before using Bill's taunt.");
+				return;
+			}
+
 			g_bBillTaunting[iClient] = true;
 			g_iBillTauntDuration[iClient] = 450; // 15 second duration
 			g_iBillGlobalTauntCooldown = 7200; // 4 minute cooldown

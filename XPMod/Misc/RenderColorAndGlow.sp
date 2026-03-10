@@ -38,7 +38,11 @@ void SetClientRenderAndGlowColor(int iClient)
 	int iTauntingBill = -1;
 	for (int i = 1; i <= MaxClients; i++)
 	{
-		if (IsClientInGame(i) && g_iClientTeam[i] == TEAM_SURVIVORS && g_bBillTaunting[i])
+		if (IsClientInGame(i) &&
+			g_iClientTeam[i] == TEAM_SURVIVORS &&
+			g_bTalentsConfirmed[i] &&
+			g_iChosenSurvivor[i] == BILL &&
+			g_bBillTaunting[i])
 		{
 			iTauntingBill = i;
 			break;
