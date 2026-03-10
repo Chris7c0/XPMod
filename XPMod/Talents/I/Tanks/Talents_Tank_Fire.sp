@@ -120,7 +120,11 @@ void EventsHurt_AttackerTank_Fire(Handle hEvent, int iAttackerTank, int iVictim)
 	
 	if(StrEqual(weapon,"tank_claw") == true)
 	{
-		g_iFireTankPunchHitCounter[iAttackerTank]++;
+		// Only count punches on non-incapped survivors for fire punch activation
+		bool bCountPunch = (g_iClientTeam[iVictim] == TEAM_SURVIVORS && IsIncap(iVictim) == false);
+
+		if(bCountPunch)
+			g_iFireTankPunchHitCounter[iAttackerTank]++;
 
 		//Fire punch occurs on every Nth successful survivor hit, starting with the first
 		if(g_bFireTankAttackCharged[iAttackerTank] == true)
@@ -131,7 +135,7 @@ void EventsHurt_AttackerTank_Fire(Handle hEvent, int iAttackerTank, int iVictim)
 			DeleteParticleEntity(g_iPID_TankChargedFire[iAttackerTank]);
 			SetFireToPlayer(iVictim, iAttackerTank, 5.0);
 		}
-		else if(g_iFireTankPunchHitCounter[iAttackerTank] >= FIRE_TANK_FIRE_PUNCH_EVERY_N_HITS)
+		else if(bCountPunch && g_iFireTankPunchHitCounter[iAttackerTank] >= FIRE_TANK_FIRE_PUNCH_EVERY_N_HITS)
 		{
 			// Recharge fire punch after N hits
 			g_iFireTankPunchHitCounter[iAttackerTank] = 0;
