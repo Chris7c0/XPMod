@@ -218,6 +218,15 @@ bool g_bCoachInCISpeed[MAXPLAYERS + 1];
 bool g_bCoachInSISpeed[MAXPLAYERS + 1];
 int g_iCoachCIHeadshotCounter[MAXPLAYERS + 1];
 int g_iCoachSIHeadshotCounter[MAXPLAYERS + 1];
+//For Coach's Wrecking Ball Lunge
+#define COACH_LUNGE_RANGE                  240.0   // 20 feet = 20 * 12 HU
+#define COACH_LUNGE_STOP_DISTANCE          50.0    // Stop this far from target (melee strike range)
+#define COACH_LUNGE_MIN_DISTANCE           80.0    // Don't teleport if already this close
+#define COACH_LUNGE_COOLDOWN_DURATION      1.0     // Seconds between lunges
+bool g_bCoachLungeOnCooldown[MAXPLAYERS + 1];
+bool g_bCoachLungeTriggered[MAXPLAYERS + 1];
+bool g_bCoachLungeEnabled[MAXPLAYERS + 1] = {true, ...};
+bool g_bCoachLungeToggleCooldown[MAXPLAYERS + 1];
 
 //Ellis's Stuff
 #define ELLIS_STARTING_MAX_HEALTH                       100

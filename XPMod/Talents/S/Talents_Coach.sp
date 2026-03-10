@@ -475,6 +475,175 @@ void OnGameFrame_Coach(int iClient)
 			}
 		}
 	}
+	// Wrecking Ball Lunge - performed from OnPlayerRunCmd_Coach when right-click detected
+	if(g_bCoachLungeTriggered[iClient] == true)
+	{
+		g_bCoachLungeTriggered[iClient] = false;
+
+		// Find lunge target - prioritize crosshair target, then closest in front
+		float xyzClientPos[3];
+		GetClientAbsOrigin(iClient, xyzClientPos);
+
+		float fClosestDist = COACH_LUNGE_RANGE + 1.0;
+		float xyzClosestTarget[3];
+		bool bFoundTarget = false;
+
+		// First check: is there a target directly in the crosshair?
+		int iAimTarget = GetClientAimTarget(iClient, false);
+		if(iAimTarget > 0 && IsValidEntity(iAimTarget))
+		{
+			bool bValidAimTarget = false;
+			float xyzAimPos[3];
+
+			// Check if aim target is an SI player (must be below 30% health)
+			if(iAimTarget <= MaxClients && RunClientChecks(iAimTarget) && IsPlayerAlive(iAimTarget) && g_iClientTeam[iAimTarget] == TEAM_INFECTED)
+			{
+				int iSIHealth = GetPlayerHealth(iAimTarget);
+				int iSIMaxHealth = GetPlayerMaxHealth(iAimTarget);
+				if(iSIMaxHealth > 0 && float(iSIHealth) / float(iSIMaxHealth) < 0.30)
+				{
+					GetClientAbsOrigin(iAimTarget, xyzAimPos);
+					bValidAimTarget = true;
+				}
+			}
+			// Check if aim target is a CI entity
+			else if(iAimTarget > MaxClients)
+			{
+				char strAimClassName[32];
+				GetEntityClassname(iAimTarget, strAimClassName, sizeof(strAimClassName));
+				if(StrEqual(strAimClassName, "infected") && GetEntProp(iAimTarget, Prop_Data, "m_iHealth") > 0)
+				{
+					GetEntPropVector(iAimTarget, Prop_Send, "m_vecOrigin", xyzAimPos);
+					bValidAimTarget = true;
+				}
+			}
+
+			if(bValidAimTarget)
+			{
+				float fAimDist = GetVectorDistance(xyzClientPos, xyzAimPos);
+				if(fAimDist <= COACH_LUNGE_RANGE)
+				{
+					fClosestDist = fAimDist;
+					xyzClosestTarget = xyzAimPos;
+					bFoundTarget = true;
+				}
+			}
+		}
+
+		// Fallback: find closest infected in front of player
+		if(bFoundTarget == false)
+		{
+			// Get player's facing direction (horizontal only)
+			float xyzEyeAngles[3], vFacing[3];
+			GetClientEyeAngles(iClient, xyzEyeAngles);
+			GetAngleVectors(xyzEyeAngles, vFacing, NULL_VECTOR, NULL_VECTOR);
+			vFacing[2] = 0.0;
+			NormalizeVector(vFacing, vFacing);
+
+			// SI only via crosshair (handled above), fallback only checks CI
+
+			// Check CI entities
+			for(int iEntity = MaxClients + 1; iEntity < MAXENTITIES; iEntity++)
+			{
+				if(IsValidEntity(iEntity) == false)
+					continue;
+				if(HasEntProp(iEntity, Prop_Send, "m_vecOrigin") == false)
+					continue;
+
+				char strClassName[32];
+				GetEntityClassname(iEntity, strClassName, sizeof(strClassName));
+				if(StrEqual(strClassName, "infected") == false)
+					continue;
+				if(GetEntProp(iEntity, Prop_Data, "m_iHealth") <= 0)
+					continue;
+
+				float xyzEntityPos[3];
+				GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", xyzEntityPos);
+
+				float vToTarget[3];
+				SubtractVectors(xyzEntityPos, xyzClientPos, vToTarget);
+				vToTarget[2] = 0.0;
+				NormalizeVector(vToTarget, vToTarget);
+				if(GetVectorDotProduct(vFacing, vToTarget) < 0.5)
+					continue;
+
+				float fDist = GetVectorDistance(xyzClientPos, xyzEntityPos);
+				if(fDist < fClosestDist)
+				{
+					fClosestDist = fDist;
+					xyzClosestTarget = xyzEntityPos;
+					bFoundTarget = true;
+				}
+			}
+		}
+
+		PrintToChat(iClient, "\x03[Lunge Debug] \x05Target: %s | Dist: %.1f", bFoundTarget ? "YES" : "NO", fClosestDist);
+
+		// Teleport to right in front of the closest target (only if not already in melee range)
+		if(bFoundTarget && fClosestDist > COACH_LUNGE_MIN_DISTANCE)
+		{
+			float vDirection[3];
+			SubtractVectors(xyzClosestTarget, xyzClientPos, vDirection);
+			vDirection[2] = 0.0;
+			NormalizeVector(vDirection, vDirection);
+
+			// Teleport to COACH_LUNGE_STOP_DISTANCE units away from target
+			float xyzTeleportPos[3];
+			xyzTeleportPos[0] = xyzClosestTarget[0] - (vDirection[0] * COACH_LUNGE_STOP_DISTANCE);
+			xyzTeleportPos[1] = xyzClosestTarget[1] - (vDirection[1] * COACH_LUNGE_STOP_DISTANCE);
+			xyzTeleportPos[2] = xyzClosestTarget[2] + 10.0;  // Slightly above ground level at target
+
+			// Check line of sight from player to destination (no walls in the way)
+			float xyzEyePos[3];
+			GetClientEyePosition(iClient, xyzEyePos);
+			Handle hLOSTrace = TR_TraceRayFilterEx(xyzEyePos, xyzTeleportPos, MASK_PLAYERSOLID, RayType_EndPoint, TraceFilter_NotSelf, iClient);
+			bool bWallBlocked = TR_DidHit(hLOSTrace);
+			CloseHandle(hLOSTrace);
+
+			// Check if the destination is clear using a hull trace (survivor bounding box)
+			bool bDestBlocked = false;
+			if(bWallBlocked == false)
+			{
+				float vHullMins[3], vHullMaxs[3], vEndPos[3];
+				vHullMins[0] = -16.0; vHullMins[1] = -16.0; vHullMins[2] = 0.0;
+				vHullMaxs[0] = 16.0;  vHullMaxs[1] = 16.0;  vHullMaxs[2] = 72.0;
+				vEndPos = xyzTeleportPos;
+				vEndPos[2] += 1.0;
+
+				Handle hHullTrace = TR_TraceHullFilterEx(xyzTeleportPos, vEndPos, vHullMins, vHullMaxs, MASK_PLAYERSOLID, TraceFilter_NotSelf, iClient);
+				bDestBlocked = TR_DidHit(hHullTrace);
+				CloseHandle(hHullTrace);
+			}
+
+			if(bWallBlocked || bDestBlocked)
+			{
+				PrintToChat(iClient, "\x03[Lunge Debug] \x05Blocked by geometry, cannot lunge");
+				g_bCoachLungeOnCooldown[iClient] = false;
+			}
+			else
+			{
+				float vZeroVelocity[3];
+				vZeroVelocity[0] = 0.0;
+				vZeroVelocity[1] = 0.0;
+				vZeroVelocity[2] = 0.0;
+
+				// Keep current pitch, only change yaw to face target
+				float vCurrentAngles[3];
+				GetClientEyeAngles(iClient, vCurrentAngles);
+				float vAimAngles[3];
+				vAimAngles[0] = vCurrentAngles[0];  // Keep existing pitch (up/down)
+				vAimAngles[1] = RadToDeg(ArcTangent2(vDirection[1], vDirection[0]));  // Yaw: face target
+				vAimAngles[2] = 0.0;
+
+				TeleportEntity(iClient, xyzTeleportPos, vAimAngles, vZeroVelocity);
+
+				PrintToChat(iClient, "\x03[Lunge Debug] \x04LUNGED! Dist: %.1f", fClosestDist);
+			}
+
+			g_bCoachLungeOnCooldown[iClient] = true;
+			CreateTimer(COACH_LUNGE_COOLDOWN_DURATION, TimerCoachLungeCooldownReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
+		}
+	}
 	if(g_iBullLevel[iClient] > 0)
 	{
 		int buttons;
@@ -929,4 +1098,43 @@ void GiveExtraAmmoForCurrentShotgun(int iClient, int iAmmoToGive = 1)
 	int iNewAmmo =  iCurrentClipAmmo + iAmmoToGive < (iBaseMaxClipAmmo + (g_iSprayLevel[iClient] * 2)) ? iCurrentClipAmmo + iAmmoToGive : iBaseMaxClipAmmo + (g_iSprayLevel[iClient] * 2);
 	
 	SetEntData(iActiveWeaponID, g_iOffset_ClipShotgun, iNewAmmo, 4, true);
+}
+
+bool TraceFilter_NotSelf(int iEntity, int iMask, any iClient)
+{
+	return iEntity != iClient;
+}
+
+void OnPlayerRunCmd_Coach(int iClient, int iButtons)
+{
+	if(g_iChosenSurvivor[iClient] != COACH || g_bTalentsConfirmed[iClient] == false)
+		return;
+
+	if(g_iWreckingLevel[iClient] > 0)
+	{
+		char strRunCmdWeapon[32];
+		GetClientWeapon(iClient, strRunCmdWeapon, sizeof(strRunCmdWeapon));
+		bool bHoldingMelee = (StrContains(strRunCmdWeapon, "melee", false) != -1);
+
+		// Toggle lunge on/off with CROUCH+USE while holding melee
+		if(bHoldingMelee && (iButtons & IN_DUCK) && (iButtons & IN_USE) && g_bCoachLungeToggleCooldown[iClient] == false)
+		{
+			g_bCoachLungeEnabled[iClient] = !g_bCoachLungeEnabled[iClient];
+			g_bCoachLungeToggleCooldown[iClient] = true;
+			CreateTimer(0.5, TimerCoachLungeToggleCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
+			PrintHintText(iClient, "Wrecking Ball Lunge: %s", g_bCoachLungeEnabled[iClient] ? "ON" : "OFF");
+		}
+
+		// Wrecking Ball Lunge - attack while holding melee
+		if(bHoldingMelee &&
+			g_bCoachLungeEnabled[iClient] &&
+			g_bCoachLungeOnCooldown[iClient] == false &&
+			g_bIsFlyingWithJetpack[iClient] == false &&
+			g_bIsClientDown[iClient] == false &&
+			IsClientGrappled(iClient) == false &&
+			(iButtons & IN_ATTACK))
+		{
+			g_bCoachLungeTriggered[iClient] = true;
+		}
+	}
 }

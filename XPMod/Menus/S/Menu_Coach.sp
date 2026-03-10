@@ -110,6 +110,9 @@ Action WreckingMenuDraw(int iClient)
 		\nLevel 1:\
 		\n(Charge) +100 melee dmg per level\
 		\n+5 max health per level\
+		\n(Auto) Lunge toward nearby CI or SI(<30%%%% HP)\
+		\n   within range when attacking with melee\
+		\n   [CROUCH+USE] with melee to toggle on/off\
 		\n \
 		\nLevel 5:\
 		\nOn SI headshot w/ melee weapon & Wrecking Ball charged:\

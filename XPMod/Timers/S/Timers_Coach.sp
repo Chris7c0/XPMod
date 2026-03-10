@@ -188,6 +188,18 @@ Action TimerCoachRageRegenTick(Handle timer, int iClient)
 	return Plugin_Stop;
 }
 
+Action TimerCoachLungeCooldownReset(Handle timer, int iClient)
+{
+	g_bCoachLungeOnCooldown[iClient] = false;
+	return Plugin_Stop;
+}
+
+Action TimerCoachLungeToggleCooldown(Handle timer, int iClient)
+{
+	g_bCoachLungeToggleCooldown[iClient] = false;
+	return Plugin_Stop;
+}
+
 Action TimerWreckingChargeRetrigger(Handle timer, int iClient)
 {
 	g_iWreckingBallChargeCounter[iClient] = 0;

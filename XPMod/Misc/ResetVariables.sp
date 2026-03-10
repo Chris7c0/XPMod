@@ -91,6 +91,10 @@ void ResetClientVariablesForRound(int iClient)
 	g_iMeleeDamageCounter[iClient] = 0;
 	g_bIsHighJumpCharged[iClient] = false;
 	g_bIsWreckingBallCharged[iClient] = false;
+	g_bCoachLungeOnCooldown[iClient] = false;
+	g_bCoachLungeTriggered[iClient] = false;
+	g_bCoachLungeEnabled[iClient] = true;
+	g_bCoachLungeToggleCooldown[iClient] = false;
 	g_iExtraExplosiveUses[iClient] = 0;
 	g_iBillSprintChargeCounter[iClient] = 0;
 	g_bBillSprinting[iClient] = false;
@@ -375,6 +379,10 @@ void ResetAllVariables(int iClient)
 	g_bIsFlyingWithJetpack[iClient] = false;
 	g_bIsHighJumpCharged[iClient] = false;
 	g_bIsWreckingBallCharged[iClient] = false;
+	g_bCoachLungeOnCooldown[iClient] = false;
+	g_bCoachLungeTriggered[iClient] = false;
+	g_bCoachLungeEnabled[iClient] = true;
+	g_bCoachLungeToggleCooldown[iClient] = false;
 	g_bIsMovementTypeFly[iClient] = false;
 	g_iNicksRamboWeaponID[iClient] = 0;
 	g_bUsingShadowNinja[iClient] = false;
