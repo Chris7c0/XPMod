@@ -581,7 +581,7 @@ bool GetCrosshairPosition(int iClient, float xyzLocation[3], float xyzEyeAngles[
 		xyzEyeAngles[0] = 0.0;
 		xyzEyeAngles[2] = 0.0;
 	}
-	
+
 	// Get the actual location
 	TR_GetEndPosition(xyzLocation, trace);
 	CloseHandle(trace);
@@ -596,7 +596,7 @@ bool GetCrosshairPosition(int iClient, float xyzLocation[3], float xyzEyeAngles[
 	float xyzTestLocation[3];
 	xyzTestLocation[0] = xyzLocation[0];
 	xyzTestLocation[1] = xyzLocation[1];
-	xyzTestLocation[2] = xyzLocation[2] + 200.0;
+	xyzTestLocation[2] = xyzLocation[2] + 40.0;
 	if (TR_PointOutsideWorld(xyzTestLocation) == true)
 		return false;
 
