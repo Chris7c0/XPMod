@@ -48,6 +48,7 @@ char g_strActiveWeaponClass[MAXPLAYERS + 1][32];
 // Misc Survivor Variables
 #define SCREEN_SHAKE_AMOUNT_DEFAULT     20
 int g_iScreenShakeAmount = SCREEN_SHAKE_AMOUNT_DEFAULT;
+int g_iLastScreenShakeAmount = SCREEN_SHAKE_AMOUNT_DEFAULT;
 bool g_bClientIsReloading[MAXPLAYERS + 1];
 int g_iReloadingWeaponRef[MAXPLAYERS + 1];
 int g_iReloadFrameCounter[MAXPLAYERS + 1];
