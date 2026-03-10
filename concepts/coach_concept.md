@@ -77,7 +77,7 @@ Deploy Turrets
 ```
 Level 1:
 +30 Melee Damage per Level
-+10 Max Health per Level
++5 Max Health per Level
 +20% Jockey Resistance per Level
 Start The Round With A Random Explosive
 
