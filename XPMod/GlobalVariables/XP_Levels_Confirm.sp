@@ -5,7 +5,10 @@ bool g_bClientLoggedIn[MAXPLAYERS + 1];
 int g_iDBUserID[MAXPLAYERS + 1] = {-1, ...};
 char g_strDBUserToken[MAXPLAYERS + 1][41];
 bool g_bCanSave = true;
-bool g_bSurvivorTalentsGivenThisRound[MAXPLAYERS + 1] = {false, ...};
+// Survivor base spawn setup and confirmed class talent application happen on different timelines.
+// Players can spawn before confirming, so these states must stay separate.
+bool g_bSurvivorSpawnLoadoutGivenThisRound[MAXPLAYERS + 1] = {false, ...};
+bool g_bConfirmedSurvivorTalentsGivenThisRound[MAXPLAYERS + 1] = {false, ...};
 int g_iClientXP[MAXPLAYERS + 1];
 int g_iClientLevel[MAXPLAYERS + 1];
 int g_iClientPrestigePoints[MAXPLAYERS + 1];

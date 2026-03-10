@@ -71,7 +71,8 @@ void HandleClientConnect(int iClient)
 		Logout(iClient);
 		g_bClientSpectating[iClient] = false;
 		g_iAutoSetCountDown[iClient] = -1;
-		g_bSurvivorTalentsGivenThisRound[iClient] = false;
+		g_bSurvivorSpawnLoadoutGivenThisRound[iClient] = false;
+		g_bConfirmedSurvivorTalentsGivenThisRound[iClient] = false;
 
 		//ClientCommand(iClient, "bind ` toggleconsole");
 		//ClientCommand(iClient, "con_enable 1");
@@ -126,7 +127,8 @@ void HandleClientDisconnect(int iClient)
 	g_fLastPlayerLastButtonPressTime[iClient] =  0.0;
 
 	g_bClientSpectating[iClient] = false;
-	g_bSurvivorTalentsGivenThisRound[iClient] = false;
+	g_bSurvivorSpawnLoadoutGivenThisRound[iClient] = false;
+	g_bConfirmedSurvivorTalentsGivenThisRound[iClient] = false;
 
 	if(IsFakeClient(iClient)==true)
 	{

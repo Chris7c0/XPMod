@@ -1,37 +1,11 @@
 void TalentsLoad_Bill(int iClient)
 {
-	SetPlayerTalentMaxHealth_Bill(iClient, !g_bSurvivorTalentsGivenThisRound[iClient]);
+	SetPlayerTalentMaxHealth_Bill(iClient, !g_bConfirmedSurvivorTalentsGivenThisRound[iClient]);
 	SetClientSpeed(iClient);
+	RecalculateBillsConfirmedPassives();
+	RecalculateSurvivorScreenShakeAmountFromConfirmedTalents();
 
-	if (g_iGhillieLevel[iClient] > 0 || g_iPromotionalLevel[iClient] > 0)
-	{
-		if (g_bGameFrozen == false)
-		{
-			SetEntityRenderMode(iClient, RenderMode:3);
-			SetEntityRenderColor(iClient, 255, 255, 255, RoundToFloor(255 * (1.0 - (((float(g_iGhillieLevel[iClient]) * 0.13) + ((float(g_iPromotionalLevel[iClient]) * 0.04)))))));
-			if(g_iPromotionalLevel[iClient] > 0)	//disable glow
-			{
-				SetEntProp(iClient, Prop_Send, "m_iGlowType", 3);
-				SetEntProp(iClient, Prop_Send, "m_nGlowRange", 0);
-				SetEntProp(iClient, Prop_Send, "m_glowColorOverride", 1);
-				ChangeEdictState(iClient, 12);
-			}
-		}
-	}
-	
-	if(g_iWillLevel[iClient] > 0)
-	{
-
-		if(g_bSurvivorTalentsGivenThisRound[iClient] == false)
-		{			
-			//Set Convar for crawling speed
-			g_iCrawlSpeedMultiplier += g_iWillLevel[iClient] * 5;
-			SetConVarInt(FindConVar("survivor_crawl_speed"), (15 + g_iCrawlSpeedMultiplier),false,false);
-			SetConVarInt(FindConVar("survivor_allow_crawling"),1,false,false);
-		}
-	}
-	
-	if(g_bSurvivorTalentsGivenThisRound[iClient] == false && g_iPromotionalLevel[iClient] > 0)
+	if(g_bConfirmedSurvivorTalentsGivenThisRound[iClient] == false && g_iPromotionalLevel[iClient] > 0)
 	{
 		if(g_iPromotionalLevel[iClient]==1 || g_iPromotionalLevel[iClient]==2)
 			g_iClientBindUses_2[iClient] = 2;
@@ -40,17 +14,69 @@ void TalentsLoad_Bill(int iClient)
 		else
 			g_iClientBindUses_2[iClient] = 0;
 	}
-
-	if(g_bSurvivorTalentsGivenThisRound[iClient] == false && g_iInspirationalLevel[iClient] > 0)
-	{
-		g_iScreenShakeAmount -= 5;
-		SetSurvivorScreenShakeAmount();
-	}
 	
 	if((g_iClientLevel[iClient] - (g_iClientLevel[iClient] - g_iSkillPoints[iClient])) <= (g_iClientLevel[iClient] - 1))
 		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Support Talents \x05have been loaded.");
 	else
 		PrintToChat(iClient, "\x03[XPMod] \x05Your abilties will be automatically set as you level.");
+}
+
+void RecalculateSurvivorScreenShakeAmountFromConfirmedTalents()
+{
+	g_iScreenShakeAmount = SCREEN_SHAKE_AMOUNT_DEFAULT;
+
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		if (RunClientChecks(i) == false ||
+			IsPlayerAlive(i) == false ||
+			g_iClientTeam[i] != TEAM_SURVIVORS ||
+			g_bTalentsConfirmed[i] == false)
+			continue;
+
+		if (g_iChosenSurvivor[i] == BILL && g_iInspirationalLevel[i] > 0)
+			g_iScreenShakeAmount -= 5;
+
+		if (g_iChosenSurvivor[i] == COACH && g_iLeadLevel[i] > 0)
+			g_iScreenShakeAmount -= 10;
+	}
+
+	SetSurvivorScreenShakeAmount();
+}
+
+void ResetBillTalentsRuntimeState(int iClient)
+{
+	StopBillTaunt(iClient);
+	RecalculateBillsConfirmedPassives();
+	RecalculateSurvivorScreenShakeAmountFromConfirmedTalents();
+}
+
+void UpdateBillsTeamCrawling()
+{
+	if (g_iCrawlSpeedMultiplier < 0)
+		g_iCrawlSpeedMultiplier = 0;
+
+	SetConVarInt(FindConVar("survivor_crawl_speed"), 15 + g_iCrawlSpeedMultiplier, false, false);
+	SetConVarInt(FindConVar("survivor_allow_crawling"), g_iCrawlSpeedMultiplier > 0 ? 1 : 0, false, false);
+}
+
+void RecalculateBillsConfirmedPassives()
+{
+	g_iCrawlSpeedMultiplier = 0;
+
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		if (RunClientChecks(i) == false ||
+			IsPlayerAlive(i) == false ||
+			g_iClientTeam[i] != TEAM_SURVIVORS ||
+			g_bTalentsConfirmed[i] == false ||
+			g_iChosenSurvivor[i] != BILL ||
+			g_iWillLevel[i] <= 0)
+			continue;
+
+		g_iCrawlSpeedMultiplier += g_iWillLevel[i] * 5;
+	}
+
+	UpdateBillsTeamCrawling();
 }
 
 void StopBillTaunt(int iClient, bool bRefreshRender = true)
@@ -92,6 +118,20 @@ void OnGameFrame_Bill(int iClient)
 {
 	if (g_bGameFrozen)
 		return;
+
+	if (g_bTalentsConfirmed[iClient] == false)
+	{
+		StopBillTaunt(iClient);
+		if (g_bBillSprinting[iClient])
+		{
+			g_bBillSprinting[iClient] = false;
+			SetClientSpeed(iClient);
+		}
+		g_iBillSprintChargePower[iClient] = 0;
+		g_iBillSprintChargeCounter[iClient] = 0;
+		g_iBillTeamHealCounter[iClient] = 0;
+		return;
+	}
 
 	int iButtons;
 	iButtons = GetEntProp(iClient, Prop_Data, "m_nButtons");
@@ -227,6 +267,11 @@ void OnGameFrame_Bill(int iClient)
 
 void OGFSurvivorReload_Bill(int iClient, const char[] currentweapon, int ActiveWeaponID, int CurrentClipAmmo, int iOffset_Ammo)
 {
+	if (g_bTalentsConfirmed[iClient] == false ||
+		g_iChosenSurvivor[iClient] != BILL ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS)
+		return;
+
 	//if((((StrEqual(currentweapon, "weapon_rifle", false) == true) || (StrEqual(currentweapon, "weapon_rifle_sg552", false) == true)) && (CurrentClipAmmo == 50)) || ((StrEqual(currentweapon, "weapon_rifle_ak47", false) == true) && (CurrentClipAmmo == 40)) || ((StrEqual(currentweapon, "weapon_rifle_desert", false) == true) && (CurrentClipAmmo == 60)))
 	//if((StrEqual(currentweapon, "weapon_rifle", false) == true) || (StrEqual(currentweapon, "weapon_rifle_sg552", false) == true) || (StrEqual(currentweapon, "weapon_rifle_ak47", false) == true) || (StrEqual(currentweapon, "weapon_rifle_desert", false) == true) && (CurrentClipAmmo != 0))
 	if((((StrEqual(currentweapon, "weapon_rifle", false) == true) || (StrEqual(currentweapon, "weapon_rifle_sg552", false) == true)) && (CurrentClipAmmo == 50)) || ((StrEqual(currentweapon, "weapon_rifle_ak47", false) == true) && (CurrentClipAmmo == 40)) || ((StrEqual(currentweapon, "weapon_rifle_desert", false) == true) && (CurrentClipAmmo == 60)))

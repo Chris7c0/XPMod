@@ -74,7 +74,8 @@ void ResetClientVariablesForRound(int iClient)
 	g_iFastAttackingCurrentItemIndex[iClient] = ITEM_EMPTY;
 	g_bWalkAndUseToggler[iClient] = false;
 	g_fAbilityImpactDamageImmunityEndTime[iClient] = -1.0;
-	g_bSurvivorTalentsGivenThisRound[iClient] = false;
+	g_bSurvivorSpawnLoadoutGivenThisRound[iClient] = false;
+	g_bConfirmedSurvivorTalentsGivenThisRound[iClient] = false;
 	g_bPlayerInTeamChangeCoolDown[iClient] = false;
 	g_fTimeStamp[iClient] = -1.0;
 	g_bMovementLocked[iClient] = false;
@@ -374,6 +375,7 @@ void ResetClientVariablesForRound(int iClient)
 void ResetAllVariables(int iClient)
 {
 	g_iBanDurationInMinutes[iClient] = 0;
+	g_bConfirmedSurvivorTalentsGivenThisRound[iClient] = false;
 	
 	g_bUsingFireStorm[iClient] = false;
 	g_bUsingTongueRope[iClient] = false;

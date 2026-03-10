@@ -40,6 +40,8 @@ void OpenCharacterSelectionPanel(int iClient)
 void ResetTalentConfirmCountdown(int iClient)
 {
 	g_bTalentsConfirmed[iClient] = false;
+	ResetSurvivorClassTalentsRuntimeState(iClient);
+	g_bConfirmedSurvivorTalentsGivenThisRound[iClient] = false;
 	g_iAutoSetCountDown[iClient] = -1;
 	g_bUserStoppedConfirmation[iClient] = false;
 	g_iOpenCharacterSelectAndDrawMenuState[iClient] = STARTING_CHAR_SELECT_PROCESS;

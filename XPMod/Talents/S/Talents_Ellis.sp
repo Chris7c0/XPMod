@@ -1,6 +1,6 @@
 void TalentsLoad_Ellis(int iClient)
 {
-	SetPlayerTalentMaxHealth_Ellis(iClient, !g_bSurvivorTalentsGivenThisRound[iClient]);
+	SetPlayerTalentMaxHealth_Ellis(iClient, !g_bConfirmedSurvivorTalentsGivenThisRound[iClient]);
 	SetClientSpeed(iClient);
 	EllisDropMeleeWeaponsIfNecessary(iClient);
 	
@@ -11,7 +11,7 @@ void TalentsLoad_Ellis(int iClient)
 		g_bEllisLimitBreakInCooldown[iClient] = false;
 	}
 	
-	if(g_bSurvivorTalentsGivenThisRound[iClient] == false)
+	if(g_bConfirmedSurvivorTalentsGivenThisRound[iClient] == false)
 	{
 		if((0.4 - (float(g_iWeaponsLevel[iClient])*0.08)) < g_fMaxLaserAccuracy)
 		{
@@ -93,6 +93,45 @@ void TalentsLoad_Ellis(int iClient)
 		g_iEllisPrimarySlot1[iClient] = ITEM_EMPTY;
 		delete g_hTimer_EllisPickupWeaponCycleCooldown[iClient];
 	}
+}
+
+void RecalculateEllisConfirmedPassives()
+{
+	g_fMaxLaserAccuracy = 0.4;
+	g_iEllisAdrenalineStackDuration = 15;
+
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		if (RunClientChecks(i) == false ||
+			IsPlayerAlive(i) == false ||
+			g_iClientTeam[i] != TEAM_SURVIVORS ||
+			g_bTalentsConfirmed[i] == false ||
+			g_iChosenSurvivor[i] != ELLIS)
+			continue;
+
+		float fLaserAccuracy = 0.4 - (float(g_iWeaponsLevel[i]) * 0.08);
+		if (fLaserAccuracy < g_fMaxLaserAccuracy)
+			g_fMaxLaserAccuracy = fLaserAccuracy;
+
+		if (g_iOverLevel[i] > 0)
+			g_iEllisAdrenalineStackDuration += (g_iOverLevel[i] * 2);
+	}
+
+	SetConVarFloat(FindConVar("upgrade_laser_sight_spread_factor"), g_fMaxLaserAccuracy);
+	SetConVarFloat(FindConVar("adrenaline_duration"), float(g_iEllisAdrenalineStackDuration));
+}
+
+void ResetEllisTalentsRuntimeState(int iClient)
+{
+	g_bUsingFireStorm[iClient] = false;
+	g_bEllisOverSpeedIncreased[iClient] = false;
+	g_bEllisHasAdrenalineBuffs[iClient] = false;
+	g_bIsEllisLimitBreaking[iClient] = false;
+	g_bCanEllisLimitBreak[iClient] = false;
+	g_bEllisLimitBreakInCooldown[iClient] = false;
+
+	RecalculateEllisConfirmedPassives();
+	SetClientSpeed(iClient);
 }
 
 void SetPlayerTalentMaxHealth_Ellis(int iClient, bool bFillInHealthGap = true)

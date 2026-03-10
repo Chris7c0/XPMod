@@ -113,10 +113,13 @@ public Action OnPlayerRunCmd(int iClient, int &iButtons, int &iImpulse, float fV
 
 	OnPlayerRunCmd_SelfRevive(iClient, iButtons);
 
-	// If buttons are changed for more classes in the future, then this needs to be put into a switch statement
-	bButtonsChanged = OnPlayerRunCmd_Coach(iClient, iButtons) || bButtonsChanged;
-	OnPlayerRunCmd_Ellis(iClient, iButtons);
-	bButtonsChanged = OnPlayerRunCmd_Louis(iClient, iButtons) || bButtonsChanged;
+	if (g_iClientTeam[iClient] == TEAM_SURVIVORS && g_bTalentsConfirmed[iClient])
+	{
+		// If buttons are changed for more classes in the future, then this needs to be put into a switch statement
+		bButtonsChanged = OnPlayerRunCmd_Coach(iClient, iButtons) || bButtonsChanged;
+		OnPlayerRunCmd_Ellis(iClient, iButtons);
+		bButtonsChanged = OnPlayerRunCmd_Louis(iClient, iButtons) || bButtonsChanged;
+	}
 	OnPlayerRunCmd_Smoker(iClient, iButtons);
 	OnPlayerRunCmd_Hunter(iClient, iButtons);
 
@@ -124,14 +127,17 @@ public Action OnPlayerRunCmd(int iClient, int &iButtons, int &iImpulse, float fV
 	OnPlayerRunCmd_Tank_Ice(iClient, iButtons);
 
 	// Faster Attack Handling
-	HandleFasterAttacking_Ellis(iClient, iButtons);
-	HandleFasterAttacking_Rochelle(iClient, iButtons);
+	if (g_iClientTeam[iClient] == TEAM_SURVIVORS && g_bTalentsConfirmed[iClient])
+	{
+		HandleFasterAttacking_Ellis(iClient, iButtons);
+		HandleFasterAttacking_Rochelle(iClient, iButtons);
+	}
 	
 	//Charger Earthquake Bind 2
 	HandleChargerEarthquake(iClient, iButtons);
 
 	//Bill's Team Crawling
-	if(g_iCrawlSpeedMultiplier > 0 && IsFakeClient(iClient) == false)
+	if(g_bTalentsConfirmed[iClient] && g_iCrawlSpeedMultiplier > 0 && IsFakeClient(iClient) == false)
 	{
 		// gClone[iClient] == -1 check is to make sure Animation isnt already playing 
 		if(gClone[iClient] == -1 && !g_bEndOfRound && iButtons & IN_FORWARD && IsIncap(iClient) == true) 

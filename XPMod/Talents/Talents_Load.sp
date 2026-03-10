@@ -7,6 +7,32 @@
 /**************************************************************************************************************************
  *                                                     Load Talents                                                       *
  **************************************************************************************************************************/
+void LoadSurvivorClassTalents(int iClient)
+{
+	switch(g_iChosenSurvivor[iClient])
+	{
+		case BILL:		TalentsLoad_Bill(iClient);
+		case ROCHELLE:	TalentsLoad_Rochelle(iClient);
+		case COACH:		TalentsLoad_Coach(iClient);
+		case ELLIS:		TalentsLoad_Ellis(iClient);
+		case NICK:		TalentsLoad_Nick(iClient);
+		case LOUIS:		TalentsLoad_Louis(iClient);
+	}
+}
+
+void ResetSurvivorClassTalentsRuntimeState(int iClient)
+{
+	switch(g_iChosenSurvivor[iClient])
+	{
+		case BILL:		ResetBillTalentsRuntimeState(iClient);
+		case ROCHELLE:	ResetRochelleTalentsRuntimeState(iClient);
+		case COACH:		ResetCoachTalentsRuntimeState(iClient);
+		case ELLIS:		ResetEllisTalentsRuntimeState(iClient);
+		case NICK:		ResetNickTalentsRuntimeState(iClient);
+		case LOUIS:		ResetLouisTalentsRuntimeState(iClient);
+	}
+}
+
 void LoadTalents(int iClient)
 {
 	if (RunClientChecks(iClient) == false || 
@@ -41,21 +67,9 @@ void LoadTalents(int iClient)
 		DeleteAllClientParticles(iClient);
 		SetClientRenderAndGlowColor(iClient);
 
-		if(g_bSurvivorTalentsGivenThisRound[iClient] == false)
+		// Base spawn/bootstrap work should happen once per round even before confirmation.
+		if(g_bSurvivorSpawnLoadoutGivenThisRound[iClient] == false)
 		{
-			g_iSavedClip[iClient] = 0;
-			g_bForceReload[iClient] = false;
-			
-			switch(g_iChosenSurvivor[iClient])
-			{
-				case BILL:		TalentsLoad_Bill(iClient);
-				case ROCHELLE:	TalentsLoad_Rochelle(iClient);
-				case COACH:		TalentsLoad_Coach(iClient);
-				case ELLIS:		TalentsLoad_Ellis(iClient);
-				case NICK:		TalentsLoad_Nick(iClient);
-				case LOUIS:		TalentsLoad_Louis(iClient);
-			}
-			
 			if( (g_iClientLevel[iClient] - (g_iClientLevel[iClient] - g_iSkillPoints[iClient])) <= (g_iClientLevel[iClient] - 1))	//Show Ring Effect if they have leveled up a talent
 			{
 				float pos[3];
@@ -107,8 +121,18 @@ void LoadTalents(int iClient)
 			//Give them their weapons
 			SpawnWeapons(iClient);
 
-			g_bSurvivorTalentsGivenThisRound[iClient] = true;	//Block Surivor Talents from being given again to the same iClient
-		}		
+			g_bSurvivorSpawnLoadoutGivenThisRound[iClient] = true;
+		}
+
+		// Confirmed class talents are separate so a player who confirms after spawning
+		// still receives active and passive survivor talents exactly once that round.
+		if (g_bTalentsConfirmed[iClient] && g_bConfirmedSurvivorTalentsGivenThisRound[iClient] == false)
+		{
+			g_iSavedClip[iClient] = 0;
+			g_bForceReload[iClient] = false;
+			LoadSurvivorClassTalents(iClient);
+			g_bConfirmedSurvivorTalentsGivenThisRound[iClient] = true;
+		}
 	}
 
 	// Capture the players health for functionality like self revive on ledge

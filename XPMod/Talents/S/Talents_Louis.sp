@@ -4,7 +4,7 @@ void TalentsLoad_Louis(int iClient)
 	g_iLouisTeleportChargeUses[iClient] = 0;
 	g_iLouisTeleportMovementPenaltyStacks[iClient] = 0;
 
-	SetPlayerTalentMaxHealth_Louis(iClient, !g_bSurvivorTalentsGivenThisRound[iClient]);
+	SetPlayerTalentMaxHealth_Louis(iClient, !g_bConfirmedSurvivorTalentsGivenThisRound[iClient]);
 	SetClientSpeed(iClient);
 
 	// Give starting XMR
@@ -22,6 +22,18 @@ void TalentsLoad_Louis(int iClient)
 		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Disruptor Talents \x05have been loaded.");
 	else
 		PrintToChat(iClient, "\x03[XPMod] \x05Your abilties will be automatically set as you level.");
+}
+
+void ResetLouisTalentsRuntimeState(int iClient)
+{
+	g_bLouisLaserModeActivated[iClient] = true;
+	g_bLouisLaserModeToggleCooldown[iClient] = false;
+	g_bLouisTeleportCoolingDown[iClient] = false;
+	g_bLouisTeleportActive[iClient] = false;
+	g_iLouisTeleportChargeUses[iClient] = 0;
+	g_fLouisXMRWallet[iClient] = 0.0;
+
+	SetClientSpeed(iClient);
 }
 
 void SetPlayerTalentMaxHealth_Louis(int iClient, bool bFillInHealthGap = true)

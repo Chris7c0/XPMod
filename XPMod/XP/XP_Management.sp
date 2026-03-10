@@ -359,6 +359,10 @@ Action ResetSurvivorTalents(int iClient)
 	if(IsClientInGame(iClient) == false)
 		return Plugin_Handled;
 
+	g_bTalentsConfirmed[iClient] = false;
+	g_bConfirmedSurvivorTalentsGivenThisRound[iClient] = false;
+	ResetSurvivorClassTalentsRuntimeState(iClient);
+
 	//Reset all levels///////////////////////////////////////////////////////////////////////////////
 	
 	//Bill

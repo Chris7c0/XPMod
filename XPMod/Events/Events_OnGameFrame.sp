@@ -62,17 +62,20 @@ public void OnGameFrame()
 			}
 			
 			// Handle Survivor On Game Frame Talents
-			switch(g_iChosenSurvivor[iClient])
+			if (g_bTalentsConfirmed[iClient])
 			{
-				case BILL:		OnGameFrame_Bill(iClient);
-				case ROCHELLE:	OnGameFrame_Rochelle(iClient);
-				case COACH:		OnGameFrame_Coach(iClient);
-				case ELLIS:		OnGameFrame_Ellis(iClient);
-				case NICK:		OnGameFrame_Nick(iClient);
+				switch(g_iChosenSurvivor[iClient])
+				{
+					case BILL:		OnGameFrame_Bill(iClient);
+					case ROCHELLE:	OnGameFrame_Rochelle(iClient);
+					case COACH:		OnGameFrame_Coach(iClient);
+					case ELLIS:		OnGameFrame_Ellis(iClient);
+					case NICK:		OnGameFrame_Nick(iClient);
+				}
 			}
 
 			// OnGameFrame Reloads
-			if(g_bClientIsReloading[iClient] == true)
+			if(g_bTalentsConfirmed[iClient] && g_bClientIsReloading[iClient] == true)
 			{
 				// Cancel reload monitoring if the player switched weapons
 				int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);

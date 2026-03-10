@@ -1,6 +1,6 @@
 void TalentsLoad_Rochelle(int iClient)
 {
-	SetPlayerTalentMaxHealth_Rochelle(iClient, !g_bSurvivorTalentsGivenThisRound[iClient]);
+	SetPlayerTalentMaxHealth_Rochelle(iClient, !g_bConfirmedSurvivorTalentsGivenThisRound[iClient]);
 	SetClientSpeed(iClient);
 
 	//Sets the iClient to hear all the infected's voice comms
@@ -23,7 +23,7 @@ void TalentsLoad_Rochelle(int iClient)
 			g_iPID_RochelleCharge1[iClient] = WriteParticle(iClient, "rochelle_ulti_ninja_charge1", 0.0);
 	}
 	
-	if(g_bSurvivorTalentsGivenThisRound[iClient] == false)
+	if(g_bConfirmedSurvivorTalentsGivenThisRound[iClient] == false)
 	{
 		if(g_iSmokeLevel[iClient]>0)
 		{
@@ -35,6 +35,30 @@ void TalentsLoad_Rochelle(int iClient)
 		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Ninja Talents \x05have been loaded.");
 	else
 		PrintToChat(iClient, "\x03[XPMod] \x05Your abilties will be automatically set as you level.");
+}
+
+void ResetRochelleTalentsRuntimeState(int iClient)
+{
+	g_bWalkAndUseToggler[iClient] = false;
+	g_bUsingShadowNinja[iClient] = false;
+	g_bUsingTongueRope[iClient] = false;
+	g_bUsedTongueRope[iClient] = false;
+	g_bIsHighJumpCharged[iClient] = false;
+	g_bIsHighJumping[iClient] = false;
+	g_iHighJumpChargeCounter[iClient] = 0;
+	DeleteParticleEntity(g_iPID_RochelleJumpCharge[iClient]);
+
+	if (g_iGatherLevel[iClient] == 5)
+	{
+		for (int i = 1; i <= MaxClients; i++)
+		{
+			if (IsClientInGame(i) && g_iClientTeam[i] == TEAM_INFECTED && IsFakeClient(i) == false)
+				SetListenOverride(iClient, i, Listen_Default);
+		}
+	}
+
+	SetClientRenderAndGlowColor(iClient);
+	SetClientSpeed(iClient);
 }
 
 void SetPlayerTalentMaxHealth_Rochelle(int iClient, bool bFillInHealthGap = true)

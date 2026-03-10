@@ -4,10 +4,10 @@ void TalentsLoad_Nick(int iClient)
 	g_iNickMagnumHitsPerClip[iClient] = 0;
 	g_bRamboModeActive[iClient] = false;
 
-	SetPlayerTalentMaxHealth_Nick(iClient, !g_bSurvivorTalentsGivenThisRound[iClient]);
+	SetPlayerTalentMaxHealth_Nick(iClient, !g_bConfirmedSurvivorTalentsGivenThisRound[iClient]);
 	SetClientSpeed(iClient);
 	
-	if(g_bSurvivorTalentsGivenThisRound[iClient] == false)
+	if(g_bConfirmedSurvivorTalentsGivenThisRound[iClient] == false)
 		g_iClientBindUses_1[iClient] = 3 - RoundToCeil(g_iMagnumLevel[iClient] * 0.5);
 	
 	if(g_iDesperateLevel[iClient] > 0)
@@ -34,6 +34,18 @@ void TalentsLoad_Nick(int iClient)
 		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Gambler Talents \x05have been loaded.");
 	else
 		PrintToChat(iClient, "\x03[XPMod] \x05Your abilties will be automatically set as you level.");
+}
+
+void ResetNickTalentsRuntimeState(int iClient)
+{
+	g_bRamboModeActive[iClient] = false;
+	g_bCanNickSecondaryCycle[iClient] = false;
+	g_bIsNickInSecondaryCycle[iClient] = false;
+	g_bCanNickZoomKit[iClient] = false;
+	g_bNickIsInvisible[iClient] = false;
+
+	SetClientRenderAndGlowColor(iClient);
+	SetClientSpeed(iClient);
 }
 
 void SetPlayerTalentMaxHealth_Nick(int iClient, bool bFillInHealthGap = true)

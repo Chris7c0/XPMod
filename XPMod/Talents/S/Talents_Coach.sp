@@ -1,13 +1,13 @@
 void TalentsLoad_Coach(int iClient)
 {
-	SetPlayerTalentMaxHealth_Coach(iClient, !g_bSurvivorTalentsGivenThisRound[iClient]);
+	SetPlayerTalentMaxHealth_Coach(iClient, !g_bConfirmedSurvivorTalentsGivenThisRound[iClient]);
 	SetClientSpeed(iClient);
 
 	if(g_iBullLevel[iClient]>0 || g_iWreckingLevel[iClient]>0 || g_iStrongLevel[iClient]>0)
 	{					
 		g_iMeleeDamageCounter[iClient] = (g_iStrongLevel[iClient] * 30);
 		
-		if(g_bSurvivorTalentsGivenThisRound[iClient] == false)
+		if(g_bConfirmedSurvivorTalentsGivenThisRound[iClient] == false)
 		{
 			CreateTimer(3.0, TimerGiveFirstExplosive, iClient, TIMER_FLAG_NO_MAPCHANGE);
 		}
@@ -33,7 +33,7 @@ void TalentsLoad_Coach(int iClient)
 		g_bIsCoachGrenadeFireCycling[iClient] = false;
 		g_bIsCoachInGrenadeCycle[iClient] = false;
 	}
-	if(g_bSurvivorTalentsGivenThisRound[iClient] == false)
+	if(g_bConfirmedSurvivorTalentsGivenThisRound[iClient] == false)
 	{
 		if(g_iStrongLevel[iClient]>0)
 			g_iClientJetpackFuel[iClient] = g_iStrongLevel[iClient] * COACH_JETPACK_FUEL_PER_LEVEL
@@ -76,6 +76,48 @@ void TalentsLoad_Coach(int iClient)
 		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Berserker Talents \x05have been loaded.");
 	else
 		PrintToChat(iClient, "\x03[XPMod] \x05Your abilties will be automatically set as you level.");
+}
+
+void RecalculateCoachConfirmedPassives()
+{
+	g_iHighestLeadLevel = 0;
+	SetCoachesHealthStacks();
+
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		if (RunClientChecks(i) == false ||
+			IsPlayerAlive(i) == false ||
+			g_iClientTeam[i] != TEAM_SURVIVORS ||
+			g_bTalentsConfirmed[i] == false ||
+			g_iChosenSurvivor[i] != COACH ||
+			g_iLeadLevel[i] <= 0)
+			continue;
+
+		if (g_iLeadLevel[i] > g_iHighestLeadLevel)
+			g_iHighestLeadLevel = g_iLeadLevel[i];
+	}
+}
+
+void ResetCoachTalentsRuntimeState(int iClient)
+{
+	g_bCoachRageIsActive[iClient] = false;
+	g_bCoachRageIsAvailable[iClient] = false;
+	g_bCoachRageIsInCooldown[iClient] = false;
+	g_bCoachDashActive[iClient] = false;
+	g_bCoachDashCoolingDown[iClient] = false;
+	g_bCoachLungeTriggered[iClient] = false;
+	g_bCoachInCISpeed[iClient] = false;
+	g_bCoachInSISpeed[iClient] = false;
+	g_bCanCoachGrenadeCycle[iClient] = false;
+	g_bIsCoachInGrenadeCycle[iClient] = false;
+	g_bIsCoachGrenadeFireCycling[iClient] = false;
+	g_bIsJetpackOn[iClient] = false;
+	g_bIsFlyingWithJetpack[iClient] = false;
+	g_bIsMovementTypeFly[iClient] = false;
+
+	RecalculateCoachConfirmedPassives();
+	RecalculateSurvivorScreenShakeAmountFromConfirmedTalents();
+	SetClientSpeed(iClient);
 }
 
 void SetPlayerTalentMaxHealth_Coach(int iClient, bool bFillInHealthGap = true)
