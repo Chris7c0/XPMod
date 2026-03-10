@@ -15,6 +15,10 @@ void TalentsLoad_Coach(int iClient)
 	if(g_iBullLevel[iClient] > 0)
 	{
 		g_bCoachRageIsAvailable[iClient] = true;
+		g_bCoachDashActive[iClient] = false;
+		g_bCoachDashCoolingDown[iClient] = false;
+		g_iCoachDashChargeUses[iClient] = 0;
+		delete g_hTimer_CoachDashRegenerate[iClient];
 	}
 	if(g_iSprayLevel[iClient] > 0)
 	{
@@ -1105,10 +1109,10 @@ bool TraceFilter_NotSelf(int iEntity, int iMask, any iClient)
 	return iEntity != iClient;
 }
 
-void OnPlayerRunCmd_Coach(int iClient, int iButtons)
+bool OnPlayerRunCmd_Coach(int iClient, int &iButtons)
 {
 	if(g_iChosenSurvivor[iClient] != COACH || g_bTalentsConfirmed[iClient] == false)
-		return;
+		return false;
 
 	if(g_iWreckingLevel[iClient] > 0)
 	{
@@ -1136,5 +1140,72 @@ void OnPlayerRunCmd_Coach(int iClient, int iButtons)
 		{
 			g_bCoachLungeTriggered[iClient] = true;
 		}
+	}
+
+	// Bull Rush Dash - tap WALK + movement direction while holding melee, on ground, jetpack off
+	if (g_iBullLevel[iClient] > 0 &&
+		g_iCoachDashChargeUses[iClient] < COACH_DASH_TOTAL_CHARGES &&
+		g_bCoachDashCoolingDown[iClient] == false &&
+		g_bIsJetpackOn[iClient] == false &&
+		iButtons & IN_SPEED &&
+		!(iButtons & IN_USE) &&
+		(iButtons & IN_FORWARD || iButtons & IN_BACK || iButtons & IN_MOVELEFT || iButtons & IN_MOVERIGHT) &&
+		(GetEntityFlags(iClient) & FL_ONGROUND))
+	{
+		char strDashWeapon[32];
+		GetClientWeapon(iClient, strDashWeapon, sizeof(strDashWeapon));
+		if(StrContains(strDashWeapon, "melee", false) != -1 &&
+			IsClientGrappled(iClient) == false && g_bIsClientDown[iClient] == false)
+			CoachDash(iClient);
+	}
+
+	// Disable walk key while dashing
+	if(g_bCoachDashActive[iClient] == true && iButtons & IN_SPEED)
+	{
+		iButtons &= ~IN_SPEED;
+		return true;
+	}
+
+	return false;
+}
+
+void CoachDash(int iClient)
+{
+	g_bCoachDashCoolingDown[iClient] = true;
+	CreateTimer(COACH_DASH_COOLDOWN, TimerCoachDashCooldownReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
+	g_bCoachDashActive[iClient] = true;
+	SetClientSpeed(iClient);
+	CreateTimer(COACH_DASH_DURATION, TimerCoachDashInactive, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
+	EmitSoundToClient(iClient, SOUND_LOUIS_TELEPORT_USE);
+	AttachParticle(iClient, "charger_motion_blur", 3.0, 0.0);
+
+	HandleCoachDashChargeUses(iClient);
+}
+
+void HandleCoachDashChargeUses(int iClient)
+{
+	g_iCoachDashChargeUses[iClient]++;
+	PrintCoachDashCharges(iClient);
+
+	delete g_hTimer_CoachDashRegenerate[iClient];
+	g_hTimer_CoachDashRegenerate[iClient] = CreateTimer(COACH_DASH_CHARGE_REGENERATE_TIME, TimerCoachDashChargeRegenerate, iClient, TIMER_REPEAT);
+}
+
+void PrintCoachDashCharges(int iClient)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false ||
+		IsFakeClient(iClient) == true ||
+		IsClientGrappled(iClient) ||
+		IsIncap(iClient) == true)
+		return;
+
+	switch (COACH_DASH_TOTAL_CHARGES - g_iCoachDashChargeUses[iClient])
+	{
+		case 0: PrintHintText(iClient, "Bull Rush: ( ░░░░░░░░░░░░░░░░░░░░ )");
+		case 1: PrintHintText(iClient, "Bull Rush: ( ▓▓▓▓▓▓▓▓▓▓░░░░░░░░░░ )");
+		case 2: PrintHintText(iClient, "Bull Rush: ( ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ )");
 	}
 }

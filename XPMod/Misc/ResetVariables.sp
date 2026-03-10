@@ -193,6 +193,9 @@ void ResetClientVariablesForRound(int iClient)
 	g_iCoachRageMeleeDamage[iClient] = 0;
 	g_bCoachRageIsAvailable[iClient] = true;
 	g_bCoachRageIsInCooldown[iClient] = false;
+	g_bCoachDashActive[iClient] = false;
+	g_bCoachDashCoolingDown[iClient] = false;
+	g_iCoachDashChargeUses[iClient] = 0;
 	g_bShowingChargeHealParticle[iClient] = false;
 	g_bCoachInCISpeed[iClient] = false;
 	g_bCoachInSISpeed[iClient] = false;
@@ -383,6 +386,9 @@ void ResetAllVariables(int iClient)
 	g_bCoachLungeTriggered[iClient] = false;
 	g_bCoachLungeEnabled[iClient] = true;
 	g_bCoachLungeToggleCooldown[iClient] = false;
+	g_bCoachDashActive[iClient] = false;
+	g_bCoachDashCoolingDown[iClient] = false;
+	g_iCoachDashChargeUses[iClient] = 0;
 	g_bIsMovementTypeFly[iClient] = false;
 	g_iNicksRamboWeaponID[iClient] = 0;
 	g_bUsingShadowNinja[iClient] = false;
@@ -510,6 +516,7 @@ void DeleteAllGlobalTimerHandles(int iClient)
 	delete g_hTimer_NickLifeSteal[iClient];
 	delete g_hTimer_BillDropBombs[iClient];
 	delete g_hTimer_LouisTeleportRegenerate[iClient];
+	delete g_hTimer_CoachDashRegenerate[iClient];
 	delete g_hTimer_UntangleSurvivorCheck[iClient];
 	delete g_hTimer_HandleSmokerSmokeCloudTick[iClient];
 	delete g_hTimer_ResetTarFingerVictimBlindAmount[iClient];

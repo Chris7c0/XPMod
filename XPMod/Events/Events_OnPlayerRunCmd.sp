@@ -114,9 +114,9 @@ public Action OnPlayerRunCmd(int iClient, int &iButtons, int &iImpulse, float fV
 	OnPlayerRunCmd_SelfRevive(iClient, iButtons);
 
 	// If buttons are changed for more classes in the future, then this needs to be put into a switch statement
-	OnPlayerRunCmd_Coach(iClient, iButtons);
+	bButtonsChanged = OnPlayerRunCmd_Coach(iClient, iButtons) || bButtonsChanged;
 	OnPlayerRunCmd_Ellis(iClient, iButtons);
-	bButtonsChanged = OnPlayerRunCmd_Louis(iClient, iButtons);
+	bButtonsChanged = OnPlayerRunCmd_Louis(iClient, iButtons) || bButtonsChanged;
 	OnPlayerRunCmd_Smoker(iClient, iButtons);
 	OnPlayerRunCmd_Hunter(iClient, iButtons);
 

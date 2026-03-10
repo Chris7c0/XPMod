@@ -227,6 +227,15 @@ bool g_bCoachLungeOnCooldown[MAXPLAYERS + 1];
 bool g_bCoachLungeTriggered[MAXPLAYERS + 1];
 bool g_bCoachLungeEnabled[MAXPLAYERS + 1] = {true, ...};
 bool g_bCoachLungeToggleCooldown[MAXPLAYERS + 1];
+//For Coach's Bull Rush Dash
+#define COACH_DASH_TOTAL_CHARGES                2
+#define COACH_DASH_MOVEMENT_SPEED               5.0     // Shorter distance than Louis's 8.0
+#define COACH_DASH_DURATION                     0.2     // Shorter than Louis's 0.3
+#define COACH_DASH_COOLDOWN                     0.5     // Shorter cooldown than Louis's 1.0
+#define COACH_DASH_CHARGE_REGENERATE_TIME       8.0     // Time per charge to regenerate
+bool g_bCoachDashActive[MAXPLAYERS + 1] = {false, ...};
+bool g_bCoachDashCoolingDown[MAXPLAYERS + 1] = {false, ...};
+int g_iCoachDashChargeUses[MAXPLAYERS + 1] = {0, ...};
 
 //Ellis's Stuff
 #define ELLIS_STARTING_MAX_HEALTH                       100

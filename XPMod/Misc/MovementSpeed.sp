@@ -98,7 +98,14 @@ void SetClientSpeedCoach(int iClient, float &fSpeed)
 	if (g_bTalentsConfirmed[iClient] == false ||
 		g_iChosenSurvivor[iClient] != COACH)
 		return;
-	
+
+	// Bull Rush Dash speed
+	if (g_bCoachDashActive[iClient] == true)
+	{
+		fSpeed = COACH_DASH_MOVEMENT_SPEED;
+		return;
+	}
+
 	// Bull Rush CI Kill boost
 	if (g_bCoachInCISpeed[iClient])
 		fSpeed += (g_iBullLevel[iClient] * 0.05);

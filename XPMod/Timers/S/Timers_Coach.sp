@@ -200,6 +200,37 @@ Action TimerCoachLungeToggleCooldown(Handle timer, int iClient)
 	return Plugin_Stop;
 }
 
+Action TimerCoachDashCooldownReset(Handle timer, int iClient)
+{
+	g_bCoachDashCoolingDown[iClient] = false;
+	return Plugin_Stop;
+}
+
+Action TimerCoachDashInactive(Handle timer, int iClient)
+{
+	g_bCoachDashActive[iClient] = false;
+	SetClientSpeed(iClient);
+	return Plugin_Stop;
+}
+
+Action TimerCoachDashChargeRegenerate(Handle timer, int iClient)
+{
+	if (g_iCoachDashChargeUses[iClient] > 0)
+	{
+		g_iCoachDashChargeUses[iClient]--;
+		PrintCoachDashCharges(iClient);
+	}
+
+	if (g_iCoachDashChargeUses[iClient] <= 0)
+	{
+		g_iCoachDashChargeUses[iClient] = 0;
+		g_hTimer_CoachDashRegenerate[iClient] = null;
+		return Plugin_Stop;
+	}
+
+	return Plugin_Continue;
+}
+
 Action TimerWreckingChargeRetrigger(Handle timer, int iClient)
 {
 	g_iWreckingBallChargeCounter[iClient] = 0;

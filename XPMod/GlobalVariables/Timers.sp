@@ -14,6 +14,7 @@ Handle g_hTimer_HunterImmobilityZone[MAXPLAYERS + 1] 			= {null, ...};
 Handle g_hTimer_NickLifeSteal[MAXPLAYERS + 1] 			        = {null, ...};
 Handle g_hTimer_BillDropBombs[MAXPLAYERS + 1] 			        = {null, ...};
 Handle g_hTimer_LouisTeleportRegenerate[MAXPLAYERS + 1]         = {null, ...};
+Handle g_hTimer_CoachDashRegenerate[MAXPLAYERS + 1]             = {null, ...};
 Handle g_hTimer_UntangleSurvivorCheck[MAXPLAYERS + 1]           = {null, ...};
 Handle g_hTimer_HandleSmokerSmokeCloudTick[MAXPLAYERS + 1]      = {null, ...};
 Handle g_hTimer_ResetTarFingerVictimBlindAmount[MAXPLAYERS + 1] = {null, ...};
