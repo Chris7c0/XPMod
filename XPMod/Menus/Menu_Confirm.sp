@@ -92,6 +92,7 @@ void DrawConfirmationMenuToClient(int iClient, int iDisplayTime = 60)
 		g_iAutoSetCountDown[iClient] = -1;
 		g_bUserStoppedConfirmation[iClient] = true;
 		SaveUserData(iClient);
+		SaveSurvivorPick(iClient);
 
 		PrintHintText(iClient, "Characters Auto-Confirmed");
 		LoadTalents(iClient);
@@ -206,13 +207,14 @@ void ConfirmationMessageMenuHandler(Menu menu, MenuAction action, int iClient, i
 					g_bTalentsConfirmed[iClient] = true;
 					g_iAutoSetCountDown[iClient] = -1;
 					SaveUserData(iClient);
+					SaveSurvivorPick(iClient);
 
 					PrintHintText(iClient, "Characters Confirmed");
 					LoadTalents(iClient);
 					ClosePanel(iClient);
-					
+
 					RenamePlayerWithLevelTags(iClient);
-					
+
 					ShowRoundStatsPanelsToPlayer(iClient);
 				}
 			}

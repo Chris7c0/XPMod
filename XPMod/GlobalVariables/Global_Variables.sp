@@ -42,10 +42,11 @@ Handle g_hDatabase = INVALID_HANDLE;
 //#define DB_DATABASE	"DB_DATABASE"
 //#define DB_USER		"DB_USER"
 //#define DB_PASSWORD	"DB_PASSWORD"
-#define DB_CONF_NAME 	        "xpmod"
-#define DB_TABLENAME_USERS  	"users"
-#define DB_TABLENAME_BANS  	    "bans"
-#define DB_VIEWNAME_TOP_10  	"top10"
+#define DB_CONF_NAME 	            "xpmod"
+#define DB_TABLENAME_USERS  	    "users"
+#define DB_TABLENAME_BANS  	        "bans"
+#define DB_TABLENAME_SURVIVOR_PICKS "survivor_picks"
+#define DB_VIEWNAME_TOP_10  	    "top10"
 
 // Top 10 Leaderboard
 char g_strTop10SteamIDs[10][32];

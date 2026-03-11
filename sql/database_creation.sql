@@ -56,8 +56,8 @@ CREATE TABLE bans (
 -- Survivor Picks Table
 CREATE TABLE survivor_picks (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    steam_id VARCHAR(64) NOT NULL,
-    survivor_id TINYINT NOT NULL,  -- 0-7
+    steam_id BIGINT UNSIGNED NOT NULL,
+    survivor_id TINYINT UNSIGNED NOT NULL,
     picked_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_steam_date (steam_id, picked_at),
     INDEX idx_date_survivor (picked_at, survivor_id)

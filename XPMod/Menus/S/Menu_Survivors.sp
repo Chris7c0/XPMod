@@ -141,8 +141,6 @@ void ChangeSurvivorMenuHandler(Menu menu, MenuAction action, int iClient, int it
 				ResetSurvivorTalents(iClient);
 				g_iChosenSurvivor[iClient] = BILL;
 				AutoLevelUpSurivovor(iClient);
-				SaveUserData(iClient);
-				
 				DrawConfirmationMenuToClient(iClient);
 			}
 			case ROCHELLE: //Change to Rochelle
@@ -150,8 +148,6 @@ void ChangeSurvivorMenuHandler(Menu menu, MenuAction action, int iClient, int it
 				ResetSurvivorTalents(iClient);
 				g_iChosenSurvivor[iClient] = ROCHELLE;
 				AutoLevelUpSurivovor(iClient);
-				SaveUserData(iClient);
-
 				DrawConfirmationMenuToClient(iClient);
 			}
 			case COACH: //Change to Coach
@@ -159,8 +155,6 @@ void ChangeSurvivorMenuHandler(Menu menu, MenuAction action, int iClient, int it
 				ResetSurvivorTalents(iClient);
 				g_iChosenSurvivor[iClient] = COACH;
 				AutoLevelUpSurivovor(iClient);
-				SaveUserData(iClient);
-				
 				DrawConfirmationMenuToClient(iClient);
 			}
 			case ELLIS: //Change to Ellis
@@ -168,8 +162,6 @@ void ChangeSurvivorMenuHandler(Menu menu, MenuAction action, int iClient, int it
 				ResetSurvivorTalents(iClient);
 				g_iChosenSurvivor[iClient] = ELLIS;
 				AutoLevelUpSurivovor(iClient);
-				SaveUserData(iClient);
-
 				DrawConfirmationMenuToClient(iClient);
 			}
 			case NICK: //Change to Nick
@@ -177,8 +169,6 @@ void ChangeSurvivorMenuHandler(Menu menu, MenuAction action, int iClient, int it
 				ResetSurvivorTalents(iClient);
 				g_iChosenSurvivor[iClient] = NICK;
 				AutoLevelUpSurivovor(iClient);
-				SaveUserData(iClient);
-
 				DrawConfirmationMenuToClient(iClient);
 			}
 			case LOUIS: //Change to Louis
@@ -186,8 +176,6 @@ void ChangeSurvivorMenuHandler(Menu menu, MenuAction action, int iClient, int it
 				ResetSurvivorTalents(iClient);
 				g_iChosenSurvivor[iClient] = LOUIS;
 				AutoLevelUpSurivovor(iClient);
-				SaveUserData(iClient);
-
 				DrawConfirmationMenuToClient(iClient);
 			}
 			case ZOEY: //Change to Zoey
@@ -205,5 +193,6 @@ void ChangeSurvivorMenuHandler(Menu menu, MenuAction action, int iClient, int it
 				LoadoutMenuDraw(iClient);
 			}
 		}
+
 	}
 }
