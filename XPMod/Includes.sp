@@ -40,7 +40,7 @@
 #include "XPMod/Database/User_Management.sp"
 #include "XPMod/Database/Ban_Management.sp"
 #include "XPMod/Database/Statistics.sp"
-#include "XPMod/Database/SurvivorPicks.sp"
+#include "XPMod/Database/ClassPicks.sp"
 //Experience
 #include "XPMod/XP/XP_Management.sp"
 #include "XPMod/XP/XP_Events.sp"

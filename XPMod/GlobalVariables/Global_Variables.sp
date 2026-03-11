@@ -46,6 +46,7 @@ Handle g_hDatabase = INVALID_HANDLE;
 #define DB_TABLENAME_USERS  	    "users"
 #define DB_TABLENAME_BANS  	        "bans"
 #define DB_TABLENAME_SURVIVOR_PICKS "survivor_picks"
+#define DB_TABLENAME_INFECTED_PICKS "infected_picks"
 #define DB_VIEWNAME_TOP_10  	    "top10"
 
 // Top 10 Leaderboard

@@ -63,6 +63,16 @@ CREATE TABLE survivor_picks (
     INDEX idx_date_survivor (picked_at, survivor_id)
 );
 
+-- Infected Picks Table
+CREATE TABLE infected_picks (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    steam_id BIGINT UNSIGNED NOT NULL,
+    infected_id TINYINT UNSIGNED NOT NULL,
+    picked_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_steam_date (steam_id, picked_at),
+    INDEX idx_date_infected (picked_at, infected_id)
+);
+
 -- Views
 CREATE OR REPLACE VIEW top10 AS
 SELECT user_name, xp, steam_id FROM users ORDER BY xp DESC LIMIT 10;
