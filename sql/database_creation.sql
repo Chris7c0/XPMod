@@ -88,6 +88,9 @@ CREATE TABLE survivor_picks (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     steam_id BIGINT UNSIGNED NOT NULL,
     survivor_id TINYINT UNSIGNED NOT NULL,
+    server_name VARCHAR(64) NOT NULL,
+    game_mode VARCHAR(20) NOT NULL,
+    map_name VARCHAR(32) NOT NULL,
     picked_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_steam_date (steam_id, picked_at),
     INDEX idx_date_survivor (picked_at, survivor_id)
@@ -98,6 +101,9 @@ CREATE TABLE infected_picks (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     steam_id BIGINT UNSIGNED NOT NULL,
     infected_id TINYINT UNSIGNED NOT NULL,
+    server_name VARCHAR(64) NOT NULL,
+    game_mode VARCHAR(20) NOT NULL,
+    map_name VARCHAR(32) NOT NULL,
     picked_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_steam_date (steam_id, picked_at),
     INDEX idx_date_infected (picked_at, infected_id)
@@ -108,13 +114,15 @@ CREATE OR REPLACE VIEW top10 AS
 SELECT user_name, xp, steam_id FROM users ORDER BY xp DESC LIMIT 10;
 
 CREATE OR REPLACE VIEW survivor_picks_view AS
-SELECT sp.id, sp.steam_id, u.user_name, u.xp, u.prestige_points, sc.class_name AS survivor_name, sp.picked_at
+SELECT sp.id, sp.steam_id, u.user_name, u.xp, u.prestige_points, sc.class_name AS survivor_name,
+    sp.server_name, sp.game_mode, sp.map_name, sp.picked_at
 FROM survivor_picks sp
 JOIN users u ON sp.steam_id = u.steam_id
 JOIN survivor_classes sc ON sp.survivor_id = sc.class_id;
 
 CREATE OR REPLACE VIEW infected_picks_view AS
-SELECT ip.id, ip.steam_id, u.user_name, u.xp, u.prestige_points, ic.class_name AS infected_name, ip.picked_at
+SELECT ip.id, ip.steam_id, u.user_name, u.xp, u.prestige_points, ic.class_name AS infected_name,
+    ip.server_name, ip.game_mode, ip.map_name, ip.picked_at
 FROM infected_picks ip
 JOIN users u ON ip.steam_id = u.steam_id
 JOIN infected_classes ic ON ip.infected_id = ic.class_id;

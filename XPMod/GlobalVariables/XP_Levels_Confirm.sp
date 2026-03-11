@@ -9,6 +9,8 @@ bool g_bCanSave = true;
 // Players can spawn before confirming, so these states must stay separate.
 bool g_bSurvivorSpawnLoadoutGivenThisRound[MAXPLAYERS + 1] = {false, ...};
 bool g_bConfirmedSurvivorTalentsGivenThisRound[MAXPLAYERS + 1] = {false, ...};
+StringMap g_smSurvivorPickSavedThisRound;
+StringMap g_smInfectedPickSavedThisRound;
 int g_iClientXP[MAXPLAYERS + 1];
 int g_iClientLevel[MAXPLAYERS + 1];
 int g_iClientPrestigePoints[MAXPLAYERS + 1];

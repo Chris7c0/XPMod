@@ -30,7 +30,7 @@
 //                                                                                                             //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define PLUGIN_VERSION "0.8.5.0369"
+#define PLUGIN_VERSION "0.8.5.0370"
 
 #pragma newdecls required
 
@@ -66,6 +66,10 @@ public void OnPluginStart()
 	else
 		CreateTimer(10.0, Timer_ShowXPModInfoToServer, _);
 	
+	// Initialize class pick tracking maps
+	g_smSurvivorPickSavedThisRound = new StringMap();
+	g_smInfectedPickSavedThisRound = new StringMap();
+
 	// Set up ConVars
 	SetupXPMConVars();
 	// Setup the handle that will link to the MySQL Database

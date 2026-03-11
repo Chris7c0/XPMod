@@ -10,6 +10,11 @@ void SQLSaveClassPickCallback(Handle owner, Handle hQuery, const char[] error, i
 		LogError("SQL Error saving class pick: %s", error);
 }
 
+void GetGameModeString(char[] strGameMode, int maxLength)
+{
+	GetConVarString(FindConVar("mp_gamemode"), strGameMode, maxLength);
+}
+
 void SaveSurvivorPick(int iClient)
 {
 	if (g_hDatabase == INVALID_HANDLE)
@@ -30,11 +35,21 @@ void SaveSurvivorPick(int iClient)
 	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
 		return;
 
-	char strQuery[256];
-	Format(strQuery, sizeof(strQuery), "INSERT INTO %s (steam_id, survivor_id) VALUES ('%s', %i)",
-		DB_TABLENAME_SURVIVOR_PICKS, strSteamID, g_iChosenSurvivor[iClient]);
+	// Only record once per round per steam ID
+	int dummy;
+	if (g_smSurvivorPickSavedThisRound.GetValue(strSteamID, dummy))
+		return;
+
+	char strGameMode[20];
+	GetGameModeString(strGameMode, sizeof(strGameMode));
+
+	char strQuery[512];
+	Format(strQuery, sizeof(strQuery), "INSERT INTO %s (steam_id, survivor_id, server_name, game_mode, map_name) VALUES ('%s', %i, '%s', '%s', '%s')",
+		DB_TABLENAME_SURVIVOR_PICKS, strSteamID, g_iChosenSurvivor[iClient],
+		g_strServerName, strGameMode, g_strCurrentMap);
 
 	SQL_TQuery(g_hDatabase, SQLSaveClassPickCallback, strQuery, iClient);
+	g_smSurvivorPickSavedThisRound.SetValue(strSteamID, 1);
 }
 
 void SaveInfectedPick(int iClient)
@@ -57,12 +72,21 @@ void SaveInfectedPick(int iClient)
 	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
 		return;
 
+	// Only record once per round per steam ID
+	int dummy;
+	if (g_smInfectedPickSavedThisRound.GetValue(strSteamID, dummy))
+		return;
+
+	char strGameMode[20];
+	GetGameModeString(strGameMode, sizeof(strGameMode));
+
 	char strQuery[512];
-	Format(strQuery, sizeof(strQuery), "INSERT INTO %s (steam_id, infected_id) VALUES ('%s', %i), ('%s', %i), ('%s', %i)",
+	Format(strQuery, sizeof(strQuery), "INSERT INTO %s (steam_id, infected_id, server_name, game_mode, map_name) VALUES ('%s', %i, '%s', '%s', '%s'), ('%s', %i, '%s', '%s', '%s'), ('%s', %i, '%s', '%s', '%s')",
 		DB_TABLENAME_INFECTED_PICKS,
-		strSteamID, g_iClientInfectedClass1[iClient],
-		strSteamID, g_iClientInfectedClass2[iClient],
-		strSteamID, g_iClientInfectedClass3[iClient]);
+		strSteamID, g_iClientInfectedClass1[iClient], g_strServerName, strGameMode, g_strCurrentMap,
+		strSteamID, g_iClientInfectedClass2[iClient], g_strServerName, strGameMode, g_strCurrentMap,
+		strSteamID, g_iClientInfectedClass3[iClient], g_strServerName, strGameMode, g_strCurrentMap);
 
 	SQL_TQuery(g_hDatabase, SQLSaveClassPickCallback, strQuery, iClient);
+	g_smInfectedPickSavedThisRound.SetValue(strSteamID, 1);
 }

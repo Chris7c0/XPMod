@@ -1,5 +1,9 @@
 void ResetAllVariablesForRound()
 {
+	// Clear class pick tracking for the new round
+	g_smSurvivorPickSavedThisRound.Clear();
+	g_smInfectedPickSavedThisRound.Clear();
+
 	//Reset Variables
 	for (int i = 1; i <= MaxClients; i++)
 	{
@@ -376,7 +380,7 @@ void ResetAllVariables(int iClient)
 {
 	g_iBanDurationInMinutes[iClient] = 0;
 	g_bConfirmedSurvivorTalentsGivenThisRound[iClient] = false;
-	
+
 	g_bUsingFireStorm[iClient] = false;
 	g_bUsingTongueRope[iClient] = false;
 	clienthanging[iClient] = false;
