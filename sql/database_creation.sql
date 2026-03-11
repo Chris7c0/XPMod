@@ -53,6 +53,36 @@ CREATE TABLE bans (
     admin_steam_id BIGINT UNSIGNED NOT NULL DEFAULT 0
 );
 
+-- Survivor Class Names Lookup Table
+CREATE TABLE survivor_classes (
+    class_id TINYINT UNSIGNED PRIMARY KEY,
+    class_name VARCHAR(20) NOT NULL
+);
+INSERT INTO survivor_classes (class_id, class_name) VALUES
+    (0, 'Bill'),
+    (1, 'Rochelle'),
+    (2, 'Coach'),
+    (3, 'Ellis'),
+    (4, 'Nick'),
+    (5, 'Louis'),
+    (6, 'Zoey'),
+    (7, 'Francis');
+
+-- Infected Class Names Lookup Table
+CREATE TABLE infected_classes (
+    class_id TINYINT UNSIGNED PRIMARY KEY,
+    class_name VARCHAR(20) NOT NULL
+);
+INSERT INTO infected_classes (class_id, class_name) VALUES
+    (1, 'Smoker'),
+    (2, 'Boomer'),
+    (3, 'Hunter'),
+    (4, 'Spitter'),
+    (5, 'Jockey'),
+    (6, 'Charger'),
+    (7, 'Witch'),
+    (8, 'Tank');
+
 -- Survivor Picks Table
 CREATE TABLE survivor_picks (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -76,6 +106,32 @@ CREATE TABLE infected_picks (
 -- Views
 CREATE OR REPLACE VIEW top10 AS
 SELECT user_name, xp, steam_id FROM users ORDER BY xp DESC LIMIT 10;
+
+CREATE OR REPLACE VIEW survivor_picks_view AS
+SELECT sp.id, sp.steam_id, u.user_name, u.xp, u.prestige_points, sc.class_name AS survivor_name, sp.picked_at
+FROM survivor_picks sp
+JOIN users u ON sp.steam_id = u.steam_id
+JOIN survivor_classes sc ON sp.survivor_id = sc.class_id;
+
+CREATE OR REPLACE VIEW infected_picks_view AS
+SELECT ip.id, ip.steam_id, u.user_name, u.xp, u.prestige_points, ic.class_name AS infected_name, ip.picked_at
+FROM infected_picks ip
+JOIN users u ON ip.steam_id = u.steam_id
+JOIN infected_classes ic ON ip.infected_id = ic.class_id;
+
+CREATE OR REPLACE VIEW survivor_pick_counts AS
+SELECT sc.class_name AS survivor_name, COUNT(*) AS pick_count
+FROM survivor_picks sp
+JOIN survivor_classes sc ON sp.survivor_id = sc.class_id
+GROUP BY sp.survivor_id
+ORDER BY pick_count DESC;
+
+CREATE OR REPLACE VIEW infected_pick_counts AS
+SELECT ic.class_name AS infected_name, COUNT(*) AS pick_count
+FROM infected_picks ip
+JOIN infected_classes ic ON ip.infected_id = ic.class_id
+GROUP BY ip.infected_id
+ORDER BY pick_count DESC;
 
 -- Scheduled Events (Jobs)
 SET GLOBAL event_scheduler = ON;
