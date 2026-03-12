@@ -136,63 +136,35 @@ void ChangeSurvivorMenuHandler(Menu menu, MenuAction action, int iClient, int it
 	{
 		switch (itemNum)
 		{
-			case BILL: //Change to Bill
-			{
-				ResetSurvivorTalents(iClient);
-				g_iChosenSurvivor[iClient] = BILL;
-				AutoLevelUpSurivovor(iClient);
-				DrawConfirmationMenuToClient(iClient);
-			}
-			case ROCHELLE: //Change to Rochelle
-			{
-				ResetSurvivorTalents(iClient);
-				g_iChosenSurvivor[iClient] = ROCHELLE;
-				AutoLevelUpSurivovor(iClient);
-				DrawConfirmationMenuToClient(iClient);
-			}
-			case COACH: //Change to Coach
-			{
-				ResetSurvivorTalents(iClient);
-				g_iChosenSurvivor[iClient] = COACH;
-				AutoLevelUpSurivovor(iClient);
-				DrawConfirmationMenuToClient(iClient);
-			}
-			case ELLIS: //Change to Ellis
-			{
-				ResetSurvivorTalents(iClient);
-				g_iChosenSurvivor[iClient] = ELLIS;
-				AutoLevelUpSurivovor(iClient);
-				DrawConfirmationMenuToClient(iClient);
-			}
-			case NICK: //Change to Nick
-			{
-				ResetSurvivorTalents(iClient);
-				g_iChosenSurvivor[iClient] = NICK;
-				AutoLevelUpSurivovor(iClient);
-				DrawConfirmationMenuToClient(iClient);
-			}
-			case LOUIS: //Change to Louis
-			{
-				ResetSurvivorTalents(iClient);
-				g_iChosenSurvivor[iClient] = LOUIS;
-				AutoLevelUpSurivovor(iClient);
-				DrawConfirmationMenuToClient(iClient);
-			}
 			case ZOEY: //Change to Zoey
 			{
 				PrintToChat(iClient, "\x03[XPMod] \x05Zoeys Coming!");
 				ChangeSurvivorMenuDraw(iClient);
+				return;
 			}
 			case FRANCIS: //Change to Francis
 			{
 				PrintToChat(iClient, "\x03[XPMod] \x05Not Available Yet.");
 				ChangeSurvivorMenuDraw(iClient);
+				return;
 			}
 			case 8: //Change Equipment
 			{
 				LoadoutMenuDraw(iClient);
+				return;
 			}
 		}
 
+		// ItemNum 0-7 are survivor choices that align with the survivor enums
+		// So, we can just set the chosen survivor to the itemNum they clicked on
+		if (itemNum >= 0 && itemNum <= 7)
+		{
+			ResetSurvivorTalents(iClient);
+			// Set the chosen survivor to the one they just clicked on
+			g_iChosenSurvivor[iClient] = itemNum;
+			AutoLevelUpSurivovor(iClient);
+			SaveUserData(iClient);
+			DrawConfirmationMenuToClient(iClient);
+		}
 	}
 }
