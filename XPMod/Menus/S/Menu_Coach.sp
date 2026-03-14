@@ -61,7 +61,6 @@ Action BullMenuDraw(int iClient)
 	FormatEx(text, sizeof(text), "\
 		%s			Bull Rush(Level %d):\
 		\n \
-		\nLevel 1:\
 		\n+5 max health per level\
 		\nOn CI headshot with a melee weapon:\
 		\n+5%%%% speed per level for 5 seconds\
@@ -110,25 +109,20 @@ Action WreckingMenuDraw(int iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 	
 	FormatEx(text, sizeof(text), "\
-		%s									Wrecking Ball(Level %d):\
+		%s						Wrecking Ball(Level %d):\
 		\n \
-		\nLevel 1:\
-		\n(Charge) +100 melee dmg per level\
-		\n+5 max health per level\
-		\n(Auto) Lunge toward nearby CI or SI(<30%%%% HP)\
-		\n   within range when attacking with melee\
-		\n   [CROUCH+USE] with melee to toggle on/off\
+		\n+5 Max Health per Level\
+		\nHold [CROUCH] to Heal Yourself\
+		\n	+1 Health Regen Every Half Second\
 		\n \
-		\nLevel 5:\
-		\nOn SI headshot w/ melee weapon & Wrecking Ball charged:\
-		\nInstantly recharge Wrecking Ball\
-		\n(Charge) +1 health regen every half second\
+		\nMelee Attacks Lunge at Nearby Infected Within Range\
+		\n	All CI and SI(<30%% HP)\
+		\n	[CROUCH+USE] with Melee to Toggle Off\
 		\n \
-		\n \
-		\nSkill Uses:\
-		\n(Charge) Melee dmg bonus: Hold [CROUCH] to power up\
-		\n(Charge) Melee dmg bonus expelled on next [MELEE] against SI\
-		\n(Charge) HP regen: Hold [CROUCH] to heal yourself\
+		\nHold [CROUCH] to Power Up Wrecking Ball Attack:\
+		\n	+100 Melee Dmg per Level Expelled on SI Hit\
+		\n	On SI Melee Headshot While Wrecking Ball Active:\
+		\n		- Instantly Recharge It\
 		\n ",
 		strStartingNewLines,
 		g_iWreckingLevel[iClient]);
@@ -137,7 +131,7 @@ Action WreckingMenuDraw(int iClient)
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -172,6 +166,7 @@ Action SprayMenuDraw(int iClient)
 		\n [USE+ZOOM] to Turn On Jetpack\
 		\n+%i Max Fuel per Level\
 		\nWhile Jetpack Is Off, Fuel Regenerates Over Time\
+		\nBlocks Bull Rush Dash\
 		\n \
 		\nSkill Uses:\
 		\nHold [WALK] to Fly When Jetpack Is On\
@@ -184,7 +179,7 @@ Action SprayMenuDraw(int iClient)
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 

@@ -452,7 +452,7 @@ void OnGameFrame_Coach(int iClient)
 	{
 		int buttons;
 		buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
-		if(g_iWreckingLevel[iClient] == 5)
+		if(g_iWreckingLevel[iClient] > 0)
 		{
 			if(g_bCoachRageIsInCooldown[iClient] == false)
 			{
@@ -914,7 +914,7 @@ void EventsHurt_AttackerCoach(Handle hEvent, int attacker, int victim)
 		{
 			if(g_bIsWreckingBallCharged[attacker]==true)
 			{
-				if(g_iWreckingLevel[attacker] == 5)
+				if(g_iWreckingLevel[attacker] > 0)
 				{
 					g_bWreckingChargeRetrigger[attacker] = true;
 				}
