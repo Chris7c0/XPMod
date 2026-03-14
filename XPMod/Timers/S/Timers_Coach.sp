@@ -104,16 +104,21 @@ Action TimerCoachRageReset(Handle timer, int iClient)
 	g_bCoachRageIsActive[iClient] = false;
 	g_iCoachRageMeleeDamage[iClient] = 0;
 	g_bCoachRageIsInCooldown[iClient] = true;
-	
+
+	// Cap dash charges at 2 if they had 3 during rage
+	if (g_iCoachDashChargeUses[iClient] < 0)
+		g_iCoachDashChargeUses[iClient] = 0;
+
+	PrintCoachDashCharges(iClient);
+
 	SetClientSpeed(iClient);
 	CreateTimer(180.0, TimerCoachRageCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
-	
+
 	if (RunClientChecks(iClient) && IsFakeClient(iClient) == false)
 		PrintHintText(iClient, "Rage is in cooldown, healing and speed talents disabled for 3 minutes.");
-	
+
 	return Plugin_Stop;
 }
-
 Action TimerCoachRageCooldown(Handle timer, int iClient)
 {
 	g_bCoachRageIsAvailable[iClient] = true;

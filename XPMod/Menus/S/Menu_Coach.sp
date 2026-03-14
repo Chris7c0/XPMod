@@ -66,9 +66,14 @@ Action BullMenuDraw(int iClient)
 		\nOn CI headshot with a melee weapon:\
 		\n+5%%%% speed per level for 5 seconds\
 		\n \
-		\n [WALK+USE] to rage! For 20 seconds:\
+		\nWith Melee:\
+		\n [WALK+Movement] to Dash\
+		\n  - 2 Charges\
+		\n \
+		\n [WALK+USE] to rage! For 30 seconds:\
 		\n+5%%%% speed per level\
 		\n+40 melee damage per level\
+		\n+1 Dash Charge\
 		\nHealth regeneration\
 		\n3 Minute Cooldown. During Cooldown:\
 		\n-3%%%% speed per level\
@@ -81,7 +86,7 @@ Action BullMenuDraw(int iClient)
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 

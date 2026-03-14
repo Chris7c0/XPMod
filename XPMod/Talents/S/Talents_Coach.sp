@@ -707,7 +707,14 @@ void OnGameFrame_Coach(int iClient)
 			if(g_bCoachRageIsAvailable[iClient] == true)
 			{
 				g_iCoachRageMeleeDamage[iClient] = (g_iBullLevel[iClient] * 40);
-				CreateTimer(20.0, TimerCoachRageReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
+				CreateTimer(30.0, TimerCoachRageReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
+				
+				// Grant +1 Dash Charge for Rage
+				if (g_iCoachDashChargeUses[iClient] > 0)
+					g_iCoachDashChargeUses[iClient]--;
+				
+				PrintCoachDashCharges(iClient);
+
 				if(g_iCoachRageRegenCounter[iClient] < 2)
 				{
 					int currentHP = GetPlayerHealth(iClient);
@@ -1203,8 +1210,9 @@ bool OnPlayerRunCmd_Coach(int iClient, int &iButtons)
 	}
 
 	// Bull Rush Dash - tap WALK + movement direction while holding melee, on ground, jetpack off
+	int iMaxDashCharges = g_bCoachRageIsActive[iClient] ? (COACH_DASH_TOTAL_CHARGES + 1) : COACH_DASH_TOTAL_CHARGES;
 	if (g_iBullLevel[iClient] > 0 &&
-		g_iCoachDashChargeUses[iClient] < COACH_DASH_TOTAL_CHARGES &&
+		(iMaxDashCharges - g_iCoachDashChargeUses[iClient]) > 0 &&
 		g_bCoachDashCoolingDown[iClient] == false &&
 		g_bIsJetpackOn[iClient] == false &&
 		iButtons & IN_SPEED &&
@@ -1268,11 +1276,28 @@ void PrintCoachDashCharges(int iClient)
 		IsIncap(iClient) == true)
 		return;
 
-	switch (COACH_DASH_TOTAL_CHARGES - g_iCoachDashChargeUses[iClient])
+	int iMaxDashCharges = g_bCoachRageIsActive[iClient] ? (COACH_DASH_TOTAL_CHARGES + 1) : COACH_DASH_TOTAL_CHARGES;
+	int iCurrentCharges = iMaxDashCharges - g_iCoachDashChargeUses[iClient];
+	if (iCurrentCharges < 0) iCurrentCharges = 0;
+
+	if (g_bCoachRageIsActive[iClient])
 	{
-		case 0: PrintHintText(iClient, "Bull Rush: ( ░░░░░░░░░░░░░░░░░░░░ )");
-		case 1: PrintHintText(iClient, "Bull Rush: ( ▓▓▓▓▓▓▓▓▓▓░░░░░░░░░░ )");
-		case 2: PrintHintText(iClient, "Bull Rush: ( ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ )");
+		switch (iCurrentCharges)
+		{
+			case 0: PrintHintText(iClient, "Bull Rush: ( ░░░░░░░░░░░░░░░░░░░░ )");
+			case 1: PrintHintText(iClient, "Bull Rush: ( ▓▓▓▓▓▓░░░░░░░░░░░░░░ )");
+			case 2: PrintHintText(iClient, "Bull Rush: ( ▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░ )");
+			case 3: PrintHintText(iClient, "Bull Rush: ( ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ )");
+		}
+	}
+	else
+	{
+		switch (iCurrentCharges)
+		{
+			case 0: PrintHintText(iClient, "Bull Rush: ( ░░░░░░░░░░░░░ )");
+			case 1: PrintHintText(iClient, "Bull Rush: ( ▓▓▓▓▓▓░░░░░░░ )");
+			case 2: PrintHintText(iClient, "Bull Rush: ( ▓▓▓▓▓▓▓▓▓▓▓▓▓ )");
+		}
 	}
 }
 

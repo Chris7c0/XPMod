@@ -7,9 +7,10 @@ Level 1:
 On CI headshot with a melee weapon:
 +5% speed per level for 5 seconds
 
-[WALK+USE] to rage! For 20 seconds:
+[WALK+USE] to rage! For 30 seconds:
 +5% speed per level
 +40 melee damage per level
++1 Dash Charge
 Health regeneration
 
 3 Minute Cooldown. During Cooldown:
