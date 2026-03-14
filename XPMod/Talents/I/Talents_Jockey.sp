@@ -146,7 +146,8 @@ void Event_JockeyRide_Jockey(int iAttacker, int iVictim)
 	if (g_bTalentsConfirmed[iVictim] == true &&
 		g_iStrongLevel[iVictim] > 0)
 	{
-		g_fJockeyRideSpeed[iVictim] = 0.0;
+		g_fJockeyRideSpeed[iVictim] = (1.0 - (g_iStrongLevel[iVictim] * 0.16));
+		if (g_fJockeyRideSpeed[iVictim] < 0.0) g_fJockeyRideSpeed[iVictim] = 0.0;
 		SetClientSpeed(iVictim);
 		return;
 	}

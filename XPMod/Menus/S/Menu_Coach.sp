@@ -301,7 +301,7 @@ Action StrongMenuDraw(int iClient)
 		\nLevel 1:\
 		\n+30 Melee Damage per Level\
 		\n+5 Max Health per Level\
-		\n+20%% Jockey Resistance per Level\
+		\n+16%% Jockey Resistance per Level\
 		\nStart The Round With A Random Explosive\
 		\n \
 		\nLevel 2:\

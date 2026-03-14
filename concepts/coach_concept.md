@@ -2,12 +2,15 @@
 
 ### Talent 1: Bull Rush
 ```
-Level 1:
 +5 max health per level
 On CI headshot with a melee weapon:
 +5% speed per level for 5 seconds
 
-[WALK+USE] to rage! For 30 seconds:
+With Melee:
+ [WALK+Movement] to Dash
+  - 2 Charges
+
+ [WALK+USE] to rage! For 30 seconds:
 +5% speed per level
 +40 melee damage per level
 +1 Dash Charge
@@ -20,19 +23,18 @@ Coach cannot regen or speed up
 
 ### Talent 2: Wrecking Ball
 ```
-Level 1:
-(Charge) +100 melee dmg per level
-+5 max health per level
++5 Max Health per Level
+Hold [CROUCH] to Heal Yourself
+	+1 Health Regen Every Half Second
 
-Level 5:
-On SI headshot w/ melee weapon & Wrecking Ball charged:
-Instantly recharge Wrecking Ball
-(Charge) +1 health regen every half second
+Melee Attacks Lunge at Nearby Infected Within Range
+	All CI and SI(<30% HP)
+	[CROUCH+USE] with Melee to Toggle Off
 
-Skill Uses:
-- (Charge) Melee dmg bonus: Hold [CROUCH] to power up
-- (Charge) Melee dmg bonus expelled on next [MELEE] against SI
-- (Charge) HP regen: Hold [CROUCH] to heal yourself
+Hold [CROUCH] to Power Up Wrecking Ball Attack:
+	+100 Melee Dmg per Level Expelled on SI Hit
+	On SI Melee Headshot While Wrecking Ball Active:
+		- Instantly Recharge It
 ```
 
 ### Talent 3: Spray n' Pray
@@ -43,12 +45,13 @@ Skill Uses:
 Hotkey: CEDA JPack Mk. 6
 
 Level 1:
-[USE+ZOOM] to Turn On Jetpack
-+60 Max Fuel per Level
-While Jetpack Is Off, Fuel Regenerates Over Time
+ [USE+ZOOM] to Turn On Jetpack
+ +60 Max Fuel per Level
+ While Jetpack Is Off, Fuel Regenerates Over Time
+ Blocks Bull Rush Dash
 
 Skill Uses:
-Hold [WALK] to Fly When Jetpack Is On
+ Hold [WALK] to Fly When Jetpack Is On
 ```
 
 ### Talent 4: Homerun!
@@ -89,8 +92,8 @@ Deploy Turrets
 Level 1:
 +30 Melee Damage per Level
 +5 Max Health per Level
-+20% Jockey Resistance per Level
-Start The Round With A Round Random Explosive
++16% Jockey Resistance per Level
+Start The Round With A Random Explosive
 
 Level 2:
 +1 Explosive Storage Every Other Level
