@@ -1,9 +1,10 @@
 // Calculate player movement speed given all values
 void SetClientSpeed(int iClient)
 {
-	if (RunClientChecks(iClient) == false || 
+	if (RunClientChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false ||
-		g_bGameFrozen == true)
+		g_bGameFrozen == true ||
+		g_bFrozenByTank[iClient] == true)
 		return;
 
 	float fSpeed = 1.0;
