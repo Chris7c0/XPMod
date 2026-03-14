@@ -38,6 +38,16 @@ Skill Uses:
 ```
 +2 shotgun clip size per level
 +2 shotgun pellet damage per level
+
+Hotkey: CEDA JPack Mk. 6
+
+Level 1:
+[USE+ZOOM] to Turn On Jetpack
++60 Max Fuel per Level
+While Jetpack Is Off, Fuel Regenerates Over Time
+
+Skill Uses:
+Hold [WALK] to Fly When Jetpack Is On
 ```
 
 ### Talent 4: Homerun!
@@ -79,19 +89,9 @@ Level 1:
 +30 Melee Damage per Level
 +5 Max Health per Level
 +20% Jockey Resistance per Level
-Start The Round With A Random Explosive
+Start The Round With A Round Random Explosive
 
 Level 2:
 +1 Explosive Storage Every Other Level
-[WALK+ZOOM] to Cycle Explosives
-
-Bind 2: CEDA JPack Mk. 6
-
-Level 1:
-Press Bind 2 to Turn On Jetpack
-+60 Max Fuel per Level
-While Jetpack Is Off, Fuel Regenerates Over Time
-
-Skill Uses:
-Hold [WALK] to Fly When Jetpack Is On
+[CROUCH+RELOAD] to Cycle Explosives
 ```

@@ -160,9 +160,20 @@ Action SprayMenuDraw(int iClient)
 		\n \
 		\n+2 shotgun clip size per level\
 		\n+2 shotgun pellet damage per level\
+		\n \
+		\n			Hotkey: CEDA JPack Mk. 6\
+		\n \
+		\nLevel 1:\
+		\n [USE+ZOOM] to Turn On Jetpack\
+		\n+%i Max Fuel per Level\
+		\nWhile Jetpack Is Off, Fuel Regenerates Over Time\
+		\n \
+		\nSkill Uses:\
+		\nHold [WALK] to Fly When Jetpack Is On\
 		\n ",
 		strStartingNewLines,
-		g_iSprayLevel[iClient]);
+		g_iSprayLevel[iClient],
+		COACH_JETPACK_FUEL_PER_LEVEL);
 	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];
@@ -238,7 +249,6 @@ Action LeadMenuDraw(int iClient)
 	
 	FormatEx(text, sizeof(text), "\
 		%s				Lead by Example(Level %d):\
-		\n					Requires Level 11\
 		\n \
 		\nLevel 1:\
 		\n(Team) +10%%%% chainsaw fuel per level\
@@ -262,7 +272,7 @@ Action LeadMenuDraw(int iClient)
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	
@@ -296,21 +306,10 @@ Action StrongMenuDraw(int iClient)
 		\n \
 		\nLevel 2:\
 		\n+1 Explosive Storage Every Other Level\
-		\n [WALK+ZOOM] to Cycle Explosives\
-		\n \
-		\n			Bind 2: CEDA JPack Mk. 6\
-		\n \
-		\nLevel 1:\
-		\nPress Bind 2 to Turn On Jetpack\
-		\n+%i Max Fuel per Level\
-		\nWhile Jetpack Is Off, Fuel Regenerates Over Time\
-		\n \
-		\nSkill Uses:\
-		\nHold [WALK] to Fly When Jetpack Is On\
+		\n [CROUCH+RELOAD] to Cycle Explosives\
 		\n ",
 		strStartingNewLines,
-		g_iStrongLevel[iClient],
-		COACH_JETPACK_FUEL_PER_LEVEL);
+		g_iStrongLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];

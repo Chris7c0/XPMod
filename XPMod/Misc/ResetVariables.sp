@@ -92,6 +92,7 @@ void ResetClientVariablesForRound(int iClient)
 	g_bIsFlyingWithJetpack[iClient] = false;
 	g_iClientJetpackFuel[iClient] = 0;
 	g_bIsJetpackOn[iClient] = false;
+	g_bCoachJetpackToggleCooldown[iClient] = false;
 	g_iCoachDecapitationCounter[iClient] = 0;
 	g_iMeleeDamageCounter[iClient] = 0;
 	g_bIsHighJumpCharged[iClient] = false;
@@ -101,6 +102,7 @@ void ResetClientVariablesForRound(int iClient)
 	g_bCoachLungeEnabled[iClient] = true;
 	g_bCoachLungeToggleCooldown[iClient] = false;
 	g_iExtraExplosiveUses[iClient] = 0;
+	g_bCoachGrenadeCycleCooldown[iClient] = false;
 	g_iBillSprintChargeCounter[iClient] = 0;
 	g_bBillSprinting[iClient] = false;
 	g_bBillTaunting[iClient] = false;
