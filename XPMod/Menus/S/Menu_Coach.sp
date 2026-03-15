@@ -308,9 +308,9 @@ Action StrongMenuDraw(int iClient)
 		\n+1 Explosive Storage Every Other Level\
 		\n [CROUCH+RELOAD] to Cycle Explosives\
 		\n \
-		\n		Bind 2: Chainsaw Massacre\
+		\n		Bind 2: Chainsaw Massacre (3 Uses)\
 		\nEquip a Chainsaw for %0.0f seconds\
-		\nChainsaw attacks lunge at targets (60ft)\
+		\nChainsaw attacks lunge at targets (50ft)\
 		\nEvery kill increases Speed, Damage, and HP Regen\
 		\nOriginal weapon restored when it ends\
 		\n ",

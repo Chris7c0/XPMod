@@ -6,6 +6,12 @@ void Bind2Press_Coach(int iClient)
         return;
     }
 
+    if(g_iClientBindUses_2[iClient] >= 3)
+    {
+        PrintHintText(iClient, "You are out of Chainsaw Massacres.");
+        return;
+    }
+
     if(g_bCoachChainsawMassacreActive[iClient] == true)
     {
         PrintHintText(iClient, "Chainsaw Massacre is already active!");
@@ -56,6 +62,7 @@ void Bind2Press_Coach(int iClient)
     }
 
     // Activate Chainsaw Massacre
+    g_iClientBindUses_2[iClient]++;
     g_bCoachChainsawMassacreActive[iClient] = true;
     g_iCoachChainsawKillCount[iClient] = 0;
     g_iCoachChainsawMeleeDamage[iClient] = 0;
