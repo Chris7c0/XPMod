@@ -1272,6 +1272,8 @@ bool OnPlayerRunCmd_Coach(int iClient, int &iButtons)
 			g_bIsFlyingWithJetpack[iClient] == false &&
 			g_bIsClientDown[iClient] == false &&
 			IsClientGrappled(iClient) == false &&
+			g_bGameFrozen == false &&
+			g_bFrozenByTank[iClient] == false &&
 			(iButtons & IN_ATTACK))
 		{
 			g_bCoachLungeTriggered[iClient] = true;
@@ -1287,6 +1289,8 @@ bool OnPlayerRunCmd_Coach(int iClient, int &iButtons)
 			g_bCoachLungeOnCooldown[iClient] == false &&
 			g_bIsClientDown[iClient] == false &&
 			IsClientGrappled(iClient) == false &&
+			g_bGameFrozen == false &&
+			g_bFrozenByTank[iClient] == false &&
 			(iButtons & IN_ATTACK))
 		{
 			g_bCoachLungeTriggered[iClient] = true;

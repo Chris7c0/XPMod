@@ -31,6 +31,12 @@ void BindPress(int iClient, int iBindNumber)
 		return;
 	}
 
+	if(g_bFrozenByTank[iClient] == true)
+	{
+		PrintToChat(iClient, "\x03[XPMod] \x04You cannot use binds while frozen.");
+		return;
+	}
+
 	// Louis's TIME OUT bind 2, temporarily disable infected binds
 	if(g_bInfectedBindsDisabled == true && g_iClientTeam[iClient] == TEAM_INFECTED)
 	{
