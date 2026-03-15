@@ -121,6 +121,10 @@ void SetClientSpeedCoach(int iClient, float &fSpeed)
 	else if (g_bCoachRageIsInCooldown[iClient])
 		fSpeed -= (g_iBullLevel[iClient] * 0.03);
 
+	// Chainsaw Massacre kill speed boost
+	if (g_bCoachChainsawMassacreActive[iClient] && g_iCoachChainsawKillCount[iClient] > 0)
+		fSpeed += (g_iCoachChainsawKillCount[iClient] * COACH_CHAINSAW_SPEED_PER_KILL);
+
 	//PrintToChat(iClient, "SetClientSpeedCoach: %f", fSpeed);
 }
 

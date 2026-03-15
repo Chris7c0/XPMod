@@ -239,6 +239,18 @@ bool g_bCoachLungeToggleCooldown[MAXPLAYERS + 1];
 bool g_bCoachDashActive[MAXPLAYERS + 1] = {false, ...};
 bool g_bCoachDashCoolingDown[MAXPLAYERS + 1] = {false, ...};
 int g_iCoachDashChargeUses[MAXPLAYERS + 1] = {0, ...};
+//For Coach's Chainsaw Massacre (Bind 2)
+#define COACH_CHAINSAW_DURATION                20.0    // Duration of massacre in seconds
+#define COACH_CHAINSAW_LUNGE_RANGE             720.0   // 60 feet = 60 * 12 HU
+#define COACH_CHAINSAW_SPEED_PER_KILL          0.10    // Movement speed increase per kill
+#define COACH_CHAINSAW_DAMAGE_PER_KILL         50      // Extra chainsaw damage per kill
+#define COACH_CHAINSAW_REGEN_PER_KILL          3       // HP regen per second per kill stack
+#define COACH_CHAINSAW_COOLDOWN                90.0    // Cooldown after massacre ends
+bool g_bCoachChainsawMassacreActive[MAXPLAYERS + 1];
+int g_iCoachChainsawKillCount[MAXPLAYERS + 1];
+char g_strCoachSavedMeleeWeapon[MAXPLAYERS + 1][32];
+int g_iCoachChainsawMeleeDamage[MAXPLAYERS + 1];
+bool g_bCoachChainsawCooldown[MAXPLAYERS + 1];
 
 //Ellis's Stuff
 #define ELLIS_STARTING_MAX_HEALTH                       100

@@ -114,6 +114,10 @@ void ResetCoachTalentsRuntimeState(int iClient)
 	g_bIsJetpackOn[iClient] = false;
 	g_bIsFlyingWithJetpack[iClient] = false;
 	g_bIsMovementTypeFly[iClient] = false;
+	g_bCoachChainsawMassacreActive[iClient] = false;
+	g_iCoachChainsawKillCount[iClient] = 0;
+	g_iCoachChainsawMeleeDamage[iClient] = 0;
+	g_bCoachChainsawCooldown[iClient] = false;
 
 	RecalculateCoachConfirmedPassives();
 	RecalculateSurvivorScreenShakeAmountFromConfirmedTalents();
@@ -526,16 +530,19 @@ void OnGameFrame_Coach(int iClient)
 			}
 		}
 	}
-	// Wrecking Ball Lunge - performed from OnPlayerRunCmd_Coach when right-click detected
+	// Wrecking Ball Lunge / Chainsaw Massacre Lunge - performed from OnPlayerRunCmd_Coach when attack detected
 	if(g_bCoachLungeTriggered[iClient] == true)
 	{
 		g_bCoachLungeTriggered[iClient] = false;
+
+		// Use extended range during Chainsaw Massacre
+		float fLungeRange = g_bCoachChainsawMassacreActive[iClient] ? COACH_CHAINSAW_LUNGE_RANGE : COACH_LUNGE_RANGE;
 
 		// Find lunge target - prioritize crosshair target, then closest in front
 		float xyzClientPos[3];
 		GetClientAbsOrigin(iClient, xyzClientPos);
 
-		float fClosestDist = COACH_LUNGE_RANGE + 1.0;
+		float fClosestDist = fLungeRange + 1.0;
 		float xyzClosestTarget[3];
 		bool bFoundTarget = false;
 
@@ -546,15 +553,24 @@ void OnGameFrame_Coach(int iClient)
 			bool bValidAimTarget = false;
 			float xyzAimPos[3];
 
-			// Check if aim target is an SI player (must be below 30% health)
+			// Check if aim target is an SI player (must be below 30% health, or any HP during Chainsaw Massacre)
 			if(iAimTarget <= MaxClients && RunClientChecks(iAimTarget) && IsPlayerAlive(iAimTarget) && g_iClientTeam[iAimTarget] == TEAM_INFECTED)
 			{
-				int iSIHealth = GetPlayerHealth(iAimTarget);
-				int iSIMaxHealth = GetPlayerMaxHealth(iAimTarget);
-				if(iSIMaxHealth > 0 && float(iSIHealth) / float(iSIMaxHealth) < 0.30)
+				if(g_bCoachChainsawMassacreActive[iClient])
 				{
+					// Chainsaw Massacre: lunge at SI regardless of HP
 					GetClientAbsOrigin(iAimTarget, xyzAimPos);
 					bValidAimTarget = true;
+				}
+				else
+				{
+					int iSIHealth = GetPlayerHealth(iAimTarget);
+					int iSIMaxHealth = GetPlayerMaxHealth(iAimTarget);
+					if(iSIMaxHealth > 0 && float(iSIHealth) / float(iSIMaxHealth) < 0.30)
+					{
+						GetClientAbsOrigin(iAimTarget, xyzAimPos);
+						bValidAimTarget = true;
+					}
 				}
 			}
 			// Check if aim target is a CI entity
@@ -572,7 +588,7 @@ void OnGameFrame_Coach(int iClient)
 			if(bValidAimTarget)
 			{
 				float fAimDist = GetVectorDistance(xyzClientPos, xyzAimPos);
-				if(fAimDist <= COACH_LUNGE_RANGE)
+				if(fAimDist <= fLungeRange)
 				{
 					fClosestDist = fAimDist;
 					xyzClosestTarget = xyzAimPos;
@@ -592,6 +608,37 @@ void OnGameFrame_Coach(int iClient)
 			NormalizeVector(vFacing, vFacing);
 
 			// SI only via crosshair (handled above), fallback only checks CI
+			// During Chainsaw Massacre, fallback also checks SI players
+
+			// During Chainsaw Massacre, also scan SI players in fallback
+			if(g_bCoachChainsawMassacreActive[iClient])
+			{
+				for(int iPlayer = 1; iPlayer <= MaxClients; iPlayer++)
+				{
+					if(RunClientChecks(iPlayer) == false || IsPlayerAlive(iPlayer) == false)
+						continue;
+					if(g_iClientTeam[iPlayer] != TEAM_INFECTED)
+						continue;
+
+					float xyzSIPos[3];
+					GetClientAbsOrigin(iPlayer, xyzSIPos);
+
+					float vToSI[3];
+					SubtractVectors(xyzSIPos, xyzClientPos, vToSI);
+					vToSI[2] = 0.0;
+					NormalizeVector(vToSI, vToSI);
+					if(GetVectorDotProduct(vFacing, vToSI) < 0.5)
+						continue;
+
+					float fSIDist = GetVectorDistance(xyzClientPos, xyzSIPos);
+					if(fSIDist < fClosestDist)
+					{
+						fClosestDist = fSIDist;
+						xyzClosestTarget = xyzSIPos;
+						bFoundTarget = true;
+					}
+				}
+			}
 
 			// Check CI entities
 			for(int iEntity = MaxClients + 1; iEntity < MAXENTITIES; iEntity++)
@@ -903,10 +950,11 @@ void EventsHurt_AttackerCoach(Handle hEvent, int attacker, int victim)
 	if (g_iClientTeam[victim] != TEAM_INFECTED)
 		return;
 
-	if (g_iMeleeDamageCounter[attacker] > 0 || 
-		g_iSprayLevel[attacker]>0 || 
-		g_bIsWreckingBallCharged[attacker]==true || 
-		g_bCoachRageIsActive[attacker] == true)
+	if (g_iMeleeDamageCounter[attacker] > 0 ||
+		g_iSprayLevel[attacker]>0 ||
+		g_bIsWreckingBallCharged[attacker]==true ||
+		g_bCoachRageIsActive[attacker] == true ||
+		g_bCoachChainsawMassacreActive[attacker] == true)
 	{
 		char weaponclass[32];
 		GetEventString(hEvent,"weapon",weaponclass,32);
@@ -948,6 +996,13 @@ void EventsHurt_AttackerCoach(Handle hEvent, int attacker, int victim)
 			int hp = GetPlayerHealth(victim);
 			SetPlayerHealth(victim, attacker, hp - CalculateDamageTakenForVictimTalents(victim, (g_iSprayLevel[attacker] * 2), weaponclass));
 		}
+		// Chainsaw Massacre bonus damage
+		if(g_bCoachChainsawMassacreActive[attacker] && g_iCoachChainsawMeleeDamage[attacker] > 0 &&
+			StrContains(weaponclass, "chainsaw", false) != -1)
+		{
+			int hp = GetPlayerHealth(victim);
+			SetPlayerHealth(victim, attacker, hp - g_iCoachChainsawMeleeDamage[attacker]);
+		}
 	}
 }
 
@@ -963,7 +1018,26 @@ void EventsDeath_AttackerCoach(Handle hEvent, int iAttacker, int iVictim)
 	char weaponclass[32];
 	GetEventString(hEvent,"weapon",weaponclass,32);
 
-	if (StrContains(weaponclass,"melee",false) == -1)
+	bool bIsMelee = (StrContains(weaponclass,"melee",false) != -1);
+	bool bIsChainsaw = (StrContains(weaponclass,"chainsaw",false) != -1);
+
+	// Chainsaw Massacre kill tracking
+	if(bIsChainsaw && g_bCoachChainsawMassacreActive[iAttacker])
+	{
+		g_iCoachChainsawKillCount[iAttacker]++;
+		g_iCoachChainsawMeleeDamage[iAttacker] = g_iCoachChainsawKillCount[iAttacker] * COACH_CHAINSAW_DAMAGE_PER_KILL;
+		SetClientSpeed(iAttacker);
+		PrintHintText(iAttacker, "CHAINSAW MASSACRE!\nKills: %d | +%d%% Speed | +%d Damage | +%d HP/s",
+			g_iCoachChainsawKillCount[iAttacker],
+			RoundToFloor(g_iCoachChainsawKillCount[iAttacker] * COACH_CHAINSAW_SPEED_PER_KILL * 100),
+			g_iCoachChainsawMeleeDamage[iAttacker],
+			g_iCoachChainsawKillCount[iAttacker] * COACH_CHAINSAW_REGEN_PER_KILL);
+	}
+
+	if (bIsMelee == false && bIsChainsaw == false)
+		return;
+
+	if (bIsMelee == false)
 		return;
 
 	// Headshot-dependent bonuses
@@ -1032,6 +1106,14 @@ void EventsDeath_VictimCoach(Handle hEvent, int iAttacker, int iVictim)
 	// Handle the sound if his Jetpack if its still on
 	if (g_iSprayLevel[iVictim] > 0 && g_bIsJetpackOn[iVictim])
 		StopSound(iVictim, SNDCHAN_AUTO, SOUND_JPIDLEREV);
+
+	// End Chainsaw Massacre on death
+	if (g_bCoachChainsawMassacreActive[iVictim])
+	{
+		g_bCoachChainsawMassacreActive[iVictim] = false;
+		g_iCoachChainsawKillCount[iVictim] = 0;
+		g_iCoachChainsawMeleeDamage[iVictim] = 0;
+	}
 }
 
 
@@ -1188,6 +1270,21 @@ bool OnPlayerRunCmd_Coach(int iClient, int &iButtons)
 			g_bCoachLungeEnabled[iClient] &&
 			g_bCoachLungeOnCooldown[iClient] == false &&
 			g_bIsFlyingWithJetpack[iClient] == false &&
+			g_bIsClientDown[iClient] == false &&
+			IsClientGrappled(iClient) == false &&
+			(iButtons & IN_ATTACK))
+		{
+			g_bCoachLungeTriggered[iClient] = true;
+		}
+	}
+
+	// Chainsaw Massacre Lunge - attack while holding chainsaw during massacre
+	if(g_bCoachChainsawMassacreActive[iClient])
+	{
+		char strChainsawWeapon[32];
+		GetClientWeapon(iClient, strChainsawWeapon, sizeof(strChainsawWeapon));
+		if(StrContains(strChainsawWeapon, "chainsaw", false) != -1 &&
+			g_bCoachLungeOnCooldown[iClient] == false &&
 			g_bIsClientDown[iClient] == false &&
 			IsClientGrappled(iClient) == false &&
 			(iButtons & IN_ATTACK))

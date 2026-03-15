@@ -526,3 +526,104 @@ Action TimerCoachGrenadeFireCycle(Handle timer, int iClient)
 	g_iEventWeaponFireCounter[iClient] = 0;
 	return Plugin_Stop;
 }
+
+// Chainsaw Massacre Timers
+Action TimerCoachChainsawMassacreEnd(Handle timer, int iClient)
+{
+	if(g_bCoachChainsawMassacreActive[iClient] == false)
+		return Plugin_Stop;
+
+	CoachEndChainsawMassacre(iClient);
+	return Plugin_Stop;
+}
+
+void CoachEndChainsawMassacre(int iClient)
+{
+	g_bCoachChainsawMassacreActive[iClient] = false;
+	g_iCoachChainsawMeleeDamage[iClient] = 0;
+	int iKills = g_iCoachChainsawKillCount[iClient];
+	g_iCoachChainsawKillCount[iClient] = 0;
+
+	// Start cooldown
+	g_bCoachChainsawCooldown[iClient] = true;
+	CreateTimer(COACH_CHAINSAW_COOLDOWN, TimerCoachChainsawCooldownReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
+	// Remove chainsaw and restore original weapon after a short delay
+	if(RunClientChecks(iClient) && IsPlayerAlive(iClient))
+	{
+		// Remove the chainsaw from the player
+		int iChainsaw = GetPlayerWeaponSlot(iClient, 1);
+		if(iChainsaw != -1 && IsValidEntity(iChainsaw))
+		{
+			char strCheckClass[32];
+			GetEntityClassname(iChainsaw, strCheckClass, sizeof(strCheckClass));
+			if(StrEqual(strCheckClass, "weapon_chainsaw"))
+			{
+				RemovePlayerItem(iClient, iChainsaw);
+				RemoveEntity(iChainsaw);
+			}
+		}
+
+		// Restore saved weapon with a slight delay to ensure slot is clear
+		if(strlen(g_strCoachSavedMeleeWeapon[iClient]) > 0)
+			CreateTimer(0.1, TimerCoachChainsawRestoreWeapon, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	}
+
+	SetClientSpeed(iClient);
+
+	if(RunClientChecks(iClient) && IsFakeClient(iClient) == false)
+	{
+		PrintHintText(iClient, "Chainsaw Massacre ended! Kills: %d", iKills);
+		PrintToChat(iClient, "\x03[XPMod] \x05Chainsaw Massacre ended with \x04%d \x05kills!", iKills);
+	}
+}
+
+Action TimerCoachChainsawRestoreWeapon(Handle timer, int iClient)
+{
+	if(RunClientChecks(iClient) == false || IsPlayerAlive(iClient) == false)
+		return Plugin_Stop;
+
+	if(strlen(g_strCoachSavedMeleeWeapon[iClient]) > 0)
+	{
+		char strGiveCmd[64];
+		FormatEx(strGiveCmd, sizeof(strGiveCmd), "give %s", g_strCoachSavedMeleeWeapon[iClient]);
+		RunCheatCommand(iClient, "give", strGiveCmd);
+	}
+
+	return Plugin_Stop;
+}
+
+Action TimerCoachChainsawCooldownReset(Handle timer, int iClient)
+{
+	g_bCoachChainsawCooldown[iClient] = false;
+
+	if(RunClientChecks(iClient) && IsFakeClient(iClient) == false)
+		PrintHintText(iClient, "Chainsaw Massacre is ready!");
+
+	return Plugin_Stop;
+}
+
+Action TimerCoachChainsawRegenTick(Handle timer, int iClient)
+{
+	if(RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false ||
+		g_bCoachChainsawMassacreActive[iClient] == false)
+		return Plugin_Stop;
+
+	if(g_iCoachChainsawKillCount[iClient] > 0)
+	{
+		int iRegenAmount = g_iCoachChainsawKillCount[iClient] * COACH_CHAINSAW_REGEN_PER_KILL;
+		int currentHP = GetPlayerHealth(iClient);
+		int maxHP = GetPlayerMaxHealth(iClient);
+		if(currentHP < maxHP)
+		{
+			int iNewHP = currentHP + iRegenAmount;
+			if(iNewHP > maxHP)
+				iNewHP = maxHP;
+			SetPlayerHealth(iClient, -1, iNewHP);
+		}
+	}
+
+	CreateTimer(1.0, TimerCoachChainsawRegenTick, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	return Plugin_Stop;
+}

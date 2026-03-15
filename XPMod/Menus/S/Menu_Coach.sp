@@ -307,9 +307,16 @@ Action StrongMenuDraw(int iClient)
 		\nLevel 2:\
 		\n+1 Explosive Storage Every Other Level\
 		\n [CROUCH+RELOAD] to Cycle Explosives\
+		\n \
+		\n		Bind 2: Chainsaw Massacre\
+		\nEquip a Chainsaw for %0.0f seconds\
+		\nChainsaw attacks lunge at targets (60ft)\
+		\nEvery kill increases Speed, Damage, and HP Regen\
+		\nOriginal weapon restored when it ends\
 		\n ",
 		strStartingNewLines,
-		g_iStrongLevel[iClient]);
+		g_iStrongLevel[iClient],
+		COACH_CHAINSAW_DURATION);
 	SetMenuTitle(menu, "%s", text);
 	
 	char strFinalOptionText[250];

@@ -103,6 +103,11 @@ void ResetClientVariablesForRound(int iClient)
 	g_bCoachLungeToggleCooldown[iClient] = false;
 	g_iExtraExplosiveUses[iClient] = 0;
 	g_bCoachGrenadeCycleCooldown[iClient] = false;
+	g_bCoachChainsawMassacreActive[iClient] = false;
+	g_iCoachChainsawKillCount[iClient] = 0;
+	g_iCoachChainsawMeleeDamage[iClient] = 0;
+	g_bCoachChainsawCooldown[iClient] = false;
+	g_strCoachSavedMeleeWeapon[iClient] = "";
 	g_iBillSprintChargeCounter[iClient] = 0;
 	g_bBillSprinting[iClient] = false;
 	g_bBillTaunting[iClient] = false;
@@ -208,8 +213,13 @@ void ResetClientVariablesForRound(int iClient)
 	g_bCoachInSISpeed[iClient] = false;
 	g_iCoachCIHeadshotCounter[iClient] = 0;
 	g_iCoachSIHeadshotCounter[iClient] = 0;
+	g_bCoachChainsawMassacreActive[iClient] = false;
+	g_iCoachChainsawKillCount[iClient] = 0;
+	g_iCoachChainsawMeleeDamage[iClient] = 0;
+	g_bCoachChainsawCooldown[iClient] = false;
+	g_strCoachSavedMeleeWeapon[iClient] = "";
 
-	
+
 	//Ellis
 	g_bWalkAndUseToggler[iClient] = false;
 	g_fEllisBringSpeed[iClient] = 0.0;
@@ -397,6 +407,10 @@ void ResetAllVariables(int iClient)
 	g_bCoachDashActive[iClient] = false;
 	g_bCoachDashCoolingDown[iClient] = false;
 	g_iCoachDashChargeUses[iClient] = 0;
+	g_bCoachChainsawMassacreActive[iClient] = false;
+	g_iCoachChainsawKillCount[iClient] = 0;
+	g_iCoachChainsawMeleeDamage[iClient] = 0;
+	g_bCoachChainsawCooldown[iClient] = false;
 	g_bIsMovementTypeFly[iClient] = false;
 	g_iNicksRamboWeaponID[iClient] = 0;
 	g_bUsingShadowNinja[iClient] = false;
