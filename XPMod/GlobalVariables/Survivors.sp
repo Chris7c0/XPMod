@@ -244,7 +244,7 @@ int g_iCoachDashChargeUses[MAXPLAYERS + 1] = {0, ...};
 #define COACH_CHAINSAW_LUNGE_RANGE             600.0   // 50 feet = 50 * 12 HU
 #define COACH_CHAINSAW_SPEED_PER_KILL          0.05    // Movement speed increase per kill
 #define COACH_CHAINSAW_DAMAGE_PER_KILL         25      // Extra chainsaw damage per kill
-#define COACH_CHAINSAW_REGEN_PER_KILL          2       // HP regen per second per kill stack
+#define COACH_CHAINSAW_REGEN_PER_KILL          1       // HP regen per second per kill stack
 #define COACH_CHAINSAW_COOLDOWN                90.0    // Cooldown after massacre ends
 bool g_bCoachChainsawMassacreActive[MAXPLAYERS + 1];
 int g_iCoachChainsawKillCount[MAXPLAYERS + 1];
