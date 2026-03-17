@@ -7,7 +7,7 @@ void CheckLevel(int iClient)
 int GetClientTop10Position(int iClient)
 {
 	char strSteamID[32];
-	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
+	if (GetClientSteamID64(iClient, strSteamID, sizeof(strSteamID)) == false)
 		return 0;
 
 	for (int i = 0; i < g_iTop10Count; i++)

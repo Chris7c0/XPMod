@@ -94,7 +94,7 @@ Action SwitchPlayersTeamMenuDraw(int iClient)
 	
 	SetMenuTitle(menu, "Select a team for Whom?\n ");
 	
-	AddAllCurrentPlayersToMenu(menu, iClient);
+	AddAllCurrentPlayersToMenu(menu);
 
 	SetMenuExitButton(menu, true);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -199,7 +199,7 @@ Action MutePlayerMenuDraw(int iClient)
 	
 	SetMenuTitle(menu, "Mute or Unmute Whom?\n ");
 	
-	AddAllCurrentPlayersToMenu(menu, iClient);
+	AddAllCurrentPlayersToMenu(menu);
 
 	SetMenuExitButton(menu, true);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -238,7 +238,7 @@ Action KickPlayerMenuDraw(int iClient)
 	
 	SetMenuTitle(menu, "Kick Whom?\n ");
 	
-	AddAllCurrentPlayersToMenu(menu, iClient);
+	AddAllCurrentPlayersToMenu(menu);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -324,7 +324,7 @@ Action BanPlayerInServerMenuDraw(int iClient)
 	
 	SetMenuTitle(menu, "Ban Whom?\n ");
 	
-	AddAllCurrentPlayersToMenu(menu, iClient);
+	AddAllCurrentPlayersToMenu(menu);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
@@ -628,7 +628,7 @@ void BanPlayerReasonMenuHandler(Menu menu, MenuAction action, int iClient, int i
 	}
 }
 
-void AddAllCurrentPlayersToMenu(Menu menu, int iClient)
+void AddAllCurrentPlayersToMenu(Menu menu)
 {
 	for (int iTarget = 1; iTarget <= MaxClients; iTarget++)
 	{
@@ -636,12 +636,8 @@ void AddAllCurrentPlayersToMenu(Menu menu, int iClient)
 		{
 			//Get Steam Auth ID, if this returns false, then do not proceed
 			char strSteamID[32];
-			if (GetClientAuthId(iTarget, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
-			{
-				PrintToChat(iClient, "AddAllCurrentPlayersToMenu: GetClientAuthId failed for %N", iTarget);
-				LogError("AddAllCurrentPlayersToMenu: GetClientAuthId failed for %N", iTarget);
+			if (GetClientSteamID64(iTarget, strSteamID, sizeof(strSteamID)) == false)
 				continue;
-			}
 
 			// Get the in game client id
 			char strParameters[32];
@@ -651,9 +647,9 @@ void AddAllCurrentPlayersToMenu(Menu menu, int iClient)
 			// Combine the info into a string that the admin will see
 			char strTargetInfo[50];
 			Format(strTargetInfo, sizeof(strTargetInfo), " (%i: %s) %N",
-			iTarget,
-			strSteamID,
-			iTarget);
+				iTarget,
+				strSteamID,
+				iTarget);
 
 			AddMenuItem(menu, strParameters, strTargetInfo);
 		}
@@ -733,12 +729,8 @@ bool VerifyClientSteamIDMatches(int iClient, char[] strSteamIDToCheck)
 
 	//Get Steam Auth ID, if this returns false, then do not proceed
 	char strSteamID[32];
-	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
-	{
-		PrintToChat(iClient, "GetClientAuthId failed for %N", iClient);
-		LogError("VerifyClientSteamIDMatches: GetClientAuthId failed for %N", iClient);
+	if (GetClientSteamID64(iClient, strSteamID, sizeof(strSteamID)) == false)
 		return false;
-	}
 
 	if (strcmp(strSteamIDToCheck, strSteamID, false) == 0)
 		return true;

@@ -68,7 +68,7 @@ void SaveSurvivorPick(int iClient)
 
 	// Get Steam Auth ID
 	char strSteamID[32];
-	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
+	if (GetClientSteamID64(iClient, strSteamID, sizeof(strSteamID)) == false)
 		return;
 
 	// Only record once per round per steam ID
@@ -105,7 +105,7 @@ void SaveInfectedPick(int iClient)
 
 	// Get Steam Auth ID
 	char strSteamID[32];
-	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
+	if (GetClientSteamID64(iClient, strSteamID, sizeof(strSteamID)) == false)
 		return;
 
 	// Only record once per round per steam ID

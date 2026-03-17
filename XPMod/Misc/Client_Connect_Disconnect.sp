@@ -1,9 +1,14 @@
-const float AUTH_READY_RETRY_INTERVAL = 1.0;
-const int AUTH_READY_MAX_RETRIES = 30;
+const float AUTH_READY_RETRY_INTERVAL = 2.0;
+const int AUTH_READY_MAX_RETRIES = 60;
+
+const float AUTH_VALIDATE_RETRY_INTERVAL = 5.0;
+const int AUTH_VALIDATE_MAX_RETRIES = 120; // 5s * 120 = 10 minutes
 
 bool g_bClientAuthInitPending[MAXPLAYERS + 1];
 bool g_bClientAuthInitCompleted[MAXPLAYERS + 1];
 int g_iClientAuthInitRetryCount[MAXPLAYERS + 1];
+bool g_bClientAuthValidationPending[MAXPLAYERS + 1];
+int g_iClientAuthValidationRetryCount[MAXPLAYERS + 1];
 
 void HandleAnyConnectedUsers()
 {
@@ -67,8 +72,11 @@ void HandleClientConnect(int iClient)
 		g_bClientAuthInitPending[iClient] = false;
 		g_bClientAuthInitCompleted[iClient] = false;
 		g_iClientAuthInitRetryCount[iClient] = 0;
+		g_bClientAuthValidationPending[iClient] = false;
+		g_iClientAuthValidationRetryCount[iClient] = 0;
 
 		Logout(iClient);
+		ClearClientSteamID64(iClient);
 		g_bClientSpectating[iClient] = false;
 		g_iAutoSetCountDown[iClient] = -1;
 		g_bSurvivorSpawnLoadoutGivenThisRound[iClient] = false;
@@ -97,8 +105,6 @@ void HandleClientConnect(int iClient)
 		}
 
 		StartClientAuthReadyInitialization(iClient);
-
-		RestorePlayerBindUses(iClient);
 
 		// Set the AFK last button press time
 		g_fLastPlayerLastButtonPressTime[iClient] =  GetGameTime();
@@ -157,6 +163,9 @@ void HandleClientDisconnect(int iClient)
 	g_bClientAuthInitPending[iClient] = false;
 	g_bClientAuthInitCompleted[iClient] = false;
 	g_iClientAuthInitRetryCount[iClient] = 0;
+	g_bClientAuthValidationPending[iClient] = false;
+	g_iClientAuthValidationRetryCount[iClient] = 0;
+	ClearClientSteamID64(iClient);
 	ResetAll(iClient);
 }
 
@@ -187,13 +196,18 @@ bool TryRunClientAuthReadyInitialization(int iClient)
 		return false;
 
 	char strSteamID[32];
-	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
+	if (GetClientSteamID64(iClient, strSteamID, sizeof(strSteamID)) == false)
 		return false;
 
 	g_bClientAuthInitPending[iClient] = false;
 	g_iClientAuthInitRetryCount[iClient] = 0;
 	g_bClientAuthInitCompleted[iClient] = true;
 
+	// If the Steam ID was obtained without backend validation, start background validation
+	if (g_bClientSteamIDValidated[iClient] == false)
+		StartBackgroundSteamIDValidation(iClient);
+
+	RestorePlayerBindUses(iClient);
 	SQLCheckIfUserIsInBanList(iClient);
 	GetUserIDAndToken(iClient);
 	return true;
@@ -221,11 +235,70 @@ Action TimerRetryClientAuthReadyInitialization(Handle hTimer, int iUserID)
 	return Plugin_Stop;
 }
 
+void StartBackgroundSteamIDValidation(int iClient)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsFakeClient(iClient) == true ||
+		g_bClientSteamIDValidated[iClient] == true)
+		return;
+
+	if (g_bClientAuthValidationPending[iClient] == true)
+		return;
+
+	g_bClientAuthValidationPending[iClient] = true;
+	g_iClientAuthValidationRetryCount[iClient] = 0;
+	CreateTimer(AUTH_VALIDATE_RETRY_INTERVAL, TimerBackgroundSteamIDValidation, GetClientUserId(iClient), TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+}
+
+Action TimerBackgroundSteamIDValidation(Handle hTimer, int iUserID)
+{
+	int iClient = GetClientOfUserId(iUserID);
+	if (iClient == 0)
+		return Plugin_Stop;
+
+	if (g_bClientAuthValidationPending[iClient] == false ||
+		g_bClientSteamIDValidated[iClient] == true)
+		return Plugin_Stop;
+
+	// Try to get the validated Steam ID from the backend
+	char strValidatedSteamID[32];
+	if (GetClientAuthId(iClient, AuthId_SteamID64, strValidatedSteamID, sizeof(strValidatedSteamID)) == false)
+	{
+		g_iClientAuthValidationRetryCount[iClient]++;
+		if (g_iClientAuthValidationRetryCount[iClient] < AUTH_VALIDATE_MAX_RETRIES)
+			return Plugin_Continue;
+
+		// Timed out after 10 minutes — log but don't kick since they've been playing
+		g_bClientAuthValidationPending[iClient] = false;
+		g_iClientAuthValidationRetryCount[iClient] = 0;
+		LogError("Background Steam ID validation timed out for %N", iClient);
+		return Plugin_Stop;
+	}
+
+	// Validation succeeded — check if it matches the cached unvalidated ID
+	g_bClientAuthValidationPending[iClient] = false;
+	g_iClientAuthValidationRetryCount[iClient] = 0;
+
+	if (StrEqual(strValidatedSteamID, g_strClientSteamID64[iClient]))
+	{
+		// Match — mark as validated
+		g_bClientSteamIDValidated[iClient] = true;
+	}
+	else
+	{
+		// Mismatch — possible ID spoof, kick the player
+		LogError("Steam ID mismatch for %N: cached=%s validated=%s", iClient, g_strClientSteamID64[iClient], strValidatedSteamID);
+		KickClient(iClient, "Steam ID validation failed. Please restart Steam and reconnect.");
+	}
+
+	return Plugin_Stop;
+}
+
 void StorePlayerInDisconnectedPlayerList(int iClient)
 {
 	// Get Steam Auth ID, if this returns false, then do not proceed
 	char strSteamID[32];
-	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
+	if (GetClientSteamID64(iClient, strSteamID, sizeof(strSteamID)) == false)
 		return;
 
 	// // Check if the steamid already exists in the disconnected player list
@@ -259,7 +332,7 @@ void StorePlayerInDisconnectedPlayerList(int iClient)
 void StorePlayerBindUses(int iClient)
 {
 	char strSteamID[32];
-	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
+	if (GetClientSteamID64(iClient, strSteamID, sizeof(strSteamID)) == false)
 		return;
 
 	// Check if this SteamID already has a slot
@@ -290,7 +363,7 @@ void StorePlayerBindUses(int iClient)
 void RestorePlayerBindUses(int iClient)
 {
 	char strSteamID[32];
-	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
+	if (GetClientSteamID64(iClient, strSteamID, sizeof(strSteamID)) == false)
 		return;
 
 	for (int i = 0; i < g_iBindTrackCount; i++)

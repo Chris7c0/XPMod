@@ -689,6 +689,17 @@ public void OnClientPutInServer(int iClient)
 
 public void OnClientAuthorized(int iClient, const char[] strAuth)
 {
+	// Eagerly cache the Steam ID now that Steam has validated this client
+	char strSteamID64[32];
+	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID64, sizeof(strSteamID64)))
+	{
+		CacheClientSteamID64(iClient, strSteamID64);
+		g_bClientSteamIDValidated[iClient] = true;
+		// Stop background validation timer since Steam just validated
+		g_bClientAuthValidationPending[iClient] = false;
+		g_iClientAuthValidationRetryCount[iClient] = 0;
+	}
+
 	if (g_bClientAuthInitPending[iClient] == false)
 		return;
 

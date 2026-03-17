@@ -27,6 +27,59 @@ bool RunClientChecks(int iClient)
 	return true;
 }
 
+void CacheClientSteamID64(int iClient, const char[] strSteamID)
+{
+	if (iClient < 1 ||
+		iClient > MaxClients ||
+		strSteamID[0] == '\0')
+		return;
+
+	strcopy(g_strClientSteamID64[iClient], sizeof(g_strClientSteamID64[]), strSteamID);
+}
+
+void ClearClientSteamID64(int iClient)
+{
+	if (iClient < 1 || iClient > MaxClients)
+		return;
+
+	g_strClientSteamID64[iClient][0] = '\0';
+	g_bClientSteamIDValidated[iClient] = false;
+}
+
+bool GetClientSteamID64(int iClient, char[] strSteamID, int maxlen)
+{
+	strSteamID[0] = '\0';
+
+	if (iClient < 1 || iClient > MaxClients)
+		return false;
+
+	if (g_strClientSteamID64[iClient][0] != '\0')
+	{
+		strcopy(strSteamID, maxlen, g_strClientSteamID64[iClient]);
+		return true;
+	}
+
+	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
+		return false;
+
+	// Try validated first
+	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, maxlen))
+	{
+		g_bClientSteamIDValidated[iClient] = true;
+	}
+	else
+	{
+		// Fallback: try without Steam backend validation for when the backend is slow/unreachable
+		if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, maxlen, false) == false)
+			return false;
+
+		g_bClientSteamIDValidated[iClient] = false;
+	}
+
+	CacheClientSteamID64(iClient, strSteamID);
+	return true;
+}
+
 bool RunEntityChecks(int iEntity)
 {
 	if (iEntity < 1 || IsValidEntity(iEntity) == false)

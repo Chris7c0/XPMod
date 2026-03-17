@@ -67,7 +67,7 @@ void GetUserIDAndToken(int iClient)
 	
 	//Get Steam Auth ID, if this returns false, then do not proceed
 	char strSteamID[32];
-	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
+	if (GetClientSteamID64(iClient, strSteamID, sizeof(strSteamID)) == false)
 	{
 		KickClientCannotGetSteamID(iClient);
 		return;
@@ -374,7 +374,7 @@ void CreateNewUser(int iClient)
 	
 	//Get Steam Auth ID, if this returns false, then do not proceed
 	char strSteamID[32];
-	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
+	if (GetClientSteamID64(iClient, strSteamID, sizeof(strSteamID)) == false)
 	{
 		KickClientCannotGetSteamID(iClient);
 		return;
@@ -483,11 +483,8 @@ void SaveUserDataInDatabase(int iClient)
 	
 	//Get Steam Auth ID, if this returns false, then do not proceed
 	char strSteamID[32];
-	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
-	{
-		KickClientCannotGetSteamID(iClient);
+	if (GetClientSteamID64(iClient, strSteamID, sizeof(strSteamID)) == false)
 		return;
-	}
 	
 	//Get Client Name
 	GetClientName(iClient, strClientName, sizeof(strClientName));
@@ -670,11 +667,8 @@ void SQLCheckForChangeThenSaveData(int iClient)
 	
 	//Get Steam Auth ID, if this returns false, then do not proceed
 	char strSteamID[32];
-	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
-	{
-		KickClientCannotGetSteamID(iClient);
+	if (GetClientSteamID64(iClient, strSteamID, sizeof(strSteamID)) == false)
 		return;
-	}
 	
 	// Get if there was an update we need to force push to the player in the server SQL database with the matching Steam ID
 	char strQuery[1024];

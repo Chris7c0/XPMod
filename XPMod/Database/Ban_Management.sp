@@ -59,11 +59,8 @@ void SQLCheckIfUserIsInBanList(int iClient)
 	
 	//Get Steam Auth ID, if this returns false, then do not proceed
 	char strSteamID[32];
-	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
-	{
-		LogError("SQLCheckIfUserIsInBanList: GetClientAuthId failed for %N", iClient);
+	if (GetClientSteamID64(iClient, strSteamID, sizeof(strSteamID)) == false)
 		return;
-	}
 	
 	// Run a query to see if they are in the bans table
 	// This gets the time in seconds of how long they are still banned, if they are indeed in the bans table.
@@ -102,11 +99,8 @@ void GetBanAdminDataForQuery(int iAdminClient, char[] strAdminName, int iAdminNa
 	GetClientName(iAdminClient, strAdminName, iAdminNameSize);
 	SanitizeValueStringForQuery(strAdminName, iAdminNameSize);
 
-	if (GetClientAuthId(iAdminClient, AuthId_SteamID64, strAdminSteamID, iAdminSteamIDSize) == false)
-	{
-		LogError("GetBanAdminDataForQuery: GetClientAuthId failed for %N", iAdminClient);
+	if (GetClientSteamID64(iAdminClient, strAdminSteamID, iAdminSteamIDSize) == false)
 		strcopy(strAdminSteamID, iAdminSteamIDSize, "0");
-	}
 }
 
 void SQLAddBannedUserToDatabaseUsingClientID(int iClient, int iBanDurationSeconds = 0, const char[] strBanReason, int iAdminClient = 0)
@@ -123,7 +117,7 @@ void SQLAddBannedUserToDatabaseUsingClientID(int iClient, int iBanDurationSecond
 	
 	//Get Steam Auth ID, if this returns false, then do not proceed
 	char strSteamID[32];
-	if (GetClientAuthId(iClient, AuthId_SteamID64, strSteamID, sizeof(strSteamID)) == false)
+	if (GetClientSteamID64(iClient, strSteamID, sizeof(strSteamID)) == false)
 	{
 		LogError("AddBannedUserToDatabase: GetClientAuthId failed for %N", iClient);
 		return;
