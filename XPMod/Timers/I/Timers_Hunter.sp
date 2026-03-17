@@ -6,6 +6,9 @@ void Handle1SecondClientTimers_Hunter(int iClient)
 
 Action TimerHunterBloodLustReset(Handle timer, int iClient)
 {
+	if (IsClientInGame(iClient) == false)
+		return Plugin_Stop;
+
 	g_iBloodLustStage[iClient] = 0;
 	g_iBloodLustMeter[iClient] = 0;
 	SetHunterBloodLustAbilities(iClient);
