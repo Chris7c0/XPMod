@@ -132,13 +132,14 @@ void HandleClientDisconnect(int iClient)
 
 	if(IsFakeClient(iClient)==true)
 	{
-		
+
 		if(g_bClientLoggedIn[iClient] == true)
 			Logout(iClient);
 
 		return;
 	}
 
+	SaveRoundStats(iClient);
 	SaveUserData(iClient);
 
 	StorePlayerBindUses(iClient);

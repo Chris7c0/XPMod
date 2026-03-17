@@ -71,6 +71,16 @@ int g_iStat_ClientCommonHeadshots[MAXPLAYERS + 1];
 int g_iStat_ClientSurvivorsKilled[MAXPLAYERS + 1];
 int g_iStat_ClientSurvivorsIncaps[MAXPLAYERS + 1];
 int g_iStat_ClientDamageToSurvivors[MAXPLAYERS + 1];
+int g_iStat_ClientDamageTakenSurvivor[MAXPLAYERS + 1];
+int g_iStat_ClientDamageTakenInfected[MAXPLAYERS + 1];
+int g_iStat_ClientFriendlyFireDamage[MAXPLAYERS + 1];
+int g_iStat_ClientDamageSmoker[MAXPLAYERS + 1];
+int g_iStat_ClientDamageBoomer[MAXPLAYERS + 1];
+int g_iStat_ClientDamageHunter[MAXPLAYERS + 1];
+int g_iStat_ClientDamageSpitter[MAXPLAYERS + 1];
+int g_iStat_ClientDamageJockey[MAXPLAYERS + 1];
+int g_iStat_ClientDamageCharger[MAXPLAYERS + 1];
+int g_iStat_ClientDamageTank[MAXPLAYERS + 1];
 //Last Round Stats
 int g_iStat_LastRound_ClientInfectedKilled[MAXPLAYERS + 1];
 int g_iStat_LastRound_ClientCommonKilled[MAXPLAYERS + 1];
@@ -78,6 +88,17 @@ int g_iStat_LastRound_ClientCommonHeadshots[MAXPLAYERS + 1];
 int g_iStat_LastRound_ClientSurvivorsKilled[MAXPLAYERS + 1];
 int g_iStat_LastRound_ClientSurvivorsIncaps[MAXPLAYERS + 1];
 int g_iStat_LastRound_ClientDamageToSurvivors[MAXPLAYERS + 1];
+int g_iStat_LastRound_ClientDamageTakenSurvivor[MAXPLAYERS + 1];
+int g_iStat_LastRound_ClientDamageTakenInfected[MAXPLAYERS + 1];
+int g_iStat_LastRound_ClientFriendlyFireDamage[MAXPLAYERS + 1];
+//Database Record Tracking for Round Stats
+int g_iSurvivorPickRecordID[MAXPLAYERS + 1] = {-1, ...};
+int g_iInfectedPickRecordID[MAXPLAYERS + 1] = {-1, ...};
+float g_fSurvivorPickSaveTime[MAXPLAYERS + 1];
+float g_fInfectedPickSaveTime[MAXPLAYERS + 1];
+bool g_bStatsSavedThisRound[MAXPLAYERS + 1];
+int g_iRoundWinnerTeam;       // 0 = unknown, TEAM_SURVIVORS or TEAM_INFECTED
+bool g_bSurvivorsCompletedMap; // true if survivors reached saferoom/escaped
 //Top XPMod Players
 char g_strTopXPModPlayersStatsText[600];
 

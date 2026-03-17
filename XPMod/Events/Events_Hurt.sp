@@ -18,6 +18,15 @@ Action Event_PlayerHurt(Handle hEvent, const char[] strName, bool bDontBroadcast
 	
 	EventsHurt_GiveXP(hEvent, iAttacker, iVictim);
 
+	// Track damage taken by any human player from any source (split by team)
+	if (RunClientChecks(iVictim) && IsFakeClient(iVictim) == false)
+	{
+		if (g_iClientTeam[iVictim] == TEAM_SURVIVORS)
+			g_iStat_ClientDamageTakenSurvivor[iVictim] += iDamage;
+		else if (g_iClientTeam[iVictim] == TEAM_INFECTED)
+			g_iStat_ClientDamageTakenInfected[iVictim] += iDamage;
+	}
+
 	// Capture the players health for functionality like self revive on ledge
 	StorePlayerHealth(iVictim);
 	// This is to capture any extra damage that happens post player hurt
@@ -186,10 +195,9 @@ void EventsHurt_GiveXP(Handle hEvent, int iAttacker, int iVictim)
 		
 		
 		//Limit because some attacks may give too many points
-		if(iDmgHealth < 750)
-			g_iStat_ClientDamageToSurvivors[iAttacker] += iDmgHealth;
-		else
-			g_iStat_ClientDamageToSurvivors[iAttacker] += 750;
+		int iCappedDmg = iDmgHealth < 750 ? iDmgHealth : 750;
+		g_iStat_ClientDamageToSurvivors[iAttacker] += iCappedDmg;
+		TrackInfectedPerClassDamage(iAttacker, iCappedDmg);
 	}
 
 	//Give Assitance XP for Boomer
@@ -200,10 +208,9 @@ void EventsHurt_GiveXP(Handle hEvent, int iAttacker, int iVictim)
 			// Only keep track of damage dealt for reward later if the assist is from an infected
 			if (g_iClientTeam[g_iVomitVictimAttacker[iVictim]] == TEAM_INFECTED)
 			{
-				if(iDmgHealth < 250)
-					g_iStat_ClientDamageToSurvivors[g_iVomitVictimAttacker[iVictim]] += iDmgHealth;
-				else
-					g_iStat_ClientDamageToSurvivors[g_iVomitVictimAttacker[iVictim]] += 250;
+				int iCappedAssistDmg = iDmgHealth < 250 ? iDmgHealth : 250;
+				g_iStat_ClientDamageToSurvivors[g_iVomitVictimAttacker[iVictim]] += iCappedAssistDmg;
+				TrackInfectedPerClassDamage(g_iVomitVictimAttacker[iVictim], iCappedAssistDmg);
 			}
 			
 			char iMessage[64];
@@ -214,13 +221,14 @@ void EventsHurt_GiveXP(Handle hEvent, int iAttacker, int iVictim)
 
 	// Subtract XP for Friendly Fire
 	if (iAttacker > 0 &&
-		IsFakeClient(iAttacker) == false && 
-		iAttacker != iVictim && 
+		IsFakeClient(iAttacker) == false &&
+		iAttacker != iVictim &&
 		g_iClientTeam[iAttacker] == g_iClientTeam[iVictim] &&
 		g_iChosenSurvivor[iAttacker] != NICK && // For Nick's Life Sharing
 		g_iClientXP[iAttacker] > g_iClientPreviousLevelXPAmount[iAttacker])
 	{
 		g_iClientXP[iAttacker] -= 2;
+		g_iStat_ClientFriendlyFireDamage[iAttacker] += iDmgHealth;
 		//PrintCenterText(iAttacker, "Attacked Team. -2 XP");
 	}
 }
@@ -242,6 +250,20 @@ void EventsHurt_IncreaseCommonInfectedDamage(int iAttacker, int iVictim)
 		}
 		else
 			SetPlayerHealth(iVictim, -1, hp - 1);
+	}
+}
+
+void TrackInfectedPerClassDamage(int iAttacker, int iDamage)
+{
+	switch (g_iInfectedCharacter[iAttacker])
+	{
+		case SMOKER:	g_iStat_ClientDamageSmoker[iAttacker] += iDamage;
+		case BOOMER:	g_iStat_ClientDamageBoomer[iAttacker] += iDamage;
+		case HUNTER:	g_iStat_ClientDamageHunter[iAttacker] += iDamage;
+		case SPITTER:	g_iStat_ClientDamageSpitter[iAttacker] += iDamage;
+		case JOCKEY:	g_iStat_ClientDamageJockey[iAttacker] += iDamage;
+		case CHARGER:	g_iStat_ClientDamageCharger[iAttacker] += iDamage;
+		case TANK:		g_iStat_ClientDamageTank[iAttacker] += iDamage;
 	}
 }
 

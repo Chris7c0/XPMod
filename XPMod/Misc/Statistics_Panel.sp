@@ -221,5 +221,9 @@ void StoreLastRoundClientsStats()
 		g_iStat_LastRound_ClientSurvivorsKilled[iClient] = g_iStat_ClientSurvivorsKilled[iClient];
 		g_iStat_LastRound_ClientSurvivorsIncaps[iClient] = g_iStat_ClientSurvivorsIncaps[iClient];
 		g_iStat_LastRound_ClientDamageToSurvivors[iClient] = g_iStat_ClientDamageToSurvivors[iClient];
+		// Additional Stats
+		g_iStat_LastRound_ClientDamageTakenSurvivor[iClient] = g_iStat_ClientDamageTakenSurvivor[iClient];
+		g_iStat_LastRound_ClientDamageTakenInfected[iClient] = g_iStat_ClientDamageTakenInfected[iClient];
+		g_iStat_LastRound_ClientFriendlyFireDamage[iClient] = g_iStat_ClientFriendlyFireDamage[iClient];
 	}
 }

@@ -84,7 +84,7 @@ INSERT INTO infected_classes (class_id, class_name) VALUES
     (8, 'Tank');
 
 -- Survivor Picks Table
-CREATE TABLE survivor_picks (
+CREATE TABLE survivor_stats (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     steam_id BIGINT UNSIGNED NOT NULL,
     survivor_id TINYINT UNSIGNED NOT NULL,
@@ -92,54 +92,131 @@ CREATE TABLE survivor_picks (
     game_mode VARCHAR(20) NOT NULL,
     map_name VARCHAR(32) NOT NULL,
     picked_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    si_kills INT UNSIGNED NOT NULL DEFAULT 0,
+    ci_kills INT UNSIGNED NOT NULL DEFAULT 0,
+    headshots INT UNSIGNED NOT NULL DEFAULT 0,
+    damage_taken INT UNSIGNED NOT NULL DEFAULT 0,
+    friendly_fire_damage INT UNSIGNED NOT NULL DEFAULT 0,
+    time_played INT UNSIGNED NOT NULL DEFAULT 0,
+    round_win BOOLEAN DEFAULT NULL,
     INDEX idx_steam_date (steam_id, picked_at),
     INDEX idx_date_survivor (picked_at, survivor_id)
 );
 
--- Infected Picks Table
-CREATE TABLE infected_picks (
+-- Infected Stats Table
+CREATE TABLE infected_stats (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     steam_id BIGINT UNSIGNED NOT NULL,
-    infected_id TINYINT UNSIGNED NOT NULL,
+    infected_id_1 TINYINT UNSIGNED NOT NULL,
+    infected_id_2 TINYINT UNSIGNED NOT NULL,
+    infected_id_3 TINYINT UNSIGNED NOT NULL,
     server_name VARCHAR(64) NOT NULL,
     game_mode VARCHAR(20) NOT NULL,
     map_name VARCHAR(32) NOT NULL,
     picked_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    INDEX idx_steam_date (steam_id, picked_at),
-    INDEX idx_date_infected (picked_at, infected_id)
+    survivor_kills INT UNSIGNED NOT NULL DEFAULT 0,
+    survivor_incaps INT UNSIGNED NOT NULL DEFAULT 0,
+    damage_smoker INT UNSIGNED NOT NULL DEFAULT 0,
+    damage_boomer INT UNSIGNED NOT NULL DEFAULT 0,
+    damage_hunter INT UNSIGNED NOT NULL DEFAULT 0,
+    damage_spitter INT UNSIGNED NOT NULL DEFAULT 0,
+    damage_jockey INT UNSIGNED NOT NULL DEFAULT 0,
+    damage_charger INT UNSIGNED NOT NULL DEFAULT 0,
+    damage_tank INT UNSIGNED NOT NULL DEFAULT 0,
+    damage_taken INT UNSIGNED NOT NULL DEFAULT 0,
+    time_played INT UNSIGNED NOT NULL DEFAULT 0,
+    round_win BOOLEAN DEFAULT NULL,
+    INDEX idx_steam_date (steam_id, picked_at)
 );
 
 -- Views
-CREATE OR REPLACE VIEW top10 AS
-SELECT user_name, xp, steam_id FROM users ORDER BY xp DESC LIMIT 10;
 
-CREATE OR REPLACE VIEW survivor_picks_view AS
+CREATE OR REPLACE VIEW survivor_stats_view AS
 SELECT sp.id, sp.steam_id, u.user_name, u.xp, u.prestige_points, sc.class_name AS survivor_name,
-    sp.server_name, sp.game_mode, sp.map_name, sp.picked_at
-FROM survivor_picks sp
+    sp.server_name, sp.game_mode, sp.map_name, sp.picked_at,
+    sp.si_kills, sp.ci_kills, sp.headshots, sp.damage_taken, sp.friendly_fire_damage, sp.time_played, sp.round_win
+FROM survivor_stats sp
 JOIN users u ON sp.steam_id = u.steam_id
 JOIN survivor_classes sc ON sp.survivor_id = sc.class_id;
 
-CREATE OR REPLACE VIEW infected_picks_view AS
-SELECT ip.id, ip.steam_id, u.user_name, u.xp, u.prestige_points, ic.class_name AS infected_name,
-    ip.server_name, ip.game_mode, ip.map_name, ip.picked_at
-FROM infected_picks ip
-JOIN users u ON ip.steam_id = u.steam_id
-JOIN infected_classes ic ON ip.infected_id = ic.class_id;
+CREATE OR REPLACE VIEW infected_stats_view AS
+SELECT ist.id, ist.steam_id, u.user_name, u.xp, u.prestige_points,
+    ic1.class_name AS infected_name_1, ic2.class_name AS infected_name_2, ic3.class_name AS infected_name_3,
+    ist.server_name, ist.game_mode, ist.map_name, ist.picked_at,
+    ist.survivor_kills, ist.survivor_incaps,
+    ist.damage_smoker, ist.damage_boomer, ist.damage_hunter,
+    ist.damage_spitter, ist.damage_jockey, ist.damage_charger, ist.damage_tank,
+    ist.damage_smoker + ist.damage_boomer + ist.damage_hunter + ist.damage_spitter + ist.damage_jockey + ist.damage_charger + ist.damage_tank AS damage_to_survivors,
+    ist.damage_taken, ist.time_played, ist.round_win
+FROM infected_stats ist
+JOIN users u ON ist.steam_id = u.steam_id
+JOIN infected_classes ic1 ON ist.infected_id_1 = ic1.class_id
+JOIN infected_classes ic2 ON ist.infected_id_2 = ic2.class_id
+JOIN infected_classes ic3 ON ist.infected_id_3 = ic3.class_id;
+
+CREATE OR REPLACE VIEW survivor_stats_averages AS
+SELECT ss.steam_id, u.user_name, sc.class_name AS survivor_name,
+    COUNT(*) AS rounds_played,
+    ROUND(AVG(ss.si_kills), 1) AS avg_si_kills,
+    ROUND(AVG(ss.ci_kills), 1) AS avg_ci_kills,
+    ROUND(AVG(ss.headshots), 1) AS avg_headshots,
+    ROUND(AVG(ss.damage_taken), 1) AS avg_damage_taken,
+    ROUND(AVG(ss.friendly_fire_damage), 1) AS avg_friendly_fire_damage,
+    ROUND(AVG(ss.time_played), 0) AS avg_time_played,
+    SUM(ss.round_win = 1) AS wins,
+    SUM(ss.round_win = 0) AS losses
+FROM survivor_stats ss
+JOIN users u ON ss.steam_id = u.steam_id
+JOIN survivor_classes sc ON ss.survivor_id = sc.class_id
+GROUP BY ss.steam_id, ss.survivor_id;
+
+CREATE OR REPLACE VIEW infected_stats_averages AS
+SELECT ist.steam_id, u.user_name,
+    ic1.class_name AS infected_name_1, ic2.class_name AS infected_name_2, ic3.class_name AS infected_name_3,
+    COUNT(*) AS rounds_played,
+    ROUND(AVG(ist.survivor_kills), 1) AS avg_survivor_kills,
+    ROUND(AVG(ist.survivor_incaps), 1) AS avg_survivor_incaps,
+    ROUND(AVG(ist.damage_smoker + ist.damage_boomer + ist.damage_hunter + ist.damage_spitter + ist.damage_jockey + ist.damage_charger + ist.damage_tank), 1) AS avg_damage_to_survivors,
+    ROUND(AVG(ist.damage_smoker), 1) AS avg_damage_smoker,
+    ROUND(AVG(ist.damage_boomer), 1) AS avg_damage_boomer,
+    ROUND(AVG(ist.damage_hunter), 1) AS avg_damage_hunter,
+    ROUND(AVG(ist.damage_spitter), 1) AS avg_damage_spitter,
+    ROUND(AVG(ist.damage_jockey), 1) AS avg_damage_jockey,
+    ROUND(AVG(ist.damage_charger), 1) AS avg_damage_charger,
+    ROUND(AVG(ist.damage_tank), 1) AS avg_damage_tank,
+    ROUND(AVG(ist.damage_taken), 1) AS avg_damage_taken,
+    ROUND(AVG(ist.time_played), 0) AS avg_time_played,
+    SUM(ist.round_win = 1) AS wins,
+    SUM(ist.round_win = 0) AS losses
+FROM infected_stats ist
+JOIN users u ON ist.steam_id = u.steam_id
+JOIN infected_classes ic1 ON ist.infected_id_1 = ic1.class_id
+JOIN infected_classes ic2 ON ist.infected_id_2 = ic2.class_id
+JOIN infected_classes ic3 ON ist.infected_id_3 = ic3.class_id
+GROUP BY ist.steam_id, ist.infected_id_1, ist.infected_id_2, ist.infected_id_3;
 
 CREATE OR REPLACE VIEW survivor_pick_counts AS
 SELECT sc.class_name AS survivor_name, COUNT(*) AS pick_count
-FROM survivor_picks sp
+FROM survivor_stats sp
 JOIN survivor_classes sc ON sp.survivor_id = sc.class_id
 GROUP BY sp.survivor_id
 ORDER BY pick_count DESC;
 
 CREATE OR REPLACE VIEW infected_pick_counts AS
 SELECT ic.class_name AS infected_name, COUNT(*) AS pick_count
-FROM infected_picks ip
-JOIN infected_classes ic ON ip.infected_id = ic.class_id
-GROUP BY ip.infected_id
+FROM (
+    SELECT infected_id_1 AS infected_id FROM infected_stats
+    UNION ALL
+    SELECT infected_id_2 FROM infected_stats
+    UNION ALL
+    SELECT infected_id_3 FROM infected_stats
+) picks
+JOIN infected_classes ic ON picks.infected_id = ic.class_id
+GROUP BY picks.infected_id
 ORDER BY pick_count DESC;
+
+CREATE OR REPLACE VIEW top10 AS
+SELECT user_name, xp, steam_id FROM users ORDER BY xp DESC LIMIT 10;
 
 -- Scheduled Events (Jobs)
 SET GLOBAL event_scheduler = ON;

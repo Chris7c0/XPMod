@@ -298,6 +298,8 @@ Action Event_RoundStart(Handle hEvent, const char[] strName, bool bDontBroadcast
 	g_iRoundCount++;
 	g_bEndOfRound = false;
 	g_bCanSave = true;
+	g_iRoundWinnerTeam = 0;
+	g_bSurvivorsCompletedMap = false;
 	
 	ResetAllVariablesForRound();
 	
@@ -306,30 +308,52 @@ Action Event_RoundStart(Handle hEvent, const char[] strName, bool bDontBroadcast
 
 Action Event_RoundEnd(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
+	// In L4D2, the round_end "winner" field is unreliable (often 0).
+	// Determine winner based on whether survivors completed the map.
+	if (g_bSurvivorsCompletedMap)
+		g_iRoundWinnerTeam = TEAM_SURVIVORS;
+	else
+		g_iRoundWinnerTeam = TEAM_INFECTED;
+
 	FinalizeRoundAndSave();
 	return Plugin_Continue;
 }
 
 Action Event_MapTransition(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
+	g_bSurvivorsCompletedMap = true;
+
 	if (g_iGameMode == GAMEMODE_COOP)
+	{
+		g_iRoundWinnerTeam = TEAM_SURVIVORS;
 		FinalizeRoundAndSave();
+	}
 
 	return Plugin_Continue;
 }
 
 Action Event_FinaleVehicleLeaving(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
+	g_bSurvivorsCompletedMap = true;
+
 	if (g_iGameMode == GAMEMODE_COOP)
+	{
+		g_iRoundWinnerTeam = TEAM_SURVIVORS;
 		FinalizeRoundAndSave();
+	}
 
 	return Plugin_Continue;
 }
 
 Action Event_FinaleWin(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
+	g_bSurvivorsCompletedMap = true;
+
 	if (g_iGameMode == GAMEMODE_COOP)
+	{
+		g_iRoundWinnerTeam = TEAM_SURVIVORS;
 		FinalizeRoundAndSave();
+	}
 
 	return Plugin_Continue;
 }
@@ -363,7 +387,10 @@ void FinalizeRoundAndSave()
 			if (IsClientInGame(i) == true &&
 				IsFakeClient(i) == false &&
 				g_bClientLoggedIn[i] == true)
-					SaveUserData(i);
+			{
+				SaveRoundStats(i);
+				SaveUserData(i);
+			}
 		}
 
 		// Remove the player level tags until the next confirmation
