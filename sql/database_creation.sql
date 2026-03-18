@@ -212,6 +212,39 @@ JOIN infected_classes ic3 ON ist.infected_id_3 = ic3.class_id
 LEFT JOIN tank_classes tc ON ist.tank_chosen = tc.class_id
 GROUP BY ist.steam_id, ist.infected_id_1, ist.infected_id_2, ist.infected_id_3, ist.tank_chosen;
 
+CREATE OR REPLACE VIEW personal_survivor_class_stats AS
+SELECT ss.steam_id, sc.class_name AS survivor_name,
+    COUNT(*) AS rounds_played,
+    SUM(ss.si_kills) AS total_si_kills,
+    ROUND(AVG(ss.si_kills), 1) AS avg_si_kills,
+    SUM(ss.ci_kills) AS total_ci_kills,
+    ROUND(AVG(ss.ci_kills), 1) AS avg_ci_kills,
+    SUM(ss.headshots) AS total_headshots,
+    ROUND(AVG(ss.headshots), 1) AS avg_headshots,
+    SUM(ss.round_win = 1) AS wins,
+    SUM(ss.round_win = 0) AS losses,
+    ROUND(SUM(ss.round_win = 1) * 100.0 / COUNT(*), 1) AS win_rate
+FROM survivor_stats ss
+JOIN survivor_classes sc ON ss.survivor_id = sc.class_id
+GROUP BY ss.steam_id, ss.survivor_id;
+
+CREATE OR REPLACE VIEW personal_infected_combo_stats AS
+SELECT ist.steam_id,
+    ic1.class_name AS infected_name_1, ic2.class_name AS infected_name_2, ic3.class_name AS infected_name_3,
+    COUNT(*) AS rounds_played,
+    SUM(ist.survivor_kills) AS total_survivor_kills,
+    ROUND(AVG(ist.survivor_kills), 1) AS avg_survivor_kills,
+    SUM(ist.damage_smoker + ist.damage_boomer + ist.damage_hunter + ist.damage_spitter + ist.damage_jockey + ist.damage_charger + ist.damage_tank) AS total_damage_to_survivors,
+    ROUND(AVG(ist.damage_smoker + ist.damage_boomer + ist.damage_hunter + ist.damage_spitter + ist.damage_jockey + ist.damage_charger + ist.damage_tank), 1) AS avg_damage_to_survivors,
+    SUM(ist.round_win = 1) AS wins,
+    SUM(ist.round_win = 0) AS losses,
+    ROUND(SUM(ist.round_win = 1) * 100.0 / COUNT(*), 1) AS win_rate
+FROM infected_stats ist
+JOIN infected_classes ic1 ON ist.infected_id_1 = ic1.class_id
+JOIN infected_classes ic2 ON ist.infected_id_2 = ic2.class_id
+JOIN infected_classes ic3 ON ist.infected_id_3 = ic3.class_id
+GROUP BY ist.steam_id, ist.infected_id_1, ist.infected_id_2, ist.infected_id_3;
+
 CREATE OR REPLACE VIEW survivor_pick_counts AS
 SELECT sc.class_name AS survivor_name, COUNT(*) AS pick_count
 FROM survivor_stats sp

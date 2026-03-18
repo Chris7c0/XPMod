@@ -79,3 +79,171 @@ void SQLGetTopXPModPlayerStatistics()
 
 	SQL_TQuery(g_hDatabase, SQLGetTopXPModPlayerStatisticsCallback, strQuery, _);
 }
+
+void SQLGetPersonalPlayerStatistics(int iClient)
+{
+	if (g_hDatabase == INVALID_HANDLE)
+		return;
+
+	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
+		return;
+
+	// Get Steam Auth ID
+	char strSteamID[32];
+	if (GetClientSteamID64(iClient, strSteamID, sizeof(strSteamID)) == false)
+		return;
+
+	// Clear previous data
+	g_strPersonalDBStatsText[iClient][0] = '\0';
+
+	char strQuery[2048];
+	Format(strQuery, sizeof(strQuery),
+		"SELECT 'sur_wr' AS stat_type, '' AS name_1, '' AS name_2, '' AS name_3, \
+		ROUND(SUM(round_win = 1) * 100.0 / COUNT(*), 1) AS win_rate, \
+		SUM(round_win = 1) AS val1, SUM(round_win = 0) AS val2, \
+		COUNT(*) AS val3, \
+		SUM(si_kills) AS val4, SUM(ci_kills) AS val5, SUM(headshots) AS val6 \
+		FROM survivor_stats WHERE steam_id = '%s' \
+		UNION ALL \
+		SELECT 'inf_wr', '', '', '', \
+		ROUND(SUM(round_win = 1) * 100.0 / COUNT(*), 1), \
+		SUM(round_win = 1), SUM(round_win = 0), \
+		COUNT(*), \
+		SUM(survivor_kills), \
+		SUM(damage_smoker + damage_boomer + damage_hunter + damage_spitter + damage_jockey + damage_charger + damage_tank), \
+		0 \
+		FROM infected_stats WHERE steam_id = '%s' \
+		UNION ALL \
+		(SELECT 'survivor', survivor_name, '', '', \
+		win_rate, total_si_kills, avg_si_kills, total_ci_kills, avg_ci_kills, total_headshots, avg_headshots \
+		FROM personal_survivor_class_stats WHERE steam_id = '%s' \
+		ORDER BY win_rate DESC, total_si_kills DESC LIMIT 1) \
+		UNION ALL \
+		(SELECT 'infected', infected_name_1, infected_name_2, infected_name_3, \
+		win_rate, total_survivor_kills, avg_survivor_kills, total_damage_to_survivors, avg_damage_to_survivors, 0, 0.0 \
+		FROM personal_infected_combo_stats WHERE steam_id = '%s' \
+		ORDER BY win_rate DESC, total_damage_to_survivors DESC LIMIT 1) \
+		UNION ALL \
+		(SELECT 'tank', tc.class_name, '', '', \
+		0.0, 0, 0.0, 0, 0.0, 0, 0.0 \
+		FROM infected_stats ist \
+		JOIN tank_classes tc ON ist.tank_chosen = tc.class_id \
+		WHERE ist.steam_id = '%s' AND ist.tank_chosen IS NOT NULL AND ist.tank_chosen > 0 \
+		GROUP BY ist.tank_chosen \
+		ORDER BY COUNT(*) DESC LIMIT 1)",
+		strSteamID, strSteamID, strSteamID, strSteamID, strSteamID);
+
+	SQL_TQuery(g_hDatabase, SQLGetPersonalPlayerStatisticsCallback, strQuery, iClient);
+}
+
+void SQLGetPersonalPlayerStatisticsCallback(Handle owner, Handle hQuery, const char[] error, int iClient)
+{
+	if (g_hDatabase == INVALID_HANDLE)
+		return;
+
+	if (!StrEqual("", error))
+	{
+		LogError("SQL Error (Personal Stats): %s", error);
+		return;
+	}
+
+	if (RunClientChecks(iClient) == false)
+		return;
+
+	// Survivor overall
+	char strSurvivorSection[150];
+	strSurvivorSection[0] = '\0';
+	// Infected overall
+	char strInfectedSection[150];
+	strInfectedSection[0] = '\0';
+	// Best survivor class
+	char strBestSurvivor[200];
+	strBestSurvivor[0] = '\0';
+	// Best infected combo
+	char strBestInfected[200];
+	strBestInfected[0] = '\0';
+	// Favorite tank
+	char strFavTank[60];
+	strFavTank[0] = '\0';
+
+	char strStatType[16], strName1[24], strName2[24], strName3[24];
+
+	while (SQL_FetchRow(hQuery))
+	{
+		SQL_FetchString(hQuery, 0, strStatType, sizeof(strStatType));
+		SQL_FetchString(hQuery, 1, strName1, sizeof(strName1));
+		SQL_FetchString(hQuery, 2, strName2, sizeof(strName2));
+		SQL_FetchString(hQuery, 3, strName3, sizeof(strName3));
+
+		float fWinRate = SQL_FetchFloat(hQuery, 4);
+		int iVal1 = SQL_FetchInt(hQuery, 5);
+		int iVal3 = SQL_FetchInt(hQuery, 7);
+
+		if (StrEqual(strStatType, "sur_wr") && iVal3 > 0)
+		{
+			int iVal2 = SQL_FetchInt(hQuery, 6);
+			int iVal4 = SQL_FetchInt(hQuery, 8);
+			int iVal5 = SQL_FetchInt(hQuery, 9);
+			int iVal6 = SQL_FetchInt(hQuery, 10);
+			Format(strSurvivorSection, sizeof(strSurvivorSection),
+				"\nSurvivor: %i Rounds  %.1f%% WR (%iW / %iL)\
+				\n Total SI Kills: %i   Total CI Kills: %i\
+				\n Total HS: %i",
+				iVal3, fWinRate, iVal1, iVal2, iVal4, iVal5, iVal6);
+		}
+		else if (StrEqual(strStatType, "inf_wr") && iVal3 > 0)
+		{
+			int iVal2 = SQL_FetchInt(hQuery, 6);
+			int iVal4 = SQL_FetchInt(hQuery, 8);
+			int iVal5 = SQL_FetchInt(hQuery, 9);
+			Format(strInfectedSection, sizeof(strInfectedSection),
+				"\nInfected: %i Rounds  %.1f%% WR (%iW / %iL)\
+				\n Total Kills: %i\
+				\n Total DMG: %i",
+				iVal3, fWinRate, iVal1, iVal2, iVal4, iVal5);
+		}
+		else if (StrEqual(strStatType, "survivor"))
+		{
+			float fAvgSI = SQL_FetchFloat(hQuery, 6);
+			int iCIKills = SQL_FetchInt(hQuery, 7);
+			float fAvgCI = SQL_FetchFloat(hQuery, 8);
+			int iHS = SQL_FetchInt(hQuery, 9);
+			float fAvgHS = SQL_FetchFloat(hQuery, 10);
+			Format(strBestSurvivor, sizeof(strBestSurvivor),
+				"\nBEST SURVIVOR: %s (%.1f%% WR)\
+				\n SI Kills: %i (%.1f avg)\
+				\n CI Kills: %i (%.1f avg)\
+				\n HS: %i (%.1f avg)",
+				strName1, fWinRate, iVal1, fAvgSI, iCIKills, fAvgCI, iHS, fAvgHS);
+		}
+		else if (StrEqual(strStatType, "infected"))
+		{
+			float fAvgKills = SQL_FetchFloat(hQuery, 6);
+			int iDmg = SQL_FetchInt(hQuery, 7);
+			float fAvgDmg = SQL_FetchFloat(hQuery, 8);
+			// Format combo name: "Hunter/Spitter/Charger"
+			char strCombo[72];
+			Format(strCombo, sizeof(strCombo), "%s/%s/%s", strName1, strName2, strName3);
+			Format(strBestInfected, sizeof(strBestInfected),
+				"\nBEST INFECTED: %s (%.1f%% WR)\
+				\n Kills: %i (%.1f avg)\
+				\n DMG: %i (%.1f avg)",
+				strCombo, fWinRate, iVal1, fAvgKills, iDmg, fAvgDmg);
+		}
+		else if (StrEqual(strStatType, "tank"))
+		{
+			Format(strFavTank, sizeof(strFavTank), "\nFAVORITE TANK: %s", strName1);
+		}
+	}
+
+	// No data — leave the buffer empty so the panel is silently skipped
+	if (strSurvivorSection[0] == '\0' && strInfectedSection[0] == '\0')
+		return;
+
+	// Store raw stats content only — panel framing is done in Statistics_Panel.sp
+	Format(g_strPersonalDBStatsText[iClient], sizeof(g_strPersonalDBStatsText[]),
+		"%s%s\
+		\n %s%s%s",
+		strSurvivorSection, strInfectedSection,
+		strBestSurvivor, strBestInfected, strFavTank);
+}

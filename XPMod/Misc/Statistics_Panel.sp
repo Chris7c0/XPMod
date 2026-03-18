@@ -63,6 +63,32 @@ void ShowRoundStatsLastRoundTopPlayers(int iClient)
 	RoundStatsMenuDraw(iClient, strStatsText);
 }
 
+void ShowRoundStatsPersonalDBStats(int iClient)
+{
+	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
+		return;
+
+	// If no data (query failed, no stats, or hasn't returned yet), skip to next panel
+	if (strlen(g_strPersonalDBStatsText[iClient]) <= 1)
+	{
+		RoundStatsPanel[iClient]++;
+		CreateTimer(0.1, TimerShowCurrentRoundStatsPanel, iClient, TIMER_FLAG_NO_MAPCHANGE);
+		return;
+	}
+
+	char strStatsText[700];
+	Format(strStatsText, sizeof(strStatsText),
+		"\n \
+		\nYour All-Time Stats\
+		\n %s\
+		\n \
+		\nPRESS 0 to Hide\
+		\n ",
+		g_strPersonalDBStatsText[iClient]);
+
+	RoundStatsMenuDraw(iClient, strStatsText);
+}
+
 void ShowRoundStatsXPModTopPlayers(int iClient)
 {
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
@@ -133,6 +159,9 @@ void RoundStatsMenuHandler(Menu menu, MenuAction action, int iClient, int itemNu
 
 void ShowRoundStatsPanelsToPlayer(int iClient)
 {
+	// Fire async DB query so personal stats are ready by the time that panel shows
+	SQLGetPersonalPlayerStatistics(iClient);
+
 	// Last Round Stats Panels
 	RoundStatsPanel[iClient] = ROUND_STATS_PANEL_LAST_ROUND_INDIVIDUAL;
 	CreateTimer(0.1, TimerShowCurrentRoundStatsPanel, iClient, TIMER_FLAG_NO_MAPCHANGE);
@@ -148,6 +177,7 @@ Action TimerShowCurrentRoundStatsPanel(Handle timer, int iClient)
 	{
 		case ROUND_STATS_PANEL_LAST_ROUND_INDIVIDUAL: 	ShowRoundStatsLastRoundIndividual(iClient);
 		case ROUND_STATS_PANEL_LAST_ROUND_TOP_PLAYERS: 	ShowRoundStatsLastRoundTopPlayers(iClient);
+		case ROUND_STATS_PANEL_PERSONAL_DB_STATS: 		ShowRoundStatsPersonalDBStats(iClient);
 		case ROUND_STATS_PANEL_XPMOD_TOP_PLAYERS: 		ShowRoundStatsXPModTopPlayers(iClient);
 	}
 
