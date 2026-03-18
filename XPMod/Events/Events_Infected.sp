@@ -439,6 +439,7 @@ Action Event_TankSpawn(Handle hEvent, const char[] strName, bool bDontBroadcast)
 	g_iTankCounter++;
 	g_iClientTeam[iClient] = TEAM_INFECTED;
 	g_iInfectedCharacter[iClient] = TANK;
+	g_bClientWasTankThisRound[iClient] = true;
 	// Get the calculated hp multiplier to scale health based on survivor team
 	g_fTankStartingHealthMultiplier[iClient] = CalculateTankHealthPercentageMultiplier();
 	// Reset all tank abilities if transitioning from another tank

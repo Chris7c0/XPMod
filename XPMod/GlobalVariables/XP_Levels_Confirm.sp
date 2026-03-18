@@ -96,6 +96,7 @@ int g_iSurvivorPickRecordID[MAXPLAYERS + 1] = {-1, ...};
 int g_iInfectedPickRecordID[MAXPLAYERS + 1] = {-1, ...};
 float g_fSurvivorPickSaveTime[MAXPLAYERS + 1];
 float g_fInfectedPickSaveTime[MAXPLAYERS + 1];
+bool g_bClientWasTankThisRound[MAXPLAYERS + 1];
 bool g_bStatsSavedThisRound[MAXPLAYERS + 1];
 int g_iRoundWinnerTeam;       // 0 = unknown, TEAM_SURVIVORS or TEAM_INFECTED
 bool g_bSurvivorsCompletedMap; // true if survivors reached saferoom/escaped

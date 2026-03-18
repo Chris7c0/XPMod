@@ -181,11 +181,17 @@ void SaveRoundStats(int iClient)
 	if (g_iInfectedPickRecordID[iClient] > 0)
 	{
 		int iInfectedTimePlayed = 0;
+		char strTankChosen[8];
 		if (g_fInfectedPickSaveTime[iClient] > 0.0)
 			iInfectedTimePlayed = RoundToFloor(fGameTime - g_fInfectedPickSaveTime[iClient]);
 
+		if (g_bClientWasTankThisRound[iClient] == true)
+			IntToString(g_iTankChosen[iClient], strTankChosen, sizeof(strTankChosen));
+		else
+			strcopy(strTankChosen, sizeof(strTankChosen), "NULL");
+
 		Format(strQuery, sizeof(strQuery),
-			"UPDATE %s SET survivor_kills=%i, survivor_incaps=%i, damage_smoker=%i, damage_boomer=%i, damage_hunter=%i, damage_spitter=%i, damage_jockey=%i, damage_charger=%i, damage_tank=%i, damage_taken=%i, time_played=%i, round_win=%s WHERE id=%i",
+			"UPDATE %s SET survivor_kills=%i, survivor_incaps=%i, damage_smoker=%i, damage_boomer=%i, damage_hunter=%i, damage_spitter=%i, damage_jockey=%i, damage_charger=%i, damage_tank=%i, tank_chosen=%s, damage_taken=%i, time_played=%i, round_win=%s WHERE id=%i",
 			DB_TABLENAME_INFECTED_PICKS,
 			g_iStat_ClientSurvivorsKilled[iClient],
 			g_iStat_ClientSurvivorsIncaps[iClient],
@@ -196,6 +202,7 @@ void SaveRoundStats(int iClient)
 			g_iStat_ClientDamageJockey[iClient],
 			g_iStat_ClientDamageCharger[iClient],
 			g_iStat_ClientDamageTank[iClient],
+			strTankChosen,
 			g_iStat_ClientDamageTakenInfected[iClient],
 			iInfectedTimePlayed,
 			strInfectedRoundWin,

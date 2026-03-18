@@ -139,6 +139,7 @@ void ResetClientVariablesForRound(int iClient)
 	g_iInfectedPickRecordID[iClient] = -1;
 	g_fSurvivorPickSaveTime[iClient] = 0.0;
 	g_fInfectedPickSaveTime[iClient] = 0.0;
+	g_bClientWasTankThisRound[iClient] = false;
 	g_bStatsSavedThisRound[iClient] = false;
 	g_bCanPlayHeadshotSound[iClient] = true;
 	g_bUsingTongueRope[iClient]=false;

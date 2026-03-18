@@ -1,4 +1,4 @@
--- XPMod uses a MySQL database to store player data, bans, and survivor picks.
+-- XPMod uses a MySQL database to store player data, bans, and class picks.
 -- Below is the SQL code to create the necessary database, tables, views, stored procedures, and scheduled events for XPMod.
 
 -- Example of how to add the mysql db to sourcemod database config file:
@@ -83,6 +83,18 @@ INSERT INTO infected_classes (class_id, class_name) VALUES
     (7, 'Witch'),
     (8, 'Tank');
 
+-- Tank Class Names Lookup Table
+CREATE TABLE tank_classes (
+    class_id TINYINT UNSIGNED PRIMARY KEY,
+    class_name VARCHAR(20) NOT NULL
+);
+INSERT INTO tank_classes (class_id, class_name) VALUES
+    (0, 'Not Chosen'),
+    (1, 'Fire Tank'),
+    (2, 'Ice Tank'),
+    (3, 'NecroTanker'),
+    (4, 'Vampiric Tank');
+
 -- Survivor Picks Table
 CREATE TABLE survivor_stats (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -110,6 +122,7 @@ CREATE TABLE infected_stats (
     infected_id_1 TINYINT UNSIGNED NOT NULL,
     infected_id_2 TINYINT UNSIGNED NOT NULL,
     infected_id_3 TINYINT UNSIGNED NOT NULL,
+    tank_chosen TINYINT UNSIGNED DEFAULT NULL,
     server_name VARCHAR(64) NOT NULL,
     game_mode VARCHAR(20) NOT NULL,
     map_name VARCHAR(32) NOT NULL,
@@ -142,6 +155,7 @@ JOIN survivor_classes sc ON sp.survivor_id = sc.class_id;
 CREATE OR REPLACE VIEW infected_stats_view AS
 SELECT ist.id, ist.steam_id, u.user_name, u.xp, u.prestige_points,
     ic1.class_name AS infected_name_1, ic2.class_name AS infected_name_2, ic3.class_name AS infected_name_3,
+    tc.class_name AS tank_name,
     ist.server_name, ist.game_mode, ist.map_name, ist.picked_at,
     ist.survivor_kills, ist.survivor_incaps,
     ist.damage_smoker, ist.damage_boomer, ist.damage_hunter,
@@ -152,7 +166,8 @@ FROM infected_stats ist
 JOIN users u ON ist.steam_id = u.steam_id
 JOIN infected_classes ic1 ON ist.infected_id_1 = ic1.class_id
 JOIN infected_classes ic2 ON ist.infected_id_2 = ic2.class_id
-JOIN infected_classes ic3 ON ist.infected_id_3 = ic3.class_id;
+JOIN infected_classes ic3 ON ist.infected_id_3 = ic3.class_id
+LEFT JOIN tank_classes tc ON ist.tank_chosen = tc.class_id;
 
 CREATE OR REPLACE VIEW survivor_stats_averages AS
 SELECT ss.steam_id, u.user_name, sc.class_name AS survivor_name,
@@ -173,6 +188,7 @@ GROUP BY ss.steam_id, ss.survivor_id;
 CREATE OR REPLACE VIEW infected_stats_averages AS
 SELECT ist.steam_id, u.user_name,
     ic1.class_name AS infected_name_1, ic2.class_name AS infected_name_2, ic3.class_name AS infected_name_3,
+    tc.class_name AS tank_name,
     COUNT(*) AS rounds_played,
     ROUND(AVG(ist.survivor_kills), 1) AS avg_survivor_kills,
     ROUND(AVG(ist.survivor_incaps), 1) AS avg_survivor_incaps,
@@ -193,7 +209,8 @@ JOIN users u ON ist.steam_id = u.steam_id
 JOIN infected_classes ic1 ON ist.infected_id_1 = ic1.class_id
 JOIN infected_classes ic2 ON ist.infected_id_2 = ic2.class_id
 JOIN infected_classes ic3 ON ist.infected_id_3 = ic3.class_id
-GROUP BY ist.steam_id, ist.infected_id_1, ist.infected_id_2, ist.infected_id_3;
+LEFT JOIN tank_classes tc ON ist.tank_chosen = tc.class_id
+GROUP BY ist.steam_id, ist.infected_id_1, ist.infected_id_2, ist.infected_id_3, ist.tank_chosen;
 
 CREATE OR REPLACE VIEW survivor_pick_counts AS
 SELECT sc.class_name AS survivor_name, COUNT(*) AS pick_count
@@ -213,6 +230,14 @@ FROM (
 ) picks
 JOIN infected_classes ic ON picks.infected_id = ic.class_id
 GROUP BY picks.infected_id
+ORDER BY pick_count DESC;
+
+CREATE OR REPLACE VIEW tank_pick_counts AS
+SELECT tc.class_name AS tank_name, COUNT(*) AS pick_count
+FROM infected_stats ist
+JOIN tank_classes tc ON ist.tank_chosen = tc.class_id
+WHERE ist.tank_chosen IS NOT NULL
+GROUP BY ist.tank_chosen
 ORDER BY pick_count DESC;
 
 CREATE OR REPLACE VIEW top10 AS
