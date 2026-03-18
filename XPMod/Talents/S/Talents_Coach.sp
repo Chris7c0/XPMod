@@ -607,70 +607,86 @@ void OnGameFrame_Coach(int iClient)
 			vFacing[2] = 0.0;
 			NormalizeVector(vFacing, vFacing);
 
-			// SI only via crosshair (handled above), fallback only checks CI
-			// During Chainsaw Massacre, fallback also checks SI players
+			bool bFoundPriorityPlayerTarget = false;
+			bool bBlockCIFallbackForPlayerTarget = false;
 
-			// During Chainsaw Massacre, also scan SI players in fallback
-			if(g_bCoachChainsawMassacreActive[iClient])
+			// Scan infected players in front first so CI cannot steal the lunge when the player is clearly focused on an SI/Tank.
+			for(int iPlayer = 1; iPlayer <= MaxClients; iPlayer++)
 			{
-				for(int iPlayer = 1; iPlayer <= MaxClients; iPlayer++)
+				if(RunClientChecks(iPlayer) == false || IsPlayerAlive(iPlayer) == false)
+					continue;
+				if(g_iClientTeam[iPlayer] != TEAM_INFECTED)
+					continue;
+				if(GetEntData(iPlayer, g_iOffset_IsGhost, 1) == 1)
+					continue;
+
+				float xyzSIPos[3];
+				GetClientAbsOrigin(iPlayer, xyzSIPos);
+
+				float vToSI[3];
+				SubtractVectors(xyzSIPos, xyzClientPos, vToSI);
+				vToSI[2] = 0.0;
+				NormalizeVector(vToSI, vToSI);
+				if(GetVectorDotProduct(vFacing, vToSI) < 0.5)
+					continue;
+
+				float fSIDist = GetVectorDistance(xyzClientPos, xyzSIPos);
+				if(fSIDist > fLungeRange)
+					continue;
+
+				bBlockCIFallbackForPlayerTarget = true;
+
+				if(g_bCoachChainsawMassacreActive[iClient] == false)
 				{
-					if(RunClientChecks(iPlayer) == false || IsPlayerAlive(iPlayer) == false)
+					int iSIHealth = GetPlayerHealth(iPlayer);
+					int iSIMaxHealth = GetPlayerMaxHealth(iPlayer);
+					if(iSIMaxHealth <= 0 || float(iSIHealth) / float(iSIMaxHealth) >= 0.30)
 						continue;
-					if(g_iClientTeam[iPlayer] != TEAM_INFECTED)
-						continue;
-
-					float xyzSIPos[3];
-					GetClientAbsOrigin(iPlayer, xyzSIPos);
-
-					float vToSI[3];
-					SubtractVectors(xyzSIPos, xyzClientPos, vToSI);
-					vToSI[2] = 0.0;
-					NormalizeVector(vToSI, vToSI);
-					if(GetVectorDotProduct(vFacing, vToSI) < 0.5)
-						continue;
-
-					float fSIDist = GetVectorDistance(xyzClientPos, xyzSIPos);
-					if(fSIDist < fClosestDist)
-					{
-						fClosestDist = fSIDist;
-						xyzClosestTarget = xyzSIPos;
-						bFoundTarget = true;
-					}
 				}
+
+				if(fSIDist >= fClosestDist)
+					continue;
+
+				fClosestDist = fSIDist;
+				xyzClosestTarget = xyzSIPos;
+				bFoundTarget = true;
+				bFoundPriorityPlayerTarget = true;
 			}
 
-			// Check CI entities
-			for(int iEntity = MaxClients + 1; iEntity < MAXENTITIES; iEntity++)
+			// Only fall back to CI when no infected player in front suggests the player is trying to reach them.
+			if(bBlockCIFallbackForPlayerTarget == false && bFoundPriorityPlayerTarget == false)
 			{
-				if(IsValidEntity(iEntity) == false)
-					continue;
-				if(HasEntProp(iEntity, Prop_Send, "m_vecOrigin") == false)
-					continue;
-
-				char strClassName[32];
-				GetEntityClassname(iEntity, strClassName, sizeof(strClassName));
-				if(StrEqual(strClassName, "infected") == false)
-					continue;
-				if(GetEntProp(iEntity, Prop_Data, "m_iHealth") <= 0)
-					continue;
-
-				float xyzEntityPos[3];
-				GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", xyzEntityPos);
-
-				float vToTarget[3];
-				SubtractVectors(xyzEntityPos, xyzClientPos, vToTarget);
-				vToTarget[2] = 0.0;
-				NormalizeVector(vToTarget, vToTarget);
-				if(GetVectorDotProduct(vFacing, vToTarget) < 0.5)
-					continue;
-
-				float fDist = GetVectorDistance(xyzClientPos, xyzEntityPos);
-				if(fDist < fClosestDist)
+				for(int iEntity = MaxClients + 1; iEntity < MAXENTITIES; iEntity++)
 				{
-					fClosestDist = fDist;
-					xyzClosestTarget = xyzEntityPos;
-					bFoundTarget = true;
+					if(IsValidEntity(iEntity) == false)
+						continue;
+					if(HasEntProp(iEntity, Prop_Send, "m_vecOrigin") == false)
+						continue;
+
+					char strClassName[32];
+					GetEntityClassname(iEntity, strClassName, sizeof(strClassName));
+					if(StrEqual(strClassName, "infected") == false)
+						continue;
+					if(GetEntProp(iEntity, Prop_Data, "m_iHealth") <= 0)
+						continue;
+
+					float xyzEntityPos[3];
+					GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", xyzEntityPos);
+
+					float vToTarget[3];
+					SubtractVectors(xyzEntityPos, xyzClientPos, vToTarget);
+					vToTarget[2] = 0.0;
+					NormalizeVector(vToTarget, vToTarget);
+					if(GetVectorDotProduct(vFacing, vToTarget) < 0.5)
+						continue;
+
+					float fDist = GetVectorDistance(xyzClientPos, xyzEntityPos);
+					if(fDist < fClosestDist)
+					{
+						fClosestDist = fDist;
+						xyzClosestTarget = xyzEntityPos;
+						bFoundTarget = true;
+					}
 				}
 			}
 		}
