@@ -44,6 +44,14 @@ int GetEnhancedCIListIndexID(int iEntity)
 
 void EnhanceCIIfNeeded(int iEntity)
 {
+	// Convert newly spawned CI into Necrofeasters during the Boomer's conversion window
+	if (g_bBoomerNecrofeasterConversion)
+	{
+		CreateTimer(0.2, TimerConvertNewCIToNecrofeaster, iEntity, TIMER_FLAG_NO_MAPCHANGE);
+		return;
+	}
+
+	// Random chance to spawn enhanced CI	
 	// Use a timer, or size doesnt work properly
 	if (GetRandomFloat(0.0, 1.0) <= CalculateCIEnhancementChance())
 		CreateTimer(0.1, TimerSpawnRandomlyEnhancedCIForDirector, iEntity, TIMER_FLAG_NO_MAPCHANGE);

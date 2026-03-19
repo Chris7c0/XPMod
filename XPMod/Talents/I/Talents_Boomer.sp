@@ -76,11 +76,17 @@ void Event_BoomerVomitOnPlayer(int iAttacker, int iVictim)
 								{
 									if(IsPlayerAlive(iVictim) == true)
 									{
-										PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. \x04%N\x05 got sick and is vomiting uncontrollably.", iAttacker, iVictim);
+										PrintToChatAll("\x03[XPMod] \x04%N\x05 vomited on 3 survivors. \x04%N\x05 is vomiting uncontrollably. Necrofeasters can smell the meal.", iAttacker, iVictim);
 										CreateParticle("boomer_vomit", 2.0, iVictim, ATTACH_MOUTH, true);
 										g_bIsSurvivorVomiting[iVictim] = true;
 										g_iShowSurvivorVomitCounter[iVictim] = 20;
 										CreateTimer(1.0, TimerConstantVomitDisplay, iVictim, TIMER_FLAG_NO_MAPCHANGE);
+
+										// Convert all existing CI/UI into Necrofeasters and enable 10 second conversion window for new spawns
+										ConvertAllCIToNecrofeasters();
+										g_bBoomerNecrofeasterConversion = true;
+										CreateTimer(10.0, TimerResetBoomerNecrofeasterConversion, 0, TIMER_FLAG_NO_MAPCHANGE);
+
 										ok = true;
 									}
 								}
@@ -302,4 +308,34 @@ void Event_AbilityUse_Boomer(int iClient, Handle hEvent)
 	CreateTimer(1.5, TimerResetBoomerSpeed, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	if(g_iRapidLevel[iClient] > 0)
 		CreateTimer(1.0, TimerSetBoomerCooldown, iClient, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+}
+
+void ConvertAllCIToNecrofeasters()
+{
+	float xyzEntityLocation[3];
+
+	for (int iEntity = MaxClients + 1; iEntity < MAXENTITIES; iEntity++)
+	{
+		if (IsValidEntity(iEntity) == false)
+			continue;
+
+		if (IsCommonInfected(iEntity, "") == false)
+			continue;
+
+		if (IsCommonInfectedAlive(iEntity) == false)
+			continue;
+
+		// Skip if already enhanced CI
+		if (IsEnhancedCI(iEntity) == true)
+			continue;
+
+		// Get the location of the CI
+		GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", xyzEntityLocation);
+
+		// Kill the current CI entity
+		SetEntProp(iEntity, Prop_Data, "m_iHealth", 0);
+
+		// Spawn a Necrofeaster in its place (NECRO enhanced)
+		SpawnCIAroundLocation(xyzEntityLocation, 1, UNCOMMON_CI_RANDOM, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_NECRO, false);
+	}
 }

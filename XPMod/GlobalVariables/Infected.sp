@@ -192,6 +192,7 @@ bool g_bNowCountingVomitVictims[MAXPLAYERS + 1];
 int g_iVomitVictimCounter[MAXPLAYERS + 1];
 bool g_bIsSuperSpeedBoomer[MAXPLAYERS + 1];
 bool g_bCommonInfectedDoMoreDamage;
+bool g_bBoomerNecrofeasterConversion;
 
 // Hunter
 #define HUNTER_STARTING_MAX_HEALTH                  250

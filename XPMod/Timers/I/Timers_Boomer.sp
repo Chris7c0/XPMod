@@ -153,3 +153,41 @@ Action TimerSuicideBoomerLaunch(Handle timer, int iClient)
 
 	return Plugin_Stop;
 }
+
+Action TimerResetBoomerNecrofeasterConversion(Handle timer, int data)
+{
+	g_bBoomerNecrofeasterConversion = false;
+
+	return Plugin_Stop;
+}
+
+Action TimerConvertNewCIToNecrofeaster(Handle timer, int iEntity)
+{
+	if (g_bBoomerNecrofeasterConversion == false)
+		return Plugin_Stop;
+
+	if (IsValidEntity(iEntity) == false)
+		return Plugin_Stop;
+
+	if (IsCommonInfected(iEntity, "") == false)
+		return Plugin_Stop;
+
+	if (IsCommonInfectedAlive(iEntity) == false)
+		return Plugin_Stop;
+
+	// Skip if already enhanced (e.g., already a necrofeaster from our own spawn)
+	if (IsEnhancedCI(iEntity) == true)
+		return Plugin_Stop;
+
+	// Get the location of the CI
+	float xyzEntityLocation[3];
+	GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", xyzEntityLocation);
+
+	// Kill the current CI entity
+	SetEntProp(iEntity, Prop_Data, "m_iHealth", 0);
+
+	// Spawn a Necrofeaster in its place (NECRO enhanced)
+	SpawnCIAroundLocation(xyzEntityLocation, 1, UNCOMMON_CI_RANDOM, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_NECRO, false);
+
+	return Plugin_Stop;
+}
