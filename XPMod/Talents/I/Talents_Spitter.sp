@@ -66,11 +66,20 @@ void OnGameFrame_Spitter(int iClient)
 		{
 			if(buttons & IN_DUCK)
 			{
-				if(g_iStealthSpitterChargePower[iClient] == 1)
-					PrintHintText(iClient, "Casting Phase Shift...");
-				else if(g_iStealthSpitterChargePower[iClient] > 49)
-					PrintHintText(iClient, "Casting Phase Shift...%d%%", g_iStealthSpitterChargePower[iClient]);
-				g_iStealthSpitterChargePower[iClient]++;
+				// Require minimum 50 displayed mana (1000 raw) to cast Phase Shift
+				if(g_iStealthSpitterChargeMana[iClient] < 1000)
+				{
+					g_iStealthSpitterChargePower[iClient] = 0;
+					PrintHintText(iClient, "Not enough mana to Phase Shift (%d/50)", g_iStealthSpitterChargeMana[iClient] / 20);
+				}
+				else
+				{
+					if(g_iStealthSpitterChargePower[iClient] == 1)
+						PrintHintText(iClient, "Casting Phase Shift...");
+					else if(g_iStealthSpitterChargePower[iClient] > 49)
+						PrintHintText(iClient, "Casting Phase Shift...%d%%", g_iStealthSpitterChargePower[iClient]);
+					g_iStealthSpitterChargePower[iClient]++;
+				}
 				if(g_iStealthSpitterChargePower[iClient] == 100)
 				{
 					g_bIsStealthSpitter[iClient] = true;
