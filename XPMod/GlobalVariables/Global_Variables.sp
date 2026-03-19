@@ -48,6 +48,7 @@ Handle g_hDatabase = INVALID_HANDLE;
 #define DB_TABLENAME_SURVIVOR_PICKS "survivor_stats"
 #define DB_TABLENAME_INFECTED_PICKS "infected_stats"
 #define DB_VIEWNAME_TOP_10  	    "top10"
+#define DB_VIEWNAME_TOP_PLAYER_LEADERBOARD "top_player_leaderboard"
 
 // Top 10 Leaderboard
 char g_strTop10SteamIDs[10][32];

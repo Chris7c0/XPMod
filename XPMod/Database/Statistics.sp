@@ -80,6 +80,83 @@ void SQLGetTopXPModPlayerStatistics()
 	SQL_TQuery(g_hDatabase, SQLGetTopXPModPlayerStatisticsCallback, strQuery, _);
 }
 
+void SQLGetTopPlayerLeaderboard()
+{
+	if (g_hDatabase == INVALID_HANDLE)
+	{
+		PrintToChatAll("Unable to connect to XPMod SQL Database.");
+		return;
+	}
+
+	char strQuery[256];
+	Format(strQuery, sizeof(strQuery), "SELECT stat_type, user_name, stat_value, class_info FROM %s", DB_VIEWNAME_TOP_PLAYER_LEADERBOARD);
+
+	SQL_TQuery(g_hDatabase, SQLGetTopPlayerLeaderboardCallback, strQuery, _);
+}
+
+void SQLGetTopPlayerLeaderboardCallback(Handle owner, Handle hQuery, const char[] error, int empty)
+{
+	if (g_hDatabase == INVALID_HANDLE)
+	{
+		PrintToChatAll("Unable to connect to XPMod SQL Database.");
+		return;
+	}
+
+	if (!StrEqual("", error))
+	{
+		LogError("SQL Error (Top Player Leaderboard): %s", error);
+		return;
+	}
+
+	if (SQL_MoreRows(hQuery) == false)
+		return;
+
+	// Clear old data
+	g_strTopPlayerLeaderboardText[0] = '\0';
+
+	char strStatType[16], strName[33], strClassInfo[64];
+	char strLine[130];
+	bool bInfectedSectionStarted = false;
+
+	while (SQL_FetchRow(hQuery))
+	{
+		SQL_FetchString(hQuery, 0, strStatType, sizeof(strStatType));
+		SQL_FetchString(hQuery, 1, strName, sizeof(strName));
+		int iStatValue = SQL_FetchInt(hQuery, 2);
+		SQL_FetchString(hQuery, 3, strClassInfo, sizeof(strClassInfo));
+
+		// Add blank line separator before first infected/tank stat
+		if (!bInfectedSectionStarted &&
+			(StrEqual(strStatType, "inf_wins") || StrEqual(strStatType, "inf_kills") ||
+			 StrEqual(strStatType, "inf_dmg") || StrEqual(strStatType, "tank_dmg")))
+		{
+			StrCat(g_strTopPlayerLeaderboardText, sizeof(g_strTopPlayerLeaderboardText), "\n ");
+			bInfectedSectionStarted = true;
+		}
+
+		if (StrEqual(strStatType, "sur_wins"))
+			Format(strLine, sizeof(strLine), "\n Most Survivor Wins: %i Wins - %s (%s)", iStatValue, strName, strClassInfo);
+		else if (StrEqual(strStatType, "sur_ci"))
+			Format(strLine, sizeof(strLine), "\n Most CI Kills: %i Kills - %s (%s)", iStatValue, strName, strClassInfo);
+		else if (StrEqual(strStatType, "sur_si"))
+			Format(strLine, sizeof(strLine), "\n Most SI Kills: %i Kills - %s (%s)", iStatValue, strName, strClassInfo);
+		else if (StrEqual(strStatType, "sur_hs"))
+			Format(strLine, sizeof(strLine), "\n Most Headshots: %i HS - %s (%s)", iStatValue, strName, strClassInfo);
+		else if (StrEqual(strStatType, "inf_wins"))
+			Format(strLine, sizeof(strLine), "\n Most Infected Wins: %i Wins - %s (%s)", iStatValue, strName, strClassInfo);
+		else if (StrEqual(strStatType, "inf_kills"))
+			Format(strLine, sizeof(strLine), "\n Most Survivors Killed: %i Kills - %s (%s)", iStatValue, strName, strClassInfo);
+		else if (StrEqual(strStatType, "inf_dmg"))
+			Format(strLine, sizeof(strLine), "\n Most Infected Dmg: %i Dmg - %s (%s)", iStatValue, strName, strClassInfo);
+		else if (StrEqual(strStatType, "tank_dmg"))
+			Format(strLine, sizeof(strLine), "\n Most Tank Dmg: %i Dmg - %s (%s)", iStatValue, strName, strClassInfo);
+		else
+			continue;
+
+		StrCat(g_strTopPlayerLeaderboardText, sizeof(g_strTopPlayerLeaderboardText), strLine);
+	}
+}
+
 void SQLGetPersonalPlayerStatistics(int iClient)
 {
 	if (g_hDatabase == INVALID_HANDLE)

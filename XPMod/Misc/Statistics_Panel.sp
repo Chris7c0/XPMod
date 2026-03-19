@@ -94,9 +94,13 @@ void ShowRoundStatsXPModTopPlayers(int iClient)
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return;
 
-	// If we dont have the the TopXPModPlayers yet, then don't display
+	// If we dont have the the TopXPModPlayers yet, then skip to next panel
 	if (strlen(g_strTopXPModPlayersStatsText) <= 1)
+	{
+		RoundStatsPanel[iClient]++;
+		CreateTimer(0.1, TimerShowCurrentRoundStatsPanel, iClient, TIMER_FLAG_NO_MAPCHANGE);
 		return;
+	}
 
 	char strStatsText[700];
 	Format(strStatsText, sizeof(strStatsText),
@@ -110,7 +114,31 @@ void ShowRoundStatsXPModTopPlayers(int iClient)
 	RoundStatsMenuDraw(iClient, strStatsText);
 }
 
- 
+void ShowRoundStatsTopPlayerLeaderboard(int iClient)
+{
+	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
+		return;
+
+	// If we dont have the leaderboard data yet, then end the panels
+	if (strlen(g_strTopPlayerLeaderboardText) <= 1)
+	{
+		RoundStatsPanel[iClient] = ROUND_STATS_PANEL_DONE;
+		return;
+	}
+
+	char strStatsText[900];
+	Format(strStatsText, sizeof(strStatsText),
+		"\n \n \n \n \
+		\nTop Player Leaderboard (30 Days)\
+		\n %s\
+		\n \
+		\nPRESS 0 to Hide\
+		\n ",
+		g_strTopPlayerLeaderboardText);
+
+	RoundStatsMenuDraw(iClient, strStatsText);
+}
+
 void RoundStatsMenuDraw(int iClient, const char[] strStatsText)
 {
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
@@ -175,10 +203,11 @@ Action TimerShowCurrentRoundStatsPanel(Handle timer, int iClient)
 	
 	switch (RoundStatsPanel[iClient])
 	{
-		case ROUND_STATS_PANEL_LAST_ROUND_INDIVIDUAL: 	ShowRoundStatsLastRoundIndividual(iClient);
-		case ROUND_STATS_PANEL_LAST_ROUND_TOP_PLAYERS: 	ShowRoundStatsLastRoundTopPlayers(iClient);
-		case ROUND_STATS_PANEL_PERSONAL_DB_STATS: 		ShowRoundStatsPersonalDBStats(iClient);
-		case ROUND_STATS_PANEL_XPMOD_TOP_PLAYERS: 		ShowRoundStatsXPModTopPlayers(iClient);
+		case ROUND_STATS_PANEL_LAST_ROUND_INDIVIDUAL: 		ShowRoundStatsLastRoundIndividual(iClient);
+		case ROUND_STATS_PANEL_LAST_ROUND_TOP_PLAYERS: 		ShowRoundStatsLastRoundTopPlayers(iClient);
+		case ROUND_STATS_PANEL_PERSONAL_DB_STATS: 			ShowRoundStatsPersonalDBStats(iClient);
+		case ROUND_STATS_PANEL_XPMOD_TOP_PLAYERS: 			ShowRoundStatsXPModTopPlayers(iClient);
+		case ROUND_STATS_PANEL_TOP_PLAYER_LEADERBOARD: 	ShowRoundStatsTopPlayerLeaderboard(iClient);
 	}
 
 	return Plugin_Stop;

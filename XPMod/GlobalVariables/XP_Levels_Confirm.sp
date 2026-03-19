@@ -102,6 +102,8 @@ int g_iRoundWinnerTeam;       // 0 = unknown, TEAM_SURVIVORS or TEAM_INFECTED
 bool g_bSurvivorsCompletedMap; // true if survivors reached saferoom/escaped
 //Top XPMod Players
 char g_strTopXPModPlayersStatsText[600];
+//Top Player Leaderboard
+char g_strTopPlayerLeaderboardText[1200];
 //Personal DB Stats
 char g_strPersonalDBStatsText[MAXPLAYERS + 1][600];
 
@@ -130,7 +132,8 @@ int RoundStatsPanel[MAXPLAYERS + 1];
 #define ROUND_STATS_PANEL_LAST_ROUND_TOP_PLAYERS    1
 #define ROUND_STATS_PANEL_PERSONAL_DB_STATS         2
 #define ROUND_STATS_PANEL_XPMOD_TOP_PLAYERS         3
-#define ROUND_STATS_PANEL_DONE                      4
+#define ROUND_STATS_PANEL_TOP_PLAYER_LEADERBOARD    4
+#define ROUND_STATS_PANEL_DONE                      5
 #define ROUND_STATS_PANEL_LIFETIME                  7.0
 
 //Announcer Sound Variables

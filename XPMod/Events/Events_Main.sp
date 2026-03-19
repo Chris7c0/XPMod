@@ -246,6 +246,7 @@ public void OnMapStart()
 	GetXPMConVarValues();
 
 	SQLGetTopXPModPlayerStatistics();
+	SQLGetTopPlayerLeaderboard();
 
 	// Increase the uncommon limit for the NecroTanker and Spitter conjurer abilities
 	// Also, more is better...

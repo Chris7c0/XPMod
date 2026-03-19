@@ -276,6 +276,134 @@ ORDER BY pick_count DESC;
 CREATE OR REPLACE VIEW top10 AS
 SELECT user_name, xp, steam_id FROM users ORDER BY xp DESC LIMIT 10;
 
+CREATE OR REPLACE VIEW top_player_leaderboard AS
+-- Most Survivor Wins (last 30 days)
+(SELECT 'sur_wins' AS stat_type, u.user_name,
+    SUM(ss.round_win = 1) AS stat_value,
+    (SELECT sc2.class_name FROM survivor_stats ss2
+     JOIN survivor_classes sc2 ON ss2.survivor_id = sc2.class_id
+     WHERE ss2.steam_id = ss.steam_id AND ss2.picked_at >= NOW() - INTERVAL 30 DAY
+     GROUP BY ss2.survivor_id ORDER BY COUNT(*) DESC LIMIT 1) AS class_info
+FROM survivor_stats ss
+JOIN users u ON ss.steam_id = u.steam_id
+WHERE ss.picked_at >= NOW() - INTERVAL 30 DAY
+GROUP BY ss.steam_id
+ORDER BY SUM(ss.round_win = 1) DESC
+LIMIT 1)
+UNION ALL
+-- Most CI Kills (last 30 days)
+(SELECT 'sur_ci', u.user_name,
+    SUM(ss.ci_kills),
+    (SELECT sc2.class_name FROM survivor_stats ss2
+     JOIN survivor_classes sc2 ON ss2.survivor_id = sc2.class_id
+     WHERE ss2.steam_id = ss.steam_id AND ss2.picked_at >= NOW() - INTERVAL 30 DAY
+     GROUP BY ss2.survivor_id ORDER BY COUNT(*) DESC LIMIT 1)
+FROM survivor_stats ss
+JOIN users u ON ss.steam_id = u.steam_id
+WHERE ss.picked_at >= NOW() - INTERVAL 30 DAY
+GROUP BY ss.steam_id
+ORDER BY SUM(ss.ci_kills) DESC
+LIMIT 1)
+UNION ALL
+-- Most SI Kills (last 30 days)
+(SELECT 'sur_si', u.user_name,
+    SUM(ss.si_kills),
+    (SELECT sc2.class_name FROM survivor_stats ss2
+     JOIN survivor_classes sc2 ON ss2.survivor_id = sc2.class_id
+     WHERE ss2.steam_id = ss.steam_id AND ss2.picked_at >= NOW() - INTERVAL 30 DAY
+     GROUP BY ss2.survivor_id ORDER BY COUNT(*) DESC LIMIT 1)
+FROM survivor_stats ss
+JOIN users u ON ss.steam_id = u.steam_id
+WHERE ss.picked_at >= NOW() - INTERVAL 30 DAY
+GROUP BY ss.steam_id
+ORDER BY SUM(ss.si_kills) DESC
+LIMIT 1)
+UNION ALL
+-- Most Headshots (last 30 days)
+(SELECT 'sur_hs', u.user_name,
+    SUM(ss.headshots),
+    (SELECT sc2.class_name FROM survivor_stats ss2
+     JOIN survivor_classes sc2 ON ss2.survivor_id = sc2.class_id
+     WHERE ss2.steam_id = ss.steam_id AND ss2.picked_at >= NOW() - INTERVAL 30 DAY
+     GROUP BY ss2.survivor_id ORDER BY COUNT(*) DESC LIMIT 1)
+FROM survivor_stats ss
+JOIN users u ON ss.steam_id = u.steam_id
+WHERE ss.picked_at >= NOW() - INTERVAL 30 DAY
+GROUP BY ss.steam_id
+ORDER BY SUM(ss.headshots) DESC
+LIMIT 1)
+UNION ALL
+-- Most Infected Wins (last 30 days)
+(SELECT 'inf_wins', u.user_name,
+    SUM(ist.round_win = 1),
+    (SELECT CONCAT_WS('/', ic1.class_name, ic2.class_name, ic3.class_name)
+     FROM infected_stats is2
+     JOIN infected_classes ic1 ON is2.infected_id_1 = ic1.class_id
+     JOIN infected_classes ic2 ON is2.infected_id_2 = ic2.class_id
+     JOIN infected_classes ic3 ON is2.infected_id_3 = ic3.class_id
+     WHERE is2.steam_id = ist.steam_id AND is2.picked_at >= NOW() - INTERVAL 30 DAY
+     GROUP BY is2.infected_id_1, is2.infected_id_2, is2.infected_id_3
+     ORDER BY COUNT(*) DESC LIMIT 1)
+FROM infected_stats ist
+JOIN users u ON ist.steam_id = u.steam_id
+WHERE ist.picked_at >= NOW() - INTERVAL 30 DAY
+GROUP BY ist.steam_id
+ORDER BY SUM(ist.round_win = 1) DESC
+LIMIT 1)
+UNION ALL
+-- Most Survivors Killed (last 30 days)
+(SELECT 'inf_kills', u.user_name,
+    SUM(ist.survivor_kills),
+    (SELECT CONCAT_WS('/', ic1.class_name, ic2.class_name, ic3.class_name)
+     FROM infected_stats is2
+     JOIN infected_classes ic1 ON is2.infected_id_1 = ic1.class_id
+     JOIN infected_classes ic2 ON is2.infected_id_2 = ic2.class_id
+     JOIN infected_classes ic3 ON is2.infected_id_3 = ic3.class_id
+     WHERE is2.steam_id = ist.steam_id AND is2.picked_at >= NOW() - INTERVAL 30 DAY
+     GROUP BY is2.infected_id_1, is2.infected_id_2, is2.infected_id_3
+     ORDER BY COUNT(*) DESC LIMIT 1)
+FROM infected_stats ist
+JOIN users u ON ist.steam_id = u.steam_id
+WHERE ist.picked_at >= NOW() - INTERVAL 30 DAY
+GROUP BY ist.steam_id
+ORDER BY SUM(ist.survivor_kills) DESC
+LIMIT 1)
+UNION ALL
+-- Most Infected Damage (last 30 days)
+(SELECT 'inf_dmg', u.user_name,
+    SUM(ist.damage_smoker + ist.damage_boomer + ist.damage_hunter + ist.damage_spitter + ist.damage_jockey + ist.damage_charger + ist.damage_tank),
+    (SELECT CONCAT_WS('/', ic1.class_name, ic2.class_name, ic3.class_name)
+     FROM infected_stats is2
+     JOIN infected_classes ic1 ON is2.infected_id_1 = ic1.class_id
+     JOIN infected_classes ic2 ON is2.infected_id_2 = ic2.class_id
+     JOIN infected_classes ic3 ON is2.infected_id_3 = ic3.class_id
+     WHERE is2.steam_id = ist.steam_id AND is2.picked_at >= NOW() - INTERVAL 30 DAY
+     GROUP BY is2.infected_id_1, is2.infected_id_2, is2.infected_id_3
+     ORDER BY COUNT(*) DESC LIMIT 1)
+FROM infected_stats ist
+JOIN users u ON ist.steam_id = u.steam_id
+WHERE ist.picked_at >= NOW() - INTERVAL 30 DAY
+GROUP BY ist.steam_id
+ORDER BY SUM(ist.damage_smoker + ist.damage_boomer + ist.damage_hunter + ist.damage_spitter + ist.damage_jockey + ist.damage_charger + ist.damage_tank) DESC
+LIMIT 1)
+UNION ALL
+-- Most Tank Damage (last 30 days)
+(SELECT 'tank_dmg', u.user_name,
+    SUM(ist.damage_tank),
+    (SELECT tc.class_name
+     FROM infected_stats is2
+     JOIN tank_classes tc ON is2.tank_chosen = tc.class_id
+     WHERE is2.steam_id = ist.steam_id AND is2.tank_chosen IS NOT NULL AND is2.tank_chosen > 0
+       AND is2.picked_at >= NOW() - INTERVAL 30 DAY
+     GROUP BY is2.tank_chosen
+     ORDER BY COUNT(*) DESC LIMIT 1)
+FROM infected_stats ist
+JOIN users u ON ist.steam_id = u.steam_id
+WHERE ist.picked_at >= NOW() - INTERVAL 30 DAY
+GROUP BY ist.steam_id
+ORDER BY SUM(ist.damage_tank) DESC
+LIMIT 1);
+
 -- Scheduled Events (Jobs)
 SET GLOBAL event_scheduler = ON;
 
