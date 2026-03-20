@@ -27,7 +27,7 @@ Action TestFunction1(int iClient, int args)
 		return Plugin_Handled;
 
 	DebugLog(DEBUG_MODE_TESTING, "T1");
-	//PrintToChat(iClient, "T1");
+	PrintToChat(iClient, "T1");
 
 	char strArg[20][99];
 	for (int i=0; i<20; i++)

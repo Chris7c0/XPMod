@@ -462,15 +462,14 @@ void SetSurvivorModel(int iClient)
 		{
 			SetEntityModel(iClient, "models/survivors/survivor_manager.mdl");
 		}
-
-		// NOTE, when adding zoey here, there could be issues...
-		// This SCS survivor_chat_select plugin changes to a differnt model
-		// https://forums.alliedmods.net/showthread.php?p=2399163#post2399163
-
-		// Probably need a fix for l4d1 survivors on the passing campaign (Francis was specifically mentioned)
-		// Recommended plugin: The Passing CSM Fix 2.0 (prevents game breaking bugs if L4D1 survivors are used in The Passing)
-		// Fixes the bug where players with L4D1 survivors are teleported away or kicked on The Passing
-		// https://forums.alliedmods.net/showthread.php?p=2407497#post2407497 
+		case ZOEY:
+		{
+			SetEntityModel(iClient, "models/survivors/survivor_teenangst.mdl");
+		}
+		case FRANCIS:
+		{
+			SetEntityModel(iClient, "models/survivors/survivor_biker.mdl");
+		}
 	}
 }
 
