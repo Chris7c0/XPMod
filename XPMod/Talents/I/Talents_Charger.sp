@@ -24,7 +24,7 @@ void TalentsLoad_Charger(int iClient)
 	if(g_bHasInfectedHealthBeenSet[iClient] == false)
 	{
 		g_bHasInfectedHealthBeenSet[iClient] = true;
-		SetPlayerMaxHealth(iClient, (g_iSpikedLevel[iClient] * 25) + (g_iHillbillyLevel[iClient] * 35), true);
+		SetPlayerMaxHealth(iClient, (g_iSpikedLevel[iClient] * 40) + (g_iHillbillyLevel[iClient] * 50), true);
 	}
 }
 
@@ -46,7 +46,7 @@ void OnGameFrame_Charger(int iClient)
 						PrintHintText(iClient, "Charging Uppercut");
 						//play sound and particle for charging here
 					}
-					if(g_iSpikedChargeCounter[iClient]>90)
+					if(g_iSpikedChargeCounter[iClient]>45)
 					{
 						g_iSpikedChargeCounter[iClient] = 0;
 						g_bIsSpikedCharged[iClient] = true;
@@ -57,7 +57,7 @@ void OnGameFrame_Charger(int iClient)
 				else if(g_iSpikedChargeCounter[iClient] == 0)
 				{
 					g_iSpikedChargeCounter[iClient] = -1;
-					PrintHintText(iClient, "Wait 30 seconds to charge your Uppercut again");
+					PrintHintText(iClient, "Wait 10 seconds to charge your Uppercut again");
 				}
 			}
 			else
@@ -172,7 +172,7 @@ void EventsHurt_AttackerCharger(Handle hEvent, int attacker, int victim)
 			
 			g_bIsSpikedCharged[attacker] = false;
 			g_bCanChargerSpikedCharge[attacker] = false;
-			CreateTimer(30.0, TimerResetSpikedCharge, attacker,  TIMER_FLAG_NO_MAPCHANGE);
+			CreateTimer(15.0, TimerResetSpikedCharge, attacker,  TIMER_FLAG_NO_MAPCHANGE);
 		}
 	}
 }

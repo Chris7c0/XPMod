@@ -25,8 +25,8 @@ Vanilla L4D2 default health values are used as the base. The standard L4D2 value
   ├─────────┼────────────────────────────────────────────────────────────────────────────────┼─────────┤
   │ Jockey  │ 325 base + (Unfair Lv10 × 35/lvl) = 325 + 450                                  │ 775 HP  │
   ├─────────┼────────────────────────────────────────────────────────────────────────────────┼─────────┤
-  │ Charger │ 600 base + (Spiked Lv10 × 25/lvl) + (Hillbilly Lv10 × 35/lvl) = 600 + 250 +    │ 1,200   │
-  │         │ 350                                                                            │ HP      │
+  │ Charger │ 600 base + (Spiked Lv10 × 40/lvl) + (Hillbilly Lv10 × 50/lvl) = 600 + 400 +    │ 1,500   │
+  │         │ 500                                                                            │ HP      │
   └─────────┴────────────────────────────────────────────────────────────────────────────────┴─────────┘
 
   Jockey Upgrade Variants (override Unfair calculation)

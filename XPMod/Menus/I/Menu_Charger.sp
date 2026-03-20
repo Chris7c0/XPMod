@@ -89,7 +89,7 @@ Action SpikedMenuDraw(int iClient)
 		%s				Spiked Carapace (Level %d)\
 		\n \
 		\nReflect 1 damage per level when meleed\
-		\n+25 max health per level\
+		\n+40 max health per level\
 		\n+33 health per level when knocking survivors\
 		\n \
 		\nCROUCH to charge Uppercut, on next melee:\
@@ -98,7 +98,7 @@ Action SpikedMenuDraw(int iClient)
 		\n \
 		\n \
 		\n					Bind 1: Heavy Carry\
-		\n				3 uses; 30 second cooldown\
+		\n				3 uses; 15 second cooldown\
 		\n \
 		\n+10%% per level to carry distance and speed\
 		\non next charge\
@@ -133,7 +133,7 @@ Action HillbillyMenuDraw(int iClient)
 	SetMenuTitle(menu, "\
 		%s						Hillbilly Madness! (Level %d)\
 		\n \
-		\n+35 Max Health per level\
+		\n+50 Max Health per level\
 		\n+3%% Movement Speed & Carry Range per level\
 		\n-1 Second from Charger cooldown every other level\
 		\n \
