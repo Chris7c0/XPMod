@@ -122,6 +122,7 @@ public Action OnPlayerRunCmd(int iClient, int &iButtons, int &iImpulse, float fV
 	}
 	OnPlayerRunCmd_Smoker(iClient, iButtons);
 	OnPlayerRunCmd_Hunter(iClient, iButtons);
+	bButtonsChanged = OnPlayerRunCmd_Jockey(iClient, iButtons) || bButtonsChanged;
 
 	OnPlayerRunCmd_Tank_Fire(iClient, iButtons);
 	OnPlayerRunCmd_Tank_Ice(iClient, iButtons);

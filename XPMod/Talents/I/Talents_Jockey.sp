@@ -16,7 +16,7 @@ void TalentsLoad_Jockey(int iClient)
 		// Set player health depending on if they are an upgraded jockey
 		switch (g_fJockeyNextSpawnUpgradeLevel[iClient])
 		{
-			case 0: { SetPlayerMaxHealth(iClient, (g_iUnfairLevel[iClient] * 35), true); }
+			case 0: { SetPlayerMaxHealth(iClient, (g_iUnfairLevel[iClient] * 45), true); }
 			case 1: { PrintToChat(iClient, "\x03[XPMod] \x05You've Become \x04High Health Jockey"); SetPlayerMaxHealth(iClient, 1000); }
 			case 2: { PrintToChat(iClient, "\x03[XPMod] \x05You've Become \x04Super Jockey"); SetPlayerMaxHealth(iClient, 1500); g_bHasSuperJockeySpeed[iClient] = true; }
 			case 3: { PrintToChat(iClient, "\x03[XPMod] \x05You've Become \x04Supreme Jockey"); SetPlayerMaxHealth(iClient, 2000); g_bHasSuperJockeySpeed[iClient] = true; }
@@ -30,7 +30,12 @@ void TalentsLoad_Jockey(int iClient)
 	g_fJockeyRideDistance[iClient]			= 0.0;
 	g_fJockeyNextSpawnUpgradeLevel[iClient] = 0;
 
-	
+	// Tweakers Twitch
+	g_bJockeyTwitchActive[iClient] = false;
+	g_bJockeyTwitchCoolingDown[iClient] = false;
+	g_iJockeyTwitchChargeUses[iClient] = 0;
+	g_bJockeyTwitchWaitForRelease[iClient] = false;
+	delete g_hTimer_JockeyTwitchRegenerate[iClient];
 }
 
 void OnGameFrame_Jockey(int iClient)
@@ -126,6 +131,11 @@ void Event_JockeyRide_Jockey(int iAttacker, int iVictim)
 	g_iJockeyVictim[iAttacker] = iVictim;
 	// Store the Jockey's location for determining drag distance
 	GetClientAbsOrigin(iAttacker, g_xyzJockeyStartRideLocation[iAttacker]);
+
+	// Tweakers Twitch: cap charges to riding max on ride start
+	int iRemainingTwitches = JOCKEY_TWITCH_TOTAL_CHARGES - g_iJockeyTwitchChargeUses[iAttacker];
+	if (iRemainingTwitches > JOCKEY_TWITCH_RIDING_MAX_CHARGES)
+		g_iJockeyTwitchChargeUses[iAttacker] = JOCKEY_TWITCH_TOTAL_CHARGES - JOCKEY_TWITCH_RIDING_MAX_CHARGES;
 
 	if (g_iUnfairLevel[iAttacker] > 0)
 	{
@@ -247,6 +257,124 @@ void HandleTier2Rewards(int iClient, int iVictim)
 			PrintToChatAll("\x03[XPMod] \x04%N\x05 Rode %N.\nCommon Infected Temporarily Do More Damage.", iClient, iVictim);
 			g_bCommonInfectedDoMoreDamage = true;
 			CreateTimer(30.0, TimerResetZombieDamage, 0, TIMER_FLAG_NO_MAPCHANGE);
+		}
+	}
+}
+
+// Tweakers Twitch - OnPlayerRunCmd handler
+bool OnPlayerRunCmd_Jockey(int iClient, int &iButtons)
+{
+	if (g_iInfectedCharacter[iClient] != JOCKEY ||
+		g_iMutatedLevel[iClient] <= 0 ||
+		IsFakeClient(iClient))
+		return false;
+
+	// Require SHIFT to be released before allowing next twitch
+	if (g_bJockeyTwitchWaitForRelease[iClient])
+	{
+		if (!(iButtons & IN_SPEED))
+			g_bJockeyTwitchWaitForRelease[iClient] = false;
+	}
+
+	// Trigger: WALK + directional movement
+	int iCurrentCharges = JOCKEY_TWITCH_TOTAL_CHARGES - g_iJockeyTwitchChargeUses[iClient];
+	if (iCurrentCharges < 0) iCurrentCharges = 0;
+	if (g_bJockeyIsRiding[iClient] && iCurrentCharges > JOCKEY_TWITCH_RIDING_MAX_CHARGES)
+		iCurrentCharges = JOCKEY_TWITCH_RIDING_MAX_CHARGES;
+
+	if (g_bJockeyTwitchWaitForRelease[iClient] == false &&
+		iCurrentCharges > 0 &&
+		g_bJockeyTwitchCoolingDown[iClient] == false &&
+		iButtons & IN_SPEED &&
+		(iButtons & IN_FORWARD || iButtons & IN_BACK || iButtons & IN_MOVELEFT || iButtons & IN_MOVERIGHT) &&
+		((g_bJockeyIsRiding[iClient] && RunClientChecks(g_iJockeysVictim[iClient]) && (GetEntityFlags(g_iJockeysVictim[iClient]) & FL_ONGROUND)) ||
+		(!g_bJockeyIsRiding[iClient] && (GetEntityFlags(iClient) & FL_ONGROUND))))
+	{
+		if (IsClientGrappled(iClient) == false || g_bJockeyIsRiding[iClient] == true)
+		{
+			JockeyTwitch(iClient);
+			g_bJockeyTwitchWaitForRelease[iClient] = true;
+		}
+	}
+
+	// Disable walk key while twitching
+	if (g_bJockeyTwitchActive[iClient] == true && iButtons & IN_SPEED)
+	{
+		iButtons &= ~IN_SPEED;
+		return true;
+	}
+
+	return false;
+}
+
+void JockeyTwitch(int iClient)
+{
+	g_bJockeyTwitchCoolingDown[iClient] = true;
+	CreateTimer(JOCKEY_TWITCH_COOLDOWN, TimerJockeyTwitchCooldownReset, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
+	g_bJockeyTwitchActive[iClient] = true;
+
+	if (g_bJockeyIsRiding[iClient] && RunClientChecks(g_iJockeysVictim[iClient]))
+	{
+		// While riding, boost the ride speed on the victim
+		g_fJockeyRideSpeed[g_iJockeysVictim[iClient]] = JOCKEY_TWITCH_MOVEMENT_SPEED_RIDING;
+		SetClientSpeed(g_iJockeysVictim[iClient]);
+		CreateTimer(JOCKEY_TWITCH_DURATION_RIDING, TimerJockeyTwitchInactive, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	}
+	else
+	{
+		// On foot, boost the Jockey's own speed
+		SetClientSpeed(iClient);
+		CreateTimer(JOCKEY_TWITCH_DURATION, TimerJockeyTwitchInactive, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	}
+
+	EmitSoundToClient(iClient, SOUND_LOUIS_TELEPORT_USE);
+	AttachParticle(iClient, "charger_motion_blur", 1.5, 0.0);
+
+	HandleJockeyTwitchChargeUses(iClient);
+}
+
+void HandleJockeyTwitchChargeUses(int iClient)
+{
+	g_iJockeyTwitchChargeUses[iClient]++;
+	PrintJockeyTwitchCharges(iClient);
+
+	float fRegenTime = g_bJockeyIsRiding[iClient] ? JOCKEY_TWITCH_CHARGE_REGENERATE_TIME_RIDING : JOCKEY_TWITCH_CHARGE_REGENERATE_TIME;
+	delete g_hTimer_JockeyTwitchRegenerate[iClient];
+	g_hTimer_JockeyTwitchRegenerate[iClient] = CreateTimer(fRegenTime, TimerJockeyTwitchChargeRegenerate, iClient, TIMER_REPEAT);
+}
+
+void PrintJockeyTwitchCharges(int iClient)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false ||
+		IsFakeClient(iClient) == true)
+		return;
+
+	int iCurrentCharges = JOCKEY_TWITCH_TOTAL_CHARGES - g_iJockeyTwitchChargeUses[iClient];
+	if (iCurrentCharges < 0) iCurrentCharges = 0;
+	if (g_bJockeyIsRiding[iClient] && iCurrentCharges > JOCKEY_TWITCH_RIDING_MAX_CHARGES)
+		iCurrentCharges = JOCKEY_TWITCH_RIDING_MAX_CHARGES;
+
+	if (g_bJockeyIsRiding[iClient])
+	{
+		switch (iCurrentCharges)
+		{
+			case 0: PrintHintText(iClient, "Tweakers Twitch: ( ░░░░░░░░░░ )");
+			case 1: PrintHintText(iClient, "Tweakers Twitch: ( ▓▓▓▓▓░░░░░ )");
+			case 2: PrintHintText(iClient, "Tweakers Twitch: ( ▓▓▓▓▓▓▓▓▓▓ )");
+		}
+	}
+	else
+	{
+		switch (iCurrentCharges)
+		{
+			case 0: PrintHintText(iClient, "Tweakers Twitch: ( ░░░░░░░░░░░░░░░░░░░░ )");
+			case 1: PrintHintText(iClient, "Tweakers Twitch: ( ▓▓▓▓░░░░░░░░░░░░░░░░ )");
+			case 2: PrintHintText(iClient, "Tweakers Twitch: ( ▓▓▓▓▓▓▓▓░░░░░░░░░░░░ )");
+			case 3: PrintHintText(iClient, "Tweakers Twitch: ( ▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░ )");
+			case 4: PrintHintText(iClient, "Tweakers Twitch: ( ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░ )");
+			case 5: PrintHintText(iClient, "Tweakers Twitch: ( ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ )");
 		}
 	}
 }

@@ -85,11 +85,60 @@ Action TimerSetJockeyCooldown(Handle timer, int iClient)
 
 Action TimerJockeyJumpReset(Handle timer, int iClient)
 {
-	if (RunClientChecks(iClient) && 
-		IsPlayerAlive(iClient) && 
-		IsFakeClient(iClient) ==  false && 
+	if (RunClientChecks(iClient) &&
+		IsPlayerAlive(iClient) &&
+		IsFakeClient(iClient) ==  false &&
 		g_bJockeyIsRiding[iClient])
 		g_bCanJockeyJump[iClient] = true;
-	
+
 	return Plugin_Stop;
+}
+
+// Tweakers Twitch Timers
+Action TimerJockeyTwitchCooldownReset(Handle timer, int iClient)
+{
+	g_bJockeyTwitchCoolingDown[iClient] = false;
+	return Plugin_Stop;
+}
+
+Action TimerJockeyTwitchInactive(Handle timer, int iClient)
+{
+	g_bJockeyTwitchActive[iClient] = false;
+
+	if (g_bJockeyIsRiding[iClient] && RunClientChecks(g_iJockeysVictim[iClient]))
+	{
+		// Restore the victim's ride speed to its normal value
+		g_fJockeyRideSpeed[g_iJockeysVictim[iClient]] = 1.0 + (g_iErraticLevel[iClient] * 0.03);
+		SetClientSpeed(g_iJockeysVictim[iClient]);
+	}
+	else
+	{
+		SetClientSpeed(iClient);
+	}
+
+	return Plugin_Stop;
+}
+
+Action TimerJockeyTwitchChargeRegenerate(Handle timer, int iClient)
+{
+	g_iJockeyTwitchChargeUses[iClient]--;
+
+	if (RunClientChecks(iClient) && IsPlayerAlive(iClient))
+	{
+		PrintJockeyTwitchCharges(iClient);
+
+		EmitSoundToClient(iClient, SOUND_LOUIS_TELEPORT_USE_REGEN);
+	}
+
+	// Check if fully recharged (respect riding cap)
+	int iRemaining = JOCKEY_TWITCH_TOTAL_CHARGES - g_iJockeyTwitchChargeUses[iClient];
+	int iMax = g_bJockeyIsRiding[iClient] ? JOCKEY_TWITCH_RIDING_MAX_CHARGES : JOCKEY_TWITCH_TOTAL_CHARGES;
+
+	if (iRemaining >= iMax || g_iJockeyTwitchChargeUses[iClient] <= 0)
+	{
+		g_hTimer_JockeyTwitchRegenerate[iClient] = null;
+		return Plugin_Stop;
+	}
+
+	return Plugin_Continue;
 }

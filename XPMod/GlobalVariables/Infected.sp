@@ -299,6 +299,20 @@ float g_fJockeyRideSpeedVanishingActBoost[MAXPLAYERS + 1] = {0.0, ...};
 //#define JOCKEY_PISS_SPAWN_JIMMY_CHANCE       10 //%
 int g_fJockeyNextSpawnUpgradeLevel[MAXPLAYERS + 1];
 bool g_bHasSuperJockeySpeed[MAXPLAYERS + 1];
+// Tweakers Twitch (Mutated Tenacity dash)
+#define JOCKEY_TWITCH_TOTAL_CHARGES                5
+#define JOCKEY_TWITCH_RIDING_MAX_CHARGES           2        // Max dashes available while riding
+#define JOCKEY_TWITCH_MOVEMENT_SPEED               4.0      // Much shorter burst than Louis's 8.0
+#define JOCKEY_TWITCH_MOVEMENT_SPEED_RIDING        6.0      // Gives much less distance while riding
+#define JOCKEY_TWITCH_DURATION                     0.10     // Very short burst
+#define JOCKEY_TWITCH_DURATION_RIDING              0.08     // Even shorter while riding
+#define JOCKEY_TWITCH_COOLDOWN                     0.25     // Rapid recharge between twitches
+#define JOCKEY_TWITCH_CHARGE_REGENERATE_TIME       3.0      // Regen per charge on foot
+#define JOCKEY_TWITCH_CHARGE_REGENERATE_TIME_RIDING 6.0     // Regen per charge while riding
+bool g_bJockeyTwitchActive[MAXPLAYERS + 1] = {false, ...};
+bool g_bJockeyTwitchCoolingDown[MAXPLAYERS + 1] = {false, ...};
+int g_iJockeyTwitchChargeUses[MAXPLAYERS + 1] = {0, ...};
+bool g_bJockeyTwitchWaitForRelease[MAXPLAYERS + 1] = {false, ...};
 
 
 // Charger

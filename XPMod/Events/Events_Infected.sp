@@ -284,6 +284,13 @@ Action Event_JockeyRideEnd(Handle hEvent, const char[] strName, bool bDontBroadc
 	g_bJockeyIsRiding[rider] = false;
 	g_bJockeyGrappled[victim] = false;
 
+	// Tweakers Twitch: restart regen at the on-foot rate after dismount
+	if (g_iJockeyTwitchChargeUses[rider] > 0)
+	{
+		delete g_hTimer_JockeyTwitchRegenerate[rider];
+		g_hTimer_JockeyTwitchRegenerate[rider] = CreateTimer(JOCKEY_TWITCH_CHARGE_REGENERATE_TIME, TimerJockeyTwitchChargeRegenerate, rider, TIMER_REPEAT);
+	}
+
 	g_fJockeyRideSpeed[victim] = 1.0;
 	g_fJockeyRideSpeedVanishingActBoost[victim] = 0.0;
 	SetClientSpeed(victim);

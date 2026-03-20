@@ -316,13 +316,20 @@ void SetClientSpeedJockey(int iClient, float &fSpeed)
 		g_iClientInfectedClass2[iClient] != JOCKEY &&
 		g_iClientInfectedClass3[iClient] != JOCKEY))
 		return;
-	
+
+	// Tweakers Twitch dash speed (on foot only, riding boosts victim's ride speed)
+	if (g_bJockeyTwitchActive[iClient] == true)
+	{
+		fSpeed = JOCKEY_TWITCH_MOVEMENT_SPEED;
+		return;
+	}
+
 	if (g_iUnfairLevel[iClient] > 0)
 		fSpeed += (g_iUnfairLevel[iClient] * 0.07);
 
 	if (g_bHasSuperJockeySpeed[iClient] == true)
 		fSpeed += (g_iUnfairLevel[iClient] * 0.03);
-	
+
 	// PrintToChat(iClient, "SetClientSpeedJockey: %f", fSpeed);
 }
 

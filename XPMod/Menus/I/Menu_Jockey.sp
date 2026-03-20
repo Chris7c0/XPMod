@@ -57,6 +57,13 @@ Action MutatedMenuDraw(int iClient)
 		\n+1 melee damage every 3 levels\
 		\n+5%% lunge distance per level\
 		\n-0.35 seconds from all lunge cooldowns per level\
+		\n \
+		\n			  Tweakers Twitch\
+		\n				  5 charges\
+		\n \
+		\nShort burst twitch (WALK + move direction)\
+		\nShorter distance while riding (Limited to 2 twitches)\
+		\nTwitches recharge at the half the rate while riding\
 		\n ",
 		strStartingNewLines,
 		g_iMutatedLevel[iClient]);
@@ -64,7 +71,7 @@ Action MutatedMenuDraw(int iClient)
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -134,7 +141,7 @@ Action UnfairMenuDraw(int iClient)
 	SetMenuTitle(menu, "\
 		%s	Unfair Advantage (Level %d)\
 		\n \
-		\n+35 max health per level\
+		\n+45 max health per level\
 		\n+7%% movement speed per level\
 		\n \
 		\n \

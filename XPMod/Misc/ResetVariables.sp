@@ -361,7 +361,11 @@ void ResetClientVariablesForRound(int iClient)
 	g_bCanJockeyJump[iClient] = false;
 	g_fJockeyRideSpeed[iClient] = 1.0;
 	g_fJockeyRideSpeedVanishingActBoost[iClient] = 0.0;
-	
+	g_bJockeyTwitchActive[iClient] = false;
+	g_bJockeyTwitchCoolingDown[iClient] = false;
+	g_iJockeyTwitchChargeUses[iClient] = 0;
+	g_bJockeyTwitchWaitForRelease[iClient] = false;
+
 	//Spitter
 	g_bAdhesiveGooActive[iClient] = false;
 	g_bBlockGooSwitching[iClient] = false;
@@ -570,4 +574,5 @@ void DeleteAllGlobalTimerHandles(int iClient)
 	delete g_hTimer_IceTankColdSlowAuraEffectUpdate[iClient];
 	delete g_hTimer_WingDashChargeRegenerate[iClient];
 	delete g_hTimer_VampiricTankCanRechargeStamina[iClient];
+	delete g_hTimer_JockeyTwitchRegenerate[iClient];
 }
