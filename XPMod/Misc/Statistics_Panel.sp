@@ -100,11 +100,11 @@ void ShowRoundStatsXPModTopPlayers(int iClient)
 
 	char strStatsText[700];
 	Format(strStatsText, sizeof(strStatsText),
-		"\n \n \n \n \n \n \n \
+		"\n \n \
 		\nTop XPMod Players\
 		\n \
 		%s\
- 		\n ",
+ 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		g_strTopXPModPlayersStatsText);
 	
 	RoundStatsMenuDraw(iClient, strStatsText);

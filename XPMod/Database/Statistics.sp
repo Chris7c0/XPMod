@@ -51,7 +51,7 @@ void SQLGetTopXPModPlayerStatisticsCallback(Handle owner, Handle hQuery, const c
 
 				// Format and add row data
 				char strRowData[60];
-				Format(strRowData, sizeof(strRowData), "%2i) %25s\n	XP: %s", i + 1, strPlayerName, strXP);
+				Format(strRowData, sizeof(strRowData), "%i) %25s\n	%s XP", i + 1, strPlayerName, strXP);
 				StrCat(g_strTopXPModPlayersStatsText, sizeof(g_strTopXPModPlayersStatsText), strRowData);
 			}
 			else
