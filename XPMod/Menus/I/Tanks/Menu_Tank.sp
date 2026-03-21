@@ -114,10 +114,30 @@ void ChooseTankMenuHandler(Menu menu, MenuAction action, int iClient, int itemNu
 	{
 		switch (itemNum)
 		{
-			case 0: LoadFireTankTalents(iClient);
-			case 1:	LoadIceTankTalents(iClient);
-			case 2:	LoadNecroTankerTalents(iClient);
-			case 3:	LoadVampiricTankTalents(iClient);
+			case 0:
+			{
+				LoadFireTankTalents(iClient);
+				g_bTankInfoMenuFromSelection[iClient] = true;
+				TankMenuDrawFire(iClient);
+			}
+			case 1:
+			{
+				LoadIceTankTalents(iClient);
+				g_bTankInfoMenuFromSelection[iClient] = true;
+				TankMenuDrawIce(iClient);
+			}
+			case 2:
+			{
+				LoadNecroTankerTalents(iClient);
+				g_bTankInfoMenuFromSelection[iClient] = true;
+				TankMenuDrawNecroTanker(iClient);
+			}
+			case 3:
+			{
+				LoadVampiricTankTalents(iClient);
+				g_bTankInfoMenuFromSelection[iClient] = true;
+				TankMenuDrawVampiric(iClient);
+			}
 		}
 	}
 }
@@ -130,6 +150,8 @@ void TankTopMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 	}
 	else if (action == MenuAction_Select)
 	{
+		g_bTankInfoMenuFromSelection[iClient] = false;
+
 		switch (itemNum)
 		{
 			case 0: TankMenuDrawFire(iClient);

@@ -8,19 +8,19 @@ Action TankMenuDrawFire(int iClient)
 	SetMenuTitle(menu,"FIRE TANK\
         \n\"MoRE PAiN?! MOrE FUUuN!!\"\
         \n \
-        \n Passives\
-        \n - %i HP | Good At All Ranges\
-        \n - High Damage Output, Immune To Fire\
-        \n - %i-%i%% Faster (Pain = Speed)\
-        \n - 20%% Chance To Ignite Victim On Punch\
-        \n - Lose %i HP/Sec\
-        \n - Fire Punch every %i hits\
-        \n    - \"PuNCh FAcE...MAkE BoOM!\"\
+        \nPassives\
+        \n- %i HP | Good At All Ranges\
+        \n- High Damage Output, Immune To Fire\
+        \n- %i-%i%% Faster (Pain = Speed)\
+        \n- 20%% Chance To Ignite Victim On Punch\
+        \n- Lose %i HP/Sec\
+        \n- Fire Punch every %i hits\
+        \n	- \"PuNCh FAcE...MAkE BoOM!\"\
         \n \
-        \n Actives\
-        \n - Throw Fire Rocks\
-        \n - [WALK + Move] Fire Dash\
-        \n    - Lose %i HP\
+        \nActives\
+        \n- Throw Fire Rocks\
+        \n- [WALK + Move] Fire Dash\
+        \n	- Lose %i HP\
         \n ",
         TANK_HEALTH_FIRE,
         iStartSpeedPct,
@@ -29,10 +29,13 @@ Action TankMenuDrawFire(int iClient)
         FIRE_TANK_FIRE_PUNCH_EVERY_N_HITS,
         FIRE_TANK_DASH_HP_COST);
 	
-	AddMenuItem(menu, "option1", "Back");
+	if (g_bTankInfoMenuFromSelection[iClient])
+		AddMenuItem(menu, "option1", "Close");
+	else
+		AddMenuItem(menu, "option1", "Back");
 
 	SetMenuExitButton(menu, false);
-	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
+	DisplayMenu(menu, iClient, g_bTankInfoMenuFromSelection[iClient] ? 20 : MENU_TIME_FOREVER);
 
 	return Plugin_Handled;
 }
@@ -43,13 +46,20 @@ void TankMenuHandlerFire(Menu menu, MenuAction action, int iClient, int itemNum)
 	{
 		delete menu;
 	}
-	else if (action == MenuAction_Select) 
+	else if (action == MenuAction_Select)
 	{
-		switch (itemNum)
+		if (g_bTankInfoMenuFromSelection[iClient])
 		{
-			case 0: //Back
+			g_bTankInfoMenuFromSelection[iClient] = false;
+		}
+		else
+		{
+			switch (itemNum)
 			{
-				TankTopMenuDraw(iClient);
+				case 0: //Back
+				{
+					TankTopMenuDraw(iClient);
+				}
 			}
 		}
 	}

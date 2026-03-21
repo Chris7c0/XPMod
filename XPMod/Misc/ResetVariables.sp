@@ -464,6 +464,7 @@ void ResetAllVariables(int iClient)
 
 	//Reset Tank (Needed here for changing teams)
 	g_iTankChosen[iClient] = TANK_NOT_CHOSEN;
+	g_bTankInfoMenuFromSelection[iClient] = false;
 	ResetAllTankVariables(iClient);
 }
 

@@ -89,3 +89,4 @@ int g_iHillbillyLevel[MAXPLAYERS +1];
 
 //Tank
 int g_iTankChosen[MAXPLAYERS + 1];
+bool g_bTankInfoMenuFromSelection[MAXPLAYERS + 1];
