@@ -237,7 +237,7 @@ Action MagnumMenuDraw(int iClient)
 		\nLevel 1:\
 		\n+3%%%% movement speed per level\
 		\nMax clip size is 4 (Magnum Only)\
-		\n+100%%%% damage per level (Magnum Only)\
+		\n+75%%%% damage per level (Magnum Only)\
 		\n \
 		\nLevel 5:\
 		\n+15%%%% reload speed for infected hit that clip (Magnum only)\

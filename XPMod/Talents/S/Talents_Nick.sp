@@ -537,7 +537,7 @@ void EventsHurt_AttackerNick(Handle hEvent, int iAttacker, int iVictim)
 			int hp = GetPlayerHealth(iVictim);
 			int dmg = GetEventInt(hEvent,"dmg_health");
 
-			dmg = RoundToNearest(dmg * (g_iMagnumLevel[iAttacker] * 0.65));
+			dmg = RoundToNearest(dmg * (g_iMagnumLevel[iAttacker] * 0.75));
 			dmg = CalculateDamageTakenForVictimTalents(iVictim, dmg, weaponclass);
 
 			SetPlayerHealth(iVictim, iAttacker,hp - dmg);
