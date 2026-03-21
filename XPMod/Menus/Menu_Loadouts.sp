@@ -61,8 +61,8 @@ Action LoadoutMenuDraw(int iClient)
 		\nHealth/Ammo:	 %s\
 		\nHealth Boost:	  %s\
 		\nLaser Sight:		%s\
-		\n_	_	_	_	_	_	_	_	_	_	_	_\
-		\nCost Per Round:	%d\
+		\n \
+		\nCost: %d XP\
 		\n ",
 		strStartingNewLines,
 		g_iClientUsableXP,
