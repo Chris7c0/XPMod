@@ -429,14 +429,17 @@ void SummonNecroTankerPunchZombies(int iAttackerTank, int iVictim)
 	int iRoll = GetRandomInt(1,100);
 	
 	// Testing different rolls
-	//iRoll = 20;
+	// iRoll = 70;
 
-	//Dont spawn anything
-	if (iRoll > 70)
+	// Raining Blood - 10% chance
+	if (iRoll > 65 && iRoll <= 75)
+	{
+		NecroTankerRainingBlood();
 		return;
+	}
 
 	// Spawn CI around victim
-	if (iRoll > 35 && iRoll <= 75)
+	if (iRoll > 35 && iRoll < 65)
 	{
 		// Roll the dice for Big or Small
 		int iBigOrSmall = GetRandomFloat(0.0, 1.0) <= NECROTANKER_ENHANCE_CI_CHANCE_PUNCH ? CI_SMALL_OR_BIG_RANDOM : CI_SMALL_OR_BIG_NONE;
@@ -465,6 +468,77 @@ void SummonNecroTankerPunchZombies(int iAttackerTank, int iVictim)
 		SpawnSpecialInfected(iAttackerTank, INFECTED_NAME[WITCH]);
 		return;
 	}
+}
+
+void NecroTankerRainingBlood()
+{
+	PrintToChatAll("\x04Raining blood, from a lacerated sky.");
+
+	Handle hDataPack = CreateDataPack();
+	WritePackCell(hDataPack, 0); // tick counter
+	CreateTimer(1.0, Timer_NecroTankerRainingBlood, hDataPack, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+}
+
+Action Timer_NecroTankerRainingBlood(Handle timer, Handle hDataPack)
+{
+	ResetPack(hDataPack);
+	int iTick = ReadPackCell(hDataPack);
+
+	if (iTick >= 10 || g_bGameFrozen == true)
+	{
+		CloseHandle(hDataPack);
+		return Plugin_Stop;
+	}
+
+	// Increment tick counter
+	ResetPack(hDataPack);
+	WritePackCell(hDataPack, iTick + 1);
+
+	// Spawn CEDA Enhanced Necro UI above each alive survivor
+	for (int iClient = 1; iClient <= MaxClients; iClient++)
+	{
+		if (RunClientChecks(iClient) == false ||
+			g_iClientTeam[iClient] != TEAM_SURVIVORS ||
+			IsPlayerAlive(iClient) == false)
+			continue;
+
+		// Get the survivor's position
+		float xyzSurvivorPosition[3];
+		GetClientAbsOrigin(iClient, xyzSurvivorPosition);
+
+		// Trace straight up to find the ceiling/skybox
+		// Source angles: pitch -90 = straight up (index 0 = pitch, 1 = yaw, 2 = roll)
+		float xyzUpward[3];
+		xyzUpward[0] = -90.0;
+		xyzUpward[1] = 0.0;
+		xyzUpward[2] = 0.0;
+		Handle trace = TR_TraceRayFilterEx(xyzSurvivorPosition, xyzUpward, MASK_SHOT, RayType_Infinite, TraceEntityFilter_NotAPlayer, iClient);
+
+		float xyzSpawnPosition[3];
+		if (TR_DidHit(trace))
+		{
+			TR_GetEndPosition(xyzSpawnPosition, trace);
+			// Pull down from the ceiling so CI spawns below it
+			xyzSpawnPosition[2] -= 80.0;
+		}
+		else
+		{
+			// Fallback: spawn high above the survivor
+			xyzSpawnPosition[0] = xyzSurvivorPosition[0];
+			xyzSpawnPosition[1] = xyzSurvivorPosition[1];
+			xyzSpawnPosition[2] = xyzSurvivorPosition[2] + 800.0;
+		}
+		CloseHandle(trace);
+
+		// Randomize X and Y slightly so they don't all stack
+		xyzSpawnPosition[0] += GetRandomFloat(-50.0, 50.0);
+		xyzSpawnPosition[1] += GetRandomFloat(-50.0, 50.0);
+
+		// Spawn CEDA Necro Enhanced UI
+		SpawnCommonInfected(xyzSpawnPosition, 1, UNCOMMON_CI_CEDA, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_NECRO, false, 2.0);
+	}
+
+	return Plugin_Continue;
 }
 
 void DisplayNecroTankerManaMeter(int iClient)

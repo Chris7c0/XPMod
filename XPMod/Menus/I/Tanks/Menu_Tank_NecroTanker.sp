@@ -13,20 +13,17 @@ Action TankMenuDrawNecroTanker(int iClient)
         \n - 15%% Faster\
         \n - Immune to Bile\
         \n - Hit Survivors To Summon Infected\
-        \n	+70%% CI/UI Mob\
-        \n	+5%% Witch\
         \n \
         \n Actives\
         \n - Mana Pool (Hits Regen Mana)\
         \n - [Hold USE] Summon CI\
         \n - [Hold RELOAD] Summon Enhanced CI\
-        \n - [WALK] Teleport (%i Mana)\
+        \n - [WALK] Teleport\
         \n - Throw Boomers!",
         TANK_HEALTH_NECROTANKER,
         NECROTANKER_MAX_HEALTH,
         NECROTANKER_CONSUME_COMMON_HP,
-        NECROTANKER_CONSUME_UNCOMMON_HP,
-        NECROTANKER_MANA_COST_TELEPORT);
+        NECROTANKER_CONSUME_UNCOMMON_HP);
 	
 	AddMenuItem(menu, "option1", "Back");
         
