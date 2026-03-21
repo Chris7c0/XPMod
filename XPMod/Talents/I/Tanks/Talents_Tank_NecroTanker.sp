@@ -42,7 +42,94 @@ void LoadNecroTankerTalents(int iClient)
 
 void ResetAllTankVariables_NecroTanker(int iClient)
 {
-	SuppressNeverUsedWarning(iClient);
+	g_bTeleportCoolingDown[iClient] = false;
+}
+
+void OnPlayerRunCmd_Tank_NecroTanker(int iClient, int iButtons)
+{
+	SuppressNeverUsedWarning(iButtons);
+
+	if (g_iTankChosen[iClient] != TANK_NECROTANKER)
+		return;
+
+	// Only trigger on the frame WALK is first pressed, not while held
+	if (GetEntProp(iClient, Prop_Data, "m_afButtonPressed") & IN_SPEED)
+		NecroTankerTeleport(iClient);
+}
+
+void NecroTankerTeleport(int iClient)
+{
+	if (g_bGameFrozen == true)
+	{
+		PrintHintText(iClient, "You cannot teleport while the round is frozen.");
+		return;
+	}
+
+	if (g_iClientTeam[iClient] != TEAM_INFECTED || RunClientChecks(iClient) == false || IsPlayerAlive(iClient) == false)
+		return;
+
+	if (g_bTeleportCoolingDown[iClient] == true)
+	{
+		PrintHintText(iClient, "You must wait %i seconds between teleportation.", RoundToNearest(NECROTANKER_TELEPORT_COOLDOWN));
+		return;
+	}
+
+	if (g_iNecroTankerManaPool[iClient] < NECROTANKER_MANA_COST_TELEPORT)
+	{
+		PrintHintText(iClient, "Not enough mana to teleport. (%i/%i)", g_iNecroTankerManaPool[iClient], NECROTANKER_MANA_COST_TELEPORT);
+		return;
+	}
+
+	float xyzOriginalLocation[3], xyzEndLocation[3], xyzEyeAngles[3];
+	GetClientAbsOrigin(iClient, xyzOriginalLocation);
+	if (GetCrosshairPosition(iClient, xyzEndLocation, xyzEyeAngles) == false)
+	{
+		PrintHintText(iClient, "Teleport failed. Aim at valid world geometry, not sky or outside the map.");
+		return;
+	}
+
+	//Get direction in which iClient is facing, to push out from this vector
+	float vDir[3];
+	GetAngleVectors(xyzEyeAngles, vDir, NULL_VECTOR, NULL_VECTOR);
+
+	xyzEndLocation[0] -= (vDir[0] * 50.0);
+	xyzEndLocation[1] -= (vDir[1] * 50.0);
+
+	float fDistance = GetVectorDistance(xyzOriginalLocation, xyzEndLocation, false) * 0.08;
+
+	if (fDistance > NECROTANKER_TELEPORT_MAX_DISTANCE)
+	{
+		PrintHintText(iClient, "You cannot teleport beyond %.0f ft.", NECROTANKER_TELEPORT_MAX_DISTANCE);
+		return;
+	}
+
+	TeleportEntity(iClient, xyzEndLocation, NULL_VECTOR, NULL_VECTOR);
+	EmitSoundToAll(SOUND_WARP_LIFE, iClient, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, xyzEndLocation, NULL_VECTOR, true, 0.0);
+	EmitSoundToAll(SOUND_WARP, SOUND_FROM_PLAYER, SNDCHAN_AUTO, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, xyzEndLocation, NULL_VECTOR, true, 0.0);
+
+	// Pay mana cost
+	g_iNecroTankerManaPool[iClient] -= NECROTANKER_MANA_COST_TELEPORT;
+	if (g_iNecroTankerManaPool[iClient] < 0)
+		g_iNecroTankerManaPool[iClient] = 0;
+
+	// Disable boomer throw if not enough mana
+	if (g_iNecroTankerManaPool[iClient] < NECROTANKER_MANA_COST_BOOMER_THROW)
+		SetSIAbilityCooldown(iClient, 99999.0);
+
+	DisplayNecroTankerManaMeter(iClient);
+
+	// Store positions for stuck check
+	g_fTeleportOriginalPositionX[iClient] = xyzOriginalLocation[0];
+	g_fTeleportOriginalPositionY[iClient] = xyzOriginalLocation[1];
+	g_fTeleportOriginalPositionZ[iClient] = xyzOriginalLocation[2];
+	g_fTeleportEndPositionX[iClient] = xyzEndLocation[0];
+	g_fTeleportEndPositionY[iClient] = xyzEndLocation[1];
+	g_fTeleportEndPositionZ[iClient] = xyzEndLocation[2];
+	CreateTimer(3.0, CheckIfStuck, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
+	// Cooldown
+	g_bTeleportCoolingDown[iClient] = true;
+	CreateTimer(NECROTANKER_TELEPORT_COOLDOWN, ReAllowTeleport, iClient, TIMER_FLAG_NO_MAPCHANGE);
 }
 
 void SetClientSpeedTankNecroTanker(int iClient, float &fSpeed)
@@ -58,8 +145,8 @@ void OnGameFrame_Tank_NecroTanker(int iClient)
 	int buttons;
 	buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
 	
-	//Check to see if ducking and not attacking before starting the charge
-	if((buttons & IN_SPEED || buttons & IN_DUCK) && !(buttons & IN_ATTACK2)) // && !(buttons & IN_ATTACK)
+	//Check to see if holding USE or RELOAD and not attacking before starting the charge
+	if((buttons & IN_USE || buttons & IN_RELOAD) && !(buttons & IN_ATTACK2)) // && !(buttons & IN_ATTACK)
 	{
 		// CheckIfTankMovedWhileChargingAndIncrementCharge(iClient);
 		g_iTankCharge[iClient]++;
@@ -67,9 +154,9 @@ void OnGameFrame_Tank_NecroTanker(int iClient)
 		//Display the first message to the player while he is charging up
 		if(g_iTankCharge[iClient] == 30 && IsFakeClient(iClient) == false)
 			DisplayNecroTankerManaMeter(iClient);
-		
-		//Charged for long enough, now handle summoning for each type WALK or CROUCH
-		if(buttons & IN_DUCK && g_iTankCharge[iClient] >= 31)
+
+		//Charged for long enough, now handle summoning for each type RELOAD or USE
+		if(buttons & IN_RELOAD && g_iTankCharge[iClient] >= 31)
 		{
 			// If they have the mana, spawn zombie, otherwise, print message not enough mana
 			if (g_iNecroTankerManaPool[iClient] >= NECROTANKER_MANA_COST_SUMMON_ENHANCED_CI)
@@ -80,7 +167,7 @@ void OnGameFrame_Tank_NecroTanker(int iClient)
 
 			g_iTankCharge[iClient] = 0;
 		}
-		else if(buttons & IN_SPEED && g_iTankCharge[iClient] >= 60)
+		else if(buttons & IN_USE && g_iTankCharge[iClient] >= 60)
 		{
 			// If they have the mana, spawn zombie, otherwise, print message not enough mana
 			if (g_iNecroTankerManaPool[iClient] >= NECROTANKER_MANA_COST_SUMMON_NORMAL_CI)
@@ -347,9 +434,9 @@ void SummonNecroTankerPunchZombies(int iAttackerTank, int iVictim)
 	//Dont spawn anything
 	if (iRoll > 70)
 		return;
-	
+
 	// Spawn CI around victim
-	if (iRoll > 35 && iRoll <= 70)
+	if (iRoll > 35 && iRoll <= 75)
 	{
 		// Roll the dice for Big or Small
 		int iBigOrSmall = GetRandomFloat(0.0, 1.0) <= NECROTANKER_ENHANCE_CI_CHANCE_PUNCH ? CI_SMALL_OR_BIG_RANDOM : CI_SMALL_OR_BIG_NONE;
@@ -361,24 +448,17 @@ void SummonNecroTankerPunchZombies(int iAttackerTank, int iVictim)
 	}
 
 	// Spawn CI and UI around player
-	if (iRoll > 10 && iRoll <= 35)
+	if (iRoll > 5 && iRoll <= 35)
 	{
 		// Roll the dice for Big or Small
 		int iBigOrSmall = GetRandomFloat(0.0, 1.0) <= NECROTANKER_ENHANCE_CI_CHANCE_PUNCH ? CI_SMALL_OR_BIG_RANDOM : CI_SMALL_OR_BIG_NONE;
 		// Roll the dice for an Enhanced CI properties
 		int iEnhancedCISpecifiedType = GetRandomFloat(0.0, 1.0) <= NECROTANKER_ENHANCE_CI_CHANCE_PUNCH ? ENHANCED_CI_TYPE_RANDOM : ENHANCED_CI_TYPE_NONE;
-		
+
 		SpawnCIAroundPlayerDelayed(iVictim, 1.0, 5, UNCOMMON_CI_RANDOM, iBigOrSmall, iEnhancedCISpecifiedType);
 		return;
 	}
 
-	// Spawn SI
-	if (iRoll > 5 && iRoll <= 10)
-	{
-		SpawnSpecialInfected(iAttackerTank);
-		return;
-	}
-	
 	// Spawn Witch
 	if (iRoll > 1 && iRoll <= 5)
 	{

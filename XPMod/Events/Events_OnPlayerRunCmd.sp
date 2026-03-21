@@ -126,6 +126,7 @@ public Action OnPlayerRunCmd(int iClient, int &iButtons, int &iImpulse, float fV
 
 	OnPlayerRunCmd_Tank_Fire(iClient, iButtons);
 	OnPlayerRunCmd_Tank_Ice(iClient, iButtons);
+	OnPlayerRunCmd_Tank_NecroTanker(iClient, iButtons);
 
 	// Faster Attack Handling
 	if (g_iClientTeam[iClient] == TEAM_SURVIVORS && g_bTalentsConfirmed[iClient])
