@@ -20,7 +20,7 @@ void ShowRoundStatsLastRoundIndividual(int iClient)
 		\n Damage To Survivors: %i DMG\
 		\n \
 		\nPRESS 0 to Hide\
-		\n ",
+ 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		g_iStat_LastRound_ClientInfectedKilled[iClient],
 		g_iStat_LastRound_ClientCommonKilled[iClient],
 		g_iStat_LastRound_ClientCommonHeadshots[iClient],
@@ -50,9 +50,7 @@ void ShowRoundStatsLastRoundTopPlayers(int iClient)
 		\n Most Survivors Killed:		  %s (%i Killed)\
 		\n Most Survivor Incaps:		  %s (%i Incaps)      \
 		\n Most Damage To Survivors: %s (%i DMG)\
-		\n \
-		\nPRESS 0 to Hide\
-		\n ",
+ 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		g_strReward_SIKills, g_iReward_SIKills,
 		g_strReward_CIKills, g_iReward_CIKills,
 		g_strReward_HS, g_iReward_HS,
@@ -81,9 +79,7 @@ void ShowRoundStatsPersonalDBStats(int iClient)
 		"\n \
 		\nYour All-Time Stats\
 		\n %s\
-		\n \
-		\nPRESS 0 to Hide\
-		\n ",
+ 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		g_strPersonalDBStatsText[iClient]);
 
 	RoundStatsMenuDraw(iClient, strStatsText);
@@ -108,7 +104,7 @@ void ShowRoundStatsXPModTopPlayers(int iClient)
 		\nTop XPMod Players\
 		\n \
 		%s\
-		\n \n \n \n \n \n \n \n \n ",
+ 		\n ",
 		g_strTopXPModPlayersStatsText);
 	
 	RoundStatsMenuDraw(iClient, strStatsText);
@@ -131,9 +127,7 @@ void ShowRoundStatsTopPlayerLeaderboard(int iClient)
 		"\n \n \n \n \
 		\nTop Player Leaderboard (30 Days)\
 		\n %s\
-		\n \
-		\nPRESS 0 to Hide\
-		\n ",
+		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		g_strTopPlayerLeaderboardText);
 
 	RoundStatsMenuDraw(iClient, strStatsText);
@@ -150,7 +144,7 @@ void RoundStatsMenuDraw(int iClient, const char[] strStatsText)
 	// for cross-platform compatibility (Linux + Windows).
 	char strPanelText[1024];
 	Format(strPanelText, sizeof(strPanelText),
-		"%s \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		"%s",
 		strStatsText);
 
 	Panel panel = new Panel();

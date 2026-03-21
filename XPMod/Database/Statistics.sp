@@ -135,21 +135,21 @@ void SQLGetTopPlayerLeaderboardCallback(Handle owner, Handle hQuery, const char[
 		}
 
 		if (StrEqual(strStatType, "sur_wins"))
-			Format(strLine, sizeof(strLine), "\n Most Survivor Wins: %i Wins - %s (%s)", iStatValue, strName, strClassInfo);
+			Format(strLine, sizeof(strLine), "\nSURVIVORS\nWins: %i - %s (%s)", iStatValue, strName, strClassInfo);
 		else if (StrEqual(strStatType, "sur_ci"))
-			Format(strLine, sizeof(strLine), "\n Most CI Kills: %i Kills - %s (%s)", iStatValue, strName, strClassInfo);
+			Format(strLine, sizeof(strLine), "\nCI Kills: %i - %s (%s)", iStatValue, strName, strClassInfo);
 		else if (StrEqual(strStatType, "sur_si"))
-			Format(strLine, sizeof(strLine), "\n Most SI Kills: %i Kills - %s (%s)", iStatValue, strName, strClassInfo);
+			Format(strLine, sizeof(strLine), "\nSI Kills: %i - %s (%s)", iStatValue, strName, strClassInfo);
 		else if (StrEqual(strStatType, "sur_hs"))
-			Format(strLine, sizeof(strLine), "\n Most Headshots: %i HS - %s (%s)", iStatValue, strName, strClassInfo);
+			Format(strLine, sizeof(strLine), "\nHeadshots: %i - %s (%s)", iStatValue, strName, strClassInfo);
 		else if (StrEqual(strStatType, "inf_wins"))
-			Format(strLine, sizeof(strLine), "\n Most Infected Wins: %i Wins - %s (%s)", iStatValue, strName, strClassInfo);
+			Format(strLine, sizeof(strLine), "\nINFECTED\nWins: %i - %s (%s)", iStatValue, strName, strClassInfo);
 		else if (StrEqual(strStatType, "inf_kills"))
-			Format(strLine, sizeof(strLine), "\n Most Survivors Killed: %i Kills - %s (%s)", iStatValue, strName, strClassInfo);
+			Format(strLine, sizeof(strLine), "\nKills: %i - %s (%s)", iStatValue, strName, strClassInfo);
 		else if (StrEqual(strStatType, "inf_dmg"))
-			Format(strLine, sizeof(strLine), "\n Most Infected Dmg: %i Dmg - %s (%s)", iStatValue, strName, strClassInfo);
+			Format(strLine, sizeof(strLine), "\nDmg: %i - %s (%s)", iStatValue, strName, strClassInfo);
 		else if (StrEqual(strStatType, "tank_dmg"))
-			Format(strLine, sizeof(strLine), "\n Most Tank Dmg: %i Dmg - %s (%s)", iStatValue, strName, strClassInfo);
+			Format(strLine, sizeof(strLine), "\nTank Dmg: %i - %s (%s)", iStatValue, strName, strClassInfo);
 		else
 			continue;
 
@@ -275,8 +275,8 @@ void SQLGetPersonalPlayerStatisticsCallback(Handle owner, Handle hQuery, const c
 			int iVal5 = SQL_FetchInt(hQuery, 9);
 			Format(strInfectedSection, sizeof(strInfectedSection),
 				"\nInfected: %i Rounds  %.1f%% WR (%iW / %iL)\
-				\n Total Kills: %i\
-				\n Total DMG: %i",
+				\n	Total Kills: %i\
+				\n	Total DMG: %i",
 				iVal3, fWinRate, iVal1, iVal2, iVal4, iVal5);
 		}
 		else if (StrEqual(strStatType, "survivor"))
@@ -288,9 +288,9 @@ void SQLGetPersonalPlayerStatisticsCallback(Handle owner, Handle hQuery, const c
 			float fAvgHS = SQL_FetchFloat(hQuery, 10);
 			Format(strBestSurvivor, sizeof(strBestSurvivor),
 				"\nBEST SURVIVOR: %s (%.1f%% WR)\
-				\n SI Kills: %i (%.1f avg)\
-				\n CI Kills: %i (%.1f avg)\
-				\n HS: %i (%.1f avg)",
+				\n	SI Kills: %i (%.1f avg)\
+				\n	CI Kills: %i (%.1f avg)\
+				\n	HS: %i (%.1f avg)",
 				strName1, fWinRate, iVal1, fAvgSI, iCIKills, fAvgCI, iHS, fAvgHS);
 		}
 		else if (StrEqual(strStatType, "infected"))
@@ -303,13 +303,13 @@ void SQLGetPersonalPlayerStatisticsCallback(Handle owner, Handle hQuery, const c
 			Format(strCombo, sizeof(strCombo), "%s/%s/%s", strName1, strName2, strName3);
 			Format(strBestInfected, sizeof(strBestInfected),
 				"\nBEST INFECTED: %s (%.1f%% WR)\
-				\n Kills: %i (%.1f avg)\
-				\n DMG: %i (%.1f avg)",
+				\n	Kills: %i (%.1f avg)\
+				\n	DMG: %i (%.1f avg)",
 				strCombo, fWinRate, iVal1, fAvgKills, iDmg, fAvgDmg);
 		}
 		else if (StrEqual(strStatType, "tank"))
 		{
-			Format(strFavTank, sizeof(strFavTank), "\nFAVORITE TANK: %s", strName1);
+			Format(strFavTank, sizeof(strFavTank), "\n \nFAVORITE TANK: %s", strName1);
 		}
 	}
 
