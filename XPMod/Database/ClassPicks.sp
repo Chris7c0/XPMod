@@ -51,6 +51,30 @@ void GetGameModeString(char[] strGameMode, int maxLength)
 	GetConVarString(FindConVar("mp_gamemode"), strGameMode, maxLength);
 }
 
+void SortInfectedPickIDsForStorage(int &iInfectedID1, int &iInfectedID2, int &iInfectedID3)
+{
+	if (iInfectedID1 > iInfectedID2)
+	{
+		int iTemp = iInfectedID1;
+		iInfectedID1 = iInfectedID2;
+		iInfectedID2 = iTemp;
+	}
+
+	if (iInfectedID2 > iInfectedID3)
+	{
+		int iTemp = iInfectedID2;
+		iInfectedID2 = iInfectedID3;
+		iInfectedID3 = iTemp;
+	}
+
+	if (iInfectedID1 > iInfectedID2)
+	{
+		int iTemp = iInfectedID1;
+		iInfectedID1 = iInfectedID2;
+		iInfectedID2 = iTemp;
+	}
+}
+
 void SaveSurvivorPick(int iClient)
 {
 	if (g_hDatabase == INVALID_HANDLE)
@@ -116,10 +140,15 @@ void SaveInfectedPick(int iClient)
 	char strGameMode[20];
 	GetGameModeString(strGameMode, sizeof(strGameMode));
 
+	int iStoredInfectedID1 = g_iClientInfectedClass1[iClient];
+	int iStoredInfectedID2 = g_iClientInfectedClass2[iClient];
+	int iStoredInfectedID3 = g_iClientInfectedClass3[iClient];
+	SortInfectedPickIDsForStorage(iStoredInfectedID1, iStoredInfectedID2, iStoredInfectedID3);
+
 	char strQuery[512];
 	Format(strQuery, sizeof(strQuery), "INSERT INTO %s (steam_id, infected_id_1, infected_id_2, infected_id_3, server_name, game_mode, map_name) VALUES ('%s', %i, %i, %i, '%s', '%s', '%s')",
 		DB_TABLENAME_INFECTED_PICKS,
-		strSteamID, g_iClientInfectedClass1[iClient], g_iClientInfectedClass2[iClient], g_iClientInfectedClass3[iClient],
+		strSteamID, iStoredInfectedID1, iStoredInfectedID2, iStoredInfectedID3,
 		g_strServerName, strGameMode, g_strCurrentMap);
 
 	SQL_TQuery(g_hDatabase, SQLSaveInfectedPickCallback, strQuery, iClient);
