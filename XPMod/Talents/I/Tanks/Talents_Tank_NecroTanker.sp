@@ -386,17 +386,17 @@ void SummonNecroTankerCrouchAndWalkAbility(int iClient, bool bEnhancedCI)
 	int iZombie = -1;
 	if (bEnhancedCI == false)
 	{
-		iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_NONE, true, fTimeToWaitForMob);
+		iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_CEDA, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_NONE, true, fTimeToWaitForMob);
 	}
 	else
 	{
 		int iUncommonAndEnhancedChanceRoll = GetRandomInt(1,100);
-		if (iUncommonAndEnhancedChanceRoll <= 25)
+		if (iUncommonAndEnhancedChanceRoll <= 50)
 			iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_RANDOM, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_RANDOM, true, fTimeToWaitForMob);
 		else if (iUncommonAndEnhancedChanceRoll <= 75)
-			iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_RANDOM, true, fTimeToWaitForMob);
+			iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_CEDA, CI_SMALL_OR_BIG_RANDOM, ENHANCED_CI_TYPE_RANDOM, true, fTimeToWaitForMob);
 		else if (iUncommonAndEnhancedChanceRoll <= 100)
-			iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_RANDOM, true, fTimeToWaitForMob);
+			iZombie = SpawnCommonInfected(xyzLocation, 1, UNCOMMON_CI_CEDA, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_RANDOM, true, fTimeToWaitForMob);
 	}
 	
 
@@ -446,7 +446,7 @@ void SummonNecroTankerPunchZombies(int iAttackerTank, int iVictim)
 		// Roll the dice for an Enhanced CI properties
 		int iEnhancedCISpecifiedType = GetRandomFloat(0.0, 1.0) <= NECROTANKER_ENHANCE_CI_CHANCE_PUNCH ? ENHANCED_CI_TYPE_RANDOM : ENHANCED_CI_TYPE_NONE;
 
-		SpawnCIAroundPlayerDelayed(iVictim, 1.0, 6, UNCOMMON_CI_NONE, iBigOrSmall, iEnhancedCISpecifiedType);
+		SpawnCIAroundPlayerDelayed(iVictim, 1.0, 6, UNCOMMON_CI_CEDA, iBigOrSmall, iEnhancedCISpecifiedType);
 		return;
 	}
 

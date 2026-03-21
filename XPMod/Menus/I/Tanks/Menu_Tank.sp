@@ -31,7 +31,7 @@ Action ChooseTankMenuDraw(int iClient)
 	FormatEx(strText, sizeof(strText), "NecroTanker\
 		\n %i HP: Kill Infected for Health\
 		\n Throw Boomers!\
-		\n [Hold WALK or CROUCH] Summon CI\
+		\n [Hold USE or RELOAD] Summon CEDA\
 		\n ",
 		RoundToNearest(TANK_HEALTH_NECROTANKER * g_fTankStartingHealthMultiplier[iClient]) );
 	AddMenuItem(menu, "option3", strText);

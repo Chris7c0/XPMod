@@ -16,8 +16,8 @@ Action TankMenuDrawNecroTanker(int iClient)
         \n \
         \n Actives\
         \n - Mana Pool (Hits Regen Mana)\
-        \n - [Hold USE] Summon CI\
-        \n - [Hold RELOAD] Summon Enhanced CI\
+        \n - [Hold USE] Summon CEDA\
+        \n - [Hold RELOAD] Summon Enhanced UI\
         \n - [WALK] Teleport\
         \n - Throw Boomers!",
         TANK_HEALTH_NECROTANKER,
