@@ -37,6 +37,7 @@ void HandleClientConnect(int iClient)
 	char clientname[128];
 	bool match = true;
 	GetClientName(iClient, clientname, sizeof(clientname));
+	strcopy(g_strClientBaseName[iClient], sizeof(g_strClientBaseName[]), clientname);
 
 	// Fill in special characters with ?...to prevent errors..I guess?
 	for (int l = 0; l<22; l++)
@@ -155,6 +156,7 @@ void HandleClientDisconnect(int iClient)
 	{
 		clientidname[iClient][l] = '\0';	//WAS clientidname[iClient][l] = 9999;
 	}
+	g_strClientBaseName[iClient][0] = '\0';
 	DeleteAllClientParticles(iClient);
 	g_bClientLoggedIn[iClient] = false;
 	g_iDBUserID[iClient] = -1;

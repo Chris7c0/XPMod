@@ -31,6 +31,14 @@ void GetTop10Symbol(int iPosition, char[] strSymbol, int maxlen)
 	}
 }
 
+void GetClientBaseName(int iClient, char[] strClientBaseName, int maxlen)
+{
+	if (g_strClientBaseName[iClient][0] != '\0')
+		strcopy(strClientBaseName, maxlen, g_strClientBaseName[iClient]);
+	else
+		GetClientName(iClient, strClientBaseName, maxlen);
+}
+
 void RenamePlayerWithLevelTags(int iClient, bool bRemoveTags = false)
 {
 	if (RunClientChecks(iClient) == false ||
@@ -40,22 +48,7 @@ void RenamePlayerWithLevelTags(int iClient, bool bRemoveTags = false)
 
 	char strClientName[32];
 	char strClientBaseName[32];
-	GetClientName(iClient, strClientName, sizeof(strClientName));
-
-	// Create the Level Tag regex to check against
-	// Needs to match tagged names below (one with prestige and one without)
-	// [30] ChrisP
-	// [☆111] Test
-	Handle hTagRegex = CompileRegex("\\[.{0,3}[0-9]{0,3}\\] ..*");
-
-	// Check if XPMod Level tag is already added before continuing
-	// If its already there, then remove it to obtain base name
-	if (MatchRegex(hTagRegex, strClientName))
-		strcopy(strClientBaseName, sizeof(strClientBaseName), strClientName[StrContains(strClientName, "] ") + 2]);
-	else
-		strcopy(strClientBaseName, sizeof(strClientBaseName), strClientName);
-
-	CloseHandle(hTagRegex);
+	GetClientBaseName(iClient, strClientBaseName, sizeof(strClientBaseName));
 
 	// The string [30] is 5 chars with the space. Max name length is 31.
 	// So check to make sure the name is not longer than 31 - 5 = 26

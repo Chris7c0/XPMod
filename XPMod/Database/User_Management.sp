@@ -382,7 +382,7 @@ void CreateNewUser(int iClient)
 	
 	//Get Client Name
 	char strClientName[32];
-	GetClientName(iClient, strClientName, sizeof(strClientName));
+	GetClientBaseName(iClient, strClientName, sizeof(strClientName));
 	SanitizeValueStringForQuery(strClientName, sizeof(strClientName));
 
 	//Get a new user token
@@ -487,7 +487,7 @@ void SaveUserDataInDatabase(int iClient)
 		return;
 	
 	//Get Client Name
-	GetClientName(iClient, strClientName, sizeof(strClientName));
+	GetClientBaseName(iClient, strClientName, sizeof(strClientName));
 	//Sanitize client name for the query
 	SanitizeValueStringForQuery(strClientName, sizeof(strClientName));
 	

@@ -207,9 +207,10 @@ Action Event_PlayerChangeName(Handle hEvent, const char[] strName, bool bDontBro
 		return Plugin_Continue;
 
 	if (g_bHideNameChangeMessage == false)
-		KickClient(iClient, "You cannot change your name on XPMod servers");
+		GetEventString(hEvent, "newname", g_strClientBaseName[iClient], sizeof(g_strClientBaseName[]));
 
-	// GetEventString(hEvent, "newname", g_strNewName[client], 32);
+	if (g_bHideNameChangeMessage == false)
+		KickClient(iClient, "You cannot change your name on XPMod servers");
 
 	return Plugin_Continue;
 }

@@ -57,6 +57,7 @@ int g_iTop10Count;
 // Validated SteamID cache for reconnect/disconnect-safe lookups.
 char g_strClientSteamID64[MAXPLAYERS + 1][32];
 bool g_bClientSteamIDValidated[MAXPLAYERS + 1];
+char g_strClientBaseName[MAXPLAYERS + 1][32];
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
