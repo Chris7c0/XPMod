@@ -63,3 +63,24 @@ Action TimerZoeySacrificialAidBleedoutCheck(Handle timer, int iUserID)
 	g_iZoeySacrificialAidBleedoutLastHealth[iTarget] = iCurrentIncapHealth;
 	return Plugin_Continue;
 }
+
+Action TimerZoeyInstantInterventionHealingCircleTick(Handle timer, int iCircleEntity)
+{
+	if (RunEntityChecks(iCircleEntity) == false ||
+		g_iZoeyInstantInterventionCircleTicksRemaining[iCircleEntity] <= 0)
+	{
+		g_iZoeyInstantInterventionCircleTicksRemaining[iCircleEntity] = 0;
+		return Plugin_Stop;
+	}
+
+	HealZoeyInstantInterventionCircle(g_xyzZoeyInstantInterventionCircleOrigin[iCircleEntity]);
+
+	g_iZoeyInstantInterventionCircleTicksRemaining[iCircleEntity]--;
+	if (g_iZoeyInstantInterventionCircleTicksRemaining[iCircleEntity] <= 0)
+	{
+		g_iZoeyInstantInterventionCircleTicksRemaining[iCircleEntity] = 0;
+		return Plugin_Stop;
+	}
+
+	return Plugin_Continue;
+}

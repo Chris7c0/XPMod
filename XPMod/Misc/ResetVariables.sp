@@ -60,6 +60,8 @@ void ResetAllVariablesForRound()
 	g_fMaxLaserAccuracy = 0.4;
 	g_fZoeySurvivorsWillGlobalCooldownEndTime = -1.0;
 	g_fZoeySacrificialAidGlobalCooldownEndTime = -1.0;
+	g_fZoeyInstantInterventionGlobalCooldownEndTime = -1.0;
+	g_iZoeyInstantInterventionDownedCount = 0;
 	// g_bSomeoneAttacksFaster = false;
 
 	// Clear bind uses tracking (reconnect persistence is per-round only)
@@ -322,6 +324,10 @@ void ResetClientVariablesForRound(int iClient)
 	g_bTimeOutInCooldown =  false;
 	g_bNoobWipeCooldown = false;
 	g_bInfectedBindsDisabled = false;
+
+	g_iZoeyInstantInterventionTargetUserId[iClient] = 0;
+	g_bZoeyInstantInterventionWalkHeld[iClient] = false;
+	g_fZoeyInstantInterventionReviveSpeedEndTime[iClient] = -1.0;
 	
 	//Infected Talents
 	g_iInfectedConvarsSet[iClient] = false;
@@ -521,6 +527,8 @@ void Event_DeathResetAllVariables(int iAttacker, int iVictim)
 {
 	g_bIsClientDown[iVictim] = false;
 	clienthanging[iVictim] = false;
+	g_fZoeyResilienceEndTime[iVictim] = -1.0;
+	g_fZoeyResilienceDamageReduction[iVictim] = 0.0;
 
 	// Infected //////////////////////////////////////////////////////////////////////////
 

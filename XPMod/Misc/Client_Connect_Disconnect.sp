@@ -127,6 +127,9 @@ void HandleClientDisconnect(int iClient)
 	if(iClient	< 1)
 		return;
 
+	bool bWasDownedSurvivor = g_iClientTeam[iClient] == TEAM_SURVIVORS &&
+		(g_bIsClientDown[iClient] == true || clienthanging[iClient] == true);
+
 	SDKUnhook(iClient, SDKHook_OnTakeDamage, OnTakeDamage);
 	g_fAbilityImpactDamageImmunityEndTime[iClient] = -1.0;
 	
@@ -169,6 +172,9 @@ void HandleClientDisconnect(int iClient)
 	g_iClientAuthValidationRetryCount[iClient] = 0;
 	ClearClientSteamID64(iClient);
 	ResetAll(iClient);
+
+	if (bWasDownedSurvivor && SetAllZoeyInstantInterventionDownedCount())
+		SetAllZoeyInstantInterventionSpeed("A downed teammate disconnected. Instant Intervention slows to normal.");
 }
 
 void StartClientAuthReadyInitialization(int iClient)

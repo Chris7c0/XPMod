@@ -185,16 +185,27 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 	else
 	{
 		FormatEx(text, sizeof(text), "\
-			%s\t\t%s (Level %d):\
+			%s\t\t%s:\
 			\n \
-			\n Zoey's gameplay scaffolding is in place.\
-			\n Ability behavior for this talent is not implemented yet.\
+			\n +40%% Medkit Use Speed\
+			\n +5%% Movement Speed Per Downed Survivor\
+			\n - Max +15%% movement speed\
 			\n \
-			\n This slot is reserved for future Medic work.\
+			\n Bind 2: Instant Intervention\
+			\n - +1 use every other level, max 3\
+			\n - Choose a teammate, then hold [WALK] to teleport\
+			\n - Cannot be used while grappled or downed\
+			\n - 2 minute global cooldown\
+			\n \
+			\n On arrival:\
+			\n - Zoey gains 33%% damage reduction for 7 seconds\
+			\n - Zoey gains +25%% revive speed for 7 seconds\
+			\n - Drops a 10 second healing circle for nearby survivors\
+			\n - Instantly picks up one downed survivor in the circle\
+			\n - Kills all common infected within 4 meters\
 			\n ",
 			strStartingNewLines,
-			strTalentName,
-			GetZoeyTalentLevel(iClient, iTalentIndex));
+			strTalentName);
 	}
 	SetMenuTitle(menu, "%s", text);
 

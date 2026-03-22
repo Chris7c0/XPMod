@@ -62,10 +62,17 @@ Action Event_PlayerDeath(Handle hEvent, char[] Event_name, bool dontBroadcast)
 	EventsDeath_VictimCoach(hEvent, iAttacker, iVictim);
 	// EventsDeath_VictimEllis(hEvent, iAttacker, iVictim);
 	EventsDeath_VictimNick(hEvent, iAttacker, iVictim);
+	EventsDeath_VictimZoey(hEvent, iAttacker, iVictim);
 	//EventsDeath_VictimLouis(hEvent, iAttacker, iVictim);
 
 	// Reset all the variables that should be here
 	Event_DeathResetAllVariables(iAttacker, iVictim);
+
+	if (g_iClientTeam[iVictim] == TEAM_SURVIVORS &&
+		SetAllZoeyInstantInterventionDownedCount())
+	{
+		SetAllZoeyInstantInterventionSpeed("A teammate has died. Instant Intervention slows to normal.");
+	}
 
 	// Reset the client's current speed
 	if (iVictim > 0 && iAttacker > 0)

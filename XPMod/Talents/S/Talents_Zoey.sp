@@ -1,5 +1,6 @@
 void TalentsLoad_Zoey(int iClient)
 {
+	ClearZoeyInstantInterventionState(iClient);
 	g_fZoeyResilienceEndTime[iClient] = -1.0;
 	g_fZoeyResilienceDamageReduction[iClient] = 0.0;
 	g_iZoeyQueuedReviveResumeTarget[iClient] = -1;
@@ -28,6 +29,10 @@ void TalentsLoad_Zoey(int iClient)
 	g_iZoeySacrificialAidBleedoutLastHealth[iClient] = 0;
 	g_iZoeyMedicalExpertiseBileSerial[iClient] = 0;
 
+	if (g_bConfirmedSurvivorTalentsGivenThisRound[iClient] == false)
+		g_iClientBindUses_2[iClient] = 3 - RoundToCeil(float(g_iZoeyTalent6Level[iClient]) * 0.5);
+
+	SetAllZoeyInstantInterventionDownedCount();
 	SetPlayerTalentMaxHealth_Zoey(iClient, !g_bConfirmedSurvivorTalentsGivenThisRound[iClient]);
 	SetClientSpeed(iClient);
 
@@ -42,6 +47,7 @@ void TalentsLoad_Zoey(int iClient)
 
 void ResetZoeyTalentsRuntimeState(int iClient)
 {
+	ClearZoeyInstantInterventionState(iClient);
 	g_fZoeyResilienceEndTime[iClient] = -1.0;
 	g_fZoeyResilienceDamageReduction[iClient] = 0.0;
 	g_iZoeyQueuedReviveResumeTarget[iClient] = -1;
@@ -74,6 +80,13 @@ void ResetZoeyTalentsRuntimeState(int iClient)
 	SetClientSpeed(iClient);
 }
 
+void ClearZoeyInstantInterventionState(int iClient)
+{
+	g_iZoeyInstantInterventionTargetUserId[iClient] = 0;
+	g_bZoeyInstantInterventionWalkHeld[iClient] = false;
+	g_fZoeyInstantInterventionReviveSpeedEndTime[iClient] = -1.0;
+}
+
 void SetPlayerTalentMaxHealth_Zoey(int iClient, bool bFillInHealthGap = true)
 {
 	if (g_bTalentsConfirmed[iClient] == false ||
@@ -98,6 +111,83 @@ void ClearZoeySurvivorsWillReveal(int iClient)
 {
 	g_fZoeySurvivorsWillRevealEndTime[iClient] = -1.0;
 	g_fZoeySurvivorsWillNextMistTime[iClient] = 0.0;
+}
+
+float GetZoeyInstantInterventionGlobalCooldownRemaining()
+{
+	float fRemaining = g_fZoeyInstantInterventionGlobalCooldownEndTime - GetGameTime();
+	return fRemaining > 0.0 ? fRemaining : 0.0;
+}
+
+int GetZoeyInstantInterventionDownedSurvivorCount()
+{
+	int iDownedCount = 0;
+
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		if (RunClientChecks(i) == false ||
+			IsPlayerAlive(i) == false ||
+			g_iClientTeam[i] != TEAM_SURVIVORS ||
+			IsZoeySacrificialAidTargetDowned(i) == false)
+		{
+			continue;
+		}
+
+		iDownedCount++;
+		if (iDownedCount >= ZOEY_INSTANT_INTERVENTION_MAX_DOWNED_SPEED_STACKS)
+			return ZOEY_INSTANT_INTERVENTION_MAX_DOWNED_SPEED_STACKS;
+	}
+
+	return iDownedCount;
+}
+
+bool SetAllZoeyInstantInterventionDownedCount()
+{
+	int iDownedCount = GetZoeyInstantInterventionDownedSurvivorCount();
+	if (g_iZoeyInstantInterventionDownedCount == iDownedCount)
+		return false;
+
+	g_iZoeyInstantInterventionDownedCount = iDownedCount;
+	return true;
+}
+
+void SetAllZoeyInstantInterventionSpeed(const char[] strMessage = "")
+{
+	for (int iPlayer = 1; iPlayer <= MaxClients; iPlayer++)
+	{
+		if (g_iChosenSurvivor[iPlayer] != ZOEY ||
+			g_iZoeyTalent6Level[iPlayer] <= 0 ||
+			g_iClientTeam[iPlayer] != TEAM_SURVIVORS ||
+			RunClientChecks(iPlayer) == false ||
+			IsPlayerAlive(iPlayer) == false)
+		{
+			continue;
+		}
+
+		SetClientSpeed(iPlayer);
+
+		if (strMessage[0] != '\0' && IsFakeClient(iPlayer) == false)
+			PrintHintText(iPlayer, "%s", strMessage);
+	}
+}
+
+void GrantZoeyResilienceBuff(int iTarget, float fDamageReduction, float fDuration)
+{
+	if (RunClientChecks(iTarget) == false ||
+		IsPlayerAlive(iTarget) == false ||
+		g_iClientTeam[iTarget] != TEAM_SURVIVORS ||
+		fDamageReduction <= 0.0 ||
+		fDuration <= 0.0)
+	{
+		return;
+	}
+
+	float fNewEndTime = GetGameTime() + fDuration;
+	if (g_fZoeyResilienceEndTime[iTarget] < fNewEndTime)
+		g_fZoeyResilienceEndTime[iTarget] = fNewEndTime;
+
+	if (g_fZoeyResilienceDamageReduction[iTarget] < fDamageReduction)
+		g_fZoeyResilienceDamageReduction[iTarget] = fDamageReduction;
 }
 
 bool IsZoeyHoldingMedkit(int iClient)
@@ -350,10 +440,9 @@ int ApplyZoeyMedicalExpertiseBonusTempHealth(int iClient, int iBaseHealAmount, f
 	return iTempHealthAfter - iTempHealthBefore;
 }
 
-float GetZoeyMedicalExpertiseCurrentUseDuration(int iClient, int iActiveWeaponID)
+float GetZoeyCurrentUseDuration(int iClient, int iActiveWeaponID)
 {
-	if (IsZoeyMedicalExpertiseActive(iClient) == false ||
-		RunEntityChecks(iActiveWeaponID) == false)
+	if (RunEntityChecks(iActiveWeaponID) == false)
 		return 0.0;
 
 	char strWeaponClass[32];
@@ -362,13 +451,32 @@ float GetZoeyMedicalExpertiseCurrentUseDuration(int iClient, int iActiveWeaponID
 	if (StrEqual(strWeaponClass, "weapon_first_aid_kit", false))
 	{
 		ConVar cvMedkitUseDuration = FindConVar("first_aid_kit_use_duration");
-		return cvMedkitUseDuration != null ? cvMedkitUseDuration.FloatValue : 5.0;
+		float fDesiredDuration = cvMedkitUseDuration != null ? cvMedkitUseDuration.FloatValue : 5.0;
+		bool bModified = false;
+
+		if (IsZoeyMedicalExpertiseActive(iClient))
+		{
+			fDesiredDuration *= (1.0 - ZOEY_MEDICAL_EXPERTISE_HEAL_ITEM_USE_SPEED_BONUS);
+			bModified = true;
+		}
+
+		if (g_iZoeyTalent6Level[iClient] > 0)
+		{
+			fDesiredDuration *= (1.0 - ZOEY_INSTANT_INTERVENTION_MEDKIT_USE_SPEED_BONUS);
+			bModified = true;
+		}
+
+		return bModified ? fDesiredDuration : 0.0;
 	}
 
 	if (StrEqual(strWeaponClass, "weapon_pain_pills", false) ||
 		StrEqual(strWeaponClass, "weapon_adrenaline", false))
 	{
-		return ZOEY_MEDICAL_EXPERTISE_BOOST_USE_DURATION;
+		if (IsZoeyMedicalExpertiseActive(iClient) == false)
+			return 0.0;
+
+		return ZOEY_MEDICAL_EXPERTISE_BOOST_USE_DURATION *
+			(1.0 - ZOEY_MEDICAL_EXPERTISE_HEAL_ITEM_USE_SPEED_BONUS);
 	}
 
 	return 0.0;
@@ -400,8 +508,11 @@ void ApplyZoeyMedicalExpertiseUseSpeedToEntity(int iEntity, float fDesiredDurati
 
 void HandleZoeyMedicalExpertiseUseSpeed(int iClient)
 {
-	if (IsZoeyMedicalExpertiseActive(iClient) == false)
+	if (IsZoeyMedicalExpertiseActive(iClient) == false &&
+		g_iZoeyTalent6Level[iClient] <= 0)
+	{
 		return;
+	}
 
 	if (GetEntProp(iClient, Prop_Send, "m_bPerformingAction") != 1 &&
 		GetEntPropFloat(iClient, Prop_Send, "m_flProgressBarDuration") <= 0.0)
@@ -410,11 +521,10 @@ void HandleZoeyMedicalExpertiseUseSpeed(int iClient)
 	}
 
 	int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-	float fBaseDuration = GetZoeyMedicalExpertiseCurrentUseDuration(iClient, iActiveWeaponID);
-	if (fBaseDuration <= 0.0)
+	float fDesiredDuration = GetZoeyCurrentUseDuration(iClient, iActiveWeaponID);
+	if (fDesiredDuration <= 0.0)
 		return;
 
-	float fDesiredDuration = fBaseDuration * (1.0 - ZOEY_MEDICAL_EXPERTISE_HEAL_ITEM_USE_SPEED_BONUS);
 	ApplyZoeyMedicalExpertiseUseSpeedToEntity(iClient, fDesiredDuration);
 
 	if (RunEntityChecks(iActiveWeaponID) &&
@@ -539,6 +649,9 @@ void ReviveZoeySacrificialAidTarget(int iClient, int iTarget)
 
 	if (bWasHanging == false && SetAllNicksDesprateMeasuresStacks())
 		SetAllNicksDesprateMeasureSpeed("A teammate has been revived, your senses return to a weaker state.");
+
+	if (SetAllZoeyInstantInterventionDownedCount())
+		SetAllZoeyInstantInterventionSpeed("A teammate is back up. Instant Intervention slows to normal.");
 
 	SetClientRenderAndGlowColor(iTarget);
 	SetClientSpeed(iTarget);
@@ -934,18 +1047,274 @@ public Action OnSetTransmit_ZoeySurvivorsWillMist(int iEntity, int iClient)
 	return Plugin_Continue;
 }
 
+bool FindZoeyInstantInterventionTeleportDestination(int iClient, int iTarget, float xyzDestination[3])
+{
+	if (RunClientChecks(iClient) == false ||
+		RunClientChecks(iTarget) == false ||
+		IsPlayerAlive(iTarget) == false)
+	{
+		return false;
+	}
+
+	float xyzTargetOrigin[3];
+	GetClientAbsOrigin(iTarget, xyzTargetOrigin);
+
+	float fCandidateRadii[4] = {48.0, 80.0, 112.0, 144.0};
+	float vHullMins[3] = {-16.0, -16.0, 0.0};
+	float vHullMaxs[3] = {16.0, 16.0, 72.0};
+
+	for (int iRadius = 0; iRadius < sizeof(fCandidateRadii); iRadius++)
+	{
+		for (int iAngle = 0; iAngle < 8; iAngle++)
+		{
+			float fRadians = DegToRad(float(iAngle) * 45.0);
+			float xyzCandidate[3];
+			xyzCandidate[0] = xyzTargetOrigin[0] + (Cosine(fRadians) * fCandidateRadii[iRadius]);
+			xyzCandidate[1] = xyzTargetOrigin[1] + (Sine(fRadians) * fCandidateRadii[iRadius]);
+			xyzCandidate[2] = xyzTargetOrigin[2] + 24.0;
+
+			float xyzTraceStart[3], xyzTraceEnd[3];
+			xyzTraceStart = xyzCandidate;
+			xyzTraceEnd = xyzCandidate;
+			xyzTraceStart[2] += 48.0;
+			xyzTraceEnd[2] -= 128.0;
+
+			Handle hGroundTrace = TR_TraceRayFilterEx(xyzTraceStart, xyzTraceEnd, MASK_PLAYERSOLID, RayType_EndPoint, TraceEntityFilter_NotAPlayer, iClient);
+			if (TR_DidHit(hGroundTrace) == false)
+			{
+				CloseHandle(hGroundTrace);
+				continue;
+			}
+
+			TR_GetEndPosition(xyzCandidate, hGroundTrace);
+			CloseHandle(hGroundTrace);
+			xyzCandidate[2] += 2.0;
+
+			float xyzCandidateEnd[3];
+			xyzCandidateEnd = xyzCandidate;
+			xyzCandidateEnd[2] += 1.0;
+
+			Handle hHullTrace = TR_TraceHullFilterEx(xyzCandidate, xyzCandidateEnd, vHullMins, vHullMaxs, MASK_PLAYERSOLID, TraceFilter_NotSelf, iClient);
+			bool bBlocked = TR_DidHit(hHullTrace);
+			CloseHandle(hHullTrace);
+
+			if (bBlocked)
+				continue;
+
+			xyzDestination = xyzCandidate;
+			return true;
+		}
+	}
+
+	return false;
+}
+
+int FindZoeyInstantInterventionPickupTarget(float xyzCenter[3], float fRadius)
+{
+	int iClosestTarget = -1;
+	float fClosestDistance = fRadius + 1.0;
+
+	for (int iTarget = 1; iTarget <= MaxClients; iTarget++)
+	{
+		if (RunClientChecks(iTarget) == false ||
+			IsPlayerAlive(iTarget) == false ||
+			g_iClientTeam[iTarget] != TEAM_SURVIVORS ||
+			IsZoeySacrificialAidTargetDowned(iTarget) == false)
+		{
+			continue;
+		}
+
+		float xyzTargetOrigin[3];
+		GetClientAbsOrigin(iTarget, xyzTargetOrigin);
+		float fDistance = GetVectorDistance(xyzCenter, xyzTargetOrigin);
+		if (fDistance > fRadius || fDistance >= fClosestDistance)
+			continue;
+
+		fClosestDistance = fDistance;
+		iClosestTarget = iTarget;
+	}
+
+	return iClosestTarget;
+}
+
+int KillZoeyCommonInfectedAroundLocation(int iClient, float xyzLocation[3], float fRadius)
+{
+	char strClasses[1][32] = {"infected"};
+	int iNearbyEntities[MAXENTITIES];
+	int iFoundEntities = GetAllEntitiesInRadiusOfVector(xyzLocation, fRadius, iNearbyEntities, strClasses, sizeof(strClasses));
+	int iKilled = 0;
+
+	for (int iIndex = 0; iIndex < iFoundEntities; iIndex++)
+	{
+		int iEntity = iNearbyEntities[iIndex];
+		if (RunEntityChecks(iEntity) == false ||
+			IsCommonInfectedAlive(iEntity) == false)
+		{
+			continue;
+		}
+
+		DealZoeySyntheticCIDamage(iClient, iEntity, 9999, DMG_BLAST);
+		iKilled++;
+	}
+
+	if (iKilled > 0)
+		DetonateZoeyTriggerHappyImpact(iClient);
+
+	return iKilled;
+}
+
+void HealZoeyInstantInterventionCircle(float xyzLocation[3])
+{
+	for (int iTarget = 1; iTarget <= MaxClients; iTarget++)
+	{
+		if (RunClientChecks(iTarget) == false ||
+			IsPlayerAlive(iTarget) == false ||
+			g_iClientTeam[iTarget] != TEAM_SURVIVORS)
+		{
+			continue;
+		}
+
+		float xyzTargetOrigin[3];
+		GetClientAbsOrigin(iTarget, xyzTargetOrigin);
+		if (GetVectorDistance(xyzLocation, xyzTargetOrigin) > ZOEY_INSTANT_INTERVENTION_HEALING_CIRCLE_RADIUS)
+			continue;
+
+		if (IsZoeySacrificialAidTargetDowned(iTarget))
+		{
+			int iCurrentIncapHealth = GetEntProp(iTarget, Prop_Data, "m_iHealth");
+			if (iCurrentIncapHealth > 0)
+				SetEntProp(iTarget, Prop_Data, "m_iHealth", iCurrentIncapHealth + ZOEY_INSTANT_INTERVENTION_HEALING_PER_TICK);
+
+			continue;
+		}
+
+		ApplyZoeySharingIsCaringPermanentHeal(iTarget, ZOEY_INSTANT_INTERVENTION_HEALING_PER_TICK);
+	}
+}
+
+void StartZoeyInstantInterventionHealingCircle(float xyzLocation[3])
+{
+	int iCircleEntity = CreateSmokeParticle(-1,
+		xyzLocation,
+		false,
+		"",
+		140,
+		220,
+		140,
+		120,
+		0,
+		30,
+		10,
+		110,
+		180,
+		10,
+		90,
+		4,
+		ZOEY_INSTANT_INTERVENTION_HEALING_CIRCLE_DURATION);
+
+	if (RunEntityChecks(iCircleEntity) == false)
+		return;
+
+	g_xyzZoeyInstantInterventionCircleOrigin[iCircleEntity] = xyzLocation;
+	g_iZoeyInstantInterventionCircleTicksRemaining[iCircleEntity] = RoundToFloor(ZOEY_INSTANT_INTERVENTION_HEALING_CIRCLE_DURATION / ZOEY_INSTANT_INTERVENTION_HEALING_CIRCLE_INTERVAL);
+	CreateTimer(ZOEY_INSTANT_INTERVENTION_HEALING_CIRCLE_INTERVAL, TimerZoeyInstantInterventionHealingCircleTick, iCircleEntity, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+}
+
+bool TryActivateZoeyInstantIntervention(int iClient)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false ||
+		g_bTalentsConfirmed[iClient] == false ||
+		g_iChosenSurvivor[iClient] != ZOEY ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
+		g_iZoeyTalent6Level[iClient] <= 0)
+	{
+		return false;
+	}
+
+	if (g_bIsClientDown[iClient] == true || IsClientGrappled(iClient) == true)
+	{
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "Instant Intervention cannot be used while downed or grappled.");
+		return false;
+	}
+
+	if (g_iClientBindUses_2[iClient] >= 3)
+	{
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "You are out of Instant Intervention uses.");
+		return false;
+	}
+
+	float fCooldownRemaining = GetZoeyInstantInterventionGlobalCooldownRemaining();
+	if (fCooldownRemaining > 0.0)
+	{
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "Instant Intervention cooling down: %0.0f seconds", fCooldownRemaining);
+		return false;
+	}
+
+	int iTarget = GetClientOfUserId(g_iZoeyInstantInterventionTargetUserId[iClient]);
+	if (RunClientChecks(iTarget) == false ||
+		IsPlayerAlive(iTarget) == false ||
+		g_iClientTeam[iTarget] != TEAM_SURVIVORS ||
+		iTarget == iClient)
+	{
+		g_iZoeyInstantInterventionTargetUserId[iClient] = 0;
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "Instant Intervention target is no longer valid.");
+		return false;
+	}
+
+	float xyzDestination[3];
+	if (FindZoeyInstantInterventionTeleportDestination(iClient, iTarget, xyzDestination) == false)
+	{
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "Instant Intervention could not find a safe landing point.");
+		return false;
+	}
+
+	g_iClientBindUses_2[iClient]++;
+	g_fZoeyInstantInterventionGlobalCooldownEndTime = GetGameTime() + ZOEY_INSTANT_INTERVENTION_GLOBAL_COOLDOWN;
+	g_fZoeyInstantInterventionReviveSpeedEndTime[iClient] = GetGameTime() + ZOEY_INSTANT_INTERVENTION_BUFF_DURATION;
+	g_iZoeyInstantInterventionTargetUserId[iClient] = 0;
+
+	float xyzAngles[3];
+	GetClientEyeAngles(iClient, xyzAngles);
+	TeleportEntity(iClient, xyzDestination, xyzAngles, EMPTY_VECTOR);
+	WriteParticle(iClient, "teleport_warp", 0.0, 3.0, xyzDestination);
+	GrantZoeyResilienceBuff(iClient, ZOEY_INSTANT_INTERVENTION_DAMAGE_REDUCTION, ZOEY_INSTANT_INTERVENTION_BUFF_DURATION);
+
+	int iPickupTarget = FindZoeyInstantInterventionPickupTarget(xyzDestination, ZOEY_INSTANT_INTERVENTION_HEALING_CIRCLE_RADIUS);
+	if (RunClientChecks(iPickupTarget))
+		ReviveZoeySacrificialAidTarget(iClient, iPickupTarget);
+
+	KillZoeyCommonInfectedAroundLocation(iClient, xyzDestination, ZOEY_INSTANT_INTERVENTION_CI_KILL_RADIUS);
+	StartZoeyInstantInterventionHealingCircle(xyzDestination);
+	SetClientSpeed(iClient);
+
+	if (IsFakeClient(iClient) == false)
+	{
+		PrintHintText(iClient, "Instant Intervention activated.\nRevive speed and resilience increased for %.0f seconds.", ZOEY_INSTANT_INTERVENTION_BUFF_DURATION);
+		PrintToChat(iClient, "\x03[XPMod] \x04Instant Intervention\x05 used. %d use%s remain.", 3 - g_iClientBindUses_2[iClient], (3 - g_iClientBindUses_2[iClient]) != 1 ? "s" : "");
+	}
+
+	return true;
+}
+
 void OnGameFrame_Zoey(int iClient)
 {
 	if (iClient < 0 ||
 		g_iChosenSurvivor[iClient] != ZOEY ||
 		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
-		(g_iZoeyTalent1Level[iClient] <= 0 && g_iZoeyTalent2Level[iClient] <= 0 && g_iZoeyTalent3Level[iClient] <= 0 && g_iZoeyTalent5Level[iClient] <= 0))
+		(g_iZoeyTalent1Level[iClient] <= 0 && g_iZoeyTalent2Level[iClient] <= 0 && g_iZoeyTalent3Level[iClient] <= 0 && g_iZoeyTalent5Level[iClient] <= 0 && g_iZoeyTalent6Level[iClient] <= 0))
 		return;
 
 	if (g_iZoeyTalent1Level[iClient] > 0 || g_iZoeyTalent3Level[iClient] > 0)
 		HandleZoeyHealingItemMoveSpeed(iClient);
 
-	if (g_iZoeyTalent1Level[iClient] > 0)
+	if (g_iZoeyTalent1Level[iClient] > 0 ||
+		g_fZoeyInstantInterventionReviveSpeedEndTime[iClient] > GetGameTime())
 	{
 		HandleZoeyFastRevive(iClient);
 	}
@@ -956,7 +1325,7 @@ void OnGameFrame_Zoey(int iClient)
 	if (g_iZoeyTalent3Level[iClient] > 0)
 		HandleZoeySurvivorsWillState(iClient);
 
-	if (g_iZoeyTalent5Level[iClient] > 0)
+	if (g_iZoeyTalent5Level[iClient] > 0 || g_iZoeyTalent6Level[iClient] > 0)
 		HandleZoeyMedicalExpertiseUseSpeed(iClient);
 }
 
@@ -976,6 +1345,9 @@ bool OnPlayerRunCmd_Zoey(int iClient, int &iButtons)
 	if (g_iZoeyTalent1Level[iClient] > 0)
 		HandleZoeyProtectedReviveResume(iClient, iButtons);
 
+	if (g_iZoeyTalent6Level[iClient] > 0)
+		bButtonsChanged = HandleZoeyInstantInterventionInput(iClient, iButtons) || bButtonsChanged;
+
 	if (g_iZoeyTalent2Level[iClient] > 0 || g_iZoeyTalent3Level[iClient] > 0)
 		bButtonsChanged = HandleZoeyWalkUseInput(iClient, iButtons) || bButtonsChanged;
 
@@ -983,6 +1355,31 @@ bool OnPlayerRunCmd_Zoey(int iClient, int &iButtons)
 		bButtonsChanged = HandleZoeyTriggerHappyInput(iClient, iButtons) || bButtonsChanged;
 
 	return bButtonsChanged;
+}
+
+bool HandleZoeyInstantInterventionInput(int iClient, int &iButtons)
+{
+	SuppressNeverUsedWarning(iButtons);
+
+	bool bWalkPressed = (iButtons & IN_SPEED) != 0 &&
+		(iButtons & IN_USE) == 0 &&
+		(iButtons & IN_RELOAD) == 0;
+
+	if (bWalkPressed == false)
+	{
+		g_bZoeyInstantInterventionWalkHeld[iClient] = false;
+		return false;
+	}
+
+	if (g_bZoeyInstantInterventionWalkHeld[iClient] == true ||
+		g_iZoeyInstantInterventionTargetUserId[iClient] == 0)
+	{
+		return false;
+	}
+
+	g_bZoeyInstantInterventionWalkHeld[iClient] = true;
+	TryActivateZoeyInstantIntervention(iClient);
+	return false;
 }
 
 void OGFSurvivorReload_Zoey(int iClient, const char[] strCurrentWeapon, int iActiveWeaponID, int iCurrentClipAmmo, int iOffset_Ammo)
@@ -1004,8 +1401,13 @@ void OGFSurvivorReload_Zoey(int iClient, const char[] strCurrentWeapon, int iAct
 
 float GetZoeyResilientResuscitationReviveDuration(int iClient)
 {
-	return ZOEY_RESILIENT_RESUSCITATION_BASE_REVIVE_DURATION *
+	float fDuration = ZOEY_RESILIENT_RESUSCITATION_BASE_REVIVE_DURATION *
 		(1.0 - (float(g_iZoeyTalent1Level[iClient]) * ZOEY_RESILIENT_RESUSCITATION_REVIVE_SPEED_PER_LEVEL));
+
+	if (g_fZoeyInstantInterventionReviveSpeedEndTime[iClient] > GetGameTime())
+		fDuration *= (1.0 - ZOEY_INSTANT_INTERVENTION_REVIVE_SPEED_BONUS);
+
+	return fDuration;
 }
 
 float GetZoeyResilientResuscitationDamageReduction(int iClient)
@@ -1243,7 +1645,7 @@ void HandleZoeyFastRevive(int iClient)
 
 		float fProgressBarDuration = GetEntPropFloat(iTarget, Prop_Send, "m_flProgressBarDuration");
 		if (fProgressBarDuration <= 0.0 ||
-			fProgressBarDuration <= fDesiredDuration + 0.01)
+			FloatAbs(fProgressBarDuration - fDesiredDuration) <= 0.01)
 			continue;
 
 		float fProgressBarStartTime = GetEntPropFloat(iTarget, Prop_Send, "m_flProgressBarStartTime");
@@ -1274,8 +1676,7 @@ void ApplyZoeyResilientResuscitation(int iClient, int iTarget)
 	if (fDamageReduction <= 0.0)
 		return;
 
-	g_fZoeyResilienceEndTime[iTarget] = GetGameTime() + ZOEY_RESILIENT_RESUSCITATION_DURATION;
-	g_fZoeyResilienceDamageReduction[iTarget] = fDamageReduction;
+	GrantZoeyResilienceBuff(iTarget, fDamageReduction, ZOEY_RESILIENT_RESUSCITATION_DURATION);
 
 	int iReductionPercent = RoundToNearest(fDamageReduction * 100.0);
 	int iDurationSeconds = RoundToNearest(ZOEY_RESILIENT_RESUSCITATION_DURATION);
@@ -1330,6 +1731,19 @@ void EventsHurt_ApplyZoeyResilience(int iAttacker, int iVictim, int iDamage, int
 
 	if (iReductionAmount > 0)
 		SetPlayerHealth(iVictim, -1, iReductionAmount, true);
+}
+
+void EventsDeath_VictimZoey(Handle hEvent, int iAttacker, int iVictim)
+{
+	SuppressNeverUsedWarning(hEvent, iAttacker);
+
+	if (g_iClientTeam[iVictim] != TEAM_SURVIVORS ||
+		g_iChosenSurvivor[iVictim] != ZOEY)
+	{
+		return;
+	}
+
+	ClearZoeyInstantInterventionState(iVictim);
 }
 
 bool IsZoeyTriggerHappyWeaponClass(const char[] strWeaponClass)

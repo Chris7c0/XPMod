@@ -300,6 +300,9 @@ Action Event_ReviveSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 	// Nicks Desperate Measures (dont run this on ledges)
 	if (!bWasHanging && SetAllNicksDesprateMeasuresStacks())
 		SetAllNicksDesprateMeasureSpeed("A teammate has been revived, your senses return to a weaker state.");
+
+	if (SetAllZoeyInstantInterventionDownedCount())
+		SetAllZoeyInstantInterventionSpeed("A teammate is back up. Instant Intervention slows to normal.");
 	
 	SetClientSpeed(iTarget);
 	SetClientRenderAndGlowColor(iTarget);
@@ -338,6 +341,9 @@ void Event_LedgeGrab(Handle hEvent, const char[] strName, bool bDontBroadcast)		
 {
 	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	clienthanging[iClient] = true;
+
+	if (SetAllZoeyInstantInterventionDownedCount())
+		SetAllZoeyInstantInterventionSpeed("A teammate is hanging. Instant Intervention quickens you.");
 
 	// Self Revive Message
 	if (g_iSelfRevives[iClient] > 0 && IsFakeClient(iClient) == false)
@@ -406,6 +412,9 @@ Action Event_PlayerIncap(Handle hEvent, char[] Event_name, bool dontBroadcast)
 		// Update Nicks Desperate Measures Stacks
 		if (SetAllNicksDesprateMeasuresStacks())
 			SetAllNicksDesprateMeasureSpeed("A teammate has fallen, your senses sharpen.");
+
+		if (SetAllZoeyInstantInterventionDownedCount())
+			SetAllZoeyInstantInterventionSpeed("A teammate is down. Instant Intervention quickens you.");
 
 		for(int i=1;i<=MaxClients;i++)
 		{
@@ -768,6 +777,9 @@ Action Event_DefibUsed(Handle hEvent, const char[] strName, bool bDontBroadcast)
 	// Update Nicks Desperate Measures Stacks
 	if (SetAllNicksDesprateMeasuresStacks())
 		SetAllNicksDesprateMeasureSpeed("A teammate has been brought back, your senses return to a weaker state.");
+
+	if (SetAllZoeyInstantInterventionDownedCount())
+		SetAllZoeyInstantInterventionSpeed("A teammate is back up. Instant Intervention slows to normal.");
 	
 	SetClientSpeed(iSubject);
 	ApplyZoeyResilientResuscitation(iClient, iSubject);

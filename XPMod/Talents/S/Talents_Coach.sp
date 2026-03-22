@@ -153,7 +153,6 @@ void OnGameFrame_Coach(int iClient)
 			{
 				if(buttons & IN_SPEED)
 				{
-
 					RunCheatCommand(iClient, "give", "give health");
 
 					SetPlayerHealth(iClient, -1, preledgehealth[iClient]);
@@ -164,9 +163,12 @@ void OnGameFrame_Coach(int iClient)
 					
 					g_bIsClientDown[iClient] = false;
 					clienthanging[iClient] = false;
+
+					if (SetAllZoeyInstantInterventionDownedCount())
+						SetAllZoeyInstantInterventionSpeed("A teammate is back up. Instant Intervention slows to normal.");
+				}
 				}
 			}
-		}
 		else
 		{
 			preledgehealth[iClient] = GetClientHealth(iClient);

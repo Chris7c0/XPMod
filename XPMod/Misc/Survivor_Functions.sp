@@ -171,6 +171,9 @@ void SuccessfulSelfRevive(int iClient)
 	// Remove the self revive from the client
 	g_iSelfRevives[iClient]--;
 
+	if (SetAllZoeyInstantInterventionDownedCount())
+		SetAllZoeyInstantInterventionSpeed("A teammate is back up. Instant Intervention slows to normal.");
+
 	HandlePostSelfRevive(iClient);
 }
 

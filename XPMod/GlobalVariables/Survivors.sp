@@ -464,6 +464,18 @@ bool g_bNoobWipeCooldown;
 #define ZOEY_MEDICAL_EXPERTISE_SCRAP_RECYCLE_PILLS_REVIVES       2
 #define ZOEY_MEDICAL_EXPERTISE_SCRAP_RECYCLE_MEDKIT_REVIVES      4
 #define ZOEY_MEDICAL_EXPERTISE_BILE_DURATION_MULTIPLIER          0.67
+#define ZOEY_INSTANT_INTERVENTION_MEDKIT_USE_SPEED_BONUS         0.40
+#define ZOEY_INSTANT_INTERVENTION_MOVE_SPEED_PER_DOWNED          0.05
+#define ZOEY_INSTANT_INTERVENTION_MAX_DOWNED_SPEED_STACKS        3
+#define ZOEY_INSTANT_INTERVENTION_DAMAGE_REDUCTION               0.33
+#define ZOEY_INSTANT_INTERVENTION_BUFF_DURATION                  7.0
+#define ZOEY_INSTANT_INTERVENTION_REVIVE_SPEED_BONUS             0.25
+#define ZOEY_INSTANT_INTERVENTION_HEALING_CIRCLE_RADIUS          160.0
+#define ZOEY_INSTANT_INTERVENTION_HEALING_CIRCLE_DURATION        10.0
+#define ZOEY_INSTANT_INTERVENTION_HEALING_CIRCLE_INTERVAL        1.0
+#define ZOEY_INSTANT_INTERVENTION_HEALING_PER_TICK               4
+#define ZOEY_INSTANT_INTERVENTION_CI_KILL_RADIUS                 160.0
+#define ZOEY_INSTANT_INTERVENTION_GLOBAL_COOLDOWN                120.0
 #define ZOEY_SACRIFICIAL_AID_GLOBAL_COOLDOWN                     10.0
 #define ZOEY_SACRIFICIAL_AID_MAJOR_COST                          15
 #define ZOEY_SACRIFICIAL_AID_MAJOR_HEAL                          100
@@ -501,6 +513,13 @@ int g_iZoeySacrificialAidMaxHealthPenalty[MAXPLAYERS + 1] = {0, ...};
 float g_fZoeySacrificialAidBleedoutStopEndTime[MAXPLAYERS + 1] = {-1.0, ...};
 int g_iZoeySacrificialAidBleedoutLastHealth[MAXPLAYERS + 1] = {0, ...};
 int g_iZoeyMedicalExpertiseBileSerial[MAXPLAYERS + 1] = {0, ...};
+int g_iZoeyInstantInterventionTargetUserId[MAXPLAYERS + 1] = {0, ...};
+bool g_bZoeyInstantInterventionWalkHeld[MAXPLAYERS + 1] = {false, ...};
+float g_fZoeyInstantInterventionReviveSpeedEndTime[MAXPLAYERS + 1] = {-1.0, ...};
+float g_xyzZoeyInstantInterventionCircleOrigin[MAXENTITIES + 1][3];
+int g_iZoeyInstantInterventionCircleTicksRemaining[MAXENTITIES + 1] = {0, ...};
 float g_fZoeySurvivorsWillGlobalCooldownEndTime = -1.0;
 float g_fZoeySacrificialAidGlobalCooldownEndTime = -1.0;
+float g_fZoeyInstantInterventionGlobalCooldownEndTime = -1.0;
+int g_iZoeyInstantInterventionDownedCount = 0;
 int g_iZoeySurvivorsWillMistOwner[MAXENTITIES + 1] = {0, ...};
