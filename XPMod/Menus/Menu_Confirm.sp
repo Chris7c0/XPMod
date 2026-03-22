@@ -141,6 +141,7 @@ Action ConfirmationMessageMenuDraw(int iClient)
 				case ELLIS: surClass =  "Ellis - Weapons Expert";
 				case NICK: surClass =  "Nick - Gambler";
 				case LOUIS: surClass =  "Louis - Disruptor";
+				case ZOEY: surClass =  "Zoey - R.C. Medic";
 				default: surClass = "NONE";
 			}
 			

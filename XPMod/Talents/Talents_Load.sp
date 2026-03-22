@@ -17,6 +17,7 @@ void LoadSurvivorClassTalents(int iClient)
 		case ELLIS:		TalentsLoad_Ellis(iClient);
 		case NICK:		TalentsLoad_Nick(iClient);
 		case LOUIS:		TalentsLoad_Louis(iClient);
+		case ZOEY:		TalentsLoad_Zoey(iClient);
 	}
 }
 
@@ -30,6 +31,7 @@ void ResetSurvivorClassTalentsRuntimeState(int iClient)
 		case ELLIS:		ResetEllisTalentsRuntimeState(iClient);
 		case NICK:		ResetNickTalentsRuntimeState(iClient);
 		case LOUIS:		ResetLouisTalentsRuntimeState(iClient);
+		case ZOEY:		ResetZoeyTalentsRuntimeState(iClient);
 	}
 }
 
@@ -82,6 +84,7 @@ void LoadTalents(int iClient)
 					case ELLIS: 	{ color[0] = 255;	color[1] = 80; 	color[2] = 0;	color[3] = 255; }
 					case NICK: 		{ color[0] = 255;	color[1] = 255;	color[2] = 255;	color[3] = 255; }
 					case LOUIS: 	{ color[0] = 0;		color[1] = 255;	color[2] = 50;	color[3] = 255; }
+					case ZOEY: 		{ color[0] = 60;	color[1] = 220;	color[2] = 120;	color[3] = 255; }
 				}
 				
 				GetEntPropVector(iClient, Prop_Send, "m_vecOrigin", pos);

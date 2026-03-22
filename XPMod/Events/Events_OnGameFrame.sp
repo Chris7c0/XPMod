@@ -71,6 +71,7 @@ public void OnGameFrame()
 					case COACH:		OnGameFrame_Coach(iClient);
 					case ELLIS:		OnGameFrame_Ellis(iClient);
 					case NICK:		OnGameFrame_Nick(iClient);
+					case ZOEY:		OnGameFrame_Zoey(iClient);
 				}
 			}
 
@@ -113,6 +114,7 @@ public void OnGameFrame()
 						case ELLIS:		OGFSurvivorReload_Ellis(iClient, strCurrentWeapon, iActiveWeaponID, iCurrentClipAmmo, iOffset_Ammo);
 						case NICK:		OGFSurvivorReload_Nick(iClient, strCurrentWeapon, iActiveWeaponID, iCurrentClipAmmo);
 						case LOUIS:		OGFSurvivorReload_Louis(iClient, strCurrentWeapon, iActiveWeaponID, iCurrentClipAmmo,iOffset_Ammo);
+						case ZOEY:		OGFSurvivorReload_Zoey(iClient, strCurrentWeapon, iActiveWeaponID, iCurrentClipAmmo, iOffset_Ammo);
 					}
 
 					if(g_iReloadFrameCounter[iClient] == 300)

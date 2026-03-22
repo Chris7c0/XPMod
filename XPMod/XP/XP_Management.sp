@@ -405,6 +405,14 @@ Action ResetSurvivorTalents(int iClient)
 	g_iLouisTalent4Level[iClient] = 0;
 	g_iLouisTalent5Level[iClient] = 0;
 	g_iLouisTalent6Level[iClient] = 0;
+
+	//Zoey
+	g_iZoeyTalent1Level[iClient] = 0;
+	g_iZoeyTalent2Level[iClient] = 0;
+	g_iZoeyTalent3Level[iClient] = 0;
+	g_iZoeyTalent4Level[iClient] = 0;
+	g_iZoeyTalent5Level[iClient] = 0;
+	g_iZoeyTalent6Level[iClient] = 0;
 	
 
 	g_iSkillPoints[iClient] = g_iClientLevel[iClient];
@@ -463,6 +471,7 @@ void AutoLevelUpSurivovor(int iClient)
 		case ELLIS:		LevelUpAllEllis(iClient);
 		case NICK:		LevelUpAllNick(iClient);
 		case LOUIS:		LevelUpAllLouis(iClient);
+		case ZOEY:		LevelUpAllZoey(iClient);
 	}
 }
 
@@ -634,6 +643,22 @@ void LevelUpAllLouis(int iClient)
 		g_iLouisTalent4Level, \
 		g_iLouisTalent5Level, \
 		g_iLouisTalent6Level \
+		);
+}
+
+void LevelUpAllZoey(int iClient)
+{
+	if (g_iChosenSurvivor[iClient] != ZOEY)
+		g_iChosenSurvivor[iClient] = ZOEY;
+
+	AutoLevelUpSurvivorTalents( \
+		iClient, \
+		g_iZoeyTalent1Level, \
+		g_iZoeyTalent2Level, \
+		g_iZoeyTalent3Level, \
+		g_iZoeyTalent4Level, \
+		g_iZoeyTalent5Level, \
+		g_iZoeyTalent6Level \
 		);
 }
 

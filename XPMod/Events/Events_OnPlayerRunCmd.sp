@@ -117,6 +117,7 @@ public Action OnPlayerRunCmd(int iClient, int &iButtons, int &iImpulse, float fV
 	{
 		// If buttons are changed for more classes in the future, then this needs to be put into a switch statement
 		bButtonsChanged = OnPlayerRunCmd_Coach(iClient, iButtons) || bButtonsChanged;
+		bButtonsChanged = OnPlayerRunCmd_Zoey(iClient, iButtons) || bButtonsChanged;
 		OnPlayerRunCmd_Ellis(iClient, iButtons);
 		bButtonsChanged = OnPlayerRunCmd_Louis(iClient, iButtons) || bButtonsChanged;
 	}

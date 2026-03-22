@@ -54,6 +54,14 @@ int g_iLouisTalent4Level[MAXPLAYERS + 1];
 int g_iLouisTalent5Level[MAXPLAYERS + 1];
 int g_iLouisTalent6Level[MAXPLAYERS + 1];
 
+//Zoey Talent Levels
+int g_iZoeyTalent1Level[MAXPLAYERS + 1];
+int g_iZoeyTalent2Level[MAXPLAYERS + 1];
+int g_iZoeyTalent3Level[MAXPLAYERS + 1];
+int g_iZoeyTalent4Level[MAXPLAYERS + 1];
+int g_iZoeyTalent5Level[MAXPLAYERS + 1];
+int g_iZoeyTalent6Level[MAXPLAYERS + 1];
+
 
 ////////////////////////////////     INFECTED    /////////////////////////////////////
 

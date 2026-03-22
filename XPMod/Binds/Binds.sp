@@ -54,6 +54,7 @@ void BindPress(int iClient, int iBindNumber)
 			case ELLIS:		iBindNumber == 1 ? Bind1Press_Ellis(iClient) 	: Bind2Press_Ellis(iClient);
 			case NICK:		iBindNumber == 1 ? Bind1Press_Nick(iClient) 	: Bind2Press_Nick(iClient);
 			case LOUIS:		iBindNumber == 1 ? Bind1Press_Louis(iClient) 	: Bind2Press_Louis(iClient);
+			case ZOEY:		iBindNumber == 1 ? Bind1Press_Zoey(iClient) 	: Bind2Press_Zoey(iClient);
 		}
 	}
 	else if(g_iClientTeam[iClient] == TEAM_INFECTED)

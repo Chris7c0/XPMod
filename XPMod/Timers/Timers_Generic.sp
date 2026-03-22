@@ -29,6 +29,7 @@ Action Timer1SecondGlobalRepeating(Handle timer, int data)
 			// 	case ELLIS:		Handle1SecondClientTimers_Ellis(iClient);
 			// 	case NICK:		Handle1SecondClientTimers_Nick(iClient);
 			// 	case LOUIS:		Handle1SecondClientTimers_Louis(iClient);
+			//	case ZOEY:		Handle1SecondClientTimers_Zoey(iClient);
 			// }
 		}
 		else if(g_iClientTeam[iClient] == TEAM_INFECTED)
@@ -71,6 +72,7 @@ Action Timer2SecondGlobalRepeating(Handle timer, int data)
 				// case ELLIS:		Handle2SecondClientTimers_Ellis(iClient);
 				// case NICK:		Handle2SecondClientTimers_Nick(iClient);
 				// case LOUIS:		Handle2SecondClientTimers_Louis(iClient);
+				// case ZOEY:		Handle2SecondClientTimers_Zoey(iClient);
 				}
 			}
 		// else if(g_iClientTeam[iClient] == TEAM_INFECTED)

@@ -38,7 +38,7 @@ void SetupXPMConVars()
 	// HookConVarChange(g_hCVar_TalentSelectionMode, CVarChange_TalentSelectionMode);
 
 	// Default Survivor Class
-	g_hCVar_DefaultSurvivor = CreateConVar("xpm_default_survivor", "0", "Sets the default surivovor when someone first logs in [0 = BILL, 1 = ROCHELLE, 2 = COACH, 3 = ELLIS, 4 = NICK]", 0, true, 0.0, true, 8.0);
+	g_hCVar_DefaultSurvivor = CreateConVar("xpm_default_survivor", "0", "Sets the default surivovor when someone first logs in [0 = BILL, 1 = ROCHELLE, 2 = COACH, 3 = ELLIS, 4 = NICK, 5 = LOUIS, 6 = ZOEY, 7 = FRANCIS]", 0, true, 0.0, true, 8.0);
 	HookConVarChange(g_hCVar_DefaultSurvivor, CVarChange_DefaultSurvivor);
 
 	// Default Infected Class Slot 1

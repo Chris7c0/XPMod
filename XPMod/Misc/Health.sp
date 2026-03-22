@@ -296,6 +296,7 @@ void SetPlayerTalentMaxHealth(int iClient, bool bFillInHealthGap = true)
 			case ELLIS:		SetPlayerTalentMaxHealth_Ellis(iClient, bFillInHealthGap);
 			case NICK:		SetPlayerTalentMaxHealth_Nick(iClient, bFillInHealthGap);
 			case LOUIS:		SetPlayerTalentMaxHealth_Louis(iClient, bFillInHealthGap);
+			case ZOEY:		SetPlayerTalentMaxHealth_Zoey(iClient, bFillInHealthGap);
 		}
 	}
 }
