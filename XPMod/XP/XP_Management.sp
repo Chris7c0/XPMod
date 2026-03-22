@@ -1140,48 +1140,52 @@ void ChangeXPDisplayMode(int iClient)
 
 void GiveRewards()
 {
+	char strClientBaseName[sizeof(g_strReward_SIKills)];
+
 	for(int i = 1; i <= MaxClients; i++)
 	{		
 		if(RunClientChecks(i) == false || IsFakeClient(i) == true)
 			continue;
 		
+		GetClientBaseName(i, strClientBaseName, sizeof(strClientBaseName));
+
 		//Give Survivor Rewards
 		if(g_iStat_ClientInfectedKilled[i] >= g_iReward_SIKills)
 		{
 			g_iReward_SIKills = g_iStat_ClientInfectedKilled[i];
 			g_iReward_SIKillsID = i;
-			GetClientName(i, g_strReward_SIKills, sizeof(g_strReward_SIKills));
+			strcopy(g_strReward_SIKills, sizeof(g_strReward_SIKills), strClientBaseName);
 		}
 		if(g_iStat_ClientCommonKilled[i] >= g_iReward_CIKills)
 		{
 			g_iReward_CIKills = g_iStat_ClientCommonKilled[i];
 			g_iReward_CIKillsID = i;
-			GetClientName(i, g_strReward_CIKills, sizeof(g_strReward_CIKills));
+			strcopy(g_strReward_CIKills, sizeof(g_strReward_CIKills), strClientBaseName);
 		}
 		if(g_iStat_ClientCommonHeadshots[i] >= g_iReward_HS)
 		{
 			g_iReward_HS = g_iStat_ClientCommonHeadshots[i];
 			g_iReward_HSID = i;
-			GetClientName(i, g_strReward_HS, sizeof(g_strReward_HS));
+			strcopy(g_strReward_HS, sizeof(g_strReward_HS), strClientBaseName);
 		}
 		//Give Infected Rewards
 		if(g_iStat_ClientSurvivorsKilled[i] >= g_iReward_SurKills)
 		{
 			g_iReward_SurKills = g_iStat_ClientSurvivorsKilled[i];
 			g_iReward_SurKillsID = i;
-			GetClientName(i, g_strReward_SurKills, sizeof(g_strReward_SurKills));
+			strcopy(g_strReward_SurKills, sizeof(g_strReward_SurKills), strClientBaseName);
 		}
 		if(g_iStat_ClientSurvivorsIncaps[i] >= g_iReward_SurIncaps)
 		{
 			g_iReward_SurIncaps = g_iStat_ClientSurvivorsIncaps[i];
 			g_iReward_SurIncapsID = i;
-			GetClientName(i, g_strReward_SurIncaps, sizeof(g_strReward_SurIncaps));
+			strcopy(g_strReward_SurIncaps, sizeof(g_strReward_SurIncaps), strClientBaseName);
 		}
 		if(g_iStat_ClientDamageToSurvivors[i] >= g_iReward_SurDmg)
 		{
 			g_iReward_SurDmg = g_iStat_ClientDamageToSurvivors[i];
 			g_iReward_SurDmgID = i;
-			GetClientName(i, g_strReward_SurDmg, sizeof(g_strReward_SurDmg));
+			strcopy(g_strReward_SurDmg, sizeof(g_strReward_SurDmg), strClientBaseName);
 		}
 		
 	}

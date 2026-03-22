@@ -11,6 +11,7 @@ void CreateXPMStatistics(int iClient, char[] strStoreBuffer = "", int iStoreBuff
 	char strLoggedIn[16];
 	char strConfirmed[16];
 	char strState[64];
+	char strClientBaseName[32];
 	char strSafeServerName[sizeof(g_strServerName)];
 	char strSafeCurrentMap[sizeof(g_strCurrentMap)];
 
@@ -45,7 +46,8 @@ void CreateXPMStatistics(int iClient, char[] strStoreBuffer = "", int iStoreBuff
 		{
 			if(RunClientChecks(i) && IsFakeClient(i) == false && g_iClientTeam[i] == TEAM_SPECTATORS)
 			{
-				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x04 [\x03%N\x04]\x03 ", i);
+				GetClientBaseName(i, strClientBaseName, sizeof(strClientBaseName));
+				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x04 [\x03%s\x04]\x03 ", strClientBaseName);
 				PrintToBufferServerOrClient(iClient, strStatsTextBuffer, strStoreBuffer, iStoreBufferSize);
 
 				GetLoggedInAndConfirmedStrings(i, strLoggedIn, sizeof(strLoggedIn), strConfirmed, sizeof(strConfirmed));
@@ -69,6 +71,8 @@ void CreateXPMStatistics(int iClient, char[] strStoreBuffer = "", int iStoreBuff
 		{
 			if(RunClientChecks(i) && IsFakeClient(i) == false && g_iClientTeam[i] == TEAM_SURVIVORS)
 			{
+				GetClientBaseName(i, strClientBaseName, sizeof(strClientBaseName));
+
 				// Determine the player state
 				if (IsPlayerAlive(i) == false)
 					strState = "DEAD";
@@ -83,7 +87,7 @@ void CreateXPMStatistics(int iClient, char[] strStoreBuffer = "", int iStoreBuff
 				else
 					strState = "ERROR!";
 
-				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x04 [\x03%N\x04]\x05 %s\x03 ", i, strState);
+				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x04 [\x03%s\x04]\x05 %s\x03 ", strClientBaseName, strState);
 				PrintToBufferServerOrClient(iClient, strStatsTextBuffer, strStoreBuffer, iStoreBufferSize);
 
 				GetLoggedInAndConfirmedStrings(i, strLoggedIn, sizeof(strLoggedIn), strConfirmed, sizeof(strConfirmed));
@@ -119,6 +123,8 @@ void CreateXPMStatistics(int iClient, char[] strStoreBuffer = "", int iStoreBuff
 				g_iClientTeam[i] == TEAM_INFECTED &&
 				IsFakeClient(i) == false)
 			{
+				GetClientBaseName(i, strClientBaseName, sizeof(strClientBaseName));
+
 
 				// Determine the player state
 				if (g_bIsGhost[i])
@@ -134,7 +140,7 @@ void CreateXPMStatistics(int iClient, char[] strStoreBuffer = "", int iStoreBuff
 				else
 					strState = "ERROR!";
 				
-				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x04 [\x03%N\x04]\x05 %s\x03 ", i, strState);
+				Format(strStatsTextBuffer, sizeof(strStatsTextBuffer), "\x04 [\x03%s\x04]\x05 %s\x03 ", strClientBaseName, strState);
 				PrintToBufferServerOrClient(iClient, strStatsTextBuffer, strStoreBuffer, iStoreBufferSize);
 
 				if (IsFakeClient(i) == false)
