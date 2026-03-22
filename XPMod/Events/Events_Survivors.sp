@@ -461,6 +461,7 @@ Action Event_HealSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 {
 	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
 	int target = GetClientOfUserId(GetEventInt(hEvent, "subject"));
+	int iZoeySharedMedkitHealAmount = 0;
 
 	
 	g_iKitsUsed++;
@@ -468,15 +469,18 @@ Action Event_HealSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 	if(RunClientChecks(iClient) == false || RunClientChecks(target) == false)
 		return Plugin_Continue;
 	
-	//Get their current health states
+	// Get the direct medkit heal amount first so Zoey's splash can mirror the actual heal.
 	int currentHP = GetPlayerHealth(target);
-	int maxHP = GetPlayerMaxHealth(target);
-	
-	//Set what their health should be after health kit use
-	if((currentHP + 100) > maxHP)
-		SetPlayerHealth(target, -1, maxHP);
-	else
+	if (currentHP > 0)
+	{
+		int iTargetHealthBeforeMedkit = currentHP;
 		SetPlayerHealth(target, -1, currentHP + 100);
+		int iTargetHealthAfterMedkit = GetPlayerHealth(target);
+		if (iTargetHealthAfterMedkit > iTargetHealthBeforeMedkit)
+		{
+			iZoeySharedMedkitHealAmount = RoundToFloor(float(iTargetHealthAfterMedkit - iTargetHealthBeforeMedkit) * GetZoeySharingIsCaringMedkitShareMultiplier(iClient));
+		}
+	}
 	
 	if(g_iOverLevel[target] > 0)
 	{
@@ -705,6 +709,10 @@ Action Event_HealSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 			}
 		}
 	}
+
+	if (iZoeySharedMedkitHealAmount > 0)
+		ShareZoeyHealingToNearbyTeammates(iClient, iZoeySharedMedkitHealAmount, target);
+
 	if (iClient > 0 && iClient <= MaxClients)
 	{
 		if(IsFakeClient(iClient) == true)
@@ -816,6 +824,14 @@ Action Event_PillsUsed(Handle hEvent, const char[] strName, bool bDontBroadcast)
 	}
 
 	EventsPillsUsed_Louis(iClient);
+
+	int iZoeySharedPillsHealBase = ConsumeZoeySharingIsCaringTrackedBoostHealAmount(iClient);
+	if (iZoeySharedPillsHealBase > 0)
+	{
+		int iZoeySharedPillsHealAmount = RoundToFloor(float(iZoeySharedPillsHealBase) * GetZoeySharingIsCaringPillsShareMultiplier(iClient));
+		if (iZoeySharedPillsHealAmount > 0)
+			ShareZoeyHealingToNearbyTeammates(iClient, iZoeySharedPillsHealAmount, iClient);
+	}
 		
 	return Plugin_Continue;
 }
@@ -870,6 +886,14 @@ Action Event_AdrenalineUsed(Handle hEvent, const char[] strName, bool bDontBroad
 	}
 
 	EventsAdrenalineUsed_Louis(iClient);
+
+	int iZoeySharedAdrenalineHealBase = ConsumeZoeySharingIsCaringTrackedBoostHealAmount(iClient);
+	if (iZoeySharedAdrenalineHealBase > 0)
+	{
+		int iZoeySharedAdrenalineHealAmount = RoundToFloor(float(iZoeySharedAdrenalineHealBase) * GetZoeySharingIsCaringAdrenalineShareMultiplier(iClient));
+		if (iZoeySharedAdrenalineHealAmount > 0)
+			ShareZoeyHealingToNearbyTeammates(iClient, iZoeySharedAdrenalineHealAmount, iClient);
+	}
 
 	return Plugin_Continue;
 }

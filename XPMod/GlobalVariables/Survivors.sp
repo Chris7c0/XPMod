@@ -451,6 +451,11 @@ bool g_bNoobWipeCooldown;
 #define ZOEY_SURVIVORS_WILL_GLOBAL_COOLDOWN                      180.0
 #define ZOEY_SURVIVORS_WILL_REVEAL_MIST_INTERVAL                 0.4
 #define ZOEY_SURVIVORS_WILL_REVEAL_MIST_DURATION                 0.6
+#define ZOEY_SHARING_IS_CARING_RADIUS_BASE                       60.0
+#define ZOEY_SHARING_IS_CARING_RADIUS_PER_LEVEL                  24.0
+#define ZOEY_SHARING_IS_CARING_MEDKIT_SHARE_PER_LEVEL            0.05
+#define ZOEY_SHARING_IS_CARING_PILLS_SHARE_PER_LEVEL             0.10
+#define ZOEY_SHARING_IS_CARING_ADRENALINE_SHARE_PER_LEVEL        0.16
 float g_fZoeyResilienceEndTime[MAXPLAYERS + 1] = {-1.0, ...};
 float g_fZoeyResilienceDamageReduction[MAXPLAYERS + 1] = {0.0, ...};
 int g_iZoeyQueuedReviveResumeTarget[MAXPLAYERS + 1] = {-1, ...};
@@ -470,5 +475,6 @@ bool g_bZoeySurvivorsWillCharging[MAXPLAYERS + 1] = {false, ...};
 float g_fZoeySurvivorsWillChargeStartTime[MAXPLAYERS + 1] = {-1.0, ...};
 float g_fZoeySurvivorsWillRevealEndTime[MAXPLAYERS + 1] = {-1.0, ...};
 float g_fZoeySurvivorsWillNextMistTime[MAXPLAYERS + 1] = {0.0, ...};
+int g_iZoeySharingTrackedTempHealth[MAXPLAYERS + 1] = {-1, ...};
 float g_fZoeySurvivorsWillGlobalCooldownEndTime = -1.0;
 int g_iZoeySurvivorsWillMistOwner[MAXENTITIES + 1] = {0, ...};

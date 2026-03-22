@@ -19,6 +19,7 @@ void TalentsLoad_Zoey(int iClient)
 	g_fZoeySurvivorsWillChargeStartTime[iClient] = -1.0;
 	g_fZoeySurvivorsWillRevealEndTime[iClient] = -1.0;
 	g_fZoeySurvivorsWillNextMistTime[iClient] = 0.0;
+	g_iZoeySharingTrackedTempHealth[iClient] = -1;
 
 	SetPlayerTalentMaxHealth_Zoey(iClient, !g_bConfirmedSurvivorTalentsGivenThisRound[iClient]);
 	SetClientSpeed(iClient);
@@ -53,6 +54,7 @@ void ResetZoeyTalentsRuntimeState(int iClient)
 	g_fZoeySurvivorsWillChargeStartTime[iClient] = -1.0;
 	g_fZoeySurvivorsWillRevealEndTime[iClient] = -1.0;
 	g_fZoeySurvivorsWillNextMistTime[iClient] = 0.0;
+	g_iZoeySharingTrackedTempHealth[iClient] = -1;
 
 	SetClientSpeed(iClient);
 }
@@ -92,6 +94,136 @@ bool IsZoeyHoldingMedkit(int iClient)
 	char strWeaponClass[32];
 	GetEntityClassname(iActiveWeaponID, strWeaponClass, sizeof(strWeaponClass));
 	return StrEqual(strWeaponClass, "weapon_first_aid_kit", false);
+}
+
+bool IsZoeySharingIsCaringActive(int iClient)
+{
+	return RunClientChecks(iClient) &&
+		IsPlayerAlive(iClient) &&
+		g_bTalentsConfirmed[iClient] == true &&
+		g_iChosenSurvivor[iClient] == ZOEY &&
+		g_iClientTeam[iClient] == TEAM_SURVIVORS &&
+		g_iZoeyTalent4Level[iClient] > 0;
+}
+
+float GetZoeySharingIsCaringRadius(int iClient)
+{
+	if (IsZoeySharingIsCaringActive(iClient) == false)
+		return 0.0;
+
+	return ZOEY_SHARING_IS_CARING_RADIUS_BASE +
+		(float(g_iZoeyTalent4Level[iClient]) * ZOEY_SHARING_IS_CARING_RADIUS_PER_LEVEL);
+}
+
+float GetZoeySharingIsCaringMedkitShareMultiplier(int iClient)
+{
+	return IsZoeySharingIsCaringActive(iClient) ?
+		float(g_iZoeyTalent4Level[iClient]) * ZOEY_SHARING_IS_CARING_MEDKIT_SHARE_PER_LEVEL :
+		0.0;
+}
+
+float GetZoeySharingIsCaringPillsShareMultiplier(int iClient)
+{
+	return IsZoeySharingIsCaringActive(iClient) ?
+		float(g_iZoeyTalent4Level[iClient]) * ZOEY_SHARING_IS_CARING_PILLS_SHARE_PER_LEVEL :
+		0.0;
+}
+
+float GetZoeySharingIsCaringAdrenalineShareMultiplier(int iClient)
+{
+	return IsZoeySharingIsCaringActive(iClient) ?
+		float(g_iZoeyTalent4Level[iClient]) * ZOEY_SHARING_IS_CARING_ADRENALINE_SHARE_PER_LEVEL :
+		0.0;
+}
+
+void TrackZoeySharingIsCaringBoostUse(int iClient)
+{
+	if (IsZoeySharingIsCaringActive(iClient) == false)
+		return;
+
+	int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+	if (RunEntityChecks(iActiveWeaponID) == false ||
+		iActiveWeaponID != GetPlayerWeaponSlot(iClient, 4))
+		return;
+
+	char strWeaponClass[32];
+	GetEntityClassname(iActiveWeaponID, strWeaponClass, sizeof(strWeaponClass));
+	if (StrEqual(strWeaponClass, "weapon_pain_pills", false) == false &&
+		StrEqual(strWeaponClass, "weapon_adrenaline", false) == false)
+		return;
+
+	g_iZoeySharingTrackedTempHealth[iClient] = GetSurvivorTempHealth(iClient);
+}
+
+int ConsumeZoeySharingIsCaringTrackedBoostHealAmount(int iClient)
+{
+	int iTrackedTempHealth = g_iZoeySharingTrackedTempHealth[iClient];
+	g_iZoeySharingTrackedTempHealth[iClient] = -1;
+
+	if (IsZoeySharingIsCaringActive(iClient) == false ||
+		iTrackedTempHealth < 0)
+		return 0;
+
+	int iCurrentTempHealth = GetSurvivorTempHealth(iClient);
+	if (iCurrentTempHealth <= iTrackedTempHealth)
+		return 0;
+
+	return iCurrentTempHealth - iTrackedTempHealth;
+}
+
+int ApplyZoeySharingIsCaringPermanentHeal(int iTarget, int iHealAmount)
+{
+	if (iHealAmount <= 0 ||
+		RunClientChecks(iTarget) == false ||
+		IsPlayerAlive(iTarget) == false ||
+		g_iClientTeam[iTarget] != TEAM_SURVIVORS ||
+		IsIncap(iTarget) == true)
+		return 0;
+
+	int iHealthBefore = GetPlayerHealth(iTarget);
+	if (iHealthBefore <= 0)
+		return 0;
+
+	if (SetPlayerHealth(iTarget, -1, iHealAmount, true) == false)
+		return 0;
+
+	int iHealthAfter = GetPlayerHealth(iTarget);
+	if (iHealthAfter <= iHealthBefore)
+		return 0;
+
+	return iHealthAfter - iHealthBefore;
+}
+
+void ShareZoeyHealingToNearbyTeammates(int iZoey, int iSharedHealAmount, int iPrimaryTargetToSkip)
+{
+	if (IsZoeySharingIsCaringActive(iZoey) == false ||
+		iSharedHealAmount <= 0)
+		return;
+
+	float fRadius = GetZoeySharingIsCaringRadius(iZoey);
+	if (fRadius <= 0.0)
+		return;
+
+	float xyzZoeyOrigin[3];
+	GetClientAbsOrigin(iZoey, xyzZoeyOrigin);
+
+	for (int iTeammate = 1; iTeammate <= MaxClients; iTeammate++)
+	{
+		if (iTeammate == iZoey ||
+			iTeammate == iPrimaryTargetToSkip ||
+			RunClientChecks(iTeammate) == false ||
+			IsPlayerAlive(iTeammate) == false ||
+			g_iClientTeam[iTeammate] != TEAM_SURVIVORS ||
+			IsIncap(iTeammate) == true)
+			continue;
+
+		float xyzTeammateOrigin[3];
+		GetClientAbsOrigin(iTeammate, xyzTeammateOrigin);
+		if (GetVectorDistance(xyzZoeyOrigin, xyzTeammateOrigin) > fRadius)
+			continue;
+
+		ApplyZoeySharingIsCaringPermanentHeal(iTeammate, iSharedHealAmount);
+	}
 }
 
 float GetZoeySurvivorsWillChargeDuration(int iClient)
@@ -352,6 +484,12 @@ bool OnPlayerRunCmd_Zoey(int iClient, int &iButtons)
 		return false;
 
 	bool bButtonsChanged = false;
+
+	if (g_iZoeyTalent4Level[iClient] > 0 &&
+		(iButtons & IN_ATTACK) != 0)
+	{
+		TrackZoeySharingIsCaringBoostUse(iClient);
+	}
 
 	if (g_iZoeyTalent1Level[iClient] > 0)
 		HandleZoeyProtectedReviveResume(iClient, iButtons);
