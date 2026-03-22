@@ -439,9 +439,23 @@ bool g_bNoobWipeCooldown;
 #define ZOEY_RESILIENT_RESUSCITATION_MOVE_SPEED_PER_LEVEL        0.04
 #define ZOEY_RESILIENT_RESUSCITATION_DAMAGE_REDUCTION_PER_LEVEL  0.04
 #define ZOEY_RESILIENT_RESUSCITATION_DURATION                    7.0
+#define ZOEY_TRIGGER_HAPPY_CLIP_SIZE                             120
+#define ZOEY_TRIGGER_HAPPY_EXPLOSIVE_AMMO_COOLDOWN               30.0
+#define ZOEY_TRIGGER_HAPPY_EXPLOSIVE_SI_DAMAGE_MULTIPLIER        1.0
+#define ZOEY_MOP_THE_FLOOR_HITS_PER_CHARGE                       5
+#define ZOEY_MOP_THE_FLOOR_RADIUS                                275.0
 float g_fZoeyResilienceEndTime[MAXPLAYERS + 1] = {-1.0, ...};
 float g_fZoeyResilienceDamageReduction[MAXPLAYERS + 1] = {0.0, ...};
 int g_iZoeyQueuedReviveResumeTarget[MAXPLAYERS + 1] = {-1, ...};
 float g_fZoeyQueuedReviveResumeDuration[MAXPLAYERS + 1] = {0.0, ...};
 float g_fZoeyQueuedReviveResumeProgress[MAXPLAYERS + 1] = {0.0, ...};
 float g_fZoeyQueuedReviveResumeAllowedUntil[MAXPLAYERS + 1] = {-1.0, ...};
+bool g_bZoeyExplosiveAmmoActive[MAXPLAYERS + 1] = {false, ...};
+float g_fZoeyExplosiveAmmoCooldownEndTime[MAXPLAYERS + 1] = {-1.0, ...};
+bool g_bZoeyMopArmed[MAXPLAYERS + 1] = {false, ...};
+int g_iZoeyMopCharge[MAXPLAYERS + 1] = {0, ...};
+int g_iZoeyMopHitCounter[MAXPLAYERS + 1] = {0, ...};
+bool g_bZoeyWalkReloadHeld[MAXPLAYERS + 1] = {false, ...};
+bool g_bZoeyWalkUseHeld[MAXPLAYERS + 1] = {false, ...};
+float g_fZoeyPrimaryStripHintCooldown[MAXPLAYERS + 1] = {0.0, ...};
+bool g_bZoeySuppressSyntheticCIHurt[MAXPLAYERS + 1] = {false, ...};

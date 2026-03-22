@@ -91,6 +91,7 @@ Action Event_PlayerHurt(Handle hEvent, const char[] strName, bool bDontBroadcast
 			case ELLIS:		EventsHurt_AttackerEllis(hEvent, iAttacker, iVictim);
 			case NICK:		EventsHurt_AttackerNick(hEvent, iAttacker, iVictim);
 			case LOUIS:		EventsHurt_AttackerLouis(hEvent, iAttacker, iVictim);
+			case ZOEY:		EventsHurt_AttackerZoey(hEvent, iAttacker, iVictim);
 		}
 	}
 	if (g_iClientTeam[iVictim] == TEAM_SURVIVORS)

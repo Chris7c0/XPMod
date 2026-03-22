@@ -97,6 +97,30 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 			strStartingNewLines,
 			strTalentName);
 	}
+	else if (iTalentIndex == 1)
+	{
+		FormatEx(text, sizeof(text), "\
+			%s\t\t%s:\
+			\n \
+			\n Removes The Ability To Hold A Primary Weapon\
+			\n Dual Pistols Become Automatic Machine Pistols\
+			\n - 120 Clip Size\
+			\n \
+			\n Press [WALK] + [RELOAD] For Explosive Ammo\
+			\n - Reloads Current Clip\
+			\n - Bullets Explode\
+			\n - One-Shots Common Infected\
+			\n - Increased Damage To Special Infected\
+			\n - 30 Second Cooldown After The Clip Ends\
+			\n \
+			\n Mop 'Til They Drop\
+			\n - Gain 1 Charge Per 5 Machine-Pistol Hits On CI/SI\
+			\n - Press [WALK] + [USE] To Arm\
+			\n - Next Shot Marks A Target And Kills Nearby CI Equal To Stored Charge\
+			\n ",
+			strStartingNewLines,
+			strTalentName);
+	}
 	else
 	{
 		FormatEx(text, sizeof(text), "\

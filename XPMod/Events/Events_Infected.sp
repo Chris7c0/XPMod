@@ -386,6 +386,10 @@ Action Event_InfectedHurt(Handle hEvent, const char[] strName, bool bDontBroadca
 					}
 				}
 			}
+			case ZOEY:
+			{
+				EventsInfectedHurt_Zoey(hEvent, attacker, victim);
+			}
 		}
 	}
 	

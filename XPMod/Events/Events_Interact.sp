@@ -385,6 +385,10 @@ Action Event_ItemPickUp(Handle hEvent, const char[] strName, bool bDontBroadcast
 	{
 		EventsItemPickUp_Louis(iClient, weaponclass);
 	}
+	else if(g_iChosenSurvivor[iClient] == ZOEY)
+	{
+		EventsItemPickUp_Zoey(iClient, weaponclass);
+	}
 
 	// If the player picked up X number of lasers, then run a clean up to prevent server slowness
 	if (g_iLaserUpgradeCounter[iClient] > WEAPON_PROXIMITY_CLEAN_UP_TRIGGER_ITEM_PICKUP_COUNT)

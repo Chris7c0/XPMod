@@ -82,6 +82,17 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 			if (StrEqual(strCurrentWeapon, "weapon_pistol", false) == true)
 				SetEntProp(ActiveWeaponID, Prop_Send, "m_isHoldingFireButton", 0);
 		}
+		case ZOEY:
+		{
+			char strCurrentWeapon[32];
+			GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
+
+			int ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+
+			if (StrEqual(strCurrentWeapon, "weapon_pistol", false) == true &&
+				g_iZoeyTalent2Level[iClient] > 0)
+				SetEntProp(ActiveWeaponID, Prop_Send, "m_isHoldingFireButton", 0);
+		}
 	}
 	
 	if(g_bClientIsReloading[iClient] == true)
