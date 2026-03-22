@@ -98,6 +98,19 @@ public Action OnTakeDamage(int iVictim, int &iAttacker, int &iInflictor, float &
 		return Plugin_Changed;
 	}
 
+	if (ShouldApplyZoeySurvivorsWillIncapReduction(iVictim, iDamageType))
+	{
+		int iReductionAmount = RoundToFloor(fDamage * ZOEY_SURVIVORS_WILL_INCAP_DAMAGE_REDUCTION);
+		if (iReductionAmount > 0)
+		{
+			fDamage -= float(iReductionAmount);
+			if (fDamage < 1.0)
+				fDamage = 1.0;
+
+			return Plugin_Changed;
+		}
+	}
+
 	if (iVictim > 0 &&
 		iVictim <= MaxClients &&
 		iAttacker > 0 &&

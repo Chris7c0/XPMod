@@ -221,11 +221,14 @@ void SetClientSpeedLouis(int iClient, float &fSpeed)
 void SetClientSpeedZoey(int iClient, float &fSpeed)
 {
 	if (g_bTalentsConfirmed[iClient] == false ||
-		g_iChosenSurvivor[iClient] != ZOEY ||
-		g_iZoeyTalent1Level[iClient] <= 0)
+		g_iChosenSurvivor[iClient] != ZOEY)
 		return;
 
-	if (IsZoeyHoldingHealingItem(iClient))
+	if (g_iZoeyTalent3Level[iClient] > 0)
+		fSpeed += ZOEY_SURVIVORS_WILL_MOVE_SPEED_BONUS;
+
+	if (g_iZoeyTalent1Level[iClient] > 0 &&
+		IsZoeyHoldingHealingItem(iClient))
 		fSpeed += (g_iZoeyTalent1Level[iClient] * ZOEY_RESILIENT_RESUSCITATION_MOVE_SPEED_PER_LEVEL);
 }
 

@@ -15,6 +15,10 @@ void TalentsLoad_Zoey(int iClient)
 	g_bZoeyWalkUseHeld[iClient] = false;
 	g_fZoeyPrimaryStripHintCooldown[iClient] = 0.0;
 	g_bZoeySuppressSyntheticCIHurt[iClient] = false;
+	g_bZoeySurvivorsWillCharging[iClient] = false;
+	g_fZoeySurvivorsWillChargeStartTime[iClient] = -1.0;
+	g_fZoeySurvivorsWillRevealEndTime[iClient] = -1.0;
+	g_fZoeySurvivorsWillNextMistTime[iClient] = 0.0;
 
 	SetPlayerTalentMaxHealth_Zoey(iClient, !g_bConfirmedSurvivorTalentsGivenThisRound[iClient]);
 	SetClientSpeed(iClient);
@@ -45,6 +49,10 @@ void ResetZoeyTalentsRuntimeState(int iClient)
 	g_bZoeyWalkUseHeld[iClient] = false;
 	g_fZoeyPrimaryStripHintCooldown[iClient] = 0.0;
 	g_bZoeySuppressSyntheticCIHurt[iClient] = false;
+	g_bZoeySurvivorsWillCharging[iClient] = false;
+	g_fZoeySurvivorsWillChargeStartTime[iClient] = -1.0;
+	g_fZoeySurvivorsWillRevealEndTime[iClient] = -1.0;
+	g_fZoeySurvivorsWillNextMistTime[iClient] = 0.0;
 
 	SetClientSpeed(iClient);
 }
@@ -59,22 +67,283 @@ void SetPlayerTalentMaxHealth_Zoey(int iClient, bool bFillInHealthGap = true)
 	SetPlayerMaxHealth(iClient, 100, false, bFillInHealthGap);
 }
 
+void ClearZoeySurvivorsWillCharge(int iClient)
+{
+	g_bZoeySurvivorsWillCharging[iClient] = false;
+	g_fZoeySurvivorsWillChargeStartTime[iClient] = -1.0;
+}
+
+void ClearZoeySurvivorsWillReveal(int iClient)
+{
+	g_fZoeySurvivorsWillRevealEndTime[iClient] = -1.0;
+	g_fZoeySurvivorsWillNextMistTime[iClient] = 0.0;
+}
+
+bool IsZoeyHoldingMedkit(int iClient)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false)
+		return false;
+
+	int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+	if (RunEntityChecks(iActiveWeaponID) == false)
+		return false;
+
+	char strWeaponClass[32];
+	GetEntityClassname(iActiveWeaponID, strWeaponClass, sizeof(strWeaponClass));
+	return StrEqual(strWeaponClass, "weapon_first_aid_kit", false);
+}
+
+float GetZoeySurvivorsWillChargeDuration(int iClient)
+{
+	if (g_bZoeySurvivorsWillCharging[iClient] == false ||
+		g_fZoeySurvivorsWillChargeStartTime[iClient] < 0.0)
+		return 0.0;
+
+	float fDuration = GetGameTime() - g_fZoeySurvivorsWillChargeStartTime[iClient];
+	if (fDuration < 0.0)
+		return 0.0;
+
+	return fDuration > ZOEY_SURVIVORS_WILL_CHARGE_MAX_DURATION ?
+		ZOEY_SURVIVORS_WILL_CHARGE_MAX_DURATION :
+		fDuration;
+}
+
+float GetZoeySurvivorsWillGlobalCooldownRemaining()
+{
+	float fRemaining = g_fZoeySurvivorsWillGlobalCooldownEndTime - GetGameTime();
+	return fRemaining > 0.0 ? fRemaining : 0.0;
+}
+
+int GetZoeySurvivorsWillTeamIncapHealthBonus()
+{
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		if (RunClientChecks(i) == false ||
+			IsPlayerAlive(i) == false ||
+			g_iClientTeam[i] != TEAM_SURVIVORS ||
+			g_bTalentsConfirmed[i] == false ||
+			g_iChosenSurvivor[i] != ZOEY ||
+			g_iZoeyTalent3Level[i] <= 0)
+			continue;
+
+		return ZOEY_SURVIVORS_WILL_INCAP_HEALTH_BONUS;
+	}
+
+	return 0;
+}
+
+void ApplyZoeySurvivorsWillIncapHealthBonus(int iClient)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS)
+		return;
+
+	int iBonus = GetZoeySurvivorsWillTeamIncapHealthBonus();
+	if (iBonus <= 0)
+		return;
+
+	int iCurrentIncapHealth = GetEntProp(iClient, Prop_Data, "m_iHealth");
+	if (iCurrentIncapHealth <= 0)
+		return;
+
+	SetEntProp(iClient, Prop_Data, "m_iHealth", iCurrentIncapHealth + iBonus);
+}
+
+bool ShouldApplyZoeySurvivorsWillIncapReduction(int iVictim, int iDmgType)
+{
+	if (RunClientChecks(iVictim) == false ||
+		IsPlayerAlive(iVictim) == false ||
+		g_iClientTeam[iVictim] != TEAM_SURVIVORS ||
+		g_bTalentsConfirmed[iVictim] == false ||
+		g_iChosenSurvivor[iVictim] != ZOEY ||
+		g_iZoeyTalent3Level[iVictim] <= 0 ||
+		IsIncap(iVictim) == false)
+		return false;
+
+	if ((iDmgType & (DMG_DROWN | DMG_DISSOLVE | DMG_REMOVENORAGDOLL | DMG_FALL | DMG_CRUSH)) != 0)
+		return false;
+
+	return true;
+}
+
+void TryStartZoeySurvivorsWillCharge(int iClient)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false ||
+		g_bTalentsConfirmed[iClient] == false ||
+		g_iChosenSurvivor[iClient] != ZOEY ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
+		g_iZoeyTalent3Level[iClient] <= 0 ||
+		g_bIsClientDown[iClient] == true ||
+		IsClientGrappled(iClient) == true)
+		return;
+
+	if (IsZoeyHoldingMedkit(iClient) == false)
+	{
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "Survivor's Will requires a medkit equipped.");
+		return;
+	}
+
+	float fCooldownRemaining = GetZoeySurvivorsWillGlobalCooldownRemaining();
+	if (fCooldownRemaining > 0.0)
+	{
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "Survivor's Will cooling down: %0.0f seconds", fCooldownRemaining);
+		return;
+	}
+
+	if (g_bZoeySurvivorsWillCharging[iClient] == true)
+	{
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "Survivor's Will charge: %0.1f / %.0f seconds", GetZoeySurvivorsWillChargeDuration(iClient), ZOEY_SURVIVORS_WILL_CHARGE_MAX_DURATION);
+		return;
+	}
+
+	g_bZoeySurvivorsWillCharging[iClient] = true;
+	g_fZoeySurvivorsWillChargeStartTime[iClient] = GetGameTime();
+
+	if (IsFakeClient(iClient) == false)
+		PrintHintText(iClient, "Survivor's Will charging.\nKeep the medkit out, then switch away.");
+}
+
+void CreateZoeySurvivorsWillMist(int iClient, float xyzLocation[3])
+{
+	int iSmokeEntity = CreateSmokeParticle(-1, xyzLocation, false, "", 205, 225, 205, 80, 0, 30, 35, 30, 60, 8, 60, 4, ZOEY_SURVIVORS_WILL_REVEAL_MIST_DURATION);
+	if (RunEntityChecks(iSmokeEntity) == false)
+		return;
+
+	g_iZoeySurvivorsWillMistOwner[iSmokeEntity] = iClient;
+	SDKHook(iSmokeEntity, SDKHook_SetTransmit, OnSetTransmit_ZoeySurvivorsWillMist);
+}
+
+void RevealZoeySurvivorsWillGhosts(int iClient)
+{
+	float xyzClientEye[3];
+	GetClientEyePosition(iClient, xyzClientEye);
+
+	for (int iGhost = 1; iGhost <= MaxClients; iGhost++)
+	{
+		if (RunClientChecks(iGhost) == false ||
+			IsPlayerAlive(iGhost) == false ||
+			g_iClientTeam[iGhost] != TEAM_INFECTED ||
+			GetEntData(iGhost, g_iOffset_IsGhost, 1) != 1)
+			continue;
+
+		float xyzGhostEye[3];
+		GetClientEyePosition(iGhost, xyzGhostEye);
+		if (IsVisibleTo(xyzClientEye, xyzGhostEye) == false)
+			continue;
+
+		float xyzGhostLocation[3];
+		GetClientAbsOrigin(iGhost, xyzGhostLocation);
+		xyzGhostLocation[2] += 20.0;
+		CreateZoeySurvivorsWillMist(iClient, xyzGhostLocation);
+	}
+}
+
+void ActivateZoeySurvivorsWillReveal(int iClient, float fDuration)
+{
+	ClearZoeySurvivorsWillCharge(iClient);
+
+	float fCooldownRemaining = GetZoeySurvivorsWillGlobalCooldownRemaining();
+	if (fCooldownRemaining > 0.0)
+	{
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "Survivor's Will cooling down: %0.0f seconds", fCooldownRemaining);
+		return;
+	}
+
+	if (fDuration <= 0.0)
+		return;
+
+	if (fDuration > ZOEY_SURVIVORS_WILL_CHARGE_MAX_DURATION)
+		fDuration = ZOEY_SURVIVORS_WILL_CHARGE_MAX_DURATION;
+
+	g_fZoeySurvivorsWillRevealEndTime[iClient] = GetGameTime() + fDuration;
+	g_fZoeySurvivorsWillNextMistTime[iClient] = GetGameTime() + ZOEY_SURVIVORS_WILL_REVEAL_MIST_INTERVAL;
+	g_fZoeySurvivorsWillGlobalCooldownEndTime = GetGameTime() + ZOEY_SURVIVORS_WILL_GLOBAL_COOLDOWN;
+
+	RevealZoeySurvivorsWillGhosts(iClient);
+
+	if (IsFakeClient(iClient) == false)
+		PrintHintText(iClient, "Survivor's Will active for %0.1f seconds.\nGlobal cooldown: %.0f seconds.", fDuration, ZOEY_SURVIVORS_WILL_GLOBAL_COOLDOWN);
+}
+
+void HandleZoeySurvivorsWillState(int iClient)
+{
+	if (g_iZoeyTalent3Level[iClient] <= 0)
+	{
+		ClearZoeySurvivorsWillCharge(iClient);
+		ClearZoeySurvivorsWillReveal(iClient);
+		return;
+	}
+
+	if (g_bZoeySurvivorsWillCharging[iClient] == true)
+	{
+		if (g_bIsClientDown[iClient] == true ||
+			IsClientGrappled(iClient) == true)
+		{
+			ClearZoeySurvivorsWillCharge(iClient);
+		}
+		else if (IsZoeyHoldingMedkit(iClient) == false)
+		{
+			ActivateZoeySurvivorsWillReveal(iClient, GetZoeySurvivorsWillChargeDuration(iClient));
+		}
+	}
+
+	if (g_fZoeySurvivorsWillRevealEndTime[iClient] < GetGameTime())
+	{
+		ClearZoeySurvivorsWillReveal(iClient);
+		return;
+	}
+
+	if (g_fZoeySurvivorsWillRevealEndTime[iClient] > 0.0 &&
+		g_fZoeySurvivorsWillNextMistTime[iClient] <= GetGameTime())
+	{
+		g_fZoeySurvivorsWillNextMistTime[iClient] = GetGameTime() + ZOEY_SURVIVORS_WILL_REVEAL_MIST_INTERVAL;
+		RevealZoeySurvivorsWillGhosts(iClient);
+	}
+}
+
+public Action OnSetTransmit_ZoeySurvivorsWillMist(int iEntity, int iClient)
+{
+	int iOwner = g_iZoeySurvivorsWillMistOwner[iEntity];
+	if (RunClientChecks(iClient) == false ||
+		iOwner != iClient ||
+		RunClientChecks(iOwner) == false ||
+		IsPlayerAlive(iOwner) == false ||
+		g_fZoeySurvivorsWillRevealEndTime[iOwner] < GetGameTime())
+	{
+		return Plugin_Handled;
+	}
+
+	return Plugin_Continue;
+}
+
 void OnGameFrame_Zoey(int iClient)
 {
 	if (iClient < 0 ||
 		g_iChosenSurvivor[iClient] != ZOEY ||
 		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
-		(g_iZoeyTalent1Level[iClient] <= 0 && g_iZoeyTalent2Level[iClient] <= 0))
+		(g_iZoeyTalent1Level[iClient] <= 0 && g_iZoeyTalent2Level[iClient] <= 0 && g_iZoeyTalent3Level[iClient] <= 0))
 		return;
+
+	if (g_iZoeyTalent1Level[iClient] > 0 || g_iZoeyTalent3Level[iClient] > 0)
+		HandleZoeyHealingItemMoveSpeed(iClient);
 
 	if (g_iZoeyTalent1Level[iClient] > 0)
 	{
-		HandleZoeyHealingItemMoveSpeed(iClient);
 		HandleZoeyFastRevive(iClient);
 	}
 
 	if (g_iZoeyTalent2Level[iClient] > 0)
 		HandleZoeyTriggerHappyState(iClient);
+
+	if (g_iZoeyTalent3Level[iClient] > 0)
+		HandleZoeySurvivorsWillState(iClient);
 }
 
 bool OnPlayerRunCmd_Zoey(int iClient, int &iButtons)
@@ -86,6 +355,9 @@ bool OnPlayerRunCmd_Zoey(int iClient, int &iButtons)
 
 	if (g_iZoeyTalent1Level[iClient] > 0)
 		HandleZoeyProtectedReviveResume(iClient, iButtons);
+
+	if (g_iZoeyTalent2Level[iClient] > 0 || g_iZoeyTalent3Level[iClient] > 0)
+		bButtonsChanged = HandleZoeyWalkUseInput(iClient, iButtons) || bButtonsChanged;
 
 	if (g_iZoeyTalent2Level[iClient] > 0)
 		bButtonsChanged = HandleZoeyTriggerHappyInput(iClient, iButtons) || bButtonsChanged;
@@ -529,16 +801,47 @@ void HandleZoeyTriggerHappyState(int iClient)
 		DeactivateZoeyExplosiveAmmo(iClient, true);
 }
 
+bool HandleZoeyWalkUseInput(int iClient, int &iButtons)
+{
+	bool bWalkUsePressed = (iButtons & IN_SPEED) && (iButtons & IN_USE);
+
+	if (bWalkUsePressed == false)
+	{
+		g_bZoeyWalkUseHeld[iClient] = false;
+		return false;
+	}
+
+	if (g_bZoeyWalkUseHeld[iClient] == true)
+		return false;
+
+	g_bZoeyWalkUseHeld[iClient] = true;
+
+	if (g_iZoeyTalent3Level[iClient] > 0 &&
+		IsZoeyHoldingMedkit(iClient) == true)
+	{
+		TryStartZoeySurvivorsWillCharge(iClient);
+		iButtons &= ~IN_USE;
+		return true;
+	}
+
+	if (g_iZoeyTalent2Level[iClient] > 0 &&
+		IsZoeyHoldingMachinePistols(iClient) == true)
+	{
+		ToggleZoeyMopArmed(iClient);
+		iButtons &= ~IN_USE;
+		return true;
+	}
+
+	return false;
+}
+
 bool HandleZoeyTriggerHappyInput(int iClient, int &iButtons)
 {
 	bool bButtonsChanged = false;
 	bool bWalkReloadPressed = (iButtons & IN_SPEED) && (iButtons & IN_RELOAD);
-	bool bWalkUsePressed = (iButtons & IN_SPEED) && (iButtons & IN_USE);
 
 	if (bWalkReloadPressed == false)
 		g_bZoeyWalkReloadHeld[iClient] = false;
-	if (bWalkUsePressed == false)
-		g_bZoeyWalkUseHeld[iClient] = false;
 
 	if (bWalkReloadPressed &&
 		g_bZoeyWalkReloadHeld[iClient] == false)
@@ -546,15 +849,6 @@ bool HandleZoeyTriggerHappyInput(int iClient, int &iButtons)
 		g_bZoeyWalkReloadHeld[iClient] = true;
 		ActivateZoeyExplosiveAmmo(iClient);
 		iButtons &= ~IN_RELOAD;
-		bButtonsChanged = true;
-	}
-
-	if (bWalkUsePressed &&
-		g_bZoeyWalkUseHeld[iClient] == false)
-	{
-		g_bZoeyWalkUseHeld[iClient] = true;
-		ToggleZoeyMopArmed(iClient);
-		iButtons &= ~IN_USE;
 		bButtonsChanged = true;
 	}
 

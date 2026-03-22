@@ -368,6 +368,7 @@ Action Event_PlayerIncap(Handle hEvent, char[] Event_name, bool dontBroadcast)
 	g_bIsClientDown[iClient] = true;
 	g_iJockeyVictim[incapper] = -1;
 	SetClientRenderAndGlowColor(iClient);
+	ApplyZoeySurvivorsWillIncapHealthBonus(iClient);
 	
 	if(RunClientChecks(iClient) == false)
 		return Plugin_Continue;

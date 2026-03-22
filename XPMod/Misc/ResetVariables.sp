@@ -58,6 +58,7 @@ void ResetAllVariablesForRound()
 	g_iCrawlSpeedMultiplier = 0;
 	g_iNickDesperateMeasuresStack = 0;
 	g_fMaxLaserAccuracy = 0.4;
+	g_fZoeySurvivorsWillGlobalCooldownEndTime = -1.0;
 	// g_bSomeoneAttacksFaster = false;
 
 	// Clear bind uses tracking (reconnect persistence is per-round only)
@@ -170,6 +171,10 @@ void ResetClientVariablesForRound(int iClient)
 	g_bZoeyWalkUseHeld[iClient] = false;
 	g_fZoeyPrimaryStripHintCooldown[iClient] = 0.0;
 	g_bZoeySuppressSyntheticCIHurt[iClient] = false;
+	g_bZoeySurvivorsWillCharging[iClient] = false;
+	g_fZoeySurvivorsWillChargeStartTime[iClient] = -1.0;
+	g_fZoeySurvivorsWillRevealEndTime[iClient] = -1.0;
+	g_fZoeySurvivorsWillNextMistTime[iClient] = 0.0;
 	g_iKitsUsed = 0;
 	g_iBillTeamHealCounter[iClient] = 0;
 	g_iBillsTeamHealthPool = BILL_TEAM_HEAL_HP_POOL;
@@ -491,6 +496,7 @@ void ResetAllEntityVariablesForRound()
 		g_iXPModEntityType[iEntity] = XPMOD_ENTITY_TYPE_NONE;
 		g_fXPModEntityHealth[iEntity] = -1.0;
 		g_iPoopBombOwnerID[iEntity] = 0;
+		g_iZoeySurvivorsWillMistOwner[iEntity] = 0;
 	}
 }
 
@@ -550,6 +556,10 @@ void Event_DeathResetAllVariables(int iAttacker, int iVictim)
 	g_bUsingShadowNinja[iVictim] = false;
 	g_bIsJetpackOn[iVictim] = false;
 	g_bUsingTongueRope[iVictim] = false;
+	g_bZoeySurvivorsWillCharging[iVictim] = false;
+	g_fZoeySurvivorsWillChargeStartTime[iVictim] = -1.0;
+	g_fZoeySurvivorsWillRevealEndTime[iVictim] = -1.0;
+	g_fZoeySurvivorsWillNextMistTime[iVictim] = 0.0;
 	DeleteAllClientParticles(iVictim);
 
 	if(g_bIsRochellePoisoned[iVictim]==true)

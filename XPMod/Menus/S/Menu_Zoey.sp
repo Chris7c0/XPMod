@@ -121,6 +121,24 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 			strStartingNewLines,
 			strTalentName);
 	}
+	else if (iTalentIndex == 2)
+	{
+		FormatEx(text, sizeof(text), "\
+			%s\t\t%s:\
+			\n \
+			\n +5%% Movement Speed\
+			\n +100 Incap Health (Team Shared, Does Not Stack With Other Zoeys)\
+			\n +15%% Damage Reduction While Incapacitated\
+			\n \
+			\n While Holding A Medkit Press [WALK] + [USE] To Start\
+			\n - Keep The Medkit Out For Up To 20 Seconds\
+			\n - Switch Off The Medkit To Activate\
+			\n - Reveal Visible SI Ghost Locations With A Smoke Mist For The Stored Duration\
+			\n - 3 Minute Global Cooldown\
+			\n ",
+			strStartingNewLines,
+			strTalentName);
+	}
 	else
 	{
 		FormatEx(text, sizeof(text), "\

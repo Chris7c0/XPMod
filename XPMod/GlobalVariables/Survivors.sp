@@ -444,6 +444,13 @@ bool g_bNoobWipeCooldown;
 #define ZOEY_TRIGGER_HAPPY_EXPLOSIVE_SI_DAMAGE_MULTIPLIER        1.0
 #define ZOEY_MOP_THE_FLOOR_HITS_PER_CHARGE                       5
 #define ZOEY_MOP_THE_FLOOR_RADIUS                                275.0
+#define ZOEY_SURVIVORS_WILL_MOVE_SPEED_BONUS                     0.05
+#define ZOEY_SURVIVORS_WILL_INCAP_HEALTH_BONUS                   100
+#define ZOEY_SURVIVORS_WILL_INCAP_DAMAGE_REDUCTION               0.15
+#define ZOEY_SURVIVORS_WILL_CHARGE_MAX_DURATION                  20.0
+#define ZOEY_SURVIVORS_WILL_GLOBAL_COOLDOWN                      180.0
+#define ZOEY_SURVIVORS_WILL_REVEAL_MIST_INTERVAL                 0.4
+#define ZOEY_SURVIVORS_WILL_REVEAL_MIST_DURATION                 0.6
 float g_fZoeyResilienceEndTime[MAXPLAYERS + 1] = {-1.0, ...};
 float g_fZoeyResilienceDamageReduction[MAXPLAYERS + 1] = {0.0, ...};
 int g_iZoeyQueuedReviveResumeTarget[MAXPLAYERS + 1] = {-1, ...};
@@ -459,3 +466,9 @@ bool g_bZoeyWalkReloadHeld[MAXPLAYERS + 1] = {false, ...};
 bool g_bZoeyWalkUseHeld[MAXPLAYERS + 1] = {false, ...};
 float g_fZoeyPrimaryStripHintCooldown[MAXPLAYERS + 1] = {0.0, ...};
 bool g_bZoeySuppressSyntheticCIHurt[MAXPLAYERS + 1] = {false, ...};
+bool g_bZoeySurvivorsWillCharging[MAXPLAYERS + 1] = {false, ...};
+float g_fZoeySurvivorsWillChargeStartTime[MAXPLAYERS + 1] = {-1.0, ...};
+float g_fZoeySurvivorsWillRevealEndTime[MAXPLAYERS + 1] = {-1.0, ...};
+float g_fZoeySurvivorsWillNextMistTime[MAXPLAYERS + 1] = {0.0, ...};
+float g_fZoeySurvivorsWillGlobalCooldownEndTime = -1.0;
+int g_iZoeySurvivorsWillMistOwner[MAXENTITIES + 1] = {0, ...};
