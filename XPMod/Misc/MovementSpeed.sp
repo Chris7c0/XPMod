@@ -21,14 +21,15 @@ void SetClientSpeed(int iClient)
 	
 	// Survivors
 	if (g_iClientTeam[iClient] == TEAM_SURVIVORS)
-	{
-		SetClientSpeedBill(iClient, fSpeed);
-		SetClientSpeedRochelle(iClient, fSpeed);
-		SetClientSpeedCoach(iClient, fSpeed);
-		SetClientSpeedEllis(iClient, fSpeed);
-		SetClientSpeedNick(iClient, fSpeed);
-		SetClientSpeedLouis(iClient, fSpeed);
-	}
+		{
+			SetClientSpeedBill(iClient, fSpeed);
+			SetClientSpeedRochelle(iClient, fSpeed);
+			SetClientSpeedCoach(iClient, fSpeed);
+			SetClientSpeedEllis(iClient, fSpeed);
+			SetClientSpeedNick(iClient, fSpeed);
+			SetClientSpeedLouis(iClient, fSpeed);
+			SetClientSpeedZoey(iClient, fSpeed);
+		}
 	// Infected
 	if (g_iClientTeam[iClient] == TEAM_INFECTED)
 	{
@@ -214,7 +215,18 @@ void SetClientSpeedLouis(int iClient, float &fSpeed)
 	if (fSpeed > (g_bLouisLaserModeActivated[iClient] ? LOUIS_SPEED_MAX_LASER : LOUIS_SPEED_MAX_NOLASER))
 		fSpeed = (g_bLouisLaserModeActivated[iClient] ? LOUIS_SPEED_MAX_LASER : LOUIS_SPEED_MAX_NOLASER);
 	
-	// PrintToChat(iClient, "SetClientSpeedLouis: %f", fSpeed);
+		// PrintToChat(iClient, "SetClientSpeedLouis: %f", fSpeed);
+}
+
+void SetClientSpeedZoey(int iClient, float &fSpeed)
+{
+	if (g_bTalentsConfirmed[iClient] == false ||
+		g_iChosenSurvivor[iClient] != ZOEY ||
+		g_iZoeyTalent1Level[iClient] <= 0)
+		return;
+
+	if (IsZoeyHoldingHealingItem(iClient))
+		fSpeed += (g_iZoeyTalent1Level[iClient] * ZOEY_RESILIENT_RESUSCITATION_MOVE_SPEED_PER_LEVEL);
 }
 
 

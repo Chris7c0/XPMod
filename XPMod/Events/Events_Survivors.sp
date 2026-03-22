@@ -293,6 +293,9 @@ Action Event_ReviveSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 	SetClientSpeed(iTarget);
 	SetClientRenderAndGlowColor(iTarget);
 
+	ApplyZoeyResilientResuscitation(iClient, iTarget);
+	ConvertZoeyReviveHealthToPermanent(iTarget);
+
 	if(IsFakeClient(iClient) == true)
 		return Plugin_Continue;
 	
@@ -745,6 +748,7 @@ Action Event_DefibUsed(Handle hEvent, const char[] strName, bool bDontBroadcast)
 		SetAllNicksDesprateMeasureSpeed("A teammate has been brought back, your senses return to a weaker state.");
 	
 	SetClientSpeed(iSubject);
+	ApplyZoeyResilientResuscitation(iClient, iSubject);
 	return Plugin_Continue;
 }
 

@@ -155,6 +155,12 @@ void ResetClientVariablesForRound(int iClient)
 	g_bIsClientDown[iClient] = false;
 	clienthanging[iClient] = false;
 	g_fLastReviveXPTime[iClient] = 0.0;
+	g_fZoeyResilienceEndTime[iClient] = -1.0;
+	g_fZoeyResilienceDamageReduction[iClient] = 0.0;
+	g_iZoeyQueuedReviveResumeTarget[iClient] = -1;
+	g_fZoeyQueuedReviveResumeDuration[iClient] = 0.0;
+	g_fZoeyQueuedReviveResumeProgress[iClient] = 0.0;
+	g_fZoeyQueuedReviveResumeAllowedUntil[iClient] = -1.0;
 	g_iKitsUsed = 0;
 	g_iBillTeamHealCounter[iClient] = 0;
 	g_iBillsTeamHealthPool = BILL_TEAM_HEAL_HP_POOL;

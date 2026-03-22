@@ -432,3 +432,16 @@ bool g_bInfectedBindsDisabled;
 #define LOUIS_TIME_OUT_COOLDOWN_DURATION                300.0
 #define LOUIS_NOOBWIPE_COOLDOWN_DURATION                15.0
 bool g_bNoobWipeCooldown;
+
+// Zoey
+#define ZOEY_RESILIENT_RESUSCITATION_BASE_REVIVE_DURATION        5.0
+#define ZOEY_RESILIENT_RESUSCITATION_REVIVE_SPEED_PER_LEVEL      0.08
+#define ZOEY_RESILIENT_RESUSCITATION_MOVE_SPEED_PER_LEVEL        0.04
+#define ZOEY_RESILIENT_RESUSCITATION_DAMAGE_REDUCTION_PER_LEVEL  0.04
+#define ZOEY_RESILIENT_RESUSCITATION_DURATION                    7.0
+float g_fZoeyResilienceEndTime[MAXPLAYERS + 1] = {-1.0, ...};
+float g_fZoeyResilienceDamageReduction[MAXPLAYERS + 1] = {0.0, ...};
+int g_iZoeyQueuedReviveResumeTarget[MAXPLAYERS + 1] = {-1, ...};
+float g_fZoeyQueuedReviveResumeDuration[MAXPLAYERS + 1] = {0.0, ...};
+float g_fZoeyQueuedReviveResumeProgress[MAXPLAYERS + 1] = {0.0, ...};
+float g_fZoeyQueuedReviveResumeAllowedUntil[MAXPLAYERS + 1] = {-1.0, ...};

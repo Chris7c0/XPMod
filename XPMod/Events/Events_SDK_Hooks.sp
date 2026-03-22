@@ -98,6 +98,15 @@ public Action OnTakeDamage(int iVictim, int &iAttacker, int &iInflictor, float &
 		return Plugin_Changed;
 	}
 
+	if (iVictim > 0 &&
+		iVictim <= MaxClients &&
+		iAttacker > 0 &&
+		IsCommonInfected(iAttacker, "") &&
+		(IsZoeyActivelyReviving(iVictim) || IsClientBeingRevivedByZoey(iVictim)))
+	{
+		QueueZoeyReviveResumeFromCommonHit(iVictim);
+	}
+
 	// Check that this is an uncommon infected and not world or bot/human player
 	if (iVictim > 0 &&
 		RunClientChecks(iVictim) == false &&

@@ -79,17 +79,38 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 	Menu menu = CreateMenu(ZoeyTalentInfoMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
-	FormatEx(text, sizeof(text), "\
-		%s\t\t%s (Level %d):\
-		\n \
-		\n Zoey's gameplay scaffolding is in place.\
-		\n Ability behavior for this talent is not implemented yet.\
-		\n \
-		\n This slot is reserved for future Medic work.\
-		\n ",
-		strStartingNewLines,
-		strTalentName,
-		GetZoeyTalentLevel(iClient, iTalentIndex));
+	if (iTalentIndex == 0)
+	{
+		FormatEx(text, sizeof(text), "\
+			%s\t\t%s:\
+			\n \
+			\n +40%% Revive Speed\
+			\n +20%% Movement Speed While Holding A Healing Item\
+			\n \
+			\n Revive Bonuses:\
+			\n - Revived Ally Gains +20%% Damage Reduction For 7 Seconds\
+			\n - Revives Are Not Interrupted By Common Infected Hits\
+			\n - Revived Allies Return With Permanent Health Instead Of Temporary Health\
+			\n \
+			\n Zoey Gains No Buff From Max HP Increases\
+			\n ",
+			strStartingNewLines,
+			strTalentName);
+	}
+	else
+	{
+		FormatEx(text, sizeof(text), "\
+			%s\t\t%s (Level %d):\
+			\n \
+			\n Zoey's gameplay scaffolding is in place.\
+			\n Ability behavior for this talent is not implemented yet.\
+			\n \
+			\n This slot is reserved for future Medic work.\
+			\n ",
+			strStartingNewLines,
+			strTalentName,
+			GetZoeyTalentLevel(iClient, iTalentIndex));
+	}
 	SetMenuTitle(menu, "%s", text);
 
 	char strItemData[8];

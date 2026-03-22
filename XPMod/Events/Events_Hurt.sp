@@ -40,6 +40,7 @@ Action Event_PlayerHurt(Handle hEvent, const char[] strName, bool bDontBroadcast
 
 	// Reduce damage for low level human survivor players that are not incaped
 	ReduceDamageTakenForNewPlayers(iVictim, iAttacker, iDamage, iDmgType);
+	EventsHurt_ApplyZoeyResilience(iAttacker, iVictim, iDamage, iDmgType);
 
 	
 	EventsHurt_IncreaseCommonInfectedDamage(iAttacker, iVictim);
