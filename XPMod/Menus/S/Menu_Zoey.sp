@@ -157,6 +157,31 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 			strStartingNewLines,
 			strTalentName);
 	}
+	else if (iTalentIndex == 4)
+	{
+		FormatEx(text, sizeof(text), "\
+			%s\t\t%s:\
+			\n \
+			\n +25%% Healing Item Use Speed\
+			\n +50%% Medkit Healing\
+			\n +40%% Pills Healing\
+			\n +60%% Adrenaline Healing\
+			\n \
+			\n Scrap Recycle:\
+			\n - After 4 teammate pickups gain +1 Medkit\
+			\n - After 2 teammate pickups gain +1 Pills\
+			\n - Team bile duration reduced by 33%%\
+			\n \
+			\n Bind 1: Sacrificial Aid\
+			\n - Aim at a visible teammate and choose a sacrifice\
+			\n - 10 second global cooldown\
+			\n - -15 Max HP: Heal 100 HP or instantly pick up a downed ally\
+			\n - -10 Max HP: Give 70 temp HP or stop bleedout for 20 seconds\
+			\n - -5 Max HP: Heal 30 HP or stop bleedout for 10 seconds\
+			\n ",
+			strStartingNewLines,
+			strTalentName);
+	}
 	else
 	{
 		FormatEx(text, sizeof(text), "\

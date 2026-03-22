@@ -456,6 +456,24 @@ bool g_bNoobWipeCooldown;
 #define ZOEY_SHARING_IS_CARING_MEDKIT_SHARE_PER_LEVEL            0.05
 #define ZOEY_SHARING_IS_CARING_PILLS_SHARE_PER_LEVEL             0.10
 #define ZOEY_SHARING_IS_CARING_ADRENALINE_SHARE_PER_LEVEL        0.16
+#define ZOEY_MEDICAL_EXPERTISE_HEAL_ITEM_USE_SPEED_BONUS         0.25
+#define ZOEY_MEDICAL_EXPERTISE_MEDKIT_HEAL_AMOUNT                150
+#define ZOEY_MEDICAL_EXPERTISE_PILLS_HEAL_BONUS                  0.40
+#define ZOEY_MEDICAL_EXPERTISE_ADRENALINE_HEAL_BONUS             0.60
+#define ZOEY_MEDICAL_EXPERTISE_BOOST_USE_DURATION                3.0
+#define ZOEY_MEDICAL_EXPERTISE_SCRAP_RECYCLE_PILLS_REVIVES       2
+#define ZOEY_MEDICAL_EXPERTISE_SCRAP_RECYCLE_MEDKIT_REVIVES      4
+#define ZOEY_MEDICAL_EXPERTISE_BILE_DURATION_MULTIPLIER          0.67
+#define ZOEY_SACRIFICIAL_AID_GLOBAL_COOLDOWN                     10.0
+#define ZOEY_SACRIFICIAL_AID_MAJOR_COST                          15
+#define ZOEY_SACRIFICIAL_AID_MAJOR_HEAL                          100
+#define ZOEY_SACRIFICIAL_AID_MEDIUM_COST                         10
+#define ZOEY_SACRIFICIAL_AID_MEDIUM_TEMP_HEALTH                  70.0
+#define ZOEY_SACRIFICIAL_AID_MEDIUM_BLEEDOUT_DURATION            20.0
+#define ZOEY_SACRIFICIAL_AID_MINOR_COST                          5
+#define ZOEY_SACRIFICIAL_AID_MINOR_HEAL                          30
+#define ZOEY_SACRIFICIAL_AID_MINOR_BLEEDOUT_DURATION             10.0
+#define ZOEY_SACRIFICIAL_AID_BLEEDOUT_CHECK_INTERVAL             0.1
 float g_fZoeyResilienceEndTime[MAXPLAYERS + 1] = {-1.0, ...};
 float g_fZoeyResilienceDamageReduction[MAXPLAYERS + 1] = {0.0, ...};
 int g_iZoeyQueuedReviveResumeTarget[MAXPLAYERS + 1] = {-1, ...};
@@ -476,5 +494,13 @@ float g_fZoeySurvivorsWillChargeStartTime[MAXPLAYERS + 1] = {-1.0, ...};
 float g_fZoeySurvivorsWillRevealEndTime[MAXPLAYERS + 1] = {-1.0, ...};
 float g_fZoeySurvivorsWillNextMistTime[MAXPLAYERS + 1] = {0.0, ...};
 int g_iZoeySharingTrackedTempHealth[MAXPLAYERS + 1] = {-1, ...};
+int g_iZoeyMedicalExpertisePillsReviveCounter[MAXPLAYERS + 1] = {0, ...};
+int g_iZoeyMedicalExpertiseMedkitReviveCounter[MAXPLAYERS + 1] = {0, ...};
+int g_iZoeySacrificialAidMenuTarget[MAXPLAYERS + 1] = {-1, ...};
+int g_iZoeySacrificialAidMaxHealthPenalty[MAXPLAYERS + 1] = {0, ...};
+float g_fZoeySacrificialAidBleedoutStopEndTime[MAXPLAYERS + 1] = {-1.0, ...};
+int g_iZoeySacrificialAidBleedoutLastHealth[MAXPLAYERS + 1] = {0, ...};
+int g_iZoeyMedicalExpertiseBileSerial[MAXPLAYERS + 1] = {0, ...};
 float g_fZoeySurvivorsWillGlobalCooldownEndTime = -1.0;
+float g_fZoeySacrificialAidGlobalCooldownEndTime = -1.0;
 int g_iZoeySurvivorsWillMistOwner[MAXENTITIES + 1] = {0, ...};

@@ -306,6 +306,7 @@ Action Event_ReviveSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 
 	ApplyZoeyResilientResuscitation(iClient, iTarget);
 	ConvertZoeyReviveHealthToPermanent(iTarget);
+	HandleZoeyMedicalExpertiseReviveRewards(iClient, iTarget);
 
 	if(IsFakeClient(iClient) == true)
 		return Plugin_Continue;
@@ -473,8 +474,9 @@ Action Event_HealSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 	int currentHP = GetPlayerHealth(target);
 	if (currentHP > 0)
 	{
+		int iDirectMedkitHealAmount = IsZoeyMedicalExpertiseActive(iClient) ? ZOEY_MEDICAL_EXPERTISE_MEDKIT_HEAL_AMOUNT : 100;
 		int iTargetHealthBeforeMedkit = currentHP;
-		SetPlayerHealth(target, -1, currentHP + 100);
+		SetPlayerHealth(target, -1, currentHP + iDirectMedkitHealAmount);
 		int iTargetHealthAfterMedkit = GetPlayerHealth(target);
 		if (iTargetHealthAfterMedkit > iTargetHealthBeforeMedkit)
 		{
@@ -825,10 +827,11 @@ Action Event_PillsUsed(Handle hEvent, const char[] strName, bool bDontBroadcast)
 
 	EventsPillsUsed_Louis(iClient);
 
-	int iZoeySharedPillsHealBase = ConsumeZoeySharingIsCaringTrackedBoostHealAmount(iClient);
-	if (iZoeySharedPillsHealBase > 0)
+	int iZoeySharedPillsHealTotal = ConsumeZoeySharingIsCaringTrackedBoostHealAmount(iClient);
+	if (iZoeySharedPillsHealTotal > 0)
 	{
-		int iZoeySharedPillsHealAmount = RoundToFloor(float(iZoeySharedPillsHealBase) * GetZoeySharingIsCaringPillsShareMultiplier(iClient));
+		iZoeySharedPillsHealTotal += ApplyZoeyMedicalExpertiseBonusTempHealth(iClient, iZoeySharedPillsHealTotal, ZOEY_MEDICAL_EXPERTISE_PILLS_HEAL_BONUS);
+		int iZoeySharedPillsHealAmount = RoundToFloor(float(iZoeySharedPillsHealTotal) * GetZoeySharingIsCaringPillsShareMultiplier(iClient));
 		if (iZoeySharedPillsHealAmount > 0)
 			ShareZoeyHealingToNearbyTeammates(iClient, iZoeySharedPillsHealAmount, iClient);
 	}
@@ -887,10 +890,11 @@ Action Event_AdrenalineUsed(Handle hEvent, const char[] strName, bool bDontBroad
 
 	EventsAdrenalineUsed_Louis(iClient);
 
-	int iZoeySharedAdrenalineHealBase = ConsumeZoeySharingIsCaringTrackedBoostHealAmount(iClient);
-	if (iZoeySharedAdrenalineHealBase > 0)
+	int iZoeySharedAdrenalineHealTotal = ConsumeZoeySharingIsCaringTrackedBoostHealAmount(iClient);
+	if (iZoeySharedAdrenalineHealTotal > 0)
 	{
-		int iZoeySharedAdrenalineHealAmount = RoundToFloor(float(iZoeySharedAdrenalineHealBase) * GetZoeySharingIsCaringAdrenalineShareMultiplier(iClient));
+		iZoeySharedAdrenalineHealTotal += ApplyZoeyMedicalExpertiseBonusTempHealth(iClient, iZoeySharedAdrenalineHealTotal, ZOEY_MEDICAL_EXPERTISE_ADRENALINE_HEAL_BONUS);
+		int iZoeySharedAdrenalineHealAmount = RoundToFloor(float(iZoeySharedAdrenalineHealTotal) * GetZoeySharingIsCaringAdrenalineShareMultiplier(iClient));
 		if (iZoeySharedAdrenalineHealAmount > 0)
 			ShareZoeyHealingToNearbyTeammates(iClient, iZoeySharedAdrenalineHealAmount, iClient);
 	}

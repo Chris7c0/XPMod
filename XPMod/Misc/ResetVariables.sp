@@ -59,6 +59,7 @@ void ResetAllVariablesForRound()
 	g_iNickDesperateMeasuresStack = 0;
 	g_fMaxLaserAccuracy = 0.4;
 	g_fZoeySurvivorsWillGlobalCooldownEndTime = -1.0;
+	g_fZoeySacrificialAidGlobalCooldownEndTime = -1.0;
 	// g_bSomeoneAttacksFaster = false;
 
 	// Clear bind uses tracking (reconnect persistence is per-round only)
@@ -175,6 +176,14 @@ void ResetClientVariablesForRound(int iClient)
 	g_fZoeySurvivorsWillChargeStartTime[iClient] = -1.0;
 	g_fZoeySurvivorsWillRevealEndTime[iClient] = -1.0;
 	g_fZoeySurvivorsWillNextMistTime[iClient] = 0.0;
+	g_iZoeySharingTrackedTempHealth[iClient] = -1;
+	g_iZoeyMedicalExpertisePillsReviveCounter[iClient] = 0;
+	g_iZoeyMedicalExpertiseMedkitReviveCounter[iClient] = 0;
+	g_iZoeySacrificialAidMenuTarget[iClient] = -1;
+	g_iZoeySacrificialAidMaxHealthPenalty[iClient] = 0;
+	g_fZoeySacrificialAidBleedoutStopEndTime[iClient] = -1.0;
+	g_iZoeySacrificialAidBleedoutLastHealth[iClient] = 0;
+	g_iZoeyMedicalExpertiseBileSerial[iClient] = 0;
 	g_iKitsUsed = 0;
 	g_iBillTeamHealCounter[iClient] = 0;
 	g_iBillsTeamHealthPool = BILL_TEAM_HEAL_HP_POOL;
@@ -459,6 +468,14 @@ void ResetAllVariables(int iClient)
 	g_iBillTauntDuration[iClient] = 0;
 	g_iBillTeamHealCounter[iClient] = 0;
 	g_bIsClientDown[iClient] = false;
+	g_iZoeySharingTrackedTempHealth[iClient] = -1;
+	g_iZoeyMedicalExpertisePillsReviveCounter[iClient] = 0;
+	g_iZoeyMedicalExpertiseMedkitReviveCounter[iClient] = 0;
+	g_iZoeySacrificialAidMenuTarget[iClient] = -1;
+	g_iZoeySacrificialAidMaxHealthPenalty[iClient] = 0;
+	g_fZoeySacrificialAidBleedoutStopEndTime[iClient] = -1.0;
+	g_iZoeySacrificialAidBleedoutLastHealth[iClient] = 0;
+	g_iZoeyMedicalExpertiseBileSerial[iClient] = 0;
 	
 	if (g_iSmokerSmokeCloudPlayer == iClient || g_iSmokerInSmokeCloudLimbo == iClient)
 	{
@@ -560,6 +577,9 @@ void Event_DeathResetAllVariables(int iAttacker, int iVictim)
 	g_fZoeySurvivorsWillChargeStartTime[iVictim] = -1.0;
 	g_fZoeySurvivorsWillRevealEndTime[iVictim] = -1.0;
 	g_fZoeySurvivorsWillNextMistTime[iVictim] = 0.0;
+	g_fZoeySacrificialAidBleedoutStopEndTime[iVictim] = -1.0;
+	g_iZoeySacrificialAidBleedoutLastHealth[iVictim] = 0;
+	g_iZoeyMedicalExpertiseBileSerial[iVictim]++;
 	DeleteAllClientParticles(iVictim);
 
 	if(g_bIsRochellePoisoned[iVictim]==true)
@@ -601,4 +621,5 @@ void DeleteAllGlobalTimerHandles(int iClient)
 	delete g_hTimer_WingDashChargeRegenerate[iClient];
 	delete g_hTimer_VampiricTankCanRechargeStamina[iClient];
 	delete g_hTimer_JockeyTwitchRegenerate[iClient];
+	delete g_hTimer_ZoeySacrificialAidBleedoutCheck[iClient];
 }

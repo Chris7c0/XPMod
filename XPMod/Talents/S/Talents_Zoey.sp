@@ -20,6 +20,13 @@ void TalentsLoad_Zoey(int iClient)
 	g_fZoeySurvivorsWillRevealEndTime[iClient] = -1.0;
 	g_fZoeySurvivorsWillNextMistTime[iClient] = 0.0;
 	g_iZoeySharingTrackedTempHealth[iClient] = -1;
+	g_iZoeyMedicalExpertisePillsReviveCounter[iClient] = 0;
+	g_iZoeyMedicalExpertiseMedkitReviveCounter[iClient] = 0;
+	g_iZoeySacrificialAidMenuTarget[iClient] = -1;
+	g_iZoeySacrificialAidMaxHealthPenalty[iClient] = 0;
+	g_fZoeySacrificialAidBleedoutStopEndTime[iClient] = -1.0;
+	g_iZoeySacrificialAidBleedoutLastHealth[iClient] = 0;
+	g_iZoeyMedicalExpertiseBileSerial[iClient] = 0;
 
 	SetPlayerTalentMaxHealth_Zoey(iClient, !g_bConfirmedSurvivorTalentsGivenThisRound[iClient]);
 	SetClientSpeed(iClient);
@@ -55,6 +62,14 @@ void ResetZoeyTalentsRuntimeState(int iClient)
 	g_fZoeySurvivorsWillRevealEndTime[iClient] = -1.0;
 	g_fZoeySurvivorsWillNextMistTime[iClient] = 0.0;
 	g_iZoeySharingTrackedTempHealth[iClient] = -1;
+	g_iZoeyMedicalExpertisePillsReviveCounter[iClient] = 0;
+	g_iZoeyMedicalExpertiseMedkitReviveCounter[iClient] = 0;
+	g_iZoeySacrificialAidMenuTarget[iClient] = -1;
+	g_iZoeySacrificialAidMaxHealthPenalty[iClient] = 0;
+	g_fZoeySacrificialAidBleedoutStopEndTime[iClient] = -1.0;
+	g_iZoeySacrificialAidBleedoutLastHealth[iClient] = 0;
+	g_iZoeyMedicalExpertiseBileSerial[iClient] = 0;
+	delete g_hTimer_ZoeySacrificialAidBleedoutCheck[iClient];
 
 	SetClientSpeed(iClient);
 }
@@ -66,7 +81,11 @@ void SetPlayerTalentMaxHealth_Zoey(int iClient, bool bFillInHealthGap = true)
 		g_iClientTeam[iClient] != TEAM_SURVIVORS)
 		return;
 	
-	SetPlayerMaxHealth(iClient, 100, false, bFillInHealthGap);
+	int iDesiredMaxHealth = 100 - g_iZoeySacrificialAidMaxHealthPenalty[iClient];
+	if (iDesiredMaxHealth < 1)
+		iDesiredMaxHealth = 1;
+
+	SetPlayerMaxHealth(iClient, iDesiredMaxHealth, false, bFillInHealthGap);
 }
 
 void ClearZoeySurvivorsWillCharge(int iClient)
@@ -106,6 +125,27 @@ bool IsZoeySharingIsCaringActive(int iClient)
 		g_iZoeyTalent4Level[iClient] > 0;
 }
 
+bool IsZoeyMedicalExpertiseActive(int iClient)
+{
+	return RunClientChecks(iClient) &&
+		IsPlayerAlive(iClient) &&
+		g_bTalentsConfirmed[iClient] == true &&
+		g_iChosenSurvivor[iClient] == ZOEY &&
+		g_iClientTeam[iClient] == TEAM_SURVIVORS &&
+		g_iZoeyTalent5Level[iClient] > 0;
+}
+
+bool DoesSurvivorTeamHaveZoeyMedicalExpertise()
+{
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		if (IsZoeyMedicalExpertiseActive(i))
+			return true;
+	}
+
+	return false;
+}
+
 float GetZoeySharingIsCaringRadius(int iClient)
 {
 	if (IsZoeySharingIsCaringActive(iClient) == false)
@@ -138,7 +178,8 @@ float GetZoeySharingIsCaringAdrenalineShareMultiplier(int iClient)
 
 void TrackZoeySharingIsCaringBoostUse(int iClient)
 {
-	if (IsZoeySharingIsCaringActive(iClient) == false)
+	if (IsZoeySharingIsCaringActive(iClient) == false &&
+		IsZoeyMedicalExpertiseActive(iClient) == false)
 		return;
 
 	int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
@@ -160,7 +201,8 @@ int ConsumeZoeySharingIsCaringTrackedBoostHealAmount(int iClient)
 	int iTrackedTempHealth = g_iZoeySharingTrackedTempHealth[iClient];
 	g_iZoeySharingTrackedTempHealth[iClient] = -1;
 
-	if (IsZoeySharingIsCaringActive(iClient) == false ||
+	if ((IsZoeySharingIsCaringActive(iClient) == false &&
+		IsZoeyMedicalExpertiseActive(iClient) == false) ||
 		iTrackedTempHealth < 0)
 		return 0;
 
@@ -224,6 +266,443 @@ void ShareZoeyHealingToNearbyTeammates(int iZoey, int iSharedHealAmount, int iPr
 
 		ApplyZoeySharingIsCaringPermanentHeal(iTeammate, iSharedHealAmount);
 	}
+}
+
+float GetZoeySacrificialAidGlobalCooldownRemaining()
+{
+	float fRemaining = g_fZoeySacrificialAidGlobalCooldownEndTime - GetGameTime();
+	return fRemaining > 0.0 ? fRemaining : 0.0;
+}
+
+bool IsZoeySacrificialAidTargetHanging(int iTarget)
+{
+	return RunClientChecks(iTarget) &&
+		IsPlayerAlive(iTarget) &&
+		g_iClientTeam[iTarget] == TEAM_SURVIVORS &&
+		(clienthanging[iTarget] == true || GetEntProp(iTarget, Prop_Send, "m_isHangingFromLedge") == 1);
+}
+
+bool IsZoeySacrificialAidTargetDowned(int iTarget)
+{
+	return RunClientChecks(iTarget) &&
+		IsPlayerAlive(iTarget) &&
+		g_iClientTeam[iTarget] == TEAM_SURVIVORS &&
+		(IsIncap(iTarget) == true || IsZoeySacrificialAidTargetHanging(iTarget) == true);
+}
+
+bool GetZoeySacrificialAidTarget(int iClient, int &iTarget)
+{
+	iTarget = GetClientAimTarget(iClient, true);
+	if (RunClientChecks(iTarget) == false ||
+		IsPlayerAlive(iTarget) == false ||
+		g_iClientTeam[iTarget] != TEAM_SURVIVORS ||
+		iTarget == iClient)
+	{
+		iTarget = -1;
+		return false;
+	}
+
+	float xyzClientEye[3], xyzTargetEye[3];
+	GetClientEyePosition(iClient, xyzClientEye);
+	GetClientEyePosition(iTarget, xyzTargetEye);
+	if (IsVisibleTo(xyzClientEye, xyzTargetEye) == false)
+	{
+		iTarget = -1;
+		return false;
+	}
+
+	return true;
+}
+
+bool CanZoeySacrificialAidPayCost(int iClient, int iCost)
+{
+	return GetPlayerMaxHealth(iClient) > iCost;
+}
+
+bool ApplyZoeySacrificialAidCost(int iClient, int iCost)
+{
+	if (CanZoeySacrificialAidPayCost(iClient, iCost) == false)
+		return false;
+
+	g_iZoeySacrificialAidMaxHealthPenalty[iClient] += iCost;
+	SetPlayerTalentMaxHealth_Zoey(iClient, false);
+	return true;
+}
+
+int ApplyZoeyMedicalExpertiseBonusTempHealth(int iClient, int iBaseHealAmount, float fBonusMultiplier)
+{
+	if (IsZoeyMedicalExpertiseActive(iClient) == false ||
+		iBaseHealAmount <= 0 ||
+		fBonusMultiplier <= 0.0)
+		return 0;
+
+	int iTempHealthBefore = GetSurvivorTempHealth(iClient);
+	int iBonusHealAmount = RoundToFloor(float(iBaseHealAmount) * fBonusMultiplier);
+	if (iBonusHealAmount <= 0)
+		return 0;
+
+	AddTempHealthToSurvivor(iClient, float(iBonusHealAmount));
+
+	int iTempHealthAfter = GetSurvivorTempHealth(iClient);
+	if (iTempHealthAfter <= iTempHealthBefore)
+		return 0;
+
+	return iTempHealthAfter - iTempHealthBefore;
+}
+
+float GetZoeyMedicalExpertiseCurrentUseDuration(int iClient, int iActiveWeaponID)
+{
+	if (IsZoeyMedicalExpertiseActive(iClient) == false ||
+		RunEntityChecks(iActiveWeaponID) == false)
+		return 0.0;
+
+	char strWeaponClass[32];
+	GetEntityClassname(iActiveWeaponID, strWeaponClass, sizeof(strWeaponClass));
+
+	if (StrEqual(strWeaponClass, "weapon_first_aid_kit", false))
+	{
+		ConVar cvMedkitUseDuration = FindConVar("first_aid_kit_use_duration");
+		return cvMedkitUseDuration != null ? cvMedkitUseDuration.FloatValue : 5.0;
+	}
+
+	if (StrEqual(strWeaponClass, "weapon_pain_pills", false) ||
+		StrEqual(strWeaponClass, "weapon_adrenaline", false))
+	{
+		return ZOEY_MEDICAL_EXPERTISE_BOOST_USE_DURATION;
+	}
+
+	return 0.0;
+}
+
+void ApplyZoeyMedicalExpertiseUseSpeedToEntity(int iEntity, float fDesiredDuration)
+{
+	if (RunEntityChecks(iEntity) == false ||
+		fDesiredDuration <= 0.0)
+		return;
+
+	float fCurrentDuration = GetEntPropFloat(iEntity, Prop_Send, "m_flProgressBarDuration");
+	if (fCurrentDuration <= 0.0 ||
+		fCurrentDuration <= fDesiredDuration + 0.01)
+		return;
+
+	float fCurrentTime = GetGameTime();
+	float fCurrentStartTime = GetEntPropFloat(iEntity, Prop_Send, "m_flProgressBarStartTime");
+	float fCurrentProgress = (fCurrentTime - fCurrentStartTime) / fCurrentDuration;
+
+	if (fCurrentProgress < 0.0)
+		fCurrentProgress = 0.0;
+	else if (fCurrentProgress > 1.0)
+		fCurrentProgress = 1.0;
+
+	SetEntPropFloat(iEntity, Prop_Send, "m_flProgressBarStartTime", fCurrentTime - (fCurrentProgress * fDesiredDuration));
+	SetEntPropFloat(iEntity, Prop_Send, "m_flProgressBarDuration", fDesiredDuration);
+}
+
+void HandleZoeyMedicalExpertiseUseSpeed(int iClient)
+{
+	if (IsZoeyMedicalExpertiseActive(iClient) == false)
+		return;
+
+	if (GetEntProp(iClient, Prop_Send, "m_bPerformingAction") != 1 &&
+		GetEntPropFloat(iClient, Prop_Send, "m_flProgressBarDuration") <= 0.0)
+	{
+		return;
+	}
+
+	int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+	float fBaseDuration = GetZoeyMedicalExpertiseCurrentUseDuration(iClient, iActiveWeaponID);
+	if (fBaseDuration <= 0.0)
+		return;
+
+	float fDesiredDuration = fBaseDuration * (1.0 - ZOEY_MEDICAL_EXPERTISE_HEAL_ITEM_USE_SPEED_BONUS);
+	ApplyZoeyMedicalExpertiseUseSpeedToEntity(iClient, fDesiredDuration);
+
+	if (RunEntityChecks(iActiveWeaponID) &&
+		HasEntProp(iActiveWeaponID, Prop_Send, "m_helpingHandTarget"))
+	{
+		int iHelpingHandTarget = GetEntPropEnt(iActiveWeaponID, Prop_Send, "m_helpingHandTarget");
+		if (RunClientChecks(iHelpingHandTarget) &&
+			IsPlayerAlive(iHelpingHandTarget) &&
+			g_iClientTeam[iHelpingHandTarget] == TEAM_SURVIVORS)
+		{
+			ApplyZoeyMedicalExpertiseUseSpeedToEntity(iHelpingHandTarget, fDesiredDuration);
+		}
+	}
+}
+
+void GiveZoeyScrapRecycleReward(int iClient, const char[] strGiveCommand, const char[] strHintText)
+{
+	RunCheatCommand(iClient, "give", strGiveCommand);
+
+	if (IsFakeClient(iClient) == false)
+		PrintHintText(iClient, "%s", strHintText);
+}
+
+void HandleZoeyMedicalExpertiseReviveRewards(int iClient, int iTarget)
+{
+	if (IsZoeyMedicalExpertiseActive(iClient) == false ||
+		RunClientChecks(iTarget) == false ||
+		iTarget == iClient)
+		return;
+
+	g_iZoeyMedicalExpertisePillsReviveCounter[iClient]++;
+	if (g_iZoeyMedicalExpertisePillsReviveCounter[iClient] >= ZOEY_MEDICAL_EXPERTISE_SCRAP_RECYCLE_PILLS_REVIVES)
+	{
+		g_iZoeyMedicalExpertisePillsReviveCounter[iClient] -= ZOEY_MEDICAL_EXPERTISE_SCRAP_RECYCLE_PILLS_REVIVES;
+		GiveZoeyScrapRecycleReward(iClient, "give pain_pills", "Scrap Recycle: +1 Pills");
+	}
+
+	g_iZoeyMedicalExpertiseMedkitReviveCounter[iClient]++;
+	if (g_iZoeyMedicalExpertiseMedkitReviveCounter[iClient] >= ZOEY_MEDICAL_EXPERTISE_SCRAP_RECYCLE_MEDKIT_REVIVES)
+	{
+		g_iZoeyMedicalExpertiseMedkitReviveCounter[iClient] -= ZOEY_MEDICAL_EXPERTISE_SCRAP_RECYCLE_MEDKIT_REVIVES;
+		GiveZoeyScrapRecycleReward(iClient, "give first_aid_kit", "Scrap Recycle: +1 Medkit");
+	}
+}
+
+void ApplyZoeyMedicalExpertiseBileReduction(int iVictim)
+{
+	if (RunClientChecks(iVictim) == false ||
+		IsPlayerAlive(iVictim) == false ||
+		g_iClientTeam[iVictim] != TEAM_SURVIVORS ||
+		DoesSurvivorTeamHaveZoeyMedicalExpertise() == false)
+		return;
+
+	ConVar cvBileDuration = FindConVar("survivor_it_duration");
+	float fBaseDuration = cvBileDuration != null ? cvBileDuration.FloatValue : 20.0;
+	float fReducedDuration = fBaseDuration * ZOEY_MEDICAL_EXPERTISE_BILE_DURATION_MULTIPLIER;
+	if (fReducedDuration <= 0.0)
+		return;
+
+	g_iZoeyMedicalExpertiseBileSerial[iVictim]++;
+	Handle hDataPackage = CreateDataPack();
+	WritePackCell(hDataPackage, GetClientUserId(iVictim));
+	WritePackCell(hDataPackage, g_iZoeyMedicalExpertiseBileSerial[iVictim]);
+	CreateTimer(fReducedDuration, TimerZoeyMedicalExpertiseEndBile, hDataPackage, TIMER_FLAG_NO_MAPCHANGE);
+}
+
+void StopZoeySacrificialAidBleedoutProtection(int iTarget)
+{
+	g_fZoeySacrificialAidBleedoutStopEndTime[iTarget] = -1.0;
+	g_iZoeySacrificialAidBleedoutLastHealth[iTarget] = 0;
+	delete g_hTimer_ZoeySacrificialAidBleedoutCheck[iTarget];
+}
+
+void StartZoeySacrificialAidBleedoutProtection(int iTarget, float fDuration)
+{
+	if (RunClientChecks(iTarget) == false ||
+		IsPlayerAlive(iTarget) == false ||
+		g_iClientTeam[iTarget] != TEAM_SURVIVORS ||
+		IsIncap(iTarget) == false ||
+		fDuration <= 0.0)
+		return;
+
+	g_fZoeySacrificialAidBleedoutStopEndTime[iTarget] = GetGameTime() + fDuration;
+	g_iZoeySacrificialAidBleedoutLastHealth[iTarget] = GetEntProp(iTarget, Prop_Data, "m_iHealth");
+
+	delete g_hTimer_ZoeySacrificialAidBleedoutCheck[iTarget];
+	g_hTimer_ZoeySacrificialAidBleedoutCheck[iTarget] = CreateTimer(ZOEY_SACRIFICIAL_AID_BLEEDOUT_CHECK_INTERVAL, TimerZoeySacrificialAidBleedoutCheck, GetClientUserId(iTarget), TIMER_REPEAT);
+}
+
+void ReviveZoeySacrificialAidTarget(int iClient, int iTarget)
+{
+	bool bWasHanging = IsZoeySacrificialAidTargetHanging(iTarget);
+
+	StopZoeySacrificialAidBleedoutProtection(iTarget);
+
+	RunCheatCommand(iTarget, "give", "give health");
+
+	if (bWasHanging)
+	{
+		if (g_iPlayerHealth[iTarget] <= 1)
+			g_iPlayerHealth[iTarget] = 1;
+
+		SetPlayerHealth(iTarget, -1, g_iPlayerHealth[iTarget]);
+		ResetTempHealthToSurvivor(iTarget);
+
+		if (g_iPlayerHealthTemp[iTarget] > 0)
+			AddTempHealthToSurvivor(iTarget, float(g_iPlayerHealthTemp[iTarget]));
+	}
+	else
+	{
+		SetPlayerHealth(iTarget, -1, SELF_REVIVE_HEALTH);
+		ResetTempHealthToSurvivor(iTarget);
+		AddTempHealthToSurvivor(iTarget, float(SELF_REVIVE_TEMP_HEALTH));
+	}
+
+	g_bIsClientDown[iTarget] = false;
+	clienthanging[iTarget] = false;
+	EndSelfRevive(iTarget);
+	SetEntPropFloat(iTarget, Prop_Send, "m_flProgressBarStartTime", GetGameTime());
+	SetEntPropFloat(iTarget, Prop_Send, "m_flProgressBarDuration", 0.0);
+	SetEntPropEnt(iTarget, Prop_Send, "m_reviveOwner", -1);
+
+	if (bWasHanging == false && SetAllNicksDesprateMeasuresStacks())
+		SetAllNicksDesprateMeasureSpeed("A teammate has been revived, your senses return to a weaker state.");
+
+	SetClientRenderAndGlowColor(iTarget);
+	SetClientSpeed(iTarget);
+
+	// Instant pickups do not fire revive_success, so mirror Zoey's revive passives here.
+	ApplyZoeyResilientResuscitation(iClient, iTarget);
+	ConvertZoeyReviveHealthToPermanent(iTarget);
+	HandleZoeyMedicalExpertiseReviveRewards(iClient, iTarget);
+}
+
+bool TryUseZoeySacrificialAid(int iClient, int iTarget, int iCost)
+{
+	if (RunClientChecks(iClient) == false ||
+		RunClientChecks(iTarget) == false ||
+		IsPlayerAlive(iClient) == false ||
+		IsPlayerAlive(iTarget) == false ||
+		g_bTalentsConfirmed[iClient] == false ||
+		g_iChosenSurvivor[iClient] != ZOEY ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
+		g_iClientTeam[iTarget] != TEAM_SURVIVORS ||
+		g_iZoeyTalent5Level[iClient] <= 0 ||
+		g_bIsClientDown[iClient] == true ||
+		IsClientGrappled(iClient) == true ||
+		iClient == iTarget)
+	{
+		return false;
+	}
+
+	if (iCost != ZOEY_SACRIFICIAL_AID_MAJOR_COST &&
+		iCost != ZOEY_SACRIFICIAL_AID_MEDIUM_COST &&
+		iCost != ZOEY_SACRIFICIAL_AID_MINOR_COST)
+	{
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "Sacrificial Aid received an invalid sacrifice tier.");
+		return false;
+	}
+
+	float fCooldownRemaining = GetZoeySacrificialAidGlobalCooldownRemaining();
+	if (fCooldownRemaining > 0.0)
+	{
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "Sacrificial Aid cooling down: %0.0f seconds", fCooldownRemaining);
+		return false;
+	}
+
+	float xyzClientEye[3], xyzTargetEye[3];
+	GetClientEyePosition(iClient, xyzClientEye);
+	GetClientEyePosition(iTarget, xyzTargetEye);
+	if (IsVisibleTo(xyzClientEye, xyzTargetEye) == false)
+	{
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "Sacrificial Aid requires a visible teammate.");
+		return false;
+	}
+
+	bool bTargetDowned = IsZoeySacrificialAidTargetDowned(iTarget);
+	bool bTargetHanging = IsZoeySacrificialAidTargetHanging(iTarget);
+	if (bTargetDowned && bTargetHanging == true && iCost != ZOEY_SACRIFICIAL_AID_MAJOR_COST)
+	{
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "Only the 100 HP option can instantly pick up a ledge-hanging teammate.");
+		return false;
+	}
+
+	if (bTargetDowned == false)
+	{
+		int iCurrentHealth = GetPlayerHealth(iTarget);
+		int iMaxHealth = GetPlayerMaxHealth(iTarget);
+		int iTempHealth = GetSurvivorTempHealth(iTarget);
+
+		if ((iCost == ZOEY_SACRIFICIAL_AID_MAJOR_COST || iCost == ZOEY_SACRIFICIAL_AID_MINOR_COST) &&
+			iCurrentHealth + iTempHealth >= iMaxHealth)
+		{
+			if (IsFakeClient(iClient) == false)
+				PrintHintText(iClient, "%N is already at full health.", iTarget);
+			return false;
+		}
+
+		if (iCost == ZOEY_SACRIFICIAL_AID_MEDIUM_COST &&
+			iCurrentHealth + iTempHealth >= iMaxHealth)
+		{
+			if (IsFakeClient(iClient) == false)
+				PrintHintText(iClient, "%N cannot gain more temporary health right now.", iTarget);
+			return false;
+		}
+	}
+
+	if (ApplyZoeySacrificialAidCost(iClient, iCost) == false)
+	{
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "Sacrificial Aid needs more remaining max health.");
+		return false;
+	}
+
+	g_fZoeySacrificialAidGlobalCooldownEndTime = GetGameTime() + ZOEY_SACRIFICIAL_AID_GLOBAL_COOLDOWN;
+
+	if (bTargetDowned)
+	{
+		switch (iCost)
+		{
+			case ZOEY_SACRIFICIAL_AID_MAJOR_COST:
+			{
+				ReviveZoeySacrificialAidTarget(iClient, iTarget);
+
+				if (IsFakeClient(iClient) == false)
+					PrintHintText(iClient, "Sacrificial Aid: Instantly picked up %N", iTarget);
+				if (IsFakeClient(iTarget) == false)
+					PrintHintText(iTarget, "%N sacrificed max health to instantly pick you up.", iClient);
+			}
+			case ZOEY_SACRIFICIAL_AID_MEDIUM_COST:
+			{
+				StartZoeySacrificialAidBleedoutProtection(iTarget, ZOEY_SACRIFICIAL_AID_MEDIUM_BLEEDOUT_DURATION);
+
+				if (IsFakeClient(iClient) == false)
+					PrintHintText(iClient, "Sacrificial Aid: %N stops bleeding out for %.0f seconds", iTarget, ZOEY_SACRIFICIAL_AID_MEDIUM_BLEEDOUT_DURATION);
+				if (IsFakeClient(iTarget) == false)
+					PrintHintText(iTarget, "%N stopped your bleedout for %.0f seconds.", iClient, ZOEY_SACRIFICIAL_AID_MEDIUM_BLEEDOUT_DURATION);
+			}
+			case ZOEY_SACRIFICIAL_AID_MINOR_COST:
+			{
+				StartZoeySacrificialAidBleedoutProtection(iTarget, ZOEY_SACRIFICIAL_AID_MINOR_BLEEDOUT_DURATION);
+
+				if (IsFakeClient(iClient) == false)
+					PrintHintText(iClient, "Sacrificial Aid: %N stops bleeding out for %.0f seconds", iTarget, ZOEY_SACRIFICIAL_AID_MINOR_BLEEDOUT_DURATION);
+				if (IsFakeClient(iTarget) == false)
+					PrintHintText(iTarget, "%N stopped your bleedout for %.0f seconds.", iClient, ZOEY_SACRIFICIAL_AID_MINOR_BLEEDOUT_DURATION);
+			}
+		}
+
+		return true;
+	}
+
+	switch (iCost)
+	{
+		case ZOEY_SACRIFICIAL_AID_MAJOR_COST:
+		{
+			ApplyZoeySharingIsCaringPermanentHeal(iTarget, ZOEY_SACRIFICIAL_AID_MAJOR_HEAL);
+
+			if (IsFakeClient(iClient) == false)
+				PrintHintText(iClient, "Sacrificial Aid: Healed %N for %d HP", iTarget, ZOEY_SACRIFICIAL_AID_MAJOR_HEAL);
+			if (IsFakeClient(iTarget) == false)
+				PrintHintText(iTarget, "%N sacrificed max health to heal you for %d HP.", iClient, ZOEY_SACRIFICIAL_AID_MAJOR_HEAL);
+		}
+		case ZOEY_SACRIFICIAL_AID_MEDIUM_COST:
+		{
+			AddTempHealthToSurvivor(iTarget, ZOEY_SACRIFICIAL_AID_MEDIUM_TEMP_HEALTH);
+
+			if (IsFakeClient(iClient) == false)
+				PrintHintText(iClient, "Sacrificial Aid: Gave %N %.0f temp HP", iTarget, ZOEY_SACRIFICIAL_AID_MEDIUM_TEMP_HEALTH);
+			if (IsFakeClient(iTarget) == false)
+				PrintHintText(iTarget, "%N sacrificed max health to give you %.0f temp HP.", iClient, ZOEY_SACRIFICIAL_AID_MEDIUM_TEMP_HEALTH);
+		}
+		case ZOEY_SACRIFICIAL_AID_MINOR_COST:
+		{
+			ApplyZoeySharingIsCaringPermanentHeal(iTarget, ZOEY_SACRIFICIAL_AID_MINOR_HEAL);
+
+			if (IsFakeClient(iClient) == false)
+				PrintHintText(iClient, "Sacrificial Aid: Healed %N for %d HP", iTarget, ZOEY_SACRIFICIAL_AID_MINOR_HEAL);
+			if (IsFakeClient(iTarget) == false)
+				PrintHintText(iTarget, "%N sacrificed max health to heal you for %d HP.", iClient, ZOEY_SACRIFICIAL_AID_MINOR_HEAL);
+		}
+	}
+
+	return true;
 }
 
 float GetZoeySurvivorsWillChargeDuration(int iClient)
@@ -460,7 +939,7 @@ void OnGameFrame_Zoey(int iClient)
 	if (iClient < 0 ||
 		g_iChosenSurvivor[iClient] != ZOEY ||
 		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
-		(g_iZoeyTalent1Level[iClient] <= 0 && g_iZoeyTalent2Level[iClient] <= 0 && g_iZoeyTalent3Level[iClient] <= 0))
+		(g_iZoeyTalent1Level[iClient] <= 0 && g_iZoeyTalent2Level[iClient] <= 0 && g_iZoeyTalent3Level[iClient] <= 0 && g_iZoeyTalent5Level[iClient] <= 0))
 		return;
 
 	if (g_iZoeyTalent1Level[iClient] > 0 || g_iZoeyTalent3Level[iClient] > 0)
@@ -476,6 +955,9 @@ void OnGameFrame_Zoey(int iClient)
 
 	if (g_iZoeyTalent3Level[iClient] > 0)
 		HandleZoeySurvivorsWillState(iClient);
+
+	if (g_iZoeyTalent5Level[iClient] > 0)
+		HandleZoeyMedicalExpertiseUseSpeed(iClient);
 }
 
 bool OnPlayerRunCmd_Zoey(int iClient, int &iButtons)
@@ -485,7 +967,7 @@ bool OnPlayerRunCmd_Zoey(int iClient, int &iButtons)
 
 	bool bButtonsChanged = false;
 
-	if (g_iZoeyTalent4Level[iClient] > 0 &&
+	if ((g_iZoeyTalent4Level[iClient] > 0 || g_iZoeyTalent5Level[iClient] > 0) &&
 		(iButtons & IN_ATTACK) != 0)
 	{
 		TrackZoeySharingIsCaringBoostUse(iClient);

@@ -16,13 +16,8 @@ Action Event_PlayerNowIt(Handle hEvent, const char[] strName, bool bDontBroadcas
 	int iAttacker = GetClientOfUserId(GetEventInt(hEvent,"attacker"));
 	int iVictim = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 
-	if (iAttacker == 0 || iVictim == 0)
+	if (iVictim == 0)
 		return Plugin_Continue;
-	
-	if(RunClientChecks(iAttacker) == true)
-	{
-		g_iVomitVictimAttacker[iVictim] = iAttacker;
-	}
 
 	if (g_iBileCleansingKits[iVictim] > 0 &&
 		RunClientChecks(iVictim) == true &&
@@ -32,6 +27,16 @@ Action Event_PlayerNowIt(Handle hEvent, const char[] strName, bool bDontBroadcas
 			\n%i Bile Cleansing Kit%s Remaining",
 			g_iBileCleansingKits[iVictim],
 			g_iBileCleansingKits[iVictim] == 1 ? "" : "s");
+
+	ApplyZoeyMedicalExpertiseBileReduction(iVictim);
+
+	if (iAttacker == 0)
+		return Plugin_Continue;
+
+	if(RunClientChecks(iAttacker) == true)
+	{
+		g_iVomitVictimAttacker[iVictim] = iAttacker;
+	}
 
 	// Handle the Boomer's abilities
 	Event_BoomerVomitOnPlayer(iAttacker, iVictim);
@@ -47,6 +52,7 @@ Action Event_PlayerNoLongerIt(Handle hEvent, const char[] strName, bool bDontBro
 	int iVictim = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 
 	g_iVomitVictimAttacker[iVictim] = 0;
+	g_iZoeyMedicalExpertiseBileSerial[iVictim]++;
 
 
 	return Plugin_Continue;
