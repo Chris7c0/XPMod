@@ -7,14 +7,10 @@ void TalentsLoad_Zoey(int iClient)
 	g_fZoeyQueuedReviveResumeDuration[iClient] = 0.0;
 	g_fZoeyQueuedReviveResumeProgress[iClient] = 0.0;
 	g_fZoeyQueuedReviveResumeAllowedUntil[iClient] = -1.0;
-	g_bZoeyExplosiveAmmoActive[iClient] = false;
-	g_fZoeyExplosiveAmmoCooldownEndTime[iClient] = -1.0;
-	g_bZoeyExplosiveAmmoLoadPending[iClient] = false;
 	g_fZoeyLastTriggerHappyShotTime[iClient] = -1.0;
 	g_bZoeyMopArmed[iClient] = false;
 	g_iZoeyMopCharge[iClient] = 0;
 	g_iZoeyMopHitCounter[iClient] = 0;
-	g_bZoeyWalkReloadHeld[iClient] = false;
 	g_bZoeyWalkUseHeld[iClient] = false;
 	g_fZoeyPrimaryStripHintCooldown[iClient] = 0.0;
 	g_bZoeySuppressSyntheticCIHurt[iClient] = false;
@@ -60,14 +56,10 @@ void ResetZoeyTalentsRuntimeState(int iClient)
 	g_fZoeyQueuedReviveResumeDuration[iClient] = 0.0;
 	g_fZoeyQueuedReviveResumeProgress[iClient] = 0.0;
 	g_fZoeyQueuedReviveResumeAllowedUntil[iClient] = -1.0;
-	g_bZoeyExplosiveAmmoActive[iClient] = false;
-	g_fZoeyExplosiveAmmoCooldownEndTime[iClient] = -1.0;
-	g_bZoeyExplosiveAmmoLoadPending[iClient] = false;
 	g_fZoeyLastTriggerHappyShotTime[iClient] = -1.0;
 	g_bZoeyMopArmed[iClient] = false;
 	g_iZoeyMopCharge[iClient] = 0;
 	g_iZoeyMopHitCounter[iClient] = 0;
-	g_bZoeyWalkReloadHeld[iClient] = false;
 	g_bZoeyWalkUseHeld[iClient] = false;
 	g_fZoeyPrimaryStripHintCooldown[iClient] = 0.0;
 	g_bZoeySuppressSyntheticCIHurt[iClient] = false;
@@ -1471,9 +1463,6 @@ bool OnPlayerRunCmd_Zoey(int iClient, int &iButtons)
 	if (g_iZoeyTalent2Level[iClient] > 0 || g_iZoeyTalent3Level[iClient] > 0)
 		bButtonsChanged = HandleZoeyWalkUseInput(iClient, iButtons) || bButtonsChanged;
 
-	if (g_iZoeyTalent2Level[iClient] > 0)
-		bButtonsChanged = HandleZoeyTriggerHappyInput(iClient, iButtons) || bButtonsChanged;
-
 	return bButtonsChanged;
 }
 
@@ -1512,10 +1501,7 @@ void OGFSurvivorReload_Zoey(int iClient, const char[] strCurrentWeapon, int iAct
 		RunEntityChecks(iActiveWeaponID) == true &&
 		IsZoeyTriggerHappyNormalClipAmmo(iCurrentClipAmmo))
 	{
-		if (g_bZoeyExplosiveAmmoLoadPending[iClient] == true)
-			LoadZoeyExplosiveAmmoClip(iClient, iActiveWeaponID);
-		else
-			SetEntData(iActiveWeaponID, g_iOffset_Clip1, ZOEY_TRIGGER_HAPPY_CLIP_SIZE, true);
+		SetEntData(iActiveWeaponID, g_iOffset_Clip1, ZOEY_TRIGGER_HAPPY_CLIP_SIZE, true);
 
 		g_bClientIsReloading[iClient] = false;
 		g_iReloadFrameCounter[iClient] = 0;
@@ -2033,9 +2019,6 @@ void HandleZoeyTriggerHappyState(int iClient)
 {
 	StripZoeyPrimaryWeapon(iClient);
 
-	if (g_bZoeyExplosiveAmmoActive[iClient] == false)
-		return;
-
 	int iSecondaryWeapon = GetPlayerWeaponSlot(iClient, 1);
 	if (RunEntityChecks(iSecondaryWeapon) == false)
 		return;
@@ -2047,13 +2030,7 @@ void HandleZoeyTriggerHappyState(int iClient)
 
 	int iCurrentClipAmmo = GetEntProp(iSecondaryWeapon, Prop_Data, "m_iClip1");
 	if (iCurrentClipAmmo > ZOEY_TRIGGER_HAPPY_CLIP_SIZE)
-	{
 		SetEntData(iSecondaryWeapon, g_iOffset_Clip1, ZOEY_TRIGGER_HAPPY_CLIP_SIZE, true);
-		iCurrentClipAmmo = ZOEY_TRIGGER_HAPPY_CLIP_SIZE;
-	}
-
-	if (iCurrentClipAmmo <= 0)
-		DeactivateZoeyExplosiveAmmo(iClient, true);
 }
 
 bool HandleZoeyWalkUseInput(int iClient, int &iButtons)
@@ -2088,142 +2065,6 @@ bool HandleZoeyWalkUseInput(int iClient, int &iButtons)
 	}
 
 	return false;
-}
-
-bool HandleZoeyTriggerHappyInput(int iClient, int &iButtons)
-{
-	bool bButtonsChanged = false;
-	bool bWalkReloadPressed = (iButtons & IN_SPEED) && (iButtons & IN_RELOAD);
-
-	if (bWalkReloadPressed == false)
-		g_bZoeyWalkReloadHeld[iClient] = false;
-
-	if (bWalkReloadPressed &&
-		g_bZoeyWalkReloadHeld[iClient] == false)
-	{
-		g_bZoeyWalkReloadHeld[iClient] = true;
-		if (ActivateZoeyExplosiveAmmo(iClient) == true)
-		{
-			iButtons &= ~IN_RELOAD;
-			bButtonsChanged = true;
-		}
-	}
-
-	return bButtonsChanged;
-}
-
-void LoadZoeyExplosiveAmmoClip(int iClient, int iActiveWeaponID)
-{
-	if (RunEntityChecks(iActiveWeaponID) == false)
-		return;
-
-	SetEntData(iActiveWeaponID, g_iOffset_Clip1, ZOEY_TRIGGER_HAPPY_CLIP_SIZE, true);
-	g_bZoeyExplosiveAmmoActive[iClient] = true;
-	g_bZoeyExplosiveAmmoLoadPending[iClient] = false;
-
-	if (IsFakeClient(iClient) == false)
-		PrintHintText(iClient, "Explosive ammo loaded.\nCooldown begins after this clip runs dry.");
-}
-
-void CancelZoeyExplosiveAmmoPendingLoad(int iClient)
-{
-	g_bZoeyExplosiveAmmoLoadPending[iClient] = false;
-}
-
-void TryCancelZoeyExplosiveAmmoOnPrematureReload(int iClient, const char[] strCurrentWeapon, int iActiveWeaponID)
-{
-	if (RunClientChecks(iClient) == false ||
-		IsPlayerAlive(iClient) == false ||
-		g_bTalentsConfirmed[iClient] == false ||
-		g_iChosenSurvivor[iClient] != ZOEY ||
-		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
-		g_iZoeyTalent2Level[iClient] <= 0 ||
-		g_bZoeyExplosiveAmmoActive[iClient] == false ||
-		StrEqual(strCurrentWeapon, "weapon_pistol", false) == false ||
-		RunEntityChecks(iActiveWeaponID) == false)
-	{
-		return;
-	}
-
-	int iCurrentClipAmmo = GetEntProp(iActiveWeaponID, Prop_Data, "m_iClip1");
-	if (iCurrentClipAmmo > 0 && iCurrentClipAmmo < ZOEY_TRIGGER_HAPPY_CLIP_SIZE)
-		DeactivateZoeyExplosiveAmmo(iClient, true);
-}
-
-bool ActivateZoeyExplosiveAmmo(int iClient)
-{
-	if (RunClientChecks(iClient) == false ||
-		IsPlayerAlive(iClient) == false ||
-		g_bTalentsConfirmed[iClient] == false ||
-		g_iChosenSurvivor[iClient] != ZOEY ||
-		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
-		IsZoeyClientDownedOrHanging(iClient) == true ||
-		IsClientGrappled(iClient) == true)
-	{
-		return false;
-	}
-
-	if (IsZoeyHoldingMachinePistols(iClient) == false)
-	{
-		if (IsFakeClient(iClient) == false)
-			PrintHintText(iClient, "Trigger Happy requires dual pistols equipped.");
-		return false;
-	}
-
-	if (g_bZoeyExplosiveAmmoActive[iClient] == true)
-	{
-		if (IsFakeClient(iClient) == false)
-			PrintHintText(iClient, "Explosive machine-pistol ammo is already active.");
-		return false;
-	}
-
-	if (g_bZoeyExplosiveAmmoLoadPending[iClient] == true)
-	{
-		if (IsFakeClient(iClient) == false)
-			PrintHintText(iClient, "Explosive ammo is queued.\nFinish the reload to load the clip.");
-		return false;
-	}
-
-	float fCooldownRemaining = g_fZoeyExplosiveAmmoCooldownEndTime[iClient] - GetGameTime();
-	if (fCooldownRemaining > 0.0)
-	{
-		if (IsFakeClient(iClient) == false)
-			PrintHintText(iClient, "Explosive ammo cooling down: %0.0f seconds", fCooldownRemaining);
-		return false;
-	}
-
-	int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-	if (RunEntityChecks(iActiveWeaponID) == false)
-		return false;
-
-	int iCurrentClipAmmo = GetEntProp(iActiveWeaponID, Prop_Data, "m_iClip1");
-	if (IsZoeyTriggerHappyNormalClipAmmo(iCurrentClipAmmo))
-	{
-		LoadZoeyExplosiveAmmoClip(iClient, iActiveWeaponID);
-		return true;
-	}
-
-	if (IsFakeClient(iClient) == false)
-		PrintHintText(iClient, "Explosive ammo primed.\nFinish reloading to load the clip.");
-
-	g_bZoeyExplosiveAmmoLoadPending[iClient] = true;
-	return false;
-}
-
-void DeactivateZoeyExplosiveAmmo(int iClient, bool bStartCooldown)
-{
-	if (g_bZoeyExplosiveAmmoActive[iClient] == false && bStartCooldown == false)
-		return;
-
-	g_bZoeyExplosiveAmmoActive[iClient] = false;
-	g_bZoeyExplosiveAmmoLoadPending[iClient] = false;
-
-	if (bStartCooldown)
-	{
-		g_fZoeyExplosiveAmmoCooldownEndTime[iClient] = GetGameTime() + ZOEY_TRIGGER_HAPPY_EXPLOSIVE_AMMO_COOLDOWN;
-		if (IsFakeClient(iClient) == false)
-			PrintHintText(iClient, "Explosive ammo ended.\n30 second cooldown started.");
-	}
 }
 
 void ToggleZoeyMopArmed(int iClient)
@@ -2353,9 +2194,6 @@ void EventsHurt_AttackerZoey(Handle hEvent, int iAttacker, int iVictim)
 	TryTriggerZoeyMop(iAttacker, iVictim);
 	AddZoeyMopHit(iAttacker);
 
-	if (g_bZoeyExplosiveAmmoActive[iAttacker] == false)
-		return;
-
 	int iVictimHealth = GetPlayerHealth(iVictim);
 	int iDamage = GetEventInt(hEvent, "dmg_health");
 	int iBonusDamage = RoundToNearest(float(iDamage) * ZOEY_TRIGGER_HAPPY_EXPLOSIVE_SI_DAMAGE_MULTIPLIER);
@@ -2390,11 +2228,8 @@ void EventsInfectedHurt_Zoey(Handle hEvent, int iAttacker, int iVictim)
 	TryTriggerZoeyMop(iAttacker, iVictim);
 	AddZoeyMopHit(iAttacker);
 
-	if (g_bZoeyExplosiveAmmoActive[iAttacker])
-	{
-		DealZoeySyntheticCIDamage(iAttacker, iVictim, 9999, DMG_BLAST);
-		DetonateZoeyTriggerHappyImpact(iVictim);
-	}
+	DealZoeySyntheticCIDamage(iAttacker, iVictim, 9999, DMG_BLAST);
+	DetonateZoeyTriggerHappyImpact(iVictim);
 }
 
 void EventsItemPickUp_Zoey(int iClient, const char[] strWeaponClass)

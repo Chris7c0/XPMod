@@ -3,7 +3,7 @@
 ### Talent 1: Resilient Resuscitation
 ```
 +40% Revive Speed
-+20% Movement Speed While Holding A Healing Item
++25% Movement Speed While Holding A Healing Item
 
 Revive Bonuses:
 - Revived Ally Gains +20% Damage Reduction For 7 Seconds
@@ -17,17 +17,12 @@ Zoey Gains No Buff From Max HP Increases
 ```
 Removes The Ability To Hold A Primary Weapon
 
-Dual Pistols Become Automatic Machine Pistols
+Dual Pistols Become Automatic Explosive Machine Pistols
 - Fast Firing Rate (10 Rounds Per Second?)
 - 120 Clip Size
-
-Press [WALK] + [RELOAD] To Activate Explosive Pistols Ammo
-- Machine Pistol Bullets Explode 
+- Bullets Explode
 - Kills All CI With One Shot
 - Increased Damage To SI
-- Reloads Current Clip 
-    - All Ammo Converted Until The Clip Runs Out
-- 30 Second Cooldown Once Clip Expires
 
 Mop 'Til They Drop
 Press [WALK] + [USE] To Arm

@@ -103,15 +103,11 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 			%s\t\t%s:\
 			\n \
 			\n Removes The Ability To Hold A Primary Weapon\
-			\n Dual Pistols Become Automatic Machine Pistols\
+			\n Dual Pistols Become Automatic Explosive Machine Pistols\
 			\n - 120 Clip Size\
-			\n \
-			\n Press [WALK] + [RELOAD] For Explosive Ammo\
-			\n - Reloads Current Clip\
 			\n - Bullets Explode\
 			\n - One-Shots Common Infected\
 			\n - Increased Damage To Special Infected\
-			\n - 30 Second Cooldown After The Clip Ends\
 			\n \
 			\n Mop 'Til They Drop\
 			\n - Gain 1 Charge Per 5 Machine-Pistol Hits On CI/SI\
