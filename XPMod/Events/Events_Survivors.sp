@@ -518,7 +518,23 @@ Action Event_HealBegin(Handle hEvent, char[] Event_name, bool dontBroadcast)
 
 	g_iZoeySharingTrackedMedkitTargetUserId[iClient] = GetClientUserId(iTarget);
 	g_iZoeySharingTrackedMedkitTargetHealthBefore[iClient] = GetPlayerHealth(iTarget);
+	RefreshManagedFirstAidKitUseDuration(iClient);
 
+	return Plugin_Continue;
+}
+
+Action Event_HealEnd(Handle hEvent, char[] Event_name, bool dontBroadcast)
+{
+	SuppressNeverUsedWarning(Event_name, dontBroadcast);
+
+	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+	if (RunClientChecks(iClient))
+	{
+		g_iZoeySharingTrackedMedkitTargetUserId[iClient] = 0;
+		g_iZoeySharingTrackedMedkitTargetHealthBefore[iClient] = -1;
+	}
+
+	RefreshManagedFirstAidKitUseDuration();
 	return Plugin_Continue;
 }
 
@@ -563,6 +579,7 @@ Action Event_HealSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 
 	g_iZoeySharingTrackedMedkitTargetUserId[iClient] = 0;
 	g_iZoeySharingTrackedMedkitTargetHealthBefore[iClient] = -1;
+	RefreshManagedFirstAidKitUseDuration();
 	
 	if(g_iOverLevel[target] > 0)
 	{

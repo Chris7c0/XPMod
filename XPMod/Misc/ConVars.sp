@@ -70,6 +70,10 @@ void SetUpInitialConvarValues()
 	g_hCVar_SurvivorReviveDuration = FindConVar("survivor_revive_duration");
 	if (g_hCVar_SurvivorReviveDuration != null)
 		g_fDefaultSurvivorReviveDuration = g_hCVar_SurvivorReviveDuration.FloatValue;
+
+	g_hCVar_FirstAidKitUseDuration = FindConVar("first_aid_kit_use_duration");
+	if (g_hCVar_FirstAidKitUseDuration != null)
+		g_fDefaultFirstAidKitUseDuration = g_hCVar_FirstAidKitUseDuration.FloatValue;
 }
 
 //Callback function for updating the Debug Mode

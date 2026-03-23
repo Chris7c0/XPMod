@@ -24,13 +24,9 @@
 //          We hope you enjoy XP Mod.                                                                          //
 //                                                                                                             //
 //                                                                                                             //
-//          Contact Information:                                                                               //
-//                                                                                                             //
-//            Chris Pringle: chris7c0@gmail.com          Ezekiel Keener: ezekiel.keener@yahoo.com              //
-//                                                                                                             //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define PLUGIN_VERSION "0.8.6.0002"
+#define PLUGIN_VERSION "0.8.6.0003"
 
 #pragma newdecls required
 

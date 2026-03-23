@@ -30,6 +30,8 @@ bool g_bDevCommandsRegistered = false;
 ConVar g_hCVar_IdleKickEnabled;
 ConVar g_hCVar_SurvivorReviveDuration;
 float g_fDefaultSurvivorReviveDuration = 5.0;
+ConVar g_hCVar_FirstAidKitUseDuration;
+float g_fDefaultFirstAidKitUseDuration = 5.0;
 // XP Loadout Use and Gain Enabled
 ConVar g_hCVar_XPSaveForHighLevelsEnabled;
 bool XPSaveForHighLevelsEnabled = true;
