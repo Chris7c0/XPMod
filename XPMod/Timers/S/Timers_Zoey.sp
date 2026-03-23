@@ -14,7 +14,7 @@ Action TimerZoeyMedicalExpertiseEndBile(Handle timer, Handle hDataPackage)
 		return Plugin_Stop;
 	}
 
-	SDKCall(g_hSDK_UnVomitOnPlayer, iVictim);
+	RemoveSurvivorBile(iVictim);
 	return Plugin_Stop;
 }
 

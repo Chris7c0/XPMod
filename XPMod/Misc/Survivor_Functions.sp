@@ -1,3 +1,19 @@
+void RemoveSurvivorBile(int iClient)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS)
+	{
+		return;
+	}
+
+	g_iZoeyMedicalExpertiseBileSerial[iClient]++;
+	g_iVomitVictimAttacker[iClient] = 0;
+	g_iShowSurvivorVomitCounter[iClient] = 0;
+	g_bIsSurvivorVomiting[iClient] = false;
+	SDKCall(g_hSDK_UnVomitOnPlayer, iClient);
+}
+
 void OnPlayerRunCmd_BileCleanse(int iClient, int &iButtons)
 {
 	// If they started a bile cleanse, handle if something prevented contiuation
@@ -41,7 +57,7 @@ void OnPlayerRunCmd_BileCleanse(int iClient, int &iButtons)
 		g_iBileCleansingFrameTimeCtr[iClient] = -1;
 		g_iBileCleansingKits[iClient]--;
 
-		SDKCall(g_hSDK_UnVomitOnPlayer, iClient);
+		RemoveSurvivorBile(iClient);
 
 		PrintHintText(iClient, "%i Bile Cleansing Kit%s Remaining",
 			g_iBileCleansingKits[iClient],

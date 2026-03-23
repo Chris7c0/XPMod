@@ -170,7 +170,7 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 			\n Scrap Recycle:\
 			\n - After 4 teammate pickups gain +1 Medkit\
 			\n - After 2 teammate pickups gain +1 Pills\
-			\n - Team bile duration reduced by 33%%\
+			\n - Team bile duration reduced by 50%%\
 			\n \
 			\n Bind 1: Sacrificial Aid\
 			\n - Aim at a visible teammate and choose a sacrifice\

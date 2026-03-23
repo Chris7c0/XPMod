@@ -73,7 +73,7 @@ Shared Pills/Adrenaline Healing Is Converted To Permanent Health.
 Scrap Recycle:
 - After Helping Up Teammates 4 Times, Gain +1 Medkit
 - After Helping Up Teammates 2 Times, Gain +1 Pills
-- (Team) 33% Reduced Bile Duration
+- (Team) 50% Reduced Bile Duration
 
 Bind 1: Sacrificial Aid
 - Unlimited Use
