@@ -84,6 +84,8 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 		}
 		case ZOEY:
 		{
+			RecordZoeyTriggerHappyShot(iClient, wclass);
+
 			char strCurrentWeapon[32];
 			GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 

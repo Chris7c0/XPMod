@@ -9,6 +9,8 @@ void TalentsLoad_Zoey(int iClient)
 	g_fZoeyQueuedReviveResumeAllowedUntil[iClient] = -1.0;
 	g_bZoeyExplosiveAmmoActive[iClient] = false;
 	g_fZoeyExplosiveAmmoCooldownEndTime[iClient] = -1.0;
+	g_bZoeyExplosiveAmmoLoadPending[iClient] = false;
+	g_fZoeyLastTriggerHappyShotTime[iClient] = -1.0;
 	g_bZoeyMopArmed[iClient] = false;
 	g_iZoeyMopCharge[iClient] = 0;
 	g_iZoeyMopHitCounter[iClient] = 0;
@@ -57,6 +59,8 @@ void ResetZoeyTalentsRuntimeState(int iClient)
 	g_fZoeyQueuedReviveResumeAllowedUntil[iClient] = -1.0;
 	g_bZoeyExplosiveAmmoActive[iClient] = false;
 	g_fZoeyExplosiveAmmoCooldownEndTime[iClient] = -1.0;
+	g_bZoeyExplosiveAmmoLoadPending[iClient] = false;
+	g_fZoeyLastTriggerHappyShotTime[iClient] = -1.0;
 	g_bZoeyMopArmed[iClient] = false;
 	g_iZoeyMopCharge[iClient] = 0;
 	g_iZoeyMopHitCounter[iClient] = 0;
@@ -1411,12 +1415,13 @@ void OGFSurvivorReload_Zoey(int iClient, const char[] strCurrentWeapon, int iAct
 	if (g_iZoeyTalent2Level[iClient] > 0 &&
 		StrEqual(strCurrentWeapon, "weapon_pistol", false) == true &&
 		RunEntityChecks(iActiveWeaponID) == true &&
-		(iCurrentClipAmmo == 15 || iCurrentClipAmmo == 30))
+		IsZoeyTriggerHappyNormalClipAmmo(iCurrentClipAmmo))
 	{
-		if (g_bZoeyExplosiveAmmoActive[iClient] == true)
-			DeactivateZoeyExplosiveAmmo(iClient, true);
+		if (g_bZoeyExplosiveAmmoLoadPending[iClient] == true)
+			LoadZoeyExplosiveAmmoClip(iClient, iActiveWeaponID);
+		else
+			SetEntData(iActiveWeaponID, g_iOffset_Clip1, ZOEY_TRIGGER_HAPPY_CLIP_SIZE, true);
 
-		SetEntData(iActiveWeaponID, g_iOffset_Clip1, ZOEY_TRIGGER_HAPPY_CLIP_SIZE, true);
 		g_bClientIsReloading[iClient] = false;
 		g_iReloadFrameCounter[iClient] = 0;
 	}
@@ -1832,10 +1837,43 @@ bool IsZoeyTriggerHappyWeaponClass(const char[] strWeaponClass)
 	return StrEqual(strWeaponClass, "weapon_pistol", false);
 }
 
+bool IsZoeyTriggerHappyNormalClipAmmo(int iClipAmmo)
+{
+	return iClipAmmo == 15 || iClipAmmo == 30;
+}
+
 bool IsZoeyTriggerHappyEventWeapon(const char[] strWeaponClass)
 {
-	return StrEqual(strWeaponClass, "pistol", false) ||
+	return StrEqual(strWeaponClass, "weapon_pistol", false) ||
+		StrEqual(strWeaponClass, "pistol", false) ||
 		StrEqual(strWeaponClass, "dual_pistols", false);
+}
+
+void RecordZoeyTriggerHappyShot(int iClient, const char[] strWeaponClass)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false ||
+		g_bTalentsConfirmed[iClient] == false ||
+		g_iChosenSurvivor[iClient] != ZOEY ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
+		g_iZoeyTalent2Level[iClient] <= 0 ||
+		IsZoeyTriggerHappyEventWeapon(strWeaponClass) == false)
+	{
+		return;
+	}
+
+	g_fZoeyLastTriggerHappyShotTime[iClient] = GetGameTime();
+}
+
+bool DidZoeyRecentlyFireTriggerHappyWeapon(int iClient)
+{
+	return RunClientChecks(iClient) &&
+		IsPlayerAlive(iClient) &&
+		g_bTalentsConfirmed[iClient] &&
+		g_iChosenSurvivor[iClient] == ZOEY &&
+		g_iClientTeam[iClient] == TEAM_SURVIVORS &&
+		g_iZoeyTalent2Level[iClient] > 0 &&
+		(g_fZoeyLastTriggerHappyShotTime[iClient] + ZOEY_TRIGGER_HAPPY_SHOT_EVENT_WINDOW) >= GetGameTime();
 }
 
 bool IsZoeyHoldingMachinePistols(int iClient)
@@ -1968,15 +2006,55 @@ bool HandleZoeyTriggerHappyInput(int iClient, int &iButtons)
 		g_bZoeyWalkReloadHeld[iClient] == false)
 	{
 		g_bZoeyWalkReloadHeld[iClient] = true;
-		ActivateZoeyExplosiveAmmo(iClient);
-		iButtons &= ~IN_RELOAD;
-		bButtonsChanged = true;
+		if (ActivateZoeyExplosiveAmmo(iClient) == true)
+		{
+			iButtons &= ~IN_RELOAD;
+			bButtonsChanged = true;
+		}
 	}
 
 	return bButtonsChanged;
 }
 
-void ActivateZoeyExplosiveAmmo(int iClient)
+void LoadZoeyExplosiveAmmoClip(int iClient, int iActiveWeaponID)
+{
+	if (RunEntityChecks(iActiveWeaponID) == false)
+		return;
+
+	SetEntData(iActiveWeaponID, g_iOffset_Clip1, ZOEY_TRIGGER_HAPPY_CLIP_SIZE, true);
+	g_bZoeyExplosiveAmmoActive[iClient] = true;
+	g_bZoeyExplosiveAmmoLoadPending[iClient] = false;
+
+	if (IsFakeClient(iClient) == false)
+		PrintHintText(iClient, "Explosive ammo loaded.\nCooldown begins after this clip runs dry.");
+}
+
+void CancelZoeyExplosiveAmmoPendingLoad(int iClient)
+{
+	g_bZoeyExplosiveAmmoLoadPending[iClient] = false;
+}
+
+void TryCancelZoeyExplosiveAmmoOnPrematureReload(int iClient, const char[] strCurrentWeapon, int iActiveWeaponID)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false ||
+		g_bTalentsConfirmed[iClient] == false ||
+		g_iChosenSurvivor[iClient] != ZOEY ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
+		g_iZoeyTalent2Level[iClient] <= 0 ||
+		g_bZoeyExplosiveAmmoActive[iClient] == false ||
+		StrEqual(strCurrentWeapon, "weapon_pistol", false) == false ||
+		RunEntityChecks(iActiveWeaponID) == false)
+	{
+		return;
+	}
+
+	int iCurrentClipAmmo = GetEntProp(iActiveWeaponID, Prop_Data, "m_iClip1");
+	if (iCurrentClipAmmo > 0 && iCurrentClipAmmo < ZOEY_TRIGGER_HAPPY_CLIP_SIZE)
+		DeactivateZoeyExplosiveAmmo(iClient, true);
+}
+
+bool ActivateZoeyExplosiveAmmo(int iClient)
 {
 	if (RunClientChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false ||
@@ -1985,20 +2063,29 @@ void ActivateZoeyExplosiveAmmo(int iClient)
 		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
 		IsZoeyClientDownedOrHanging(iClient) == true ||
 		IsClientGrappled(iClient) == true)
-		return;
+	{
+		return false;
+	}
 
 	if (IsZoeyHoldingMachinePistols(iClient) == false)
 	{
 		if (IsFakeClient(iClient) == false)
 			PrintHintText(iClient, "Trigger Happy requires dual pistols equipped.");
-		return;
+		return false;
 	}
 
 	if (g_bZoeyExplosiveAmmoActive[iClient] == true)
 	{
 		if (IsFakeClient(iClient) == false)
 			PrintHintText(iClient, "Explosive machine-pistol ammo is already active.");
-		return;
+		return false;
+	}
+
+	if (g_bZoeyExplosiveAmmoLoadPending[iClient] == true)
+	{
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "Explosive ammo is queued.\nFinish the reload to load the clip.");
+		return false;
 	}
 
 	float fCooldownRemaining = g_fZoeyExplosiveAmmoCooldownEndTime[iClient] - GetGameTime();
@@ -2006,18 +2093,25 @@ void ActivateZoeyExplosiveAmmo(int iClient)
 	{
 		if (IsFakeClient(iClient) == false)
 			PrintHintText(iClient, "Explosive ammo cooling down: %0.0f seconds", fCooldownRemaining);
-		return;
+		return false;
 	}
 
 	int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 	if (RunEntityChecks(iActiveWeaponID) == false)
-		return;
+		return false;
 
-	SetEntData(iActiveWeaponID, g_iOffset_Clip1, ZOEY_TRIGGER_HAPPY_CLIP_SIZE, true);
-	g_bZoeyExplosiveAmmoActive[iClient] = true;
+	int iCurrentClipAmmo = GetEntProp(iActiveWeaponID, Prop_Data, "m_iClip1");
+	if (IsZoeyTriggerHappyNormalClipAmmo(iCurrentClipAmmo))
+	{
+		LoadZoeyExplosiveAmmoClip(iClient, iActiveWeaponID);
+		return true;
+	}
 
 	if (IsFakeClient(iClient) == false)
-		PrintHintText(iClient, "Explosive ammo loaded.\nCooldown begins after this clip runs dry.");
+		PrintHintText(iClient, "Explosive ammo primed.\nFinish reloading to load the clip.");
+
+	g_bZoeyExplosiveAmmoLoadPending[iClient] = true;
+	return false;
 }
 
 void DeactivateZoeyExplosiveAmmo(int iClient, bool bStartCooldown)
@@ -2026,6 +2120,7 @@ void DeactivateZoeyExplosiveAmmo(int iClient, bool bStartCooldown)
 		return;
 
 	g_bZoeyExplosiveAmmoActive[iClient] = false;
+	g_bZoeyExplosiveAmmoLoadPending[iClient] = false;
 
 	if (bStartCooldown)
 	{
@@ -2192,9 +2287,8 @@ void EventsInfectedHurt_Zoey(Handle hEvent, int iAttacker, int iVictim)
 	if (g_bZoeySuppressSyntheticCIHurt[iAttacker] == true)
 		return;
 
-	char strCurrentWeapon[32];
-	GetClientWeapon(iAttacker, strCurrentWeapon, sizeof(strCurrentWeapon));
-	if (IsZoeyTriggerHappyWeaponClass(strCurrentWeapon) == false)
+	// infected_hurt does not expose the shot weapon, so consume the recent weapon_fire record instead.
+	if (DidZoeyRecentlyFireTriggerHappyWeapon(iAttacker) == false)
 		return;
 
 	TryTriggerZoeyMop(iAttacker, iVictim);

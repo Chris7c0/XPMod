@@ -58,6 +58,9 @@ void Event_WeaponReload(Handle hEvent, const char[] strName, bool bDontBroadcast
 	
 	if(RunClientChecks(iClient) == false || IsFakeClient(iClient)==true || g_iClientTeam[iClient] != TEAM_SURVIVORS)
 		return;
+
+	if (g_iChosenSurvivor[iClient] == ZOEY)
+		TryCancelZoeyExplosiveAmmoOnPrematureReload(iClient, currentweapon, ActiveWeaponID);
 	
 	if(g_bCoachShotgunForceReload[iClient] == true)
 	{

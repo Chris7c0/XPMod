@@ -87,6 +87,9 @@ public void OnGameFrame()
 						SetEntData(g_iReloadingWeaponRef[iClient], g_iOffset_ClipShotgun, g_iCoachShotgunSavedAmmo[iClient], true);
 						g_iCoachShotgunSavedAmmo[iClient] = 0;
 					}
+					if (g_iChosenSurvivor[iClient] == ZOEY)
+						CancelZoeyExplosiveAmmoPendingLoad(iClient);
+
 					g_bClientIsReloading[iClient] = false;
 					g_iReloadFrameCounter[iClient] = 0;
 					g_bCoachShotgunForceReload[iClient] = false;
@@ -124,6 +127,9 @@ public void OnGameFrame()
 							SetEntData(g_iReloadingWeaponRef[iClient], g_iOffset_ClipShotgun, g_iCoachShotgunSavedAmmo[iClient], true);
 							g_iCoachShotgunSavedAmmo[iClient] = 0;
 						}
+						if (g_iChosenSurvivor[iClient] == ZOEY)
+							CancelZoeyExplosiveAmmoPendingLoad(iClient);
+
 						g_bClientIsReloading[iClient] = false;
 						g_iReloadFrameCounter[iClient] = 0;
 						g_bCoachShotgunForceReload[iClient] = false;
