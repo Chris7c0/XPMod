@@ -1411,8 +1411,7 @@ void OGFSurvivorReload_Zoey(int iClient, const char[] strCurrentWeapon, int iAct
 	if (g_iZoeyTalent2Level[iClient] > 0 &&
 		StrEqual(strCurrentWeapon, "weapon_pistol", false) == true &&
 		RunEntityChecks(iActiveWeaponID) == true &&
-		iCurrentClipAmmo > 0 &&
-		iCurrentClipAmmo < ZOEY_TRIGGER_HAPPY_CLIP_SIZE)
+		(iCurrentClipAmmo == 15 || iCurrentClipAmmo == 30))
 	{
 		if (g_bZoeyExplosiveAmmoActive[iClient] == true)
 			DeactivateZoeyExplosiveAmmo(iClient, true);
@@ -1913,6 +1912,12 @@ void HandleZoeyTriggerHappyState(int iClient)
 		return;
 
 	int iCurrentClipAmmo = GetEntProp(iSecondaryWeapon, Prop_Data, "m_iClip1");
+	if (iCurrentClipAmmo > ZOEY_TRIGGER_HAPPY_CLIP_SIZE)
+	{
+		SetEntData(iSecondaryWeapon, g_iOffset_Clip1, ZOEY_TRIGGER_HAPPY_CLIP_SIZE, true);
+		iCurrentClipAmmo = ZOEY_TRIGGER_HAPPY_CLIP_SIZE;
+	}
+
 	if (iCurrentClipAmmo <= 0)
 		DeactivateZoeyExplosiveAmmo(iClient, true);
 }

@@ -217,6 +217,10 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 			{
 				OGFSurvivorReload_Louis(iClient, currentweapon, ActiveWeaponID, CurrentClipAmmo, iOffset_Ammo);
 			}
+			case ZOEY:
+			{
+				OGFSurvivorReload_Zoey(iClient, currentweapon, ActiveWeaponID, CurrentClipAmmo, iOffset_Ammo);
+			}
 			}
 		g_bClientIsReloading[iClient] = false;
 		g_iReloadFrameCounter[iClient] = 0;
