@@ -388,6 +388,7 @@ void ShareZoeyHealingToNearbyTeammates(int iZoey, int iSharedHealAmount, int iPr
 			RunClientChecks(iTeammate) == false ||
 			IsPlayerAlive(iTeammate) == false ||
 			g_iClientTeam[iTeammate] != TEAM_SURVIVORS ||
+			g_iChosenSurvivor[iTeammate] == ZOEY ||
 			IsIncap(iTeammate) == true)
 			continue;
 
