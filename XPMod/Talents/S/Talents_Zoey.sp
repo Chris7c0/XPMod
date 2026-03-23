@@ -1059,7 +1059,7 @@ void TryStartZoeySurvivorsWillCharge(int iClient)
 
 void CreateZoeySurvivorsWillMist(int iClient, float xyzLocation[3])
 {
-	int iSmokeEntity = CreateSmokeParticle(-1, xyzLocation, false, "", 205, 225, 205, 80, 0, 30, 35, 30, 60, 8, 60, 4, ZOEY_SURVIVORS_WILL_REVEAL_MIST_DURATION);
+	int iSmokeEntity = CreateSmokeParticle(-1, xyzLocation, false, "", 100, 150, 255, 90, 0, 30, 35, 30, 60, 8, 60, 4, ZOEY_SURVIVORS_WILL_REVEAL_MIST_DURATION);
 	if (RunEntityChecks(iSmokeEntity) == false)
 		return;
 
