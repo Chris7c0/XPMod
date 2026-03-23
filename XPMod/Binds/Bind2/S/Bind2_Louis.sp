@@ -184,7 +184,7 @@ bool MedHax(int iClient)
 
 	// Enable the med hax for all survivors
 	g_bLouisMedHaxEnabled = true;
-	SetConVarInt(FindConVar("survivor_revive_duration"), LOUIS_MED_HAX_USE_DURATION);
+	RefreshManagedSurvivorReviveDuration();
 	SetConVarInt(FindConVar("first_aid_kit_use_duration"), LOUIS_MED_HAX_USE_DURATION);
 	SetConVarInt(FindConVar("defibrillator_use_duration"), LOUIS_MED_HAX_USE_DURATION);
 	// Reset to normal med use duration has expired
@@ -205,7 +205,7 @@ Action TimerStopMedHax(Handle timer, int blah)
 	
 	g_bLouisMedHaxEnabled = false;
 	// Reset to the default values
-	SetConVarInt(FindConVar("survivor_revive_duration"), 5);
+	RefreshManagedSurvivorReviveDuration();
 	SetConVarInt(FindConVar("first_aid_kit_use_duration"), 5);
 	SetConVarInt(FindConVar("defibrillator_use_duration"), 3);
 

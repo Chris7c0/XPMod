@@ -28,6 +28,8 @@ ConVar g_hCVar_DevModeEnabled;
 bool g_bDevModeEnabled = false;
 bool g_bDevCommandsRegistered = false;
 ConVar g_hCVar_IdleKickEnabled;
+ConVar g_hCVar_SurvivorReviveDuration;
+float g_fDefaultSurvivorReviveDuration = 5.0;
 // XP Loadout Use and Gain Enabled
 ConVar g_hCVar_XPSaveForHighLevelsEnabled;
 bool XPSaveForHighLevelsEnabled = true;

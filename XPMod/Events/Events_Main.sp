@@ -58,6 +58,8 @@ void SetupXPMEvents()
 	HookEvent("weapon_reload", Event_WeaponReload);
 	HookEvent("heal_success", Event_HealSuccess);
 	HookEvent("player_ledge_grab", Event_LedgeGrab);
+	HookEvent("revive_begin", Event_ReviveBegin);
+	HookEvent("revive_end", Event_ReviveEnd);
 	HookEvent("revive_success", Event_ReviveSuccess);
 	HookEvent("defibrillator_used", Event_DefibUsed);
 	HookEvent("weapon_fire", Event_WeaponFire);

@@ -66,6 +66,10 @@ void SetUpInitialConvarValues()
 	g_bDevModeEnabled = g_hCVar_DevModeEnabled.IntValue == 1 ? true : false;
 
 	g_bAFKIdleKickingEnabled =  g_hCVar_IdleKickEnabled.IntValue == 1 ? true : false;
+
+	g_hCVar_SurvivorReviveDuration = FindConVar("survivor_revive_duration");
+	if (g_hCVar_SurvivorReviveDuration != null)
+		g_fDefaultSurvivorReviveDuration = g_hCVar_SurvivorReviveDuration.FloatValue;
 }
 
 //Callback function for updating the Debug Mode

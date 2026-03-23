@@ -79,6 +79,7 @@ void ResetZoeyTalentsRuntimeState(int iClient)
 	delete g_hTimer_ZoeySacrificialAidBleedoutCheck[iClient];
 
 	SetClientSpeed(iClient);
+	RefreshManagedSurvivorReviveDuration();
 }
 
 void ClearZoeyInstantInterventionState(int iClient)
@@ -519,13 +520,22 @@ void ApplyZoeyMedicalExpertiseUseSpeedToEntity(int iEntity, float fDesiredDurati
 
 void HandleZoeyMedicalExpertiseUseSpeed(int iClient)
 {
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false)
+	{
+		return;
+	}
+
 	if (IsZoeyMedicalExpertiseActive(iClient) == false &&
 		g_iZoeyTalent6Level[iClient] <= 0)
 	{
 		return;
 	}
 
-	if (GetEntProp(iClient, Prop_Send, "m_bPerformingAction") != 1 &&
+	bool bIsPerformingAction = HasEntProp(iClient, Prop_Send, "m_bPerformingAction") &&
+		GetEntProp(iClient, Prop_Send, "m_bPerformingAction") == 1;
+
+	if (bIsPerformingAction == false &&
 		GetEntPropFloat(iClient, Prop_Send, "m_flProgressBarDuration") <= 0.0)
 	{
 		return;
@@ -1429,6 +1439,91 @@ float GetZoeyResilientResuscitationDamageReduction(int iClient)
 	return float(g_iZoeyTalent1Level[iClient]) * ZOEY_RESILIENT_RESUSCITATION_DAMAGE_REDUCTION_PER_LEVEL;
 }
 
+bool IsZoeyReviveSpeedOverrideActive(int iClient)
+{
+	return IsZoeyActivelyReviving(iClient) ||
+		(g_iZoeyQueuedReviveResumeTarget[iClient] > 0 &&
+		g_fZoeyQueuedReviveResumeAllowedUntil[iClient] >= GetGameTime());
+}
+
+float GetManagedSurvivorReviveDuration(int iReviveBeginClient = -1)
+{
+	float fDesiredDuration = g_fDefaultSurvivorReviveDuration;
+
+	if (g_bLouisMedHaxEnabled)
+		fDesiredDuration = float(LOUIS_MED_HAX_USE_DURATION);
+
+	if (RunClientChecks(iReviveBeginClient) &&
+		g_bTalentsConfirmed[iReviveBeginClient] == true &&
+		g_iChosenSurvivor[iReviveBeginClient] == ZOEY &&
+		g_iClientTeam[iReviveBeginClient] == TEAM_SURVIVORS &&
+		g_iZoeyTalent1Level[iReviveBeginClient] > 0)
+	{
+		float fZoeyDuration = GetZoeyResilientResuscitationReviveDuration(iReviveBeginClient);
+		if (fZoeyDuration > 0.0 && fZoeyDuration < fDesiredDuration)
+			fDesiredDuration = fZoeyDuration;
+	}
+
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		if (i == iReviveBeginClient ||
+			IsZoeyReviveSpeedOverrideActive(i) == false)
+		{
+			continue;
+		}
+
+		float fZoeyDuration = GetZoeyResilientResuscitationReviveDuration(i);
+		if (fZoeyDuration > 0.0 && fZoeyDuration < fDesiredDuration)
+			fDesiredDuration = fZoeyDuration;
+	}
+
+	return fDesiredDuration;
+}
+
+void RefreshManagedSurvivorReviveDuration(int iReviveBeginClient = -1)
+{
+	if (g_hCVar_SurvivorReviveDuration == null)
+		return;
+
+	float fDesiredDuration = GetManagedSurvivorReviveDuration(iReviveBeginClient);
+	if (fDesiredDuration <= 0.0)
+		fDesiredDuration = g_fDefaultSurvivorReviveDuration;
+
+	if (FloatAbs(g_hCVar_SurvivorReviveDuration.FloatValue - fDesiredDuration) > 0.01)
+		g_hCVar_SurvivorReviveDuration.FloatValue = fDesiredDuration;
+}
+
+bool CanZoeyContinueReviveTarget(int iClient, int iTarget)
+{
+	if (RunClientChecks(iClient) == false ||
+		RunClientChecks(iTarget) == false ||
+		IsPlayerAlive(iClient) == false ||
+		IsPlayerAlive(iTarget) == false ||
+		g_bTalentsConfirmed[iClient] == false ||
+		g_iChosenSurvivor[iClient] != ZOEY ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
+		g_iClientTeam[iTarget] != TEAM_SURVIVORS ||
+		g_iZoeyTalent1Level[iClient] <= 0 ||
+		IsZoeyClientDownedOrHanging(iClient) == true ||
+		IsClientGrappled(iClient) == true ||
+		IsZoeySacrificialAidTargetDowned(iTarget) == false)
+	{
+		return false;
+	}
+
+	if ((GetEntProp(iClient, Prop_Data, "m_nButtons") & IN_USE) == 0)
+		return false;
+
+	float xyzClientEye[3], xyzTargetEye[3];
+	GetClientEyePosition(iClient, xyzClientEye);
+	GetClientEyePosition(iTarget, xyzTargetEye);
+
+	if (GetVectorDistance(xyzClientEye, xyzTargetEye) > ZOEY_RESILIENT_RESUSCITATION_MAX_REVIVE_DISTANCE)
+		return false;
+
+	return IsVisibleTo(xyzClientEye, xyzTargetEye);
+}
+
 bool IsZoeyHealingItemWeaponClass(const char[] strWeaponClass)
 {
 	return StrEqual(strWeaponClass, "weapon_first_aid_kit", false) ||
@@ -1530,9 +1625,10 @@ void QueueZoeyReviveResume(int iZoey, int iTarget)
 		fCurrentProgress = 1.0;
 
 	g_iZoeyQueuedReviveResumeTarget[iZoey] = iTarget;
-	g_fZoeyQueuedReviveResumeDuration[iZoey] = fProgressBarDuration;
+	g_fZoeyQueuedReviveResumeDuration[iZoey] = GetZoeyResilientResuscitationReviveDuration(iZoey);
 	g_fZoeyQueuedReviveResumeProgress[iZoey] = fCurrentProgress;
-	g_fZoeyQueuedReviveResumeAllowedUntil[iZoey] = GetGameTime() + 0.25;
+	g_fZoeyQueuedReviveResumeAllowedUntil[iZoey] = GetGameTime() + ZOEY_RESILIENT_RESUSCITATION_RESUME_GRACE_DURATION;
+	RefreshManagedSurvivorReviveDuration(iZoey);
 }
 
 void QueueZoeyReviveResumeFromCommonHit(int iVictim)
@@ -1560,15 +1656,17 @@ void ClearZoeyQueuedReviveResume(int iZoey)
 	g_fZoeyQueuedReviveResumeDuration[iZoey] = 0.0;
 	g_fZoeyQueuedReviveResumeProgress[iZoey] = 0.0;
 	g_fZoeyQueuedReviveResumeAllowedUntil[iZoey] = -1.0;
+	RefreshManagedSurvivorReviveDuration();
 }
 
 void HandleZoeyProtectedReviveResume(int iZoey, int iButtons)
 {
+	SuppressNeverUsedWarning(iButtons);
+
 	if (g_iZoeyQueuedReviveResumeTarget[iZoey] <= 0)
 		return;
 
 	int iTarget = g_iZoeyQueuedReviveResumeTarget[iZoey];
-	float fDuration = g_fZoeyQueuedReviveResumeDuration[iZoey];
 	float fProgress = g_fZoeyQueuedReviveResumeProgress[iZoey];
 
 	if (g_fZoeyQueuedReviveResumeAllowedUntil[iZoey] < GetGameTime())
@@ -1577,19 +1675,7 @@ void HandleZoeyProtectedReviveResume(int iZoey, int iButtons)
 		return;
 	}
 
-	if (RunClientChecks(iZoey) == false ||
-		RunClientChecks(iTarget) == false ||
-		IsPlayerAlive(iZoey) == false ||
-		IsPlayerAlive(iTarget) == false ||
-		g_bTalentsConfirmed[iZoey] == false ||
-		g_iChosenSurvivor[iZoey] != ZOEY ||
-		g_iClientTeam[iZoey] != TEAM_SURVIVORS ||
-		g_iClientTeam[iTarget] != TEAM_SURVIVORS ||
-		g_iZoeyTalent1Level[iZoey] <= 0 ||
-		IsZoeyClientDownedOrHanging(iZoey) == true ||
-		IsClientGrappled(iZoey) == true ||
-		(iButtons & IN_USE) == 0 ||
-		IsZoeySacrificialAidTargetDowned(iTarget) == false)
+	if (CanZoeyContinueReviveTarget(iZoey, iTarget) == false)
 	{
 		ClearZoeyQueuedReviveResume(iZoey);
 		return;
@@ -1608,8 +1694,7 @@ void HandleZoeyProtectedReviveResume(int iZoey, int iButtons)
 		return;
 	}
 
-	if (fDuration <= 0.0)
-		fDuration = GetZoeyResilientResuscitationReviveDuration(iZoey);
+	float fDuration = GetZoeyResilientResuscitationReviveDuration(iZoey);
 
 	if (fProgress < 0.0)
 		fProgress = 0.0;
@@ -1620,6 +1705,7 @@ void HandleZoeyProtectedReviveResume(int iZoey, int iButtons)
 	SetEntPropFloat(iTarget, Prop_Send, "m_flProgressBarDuration", fDuration);
 	SetEntPropFloat(iTarget, Prop_Send, "m_flProgressBarStartTime", GetGameTime() - (fProgress * fDuration));
 	ClearZoeyQueuedReviveResume(iZoey);
+	RefreshManagedSurvivorReviveDuration(iZoey);
 }
 
 void HandleZoeyHealingItemMoveSpeed(int iClient)
@@ -1646,33 +1732,8 @@ void HandleZoeyHealingItemMoveSpeed(int iClient)
 
 void HandleZoeyFastRevive(int iClient)
 {
-	float fDesiredDuration = GetZoeyResilientResuscitationReviveDuration(iClient);
-	float fCurrentTime = GetGameTime();
-
-	for (int iTarget = 1; iTarget <= MaxClients; iTarget++)
-	{
-		if (iTarget == iClient ||
-			IsClientInGame(iTarget) == false ||
-			GetClientTeam(iTarget) != TEAM_SURVIVORS ||
-			GetEntPropEnt(iTarget, Prop_Send, "m_reviveOwner") != iClient)
-			continue;
-
-		float fProgressBarDuration = GetEntPropFloat(iTarget, Prop_Send, "m_flProgressBarDuration");
-		if (fProgressBarDuration <= 0.0 ||
-			FloatAbs(fProgressBarDuration - fDesiredDuration) <= 0.01)
-			continue;
-
-		float fProgressBarStartTime = GetEntPropFloat(iTarget, Prop_Send, "m_flProgressBarStartTime");
-		float fCurrentProgress = (fCurrentTime - fProgressBarStartTime) / fProgressBarDuration;
-
-		if (fCurrentProgress < 0.0)
-			fCurrentProgress = 0.0;
-		else if (fCurrentProgress > 1.0)
-			fCurrentProgress = 1.0;
-
-		SetEntPropFloat(iTarget, Prop_Send, "m_flProgressBarStartTime", fCurrentTime - (fCurrentProgress * fDesiredDuration));
-		SetEntPropFloat(iTarget, Prop_Send, "m_flProgressBarDuration", fDesiredDuration);
-	}
+	SuppressNeverUsedWarning(iClient);
+	RefreshManagedSurvivorReviveDuration();
 }
 
 void ApplyZoeyResilientResuscitation(int iClient, int iTarget)
@@ -1764,6 +1825,7 @@ void EventsDeath_VictimZoey(Handle hEvent, int iAttacker, int iVictim)
 	}
 
 	ClearZoeyInstantInterventionState(iVictim);
+	RefreshManagedSurvivorReviveDuration();
 }
 
 bool IsZoeyTriggerHappyWeaponClass(const char[] strWeaponClass)

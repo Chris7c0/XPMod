@@ -464,7 +464,7 @@ void SetSurvivorModel(int iClient)
 		}
 		case ZOEY:
 		{
-			SetEntityModel(iClient, "models/survivors/survivor_teenangst.mdl");
+			//SetEntityModel(iClient, "models/survivors/survivor_teenangst.mdl");
 		}
 		case FRANCIS:
 		{

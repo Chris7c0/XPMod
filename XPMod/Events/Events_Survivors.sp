@@ -282,6 +282,40 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 	return Plugin_Continue;
 }
 
+Action Event_ReviveBegin(Handle hEvent, char[] Event_name, bool dontBroadcast)
+{
+	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+	RefreshManagedSurvivorReviveDuration(iClient);
+
+	if (RunClientChecks(iClient) &&
+		IsFakeClient(iClient) == false &&
+		g_bTalentsConfirmed[iClient] == true &&
+		g_iChosenSurvivor[iClient] == ZOEY &&
+		g_iClientTeam[iClient] == TEAM_SURVIVORS &&
+		g_iZoeyTalent1Level[iClient] > 0)
+	{
+		float fDefaultDuration = g_fDefaultSurvivorReviveDuration;
+		float fActualDuration = g_hCVar_SurvivorReviveDuration != null ?
+			g_hCVar_SurvivorReviveDuration.FloatValue :
+			GetManagedSurvivorReviveDuration(iClient);
+
+		if (fDefaultDuration > 0.0 && fActualDuration < fDefaultDuration)
+		{
+			int iSpeedPercent = RoundToNearest((1.0 - (fActualDuration / fDefaultDuration)) * 100.0);
+			PrintToChat(iClient, "\x03[XPMod]\x05 Zoey revive speed active: \x04%d%%\x05 faster (\x04%.1f\x05s from \x04%.1f\x05s).", iSpeedPercent, fActualDuration, fDefaultDuration);
+		}
+	}
+
+	return Plugin_Continue;
+}
+
+Action Event_ReviveEnd(Handle hEvent, char[] Event_name, bool dontBroadcast)
+{
+	SuppressNeverUsedWarning(hEvent, Event_name, dontBroadcast);
+	RefreshManagedSurvivorReviveDuration();
+	return Plugin_Continue;
+}
+
 Action Event_ReviveSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 {
 	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
@@ -293,6 +327,7 @@ Action Event_ReviveSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 	g_bIsClientDown[iTarget] = false;
 	clienthanging[iTarget] = false;
 	EndSelfRevive(iTarget);
+	RefreshManagedSurvivorReviveDuration();
 
 	if(RunClientChecks(iTarget) == false)
 		return Plugin_Continue;

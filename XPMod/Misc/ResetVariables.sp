@@ -45,7 +45,8 @@ void ResetAllVariablesForRound()
 	SetConVarInt(FindConVar("sb_stop"), 1);				//So the bots dont run off before unfrozen
 	SetConVarFloat(FindConVar("upgrade_laser_sight_spread_factor"), 0.4);
 	// Louis's Bind2 abilities reset to the default values
-	SetConVarInt(FindConVar("survivor_revive_duration"), 5);
+	if (g_hCVar_SurvivorReviveDuration != null)
+		g_hCVar_SurvivorReviveDuration.FloatValue = g_fDefaultSurvivorReviveDuration;
 	SetConVarInt(FindConVar("first_aid_kit_use_duration"), 5);
 	SetConVarInt(FindConVar("defibrillator_use_duration"), 3);
 	g_bCommonInfectedDoMoreDamage = false;
