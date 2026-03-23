@@ -486,6 +486,8 @@ bool g_bNoobWipeCooldown;
 #define ZOEY_SACRIFICIAL_AID_GLOBAL_COOLDOWN                     10.0
 #define ZOEY_SACRIFICIAL_AID_MAJOR_COST                          15
 #define ZOEY_SACRIFICIAL_AID_MAJOR_HEAL                          100
+#define ZOEY_SACRIFICIAL_AID_MAJOR_REGEN_HP_PER_TICK             20
+#define ZOEY_SACRIFICIAL_AID_MAJOR_REGEN_TICKS                   5
 #define ZOEY_SACRIFICIAL_AID_MEDIUM_COST                         10
 #define ZOEY_SACRIFICIAL_AID_MEDIUM_TEMP_HEALTH                  70.0
 #define ZOEY_SACRIFICIAL_AID_MEDIUM_BLEEDOUT_DURATION            20.0
@@ -521,6 +523,7 @@ int g_iZoeySacrificialAidMaxHealthPenalty[MAXPLAYERS + 1] = {0, ...};
 float g_fZoeySacrificialAidBleedoutStopEndTime[MAXPLAYERS + 1] = {-1.0, ...};
 int g_iZoeySacrificialAidBleedoutLastHealth[MAXPLAYERS + 1] = {0, ...};
 int g_iZoeyMedicalExpertiseBileSerial[MAXPLAYERS + 1] = {0, ...};
+int g_iZoeySacrificialAidRegenTicksRemaining[MAXPLAYERS + 1] = {0, ...};
 int g_iZoeyInstantInterventionTargetUserId[MAXPLAYERS + 1] = {0, ...};
 bool g_bZoeyInstantInterventionWalkHeld[MAXPLAYERS + 1] = {false, ...};
 float g_fZoeyInstantInterventionReviveSpeedEndTime[MAXPLAYERS + 1] = {-1.0, ...};

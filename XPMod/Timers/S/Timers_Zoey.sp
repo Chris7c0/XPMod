@@ -1,3 +1,19 @@
+void Handle1SecondClientTimers_Zoey(int iClient)
+{
+	if (g_iZoeySacrificialAidRegenTicksRemaining[iClient] > 0)
+	{
+		if (IsZoeyClientDownedOrHanging(iClient) || IsIncap(iClient))
+		{
+			g_iZoeySacrificialAidRegenTicksRemaining[iClient] = 0;
+			return;
+		}
+
+		ApplyZoeySharingIsCaringPermanentHeal(iClient, ZOEY_SACRIFICIAL_AID_MAJOR_REGEN_HP_PER_TICK);
+
+		g_iZoeySacrificialAidRegenTicksRemaining[iClient]--;
+	}
+}
+
 Action TimerZoeyMeleeSwapCooldown(Handle timer, int iClient)
 {
 	g_bCanZoeyMeleeSwap[iClient] = true;

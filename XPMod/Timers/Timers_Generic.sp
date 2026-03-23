@@ -21,16 +21,16 @@ Action Timer1SecondGlobalRepeating(Handle timer, int data)
 		
 		if(g_iClientTeam[iClient] == TEAM_SURVIVORS)
 		{
-			// switch(g_iChosenSurvivor[iClient])
-			// {
+			switch(g_iChosenSurvivor[iClient])
+			{
 			// 	case BILL:		Handle1SecondClientTimers_Bill(iClient);
 			// 	case ROCHELLE:	Handle1SecondClientTimers_Rochelle(iClient);
 			// 	case COACH:		Handle1SecondClientTimers_Coach(iClient);
 			// 	case ELLIS:		Handle1SecondClientTimers_Ellis(iClient);
 			// 	case NICK:		Handle1SecondClientTimers_Nick(iClient);
 			// 	case LOUIS:		Handle1SecondClientTimers_Louis(iClient);
-			//	case ZOEY:		Handle1SecondClientTimers_Zoey(iClient);
-			// }
+				case ZOEY:		Handle1SecondClientTimers_Zoey(iClient);
+			}
 		}
 		else if(g_iClientTeam[iClient] == TEAM_INFECTED)
 		{

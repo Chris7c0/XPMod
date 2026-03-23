@@ -28,6 +28,7 @@ void TalentsLoad_Zoey(int iClient)
 	g_iZoeySacrificialAidMaxHealthPenalty[iClient] = 0;
 	g_fZoeySacrificialAidBleedoutStopEndTime[iClient] = -1.0;
 	g_iZoeySacrificialAidBleedoutLastHealth[iClient] = 0;
+	g_iZoeySacrificialAidRegenTicksRemaining[iClient] = 0;
 	g_iZoeyMedicalExpertiseBileSerial[iClient] = 0;
 
 	if (g_bConfirmedSurvivorTalentsGivenThisRound[iClient] == false &&
@@ -84,6 +85,7 @@ void ResetZoeyTalentsRuntimeState(int iClient)
 	g_iZoeySacrificialAidMaxHealthPenalty[iClient] = 0;
 	g_fZoeySacrificialAidBleedoutStopEndTime[iClient] = -1.0;
 	g_iZoeySacrificialAidBleedoutLastHealth[iClient] = 0;
+	g_iZoeySacrificialAidRegenTicksRemaining[iClient] = 0;
 	g_iZoeyMedicalExpertiseBileSerial[iClient] = 0;
 	delete g_hTimer_ZoeySacrificialAidBleedoutCheck[iClient];
 	g_bCanZoeyMeleeSwap[iClient] = false;
@@ -912,12 +914,12 @@ bool TryUseZoeySacrificialAid(int iClient, int iTarget, int iCost)
 	{
 		case ZOEY_SACRIFICIAL_AID_MAJOR_COST:
 		{
-			ApplyZoeySharingIsCaringPermanentHeal(iTarget, ZOEY_SACRIFICIAL_AID_MAJOR_HEAL);
+			g_iZoeySacrificialAidRegenTicksRemaining[iTarget] = ZOEY_SACRIFICIAL_AID_MAJOR_REGEN_TICKS;
 
 			if (IsFakeClient(iClient) == false)
-				PrintHintText(iClient, "Sacrificial Aid: Healed %N for %d HP", iTarget, ZOEY_SACRIFICIAL_AID_MAJOR_HEAL);
+				PrintHintText(iClient, "Sacrificial Aid: Regenerating %N for %d HP/s over %d seconds", iTarget, ZOEY_SACRIFICIAL_AID_MAJOR_REGEN_HP_PER_TICK, ZOEY_SACRIFICIAL_AID_MAJOR_REGEN_TICKS);
 			if (IsFakeClient(iTarget) == false)
-				PrintHintText(iTarget, "%N sacrificed max health to heal you for %d HP.", iClient, ZOEY_SACRIFICIAL_AID_MAJOR_HEAL);
+				PrintHintText(iTarget, "%N sacrificed max health to regenerate you for %d HP/s over %d seconds.", iClient, ZOEY_SACRIFICIAL_AID_MAJOR_REGEN_HP_PER_TICK, ZOEY_SACRIFICIAL_AID_MAJOR_REGEN_TICKS);
 		}
 		case ZOEY_SACRIFICIAL_AID_MEDIUM_COST:
 		{

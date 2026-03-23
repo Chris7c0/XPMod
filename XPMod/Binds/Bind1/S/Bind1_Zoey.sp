@@ -44,7 +44,6 @@ Action ZoeySacrificialAidMenuDraw(int iClient, int iTarget)
 
 	g_iZoeySacrificialAidMenuTarget[iClient] = iTarget;
 
-	bool bTargetDowned = IsZoeySacrificialAidTargetDowned(iTarget);
 	Menu menu = CreateMenu(ZoeySacrificialAidMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
@@ -61,13 +60,13 @@ Action ZoeySacrificialAidMenuDraw(int iClient, int iTarget)
 		GetPlayerMaxHealth(iClient));
 	SetMenuTitle(menu, "%s", text);
 
-	FormatEx(text, sizeof(text), "%s\n ", bTargetDowned ? "-15 Max HP: Instant Pickup" : "-15 Max HP: Heal 100 HP");
+	FormatEx(text, sizeof(text), "-15 Max HP: Regen 20 HP/s (5s)\n    Downed: Instant Pickup\n ");
 	AddMenuItem(menu, "15", text);
 
-	FormatEx(text, sizeof(text), "%s\n ", bTargetDowned ? "-10 Max HP: Stop Bleedout 20s" : "-10 Max HP: Give 70 Temp HP");
+	FormatEx(text, sizeof(text), "-10 Max HP: Give 70 Temp HP\n    Downed: Stop Bleedout 20s\n ");
 	AddMenuItem(menu, "10", text);
 
-	FormatEx(text, sizeof(text), "%s\n ", bTargetDowned ? "-5 Max HP: Stop Bleedout 10s" : "-5 Max HP: Heal 30 HP");
+	FormatEx(text, sizeof(text), "-5 Max HP: Heal 30 HP\n    Downed: Stop Bleedout 10s\n ");
 	AddMenuItem(menu, "5", text);
 
 	AddMenuItem(menu, "rescan", "Retarget\n ");
