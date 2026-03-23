@@ -149,16 +149,18 @@ int GetZoeyInstantInterventionDownedSurvivorCount()
 	for (int i = 1; i <= MaxClients; i++)
 	{
 		if (RunClientChecks(i) == false ||
-			IsPlayerAlive(i) == false ||
-			g_iClientTeam[i] != TEAM_SURVIVORS ||
-			IsZoeySacrificialAidTargetDowned(i) == false)
+			g_iClientTeam[i] != TEAM_SURVIVORS)
 		{
 			continue;
 		}
 
-		iDownedCount++;
-		if (iDownedCount >= ZOEY_INSTANT_INTERVENTION_MAX_DOWNED_SPEED_STACKS)
-			return ZOEY_INSTANT_INTERVENTION_MAX_DOWNED_SPEED_STACKS;
+		// Count both downed (incapped/hanging) and dead survivors
+		if (IsPlayerAlive(i) == false || IsZoeySacrificialAidTargetDowned(i))
+		{
+			iDownedCount++;
+			if (iDownedCount >= ZOEY_INSTANT_INTERVENTION_MAX_DOWNED_SPEED_STACKS)
+				return ZOEY_INSTANT_INTERVENTION_MAX_DOWNED_SPEED_STACKS;
+		}
 	}
 
 	return iDownedCount;

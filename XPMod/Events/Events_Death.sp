@@ -71,7 +71,7 @@ Action Event_PlayerDeath(Handle hEvent, char[] Event_name, bool dontBroadcast)
 	if (g_iClientTeam[iVictim] == TEAM_SURVIVORS &&
 		SetAllZoeyInstantInterventionDownedCount())
 	{
-		SetAllZoeyInstantInterventionSpeed("A teammate has died. Instant Intervention slows to normal.");
+		SetAllZoeyInstantInterventionSpeed("A teammate has died. Instant Intervention quickens you.");
 	}
 
 	// Reset the client's current speed
