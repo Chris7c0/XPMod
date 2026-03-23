@@ -23,6 +23,9 @@ void TalentsLoad_Zoey(int iClient)
 	g_fZoeySurvivorsWillRevealEndTime[iClient] = -1.0;
 	g_fZoeySurvivorsWillNextMistTime[iClient] = 0.0;
 	g_iZoeySharingTrackedTempHealth[iClient] = -1;
+	g_iZoeySharingTrackedBoostType[iClient] = ZOEY_SHARING_TRACKED_BOOST_NONE;
+	g_iZoeySharingTrackedMedkitTargetUserId[iClient] = 0;
+	g_iZoeySharingTrackedMedkitTargetHealthBefore[iClient] = -1;
 	g_iZoeyMedicalExpertisePillsReviveCounter[iClient] = 0;
 	g_iZoeyMedicalExpertiseMedkitReviveCounter[iClient] = 0;
 	g_iZoeySacrificialAidMenuTarget[iClient] = -1;
@@ -73,6 +76,9 @@ void ResetZoeyTalentsRuntimeState(int iClient)
 	g_fZoeySurvivorsWillRevealEndTime[iClient] = -1.0;
 	g_fZoeySurvivorsWillNextMistTime[iClient] = 0.0;
 	g_iZoeySharingTrackedTempHealth[iClient] = -1;
+	g_iZoeySharingTrackedBoostType[iClient] = ZOEY_SHARING_TRACKED_BOOST_NONE;
+	g_iZoeySharingTrackedMedkitTargetUserId[iClient] = 0;
+	g_iZoeySharingTrackedMedkitTargetHealthBefore[iClient] = -1;
 	g_iZoeyMedicalExpertisePillsReviveCounter[iClient] = 0;
 	g_iZoeyMedicalExpertiseMedkitReviveCounter[iClient] = 0;
 	g_iZoeySacrificialAidMenuTarget[iClient] = -1;
@@ -282,6 +288,19 @@ float GetZoeySharingIsCaringAdrenalineShareMultiplier(int iClient)
 		0.0;
 }
 
+int GetZoeySharingTrackedBoostBaseHealAmount(int iBoostType)
+{
+	switch (iBoostType)
+	{
+		case ZOEY_SHARING_TRACKED_BOOST_PILLS:
+			return ZOEY_SHARING_IS_CARING_PILLS_BASE_HEAL;
+		case ZOEY_SHARING_TRACKED_BOOST_ADRENALINE:
+			return ZOEY_SHARING_IS_CARING_ADRENALINE_BASE_HEAL;
+	}
+
+	return 0;
+}
+
 void TrackZoeySharingIsCaringBoostUse(int iClient)
 {
 	if (IsZoeySharingIsCaringActive(iClient) == false &&
@@ -295,17 +314,24 @@ void TrackZoeySharingIsCaringBoostUse(int iClient)
 
 	char strWeaponClass[32];
 	GetEntityClassname(iActiveWeaponID, strWeaponClass, sizeof(strWeaponClass));
-	if (StrEqual(strWeaponClass, "weapon_pain_pills", false) == false &&
-		StrEqual(strWeaponClass, "weapon_adrenaline", false) == false)
+	int iBoostType = ZOEY_SHARING_TRACKED_BOOST_NONE;
+	if (StrEqual(strWeaponClass, "weapon_pain_pills", false))
+		iBoostType = ZOEY_SHARING_TRACKED_BOOST_PILLS;
+	else if (StrEqual(strWeaponClass, "weapon_adrenaline", false))
+		iBoostType = ZOEY_SHARING_TRACKED_BOOST_ADRENALINE;
+	else
 		return;
 
 	g_iZoeySharingTrackedTempHealth[iClient] = GetSurvivorTempHealth(iClient);
+	g_iZoeySharingTrackedBoostType[iClient] = iBoostType;
 }
 
 int ConsumeZoeySharingIsCaringTrackedBoostHealAmount(int iClient)
 {
 	int iTrackedTempHealth = g_iZoeySharingTrackedTempHealth[iClient];
+	int iBoostType = g_iZoeySharingTrackedBoostType[iClient];
 	g_iZoeySharingTrackedTempHealth[iClient] = -1;
+	g_iZoeySharingTrackedBoostType[iClient] = ZOEY_SHARING_TRACKED_BOOST_NONE;
 
 	if ((IsZoeySharingIsCaringActive(iClient) == false &&
 		IsZoeyMedicalExpertiseActive(iClient) == false) ||
@@ -313,10 +339,10 @@ int ConsumeZoeySharingIsCaringTrackedBoostHealAmount(int iClient)
 		return 0;
 
 	int iCurrentTempHealth = GetSurvivorTempHealth(iClient);
-	if (iCurrentTempHealth <= iTrackedTempHealth)
-		return 0;
+	int iTrackedHealAmount = iCurrentTempHealth > iTrackedTempHealth ? iCurrentTempHealth - iTrackedTempHealth : 0;
+	int iBaseHealAmount = GetZoeySharingTrackedBoostBaseHealAmount(iBoostType);
 
-	return iCurrentTempHealth - iTrackedTempHealth;
+	return iTrackedHealAmount > iBaseHealAmount ? iTrackedHealAmount : iBaseHealAmount;
 }
 
 int ApplyZoeySharingIsCaringPermanentHeal(int iTarget, int iHealAmount)
@@ -450,10 +476,9 @@ int ApplyZoeyMedicalExpertiseBonusTempHealth(int iClient, int iBaseHealAmount, f
 	AddTempHealthToSurvivor(iClient, float(iBonusHealAmount));
 
 	int iTempHealthAfter = GetSurvivorTempHealth(iClient);
-	if (iTempHealthAfter <= iTempHealthBefore)
-		return 0;
+	int iAppliedBonusAmount = iTempHealthAfter > iTempHealthBefore ? iTempHealthAfter - iTempHealthBefore : 0;
 
-	return iTempHealthAfter - iTempHealthBefore;
+	return iAppliedBonusAmount > iBonusHealAmount ? iAppliedBonusAmount : iBonusHealAmount;
 }
 
 float GetZoeyCurrentUseDuration(int iClient, int iActiveWeaponID)

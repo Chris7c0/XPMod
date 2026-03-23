@@ -56,6 +56,7 @@ void SetupXPMEvents()
 	//Survivor Events
 	HookEvent("weapon_fire", Event_WeaponFire);
 	HookEvent("weapon_reload", Event_WeaponReload);
+	HookEvent("heal_begin", Event_HealBegin);
 	HookEvent("heal_success", Event_HealSuccess);
 	HookEvent("player_ledge_grab", Event_LedgeGrab);
 	HookEvent("revive_begin", Event_ReviveBegin);

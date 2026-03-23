@@ -508,6 +508,20 @@ Action Event_PlayerIncap(Handle hEvent, char[] Event_name, bool dontBroadcast)
 	return Plugin_Continue;
 }
 
+Action Event_HealBegin(Handle hEvent, char[] Event_name, bool dontBroadcast)
+{
+	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+	int iTarget = GetClientOfUserId(GetEventInt(hEvent, "subject"));
+
+	if (RunClientChecks(iClient) == false || RunClientChecks(iTarget) == false)
+		return Plugin_Continue;
+
+	g_iZoeySharingTrackedMedkitTargetUserId[iClient] = GetClientUserId(iTarget);
+	g_iZoeySharingTrackedMedkitTargetHealthBefore[iClient] = GetPlayerHealth(iTarget);
+
+	return Plugin_Continue;
+}
+
 Action Event_HealSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 {
 	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
@@ -526,13 +540,29 @@ Action Event_HealSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 	{
 		int iDirectMedkitHealAmount = IsZoeyMedicalExpertiseActive(iClient) ? ZOEY_MEDICAL_EXPERTISE_MEDKIT_HEAL_AMOUNT : 100;
 		int iTargetHealthBeforeMedkit = currentHP;
+		if (g_iZoeySharingTrackedMedkitTargetUserId[iClient] == GetClientUserId(target) &&
+			g_iZoeySharingTrackedMedkitTargetHealthBefore[iClient] > 0)
+		{
+			iTargetHealthBeforeMedkit = g_iZoeySharingTrackedMedkitTargetHealthBefore[iClient];
+		}
+
 		SetPlayerHealth(target, -1, currentHP + iDirectMedkitHealAmount);
 		int iTargetHealthAfterMedkit = GetPlayerHealth(target);
-		if (iTargetHealthAfterMedkit > iTargetHealthBeforeMedkit)
+		int iSharedBaseMedkitHealAmount = iTargetHealthAfterMedkit > iTargetHealthBeforeMedkit ? iTargetHealthAfterMedkit - iTargetHealthBeforeMedkit : 0;
+		if (iSharedBaseMedkitHealAmount <= 0 &&
+			iTargetHealthBeforeMedkit >= GetPlayerMaxHealth(target))
 		{
-			iZoeySharedMedkitHealAmount = RoundToFloor(float(iTargetHealthAfterMedkit - iTargetHealthBeforeMedkit) * GetZoeySharingIsCaringMedkitShareMultiplier(iClient));
+			iSharedBaseMedkitHealAmount = iDirectMedkitHealAmount;
+		}
+
+		if (iSharedBaseMedkitHealAmount > 0)
+		{
+			iZoeySharedMedkitHealAmount = RoundToFloor(float(iSharedBaseMedkitHealAmount) * GetZoeySharingIsCaringMedkitShareMultiplier(iClient));
 		}
 	}
+
+	g_iZoeySharingTrackedMedkitTargetUserId[iClient] = 0;
+	g_iZoeySharingTrackedMedkitTargetHealthBefore[iClient] = -1;
 	
 	if(g_iOverLevel[target] > 0)
 	{

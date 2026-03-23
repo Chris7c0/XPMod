@@ -459,6 +459,11 @@ bool g_bNoobWipeCooldown;
 #define ZOEY_SHARING_IS_CARING_MEDKIT_SHARE_PER_LEVEL            0.05
 #define ZOEY_SHARING_IS_CARING_PILLS_SHARE_PER_LEVEL             0.10
 #define ZOEY_SHARING_IS_CARING_ADRENALINE_SHARE_PER_LEVEL        0.16
+#define ZOEY_SHARING_IS_CARING_PILLS_BASE_HEAL                   50
+#define ZOEY_SHARING_IS_CARING_ADRENALINE_BASE_HEAL              25
+#define ZOEY_SHARING_TRACKED_BOOST_NONE                          0
+#define ZOEY_SHARING_TRACKED_BOOST_PILLS                         1
+#define ZOEY_SHARING_TRACKED_BOOST_ADRENALINE                    2
 #define ZOEY_MEDICAL_EXPERTISE_HEAL_ITEM_USE_SPEED_BONUS         0.25
 #define ZOEY_MEDICAL_EXPERTISE_MEDKIT_HEAL_AMOUNT                150
 #define ZOEY_MEDICAL_EXPERTISE_PILLS_HEAL_BONUS                  0.40
@@ -511,6 +516,9 @@ float g_fZoeySurvivorsWillChargeStartTime[MAXPLAYERS + 1] = {-1.0, ...};
 float g_fZoeySurvivorsWillRevealEndTime[MAXPLAYERS + 1] = {-1.0, ...};
 float g_fZoeySurvivorsWillNextMistTime[MAXPLAYERS + 1] = {0.0, ...};
 int g_iZoeySharingTrackedTempHealth[MAXPLAYERS + 1] = {-1, ...};
+int g_iZoeySharingTrackedBoostType[MAXPLAYERS + 1] = {ZOEY_SHARING_TRACKED_BOOST_NONE, ...};
+int g_iZoeySharingTrackedMedkitTargetUserId[MAXPLAYERS + 1] = {0, ...};
+int g_iZoeySharingTrackedMedkitTargetHealthBefore[MAXPLAYERS + 1] = {-1, ...};
 int g_iZoeyMedicalExpertisePillsReviveCounter[MAXPLAYERS + 1] = {0, ...};
 int g_iZoeyMedicalExpertiseMedkitReviveCounter[MAXPLAYERS + 1] = {0, ...};
 int g_iZoeySacrificialAidMenuTarget[MAXPLAYERS + 1] = {-1, ...};
