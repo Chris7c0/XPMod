@@ -308,7 +308,7 @@ Action Event_ReviveSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 	SetClientRenderAndGlowColor(iTarget);
 
 	ApplyZoeyResilientResuscitation(iClient, iTarget);
-	ConvertZoeyReviveHealthToPermanent(iTarget);
+	ConvertZoeyReviveHealthToPermanent(iClient, iTarget);
 	HandleZoeyMedicalExpertiseReviveRewards(iClient, iTarget);
 
 	if(IsFakeClient(iClient) == true)

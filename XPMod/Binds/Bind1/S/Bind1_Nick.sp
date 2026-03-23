@@ -244,6 +244,10 @@ Action TimerApplyDivineIntervention(Handle hTimer, int iClient)
 		SetPlayerHealth(iClient, -1, 70);
 		ResetTempHealthToSurvivor(iClient);
 		g_bIsClientDown[iClient] = false;
+
+		if (SetAllZoeyInstantInterventionDownedCount())
+			SetAllZoeyInstantInterventionSpeed("A teammate is back up. Instant Intervention slows to normal.");
+
 		return Plugin_Stop;
 	}
 

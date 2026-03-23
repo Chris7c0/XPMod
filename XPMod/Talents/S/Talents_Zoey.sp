@@ -29,7 +29,8 @@ void TalentsLoad_Zoey(int iClient)
 	g_iZoeySacrificialAidBleedoutLastHealth[iClient] = 0;
 	g_iZoeyMedicalExpertiseBileSerial[iClient] = 0;
 
-	if (g_bConfirmedSurvivorTalentsGivenThisRound[iClient] == false)
+	if (g_bConfirmedSurvivorTalentsGivenThisRound[iClient] == false &&
+		g_bClientBindUsesRestored[iClient] == false)
 		g_iClientBindUses_2[iClient] = 3 - RoundToCeil(float(g_iZoeyTalent6Level[iClient]) * 0.5);
 
 	SetAllZoeyInstantInterventionDownedCount();
@@ -85,6 +86,16 @@ void ClearZoeyInstantInterventionState(int iClient)
 	g_iZoeyInstantInterventionTargetUserId[iClient] = 0;
 	g_bZoeyInstantInterventionWalkHeld[iClient] = false;
 	g_fZoeyInstantInterventionReviveSpeedEndTime[iClient] = -1.0;
+}
+
+bool IsZoeyClientDownedOrHanging(int iClient)
+{
+	return RunClientChecks(iClient) &&
+		IsPlayerAlive(iClient) &&
+		g_iClientTeam[iClient] == TEAM_SURVIVORS &&
+		(g_bIsClientDown[iClient] == true ||
+		clienthanging[iClient] == true ||
+		GetEntProp(iClient, Prop_Send, "m_isHangingFromLedge") == 1);
 }
 
 void SetPlayerTalentMaxHealth_Zoey(int iClient, bool bFillInHealthGap = true)
@@ -658,7 +669,7 @@ void ReviveZoeySacrificialAidTarget(int iClient, int iTarget)
 
 	// Instant pickups do not fire revive_success, so mirror Zoey's revive passives here.
 	ApplyZoeyResilientResuscitation(iClient, iTarget);
-	ConvertZoeyReviveHealthToPermanent(iTarget);
+	ConvertZoeyReviveHealthToPermanent(iClient, iTarget);
 	HandleZoeyMedicalExpertiseReviveRewards(iClient, iTarget);
 }
 
@@ -673,7 +684,7 @@ bool TryUseZoeySacrificialAid(int iClient, int iTarget, int iCost)
 		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
 		g_iClientTeam[iTarget] != TEAM_SURVIVORS ||
 		g_iZoeyTalent5Level[iClient] <= 0 ||
-		g_bIsClientDown[iClient] == true ||
+		IsZoeyClientDownedOrHanging(iClient) == true ||
 		IsClientGrappled(iClient) == true ||
 		iClient == iTarget)
 	{
@@ -900,7 +911,7 @@ void TryStartZoeySurvivorsWillCharge(int iClient)
 		g_iChosenSurvivor[iClient] != ZOEY ||
 		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
 		g_iZoeyTalent3Level[iClient] <= 0 ||
-		g_bIsClientDown[iClient] == true ||
+		IsZoeyClientDownedOrHanging(iClient) == true ||
 		IsClientGrappled(iClient) == true)
 		return;
 
@@ -1007,7 +1018,7 @@ void HandleZoeySurvivorsWillState(int iClient)
 
 	if (g_bZoeySurvivorsWillCharging[iClient] == true)
 	{
-		if (g_bIsClientDown[iClient] == true ||
+		if (IsZoeyClientDownedOrHanging(iClient) == true ||
 			IsClientGrappled(iClient) == true)
 		{
 			ClearZoeySurvivorsWillCharge(iClient);
@@ -1232,10 +1243,10 @@ bool TryActivateZoeyInstantIntervention(int iClient)
 		return false;
 	}
 
-	if (g_bIsClientDown[iClient] == true || IsClientGrappled(iClient) == true)
+	if (IsZoeyClientDownedOrHanging(iClient) == true || IsClientGrappled(iClient) == true)
 	{
 		if (IsFakeClient(iClient) == false)
-			PrintHintText(iClient, "Instant Intervention cannot be used while downed or grappled.");
+			PrintHintText(iClient, "Instant Intervention cannot be used while downed, hanging, or grappled.");
 		return false;
 	}
 
@@ -1393,6 +1404,9 @@ void OGFSurvivorReload_Zoey(int iClient, const char[] strCurrentWeapon, int iAct
 		iCurrentClipAmmo > 0 &&
 		iCurrentClipAmmo < ZOEY_TRIGGER_HAPPY_CLIP_SIZE)
 	{
+		if (g_bZoeyExplosiveAmmoActive[iClient] == true)
+			DeactivateZoeyExplosiveAmmo(iClient, true);
+
 		SetEntData(iActiveWeaponID, g_iOffset_Clip1, ZOEY_TRIGGER_HAPPY_CLIP_SIZE, true);
 		g_bClientIsReloading[iClient] = false;
 		g_iReloadFrameCounter[iClient] = 0;
@@ -1440,7 +1454,7 @@ bool IsZoeyActivelyReviving(int iClient)
 		g_iChosenSurvivor[iClient] != ZOEY ||
 		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
 		g_iZoeyTalent1Level[iClient] <= 0 ||
-		g_bIsClientDown[iClient] == true ||
+		IsZoeyClientDownedOrHanging(iClient) == true ||
 		IsClientGrappled(iClient) == true)
 		return false;
 
@@ -1572,10 +1586,10 @@ void HandleZoeyProtectedReviveResume(int iZoey, int iButtons)
 		g_iClientTeam[iZoey] != TEAM_SURVIVORS ||
 		g_iClientTeam[iTarget] != TEAM_SURVIVORS ||
 		g_iZoeyTalent1Level[iZoey] <= 0 ||
-		g_bIsClientDown[iZoey] == true ||
+		IsZoeyClientDownedOrHanging(iZoey) == true ||
 		IsClientGrappled(iZoey) == true ||
 		(iButtons & IN_USE) == 0 ||
-		IsIncap(iTarget) == false)
+		IsZoeySacrificialAidTargetDowned(iTarget) == false)
 	{
 		ClearZoeyQueuedReviveResume(iZoey);
 		return;
@@ -1688,9 +1702,15 @@ void ApplyZoeyResilientResuscitation(int iClient, int iTarget)
 		PrintHintText(iClient, "%N gains %d%% resilience for %d seconds.", iTarget, iReductionPercent, iDurationSeconds);
 }
 
-void ConvertZoeyReviveHealthToPermanent(int iTarget)
+void ConvertZoeyReviveHealthToPermanent(int iClient, int iTarget)
 {
-	if (RunClientChecks(iTarget) == false ||
+	if (RunClientChecks(iClient) == false ||
+		RunClientChecks(iTarget) == false ||
+		g_bTalentsConfirmed[iClient] == false ||
+		g_iChosenSurvivor[iClient] != ZOEY ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
+		g_iZoeyTalent1Level[iClient] <= 0 ||
+		iClient == iTarget ||
 		IsPlayerAlive(iTarget) == false ||
 		g_iClientTeam[iTarget] != TEAM_SURVIVORS)
 		return;
@@ -1896,7 +1916,7 @@ void ActivateZoeyExplosiveAmmo(int iClient)
 		g_bTalentsConfirmed[iClient] == false ||
 		g_iChosenSurvivor[iClient] != ZOEY ||
 		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
-		g_bIsClientDown[iClient] == true ||
+		IsZoeyClientDownedOrHanging(iClient) == true ||
 		IsClientGrappled(iClient) == true)
 		return;
 
@@ -1944,7 +1964,7 @@ void DeactivateZoeyExplosiveAmmo(int iClient, bool bStartCooldown)
 	{
 		g_fZoeyExplosiveAmmoCooldownEndTime[iClient] = GetGameTime() + ZOEY_TRIGGER_HAPPY_EXPLOSIVE_AMMO_COOLDOWN;
 		if (IsFakeClient(iClient) == false)
-			PrintHintText(iClient, "Explosive ammo spent.\n30 second cooldown started.");
+			PrintHintText(iClient, "Explosive ammo ended.\n30 second cooldown started.");
 	}
 }
 

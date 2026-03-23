@@ -256,6 +256,10 @@ void HealClientFully(int iClient)
 	ResetTempHealthToSurvivor(iClient);
 
 	g_bIsClientDown[iClient] = false;
+	clienthanging[iClient] = false;
+
+	if (SetAllZoeyInstantInterventionDownedCount())
+		SetAllZoeyInstantInterventionSpeed("A teammate is back up. Instant Intervention slows to normal.");
 	
 }
 

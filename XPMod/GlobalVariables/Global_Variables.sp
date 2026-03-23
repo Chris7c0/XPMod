@@ -278,6 +278,7 @@ bool g_bAFKIdleKickingEnabled;
 // Binds
 int g_iClientBindUses_1[MAXPLAYERS + 1];
 int g_iClientBindUses_2[MAXPLAYERS + 1];
+bool g_bClientBindUsesRestored[MAXPLAYERS + 1];
 bool g_bBind1InCooldown[MAXPLAYERS + 1];
 bool g_bBind2InCooldown[MAXPLAYERS + 1];
 #define BIND1_ATTEMPT_COOLDOWN_DURATION         1.0

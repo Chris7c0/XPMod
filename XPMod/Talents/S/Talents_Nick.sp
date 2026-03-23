@@ -920,13 +920,17 @@ void JebusHandMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum
 					int foundvalident = 0;
 					for (int i = 1; i <= MaxClients; i++)
 					{
-						if(IsClientInGame(i)==true)
-							if(GetClientTeam(i)==2 && IsPlayerAlive(i)==true && g_bIsClientDown[i]==true && IsFakeClient(i)==false  && IsClientGrappled(i) == false)
-							{
+							if(IsClientInGame(i)==true)
+								if(GetClientTeam(i)==2 && IsPlayerAlive(i)==true && g_bIsClientDown[i]==true && IsFakeClient(i)==false  && IsClientGrappled(i) == false)
+								{
 								RunCheatCommand(i, "give", "give health");
 								PrintHintText(i, "You have been instantly revived by %N", iClient);
 								SetPlayerHealth(i, -1, 20);
 								g_bIsClientDown[i] = false;
+
+								if (SetAllZoeyInstantInterventionDownedCount())
+									SetAllZoeyInstantInterventionSpeed("A teammate is back up. Instant Intervention slows to normal.");
+
 								g_iClientBindUses_2[iClient] += 2;
 								float vec[3];
 								GetClientAbsOrigin(i, vec);
@@ -954,14 +958,18 @@ void JebusHandMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum
 					{
 						if(IsClientInGame(i)==true)
 							if(GetClientTeam(i)==2 && IsPlayerAlive(i)==true && g_bIsClientDown[i]==true && IsFakeClient(i)==true  && IsClientGrappled(i) == false)
-							{
-								if(foundvalident > 0  || g_iClientBindUses_2[iClient]>2)
-									break;
+								{
+									if(foundvalident > 0  || g_iClientBindUses_2[iClient]>2)
+										break;
 
 								RunCheatCommand(i, "give", "give health");
 
 								SetPlayerHealth(i, -1, 20);
 								g_bIsClientDown[i] = false;
+
+								if (SetAllZoeyInstantInterventionDownedCount())
+									SetAllZoeyInstantInterventionSpeed("A teammate is back up. Instant Intervention slows to normal.");
+
 								g_iClientBindUses_2[iClient] += 2;
 								float vec[3];
 								GetClientAbsOrigin(i, vec);

@@ -166,6 +166,9 @@ void HandleGettingUpFromLedge(int iClient, int iButtons)
 	// Reset the values
 	g_bIsClientDown[iClient] = false;
 	clienthanging[iClient] = false;
+
+	if (SetAllZoeyInstantInterventionDownedCount())
+		SetAllZoeyInstantInterventionSpeed("A teammate is back up. Instant Intervention slows to normal.");
 }
 
 void HandleRochelleNinjaRopeMovement(int iClient, int iButtons)

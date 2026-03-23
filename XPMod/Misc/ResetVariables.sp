@@ -90,6 +90,7 @@ void ResetClientVariablesForRound(int iClient)
 	g_bStopAllInput[iClient] = false;
 	g_iClientBindUses_1[iClient] = 0;
 	g_iClientBindUses_2[iClient] = 0;
+	g_bClientBindUsesRestored[iClient] = false;
 	g_bBind1InCooldown[iClient] = false;
 	g_bBind2InCooldown[iClient] = false;
 	g_iEllisSpeedBoostCounter[iClient] = 0;

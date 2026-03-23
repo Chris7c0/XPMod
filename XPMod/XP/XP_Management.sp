@@ -291,6 +291,7 @@ void ResetAll(int iClient)
 	g_iClientHealthSlotCost[iClient] = 0;
 	g_iClientBoostSlotCost[iClient] = 0;
 	g_iClientLaserSlotCost[iClient] = 0;
+	g_bClientBindUsesRestored[iClient] = false;
 	
 	ResetAllOptions(iClient);
 	ResetAllInfectedClasses(iClient); // Infected Talents

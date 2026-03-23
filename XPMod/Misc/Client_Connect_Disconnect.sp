@@ -374,12 +374,15 @@ void RestorePlayerBindUses(int iClient)
 	if (GetClientSteamID64(iClient, strSteamID, sizeof(strSteamID)) == false)
 		return;
 
+	g_bClientBindUsesRestored[iClient] = false;
+
 	for (int i = 0; i < g_iBindTrackCount; i++)
 	{
 		if (StrEqual(g_strBindTrackSteamID[i], strSteamID))
 		{
 			g_iClientBindUses_1[iClient] = g_iBindTrackUses1[i];
 			g_iClientBindUses_2[iClient] = g_iBindTrackUses2[i];
+			g_bClientBindUsesRestored[iClient] = true;
 
 			// Remove the entry by shifting the last element into this slot
 			g_iBindTrackCount--;
