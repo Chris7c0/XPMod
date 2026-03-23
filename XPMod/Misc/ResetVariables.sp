@@ -186,6 +186,11 @@ void ResetClientVariablesForRound(int iClient)
 	g_fZoeySacrificialAidBleedoutStopEndTime[iClient] = -1.0;
 	g_iZoeySacrificialAidBleedoutLastHealth[iClient] = 0;
 	g_iZoeyMedicalExpertiseBileSerial[iClient] = 0;
+	g_bCanZoeyMeleeSwap[iClient] = false;
+	g_bZoeyHasMeleeStashed[iClient] = false;
+	g_strZoeyStashedMelee[iClient] = "";
+	g_iZoeyPistolSavedClip[iClient] = ZOEY_TRIGGER_HAPPY_CLIP_SIZE;
+	g_iZoeyMeleeSwaps[iClient] = 0;
 	g_iKitsUsed = 0;
 	g_iBillTeamHealCounter[iClient] = 0;
 	g_iBillsTeamHealthPool = BILL_TEAM_HEAL_HP_POOL;
@@ -482,7 +487,12 @@ void ResetAllVariables(int iClient)
 	g_fZoeySacrificialAidBleedoutStopEndTime[iClient] = -1.0;
 	g_iZoeySacrificialAidBleedoutLastHealth[iClient] = 0;
 	g_iZoeyMedicalExpertiseBileSerial[iClient] = 0;
-	
+	g_bCanZoeyMeleeSwap[iClient] = false;
+	g_bZoeyHasMeleeStashed[iClient] = false;
+	g_strZoeyStashedMelee[iClient] = "";
+	g_iZoeyPistolSavedClip[iClient] = ZOEY_TRIGGER_HAPPY_CLIP_SIZE;
+	g_iZoeyMeleeSwaps[iClient] = 0;
+
 	if (g_iSmokerSmokeCloudPlayer == iClient || g_iSmokerInSmokeCloudLimbo == iClient)
 	{
 		g_iSmokerSmokeCloudPlayer = -1;

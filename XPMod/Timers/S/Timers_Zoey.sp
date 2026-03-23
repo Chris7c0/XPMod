@@ -1,3 +1,9 @@
+Action TimerZoeyMeleeSwapCooldown(Handle timer, int iClient)
+{
+	g_bCanZoeyMeleeSwap[iClient] = true;
+	return Plugin_Stop;
+}
+
 Action TimerZoeyMedicalExpertiseEndBile(Handle timer, Handle hDataPackage)
 {
 	ResetPack(hDataPackage);

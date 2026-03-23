@@ -531,3 +531,8 @@ float g_fZoeySacrificialAidGlobalCooldownEndTime = -1.0;
 float g_fZoeyInstantInterventionGlobalCooldownEndTime = -1.0;
 int g_iZoeyInstantInterventionDownedCount = 0;
 int g_iZoeySurvivorsWillMistOwner[MAXENTITIES + 1] = {0, ...};
+bool g_bCanZoeyMeleeSwap[MAXPLAYERS + 1];
+bool g_bZoeyHasMeleeStashed[MAXPLAYERS + 1];
+char g_strZoeyStashedMelee[MAXPLAYERS + 1][32];
+int g_iZoeyPistolSavedClip[MAXPLAYERS + 1];
+int g_iZoeyMeleeSwaps[MAXPLAYERS + 1];

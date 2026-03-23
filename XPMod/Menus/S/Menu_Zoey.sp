@@ -109,6 +109,11 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 			\n - One-Shots Common Infected\
 			\n - Increased Damage To Special Infected\
 			\n \
+			\n Melee Swap\
+			\n - Pick Up A Melee Weapon To Stash It\
+			\n - Press [WALK] + [ZOOM] To Swap Between Melee And Machine Pistols\
+			\n - Ammo Is Saved When Swapping\
+			\n \
 			\n Mop 'Til They Drop\
 			\n - Gain 1 Charge Per 5 Machine-Pistol Hits On CI/SI\
 			\n - Press [WALK] + [USE] To Arm\

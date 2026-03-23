@@ -39,7 +39,14 @@ void TalentsLoad_Zoey(int iClient)
 	SetClientSpeed(iClient);
 
 	if (g_iZoeyTalent2Level[iClient] > 0)
+	{
 		EnsureZoeyDualPistols(iClient);
+		g_bCanZoeyMeleeSwap[iClient] = true;
+		g_bZoeyHasMeleeStashed[iClient] = false;
+		g_strZoeyStashedMelee[iClient] = "";
+		g_iZoeyPistolSavedClip[iClient] = ZOEY_TRIGGER_HAPPY_CLIP_SIZE;
+		g_iZoeyMeleeSwaps[iClient] = 0;
+	}
 
 	if ((g_iClientLevel[iClient] - (g_iClientLevel[iClient] - g_iSkillPoints[iClient])) <= (g_iClientLevel[iClient] - 1))
 		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Rapid Combat Medic Talents \x05have been loaded.");
@@ -79,6 +86,11 @@ void ResetZoeyTalentsRuntimeState(int iClient)
 	g_iZoeySacrificialAidBleedoutLastHealth[iClient] = 0;
 	g_iZoeyMedicalExpertiseBileSerial[iClient] = 0;
 	delete g_hTimer_ZoeySacrificialAidBleedoutCheck[iClient];
+	g_bCanZoeyMeleeSwap[iClient] = false;
+	g_bZoeyHasMeleeStashed[iClient] = false;
+	g_strZoeyStashedMelee[iClient] = "";
+	g_iZoeyPistolSavedClip[iClient] = ZOEY_TRIGGER_HAPPY_CLIP_SIZE;
+	g_iZoeyMeleeSwaps[iClient] = 0;
 
 	SetClientSpeed(iClient);
 	RefreshManagedSurvivorReviveDuration();
@@ -1432,7 +1444,10 @@ void OnGameFrame_Zoey(int iClient)
 	}
 
 	if (g_iZoeyTalent2Level[iClient] > 0)
+	{
 		HandleZoeyTriggerHappyState(iClient);
+		HandleZoeyMeleeSwap(iClient);
+	}
 
 	if (g_iZoeyTalent3Level[iClient] > 0)
 		HandleZoeySurvivorsWillState(iClient);
@@ -2031,6 +2046,87 @@ void HandleZoeyTriggerHappyState(int iClient)
 	int iCurrentClipAmmo = GetEntProp(iSecondaryWeapon, Prop_Data, "m_iClip1");
 	if (iCurrentClipAmmo > ZOEY_TRIGGER_HAPPY_CLIP_SIZE)
 		SetEntData(iSecondaryWeapon, g_iOffset_Clip1, ZOEY_TRIGGER_HAPPY_CLIP_SIZE, true);
+}
+
+void HandleZoeyMeleeSwap(int iClient)
+{
+	if (g_bCanZoeyMeleeSwap[iClient] == false)
+		return;
+
+	int buttons;
+	buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
+	if ((buttons & IN_SPEED) == 0 || (buttons & IN_ZOOM) == 0)
+		return;
+
+	char strCurrentWeapon[32];
+	GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
+
+	bool bHoldingPistol = StrEqual(strCurrentWeapon, "weapon_pistol", false);
+	bool bHoldingMelee = StrEqual(strCurrentWeapon, "weapon_melee", false);
+
+	if (bHoldingPistol == false && bHoldingMelee == false)
+		return;
+
+	// Start cooldown
+	g_bCanZoeyMeleeSwap[iClient] = false;
+	CreateTimer(0.5, TimerZoeyMeleeSwapCooldown, iClient, TIMER_FLAG_NO_MAPCHANGE);
+
+	int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+	if (IsValidEntity(iActiveWeaponID) == false)
+		return;
+
+	// Swap FROM melee TO pistols
+	if (bHoldingMelee)
+	{
+		// Save the melee script name
+		GetEntPropString(iActiveWeaponID, Prop_Data, "m_strMapSetScriptName", g_strZoeyStashedMelee[iClient], sizeof(g_strZoeyStashedMelee[]));
+		g_bZoeyHasMeleeStashed[iClient] = true;
+
+		// Remove melee weapon
+		RemovePlayerItem(iClient, iActiveWeaponID);
+		RemoveEntity(iActiveWeaponID);
+
+		// Give dual pistols with Trigger Happy clip size
+		RunCheatCommand(iClient, "give", "give pistol");
+		RunCheatCommand(iClient, "give", "give pistol");
+
+		int iNewWeapon = GetPlayerWeaponSlot(iClient, 1);
+		if (RunEntityChecks(iNewWeapon))
+			SetEntData(iNewWeapon, g_iOffset_Clip1, g_iZoeyPistolSavedClip[iClient], true);
+
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "Swapped to Machine Pistols.\nMelee stashed: %s", g_strZoeyStashedMelee[iClient]);
+	}
+	// Swap FROM pistols TO stashed melee
+	else if (bHoldingPistol && g_bZoeyHasMeleeStashed[iClient])
+	{
+		// Save current pistol clip ammo
+		int iCurrentClipAmmo = GetEntProp(iActiveWeaponID, Prop_Data, "m_iClip1");
+		g_iZoeyPistolSavedClip[iClient] = iCurrentClipAmmo;
+
+		// Remove pistols
+		KillEntitySafely(iActiveWeaponID);
+
+		// Give back the stashed melee weapon
+		char strGiveCmd[64];
+		FormatEx(strGiveCmd, sizeof(strGiveCmd), "give %s", g_strZoeyStashedMelee[iClient]);
+		RunCheatCommand(iClient, "give", strGiveCmd);
+
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "Swapped to Melee: %s", g_strZoeyStashedMelee[iClient]);
+
+		// Clean up dropped pistol entities periodically
+		if (++g_iZoeyMeleeSwaps[iClient] >= WEAPON_PROXIMITY_CLEAN_UP_TRIGGER_ITEM_PICKUP_COUNT)
+		{
+			g_iZoeyMeleeSwaps[iClient] = 0;
+			PistolWeaponCleanUp();
+		}
+	}
+	else if (bHoldingPistol && g_bZoeyHasMeleeStashed[iClient] == false)
+	{
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "No melee weapon stashed.\nPick up a melee weapon first.");
+	}
 }
 
 bool HandleZoeyWalkUseInput(int iClient, int &iButtons)
