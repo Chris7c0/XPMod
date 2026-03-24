@@ -644,16 +644,10 @@ int ApplyZoeyMedicalExpertiseBonusTempHealth(int iClient, int iBaseHealAmount, f
 	return iAppliedBonusAmount > iBonusHealAmount ? iAppliedBonusAmount : iBonusHealAmount;
 }
 
-float GetZoeyMedicalExpertiseMedkitUseDuration(int iClient)
+float GetZoeyManagedMedkitUseDuration(int iClient)
 {
 	float fDesiredDuration = g_fDefaultFirstAidKitUseDuration;
 	bool bModified = false;
-
-	if (IsZoeyMedicalExpertiseActive(iClient))
-	{
-		fDesiredDuration *= (1.0 - ZOEY_MEDICAL_EXPERTISE_HEAL_ITEM_USE_SPEED_BONUS);
-		bModified = true;
-	}
 
 	if (g_iZoeyTalent6Level[iClient] > 0 &&
 		g_fZoeyInstantInterventionReviveSpeedEndTime[iClient] > GetGameTime())
@@ -672,8 +666,7 @@ bool IsZoeyActivelyUsingManagedMedkit(int iClient)
 		g_bTalentsConfirmed[iClient] == false ||
 		g_iChosenSurvivor[iClient] != ZOEY ||
 		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
-		(IsZoeyMedicalExpertiseActive(iClient) == false &&
-		g_iZoeyTalent6Level[iClient] <= 0))
+		g_iZoeyTalent6Level[iClient] <= 0)
 	{
 		return false;
 	}
@@ -705,7 +698,7 @@ float GetManagedFirstAidKitUseDuration(int iHealBeginClient = -1)
 		g_iChosenSurvivor[iHealBeginClient] == ZOEY &&
 		g_iClientTeam[iHealBeginClient] == TEAM_SURVIVORS)
 	{
-		float fZoeyDuration = GetZoeyMedicalExpertiseMedkitUseDuration(iHealBeginClient);
+		float fZoeyDuration = GetZoeyManagedMedkitUseDuration(iHealBeginClient);
 		if (fZoeyDuration > 0.0 && fZoeyDuration < fDesiredDuration)
 			fDesiredDuration = fZoeyDuration;
 	}
@@ -718,7 +711,7 @@ float GetManagedFirstAidKitUseDuration(int iHealBeginClient = -1)
 			continue;
 		}
 
-		float fZoeyDuration = GetZoeyMedicalExpertiseMedkitUseDuration(i);
+		float fZoeyDuration = GetZoeyManagedMedkitUseDuration(i);
 		if (fZoeyDuration > 0.0 && fZoeyDuration < fDesiredDuration)
 			fDesiredDuration = fZoeyDuration;
 	}
@@ -739,52 +732,7 @@ void RefreshManagedFirstAidKitUseDuration(int iHealBeginClient = -1)
 		g_hCVar_FirstAidKitUseDuration.FloatValue = fDesiredDuration;
 }
 
-float GetZoeyMedicalExpertiseBoostUseDuration(int iClient, int iActiveWeaponID)
-{
-	if (RunEntityChecks(iActiveWeaponID) == false)
-		return 0.0;
-
-	char strWeaponClass[32];
-	GetEntityClassname(iActiveWeaponID, strWeaponClass, sizeof(strWeaponClass));
-
-	if (StrEqual(strWeaponClass, "weapon_pain_pills", false) ||
-		StrEqual(strWeaponClass, "weapon_adrenaline", false))
-	{
-		if (IsZoeyMedicalExpertiseActive(iClient) == false)
-			return 0.0;
-
-		return ZOEY_MEDICAL_EXPERTISE_BOOST_USE_DURATION *
-			(1.0 - ZOEY_MEDICAL_EXPERTISE_HEAL_ITEM_USE_SPEED_BONUS);
-	}
-
-	return 0.0;
-}
-
-void ApplyZoeyMedicalExpertiseUseSpeedToEntity(int iEntity, float fDesiredDuration)
-{
-	if (RunEntityChecks(iEntity) == false ||
-		fDesiredDuration <= 0.0)
-		return;
-
-	float fCurrentDuration = GetEntPropFloat(iEntity, Prop_Send, "m_flProgressBarDuration");
-	if (fCurrentDuration <= 0.0 ||
-		fCurrentDuration <= fDesiredDuration + 0.01)
-		return;
-
-	float fCurrentTime = GetGameTime();
-	float fCurrentStartTime = GetEntPropFloat(iEntity, Prop_Send, "m_flProgressBarStartTime");
-	float fCurrentProgress = (fCurrentTime - fCurrentStartTime) / fCurrentDuration;
-
-	if (fCurrentProgress < 0.0)
-		fCurrentProgress = 0.0;
-	else if (fCurrentProgress > 1.0)
-		fCurrentProgress = 1.0;
-
-	SetEntPropFloat(iEntity, Prop_Send, "m_flProgressBarStartTime", fCurrentTime - (fCurrentProgress * fDesiredDuration));
-	SetEntPropFloat(iEntity, Prop_Send, "m_flProgressBarDuration", fDesiredDuration);
-}
-
-void HandleZoeyMedicalExpertiseUseSpeed(int iClient)
+void HandleZoeyManagedMedkitUseSpeed(int iClient)
 {
 	if (RunClientChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false)
@@ -793,30 +741,6 @@ void HandleZoeyMedicalExpertiseUseSpeed(int iClient)
 	}
 
 	RefreshManagedFirstAidKitUseDuration(iClient);
-
-	if (IsZoeyMedicalExpertiseActive(iClient) == false)
-		return;
-
-	int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-	// Medkits now use the real first_aid_kit_use_duration convar override.
-	// Only pills/adrenaline still need the client progress bar rewrite.
-	float fDesiredDuration = GetZoeyMedicalExpertiseBoostUseDuration(iClient, iActiveWeaponID);
-	if (fDesiredDuration <= 0.0)
-		return;
-
-	ApplyZoeyMedicalExpertiseUseSpeedToEntity(iClient, fDesiredDuration);
-
-	if (RunEntityChecks(iActiveWeaponID) &&
-		HasEntProp(iActiveWeaponID, Prop_Send, "m_helpingHandTarget"))
-	{
-		int iHelpingHandTarget = GetEntPropEnt(iActiveWeaponID, Prop_Send, "m_helpingHandTarget");
-		if (RunClientChecks(iHelpingHandTarget) &&
-			IsPlayerAlive(iHelpingHandTarget) &&
-			g_iClientTeam[iHelpingHandTarget] == TEAM_SURVIVORS)
-		{
-			ApplyZoeyMedicalExpertiseUseSpeedToEntity(iHelpingHandTarget, fDesiredDuration);
-		}
-	}
 }
 
 void GiveZoeyScrapRecycleReward(int iClient, const char[] strGiveCommand, const char[] strHintText)
@@ -1611,7 +1535,7 @@ void OnGameFrame_Zoey(int iClient)
 	if (iClient < 0 ||
 		g_iChosenSurvivor[iClient] != ZOEY ||
 		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
-		(g_iZoeyTalent1Level[iClient] <= 0 && g_iZoeyTalent2Level[iClient] <= 0 && g_iZoeyTalent3Level[iClient] <= 0 && g_iZoeyTalent5Level[iClient] <= 0 && g_iZoeyTalent6Level[iClient] <= 0))
+		(g_iZoeyTalent1Level[iClient] <= 0 && g_iZoeyTalent2Level[iClient] <= 0 && g_iZoeyTalent3Level[iClient] <= 0 && g_iZoeyTalent6Level[iClient] <= 0))
 		return;
 
 	if (g_iZoeyTalent1Level[iClient] > 0 || g_iZoeyTalent3Level[iClient] > 0)
@@ -1632,8 +1556,8 @@ void OnGameFrame_Zoey(int iClient)
 	if (g_iZoeyTalent3Level[iClient] > 0)
 		HandleZoeySurvivorsWillState(iClient);
 
-	if (g_iZoeyTalent5Level[iClient] > 0 || g_iZoeyTalent6Level[iClient] > 0)
-		HandleZoeyMedicalExpertiseUseSpeed(iClient);
+	if (g_iZoeyTalent6Level[iClient] > 0)
+		HandleZoeyManagedMedkitUseSpeed(iClient);
 }
 
 bool OnPlayerRunCmd_Zoey(int iClient, int &iButtons)

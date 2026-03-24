@@ -159,15 +159,14 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 			strTalentName);
 	}
 	else if (iTalentIndex == 4)
-	{
-		FormatEx(text, sizeof(text), "\
-			%s\t\t%s:\
-			\n \
-			\n +25%% Healing Item Use Speed\
-			\n +50%% Medkit Healing\
-			\n +40%% Pills Healing\
-			\n +60%% Adrenaline Healing\
-			\n \
+		{
+			FormatEx(text, sizeof(text), "\
+				%s\t\t%s:\
+				\n \
+				\n +50%% Medkit Healing\
+				\n +40%% Pills Healing\
+				\n +60%% Adrenaline Healing\
+				\n \
 			\n Scrap Recycle:\
 			\n - After 4 teammate pickups gain +1 Medkit\
 			\n - After 2 teammate pickups gain +1 Pills\
