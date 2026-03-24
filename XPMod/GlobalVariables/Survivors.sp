@@ -439,8 +439,6 @@ bool g_bNoobWipeCooldown;
 #define ZOEY_RESILIENT_RESUSCITATION_MOVE_SPEED_PER_LEVEL        0.05
 #define ZOEY_RESILIENT_RESUSCITATION_DAMAGE_REDUCTION_PER_LEVEL  0.04
 #define ZOEY_RESILIENT_RESUSCITATION_DURATION                    7.0
-#define ZOEY_RESILIENT_RESUSCITATION_MAX_REVIVE_DISTANCE         120.0
-#define ZOEY_RESILIENT_RESUSCITATION_RESUME_GRACE_DURATION       0.5
 #define ZOEY_TRIGGER_HAPPY_CLIP_SIZE                             120
 #define ZOEY_TRIGGER_HAPPY_EXPLOSIVE_SI_DAMAGE_MULTIPLIER        1.0
 #define ZOEY_TRIGGER_HAPPY_SHOT_EVENT_WINDOW                     0.35
@@ -497,10 +495,6 @@ bool g_bNoobWipeCooldown;
 #define ZOEY_SACRIFICIAL_AID_BLEEDOUT_CHECK_INTERVAL             0.1
 float g_fZoeyResilienceEndTime[MAXPLAYERS + 1] = {-1.0, ...};
 float g_fZoeyResilienceDamageReduction[MAXPLAYERS + 1] = {0.0, ...};
-int g_iZoeyQueuedReviveResumeTarget[MAXPLAYERS + 1] = {-1, ...};
-float g_fZoeyQueuedReviveResumeDuration[MAXPLAYERS + 1] = {0.0, ...};
-float g_fZoeyQueuedReviveResumeProgress[MAXPLAYERS + 1] = {0.0, ...};
-float g_fZoeyQueuedReviveResumeAllowedUntil[MAXPLAYERS + 1] = {-1.0, ...};
 float g_fZoeyLastTriggerHappyShotTime[MAXPLAYERS + 1] = {-1.0, ...};
 bool g_bZoeyMopArmed[MAXPLAYERS + 1] = {false, ...};
 int g_iZoeyMopCharge[MAXPLAYERS + 1] = {0, ...};

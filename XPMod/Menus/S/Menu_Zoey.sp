@@ -90,7 +90,6 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 			\n \
 			\n Revive Bonuses:\
 			\n - Revived Ally Gains +20%% Damage Reduction For 7 Seconds\
-			\n - Revives Are Not Interrupted By Common Infected Hits\
 			\n - Revived Allies Return With Permanent Health Instead Of Temporary Health\
 			\n \
 			\n Zoey Gains No Buff From Max HP Increases\

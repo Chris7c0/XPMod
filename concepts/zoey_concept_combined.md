@@ -8,7 +8,6 @@ Zoey Deals No Friendly Fire Damage
 
 Revive Bonuses:
 - Revived Ally Gains +20% Damage Reduction For 7 Seconds
-- Revives Are Not Interrupted By Common Infected Hits
 - Revived Allies Return With Permanent Health Instead Of Temporary Health
 
 Zoey Gains No Buff From Max HP Increases

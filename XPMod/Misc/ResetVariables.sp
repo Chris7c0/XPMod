@@ -163,10 +163,6 @@ void ResetClientVariablesForRound(int iClient)
 	g_fLastReviveXPTime[iClient] = 0.0;
 	g_fZoeyResilienceEndTime[iClient] = -1.0;
 	g_fZoeyResilienceDamageReduction[iClient] = 0.0;
-	g_iZoeyQueuedReviveResumeTarget[iClient] = -1;
-	g_fZoeyQueuedReviveResumeDuration[iClient] = 0.0;
-	g_fZoeyQueuedReviveResumeProgress[iClient] = 0.0;
-	g_fZoeyQueuedReviveResumeAllowedUntil[iClient] = -1.0;
 	g_fZoeyLastTriggerHappyShotTime[iClient] = -1.0;
 	g_bZoeyMopArmed[iClient] = false;
 	g_iZoeyMopCharge[iClient] = 0;
