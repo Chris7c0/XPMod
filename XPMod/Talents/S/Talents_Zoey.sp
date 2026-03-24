@@ -1911,6 +1911,11 @@ void ConvertZoeyReviveHealthToPermanent(int iClient, int iTarget)
 	if (iTempHealth <= 0)
 		return;
 
+	// Ellis' Bring It converts all permanent health to temporary, so skip
+	// the permanent conversion and leave his health as temp instead.
+	if (g_iBringLevel[iTarget] > 0 && g_iChosenSurvivor[iTarget] == ELLIS)
+		return;
+
 	SetPlayerHealth(iTarget, -1, iCurrentHealth + iTempHealth, false, false);
 	ResetTempHealthToSurvivor(iTarget);
 }
