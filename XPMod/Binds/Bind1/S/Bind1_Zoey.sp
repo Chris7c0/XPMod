@@ -74,10 +74,10 @@ Action ZoeySacrificialAidMenuDraw(int iClient, int iTarget)
 	FormatEx(text, sizeof(text), "-15 Max HP: Regen 20 HP/s (5s)\n    Downed: Instant Pickup\n ");
 	AddMenuItem(menu, "15", text, bHasTarget ? ITEMDRAW_DEFAULT : ITEMDRAW_DISABLED);
 
-	FormatEx(text, sizeof(text), "-20 Max HP: Gain a Defibrillator\n ");
+	FormatEx(text, sizeof(text), "-20 Max HP: Gain a Defibrillator\n    Stash your medkit if possible\n ");
 	AddMenuItem(menu, "20", text);
 
-	FormatEx(text, sizeof(text), "-40 Max HP: Survivor Resurrection\n ");
+	FormatEx(text, sizeof(text), "-40 Max HP: Survivor Resurrection\n    Global 1 use per round\n ");
 	AddMenuItem(menu, "40", text);
 
 	AddMenuItem(menu, "cancel", "Cancel\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");

@@ -169,6 +169,7 @@ void ResetClientVariablesForRound(int iClient)
 	g_iZoeyMopCharge[iClient] = 0;
 	g_iZoeyMopHitCounter[iClient] = 0;
 	g_bZoeyWalkUseHeld[iClient] = false;
+	g_bZoeyWalkZoomHeld[iClient] = false;
 	g_fZoeyPrimaryStripHintCooldown[iClient] = 0.0;
 	g_bZoeySuppressSyntheticCIHurt[iClient] = false;
 	g_bZoeySurvivorsWillCharging[iClient] = false;
@@ -185,6 +186,14 @@ void ResetClientVariablesForRound(int iClient)
 	g_iZoeySacrificialAidRegenTicksRemaining[iClient] = 0;
 	g_iZoeySacrificialAidRegenTargetUserId[iClient] = 0;
 	g_iZoeyMedicalExpertiseBileSerial[iClient] = 0;
+	g_bZoeyHealthSlotItemJustGivenByCheats[iClient] = false;
+	g_bZoeyHealthSlotWasEmptyOnLastPickUp[iClient] = false;
+	g_iZoeyStashedHealthItemCount[iClient] = 0;
+	g_strZoeyStashedHealthItems[iClient][0] = "";
+	g_strZoeyStashedHealthItems[iClient][1] = "";
+	g_bZoeyPendingHealthSlotDropCleanup[iClient] = false;
+	g_strZoeyPendingHealthSlotDropCleanupToken[iClient] = "";
+	g_fZoeyPendingHealthSlotDropCleanupExpireTime[iClient] = 0.0;
 	g_bCanZoeyMeleeSwap[iClient] = false;
 	g_bZoeyHasMeleeStashed[iClient] = false;
 	g_strZoeyStashedMelee[iClient] = "";
@@ -488,6 +497,14 @@ void ResetAllVariables(int iClient)
 	g_iZoeySacrificialAidRegenTicksRemaining[iClient] = 0;
 	g_iZoeySacrificialAidRegenTargetUserId[iClient] = 0;
 	g_iZoeyMedicalExpertiseBileSerial[iClient] = 0;
+	g_bZoeyHealthSlotItemJustGivenByCheats[iClient] = false;
+	g_bZoeyHealthSlotWasEmptyOnLastPickUp[iClient] = false;
+	g_iZoeyStashedHealthItemCount[iClient] = 0;
+	g_strZoeyStashedHealthItems[iClient][0] = "";
+	g_strZoeyStashedHealthItems[iClient][1] = "";
+	g_bZoeyPendingHealthSlotDropCleanup[iClient] = false;
+	g_strZoeyPendingHealthSlotDropCleanupToken[iClient] = "";
+	g_fZoeyPendingHealthSlotDropCleanupExpireTime[iClient] = 0.0;
 	g_bCanZoeyMeleeSwap[iClient] = false;
 	g_bZoeyHasMeleeStashed[iClient] = false;
 	g_strZoeyStashedMelee[iClient] = "";

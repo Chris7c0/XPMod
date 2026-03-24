@@ -28,6 +28,15 @@ Action TimerZoeyMeleeSwapCooldown(Handle timer, int iClient)
 	return Plugin_Stop;
 }
 
+Action TimerZoeyCleanupDirectStashWorldEntity(Handle timer, int iEntityRef)
+{
+	int iEntity = EntRefToEntIndex(iEntityRef);
+	if (RunEntityChecks(iEntity) == true)
+		KillEntitySafely(iEntity);
+
+	return Plugin_Stop;
+}
+
 Action TimerZoeyMedicalExpertiseEndBile(Handle timer, Handle hDataPackage)
 {
 	ResetPack(hDataPackage);

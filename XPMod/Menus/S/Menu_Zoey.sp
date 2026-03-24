@@ -149,6 +149,8 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 			\n - Aura Radius Scales From 7 To 15 Feet\
 			\n - Does Not Heal Zoey\
 			\n - Direct Medkit Target Does Not Receive Extra Splash Healing\
+			\n - Stash 2 Extra Medkits/Defibrillators\
+			\n - Press [WALK] + [ZOOM] While Holding One To Cycle Them\
 			\n \
 			\n Shared Healing Scales By Talent Level:\
 			\n - Medkits Share Up To 25%%%% Permanent Health\
@@ -178,7 +180,7 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 			\n - -5 Max HP: Heal 30 HP or stop bleedout for 10 seconds\
 			\n - -10 Max HP: Give 70 temp HP or stop bleedout for 20 seconds\
 			\n - -15 Max HP: Heal 100 HP or instantly pick up a downed ally\
-			\n - -20 Max HP: Give Zoey a defibrillator\
+			\n - -20 Max HP: Give Zoey a defibrillator and stash your medkit if possible\
 			\n - -40 Max HP: Resurrect a dead teammate\
 			\n - Resurrection is globally limited to 1 use per round\
 			\n ",

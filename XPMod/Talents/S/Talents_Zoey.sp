@@ -8,6 +8,7 @@ void TalentsLoad_Zoey(int iClient)
 	g_iZoeyMopCharge[iClient] = 0;
 	g_iZoeyMopHitCounter[iClient] = 0;
 	g_bZoeyWalkUseHeld[iClient] = false;
+	g_bZoeyWalkZoomHeld[iClient] = false;
 	g_fZoeyPrimaryStripHintCooldown[iClient] = 0.0;
 	g_bZoeySuppressSyntheticCIHurt[iClient] = false;
 	g_bZoeySurvivorsWillCharging[iClient] = false;
@@ -27,6 +28,14 @@ void TalentsLoad_Zoey(int iClient)
 	g_iZoeySacrificialAidRegenTicksRemaining[iClient] = 0;
 	g_iZoeySacrificialAidRegenTargetUserId[iClient] = 0;
 	g_iZoeyMedicalExpertiseBileSerial[iClient] = 0;
+	g_bZoeyHealthSlotItemJustGivenByCheats[iClient] = false;
+	g_bZoeyHealthSlotWasEmptyOnLastPickUp[iClient] = false;
+	g_iZoeyStashedHealthItemCount[iClient] = 0;
+	g_strZoeyStashedHealthItems[iClient][0] = "";
+	g_strZoeyStashedHealthItems[iClient][1] = "";
+	g_bZoeyPendingHealthSlotDropCleanup[iClient] = false;
+	g_strZoeyPendingHealthSlotDropCleanupToken[iClient] = "";
+	g_fZoeyPendingHealthSlotDropCleanupExpireTime[iClient] = 0.0;
 
 	if (g_bConfirmedSurvivorTalentsGivenThisRound[iClient] == false &&
 		g_bClientBindUsesRestored[iClient] == false)
@@ -62,6 +71,7 @@ void ResetZoeyTalentsRuntimeState(int iClient)
 	g_iZoeyMopCharge[iClient] = 0;
 	g_iZoeyMopHitCounter[iClient] = 0;
 	g_bZoeyWalkUseHeld[iClient] = false;
+	g_bZoeyWalkZoomHeld[iClient] = false;
 	g_fZoeyPrimaryStripHintCooldown[iClient] = 0.0;
 	g_bZoeySuppressSyntheticCIHurt[iClient] = false;
 	g_bZoeySurvivorsWillCharging[iClient] = false;
@@ -81,6 +91,14 @@ void ResetZoeyTalentsRuntimeState(int iClient)
 	g_iZoeySacrificialAidRegenTicksRemaining[iClient] = 0;
 	g_iZoeySacrificialAidRegenTargetUserId[iClient] = 0;
 	g_iZoeyMedicalExpertiseBileSerial[iClient] = 0;
+	g_bZoeyHealthSlotItemJustGivenByCheats[iClient] = false;
+	g_bZoeyHealthSlotWasEmptyOnLastPickUp[iClient] = false;
+	g_iZoeyStashedHealthItemCount[iClient] = 0;
+	g_strZoeyStashedHealthItems[iClient][0] = "";
+	g_strZoeyStashedHealthItems[iClient][1] = "";
+	g_bZoeyPendingHealthSlotDropCleanup[iClient] = false;
+	g_strZoeyPendingHealthSlotDropCleanupToken[iClient] = "";
+	g_fZoeyPendingHealthSlotDropCleanupExpireTime[iClient] = 0.0;
 	delete g_hTimer_ZoeySacrificialAidBleedoutCheck[iClient];
 	g_bCanZoeyMeleeSwap[iClient] = false;
 	g_bZoeyHasMeleeStashed[iClient] = false;
@@ -544,6 +562,348 @@ int GetZoeyHealthSlotItem(int iClient)
 	return GetPlayerWeaponSlot(iClient, 3);
 }
 
+bool GetZoeyHealthSlotItemGiveTokenFromWeaponClass(const char[] strWeaponClass, char[] strGiveToken, int iMaxLen)
+{
+	if (StrEqual(strWeaponClass, "weapon_first_aid_kit", false) == true ||
+		StrEqual(strWeaponClass, "first_aid_kit", false) == true ||
+		StrContains(strWeaponClass, "first_aid_kit", false) != -1)
+	{
+		strcopy(strGiveToken, iMaxLen, "first_aid_kit");
+		return true;
+	}
+
+	if (StrEqual(strWeaponClass, "weapon_defibrillator", false) == true ||
+		StrEqual(strWeaponClass, "defibrillator", false) == true ||
+		StrContains(strWeaponClass, "defibrillator", false) != -1)
+	{
+		strcopy(strGiveToken, iMaxLen, "defibrillator");
+		return true;
+	}
+
+	strGiveToken[0] = '\0';
+	return false;
+}
+
+bool GetZoeyHealthSlotEntityClassFromGiveToken(const char[] strGiveToken, char[] strWeaponClass, int iMaxLen)
+{
+	if (StrEqual(strGiveToken, "first_aid_kit", false) == true)
+	{
+		strcopy(strWeaponClass, iMaxLen, "weapon_first_aid_kit");
+		return true;
+	}
+
+	if (StrEqual(strGiveToken, "defibrillator", false) == true)
+	{
+		strcopy(strWeaponClass, iMaxLen, "weapon_defibrillator");
+		return true;
+	}
+
+	strWeaponClass[0] = '\0';
+	return false;
+}
+
+void GetZoeyHealthSlotItemDisplayName(const char[] strGiveToken, char[] strDisplayName, int iMaxLen)
+{
+	if (StrEqual(strGiveToken, "first_aid_kit", false) == true)
+	{
+		strcopy(strDisplayName, iMaxLen, "Medkit");
+		return;
+	}
+
+	if (StrEqual(strGiveToken, "defibrillator", false) == true)
+	{
+		strcopy(strDisplayName, iMaxLen, "Defibrillator");
+		return;
+	}
+
+	strcopy(strDisplayName, iMaxLen, "Item");
+}
+
+void GetZoeyHealthSlotItemCompactDisplayName(const char[] strGiveToken, char[] strDisplayName, int iMaxLen)
+{
+	if (StrEqual(strGiveToken, "first_aid_kit", false) == true)
+	{
+		strcopy(strDisplayName, iMaxLen, "MED KIT");
+		return;
+	}
+
+	if (StrEqual(strGiveToken, "defibrillator", false) == true)
+	{
+		strcopy(strDisplayName, iMaxLen, "DEFIB");
+		return;
+	}
+
+	strcopy(strDisplayName, iMaxLen, "     ");
+}
+
+bool GetZoeyCurrentHealthSlotItemGiveToken(int iClient, char[] strGiveToken, int iMaxLen)
+{
+	int iHealthSlotItem = GetZoeyHealthSlotItem(iClient);
+	if (RunEntityChecks(iHealthSlotItem) == false)
+	{
+		strGiveToken[0] = '\0';
+		return false;
+	}
+
+	char strWeaponClass[32];
+	GetEntityClassname(iHealthSlotItem, strWeaponClass, sizeof(strWeaponClass));
+	return GetZoeyHealthSlotItemGiveTokenFromWeaponClass(strWeaponClass, strGiveToken, iMaxLen);
+}
+
+bool PeekZoeyStashedHealthSlotItem(int iClient, char[] strGiveToken, int iMaxLen)
+{
+	if (g_iZoeyStashedHealthItemCount[iClient] <= 0)
+	{
+		strGiveToken[0] = '\0';
+		return false;
+	}
+
+	strcopy(strGiveToken, iMaxLen, g_strZoeyStashedHealthItems[iClient][0]);
+	return true;
+}
+
+void FormatZoeyStashedHealthItemsDisplay(int iClient, char[] strDisplay, int iMaxLen)
+{
+	char strSlot1GiveToken[32];
+	char strSlot2GiveToken[32];
+	strSlot1GiveToken[0] = '\0';
+	strSlot2GiveToken[0] = '\0';
+
+	if (g_iZoeyStashedHealthItemCount[iClient] > 0)
+		strcopy(strSlot1GiveToken, sizeof(strSlot1GiveToken), g_strZoeyStashedHealthItems[iClient][0]);
+
+	if (g_iZoeyStashedHealthItemCount[iClient] > 1)
+		strcopy(strSlot2GiveToken, sizeof(strSlot2GiveToken), g_strZoeyStashedHealthItems[iClient][1]);
+
+	char strSlot1Display[16], strSlot2Display[16];
+	GetZoeyHealthSlotItemCompactDisplayName(strSlot1GiveToken, strSlot1Display, sizeof(strSlot1Display));
+	GetZoeyHealthSlotItemCompactDisplayName(strSlot2GiveToken, strSlot2Display, sizeof(strSlot2Display));
+
+	FormatEx(strDisplay, iMaxLen, "[%s] [%s]", strSlot1Display, strSlot2Display);
+}
+
+void RemoveFirstZoeyStashedHealthSlotItem(int iClient)
+{
+	if (g_iZoeyStashedHealthItemCount[iClient] <= 0)
+		return;
+
+	for (int i = 1; i < g_iZoeyStashedHealthItemCount[iClient]; i++)
+	{
+		strcopy(g_strZoeyStashedHealthItems[iClient][i - 1], 32, g_strZoeyStashedHealthItems[iClient][i]);
+	}
+
+	g_iZoeyStashedHealthItemCount[iClient]--;
+	g_strZoeyStashedHealthItems[iClient][g_iZoeyStashedHealthItemCount[iClient]] = "";
+}
+
+void ClearZoeyPendingHealthSlotDropCleanup(int iClient)
+{
+	g_bZoeyPendingHealthSlotDropCleanup[iClient] = false;
+	g_strZoeyPendingHealthSlotDropCleanupToken[iClient] = "";
+	g_fZoeyPendingHealthSlotDropCleanupExpireTime[iClient] = 0.0;
+}
+
+void StartZoeyPendingHealthSlotDropCleanup(int iClient, const char[] strGiveToken)
+{
+	g_bZoeyPendingHealthSlotDropCleanup[iClient] = true;
+	strcopy(g_strZoeyPendingHealthSlotDropCleanupToken[iClient], sizeof(g_strZoeyPendingHealthSlotDropCleanupToken[]), strGiveToken);
+	g_fZoeyPendingHealthSlotDropCleanupExpireTime[iClient] = GetGameTime() + 1.0;
+}
+
+bool TryHandleZoeyPendingHealthSlotDropCleanup(int iClient, const char[] strDroppedItem, int iDroppedEntity)
+{
+	if (g_bZoeyPendingHealthSlotDropCleanup[iClient] == false)
+		return false;
+
+	if (g_fZoeyPendingHealthSlotDropCleanupExpireTime[iClient] < GetGameTime())
+	{
+		ClearZoeyPendingHealthSlotDropCleanup(iClient);
+		return false;
+	}
+
+	char strDroppedGiveToken[32];
+	if (GetZoeyHealthSlotItemGiveTokenFromWeaponClass(strDroppedItem, strDroppedGiveToken, sizeof(strDroppedGiveToken)) == false)
+		return false;
+
+	if (StrEqual(strDroppedGiveToken, g_strZoeyPendingHealthSlotDropCleanupToken[iClient], false) == false)
+		return false;
+
+	if (RunEntityChecks(iDroppedEntity) == true)
+		KillEntitySafely(iDroppedEntity);
+
+	ClearZoeyPendingHealthSlotDropCleanup(iClient);
+	return true;
+}
+
+bool StashZoeyHealthSlotItem(int iClient, const char[] strGiveToken, bool bNotify = true)
+{
+	if (IsZoeySharingIsCaringActive(iClient) == false ||
+		strGiveToken[0] == '\0' ||
+		g_iZoeyStashedHealthItemCount[iClient] >= ZOEY_SHARING_IS_CARING_STASH_MAX_ITEMS)
+	{
+		return false;
+	}
+
+	strcopy(g_strZoeyStashedHealthItems[iClient][g_iZoeyStashedHealthItemCount[iClient]], 32, strGiveToken);
+	g_iZoeyStashedHealthItemCount[iClient]++;
+
+	if (bNotify == true && IsFakeClient(iClient) == false)
+	{
+		char strDisplayName[32];
+		char strStashDisplay[96];
+		GetZoeyHealthSlotItemDisplayName(strGiveToken, strDisplayName, sizeof(strDisplayName));
+		FormatZoeyStashedHealthItemsDisplay(iClient, strStashDisplay, sizeof(strStashDisplay));
+		PrintHintText(iClient, "Stashed %s.\n%s", strDisplayName, strStashDisplay);
+	}
+
+	return true;
+}
+
+bool GiveZoeyHealthSlotItem(int iClient, const char[] strGiveToken)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false ||
+		strGiveToken[0] == '\0')
+	{
+		return false;
+	}
+
+	char strGiveCommand[64];
+	FormatEx(strGiveCommand, sizeof(strGiveCommand), "give %s", strGiveToken);
+
+	g_bZoeyHealthSlotItemJustGivenByCheats[iClient] = true;
+	RunCheatCommand(iClient, "give", strGiveCommand);
+
+	char strCurrentGiveToken[32];
+	bool bSuccess = GetZoeyCurrentHealthSlotItemGiveToken(iClient, strCurrentGiveToken, sizeof(strCurrentGiveToken)) &&
+		StrEqual(strCurrentGiveToken, strGiveToken, false) == true;
+
+	if (bSuccess == false)
+		g_bZoeyHealthSlotItemJustGivenByCheats[iClient] = false;
+
+	return bSuccess;
+}
+
+bool DropZoeyHealthSlotItemInFront(int iClient, const char[] strGiveToken)
+{
+	char strWeaponClass[32];
+	if (GetZoeyHealthSlotEntityClassFromGiveToken(strGiveToken, strWeaponClass, sizeof(strWeaponClass)) == false)
+		return false;
+
+	int iItem = CreateEntityByName(strWeaponClass);
+	if (RunEntityChecks(iItem) == false)
+		return false;
+
+	DispatchSpawn(iItem);
+
+	float xyzAngles[3], xyzDirection[3], xyzLocation[3];
+	GetClientEyeAngles(iClient, xyzAngles);
+	GetAngleVectors(xyzAngles, xyzDirection, NULL_VECTOR, NULL_VECTOR);
+	GetClientAbsOrigin(iClient, xyzLocation);
+	xyzLocation[0] += xyzDirection[0] * 30.0;
+	xyzLocation[1] += xyzDirection[1] * 30.0;
+	xyzLocation[2] += 24.0;
+	xyzAngles[0] = 0.0;
+	xyzAngles[2] = 0.0;
+
+	TeleportEntity(iItem, xyzLocation, xyzAngles, NULL_VECTOR);
+	return true;
+}
+
+bool TryRefillZoeyHealthSlotFromStash(int iClient)
+{
+	if (IsZoeySharingIsCaringActive(iClient) == false ||
+		RunEntityChecks(GetZoeyHealthSlotItem(iClient)) == true)
+	{
+		return false;
+	}
+
+	char strGiveToken[32];
+	if (PeekZoeyStashedHealthSlotItem(iClient, strGiveToken, sizeof(strGiveToken)) == false)
+		return false;
+
+	if (GiveZoeyHealthSlotItem(iClient, strGiveToken) == false)
+		return false;
+
+	RemoveFirstZoeyStashedHealthSlotItem(iClient);
+
+	if (IsFakeClient(iClient) == false)
+	{
+		char strStashDisplay[96];
+		FormatZoeyStashedHealthItemsDisplay(iClient, strStashDisplay, sizeof(strStashDisplay));
+		PrintHintText(iClient, "%s", strStashDisplay);
+	}
+
+	return true;
+}
+
+void HandleZoeyHealthSlotStashState(int iClient)
+{
+	if (IsZoeySharingIsCaringActive(iClient) == false ||
+		g_iZoeyStashedHealthItemCount[iClient] <= 0)
+	{
+		return;
+	}
+
+	TryRefillZoeyHealthSlotFromStash(iClient);
+}
+
+bool CycleZoeyHealthSlotStash(int iClient)
+{
+	if (IsZoeySharingIsCaringActive(iClient) == false)
+		return false;
+
+	char strActiveGiveToken[32];
+	if (GetZoeyCurrentHealthSlotItemGiveToken(iClient, strActiveGiveToken, sizeof(strActiveGiveToken)) == false)
+		return false;
+
+	if (g_iZoeyStashedHealthItemCount[iClient] <= 0)
+	{
+		char strStashDisplay[96];
+		FormatZoeyStashedHealthItemsDisplay(iClient, strStashDisplay, sizeof(strStashDisplay));
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "No stashed med items.\n%s", strStashDisplay);
+		return false;
+	}
+
+	char strNextGiveToken[32];
+	strcopy(strNextGiveToken, sizeof(strNextGiveToken), g_strZoeyStashedHealthItems[iClient][0]);
+
+	int iHealthSlotItem = GetZoeyHealthSlotItem(iClient);
+	if (RunEntityChecks(iHealthSlotItem) == false)
+		return false;
+
+	RemovePlayerItem(iClient, iHealthSlotItem);
+	KillEntitySafely(iHealthSlotItem);
+
+	if (GiveZoeyHealthSlotItem(iClient, strNextGiveToken) == false)
+	{
+		GiveZoeyHealthSlotItem(iClient, strActiveGiveToken);
+		return false;
+	}
+
+	ClientCommand(iClient, "slot4");
+
+	if (g_iZoeyStashedHealthItemCount[iClient] == 1)
+	{
+		strcopy(g_strZoeyStashedHealthItems[iClient][0], 32, strActiveGiveToken);
+	}
+	else
+	{
+		strcopy(g_strZoeyStashedHealthItems[iClient][0], 32, g_strZoeyStashedHealthItems[iClient][1]);
+		strcopy(g_strZoeyStashedHealthItems[iClient][1], 32, strActiveGiveToken);
+	}
+
+	if (IsFakeClient(iClient) == false)
+	{
+		char strStashDisplay[96];
+		FormatZoeyStashedHealthItemsDisplay(iClient, strStashDisplay, sizeof(strStashDisplay));
+		PrintHintText(iClient, "%s", strStashDisplay);
+	}
+
+	return true;
+}
+
 bool IsZoeyHoldingDefibrillator(int iClient)
 {
 	int iHealthSlotItem = GetZoeyHealthSlotItem(iClient);
@@ -560,12 +920,20 @@ bool ReplaceZoeyHealthSlotItemWithDefibrillator(int iClient)
 	int iHealthSlotItem = GetZoeyHealthSlotItem(iClient);
 	if (RunEntityChecks(iHealthSlotItem) == true)
 	{
+		char strCurrentGiveToken[32];
+		bool bHasCurrentHealthItem = GetZoeyCurrentHealthSlotItemGiveToken(iClient, strCurrentGiveToken, sizeof(strCurrentGiveToken));
+		if (bHasCurrentHealthItem == true &&
+			StrEqual(strCurrentGiveToken, "first_aid_kit", false) == true &&
+			StashZoeyHealthSlotItem(iClient, strCurrentGiveToken, false) == false)
+		{
+			DropZoeyHealthSlotItemInFront(iClient, strCurrentGiveToken);
+		}
+
 		RemovePlayerItem(iClient, iHealthSlotItem);
 		KillEntitySafely(iHealthSlotItem);
 	}
 
-	RunCheatCommand(iClient, "give", "give defibrillator");
-	return IsZoeyHoldingDefibrillator(iClient);
+	return GiveZoeyHealthSlotItem(iClient, "defibrillator");
 }
 
 bool TryUseZoeySacrificialAidDefibrillator(int iClient)
@@ -745,7 +1113,41 @@ void HandleZoeyManagedMedkitUseSpeed(int iClient)
 
 void GiveZoeyScrapRecycleReward(int iClient, const char[] strGiveCommand, const char[] strHintText)
 {
-	RunCheatCommand(iClient, "give", strGiveCommand);
+	char strGiveToken[32];
+	bool bIsHealthSlotReward = false;
+	if (StrEqual(strGiveCommand, "give first_aid_kit", false) == true)
+	{
+		strcopy(strGiveToken, sizeof(strGiveToken), "first_aid_kit");
+		bIsHealthSlotReward = true;
+	}
+	else if (StrEqual(strGiveCommand, "give defibrillator", false) == true)
+	{
+		strcopy(strGiveToken, sizeof(strGiveToken), "defibrillator");
+		bIsHealthSlotReward = true;
+	}
+
+	if (bIsHealthSlotReward == true &&
+		IsZoeySharingIsCaringActive(iClient) == true &&
+		RunEntityChecks(GetZoeyHealthSlotItem(iClient)) == true)
+	{
+		if (StashZoeyHealthSlotItem(iClient, strGiveToken, false) == false &&
+			DropZoeyHealthSlotItemInFront(iClient, strGiveToken) == false)
+		{
+			return;
+		}
+	}
+	else if (bIsHealthSlotReward == true)
+	{
+		if (GiveZoeyHealthSlotItem(iClient, strGiveToken) == false &&
+			DropZoeyHealthSlotItemInFront(iClient, strGiveToken) == false)
+		{
+			return;
+		}
+	}
+	else
+	{
+		RunCheatCommand(iClient, "give", strGiveCommand);
+	}
 
 	if (IsFakeClient(iClient) == false)
 		PrintHintText(iClient, "%s", strHintText);
@@ -1535,7 +1937,7 @@ void OnGameFrame_Zoey(int iClient)
 	if (iClient < 0 ||
 		g_iChosenSurvivor[iClient] != ZOEY ||
 		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
-		(g_iZoeyTalent1Level[iClient] <= 0 && g_iZoeyTalent2Level[iClient] <= 0 && g_iZoeyTalent3Level[iClient] <= 0 && g_iZoeyTalent6Level[iClient] <= 0))
+		(g_iZoeyTalent1Level[iClient] <= 0 && g_iZoeyTalent2Level[iClient] <= 0 && g_iZoeyTalent3Level[iClient] <= 0 && g_iZoeyTalent4Level[iClient] <= 0 && g_iZoeyTalent6Level[iClient] <= 0))
 		return;
 
 	if (g_iZoeyTalent1Level[iClient] > 0 || g_iZoeyTalent3Level[iClient] > 0)
@@ -1548,13 +1950,13 @@ void OnGameFrame_Zoey(int iClient)
 	}
 
 	if (g_iZoeyTalent2Level[iClient] > 0)
-	{
 		HandleZoeyTriggerHappyState(iClient);
-		HandleZoeyMeleeSwap(iClient);
-	}
 
 	if (g_iZoeyTalent3Level[iClient] > 0)
 		HandleZoeySurvivorsWillState(iClient);
+
+	if (g_iZoeyTalent4Level[iClient] > 0)
+		HandleZoeyHealthSlotStashState(iClient);
 
 	if (g_iZoeyTalent6Level[iClient] > 0)
 		HandleZoeyManagedMedkitUseSpeed(iClient);
@@ -1579,6 +1981,9 @@ bool OnPlayerRunCmd_Zoey(int iClient, int &iButtons)
 	if (g_iZoeyTalent2Level[iClient] > 0 || g_iZoeyTalent3Level[iClient] > 0)
 		bButtonsChanged = HandleZoeyWalkUseInput(iClient, iButtons) || bButtonsChanged;
 
+	if (g_iZoeyTalent2Level[iClient] > 0 || g_iZoeyTalent4Level[iClient] > 0)
+		bButtonsChanged = HandleZoeyWalkZoomInput(iClient, iButtons) || bButtonsChanged;
+
 	return bButtonsChanged;
 }
 
@@ -1587,6 +1992,7 @@ bool HandleZoeyInstantInterventionInput(int iClient, int &iButtons)
 	SuppressNeverUsedWarning(iButtons);
 
 	bool bWalkPressed = (iButtons & IN_SPEED) != 0 &&
+		(iButtons & IN_ZOOM) == 0 &&
 		(iButtons & IN_USE) == 0 &&
 		(iButtons & IN_RELOAD) == 0;
 
@@ -1980,15 +2386,43 @@ void HandleZoeyTriggerHappyState(int iClient)
 		SetEntData(iSecondaryWeapon, g_iOffset_Clip1, ZOEY_TRIGGER_HAPPY_CLIP_SIZE, true);
 }
 
-void HandleZoeyMeleeSwap(int iClient)
+bool HandleZoeyWalkZoomInput(int iClient, int &iButtons)
+{
+	SuppressNeverUsedWarning(iButtons);
+
+	bool bWalkZoomPressed = (iButtons & IN_SPEED) && (iButtons & IN_ZOOM);
+	if (bWalkZoomPressed == false)
+	{
+		g_bZoeyWalkZoomHeld[iClient] = false;
+		return false;
+	}
+
+	if (g_bZoeyWalkZoomHeld[iClient] == true)
+		return false;
+
+	g_bZoeyWalkZoomHeld[iClient] = true;
+
+	char strCurrentWeapon[32];
+	GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
+
+	char strHealthSlotGiveToken[32];
+	if (g_iZoeyTalent4Level[iClient] > 0 &&
+		GetZoeyHealthSlotItemGiveTokenFromWeaponClass(strCurrentWeapon, strHealthSlotGiveToken, sizeof(strHealthSlotGiveToken)) == true)
+	{
+		CycleZoeyHealthSlotStash(iClient);
+		return false;
+	}
+
+	if (g_iZoeyTalent2Level[iClient] <= 0)
+		return false;
+
+	return TryZoeyMeleeSwap(iClient);
+}
+
+bool TryZoeyMeleeSwap(int iClient)
 {
 	if (g_bCanZoeyMeleeSwap[iClient] == false)
-		return;
-
-	int buttons;
-	buttons = GetEntProp(iClient, Prop_Data, "m_nButtons", buttons);
-	if ((buttons & IN_SPEED) == 0 || (buttons & IN_ZOOM) == 0)
-		return;
+		return false;
 
 	char strCurrentWeapon[32];
 	GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
@@ -1997,7 +2431,7 @@ void HandleZoeyMeleeSwap(int iClient)
 	bool bHoldingMelee = StrEqual(strCurrentWeapon, "weapon_melee", false);
 
 	if (bHoldingPistol == false && bHoldingMelee == false)
-		return;
+		return false;
 
 	// Start cooldown
 	g_bCanZoeyMeleeSwap[iClient] = false;
@@ -2005,7 +2439,7 @@ void HandleZoeyMeleeSwap(int iClient)
 
 	int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 	if (IsValidEntity(iActiveWeaponID) == false)
-		return;
+		return false;
 
 	// Swap FROM melee TO pistols
 	if (bHoldingMelee)
@@ -2028,6 +2462,7 @@ void HandleZoeyMeleeSwap(int iClient)
 
 		if (IsFakeClient(iClient) == false)
 			PrintHintText(iClient, "Swapped to Machine Pistols.\nMelee stashed: %s", g_strZoeyStashedMelee[iClient]);
+		return false;
 	}
 	// Swap FROM pistols TO stashed melee
 	else if (bHoldingPistol && g_bZoeyHasMeleeStashed[iClient])
@@ -2045,7 +2480,7 @@ void HandleZoeyMeleeSwap(int iClient)
 		RunCheatCommand(iClient, "give", strGiveCmd);
 
 		if (IsFakeClient(iClient) == false)
-			PrintHintText(iClient, "Swapped to Melee: %s", g_strZoeyStashedMelee[iClient]);
+			PrintHintText(iClient, "%s", g_strZoeyStashedMelee[iClient]);
 
 		// Clean up dropped pistol entities periodically
 		if (++g_iZoeyMeleeSwaps[iClient] >= WEAPON_PROXIMITY_CLEAN_UP_TRIGGER_ITEM_PICKUP_COUNT)
@@ -2053,12 +2488,15 @@ void HandleZoeyMeleeSwap(int iClient)
 			g_iZoeyMeleeSwaps[iClient] = 0;
 			PistolWeaponCleanUp();
 		}
+		return false;
 	}
 	else if (bHoldingPistol && g_bZoeyHasMeleeStashed[iClient] == false)
 	{
 		if (IsFakeClient(iClient) == false)
 			PrintHintText(iClient, "No melee weapon stashed.\nPick up a melee weapon first.");
 	}
+
+	return false;
 }
 
 bool HandleZoeyWalkUseInput(int iClient, int &iButtons)
@@ -2280,11 +2718,62 @@ void EventsInfectedHurt_Zoey(Handle hEvent, int iAttacker, int iVictim)
 	DetonateZoeyTriggerHappyImpact(iVictim);
 }
 
+void EventsPlayerUse_Zoey(int iClient, int iTargetID)
+{
+	if (IsZoeySharingIsCaringActive(iClient) == false)
+		return;
+
+	char strCurrentGiveToken[32];
+	if (GetZoeyCurrentHealthSlotItemGiveToken(iClient, strCurrentGiveToken, sizeof(strCurrentGiveToken)) == false)
+		return;
+
+	if (g_iZoeyStashedHealthItemCount[iClient] >= ZOEY_SHARING_IS_CARING_STASH_MAX_ITEMS)
+		return;
+
+	char strTargetClassName[35];
+	GetEdictClassname(iTargetID, strTargetClassName, sizeof(strTargetClassName));
+
+	char strTargetGiveToken[32];
+	if (GetZoeyHealthSlotItemGiveTokenFromWeaponClass(strTargetClassName, strTargetGiveToken, sizeof(strTargetGiveToken)) == false)
+		return;
+
+	if (StrEqual(strCurrentGiveToken, strTargetGiveToken, false) == true)
+	{
+		if (StashZoeyHealthSlotItem(iClient, strTargetGiveToken) == true &&
+			iTargetID > 0 &&
+			IsValidEntity(iTargetID))
+		{
+			AcceptEntityInput(iTargetID, "Kill");
+			CreateTimer(0.0, TimerZoeyCleanupDirectStashWorldEntity, EntIndexToEntRef(iTargetID), TIMER_FLAG_NO_MAPCHANGE);
+		}
+		return;
+	}
+
+	if (StashZoeyHealthSlotItem(iClient, strCurrentGiveToken) == false)
+		return;
+
+	StartZoeyPendingHealthSlotDropCleanup(iClient, strCurrentGiveToken);
+}
+
 void EventsItemPickUp_Zoey(int iClient, const char[] strWeaponClass)
 {
 	if (g_iChosenSurvivor[iClient] != ZOEY ||
-		g_bTalentsConfirmed[iClient] == false ||
-		g_iZoeyTalent2Level[iClient] <= 0)
+		g_bTalentsConfirmed[iClient] == false)
+		return;
+
+	if (g_iZoeyTalent4Level[iClient] > 0)
+	{
+		if (g_bZoeyHealthSlotItemJustGivenByCheats[iClient] == false &&
+			(StrEqual(strWeaponClass, "first_aid_kit", false) == true ||
+			StrEqual(strWeaponClass, "defibrillator", false) == true))
+		{
+			g_bZoeyHealthSlotWasEmptyOnLastPickUp[iClient] = true;
+		}
+
+		g_bZoeyHealthSlotItemJustGivenByCheats[iClient] = false;
+	}
+
+	if (g_iZoeyTalent2Level[iClient] <= 0)
 		return;
 
 	if (StrEqual(strWeaponClass, "pistol", false) == true)

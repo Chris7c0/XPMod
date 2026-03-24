@@ -451,6 +451,7 @@ bool g_bNoobWipeCooldown;
 #define ZOEY_SURVIVORS_WILL_GLOBAL_COOLDOWN                      180.0
 #define ZOEY_SURVIVORS_WILL_REVEAL_MIST_INTERVAL                 0.4
 #define ZOEY_SURVIVORS_WILL_REVEAL_MIST_DURATION                 0.6
+#define ZOEY_SHARING_IS_CARING_STASH_MAX_ITEMS                   2
 #define ZOEY_SHARING_IS_CARING_RADIUS_BASE                       60.0
 #define ZOEY_SHARING_IS_CARING_RADIUS_PER_LEVEL                  24.0
 #define ZOEY_SHARING_IS_CARING_MEDKIT_SHARE_PER_LEVEL            0.05
@@ -500,6 +501,7 @@ bool g_bZoeyMopArmed[MAXPLAYERS + 1] = {false, ...};
 int g_iZoeyMopCharge[MAXPLAYERS + 1] = {0, ...};
 int g_iZoeyMopHitCounter[MAXPLAYERS + 1] = {0, ...};
 bool g_bZoeyWalkUseHeld[MAXPLAYERS + 1] = {false, ...};
+bool g_bZoeyWalkZoomHeld[MAXPLAYERS + 1] = {false, ...};
 float g_fZoeyPrimaryStripHintCooldown[MAXPLAYERS + 1] = {0.0, ...};
 bool g_bZoeySuppressSyntheticCIHurt[MAXPLAYERS + 1] = {false, ...};
 bool g_bZoeySurvivorsWillCharging[MAXPLAYERS + 1] = {false, ...};
@@ -530,6 +532,13 @@ float g_fZoeyInstantInterventionGlobalCooldownEndTime = -1.0;
 int g_iZoeySacrificialAidResurrectUses = 0;
 int g_iZoeyInstantInterventionDownedCount = 0;
 int g_iZoeySurvivorsWillMistOwner[MAXENTITIES + 1] = {0, ...};
+bool g_bZoeyHealthSlotItemJustGivenByCheats[MAXPLAYERS + 1] = {false, ...};
+bool g_bZoeyHealthSlotWasEmptyOnLastPickUp[MAXPLAYERS + 1] = {false, ...};
+int g_iZoeyStashedHealthItemCount[MAXPLAYERS + 1] = {0, ...};
+char g_strZoeyStashedHealthItems[MAXPLAYERS + 1][ZOEY_SHARING_IS_CARING_STASH_MAX_ITEMS][32];
+bool g_bZoeyPendingHealthSlotDropCleanup[MAXPLAYERS + 1] = {false, ...};
+char g_strZoeyPendingHealthSlotDropCleanupToken[MAXPLAYERS + 1][32];
+float g_fZoeyPendingHealthSlotDropCleanupExpireTime[MAXPLAYERS + 1] = {0.0, ...};
 bool g_bCanZoeyMeleeSwap[MAXPLAYERS + 1];
 bool g_bZoeyHasMeleeStashed[MAXPLAYERS + 1];
 char g_strZoeyStashedMelee[MAXPLAYERS + 1][32];

@@ -31,6 +31,7 @@ Action Event_PlayerUse(Handle hEvent, const char[] strName, bool bDontBroadcast)
 	EventsPlayerUse_Ellis(iClient, iTargetID);
 	EventsPlayerUse_Nick(iClient, iTargetID);
 	EventsPlayerUse_Louis(iClient, iTargetID);
+	EventsPlayerUse_Zoey(iClient, iTargetID);
 
 	if(g_iChosenSurvivor[iClient] == COACH && g_iSprayLevel[iClient] > 0)
 	{
@@ -406,6 +407,15 @@ Action Event_WeaponDropped(Handle hEvent, const char[] strName, bool bDontBroadc
 	char droppeditem[32];
 	GetEventString(hEvent, "item", droppeditem, 32);
 	int iProp = GetEventInt(hEvent,"propid");
+
+	if (iClient > 0 &&
+		iClient <= MaxClients &&
+		g_iChosenSurvivor[iClient] == ZOEY &&
+		g_bTalentsConfirmed[iClient] == true &&
+		TryHandleZoeyPendingHealthSlotDropCleanup(iClient, droppeditem, iProp))
+	{
+		return Plugin_Continue;
+	}
 
 	if(g_iStrongLevel[iClient] > 0)
 	{

@@ -50,6 +50,9 @@ While Holding A Medkit Press [WALK] + [USE] To Start:
 ```
 Healing By Zoey Splashes To Nearby Teammates (Does Not Heal Zoey).
 
+Zoey Can Stash 2 Extra Health Items (Medkit and Defibrillator slot).
+- Press [WALK] + [ZOOM] while holding a medkit or debibrilator To Swap Between The Stashed Health Items
+
 15 Foot Aura Radius 
 25% Medkit Shared Healing 
 50% Pills Shared Healing 
@@ -77,6 +80,8 @@ Bind 1: Sacrificial Aid
   - -15 HP: Heal 100 HP (Or Instantly Pick Up A Downed Target)
   - -10 HP : Give 70 Temp HP  (Or Stop Bleedout For 20 Seconds)
   - -5 HP: Heal 30 HP (Or Stop Bleedout For 10 Seconds)
+  - -20 HP: Give Zoey A Defibrillator And Stash 1 Medkit If Possible
+    - If Zoey Already Has 2 Medkits, 1 Is Dropped
 ```
 
 ### Talent 6: Instant Intervention
