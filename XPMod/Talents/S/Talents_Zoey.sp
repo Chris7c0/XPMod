@@ -30,6 +30,7 @@ void TalentsLoad_Zoey(int iClient)
 	g_iZoeyMedicalExpertiseBileSerial[iClient] = 0;
 	g_bZoeyHealthSlotItemJustGivenByCheats[iClient] = false;
 	g_bZoeyHealthSlotWasEmptyOnLastPickUp[iClient] = false;
+	g_fZoeyIgnoreCheatPistolPickupUntil[iClient] = 0.0;
 	g_iZoeyStashedHealthItemCount[iClient] = 0;
 	g_strZoeyStashedHealthItems[iClient][0] = "";
 	g_strZoeyStashedHealthItems[iClient][1] = "";
@@ -93,6 +94,7 @@ void ResetZoeyTalentsRuntimeState(int iClient)
 	g_iZoeyMedicalExpertiseBileSerial[iClient] = 0;
 	g_bZoeyHealthSlotItemJustGivenByCheats[iClient] = false;
 	g_bZoeyHealthSlotWasEmptyOnLastPickUp[iClient] = false;
+	g_fZoeyIgnoreCheatPistolPickupUntil[iClient] = 0.0;
 	g_iZoeyStashedHealthItemCount[iClient] = 0;
 	g_strZoeyStashedHealthItems[iClient][0] = "";
 	g_strZoeyStashedHealthItems[iClient][1] = "";
@@ -2311,6 +2313,13 @@ bool DidZoeyRecentlyFireTriggerHappyWeapon(int iClient)
 		(g_fZoeyLastTriggerHappyShotTime[iClient] + ZOEY_TRIGGER_HAPPY_SHOT_EVENT_WINDOW) >= GetGameTime();
 }
 
+void StartZoeyIgnoreCheatPistolPickupWindow(int iClient, float fDuration = 0.3)
+{
+	float fExpireTime = GetGameTime() + fDuration;
+	if (g_fZoeyIgnoreCheatPistolPickupUntil[iClient] < fExpireTime)
+		g_fZoeyIgnoreCheatPistolPickupUntil[iClient] = fExpireTime;
+}
+
 bool IsZoeyHoldingMachinePistols(int iClient)
 {
 	if (RunClientChecks(iClient) == false ||
@@ -2320,6 +2329,33 @@ bool IsZoeyHoldingMachinePistols(int iClient)
 	char strCurrentWeapon[32];
 	GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 	return IsZoeyTriggerHappyWeaponClass(strCurrentWeapon);
+}
+
+int RemoveZoeyOwnedPistolWeapons(int iClient)
+{
+	if (RunClientChecks(iClient) == false)
+		return 0;
+
+	int iRemovedWeapons = 0;
+	int iWeaponCount = GetEntPropArraySize(iClient, Prop_Send, "m_hMyWeapons");
+	char strWeaponClass[32];
+
+	for (int iWeaponSlot = 0; iWeaponSlot < iWeaponCount; iWeaponSlot++)
+	{
+		int iWeapon = GetEntPropEnt(iClient, Prop_Send, "m_hMyWeapons", iWeaponSlot);
+		if (RunEntityChecks(iWeapon) == false)
+			continue;
+
+		GetEntityClassname(iWeapon, strWeaponClass, sizeof(strWeaponClass));
+		if (StrEqual(strWeaponClass, "weapon_pistol", false) == false)
+			continue;
+
+		RemovePlayerItem(iClient, iWeapon);
+		RemoveEntity(iWeapon);
+		iRemovedWeapons++;
+	}
+
+	return iRemovedWeapons;
 }
 
 void EnsureZoeyDualPistols(int iClient)
@@ -2339,7 +2375,10 @@ void EnsureZoeyDualPistols(int iClient)
 
 	int iCurrentClipAmmo = GetEntProp(iSecondaryWeapon, Prop_Data, "m_iClip1");
 	if (iCurrentClipAmmo <= 15)
+	{
+		StartZoeyIgnoreCheatPistolPickupWindow(iClient);
 		RunCheatCommand(iClient, "give", "give pistol");
+	}
 
 	if (RunEntityChecks(iSecondaryWeapon))
 	{
@@ -2452,9 +2491,10 @@ bool TryZoeyMeleeSwap(int iClient)
 		RemovePlayerItem(iClient, iActiveWeaponID);
 		RemoveEntity(iActiveWeaponID);
 
-		// Give dual pistols with Trigger Happy clip size
+		// Give pistols directly and suppress the pickup hook so it does not add extras.
+		StartZoeyIgnoreCheatPistolPickupWindow(iClient, 0.5);
 		RunCheatCommand(iClient, "give", "give pistol");
-		RunCheatCommand(iClient, "give", "give pistol");
+		EnsureZoeyDualPistols(iClient);
 
 		int iNewWeapon = GetPlayerWeaponSlot(iClient, 1);
 		if (RunEntityChecks(iNewWeapon))
@@ -2471,16 +2511,15 @@ bool TryZoeyMeleeSwap(int iClient)
 		int iCurrentClipAmmo = GetEntProp(iActiveWeaponID, Prop_Data, "m_iClip1");
 		g_iZoeyPistolSavedClip[iClient] = iCurrentClipAmmo;
 
-		// Remove pistols
-		KillEntitySafely(iActiveWeaponID);
+		// Purge every owned pistol entity so restoring melee cannot eject a leftover duplicate.
+		if (RemoveZoeyOwnedPistolWeapons(iClient) <= 0)
+		{
+			RemovePlayerItem(iClient, iActiveWeaponID);
+			RemoveEntity(iActiveWeaponID);
+		}
 
-		// Give back the stashed melee weapon
-		char strGiveCmd[64];
-		FormatEx(strGiveCmd, sizeof(strGiveCmd), "give %s", g_strZoeyStashedMelee[iClient]);
-		RunCheatCommand(iClient, "give", strGiveCmd);
-
-		if (IsFakeClient(iClient) == false)
-			PrintHintText(iClient, "%s", g_strZoeyStashedMelee[iClient]);
+		// Delay the restore slightly so the engine sees an empty secondary slot.
+		CreateTimer(0.1, TimerZoeyRestoreStashedMelee, iClient, TIMER_FLAG_NO_MAPCHANGE);
 
 		// Clean up dropped pistol entities periodically
 		if (++g_iZoeyMeleeSwaps[iClient] >= WEAPON_PROXIMITY_CLEAN_UP_TRIGGER_ITEM_PICKUP_COUNT)
@@ -2778,6 +2817,9 @@ void EventsItemPickUp_Zoey(int iClient, const char[] strWeaponClass)
 
 	if (StrEqual(strWeaponClass, "pistol", false) == true)
 	{
+		if (g_fZoeyIgnoreCheatPistolPickupUntil[iClient] > GetGameTime())
+			return;
+
 		EnsureZoeyDualPistols(iClient);
 
 		int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);

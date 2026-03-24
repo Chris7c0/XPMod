@@ -534,6 +534,7 @@ int g_iZoeyInstantInterventionDownedCount = 0;
 int g_iZoeySurvivorsWillMistOwner[MAXENTITIES + 1] = {0, ...};
 bool g_bZoeyHealthSlotItemJustGivenByCheats[MAXPLAYERS + 1] = {false, ...};
 bool g_bZoeyHealthSlotWasEmptyOnLastPickUp[MAXPLAYERS + 1] = {false, ...};
+float g_fZoeyIgnoreCheatPistolPickupUntil[MAXPLAYERS + 1] = {0.0, ...};
 int g_iZoeyStashedHealthItemCount[MAXPLAYERS + 1] = {0, ...};
 char g_strZoeyStashedHealthItems[MAXPLAYERS + 1][ZOEY_SHARING_IS_CARING_STASH_MAX_ITEMS][32];
 bool g_bZoeyPendingHealthSlotDropCleanup[MAXPLAYERS + 1] = {false, ...};

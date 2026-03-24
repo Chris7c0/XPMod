@@ -28,6 +28,28 @@ Action TimerZoeyMeleeSwapCooldown(Handle timer, int iClient)
 	return Plugin_Stop;
 }
 
+Action TimerZoeyRestoreStashedMelee(Handle timer, int iClient)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
+		g_iChosenSurvivor[iClient] != ZOEY ||
+		g_bTalentsConfirmed[iClient] == false ||
+		g_strZoeyStashedMelee[iClient][0] == '\0')
+	{
+		return Plugin_Stop;
+	}
+
+	char strGiveCmd[64];
+	FormatEx(strGiveCmd, sizeof(strGiveCmd), "give %s", g_strZoeyStashedMelee[iClient]);
+	RunCheatCommand(iClient, "give", strGiveCmd);
+
+	if (IsFakeClient(iClient) == false)
+		PrintHintText(iClient, "%s", g_strZoeyStashedMelee[iClient]);
+
+	return Plugin_Stop;
+}
+
 Action TimerZoeyCleanupDirectStashWorldEntity(Handle timer, int iEntityRef)
 {
 	int iEntity = EntRefToEntIndex(iEntityRef);
