@@ -62,6 +62,7 @@ void ResetAllVariablesForRound()
 	g_fZoeySurvivorsWillGlobalCooldownEndTime = -1.0;
 	g_fZoeySacrificialAidGlobalCooldownEndTime = -1.0;
 	g_fZoeyInstantInterventionGlobalCooldownEndTime = -1.0;
+	g_iZoeySacrificialAidResurrectUses = 0;
 	g_iZoeyInstantInterventionDownedCount = 0;
 	// g_bSomeoneAttacksFaster = false;
 

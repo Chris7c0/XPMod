@@ -482,6 +482,8 @@ bool g_bNoobWipeCooldown;
 #define ZOEY_INSTANT_INTERVENTION_CI_KILL_RADIUS                 160.0
 #define ZOEY_INSTANT_INTERVENTION_GLOBAL_COOLDOWN                120.0
 #define ZOEY_SACRIFICIAL_AID_GLOBAL_COOLDOWN                     10.0
+#define ZOEY_SACRIFICIAL_AID_RESURRECT_COST                      40
+#define ZOEY_SACRIFICIAL_AID_DEFIB_COST                          20
 #define ZOEY_SACRIFICIAL_AID_MAJOR_COST                          15
 #define ZOEY_SACRIFICIAL_AID_MAJOR_HEAL                          100
 #define ZOEY_SACRIFICIAL_AID_MAJOR_REGEN_HP_PER_TICK             20
@@ -527,6 +529,7 @@ int g_iZoeyInstantInterventionCircleTicksRemaining[MAXENTITIES + 1] = {0, ...};
 float g_fZoeySurvivorsWillGlobalCooldownEndTime = -1.0;
 float g_fZoeySacrificialAidGlobalCooldownEndTime = -1.0;
 float g_fZoeyInstantInterventionGlobalCooldownEndTime = -1.0;
+int g_iZoeySacrificialAidResurrectUses = 0;
 int g_iZoeyInstantInterventionDownedCount = 0;
 int g_iZoeySurvivorsWillMistOwner[MAXENTITIES + 1] = {0, ...};
 bool g_bCanZoeyMeleeSwap[MAXPLAYERS + 1];

@@ -22,12 +22,8 @@ void Bind1Press_Zoey(int iClient)
 		return;
 	}
 
-	int iTarget;
-	if (GetZoeySacrificialAidTarget(iClient, iTarget) == false)
-	{
-		PrintHintText(iClient, "Aim at a visible teammate to use Sacrificial Aid.");
-		return;
-	}
+	int iTarget = -1;
+	GetZoeySacrificialAidTarget(iClient, iTarget);
 
 	ZoeySacrificialAidMenuDraw(iClient, iTarget);
 }
@@ -35,41 +31,55 @@ void Bind1Press_Zoey(int iClient)
 Action ZoeySacrificialAidMenuDraw(int iClient, int iTarget)
 {
 	if (RunClientChecks(iClient) == false ||
-		RunClientChecks(iTarget) == false ||
-		IsPlayerAlive(iTarget) == false ||
-		g_iClientTeam[iTarget] != TEAM_SURVIVORS)
+		IsPlayerAlive(iClient) == false ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS)
 	{
 		return Plugin_Handled;
 	}
 
-	g_iZoeySacrificialAidMenuTarget[iClient] = iTarget;
+	bool bHasTarget = RunClientChecks(iTarget) &&
+		IsPlayerAlive(iTarget) == true &&
+		g_iClientTeam[iTarget] == TEAM_SURVIVORS;
+
+	g_iZoeySacrificialAidMenuTarget[iClient] = bHasTarget ? iTarget : -1;
 
 	Menu menu = CreateMenu(ZoeySacrificialAidMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
 	char text[512];
+	char strTargetLine[64];
+	if (bHasTarget)
+		FormatEx(strTargetLine, sizeof(strTargetLine), "Target: %N", iTarget);
+	else
+		FormatEx(strTargetLine, sizeof(strTargetLine), "Target: None");
+
 	FormatEx(text, sizeof(text), "\
 		\n \
 		\n      Sacrificial Aid\
 		\n========================\
-		\n Target: %N\
+		\n %s\
 		\n Current Max HP: %d\
 		\n========================\
 		\n ",
-		iTarget,
+		strTargetLine,
 		GetPlayerMaxHealth(iClient));
 	SetMenuTitle(menu, "%s", text);
 
-	FormatEx(text, sizeof(text), "-15 Max HP: Regen 20 HP/s (5s)\n    Downed: Instant Pickup\n ");
-	AddMenuItem(menu, "15", text);
+	FormatEx(text, sizeof(text), "-5 Max HP: Heal 30 HP\n    Downed: Stop Bleedout 10s\n ");
+	AddMenuItem(menu, "5", text, bHasTarget ? ITEMDRAW_DEFAULT : ITEMDRAW_DISABLED);
 
 	FormatEx(text, sizeof(text), "-10 Max HP: Give 70 Temp HP\n    Downed: Stop Bleedout 20s\n ");
-	AddMenuItem(menu, "10", text);
+	AddMenuItem(menu, "10", text, bHasTarget ? ITEMDRAW_DEFAULT : ITEMDRAW_DISABLED);
 
-	FormatEx(text, sizeof(text), "-5 Max HP: Heal 30 HP\n    Downed: Stop Bleedout 10s\n ");
-	AddMenuItem(menu, "5", text);
+	FormatEx(text, sizeof(text), "-15 Max HP: Regen 20 HP/s (5s)\n    Downed: Instant Pickup\n ");
+	AddMenuItem(menu, "15", text, bHasTarget ? ITEMDRAW_DEFAULT : ITEMDRAW_DISABLED);
 
-	AddMenuItem(menu, "rescan", "Retarget\n ");
+	FormatEx(text, sizeof(text), "-20 Max HP: Gain a Defibrillator\n ");
+	AddMenuItem(menu, "20", text);
+
+	FormatEx(text, sizeof(text), "-40 Max HP: Survivor Resurrection\n ");
+	AddMenuItem(menu, "40", text);
+
 	AddMenuItem(menu, "cancel", "Cancel\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ");
 
 	SetMenuExitButton(menu, false);
@@ -100,17 +110,17 @@ void ZoeySacrificialAidMenuHandler(Menu menu, MenuAction action, int iClient, in
 		if (StrEqual(strInfo, "cancel", false))
 			return;
 
-		if (StrEqual(strInfo, "rescan", false))
+		if (StrEqual(strInfo, "40", false))
 		{
-			int iRetarget;
-			if (GetZoeySacrificialAidTarget(iClient, iRetarget))
-			{
-				ZoeySacrificialAidMenuDraw(iClient, iRetarget);
-			}
-			else
-			{
-				PrintHintText(iClient, "Aim at a visible teammate to use Sacrificial Aid.");
-			}
+			if (TryUseZoeySacrificialAidResurrection(iClient) == false)
+				ZoeySacrificialAidMenuDraw(iClient, g_iZoeySacrificialAidMenuTarget[iClient]);
+			return;
+		}
+
+		if (StrEqual(strInfo, "20", false))
+		{
+			if (TryUseZoeySacrificialAidDefibrillator(iClient) == false)
+				ZoeySacrificialAidMenuDraw(iClient, g_iZoeySacrificialAidMenuTarget[iClient]);
 			return;
 		}
 

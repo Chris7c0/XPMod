@@ -465,6 +465,165 @@ bool ApplyZoeySacrificialAidCost(int iClient, int iCost)
 	return true;
 }
 
+bool TryUseZoeySacrificialAidResurrection(int iClient)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false ||
+		g_bTalentsConfirmed[iClient] == false ||
+		g_iChosenSurvivor[iClient] != ZOEY ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
+		g_iZoeyTalent5Level[iClient] <= 0 ||
+		IsZoeyClientDownedOrHanging(iClient) == true ||
+		IsClientGrappled(iClient) == true)
+	{
+		return false;
+	}
+
+	if (g_iZoeySacrificialAidResurrectUses >= 1)
+	{
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "Sacrificial Aid resurrection has already been used this round.");
+		return false;
+	}
+
+	float fCooldownRemaining = GetZoeySacrificialAidGlobalCooldownRemaining();
+	if (fCooldownRemaining > 0.0)
+	{
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "Sacrificial Aid cooling down: %0.0f seconds", fCooldownRemaining);
+		return false;
+	}
+
+	int iTarget = FindDeadSurvivor();
+	if (RunClientChecks(iTarget) == false)
+	{
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "No one is dead.");
+		return false;
+	}
+
+	if (ApplyZoeySacrificialAidCost(iClient, ZOEY_SACRIFICIAL_AID_RESURRECT_COST) == false)
+	{
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "Sacrificial Aid needs more remaining max health.");
+		return false;
+	}
+
+	int iResurrectedTarget = ResurrectPlayer(iTarget, iClient);
+	if (RunClientChecks(iResurrectedTarget) == false)
+	{
+		g_iZoeySacrificialAidMaxHealthPenalty[iClient] -= ZOEY_SACRIFICIAL_AID_RESURRECT_COST;
+		if (g_iZoeySacrificialAidMaxHealthPenalty[iClient] < 0)
+			g_iZoeySacrificialAidMaxHealthPenalty[iClient] = 0;
+		SetPlayerTalentMaxHealth_Zoey(iClient, false);
+
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "No one is dead.");
+		return false;
+	}
+
+	g_iZoeySacrificialAidResurrectUses++;
+	g_fZoeySacrificialAidGlobalCooldownEndTime = GetGameTime() + ZOEY_SACRIFICIAL_AID_GLOBAL_COOLDOWN;
+
+	if (IsFakeClient(iClient) == false)
+		PrintHintText(iClient, "Sacrificial Aid: Resurrected %N", iResurrectedTarget);
+	if (IsFakeClient(iResurrectedTarget) == false)
+		PrintHintText(iResurrectedTarget, "%N sacrificed max health to resurrect you.", iClient);
+
+	return true;
+}
+
+int GetZoeyHealthSlotItem(int iClient)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false)
+	{
+		return -1;
+	}
+
+	return GetPlayerWeaponSlot(iClient, 3);
+}
+
+bool IsZoeyHoldingDefibrillator(int iClient)
+{
+	int iHealthSlotItem = GetZoeyHealthSlotItem(iClient);
+	if (RunEntityChecks(iHealthSlotItem) == false)
+		return false;
+
+	char strWeaponClass[32];
+	GetEntityClassname(iHealthSlotItem, strWeaponClass, sizeof(strWeaponClass));
+	return StrEqual(strWeaponClass, "weapon_defibrillator", false);
+}
+
+bool ReplaceZoeyHealthSlotItemWithDefibrillator(int iClient)
+{
+	int iHealthSlotItem = GetZoeyHealthSlotItem(iClient);
+	if (RunEntityChecks(iHealthSlotItem) == true)
+	{
+		RemovePlayerItem(iClient, iHealthSlotItem);
+		KillEntitySafely(iHealthSlotItem);
+	}
+
+	RunCheatCommand(iClient, "give", "give defibrillator");
+	return IsZoeyHoldingDefibrillator(iClient);
+}
+
+bool TryUseZoeySacrificialAidDefibrillator(int iClient)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false ||
+		g_bTalentsConfirmed[iClient] == false ||
+		g_iChosenSurvivor[iClient] != ZOEY ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
+		g_iZoeyTalent5Level[iClient] <= 0 ||
+		IsZoeyClientDownedOrHanging(iClient) == true ||
+		IsClientGrappled(iClient) == true)
+	{
+		return false;
+	}
+
+	if (IsZoeyHoldingDefibrillator(iClient) == true)
+	{
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "You already have a defibrillator.");
+		return false;
+	}
+
+	float fCooldownRemaining = GetZoeySacrificialAidGlobalCooldownRemaining();
+	if (fCooldownRemaining > 0.0)
+	{
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "Sacrificial Aid cooling down: %0.0f seconds", fCooldownRemaining);
+		return false;
+	}
+
+	if (ApplyZoeySacrificialAidCost(iClient, ZOEY_SACRIFICIAL_AID_DEFIB_COST) == false)
+	{
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "Sacrificial Aid needs more remaining max health.");
+		return false;
+	}
+
+	if (ReplaceZoeyHealthSlotItemWithDefibrillator(iClient) == false)
+	{
+		g_iZoeySacrificialAidMaxHealthPenalty[iClient] -= ZOEY_SACRIFICIAL_AID_DEFIB_COST;
+		if (g_iZoeySacrificialAidMaxHealthPenalty[iClient] < 0)
+			g_iZoeySacrificialAidMaxHealthPenalty[iClient] = 0;
+		SetPlayerTalentMaxHealth_Zoey(iClient, false);
+
+		if (IsFakeClient(iClient) == false)
+			PrintHintText(iClient, "Sacrificial Aid failed to give you a defibrillator.");
+		return false;
+	}
+
+	g_fZoeySacrificialAidGlobalCooldownEndTime = GetGameTime() + ZOEY_SACRIFICIAL_AID_GLOBAL_COOLDOWN;
+
+	if (IsFakeClient(iClient) == false)
+		PrintHintText(iClient, "Sacrificial Aid: You received a defibrillator.");
+
+	return true;
+}
+
 int ApplyZoeyMedicalExpertiseBonusTempHealth(int iClient, int iBaseHealAmount, float fBonusMultiplier)
 {
 	if (IsZoeyMedicalExpertiseActive(iClient) == false ||

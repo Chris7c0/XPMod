@@ -174,11 +174,14 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 			\n - Team bile duration reduced by 50%%\
 			\n \
 			\n Bind 1: Sacrificial Aid\
-			\n - Aim at a visible teammate and choose a sacrifice\
+			\n - Opens a sacrifice menu, targeted aid needs a visible teammate\
 			\n - 10 second global cooldown\
-			\n - -15 Max HP: Heal 100 HP or instantly pick up a downed ally\
-			\n - -10 Max HP: Give 70 temp HP or stop bleedout for 20 seconds\
 			\n - -5 Max HP: Heal 30 HP or stop bleedout for 10 seconds\
+			\n - -10 Max HP: Give 70 temp HP or stop bleedout for 20 seconds\
+			\n - -15 Max HP: Heal 100 HP or instantly pick up a downed ally\
+			\n - -20 Max HP: Give Zoey a defibrillator\
+			\n - -40 Max HP: Resurrect a dead teammate\
+			\n - Resurrection is globally limited to 1 use per round\
 			\n ",
 			strStartingNewLines,
 			strTalentName);
