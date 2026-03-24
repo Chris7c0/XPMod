@@ -100,6 +100,7 @@ Action TimerZoeyInstantInterventionHealingCircleTick(Handle timer, int iCircleEn
 	}
 
 	HealZoeyInstantInterventionCircle(g_xyzZoeyInstantInterventionCircleOrigin[iCircleEntity]);
+	DrawZoeyHealingCircleRing(g_xyzZoeyInstantInterventionCircleOrigin[iCircleEntity]);
 
 	g_iZoeyInstantInterventionCircleTicksRemaining[iCircleEntity]--;
 	if (g_iZoeyInstantInterventionCircleTicksRemaining[iCircleEntity] <= 0)

@@ -1292,6 +1292,29 @@ int KillZoeyCommonInfectedAroundLocation(int iClient, float xyzLocation[3], floa
 	return iKilled;
 }
 
+void DrawZoeyHealingCircleRing(float xyzLocation[3])
+{
+	float xyzRingPosition[3];
+	xyzRingPosition[0] = xyzLocation[0];
+	xyzRingPosition[1] = xyzLocation[1];
+	xyzRingPosition[2] = xyzLocation[2] + 10.0;
+
+	TE_SetupBeamRingPoint(xyzRingPosition,
+		ZOEY_INSTANT_INTERVENTION_HEALING_CIRCLE_RADIUS,
+		ZOEY_INSTANT_INTERVENTION_HEALING_CIRCLE_RADIUS + 0.1,
+		g_iSprite_Laser,
+		g_iSprite_Glow,
+		0,
+		15,
+		ZOEY_INSTANT_INTERVENTION_HEALING_CIRCLE_INTERVAL + 0.1,
+		4.0,
+		0.0,
+		{140, 220, 140, 200},
+		10,
+		0);
+	TE_SendToAll();
+}
+
 void HealZoeyInstantInterventionCircle(float xyzLocation[3])
 {
 	for (int iTarget = 1; iTarget <= MaxClients; iTarget++)
@@ -1346,6 +1369,7 @@ void StartZoeyInstantInterventionHealingCircle(float xyzLocation[3])
 
 	g_xyzZoeyInstantInterventionCircleOrigin[iCircleEntity] = xyzLocation;
 	g_iZoeyInstantInterventionCircleTicksRemaining[iCircleEntity] = RoundToFloor(ZOEY_INSTANT_INTERVENTION_HEALING_CIRCLE_DURATION / ZOEY_INSTANT_INTERVENTION_HEALING_CIRCLE_INTERVAL);
+	DrawZoeyHealingCircleRing(xyzLocation);
 	CreateTimer(ZOEY_INSTANT_INTERVENTION_HEALING_CIRCLE_INTERVAL, TimerZoeyInstantInterventionHealingCircleTick, iCircleEntity, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 }
 
