@@ -4,6 +4,7 @@
 ```
 +40% Revive Speed
 +25% Movement Speed While Holding A Healing Item
+Zoey Deals No Friendly Fire Damage
 
 Revive Bonuses:
 - Revived Ally Gains +20% Damage Reduction For 7 Seconds

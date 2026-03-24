@@ -2305,9 +2305,23 @@ void EventsHurt_AttackerZoey(Handle hEvent, int iAttacker, int iVictim)
 	if (g_iChosenSurvivor[iAttacker] != ZOEY ||
 		g_bTalentsConfirmed[iAttacker] == false ||
 		g_iClientTeam[iAttacker] != TEAM_SURVIVORS ||
-		g_iClientTeam[iVictim] != TEAM_INFECTED ||
 		RunClientChecks(iAttacker) == false ||
-		IsFakeClient(iAttacker) == true ||
+		IsFakeClient(iAttacker) == true)
+		return;
+
+	// Talent 1 - Resilient Resuscitation: Negate all friendly fire damage
+	if (g_iZoeyTalent1Level[iAttacker] > 0 &&
+		g_iClientTeam[iVictim] == TEAM_SURVIVORS &&
+		RunClientChecks(iVictim) == true &&
+		iAttacker != iVictim)
+	{
+		int iDmgAmount = GetEventInt(hEvent, "dmg_health");
+		if (iDmgAmount > 0)
+			SetPlayerHealth(iVictim, -1, GetPlayerHealth(iVictim) + iDmgAmount);
+		return;
+	}
+
+	if (g_iClientTeam[iVictim] != TEAM_INFECTED ||
 		g_iZoeyTalent2Level[iAttacker] <= 0)
 		return;
 

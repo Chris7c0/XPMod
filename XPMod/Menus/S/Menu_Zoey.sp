@@ -86,6 +86,7 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 			\n \
 			\n +40%% Revive Speed\
 			\n +25%% Movement Speed While Holding A Healing Item\
+			\n Zoey Deals No Friendly Fire Damage\
 			\n \
 			\n Revive Bonuses:\
 			\n - Revived Ally Gains +20%% Damage Reduction For 7 Seconds\
