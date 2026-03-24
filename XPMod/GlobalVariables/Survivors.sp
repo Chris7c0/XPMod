@@ -524,6 +524,7 @@ float g_fZoeySacrificialAidBleedoutStopEndTime[MAXPLAYERS + 1] = {-1.0, ...};
 int g_iZoeySacrificialAidBleedoutLastHealth[MAXPLAYERS + 1] = {0, ...};
 int g_iZoeyMedicalExpertiseBileSerial[MAXPLAYERS + 1] = {0, ...};
 int g_iZoeySacrificialAidRegenTicksRemaining[MAXPLAYERS + 1] = {0, ...};
+int g_iZoeySacrificialAidRegenTargetUserId[MAXPLAYERS + 1] = {0, ...};
 int g_iZoeyInstantInterventionTargetUserId[MAXPLAYERS + 1] = {0, ...};
 bool g_bZoeyInstantInterventionWalkHeld[MAXPLAYERS + 1] = {false, ...};
 float g_fZoeyInstantInterventionReviveSpeedEndTime[MAXPLAYERS + 1] = {-1.0, ...};

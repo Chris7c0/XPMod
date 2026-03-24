@@ -1,17 +1,25 @@
 void Handle1SecondClientTimers_Zoey(int iClient)
 {
-	if (g_iZoeySacrificialAidRegenTicksRemaining[iClient] > 0)
+	if (g_iZoeySacrificialAidRegenTicksRemaining[iClient] <= 0)
+		return;
+
+	int iTarget = GetClientOfUserId(g_iZoeySacrificialAidRegenTargetUserId[iClient]);
+	if (RunClientChecks(iTarget) == false ||
+		IsPlayerAlive(iTarget) == false ||
+		g_iClientTeam[iTarget] != TEAM_SURVIVORS ||
+		IsZoeyClientDownedOrHanging(iTarget) ||
+		IsIncap(iTarget))
 	{
-		if (IsZoeyClientDownedOrHanging(iClient) || IsIncap(iClient))
-		{
-			g_iZoeySacrificialAidRegenTicksRemaining[iClient] = 0;
-			return;
-		}
-
-		ApplyZoeySharingIsCaringPermanentHeal(iClient, ZOEY_SACRIFICIAL_AID_MAJOR_REGEN_HP_PER_TICK);
-
-		g_iZoeySacrificialAidRegenTicksRemaining[iClient]--;
+		g_iZoeySacrificialAidRegenTicksRemaining[iClient] = 0;
+		g_iZoeySacrificialAidRegenTargetUserId[iClient] = 0;
+		return;
 	}
+
+	ApplyZoeySharingIsCaringPermanentHeal(iTarget, ZOEY_SACRIFICIAL_AID_MAJOR_REGEN_HP_PER_TICK);
+
+	g_iZoeySacrificialAidRegenTicksRemaining[iClient]--;
+	if (g_iZoeySacrificialAidRegenTicksRemaining[iClient] <= 0)
+		g_iZoeySacrificialAidRegenTargetUserId[iClient] = 0;
 }
 
 Action TimerZoeyMeleeSwapCooldown(Handle timer, int iClient)
@@ -40,24 +48,23 @@ Action TimerZoeyMedicalExpertiseEndBile(Handle timer, Handle hDataPackage)
 	return Plugin_Stop;
 }
 
-Action TimerZoeySacrificialAidBleedoutCheck(Handle timer, int iUserID)
+Action TimerZoeySacrificialAidBleedoutCheck(Handle timer, int iTarget)
 {
-	int iTarget = GetClientOfUserId(iUserID);
 	if (RunClientChecks(iTarget) == false ||
 		IsPlayerAlive(iTarget) == false ||
 		g_iClientTeam[iTarget] != TEAM_SURVIVORS ||
 		IsIncap(iTarget) == false)
 	{
-		if (iTarget > 0)
-			StopZoeySacrificialAidBleedoutProtection(iTarget);
-
+		g_fZoeySacrificialAidBleedoutStopEndTime[iTarget] = -1.0;
+		g_iZoeySacrificialAidBleedoutLastHealth[iTarget] = 0;
 		g_hTimer_ZoeySacrificialAidBleedoutCheck[iTarget] = null;
 		return Plugin_Stop;
 	}
 
 	if (g_fZoeySacrificialAidBleedoutStopEndTime[iTarget] <= GetGameTime())
 	{
-		StopZoeySacrificialAidBleedoutProtection(iTarget);
+		g_fZoeySacrificialAidBleedoutStopEndTime[iTarget] = -1.0;
+		g_iZoeySacrificialAidBleedoutLastHealth[iTarget] = 0;
 		g_hTimer_ZoeySacrificialAidBleedoutCheck[iTarget] = null;
 		return Plugin_Stop;
 	}
@@ -65,7 +72,8 @@ Action TimerZoeySacrificialAidBleedoutCheck(Handle timer, int iUserID)
 	int iCurrentIncapHealth = GetEntProp(iTarget, Prop_Data, "m_iHealth");
 	if (iCurrentIncapHealth <= 0)
 	{
-		StopZoeySacrificialAidBleedoutProtection(iTarget);
+		g_fZoeySacrificialAidBleedoutStopEndTime[iTarget] = -1.0;
+		g_iZoeySacrificialAidBleedoutLastHealth[iTarget] = 0;
 		g_hTimer_ZoeySacrificialAidBleedoutCheck[iTarget] = null;
 		return Plugin_Stop;
 	}
@@ -74,12 +82,8 @@ Action TimerZoeySacrificialAidBleedoutCheck(Handle timer, int iUserID)
 	if (iLastRecordedHealth > 0 &&
 		iCurrentIncapHealth < iLastRecordedHealth)
 	{
-		int iHealthLost = iLastRecordedHealth - iCurrentIncapHealth;
-		if (iHealthLost == 1)
-		{
-			SetEntProp(iTarget, Prop_Data, "m_iHealth", iCurrentIncapHealth + 1);
-			iCurrentIncapHealth++;
-		}
+		SetEntProp(iTarget, Prop_Data, "m_iHealth", iLastRecordedHealth);
+		iCurrentIncapHealth = iLastRecordedHealth;
 	}
 
 	g_iZoeySacrificialAidBleedoutLastHealth[iTarget] = iCurrentIncapHealth;

@@ -29,6 +29,7 @@ void TalentsLoad_Zoey(int iClient)
 	g_fZoeySacrificialAidBleedoutStopEndTime[iClient] = -1.0;
 	g_iZoeySacrificialAidBleedoutLastHealth[iClient] = 0;
 	g_iZoeySacrificialAidRegenTicksRemaining[iClient] = 0;
+	g_iZoeySacrificialAidRegenTargetUserId[iClient] = 0;
 	g_iZoeyMedicalExpertiseBileSerial[iClient] = 0;
 
 	if (g_bConfirmedSurvivorTalentsGivenThisRound[iClient] == false &&
@@ -86,6 +87,7 @@ void ResetZoeyTalentsRuntimeState(int iClient)
 	g_fZoeySacrificialAidBleedoutStopEndTime[iClient] = -1.0;
 	g_iZoeySacrificialAidBleedoutLastHealth[iClient] = 0;
 	g_iZoeySacrificialAidRegenTicksRemaining[iClient] = 0;
+	g_iZoeySacrificialAidRegenTargetUserId[iClient] = 0;
 	g_iZoeyMedicalExpertiseBileSerial[iClient] = 0;
 	delete g_hTimer_ZoeySacrificialAidBleedoutCheck[iClient];
 	g_bCanZoeyMeleeSwap[iClient] = false;
@@ -737,7 +739,7 @@ void StartZoeySacrificialAidBleedoutProtection(int iTarget, float fDuration)
 	g_iZoeySacrificialAidBleedoutLastHealth[iTarget] = GetEntProp(iTarget, Prop_Data, "m_iHealth");
 
 	delete g_hTimer_ZoeySacrificialAidBleedoutCheck[iTarget];
-	g_hTimer_ZoeySacrificialAidBleedoutCheck[iTarget] = CreateTimer(ZOEY_SACRIFICIAL_AID_BLEEDOUT_CHECK_INTERVAL, TimerZoeySacrificialAidBleedoutCheck, GetClientUserId(iTarget), TIMER_REPEAT);
+	g_hTimer_ZoeySacrificialAidBleedoutCheck[iTarget] = CreateTimer(ZOEY_SACRIFICIAL_AID_BLEEDOUT_CHECK_INTERVAL, TimerZoeySacrificialAidBleedoutCheck, iTarget, TIMER_REPEAT);
 }
 
 void ReviveZoeySacrificialAidTarget(int iClient, int iTarget)
@@ -914,7 +916,8 @@ bool TryUseZoeySacrificialAid(int iClient, int iTarget, int iCost)
 	{
 		case ZOEY_SACRIFICIAL_AID_MAJOR_COST:
 		{
-			g_iZoeySacrificialAidRegenTicksRemaining[iTarget] = ZOEY_SACRIFICIAL_AID_MAJOR_REGEN_TICKS;
+			g_iZoeySacrificialAidRegenTicksRemaining[iClient] = ZOEY_SACRIFICIAL_AID_MAJOR_REGEN_TICKS;
+			g_iZoeySacrificialAidRegenTargetUserId[iClient] = GetClientUserId(iTarget);
 
 			if (IsFakeClient(iClient) == false)
 				PrintHintText(iClient, "Sacrificial Aid: Regenerating %N for %d HP/s over %d seconds", iTarget, ZOEY_SACRIFICIAL_AID_MAJOR_REGEN_HP_PER_TICK, ZOEY_SACRIFICIAL_AID_MAJOR_REGEN_TICKS);

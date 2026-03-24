@@ -186,6 +186,7 @@ void ResetClientVariablesForRound(int iClient)
 	g_fZoeySacrificialAidBleedoutStopEndTime[iClient] = -1.0;
 	g_iZoeySacrificialAidBleedoutLastHealth[iClient] = 0;
 	g_iZoeySacrificialAidRegenTicksRemaining[iClient] = 0;
+	g_iZoeySacrificialAidRegenTargetUserId[iClient] = 0;
 	g_iZoeyMedicalExpertiseBileSerial[iClient] = 0;
 	g_bCanZoeyMeleeSwap[iClient] = false;
 	g_bZoeyHasMeleeStashed[iClient] = false;
@@ -488,6 +489,7 @@ void ResetAllVariables(int iClient)
 	g_fZoeySacrificialAidBleedoutStopEndTime[iClient] = -1.0;
 	g_iZoeySacrificialAidBleedoutLastHealth[iClient] = 0;
 	g_iZoeySacrificialAidRegenTicksRemaining[iClient] = 0;
+	g_iZoeySacrificialAidRegenTargetUserId[iClient] = 0;
 	g_iZoeyMedicalExpertiseBileSerial[iClient] = 0;
 	g_bCanZoeyMeleeSwap[iClient] = false;
 	g_bZoeyHasMeleeStashed[iClient] = false;
