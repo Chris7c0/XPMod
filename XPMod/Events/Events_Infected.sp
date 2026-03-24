@@ -401,8 +401,14 @@ Action Event_InfectedHurt(Handle hEvent, const char[] strName, bool bDontBroadca
 	
 	if(g_bUsingFireStorm[attacker]==true)
 	{
+		// // Do not set witches on fire, use this later when we have different types of witches and want to block fire.
+		// char strEntityClassname[32];
+		// GetEntityClassname(victim, strEntityClassname, sizeof(strEntityClassname));
+		// if (StrEqual(strEntityClassname, "witch", false) == false)
+		// {
 		float time = (float(g_iFireLevel[attacker]) * 6.0);
 		IgniteEntity(victim, time, false);
+		// }
 	}
 	
 	return Plugin_Continue;

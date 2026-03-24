@@ -2362,6 +2362,12 @@ void EventsInfectedHurt_Zoey(Handle hEvent, int iAttacker, int iVictim)
 		RunEntityChecks(iVictim) == false)
 		return;
 
+	// Do not apply explosive pistol damage to witches
+	char strEntityClassname[32];
+	GetEntityClassname(iVictim, strEntityClassname, sizeof(strEntityClassname));
+	if (StrEqual(strEntityClassname, "witch", false))
+		return;
+
 	if (g_bZoeySuppressSyntheticCIHurt[iAttacker] == true)
 		return;
 
