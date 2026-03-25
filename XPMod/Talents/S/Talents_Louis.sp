@@ -51,6 +51,11 @@ void SetPlayerTalentMaxHealth_Louis(int iClient, bool bFillInHealthGap = true)
 		bFillInHealthGap);
 }
 
+bool CanLouisEarnXMR()
+{
+	// Keep Louis from farming wallet income in the saferoom before the round is underway.
+	return g_bPlayerLeftStartArea;
+}
 
 bool OnPlayerRunCmd_Louis(int iClient, int &iButtons)
 {
@@ -403,7 +408,8 @@ void EventsDeath_AttackerLouis(Handle hEvent, int iAttacker, int iVictim)
 				}
 
 				// Give XMR
-				g_fLouisXMRWallet[iAttacker] += LOUIS_HEADSHOT_XMR_AMOUNT_CI;
+				if (CanLouisEarnXMR())
+					g_fLouisXMRWallet[iAttacker] += LOUIS_HEADSHOT_XMR_AMOUNT_CI;
 			}
 
 			// SI Headshot
@@ -431,8 +437,11 @@ void EventsDeath_AttackerLouis(Handle hEvent, int iAttacker, int iVictim)
 						case 1:
 						{
 							// Give XMR Reward
-							g_fLouisXMRWallet[iAttacker] += LOUIS_NEUROSURGEON_SI_XMR_REWARD_AMOUNT;
-							PrintToChat(iAttacker, "\x03[XPMod] \x05You earned %0.1f XMR for your neurosurgery efforts!", LOUIS_NEUROSURGEON_SI_XMR_REWARD_AMOUNT);
+							if (CanLouisEarnXMR())
+							{
+								g_fLouisXMRWallet[iAttacker] += LOUIS_NEUROSURGEON_SI_XMR_REWARD_AMOUNT;
+								PrintToChat(iAttacker, "\x03[XPMod] \x05You earned %0.1f XMR for your neurosurgery efforts!", LOUIS_NEUROSURGEON_SI_XMR_REWARD_AMOUNT);
+							}
 						}
 						case 2:
 						{
@@ -448,7 +457,8 @@ void EventsDeath_AttackerLouis(Handle hEvent, int iAttacker, int iVictim)
 				}
 
 				// Give XMR
-				g_fLouisXMRWallet[iAttacker] += LOUIS_HEADSHOT_XMR_AMOUNT_SI;
+				if (CanLouisEarnXMR())
+					g_fLouisXMRWallet[iAttacker] += LOUIS_HEADSHOT_XMR_AMOUNT_SI;
 			}
 		}
 	}
