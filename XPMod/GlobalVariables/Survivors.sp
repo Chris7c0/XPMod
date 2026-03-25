@@ -370,7 +370,7 @@ bool g_bLouisLaserModeToggleCooldown[MAXPLAYERS + 1] = {false, ...};
 #define LOUIS_HEADSHOT_SPEED_RETENTION_TIME_SI          60.0
 #define LOUIS_STASHED_INVENTORY_MAX_PILLS               4
 #define LOUIS_PILLS_USED_BONUS_DURATION                 90.0
-#define LOUIS_PILLS_USED_BONUS_DAMAGE_PER_LEVEL         0.04
+#define LOUIS_PILLS_USED_BONUS_DAMAGE_PER_LEVEL         0.03
 #define LOUIS_PILLS_USED_HEALTH_REDUCTION_PER_LEVEL     2
 #define LOUIS_PILLS_USED_MAX_STACKS                     3
 bool g_bLouisTeleportCoolingDown[MAXPLAYERS + 1] = {false, ...};

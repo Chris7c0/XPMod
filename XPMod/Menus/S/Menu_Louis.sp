@@ -276,7 +276,7 @@ Action LouisTalent6MenuDraw(int iClient)
 		\n	- -2 Temp Health Per Level\
 		\n	- +2%%%% Speed per Level for 90 Seconds\
 		\n		- Louis Capped At +15%%%% Speed\
-		\n	- +4%%%% Damage per Level for 90 Seconds  \
+		\n	- +3%%%% Damage per Level for 90 Seconds  \
 		\n	- 3 Stacks Max\
 		\n \
 		\n Bind 2: H3D 5h0p\
@@ -450,4 +450,3 @@ void LouisTalent6MenuHandler(Menu menu, MenuAction action, int iClient, int item
         }
     }
 }
-
