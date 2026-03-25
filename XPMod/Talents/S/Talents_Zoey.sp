@@ -48,7 +48,7 @@ void TalentsLoad_Zoey(int iClient)
 
 	if (g_iZoeyTalent2Level[iClient] > 0)
 	{
-		EnsureZoeyDualPistols(iClient);
+		EnsureZoeyTriggerHappyPistol(iClient);
 		g_bCanZoeyMeleeSwap[iClient] = true;
 		g_bZoeyHasMeleeStashed[iClient] = false;
 		g_strZoeyStashedMelee[iClient] = "";
@@ -1989,6 +1989,38 @@ bool OnPlayerRunCmd_Zoey(int iClient, int &iButtons)
 	return bButtonsChanged;
 }
 
+void HandleFasterAttacking_Zoey(int iClient, int iButtons)
+{
+	if (g_iChosenSurvivor[iClient] != ZOEY ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
+		g_bTalentsConfirmed[iClient] == false ||
+		g_iZoeyTalent2Level[iClient] <= 0)
+	{
+		return;
+	}
+
+	if (!(iButtons & IN_ATTACK))
+		return;
+
+	int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
+	if (RunEntityChecks(iActiveWeaponID) == false)
+		return;
+
+	int iActiveWeaponSlot = GetActiveWeaponSlot(iClient, iActiveWeaponID);
+	if (iActiveWeaponSlot != 1)
+		return;
+
+	int iWeaponIndex = GetWeaponIndexByFindingAndComparingViewModelString(iClient, iActiveWeaponID);
+	if (iWeaponIndex != ITEM_P220)
+		return;
+
+	float fDualPistolFireRateMultiplier = ITEM_WEAPON_BASE_ROF[ITEM_P220] / ITEM_WEAPON_BASE_ROF[ITEM_GLOCK_P220];
+	if (fDualPistolFireRateMultiplier <= 1.0)
+		return;
+
+	ChangeWeaponSpeed(iClient, fDualPistolFireRateMultiplier, iActiveWeaponSlot);
+}
+
 bool HandleZoeyInstantInterventionInput(int iClient, int &iButtons)
 {
 	SuppressNeverUsedWarning(iButtons);
@@ -2276,14 +2308,13 @@ bool IsZoeyTriggerHappyWeaponClass(const char[] strWeaponClass)
 
 bool IsZoeyTriggerHappyNormalClipAmmo(int iClipAmmo)
 {
-	return iClipAmmo == 15 || iClipAmmo == 30;
+	return iClipAmmo == 15;
 }
 
 bool IsZoeyTriggerHappyEventWeapon(const char[] strWeaponClass)
 {
 	return StrEqual(strWeaponClass, "weapon_pistol", false) ||
-		StrEqual(strWeaponClass, "pistol", false) ||
-		StrEqual(strWeaponClass, "dual_pistols", false);
+		StrEqual(strWeaponClass, "pistol", false);
 }
 
 void RecordZoeyTriggerHappyShot(int iClient, const char[] strWeaponClass)
@@ -2320,7 +2351,7 @@ void StartZoeyIgnoreCheatPistolPickupWindow(int iClient, float fDuration = 0.3)
 		g_fZoeyIgnoreCheatPistolPickupUntil[iClient] = fExpireTime;
 }
 
-bool IsZoeyHoldingMachinePistols(int iClient)
+bool IsZoeyHoldingTriggerHappyPistol(int iClient)
 {
 	if (RunClientChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false)
@@ -2329,6 +2360,23 @@ bool IsZoeyHoldingMachinePistols(int iClient)
 	char strCurrentWeapon[32];
 	GetClientWeapon(iClient, strCurrentWeapon, sizeof(strCurrentWeapon));
 	return IsZoeyTriggerHappyWeaponClass(strCurrentWeapon);
+}
+
+bool IsZoeyHoldingSingleTriggerHappyPistol(int iClient, int iWeaponID = -1)
+{
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false)
+	{
+		return false;
+	}
+
+	if (RunEntityChecks(iWeaponID) == false)
+		iWeaponID = GetPlayerWeaponSlot(iClient, 1);
+
+	if (RunEntityChecks(iWeaponID) == false)
+		return false;
+
+	return GetWeaponIndexByFindingAndComparingViewModelString(iClient, iWeaponID) == ITEM_P220;
 }
 
 int RemoveZoeyOwnedPistolWeapons(int iClient)
@@ -2358,7 +2406,7 @@ int RemoveZoeyOwnedPistolWeapons(int iClient)
 	return iRemovedWeapons;
 }
 
-void EnsureZoeyDualPistols(int iClient)
+void EnsureZoeyTriggerHappyPistol(int iClient, int iDesiredClipAmmo = -1)
 {
 	if (RunClientChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false)
@@ -2373,19 +2421,30 @@ void EnsureZoeyDualPistols(int iClient)
 	if (IsZoeyTriggerHappyWeaponClass(strWeaponClass) == false)
 		return;
 
-	int iCurrentClipAmmo = GetEntProp(iSecondaryWeapon, Prop_Data, "m_iClip1");
-	if (iCurrentClipAmmo <= 15)
+	if (iDesiredClipAmmo < 0)
+		iDesiredClipAmmo = GetEntProp(iSecondaryWeapon, Prop_Data, "m_iClip1");
+
+	if (IsZoeyHoldingSingleTriggerHappyPistol(iClient, iSecondaryWeapon) == false)
 	{
-		StartZoeyIgnoreCheatPistolPickupWindow(iClient);
+		if (RemoveZoeyOwnedPistolWeapons(iClient) <= 0)
+		{
+			RemovePlayerItem(iClient, iSecondaryWeapon);
+			RemoveEntity(iSecondaryWeapon);
+		}
+
+		StartZoeyIgnoreCheatPistolPickupWindow(iClient, 0.5);
 		RunCheatCommand(iClient, "give", "give pistol");
+
+		iSecondaryWeapon = GetPlayerWeaponSlot(iClient, 1);
+		if (RunEntityChecks(iSecondaryWeapon) == false)
+			return;
 	}
 
-	if (RunEntityChecks(iSecondaryWeapon))
-	{
-		iCurrentClipAmmo = GetEntProp(iSecondaryWeapon, Prop_Data, "m_iClip1");
-		if (iCurrentClipAmmo > 0 && iCurrentClipAmmo < ZOEY_TRIGGER_HAPPY_CLIP_SIZE)
-			SetEntData(iSecondaryWeapon, g_iOffset_Clip1, ZOEY_TRIGGER_HAPPY_CLIP_SIZE, true);
-	}
+	if (iDesiredClipAmmo > ZOEY_TRIGGER_HAPPY_CLIP_SIZE)
+		iDesiredClipAmmo = ZOEY_TRIGGER_HAPPY_CLIP_SIZE;
+
+	if (iDesiredClipAmmo >= 0)
+		SetEntData(iSecondaryWeapon, g_iOffset_Clip1, iDesiredClipAmmo, true);
 }
 
 void StripZoeyPrimaryWeapon(int iClient)
@@ -2419,6 +2478,14 @@ void HandleZoeyTriggerHappyState(int iClient)
 	GetEntityClassname(iSecondaryWeapon, strWeaponClass, sizeof(strWeaponClass));
 	if (IsZoeyTriggerHappyWeaponClass(strWeaponClass) == false)
 		return;
+
+	if (IsZoeyHoldingSingleTriggerHappyPistol(iClient, iSecondaryWeapon) == false)
+	{
+		EnsureZoeyTriggerHappyPistol(iClient, ZOEY_TRIGGER_HAPPY_CLIP_SIZE);
+		iSecondaryWeapon = GetPlayerWeaponSlot(iClient, 1);
+		if (RunEntityChecks(iSecondaryWeapon) == false)
+			return;
+	}
 
 	int iCurrentClipAmmo = GetEntProp(iSecondaryWeapon, Prop_Data, "m_iClip1");
 	if (iCurrentClipAmmo > ZOEY_TRIGGER_HAPPY_CLIP_SIZE)
@@ -2480,7 +2547,7 @@ bool TryZoeyMeleeSwap(int iClient)
 	if (IsValidEntity(iActiveWeaponID) == false)
 		return false;
 
-	// Swap FROM melee TO pistols
+	// Swap FROM melee TO pistol
 	if (bHoldingMelee)
 	{
 		// Save the melee script name
@@ -2491,27 +2558,23 @@ bool TryZoeyMeleeSwap(int iClient)
 		RemovePlayerItem(iClient, iActiveWeaponID);
 		RemoveEntity(iActiveWeaponID);
 
-		// Give pistols directly and suppress the pickup hook so it does not add extras.
+		// Give Zoey her Trigger Happy pistol directly and suppress the pickup hook.
 		StartZoeyIgnoreCheatPistolPickupWindow(iClient, 0.5);
 		RunCheatCommand(iClient, "give", "give pistol");
-		EnsureZoeyDualPistols(iClient);
-
-		int iNewWeapon = GetPlayerWeaponSlot(iClient, 1);
-		if (RunEntityChecks(iNewWeapon))
-			SetEntData(iNewWeapon, g_iOffset_Clip1, g_iZoeyPistolSavedClip[iClient], true);
+		EnsureZoeyTriggerHappyPistol(iClient, g_iZoeyPistolSavedClip[iClient]);
 
 		if (IsFakeClient(iClient) == false)
-			PrintHintText(iClient, "Swapped to Machine Pistols.\nMelee stashed: %s", g_strZoeyStashedMelee[iClient]);
+			PrintHintText(iClient, "Swapped to Trigger Happy Pistol.\nMelee stashed: %s", g_strZoeyStashedMelee[iClient]);
 		return false;
 	}
-	// Swap FROM pistols TO stashed melee
+	// Swap FROM pistol TO stashed melee
 	else if (bHoldingPistol && g_bZoeyHasMeleeStashed[iClient])
 	{
 		// Save current pistol clip ammo
 		int iCurrentClipAmmo = GetEntProp(iActiveWeaponID, Prop_Data, "m_iClip1");
 		g_iZoeyPistolSavedClip[iClient] = iCurrentClipAmmo;
 
-		// Purge every owned pistol entity so restoring melee cannot eject a leftover duplicate.
+		// Purge any owned pistol entity so restoring melee sees a clean secondary slot.
 		if (RemoveZoeyOwnedPistolWeapons(iClient) <= 0)
 		{
 			RemovePlayerItem(iClient, iActiveWeaponID);
@@ -2562,7 +2625,7 @@ bool HandleZoeyWalkUseInput(int iClient, int &iButtons)
 	}
 
 	if (g_iZoeyTalent2Level[iClient] > 0 &&
-		IsZoeyHoldingMachinePistols(iClient) == true)
+		IsZoeyHoldingTriggerHappyPistol(iClient) == true)
 	{
 		ToggleZoeyMopArmed(iClient);
 		iButtons &= ~IN_USE;
@@ -2720,8 +2783,10 @@ void EventsHurt_AttackerZoey(Handle hEvent, int iAttacker, int iVictim)
 		return;
 
 	iBonusDamage = CalculateDamageTakenForVictimTalents(iVictim, iBonusDamage, strWeaponClass);
-	SetPlayerHealth(iVictim, iAttacker, iVictimHealth - iBonusDamage);
-	DetonateZoeyTriggerHappyImpact(iVictim);
+	int iPostBonusHealth = iVictimHealth - iBonusDamage;
+	SetPlayerHealth(iVictim, iAttacker, iPostBonusHealth);
+	if (iPostBonusHealth <= 0)
+		DetonateZoeyTriggerHappyImpact(iVictim);
 }
 
 void EventsInfectedHurt_Zoey(Handle hEvent, int iAttacker, int iVictim)
@@ -2820,11 +2885,7 @@ void EventsItemPickUp_Zoey(int iClient, const char[] strWeaponClass)
 		if (g_fZoeyIgnoreCheatPistolPickupUntil[iClient] > GetGameTime())
 			return;
 
-		EnsureZoeyDualPistols(iClient);
-
-		int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-		if (RunEntityChecks(iActiveWeaponID))
-			SetEntData(iActiveWeaponID, g_iOffset_Clip1, ZOEY_TRIGGER_HAPPY_CLIP_SIZE, true);
+		EnsureZoeyTriggerHappyPistol(iClient, ZOEY_TRIGGER_HAPPY_CLIP_SIZE);
 		return;
 	}
 

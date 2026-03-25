@@ -134,6 +134,7 @@ public Action OnPlayerRunCmd(int iClient, int &iButtons, int &iImpulse, float fV
 	{
 		HandleFasterAttacking_Ellis(iClient, iButtons);
 		HandleFasterAttacking_Rochelle(iClient, iButtons);
+		HandleFasterAttacking_Zoey(iClient, iButtons);
 	}
 	
 	//Charger Earthquake Bind 2
