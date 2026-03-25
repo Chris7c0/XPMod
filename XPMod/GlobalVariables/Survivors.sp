@@ -353,7 +353,7 @@ bool g_bNickHealCooldown;
 #define LOUIS_TELEPORT_BLINDNESS_FADE_TIME              12.0
 #define LOUIS_TELEPORT_BLINDNESS_STAY_FACTOR            1.5
 #define LOUIS_TELEPORT_MOVEMENT_PENALTY_TIME            10.0
-#define LOUIS_TELEPORT_MOVEMENT_PENALTY_AMOUNT          0.05
+#define LOUIS_TELEPORT_MOVEMENT_PENALTY_AMOUNT          0.10
 #define LOUIS_SPEED_MAX_LASER                           1.10
 #define LOUIS_SPEED_MAX_NOLASER                         1.25
 bool g_bLouisLaserModeActivated[MAXPLAYERS + 1] = {true, ...};
