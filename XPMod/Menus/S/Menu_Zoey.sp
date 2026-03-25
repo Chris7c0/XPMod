@@ -146,16 +146,16 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 			%s\t\t%s:\
 			\n \
 			\n Zoey's Healing Splashes To Nearby Teammates\
-			\n - Aura Radius Scales From 7 To 15 Feet\
+			\n - 15 Foot Aura Radius\
 			\n - Does Not Heal Zoey\
 			\n - Direct Medkit Target Does Not Receive Extra Splash Healing\
 			\n - Stash 2 Extra Medkits/Defibrillators\
 			\n - Press [WALK] + [ZOOM] While Holding One To Cycle Them\
 			\n \
-			\n Shared Healing Scales By Talent Level:\
-			\n - Medkits Share Up To 25%%%% Permanent Health\
-			\n - Pills Share Up To 50%%%% Permanent Health\
-			\n - Adrenaline Shares Up To 80%%%% Permanent Health\
+			\n Shared Healing:\
+			\n - Medkits Share 25%%%% Permanent Health\
+			\n - Pills Share 30%%%% Permanent Health\
+			\n - Adrenaline Shares 50%%%% Permanent Health\
 			\n ",
 			strStartingNewLines,
 			strTalentName);

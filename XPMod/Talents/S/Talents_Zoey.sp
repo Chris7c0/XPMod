@@ -286,28 +286,27 @@ float GetZoeySharingIsCaringRadius(int iClient)
 	if (IsZoeySharingIsCaringActive(iClient) == false)
 		return 0.0;
 
-	return ZOEY_SHARING_IS_CARING_RADIUS_BASE +
-		(float(g_iZoeyTalent4Level[iClient]) * ZOEY_SHARING_IS_CARING_RADIUS_PER_LEVEL);
+	return ZOEY_SHARING_IS_CARING_RADIUS;
 }
 
 float GetZoeySharingIsCaringMedkitShareMultiplier(int iClient)
 {
 	return IsZoeySharingIsCaringActive(iClient) ?
-		float(g_iZoeyTalent4Level[iClient]) * ZOEY_SHARING_IS_CARING_MEDKIT_SHARE_PER_LEVEL :
+		ZOEY_SHARING_IS_CARING_MEDKIT_SHARE_MULTIPLIER :
 		0.0;
 }
 
 float GetZoeySharingIsCaringPillsShareMultiplier(int iClient)
 {
 	return IsZoeySharingIsCaringActive(iClient) ?
-		float(g_iZoeyTalent4Level[iClient]) * ZOEY_SHARING_IS_CARING_PILLS_SHARE_PER_LEVEL :
+		ZOEY_SHARING_IS_CARING_PILLS_SHARE_MULTIPLIER :
 		0.0;
 }
 
 float GetZoeySharingIsCaringAdrenalineShareMultiplier(int iClient)
 {
 	return IsZoeySharingIsCaringActive(iClient) ?
-		float(g_iZoeyTalent4Level[iClient]) * ZOEY_SHARING_IS_CARING_ADRENALINE_SHARE_PER_LEVEL :
+		ZOEY_SHARING_IS_CARING_ADRENALINE_SHARE_MULTIPLIER :
 		0.0;
 }
 
