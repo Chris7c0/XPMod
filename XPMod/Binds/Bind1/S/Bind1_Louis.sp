@@ -140,7 +140,10 @@ Action WarezStationMenuDraw(int iClient)
 	AddMenuItem(menu, "option2", "+25 HP Max Health");
 	AddMenuItem(menu, "option3", "-25% Team Screen Shake");
 	AddMenuItem(menu, "option4", "+3 Bile Cleansing Kits");
-	AddMenuItem(menu, "option5", "Receive Pills + Adrenaline");
+	if (g_bLouisWarezStationPillsAndAdrenalineUsed)
+		AddMenuItem(menu, "option5", "Receive Pills + Adrenaline [USED]", ITEMDRAW_DISABLED);
+	else
+		AddMenuItem(menu, "option5", "Receive Pills + Adrenaline");
 	AddMenuItem(menu, "option6", "Receive Full Ammo");
 	AddMenuItem(menu, "option7", "I'm Feeling Lucky\n ")
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
@@ -222,11 +225,19 @@ void WarezStationMenuHandler(Menu menu, MenuAction action, int iClient, int item
 			}
 			case 4:	// Pills and Adrenaline
 			{
+				if (g_bLouisWarezStationPillsAndAdrenalineUsed)
+				{
+					PrintHintText(iClient, "Pills and Adrenaline has already been used this round.");
+					WarezStationMenuDraw(iClient);
+					return;
+				}
+
 				RunCheatCommand(iClient, "give", "give pain_pills");
 				RunCheatCommand(iClient, "give", "give pain_pills");
 				RunCheatCommand(iClient, "give", "give pain_pills");
 				RunCheatCommand(iClient, "give", "give adrenaline");
 				RunCheatCommand(iClient, "give", "give adrenaline");
+				g_bLouisWarezStationPillsAndAdrenalineUsed = true;
 				PrintToChatAll("\x03[XPMod] \x05%N r3C31v3D w4R3z: \x04Pills and Adrenaline", iClient);
 			}
 			case 5:	// Ammo

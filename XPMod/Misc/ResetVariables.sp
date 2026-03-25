@@ -64,6 +64,7 @@ void ResetAllVariablesForRound()
 	g_fZoeyInstantInterventionGlobalCooldownEndTime = -1.0;
 	g_iZoeySacrificialAidResurrectUses = 0;
 	g_iZoeyInstantInterventionDownedCount = 0;
+	g_bLouisWarezStationPillsAndAdrenalineUsed = false;
 	// g_bSomeoneAttacksFaster = false;
 
 	// Clear bind uses tracking (reconnect persistence is per-round only)

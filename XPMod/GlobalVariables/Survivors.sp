@@ -394,6 +394,7 @@ bool g_bWareStationClientAlreadyServiced[MAXPLAYERS + 1][MAXPLAYERS + 1];
 int g_iWareStationOwnerIDOfCurrentlyViewedStation[MAXPLAYERS + 1];
 float g_xyzWarezStationLocation[MAXPLAYERS + 1][3];
 float g_fWarezStationSpeedBoost[MAXPLAYERS + 1];
+bool g_bLouisWarezStationPillsAndAdrenalineUsed = false;
 float g_fLouisXMRWallet[MAXPLAYERS + 1];
 #define LOUIS_HEADSHOT_XMR_STARTING_AMOUNT              2.6
 #define LOUIS_HEADSHOT_XMR_AMOUNT_CI                    0.1
