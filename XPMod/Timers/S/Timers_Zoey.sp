@@ -44,9 +44,6 @@ Action TimerZoeyRestoreStashedMelee(Handle timer, int iClient)
 	FormatEx(strGiveCmd, sizeof(strGiveCmd), "give %s", g_strZoeyStashedMelee[iClient]);
 	RunCheatCommand(iClient, "give", strGiveCmd);
 
-	if (IsFakeClient(iClient) == false)
-		PrintHintText(iClient, "%s", g_strZoeyStashedMelee[iClient]);
-
 	return Plugin_Stop;
 }
 

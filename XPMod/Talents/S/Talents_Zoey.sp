@@ -2563,8 +2563,6 @@ bool TryZoeyMeleeSwap(int iClient)
 		RunCheatCommand(iClient, "give", "give pistol");
 		EnsureZoeyTriggerHappyPistol(iClient, g_iZoeyPistolSavedClip[iClient]);
 
-		if (IsFakeClient(iClient) == false)
-			PrintHintText(iClient, "Swapped to Trigger Happy Pistol.\nMelee stashed: %s", g_strZoeyStashedMelee[iClient]);
 		return false;
 	}
 	// Swap FROM pistol TO stashed melee
