@@ -115,7 +115,7 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 				\n - Ammo Is Saved When Swapping\
 				\n \
 				\n Mop 'Til They Drop\
-				\n - Gain 1 Charge Per 5 Pistol Hits On CI/SI\
+				\n - Gain 1 Charge Per 3 Pistol Hits On CI/SI\
 				\n - Press [WALK] + [USE] To Arm\
 				\n - Next Shot Marks A Target And Kills Nearby CI Equal To Stored Charge\
 				\n ",

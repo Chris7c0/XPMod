@@ -29,7 +29,7 @@ Press [WALK] + [USE] To Arm
 Then Shoot Target To Activate Mop The Floor
 - Next Shot Marks A Target; Nearby CI Are Instantly Killed
 - Number Of CI Killed Equals Stored Charge
-- Gain 1 Charge Per 5 Machine-Pistol Hits On CI/SI
+- Gain 1 Charge Per 3 Machine-Pistol Hits On CI/SI
 ```
 
 ### Talent 3: Survivor's Will
