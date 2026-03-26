@@ -110,9 +110,9 @@ bool g_bSmokerVictimGlowDisabled[MAXPLAYERS + 1];
 bool SetMoveTypeBackToNormalOnNextGameFrame[MAXPLAYERS + 1];
 bool g_bIsElectrocuting[MAXPLAYERS + 1];
 #define SMOKER_ELECTORUCTION_MAX_DISTANCE               1200.0  // 150ft, Units here divided by 8 is close to number of feet in game
-#define SMOKER_DOPPELGANGER_MAX_CLONES                  2
+#define SMOKER_DOPPELGANGER_MAX_CLONES                  4
 #define SMOKER_DOPPELGANGER_DURATION                    15.0
-#define SMOKER_DOPPELGANGER_REGEN_PERIOD                30.0
+#define SMOKER_DOPPELGANGER_REGEN_PERIOD                15.0
 #define SMOKER_DOPPELGANGER_COOLDOWN_PERIOD             0.5
 #define SMOKER_DOPPELGANGER_FADE_IN_PERIOD              2.5
 #define SMOKER_DOPPELGANGER_CI_SPAWN_COUNT              4

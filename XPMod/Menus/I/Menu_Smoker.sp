@@ -108,7 +108,7 @@ Action NoxiousMenuDraw(int iClient)
 		\n \
 		\n [PRESS RELOAD] Create Doppelganger On Crosshair\
 		\n	Spawn Clowns & JumboJimmy If Hit\
-		\n	Regens(Max 2)\
+		\n	Regens(Max 4)\
 		\n \
 		\n					Bind 1: Cloud Conversion\
 		\n \
