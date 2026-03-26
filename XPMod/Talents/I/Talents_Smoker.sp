@@ -5,7 +5,7 @@ void TalentsLoad_Smoker(int iClient)
 		if(g_bHasInfectedHealthBeenSet[iClient] == false)
 		{
 			g_bHasInfectedHealthBeenSet[iClient] = true;
-			SetPlayerMaxHealth(iClient, (g_iSmokerTalent1Level[iClient] * SMOKER_BONUS_MAX_HEALTH_PER_LEVEL), true);
+			SetPlayerMaxHealth(iClient, SMOKER_STARTING_MAX_HEALTH, false);
 		}
 	}
 
@@ -39,6 +39,11 @@ void OnGameFrame_Smoker(int iClient)
 	if (g_bTalentsConfirmed[iClient] == false ||
 		g_iSmokerTalent1Level[iClient] <= 0)
 		return;
+
+	// Health Regeneration
+	// Every frame give x hp, 30 fps, so 30 * x hp per second
+	if (GetPlayerHealth(iClient) < GetPlayerMaxHealth(iClient))
+		SetPlayerHealth(iClient, -1, SMOKER_HEALTH_REGEN_PER_FRAME, true);
 
 	// Regeneration of Smoker Doppelganger Decoy Clones
 	if(g_iSmokerDoppelgangerCount[iClient] < SMOKER_DOPPELGANGER_MAX_CLONES && 

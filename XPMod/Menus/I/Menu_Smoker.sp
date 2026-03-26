@@ -54,28 +54,30 @@ Action EnvelopmentMenuDraw(int iClient)
 	SetMenuTitle(menu, "\
 		%s  				Rapid Cell Division (Level %d)\
 		\n \
+		\n%d Max Health\
+		\nRegenerate 60 HP per Second\
+		\n \
 		\nWhile Choking a Victim:\
-		\n	- +5 Max Health per Level\
-		\n	- +2 Bonus Damage per Hit\
-		\n	- Regenerate 30 HP per Second\
-		\n	- Can Move Slowly\
+		\n	+2 Dmg per Hit\
+		\n	Can Move Slowly\
 		\n \
 		\nReduced Tongue Ability Cooldown\
-		\n	- -1 Second Every Three Levels\
+		\n	-1 Second Every Three Levels\
 		\n \
 		\nWhile Alive as Smoker, All Smokers Receive:\
-		\n	- +10%% Increased Tongue Range per Level\
-		\n	- +20%% Increased Tongue Travel Speed per Level    \
-		\n	- +15%% Increased Tongue Drag Speed per Level\
-		\n	- +20%% Increased Tongue Strength per level\
+		\n	+10%% Increased Tongue Range per Level\
+		\n	+20%% Increased Tongue Travel Speed per Level    \
+		\n	+15%% Increased Tongue Drag Speed per Level\
+		\n	+20%% Increased Tongue Strength per level\
 		\n ",
 		strStartingNewLines,
-		g_iSmokerTalent1Level[iClient]);
+		g_iSmokerTalent1Level[iClient],
+		SMOKER_STARTING_MAX_HEALTH);
 	
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
