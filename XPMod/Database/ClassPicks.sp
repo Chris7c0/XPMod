@@ -77,6 +77,9 @@ void SortInfectedPickIDsForStorage(int &iInfectedID1, int &iInfectedID2, int &iI
 
 void SaveSurvivorPick(int iClient)
 {
+	if (!XPSaveForHighLevelsEnabled)
+		return;
+
 	if (g_hDatabase == INVALID_HANDLE)
 		return;
 
@@ -114,6 +117,9 @@ void SaveSurvivorPick(int iClient)
 
 void SaveInfectedPick(int iClient)
 {
+	if (!XPSaveForHighLevelsEnabled)
+		return;
+
 	if (g_hDatabase == INVALID_HANDLE)
 		return;
 
@@ -157,6 +163,9 @@ void SaveInfectedPick(int iClient)
 
 void SaveRoundStats(int iClient)
 {
+	if (!XPSaveForHighLevelsEnabled)
+		return;
+
 	if (g_hDatabase == INVALID_HANDLE)
 		return;
 
