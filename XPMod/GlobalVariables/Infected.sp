@@ -86,7 +86,7 @@ ArrayList g_listEnhancedCIEntities;
 #define ENHANCED_CI_VAMPIRIC_LIFE_STEAL_AMOUNT      250
 
 // Smoker
-#define SMOKER_STARTING_MAX_HEALTH                      250
+#define SMOKER_STARTING_MAX_HEALTH                      350
 #define SMOKER_BONUS_MAX_HEALTH_PER_LEVEL               5
 #define SMOKER_HEALTH_REGEN_PER_FRAME                   1
 #define SMOKER_DEFAULT_TONGUE_COOLDOWN                  15.0
