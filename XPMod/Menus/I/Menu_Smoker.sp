@@ -56,6 +56,7 @@ Action EnvelopmentMenuDraw(int iClient)
 		\n \
 		\nWhile Choking a Victim:\
 		\n	- +5 Max Health per Level\
+		\n	- +2 Bonus Damage per Hit\
 		\n	- Regenerate 30 HP per Second\
 		\n	- Can Move Slowly\
 		\n \
@@ -74,7 +75,7 @@ Action EnvelopmentMenuDraw(int iClient)
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 

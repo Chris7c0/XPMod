@@ -138,12 +138,20 @@ void EventsHurt_AttackerSmoker(Handle hEvent, int iAttacker, int iVictim)
 
 	if (g_iClientTeam[iVictim] != TEAM_SURVIVORS)
 		return;
-	
+
 	char strWeapon[20];
 	GetEventString(hEvent,"weapon", strWeapon, 20);
 
 	// If the smoker is somehow in limbo or a smoke cloud, then kick them out.
 	ReturnSmokerFromSmokeCloudIfCurrentlySmokeCloud(iVictim);
+
+	// Rapid Cell Division: +2 bonus damage while choking a victim
+	if (g_iSmokerTalent1Level[iAttacker] > 0 &&
+		g_iChokingVictim[iAttacker] > 0 &&
+		StrEqual(strWeapon, "smoker_claw") == true)
+	{
+		DealDamage(iVictim, iAttacker, 2);
+	}
 }
 
 void EventsDeath_VictimSmoker(Handle hEvent, int iAttacker, int iVictim)
