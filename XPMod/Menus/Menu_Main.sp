@@ -16,24 +16,39 @@ void ClosePanel(int iClient)
 
 void GetNewLinesToPushMenuDown(int iClient, char strStartingNewLines[32])
 {
-	// if Client is specator or ghost
-	if (g_iClientTeam[iClient] == TEAM_SPECTATORS)// || g_bIsGhost[iClient] == true)
-		strStartingNewLines = "\n \n \n \n \n \n";
+	if (g_iClientTeam[iClient] == TEAM_SPECTATORS)
+		strStartingNewLines = "\n \n \n \n \n ";
 	else if (g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == false)
-		strStartingNewLines = "\n \n \n \n \n \n \n \n";
-	else
+		strStartingNewLines = "\n \n \n \n \n ";
+	else // Infected or alive survivor
 		strStartingNewLines = "\n \n";
 }
 
 void GetNewLinesToPushMenuUp(int iClient, char strEndingNewLines[32])
 {
-	// if Client is specator or ghost
-	if (g_iClientTeam[iClient] == TEAM_SPECTATORS)// || g_bIsGhost[iClient] == true)
-		strEndingNewLines = "\n \n ";
+	if (g_iClientTeam[iClient] == TEAM_SPECTATORS)
+		strEndingNewLines = "\n \n \n \n ";
 	else if (g_iClientTeam[iClient] == TEAM_SURVIVORS && IsPlayerAlive(iClient) == false)
 		strEndingNewLines = "";
-	else
+	else // Infected or alive survivor
 		strEndingNewLines = "\n \n \n \n \n \n ";
+}
+
+void GetNewLinesAutomatic(char text[512], char strNewLines[512], int iMenuOptionNewLines = 1, int iTargetNewLines = 35)
+{
+	strNewLines[0] = '\0';
+
+	int iTextNewLines = 0;
+	for (int i = 0; text[i] != '\0'; i++)
+		if (text[i] == '\n')
+			iTextNewLines++;
+
+	int iNewLineCount = iTargetNewLines - iMenuOptionNewLines - iTextNewLines;
+	if (iNewLineCount < 0)
+		iNewLineCount = 0;
+
+	for (int i = 0; i < iNewLineCount; i++)
+		StrCat(strNewLines, sizeof(strNewLines), "\n ");
 }
 
 void XPModMenuDraw(int iClient)
