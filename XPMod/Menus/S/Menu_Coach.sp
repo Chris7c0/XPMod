@@ -9,13 +9,14 @@ Action CoachMenuDraw(int iClient)
 	Menu menu = CreateMenu(CoachMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Coach's Berserker Talents\n ", strStartingNewLines,g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines, 7+3);
+
 	FormatEx(text, sizeof(text), "	[Level %d]	Bull Rush", g_iBullLevel[iClient]);
 	AddMenuItem(menu, "option1", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	Wrecking Ball", g_iWreckingLevel[iClient]);
@@ -29,13 +30,14 @@ Action CoachMenuDraw(int iClient)
 	FormatEx(text, sizeof(text), "	[Level %d]	Strong Arm (Bind 2)\n ", g_iStrongLevel[iClient]);
 	AddMenuItem(menu, "option6", text);
 	
-	AddMenuItem(menu, "option7", "Open In Website\n ");
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\n \n=	=	=	=	=	=	=	=	=	=	=	=	=\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option9", strFinalOptionText);
 	
@@ -54,10 +56,10 @@ Action BullMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(BullMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s			Bull Rush(Level %d):\
 		\n \
@@ -81,11 +83,13 @@ Action BullMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iBullLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -104,10 +108,10 @@ Action WreckingMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(WreckingMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s						Wrecking Ball(Level %d):\
 		\n \
@@ -127,11 +131,13 @@ Action WreckingMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iWreckingLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -150,10 +156,10 @@ Action SprayMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(SprayMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s			Spray n' Pray(Level %d):\
 		\n \
@@ -175,11 +181,13 @@ Action SprayMenuDraw(int iClient)
 		g_iSprayLevel[iClient],
 		COACH_JETPACK_FUEL_PER_LEVEL);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -198,10 +206,10 @@ Action HomerunMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(HomerunMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s				Homerun!(Level %d):\
 		\n \
@@ -220,11 +228,13 @@ Action HomerunMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iHomerunLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -243,10 +253,10 @@ Action LeadMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(LeadMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s				Lead by Example(Level %d):\
 		\n \
@@ -268,11 +278,13 @@ Action LeadMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iLeadLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	
@@ -291,10 +303,10 @@ Action StrongMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(StrongMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s					Strong Arm(Level %d):\
 		\n \
@@ -318,11 +330,13 @@ Action StrongMenuDraw(int iClient)
 		g_iStrongLevel[iClient],
 		COACH_CHAINSAW_DURATION);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	
@@ -367,11 +381,6 @@ void CoachMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 			case 5: //Strong Arm
 			{
 				StrongMenuDraw(iClient);
-			}
-			case 6: //Open In Website
-			{
-				OpenMOTDPanel(iClient, "", "http://xpmod.net/talents/survivors/ceda%20files/coach/xpmod_ig_talents_survivors_coach.html", MOTDPANEL_TYPE_URL);
-				CoachMenuDraw(iClient);
 			}
 			case 8: //Back
 			{

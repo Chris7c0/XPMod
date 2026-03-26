@@ -8,20 +8,20 @@ Action ChargerTopMenuDraw(int iClient)
 	Menu menu = CreateMenu(ChargerTopMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	char title[256];
-	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n==========================\nCharger Talents:\n==========================\n \nGround 'n Pound: Level %d\nSpiked Carapace: Level %d\nHillbilly Madness!: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iGroundLevel[iClient], g_iSpikedLevel[iClient], g_iHillbillyLevel[iClient]);
-	SetMenuTitle(menu, "%s", title);
+
+	char text[512];
+	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n==========================\nCharger Talents:\n==========================\n \nGround 'n Pound: Level %d\nSpiked Carapace: Level %d\nHillbilly Madness!: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iGroundLevel[iClient], g_iSpikedLevel[iClient], g_iHillbillyLevel[iClient]);
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines, 4+3);
 	
 	AddMenuItem(menu, "option1", "Ground 'n Pound");
 	AddMenuItem(menu, "option2", "Spiked Carapace");
 	AddMenuItem(menu, "option3", "Hillbilly Madness!\n ");
 	AddMenuItem(menu, "option4", "Choose The Charger\n ");
-	AddMenuItem(menu, "option5", "Open In Website\n ");
-	
+	AddMenuItem(menu, "option5", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
@@ -30,7 +30,8 @@ Action ChargerTopMenuDraw(int iClient)
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		\n==========================\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option9", strFinalOptionText);
 		
@@ -48,11 +49,12 @@ Action GroundMenuDraw(int iClient)
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(GroundMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	SetMenuTitle(menu, "\
+
+	char text[512];
+	FormatEx(text, sizeof(text), "\
 		%s  				Ground 'n Pound (Level %d)\
 		\n \
 		\n+1 knock damage per level\
@@ -61,11 +63,14 @@ Action GroundMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iGroundLevel[iClient]);
-	
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -81,11 +86,12 @@ Action SpikedMenuDraw(int iClient)
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(SpikedMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	SetMenuTitle(menu, "\
+
+	char text[512];
+	FormatEx(text, sizeof(text), "\
 		%s				Spiked Carapace (Level %d)\
 		\n \
 		\nReflect 1 damage per level when meleed\
@@ -106,11 +112,14 @@ Action SpikedMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iSpikedLevel[iClient]);
-	
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -126,11 +135,12 @@ Action HillbillyMenuDraw(int iClient)
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(HillbillyMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	SetMenuTitle(menu, "\
+
+	char text[512];
+	FormatEx(text, sizeof(text), "\
 		%s						Hillbilly Madness! (Level %d)\
 		\n \
 		\n+50 Max Health per level\
@@ -151,11 +161,14 @@ Action HillbillyMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iHillbillyLevel[iClient]);
-	
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -231,11 +244,6 @@ void ChargerTopMenuHandler(Menu menu, MenuAction action, int iClient, int itemNu
 					PrintToChat(iClient, "\x03[XPMod] \x05You already have the \x04Charger\x05 as one of your classes.");
 					ChargerTopMenuDraw(iClient);
 				}
-			}
-			case 4: //Open In Website
-			{
-				OpenMOTDPanel(iClient, "", "http://xpmod.net/talents/infected/ceda%20files/charger/xpmod_ig_talents_infected_charger.html", MOTDPANEL_TYPE_URL);
-				ChargerTopMenuDraw(iClient);
 			}
 			case 8: //Back
 			{

@@ -8,13 +8,13 @@ Action TopInfectedMenuDraw(int iClient)
 	Menu menu = CreateMenu(TopInfectedMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char text[512], strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	char title[256];
-	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		 Your Infected\n \n Class 1)	%s\n Class 2)	%s\n Class 3)	%s\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
-	SetMenuTitle(menu, "%s", title);
+
+	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		 Your Infected\n \n Class 1)	%s\n Class 2)	%s\n Class 3)	%s\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines, 8+2);
 	AddMenuItem(menu, "option1", "Smoker");
 	AddMenuItem(menu, "option2", "Boomer");
 	AddMenuItem(menu, "option3", "Hunter");
@@ -33,9 +33,8 @@ Action TopInfectedMenuDraw(int iClient)
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Exit the Menu\
 		\n▬▬▬▬▬▬▬▬▬▬▬▬▬\
-		%s\
-		%s\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s%s%s",
+		strNewLines,
 		strEndingNewLines,
 		g_bTalentsConfirmed[iClient] ? "\n \n ": "");
 	AddMenuItem(menu, "option10", strFinalOptionText);
@@ -57,13 +56,13 @@ Action ChangeInfectedMenuDraw(int iClient)
 	Menu menu = CreateMenu(ChangeInfectedMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char text[512], strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	char title[256];
-	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n	Change Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient],g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
-	SetMenuTitle(menu, "%s", title);
+
+	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n	Change Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient],g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines, 3+2);
 	AddMenuItem(menu, "option1", "Change Class 1");
 	AddMenuItem(menu, "option2", "Change Class 2");
 	AddMenuItem(menu, "option3", "Change Class 3\n ");
@@ -72,8 +71,8 @@ Action ChangeInfectedMenuDraw(int iClient)
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Confirm Your Infected\
 		\n▬▬▬▬▬▬▬▬▬▬▬▬▬\
-		%s\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option5", strFinalOptionText);
 
@@ -90,11 +89,14 @@ Action ChangeClass1MenuDraw(int iClient)
 	Menu menu = CreateMenu(ChangeClass1MenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char text[512], strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 
-	SetMenuTitle(menu, "%sChange Your Infected\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n \nChange Class 1 to...", strStartingNewLines, g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+	FormatEx(text, sizeof(text), "%sChange Your Infected\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n \nChange Class 1 to...", strStartingNewLines, g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines, 7+2);
+
 	AddMenuItem(menu, "option1", "Smoker");
 	AddMenuItem(menu, "option2", "Boomer");
 	AddMenuItem(menu, "option3", "Hunter");
@@ -107,28 +109,31 @@ Action ChangeClass1MenuDraw(int iClient)
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Back\
 		\n▬▬▬▬▬▬▬▬▬▬▬▬▬\
-		%s\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s%s",
+		strNewLines,
 		strEndingNewLines);
-	AddMenuItem(menu, "option9", strFinalOptionText); 
+	AddMenuItem(menu, "option9", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
 	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
 	return Plugin_Handled;
 }
 //Change Infected Class 2
-Action ChangeClass2MenuDraw(int iClient) 
+Action ChangeClass2MenuDraw(int iClient)
 {
 
-	
+
 	Menu menu = CreateMenu(ChangeClass2MenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char text[512], strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 
-	SetMenuTitle(menu, "%sChange Your Infected\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n \nChange Class 2 to...", strStartingNewLines, g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+	FormatEx(text, sizeof(text), "%sChange Your Infected\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n \nChange Class 2 to...", strStartingNewLines, g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines, 7+2);
+
 	AddMenuItem(menu, "option1", "Smoker");
 	AddMenuItem(menu, "option2", "Boomer");
 	AddMenuItem(menu, "option3", "Hunter");
@@ -141,8 +146,8 @@ Action ChangeClass2MenuDraw(int iClient)
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Back\
 		\n▬▬▬▬▬▬▬▬▬▬▬▬▬\
-		%s\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option9", strFinalOptionText);
 
@@ -151,18 +156,21 @@ Action ChangeClass2MenuDraw(int iClient)
 	return Plugin_Handled;
 }
 //Change Infected Class 3
-Action ChangeClass3MenuDraw(int iClient) 
+Action ChangeClass3MenuDraw(int iClient)
 {
 
-	
+
 	Menu menu = CreateMenu(ChangeClass3MenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char text[512], strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 
-	SetMenuTitle(menu, "%sChange Your Infected\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n \nChange Class 3 to...", strStartingNewLines, g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+	FormatEx(text, sizeof(text), "%sChange Your Infected\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n \nChange Class 3 to...", strStartingNewLines, g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines, 7+2);
+
 	AddMenuItem(menu, "option1", "Smoker");
 	AddMenuItem(menu, "option2", "Boomer");
 	AddMenuItem(menu, "option3", "Hunter");
@@ -175,8 +183,8 @@ Action ChangeClass3MenuDraw(int iClient)
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Back\
 		\n▬▬▬▬▬▬▬▬▬▬▬▬▬\
-		%s\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option9", strFinalOptionText);
 

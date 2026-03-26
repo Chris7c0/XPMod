@@ -9,13 +9,14 @@ Action LouisMenuDraw(int iClient)
 	Menu menu = CreateMenu(LouisMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=\n \n			Louis's Disruptor Talents\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines, 7+3);
+
 	FormatEx(text, sizeof(text), "	[Level %d]	Manager's Prep", g_iLouisTalent1Level[iClient]);
 	AddMenuItem(menu, "option1", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	9mm Augmentation", g_iLouisTalent2Level[iClient]);
@@ -29,13 +30,14 @@ Action LouisMenuDraw(int iClient)
 	FormatEx(text, sizeof(text), "	[Level %d]	PILLS HERE! (Bind 2)\n ", g_iLouisTalent6Level[iClient]);
 	AddMenuItem(menu, "option6", text);
 	
-	AddMenuItem(menu, "option7", "Open In Website\n ");
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\n \n=	=	=	=	=	=	=	=	=	=	=	=\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option9", strFinalOptionText);
 	
@@ -51,10 +53,10 @@ Action LouisTalent1MenuDraw(int iClient)
 	char text[512];
 	Menu menu = CreateMenu(LouisTalent1MenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s			Manager's Prep (Level %d):\
 		\n \
@@ -67,11 +69,13 @@ Action LouisTalent1MenuDraw(int iClient)
 		strStartingNewLines,
 		g_iLouisTalent1Level[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -89,10 +93,10 @@ Action LouisTalent2MenuDraw(int iClient)
 
 	Menu menu = CreateMenu(LouisTalent2MenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s 		9mm Augmentation (Level %d):\
 		\n \
@@ -113,13 +117,15 @@ Action LouisTalent2MenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iLouisTalent2Level[iClient]);
-	
+
 	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -136,10 +142,10 @@ Action LouisTalent3MenuDraw(int iClient)
 
 	Menu menu = CreateMenu(LouisTalent3MenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s 						Time Dilation (Level %d):\
 		\n \
@@ -154,11 +160,13 @@ Action LouisTalent3MenuDraw(int iClient)
 		strStartingNewLines,
 		g_iLouisTalent3Level[iClient]);
 	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -176,10 +184,10 @@ Action LouisTalent4MenuDraw(int iClient)
 
 	Menu menu = CreateMenu(LouisTalent4MenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s 							BOOM HEADSHOT! (Level %d):\
 		\n \
@@ -194,11 +202,13 @@ Action LouisTalent4MenuDraw(int iClient)
 		strStartingNewLines,
 		g_iLouisTalent4Level[iClient]);
 	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -215,10 +225,10 @@ Action LouisTalent5MenuDraw(int iClient)
 
 	Menu menu = CreateMenu(LouisTalent5MenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s 					Neurosurgeon (Level %d):\
 		\n \
@@ -239,11 +249,13 @@ Action LouisTalent5MenuDraw(int iClient)
 		g_iLouisTalent5Level[iClient],
 		LOUIS_NEUROSURGEON_SI_XMR_REWARD_AMOUNT);
 	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -260,10 +272,10 @@ Action LouisTalent6MenuDraw(int iClient)
 	
 	Menu menu = CreateMenu(LouisTalent6MenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s 					PILLS HERE! (Level %d):\
 		\n \
@@ -290,11 +302,13 @@ Action LouisTalent6MenuDraw(int iClient)
 		LOUIS_HEADSHOT_XMR_AMOUNT_CI,
 		LOUIS_HEADSHOT_XMR_AMOUNT_SI);
 	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -323,12 +337,6 @@ void LouisMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 			case 3:	LouisTalent4MenuDraw(iClient);
 			case 4:	LouisTalent5MenuDraw(iClient);
 			case 5:	LouisTalent6MenuDraw(iClient);
-			case 6: //Open In Website
-			{
-				//OpenMOTDPanel(iClient, "", "http://xpmod.net/talents/survivors/ceda%20files/ellis/xpmod_ig_talents_survivors_ellis.html", MOTDPANEL_TYPE_URL);
-				PrintToChatAll("Unavailable for Louis...for now.");
-				LouisMenuDraw(iClient);
-			}
 			case 8: //Back
 			{
 				TopSurvivorMenuDraw(iClient);

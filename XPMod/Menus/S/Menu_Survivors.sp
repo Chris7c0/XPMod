@@ -4,20 +4,24 @@ Action TopSurvivorMenuDraw(int iClient)
 	Menu menu = CreateMenu(TopSurvivorMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char text[512], strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
+	char strClassName[64];
 	switch(g_iChosenSurvivor[iClient])
 	{
-		case BILL:		SetMenuTitle(menu, "%sLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\nYour Survivor: Bill (Support)\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-		case ROCHELLE:	SetMenuTitle(menu, "%sLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\nYour Survivor: Rochelle (Ninja)\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-		case COACH:		SetMenuTitle(menu, "%sLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\nYour Survivor: Coach (Berserker)\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-		case ELLIS:		SetMenuTitle(menu, "%sLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\nYour Survivor: Ellis (Weapon Expert)\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-		case NICK:		SetMenuTitle(menu, "%sLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\nYour Survivor: Nick (Gambler)\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-		case LOUIS:		SetMenuTitle(menu, "%sLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\nYour Survivor: Louis (Disruptor)\n  ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-		case ZOEY:		SetMenuTitle(menu, "%sLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\nYour Survivor: Zoey (R.C. Medic)\n  ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+		case BILL:		strcopy(strClassName, sizeof(strClassName), "Bill (Support)");
+		case ROCHELLE:	strcopy(strClassName, sizeof(strClassName), "Rochelle (Ninja)");
+		case COACH:		strcopy(strClassName, sizeof(strClassName), "Coach (Berserker)");
+		case ELLIS:		strcopy(strClassName, sizeof(strClassName), "Ellis (Weapon Expert)");
+		case NICK:		strcopy(strClassName, sizeof(strClassName), "Nick (Gambler)");
+		case LOUIS:		strcopy(strClassName, sizeof(strClassName), "Louis (Disruptor)");
+		case ZOEY:		strcopy(strClassName, sizeof(strClassName), "Zoey (R.C. Medic)");
 	}
+	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\nYour Survivor: %s\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], strClassName);
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines, 7+2);
 		
 	AddMenuItem(menu, "option1", "Bill			  (Support)");
 	AddMenuItem(menu, "option2", "Rochelle	(Ninja)");
@@ -31,8 +35,8 @@ Action TopSurvivorMenuDraw(int iClient)
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Back\
 		\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\
-		%s\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option9", strFinalOptionText);
 
@@ -52,20 +56,24 @@ Action ChangeSurvivorMenuDraw(int iClient)
 	Menu menu = CreateMenu(ChangeSurvivorMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char text[512], strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
+	char strClassName[64];
 	switch(g_iChosenSurvivor[iClient])
 	{
-		case BILL:		SetMenuTitle(menu, "%s=	=	=	=	=	=	=	=	=	=	=\nYour Survivor: Bill (Support)\n \n Change your Survivor to...", strStartingNewLines);
-		case ROCHELLE:	SetMenuTitle(menu, "%s=	=	=	=	=	=	=	=	=	=	=\nYour Survivor: Rochelle (Ninja)\n \n Change your Survivor to...", strStartingNewLines);
-		case COACH:		SetMenuTitle(menu, "%s=	=	=	=	=	=	=	=	=	=	=\nYour Survivor: Coach (Berserker)\n \n Change your Survivor to...", strStartingNewLines);
-		case ELLIS:		SetMenuTitle(menu, "%s=	=	=	=	=	=	=	=	=	=	=\nYour Survivor: Ellis (Weapon Expert)\n \n Change your Survivor to...", strStartingNewLines);
-		case NICK:		SetMenuTitle(menu, "%s=	=	=	=	=	=	=	=	=	=	=\nYour Survivor: Nick (Gambler)\n \n Change your Survivor to...", strStartingNewLines);
-		case LOUIS:		SetMenuTitle(menu, "%s=	=	=	=	=	=	=	=	=	=	=\nYour Survivor: Louis (Disruptor)\n \n Change your Survivor to...", strStartingNewLines);
-		case ZOEY:		SetMenuTitle(menu, "%s=	=	=	=	=	=	=	=	=	=	=\nYour Survivor: Zoey (R.C. Medic)\n \n Change your Survivor to...", strStartingNewLines);
+		case BILL:		strcopy(strClassName, sizeof(strClassName), "Bill (Support)");
+		case ROCHELLE:	strcopy(strClassName, sizeof(strClassName), "Rochelle (Ninja)");
+		case COACH:		strcopy(strClassName, sizeof(strClassName), "Coach (Berserker)");
+		case ELLIS:		strcopy(strClassName, sizeof(strClassName), "Ellis (Weapon Expert)");
+		case NICK:		strcopy(strClassName, sizeof(strClassName), "Nick (Gambler)");
+		case LOUIS:		strcopy(strClassName, sizeof(strClassName), "Louis (Disruptor)");
+		case ZOEY:		strcopy(strClassName, sizeof(strClassName), "Zoey (R.C. Medic)");
 	}
+	FormatEx(text, sizeof(text), "%s=	=	=	=	=	=	=	=	=	=	=\nYour Survivor: %s\n \n Change your Survivor to...", strStartingNewLines, strClassName);
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines, 8+2);
 	AddMenuItem(menu, "option1", "Bill		   (Support)			   [EASY]");
 	AddMenuItem(menu, "option2", "Rochelle (Ninja)					  [PRO]");
 	AddMenuItem(menu, "option3", "Coach	 (Berserker)	  [NORMAL]");
@@ -80,8 +88,8 @@ Action ChangeSurvivorMenuDraw(int iClient)
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Exit\
 		\n=	=	=	=	=	=	=	=	=	=	=\
-		%s\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option10", strFinalOptionText);
 

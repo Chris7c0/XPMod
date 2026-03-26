@@ -44,13 +44,14 @@ Action LoadoutMenuDraw(int iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 
 	GetWeaponNames(iClient);
-	
+
 	if(g_iClientLevel[iClient]>0)
 		g_iClientUsableXP = g_iClientXP[iClient] - g_iClientPreviousLevelXPAmount[iClient];
 	else
 		g_iClientUsableXP = g_iClientXP[iClient];
-	
-	SetMenuTitle(menu, 
+
+	char text[512], strNewLines[512];
+	FormatEx(text, sizeof(text),
 		"%sUsable XP: %d\
 		\n \
 		\n* You get equipment when you confirm *\
@@ -73,7 +74,9 @@ Action LoadoutMenuDraw(int iClient)
 		g_strClientBoostSlot,
 		g_strClientLaserSlot,
 		g_iClientTotalXPCost[iClient]);
-	
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines, 10);
+
 	AddMenuItem(menu, "option1", "Primary Slot");
 	AddMenuItem(menu, "option2", "Secondary Slot");
 	AddMenuItem(menu, "option3", "Explosives Slot");
@@ -86,8 +89,8 @@ Action LoadoutMenuDraw(int iClient)
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Exit\
-		%s\n \n \n \n \n \n \n \n \n \n ",
-		strEndingNewLines);
+		%s%s",
+		strNewLines, strEndingNewLines);
 	AddMenuItem(menu, "option10", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);

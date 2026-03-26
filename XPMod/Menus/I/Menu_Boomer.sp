@@ -8,21 +8,21 @@ Action BoomerTopMenuDraw(int iClient)
 	Menu menu = CreateMenu(BoomerTopMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 
-	char title[256];
-	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n==========================\nBoomer Talents:\n==========================\n \nRapid Regurgitation: Level %d\nAcidic Brew: Level %d\nNorovirus: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iRapidLevel[iClient], g_iAcidicLevel[iClient], g_iNorovirusLevel[iClient]);
-	SetMenuTitle(menu, "%s", title);
+	char text[512];
+	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n==========================\nBoomer Talents:\n==========================\n \nRapid Regurgitation: Level %d\nAcidic Brew: Level %d\nNorovirus: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iRapidLevel[iClient], g_iAcidicLevel[iClient], g_iNorovirusLevel[iClient]);
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines, 4+3);
 	AddMenuItem(menu, "option1", "Rapid Regurgitation");
 	AddMenuItem(menu, "option2", "Acidic Brew");
 	AddMenuItem(menu, "option3", "Norovirus\n ");
 	
 	AddMenuItem(menu, "option4", "Choose The Boomer\n ");
 	
-	AddMenuItem(menu, "option5", "Open In Website\n ");
-	
+	AddMenuItem(menu, "option5", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
@@ -31,7 +31,8 @@ Action BoomerTopMenuDraw(int iClient)
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		\n==========================\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option9", strFinalOptionText);
 	
@@ -48,11 +49,12 @@ Action RapidMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(RapidMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 
-	SetMenuTitle(menu, "\
+	char text[512];
+	FormatEx(text, sizeof(text), "\
 		%s  					Rapid Regurgitation (Level %d)\
 		\n \
 		\n-2 second vomit cooldown per level\
@@ -60,11 +62,14 @@ Action RapidMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iRapidLevel[iClient]);
-	
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -79,11 +84,12 @@ Action AcidicMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(AcidicMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	SetMenuTitle(menu, "\
+
+	char text[512];
+	FormatEx(text, sizeof(text), "\
 		%s						Acidic Brew (Level %d)\
 		\n \
 		\nVomit victims lose their HUD for 2 seconds per level\
@@ -98,11 +104,14 @@ Action AcidicMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iAcidicLevel[iClient]);
-	
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -117,11 +126,12 @@ Action NorovirusMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(NorovirusMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	SetMenuTitle(menu, "\
+
+	char text[512];
+	FormatEx(text, sizeof(text), "\
 		%s							Norovirus (Level %d)\
 		\n \
 		\nLevel 1:\
@@ -141,11 +151,14 @@ Action NorovirusMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iNorovirusLevel[iClient]);
-	
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	
@@ -217,11 +230,6 @@ void BoomerTopMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum
 					PrintToChat(iClient, "\x03[XPMod] \x05You already have the \x04boomer\x05 as one of your classes.");
 					BoomerTopMenuDraw(iClient);
 				}
-			}
-			case 4: //Open In Website
-			{
-				OpenMOTDPanel(iClient, "", "http://xpmod.net/talents/infected/ceda%20files/boomer/xpmod_ig_talents_infected_boomer.html", MOTDPANEL_TYPE_URL);
-				BoomerTopMenuDraw(iClient);
 			}
 			case 8: //Back
 			{

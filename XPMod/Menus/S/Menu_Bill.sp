@@ -10,13 +10,14 @@ Action SupportMenuDraw(int iClient)
 	Menu menu = CreateMenu(SupportMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n					Bill's Support Talents\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines, 7+3);
+
 	FormatEx(text, sizeof(text), "	[Level %d]	Inspirational Leadership", g_iInspirationalLevel[iClient]);
 	AddMenuItem(menu, "option1", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	Ghillie Tactics", g_iGhillieLevel[iClient]);
@@ -29,14 +30,15 @@ Action SupportMenuDraw(int iClient)
 	AddMenuItem(menu, "option5", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	Promotional Benefits (Bind 2)          \n ", g_iPromotionalLevel[iClient]);
 	AddMenuItem(menu, "option6", text);
-	
-	AddMenuItem(menu, "option7", "Open In Website	\n ");
+
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option9", strFinalOptionText);
 	
@@ -55,10 +57,10 @@ Action InspirationalMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(InspirationalMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s				Inspirational Leadership (Level %d)\
 		\n \
@@ -76,11 +78,13 @@ Action InspirationalMenuDraw(int iClient)
 		BILL_TEAM_HEAL_FRAME_COUNTER_REQUIREMENT,
 		BILL_TEAM_HEAL_HP_POOL);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	
@@ -99,7 +103,7 @@ Action GhillieMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(GhillieMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 
@@ -118,11 +122,13 @@ Action GhillieMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iGhillieLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -141,10 +147,10 @@ Action WillMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(WillMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s					Will to Live(Level %d):\
 		\n \
@@ -161,11 +167,13 @@ Action WillMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iWillLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -185,10 +193,10 @@ Action ExorcismMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(ExorcismMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s  Exorcism in a Barrel(Level %d):\
 		\n \
@@ -198,11 +206,13 @@ Action ExorcismMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iExorcismLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -221,10 +231,10 @@ Action DiehardMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(DiehardMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s					Die Hard(Level %d):\
 		\n \
@@ -247,11 +257,13 @@ Action DiehardMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iDiehardLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	
@@ -270,10 +282,10 @@ Action PromotionalMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(PromotionalMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s		Promotional Benefits(Level %d):\
 		\n \
@@ -292,11 +304,13 @@ Action PromotionalMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iPromotionalLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	
@@ -342,11 +356,6 @@ void SupportMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 			case 5: //Promotional Benefits
 			{
 				PromotionalMenuDraw(iClient);
-			}
-			case 6: //Open In Website
-			{
-				OpenMOTDPanel(iClient, "", "http://xpmod.net/talents/survivors/ceda%20files/bill/xpmod_ig_talents_survivors_bill.html", MOTDPANEL_TYPE_URL);
-				SupportMenuDraw(iClient);
 			}
 			case 8: //Back
 			{

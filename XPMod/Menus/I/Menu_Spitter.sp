@@ -8,20 +8,20 @@ Action SpitterTopMenuDraw(int iClient)
 	Menu menu = CreateMenu(SpitterTopMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	char title[256];
-	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n==============================\nSpitter Talents:\n==============================\n \nPuppet Master: Level %d\nMaterial Girl: Level %d\nHallucinogenic Nightmare: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iPuppetLevel[iClient], g_iMaterialLevel[iClient], g_iHallucinogenicLevel[iClient]);
-	SetMenuTitle(menu, "%s", title);
+
+	char text[512];
+	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n==============================\nSpitter Talents:\n==============================\n \nPuppet Master: Level %d\nMaterial Girl: Level %d\nHallucinogenic Nightmare: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iPuppetLevel[iClient], g_iMaterialLevel[iClient], g_iHallucinogenicLevel[iClient]);
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines, 4+3);
 	
 	AddMenuItem(menu, "option1", "Puppet Master");
 	AddMenuItem(menu, "option2", "Material Girl");
 	AddMenuItem(menu, "option3", "Hallucinogenic Nightmare\n ");
 	AddMenuItem(menu, "option4", "Choose The Spitter\n ");
-	AddMenuItem(menu, "option5", "Open In Website\n ");
-	
+	AddMenuItem(menu, "option5", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
@@ -30,7 +30,8 @@ Action SpitterTopMenuDraw(int iClient)
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		\n==============================\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option9", strFinalOptionText);
 
@@ -48,11 +49,12 @@ Action PuppetMenuDraw(int iClient)
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(PuppetMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	SetMenuTitle(menu, "\
+
+	char text[512];
+	FormatEx(text, sizeof(text), "\
 		%s  						Puppet Master (Level %d)\
 		\n \
 		\nLevel 1:\
@@ -67,11 +69,14 @@ Action PuppetMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iPuppetLevel[iClient]);
-	
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	
@@ -87,11 +92,12 @@ Action MaterialMenuDraw(int iClient)
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(MaterialMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	SetMenuTitle(menu, "\
+
+	char text[512];
+	FormatEx(text, sizeof(text), "\
 		%s				Material Girl (Level %d)\
 		\n \
 		\nLevel 1:\
@@ -116,11 +122,14 @@ Action MaterialMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iMaterialLevel[iClient]);
-	
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	
@@ -136,11 +145,12 @@ Action HallucinogenicMenuDraw(int iClient)
 	CheckLevel(iClient);
 	Menu menu = CreateMenu(HallucinogenicMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	SetMenuTitle(menu, "\
+
+	char text[512];
+	FormatEx(text, sizeof(text), "\
 		%s				Hallucinogenic Nightmare (Level %d)\
 		\n \
 		\nLevel 1:\
@@ -162,11 +172,14 @@ Action HallucinogenicMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iHallucinogenicLevel[iClient]);
-	
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	
@@ -318,11 +331,6 @@ void SpitterTopMenuHandler(Menu menu, MenuAction action, int iClient, int itemNu
 					PrintToChat(iClient, "\x03[XPMod] \x05You already have the \x04Spitter\x05 as one of your classes.");
 					SpitterTopMenuDraw(iClient);
 				}
-			}
-			case 4: //Open In Website
-			{
-				OpenMOTDPanel(iClient, "", "http://xpmod.net/talents/infected/ceda%20files/spitter/xpmod_ig_talents_infected_spitter.html", MOTDPANEL_TYPE_URL);
-				SpitterTopMenuDraw(iClient);
 			}
 			case 8: //Back
 			{

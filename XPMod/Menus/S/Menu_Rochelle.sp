@@ -6,13 +6,14 @@ Action RochelleMenuDraw(int iClient)
 	Menu menu = CreateMenu(RochelleMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n				Rochelle's Ninja Talents\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines, 7+3);
+
 	FormatEx(text, sizeof(text), "	[Level %d]	Gather Intelligence", g_iGatherLevel[iClient]);
 	AddMenuItem(menu, "option1", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	Hunter Killer", g_iHunterLevel[iClient]);
@@ -26,13 +27,14 @@ Action RochelleMenuDraw(int iClient)
 	FormatEx(text, sizeof(text), "	[Level %d]	Shadow Ninja (Bind 2)\n ", g_iShadowLevel[iClient]);
 	AddMenuItem(menu, "option6", text);
 	
-	AddMenuItem(menu, "option7", "Open In Website\n ");
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option9", strFinalOptionText);
 
@@ -49,10 +51,10 @@ Action GatherMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(GatherMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s					Gather Intelligence(Level %d):\
 		\n \
@@ -64,16 +66,18 @@ Action GatherMenuDraw(int iClient)
 		\n \
 		\nSkill Uses:\
 		\nPress [Walk + Use] to turn on or off\
-		\nDefault: [Shift + E]\		
+		\nDefault: [Shift + E]\
 		\n ",
 		strStartingNewLines,
 		g_iGatherLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -92,10 +96,10 @@ Action HunterMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(HunterMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s									Hunter Killer(Level %d):\
 		\n \
@@ -113,11 +117,13 @@ Action HunterMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iHunterLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -136,10 +142,10 @@ Action SnipersEnduranceMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(SnipersEnduranceMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s					Sniper's Endurance(Level %d):\
 		\n \
@@ -159,11 +165,13 @@ Action SnipersEnduranceMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iSniperLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -182,10 +190,10 @@ Action SilentMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(SilentMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s			Silent Sorrow(Level %d):\
 		\n \
@@ -215,11 +223,13 @@ Action SilentMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iSilentLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -238,10 +248,10 @@ Action SmokeMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(SmokeMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s				Smoke and Mirrors(Level %d):\
 		\n \
@@ -261,11 +271,13 @@ Action SmokeMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iSmokeLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -284,10 +296,10 @@ Action ShadowMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(ShadowMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s				Shadow Ninja(Level %d):\
 		\n \
@@ -306,11 +318,13 @@ Action ShadowMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iShadowLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -356,11 +370,6 @@ void RochelleMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 			case 5: //Shadow Ninja
 			{
 				ShadowMenuDraw(iClient);
-			}
-			case 6: //Open In Website
-			{
-				OpenMOTDPanel(iClient, "", "http://xpmod.net/talents/survivors/ceda%20files/rochelle/xpmod_ig_talents_survivors_rochelle.html", MOTDPANEL_TYPE_URL);
-				RochelleMenuDraw(iClient);
 			}
 			case 8: //Back
 			{

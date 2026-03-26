@@ -7,21 +7,21 @@ Action JockeyTopMenuDraw(int iClient)
 	Menu menu = CreateMenu(JockeyTopMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	char title[256];
-	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n==========================\nJockey Talents:\n==========================\n \nMutated Tenacity: Level %d\nErratic Domination: Level %d\nUnfair Advantage: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iMutatedLevel[iClient], g_iErraticLevel[iClient], g_iUnfairLevel[iClient]);
-	SetMenuTitle(menu, "%s", title);
+
+	char text[512];
+	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n==========================\nJockey Talents:\n==========================\n \nMutated Tenacity: Level %d\nErratic Domination: Level %d\nUnfair Advantage: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iMutatedLevel[iClient], g_iErraticLevel[iClient], g_iUnfairLevel[iClient]);
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines, 4+3);
 	AddMenuItem(menu, "option1", "Mutated Tenacity");
 	AddMenuItem(menu, "option2", "Erratic Domination");
 	AddMenuItem(menu, "option3", "Unfair Advantage\n ");
 	
 	AddMenuItem(menu, "option4", "Choose The Jockey\n ");
 	
-	AddMenuItem(menu, "option5", "Open In Website\n ");
-	
+	AddMenuItem(menu, "option5", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
@@ -30,7 +30,8 @@ Action JockeyTopMenuDraw(int iClient)
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		\n==========================\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option9", strFinalOptionText);
 
@@ -47,11 +48,12 @@ Action MutatedMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(MutatedMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	SetMenuTitle(menu, "\
+
+	char text[512];
+	FormatEx(text, sizeof(text), "\
 		%s  				Mutated Tenacity (Level %d)\
 		\n \
 		\n+1 melee damage every 3 levels\
@@ -67,11 +69,14 @@ Action MutatedMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iMutatedLevel[iClient]);
-	
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -86,11 +91,12 @@ Action ErraticMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(ErraticMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	SetMenuTitle(menu, "\
+
+	char text[512];
+	FormatEx(text, sizeof(text), "\
 		%s						Erratic Domination (Level %d)\
 		\n \
 		\n+1 riding damage every 3 levels\
@@ -115,11 +121,14 @@ Action ErraticMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iErraticLevel[iClient]);
-	
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -134,11 +143,12 @@ Action UnfairMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(UnfairMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	SetMenuTitle(menu, "\
+
+	char text[512];
+	FormatEx(text, sizeof(text), "\
 		%s	Unfair Advantage (Level %d)\
 		\n \
 		\n+45 max health per level\
@@ -155,11 +165,14 @@ Action UnfairMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iUnfairLevel[iClient]);
-	
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -231,11 +244,6 @@ void JockeyTopMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum
 					PrintToChat(iClient, "\x03[XPMod] \x05You already have the \x04jockey\x05 as one of your classes.");
 					JockeyTopMenuDraw(iClient);
 				}
-			}
-			case 4: //Open In Website
-			{
-				OpenMOTDPanel(iClient, "", "http://xpmod.net/talents/infected/ceda%20files/jockey/xpmod_ig_talents_infected_jockey.html", MOTDPANEL_TYPE_URL);
-				JockeyTopMenuDraw(iClient);
 			}
 			case 8: //Back
 			{

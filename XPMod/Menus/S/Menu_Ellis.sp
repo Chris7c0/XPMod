@@ -9,13 +9,14 @@ Action EllisMenuDraw(int iClient)
 	Menu menu = CreateMenu(EllisMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n			Ellis's Weapons Expert Talents\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines, 7+3);
+
 	FormatEx(text, sizeof(text), "	[Level %d]	Overconfidence", g_iOverLevel[iClient]);
 	AddMenuItem(menu, "option1", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	Bring the Pain!", g_iBringLevel[iClient]);
@@ -29,13 +30,14 @@ Action EllisMenuDraw(int iClient)
 	FormatEx(text, sizeof(text), "	[Level %d]	Fire Storm (Bind 2)\n ", g_iFireLevel[iClient]);
 	AddMenuItem(menu, "option6", text);
 	
-	AddMenuItem(menu, "option7", "Open In Website\n ");
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option9", strFinalOptionText);
 
@@ -54,10 +56,10 @@ Action OverMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(OverMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s 		  Overconfidence (Level %d):\
 		\n \
@@ -83,11 +85,13 @@ Action OverMenuDraw(int iClient)
 		ELLIS_HEAL_AMOUNT_ADRENALINE,
 		ELLIS_OVERCONFIDENCE_BUFF_HP_REQUIREMENT);
 	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -106,10 +110,10 @@ Action BringMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(BringMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s			  Bring the Pain!(Level %d):\
 		\n \
@@ -128,11 +132,13 @@ Action BringMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iBringLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -151,10 +157,10 @@ Action JamminMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(JamminMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s		Jammin' to the Music (Level %d):\
 		\n \
@@ -175,11 +181,13 @@ Action JamminMenuDraw(int iClient)
 		ELLIS_STASHED_INVENTORY_MAX_ADRENALINE,
 		ELLIS_STASHED_INVENTORY_MAX_TANK_SPAWN_ADRENALINE);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -198,10 +206,10 @@ Action WeaponsMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(WeaponsMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-		
+
 	FormatEx(text, sizeof(text), "\
 		%s		Weapons Training (Level %d):\
 		\n \
@@ -217,11 +225,13 @@ Action WeaponsMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iWeaponsLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -240,10 +250,10 @@ Action MetalMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(MetalMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s				Mechanic Affinity (Level %d):\
 		\n \
@@ -267,11 +277,13 @@ Action MetalMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iMetalLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	
@@ -290,10 +302,10 @@ Action FireMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(FireMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s						Fire Storm(Level %d):\
 		\n \
@@ -315,11 +327,13 @@ Action FireMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iFireLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 	
@@ -365,11 +379,6 @@ void EllisMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 			case 5: //Fire Storm
 			{
 				FireMenuDraw(iClient);
-			}
-			case 6: //Open In Website
-			{
-				OpenMOTDPanel(iClient, "", "http://xpmod.net/talents/survivors/ceda%20files/ellis/xpmod_ig_talents_survivors_ellis.html", MOTDPANEL_TYPE_URL);
-				EllisMenuDraw(iClient);
 			}
 			case 8: //Back
 			{

@@ -7,21 +7,21 @@ Action SmokerTopMenuDraw(int iClient)
 	Menu menu = CreateMenu(SmokerTopMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	char title[256];
-	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n==========================\nSmoker Talents:\n==========================\n \nRapid Cell Division: Level %d\nIllusive Trickster: Level %d\nAcute Toxicity: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iSmokerTalent1Level[iClient], g_iSmokerTalent2Level[iClient], g_iSmokerTalent3Level[iClient]);
-	SetMenuTitle(menu, "%s", title);
+
+	char text[512];
+	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n==========================\nSmoker Talents:\n==========================\n \nRapid Cell Division: Level %d\nIllusive Trickster: Level %d\nAcute Toxicity: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iSmokerTalent1Level[iClient], g_iSmokerTalent2Level[iClient], g_iSmokerTalent3Level[iClient]);
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines, 4+3);
 	AddMenuItem(menu, "option1", "Rapid Cell Division");
 	AddMenuItem(menu, "option2", "Illusive Trickster");
 	AddMenuItem(menu, "option3", "Acute Toxicity\n ");
 	
 	AddMenuItem(menu, "option4", "Choose The Smoker\n ");
 	
-	AddMenuItem(menu, "option5", "Open In Website\n ");
-	
+	AddMenuItem(menu, "option5", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
@@ -30,7 +30,8 @@ Action SmokerTopMenuDraw(int iClient)
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		\n==========================\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option9", strFinalOptionText);
 
@@ -47,11 +48,12 @@ Action EnvelopmentMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(EnvelopmentMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	SetMenuTitle(menu, "\
+
+	char text[512];
+	FormatEx(text, sizeof(text), "\
 		%s  				Rapid Cell Division (Level %d)\
 		\n \
 		\n%d Max Health\
@@ -73,11 +75,14 @@ Action EnvelopmentMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iSmokerTalent1Level[iClient],
 		SMOKER_STARTING_MAX_HEALTH);
-	
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -92,11 +97,12 @@ Action NoxiousMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(NoxiousMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	SetMenuTitle(menu, "\
+
+	char text[512];
+	FormatEx(text, sizeof(text), "\
 		%s					Illusive Trickster (Level %d)\
 		\n \
 		\n 8.5%% Invisibility per Lvl When Tonguing\
@@ -122,11 +128,14 @@ Action NoxiousMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iSmokerTalent2Level[iClient]);
-	
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -141,11 +150,12 @@ Action DirtyMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(DirtyMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	SetMenuTitle(menu, "\
+
+	char text[512];
+	FormatEx(text, sizeof(text), "\
 		%s				Acute Toxicity (Level %d)\
 		\n \
 		\n +5%% Speed per Level\
@@ -168,11 +178,14 @@ Action DirtyMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iSmokerTalent3Level[iClient]);
-	
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -244,11 +257,6 @@ void SmokerTopMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum
 					PrintToChat(iClient, "\x03[XPMod] \x05You already have the \x04smoker\x05 as one of your classes.");
 					SmokerTopMenuDraw(iClient);
 				}
-			}
-			case 4: //Open In Website
-			{
-				OpenMOTDPanel(iClient, "", "http://xpmod.net/talents/infected/ceda%20files/smoker/xpmod_ig_talents_infected_smoker.html", MOTDPANEL_TYPE_URL);
-				SmokerTopMenuDraw(iClient);
 			}
 			case 8: //Back
 			{

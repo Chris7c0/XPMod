@@ -9,13 +9,14 @@ Action NickMenuDraw(int iClient)
 	Menu menu = CreateMenu(NickMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n					Nick's Gambler Talents\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines, 7+3);
+
 	FormatEx(text, sizeof(text), "	[Level %d]	Swindler", g_iSwindlerLevel[iClient]);
 	AddMenuItem(menu, "option1", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	Leftover Supplies", g_iLeftoverLevel[iClient]);
@@ -28,14 +29,15 @@ Action NickMenuDraw(int iClient)
 	AddMenuItem(menu, "option5", text);
 	FormatEx(text, sizeof(text), "	[Level %d]	Desperate Measures (Bind 2)         \n ", g_iDesperateLevel[iClient]);
 	AddMenuItem(menu, "option6", text);
-	
-	AddMenuItem(menu, "option7", "Open In Website \n ");
+
+	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
 
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\n \n=	=	=	=	=	=	=	=	=	=	=	=	=	=\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option9", strFinalOptionText);
 
@@ -54,10 +56,10 @@ Action SwindlerMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(SwindlerMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s						Swindler(Level %d):\
 		\n \
@@ -74,11 +76,13 @@ Action SwindlerMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iSwindlerLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -97,10 +101,10 @@ Action LeftoverMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(LeftoverMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s							Leftover Supplies(Level %d):\
 		\n \
@@ -116,11 +120,13 @@ Action LeftoverMenuDraw(int iClient)
 		g_iSkillPoints[iClient],
 		g_iLeftoverLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -139,10 +145,10 @@ Action RiskyMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(RiskyMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s	Risky Business(Level %d):\
 		\n \
@@ -161,11 +167,13 @@ Action RiskyMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iRiskyLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -184,10 +192,10 @@ Action EnhancedMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(EnhancedMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s					Enhanced Pain Killers(Level %d):\
 		\n \
@@ -203,11 +211,13 @@ Action EnhancedMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iEnhancedLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -226,10 +236,10 @@ Action MagnumMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(MagnumMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s			Magnum Stampede(Level %d):\
 		\n			    Requires Level 11\
@@ -251,11 +261,13 @@ Action MagnumMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iMagnumLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
-		
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -274,10 +286,10 @@ Action DesperateMenuDraw(int iClient)
 
 	Menu menu = CreateMenu(DesperateMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	FormatEx(text, sizeof(text), "\
 		%s				Desperate Measures(Level %d):\
 		\n					  Requires Level 26\
@@ -305,11 +317,13 @@ Action DesperateMenuDraw(int iClient)
 		strStartingNewLines,
 		g_iDesperateLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -355,11 +369,6 @@ void NickMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 			case 5: //Desperate Measures
 			{
 				DesperateMenuDraw(iClient);
-			}
-			case 6: //Open In Website
-			{
-				OpenMOTDPanel(iClient, "", "http://xpmod.net/talents/survivors/ceda%20files/nick/xpmod_ig_talents_survivors_nick.html", MOTDPANEL_TYPE_URL);
-				NickMenuDraw(iClient);
 			}
 			case 8: //Back
 			{

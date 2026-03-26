@@ -7,21 +7,21 @@ Action HunterTopMenuDraw(int iClient)
 	Menu menu = CreateMenu(HunterTopMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	char title[256];
-	FormatEx(title, sizeof(title), "%sLevel %d	XP: %d/%d\n==========================\nHunter Talents:\n==========================\n \nPredatorial Evolution: Level %d\nBlood Lust: Level %d\nKill-meleon: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iPredatorialLevel[iClient], g_iBloodLustLevel[iClient], g_iKillmeleonLevel[iClient]);
-	SetMenuTitle(menu, "%s", title);
+
+	char text[512];
+	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n==========================\nHunter Talents:\n==========================\n \nPredatorial Evolution: Level %d\nBlood Lust: Level %d\nKill-meleon: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iPredatorialLevel[iClient], g_iBloodLustLevel[iClient], g_iKillmeleonLevel[iClient]);
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines, 4+3);
 	AddMenuItem(menu, "option1", "Predatorial Evolution");
 	AddMenuItem(menu, "option2", "Blood Lust");
 	AddMenuItem(menu, "option3", "Kill-meleon\n ");
 	
 	AddMenuItem(menu, "option4", "Choose The Hunter\n ");
 	
-	AddMenuItem(menu, "option5", "Open In Website\n ");
-	
+	AddMenuItem(menu, "option5", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option6", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option7", "", ITEMDRAW_NOTEXT);
 	AddMenuItem(menu, "option8", "", ITEMDRAW_NOTEXT);
@@ -30,7 +30,8 @@ Action HunterTopMenuDraw(int iClient)
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		\n==========================\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option9", strFinalOptionText);
 	
@@ -47,11 +48,12 @@ Action PredatorialMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(PredatorialMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	SetMenuTitle(menu, "\
+
+	char text[512];
+	FormatEx(text, sizeof(text), "\
 		%s       Predatorial Evolution (Level %d)        \
 		\n \
 		\n [HOLD ATTACK] Dismount Victims\
@@ -75,11 +77,14 @@ Action PredatorialMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iPredatorialLevel[iClient]);
-	
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -94,19 +99,20 @@ Action BloodLustMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(BloodLustMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	SetMenuTitle(menu, "\
+
+	char text[512];
+	FormatEx(text, sizeof(text), "\
 		%s					Blood Lust (Level %d)\
 		\n \
 		\nPounce or Claw a Victim to Feed Your\
 		\nBlood Lust Meter.\
 		\n \
 		\n3 Blood Lust Stages:\
-		\n	+35% Movement Speed per Stage\
-		\n	+25% Non Lunging Stealth per Stage\
+		\n	+35%% Movement Speed per Stage\
+		\n	+25%% Non Lunging Stealth per Stage\
 		\n	+1 Shredding Damage per Stage\
 		\n	+30 Health/Second Regeneration per Stage\
 		\n \
@@ -120,11 +126,14 @@ Action BloodLustMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iBloodLustLevel[iClient]);
-	
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -139,11 +148,12 @@ Action KillmeleonMenuDraw(int iClient)
 {
 	Menu menu = CreateMenu(KillmeleonMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	SetMenuTitle(menu, "\
+
+	char text[512];
+	FormatEx(text, sizeof(text), "\
 		%s				Kill-meleon (Level %d)\
 		\n \
 		\n+250 Max Health\
@@ -167,11 +177,14 @@ Action KillmeleonMenuDraw(int iClient)
 		\n ",
 		strStartingNewLines,
 		g_iKillmeleonLevel[iClient]);
-	
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines);
+
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n %s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option1", strFinalOptionText);
 
@@ -243,11 +256,6 @@ void HunterTopMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum
 					PrintToChat(iClient, "\x03[XPMod] \x05You already have the \x04hunter\x05 as one of your classes.");
 					HunterTopMenuDraw(iClient);
 				}
-			}
-			case 4: //Open In Website
-			{
-				OpenMOTDPanel(iClient, "", "http://xpmod.net/talents/infected/ceda%20files/hunter/xpmod_ig_talents_infected_hunter.html", MOTDPANEL_TYPE_URL);
-				HunterTopMenuDraw(iClient);
 			}
 			case 8: //Back
 			{

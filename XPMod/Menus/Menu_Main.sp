@@ -186,10 +186,13 @@ Action TopChooseCharactersMenuDraw(int iClient)
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 
-	SetMenuTitle(menu, "%s\
+	char text[512], strNewLines[512];
+	FormatEx(text, sizeof(text), "%s\
 	\nChoose A Team\
 	\n▬▬▬▬▬▬▬▬▬▬▬\n",
 	strStartingNewLines);
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines, 9);
 	AddMenuItem(menu, "option1", "Survivors");
 	AddMenuItem(menu, "option2", "Infected\n ");
 	AddMenuItem(menu, "option3", "", ITEMDRAW_NOTEXT);
@@ -202,9 +205,8 @@ Action TopChooseCharactersMenuDraw(int iClient)
 	char strFinalOptionText[250];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Main Menu\n \nNote: Once you are\nconfirmed, you must\nwait until the next\nround to change any\nof your characters.\
 	\n▬▬▬▬▬▬▬▬▬▬▬\
-	%s\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
-	strEndingNewLines);
+	%s%s",
+	strNewLines, strEndingNewLines);
 	AddMenuItem(menu, "option9", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
@@ -224,10 +226,13 @@ Action ExtrasMenuDraw(int iClient)
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 
-	SetMenuTitle(menu, "%s\
+	char text[512], strNewLines[512];
+	FormatEx(text, sizeof(text), "%s\
 	XPMod Extras\
 	\n▬▬▬▬▬▬▬▬▬▬▬\n",
 	strStartingNewLines);
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines, 9);
 	AddMenuItem(menu, "option1", "Change Team");
 	AddMenuItem(menu, "option2", "Statistics");
 	AddMenuItem(menu, "option3", "Options");
@@ -240,9 +245,8 @@ Action ExtrasMenuDraw(int iClient)
 	char strFinalOptionText[150];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Main Menu\
 	\n▬▬▬▬▬▬▬▬▬▬▬\
-	%s\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
-	strEndingNewLines);
+	%s%s",
+	strNewLines, strEndingNewLines);
 	AddMenuItem(menu, "option9", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
@@ -261,10 +265,13 @@ Action ChooseTeamMenuDraw(int iClient)
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 
-	SetMenuTitle(menu, "%s\
+	char text[512], strNewLines[512];
+	FormatEx(text, sizeof(text), "%s\
 	Choose A Team\
 	\n▬▬▬▬▬▬▬▬▬▬▬\n",
 	strStartingNewLines);
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines, 9);
 	AddMenuItem(menu, "option1", "Survivors");
 	AddMenuItem(menu, "option2", "Infected");
 	AddMenuItem(menu, "option3", "Spectators\n ");
@@ -277,9 +284,8 @@ Action ChooseTeamMenuDraw(int iClient)
 	char strFinalOptionText[150];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Back\
 	\n▬▬▬▬▬▬▬▬▬▬▬\
-	%s\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
-	strEndingNewLines);
+	%s%s",
+	strNewLines, strEndingNewLines);
 	AddMenuItem(menu, "option9", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
@@ -299,10 +305,13 @@ Action ChooseStatisticsMenuDraw(int iClient)
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 
-	SetMenuTitle(menu, "%s\
+	char text[512], strNewLines[512];
+	FormatEx(text, sizeof(text), "%s\
 	\nChoose The Statistics You Want To See\
 	\n▬▬▬▬▬▬▬▬▬▬▬\n",
 	strStartingNewLines);
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines, 9);
 	AddMenuItem(menu, "option1", "Last Round Stats");
 	AddMenuItem(menu, "option2", "Current Round Stats\n ");
 	AddMenuItem(menu, "option3", "", ITEMDRAW_NOTEXT);
@@ -315,9 +324,8 @@ Action ChooseStatisticsMenuDraw(int iClient)
 	char strFinalOptionText[150];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Back\
 	\n▬▬▬▬▬▬▬▬▬▬▬\
-	%s\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
-	strEndingNewLines);
+	%s%s",
+	strNewLines, strEndingNewLines);
 	AddMenuItem(menu, "option9", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
@@ -335,18 +343,21 @@ Action OptionMenuDraw(int iClient)
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 
-	SetMenuTitle(menu, "\
+	char text[512], strNewLines[512];
+	FormatEx(text, sizeof(text), "\
 	%s		 XP Mod Options\
 	\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬",
 	strStartingNewLines);
-	
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines, 9);
+
 	if(g_iXPDisplayMode[iClient]==0)
 		AddMenuItem(menu, "option1", "XP Display Mode: In Game\n       - Requires XPMod Addon\n ");
 	else if(g_iXPDisplayMode[iClient]==1)
 		AddMenuItem(menu, "option1", "XP Display Mode: In Chat\n ");
 	else
 		AddMenuItem(menu, "option1", "XP Display Mode : Off\n ");
-	
+
 	if(g_bAnnouncerOn[iClient]==false)
 		AddMenuItem(menu, "option2", "Turn Announcer On\n ");
 	else
@@ -366,9 +377,8 @@ Action OptionMenuDraw(int iClient)
 	char strFinalOptionText[150];
 	Format(strFinalOptionText, sizeof(strFinalOptionText), "Back\
 	\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n\
-	%s\
-	\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
-	strEndingNewLines);
+	%s%s",
+	strNewLines, strEndingNewLines);
 	AddMenuItem(menu, "option9", strFinalOptionText);
 	
 	SetMenuExitButton(menu, false);

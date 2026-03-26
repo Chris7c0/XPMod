@@ -5,15 +5,17 @@ Action ChooseTankMenuDraw(int iClient)
 	
 	Menu menu = CreateMenu(ChooseTankMenuHandler);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char text[512], strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 
-	SetMenuTitle(menu, "\
+	FormatEx(text, sizeof(text), "\
 		%s			Choose Your Tank\
 		\n=	=	=	=	=	=	=	=	=	=	=\n ",
 		strStartingNewLines);
-	
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines, 16);
+
 	char strText[512];
 	FormatEx(strText, sizeof(strText), "Fire Tank\
 		\n %i HP, High Damage\
@@ -41,8 +43,9 @@ Action ChooseTankMenuDraw(int iClient)
 		\n [Press MELEE] Wing Dash\
 		\n \
 		\n=	=	=	=	=	=	=	=	=	=	=\
-		%s\n \n \n \n \n \n \n \n \n \n \n ",
+		%s%s",
 		RoundToNearest(TANK_HEALTH_VAMPIRIC * g_fTankStartingHealthMultiplier[iClient]),
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option4", strText);
 
@@ -62,12 +65,11 @@ Action TankTopMenuDraw(int iClient)
 	Menu menu = CreateMenu(TankTopMenuHandler);
 	SetMenuPagination(menu, MENU_NO_PAGINATION);
 
-	char strStartingNewLines[32], strEndingNewLines[32];
+	char text[512], strStartingNewLines[32], strEndingNewLines[32], strNewLines[512];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
-	char title[256];
-	FormatEx(title, sizeof(title), "\
+
+	FormatEx(text, sizeof(text), "\
 		%sLevel %d	XP: %d/%d\
 		\n==========================\
 		\nTanks:\
@@ -78,7 +80,8 @@ Action TankTopMenuDraw(int iClient)
 		g_iClientLevel[iClient],
 		g_iClientXP[iClient],
 		g_iClientNextLevelXPAmount[iClient]);
-	SetMenuTitle(menu, "%s", title);
+	SetMenuTitle(menu, "%s", text);
+	GetNewLinesAutomatic(text, strNewLines, 4+2);
 	
 	AddMenuItem(menu, "option1", "Fire Tank");
 	AddMenuItem(menu, "option2", "Ice Tank");
@@ -93,7 +96,8 @@ Action TankTopMenuDraw(int iClient)
 	Format(strFinalOptionText, sizeof(strFinalOptionText),
 		"Back\
 		\n==========================\
-		%s\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		%s%s",
+		strNewLines,
 		strEndingNewLines);
 	AddMenuItem(menu, "option9", strFinalOptionText);
 	
