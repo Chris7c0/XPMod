@@ -441,7 +441,7 @@ bool g_bNoobWipeCooldown;
 #define ZOEY_RESILIENT_RESUSCITATION_DAMAGE_REDUCTION_PER_LEVEL  0.04
 #define ZOEY_RESILIENT_RESUSCITATION_DURATION                    7.0
 #define ZOEY_TRIGGER_HAPPY_CLIP_SIZE                             120
-#define ZOEY_TRIGGER_HAPPY_EXPLOSIVE_SI_DAMAGE_MULTIPLIER        2.5
+#define ZOEY_TRIGGER_HAPPY_EXPLOSIVE_SI_DAMAGE_MULTIPLIER        1.5
 #define ZOEY_TRIGGER_HAPPY_SHOT_EVENT_WINDOW                     0.35
 #define ZOEY_MOP_THE_FLOOR_HITS_PER_CHARGE                       3
 #define ZOEY_MOP_THE_FLOOR_RADIUS                                275.0
