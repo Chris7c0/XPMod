@@ -110,7 +110,6 @@ void ResetZoeyTalentsRuntimeState(int iClient)
 
 	SetClientSpeed(iClient);
 	RefreshManagedSurvivorReviveDuration();
-	RefreshManagedFirstAidKitUseDuration();
 }
 
 void ClearZoeyInstantInterventionState(int iClient)
@@ -1013,103 +1012,37 @@ int ApplyZoeyMedicalExpertiseBonusTempHealth(int iClient, int iBaseHealAmount, f
 	return iAppliedBonusAmount > iBonusHealAmount ? iAppliedBonusAmount : iBonusHealAmount;
 }
 
-float GetZoeyManagedMedkitUseDuration(int iClient)
+void HandleZoeyMedkitUseSpeed(int iClient, int iButtons)
 {
-	float fDesiredDuration = g_fDefaultFirstAidKitUseDuration;
-	bool bModified = false;
+	bool bHealButtonPressed = (iButtons & IN_ATTACK) != 0 || (iButtons & IN_ATTACK2) != 0;
 
-	if (g_iZoeyTalent6Level[iClient] > 0 &&
-		g_fZoeyInstantInterventionReviveSpeedEndTime[iClient] > GetGameTime())
+	if (bHealButtonPressed == false)
 	{
-		fDesiredDuration *= (1.0 - ZOEY_INSTANT_INTERVENTION_MEDKIT_USE_SPEED_BONUS);
-		bModified = true;
+		g_bZoeyMedkitSpeedApplied[iClient] = false;
+		return;
 	}
 
-	return bModified ? fDesiredDuration : 0.0;
-}
-
-bool IsZoeyActivelyUsingManagedMedkit(int iClient)
-{
-	if (RunClientChecks(iClient) == false ||
-		IsPlayerAlive(iClient) == false ||
-		g_bTalentsConfirmed[iClient] == false ||
-		g_iChosenSurvivor[iClient] != ZOEY ||
-		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
-		g_iZoeyTalent6Level[iClient] <= 0)
-	{
-		return false;
-	}
-
-	if (HasEntProp(iClient, Prop_Send, "m_bPerformingAction") == false ||
-		GetEntProp(iClient, Prop_Send, "m_bPerformingAction") != 1)
-	{
-		return false;
-	}
-
-	int iActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
-	if (RunEntityChecks(iActiveWeaponID) == false)
-		return false;
-
-	char strWeaponClass[32];
-	GetEntityClassname(iActiveWeaponID, strWeaponClass, sizeof(strWeaponClass));
-	return StrEqual(strWeaponClass, "weapon_first_aid_kit", false);
-}
-
-float GetManagedFirstAidKitUseDuration(int iHealBeginClient = -1)
-{
-	float fDesiredDuration = g_fDefaultFirstAidKitUseDuration;
+	if (g_bZoeyMedkitSpeedApplied[iClient])
+		return;
 
 	if (g_bLouisMedHaxEnabled)
-		fDesiredDuration = float(LOUIS_MED_HAX_USE_DURATION);
-
-	if (RunClientChecks(iHealBeginClient) &&
-		g_bTalentsConfirmed[iHealBeginClient] == true &&
-		g_iChosenSurvivor[iHealBeginClient] == ZOEY &&
-		g_iClientTeam[iHealBeginClient] == TEAM_SURVIVORS)
-	{
-		float fZoeyDuration = GetZoeyManagedMedkitUseDuration(iHealBeginClient);
-		if (fZoeyDuration > 0.0 && fZoeyDuration < fDesiredDuration)
-			fDesiredDuration = fZoeyDuration;
-	}
-
-	for (int i = 1; i <= MaxClients; i++)
-	{
-		if (i == iHealBeginClient ||
-			IsZoeyActivelyUsingManagedMedkit(i) == false)
-		{
-			continue;
-		}
-
-		float fZoeyDuration = GetZoeyManagedMedkitUseDuration(i);
-		if (fZoeyDuration > 0.0 && fZoeyDuration < fDesiredDuration)
-			fDesiredDuration = fZoeyDuration;
-	}
-
-	return fDesiredDuration;
-}
-
-void RefreshManagedFirstAidKitUseDuration(int iHealBeginClient = -1)
-{
-	if (g_hCVar_FirstAidKitUseDuration == null)
 		return;
 
-	float fDesiredDuration = GetManagedFirstAidKitUseDuration(iHealBeginClient);
-	if (fDesiredDuration <= 0.0)
-		fDesiredDuration = g_fDefaultFirstAidKitUseDuration;
+	if (StrEqual(g_strActiveWeaponClass[iClient], "weapon_first_aid_kit", false) == false)
+		return;
 
-	if (FloatAbs(g_hCVar_FirstAidKitUseDuration.FloatValue - fDesiredDuration) > 0.01)
-		g_hCVar_FirstAidKitUseDuration.FloatValue = fDesiredDuration;
+	g_bZoeyMedkitSpeedApplied[iClient] = true;
+	SetConVarInt(FindConVar("first_aid_kit_use_duration"), ZOEY_MEDKIT_USE_DURATION);
+	CreateTimer(0.1, TimerResetZoeyMedkitUseDuration, _, TIMER_FLAG_NO_MAPCHANGE);
 }
 
-void HandleZoeyManagedMedkitUseSpeed(int iClient)
+Action TimerResetZoeyMedkitUseDuration(Handle timer)
 {
-	if (RunClientChecks(iClient) == false ||
-		IsPlayerAlive(iClient) == false)
-	{
-		return;
-	}
+	if (g_bLouisMedHaxEnabled)
+		return Plugin_Stop;
 
-	RefreshManagedFirstAidKitUseDuration(iClient);
+	SetConVarInt(FindConVar("first_aid_kit_use_duration"), 5);
+	return Plugin_Stop;
 }
 
 void GiveZoeyScrapRecycleReward(int iClient, const char[] strGiveCommand, const char[] strHintText)
@@ -1958,9 +1891,6 @@ void OnGameFrame_Zoey(int iClient)
 
 	if (g_iZoeyTalent4Level[iClient] > 0)
 		HandleZoeyHealthSlotStashState(iClient);
-
-	if (g_iZoeyTalent6Level[iClient] > 0)
-		HandleZoeyManagedMedkitUseSpeed(iClient);
 }
 
 bool OnPlayerRunCmd_Zoey(int iClient, int &iButtons)
@@ -1977,7 +1907,10 @@ bool OnPlayerRunCmd_Zoey(int iClient, int &iButtons)
 	}
 
 	if (g_iZoeyTalent6Level[iClient] > 0)
+	{
+		HandleZoeyMedkitUseSpeed(iClient, iButtons);
 		bButtonsChanged = HandleZoeyInstantInterventionInput(iClient, iButtons) || bButtonsChanged;
+	}
 
 	if (g_iZoeyTalent2Level[iClient] > 0 || g_iZoeyTalent3Level[iClient] > 0)
 		bButtonsChanged = HandleZoeyWalkUseInput(iClient, iButtons) || bButtonsChanged;
@@ -2200,7 +2133,6 @@ void HandleZoeyFastRevive(int iClient)
 {
 	SuppressNeverUsedWarning(iClient);
 	RefreshManagedSurvivorReviveDuration();
-	RefreshManagedFirstAidKitUseDuration();
 }
 
 void ApplyZoeyResilientResuscitation(int iClient, int iTarget)
