@@ -50,6 +50,7 @@ void ResetAllVariablesForRound()
 		g_hCVar_SurvivorReviveDuration.FloatValue = g_fDefaultSurvivorReviveDuration;
 	SetConVarInt(FindConVar("first_aid_kit_use_duration"), 5);
 	SetConVarInt(FindConVar("defibrillator_use_duration"), 3);
+	SetConVarInt(FindConVar("vs_defib_penalty"), 50);
 	g_bCommonInfectedDoMoreDamage = false;
 	g_bNickAlreadyGivenMoreBind2s = false;
 	g_iNickResurrectUses = 0;
