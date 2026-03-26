@@ -37,6 +37,7 @@ void ResetAllVariablesForRound()
 	SetConVarFloat(FindConVar("chainsaw_hit_interval"), 0.1, false, false);
 	SetConVarInt(FindConVar("survivor_crawl_speed"), 15,false,false);
 	SetConVarInt(FindConVar("survivor_allow_crawling"),0,false,false);
+	SetConVarInt(FindConVar("survivor_limp_health"),1,false,false);	//Prevent survivors from slowing down at low health
 	SetConVarFloat(FindConVar("z_vomit_fatigue"),0.0,false,false);	//So players can move on vomit
 	//////////////////////////////////////////////////////////////////////////////////////////////////////SetConVarFloat(FindConVar("z_spit_fatigue"),0.0,false,false);	//So players can move on spit
 	SetConVarInt(FindConVar("first_aid_kit_max_heal"), 999);		//So everyone can heal to their max using medkit
