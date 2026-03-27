@@ -54,14 +54,14 @@ Action LoadoutMenuDraw(int iClient)
 	FormatEx(text, sizeof(text),
 		"%sUsable XP: %d\
 		\n \
-		\n* You get equipment when you confirm *\
+		\n* Get equipment when you confirm *\
 		\n \
-		\nPrimary:			  %s\
-		\nSecondary:		 %s\
-		\nExplosive:			%s\
-		\nHealth/Ammo:	 %s\
-		\nHealth Boost:	  %s\
-		\nLaser Sight:		%s\
+		\nPrimary:		%s\
+		\nSecondary:  %s\
+		\nExplosive:    %s\
+		\nMed/Ammo: %s\
+		\nBoost:		  %s\
+		\nLaser:		  %s\
 		\n \
 		\nCost: %d XP\
 		\n ",
@@ -75,21 +75,20 @@ Action LoadoutMenuDraw(int iClient)
 		g_strClientLaserSlot,
 		g_iClientTotalXPCost[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	GetNewLinesAutomatic(text, strNewLines, 10);
+	GetNewLinesAutomatic(text, strNewLines, 12);
 
-	AddMenuItem(menu, "option1", "Primary Slot");
-	AddMenuItem(menu, "option2", "Secondary Slot");
-	AddMenuItem(menu, "option3", "Explosives Slot");
-	AddMenuItem(menu, "option4", "Health/Ammo Slot");
-	AddMenuItem(menu, "option5", "Health Boost Slot");
-	AddMenuItem(menu, "option6", "Laser Sight");
-	AddMenuItem(menu, "option7", "Reset All");
-	AddMenuItem(menu, "option8", "Change Your Survivor\n ");
+	AddMenuItem(menu, "option1", "Primary");
+	AddMenuItem(menu, "option2", "Secondary");
+	AddMenuItem(menu, "option3", "Explosives");
+	AddMenuItem(menu, "option4", "Med/Ammo");
+	AddMenuItem(menu, "option5", "Boost");
+	AddMenuItem(menu, "option6", "Laser");
+	AddMenuItem(menu, "option7", "Reset All\n ");
+	AddMenuItem(menu, "option8", "Change Survivor\n ");
 	AddMenuItem(menu, "option9", "Main Menu");
 
 	char strFinalOptionText[250];
-	Format(strFinalOptionText, sizeof(strFinalOptionText), "Exit\
-		%s%s",
+	Format(strFinalOptionText, sizeof(strFinalOptionText), "Exit%s%s",
 		strNewLines, strEndingNewLines);
 	AddMenuItem(menu, "option10", strFinalOptionText);
 
@@ -1117,87 +1116,87 @@ void GetWeaponNames(int iClient)
 		}
 		case 1: //Israeli UZI 
 		{
-			g_strClientPrimarySlot = "Israeli UZI (55 XP)";
+			g_strClientPrimarySlot = "Israeli UZI (55)";
 			g_iClientPrimarySlotCost[iClient] = 55;
 		}
 		case 2: //Mac-10
 		{
-			g_strClientPrimarySlot = "Silenced MAC-10 (60 XP)";
+			g_strClientPrimarySlot = "Silenced MAC-10 (60)";
 			g_iClientPrimarySlotCost[iClient] = 60;
 		}
 		case 3: //MP5
 		{
-			g_strClientPrimarySlot = "MP5 (70 XP)";
+			g_strClientPrimarySlot = "MP5 (70)";
 			g_iClientPrimarySlotCost[iClient] = 70;
 		}
 		case 4: //AK-47
 		{
-			g_strClientPrimarySlot = "AK-47 (80 XP)";
+			g_strClientPrimarySlot = "AK-47 (80)";
 			g_iClientPrimarySlotCost[iClient] = 80;
 		}
 		case 5: //M16A2
 		{
-			g_strClientPrimarySlot = "M16A2 (80 XP)";
+			g_strClientPrimarySlot = "M16A2 (80)";
 			g_iClientPrimarySlotCost[iClient] = 80;
 		}
 		case 6: //SIG SG 552
 		{
-			g_strClientPrimarySlot = "SIG SG 552 (100 XP)";
+			g_strClientPrimarySlot = "SIG SG 552 (100)";
 			g_iClientPrimarySlotCost[iClient] = 100;
 		}
 		case 7: //Scar-L
 		{
-			g_strClientPrimarySlot = "Scar-L (DEFAULT)";
+			g_strClientPrimarySlot = "Scar-L (0)";
 			g_iClientPrimarySlotCost[iClient] = 0;								// Default Loadout Item
 		}
 		case 8: //Remington 870
 		{
-			g_strClientPrimarySlot = "Remington 870 (60 XP)";
+			g_strClientPrimarySlot = "Remington 870 (60)";
 			g_iClientPrimarySlotCost[iClient] = 60;
 		}
 		case 9: //Remington 870 Custom
 		{
-			g_strClientPrimarySlot = "Remington 870 Custom (60 XP)";
+			g_strClientPrimarySlot = "Remington 870 Custom (60)";
 			g_iClientPrimarySlotCost[iClient] = 60;
 		}
 		case 10: //Benelli M1014
 		{
-			g_strClientPrimarySlot = "Benelli M1014 (80 XP)";
+			g_strClientPrimarySlot = "Benelli M1014 (80)";
 			g_iClientPrimarySlotCost[iClient] = 80;
 		}
 		case 11: //Franchi SPAS-12
 		{
-			g_strClientPrimarySlot = "Franchi SPAS-12 (80 XP)";
+			g_strClientPrimarySlot = "Franchi SPAS-12 (80)";
 			g_iClientPrimarySlotCost[iClient] = 80;
 		}
 		case 12: //Ruger Mini-14
 		{
-			g_strClientPrimarySlot = "Ruger Mini-14 (60 XP)";
+			g_strClientPrimarySlot = "Ruger Mini-14 (60)";
 			g_iClientPrimarySlotCost[iClient] = 60;
 		}
 		case 13: //H&K MSG90
 		{
-			g_strClientPrimarySlot = "H&K MSG90 (80 XP)";
+			g_strClientPrimarySlot = "H&K MSG90 (80)";
 			g_iClientPrimarySlotCost[iClient] = 80;
 		}
 		case 14: //Scout
 		{
-			g_strClientPrimarySlot = "Scout (60 XP)";
+			g_strClientPrimarySlot = "Scout (60)";
 			g_iClientPrimarySlotCost[iClient] = 60;
 		}
 		case 15: //AWP
 		{
-			g_strClientPrimarySlot = "AWP (100 XP)";
+			g_strClientPrimarySlot = "AWP (100)";
 			g_iClientPrimarySlotCost[iClient] = 100;
 		}
 		case 16: //Grenade Launcher
 		{
-			g_strClientPrimarySlot = "Grenade Launcher (400 XP)";
+			g_strClientPrimarySlot = "Grenade Launcher (400)";
 			g_iClientPrimarySlotCost[iClient] = 400;
 		}
 		case 17: //M60
 		{
-			g_strClientPrimarySlot = "M60 (500 XP)";
+			g_strClientPrimarySlot = "M60 (500)";
 			g_iClientPrimarySlotCost[iClient] = 500;
 		}
 	}
@@ -1210,82 +1209,82 @@ void GetWeaponNames(int iClient)
 		}
 		case 1: //P220
 		{
-			g_strClientSecondarySlot = "P220 (15 XP)";
+			g_strClientSecondarySlot = "P220 (15)";
 			g_iClientSecondarySlotCost[iClient] = 15;
 		}
 		case 2: //Glock + P220
 		{
-			g_strClientSecondarySlot = "Glock + P220 (30 XP)";
+			g_strClientSecondarySlot = "Glock + P220 (30)";
 			g_iClientSecondarySlotCost[iClient] = 30;
 		}
 		case 3: //Magnum
 		{
-			g_strClientSecondarySlot = "Magnum (40 XP)";
+			g_strClientSecondarySlot = "Magnum (40)";
 			g_iClientSecondarySlotCost[iClient] = 40;
 		}
 		case 4: //Axe
 		{
-			g_strClientSecondarySlot = "Axe (20 XP)";
+			g_strClientSecondarySlot = "Axe (20)";
 			g_iClientSecondarySlotCost[iClient] = 20;
 		}
 		case 5: //Crowbar
 		{
-			g_strClientSecondarySlot = "Crowbar (20 XP)";
+			g_strClientSecondarySlot = "Crowbar (20)";
 			g_iClientSecondarySlotCost[iClient] = 20;
 		}
 		case 6: //Cricket Bat
 		{
-			g_strClientSecondarySlot = "Cricket Bat (25 XP)";
+			g_strClientSecondarySlot = "Cricket Bat (25)";
 			g_iClientSecondarySlotCost[iClient] = 25;
 		}
 		case 7: //Baseball Bat
 		{
-			g_strClientSecondarySlot = "Baseball Bat (25 XP)";
+			g_strClientSecondarySlot = "Baseball Bat (25)";
 			g_iClientSecondarySlotCost[iClient] = 25;
 		}
 		case 8: //Katana
 		{
-			g_strClientSecondarySlot = "Katana (40 XP)";
+			g_strClientSecondarySlot = "Katana (40)";
 			g_iClientSecondarySlotCost[iClient] = 40;
 		}
 		case 9: //Electric Guitar
 		{
-			g_strClientSecondarySlot = "Electric Guitar (20 XP)";
-			g_iClientSecondarySlotCost[iClient] = 20;
+			g_strClientSecondarySlot = "Electric Guitar (30)";
+			g_iClientSecondarySlotCost[iClient] = 30;
 		}
 		case 10: //Machete
 		{
-			g_strClientSecondarySlot = "Machete (DEFAULT)";
+			g_strClientSecondarySlot = "Machete (0)";
 			g_iClientSecondarySlotCost[iClient] = 0;							// Default Loadout Item
 		}
 		case 11: //Frying Pan
 		{
-			g_strClientSecondarySlot = "Frying Pan (20 XP)";
+			g_strClientSecondarySlot = "Frying Pan (20)";
 			g_iClientSecondarySlotCost[iClient] = 20;
 		}
 		case 12: //Nightstick
 		{
-			g_strClientSecondarySlot = "Nightstick (50 XP)";
+			g_strClientSecondarySlot = "Nightstick (50)";
 			g_iClientSecondarySlotCost[iClient] = 50;
 		}
 		case 13: //Chainsaw
 		{
-			g_strClientSecondarySlot = "Chainsaw (250 XP)";
+			g_strClientSecondarySlot = "Chainsaw (250)";
 			g_iClientSecondarySlotCost[iClient] = 250;
 		}
 		case 14: //Combat Knife
 		{
-			g_strClientSecondarySlot = "Combat Knife (50 XP)";
+			g_strClientSecondarySlot = "Combat Knife (50)";
 			g_iClientSecondarySlotCost[iClient] = 50;
 		}
 		case 15: //Golf Club
 		{
-			g_strClientSecondarySlot = "Golf Club (30 XP)";
+			g_strClientSecondarySlot = "Golf Club (30)";
 			g_iClientSecondarySlotCost[iClient] = 30;
 		}
 		case 16: //Pitch Fork
 		{
-			g_strClientSecondarySlot = "Pitch Fork (30 XP)";
+			g_strClientSecondarySlot = "Pitch Fork (30)";
 			g_iClientSecondarySlotCost[iClient] = 30;
 		}
 	}
@@ -1298,17 +1297,17 @@ void GetWeaponNames(int iClient)
 		}
 		case 1: //Pipe Bomb
 		{
-			g_strClientExplosiveSlot = "Pipe Bomb (30 XP)";
+			g_strClientExplosiveSlot = "Pipe Bomb (30)";
 			g_iClientExplosiveSlotCost[iClient] = 30;
 		}
 		case 2: //Molotov
 		{
-			g_strClientExplosiveSlot = "Molotov (DEFAULT)";
+			g_strClientExplosiveSlot = "Molotov (0)";
 			g_iClientExplosiveSlotCost[iClient] = 0;							// Default Loadout Item
 		}
 		case 3: //Bile Jar
 		{
-			g_strClientExplosiveSlot = "Bile Jar (40 XP)";
+			g_strClientExplosiveSlot = "Bile Jar (40)";
 			g_iClientExplosiveSlotCost[iClient] = 40;
 		}
 	}
@@ -1321,17 +1320,17 @@ void GetWeaponNames(int iClient)
 		}
 		case 1: //Med Kit
 		{
-			g_strClientHealthSlot = "First Aid Kit (DEFAULT)";
+			g_strClientHealthSlot = "First Aid Kit (0)";
 			g_iClientHealthSlotCost[iClient] = 0;								// Default Loadout Item
 		}
 		case 2: //Defib
 		{
-			g_strClientHealthSlot = "Defibrillator (500 XP)";
+			g_strClientHealthSlot = "Defibrillator (500)";
 			g_iClientHealthSlotCost[iClient] = 500;
 		}
 		case 3: //Incendiary Ammo
 		{
-			g_strClientHealthSlot = "Incendiary Ammo (500 XP)";
+			g_strClientHealthSlot = "Incendiary Ammo (500)";
 			g_iClientHealthSlotCost[iClient] = 500;
 		}
 	}
@@ -1344,12 +1343,12 @@ void GetWeaponNames(int iClient)
 		}
 		case 1: //Pain Pills
 		{
-			g_strClientBoostSlot = "Pain Pills (DEFAULT)";
+			g_strClientBoostSlot = "Pain Pills (0)";
 			g_iClientBoostSlotCost[iClient] = 0;								// Default Loadout Item
 		}
 		case 2: //Adrenaline Shot
 		{
-			g_strClientBoostSlot = "Adrenaline Shot (50 XP)";
+			g_strClientBoostSlot = "Adrenaline Shot (50)";
 			g_iClientBoostSlotCost[iClient] = 50;
 		}
 	}
@@ -1360,7 +1359,7 @@ void GetWeaponNames(int iClient)
 	}
 	else
 	{
-		g_strClientLaserSlot = "Yes (100 XP)";
+		g_strClientLaserSlot = "Yes (100)";
 		g_iClientLaserSlotCost[iClient] = 100;
 	}
 	g_iClientTotalXPCost[iClient] = g_iClientPrimarySlotCost[iClient] + g_iClientSecondarySlotCost[iClient] + g_iClientExplosiveSlotCost[iClient] + g_iClientHealthSlotCost[iClient] + g_iClientBoostSlotCost[iClient] + g_iClientLaserSlotCost[iClient];	//add more to this when needed

@@ -16,17 +16,14 @@ Action CreateNewUserMenuDraw(int iClient)
 		char text[500], strNewLines[512];
 		FormatEx(text, sizeof(text),
 			"%s \
-			\n							Welcome to XPMod!\n \
-			\n\
-			XPMod adds RPG elements to Left4Dead2, enabling you\n\
-			to gain powerful abilities and equipment by earning XP.\n \
-			\n\
-			This is not a typical mod. It is complex with a lot of\n\
-			depth that can take time to master. Those that choose\n\
-			to play XPMod will encounter unique challenges and\n\
-			be rewarded with intense gameplay.\n \
-			\n\
-			Start playing XPMod?",
+			\nWelcome to XPMod!\n \
+			\nXPMod adds RPG elements to Left4Dead2, enabling you\
+			\nto gain powerful abilities and equipment by earning XP.\n \
+			\nThis is not a typical mod. It is complex with a lot of\
+			\ndepth that can take time to master. Those that choose\
+			\nto play XPMod will encounter unique challenges and\
+			\nbe rewarded with intense gameplay.\n \n \
+			\nStart playing XPMod?\n ",
 			strStartingNewLines);
 		SetMenuTitle(menu, "%s", text);
 		GetNewLinesAutomatic(text, strNewLines, 5);
@@ -103,8 +100,8 @@ Action BanMeMenuDraw(int iClient)
 
 	char text[500], strNewLines[512];
 	FormatEx(text, sizeof(text), "%s\
-		=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n\
-		How long would you like to be banned from this server?   \n ",
+		\n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \
+		\nHow long would you like to be banned from this server?    \n ",
 		strStartingNewLines);
 	SetMenuTitle(menu, "%s", text);
 	GetNewLinesAutomatic(text, strNewLines, 5);
@@ -114,8 +111,8 @@ Action BanMeMenuDraw(int iClient)
 	AddMenuItem(menu, "option3", " 1 Day Ban");
 	AddMenuItem(menu, "option4", " 1 Week Ban");
 	char strFinalOptionText[250];
-	Format(strFinalOptionText, sizeof(strFinalOptionText), " 1 Month Ban\n \n\
-		=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\
+	Format(strFinalOptionText, sizeof(strFinalOptionText), " 1 Month Ban\n \
+		\n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\
 		%s%s",
 		strNewLines, strEndingNewLines);
 	AddMenuItem(menu, "option5", strFinalOptionText);
@@ -178,9 +175,9 @@ Action BanConfirmMenu(int iClient, int iBanDurationInMinutes)
 
 	char text[500], strNewLines[512];
 	FormatEx(text, sizeof(text), "%s\
-		=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \n\
-		You will be banned from all XPMod servers for %i days.    \n \n\
-		Are you sure?\n ",
+		\n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\n \
+		\nYou will be banned from all XPMod servers for %i days.    \n \
+		\nAre you sure?\n ",
 		strStartingNewLines,
 		(g_iBanDurationInMinutes[iClient] / 60 / 24) );
 	SetMenuTitle(menu, "%s", text);
@@ -188,8 +185,8 @@ Action BanConfirmMenu(int iClient, int iBanDurationInMinutes)
 
 	AddMenuItem(menu, "option1", " Yes");
 	char strFinalOptionText[250];
-	Format(strFinalOptionText, sizeof(strFinalOptionText), " No\n \n\
-		=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\
+	Format(strFinalOptionText, sizeof(strFinalOptionText), " No\n \
+	\n=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=	=\
 		%s%s",
 		strNewLines, strEndingNewLines);
 	AddMenuItem(menu, "option2", strFinalOptionText);

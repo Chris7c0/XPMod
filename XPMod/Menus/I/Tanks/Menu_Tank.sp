@@ -81,7 +81,7 @@ Action TankTopMenuDraw(int iClient)
 		g_iClientXP[iClient],
 		g_iClientNextLevelXPAmount[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	GetNewLinesAutomatic(text, strNewLines, 4+2);
+	GetNewLinesAutomatic(text, strNewLines, 4+1);
 	
 	AddMenuItem(menu, "option1", "Fire Tank");
 	AddMenuItem(menu, "option2", "Ice Tank");

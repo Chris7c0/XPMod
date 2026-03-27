@@ -21,7 +21,7 @@ Action TopSurvivorMenuDraw(int iClient)
 	}
 	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\nYour Survivor: %s\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], strClassName);
 	SetMenuTitle(menu, "%s", text);
-	GetNewLinesAutomatic(text, strNewLines, 7+2);
+	GetNewLinesAutomatic(text, strNewLines, 8+3);
 		
 	AddMenuItem(menu, "option1", "Bill			  (Support)");
 	AddMenuItem(menu, "option2", "Rochelle	(Ninja)");
@@ -73,7 +73,7 @@ Action ChangeSurvivorMenuDraw(int iClient)
 	}
 	FormatEx(text, sizeof(text), "%s=	=	=	=	=	=	=	=	=	=	=\nYour Survivor: %s\n \n Change your Survivor to...", strStartingNewLines, strClassName);
 	SetMenuTitle(menu, "%s", text);
-	GetNewLinesAutomatic(text, strNewLines, 8+2);
+	GetNewLinesAutomatic(text, strNewLines, 10+3);
 	AddMenuItem(menu, "option1", "Bill		   (Support)			   [EASY]");
 	AddMenuItem(menu, "option2", "Rochelle (Ninja)					  [PRO]");
 	AddMenuItem(menu, "option3", "Coach	 (Berserker)	  [NORMAL]");

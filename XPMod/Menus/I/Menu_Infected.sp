@@ -14,7 +14,7 @@ Action TopInfectedMenuDraw(int iClient)
 
 	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		 Your Infected\n \n Class 1)	%s\n Class 2)	%s\n Class 3)	%s\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	GetNewLinesAutomatic(text, strNewLines, 8+2);
+	GetNewLinesAutomatic(text, strNewLines, 9+4);
 	AddMenuItem(menu, "option1", "Smoker");
 	AddMenuItem(menu, "option2", "Boomer");
 	AddMenuItem(menu, "option3", "Hunter");
@@ -62,7 +62,7 @@ Action ChangeInfectedMenuDraw(int iClient)
 
 	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n	Change Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient],g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	GetNewLinesAutomatic(text, strNewLines, 3+2);
+	GetNewLinesAutomatic(text, strNewLines, 4+2);
 	AddMenuItem(menu, "option1", "Change Class 1");
 	AddMenuItem(menu, "option2", "Change Class 2");
 	AddMenuItem(menu, "option3", "Change Class 3\n ");
@@ -95,7 +95,7 @@ Action ChangeClass1MenuDraw(int iClient)
 
 	FormatEx(text, sizeof(text), "%sChange Your Infected\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n \nChange Class 1 to...", strStartingNewLines, g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	GetNewLinesAutomatic(text, strNewLines, 7+2);
+	GetNewLinesAutomatic(text, strNewLines, 8+2);
 
 	AddMenuItem(menu, "option1", "Smoker");
 	AddMenuItem(menu, "option2", "Boomer");
@@ -132,7 +132,7 @@ Action ChangeClass2MenuDraw(int iClient)
 
 	FormatEx(text, sizeof(text), "%sChange Your Infected\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n \nChange Class 2 to...", strStartingNewLines, g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	GetNewLinesAutomatic(text, strNewLines, 7+2);
+	GetNewLinesAutomatic(text, strNewLines, 8+2);
 
 	AddMenuItem(menu, "option1", "Smoker");
 	AddMenuItem(menu, "option2", "Boomer");
@@ -169,7 +169,7 @@ Action ChangeClass3MenuDraw(int iClient)
 
 	FormatEx(text, sizeof(text), "%sChange Your Infected\n▬▬▬▬▬▬▬▬▬▬▬▬▬\n		Your Infected\n \nClass 1)	%s\nClass 2)	%s\nClass 3)	%s\n \nChange Class 3 to...", strStartingNewLines, g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	SetMenuTitle(menu, "%s", text);
-	GetNewLinesAutomatic(text, strNewLines, 7+2);
+	GetNewLinesAutomatic(text, strNewLines, 8+2);
 
 	AddMenuItem(menu, "option1", "Smoker");
 	AddMenuItem(menu, "option2", "Boomer");
