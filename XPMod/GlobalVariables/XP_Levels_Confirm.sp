@@ -103,9 +103,9 @@ bool g_bSurvivorsCompletedMap; // true if survivors reached saferoom/escaped
 //Top XPMod Players
 char g_strTopXPModPlayersStatsText[600];
 //Top Player Leaderboard
-char g_strTopPlayerLeaderboardText[1200];
+char g_strTopPlayerLeaderboardText[512];
 //Personal DB Stats
-char g_strPersonalDBStatsText[MAXPLAYERS + 1][600];
+char g_strPersonalDBStatsText[MAXPLAYERS + 1][512];
 
 //Rewards
 int g_iReward_SIKills;

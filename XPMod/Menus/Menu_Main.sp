@@ -34,7 +34,7 @@ void GetNewLinesToPushMenuUp(int iClient, char strEndingNewLines[32])
 		strEndingNewLines = "\n \n \n \n \n \n ";
 }
 
-void GetNewLinesAutomatic(char text[512], char strNewLines[512], int iMenuOptionNewLines = 1, int iTargetNewLines = 35)
+void GetNewLinesAutomatic(const char[] text, char strNewLines[512], int iMenuOptionNewLines = 1, int iTargetNewLines = 35)
 {
 	strNewLines[0] = '\0';
 

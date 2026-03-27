@@ -1,4 +1,3 @@
-
 void ShowRoundStatsLastRoundIndividual(int iClient)
 {
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
@@ -6,8 +5,7 @@ void ShowRoundStatsLastRoundIndividual(int iClient)
 
 	char strStatsText[700];
 	Format(strStatsText, sizeof(strStatsText),
-		"\n \n \n \n \n \n \n \n \
-		\nYour Stats Last Round\
+		"Your Stats Last Round\
 		\n \
 		\nSURVIVOR\
 		\n S.I. Killed:		%i Killed\
@@ -19,15 +17,14 @@ void ShowRoundStatsLastRoundIndividual(int iClient)
 		\n Survivor Incaps:		  %i Incaps      \
 		\n Damage To Survivors: %i DMG\
 		\n \
-		\nPRESS 0 to Hide\
- 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\nPRESS 0 to Hide",
 		g_iStat_LastRound_ClientInfectedKilled[iClient],
 		g_iStat_LastRound_ClientCommonKilled[iClient],
 		g_iStat_LastRound_ClientCommonHeadshots[iClient],
 		g_iStat_LastRound_ClientSurvivorsKilled[iClient],
 		g_iStat_LastRound_ClientSurvivorsIncaps[iClient],
 		g_iStat_LastRound_ClientDamageToSurvivors[iClient]);
-	
+
 	RoundStatsMenuDraw(iClient, strStatsText);
 }
 
@@ -38,8 +35,7 @@ void ShowRoundStatsLastRoundTopPlayers(int iClient)
 
 	char strStatsText[700];
 	Format(strStatsText, sizeof(strStatsText),
-		"\n \n \n \n \n \n \n \n \
-		\nTop Players Last Round\
+		"Top Players Last Round\
 		\n \
 		\nSURVIVORS\
 		\n Most S.I. Killed:		%s (%i Killed)\
@@ -48,16 +44,15 @@ void ShowRoundStatsLastRoundTopPlayers(int iClient)
 		\n \
 		\nINFECTED\
 		\n Most Survivors Killed:		  %s (%i Killed)\
-		\n Most Survivor Incaps:		  %s (%i Incaps)      \
-		\n Most Damage To Survivors: %s (%i DMG)\
- 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		\n Most Survivor Incaps:		  %s (%i Incaps)\
+		\n Most Damage To Survivors: %s (%i DMG)     ",
 		g_strReward_SIKills, g_iReward_SIKills,
 		g_strReward_CIKills, g_iReward_CIKills,
 		g_strReward_HS, g_iReward_HS,
 		g_strReward_SurKills, g_iReward_SurKills,
 		g_strReward_SurIncaps, g_iReward_SurIncaps,
 		g_strReward_SurDmg, g_iReward_SurDmg);
-	
+
 	RoundStatsMenuDraw(iClient, strStatsText);
 }
 
@@ -76,13 +71,10 @@ void ShowRoundStatsPersonalDBStats(int iClient)
 
 	char strStatsText[700];
 	Format(strStatsText, sizeof(strStatsText),
-		"\n \
-		\nYour All-Time Stats\
-		\n %s\
- 		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		"Your All-Time Stats\n %s",
 		g_strPersonalDBStatsText[iClient]);
 
-	RoundStatsMenuDraw(iClient, strStatsText);
+	RoundStatsMenuDraw(iClient, strStatsText, 0);
 }
 
 void ShowRoundStatsXPModTopPlayers(int iClient)
@@ -100,14 +92,10 @@ void ShowRoundStatsXPModTopPlayers(int iClient)
 
 	char strStatsText[700];
 	Format(strStatsText, sizeof(strStatsText),
-		"\n \
-		\nTop XPMod Players\
-		\n \
-		%s\
- 		\n \n \n \n \n \n \n \n ",
+		"Top Players\n %s",
 		g_strTopXPModPlayersStatsText);
-	
-	RoundStatsMenuDraw(iClient, strStatsText);
+
+	RoundStatsMenuDraw(iClient, strStatsText, 0);
 }
 
 void ShowRoundStatsTopPlayerLeaderboard(int iClient)
@@ -122,46 +110,40 @@ void ShowRoundStatsTopPlayerLeaderboard(int iClient)
 		return;
 	}
 
-	char strStatsText[900];
+	char strStatsText[512];
 	Format(strStatsText, sizeof(strStatsText),
-		"\n \n \n \n \
-		\nTop Player Leaderboard (30 Days)\
-		\n %s\
-		\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n ",
+		"Leaderboard (30 Days)\n %s",
 		g_strTopPlayerLeaderboardText);
 
 	RoundStatsMenuDraw(iClient, strStatsText);
 }
 
-void RoundStatsMenuDraw(int iClient, const char[] strStatsText)
+void RoundStatsMenuDraw(int iClient, const char[] strStatsText, int iMenuOptionNewLines = 0)
 {
 	if (RunClientChecks(iClient) == false || IsFakeClient(iClient) == true)
 		return;
 
-	// Pad the stats text with newlines to push the numbered menu items
-	// off the bottom of the panel, keeping it looking like an info display.
-	// Uses single-byte \n characters instead of multi-byte zero-width spaces
-	// for cross-platform compatibility (Linux + Windows).
-	char strPanelText[1024];
-	Format(strPanelText, sizeof(strPanelText),
-		"%s",
-		strStatsText);
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
+
+	char strFullText[512];
+	Format(strFullText, sizeof(strFullText), "%s%s", strStartingNewLines, strStatsText);
+
+	char strNewLines[512];
+	GetNewLinesAutomatic(strFullText, strNewLines, iMenuOptionNewLines);
+
+	// Assemble final panel text
+	char strPanelText[512];
+	Format(strPanelText, sizeof(strPanelText), "%s%s%s", strFullText, strNewLines, strEndingNewLines);
 
 	Panel panel = new Panel();
 	panel.SetTitle(strPanelText);
-	panel.DrawItem(" ");
-	panel.DrawItem(" ");
-	panel.DrawItem(" ");
-	panel.DrawItem(" ");
-	panel.DrawItem(" ");
-	panel.DrawItem(" ");
-	panel.DrawItem(" ");
-	panel.DrawItem(" ");
-	panel.DrawItem(" ");
-	panel.DrawItem(" ");
-	
+
+	for (int i = 0; i < 10; i++)
+		panel.DrawItem(" ", ITEMDRAW_NOTEXT);
+
 	panel.Send(iClient, RoundStatsMenuHandler, RoundToNearest(ROUND_STATS_PANEL_LIFETIME));
- 
 	delete panel;
 }
 
