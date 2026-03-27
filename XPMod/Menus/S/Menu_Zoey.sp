@@ -88,8 +88,8 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 			\nZoey Deals No Friendly Fire Damage\
 			\n \
 			\nRevive Bonuses:\
-			\n	Revived Ally Gains +20%% Damage Reduction For 7 Seconds\
-			\n	Revived Allies Return With Permanent Health Instead Of Temp Health\
+			\n	Revived Ally Gets +20%% Damage Reduction For 7 Seconds\
+			\n	Revived Ally Gets Permanent Health Instead Of Temp Health\
 			\n \
 			\nZoey Gains No Buff From Max HP Increases\
 			\n ",
@@ -102,22 +102,21 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 		FormatEx(text, sizeof(text), "\
 			%s%s:\
 			\n \
-			\nRemoves The Ability To Hold A Primary Weapon\
-			\nGain An Automatic Explosive Machine Pistol\
+			\nRemoves Primary Weapons\
+			\nGain Automatic Explosive Machine Pistol\
 			\n	120 Clip Size\
 			\n	Bullets Explode\
-			\n	One-Shots Common Infected\
-			\n	+150%% Damage To Special Infected\
+			\n	OneShots CI\
+			\n	+150%% Dmg to SI\
 			\n \
-			\nMelee Swap\
+			\nPistol Melee Swap\
 			\n	Pick Up A Melee Weapon To Stash It\
-			\n	Press [WALK] + [ZOOM] To Swap Between Melee And Pistol\
-			\n	Ammo Is Saved When Swapping\
+			\n	Press [WALK] + [ZOOM] To Swap Between Them\
 			\n \
 			\nMop 'Til They Drop\
-			\n	Gain 1 Charge Per 3 Pistol Hits On CI/SI\
+			\n	Gain 1 Charge Per 3 Pistol Hits\
 			\n	Press [WALK] + [USE] To Arm\
-			\n	Next Shot Marks A Target And Kills Nearby CI Equal To Stored Charge\
+			\n	Armed CI Shot Kills Nearby CI Equal To Stored Charge\
 			\n ",
 			strStartingNewLines,
 			strTalentName);
@@ -135,7 +134,7 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 			\nWhile Holding A Medkit Press [WALK] + [USE] To Start\
 			\n	Keep The Medkit Out For Up To 20 Seconds\
 			\n	Switch Off The Medkit To Activate\
-			\n	Reveal Visible SI Ghost Locations With A Smoke Mist For The Stored Duration\
+			\n	Reveal SI Ghost Locations With Smoke Mist For Stored Duration\
 			\n	3 Minute Global Cooldown\
 			\n ",
 			strStartingNewLines,
@@ -150,10 +149,10 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 			\nZoey's Healing Splashes To Nearby Teammates\
 			\n	15 Foot Aura Radius\
 			\n	Does Not Heal Zoey\
-			\n	Direct Medkit Target Does Not Receive Extra Splash Healing\
+			\n	Direct Medkit Target Does Not Get Splash Healing\
 			\n \
 			\nStash 2 Extra Medkits/Defibrillators\
-			\n	Press [WALK] + [ZOOM] While Holding One To Cycle Them\
+			\n	Press [WALK] + [ZOOM] While Equipped To Cycle Them\
 			\n \
 			\nShared Healing:\
 			\n	Medkits Share 25%% Permanent Health\
@@ -172,21 +171,20 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 			\n+50%% Medkit Healing\
 			\n+40%% Pills Healing\
 			\n+60%% Adrenaline Healing\
-			\nTeam bile duration reduced by 50%%\
+			\n-50%% Team Bile Duration\
 			\n \
 			\nScrap Recycle:\
-			\n	After 4 teammate pickups gain +1 Medkit\
-			\n	After 2 teammate pickups gain +1 Pills\
+			\n	2 Revives: +1 Pills\
+			\n	4 Revives: +1 Medkit\
 			\n \
 			\nBind 1: Sacrificial Aid\
-			\n	Opens a sacrifice menu, targeted aid needs a visible teammate\
-			\n	10 second global cooldown\
-			\n	-5 Max HP: Heal 30 HP or stop bleedout for 10 seconds\
-			\n	-10 Max HP: Give 70 temp HP or stop bleedout for 20 seconds\
-			\n	-15 Max HP: Heal 100 HP or instantly pick up a downed ally\
-			\n	-20 Max HP: Give Zoey a defibrillator and stash your medkit if possible\
-			\n	-40 Max HP: Resurrect a dead teammate\
-			\n		Resurrection is globally limited to 1 use per round\
+			\n	Target Player to Open Sacrifice Menu\
+			\n	Lose MaxHP For:\
+			\n	 -5: +30 HP/Stop Bleedout 10s\
+			\n	-10: +70 TempHP/Stop Bleedout 20s\
+			\n	-15: +100 HP/Revive Ally\
+			\n	-20: +1 Defib\
+			\n	-40: Resurrect Ally (1 Use)\
 			\n ",
 			strStartingNewLines,
 			strTalentName);
@@ -198,20 +196,18 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 			%s%s\
 			\n \
 			\n+40%% Medkit Use Speed\
-			\n+5%% Movement Speed Per Downed Survivor (Max 15%%)\
+			\n+5%% Movement Speed per Downed Ally (Max 15%%)\
 			\n \
 			\nBind 2: Instant Intervention\
-			\n	+1 use every other level, max 3\
-			\n	Choose a teammate, then hold [WALK] to teleport\
-			\n	Cannot be used while grappled or downed\
-			\n	2 minute global cooldown\
+			\n	Choose Ally, Then Tap [WALK] to Teleport\
+			\n	2 Minute Global Cooldown\
 			\n \
-			\nOn arrival:\
-			\n	Zoey gains 33%% damage reduction for 7 seconds\
-			\n	Zoey gains +25%% revive speed for 7 seconds\
-			\n	Drops a 10 second healing circle for nearby survivors\
-			\n	Instantly picks up one downed survivor in the circle\
-			\n	Kills all common infected within 4 meters\
+			\nOn Arrival:\
+			\n	33%% Damage Reduction for 7s\
+			\n	+25%% Revive Speed for 7s\
+			\n	Drops a Healing Circle for Survivors\
+			\n	Instantly Revives 1 Downed Ally\
+			\n	Kills All CI Within 10ft\
 			\n ",
 			strStartingNewLines,
 			strTalentName);

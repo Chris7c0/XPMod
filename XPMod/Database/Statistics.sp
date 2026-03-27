@@ -153,7 +153,7 @@ void SQLGetTopPlayerLeaderboardCallback(Handle owner, Handle hQuery, const char[
 	// Clear old data
 	g_strTopPlayerLeaderboardText[0] = '\0';
 
-	char strStatType[16], strName[32], strClassInfo[16];
+	char strStatType[16], strName[32], strClassInfo[32];
 	char strLine[90];
 	bool bInfectedSectionStarted = false;
 
@@ -174,10 +174,9 @@ void SQLGetTopPlayerLeaderboardCallback(Handle owner, Handle hQuery, const char[
 			bInfectedSectionStarted = true;
 		}
 
-		// Abbreviate infected class info (e.g. "Boomer/Jockey/Smoker" -> "B/J/SM")
-		char strDisplayClassInfo[16];
-		if (bIsInfectedStat)
-			AbbreviateInfectedClassInfo(strClassInfo, strDisplayClassInfo, sizeof(strDisplayClassInfo));
+		// Abbreviate infected class info (e.g. "Boomer/Spitter/Charger" -> "B/SP/C")
+		if (bIsInfectedStat && StrEqual(strStatType, "tank_dmg") == false)
+			AbbreviateInfectedClassInfo(strClassInfo, strClassInfo, sizeof(strClassInfo));
 
 		if (StrEqual(strStatType, "sur_wins"))
 			Format(strLine, sizeof(strLine), "\nSURVIVORS\nWins: %i	%s (%s)", iStatValue, strName, strClassInfo);
@@ -188,11 +187,11 @@ void SQLGetTopPlayerLeaderboardCallback(Handle owner, Handle hQuery, const char[
 		else if (StrEqual(strStatType, "sur_hs"))
 			Format(strLine, sizeof(strLine), "\nHS: %i	%s (%s)", iStatValue, strName, strClassInfo);
 		else if (StrEqual(strStatType, "inf_wins"))
-			Format(strLine, sizeof(strLine), "\nINFECTED\nWins: %i	%s (%s)", iStatValue, strName, strDisplayClassInfo);
+			Format(strLine, sizeof(strLine), "\nINFECTED\nWins: %i	%s (%s)", iStatValue, strName, strClassInfo);
 		else if (StrEqual(strStatType, "inf_kills"))
-			Format(strLine, sizeof(strLine), "\nKills: %i	%s (%s)", iStatValue, strName, strDisplayClassInfo);
+			Format(strLine, sizeof(strLine), "\nKills: %i	%s (%s)", iStatValue, strName, strClassInfo);
 		else if (StrEqual(strStatType, "inf_dmg"))
-			Format(strLine, sizeof(strLine), "\nDmg: %i	%s (%s)", iStatValue, strName, strDisplayClassInfo);
+			Format(strLine, sizeof(strLine), "\nDmg: %i	%s (%s)", iStatValue, strName, strClassInfo);
 		else if (StrEqual(strStatType, "tank_dmg"))
 			Format(strLine, sizeof(strLine), "\nTank Dmg: %i	%s (%s)", iStatValue, strName, strClassInfo);
 		else
