@@ -73,7 +73,7 @@ Action ChangeSurvivorMenuDraw(int iClient)
 	}
 	FormatEx(text, sizeof(text), "%s=	=	=	=	=	=	=	=	=	=	=\nYour Survivor: %s\n \n Change your Survivor to...", strStartingNewLines, strClassName);
 	SetMenuTitle(menu, "%s", text);
-	GetNewLinesAutomatic(text, strNewLines, 10+3);
+	GetNewLinesAutomatic(text, strNewLines, 10+2);
 	AddMenuItem(menu, "option1", "Bill		   (Support)			   [EASY]");
 	AddMenuItem(menu, "option2", "Rochelle (Ninja)					  [PRO]");
 	AddMenuItem(menu, "option3", "Coach	 (Berserker)	  [NORMAL]");

@@ -117,78 +117,90 @@ void DrawConfirmationMenuToClient(int iClient, int iDisplayTime = 60)
 
 Action ConfirmationMessageMenuDraw(int iClient)
 {
-	if(RunClientChecks(iClient) == false || 
+	if(RunClientChecks(iClient) == false ||
 		IsFakeClient(iClient) == true ||
 		g_bClientLoggedIn[iClient] == false)
 		return Plugin_Handled;
-	
-	if(g_bTalentsConfirmed[iClient] == false)
+
+	if(g_bTalentsConfirmed[iClient] == true)
+		return Plugin_Handled;
+
+	if(g_iAutoSetCountDown[iClient] <= 0)
 	{
-		if(g_iAutoSetCountDown[iClient] > 0)
-		{
-			Menu menu = CreateMenu(ConfirmationMessageMenuHandler);
-
-			char strStartingNewLines[32], strEndingNewLines[32];
-			GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
-			GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-			
-			char surClass[32];
-			switch(g_iChosenSurvivor[iClient])
-			{
-				case BILL: surClass =  "Bill - Support";
-				case ROCHELLE: surClass =  "Rochelle - Ninja";
-				case COACH: surClass =  "Coach - Berserker";
-				case ELLIS: surClass =  "Ellis - Weapons Expert";
-				case NICK: surClass =  "Nick - Gambler";
-				case LOUIS: surClass =  "Louis - Disruptor";
-				case ZOEY: surClass =  "Zoey - R.C. Medic";
-				default: surClass = "NONE";
-			}
-			
-			char text[300];
-			FormatEx(text, sizeof(text), "%s===	===	===	===	===	===	===	===	===	===\n \n	Survivor:			   %s\n	Equipment Cost:	 %d XP\n	Infected:				%s	%s	%s\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \nConfirm your Characters and Equipment for this round?     \n ", strStartingNewLines, surClass, g_iClientTotalXPCost[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
-			SetMenuTitle(menu, "%s", text);
-			
-			AddMenuItem(menu, "option1", " Yes, confirm.");
-
-			if(g_iClientTeam[iClient] == TEAM_SURVIVORS)
-				AddMenuItem(menu, "option2", " No, change Survivor/Equipment.");
-			else if(g_iClientTeam[iClient] == TEAM_INFECTED)
-				AddMenuItem(menu, "option2", " No, change Infected.");
-			else
-				AddMenuItem(menu, "option2", " No, change Characters.");
-
-			if(g_iAutoSetCountDown[iClient] > 9)
-			{
-				switch( (g_iAutoSetCountDown[iClient] % 3) )
-				{
-					case 0: FormatEx(text, sizeof(text), " No, not yet.\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n		   ->           Closing in %d Seconds           <-\n \n===	===	===	===	===	===	===	===	===	===\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n %s", g_iAutoSetCountDown[iClient], strEndingNewLines);
-					case 1: FormatEx(text, sizeof(text), " No, not yet.\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n		            ->  Closing in %d Seconds  <-\n \n===	===	===	===	===	===	===	===	===	===\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n %s", g_iAutoSetCountDown[iClient], strEndingNewLines);
-					case 2: FormatEx(text, sizeof(text), " No, not yet.\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n		        ->      Closing in %d Seconds      <-\n \n===	===	===	===	===	===	===	===	===	===\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n %s", g_iAutoSetCountDown[iClient], strEndingNewLines);
-				}
-			}
-			else
-			{
-				switch( (g_iAutoSetCountDown[iClient] % 3) )
-				{
-					case 0: FormatEx(text, sizeof(text), " No, not yet.\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n		   ->           Closing in  %d Seconds           <-\n \n===	===	===	===	===	===	===	===	===	===\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n %s", g_iAutoSetCountDown[iClient], strEndingNewLines);
-					case 1: FormatEx(text, sizeof(text), " No, not yet.\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n		            ->  Closing in  %d Seconds  <-\n \n===	===	===	===	===	===	===	===	===	===\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n %s", g_iAutoSetCountDown[iClient], strEndingNewLines);
-					case 2: FormatEx(text, sizeof(text), " No, not yet.\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \n		        ->      Closing in  %d Seconds      <-\n \n===	===	===	===	===	===	===	===	===	===\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n %s", g_iAutoSetCountDown[iClient], strEndingNewLines);
-				}
-			}
-			
-			AddMenuItem(menu, "option3", text);
-			
-			SetMenuExitButton(menu, false);
-			DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
-		}
-		else
-		{
-			g_bUserStoppedConfirmation[iClient] = true;
-			ClosePanel(iClient);
-		}
+		g_bUserStoppedConfirmation[iClient] = true;
+		ClosePanel(iClient);
+		return Plugin_Handled;
 	}
-	
+
+	Menu menu = CreateMenu(ConfirmationMessageMenuHandler);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
+
+	char strStartingNewLines[32], strEndingNewLines[32];
+	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
+	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
+
+	// Survivor class name
+	char surClass[32];
+	switch(g_iChosenSurvivor[iClient])
+	{
+		case BILL: 	surClass = "Bill - Support";
+		case ROCHELLE:	surClass = "Rochelle - Ninja";
+		case COACH:	surClass = "Coach - Berserker";
+		case ELLIS:	surClass = "Ellis - Weapons Expert";
+		case NICK:	surClass = "Nick - Gambler";
+		case LOUIS:	surClass = "Louis - Disruptor";
+		case ZOEY:	surClass = "Zoey - R.C. Medic";
+		default:	surClass = "NONE";
+	}
+
+	// Title
+	char text[512], strNewLines[512];
+	FormatEx(text, sizeof(text), "%s===	===	===	===	===	===	===	===	===	===\n \n	Survivor:			   %s\n	Equipment Cost:	 %d XP\n	Infected:				%s	%s	%s\n \n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\n \nConfirm your Characters and Equipment for this round? \n ", strStartingNewLines, surClass, g_iClientTotalXPCost[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+	SetMenuTitle(menu, "%s", text);
+
+	// Calculate menu option newlines for automatic padding
+	// 10 accounts for 3 option slots + 7 fixed newlines in option3 text
+	GetNewLinesAutomatic(text, strNewLines, 10);
+
+	// Option 1
+	AddMenuItem(menu, "option1", "Yes, confirm!");
+
+	// Option 2
+	if(g_iClientTeam[iClient] == TEAM_SURVIVORS)
+		AddMenuItem(menu, "option2", "No, change Survivor/Equipment.");
+	else if(g_iClientTeam[iClient] == TEAM_INFECTED)
+		AddMenuItem(menu, "option2", "No, change Infected.");
+	else
+		AddMenuItem(menu, "option2", "No, change Characters.");
+
+	// Option 3 - Countdown with bouncing arrow animation
+	char strArrowLine[128];
+	char strDigitPad[4] = "";
+	if(g_iAutoSetCountDown[iClient] <= 9)
+		strDigitPad = " ";
+
+	switch(g_iAutoSetCountDown[iClient] % 3)
+	{
+		case 0: FormatEx(strArrowLine, sizeof(strArrowLine), "\t\t   ->           Closing in %s%d Seconds           <-", strDigitPad, g_iAutoSetCountDown[iClient]);
+		case 1: FormatEx(strArrowLine, sizeof(strArrowLine), "\t\t            ->  Closing in %s%d Seconds  <-", strDigitPad, g_iAutoSetCountDown[iClient]);
+		case 2: FormatEx(strArrowLine, sizeof(strArrowLine), "\t\t        ->      Closing in %s%d Seconds      <-", strDigitPad, g_iAutoSetCountDown[iClient]);
+	}
+
+	char strOption3Text[512];
+	Format(strOption3Text, sizeof(strOption3Text), "No, not yet.\
+	\n \
+	\n ~	~	~	~	~	~	~	~	~	~	~	~	~	~	~	~\
+	\n \
+	\n%s\
+	\n \
+	\n===	===	===	===	===	===	===	===	===	===\
+	\n %s%s",
+	strArrowLine, strNewLines, strEndingNewLines);
+	AddMenuItem(menu, "option3", strOption3Text);
+
+	SetMenuExitButton(menu, false);
+	DisplayMenu(menu, iClient, MENU_TIME_FOREVER);
+
 	return Plugin_Handled;
 }
 
@@ -228,16 +240,10 @@ void ConfirmationMessageMenuHandler(Menu menu, MenuAction action, int iClient, i
 				g_bUserStoppedConfirmation[iClient] = true;
 				ClosePanel(iClient);
 
-				if (g_iClientTeam[iClient] == TEAM_SURVIVORS)
-					OpenCharacterSelectionPanel(iClient);
-				else if (g_iClientTeam[iClient] == TEAM_INFECTED)
-					OpenCharacterSelectionPanel(iClient);
-				else
-					OpenCharacterSelectionPanel(iClient);
+				OpenCharacterSelectionPanel(iClient);
 
 				// Set this value to draw the confirmation once they close the motd and push a button
-				if (g_bTalentsConfirmed[iClient] == false)
-					g_iOpenCharacterSelectAndDrawMenuState[iClient] = WAITING_ON_RELEASE_FOR_CONFIRM_MENU;
+				g_iOpenCharacterSelectAndDrawMenuState[iClient] = WAITING_ON_RELEASE_FOR_CONFIRM_MENU;
 			}
 			case 2: //No
 			{

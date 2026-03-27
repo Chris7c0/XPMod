@@ -91,24 +91,39 @@ Action TopMenuDraw(int iClient)
 	char strStartingNewLines[32], strEndingNewLines[32];
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
-	
+
 	// Title
+	char text[512], strNewLines[512];
 	if(g_iClientTeam[iClient] == TEAM_SURVIVORS)
+	{
+		char strClassName[20];
 		switch(g_iChosenSurvivor[iClient])
 		{
-			case BILL: 		SetMenuTitle(menu, "%s				XP Mod\n			v %s\n▬▬▬▬▬▬▬▬▬▬▬▬▬\nLevel  %d  Support\nXP:   %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬", strStartingNewLines, PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-			case ROCHELLE:	SetMenuTitle(menu, "%s				XP Mod\n			v %s\n▬▬▬▬▬▬▬▬▬▬▬▬▬\nLevel  %d  Ninja\nXP:   %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬", strStartingNewLines, PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-			case COACH:		SetMenuTitle(menu, "%s				XP Mod\n			v %s\n▬▬▬▬▬▬▬▬▬▬▬▬▬\nLevel  %d  Berserker\nXP:   %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬", strStartingNewLines, PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-			case ELLIS:		SetMenuTitle(menu, "%s				XP Mod\n			v %s\n▬▬▬▬▬▬▬▬▬▬▬▬▬\nLevel %d Weapon Expert\nXP:   %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬", strStartingNewLines, PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-			case NICK:		SetMenuTitle(menu, "%s				XP Mod\n			v %s\n▬▬▬▬▬▬▬▬▬▬▬▬▬\nLevel  %d  Gambler\nXP:   %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬", strStartingNewLines, PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-			case LOUIS:		SetMenuTitle(menu, "%s				XP Mod\n			v %s\n▬▬▬▬▬▬▬▬▬▬▬▬▬\nLevel  %d  Disruptor\nXP:   %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬", strStartingNewLines, PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-			case ZOEY:		SetMenuTitle(menu, "%s				XP Mod\n			v %s\n▬▬▬▬▬▬▬▬▬▬▬▬▬\nLevel  %d  Medic\nXP:   %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬", strStartingNewLines, PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+			case BILL: 	strcopy(strClassName, sizeof(strClassName), "Support");
+			case ROCHELLE:	strcopy(strClassName, sizeof(strClassName), "Ninja");
+			case COACH:	strcopy(strClassName, sizeof(strClassName), "Berserker");
+			case ELLIS:	strcopy(strClassName, sizeof(strClassName), "Weapon Expert");
+			case NICK:	strcopy(strClassName, sizeof(strClassName), "Gambler");
+			case LOUIS:	strcopy(strClassName, sizeof(strClassName), "Disruptor");
+			case ZOEY:	strcopy(strClassName, sizeof(strClassName), "R.C. Medic");
 		}
+		FormatEx(text, sizeof(text), "%s				XP Mod\n			v %s\n▬▬▬▬▬▬▬▬▬▬▬▬▬\nLevel  %d  %s\nXP:   %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬", strStartingNewLines, PLUGIN_VERSION, g_iClientLevel[iClient], strClassName, g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+	}
 	else if(g_iClientTeam[iClient] == TEAM_INFECTED)
-		SetMenuTitle(menu, "%s				XP Mod\n			v %s\n▬▬▬▬▬▬▬▬▬▬▬▬▬\nLevel  %d  Infected\nXP:   %d/%d\n \nClass 1) %s\nClass 2) %s\nClass 3) %s\n▬▬▬▬▬▬▬▬▬▬▬▬▬", strStartingNewLines, PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+		FormatEx(text, sizeof(text), "%s				XP Mod\n			v %s\n▬▬▬▬▬▬▬▬▬▬▬▬▬\nLevel  %d  Infected\nXP:   %d/%d\n \nClass 1) %s\nClass 2) %s\nClass 3) %s\n▬▬▬▬▬▬▬▬▬▬▬▬▬", strStartingNewLines, PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	else
-		SetMenuTitle(menu, "%s				XP Mod\n			v %s\n▬▬▬▬▬▬▬▬▬▬▬▬▬\nLevel %d\nXP:     %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬", strStartingNewLines, PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
-	
+		FormatEx(text, sizeof(text), "%s				XP Mod\n			v %s\n▬▬▬▬▬▬▬▬▬▬▬▬▬\nLevel %d\nXP:     %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬", strStartingNewLines, PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+	SetMenuTitle(menu, "%s", text);
+
+	// Calculate menu option newlines for automatic padding
+	// Base of 9 for the 10 option slots (excluding the final padded option)
+	int iMenuOptionNewLines = 9;
+	if(GetClientAdminLevel(iClient) > 0)
+		iMenuOptionNewLines += 1;
+	if(g_bTalentsConfirmed[iClient] == false)
+		iMenuOptionNewLines += 5;
+	GetNewLinesAutomatic(text, strNewLines, iMenuOptionNewLines, 37);
+
 	// Option 1
 	if (g_bTalentsConfirmed[iClient] == true)
 	{
@@ -123,7 +138,7 @@ Action TopMenuDraw(int iClient)
 		else
 			AddMenuItem(menu, "option1", "Change Your Characters");
 	}
-	
+
 	// Options 2 and 3
 	AddMenuItem(menu, "option2", "Change Your Equipment");
 	AddMenuItem(menu, "option3", "Extras");
@@ -153,20 +168,12 @@ Action TopMenuDraw(int iClient)
 	// Option 9
 	AddMenuItem(menu, "option9", "", ITEMDRAW_NOTEXT);
 
-	// Option 10 (This is the tricky bit, to get the menu at the right height)
-	// This must consider all the new lines for all the conditions above
-	// Start with a baseline of newlines, then add the others for each condition
-	char strFinalOptionText[150];
-	Format(strFinalOptionText, sizeof(strFinalOptionText), 
-		"Exit the Menu\
-		\n▬▬▬▬▬▬▬▬▬▬▬▬▬\
-		%s\
-		\n \n \n \n \n \n \n \n \n \n \n \
-		%s%s%s",
-		strEndingNewLines,
-		g_iClientTeam[iClient] == TEAM_INFECTED ? "" : "\n \n \n \n ",
-		g_bTalentsConfirmed[iClient] == false ? "" : "\n \n \n \n \n ",
-		GetClientAdminLevel(iClient) > 0 ? "" : "\n ")
+	// Option 10
+	char strFinalOptionText[512];
+	Format(strFinalOptionText, sizeof(strFinalOptionText), "Exit the Menu\
+	\n▬▬▬▬▬▬▬▬▬▬▬▬▬\
+	%s%s",
+	strNewLines, strEndingNewLines);
 	AddMenuItem(menu, "option10", strFinalOptionText);
 
 	SetMenuExitButton(menu, false);
@@ -192,7 +199,7 @@ Action TopChooseCharactersMenuDraw(int iClient)
 	\n▬▬▬▬▬▬▬▬▬▬▬\n",
 	strStartingNewLines);
 	SetMenuTitle(menu, "%s", text);
-	GetNewLinesAutomatic(text, strNewLines, 9);
+	GetNewLinesAutomatic(text, strNewLines, 8);
 	AddMenuItem(menu, "option1", "Survivors");
 	AddMenuItem(menu, "option2", "Infected\n ");
 	AddMenuItem(menu, "option3", "", ITEMDRAW_NOTEXT);
@@ -227,12 +234,11 @@ Action ExtrasMenuDraw(int iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 
 	char text[512], strNewLines[512];
-	FormatEx(text, sizeof(text), "%s\
-	XPMod Extras\
+	FormatEx(text, sizeof(text), "%s		XPMod Extras\
 	\n▬▬▬▬▬▬▬▬▬▬▬\n",
 	strStartingNewLines);
 	SetMenuTitle(menu, "%s", text);
-	GetNewLinesAutomatic(text, strNewLines, 9);
+	GetNewLinesAutomatic(text, strNewLines, 8);
 	AddMenuItem(menu, "option1", "Change Team");
 	AddMenuItem(menu, "option2", "Statistics");
 	AddMenuItem(menu, "option3", "Options");
@@ -271,7 +277,7 @@ Action ChooseTeamMenuDraw(int iClient)
 	\n▬▬▬▬▬▬▬▬▬▬▬\n",
 	strStartingNewLines);
 	SetMenuTitle(menu, "%s", text);
-	GetNewLinesAutomatic(text, strNewLines, 9);
+	GetNewLinesAutomatic(text, strNewLines, 5);
 	AddMenuItem(menu, "option1", "Survivors");
 	AddMenuItem(menu, "option2", "Infected");
 	AddMenuItem(menu, "option3", "Spectators\n ");
@@ -311,7 +317,7 @@ Action ChooseStatisticsMenuDraw(int iClient)
 	\n▬▬▬▬▬▬▬▬▬▬▬\n",
 	strStartingNewLines);
 	SetMenuTitle(menu, "%s", text);
-	GetNewLinesAutomatic(text, strNewLines, 9);
+	GetNewLinesAutomatic(text, strNewLines, 2);
 	AddMenuItem(menu, "option1", "Last Round Stats");
 	AddMenuItem(menu, "option2", "Current Round Stats\n ");
 	AddMenuItem(menu, "option3", "", ITEMDRAW_NOTEXT);
@@ -349,7 +355,12 @@ Action OptionMenuDraw(int iClient)
 	\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬",
 	strStartingNewLines);
 	SetMenuTitle(menu, "%s", text);
-	GetNewLinesAutomatic(text, strNewLines, 9);
+
+	// Calculate menu option newlines for automatic padding
+	int iMenuOptionNewLines = 8;
+	if(g_iXPDisplayMode[iClient] == 0)
+		iMenuOptionNewLines += 1; // "In Game" option has 1 extra newline for the addon note
+	GetNewLinesAutomatic(text, strNewLines, iMenuOptionNewLines);
 
 	if(g_iXPDisplayMode[iClient]==0)
 		AddMenuItem(menu, "option1", "XP Display Mode: In Game\n       - Requires XPMod Addon\n ");
