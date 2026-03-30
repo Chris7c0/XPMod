@@ -42,26 +42,14 @@ All 6 talents fully match between menu and code:
 
 ## Rochelle - 4 Discrepancies
 
-### Silent Sorrow - Typo
-- **Menu says:** "H & K (Miliatry Rifle)"
-- **Should be:** "Military Rifle"
-- **Location:** `Menu_Rochelle.sp:214`
-
 ### Silent Sorrow - Format String Bug
 - **Menu says:** `+12%` with a single `%`
 - **Should be:** `+12%%%%` to match all other percentages in the same FormatEx call
 - **Location:** `Menu_Rochelle.sp:215`
 
-### Shadow Ninja - Melee Attack Speed Not Implemented
-- **Menu says:** "+30% melee attack speed per level" during Silent Assassin
-- **Code does:** No melee attack speed modification code exists for Rochelle anywhere. The only Silent Assassin effects are: hide glow, stealth (19%/level), movement speed (+6%/level), and giving a katana.
-
 ### Shadow Ninja (Bind 2) - Bind Uses Don't Scale
 - **Menu says:** "+1 use every other level"
 - **Code does:** Always 3 uses at all levels. `g_iClientBindUses_2` is initialized to 0 in `ResetVariables.sp:97` with no Shadow-level-based scaling. Compare with Zoey which properly initializes bind uses based on level.
-
-### Note: Scout Clip Size Has No Effect
-Silent Sorrow menu says "-5 Clip Size" for the Scout, but the code caps clip to `20 - g_iSilentLevel`. Since the default Scout clip is 15, the formula never reduces it below 15 at any talent level, so this penalty has no practical effect.
 
 ---
 
@@ -98,10 +86,6 @@ Silent Sorrow menu says "-5 Clip Size" for the Scout, but the code caps clip to 
 ### Fire Storm (Bind 2) - Bind Uses Don't Scale
 - **Menu says:** "+1 Use Every Other Level"
 - **Code does:** Always 3 uses. `g_iClientBindUses_2` is initialized to 0 with no Fire-level-based scaling. Compare with Bind 1 (Mechanic Affinity) which properly scales: `3 - RoundToCeil(g_iMetalLevel * 0.5)`.
-
-### Fire Storm - Witch Neutralization Not Implemented
-- **Menu says:** "Burning A Calm Witch Immediately Neutralizes Her"
-- **Code does:** No witch neutralization code exists. The only witch-related code in `Events_Infected.sp:404-411` is a commented-out block with the note "Do not set witches on fire, use this later when we have different types of witches."
 
 ---
 

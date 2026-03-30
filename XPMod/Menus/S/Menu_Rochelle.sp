@@ -212,7 +212,7 @@ Action SilentMenuDraw(int iClient)
 		\n	Miss: -15 Stacks\
 		\n \
 		\n H & K (Miliatry Rifle):\
-		\n	+12% Dmg per Level\
+		\n	+12%%%% Dmg per Level\
 		\n	+6 Clip Size per Level\
 		\n	Ignite Enemies\
 		\n \
@@ -307,7 +307,7 @@ Action ShadowMenuDraw(int iClient)
 		\n+5 max health per level\
 		\n \
 		\n				Bind 2: Silent Assassin\
-		\n+1 use every other level; 12 second duration\
+		\n3 Uses; 12 second duration\
 		\n \
 		\n+6%%%% movement speed per level\
 		\n+30%%%% melee attack speed per level\

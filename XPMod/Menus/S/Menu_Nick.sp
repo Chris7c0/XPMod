@@ -70,7 +70,7 @@ Action SwindlerMenuDraw(int iClient)
 		\n \
 		\n \
 		\nSkill Uses:\
-		\nLife stealing ticks every second for 5 seconds\
+		\nLife stealing ticks every 2 seconds for 5 ticks\
 		\nLife stealing only affects SI\
 		\n ",
 		strStartingNewLines,
@@ -155,8 +155,8 @@ Action RiskyMenuDraw(int iClient)
 		\nAll upgrades are (p220 & Glock):\
 		\n \
 		\nLevel 1:\
-		\n+20%%%% reload speed per level\
-		\n+20%%%% damage per level\
+		\n+10%%%% reload speed per level\
+		\n+13%%%% damage per level\
 		\n+6 clip size per level\
 		\n \
 		\nLevel 5:\
@@ -205,7 +205,7 @@ Action EnhancedMenuDraw(int iClient)
 		\npills (+8 at max)\
 		\n \
 		\nShoot Survivors with Pistols to heal them...at a cost.\
-		\n   Pistols:     +2 HP for Teammate, -1 HP for You\
+		\n   Pistols:     +1 HP for Teammate, -1 HP for You\
 		\n   Magnum:  +7 HP for Teammate, -3 HP for You\
 		\n ",
 		strStartingNewLines,
@@ -295,14 +295,14 @@ Action DesperateMenuDraw(int iClient)
 		\n					  Requires Level 26\
 		\n \
 		\nLevel 1:\
-		\n(Stacks) +2%%%% speed & +10%%%% gun damage per level\
+		\n(Stacks) +1%%%% speed & +10%%%% gun damage per level\
 		\n \
 		\n \
 		\n				Bind 2: Cheating Death\
-		\n				+1 use every other level\
+		\n				3 Uses\
 		\n \
 		\nLevel 1:\
-		\nHeal team +4 health per level (costs 1 charge)\
+		\nHeal team +5 health per level (costs 1 charge)\
 		\nLevel 3:\
 		\nRevive incapacitated ally (costs 2 charges)\
 		\nLevel 5:\

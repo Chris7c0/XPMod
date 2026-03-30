@@ -201,7 +201,7 @@ Action ExorcismMenuDraw(int iClient)
 		%s  Exorcism in a Barrel(Level %d):\
 		\n \
 		\n+6%%%% Assault Rifle damage per level\
-		\n+20%%%% Reload speed per level\
+		\n+9%%%% Reload speed per level\
 		\n ",
 		strStartingNewLines,
 		g_iExorcismLevel[iClient]);
@@ -250,7 +250,7 @@ Action DiehardMenuDraw(int iClient)
 		\n- 4 minute global cooldown\
 		\n \
 		\n		Bind 1: Improvised Explosives\
-		\n			+1 use every other level\
+		\n				3 Uses\
 		\n \
 		\nDrop +1 active pipebomb every other level\
 		\n ",
@@ -289,7 +289,7 @@ Action PromotionalMenuDraw(int iClient)
 	FormatEx(text, sizeof(text), "\
 		%s		Promotional Benefits(Level %d):\
 		\n \
-		\n+8%%%% reload speed & cloaking per level\
+		\n+4%%%% reload speed & cloaking per level\
 		\n+20 rifle clip size per level\
 		\n+20%%%% M60 damage per level\
 		\nAutomatic laser sight\

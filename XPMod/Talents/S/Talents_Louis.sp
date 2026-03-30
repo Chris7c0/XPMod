@@ -485,16 +485,16 @@ void EventsPillsUsed_Louis(int iClient)
 	SetClientSpeed(iClient);
 
 	// Take Temp Health away from player for Pills Here talent, only if its not going enough above max health already
-	if (g_iLouisTalent5Level[iClient] > 0 &&
+	if (g_iLouisTalent6Level[iClient] > 0 &&
 		(GetPlayerHealth(iClient) +
 		g_iTempHealthBeforeUsingHealthBoostSlotItem[iClient] + 
 		50 - // Pill health default setting
-		(g_iLouisTalent5Level[iClient] * LOUIS_PILLS_USED_HEALTH_REDUCTION_PER_LEVEL) < 
+		(g_iLouisTalent6Level[iClient] * LOUIS_PILLS_USED_HEALTH_REDUCTION_PER_LEVEL) < 
 		GetPlayerMaxHealth(iClient)))
 	{
 		int iCurrentTempHealth = GetSurvivorTempHealth(iClient);
 		ResetTempHealthToSurvivor(iClient);
-		AddTempHealthToSurvivor(iClient, float(iCurrentTempHealth - g_iLouisTalent5Level[iClient] * LOUIS_PILLS_USED_HEALTH_REDUCTION_PER_LEVEL));
+		AddTempHealthToSurvivor(iClient, float(iCurrentTempHealth - g_iLouisTalent6Level[iClient] * LOUIS_PILLS_USED_HEALTH_REDUCTION_PER_LEVEL));
 
 		g_iTempHealthBeforeUsingHealthBoostSlotItem[iClient] = 0;
 	}

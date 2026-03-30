@@ -101,7 +101,7 @@ Action LouisTalent2MenuDraw(int iClient)
 		%s 		9mm Augmentation (Level %d):\
 		\n \
 		\n SMG and Pistol (Not Magnum) Buffs:\
-		\n 	- +10%%%% Damage per Level\
+		\n 	- +20%%%% Damage per Level\
 		\n 	- +10 Clip Size per Level\
 		\n Hold [CROUCH] + [USE] to Toggle Laser Mode     \
 		\n \
@@ -191,13 +191,15 @@ Action LouisTalent4MenuDraw(int iClient)
 	FormatEx(text, sizeof(text), "\
 		%s 							BOOM HEADSHOT! (Level %d):\
 		\n \
-		\n +40%%%% Headshot Damage Multiplier per Level\
-		\n -10%%%% Damage Penalty for Non-Headshots per Level\
+		\n Headshot/body damage per level varies by mode:\
+		\n 	- Laser On: +5%%%% / -20%%%%\
+		\n 	- Laser Off: +30%%%% / -10%%%%\
+		\n 	- Pistols: +20%%%% / -15%%%%\
 		\n \
 		\n Headshot Kill Bonuses:\
 		\n 	- CI: +1 HP, +1%%%% Speed for 60 Seconds, +3 Clip Ammo per Level\
 		\n 	- SI: +5 HP, +5%%%% Speed for 60 Seconds, +10 Clip Ammo per Level   \
-		\n 	- Louis Is Always Capped At +15%%%% Speed\
+		\n 	- Louis Speed Cap: +10%%%% w/ Laser, +25%%%% w/o\
 		\n ",
 		strStartingNewLines,
 		g_iLouisTalent4Level[iClient]);
@@ -287,7 +289,7 @@ Action LouisTalent6MenuDraw(int iClient)
 		\n When Taking Pills (Stacks):\
 		\n	- -2 Temp Health Per Level\
 		\n	- +2%%%% Speed per Level for 90 Seconds\
-		\n		- Louis Capped At +15%%%% Speed\
+		\n		- Louis capped at +10%%%% speed w/ Laser, +25%%%% w/o\
 		\n	- +3%%%% Damage per Level for 90 Seconds  \
 		\n	- 3 Stacks Max\
 		\n \

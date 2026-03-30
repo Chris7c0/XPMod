@@ -425,7 +425,7 @@ void HandleBillsTeamHealing(int iClient, int iButtons)
 {
 	if (RunClientChecks(iClient) == false ||
 		g_bTalentsConfirmed[iClient] ==  false ||
-		g_iInspirationalLevel[iClient] < 0 ||
+		g_iInspirationalLevel[iClient] <= 0 ||
 		g_bIsClientDown[iClient] == true ||
 		IsClientGrappled(iClient) == true ||
 		IsPlayerAlive(iClient) == false)

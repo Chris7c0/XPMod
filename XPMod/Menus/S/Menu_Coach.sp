@@ -264,7 +264,6 @@ Action LeadMenuDraw(int iClient)
 		\n(Team) +10%%%% chainsaw fuel per level\
 		\n(Team) +5 max health per level\
 		\n \
-		\nLevel 5:\
 		\n(Team) (Stacks) Reduce screen shaking when\
 		\n   taking damage by 50%%%%\
 		\n \

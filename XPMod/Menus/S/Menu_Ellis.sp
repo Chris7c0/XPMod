@@ -68,9 +68,10 @@ Action OverMenuDraw(int iClient)
 		\nAdrenaline Shots Heal %i HP\
 		\nStart With An Extra Shot\
 		\n \
+		\n+5%%%% RoF To All Guns per Level\
+		\n \
 		\nIf Within %i Points Of Max Health:\
 		\n	+1%%%% Movement Speed\
-		\n	+5%%%% RoF To All Guns per Level\
 		\n \
 		\nWhile On Adrenaline:\
 		\n	+10%%%% RoF To All Guns per Level\
@@ -170,7 +171,7 @@ Action JamminMenuDraw(int iClient)
 		\n On Tank Spawn:\
 		\n \
 		\n	Level 1:\
-		\n	+1%%%% Movement Speed per Level\
+		\n	+1%%%% Movement Speed per Level per Tank\
 		\n \
 		\n	Level 5:\
 		\n	+1 Adrenaline Shot\
@@ -216,9 +217,9 @@ Action WeaponsMenuDraw(int iClient)
 		\nLevel 1:\
 		\n+15%%%% Reload Speed per Level\
 		\n(Team) +8%%%% Laser Accuracy per Level\
+		\nAutomatic Laser Sight\
 		\n \
 		\nLevel 5:\
-		\nAutomatic Laser Sight\
 		\nEllis Can Carry 2 Primary Weapons\
 		\n [WALK+ZOOM] To Cycle Weapons\
 		\n ",
@@ -315,7 +316,7 @@ Action FireMenuDraw(int iClient)
 		\n \
 		\n \
 		\n			Bind 2: Summon Kagu-Tsuchi's Wrath\
-		\n						+1 Use Every Other Level\
+		\n						3 Uses\
 		\n +1 Molotov on Use\
 		\n \
 		\nTemporarily Grants Ellis Incendiary\
