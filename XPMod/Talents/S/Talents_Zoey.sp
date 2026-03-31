@@ -2637,10 +2637,12 @@ void TryTriggerZoeyMop(int iClient, int iTargetEntity)
 
 	int iKillLimit = g_iZoeyMopCharge[iClient];
 	int iKilled = KillZoeyCommonInfectedAroundTarget(iClient, iTargetEntity, iKillLimit);
-	g_iZoeyMopCharge[iClient] = 0;
+	g_iZoeyMopCharge[iClient] -= iKilled;
+	if (g_iZoeyMopCharge[iClient] < 0)
+		g_iZoeyMopCharge[iClient] = 0;
 
 	if (IsFakeClient(iClient) == false)
-		PrintHintText(iClient, "Mop The Floor triggered.\nKilled %d common infected.", iKilled);
+		PrintHintText(iClient, "Mop The Floor triggered.\nKilled %d CI/UI.\nStored Charge: %d", iKilled, g_iZoeyMopCharge[iClient]);
 }
 
 int KillZoeyCommonInfectedAroundTarget(int iClient, int iTargetEntity, int iKillLimit)

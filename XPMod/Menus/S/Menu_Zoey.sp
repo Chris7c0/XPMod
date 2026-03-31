@@ -116,7 +116,8 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 			\nMop 'Til They Drop\
 			\n	Gain 1 Charge Per 3 Pistol Hits\
 			\n	Press [WALK] + [USE] To Arm\
-			\n	Armed CI Shot Kills Nearby CI Equal To Stored Charge\
+			\n	Armed Shot Kills Nearby CI/UI\
+			\n	Consumes 1 Charge Per CI/UI Killed\
 			\n ",
 			strStartingNewLines,
 			strTalentName);
