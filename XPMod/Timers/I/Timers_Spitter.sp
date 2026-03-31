@@ -324,9 +324,3 @@ Action TimerAllowGooSwitching(Handle timer, int iClient)
 	g_hTimer_BlockGooSwitching[iClient] = null;
 	return Plugin_Stop;
 }
-
-Action TimerResetRepulsion(Handle timer, int iClient)
-{
-	g_bCanBePushedByRepulsion[iClient] = true;
-	return Plugin_Stop;
-}

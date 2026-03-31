@@ -135,6 +135,71 @@ void OnGameFrame_Spitter(int iClient)
 	}
 }
 
+void ApplyRepulsionGooBounce(int iVictim)
+{
+	float xyzNewVelocity[3];
+
+	switch (GetRandomInt(1, 9))
+	{
+		case 1:
+		{
+			xyzNewVelocity[0] = 0.0;
+			xyzNewVelocity[1] = 0.0;
+			xyzNewVelocity[2] = 650.0;
+		}
+		case 2:
+		{
+			xyzNewVelocity[0] = 140.0;
+			xyzNewVelocity[1] = 140.0;
+			xyzNewVelocity[2] = 550.0;
+		}
+		case 3:
+		{
+			xyzNewVelocity[0] = 280.0;
+			xyzNewVelocity[1] = 0.0;
+			xyzNewVelocity[2] = 550.0;
+		}
+		case 4:
+		{
+			xyzNewVelocity[0] = 140.0;
+			xyzNewVelocity[1] = -140.0;
+			xyzNewVelocity[2] = 550.0;
+		}
+		case 5:
+		{
+			xyzNewVelocity[0] = 0.0;
+			xyzNewVelocity[1] = -280.0;
+			xyzNewVelocity[2] = 550.0;
+		}
+		case 6:
+		{
+			xyzNewVelocity[0] = -140.0;
+			xyzNewVelocity[1] = -140.0;
+			xyzNewVelocity[2] = 550.0;
+		}
+		case 7:
+		{
+			xyzNewVelocity[0] = -280.0;
+			xyzNewVelocity[1] = 0.0;
+			xyzNewVelocity[2] = 550.0;
+		}
+		case 8:
+		{
+			xyzNewVelocity[0] = -140.0;
+			xyzNewVelocity[1] = 140.0;
+			xyzNewVelocity[2] = 550.0;
+		}
+		case 9:
+		{
+			xyzNewVelocity[0] = 0.0;
+			xyzNewVelocity[1] = 280.0;
+			xyzNewVelocity[2] = 550.0;
+		}
+	}
+
+	TeleportEntity(iVictim, NULL_VECTOR, NULL_VECTOR, xyzNewVelocity);
+}
+
 void EventsHurt_AttackerSpitter(Handle hEvent, int attacker, int victim)
 {
 	if (IsFakeClient(attacker))
@@ -256,79 +321,11 @@ void DealSpecialSpitterGooCollision(int iAttacker, int iVictim, int iDamageTaken
 		}
 		case GOO_REPULSION:
 		{
-			if(g_bCanBePushedByRepulsion[iVictim] == true)
+			float fGameTime = GetGameTime();
+			if(g_fRepulsionGooNextPushTime[iVictim] <= fGameTime)
 			{
-				g_bCanBePushedByRepulsion[iVictim] = false;
-				float xyzNewVelocity[3];
-				int RandomRepulsionDirection;
-				RandomRepulsionDirection = GetRandomInt(1, 9);
-				switch (RandomRepulsionDirection)
-				{
-					case 1:
-					{
-						xyzNewVelocity[0] = 0.0;
-						xyzNewVelocity[1] = 0.0;
-						xyzNewVelocity[2] = 650.0;
-					}
-					case 2:
-					{
-						//xyzNewVelocity = {220.0, 220.0, 220.0};
-						xyzNewVelocity[0] = 140.0;
-						xyzNewVelocity[1] = 140.0;
-						xyzNewVelocity[2] = 550.0;
-					}
-					case 3:
-					{
-						//xyzNewVelocity = {440.0, 0.0, 220.0};
-						xyzNewVelocity[0] = 280.0;
-						xyzNewVelocity[1] = 0.0;
-						xyzNewVelocity[2] = 550.0;
-					}
-					case 4:
-					{
-						//xyzNewVelocity = {220.0, -220.0, 220.0};
-						xyzNewVelocity[0] = 140.0;
-						xyzNewVelocity[1] = -140.0;
-						xyzNewVelocity[2] = 550.0;
-					}
-					case 5:
-					{
-						//xyzNewVelocity = {0.0, -440.0, 220.0};
-						xyzNewVelocity[0] = 0.0;
-						xyzNewVelocity[1] = -280.0;
-						xyzNewVelocity[2] = 550.0;
-					}
-					case 6:
-					{
-						//xyzNewVelocity = {-220.0, -220.0, 220.0};
-						xyzNewVelocity[0] = -140.0;
-						xyzNewVelocity[1] = -140.0;
-						xyzNewVelocity[2] = 550.0;
-					}
-					case 7:
-					{
-						//xyzNewVelocity = {-440.0, 0.0, 220.0};
-						xyzNewVelocity[0] = -280.0;
-						xyzNewVelocity[1] = 0.0;
-						xyzNewVelocity[2] = 550.0;
-					}
-					case 8:
-					{
-						//xyzNewVelocity = {-220.0, 220.0, 220.0};
-						xyzNewVelocity[0] = -140.0;
-						xyzNewVelocity[1] = 140.0;
-						xyzNewVelocity[2] = 550.0;
-					}
-					case 9:
-					{
-						//xyzNewVelocity = {0.0, 440.0, 220.0};
-						xyzNewVelocity[0] = 0.0;
-						xyzNewVelocity[1] = 280.0;
-						xyzNewVelocity[2] = 550.0;
-					}
-				}
-				TeleportEntity(iVictim, NULL_VECTOR, NULL_VECTOR, xyzNewVelocity);
-				CreateTimer(8.0, TimerResetRepulsion, iVictim, TIMER_FLAG_NO_MAPCHANGE);
+				g_fRepulsionGooNextPushTime[iVictim] = fGameTime + SPITTER_REPULSION_BOUNCE_INTERVAL;
+				ApplyRepulsionGooBounce(iVictim);
 			}
 		}
 		case GOO_VIRAL:

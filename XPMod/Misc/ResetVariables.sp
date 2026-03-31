@@ -427,7 +427,7 @@ void ResetClientVariablesForRound(int iClient)
 	g_iViralInfector[iClient] = 0;
 	g_bIsImmuneToVirus[iClient] = false;
 	g_iBagOfSpitsSelectedSpit[iClient] = BAG_OF_SPITS_NONE;
-	g_bCanBePushedByRepulsion[iClient] = true;
+	g_fRepulsionGooNextPushTime[iClient] = 0.0;
 	g_bIsStealthSpitter[iClient] = false;
 	g_iStealthSpitterChargePower[iClient] =  0;
 	g_iStealthSpitterChargeMana[iClient] =  0;
