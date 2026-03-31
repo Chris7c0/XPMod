@@ -2,7 +2,7 @@ void SetupConsoleCommands()
 {
 	RegConsoleCmd("xpmstats", ShowTeamStatsToPlayer);
 	RegConsoleCmd("website", MotdPanel);
-	RegConsoleCmd("xpmhelp", OpenHelpMotdPanel);
+	RegConsoleCmd("xpmhelp", PrintXPModHelpMessage);
 	//RegConsoleCmd("resetmyaccount", ResetAll);		//Reset Level, skillpoints, XP,  and talents (taking this out to avoid issues)
 	RegConsoleCmd("xpmbind1", Bind1Press);				//This is the bound key function for ultimate abilities, Bind 1
 	RegConsoleCmd("xpmbind2", Bind2Press);				//This is the bound key function for ultimate abilities, Bind 2

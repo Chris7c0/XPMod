@@ -471,8 +471,7 @@ void TopMenuHandler(Menu menu, MenuAction action, int iClient, int itemNum)
 			}
 			case 3: //Help and HowTo
 			{
-				OpenMOTDPanel(iClient, "", "http://xpmod.net/help/xpmod_ig_help.html", MOTDPANEL_TYPE_URL);
-				//TopHelpMenuDraw(iClient);
+				PrintXPModHelpMessage(iClient, 0);
 			}
 			case 4: //Confirm Talents
 			{

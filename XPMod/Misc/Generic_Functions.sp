@@ -1037,9 +1037,10 @@ bool IsClientGrappled(int iClient)
 	return false;
 }
 
-Action OpenHelpMotdPanel(int iClient, int args)
+Action PrintXPModHelpMessage(int iClient, int args)
 {
-	OpenMOTDPanel(iClient, "", "http://xpmod.net/help/xpmod_ig_help.html", MOTDPANEL_TYPE_URL);
+	PrintToChat(iClient, "\x03[XPMod] \x05Check out xpmod.net or join the XPMod discord for help.");
+	PrintHintText(iClient, "Check out xpmod.net or join the XPMod discord for help.");
 	return Plugin_Handled;
 }
 
