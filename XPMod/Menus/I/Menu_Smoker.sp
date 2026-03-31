@@ -57,9 +57,8 @@ Action EnvelopmentMenuDraw(int iClient)
 		%s  				Rapid Cell Division (Level %d)\
 		\n \
 		\n%d Max Health\
-		\nRegenerate 60 HP per Second\
-		\n \
 		\nWhile Choking a Victim:\
+		\n	Regenerate 60 HP per Second\
 		\n	+2 Dmg per Hit\
 		\n	Can Move Slowly\
 		\n \

@@ -40,9 +40,10 @@ void OnGameFrame_Smoker(int iClient)
 		g_iSmokerTalent1Level[iClient] <= 0)
 		return;
 
-	// Health Regeneration
+	// Health Regeneration while actively choking a victim
 	// Every frame give x hp, 30 fps, so 30 * x hp per second
-	if (GetPlayerHealth(iClient) < GetPlayerMaxHealth(iClient))
+	if (g_iChokingVictim[iClient] > 0 &&
+		GetPlayerHealth(iClient) < GetPlayerMaxHealth(iClient))
 		SetPlayerHealth(iClient, -1, SMOKER_HEALTH_REGEN_PER_FRAME, true);
 
 	// Regeneration of Smoker Doppelganger Decoy Clones
