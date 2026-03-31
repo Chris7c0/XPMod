@@ -1039,7 +1039,7 @@ bool IsClientGrappled(int iClient)
 
 Action PrintXPModHelpMessage(int iClient, int args)
 {
-	PrintToChat(iClient, "\x03[XPMod] \x05Check out xpmod.net or join the XPMod discord for help.");
+	PrintToChat(iClient, "\x03[XPMod] \x05Check out \x04xpmod.net\x05 or join the XPMod discord for help.");
 	PrintHintText(iClient, "Check out xpmod.net or join the XPMod discord for help.");
 	return Plugin_Handled;
 }
