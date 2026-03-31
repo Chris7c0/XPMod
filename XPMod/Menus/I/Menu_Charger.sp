@@ -104,7 +104,7 @@ Action SpikedMenuDraw(int iClient)
 		\n \
 		\n \
 		\n					Bind 1: Heavy Carry\
-		\n				3 uses; 15 second cooldown\
+		\n				3 uses; 30 second cooldown\
 		\n \
 		\n+10%% per level to carry distance and speed\
 		\non next charge\

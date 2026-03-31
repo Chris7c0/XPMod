@@ -265,8 +265,8 @@ void SetClientSpeedSmoker(int iClient, float &fSpeed)
 		g_iClientInfectedClass3[iClient] != SMOKER))
 		return;
 
-	if(g_iSmokerTalent1Level[iClient] > 0)
-		fSpeed += (g_iSmokerTalent1Level[iClient] * 0.05);
+	if(g_iSmokerTalent3Level[iClient] > 0)
+		fSpeed += (g_iSmokerTalent3Level[iClient] * 0.05);
 
 	//PrintToChat(iClient, "SetClientSpeedSmoker: %f", fSpeed);
 }

@@ -234,9 +234,9 @@ void EventsDeath_VictimBoomer(Handle hEvent, int iAttacker, int iVictim)
 					float distance = GetVectorDistance(targetVector, vector);
 					if(IsVisibleTo(vector, targetVector) == true)
 					{
-						if(distance < (200.0 + (float(g_iNorovirusLevel[iVictim]) * 15.0)))
+						if(distance < (200.0 + (float(g_iNorovirusLevel[iVictim]) * 40.0)))
 						{
-							DealDamage(target, iVictim, 10 + RoundToNearest(g_iNorovirusLevel[iVictim] * 1.5));
+							DealDamage(target, iVictim, 10 + (g_iNorovirusLevel[iVictim] * 2));
 							SDKCall(g_hSDK_VomitOnPlayer, target, iVictim, true);
 							
 							//Fling Target Survivor (taken from "Tankroar 2.2" by Karma)

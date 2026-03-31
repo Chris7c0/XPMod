@@ -99,7 +99,7 @@ Action TimerPoisonCloud(Handle timer, int iClient)
 			ShowXPSprite(iClient, g_iSprite_3XP_SI, iVictim, 1.0);
 	}
 	
-	CreateTimer((3.0 - (g_iSmokerTalent2Level[iClient] * 0.25)), TimerPoisonCloud, iClient, TIMER_FLAG_NO_MAPCHANGE);
+	CreateTimer((3.0 - (g_iSmokerTalent3Level[iClient] * 0.25)), TimerPoisonCloud, iClient, TIMER_FLAG_NO_MAPCHANGE);
 	
 	return Plugin_Stop;
 }

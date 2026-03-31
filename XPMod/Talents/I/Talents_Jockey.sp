@@ -63,6 +63,14 @@ void OnGameFrame_Jockey(int iClient)
 	}
 }
 
+int GetJockeyBonusDamageEveryThreeLevels(int iLevel)
+{
+	if (iLevel <= 0)
+		return 0;
+
+	return RoundToCeil(float(iLevel) / 3.0);
+}
+
 void EventsHurt_AttackerJockey(Handle hEvent, int iAttacker, int iVictim)
 {
 	if (IsFakeClient(iAttacker))
@@ -79,13 +87,7 @@ void EventsHurt_AttackerJockey(Handle hEvent, int iAttacker, int iVictim)
 			GetEventString(hEvent, "weapon", weapon, 20);
 			if (StrEqual(weapon, "jockey_claw") == true)
 			{
-				int dmg;
-				if (g_iMutatedLevel[iAttacker] < 5)
-					dmg = 1;
-				else if (g_iMutatedLevel[iAttacker] < 9)
-					dmg = 2;
-				else
-					dmg = 3;
+				int dmg = GetJockeyBonusDamageEveryThreeLevels(g_iMutatedLevel[iAttacker]);
 
 				int hp = GetPlayerHealth(iVictim);
 				if (hp > dmg)
@@ -102,13 +104,7 @@ void EventsHurt_AttackerJockey(Handle hEvent, int iAttacker, int iVictim)
 			GetEventString(hEvent, "weapon", weapon, 20);
 			if (StrEqual(weapon, "jockey_claw") == true)
 			{
-				int dmg;
-				if (g_iMutatedLevel[iAttacker] < 5)
-					dmg = 1;
-				else if (g_iMutatedLevel[iAttacker] < 9)
-					dmg = 2;
-				else
-					dmg = 3;
+				int dmg = GetJockeyBonusDamageEveryThreeLevels(g_iErraticLevel[iAttacker]);
 				int hp = GetPlayerHealth(iVictim);
 				if (hp > dmg)
 					DealDamage(iVictim, iAttacker, dmg);

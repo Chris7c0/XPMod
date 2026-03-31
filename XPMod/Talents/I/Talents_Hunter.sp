@@ -31,7 +31,6 @@ void OnGameFrame_Hunter(int iClient)
 
 	HandleHunterLunging(iClient);
 	HandleHunterCloaking(iClient);
-	// HandleHunterVisibleBloodLustMeterGain(iClient);
 	
 	// Health Regeneration
 	// Every frame give 1 hp, 30 fps, so 30 hp per second
@@ -474,9 +473,9 @@ void PrintBloodLustMeter(int iClient)
 
 void HandleHunterVisibleBloodLustMeterGain(int iClient)
 {
-
 	if (g_bIsCloakedHunter[iClient] == false ||  // Ensure the hunter is cloaked
 		g_iInfectedCharacter[iClient] != HUNTER || 
+		g_iKillmeleonLevel[iClient] <= 0 ||
 		g_bTalentsConfirmed[iClient] == false || 
 		g_iBloodLustLevel[iClient] <= 0 ||
 		g_iBloodLustStage[iClient] >= 3 ||
@@ -494,10 +493,11 @@ void HandleHunterVisibleBloodLustMeterGain(int iClient)
 	}
 
 	float xyzClientLocation[3], xyzTargetLocation[3], fDistance, fDistanceNormalized;
+	int iTotalAmount = 0;
 
 	// Loop through all of the clients to find the survivors
 	// then check their distance from the hunter
-	for(int iTarget = 0; iTarget < MaxClients; iTarget++)
+	for (int iTarget = 1; iTarget <= MaxClients; iTarget++)
 	{
 		if (iClient == iTarget ||
 			RunClientChecks(iTarget) == false ||
@@ -516,12 +516,13 @@ void HandleHunterVisibleBloodLustMeterGain(int iClient)
 				// Normalize the distance
 				fDistanceNormalized = 1.0 - (fDistance / 1500.0);
 
-				int iAmount = RoundToNearest(fDistanceNormalized * BLOOD_LUST_METER_GAINED_VISIBILITY_SCALE_FACTOR);
-				BuildBloodLustMeter(iClient, iAmount);
-
+				iTotalAmount += RoundToNearest(fDistanceNormalized * BLOOD_LUST_METER_GAINED_VISIBILITY_SCALE_FACTOR);
 			}
 		}
-			
 	}
-	
+
+	if (iTotalAmount <= 0)
+		return;
+
+	BuildBloodLustMeter(iClient, iTotalAmount);
 }

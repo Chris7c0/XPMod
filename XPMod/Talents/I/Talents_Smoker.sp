@@ -183,12 +183,12 @@ void EventsDeath_VictimSmoker(Handle hEvent, int iAttacker, int iVictim)
 
 	SuppressNeverUsedWarning(hEvent, iAttacker);
 
-	if(g_iSmokerTalent2Level[iVictim] > 0)
+	if(g_iSmokerTalent3Level[iVictim] > 0)
 	{
 		g_bHasSmokersPoisonCloudOut[iVictim] = true;
 		GetClientEyePosition(iVictim, g_xyzPoisonCloudOriginArray[iVictim]);
 		CreateTimer(0.1, TimerPoisonCloud, iVictim, TIMER_FLAG_NO_MAPCHANGE);
-		CreateTimer( (float(g_iSmokerTalent2Level[iVictim]) * 2.0), TimerStopPoisonCloud, iVictim, TIMER_FLAG_NO_MAPCHANGE);
+		CreateTimer((float(g_iSmokerTalent3Level[iVictim]) * 2.0), TimerStopPoisonCloud, iVictim, TIMER_FLAG_NO_MAPCHANGE);
 	}
 }
 
