@@ -2,6 +2,9 @@ void TalentsLoad_Charger(int iClient)
 {
 	g_bIsChargerCharging[iClient] = false;
 	g_bChargerCarrying[iClient] = false;
+
+	if(g_bTalentsConfirmed[iClient] == false)
+		return;
 	
 	if(g_iGroundLevel[iClient] > 0)
 	{
@@ -30,6 +33,9 @@ void TalentsLoad_Charger(int iClient)
 
 void OnGameFrame_Charger(int iClient)
 {
+	if (g_bTalentsConfirmed[iClient] == false)
+		return;
+
 	if (g_iSpikedLevel[iClient] > 0)
 	{
 		if(g_bIsSpikedCharged[iClient] == false)

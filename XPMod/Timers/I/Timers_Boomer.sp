@@ -140,6 +140,11 @@ Action TimerSetBoomerCooldown(Handle timer, int iClient)
 
 Action TimerSuicideBoomerLaunch(Handle timer, int iClient)
 {
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false ||
+		g_bTalentsConfirmed[iClient] == false)
+		return Plugin_Stop;
+
 	g_bIsSuicideBoomer[iClient] = false;
 	SetEntDataFloat(iClient , FindSendPropInfo("CTerrorPlayer","m_flLaggedMovementValue"),2.0, true);
 	float velocity[3];

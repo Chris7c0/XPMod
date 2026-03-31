@@ -6,7 +6,8 @@ Action TimerSetChargerCooldown(Handle timer, int iClient)
 		|| iClient <= 0
 		|| IsClientInGame(iClient)==false
 		|| IsPlayerAlive(iClient)==false
-		|| g_bIsServingHotMeal[iClient] == true)
+		|| g_bIsServingHotMeal[iClient] == true
+		|| g_bTalentsConfirmed[iClient] == false)
 	{
 		return Plugin_Stop;
 	}

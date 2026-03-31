@@ -137,6 +137,9 @@ public void OnGameFrame()
 			//Check if they are ghost first
 			if(GetEntData(iClient, g_iOffset_IsGhost, 1) == 1)	
 				continue;
+
+			if (g_bTalentsConfirmed[iClient] == false)
+				continue;
 			
 			switch(g_iInfectedCharacter[iClient])
 			{

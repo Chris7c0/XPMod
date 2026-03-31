@@ -6,6 +6,9 @@ void TalentsLoad_Hunter(int iClient)
 	g_bIsCloakedHunter[iClient] = false;
 	SetClientRenderAndGlowColor(iClient);
 
+	if(g_bTalentsConfirmed[iClient] == false || g_iPredatorialLevel[iClient] <= 0)
+		return;
+	
 	if(g_iPredatorialLevel[iClient] > 0)
 	{
 		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Hunter Talents \x05have been loaded.");

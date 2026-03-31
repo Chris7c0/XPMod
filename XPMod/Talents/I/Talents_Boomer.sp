@@ -1,11 +1,14 @@
 void TalentsLoad_Boomer(int iClient)
 {
-	if(g_iRapidLevel[iClient] > 0)
+	if(g_bTalentsConfirmed[iClient] && g_iRapidLevel[iClient] > 0)
 		PrintToChat(iClient, "\x03[XPMod] \x05Your \x04Boomer Talents \x05have been loaded.");
 }
 
 void OnGameFrame_Boomer(int iClient)
 {
+	if (g_bTalentsConfirmed[iClient] == false)
+		return;
+
 	if(g_iAcidicLevel[iClient] > 0)
 	{
 		if(IsPlayerAlive(iClient) == true)
@@ -24,9 +27,15 @@ void OnGameFrame_Boomer(int iClient)
 
 void Event_BoomerVomitOnPlayer(int iAttacker, int iVictim)
 {
+	if (RunClientChecks(iAttacker) == false)
+		return;
+
 	if(g_iInfectedCharacter[iAttacker] ==  BOOMER)
 	{
 		GiveClientXP(iAttacker, 15, g_iSprite_15XP_SI, iVictim, "Puked on a survivor.", false, 1.0);
+
+		if (IsFakeClient(iAttacker) == false && g_bTalentsConfirmed[iAttacker] == false)
+			return;
 		
 		if(g_iAcidicLevel[iAttacker] > 0)
 		{

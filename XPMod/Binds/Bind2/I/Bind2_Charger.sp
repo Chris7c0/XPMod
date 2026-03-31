@@ -30,7 +30,7 @@ void Bind2Press_Charger(int iClient)
 
 void HandleChargerEarthquake(int iClient, int iButtons)
 {
-	if (g_bIsHillbillyEarthquakeReady[iClient] == false || g_bCanChargerEarthquake[iClient] == false || !(iButtons & IN_ATTACK2) || g_iInfectedCharacter[iClient] != CHARGER)
+	if (g_bTalentsConfirmed[iClient] == false || g_bIsHillbillyEarthquakeReady[iClient] == false || g_bCanChargerEarthquake[iClient] == false || !(iButtons & IN_ATTACK2) || g_iInfectedCharacter[iClient] != CHARGER)
 		return;
 
 	float xyzClientPosition[3], xyzClientEyeAngles[3], xyzRayTraceEndLocation[3];

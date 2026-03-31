@@ -81,7 +81,7 @@ Action Event_ChargerChargeEnd(Handle hEvent, const char[] strName, bool bDontBro
 	
 	g_bIsChargerCharging[attacker] = false;
 	
-	if(g_iHillbillyLevel[attacker] > 0)
+	if(g_bTalentsConfirmed[attacker] && g_iHillbillyLevel[attacker] > 0)
 		CreateTimer(1.0, TimerSetChargerCooldown, attacker,  TIMER_FLAG_NO_MAPCHANGE);
 		
 	if(g_bIsSuperCharger[attacker] == true)
@@ -100,7 +100,7 @@ Action Event_ChargerImpact(Handle hEvent, const char[] strName, bool bDontBroadc
 	int attacker = GetClientOfUserId(GetEventInt(hEvent,"userid"));
 	int victim = GetClientOfUserId(GetEventInt(hEvent,"victim"));
 	
-	if(g_iGroundLevel[attacker] > 0)
+	if(g_bTalentsConfirmed[attacker] && g_iGroundLevel[attacker] > 0)
 	{
 		int iDamage;
 		
@@ -115,7 +115,7 @@ Action Event_ChargerImpact(Handle hEvent, const char[] strName, bool bDontBroadc
 		int iCurrentHealth = GetPlayerHealth(victim);
 		SetPlayerHealth(victim, attacker, iCurrentHealth - iDamage);
 	}
-	if(g_iSpikedLevel[attacker] > 0)
+	if(g_bTalentsConfirmed[attacker] && g_iSpikedLevel[attacker] > 0)
 	{
 		
 		int heal = GetPlayerHealth(attacker);
@@ -135,7 +135,7 @@ Action Event_ChargerCarryStart(Handle hEvent, const char[] strName, bool bDontBr
 	
 	GiveClientXP(attacker, 50, g_iSprite_50XP_SI, victim, "Grappled A Survivor.");
 	
-	if(g_iHillbillyLevel[attacker] > 0)
+	if(g_bTalentsConfirmed[attacker] && g_iHillbillyLevel[attacker] > 0)
 		g_iPID_ChargerShield[attacker] = WriteParticle(attacker, "charger_shield", 70.0);
 		
 	SetClientRenderAndGlowColor(victim);
@@ -267,7 +267,7 @@ Action Event_JockeyRide(Handle hEvent, const char[] strName, bool bDontBroadcast
 		return Plugin_Continue;
 
 	// Rochelle's ninja escape
-	if (g_iSmokeLevel[iVictim] > 0)
+	if (g_bTalentsConfirmed[iVictim] && g_iSmokeLevel[iVictim] > 0)
 		HandleRochelleNinjaEscapeGrasp(iAttacker, iVictim);
 	
 	Event_JockeyRide_Jockey(iAttacker, iVictim);
@@ -283,7 +283,7 @@ Action Event_JockeyRideEnd(Handle hEvent, const char[] strName, bool bDontBroadc
 
 	HandleDragRaceRewards(rider, victim);
 
-	if(g_iMutatedLevel[rider] > 0 && RunClientChecks(rider)  == true && IsPlayerAlive(rider) == true)
+	if(g_bTalentsConfirmed[rider] && g_iMutatedLevel[rider] > 0 && RunClientChecks(rider)  == true && IsPlayerAlive(rider) == true)
 		CreateTimer(1.0, TimerSetJockeyCooldown, rider, TIMER_FLAG_NO_MAPCHANGE);
 	
 	g_iJockeyVictim[rider] = -1;
@@ -291,7 +291,7 @@ Action Event_JockeyRideEnd(Handle hEvent, const char[] strName, bool bDontBroadc
 	g_bJockeyGrappled[victim] = false;
 
 	// Tweakers Twitch: restart regen at the on-foot rate after dismount
-	if (g_iJockeyTwitchChargeUses[rider] > 0)
+	if (g_bTalentsConfirmed[rider] && g_iJockeyTwitchChargeUses[rider] > 0)
 	{
 		delete g_hTimer_JockeyTwitchRegenerate[rider];
 		g_hTimer_JockeyTwitchRegenerate[rider] = CreateTimer(JOCKEY_TWITCH_CHARGE_REGENERATE_TIME, TimerJockeyTwitchChargeRegenerate, rider, TIMER_REPEAT);
@@ -360,7 +360,7 @@ Action Event_InfectedHurt(Handle hEvent, const char[] strName, bool bDontBroadca
 
 	AddDamageToDPSMeter(attacker, iDamage);
 	
-	if(g_iClientTeam[attacker] == TEAM_SURVIVORS)
+	if(g_iClientTeam[attacker] == TEAM_SURVIVORS && g_bTalentsConfirmed[attacker] == true)
 	{
 		switch(g_iChosenSurvivor[attacker])
 		{
@@ -378,7 +378,17 @@ Action Event_InfectedHurt(Handle hEvent, const char[] strName, bool bDontBroadca
 			}
 			case 3:		//Ellis
 			{
-			
+				if(g_bUsingFireStorm[attacker]==true)
+				{
+					// // Do not set witches on fire, use this later when we have different types of witches and want to block fire.
+					// char strEntityClassname[32];
+					// GetEntityClassname(victim, strEntityClassname, sizeof(strEntityClassname));
+					// if (StrEqual(strEntityClassname, "witch", false) == false)
+					// {
+					float time = (float(g_iFireLevel[attacker]) * 6.0);
+					IgniteEntity(victim, time, false);
+					// }
+				}	
 			}
 			case 4:		//Nick
 			{
@@ -397,18 +407,6 @@ Action Event_InfectedHurt(Handle hEvent, const char[] strName, bool bDontBroadca
 				EventsInfectedHurt_Zoey(hEvent, attacker, victim);
 			}
 		}
-	}
-	
-	if(g_bUsingFireStorm[attacker]==true)
-	{
-		// // Do not set witches on fire, use this later when we have different types of witches and want to block fire.
-		// char strEntityClassname[32];
-		// GetEntityClassname(victim, strEntityClassname, sizeof(strEntityClassname));
-		// if (StrEqual(strEntityClassname, "witch", false) == false)
-		// {
-		float time = (float(g_iFireLevel[attacker]) * 6.0);
-		IgniteEntity(victim, time, false);
-		// }
 	}
 	
 	return Plugin_Continue;

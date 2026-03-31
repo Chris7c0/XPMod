@@ -1,12 +1,12 @@
 void TalentsLoad_Smoker(int iClient)
 {
-	if(g_iSmokerTalent1Level[iClient] > 0)
+	if (g_bTalentsConfirmed[iClient] == false  || g_iSmokerTalent1Level[iClient] <= 0)
+		return; 
+
+	if(g_bHasInfectedHealthBeenSet[iClient] == false)
 	{
-		if(g_bHasInfectedHealthBeenSet[iClient] == false)
-		{
-			g_bHasInfectedHealthBeenSet[iClient] = true;
-			SetPlayerMaxHealth(iClient, SMOKER_STARTING_MAX_HEALTH, false);
-		}
+		g_bHasInfectedHealthBeenSet[iClient] = true;
+		SetPlayerMaxHealth(iClient, SMOKER_STARTING_MAX_HEALTH, false);
 	}
 
 	// Doppelganger Decoy clones

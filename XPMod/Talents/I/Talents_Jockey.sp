@@ -128,6 +128,14 @@ void Event_JockeyRide_Jockey(int iAttacker, int iVictim)
 	// Store the Jockey's location for determining drag distance
 	GetClientAbsOrigin(iAttacker, g_xyzJockeyStartRideLocation[iAttacker]);
 
+	if (g_bTalentsConfirmed[iAttacker] == false || g_iMutatedLevel[iAttacker] <= 0)
+	{
+		// Normal Jockey Ride Speed
+		g_fJockeyRideSpeed[iVictim] = 1.0;
+		SetClientSpeed(iVictim);
+		return;
+	}
+
 	// Tweakers Twitch: cap charges to riding max on ride start
 	int iRemainingTwitches = JOCKEY_TWITCH_TOTAL_CHARGES - g_iJockeyTwitchChargeUses[iAttacker];
 	if (iRemainingTwitches > JOCKEY_TWITCH_RIDING_MAX_CHARGES)
@@ -154,14 +162,6 @@ void Event_JockeyRide_Jockey(int iAttacker, int iVictim)
 	{
 		g_fJockeyRideSpeed[iVictim] = (1.0 - (g_iStrongLevel[iVictim] * 0.16));
 		if (g_fJockeyRideSpeed[iVictim] < 0.0) g_fJockeyRideSpeed[iVictim] = 0.0;
-		SetClientSpeed(iVictim);
-		return;
-	}
-
-	if (g_bTalentsConfirmed[iAttacker] == false)
-	{
-		// Normal Jockey Ride Speed
-		g_fJockeyRideSpeed[iVictim] = 1.0;
 		SetClientSpeed(iVictim);
 		return;
 	}
@@ -261,6 +261,7 @@ void HandleTier2Rewards(int iClient, int iVictim)
 bool OnPlayerRunCmd_Jockey(int iClient, int &iButtons)
 {
 	if (g_iInfectedCharacter[iClient] != JOCKEY ||
+		g_bTalentsConfirmed[iClient] == false ||
 		g_iMutatedLevel[iClient] <= 0 ||
 		IsFakeClient(iClient))
 		return false;

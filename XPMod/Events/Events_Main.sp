@@ -468,29 +468,30 @@ bool HandleCallVote_Kick(int iVoteCaller, int iTarget, char[] strVoteType)
 void Event_PlayerJump(Handle hEvent, const char[] strName, bool bDontBroadcast)
 {
 	int iClient = GetClientOfUserId(GetEventInt(hEvent,"userid"));
-	if (iClient < 1)
+
+	if (RunClientChecks(iClient) == false || 
+		g_bTalentsConfirmed[iClient] == false ||
+		GetEntData(iClient, g_iOffset_IsGhost, 1) == 1 ||
+		IsFakeClient(iClient) == true)
 		return;
-	if(GetEntData(iClient, g_iOffset_IsGhost, 1) == 1)		//Check if they are ghost first
-		return;
-	if(IsClientInGame(iClient))
-		if(!IsFakeClient(iClient))
-			if(g_iClientTeam[iClient] == TEAM_INFECTED)
+	
+	if(g_iClientTeam[iClient] == TEAM_INFECTED)
+	{
+		if(g_iInfectedCharacter[iClient] == JOCKEY)
+		{
+			if(g_iMutatedLevel[iClient] > 0)
 			{
-				if(g_iInfectedCharacter[iClient] == JOCKEY)
-				{
-					if(g_iMutatedLevel[iClient] > 0)
-					{
-						CreateTimer(0.1, TimerJumpFurther, iClient, TIMER_FLAG_NO_MAPCHANGE);
-					}
-				}
-				else if(g_bIsSuicideBoomer[iClient] == true)
-				{
-					if(g_iInfectedCharacter[iClient] == BOOMER)
-					{
-						CreateTimer(0.1, TimerSuicideBoomerLaunch, iClient, TIMER_FLAG_NO_MAPCHANGE);
-					}
-				}
+				CreateTimer(0.1, TimerJumpFurther, iClient, TIMER_FLAG_NO_MAPCHANGE);
 			}
+		}
+		else if(g_iInfectedCharacter[iClient] == BOOMER)
+		{
+			if(g_bIsSuicideBoomer[iClient] == true)
+			{
+				CreateTimer(0.1, TimerSuicideBoomerLaunch, iClient, TIMER_FLAG_NO_MAPCHANGE);
+			}
+		}
+	}
 	return;
 }
 

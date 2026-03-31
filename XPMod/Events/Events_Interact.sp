@@ -23,6 +23,9 @@ Action Event_PlayerUse(Handle hEvent, const char[] strName, bool bDontBroadcast)
 	if(RunClientChecks(iClient) == false || g_iClientTeam[iClient] != TEAM_SURVIVORS || IsPlayerAlive(iClient) == false)
 		return Plugin_Continue;
 
+	if (g_bTalentsConfirmed[iClient] == false)
+		return Plugin_Continue;
+
 	int iTargetID = GetEventInt(hEvent,"targetid");
 
 	if (IsValidEntity(iTargetID) == false)
@@ -47,6 +50,9 @@ Action Event_ItemPickUp(Handle hEvent, const char[] strName, bool bDontBroadcast
 	if (RunClientChecks(iClient) == false || 
 		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
 		IsPlayerAlive(iClient) == false)
+		return Plugin_Continue;
+
+	if (g_bTalentsConfirmed[iClient] == false)
 		return Plugin_Continue;
 	
 	char weaponclass[24];
@@ -407,6 +413,9 @@ Action Event_WeaponDropped(Handle hEvent, const char[] strName, bool bDontBroadc
 	char droppeditem[32];
 	GetEventString(hEvent, "item", droppeditem, 32);
 	int iProp = GetEventInt(hEvent,"propid");
+
+	if (g_bTalentsConfirmed[iClient] == false)
+		return Plugin_Continue;
 
 	if (iClient > 0 &&
 		iClient <= MaxClients &&

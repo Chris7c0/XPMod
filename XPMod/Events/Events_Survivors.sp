@@ -1,6 +1,11 @@
 Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 {
 	int iClient = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+
+	if (RunClientChecks(iClient) == false ||
+		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
+		g_bTalentsConfirmed[iClient] == false)
+		return Plugin_Continue;
 	
 	char wclass[32];
 	GetEventString(hEvent,"weapon",wclass,32);
@@ -422,7 +427,7 @@ Action Event_PlayerIncap(Handle hEvent, char[] Event_name, bool dontBroadcast)
 	if(RunClientChecks(iClient) == false)
 		return Plugin_Continue;
 	
-	if(g_iWillLevel[iClient]>0)
+	if(g_bTalentsConfirmed[iClient] && g_iWillLevel[iClient]>0)
 	{
 		int currentHP = GetPlayerHealth(iClient);
 		SetPlayerHealth(iClient, incapper, currentHP + (g_iWillLevel[iClient] * 50));
@@ -460,7 +465,7 @@ Action Event_PlayerIncap(Handle hEvent, char[] Event_name, bool dontBroadcast)
 
 		for(int i=1;i<=MaxClients;i++)
 		{
-			if(g_iDiehardLevel[i] > 0)
+			if(g_bTalentsConfirmed[i] && g_iDiehardLevel[i] > 0)
 			{
 				if(RunClientChecks(i) && g_iClientTeam[i]==TEAM_SURVIVORS && IsPlayerAlive(i) == true)
 				{
@@ -481,7 +486,7 @@ Action Event_PlayerIncap(Handle hEvent, char[] Event_name, bool dontBroadcast)
 		if(g_iClientTeam[incapper] == TEAM_INFECTED)
 		{
 			//Spitter conjure CI
-			if(g_iPuppetLevel[incapper] > 0 && g_iInfectedCharacter[incapper] == SPITTER)
+			if(g_bTalentsConfirmed[incapper] && g_iPuppetLevel[incapper] > 0 && g_iInfectedCharacter[incapper] == SPITTER)
 			{
 				float xyzLocation[3];
 				GetEntPropVector(iClient, Prop_Send, "m_vecOrigin", xyzLocation);
@@ -578,7 +583,7 @@ Action Event_HealSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 	g_iZoeySharingTrackedMedkitTargetUserId[iClient] = 0;
 	g_iZoeySharingTrackedMedkitTargetHealthBefore[iClient] = -1;
 	
-	if(g_iOverLevel[target] > 0)
+	if(g_bTalentsConfirmed[target] && g_iOverLevel[target] > 0)
 	{
 		int iCurrentHealth = GetPlayerHealth(target);
 		int iMaxHealth = GetPlayerMaxHealth(target);
@@ -605,7 +610,7 @@ Action Event_HealSuccess(Handle hEvent, char[] Event_name, bool dontBroadcast)
 		// Get all health converted to temp health for Ellis
 		ConvertEllisHealthToTemporary(target);
 	}
-	if(g_iChosenSurvivor[iClient] == 4)
+	if(g_bTalentsConfirmed[iClient] && g_iChosenSurvivor[iClient] == 4)
 	{
 		if(g_iLeftoverLevel[iClient]>0)
 		{
@@ -835,7 +840,7 @@ Action Event_DefibUsed(Handle hEvent, const char[] strName, bool bDontBroadcast)
 	SetAppropriateMaxHealthForPlayer(iSubject, false);
 	
 	GiveClientXP(iClient, 100, g_iSprite_100XP, iSubject, "Defibrillated Player.");
-	if(g_iOverLevel[iSubject] > 0)
+	if(g_bTalentsConfirmed[iSubject] && g_iOverLevel[iSubject] > 0)
 	{
 		int iCurrentHealth = GetPlayerHealth(iSubject);
 		int iMaxHealth = GetPlayerMaxHealth(iSubject);
@@ -888,7 +893,7 @@ Action Event_PillsUsed(Handle hEvent, const char[] strName, bool bDontBroadcast)
 		return Plugin_Continue;
 
 	// Ellis
-	if (g_iJamminLevel[iClient] > 0)
+	if (g_bTalentsConfirmed[iClient] && g_iJamminLevel[iClient] > 0)
 	{
 		if(g_iEllisJamminAdrenalineCounter[iClient] > 0)
 		{
@@ -901,7 +906,7 @@ Action Event_PillsUsed(Handle hEvent, const char[] strName, bool bDontBroadcast)
 	int i, iLoopedClientMaxHP, iLoopedClientCurrentHP;
 	for(i = 1; i <= MaxClients; i++)		//For all the Nicks on the team, increase their health for Enhanced Pain Killers Talent
 	{
-		if(g_iEnhancedLevel[i] > 0 && i != iClient && g_iClientTeam[i] == TEAM_SURVIVORS && IsClientInGame(i)==true && IsFakeClient(i) == false)
+		if(g_bTalentsConfirmed[i] && g_iEnhancedLevel[i] > 0 && i != iClient && g_iClientTeam[i] == TEAM_SURVIVORS && IsClientInGame(i)==true && IsFakeClient(i) == false)
 		{
 			iLoopedClientMaxHP = GetPlayerMaxHealth(i);			
 			iLoopedClientCurrentHP = GetPlayerHealth(i);
@@ -947,7 +952,7 @@ Action Event_AdrenalineUsed(Handle hEvent, const char[] strName, bool bDontBroad
 
 
 	// Nick
-	if(g_iEnhancedLevel[iClient] > 0 && IsFakeClient(iClient) == false)
+	if(g_bTalentsConfirmed[iClient] && g_iEnhancedLevel[iClient] > 0 && IsFakeClient(iClient) == false)
 	{
 		int iMaxHealth = GetPlayerMaxHealth(iClient);
 		int iHealth = GetPlayerHealth(iClient);
@@ -964,7 +969,7 @@ Action Event_AdrenalineUsed(Handle hEvent, const char[] strName, bool bDontBroad
 	int i, iLoopedClientMaxHP, iLoopedClientCurrentHP;
 	for(i = 1; i <= MaxClients; i++)		//For all the Nicks on the team, increase their health for Enhanced Pain Killers Talent
 	{
-		if(g_iEnhancedLevel[i] > 0 && i != iClient && g_iClientTeam[i] == TEAM_SURVIVORS && IsClientInGame(i)==true && IsFakeClient(i) == false)
+		if(g_bTalentsConfirmed[i] && g_iEnhancedLevel[i] > 0 && i != iClient && g_iClientTeam[i] == TEAM_SURVIVORS && IsClientInGame(i)==true && IsFakeClient(i) == false)
 		{
 			iLoopedClientMaxHP = GetPlayerMaxHealth(i);			
 			iLoopedClientCurrentHP = GetPlayerHealth(i);

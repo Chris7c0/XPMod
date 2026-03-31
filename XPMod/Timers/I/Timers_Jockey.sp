@@ -6,6 +6,11 @@ void Handle1SecondClientTimers_Jockey(int iClient)
 
 Action TimerJumpFurther(Handle timer, int iClient)
 {
+	if (RunClientChecks(iClient) == false ||
+		IsPlayerAlive(iClient) == false ||
+		g_bTalentsConfirmed[iClient] == false)
+		return Plugin_Stop;
+
 	float velocity[3];
 	GetEntPropVector(iClient, Prop_Data, "m_vecVelocity", velocity);
 	velocity[0] *= (1.0 + (g_iMutatedLevel[iClient] * JOCKEY_LUNGE_DISTANCE_MULTIPLIER_PER_LEVEL));
@@ -36,7 +41,8 @@ Action TimerSetJockeyCooldown(Handle timer, int iClient)
 {
 	if (RunClientChecks(iClient) == false ||
 		IsPlayerAlive(iClient) == false ||
-		g_bIsServingHotMeal[iClient] == true)
+		g_bIsServingHotMeal[iClient] == true ||
+		g_bTalentsConfirmed[iClient] == false)
 		return Plugin_Stop;
 		
 	
@@ -105,7 +111,7 @@ Action TimerJockeyTwitchInactive(Handle timer, int iClient)
 {
 	g_bJockeyTwitchActive[iClient] = false;
 
-	if (g_bJockeyIsRiding[iClient] && RunClientChecks(g_iJockeysVictim[iClient]))
+	if (g_bJockeyIsRiding[iClient] && g_bTalentsConfirmed[iClient] && RunClientChecks(g_iJockeysVictim[iClient]))
 	{
 		// Restore the victim's ride speed to its normal value
 		g_fJockeyRideSpeed[g_iJockeysVictim[iClient]] = 1.0 + (g_iErraticLevel[iClient] * 0.03);
