@@ -79,7 +79,8 @@ Action Event_WeaponFire(Handle hEvent, char[] Event_name, bool dontBroadcast)
 			int ActiveWeaponID = GetEntDataEnt2(iClient, g_iOffset_ActiveWeapon);
 
 			// Make all non magnum pistols automatic
-			if (StrEqual(strCurrentWeapon, "weapon_pistol", false) == true)
+			if (StrEqual(strCurrentWeapon, "weapon_pistol", false) == true &&
+				g_iLouisTalent1Level[iClient] > 0)
 				SetEntProp(ActiveWeaponID, Prop_Send, "m_isHoldingFireButton", 0);
 		}
 		case ZOEY:
