@@ -140,43 +140,44 @@ void EventsHurt_AttackerSpitter(Handle hEvent, int attacker, int victim)
 	if (g_iClientTeam[victim] != TEAM_SURVIVORS)
 		return;
 
+	if(g_iPuppetLevel[attacker] <= 0 || g_bTalentsConfirmed[attacker] == false)
+		return;
+
 	int dmgHealth = GetEventInt(hEvent,"dmg_health");
 	
-	if(g_iPuppetLevel[attacker] > 0)
+	char weapon[20];
+	GetEventString(hEvent,"weapon", weapon, sizeof(weapon));
+	
+	if(g_iPuppetLevel[attacker] > 0 && StrEqual(weapon,"insect_swarm") == true)
 	{
-		char weapon[20];
-		GetEventString(hEvent,"weapon", weapon, 20);
-		if(StrEqual(weapon,"insect_swarm") == true)
+		DealSpecialSpitterGooCollision(attacker, victim, dmgHealth);
+		
+		if(g_iMaterialLevel[attacker] > 0 && IsIncap(victim) == true)
 		{
-			DealSpecialSpitterGooCollision(attacker, victim, dmgHealth);
-			
-			if(g_iMaterialLevel[attacker] > 0 && IsIncap(victim) == true)
+			if (g_hTimer_ResetGlow[victim] == null)
 			{
-				if (g_hTimer_ResetGlow[victim] == null)
-				{
-					SetEntProp(victim, Prop_Send, "m_iGlowType", 3);
-					SetEntProp(victim, Prop_Send, "m_nGlowRange", 0);
-					SetEntProp(victim, Prop_Send, "m_glowColorOverride", 1);
-					SetEntityRenderMode(victim, RenderMode:3);
-					SetEntityRenderColor(victim, 255, 255, 255, 255 - RoundToNearest(255.0 * 0.1 * g_iMaterialLevel[attacker]));
-				}
-				
-				delete g_hTimer_ResetGlow[victim];
-				g_hTimer_ResetGlow[victim] = CreateTimer(3.0, Timer_ResetGlow, victim);
+				SetEntProp(victim, Prop_Send, "m_iGlowType", 3);
+				SetEntProp(victim, Prop_Send, "m_nGlowRange", 0);
+				SetEntProp(victim, Prop_Send, "m_glowColorOverride", 1);
+				SetEntityRenderMode(victim, RenderMode:3);
+				SetEntityRenderColor(victim, 255, 255, 255, 255 - RoundToNearest(255.0 * 0.1 * g_iMaterialLevel[attacker]));
 			}
-		}
-		else if(g_bIsHallucinating[victim] == false && StrEqual(weapon,"spitter_claw") == true)
-		{
-			if(IsFakeClient(victim) == false)
-				PrintHintText(victim, "A Spitter's hallucinogenic toxin seeps through your viens"); 
 			
-			g_bIsHallucinating[victim] = true;
-			g_iHallucinogenRuntimesCounter[victim] = 0;
-			WriteParticle(victim, "hallucinogenic_effect", 0.0, 30.0);
-			
-			delete g_hTimer_HallucinatePlayer[victim];
-			g_hTimer_HallucinatePlayer[victim] = CreateTimer(2.5, TimerHallucinogen, victim, TIMER_REPEAT);
+			delete g_hTimer_ResetGlow[victim];
+			g_hTimer_ResetGlow[victim] = CreateTimer(3.0, Timer_ResetGlow, victim);
 		}
+	}
+	else if(g_iHallucinogenicLevel[attacker] > 0 && g_bIsHallucinating[victim] == false && StrEqual(weapon,"spitter_claw") == true)
+	{
+		if(IsFakeClient(victim) == false)
+			PrintHintText(victim, "A Spitter's hallucinogenic toxin seeps through your viens"); 
+		
+		g_bIsHallucinating[victim] = true;
+		g_iHallucinogenRuntimesCounter[victim] = 0;
+		WriteParticle(victim, "hallucinogenic_effect", 0.0, 30.0);
+		
+		delete g_hTimer_HallucinatePlayer[victim];
+		g_hTimer_HallucinatePlayer[victim] = CreateTimer(2.5, TimerHallucinogen, victim, TIMER_REPEAT);
 	}
 }
 

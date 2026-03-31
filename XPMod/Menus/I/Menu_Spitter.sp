@@ -57,10 +57,9 @@ Action PuppetMenuDraw(int iClient)
 	FormatEx(text, sizeof(text), "\
 		%s  						Puppet Master (Level %d)\
 		\n \
-		\nLevel 1:\
-		\nSpawn in with +1 CI per level\
-		\nWhen incaping a player, spawn +1 CI every other level on the victim\
-		\n25%% chance on hit to slow survivors by 2%%, 4%%, or 6%% per level\
+		\nSpawn With +1 CI Every Other Level\
+		\nWhen Incaping a Player, Spawn +1 CI Every Other Level on the Victim\
+		\n25%% Chance On Hit to Slow Survivors by 2%%, 4%%, or 6%% per Level\
 		\n \
 		\nLevel 6:\
 		\nFlaming Goo: A blanket of fire lies over your spit\
@@ -100,7 +99,6 @@ Action MaterialMenuDraw(int iClient)
 	FormatEx(text, sizeof(text), "\
 		%s				Material Girl (Level %d)\
 		\n \
-		\nLevel 1:\
 		\nIf spit hits incaped player:\
 		\nCloak victim +10%% per level\
 		\nHide victims' glow\
@@ -153,7 +151,6 @@ Action HallucinogenicMenuDraw(int iClient)
 	FormatEx(text, sizeof(text), "\
 		%s				Hallucinogenic Nightmare (Level %d)\
 		\n \
-		\nLevel 1:\
 		\n-0.5s spit cooldown per level\
 		\nHold [CROUCH] to Phase Shift (stealth and speed)\
 		\nClaws drug your victim, causing hallucinations\

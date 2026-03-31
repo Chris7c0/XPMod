@@ -57,9 +57,8 @@ Action GroundMenuDraw(int iClient)
 	FormatEx(text, sizeof(text), "\
 		%s  				Ground 'n Pound (Level %d)\
 		\n \
-		\n+1 knock damage per level\
-		\n+1 punch, pound, and slam damage every 3rd level\
-		\nafter the 1st level\
+		\nDeal More Punch, Pound, and Charge Impact Damage\
+		\n	All Damage Scales with Ground 'n Pound level\ 
 		\n ",
 		strStartingNewLines,
 		g_iGroundLevel[iClient]);
@@ -100,7 +99,7 @@ Action SpikedMenuDraw(int iClient)
 		\n \
 		\nCROUCH to charge Uppercut, on next melee:\
 		\n \
-		\nThrow survivors up, 5 fall damage, short stun\
+		\nThrow survivors up, fall damage, short stun\
 		\n \
 		\n \
 		\n					Bind 1: Heavy Carry\
