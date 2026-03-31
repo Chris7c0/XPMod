@@ -117,7 +117,7 @@ Action LeftoverMenuDraw(int iClient)
 		\n1 random grenade, 1 shot, or 1 pill\
 		\n ",
 		strStartingNewLines,
-		g_iSkillPoints[iClient],
+		g_iLeftoverLevel[iClient],
 		g_iLeftoverLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
 	GetNewLinesAutomatic(text, strNewLines);

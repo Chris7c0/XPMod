@@ -188,7 +188,7 @@ void OnGameFrame_Rochelle(int iClient)
 		}
 
 		// Enforce AWP clip limit - catches pickup, reload interrupt, etc.
-		if(g_iSilentLevel[iClient] > 1 &&
+		if(g_iSilentLevel[iClient] > 0 &&
 			g_bClientIsReloading[iClient] == false &&
 			StrEqual(g_strActiveWeaponClass[iClient], "weapon_sniper_awp", false) == true)
 		{
@@ -612,7 +612,7 @@ void DetectionHud(int iClient)
 
 void OGFSurvivorReload_Rochelle(int iClient, const char[] currentweapon, int ActiveWeaponID, int CurrentClipAmmo, int iOffset_Ammo)
 {
-	if((StrEqual(currentweapon, "weapon_hunting_rifle", false) == true) && (g_iSilentLevel[iClient] > 1) && (CurrentClipAmmo != 0))
+	if((StrEqual(currentweapon, "weapon_hunting_rifle", false) == true) && (g_iSilentLevel[iClient] > 0) && (CurrentClipAmmo != 0))
 	{
 		int iAmmo = GetEntData(iClient, iOffset_Ammo + 36);//for hunting rifle (+36)
 		if((iAmmo + CurrentClipAmmo) > (17 - (g_iSilentLevel[iClient] * 2)))
@@ -623,7 +623,7 @@ void OGFSurvivorReload_Rochelle(int iClient, const char[] currentweapon, int Act
 		g_bClientIsReloading[iClient] = false;
 		g_iReloadFrameCounter[iClient] = 0;
 	}
-	else if((StrEqual(currentweapon, "weapon_sniper_awp", false) == true) && (g_iSilentLevel[iClient] > 1) && (CurrentClipAmmo != 0))
+	else if((StrEqual(currentweapon, "weapon_sniper_awp", false) == true) && (g_iSilentLevel[iClient] > 0) && (CurrentClipAmmo != 0))
 	{
 		int iAmmo = GetEntData(iClient, iOffset_Ammo + 40);//for AWP, Scout, and Military Sniper (+40)
 		int iCurrentAWPClipSize = g_iRochelleAWPChargeLevel[iClient] >= 3 ? 1 : 3;
@@ -643,7 +643,7 @@ void OGFSurvivorReload_Rochelle(int iClient, const char[] currentweapon, int Act
 		g_bClientIsReloading[iClient] = false;
 		g_iReloadFrameCounter[iClient] = 0;
 	}
-	else if((StrEqual(currentweapon, "weapon_sniper_scout", false) == true) && (g_iSilentLevel[iClient] > 1) && (CurrentClipAmmo != 0))
+	else if((StrEqual(currentweapon, "weapon_sniper_scout", false) == true) && (g_iSilentLevel[iClient] > 0) && (CurrentClipAmmo != 0))
 	{
 		int iAmmo = GetEntData(iClient, iOffset_Ammo + 40);//for AWP, Scout, and Military Sniper (+40)
 		if((iAmmo + CurrentClipAmmo) > (20 - g_iSilentLevel[iClient]))
@@ -654,7 +654,7 @@ void OGFSurvivorReload_Rochelle(int iClient, const char[] currentweapon, int Act
 		g_bClientIsReloading[iClient] = false;
 		g_iReloadFrameCounter[iClient] = 0;
 	}
-	else if((StrEqual(currentweapon, "weapon_sniper_military", false) == true) && (g_iSilentLevel[iClient] > 1) && (CurrentClipAmmo == 30))
+	else if((StrEqual(currentweapon, "weapon_sniper_military", false) == true) && (g_iSilentLevel[iClient] > 0) && (CurrentClipAmmo == 30))
 	{
 		int iAmmo = GetEntData(iClient, iOffset_Ammo + 40);//for AWP, Scout, and Military Sniper (+40)
 		if(iAmmo >= (g_iSilentLevel[iClient] * 6))

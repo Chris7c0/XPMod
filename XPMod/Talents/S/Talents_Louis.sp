@@ -312,22 +312,24 @@ void EventsHurt_AttackerLouis(Handle hEvent, int iAttacker, int iVictim)
 			// Store if its a headshot and pistol for use below
 			bool bIsHeadshot = GetEventInt(hEvent, "hitgroup") == HITGROUP_HEAD;
 			bool bIsPistol = StrEqual(weaponclass,"pistol",false) == true || StrEqual(weaponclass,"dual_pistols",false) == true;
+			float fLouisTalent4BodyDamageReduction = bIsPistol ?
+				LOUIS_BODY_DAMAGE_REDUCTION_PISTOL :
+				(g_bLouisLaserModeActivated[iAttacker] ? LOUIS_BODY_DAMAGE_REDUCTION_LASER : LOUIS_BODY_DAMAGE_REDUCTION_NOLASER);
+			float fLouisTalent4HeadshotDamageMultiplier = bIsPistol ?
+				LOUIS_HEADSHOT_DMG_MULITPLIER_PISTOL :
+				(g_bLouisLaserModeActivated[iAttacker] ? LOUIS_HEADSHOT_DMG_MULITPLIER_LASER : LOUIS_HEADSHOT_DMG_MULITPLIER_NOLASER);
 
 			int iDmgHealth = GetEventInt(hEvent,"dmg_health");
 			int iAddtionalDamageAmount = RoundToNearest(float(iDmgHealth) * 
 				( (g_iLouisTalent2Level[iAttacker] * LOUIS_BONUS_DAMAGE_PER_LEVEL) + 	// Damage Buff
-				  (bIsHeadshot ? 0.0 : (-1.0 * 											// Non-Headshot Penality
-				  	(bIsPistol ? LOUIS_BODY_DAMAGE_REDUCTION_PER_LEVEL_PISTOL :			// Non-Headshot Pistol Penality
-					g_iLouisTalent4Level[iAttacker] * (g_bLouisLaserModeActivated[iAttacker] ? LOUIS_BODY_DAMAGE_REDUCTION_PER_LEVEL_LASER : LOUIS_BODY_DAMAGE_REDUCTION_PER_LEVEL_NOLASER)))) + // Check if laser mode activated
+				  (bIsHeadshot ? 0.0 : (-1.0 * 	fLouisTalent4BodyDamageReduction)) +	// Non-Headshot Penality
 				  (g_iPillsUsedStack[iAttacker] * g_iLouisTalent6Level[iAttacker] * LOUIS_PILLS_USED_BONUS_DAMAGE_PER_LEVEL) )); // Pills here buff dmg
 			int iNewDamageAmount = iDmgHealth + iAddtionalDamageAmount;
 
 			// Add even more damage if its a headshot
 			if (bIsHeadshot)
 			{
-				iNewDamageAmount = iNewDamageAmount + (iNewDamageAmount * RoundToNearest(g_iLouisTalent4Level[iAttacker] * 
-					(bIsPistol ? LOUIS_HEADSHOT_DMG_MULITPLIER_PER_LEVEL_PISTOL :	// Check if pistol
-					g_bLouisLaserModeActivated[iAttacker] ?	LOUIS_HEADSHOT_DMG_MULITPLIER_PER_LEVEL_LASER : LOUIS_HEADSHOT_DMG_MULITPLIER_PER_LEVEL_NOLASER)));  // Check if laser mode activated
+				iNewDamageAmount += RoundToNearest(float(iNewDamageAmount) * fLouisTalent4HeadshotDamageMultiplier);
 			}
 
 			// Add or remove damage based on victim talents (Also subtract damage that will be already)
@@ -371,7 +373,7 @@ void EventsDeath_AttackerLouis(Handle hEvent, int iAttacker, int iVictim)
 					SetPlayerHealth(iAttacker, -1, iAttackerHealth + 1);
 
 				// Increase clip ammo on the weapon that actually triggered the headshot
-				GiveLouisHeadshotClipBonus(iAttacker, weaponclass, g_iLouisTalent4Level[iAttacker] * 3);
+				GiveLouisHeadshotClipBonus(iAttacker, weaponclass, LOUIS_HEADSHOT_CLIP_BONUS_CI);
 				
 				g_iLouisCIHeadshotCounter[iAttacker]++;
 				SetClientSpeed(iAttacker);
@@ -422,7 +424,7 @@ void EventsDeath_AttackerLouis(Handle hEvent, int iAttacker, int iVictim)
 					SetPlayerHealth(iAttacker, -1, iAttackerHealth + 5);
 
 				// Increase clip ammo on the weapon that actually triggered the headshot
-				GiveLouisHeadshotClipBonus(iAttacker, weaponclass, g_iLouisTalent4Level[iAttacker] * 10);
+				GiveLouisHeadshotClipBonus(iAttacker, weaponclass, LOUIS_HEADSHOT_CLIP_BONUS_SI);
 
 				g_iLouisSIHeadshotCounter[iAttacker]++;
 				SetClientSpeed(iAttacker);

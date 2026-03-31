@@ -229,7 +229,7 @@ void SetClientSpeedZoey(int iClient, float &fSpeed)
 
 	if (g_iZoeyTalent1Level[iClient] > 0 &&
 		IsZoeyHoldingHealingItem(iClient))
-		fSpeed += (g_iZoeyTalent1Level[iClient] * ZOEY_RESILIENT_RESUSCITATION_MOVE_SPEED_PER_LEVEL);
+		fSpeed += ZOEY_RESILIENT_RESUSCITATION_MOVE_SPEED_BONUS;
 
 	if (g_iZoeyTalent6Level[iClient] > 0 && g_iZoeyInstantInterventionDownedCount > 0)
 		fSpeed += (float(g_iZoeyInstantInterventionDownedCount) * ZOEY_INSTANT_INTERVENTION_MOVE_SPEED_PER_DOWNED);

@@ -191,14 +191,14 @@ Action LouisTalent4MenuDraw(int iClient)
 	FormatEx(text, sizeof(text), "\
 		%s 							BOOM HEADSHOT! (Level %d):\
 		\n \
-		\n Headshot/body damage per level varies by mode:\
-		\n 	- Laser On: +5%%%% / -20%%%%\
-		\n 	- Laser Off: +30%%%% / -10%%%%\
-		\n 	- Pistols: +20%%%% / -15%%%%\
+		\n Headshot/Body Damage Varies by Mode:\
+		\n 	- Laser On: +25%%%% / -100%%%%\
+		\n 	- Laser Off: +150%%%% / -50%%%%\
+		\n 	- Pistols: +100%%%% / -75%%%%\
 		\n \
 		\n Headshot Kill Bonuses:\
-		\n 	- CI: +1 HP, +1%%%% Speed for 60 Seconds, +3 Clip Ammo per Level\
-		\n 	- SI: +5 HP, +5%%%% Speed for 60 Seconds, +10 Clip Ammo per Level   \
+		\n 	- CI: +1 HP, +1%%%% Speed for 60 Seconds, +15 Clip Ammo\
+		\n 	- SI: +5 HP, +5%%%% Speed for 60 Seconds, +50 Clip Ammo   \
 		\n 	- Louis Speed Cap: +10%%%% w/ Laser, +25%%%% w/o\
 		\n ",
 		strStartingNewLines,

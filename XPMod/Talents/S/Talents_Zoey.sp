@@ -1999,7 +1999,7 @@ void OGFSurvivorReload_Zoey(int iClient, const char[] strCurrentWeapon, int iAct
 float GetZoeyResilientResuscitationReviveDuration(int iClient)
 {
 	float fDuration = ZOEY_RESILIENT_RESUSCITATION_BASE_REVIVE_DURATION *
-		(1.0 - (float(g_iZoeyTalent1Level[iClient]) * ZOEY_RESILIENT_RESUSCITATION_REVIVE_SPEED_PER_LEVEL));
+		(1.0 - ZOEY_RESILIENT_RESUSCITATION_REVIVE_SPEED_BONUS);
 
 	if (g_fZoeyInstantInterventionReviveSpeedEndTime[iClient] > GetGameTime())
 		fDuration *= (1.0 - ZOEY_INSTANT_INTERVENTION_REVIVE_SPEED_BONUS);
@@ -2009,7 +2009,8 @@ float GetZoeyResilientResuscitationReviveDuration(int iClient)
 
 float GetZoeyResilientResuscitationDamageReduction(int iClient)
 {
-	return float(g_iZoeyTalent1Level[iClient]) * ZOEY_RESILIENT_RESUSCITATION_DAMAGE_REDUCTION_PER_LEVEL;
+	SuppressNeverUsedWarning(iClient);
+	return ZOEY_RESILIENT_RESUSCITATION_DAMAGE_REDUCTION;
 }
 
 bool IsZoeyReviveSpeedOverrideActive(int iClient)

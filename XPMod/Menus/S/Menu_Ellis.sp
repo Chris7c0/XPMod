@@ -71,7 +71,7 @@ Action OverMenuDraw(int iClient)
 		\n+5%%%% RoF To All Guns per Level\
 		\n \
 		\nIf Within %i Points Of Max Health:\
-		\n	+1%%%% Movement Speed\
+		\n	+1%%%% Movement Speed per Level\
 		\n \
 		\nWhile On Adrenaline:\
 		\n	+10%%%% RoF To All Guns per Level\
