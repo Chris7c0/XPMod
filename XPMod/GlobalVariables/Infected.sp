@@ -271,7 +271,7 @@ float g_fAdhesiveAffectAmount[MAXPLAYERS + 1];
 #define GOO_DEMI			3
 #define GOO_REPULSION		4
 #define GOO_VIRAL			5
-#define SPITTER_REPULSION_BOUNCE_INTERVAL 1.0
+#define SPITTER_REPULSION_BOUNCE_INTERVAL 2.0
 // Bag of Spits (BIND 1)
 #define BAG_OF_SPITS_NONE           -1
 #define BAG_OF_SPITS_MINI_ARMY      0
