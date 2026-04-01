@@ -445,7 +445,7 @@ bool g_bNoobWipeCooldown;
 #define ZOEY_TRIGGER_HAPPY_CLIP_SIZE                             120
 #define ZOEY_TRIGGER_HAPPY_EXPLOSIVE_SI_DAMAGE_MULTIPLIER        1.5
 #define ZOEY_TRIGGER_HAPPY_SHOT_EVENT_WINDOW                     0.35
-#define ZOEY_MOP_THE_FLOOR_HITS_PER_CHARGE                       3
+#define ZOEY_MOP_THE_FLOOR_HITS_PER_CHARGE                       5
 #define ZOEY_MOP_THE_FLOOR_RADIUS                                275.0
 #define ZOEY_SURVIVORS_WILL_MOVE_SPEED_BONUS                     0.05
 #define ZOEY_SURVIVORS_WILL_INCAP_HEALTH_BONUS                   100
@@ -518,6 +518,7 @@ int g_iZoeyMedicalExpertisePillsReviveCounter[MAXPLAYERS + 1] = {0, ...};
 int g_iZoeyMedicalExpertiseMedkitReviveCounter[MAXPLAYERS + 1] = {0, ...};
 int g_iZoeySacrificialAidMenuTarget[MAXPLAYERS + 1] = {-1, ...};
 int g_iZoeySacrificialAidMaxHealthPenalty[MAXPLAYERS + 1] = {0, ...};
+int g_iZoeyMopMaxHealthBonus[MAXPLAYERS + 1] = {0, ...};
 float g_fZoeySacrificialAidBleedoutStopEndTime[MAXPLAYERS + 1] = {-1.0, ...};
 int g_iZoeySacrificialAidBleedoutLastHealth[MAXPLAYERS + 1] = {0, ...};
 int g_iZoeyMedicalExpertiseBileSerial[MAXPLAYERS + 1] = {0, ...};

@@ -23,6 +23,7 @@ void TalentsLoad_Zoey(int iClient)
 	g_iZoeyMedicalExpertiseMedkitReviveCounter[iClient] = 0;
 	g_iZoeySacrificialAidMenuTarget[iClient] = -1;
 	g_iZoeySacrificialAidMaxHealthPenalty[iClient] = 0;
+	g_iZoeyMopMaxHealthBonus[iClient] = 0;
 	g_fZoeySacrificialAidBleedoutStopEndTime[iClient] = -1.0;
 	g_iZoeySacrificialAidBleedoutLastHealth[iClient] = 0;
 	g_iZoeySacrificialAidRegenTicksRemaining[iClient] = 0;
@@ -87,6 +88,7 @@ void ResetZoeyTalentsRuntimeState(int iClient)
 	g_iZoeyMedicalExpertiseMedkitReviveCounter[iClient] = 0;
 	g_iZoeySacrificialAidMenuTarget[iClient] = -1;
 	g_iZoeySacrificialAidMaxHealthPenalty[iClient] = 0;
+	g_iZoeyMopMaxHealthBonus[iClient] = 0;
 	g_fZoeySacrificialAidBleedoutStopEndTime[iClient] = -1.0;
 	g_iZoeySacrificialAidBleedoutLastHealth[iClient] = 0;
 	g_iZoeySacrificialAidRegenTicksRemaining[iClient] = 0;
@@ -136,7 +138,7 @@ void SetPlayerTalentMaxHealth_Zoey(int iClient, bool bFillInHealthGap = true)
 		g_iClientTeam[iClient] != TEAM_SURVIVORS)
 		return;
 	
-	int iDesiredMaxHealth = 100 - g_iZoeySacrificialAidMaxHealthPenalty[iClient];
+	int iDesiredMaxHealth = 100 + g_iZoeyMopMaxHealthBonus[iClient] - g_iZoeySacrificialAidMaxHealthPenalty[iClient];
 	if (iDesiredMaxHealth < 1)
 		iDesiredMaxHealth = 1;
 
@@ -2641,8 +2643,14 @@ void TryTriggerZoeyMop(int iClient, int iTargetEntity)
 	if (g_iZoeyMopCharge[iClient] < 0)
 		g_iZoeyMopCharge[iClient] = 0;
 
+	if (iKilled > 0)
+	{
+		g_iZoeyMopMaxHealthBonus[iClient] += iKilled;
+		SetPlayerTalentMaxHealth_Zoey(iClient, true);
+	}
+
 	if (IsFakeClient(iClient) == false)
-		PrintHintText(iClient, "Mop The Floor triggered.\nKilled %d CI/UI.\nStored Charge: %d", iKilled, g_iZoeyMopCharge[iClient]);
+		PrintHintText(iClient, "Mop The Floor triggered.\nKilled %d CI/UI.\n+%d MaxHP.\nStored Charge: %d", iKilled, iKilled, g_iZoeyMopCharge[iClient]);
 }
 
 int KillZoeyCommonInfectedAroundTarget(int iClient, int iTargetEntity, int iKillLimit)

@@ -114,9 +114,10 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 			\n	Press [WALK] + [ZOOM] To Swap Between Them\
 			\n \
 			\nMop 'Til They Drop\
-			\n	Gain 1 Charge Per 3 Pistol Hits\
+			\n	Gain 1 Charge Per 5 Pistol Hits\
 			\n	Press [WALK] + [USE] To Arm\
 			\n	Armed Shot Kills Nearby CI/UI\
+			\n	Each CI/UI Killed Grants +1 MaxHP\
 			\n	Consumes 1 Charge Per CI/UI Killed\
 			\n ",
 			strStartingNewLines,

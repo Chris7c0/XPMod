@@ -184,6 +184,7 @@ void ResetClientVariablesForRound(int iClient)
 	g_iZoeyMedicalExpertiseMedkitReviveCounter[iClient] = 0;
 	g_iZoeySacrificialAidMenuTarget[iClient] = -1;
 	g_iZoeySacrificialAidMaxHealthPenalty[iClient] = 0;
+	g_iZoeyMopMaxHealthBonus[iClient] = 0;
 	g_fZoeySacrificialAidBleedoutStopEndTime[iClient] = -1.0;
 	g_iZoeySacrificialAidBleedoutLastHealth[iClient] = 0;
 	g_iZoeySacrificialAidRegenTicksRemaining[iClient] = 0;
@@ -495,6 +496,7 @@ void ResetAllVariables(int iClient)
 	g_iZoeyMedicalExpertiseMedkitReviveCounter[iClient] = 0;
 	g_iZoeySacrificialAidMenuTarget[iClient] = -1;
 	g_iZoeySacrificialAidMaxHealthPenalty[iClient] = 0;
+	g_iZoeyMopMaxHealthBonus[iClient] = 0;
 	g_fZoeySacrificialAidBleedoutStopEndTime[iClient] = -1.0;
 	g_iZoeySacrificialAidBleedoutLastHealth[iClient] = 0;
 	g_iZoeySacrificialAidRegenTicksRemaining[iClient] = 0;
