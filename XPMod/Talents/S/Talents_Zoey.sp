@@ -131,6 +131,15 @@ bool IsZoeyClientDownedOrHanging(int iClient)
 		GetEntProp(iClient, Prop_Send, "m_isHangingFromLedge") == 1);
 }
 
+bool IsZoeyClientHanging(int iClient)
+{
+	return RunClientChecks(iClient) &&
+		IsPlayerAlive(iClient) &&
+		g_iClientTeam[iClient] == TEAM_SURVIVORS &&
+		(clienthanging[iClient] == true ||
+		GetEntProp(iClient, Prop_Send, "m_isHangingFromLedge") == 1);
+}
+
 void SetPlayerTalentMaxHealth_Zoey(int iClient, bool bFillInHealthGap = true)
 {
 	if (g_bTalentsConfirmed[iClient] == false ||
@@ -493,7 +502,7 @@ bool TryUseZoeySacrificialAidResurrection(int iClient)
 		g_iChosenSurvivor[iClient] != ZOEY ||
 		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
 		g_iZoeyTalent5Level[iClient] <= 0 ||
-		IsZoeyClientDownedOrHanging(iClient) == true ||
+		IsZoeyClientHanging(iClient) == true ||
 		IsClientGrappled(iClient) == true)
 	{
 		return false;
@@ -946,7 +955,7 @@ bool TryUseZoeySacrificialAidDefibrillator(int iClient)
 		g_iChosenSurvivor[iClient] != ZOEY ||
 		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
 		g_iZoeyTalent5Level[iClient] <= 0 ||
-		IsZoeyClientDownedOrHanging(iClient) == true ||
+		IsZoeyClientHanging(iClient) == true ||
 		IsClientGrappled(iClient) == true)
 	{
 		return false;
@@ -1214,7 +1223,7 @@ bool TryUseZoeySacrificialAid(int iClient, int iTarget, int iCost)
 		g_iClientTeam[iClient] != TEAM_SURVIVORS ||
 		g_iClientTeam[iTarget] != TEAM_SURVIVORS ||
 		g_iZoeyTalent5Level[iClient] <= 0 ||
-		IsZoeyClientDownedOrHanging(iClient) == true ||
+		IsZoeyClientHanging(iClient) == true ||
 		IsClientGrappled(iClient) == true ||
 		iClient == iTarget)
 	{

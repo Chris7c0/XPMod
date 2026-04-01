@@ -9,9 +9,9 @@ void Bind1Press_Zoey(int iClient)
 		return;
 	}
 
-	if (IsZoeyClientDownedOrHanging(iClient) == true || IsClientGrappled(iClient) == true)
+	if (IsZoeyClientHanging(iClient) == true || IsClientGrappled(iClient) == true)
 	{
-		PrintHintText(iClient, "Sacrificial Aid cannot be used while downed, hanging, or grappled.");
+		PrintHintText(iClient, "Sacrificial Aid cannot be used while hanging or grappled.");
 		return;
 	}
 
