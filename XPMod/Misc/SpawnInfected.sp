@@ -1,4 +1,5 @@
-int SpawnCommonInfected(float xyzLocation[3], int iAmount = 1, int iUncommon = UNCOMMON_CI_NONE, int iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, int iEnhancedCIType = ENHANCED_CI_TYPE_RANDOM, bool bShowParticles = true, float fTimeToWaitForMob = -1.0)
+// Set fTimeToWaitForMob to -1.0 if you want them to chill and not rush survivors immediately. 
+int SpawnCommonInfected(float xyzLocation[3], int iAmount = 1, int iUncommon = UNCOMMON_CI_NONE, int iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, int iEnhancedCIType = ENHANCED_CI_TYPE_RANDOM, bool bShowParticles = true, float fTimeToWaitForMob = 0.1)
 {
 	xyzLocation[2] += 1;
 
@@ -55,6 +56,7 @@ int SpawnCommonInfected(float xyzLocation[3], int iAmount = 1, int iUncommon = U
 	return -1;
 }
 
+// If this is set, they will pursue and run and not be removed at any distance from survivors
 Action TimerSetMobRush(Handle timer, int iZombieEntity)
 {
 	if (iZombieEntity > 0 && IsValidEntity(iZombieEntity))
@@ -69,7 +71,7 @@ Action TimerSetMobRush(Handle timer, int iZombieEntity)
 	return Plugin_Stop;
 }
 
-void SpawnCIAroundLocation(float xyzLocation[3], int iAmount = 1, int iUncommon = UNCOMMON_CI_NONE, int iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, int iEnhancedCISpecifiedType = ENHANCED_CI_TYPE_RANDOM, bool bShowParticles = true)
+void SpawnCIAroundLocation(float xyzLocation[3], int iAmount = 1, int iUncommon = UNCOMMON_CI_NONE, int iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, int iEnhancedCISpecifiedType = ENHANCED_CI_TYPE_RANDOM, bool bShowParticles = true, float fTimeToWaitForMob = 0.1)
 {
 	// Get the angle increments then convert to radians
 	// We need it in radians so convert it by multiplying by 0.0174532925
@@ -88,11 +90,11 @@ void SpawnCIAroundLocation(float xyzLocation[3], int iAmount = 1, int iUncommon 
 		xyzLocation[0] += fXOffset;
 		xyzLocation[1] += fYOffset;
 
-		SpawnCommonInfected(xyzLocation, 1, iUncommon, iBigOrSmall, iEnhancedCISpecifiedType, bShowParticles);
+		SpawnCommonInfected(xyzLocation, 1, iUncommon, iBigOrSmall, iEnhancedCISpecifiedType, bShowParticles, fTimeToWaitForMob);
 	}
 }
 
-void SpawnCIAroundPlayer(int iClient, int iAmount = 1, int iUncommon = UNCOMMON_CI_NONE, int iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, int iEnhancedCISpecifiedType = ENHANCED_CI_TYPE_RANDOM, bool bShowParticles = true)
+void SpawnCIAroundPlayer(int iClient, int iAmount = 1, int iUncommon = UNCOMMON_CI_NONE, int iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, int iEnhancedCISpecifiedType = ENHANCED_CI_TYPE_RANDOM, bool bShowParticles = true, float fTimeToWaitForMob = 0.1)
 {
 	if (RunClientChecks(iClient) == false)
 		return;
@@ -101,11 +103,11 @@ void SpawnCIAroundPlayer(int iClient, int iAmount = 1, int iUncommon = UNCOMMON_
 	float xyzLocation[3];
 	GetClientAbsOrigin(iClient, xyzLocation);
 
-	SpawnCIAroundLocation(xyzLocation, iAmount, iUncommon, iBigOrSmall, iEnhancedCISpecifiedType, bShowParticles);
+	SpawnCIAroundLocation(xyzLocation, iAmount, iUncommon, iBigOrSmall, iEnhancedCISpecifiedType, bShowParticles, fTimeToWaitForMob);
 }
 
 
-void SpawnCIAroundPlayerDelayed(int iClient, float fDelay, int iAmount = 1, int iUncommon = UNCOMMON_CI_NONE, int iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, int iEnhancedCISpecifiedType = ENHANCED_CI_TYPE_RANDOM, bool bShowParticles = true)
+void SpawnCIAroundPlayerDelayed(int iClient, float fDelay, int iAmount = 1, int iUncommon = UNCOMMON_CI_NONE, int iBigOrSmall = CI_SMALL_OR_BIG_RANDOM, int iEnhancedCISpecifiedType = ENHANCED_CI_TYPE_RANDOM, bool bShowParticles = true, float fTimeToWaitForMob = 0.1)
 {
 	if (RunClientChecks(iClient) == false)
 		return;
@@ -117,6 +119,7 @@ void SpawnCIAroundPlayerDelayed(int iClient, float fDelay, int iAmount = 1, int 
 	WritePackCell(hDataPackage, iBigOrSmall);
 	WritePackCell(hDataPackage, iEnhancedCISpecifiedType);
 	WritePackCell(hDataPackage, bShowParticles);
+	WritePackFloat(hDataPackage, fTimeToWaitForMob);
 
 	CreateTimer(fDelay, TimerSpawnCIAroundPlayer, hDataPackage);
 }
@@ -131,9 +134,10 @@ Action TimerSpawnCIAroundPlayer(Handle timer, Handle hDataPackage)
 	int iBigOrSmall = ReadPackCell(hDataPackage);
 	int iEnhancedCISpecifiedType = ReadPackCell(hDataPackage);
 	bool bShowParticles = ReadPackCell(hDataPackage);
+	float fTimeToWaitForMob = ReadPackFloat(hDataPackage);
 	CloseHandle(hDataPackage);
 
-	SpawnCIAroundPlayer(iClient, iAmount, iUncommon, iBigOrSmall, iEnhancedCISpecifiedType, bShowParticles);
+	SpawnCIAroundPlayer(iClient, iAmount, iUncommon, iBigOrSmall, iEnhancedCISpecifiedType, bShowParticles, fTimeToWaitForMob);
 
 	return Plugin_Stop;
 }
