@@ -279,24 +279,26 @@ Action LouisTalent6MenuDraw(int iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 
 	FormatEx(text, sizeof(text), "\
-		%s 					PILLS HERE! (Level %d):\
+		%s 			PILLS HERE! (Level %d):\
 		\n \
-		\n Stash Up To %i Extra Pill Bottles\
+		\nStash Up To %i Extra Pill Bottles\
 		\n \
-		\n [PRESS ZOOM] While Holding A MedKit:\
-		\n 	- Turn MedKit Into 3 Pill Bottles\
+		\nPress [ZOOM] With MedKit:\
+		\n	Convert MedKit Into 3 Pills\
 		\n \
-		\n When Taking Pills (Stacks):\
-		\n	- -2 Temp Health Per Level\
-		\n	- +2%%%% Speed per Level for 90 Seconds\
-		\n		- Louis capped at +10%%%% speed w/ Laser, +25%%%% w/o\
-		\n	- +3%%%% Damage per Level for 90 Seconds  \
-		\n	- 3 Stacks Max\
+		\nOn Pills (Stacks):\
+		\n	-2 Temp HP/Lvl\
+		\n	+2%% Speed/Lvl for 90s\
+		\n	Louis Speed Cap:\
+		\n		+10%% w/ Laser, +25%% w/o\
+		\n	+3%% Dmg/Lvl for 90s\
+		\n	Max 3 stacks\
+		\n \n \
+		\nBind 2: H3D 5h0p:\
 		\n \
-		\n Bind 2: H3D 5h0p\
-		\n	- Unlock 5cR1PT k1Dd13 3xPl0172 m3Nu\
-		\n		+ %0.1f XMR per CI Headshot Kill\
-		\n		+ %0.1f XMR per SI Headshot Kill\
+		\nUnlock 5cR1PT k1Dd13 3xPl0172 m3Nu\
+		\n	+ %0.1f XMR / CI HS kill\
+		\n	+ %0.1f XMR / SI HS kill\
 		\n ",
 		strStartingNewLines,
 		g_iLouisTalent6Level[iClient],

@@ -238,21 +238,20 @@ Action DiehardMenuDraw(int iClient)
 	FormatEx(text, sizeof(text), "\
 		%s					Die Hard(Level %d):\
 		\n \
-		\n+15 max health per level\
-		\nRegen 9 health when ally incaps per level\
-		\n+5hp to healing pool when ally incaps per level\
+		\n+15 Max HP/Lvl\
+		\nRegen 9 HP/Lvl When Ally Incaps\
+		\n+5 HP/Lvl to heal pool when ally incaps\
 		\n \
-		\nPress [WALK] + [USE] to activate Taunt:\
-		\n- Vomit Jar yourself for aggro\
-		\n- Bills cloaking suit is deactivated\
-		\n- Everyone on team gains temporary cloaking\
-		\n- Gain 30%% damage reduction while active\
-		\n- 4 minute global cooldown\
+		\nPress [WALK] + [USE]: Taunt\
+		\n	Bile Yourself for Aggro\
+		\n	Bill Cloak Disabled\
+		\n	Team Gains Temp Cloak\
+		\n	Gain 30%% Dmg Reduction\
+		\n	4 Minute Global Cooldown\
 		\n \
-		\n		Bind 1: Improvised Explosives\
-		\n				3 Uses\
+		\nBind 1: Improvised Explosives (3 Uses):\
 		\n \
-		\nDrop +1 active pipebomb every other level\
+		\nDrop +1 Pipebomb Every Other Level\
 		\n ",
 		strStartingNewLines,
 		g_iDiehardLevel[iClient]);

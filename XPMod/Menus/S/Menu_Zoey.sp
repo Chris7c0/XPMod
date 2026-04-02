@@ -104,21 +104,21 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 			\n \
 			\nRemoves Primary Weapons\
 			\nGain Automatic Explosive Machine Pistol\
-			\n	120 Clip Size\
+			\n	120 Clip\
 			\n	Bullets Explode\
 			\n	OneShots CI\
 			\n	+150%% Dmg to SI\
 			\n \
 			\nPistol Melee Swap\
-			\n	Pick Up A Melee Weapon To Stash It\
-			\n	Press [WALK] + [ZOOM] To Swap Between Them\
+			\n	Pick Up A Melee To Stash It\
+			\n	Press [WALK] + [ZOOM] To Swap\
 			\n \
 			\nMop 'Til They Drop\
 			\n	Gain 1 Charge Per 5 Pistol Hits\
 			\n	Press [WALK] + [USE] To Arm\
-			\n	Armed Shot Kills Nearby CI/UI\
-			\n	Each CI/UI Killed Grants +1 MaxHP\
-			\n	Consumes 1 Charge Per CI/UI Killed\
+			\n	Armed Shot Kills Nearby CI\
+			\n	Each CI Killed Grants +1 MaxHP\
+			\n	Consumes 1 Charge Per CI Killed\
 			\n ",
 			strStartingNewLines,
 			strTalentName);

@@ -99,24 +99,24 @@ Action MaterialMenuDraw(int iClient)
 	FormatEx(text, sizeof(text), "\
 		%s				Material Girl (Level %d)\
 		\n \
-		\nIf spit hits incaped player:\
-		\nCloak victim +10%% per level\
-		\nHide victims' glow\
+		\nIf spit hits incap victim:\
+		\nCloak victim +10%%/Lvl\
+		\nHide victim glow\
 		\n \
 		\nSpawn 1 random UI on spit (2 at Lvl 10)\
-		\nMelting Goo: +2 spit dmg\
-		\nDmg converts health to temp health\
+		\nMelting Goo: +2 Spit Dmg\
+		\nDmg converts health to temp HP\
 		\n \
 		\nLevel 6:\
-		\nDemi Goo: Triples victims gravity and\
-		\nrestricts mobility talents\
+		\nDemi Goo triples victim gravity\
+		\nRestricts mobility talents\
 		\n \
-		\nPress [WALK] to change Goo Types\
+		\nTap [WALK] change Goo Types\
+		\n \n \
+		\nBind 1: Bag of Spits\
 		\n \
-		\n				Bind 1: Bag of Spits\
-		\n \
-		\nSelect from unique Enhanced CI mobs\
-		\nConjure them on your next spit\
+		\nChoose unique Enhanced CI mobs\
+		\nConjure them on next spit\
 		\n ",
 		strStartingNewLines,
 		g_iMaterialLevel[iClient]);

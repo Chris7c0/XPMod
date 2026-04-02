@@ -200,24 +200,24 @@ Action SilentMenuDraw(int iClient)
 		\nSniper Weapon Upgrades\
 		\n \
 		\n AWP:\
-		\n	+85%%%% Dmg per Level\
+		\n	+85%%%% Dmg/Lvl\
 		\n	3 Round Clip\
-		\n	3 SI Kills Gain: Charged Shot:\
+		\n	3 SI kills gain Charged Shot:\
 		\n		2000 Dmg\
 		\n		1 Round Clip\
 		\n \
-		\n Ruger Mini-14 (Hunting Rifle):\
-		\n	+5%%%% Dmg per Stack (+500%%%% Max)\
-		\n	Hit: Gain Stacks\
-		\n	Miss: -15 Stacks\
+		\n Ruger Mini-14:\
+		\n	+5%%%% Dmg/stack (+500%%%% Max)\
+		\n	Hit: Gain stack\
+		\n	Miss: -15 stacks\
 		\n \
-		\n H & K (Miliatry Rifle):\
-		\n	+12%%%% Dmg per Level\
-		\n	+6 Clip Size per Level\
+		\n H & K:\
+		\n	+12%%%% Dmg/Lvl\
+		\n	+6 Clip/Lvl\
 		\n	Ignite Enemies\
 		\n \
 		\n Steyr Scout:\
-		\n	+100%%%% Dmg per Headshot (Max 8)     \
+		\n	+100%%%% Dmg/headshot (Max 8)\
 		\n	-5 Clip Size\
 		\n ",
 		strStartingNewLines,

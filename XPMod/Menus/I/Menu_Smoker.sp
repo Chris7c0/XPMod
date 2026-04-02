@@ -54,22 +54,22 @@ Action EnvelopmentMenuDraw(int iClient)
 
 	char text[512];
 	FormatEx(text, sizeof(text), "\
-		%s  				Rapid Cell Division (Level %d)\
+		%sRapid Cell Division (Level %d)\
 		\n \
 		\n%d Max Health\
-		\nWhile Choking a Victim:\
-		\n	Regenerate 60 HP per Second\
-		\n	+2 Dmg per Hit\
+		\nWhile Choking A Victim:\
+		\n	Regen 60 HP/s\
+		\n	+2 Dmg/Hit\
 		\n	Can Move Slowly\
 		\n \
-		\nReduced Tongue Ability Cooldown\
-		\n	-1 Second Every Three Levels\
+		\nTongue Cooldown Reduced\
+		\n	-1s every 3 Lvls\
 		\n \
-		\nWhile Alive as Smoker, All Smokers Receive:\
-		\n	+10%% Increased Tongue Range per Level\
-		\n	+20%% Increased Tongue Travel Speed per Level    \
-		\n	+15%% Increased Tongue Drag Speed per Level\
-		\n	+20%% Increased Tongue Strength per level\
+		\nWhile Alive, All Smokers Gain:\
+		\n	+10%% Tongue Range/Lvl\
+		\n	+20%% Tongue Speed/Lvl\
+		\n	+15%% Drag Speed/Lvl\
+		\n	+20%% Tongue Strength/Lvl\
 		\n ",
 		strStartingNewLines,
 		g_iSmokerTalent1Level[iClient],
@@ -102,28 +102,28 @@ Action NoxiousMenuDraw(int iClient)
 
 	char text[512];
 	FormatEx(text, sizeof(text), "\
-		%s					Illusive Trickster (Level %d)\
+		%sIllusive Trickster (Lvl %d)\
 		\n \
-		\n 8.5%% Invisibility per Lvl When Tonguing\
+		\n85%% Invisible When Tonguing\
 		\n	[PRESS CROUCH] Toggle\
 		\n \
-		\n When Choking:\
+		\nWhen Choking:\
 		\n	Hide Victim Glow\
 		\n	[PRESS WALK] Create Smoke On Victim\
 		\n \
-		\n [PRESS RELOAD] Create Doppelganger On Crosshair\
+		\nAim & [PRESS RELOAD] to Spawn Doppelganger\
 		\n	Spawn Clowns & JumboJimmy If Hit\
 		\n	Regens(Max 4)\
 		\n \
-		\n					Bind 1: Cloud Conversion\
+		\nBind 1: Cloud Conversion\
 		\n \
-		\n Become Fast Moving Invulnerable Smoke\
-		\n 3 Stages\
-		\n In Smoke:\
-		\n	CI Are Enhanced\
-		\n	Enhanced CI Spawn on Survivors\
+		\nBecome Fast Moving Invulnerable Smoke\
+		\n3 Stages\
+		\nIn Smoke:\
+		\n	CI Enhance\
+		\n	ECI Spawn on Victims\
 		\n	SI Get +150 HP/s\
-		\n	Fire, Vomit, PipeBombs Vanish\
+		\n	Fire, Bile, PipeBombs Vanish\
 		\n ",
 		strStartingNewLines,
 		g_iSmokerTalent2Level[iClient]);
@@ -155,25 +155,25 @@ Action DirtyMenuDraw(int iClient)
 
 	char text[512];
 	FormatEx(text, sizeof(text), "\
-		%s				Acute Toxicity (Level %d)\
+		%sAcute Toxicity (Level %d)\
 		\n \
-		\n +5%% Speed per Level\
+		\n+5%% Speed per Lvl\
 		\n \
-		\n [CLICK ATTACK] Release Tongued Victim\
+		\nClick [ATTACK] Release tongued victim\
 		\n \
-		\n [PRESS WALK] Teleport (10 Sec CD)\
-		\n	- Afterwards Briefly Become Invisible\
+		\nPress [WALK] Teleport (10s CD)\
+		\n	Brief Invisibility After\
 		\n \
-		\n Smoke Cloud Created On Death\
-		\n	2 HP Converted to Temp Every Tick\
-		\n	-0.25 Secs per Level on Ticks (Base 3s)\
-		\n	+2s Duration per Level\
+		\nSmoke Cloud on Death:\
+		\n	2 HP -> Temp HP per tick\
+		\n	-0.25s/Lvl tick rate (Base 3s)\
+		\n	+2s Duration/Lvl\
 		\n \
-		\n				Bind 2: The Electric Snare\
+		\nBind 2: Electric Snare\
 		\n \
-		\n Instantly Set Max HP to 500\
-		\n Shock for 1 DMG per Level Every 0.5s for 3s\
-		\n Arcs to Survivors for Half Damage\
+		\nInstantly set Max HP to 500\
+		\nShock 1 Dmg/Lvl every 0.5s for 3s\
+		\nArcs to Survivors for half dmg\
 		\n ",
 		strStartingNewLines,
 		g_iSmokerTalent3Level[iClient]);

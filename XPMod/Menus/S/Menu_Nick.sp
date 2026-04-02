@@ -295,23 +295,20 @@ Action DesperateMenuDraw(int iClient)
 		\n					  Requires Level 26\
 		\n \
 		\nLevel 1:\
-		\n(Stacks) +1%%%% speed & +10%%%% gun damage per level\
+		\n(Stacks) +1%%%% Speed & +10%%%% Gun Dmg/Lvl\
 		\n \
 		\n \
 		\n				Bind 2: Cheating Death\
 		\n				3 Uses\
 		\n \
-		\nLevel 1:\
-		\nHeal team +5 health per level (costs 1 charge)\
-		\nLevel 3:\
-		\nRevive incapacitated ally (costs 2 charges)\
-		\nLevel 5:\
-		\nResurrect a dead ally (costs 3 charges)\
+		\nLevel 1: Heal team +5 HP/Lvl (1 charge)\
+		\nLevel 3: Revive incap ally (2 charges)\
+		\nLevel 5: Resurrect dead ally (3 charges)\
 		\n \
 		\n \
 		\nSkill Uses:\
-		\n+1 (Stack) when ally incaps or dies\
-		\n-1 (Stack) if ally recovers\
+		\n+1 stack when ally incaps or dies\
+		\n-1 stack if ally recovers\
 		\nMax 3 stacks\
 		\n ",
 		strStartingNewLines,

@@ -55,7 +55,7 @@ Action GroundMenuDraw(int iClient)
 
 	char text[512];
 	FormatEx(text, sizeof(text), "\
-		%s  				Ground 'n Pound (Level %d)\
+		%sGround 'n Pound (Level %d)\
 		\n \
 		\nDeal More Punch, Pound, and Charge Impact Damage\
 		\n	All Damage Scales with Ground 'n Pound level\ 
@@ -91,23 +91,20 @@ Action SpikedMenuDraw(int iClient)
 
 	char text[512];
 	FormatEx(text, sizeof(text), "\
-		%s				Spiked Carapace (Level %d)\
+		%sSpiked Carapace (Level %d)\
 		\n \
-		\nReflect 1 damage per level when meleed\
-		\n+40 max health per level\
-		\n+33 health per level when knocking survivors\
+		\nReflect 1 Dmg/Lvl When Meleed\
+		\n+40 MaxHP/Lvl\
+		\n+33 HP/Lvl When Knocking Survivors\
 		\n \
-		\nCROUCH to charge Uppercut, on next melee:\
+		\nHold [CROUCH] to Charge Uppercut, On Next Melee:\
+		\n	Throw Survivors Up, Fall Damage, Short Stun\
 		\n \
-		\nThrow survivors up, fall damage, short stun\
 		\n \
+		\nBind 1: Heavy Carry (3 Uses, 30s Cooldown)\
 		\n \
-		\n					Bind 1: Heavy Carry\
-		\n				3 uses; 30 second cooldown\
-		\n \
-		\n+10%% per level to carry distance and speed\
-		\non next charge\
-		\nReset charge cooldown\
+		\n+10%%/Lvl to Carry Distance and Speed\
+		\nOn Next Charge, Reset Charge Cooldown\
 		\n ",
 		strStartingNewLines,
 		g_iSpikedLevel[iClient]);
@@ -140,23 +137,21 @@ Action HillbillyMenuDraw(int iClient)
 
 	char text[512];
 	FormatEx(text, sizeof(text), "\
-		%s						Hillbilly Madness! (Level %d)\
+		%sHillbilly Madness! (Level %d)\
 		\n \
-		\n+50 Max Health per level\
-		\n+3%% Movement Speed & Carry Range per level\
-		\n-1 Second from Charger cooldown every other level\
+		\n+50 MaxHP per Lvl\
+		\n+3%% Move Speed & Carry Range per Lvl\
+		\n-1s Charge Cooldown Every Other Lvl\
 		\n \
-		\nOn successful grapple (until end of charge):\
-		\n \
-		\nInvincibility\
-		\n+5%% of damage taken is converted to health per level\
-		\n \
-		\n						Bind 2: Earthquake\
-		\n								3 uses\
+		\nOn Successful Grapple (Until Charge Ends):\
+		\n	Gain Invincibility\
+		\n	+5%%/Lvl of Dmg Taken Becomes Health\
+		\n \n \
+		\nBind 2: Earthquake (3 Uses)\
 		\n \
 		\nPunch ground to:\
-		\n	Damage visible survivors in a larger radius\
-		\n	Stun visible survivors in a smaller radius\
+		\n	Damage Visible Survivors in Large Radius\
+		\n	Stun visible Survivors in Small Radius\
 		\n ",
 		strStartingNewLines,
 		g_iHillbillyLevel[iClient]);

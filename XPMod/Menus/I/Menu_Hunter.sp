@@ -54,26 +54,26 @@ Action PredatorialMenuDraw(int iClient)
 
 	char text[512];
 	FormatEx(text, sizeof(text), "\
-		%s       Predatorial Evolution (Level %d)        \
+		%sPredatorial Evolution (Level %d)     \
 		\n \
-		\n [HOLD ATTACK] Dismount Victims\
+		\nHold [ATTACK] Dismount Victims\
 		\n \
-		\n +5%% Movement Speed per Level\
+		\n+5%% Move Speed per Lvl\
 		\n \
-		\n Gain Evolved Lunge:\
-		\n	- Lunge Much Faster and Further\
+		\nEvolved Lunge:\
+		\n	Lunge Much Faster and Further\
 		\n \
-		\n	- Extra Damage For A Far Pounce\
-		\n		- Up To 20 Extra Damage\
-		\n		- Min: 150 FT\
-		\n		- Max: 350 FT\
+		\n	Hold [JUMP] Controlled Descent\
+		\n		Flying squirrel Glide\
 		\n \
-		\n	- [HOLD JUMP] Controlled Descent\
-		\n		- Like A Flying Squirrel\
+		\n	Hold [ATTACK] Dive Bomb\
+		\n		Dash At Target\
+		\n		Uses Momentum + Aim\
 		\n \
-		\n	- [HOLD ATTACK] Dive Bomb\
-		\n		- Dash Forward Toward Target\
-		\n		- Uses Momentum and Aim Direction\
+		\nExtra Damage For A Far Pounce\
+		\n	Up To 20 Extra Damage\
+		\n	Min: 150 FT\
+		\n	Max: 350 FT\
 		\n ",
 		strStartingNewLines,
 		g_iPredatorialLevel[iClient]);
@@ -105,24 +105,24 @@ Action BloodLustMenuDraw(int iClient)
 
 	char text[512];
 	FormatEx(text, sizeof(text), "\
-		%s					Blood Lust (Level %d)\
+		%sBlood Lust (Level %d)\
 		\n \
 		\nPounce or Claw a Victim to Feed Your\
-		\nBlood Lust Meter.\
+		\nBlood Lust Meter\
 		\n \
 		\n3 Blood Lust Stages:\
-		\n	+35%% Movement Speed per Stage\
-		\n	+25%% Non Lunging Stealth per Stage\
-		\n	+1 Shredding Damage per Stage\
-		\n	+30 Health/Second Regeneration per Stage\
+		\n	+35%% Move Speed per Stage\
+		\n	+25%% Non-Lunge Stealth per Stage\
+		\n	+1 Shred Dmg per Stage\
+		\n	+30 HP/s Regen per Stage\
+		\n \n \
+		\nBind 1: Immobilization Area\
 		\n \
-		\n			Bind 1: Immobilization Area\
-		\n \
-		\nDeploy an Immobilization Cloud\
-		\n	- Survivors Speed While In Cloud 15%%\
-		\n	- Cannot be activated while seen by Survivors    \
-		\n	- 30 Sec Duration\
-		\n	- 120 Sec Global Cooldown\
+		\nDeploy Immobilization Cloud\
+		\n	Survivor Speed In Cloud: 15%%\
+		\n	Can't Cast While Seen\
+		\n	30s Duration\
+		\n	120s Global CD\
 		\n ",
 		strStartingNewLines,
 		g_iBloodLustLevel[iClient]);
@@ -154,26 +154,23 @@ Action KillmeleonMenuDraw(int iClient)
 
 	char text[512];
 	FormatEx(text, sizeof(text), "\
-		%s				Kill-meleon (Level %d)\
+		%sKill-meleon (Level %d)\
 		\n \
 		\n+250 Max Health\
 		\nHide Glow\
 		\n \
-		\nDo Not Move to Build Your Stealth\
-		\n	- Up to 95%% Invisible\
-		\n	- While Invisible and Survivors Can See You:\
-		\n		- Rapidly Charges Blood Lust Meter\
-		\n		- The Closer the Survivors, The Faster The       \
-		\n			Blood Lust Meter Fills\
+		\nStand Still to Build Stealth\
+		\n	Up to 95%% Invisible\
+		\n	If Survivors See You While Invisible:    \
+		\n		Blood Lust Fills Fast\
+		\n		Closer Survivors Fill It Faster\
+		\n \n \
+		\nBind 2: Lethal Injection (3 Uses)\
 		\n \
-		\n				Bind 2: Lethal Injection\
-		\n						3 uses\
-		\n \
-		\nNext Attack Does 4 Dmg/Sec\
+		\nNext attack: 4 Dmg/s Poison\
 		\n+1 Sec/Lvl\
 		\nPoison Prevents Item Exchanging\
 		\nSlow Victims to 25%%\
-		\n \
 		\n ",
 		strStartingNewLines,
 		g_iKillmeleonLevel[iClient]);

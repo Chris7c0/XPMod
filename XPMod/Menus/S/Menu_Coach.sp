@@ -115,18 +115,18 @@ Action WreckingMenuDraw(int iClient)
 	FormatEx(text, sizeof(text), "\
 		%s						Wrecking Ball(Level %d):\
 		\n \
-		\n+5 Max Health per Level\
+		\n+5 Max HP per Lvl\
 		\nHold [CROUCH] to Heal Yourself\
-		\n	+1 Health Regen Every Half Second\
+		\n	+1 HP Regen Every 0.5s\
 		\n \
 		\nMelee Attacks Lunge at Nearby Infected Within Range\
 		\n	All CI and SI(<30%% HP)\
 		\n	[CROUCH+USE] with Melee to Toggle Off\
 		\n \
 		\nHold [CROUCH] to Power Up Wrecking Ball Attack:\
-		\n	+100 Melee Dmg per Level Expelled on SI Hit\
+		\n	+100 Melee Dmg/Lvl Expelled on SI Hit\
 		\n	On SI Melee Headshot While Wrecking Ball Active:\
-		\n		- Instantly Recharge It\
+		\n		Instantly Recharges It\
 		\n ",
 		strStartingNewLines,
 		g_iWreckingLevel[iClient]);
@@ -310,20 +310,21 @@ Action StrongMenuDraw(int iClient)
 		%s					Strong Arm(Level %d):\
 		\n \
 		\nLevel 1:\
-		\n+30 Melee Damage per Level\
-		\n+5 Max Health per Level\
-		\n+16%% Jockey Resistance per Level\
-		\nStart The Round With A Random Explosive\
+		\n+30 Melee Dmg/Lvl\
+		\n+5 Max HP/Lvl\
+		\n+16%% Jockey Resist/Lvl\
+		\nStart round with random explosive\
 		\n \
 		\nLevel 2:\
-		\n+1 Explosive Storage Every Other Level\
-		\n [CROUCH+RELOAD] to Cycle Explosives\
+		\n+1 explosive slot every other Lvl\
+		\n [CROUCH+RELOAD] Cycle explosives\
 		\n \
-		\n		Bind 2: Chainsaw Massacre (3 Uses)\
-		\nEquip a Chainsaw for %0.0f seconds\
-		\nChainsaw attacks lunge at targets (50ft)\
-		\nEvery kill increases Speed, Damage, and HP Regen\
-		\nOriginal weapon restored when it ends\
+		\n		Bind 2: Chainsaw Massacre\
+		\n				3 Uses\
+		\nEquip chainsaw for %0.0f sec\
+		\nChainsaw attacks lunge 50ft\
+		\nEach kill boosts Speed, Dmg, HP Regen\
+		\nOriginal weapon restored after\
 		\n ",
 		strStartingNewLines,
 		g_iStrongLevel[iClient],

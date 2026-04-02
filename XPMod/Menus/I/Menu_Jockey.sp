@@ -99,25 +99,23 @@ Action ErraticMenuDraw(int iClient)
 	FormatEx(text, sizeof(text), "\
 		%s						Erratic Domination (Level %d)\
 		\n \
-		\n+1 riding damage every 3 levels\
-		\n+3%% riding speed per level\
+		\n+1 Ride Dmg Every 3 Levels\
+		\n+3%% Ride Speed per Level\
 		\n \
 		\n Drag Race:\
-		\n	- Drag Victims for Tiered Rewards\
-		\n	- Tier 1: 50 Ft.\
-		\n	- Tier 2: 100 Ft.\
-		\n	- Tier 3: 150 Ft.\
+		\n	Drag Victims for Tiered Rewards\
+		\n	Tier 1: 50 Ft.\
+		\n	Tier 2: 100 Ft.\
+		\n	Tier 3: 150 Ft.\
+		\n \n \
+		\nBind 1: Golden Shower (3 Uses)\
 		\n \
-		\n						  Bind 1: Golden Shower\
-		\n							 		3 uses\
-		\n \
-		\nLevel 1:\
-		\nWhile riding, urinate on your victim, attracting infected\
-		\nDisables survivors cloaking\
+		\nWhile Riding, Pee on Victim to Attract Infected\
+		\nDisables Survivor Cloaking\
 		\nAll Nearby CI Are Upgraded to BIG Enhanced CEDA Workers\
 		\n \
 		\nLevel 10:\
-		\nSummon a horde\
+		\nSummon A Horde\
 		\n ",
 		strStartingNewLines,
 		g_iErraticLevel[iClient]);
