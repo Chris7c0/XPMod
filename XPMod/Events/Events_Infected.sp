@@ -7,6 +7,7 @@ void Event_AbilityUse(Handle hEvent, const char[] strName, bool bDontBroadcast)
 	
 	Event_AbilityUse_Boomer(iClient, hEvent);
 	Event_AbilityUse_Hunter(iClient, hEvent);
+	Event_AbilityUse_NecroTanker(iClient, hEvent);
 
 	return;
 }

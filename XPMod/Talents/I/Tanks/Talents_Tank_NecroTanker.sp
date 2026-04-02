@@ -43,6 +43,7 @@ void LoadNecroTankerTalents(int iClient)
 void ResetAllTankVariables_NecroTanker(int iClient)
 {
 	g_bTeleportCoolingDown[iClient] = false;
+	g_bNecroTankerRockActive[iClient] = false;
 }
 
 void OnPlayerRunCmd_Tank_NecroTanker(int iClient, int iButtons)
@@ -57,6 +58,23 @@ void OnPlayerRunCmd_Tank_NecroTanker(int iClient, int iButtons)
 		NecroTankerTeleport(iClient);
 }
 
+void Event_AbilityUse_NecroTanker(int iClient, Handle hEvent)
+{
+	if (g_iTankChosen[iClient] != TANK_NECROTANKER)
+		return;
+
+	char strAbility[20];
+	GetEventString(hEvent, "ability", strAbility, 20);
+	if (StrEqual(strAbility, "ability_throw", false))
+		g_bNecroTankerRockActive[iClient] = true;
+}
+
+Action Timer_NecroTankerReEnableTeleportAfterRock(Handle timer, int iClient)
+{
+	g_bNecroTankerRockActive[iClient] = false;
+	return Plugin_Stop;
+}
+
 void NecroTankerTeleport(int iClient)
 {
 	if (g_bGameFrozen == true)
@@ -67,6 +85,12 @@ void NecroTankerTeleport(int iClient)
 
 	if (g_iClientTeam[iClient] != TEAM_INFECTED || RunClientChecks(iClient) == false || IsPlayerAlive(iClient) == false)
 		return;
+
+	if (g_bNecroTankerRockActive[iClient] == true)
+	{
+		PrintHintText(iClient, "You cannot teleport while throwing a rock.");
+		return;
+	}
 
 	if (g_bTeleportCoolingDown[iClient] == true)
 	{

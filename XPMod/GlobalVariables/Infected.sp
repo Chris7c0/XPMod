@@ -449,6 +449,7 @@ bool g_bIceTankSlideInCooldown[MAXPLAYERS + 1];
 #define NECROTANKER_ENHANCE_CI_CHANCE_THROW         33
 #define NECROTANKER_ENHANCE_CI_CHANCE_PUNCH         33
 int g_iNecroTankerManaPool[MAXPLAYERS + 1];
+bool g_bNecroTankerRockActive[MAXPLAYERS + 1];
 // Vampiric Tank
 #define TANK_HEALTH_VAMPIRIC                            8000
 #define VAMPIRIC_TANK_LIFESTEAL_MULTIPLIER              8

@@ -147,6 +147,9 @@ void TrackAllRocks()
 					SetSIAbilityCooldown(iTankRockOwner, 6.0);
 				else
 					SetSIAbilityCooldown(iTankRockOwner, 99999.0);
+
+				// Re-enable teleport 2.2 seconds after rock is thrown
+				CreateTimer(2.2, Timer_NecroTankerReEnableTeleportAfterRock, iTankRockOwner, TIMER_FLAG_NO_MAPCHANGE);
 						}
 					}
 				}
