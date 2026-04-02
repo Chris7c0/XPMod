@@ -224,7 +224,7 @@ void EventsHurt_AttackerTank_NecroTanker(Handle hEvent, int iAttackerTank, int i
 
 	if (g_iClientTeam[iVictim] == TEAM_SURVIVORS &&
 		RunClientChecks(iVictim) == true &&
-		IsPlayerAlive(iVictim) == true &&
+		g_bIsClientDown[iVictim] == false &&
 		StrEqual(strWeapon,"tank_claw"))
 	{
 		SummonNecroTankerPunchZombies(iAttackerTank, iVictim);
@@ -445,9 +445,9 @@ void SummonNecroTankerCrouchAndWalkAbility(int iClient, bool bEnhancedCI)
 
 void SummonNecroTankerPunchZombies(int iAttackerTank, int iVictim)
 {
-	if (RunClientChecks(iAttackerTank) == false || 
+	if (RunClientChecks(iAttackerTank) == false ||
 		RunClientChecks(iVictim) == false ||
-		IsIncap(iVictim) == true)
+		g_bIsClientDown[iVictim] == true)
 		return;
 	
 	int iRoll = GetRandomInt(1,100);
