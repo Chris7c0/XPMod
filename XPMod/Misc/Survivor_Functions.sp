@@ -202,13 +202,34 @@ void EndSelfRevive(int iClient)
 	g_bSelfReviving[iClient] = false;
 	g_fSelfRevivingFinishTime[iClient] = -1.0;
 
-	// We must now handle this, instead of the game, if the player stoppeed a self revive
-	if (GetEntPropEnt(iClient, Prop_Send, "m_reviveOwner") == iClient)
+	// We must now handle this, instead of the game, if the player stopped a self revive.
+	// Clear m_reviveOwner if it is set to self, or if it is stale (pointing to someone
+	// who is no longer actively reviving this client). This prevents bleedout from being
+	// paused indefinitely when a teammate briefly starts reviving during a self-revive
+	// attempt and then stops, leaving m_reviveOwner in a stuck state.
+	int iReviveOwner = GetEntPropEnt(iClient, Prop_Send, "m_reviveOwner");
+	if (iReviveOwner != -1 && !IsClientBeingActivelyRevived(iClient, iReviveOwner))
 	{
 		SetEntPropFloat(iClient, Prop_Send, "m_flProgressBarStartTime", GetGameTime());
 		SetEntPropFloat(iClient, Prop_Send, "m_flProgressBarDuration", 0.0);
 		SetEntPropEnt(iClient, Prop_Send, "m_reviveOwner", -1);
 	}
+}
+
+bool IsClientBeingActivelyRevived(int iClient, int iReviveOwner)
+{
+	// Self-revive is not an active teammate revive
+	if (iReviveOwner == iClient)
+		return false;
+
+	// Check that the revive owner is a valid, alive survivor
+	if (RunClientChecks(iReviveOwner) == false ||
+		IsPlayerAlive(iReviveOwner) == false ||
+		g_iClientTeam[iReviveOwner] != TEAM_SURVIVORS)
+		return false;
+
+	// Verify the revive owner is actually targeting this client
+	return GetEntPropEnt(iReviveOwner, Prop_Send, "m_reviveTarget") == iClient;
 }
 
 void HandlePostSelfRevive(int iClient)
