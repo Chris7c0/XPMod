@@ -142,8 +142,9 @@ Action TimerConjureCommonInfected(Handle timer, Handle hDataPackage)
 	xyzLocation[1] = ReadPackFloat(hDataPackage);
 	xyzLocation[2] = ReadPackFloat(hDataPackage);
 	CloseHandle(hDataPackage);
-	
-	SpawnCommonInfected(xyzLocation, RoundToFloor(g_iPuppetLevel[iClient] * 0.5), UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_NONE, true, -1.0);
+
+	// Make the CI rush the survivors here	
+	SpawnCommonInfected(xyzLocation, RoundToFloor(g_iPuppetLevel[iClient] * 0.5), UNCOMMON_CI_NONE, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_NONE);
 	
 	return Plugin_Stop;
 }
@@ -162,6 +163,7 @@ Action TimerConjureUncommonInfected(Handle timer, Handle hDataPackage)
 	// Figure out how many to spawn 2 at level 10 and 1 otherwise
 	int iSpawnCount = g_iMaterialLevel[iClient] == 10 ? 2 : 1;
 
+	// Make the spawned UI chill in the spit and not rush survivors, by setting -1.0
 	SpawnCommonInfected(xyzLocation, iSpawnCount, UNCOMMON_CI_RANDOM, CI_SMALL_OR_BIG_NONE, ENHANCED_CI_TYPE_NONE, true, -1.0);
 	
 	return Plugin_Stop;
