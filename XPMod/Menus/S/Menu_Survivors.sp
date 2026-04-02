@@ -19,7 +19,9 @@ Action TopSurvivorMenuDraw(int iClient)
 		case LOUIS:		strcopy(strClassName, sizeof(strClassName), "Louis (Disruptor)");
 		case ZOEY:		strcopy(strClassName, sizeof(strClassName), "Zoey (R.C. Medic)");
 	}
-	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\nYour Survivor: %s\n ", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], strClassName);
+	char strXP[32];
+	FormatXPDisplay(iClient, strXP, sizeof(strXP));
+	FormatEx(text, sizeof(text), "%sLevel %d	XP: %s\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\nYour Survivor: %s\n ", strStartingNewLines, g_iClientLevel[iClient], strXP, strClassName);
 	SetMenuTitle(menu, "%s", text);
 	GetNewLinesAutomatic(text, strNewLines, 8+3);
 		

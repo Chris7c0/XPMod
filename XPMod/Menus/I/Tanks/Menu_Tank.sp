@@ -69,8 +69,10 @@ Action TankTopMenuDraw(int iClient)
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 
+	char strXP[32];
+	FormatXPDisplay(iClient, strXP, sizeof(strXP));
 	FormatEx(text, sizeof(text), "\
-		%sLevel %d	XP: %d/%d\
+		%sLevel %d	XP: %s\
 		\n==========================\
 		\nTanks:\
 		\n==========================\n \
@@ -78,8 +80,7 @@ Action TankTopMenuDraw(int iClient)
 		\ntheir abilities.\n \n",
 		strStartingNewLines,
 		g_iClientLevel[iClient],
-		g_iClientXP[iClient],
-		g_iClientNextLevelXPAmount[iClient]);
+		strXP);
 	SetMenuTitle(menu, "%s", text);
 	GetNewLinesAutomatic(text, strNewLines, 4+1);
 	

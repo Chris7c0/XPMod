@@ -12,8 +12,9 @@ Action SpitterTopMenuDraw(int iClient)
 	GetNewLinesToPushMenuDown(iClient, strStartingNewLines);
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 
-	char text[512];
-	FormatEx(text, sizeof(text), "%sLevel %d	XP: %d/%d\n==============================\nSpitter Talents:\n==============================\n \nPuppet Master: Level %d\nMaterial Girl: Level %d\nHallucinogenic Nightmare: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_iPuppetLevel[iClient], g_iMaterialLevel[iClient], g_iHallucinogenicLevel[iClient]);
+	char text[512], strXP[32];
+	FormatXPDisplay(iClient, strXP, sizeof(strXP));
+	FormatEx(text, sizeof(text), "%sLevel %d	XP: %s\n==============================\nSpitter Talents:\n==============================\n \nPuppet Master: Level %d\nMaterial Girl: Level %d\nHallucinogenic Nightmare: Level %d\n \n", strStartingNewLines, g_iClientLevel[iClient], strXP, g_iPuppetLevel[iClient], g_iMaterialLevel[iClient], g_iHallucinogenicLevel[iClient]);
 	SetMenuTitle(menu, "%s", text);
 	GetNewLinesAutomatic(text, strNewLines, 4+3);
 	

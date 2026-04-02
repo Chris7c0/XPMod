@@ -51,6 +51,14 @@ void GetNewLinesAutomatic(const char[] text, char strNewLines[512], int iMenuOpt
 		StrCat(strNewLines, sizeof(strNewLines), "\n ");
 }
 
+void FormatXPDisplay(int iClient, char[] strXP, int iMaxLen)
+{
+	if (g_iClientLevel[iClient] >= 30)
+		FormatEx(strXP, iMaxLen, "%d", g_iClientXP[iClient]);
+	else
+		FormatEx(strXP, iMaxLen, "%d/%d", g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+}
+
 void XPModMenuDraw(int iClient)
 {
 	// For client hosted games
@@ -93,7 +101,8 @@ Action TopMenuDraw(int iClient)
 	GetNewLinesToPushMenuUp(iClient, strEndingNewLines);
 
 	// Title
-	char text[512], strNewLines[512];
+	char text[512], strNewLines[512], strXP[32];
+	FormatXPDisplay(iClient, strXP, sizeof(strXP));
 	if(g_iClientTeam[iClient] == TEAM_SURVIVORS)
 	{
 		char strClassName[20];
@@ -107,12 +116,12 @@ Action TopMenuDraw(int iClient)
 			case LOUIS:	strcopy(strClassName, sizeof(strClassName), "Disruptor");
 			case ZOEY:	strcopy(strClassName, sizeof(strClassName), "R.C. Medic");
 		}
-		FormatEx(text, sizeof(text), "%s				XP Mod\n			v %s\n▬▬▬▬▬▬▬▬▬▬▬▬▬\nLevel  %d  %s\nXP:   %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬", strStartingNewLines, PLUGIN_VERSION, g_iClientLevel[iClient], strClassName, g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+		FormatEx(text, sizeof(text), "%s				XP Mod\n			v %s\n▬▬▬▬▬▬▬▬▬▬▬▬▬\nLevel  %d  %s\nXP:   %s\n▬▬▬▬▬▬▬▬▬▬▬▬▬", strStartingNewLines, PLUGIN_VERSION, g_iClientLevel[iClient], strClassName, strXP);
 	}
 	else if(g_iClientTeam[iClient] == TEAM_INFECTED)
-		FormatEx(text, sizeof(text), "%s				XP Mod\n			v %s\n▬▬▬▬▬▬▬▬▬▬▬▬▬\nLevel  %d  Infected\nXP:   %d/%d\n \nClass 1) %s\nClass 2) %s\nClass 3) %s\n▬▬▬▬▬▬▬▬▬▬▬▬▬", strStartingNewLines, PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient], g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
+		FormatEx(text, sizeof(text), "%s				XP Mod\n			v %s\n▬▬▬▬▬▬▬▬▬▬▬▬▬\nLevel  %d  Infected\nXP:   %s\n \nClass 1) %s\nClass 2) %s\nClass 3) %s\n▬▬▬▬▬▬▬▬▬▬▬▬▬", strStartingNewLines, PLUGIN_VERSION, g_iClientLevel[iClient], strXP, g_strClientInfectedClass1[iClient], g_strClientInfectedClass2[iClient], g_strClientInfectedClass3[iClient]);
 	else
-		FormatEx(text, sizeof(text), "%s				XP Mod\n			v %s\n▬▬▬▬▬▬▬▬▬▬▬▬▬\nLevel %d\nXP:     %d/%d\n▬▬▬▬▬▬▬▬▬▬▬▬▬", strStartingNewLines, PLUGIN_VERSION, g_iClientLevel[iClient], g_iClientXP[iClient], g_iClientNextLevelXPAmount[iClient]);
+		FormatEx(text, sizeof(text), "%s				XP Mod\n			v %s\n▬▬▬▬▬▬▬▬▬▬▬▬▬\nLevel %d\nXP:     %s\n▬▬▬▬▬▬▬▬▬▬▬▬▬", strStartingNewLines, PLUGIN_VERSION, g_iClientLevel[iClient], strXP);
 	SetMenuTitle(menu, "%s", text);
 
 	// Calculate menu option newlines for automatic padding
