@@ -901,14 +901,14 @@ Gain Automatic Explosive Machine Pistol
     120 Clip
     Bullets Explode
     OneShots CI
-    +150% Dmg to SI
+    +175% Dmg to SI
 
 Pistol Melee Swap
     Pick Up A Melee To Stash It
     Press [WALK] + [ZOOM] To Swap
 
 Mop 'Til They Drop
-    Gain 1 Charge Per 5 Pistol Hits
+    Gain 1 Charge Per 4 Pistol Hits
     Press [WALK] + [USE] To Arm
     Armed Shot Kills Nearby CI
     Each CI Killed Grants +1 MaxHP
@@ -1556,7 +1556,7 @@ Deal More Punch, Pound, and Charge Impact Damage
 Spiked Carapace (Level {X})
 
 Reflect 1 Dmg/Lvl When Meleed
-+40 MaxHP/Lvl
++30 MaxHP/Lvl
 +33 HP/Lvl When Knocking Survivors
 
 Hold [CROUCH] to Charge Uppercut, On Next Melee:
@@ -1574,7 +1574,7 @@ On Next Charge, Reset Charge Cooldown
 ```
 Hillbilly Madness! (Level {X})
 
-+50 MaxHP per Lvl
++30 MaxHP per Lvl
 +3% Move Speed & Carry Range per Lvl
 -1s Charge Cooldown Every Other Lvl
 

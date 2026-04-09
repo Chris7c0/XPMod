@@ -95,7 +95,7 @@ Action SpikedMenuDraw(int iClient)
 		%sSpiked Carapace (Level %d)\
 		\n \
 		\nReflect 1 Dmg/Lvl When Meleed\
-		\n+40 MaxHP/Lvl\
+		\n+30 MaxHP/Lvl\
 		\n+33 HP/Lvl When Knocking Survivors\
 		\n \
 		\nHold [CROUCH] to Charge Uppercut, On Next Melee:\
@@ -140,7 +140,7 @@ Action HillbillyMenuDraw(int iClient)
 	FormatEx(text, sizeof(text), "\
 		%sHillbilly Madness! (Level %d)\
 		\n \
-		\n+50 MaxHP per Lvl\
+		\n+30 MaxHP per Lvl\
 		\n+3%% Move Speed & Carry Range per Lvl\
 		\n-1s Charge Cooldown Every Other Lvl\
 		\n \

@@ -27,7 +27,7 @@ void TalentsLoad_Charger(int iClient)
 	if(g_bHasInfectedHealthBeenSet[iClient] == false)
 	{
 		g_bHasInfectedHealthBeenSet[iClient] = true;
-		SetPlayerMaxHealth(iClient, (g_iSpikedLevel[iClient] * 40) + (g_iHillbillyLevel[iClient] * 50), true);
+		SetPlayerMaxHealth(iClient, (g_iSpikedLevel[iClient] * 30) + (g_iHillbillyLevel[iClient] * 30), true);
 	}
 }
 

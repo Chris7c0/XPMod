@@ -109,14 +109,14 @@ Action ZoeyTalentInfoMenuDraw(int iClient, int iTalentIndex)
 			\n	120 Clip\
 			\n	Bullets Explode\
 			\n	OneShots CI\
-			\n	+150%% Dmg to SI\
+			\n	+175%% Dmg to SI\
 			\n \
 			\nPistol Melee Swap\
 			\n	Pick Up A Melee To Stash It\
 			\n	Press [WALK] + [ZOOM] To Swap\
 			\n \
 			\nMop 'Til They Drop\
-			\n	Gain 1 Charge Per 5 Pistol Hits\
+			\n	Gain 1 Charge Per 4 Pistol Hits\
 			\n	Press [WALK] + [USE] To Arm\
 			\n	Armed Shot Kills Nearby CI\
 			\n	Each CI Killed Grants +1 MaxHP\
